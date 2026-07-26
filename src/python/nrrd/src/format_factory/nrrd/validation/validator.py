@@ -9,6 +9,7 @@ from format_factory.core import Diagnostic, ResourceLimits, ValidationReport
 from ..codec.payload import (
     checked_element_count,
     dtype_info,
+    expected_binary_size,
     is_block_type,
     parse_block_size,
 )
@@ -61,6 +62,19 @@ def validate(
         else:
             dtype_info(document.nrrd_type)
         count = checked_element_count(sizes, effective_limits(limits))
+        expected_payload_size = expected_binary_size(
+            document.nrrd_type,
+            sizes,
+            effective_limits(limits),
+            block_size=block_size,
+        )
+        if len(document.payload) != expected_payload_size:
+            diagnostics.append(
+                Diagnostic(
+                    "nrrd.payload.length",
+                    "decoded payload length does not match declared type and sizes",
+                )
+            )
         if len(document.array) != count:
             diagnostics.append(
                 Diagnostic(

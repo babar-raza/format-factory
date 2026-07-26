@@ -220,6 +220,24 @@ def test_duplicate_header_and_truncated_payload_fail_closed() -> None:
         loads(fixture()[:-1])
 
 
+def test_validation_reports_declared_payload_byte_mismatch() -> None:
+    document = NrrdDocument(
+        version=5,
+        header={
+            "type": "uint16",
+            "dimension": "1",
+            "sizes": "1",
+            "endian": "little",
+            "encoding": "raw",
+        },
+        payload=b"\x01",
+        array=[1],
+    )
+    report = validate(document)
+    assert not report.is_valid
+    assert any(item.code == "nrrd.payload.length" for item in report.diagnostics)
+
+
 def test_resource_limits_are_caller_configurable() -> None:
     limits = ResourceLimits(max_input_bytes=16)
     with pytest.raises(Exception, match="max_input_bytes"):

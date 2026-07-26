@@ -44259,6 +44259,22 @@
       "validation_command": "package-install-proof plus installed-wheel type/block tests",
       "result": "276 source tests; 41 installed-wheel targeted tests; package proof PASS",
       "rollback": "Revert this bounded NRRD type implementation and remove this ledger entry."
+    },
+    {
+      "entry_id": "FF6-NRRD-VALIDATE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "AUTO-NRRD-IMPLEMENT-NRRD-VALIDATE-001",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-NRRD-IMPLEMENT-NRRD-VALIDATE-001",
+      "product": "Nearly Raw Raster Data Python production package",
+      "format": "NRRD",
+      "capability_refs": ["NRRD-VALIDATE-001"],
+      "api_symbols": ["validate"],
+      "source_files": [{"path": "src/python/nrrd/src/format_factory/nrrd/validation/validator.py", "state": "present", "sha256": "8185f66164905d7a10d679be52ddcc79ef375f1d4ef8391b21ec44fb5491684f"}],
+      "test_files": ["tests/python/nrrd/test_production_namespace.py"],
+      "validation_command": "277 source tests; clean wheel and installed validation test",
+      "result": "PASS",
+      "rollback": "Revert decoded-payload length validation and this ledger entry."
     }
   ]
 }
