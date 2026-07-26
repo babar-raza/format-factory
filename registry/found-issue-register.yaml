@@ -2,6 +2,46 @@ version: 1
 policy_ref: docs/governance/found-issue-ownership-policy.md
 issues:
 
+- issue_id: FI-033
+  stable_semantic_key: "governance:product_code_ledger:legacy_schema_crash"
+  status: closed
+  discovered_at: "2026-07-26T09:00:00Z"
+  discovering_task_id: TC-FI-033-LEDGER-VALIDATOR-001
+  issue_type: schema_violation
+  affected_component: tools/supervisor/validate_product_code_ledger.py
+  affected_paths:
+    - tools/supervisor/validate_product_code_ledger.py
+    - tests/supervisor/test_validate_product_code_ledger.py
+    - reports/r90/product-code-change-ledger.json
+  observed_behavior: >-
+    The ledger validator raised AttributeError ('str' object has no attribute
+    'get') while scanning legacy source_files string records. It stopped before
+    producing a verdict, allowing callers to treat a broken validator as an
+    unavailable or advisory check.
+  expected_behavior: >-
+    Historical records remain append-only audit data and are reported outside
+    the current projection. A malformed current record must return an explicit
+    fail-closed diagnostic; the validator must never throw on mixed history.
+  severity: P1
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-FIO-005
+  healing_taskcard_id: TC-FI-033-LEDGER-VALIDATOR-001
+  verification_verdict: >-
+    22 focused ledger tests pass (one existing real-ledger expectation remains
+    xfailed); a real-ledger invocation returns structured validity=false,
+    1,576 legacy record identifiers, and 3,233 actionable current-projection
+    errors without an exception.
+  disposition: HEALED_AND_VERIFIED
+  closed_at: "2026-07-26T09:00:00Z"
+  evidence:
+    - tests/supervisor/test_validate_product_code_ledger.py
+    - tests/supervisor/test_r90_product_acceleration.py
+    - reports/skills-rff6/skill-transcripts/found-issue-ownership-ledger-validator-001.json
+  notes: >-
+    This closes the validator crash only. The structured error count proves a
+    separate ledger-migration obligation remains; it cannot be erased or
+    claimed resolved by classifying malformed current records as history.
+
 - issue_id: FI-001
   stable_semantic_key: "sylk:broken_fixture:test_separation_pilots.py:test_no_duplicates"
   status: verified

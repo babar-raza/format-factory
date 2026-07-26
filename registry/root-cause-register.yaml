@@ -1,6 +1,33 @@
 version: 1
 root_causes:
 
+- root_cause_id: RC-FIO-005
+  title: "R90 product-code ledger mixes historical schemas with current proof records"
+  first_failing_boundary: "validate_product_code_ledger.validate_ledger source_files iteration"
+  local_cause: >-
+    The validator assumed every entries[].source_files item was a mapping,
+    although historical test-coverage and old sprint entries store strings or
+    omit current proof fields.
+  systemic_cause: >-
+    The append-only historical ledger was never separated into a materialized
+    current proof projection. Callers scanned the entire mixed-schema history
+    as if every record were current and SHA-bound.
+  affected_producer: "R90 historical product-code-change-ledger accumulation"
+  affected_consumers:
+    - tools/supervisor/validate_product_code_ledger.py
+    - tools/supervisor/autonomous_cycle.py
+    - reports/r90/product-code-change-ledger.json
+    - six-format production proof and promotion calculations
+  recurrence_path: >-
+    Any future legacy append or current proof validation will either crash or
+    misclassify historical evidence until a versioned current-entry projection
+    and migration path are enforced.
+  confidence: HIGH
+  issue_ids:
+    - FI-033
+  repair_skill_id: found-issue-ownership
+  status: mitigated
+
 - root_cause_id: RC-FIO-001
   title: "Stale test fixture parametrize lists after analytics separation migration"
   first_failing_boundary: "tests/governance_pilots/test_separation_pilots.py (parametrize lists)"
