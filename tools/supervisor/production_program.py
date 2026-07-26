@@ -37,6 +37,32 @@ STATES = (
     "RELEASE_PREP",
     "COMPLETE",
 )
+# ``REPAIR`` is an exceptional state, not a position on the happy-path
+# sequence.  A product reaches it only when formerly current evidence becomes
+# invalid after it has already crossed a verification boundary.  Recovery
+# deliberately returns to ``IMPLEMENT`` so fresh evidence must cross VERIFY
+# again; this prevents a repaired source tree from silently retaining a later
+# certification or release state.
+FORWARD_TRANSITIONS = {
+    "DISCOVER": "SNAPSHOT",
+    "SNAPSHOT": "CONTRACT",
+    "CONTRACT": "IMPLEMENT",
+    "IMPLEMENT": "VERIFY",
+    "VERIFY": "CERTIFY",
+    "CERTIFY": "EXTRACT",
+    "EXTRACT": "RELEASE_PREP",
+    "RELEASE_PREP": "COMPLETE",
+}
+REPAIRABLE_STATES = frozenset({
+    "SNAPSHOT",
+    "CONTRACT",
+    "IMPLEMENT",
+    "VERIFY",
+    "CERTIFY",
+    "EXTRACT",
+    "RELEASE_PREP",
+    "COMPLETE",
+})
 SEVERITY_ORDER = {"CRITICAL": 0, "HIGH": 1, "MEDIUM": 2, "LOW": 3}
 GAP_PRIORITY = {
     "authority": 0,
@@ -403,9 +429,14 @@ class ProductionProgram:
         if state not in STATES:
             raise ValueError(f"unknown state: {state}")
         current = self.formats[format_id]
-        current_index = STATES.index(current.state)
-        next_index = STATES.index(state)
-        if next_index > current_index + 1 and state != "REPAIR":
+        if state == current.state:
+            return
+        allowed = (
+            FORWARD_TRANSITIONS.get(current.state) == state
+            or (state == "REPAIR" and current.state in REPAIRABLE_STATES)
+            or (current.state == "REPAIR" and state == "IMPLEMENT")
+        )
+        if not allowed:
             raise ValueError(f"unsafe transition {current.state} -> {state}")
         evidence_digest = hashlib.sha256(canonical_bytes(evidence)).hexdigest()
         event = {
@@ -1286,8 +1317,35 @@ print(json.dumps(results, sort_keys=True, separators=(",", ":")))
             "unmet_obligation_count": len(unmet),
             "stale_proof_obligations": stale_unmet,
         }
-        if self.formats[format_id].state == "CONTRACT":
-            self.transition(format_id, "IMPLEMENT", evidence=evidence)
+        # Controller state is a persisted projection of the live proof graph,
+        # never a mutable promotion label.  Advance one state per audit so a
+        # crash leaves a replayable, digest-bound boundary.  A previously
+        # verified product whose proof closure changes enters REPAIR; recovery
+        # must pass IMPLEMENT and VERIFY again before it can re-enter CERTIFY.
+        current_state = self.formats[format_id].state
+        decision_state = decision.state
+        if decision_state == "INVALIDATED":
+            if current_state in {"VERIFY", "CERTIFY", "EXTRACT", "RELEASE_PREP", "COMPLETE"}:
+                self.transition(format_id, "REPAIR", evidence=evidence)
+        elif decision_state in {
+            "IMPLEMENTATION_IN_PROGRESS",
+            "IMPLEMENTATION_VERIFIED",
+            "RELEASE_CANDIDATE",
+            "RELEASED",
+        }:
+            if current_state in {"CONTRACT", "REPAIR"}:
+                self.transition(format_id, "IMPLEMENT", evidence=evidence)
+            elif (
+                current_state == "IMPLEMENT"
+                and decision_state
+                in {"IMPLEMENTATION_VERIFIED", "RELEASE_CANDIDATE", "RELEASED"}
+            ):
+                self.transition(format_id, "VERIFY", evidence=evidence)
+            elif current_state == "VERIFY" and decision_state in {
+                "RELEASE_CANDIDATE",
+                "RELEASED",
+            }:
+                self.transition(format_id, "CERTIFY", evidence=evidence)
         return evidence
 
     def audit_machinery(self) -> list[dict[str, Any]]:

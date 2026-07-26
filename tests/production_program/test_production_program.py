@@ -439,6 +439,21 @@ def test_invalid_transition_fails_closed(tmp_path: Path) -> None:
         program.transition("ipynb", "VERIFY", evidence={})
 
 
+def test_transition_rejects_backward_moves_and_only_allows_repair_recovery(
+    tmp_path: Path,
+) -> None:
+    program = ProductionProgram(tmp_path)
+    program.transition("ipynb", "SNAPSHOT", evidence={"step": "snapshot"})
+    program.transition("ipynb", "CONTRACT", evidence={"step": "contract"})
+    with pytest.raises(ValueError, match="unsafe transition"):
+        program.transition("ipynb", "DISCOVER", evidence={"manual": True})
+    program.transition("ipynb", "REPAIR", evidence={"reason": "stale proof"})
+    with pytest.raises(ValueError, match="unsafe transition"):
+        program.transition("ipynb", "CERTIFY", evidence={"manual": True})
+    program.transition("ipynb", "IMPLEMENT", evidence={"repair": "complete"})
+    assert program.formats["ipynb"].state == "IMPLEMENT"
+
+
 def test_machinery_failures_enter_current_projection(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -767,6 +782,114 @@ def test_one_executed_result_satisfies_only_its_bound_obligation(
     remaining = evidence["promotion"]["unmet_obligations"]
     assert positive["obligation_id"] not in remaining
     assert len(remaining) == 1
+
+
+def test_live_proof_advances_through_verify_without_manual_promotion(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    repo, _source, test_path = _proof_repo(tmp_path, monkeypatch)
+    compiled = compile_product_contract(_contract(), run_legacy_validator=False)
+    program = ProductionProgram(tmp_path / "state")
+    program.discover("ipynb")
+    program.compile_contract("ipynb")
+    program.audit_implementation("ipynb")
+    assert program.formats["ipynb"].state == "IMPLEMENT"
+
+    for obligation in compiled.obligations:
+        program.execute_proof(
+            "ipynb",
+            obligation["obligation_id"],
+            polarity="negative" if obligation["kind"] == "rejection" else "positive",
+            test_paths=[test_path.relative_to(repo).as_posix()],
+            fixture_paths=[],
+            package_paths=[],
+            command=[sys.executable, "-c", "print('executed')"],
+        )
+
+    evidence = program.audit_implementation("ipynb")
+    assert evidence["promotion"]["state"] == "IMPLEMENTATION_VERIFIED"
+    assert program.formats["ipynb"].state == "VERIFY"
+
+
+def test_live_installed_package_proof_advances_verify_to_certify(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    repo, _source, test_path = _proof_repo(tmp_path, monkeypatch)
+    package = repo / ".local" / "packages" / "format_factory_ipynb.whl"
+    package.parent.mkdir(parents=True)
+    package.write_bytes(b"installed-wheel")
+    monkeypatch.setattr(
+        ProductionProgram,
+        "_installed_wheel_manifest",
+        staticmethod(
+            lambda _command, packages: [
+                {
+                    "wheel_name": packages[0].name,
+                    "wheel_sha256": "a" * 64,
+                    "distribution": "format-factory-ipynb",
+                    "version": "1.0",
+                    "verified_file_count": 1,
+                    "installed_content_digest": "b" * 64,
+                }
+            ]
+        ),
+    )
+    compiled = compile_product_contract(_contract(), run_legacy_validator=False)
+    program = ProductionProgram(tmp_path / "state")
+    program.discover("ipynb")
+    program.compile_contract("ipynb")
+    program.audit_implementation("ipynb")
+    for obligation in compiled.obligations:
+        program.execute_proof(
+            "ipynb",
+            obligation["obligation_id"],
+            polarity="negative" if obligation["kind"] == "rejection" else "positive",
+            test_paths=[test_path.relative_to(repo).as_posix()],
+            fixture_paths=[],
+            package_paths=[package.relative_to(repo).as_posix()],
+            command=[sys.executable, "-c", "print('installed wheel exercised')"],
+        )
+
+    evidence = program.audit_implementation("ipynb")
+    assert evidence["promotion"]["state"] == "RELEASE_CANDIDATE"
+    assert program.formats["ipynb"].state == "VERIFY"
+    program.audit_implementation("ipynb")
+    assert program.formats["ipynb"].state == "CERTIFY"
+
+
+def test_invalidated_verified_proof_enters_repair_and_requires_reverification(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    repo, _source, test_path = _proof_repo(tmp_path, monkeypatch)
+    compiled = compile_product_contract(_contract(), run_legacy_validator=False)
+    program = ProductionProgram(tmp_path / "state")
+    program.discover("ipynb")
+    program.compile_contract("ipynb")
+    program.audit_implementation("ipynb")
+    for obligation in compiled.obligations:
+        program.execute_proof(
+            "ipynb",
+            obligation["obligation_id"],
+            polarity="negative" if obligation["kind"] == "rejection" else "positive",
+            test_paths=[test_path.relative_to(repo).as_posix()],
+            fixture_paths=[],
+            package_paths=[],
+            command=[sys.executable, "-c", "print('executed')"],
+        )
+    program.audit_implementation("ipynb")
+    assert program.formats["ipynb"].state == "VERIFY"
+
+    original = test_path.read_text(encoding="utf-8")
+    test_path.write_text(original + "# proof input changed\n", encoding="utf-8")
+    evidence = program.audit_implementation("ipynb")
+    assert evidence["promotion"]["state"] == "INVALIDATED"
+    assert program.formats["ipynb"].state == "REPAIR"
+
+    test_path.write_text(original, encoding="utf-8")
+    program.audit_implementation("ipynb")
+    assert program.formats["ipynb"].state == "IMPLEMENT"
+    program.audit_implementation("ipynb")
+    assert program.formats["ipynb"].state == "VERIFY"
 
 
 @pytest.mark.parametrize("mutation", ("change", "delete"))
