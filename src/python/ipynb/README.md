@@ -38,6 +38,29 @@ dump(document, "notebook-edited.ipynb")
 JSON members. The library parses notebook structure only and never executes
 code.
 
+## Explicit version conversion
+
+Upgrades from nbformat 4.0 through 4.4 to 4.5 are explicit and return an
+action ledger plus the cell-ID rewrite map. Downgrades use a two-step,
+content-bound plan:
+
+```python
+from format_factory.ipynb import downgrade, plan_downgrade
+
+plan = plan_downgrade(document, target="4.4")
+for loss in plan.losses:
+    print(loss.code, loss.path)
+
+converted = downgrade(document, plan=plan, accept_loss=True)
+```
+
+The executor recomputes the complete plan and rejects stale or edited plans.
+Cell IDs are reported and removed for 4.0–4.4 because those schemas disallow
+them. Later-minor metadata that older schemas permit as extensions is retained
+and reported separately through `plan.preserved_extensions`. Future minor
+versions remain preservation-only and cannot be downgraded because their
+semantics are not known.
+
 ## Active-content handling
 
 Notebook Markdown, attachments, and output MIME bundles can carry active
@@ -193,12 +216,13 @@ process are documented in `SECURITY.md`.
 - Cell-ID normalization and structural validation
 - Unknown JSON-member preservation
 - MIME-bundle helpers and structural mutation
+- Explicit, loss-audited nbformat 4.0–4.5 conversion
 - Explicit active-content classification, removal, quarantine, and marking
 - Installed-package CLI and analytics in isolated modules
 
-Version conversion and complete differential certification against the
-official `nbformat` implementation are tracked as mandatory obligations and
-are not claimed by this package chassis.
+Complete differential certification against the official `nbformat`
+implementation remains a computed release gate and is not claimed by this
+package chassis.
 
 ## License
 

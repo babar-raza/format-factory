@@ -43852,9 +43852,53 @@
         }
       ],
       "tests": "tests/python/ipynb/test_obligation_metadata_adapters.py"
+    },
+    {
+      "entry_id": "FF6-IPYNB-VERSION-CONVERSION-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-IPYNB-SOURCE-012",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-UPGRADE-001",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "SAL-IPYNB-OBL-C599FB180ACF8D49",
+      "capability_refs": [
+        "foss_python.ipynb.bound_downgrade_planning",
+        "foss_python.ipynb.explicit_downgrade_loss_acceptance",
+        "foss_python.ipynb.cell_id_downgrade_reporting",
+        "foss_python.ipynb.preserved_extension_reporting",
+        "foss_python.ipynb.future_minor_downgrade_block",
+        "foss_python.ipynb.all_supported_minor_conversion"
+      ],
+      "api_symbols": [
+        "format_factory.ipynb.ConversionDisposition",
+        "format_factory.ipynb.ConversionIssue",
+        "format_factory.ipynb.ConversionResult.losses",
+        "format_factory.ipynb.DowngradePlan",
+        "format_factory.ipynb.downgrade",
+        "format_factory.ipynb.plan_downgrade"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+          "state": "present",
+          "sha256": "da79a4d2f2e5ead26991c9a4b20ec124399cd7ef088b7a7fcc8668bda9b0b2e1"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+          "state": "present",
+          "sha256": "926393090e5beec261aaaff894ae627845f901d49248fc3b3f0a7ebdea84951a"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py",
+          "state": "present",
+          "sha256": "53124e416f65b9914975f9000c490be653555634956625a69765cf233bfbb391"
+        }
+      ],
+      "tests": "tests/python/ipynb/test_obligation_version_conversion.py"
     }
   ],
-  "total_entries": 2776,
+  "total_entries": 2777,
   "changes": [
     {
       "file": "src/python/dif/models.py",
