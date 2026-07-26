@@ -157,6 +157,23 @@ an immutable report. Copy IDs are deterministic, replacement preserves the
 selected ID, and bulk removal refuses an empty query. Dry-run and applied
 reports are equivalent while dry-run leaves the document untouched.
 
+## Typed metadata snapshots
+
+Read-only adapters expose common metadata without handing callers live nested
+dictionaries:
+
+```python
+from format_factory.ipynb import cell_metadata, notebook_metadata
+
+kernel = notebook_metadata(document).kernelspec
+tags = cell_metadata(document.cell_objects[0]).tags
+```
+
+Adapters cover kernelspec, language info, tags, slideshow, execution timing,
+and per-MIME output rendering metadata. Every adapter is a defensive snapshot;
+`to_dict()` and `extras` retain exact unknown values and namespaces. Malformed
+known namespaces fail explicitly instead of being silently treated as absent.
+
 ## Public namespace
 
 The supported namespace is `format_factory.ipynb`. The earlier top-level

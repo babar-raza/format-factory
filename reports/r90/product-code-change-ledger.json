@@ -43800,9 +43800,61 @@
         }
       ],
       "tests": "tests/python/ipynb/test_obligation_cell_editor.py"
+    },
+    {
+      "entry_id": "FF6-IPYNB-METADATA-ADAPTERS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-IPYNB-SOURCE-011",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-META-001",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "SAL-IPYNB-OBL-13F3815D0E5C95E6,SAL-IPYNB-OBL-346FB023299D218E,SAL-IPYNB-OBL-4471354A239702DB,SAL-IPYNB-OBL-DB0F793B92DED8A3",
+      "capability_refs": [
+        "foss_python.ipynb.typed_kernelspec_metadata",
+        "foss_python.ipynb.typed_language_info_metadata",
+        "foss_python.ipynb.validated_cell_tags",
+        "foss_python.ipynb.typed_slideshow_metadata",
+        "foss_python.ipynb.typed_execution_metadata",
+        "foss_python.ipynb.per_mime_output_metadata",
+        "foss_python.ipynb.lossless_unknown_metadata_preservation",
+        "foss_python.ipynb.defensive_metadata_snapshots"
+      ],
+      "api_symbols": [
+        "format_factory.ipynb.CellMetadataAdapter",
+        "format_factory.ipynb.ExecutionMetadata",
+        "format_factory.ipynb.KernelSpecMetadata",
+        "format_factory.ipynb.LanguageInfoMetadata",
+        "format_factory.ipynb.MetadataShapeError",
+        "format_factory.ipynb.MimeRenderingMetadata",
+        "format_factory.ipynb.NotebookMetadataAdapter",
+        "format_factory.ipynb.OutputMetadataAdapter",
+        "format_factory.ipynb.SlideshowMetadata",
+        "format_factory.ipynb.cell_metadata",
+        "format_factory.ipynb.notebook_metadata",
+        "format_factory.ipynb.output_metadata"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+          "state": "present",
+          "sha256": "9b85c5beb2de077df985c9befde5630e92bf51a94defa942a67a40f661023012"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+          "state": "present",
+          "sha256": "92546df38a660b3fb95ed14cdb8f5e09a273bd60f0eced6a2fc1b4bd4eb057be"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/metadata.py",
+          "state": "present",
+          "sha256": "c1271fd8e6a5ac9a9d29456d30d4cc9f82bd8f8acc21551905afa70cc1ae6fa5"
+        }
+      ],
+      "tests": "tests/python/ipynb/test_obligation_metadata_adapters.py"
     }
   ],
-  "total_entries": 2775,
+  "total_entries": 2776,
   "changes": [
     {
       "file": "src/python/dif/models.py",

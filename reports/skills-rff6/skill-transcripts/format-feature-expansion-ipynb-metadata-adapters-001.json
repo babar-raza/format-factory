@@ -1,0 +1,171 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-format-feature-expansion-ipynb-metadata-adapters-001",
+  "execution_id": "ff6-format-feature-expansion-ipynb-metadata-adapters-001",
+  "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-META-001",
+  "skill_id": "format-feature-expansion",
+  "selected_skill_ids": [
+    "format-feature-expansion"
+  ],
+  "skill_route": {
+    "operation_class": "production_product_contract_obligation_expansion",
+    "legacy_route_considered": "product_deepening",
+    "resolution": "The mission-approved production registry entry and TC-FF6-MACH-001 bind complete ProductContract obligation slices to format-feature-expansion. The historical reconciler's metadata-complete label was rejected because generic dictionary roundtrip did not provide typed access, validation of known namespaces, or evidence for the named metadata obligations.",
+    "coverage_result": "SKILL_COVERAGE_CONFIRMED: skill_id=format-feature-expansion, work_type=production_product_contract_obligation"
+  },
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-IPYNB-SOURCE-011",
+  "pre_mutation_guard_authorization_id": "3a3878e8ce3b02e6",
+  "requested_operation": "implement lossless typed metadata adapters for notebook kernelspec and language info, cell tags, slideshow and execution timing, and per-MIME output rendering metadata",
+  "inputs": {
+    "format_id": "ipynb",
+    "profile_id": "production",
+    "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-META-001",
+    "obligation_id": "SAL-IPYNB-OBL-346FB023299D218E",
+    "obligation_ids": [
+      "SAL-IPYNB-OBL-13F3815D0E5C95E6",
+      "SAL-IPYNB-OBL-346FB023299D218E",
+      "SAL-IPYNB-OBL-4471354A239702DB",
+      "SAL-IPYNB-OBL-DB0F793B92DED8A3"
+    ],
+    "capability_id": "IPYNB-META-001",
+    "contract_digest": "56762498619ac994bbc5bceac7240357118f1046bda48d5e4bdffc6baa1129ac",
+    "contract_source_digest": "e33340b8d1a9ee1b299d51140c1dc8079386000cab2b294f8aaa2a2f91d49cad",
+    "authority_digests": {
+      "SRC-NB-002": "4d3750b55006e92d8063a6ac427a84eb1f91c44e376d90de53d03893674991d9"
+    },
+    "independent_oracle": {
+      "distribution": "nbformat",
+      "version": "5.10.4"
+    },
+    "root_cause": "The codec preserved raw metadata dictionaries, but there was no typed or validated access for the contract's common metadata namespaces. A presence-based reconciler mapped generic roundtrip behavior to several distinct metadata obligations and therefore hid missing behavior.",
+    "affected_layer": "IPYNB typed model views, public API, forward-compatible preservation guarantees, error behavior, and package documentation",
+    "planned_paths": [
+      "src/python/ipynb/src/format_factory/ipynb/model/metadata.py",
+      "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+      "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+      "src/python/ipynb/README.md",
+      "tests/python/ipynb/test_obligation_metadata_adapters.py",
+      "reports/r90/product-code-change-ledger.json",
+      "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-metadata-adapters-001.json"
+    ],
+    "proof_inputs": [
+      "shared/format-contracts/ipynb.yaml",
+      "shared/format-contracts/research/ipynb.yaml",
+      "samples/by-format/ipynb/valid/minimal.ipynb",
+      "tests/python/ipynb/test_obligation_metadata_adapters.py",
+      ".local/build/ipynb-metadata-a/format_factory_ipynb-0.2.0.dev0-py3-none-any.whl",
+      ".local/build/ipynb-metadata-b/format_factory_ipynb-0.2.0.dev0-py3-none-any.whl",
+      ".local/venvs/ipynb-current-proof",
+      ".local/venvs/ipynb-static"
+    ],
+    "base_git_commit": "99c9ac7d19779b982f558b05654a54a64c13ba99"
+  },
+  "allowed_files": [
+    "src/python/ipynb/src/format_factory/ipynb/model/metadata.py",
+    "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+    "src/python/ipynb/README.md",
+    "tests/python/ipynb/test_obligation_metadata_adapters.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-metadata-adapters-001.json"
+  ],
+  "actual_files_changed": [
+    "src/python/ipynb/src/format_factory/ipynb/model/metadata.py",
+    "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+    "src/python/ipynb/README.md",
+    "tests/python/ipynb/test_obligation_metadata_adapters.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-metadata-adapters-001.json"
+  ],
+  "defect_reproduction": {
+    "result": "FAILURE_REPRODUCED",
+    "observations": [
+      "The failure-first test could not collect because format_factory.ipynb exported no MetadataShapeError or metadata adapter.",
+      "Existing generic load/dump behavior retained raw dictionaries but could not expose or validate kernelspec, language_info, tags, slideshow, execution, or per-MIME output metadata as named typed concepts.",
+      "The new focused matrix exercises a real repository notebook plus unknown nested vendor data and malformed known namespaces."
+    ]
+  },
+  "implementation": {
+    "compatibility": "Existing raw metadata access and load/dump behavior is unchanged; all metadata adapters and symbols are additive in the pre-1.0 public namespace.",
+    "snapshot_model": "Each adapter deep-copies its input once and returns defensive copies from to_dict and extras. Callers cannot accidentally mutate a notebook through a typed view.",
+    "notebook_metadata": "Kernelspec and language-info snapshots expose their defined common fields and retain all additional members exactly.",
+    "cell_metadata": "Tags are returned as an immutable tuple and enforce the nbformat uniqueness and comma restrictions. Slideshow and execution timing namespaces have typed views with unknown-member retention.",
+    "output_metadata": "Per-MIME rendering metadata is exposed separately from non-MIME extension namespaces and retains nested values exactly.",
+    "failure_behavior": "Malformed known namespaces fail with MetadataShapeError instead of being silently interpreted as absent or normalized away.",
+    "forward_preservation": "Unknown notebook, known-namespace, cell, and output metadata remains byte-value-equivalent at the Python data-model level and survives serialization.",
+    "tradeoff": "Adapters are immutable snapshots rather than live mutation facades. Snapshot creation is linear in the selected metadata subtree and consumes an equivalent temporary copy; this intentionally prioritizes isolation and preservation safety. Typed metadata mutation remains explicit raw-model work until a separately governed edit API is implemented."
+  },
+  "tests_run": [
+    "failure-first metadata-adapter test: collection failed because MetadataShapeError did not exist",
+    "focused typed-metadata obligation tests after implementation: 7 passed",
+    "source-tree format regression excluding installed-origin assertions: 336 passed, 3 deselected",
+    "Ruff 0.14.14 on production namespace and metadata-adapter test: PASS",
+    "Mypy 1.18.2 strict on production namespace: PASS, 28 source files",
+    "two isolated SOURCE_DATE_EPOCH=315532800 wheels: identical SHA-256 407a3cf4a9b7889c31e1c6b0d22f5dee09695adc09743879df503f2ebc42165f",
+    "installed-wheel full tests/python/ipynb suite: 339 passed",
+    "installed official oracle: typed fixture metadata and nested unknown namespace survived exact library roundtrip and nbformat 5.10.4 schema validation",
+    "production control-plane and production-skill regression: 43 passed",
+    "repository real-ledger test remains the known non-strict xfail because historical entries use the legacy mixed source_files schema"
+  ],
+  "ledger_entry_id": "FF6-IPYNB-METADATA-ADAPTERS-001",
+  "ledger_entry_path": "reports/r90/product-code-change-ledger.json",
+  "validations": {
+    "obligation_and_format_integrity": "PASS: current IPYNB-META-001 required-behavior obligations",
+    "failure_first": "PASS",
+    "typed_kernelspec_and_language_info": "PASS",
+    "validated_unique_comma_free_tags": "PASS",
+    "typed_slideshow_and_execution_timing": "PASS",
+    "per_mime_output_rendering_metadata": "PASS",
+    "unknown_metadata_exact_preservation": "PASS",
+    "defensive_snapshot_isolation": "PASS",
+    "malformed_known_namespace_rejection": "PASS",
+    "official_nbformat_validation_and_roundtrip": "PASS",
+    "installed_wheel_origin": "PASS",
+    "reproducible_wheel": "PASS",
+    "typing_and_lint": "PASS",
+    "public_api_blast_radius": "PASS: twelve additive pre-1.0 symbols; no existing symbol removed or renamed",
+    "declared_regression_tier": "PASS: 339 installed-wheel tests",
+    "product_ledger_exact_source_hashes": "PASS: all three current source entries match the current files",
+    "legacy_product_ledger_validator": "KNOWN GLOBAL XFAIL: historical mixed-schema entries prevent a whole-ledger pass; no global pass claimed",
+    "source_changed": "YES: canonical proof replay remains deferred to the consolidated source-wave boundary",
+    "new_proof_nodes": "NONE: no stale source proof was materialized",
+    "promotion_claimed": "NO"
+  },
+  "output_digests": {
+    "src/python/ipynb/src/format_factory/ipynb/model/metadata.py": "c1271fd8e6a5ac9a9d29456d30d4cc9f82bd8f8acc21551905afa70cc1ae6fa5",
+    "src/python/ipynb/src/format_factory/ipynb/model/__init__.py": "92546df38a660b3fb95ed14cdb8f5e09a273bd60f0eced6a2fc1b4bd4eb057be",
+    "src/python/ipynb/src/format_factory/ipynb/__init__.py": "9b85c5beb2de077df985c9befde5630e92bf51a94defa942a67a40f661023012",
+    "src/python/ipynb/README.md": "1a42eb2194822c964a52340e5479e416feb8db4abdb83fa6e18d00011ad56a13",
+    "tests/python/ipynb/test_obligation_metadata_adapters.py": "70ec8978e38fd5962fc81affab875c2aa1075301bf9b2d48af003093cfee08d8",
+    "reports/r90/product-code-change-ledger.json": "796b578d0d22453f3463626a66032bf8fc24610287d1e401aa3f275f6b454995",
+    "format_factory_ipynb-0.2.0.dev0-py3-none-any.whl": "407a3cf4a9b7889c31e1c6b0d22f5dee09695adc09743879df503f2ebc42165f"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for this bounded source slice; proof replay is deferred until the consolidated source wave is stable",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for implementation verification; no obligation closure or certification claimed",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES: no contradiction was found",
+    "14_memory_update_trigger": "NOT APPLICABLE: no gate, phase, or architecture transition occurred",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "IPYNB_TYPED_METADATA_ADAPTERS_IMPLEMENTED_CONSOLIDATED_PROOF_REPLAY_PENDING",
+  "timestamp": "2026-07-26T02:37:42.2124578Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}
