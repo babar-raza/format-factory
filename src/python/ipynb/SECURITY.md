@@ -12,4 +12,11 @@ unsafe; this avoids presenting a partial markup rewrite as a complete browser
 security boundary. Quarantined payloads remain untrusted data and must not be
 rendered directly by consumers.
 
+Notebook trust uses a caller-supplied secret, a strong HMAC algorithm, and an
+external signature store. Parsing and validation never sign content, and
+verification never writes `trusted` flags into cells. A valid notebook is not
+therefore a trusted notebook. The built-in memory store is process-local;
+applications needing durable trust must inject a protected persistent store
+and manage secret rotation outside notebook files.
+
 Report suspected vulnerabilities privately to the repository maintainers.

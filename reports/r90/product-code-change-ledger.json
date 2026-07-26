@@ -43618,9 +43618,55 @@
         }
       ],
       "tests": "tests/python/ipynb/test_obligation_sanitization.py"
+    },
+    {
+      "entry_id": "FF6-IPYNB-TRUST-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-IPYNB-SOURCE-007",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-TRUST-001",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "SAL-IPYNB-OBL-80272AC687E3FBED,SAL-IPYNB-OBL-D9ECFCF32654F42A",
+      "capability_refs": [
+        "foss_python.ipynb.content_addressed_trust",
+        "foss_python.ipynb.official_compatible_hmac",
+        "foss_python.ipynb.pluggable_signature_store",
+        "foss_python.ipynb.edit_invalidates_trust",
+        "foss_python.ipynb.explicit_trust_revocation",
+        "foss_python.ipynb.trust_validity_separation",
+        "foss_python.ipynb.bounded_signature_computation"
+      ],
+      "api_symbols": [
+        "format_factory.ipynb.HmacNotebookNotary",
+        "format_factory.ipynb.MemorySignatureStore",
+        "format_factory.ipynb.SignatureStore",
+        "format_factory.ipynb.TrustNotary",
+        "format_factory.ipynb.TrustRecord",
+        "format_factory.ipynb.TrustStatus",
+        "format_factory.ipynb.TrustVerification"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+          "state": "present",
+          "sha256": "d1f03e4d31cdb156d591beafc764b178601c3427c2227e5c7a8c3d3950a0cd7d"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/security/__init__.py",
+          "state": "present",
+          "sha256": "421f448211e06f04a5b7e789d704233b37da65c14a23bd4f4c898e233604eb14"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/security/trust.py",
+          "state": "present",
+          "sha256": "d3e35776e8ba56862153ee1d86ffa76b13bca06b5082c954dca9d46e2fe22dc6"
+        }
+      ],
+      "tests": "tests/python/ipynb/test_obligation_trust_notary.py"
     }
   ],
-  "total_entries": 2771,
+  "total_entries": 2772,
   "changes": [
     {
       "file": "src/python/dif/models.py",

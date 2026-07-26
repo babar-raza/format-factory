@@ -1,0 +1,169 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-format-feature-expansion-ipynb-trust-001",
+  "execution_id": "ff6-format-feature-expansion-ipynb-trust-001",
+  "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-TRUST-001",
+  "skill_id": "format-feature-expansion",
+  "selected_skill_ids": [
+    "format-feature-expansion"
+  ],
+  "skill_route": {
+    "operation_class": "production_product_contract_obligation_expansion",
+    "legacy_route_considered": "product_deepening",
+    "resolution": "The mission-approved production registry entry and TC-FF6-MACH-001 bind complete ProductContract obligation slices to format-feature-expansion. The older generic route does not include digest-bound installed-package and independent-oracle requirements.",
+    "coverage_result": "SKILL_COVERAGE_CONFIRMED: skill_id=format-feature-expansion, work_type=production_product_contract_obligation"
+  },
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-IPYNB-SOURCE-007",
+  "pre_mutation_guard_authorization_id": "c6633a1caba8ef3b",
+  "requested_operation": "implement a bounded content-addressed notebook trust notary with official-compatible pluggable storage, explicit signing and revocation, and edit-invalidates-trust behavior",
+  "inputs": {
+    "format_id": "ipynb",
+    "profile_id": "production",
+    "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-TRUST-001",
+    "obligation_id": "SAL-IPYNB-OBL-80272AC687E3FBED",
+    "obligation_ids": [
+      "SAL-IPYNB-OBL-80272AC687E3FBED",
+      "SAL-IPYNB-OBL-D9ECFCF32654F42A"
+    ],
+    "capability_id": "IPYNB-TRUST-001",
+    "contract_digest": "56762498619ac994bbc5bceac7240357118f1046bda48d5e4bdffc6baa1129ac",
+    "contract_source_digest": "7c685d81ce287de6811292f0f05d52840b21d546b249ca06675c2534d2c85579",
+    "authority_digests": {
+      "SRC-NB-002": "4d3750b55006e92d8063a6ac427a84eb1f91c44e376d90de53d03893674991d9"
+    },
+    "reference_implementation": {
+      "distribution": "nbformat",
+      "version": "5.10.4",
+      "component": "nbformat.sign.NotebookNotary"
+    },
+    "root_cause": "The package had validation and active-content marking but no cryptographic trust boundary. Validity could therefore be confused with reviewed/trusted content, and consumers had no pluggable compute/store/verify/revoke contract whose result automatically changed when notebook content changed.",
+    "affected_layer": "IPYNB security trust boundary, public API, package security documentation",
+    "planned_paths": [
+      "src/python/ipynb/src/format_factory/ipynb/security/trust.py",
+      "src/python/ipynb/src/format_factory/ipynb/security/__init__.py",
+      "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+      "src/python/ipynb/README.md",
+      "src/python/ipynb/SECURITY.md",
+      "tests/python/ipynb/test_obligation_trust_notary.py",
+      "reports/r90/product-code-change-ledger.json",
+      "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-trust-001.json"
+    ],
+    "proof_inputs": [
+      "shared/format-contracts/ipynb.yaml",
+      "shared/format-contracts/policy/family-packs/executable_document.yaml",
+      "shared/format-contracts/research/ipynb.yaml",
+      "tests/python/ipynb/test_obligation_trust_notary.py",
+      ".local/build/ipynb-trust-a/format_factory_ipynb-0.2.0.dev0-py3-none-any.whl",
+      ".local/venvs/ipynb-current-proof",
+      ".local/venvs/ipynb-static"
+    ],
+    "base_git_commit": "908d9cd6d62579a23a67d6199fa5258f8da5688b"
+  },
+  "allowed_files": [
+    "src/python/ipynb/src/format_factory/ipynb/security/trust.py",
+    "src/python/ipynb/src/format_factory/ipynb/security/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+    "src/python/ipynb/README.md",
+    "src/python/ipynb/SECURITY.md",
+    "tests/python/ipynb/test_obligation_trust_notary.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-trust-001.json"
+  ],
+  "actual_files_changed": [
+    "src/python/ipynb/src/format_factory/ipynb/security/trust.py",
+    "src/python/ipynb/src/format_factory/ipynb/security/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+    "src/python/ipynb/README.md",
+    "src/python/ipynb/SECURITY.md",
+    "tests/python/ipynb/test_obligation_trust_notary.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-trust-001.json"
+  ],
+  "defect_reproduction": {
+    "result": "FAILURE_REPRODUCED",
+    "command": "pytest -q tests/python/ipynb/test_obligation_trust_notary.py",
+    "outcome": "Test collection failed because format_factory.ipynb exported no HmacNotebookNotary or associated trust types."
+  },
+  "implementation": {
+    "notary": "HmacNotebookNotary requires caller-supplied key material of at least 32 bytes and allows SHA-256, SHA-384, or SHA-512 HMAC.",
+    "official_compatibility": "Signature traversal matches the official nbformat notary for valid notebooks, including sorted mapping keys and exclusion of legacy metadata.signature.",
+    "store_protocol": "SignatureStore uses the official store_signature/check_signature/remove_signature method contract; the included memory store is thread-safe, bounded, and process-local.",
+    "trust_lifecycle": "sign, verify/check_signature, revoke/unsign, and retained-record revocation are explicit operations; load, validate, sanitize, and write never sign.",
+    "edit_invalidation": "Trust is keyed by the current content digest. Any content edit computes a different record and verifies as untrusted without mutating notebook metadata.",
+    "validity_separation": "Structured TrustVerification is independent from ValidationReport; valid notebooks can be untrusted and no cell metadata trusted flag is written.",
+    "boundedness": "Signature traversal is iterative and streaming, with nesting, entry, input-byte, and decoded-byte limits.",
+    "preservation": "Signature computation never mutates the notebook and ignores, but does not delete or trust, the legacy metadata.signature value.",
+    "tradeoff": "Exact content restoration restores content-addressed trust. Callers that require permanent invalidation retain and revoke the original TrustRecord. Persistent store protection and secret rotation remain application responsibilities."
+  },
+  "tests_run": [
+    "failure-first trust test: collection failed because HmacNotebookNotary did not exist",
+    "focused trust obligation tests: 9 passed",
+    "source-tree format regression excluding installed-origin assertions: 291 passed, 3 deselected",
+    "Ruff 0.14.14 on production namespace and trust test: PASS",
+    "Mypy 1.18.2 strict on production namespace: PASS, 24 source files",
+    "two isolated SOURCE_DATE_EPOCH=315532800 wheels: identical SHA-256 e48d17482d94cb53a3a319ba8f70623efb34edbd90c5c407e192d203c38ae0f0",
+    "installed-wheel full tests/python/ipynb suite: 294 passed",
+    "production control-plane and production-skill regression: 43 passed",
+    "repository real-ledger test remains the known non-strict xfail because historical entries use the legacy mixed source_files schema"
+  ],
+  "ledger_entry_id": "FF6-IPYNB-TRUST-001",
+  "ledger_entry_path": "reports/r90/product-code-change-ledger.json",
+  "validations": {
+    "official_nbformat_signature_differential": "PASS",
+    "pluggable_store_contract": "PASS",
+    "strong_secret_and_algorithm_policy": "PASS",
+    "edit_invalidates_trust": "PASS",
+    "trust_validity_separation": "PASS",
+    "no_cell_trust_metadata_mutation": "PASS",
+    "explicit_revoke_and_retained_record_revoke": "PASS",
+    "non_mutating_legacy_signature_exclusion": "PASS",
+    "bounded_iterative_streaming_traversal": "PASS",
+    "non_json_payload_rejection": "PASS",
+    "installed_wheel_origin": "PASS",
+    "reproducible_wheel": "PASS",
+    "typing_and_lint": "PASS",
+    "declared_regression_tier": "PASS: 294 installed-wheel tests",
+    "product_ledger_exact_source_hashes": "PASS: all three current source entries match the current files",
+    "legacy_product_ledger_validator": "KNOWN GLOBAL XFAIL: historical mixed-schema entries prevent a whole-ledger pass; no global pass claimed",
+    "source_changed": "YES: canonical proof replay remains deferred to the consolidated source-wave boundary",
+    "new_proof_nodes": "NONE: no stale source proof was materialized",
+    "promotion_claimed": "NO"
+  },
+  "output_digests": {
+    "src/python/ipynb/src/format_factory/ipynb/__init__.py": "d1f03e4d31cdb156d591beafc764b178601c3427c2227e5c7a8c3d3950a0cd7d",
+    "src/python/ipynb/src/format_factory/ipynb/security/__init__.py": "421f448211e06f04a5b7e789d704233b37da65c14a23bd4f4c898e233604eb14",
+    "src/python/ipynb/src/format_factory/ipynb/security/trust.py": "d3e35776e8ba56862153ee1d86ffa76b13bca06b5082c954dca9d46e2fe22dc6",
+    "src/python/ipynb/README.md": "d11d4d10dcbbd4782c6dffc05f55685e8d1eab4f04b7b63a90a7e2d8834b8c2a",
+    "src/python/ipynb/SECURITY.md": "6d3fb0043fc98a8468302bb0c375d47d8b6cc60a2c894b9f497df82e74b4b11c",
+    "tests/python/ipynb/test_obligation_trust_notary.py": "2d83e4a58ed9bf4b9da213139892a8d92b3fe20a622b34b928e18304d8c8fd8d",
+    "reports/r90/product-code-change-ledger.json": "d0e927c1b8fb3143e2548e399bd3603a6bdd379ac511424aa8d734191d818e09",
+    "format_factory_ipynb-0.2.0.dev0-py3-none-any.whl": "e48d17482d94cb53a3a319ba8f70623efb34edbd90c5c407e192d203c38ae0f0"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for this bounded source slice; proof replay is deferred until the consolidated source wave is stable",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for implementation verification; no obligation closure or certification claimed",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES: no contradiction was found",
+    "14_memory_update_trigger": "NOT APPLICABLE: no gate, phase, or architecture transition occurred",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "IPYNB_CONTENT_ADDRESSED_TRUST_IMPLEMENTED_CONSOLIDATED_PROOF_REPLAY_PENDING",
+  "timestamp": "2026-07-26T01:48:29.1101531Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

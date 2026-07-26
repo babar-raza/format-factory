@@ -74,6 +74,29 @@ content. Removal is deliberately conservative: the complete renderable
 payload is removed rather than partially rewriting arbitrary markup and
 claiming that the remainder is safe.
 
+## Content-addressed trust
+
+Trust is independent from schema validity and is never inferred during load,
+validation, sanitization, or save:
+
+```python
+from format_factory.ipynb import HmacNotebookNotary
+
+notary = HmacNotebookNotary(secret=application_secret)
+record = notary.sign(document)       # after an explicit review
+assert notary.verify(document).trusted
+```
+
+The caller must provide at least 32 bytes of secret key material. The default
+store is bounded and process-local; durable applications inject a
+`SignatureStore` implementation with the official
+`store_signature`/`check_signature`/`remove_signature` method contract.
+Signatures use the official nbformat content traversal and exclude the legacy
+`metadata.signature` value. Any content edit computes a different signature
+and is untrusted until explicitly reviewed and signed. Exact content
+restoration restores content-addressed trust; callers can revoke a retained
+`TrustRecord` when that behavior is not desired.
+
 ## Public namespace
 
 The supported namespace is `format_factory.ipynb`. The earlier top-level
