@@ -1,0 +1,45 @@
+{
+  "invocation_id": "materialize-production-proof-nrrd-header-001",
+  "skill_id": "materialize-production-proof",
+  "mode": "live",
+  "inputs": {
+    "defect_id": "GAP-3358BD5C48EDA1E7",
+    "failing_regression": "The mandatory NRRD header obligation had no live digest-bound executed positive result.",
+    "invalidation_input": "No current executed proof was bound to SAL-NRRD-OBL-00DC4239C8859F7A after the production package migration.",
+    "target_product": "nrrd"
+  },
+  "allowed_files": [
+    ".local/production-program/current-gaps.json",
+    ".local/production-program/executed-proofs.json",
+    ".local/production-program/journal.jsonl",
+    ".local/production-program/state.json",
+    "reports/skills-rff6/skill-transcripts/materialize-production-proof-nrrd-header-001.json"
+  ],
+  "actual_files_changed": [
+    ".local/production-program/current-gaps.json",
+    ".local/production-program/executed-proofs.json",
+    ".local/production-program/journal.jsonl",
+    ".local/production-program/state.json",
+    "reports/skills-rff6/skill-transcripts/materialize-production-proof-nrrd-header-001.json"
+  ],
+  "tests_run": [
+    ".local/package-install-proof-venv/Scripts/python.exe -m pytest tests/python/nrrd/test_production_namespace.py -q (11 passed; installed-wheel imports)",
+    ".local/venvs/ipynb-current-proof/Scripts/python.exe -m pytest tests/production_program/test_production_program.py -q (43 passed)"
+  ],
+  "ledger_entry_id": "PROOF-B098B133490C3D1A5BFDE2AAC1993BEB67DD87CA49A0798E0B5A564A84C46BBB",
+  "result": "PASS",
+  "timestamp": "2026-07-26T06:21:15+00:00",
+  "evidence": {
+    "format_id": "nrrd",
+    "obligation_id": "SAL-NRRD-OBL-00DC4239C8859F7A",
+    "polarity": "positive",
+    "proof_id": "PROOF-B098B133490C3D1A5BFDE2AAC1993BEB67DD87CA49A0798E0B5A564A84C46BBB",
+    "contract_digest": "fb82ef1356b1d0e41d14d1c64af95812073638f96e006fb4982ce568dff94fe5",
+    "source_digest": "92ec6a214942b9696aecb691747e100c5e58f37eb29cfeb294f17ef1c7b56390",
+    "package_sha256": "bea5300fe5e54e303a13270c70ed8a601dc8bcd6fbe3b3f10c8b50b45f010ebf",
+    "graph_digest": "2f904444f1ad2ffb65a29b58b28f6b886b6ac7a119b61096f967e9843315dc52",
+    "open_nrrd_obligations_after": 92,
+    "computed_promotion": "IMPLEMENTATION_IN_PROGRESS",
+    "scope_limit": "This is one positive proof for the NRRD header obligation. It does not certify the remaining 92 mandatory NRRD obligations or release readiness."
+  }
+}
