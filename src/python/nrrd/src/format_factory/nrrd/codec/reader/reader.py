@@ -222,8 +222,8 @@ def loads(
     mode: str = "strict",
     limits: ResourceLimits | None = None,
 ) -> NrrdDocument:
-    if mode not in {"strict", "preservation"}:
-        raise ValueError("mode must be 'strict' or 'preservation'")
+    if mode not in {"strict", "preservation", "recovery"}:
+        raise ValueError("mode must be 'strict', 'preservation', or 'recovery'")
     return _load(data, limits=effective_limits(limits))
 
 
@@ -233,12 +233,12 @@ def load(
     mode: str = "strict",
     limits: ResourceLimits | None = None,
 ) -> NrrdDocument:
-    if mode not in {"strict", "preservation"}:
-        raise ValueError("mode must be 'strict' or 'preservation'")
+    if mode not in {"strict", "preservation", "recovery"}:
+        raise ValueError("mode must be 'strict', 'preservation', or 'recovery'")
     return _load(source, limits=effective_limits(limits))
 
 
-def _load(source: BinarySource, *, limits: ResourceLimits) -> NrrdDocument:
+def _load(source: BinarySource, *, limits: ResourceLimits, recovery_actions: tuple[str, ...] = ()) -> NrrdDocument:
     data, source_path = _read_source(source, limits)
     raw_header, attached, data_offset = _split_header(data, limits)
     version, header, comments, key_values = _parse_header(raw_header)
@@ -290,6 +290,7 @@ def _load(source: BinarySource, *, limits: ResourceLimits) -> NrrdDocument:
         array=array,
         source_path=str(source_path) if source_path else None,
         data_offset=data_offset,
+        recovery_actions=recovery_actions,
         source_bytes=data if "data file" not in header else None,
         _original_header=dict(header),
         _original_comments=list(comments),

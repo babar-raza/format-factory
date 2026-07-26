@@ -65,6 +65,14 @@ def test_lifecycle_api_and_stream_destination() -> None:
     assert loads(stream.getvalue()).array == document.array
 
 
+def test_recovery_mode_is_explicit_and_reports_no_unsafe_repair() -> None:
+    encoded = fixture()
+    recovered = loads(encoded, mode="recovery")
+    assert recovered.recovery_actions == ()
+    with pytest.raises(ValueError, match="recovery"):
+        loads(encoded, mode="unsafe")
+
+
 def test_lossless_mode_replays_unchanged_source_and_reports_mutation() -> None:
     source = (
         b"NRRD0004\r\n"

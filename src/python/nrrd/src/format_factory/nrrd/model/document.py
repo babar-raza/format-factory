@@ -41,6 +41,7 @@ class NrrdDocument:
     raw_header: bytes = b""
     source_path: str | None = None
     data_offset: int = 0
+    recovery_actions: tuple[str, ...] = ()
     source_bytes: bytes | None = field(default=None, repr=False, compare=False)
     _original_header: dict[str, str] | None = field(default=None, repr=False, compare=False)
     _original_comments: list[str] | None = field(default=None, repr=False, compare=False)
@@ -170,6 +171,7 @@ class NrrdDocument:
                 else None
             ),
             data_offset=int(value.get("data_offset", 0)),
+            recovery_actions=tuple(str(item) for item in value.get("recovery_actions", ())),
             source_bytes=(
                 bytes(value["source_bytes"])
                 if isinstance(value.get("source_bytes"), bytes)
@@ -190,6 +192,7 @@ class NrrdDocument:
             "data_size": self.data_size,
             "element_count": self.element_count,
             "data_offset": self.data_offset,
+            "recovery_actions": list(self.recovery_actions),
             "kinds": self.kinds,
             "space": self.space,
             "array": list(self.array),
