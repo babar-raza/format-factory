@@ -1,0 +1,31 @@
+{
+  "invocation_id": "create-taskcard-plan-checkpoint-ipynb-001",
+  "skill_id": "create-taskcard",
+  "mode": "live",
+  "inputs": {
+    "taskcard_id": "TC-FF6-IPYNB-SAFE-001",
+    "title": "Persist autonomous mission checkpoint after IPYNB corpus remediation",
+    "format_id": "ipynb",
+    "plan_path": "plans/.claude/ff-six-python-production-autonomous.md",
+    "route_id": "plan_creation",
+    "authorization_id": "d8d09d543d7b71c0",
+    "verified_commit": "958552034f56f9ffa93728df0708c5afe37941ef",
+    "exact_next_task": "AUTO-IPYNB-PROOF-REPLAY-001"
+  },
+  "allowed_files": [
+    "plans/.claude/ff-six-python-production-autonomous.md",
+    "reports/skills-rff6/skill-transcripts/create-taskcard-plan-checkpoint-ipynb-001.json"
+  ],
+  "actual_files_changed": [
+    "plans/.claude/ff-six-python-production-autonomous.md",
+    "reports/skills-rff6/skill-transcripts/create-taskcard-plan-checkpoint-ipynb-001.json"
+  ],
+  "tests_run": [
+    "python tools/supervisor/validate_skill_transcript.py --json reports/skills-rff6/skill-transcripts/create-taskcard-plan-checkpoint-ipynb-001.json",
+    "python tools/governance/validate_plan_skill_routes.py plans/.claude/ff-six-python-production-autonomous.md",
+    "git diff --check"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-07-26T03:52:17Z"
+}
