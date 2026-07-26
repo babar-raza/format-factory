@@ -197,10 +197,9 @@
       "deep_import": {
         "failed": 0,
         "failing_modules": {},
-        "package_import_error": "ModuleNotFoundError: No module named 'jsonschema'",
-        "total": 0
+        "total": 28
       },
-      "import_result": "FAIL: ModuleNotFoundError: No module named 'jsonschema'",
+      "import_result": "PASS",
       "install_result": "PASS",
       "local_dependencies": [
         {
@@ -212,12 +211,12 @@
       ],
       "module_import": "format_factory.ipynb",
       "package_name": "format-factory-ipynb",
-      "proof_id": "PACKAGE-PROOF-5A8FC4B30A28F487FFADA3D428D1BA74B7532A2CE91DD33FB9EF286D534C84ED",
-      "proof_input_digest": "2959a20c36d9e7930b96f2e2fc57ebddfebf2cbc5e7d0e80785bd5d9a41d0760",
-      "smoke_result": "FAIL: ModuleNotFoundError: No module named 'jsonschema'",
+      "proof_id": "PACKAGE-PROOF-807F54B8038018FC3D551C5A950BDF3B10023FB8098F8E4E990685049E0A97F6",
+      "proof_input_digest": "677c4049b51decf95fcd907e828b69ef2b99bf47e614a97445b2ac546bfa75f1",
+      "smoke_result": "PASS",
       "smoke_test": "format_factory.ipynb.load_ipynb on samples/by-format/ipynb/valid/minimal.ipynb",
       "source_digest": "6bfe5022486d3c9fde906250b4fd2d1b383dd027208dc5613b4cdb638152ac4f",
-      "verdict": "FAIL",
+      "verdict": "PASS",
       "version": "0.2.0.dev0",
       "wheel_file": "format_factory_ipynb-0.2.0.dev0-py3-none-any.whl",
       "wheel_sha256": "0e9635f74b0ba850d2b811e1da062e5db5d15deb402bac9e1f288e7657fbe180"
@@ -271,29 +270,33 @@
       "wheel_sha256": "f1dcb66b6fbd42012ddc8914e33142b9c5382a616492689c162c9abfa7f303eb"
     },
     "nrrd": {
-      "build_mode": "legacy_staging",
+      "build_mode": "native_pyproject",
       "deep_import": {
-        "failed": 2,
-        "failing_modules": {
-          "nrrd._build_backend": "ModuleNotFoundError: No module named 'setuptools'",
-          "nrrd.nrrd_to_csv": "ModuleNotFoundError: No module named 'src'"
-        },
-        "total": 14
+        "failed": 0,
+        "failing_modules": {},
+        "total": 16
       },
       "import_result": "PASS",
       "install_result": "PASS",
-      "local_dependencies": [],
-      "module_import": "nrrd",
+      "local_dependencies": [
+        {
+          "install_result": "PASS",
+          "package_name": "format-factory-core",
+          "wheel_file": "format_factory_core-0.1.0.dev0-py3-none-any.whl",
+          "wheel_sha256": "948c1e9bad28121efbc4d1084bbf3e757a636dfe0889d6e7e3a34e2af4026077"
+        }
+      ],
+      "module_import": "format_factory.nrrd",
       "package_name": "format-factory-nrrd",
-      "proof_id": "PACKAGE-PROOF-8BEA842539473B5A2675FF2130DC98087E0B68ED8ED1203D397BDC6F54B6FF97",
-      "proof_input_digest": "cd634a239fe2a0fe34b1350acb42bf76ceee58ffd20949320e54fa43b5d52b7d",
+      "proof_id": "PACKAGE-PROOF-D9AB933D4FF4421C587B313158017A78E4CFF996BFA627630642B067C67BCF55",
+      "proof_input_digest": "b3b77fc7374a9b9652afddcaa54de933a5f68ce3283e2e1e346c011438bd92ff",
       "smoke_result": "PASS",
-      "smoke_test": "nrrd.nrrd_codec.load_nrrd on samples/by-format/nrrd/valid/1d-int8.nrrd",
+      "smoke_test": "format_factory.nrrd.load_nrrd on samples/by-format/nrrd/valid/1d-int8.nrrd",
       "source_digest": "769ca815835ad53093b172715c077ba61480d84c504b4b061e52c41ee1dd448c",
       "verdict": "PASS",
-      "version": "0.1.0.dev0",
-      "wheel_file": "format_factory_nrrd-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "47f15cf94e20ba50fdf45633f6a1bd03173a29e99cf56bfa04d6bdecbb9c2734"
+      "version": "0.2.0.dev0",
+      "wheel_file": "format_factory_nrrd-0.2.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "bea5300fe5e54e303a13270c70ed8a601dc8bcd6fbe3b3f10c8b50b45f010ebf"
     },
     "ods": {
       "build_mode": "legacy_staging",
@@ -432,28 +435,33 @@
       "wheel_sha256": "1ad931ec92a947cc4432586a2ff4503bed825686be7854daf129186dd244ac25"
     },
     "safetensors": {
-      "build_mode": "legacy_staging",
+      "build_mode": "native_pyproject",
       "deep_import": {
-        "failed": 1,
-        "failing_modules": {
-          "safetensors.safetensors_to_csv": "ModuleNotFoundError: No module named 'src'"
-        },
-        "total": 15
+        "failed": 0,
+        "failing_modules": {},
+        "total": 21
       },
       "import_result": "PASS",
       "install_result": "PASS",
-      "local_dependencies": [],
-      "module_import": "safetensors",
+      "local_dependencies": [
+        {
+          "install_result": "PASS",
+          "package_name": "format-factory-core",
+          "wheel_file": "format_factory_core-0.1.0.dev0-py3-none-any.whl",
+          "wheel_sha256": "948c1e9bad28121efbc4d1084bbf3e757a636dfe0889d6e7e3a34e2af4026077"
+        }
+      ],
+      "module_import": "format_factory.safetensors",
       "package_name": "format-factory-safetensors",
-      "proof_id": "PACKAGE-PROOF-66E72D09AAD4EBC1FFED89B0EB748129D509EACE2AF7C8EBB9832A7363B526CF",
-      "proof_input_digest": "167a0fd1fc9607164e6aea5eca44c05c45fea308d9d138132d14ec80ffb60b9b",
+      "proof_id": "PACKAGE-PROOF-07E8E32CFCFE7566FF433502059EB108CF8886D6F51331E58B7263FB853C0E93",
+      "proof_input_digest": "fd2f5177f5e74bc61a443719d309944d28f719dd708c29ecbbd1431d8616d2fd",
       "smoke_result": "PASS",
-      "smoke_test": "safetensors.safetensors_codec.load_safetensors on samples/by-format/safetensors/valid/single-tensor.safetensors",
-      "source_digest": "656c2558bf46429d80d98879358962d32479dfa9d29f835f2cc2771447983684",
+      "smoke_test": "format_factory.safetensors.load on samples/by-format/safetensors/valid/single-tensor.safetensors",
+      "source_digest": "fc82bda327b81c3cef0b40b535a542b47af9506d4f38809fab4750d1a948299f",
       "verdict": "PASS",
-      "version": "0.1.0.dev0",
-      "wheel_file": "format_factory_safetensors-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "b711714b2a8a0b5987b04522a06d266f4f2c9441e9bb07fc2f7631e71cf1284a"
+      "version": "0.2.0.dev0",
+      "wheel_file": "format_factory_safetensors-0.2.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "0e39d5a2f13259ba4f79a934ee147742549c0d8dcb910b5ff042dfa35a19a8a7"
     },
     "sylk": {
       "build_mode": "legacy_staging",
@@ -625,7 +633,7 @@
   "generated_by": "tools/run_package_install_proof.py",
   "last_run": {
     "formats": [
-      "ipynb"
+      "safetensors"
     ],
     "full_fleet": false
   },
