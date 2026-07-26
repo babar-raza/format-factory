@@ -4,11 +4,11 @@ artifact_type: execution_plan
 visibility: generated
 generated_by: codex
 generated_at: 2026-07-23
-last_updated_at: 2026-07-26T03:52:17Z
+last_updated_at: 2026-07-26T04:02:09Z
 mission_id: FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS
 status: IN_PROGRESS
 lane_id: python-production
-last_verified_commit: 958552034f56f9ffa93728df0708c5afe37941ef
+last_verified_commit: c8cb0445bc9d50c35561edfc839d470ecb390190
 controller_state: VERIFY
 exact_next_task: AUTO-IPYNB-PROOF-REPLAY-001
 ---
@@ -37,10 +37,11 @@ below it provides context but cannot override these machine-oriented fields.
 
 ```yaml
 checkpoint:
-  captured_at: 2026-07-26T03:52:17Z
+  captured_at: 2026-07-26T04:02:09Z
+  checkpoint_reason: USER_REQUESTED
   branch: codex/ff-six-python-production
   worktree: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\worktrees\ff-six-python-production
-  verified_commit: 958552034f56f9ffa93728df0708c5afe37941ef
+  verified_commit: c8cb0445bc9d50c35561edfc839d470ecb390190
   mission_state: IMPLEMENT
   active_product: ipynb
   active_product_state: VERIFY
@@ -50,7 +51,8 @@ checkpoint:
     operation: Rebuild canonical IPYNB proof from the committed source, tests,
       immutable corpus, built wheel, dependency lock, and installed environment.
     first_input: plans/.claude/ff-six-python-production-autonomous.md
-    required_start_commit: 958552034f56f9ffa93728df0708c5afe37941ef
+    required_start_commit: c8cb0445bc9d50c35561edfc839d470ecb390190
+    resume_from_obligation: SAL-IPYNB-OBL-010C554B8692D166
     promotion_rule: Compute readiness from the rebuilt proof graph; do not reuse
       the stale legacy oracle status or manually promote the package.
   completed_taskcards:
@@ -68,8 +70,18 @@ checkpoint:
       state: VERIFY
       source_status: IMPLEMENTATION_VERIFIED
       corpus_status: REMEDIATED_AND_VERIFIED
-      canonical_proof_status: REPLAY_REQUIRED
-      next_obligation: Rebuild proof and materialize live gaps from exact digests.
+      canonical_proof_status: REPLAY_IN_PROGRESS
+      mandatory_obligation_count: 98
+      current_live_proof_count: 1
+      remaining_mandatory_proof_gaps: 97
+      current_graph_digest: b0fc2b342aa239c3edb6473e1d965c829fc4692eb44ac359ab8ef9ffdb36bdf6
+      last_accepted_proof:
+        obligation_id: SAL-IPYNB-OBL-1F8C3D9742EBC830
+        proof_id: PROOF-9AC3DEB63B0F324FECBFBA63ACC4655BFFE75438532B270C5047512F7D705B81
+        test: tests/python/ipynb/test_obligation_corpus_integrity.py
+        package_sha256: 0e9635f74b0ba850d2b811e1da062e5db5d15deb402bac9e1f288e7657fbe180
+      next_obligation: Replay SAL-IPYNB-OBL-010C554B8692D166, then continue
+        deterministically through the remaining compiled mandatory obligations.
     safetensors:
       state: VERIFY
       source_status: IMPLEMENTATION_VERIFIED
