@@ -1,0 +1,32 @@
+{
+  "invocation_id": "materialize-production-proof-nrrd-preserve-001",
+  "skill_id": "materialize-production-proof",
+  "mode": "live",
+  "inputs": {
+    "defect_id": "GAP-393218A3B9F1F038",
+    "failing_regression": "NRRD had no explicit lossless-output contract or caller-visible loss report.",
+    "invalidation_input": "The NRRD production source changed to add preservation semantics, invalidating older proof nodes.",
+    "target_product": "nrrd"
+  },
+  "tests_run": [
+    "installed-wheel preservation behavior: 1 passed",
+    "installed-wheel header replay: 12 passed",
+    "installed-wheel declared-version replay: 1 passed",
+    "installed-wheel encoding matrix replay: 5 passed"
+  ],
+  "result": "PASS",
+  "evidence": {
+    "source_digest": "768f94babb72fc4edb8a2063263993e4c78b6c2fdcf3267adc084bf09e9c2ba4",
+    "package_digest": "c1c129cde29c7464cbfb0251520d71c2129d5a03496b3b9cde6e9a35a07f07aa",
+    "graph_digest": "6a3366ea2481b00d548d7e0d8725844b6e8a26b3757b15bfbf4239a84ca7ee4b",
+    "proofs": {
+      "SAL-NRRD-OBL-0D0DBFB306769459": "PROOF-D3658A04F7132D520BCFBB1F3AF3DE6457ABF7A2864ADA292B7999A0AF013964",
+      "SAL-NRRD-OBL-00DC4239C8859F7A": "PROOF-A84CED5990EADAA709B69162BACAF1B71D8E2C72241824FE8875E46AFE3383FF",
+      "SAL-NRRD-OBL-028C0109E783B8F3": "PROOF-8C258034831B7ABC5AAF5CDB32BD7E876F4FAE89FBBE4F3293D7F69EAA850E58",
+      "SAL-NRRD-OBL-09FD9B976DEEA254": "PROOF-9B92B341C5B0FD25500E7700ADE64658A0D064DF49BF485260E42A0EB2BD79E0"
+    },
+    "open_nrrd_obligations_after": 89,
+    "computed_promotion": "IMPLEMENTATION_IN_PROGRESS",
+    "scope_limit": "The four listed obligations are current only for this source and wheel digest. Eighty-nine NRRD obligations remain open."
+  }
+}
