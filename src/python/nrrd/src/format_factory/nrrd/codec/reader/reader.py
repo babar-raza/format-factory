@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from os import PathLike
 from pathlib import Path
 
@@ -79,7 +80,13 @@ def _parse_header(
     header: dict[str, str] = {}
     comments: list[str] = []
     key_values: dict[str, str] = {}
+    list_files: list[str] = []
+    list_mode = False
     for line_number, line in enumerate(lines[1:], start=2):
+        if list_mode:
+            if line:
+                list_files.append(line)
+            continue
         if not line:
             continue
         if line.startswith("#"):
@@ -102,6 +109,10 @@ def _parse_header(
         if normalized in header:
             raise NrrdParseError(f"duplicate header field {normalized!r}")
         header[normalized] = value.strip()
+        if normalized == "data file" and value.strip().upper().startswith("LIST"):
+            list_mode = True
+    if list_files:
+        header["data file"] = "LIST\n" + "\n".join(list_files)
     missing = sorted(_REQUIRED_FIELDS.difference(header))
     if missing:
         raise NrrdParseError(f"missing required header fields: {', '.join(missing)}")
@@ -124,22 +135,41 @@ def _safe_detached_payload(
 ) -> bytes:
     if source_path is None:
         raise NrrdParseError("detached data requires a filesystem header source")
-    if value.upper().startswith("LIST") or "%" in value:
-        raise NrrdParseError("detached LIST and printf-pattern payloads are not yet supported")
-    relative = Path(value)
-    if relative.is_absolute() or ".." in relative.parts:
-        raise NrrdParseError("unsafe detached data path")
+    def read_relative(name: str) -> bytes:
+        relative = Path(name)
+        if relative.is_absolute() or ".." in relative.parts:
+            raise NrrdParseError("unsafe detached data path")
+        resolved = (base / relative).resolve()
+        try:
+            resolved.relative_to(base)
+        except ValueError as exc:
+            raise NrrdParseError("detached data path escapes its header directory") from exc
+        try:
+            return resolved.read_bytes()
+        except OSError as exc:
+            raise NrrdParseError(f"cannot read detached payload {resolved}: {exc}") from exc
+
     base = source_path.resolve().parent
-    resolved = (base / relative).resolve()
-    try:
-        resolved.relative_to(base)
-    except ValueError as exc:
-        raise NrrdParseError("detached data path escapes its header directory") from exc
-    try:
-        limits.enforce("max_input_bytes", resolved.stat().st_size)
-        return resolved.read_bytes()
-    except OSError as exc:
-        raise NrrdParseError(f"cannot read detached payload {resolved}: {exc}") from exc
+    if value.upper().startswith("LIST"):
+        names = [line.strip() for line in value.splitlines()[1:] if line.strip()]
+        if not names:
+            raise NrrdParseError("detached LIST has no payload paths")
+    elif "%" in value:
+        parts = value.split()
+        if len(parts) != 4 or not re.fullmatch(r"[^%]*%0?\d*d[^%]*", parts[0]):
+            raise NrrdParseError("invalid detached printf pattern")
+        try:
+            start, stop, step = (int(item) for item in parts[1:])
+        except ValueError as exc:
+            raise NrrdParseError("invalid detached printf range") from exc
+        if step == 0 or (stop - start) * step < 0:
+            raise NrrdParseError("invalid detached printf range")
+        names = [parts[0] % item for item in range(start, stop + (1 if step > 0 else -1), step)]
+    else:
+        names = [value]
+    payload = b"".join(read_relative(name) for name in names)
+    limits.enforce("max_input_bytes", len(payload))
+    return payload
 
 
 def _apply_skips(payload: bytes, header: dict[str, str]) -> bytes:
