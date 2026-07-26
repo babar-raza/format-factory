@@ -43664,9 +43664,52 @@
         }
       ],
       "tests": "tests/python/ipynb/test_obligation_trust_notary.py"
+    },
+    {
+      "entry_id": "FF6-IPYNB-ATTACHMENT-MANAGEMENT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-IPYNB-SOURCE-008",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-ATTACH-001",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "SAL-IPYNB-OBL-02A00C213D2B0190,SAL-IPYNB-OBL-356297A15A50C85B,SAL-IPYNB-OBL-44E62E9AB8ECC2E3",
+      "capability_refs": [
+        "foss_python.ipynb.attachment_management",
+        "foss_python.ipynb.reference_safe_attachment_rename",
+        "foss_python.ipynb.reference_guarded_attachment_removal",
+        "foss_python.ipynb.validated_attachment_mime_bundles",
+        "foss_python.ipynb.stable_cell_id_targeting",
+        "foss_python.ipynb.dry_run_attachment_reporting"
+      ],
+      "api_symbols": [
+        "format_factory.ipynb.AttachmentChange",
+        "format_factory.ipynb.AttachmentManager",
+        "format_factory.ipynb.AttachmentReferencePolicy",
+        "format_factory.ipynb.AttachmentReport",
+        "format_factory.ipynb.manage_attachments"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+          "state": "present",
+          "sha256": "0b461c54c8770adb7266bab12067ecdb9191aa116430f7fe0dcafebe6a7f6d5e"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+          "state": "present",
+          "sha256": "819b77af82e2d7da0f7e361642842e42683131ae4cb10d9a3cc92c58aff1c37d"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/attachments.py",
+          "state": "present",
+          "sha256": "8d898674ef00b55c51a698ec63a4a09af78cd2e91bd251ccf7e53552a740972e"
+        }
+      ],
+      "tests": "tests/python/ipynb/test_obligation_attachment_management.py"
     }
   ],
-  "total_entries": 2772,
+  "total_entries": 2773,
   "changes": [
     {
       "file": "src/python/dif/models.py",

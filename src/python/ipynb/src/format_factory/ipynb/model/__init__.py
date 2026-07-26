@@ -1,3 +1,10 @@
+from .attachments import (
+    AttachmentChange,
+    AttachmentManager,
+    AttachmentReferencePolicy,
+    AttachmentReport,
+    manage_attachments,
+)
 from .cleanup import Change, ChangeReport, CleanupPolicy, cleanup
 from .document import (
     Cell,
@@ -33,6 +40,10 @@ from .output import (
 )
 
 __all__ = [
+    "AttachmentChange",
+    "AttachmentManager",
+    "AttachmentReferencePolicy",
+    "AttachmentReport",
     "Cell",
     "CellIdRewrite",
     "Change",
@@ -60,6 +71,7 @@ __all__ = [
     "cell_from_dict",
     "cleanup",
     "get_output_representation",
+    "manage_attachments",
     "output_from_dict",
     "remove_output_mime_type",
     "upgrade",

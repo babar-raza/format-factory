@@ -97,6 +97,23 @@ and is untrusted until explicitly reviewed and signed. Exact content
 restoration restores content-addressed trust; callers can revoke a retained
 `TrustRecord` when that behavior is not desired.
 
+## Attachment management
+
+Attachments are managed by stable cell ID with explicit mutation reports:
+
+```python
+from format_factory.ipynb import manage_attachments
+
+manager = manage_attachments(document)
+report = manager.rename("markdown-cell", "plot.png", "final plot.png")
+```
+
+Add and replace validate MIME bundles before mutation. Rename rewrites literal
+and percent-encoded `attachment:` references by default while preserving the
+source string/list representation. Removal refuses to create dangling
+references unless `AttachmentReferencePolicy.LEAVE_DANGLING` is explicitly
+selected. Every operation supports `dry_run=True`.
+
 ## Public namespace
 
 The supported namespace is `format_factory.ipynb`. The earlier top-level

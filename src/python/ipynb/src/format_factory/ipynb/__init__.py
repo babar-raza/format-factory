@@ -30,6 +30,10 @@ from .errors import (
     IpynbWriteError,
 )
 from .model import (
+    AttachmentChange,
+    AttachmentManager,
+    AttachmentReferencePolicy,
+    AttachmentReport,
     Cell,
     CellIdRewrite,
     Change,
@@ -57,6 +61,7 @@ from .model import (
     cell_from_dict,
     cleanup,
     get_output_representation,
+    manage_attachments,
     output_from_dict,
     remove_output_mime_type,
     upgrade,
@@ -81,6 +86,10 @@ from .security import (
 from .validation import validate, validate_notebook, validate_notebook_schema
 
 __all__ = [
+    "AttachmentChange",
+    "AttachmentManager",
+    "AttachmentReferencePolicy",
+    "AttachmentReport",
     "CELL_ID_PATTERN",
     "Cell",
     "CellIdRewrite",
@@ -133,6 +142,7 @@ __all__ = [
     "get_code_cells",
     "get_markdown_cells",
     "get_output_representation",
+    "manage_attachments",
     "ipynb_average_source_length",
     "ipynb_cell_type_histogram",
     "ipynb_has_execution_errors",
