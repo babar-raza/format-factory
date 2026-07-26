@@ -43973,9 +43973,70 @@
         }
       ],
       "tests": "tests/python/ipynb/test_obligation_official_schema_validation.py"
+    },
+    {
+      "entry_id": "FF6-IPYNB-CORPUS-REMEDIATION-001",
+      "classification": "GOVERNED_PRODUCT_EVIDENCE_CHANGE",
+      "sprint_id": "FF6-IPYNB-CORPUS-001",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-IPYNB-CORPUS-REMEDIATE-001",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "FI-032,RC-FIO-004",
+      "capability_refs": [
+        "foss_python.ipynb.raw_fixture_schema_validation",
+        "foss_python.ipynb.content_addressed_fixture_quarantine",
+        "foss_python.ipynb.licensed_independent_corpus",
+        "foss_python.ipynb.oracle_normalization_disagreement_control",
+        "foss_python.ipynb.corpus_provenance_digest_binding"
+      ],
+      "api_symbols": [],
+      "source_files": [
+        {
+          "path": "samples/by-format/ipynb/valid/code-and-markdown.ipynb",
+          "state": "present",
+          "sha256": "77c6d7cc3b70c2a34a2dc4f9c08a71ca20a146c579a9e41e21514bfc5c903a00"
+        },
+        {
+          "path": "samples/by-format/ipynb/valid/with-outputs.ipynb",
+          "state": "present",
+          "sha256": "03ac5f4dfae9bb393b88e39b11c2b12a7df7599e7918791e1ef837eb939e53ba"
+        },
+        {
+          "path": "samples/by-format/ipynb/quarantine/_manifest.yaml",
+          "state": "present",
+          "sha256": "f25e3a0cc30eff55600d2a7fe3b794f9b5e8760c923bf6018476da8988d22f9c"
+        },
+        {
+          "path": "samples/by-format/ipynb/LICENSE.nbformat-BSD-3-Clause.txt",
+          "state": "present",
+          "sha256": "41a8cd573abd9e43e6f644bb623ac1b0c1e977dae50b0c7740f82b84a427f78a"
+        },
+        {
+          "path": "samples/by-format/ipynb/_provenance.yaml",
+          "state": "present",
+          "sha256": "6321308cec04d7295b88636e8af8c8f63ced68763c282604a76f2bc035aeb8c8"
+        },
+        {
+          "path": "samples/by-format/ipynb/_corpus-manifest.yaml",
+          "state": "present",
+          "sha256": "e5f723ca33c8be87b80fb9b8396c852d35e8796d7e0d1151a8204ff819311eb9"
+        },
+        {
+          "path": "oracle/formats/ipynb/oracle-package.yaml",
+          "state": "present",
+          "sha256": "e7a2716b9d11568638a6f5b127c950255e0c36e9cf05a9bb676df8f9f9f7ca1c"
+        },
+        {
+          "path": "tests/python/ipynb/test_obligation_corpus_integrity.py",
+          "state": "present",
+          "sha256": "21352304f8a033fc461dbe4dd404d3ffc472aa4122c4381a9fe978ab77ea3564"
+        }
+      ],
+      "tests": "tests/python/ipynb/test_obligation_corpus_integrity.py"
     }
   ],
-  "total_entries": 2778,
+  "total_entries": 2779,
   "changes": [
     {
       "file": "src/python/dif/models.py",

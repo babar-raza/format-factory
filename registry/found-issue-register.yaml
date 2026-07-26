@@ -867,3 +867,50 @@ issues:
     should evaluate whether this should become documented, repo-wide
     guidance (e.g. in AGENTS.md's coordination section) or a mechanical
     pre-commit check of its own.
+
+- issue_id: FI-032
+  stable_semantic_key: "ipynb:broken_fixture:declared_v45_missing_cell_ids_false_valid_evidence"
+  status: closed
+  discovered_at: "2026-07-26T02:58:00Z"
+  discovering_task_id: AUTO-IPYNB-IMPLEMENT-IPYNB-SCHEMA-001
+  issue_type: broken_fixture
+  affected_component: ipynb
+  affected_paths:
+    - samples/by-format/ipynb/valid/code-and-markdown.ipynb
+    - samples/by-format/ipynb/valid/with-outputs.ipynb
+    - samples/by-format/ipynb/_corpus-manifest.yaml
+    - samples/by-format/ipynb/_provenance.yaml
+    - oracle/formats/ipynb/oracle-package.yaml
+    - tests/python/ipynb/
+  observed_behavior: >-
+    Two files under the valid corpus declare nbformat 4.5 while omitting every
+    required cell id. The corpus manifest labels both structural_test PASS and
+    the legacy oracle package uses their hashes as valid positive cases.
+    Legacy load paths and nbformat 5.10.4 normalize missing IDs, so tests
+    observe repaired objects rather than validating the immutable source bytes.
+  expected_behavior: >-
+    Every active valid corpus item must pass its exact declared-minor normative
+    schema before normalization, remain bound to an exact licensed source and
+    SHA-256 digest, and be rejected from positive evidence if source bytes are
+    invalid. Normalization behavior must be tested separately.
+  severity: P2
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-FIO-004
+  healing_taskcard_id: TC-FF6-IPYNB-SAFE-001
+  verification_verdict: >-
+    HEALED: original bytes retained at their exact SHA-256 paths; both active
+    paths replaced by exact BSD-licensed vectors from nbformat v5.10.4 commit
+    60b6151f; raw-schema/oracle-disagreement/provenance regression passes;
+    98 focused and 387 complete IPYNB tests pass; Ruff, V140, V142, YAML parse,
+    corpus hash binding, installed origin, and pip check pass.
+  disposition: HEALED_AND_VERIFIED
+  closed_at: "2026-07-26T03:43:00Z"
+  evidence:
+    - "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-official-schema-001.json"
+    - "samples/by-format/ipynb/quarantine/_manifest.yaml"
+    - "tests/python/ipynb/test_obligation_corpus_integrity.py"
+  notes: >-
+    Healing work item AUTO-IPYNB-CORPUS-REMEDIATE-001 preserves the original
+    bytes by content hash, replaces active paths only with pinned BSD-licensed
+    upstream vectors, invalidates the legacy oracle package pending production
+    replay, and adds a non-normalizing regression boundary.

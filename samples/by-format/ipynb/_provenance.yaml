@@ -1,15 +1,18 @@
 format_id: ipynb
-provenance_version: "1.0"
-provenance_date: "2026-07-14"
-acquisition_sprint: CORPUS-MANIFEST-BACKFILL-2026-07-14
+provenance_version: "2.0"
+provenance_date: "2026-07-26"
+acquisition_sprint: FF6-IPYNB-CORPUS-001
 commercial_product_ready: false
+generated_by: codex
+visibility: generated
 
-# All ipynb corpus samples are project-owned synthetic, generated via Python
-# standard library (json module) with no third-party dependencies.
-# Jupyter Notebook format is specified at https://nbformat.readthedocs.io/.
-# Generation script: .local/gen_samples.py (ephemeral, gitignored)
-# Encoding: JSON with nbformat/nbformat_minor keys, cells array, metadata dict.
-# All files are fully deterministic.
+authority:
+  repository: https://github.com/jupyter/nbformat
+  release_tag: v5.10.4
+  commit: 60b6151fedcbdc9f137fb2d223eeb10c935a8378
+  license: BSD-3-Clause
+  license_path: samples/by-format/ipynb/LICENSE.nbformat-BSD-3-Clause.txt
+  license_sha256: 41a8cd573abd9e43e6f644bb623ac1b0c1e977dae50b0c7740f82b84a427f78a
 
 samples:
   - sample_id: valid/minimal.ipynb
@@ -21,26 +24,41 @@ samples:
     license: Apache-2.0
     copyright: "format-factory project"
     provenance_status: confirmed
+    validation_status: VALID_NBFORMAT_4_5
+    file_hash: "sha256:60b1be44941df5d0394431f5c4a900937c6106d65888bd39ea9da9c76ca29b2b"
+    visibility: internal
 
   - sample_id: valid/code-and-markdown.ipynb
-    source_type: project-owned-synthetic
-    generation_tool: "Python 3.13 stdlib (json)"
-    generation_script: ".local/gen_samples.py"
-    generation_date: "2026-07-14"
-    input_content: "Programmatic: notebook with one markdown cell and one code cell, each with source lines"
-    license: Apache-2.0
-    copyright: "format-factory project"
+    source_type: official-upstream-test-corpus
+    source_repository: https://github.com/jupyter/nbformat
+    source_commit: 60b6151fedcbdc9f137fb2d223eeb10c935a8378
+    source_path: tests/test4.5.ipynb
+    source_url: https://raw.githubusercontent.com/jupyter/nbformat/60b6151fedcbdc9f137fb2d223eeb10c935a8378/tests/test4.5.ipynb
+    acquisition_method: exact-byte-copy
+    acquisition_date: "2026-07-26"
+    license: BSD-3-Clause
+    license_path: samples/by-format/ipynb/LICENSE.nbformat-BSD-3-Clause.txt
+    copyright: "IPython Development Team and Jupyter Development Team"
     provenance_status: confirmed
+    validation_status: VALID_NBFORMAT_4_5
+    file_hash: "sha256:77c6d7cc3b70c2a34a2dc4f9c08a71ca20a146c579a9e41e21514bfc5c903a00"
+    visibility: internal
 
   - sample_id: valid/with-outputs.ipynb
-    source_type: project-owned-synthetic
-    generation_tool: "Python 3.13 stdlib (json)"
-    generation_script: ".local/gen_samples.py"
-    generation_date: "2026-07-14"
-    input_content: "Programmatic: notebook with code cells containing stream and display_data outputs"
-    license: Apache-2.0
-    copyright: "format-factory project"
+    source_type: official-upstream-test-corpus
+    source_repository: https://github.com/jupyter/nbformat
+    source_commit: 60b6151fedcbdc9f137fb2d223eeb10c935a8378
+    source_path: tests/test4jupyter_metadata_timings.ipynb
+    source_url: https://raw.githubusercontent.com/jupyter/nbformat/60b6151fedcbdc9f137fb2d223eeb10c935a8378/tests/test4jupyter_metadata_timings.ipynb
+    acquisition_method: exact-byte-copy
+    acquisition_date: "2026-07-26"
+    license: BSD-3-Clause
+    license_path: samples/by-format/ipynb/LICENSE.nbformat-BSD-3-Clause.txt
+    copyright: "IPython Development Team and Jupyter Development Team"
     provenance_status: confirmed
+    validation_status: VALID_NBFORMAT_4_4
+    file_hash: "sha256:03ac5f4dfae9bb393b88e39b11c2b12a7df7599e7918791e1ef837eb939e53ba"
+    visibility: internal
 
   - sample_id: invalid/missing-nbformat.ipynb
     source_type: project-owned-synthetic
@@ -51,4 +69,34 @@ samples:
     license: Apache-2.0
     copyright: "format-factory project"
     provenance_status: confirmed
+    validation_status: EXPECTED_INVALID
     expected_error: true
+    file_hash: "sha256:4d0aac7aef4b22ff1fbdfce7c7f892745a919ccd265d3f54d87c95a85e664b3c"
+    visibility: internal
+
+quarantined_samples:
+  - sample_id: quarantine/c8caeff0a36013b17b3c910f0b9ffe24b9b855aad958d02affb25147c9700b1a-code-and-markdown.ipynb
+    original_path: samples/by-format/ipynb/valid/code-and-markdown.ipynb
+    source_type: project-owned-synthetic
+    original_generation_date: "2026-07-14"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+    validation_status: QUARANTINED_INVALID_FOR_DECLARED_NBFORMAT_4_5
+    file_hash: "sha256:c8caeff0a36013b17b3c910f0b9ffe24b9b855aad958d02affb25147c9700b1a"
+    replacement_hash: "sha256:77c6d7cc3b70c2a34a2dc4f9c08a71ca20a146c579a9e41e21514bfc5c903a00"
+    positive_evidence_eligible: false
+    visibility: evidence-only
+
+  - sample_id: quarantine/3b7d9f72565a7d916baa527976f00b5de4142ee148306bfed4bd16016b735e09-with-outputs.ipynb
+    original_path: samples/by-format/ipynb/valid/with-outputs.ipynb
+    source_type: project-owned-synthetic
+    original_generation_date: "2026-07-14"
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+    validation_status: QUARANTINED_INVALID_FOR_DECLARED_NBFORMAT_4_5
+    file_hash: "sha256:3b7d9f72565a7d916baa527976f00b5de4142ee148306bfed4bd16016b735e09"
+    replacement_hash: "sha256:03ac5f4dfae9bb393b88e39b11c2b12a7df7599e7918791e1ef837eb939e53ba"
+    positive_evidence_eligible: false
+    visibility: evidence-only

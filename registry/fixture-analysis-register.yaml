@@ -33,3 +33,47 @@ fixtures:
   required_action: REPAIR_MANUALLY_THEN_ENCODE_IN_SKILL
   issue_id: FI-003
   status: repaired
+
+- fixture_id: FX-003
+  path: samples/by-format/ipynb/quarantine/c8caeff0a36013b17b3c910f0b9ffe24b9b855aad958d02affb25147c9700b1a-code-and-markdown.ipynb
+  original_path: samples/by-format/ipynb/valid/code-and-markdown.ipynb
+  owner: ipynb
+  purpose: "Retained immutable evidence for a falsely valid-labeled nbformat 4.5 mixed-cell fixture"
+  producer: CORPUS-MANIFEST-BACKFILL-2026-07-14
+  consumers:
+    - tests/python/ipynb/test_obligation_corpus_integrity.py
+    - samples/by-format/ipynb/quarantine/_manifest.yaml
+  authoritative_source: "Original project-owned bytes retained under their SHA-256 name"
+  sha256: c8caeff0a36013b17b3c910f0b9ffe24b9b855aad958d02affb25147c9700b1a
+  valid: false
+  stale: false
+  synthetic: true
+  defect: "Declares nbformat 4.5 but cells[0].id and cells[1].id are absent"
+  required_action: QUARANTINE_AND_REPLACE_WITH_LICENSED_INDEPENDENT_CORPUS
+  replacement_path: samples/by-format/ipynb/valid/code-and-markdown.ipynb
+  replacement_sha256: 77c6d7cc3b70c2a34a2dc4f9c08a71ca20a146c579a9e41e21514bfc5c903a00
+  positive_evidence_eligible: false
+  issue_id: FI-032
+  status: quarantined_replaced
+
+- fixture_id: FX-004
+  path: samples/by-format/ipynb/quarantine/3b7d9f72565a7d916baa527976f00b5de4142ee148306bfed4bd16016b735e09-with-outputs.ipynb
+  original_path: samples/by-format/ipynb/valid/with-outputs.ipynb
+  owner: ipynb
+  purpose: "Retained immutable evidence for a falsely valid-labeled nbformat 4.5 output fixture"
+  producer: CORPUS-MANIFEST-BACKFILL-2026-07-14
+  consumers:
+    - tests/python/ipynb/test_obligation_corpus_integrity.py
+    - samples/by-format/ipynb/quarantine/_manifest.yaml
+  authoritative_source: "Original project-owned bytes retained under their SHA-256 name"
+  sha256: 3b7d9f72565a7d916baa527976f00b5de4142ee148306bfed4bd16016b735e09
+  valid: false
+  stale: false
+  synthetic: true
+  defect: "Declares nbformat 4.5 but cells[0].id is absent"
+  required_action: QUARANTINE_AND_REPLACE_WITH_LICENSED_INDEPENDENT_CORPUS
+  replacement_path: samples/by-format/ipynb/valid/with-outputs.ipynb
+  replacement_sha256: 03ac5f4dfae9bb393b88e39b11c2b12a7df7599e7918791e1ef837eb939e53ba
+  positive_evidence_eligible: false
+  issue_id: FI-032
+  status: quarantined_replaced

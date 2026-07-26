@@ -297,9 +297,9 @@ class TestIpynbInstalledWorkflowRealSamples:
         result = ipynb_installed_workflow(VALID_DIR / "code-and-markdown.ipynb")
         assert result["format"] == "ipynb"
         assert result["loaded"] is True
-        assert result["code_cell_count"] == 1
-        assert result["markdown_cell_count"] == 1
-        assert result["cell_count"] == 2
+        assert result["code_cell_count"] == 4
+        assert result["markdown_cell_count"] == 5
+        assert result["cell_count"] == 9
 
     def test_workflow_on_with_outputs_sample(self):
         from ipynb.ipynb_codec import ipynb_installed_workflow

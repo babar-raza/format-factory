@@ -207,15 +207,15 @@ class TestAdditionalCodecCoverage:
 
     def test_get_cell_count_real_file(self):
         model = load_ipynb(VALID_DIR / "code-and-markdown.ipynb")
-        assert get_cell_count(model) == 2
+        assert get_cell_count(model) == 9
 
     def test_get_code_cells_real_file(self):
         model = load_ipynb(VALID_DIR / "code-and-markdown.ipynb")
-        assert len(get_code_cells(model)) == 1
+        assert len(get_code_cells(model)) == 4
 
     def test_get_markdown_cells_real_file(self):
         model = load_ipynb(VALID_DIR / "code-and-markdown.ipynb")
-        assert len(get_markdown_cells(model)) == 1
+        assert len(get_markdown_cells(model)) == 5
 
     def test_load_nbformat_minor_present(self):
         model = load_ipynb(VALID_DIR / "minimal.ipynb")
@@ -234,7 +234,7 @@ class TestAdditionalCodecCoverage:
     def test_load_with_outputs_execution_count(self):
         model = load_ipynb(VALID_DIR / "with-outputs.ipynb")
         code_cells = get_code_cells(model)
-        assert code_cells[0]["execution_count"] == 1
+        assert code_cells[0]["execution_count"] == 5
 
     def test_write_then_probe_roundtrip(self):
         model = {

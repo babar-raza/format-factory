@@ -1,59 +1,91 @@
 format_id: ipynb
-corpus_version: "1.0"
-acquisition_sprint: CORPUS-MANIFEST-BACKFILL-2026-07-14
-acquisition_date: "2026-07-14"
-generation_method: deterministic_synthetic_python_json
+corpus_version: "2.0"
+acquisition_sprint: FF6-IPYNB-CORPUS-001
+acquisition_date: "2026-07-26"
+generation_method: mixed_project_owned_and_pinned_official_upstream
 commercial_product_ready: false
+generated_by: codex
+visibility: generated
+
+validation_policy:
+  strict_authority: "vendored official nbformat schema for the declared minor"
+  reference_implementation: "nbformat 5.10.4"
+  oracle_disagreement_policy: "Normative schema governs strict validity; reference-implementation normalization is recorded but cannot relabel source bytes valid."
+  positive_evidence_requires:
+    - exact_sha256
+    - confirmed_redistribution_license
+    - strict_declared_minor_schema_pass
+    - production_reader_pass
 
 valid_samples:
   - filename: valid/minimal.ipynb
+    sha256: 60b1be44941df5d0394431f5c4a900937c6106d65888bd39ea9da9c76ca29b2b
     source: project-owned-synthetic
     source_url: "self-generated"
     license: Apache-2.0
-    copyright: "format-factory project"
     category: minimal-valid
-    description: "Minimal valid Jupyter notebook with nbformat 4, empty cells list. Tests baseline notebook structure parsing."
-    structural_test: PASS
+    description: "Minimal valid nbformat 4.5 notebook with no cells."
+    strict_schema_test: PASS
+    production_reader_test: PASS
 
   - filename: valid/code-and-markdown.ipynb
-    source: project-owned-synthetic
-    source_url: "self-generated"
-    license: Apache-2.0
-    copyright: "format-factory project"
-    category: mixed-cell-types
-    description: "Notebook with both code and markdown cells. Tests cell type discrimination and source extraction."
-    structural_test: PASS
+    sha256: 77c6d7cc3b70c2a34a2dc4f9c08a71ca20a146c579a9e41e21514bfc5c903a00
+    source: official-nbformat-v5.10.4
+    source_url: https://raw.githubusercontent.com/jupyter/nbformat/60b6151fedcbdc9f137fb2d223eeb10c935a8378/tests/test4.5.ipynb
+    source_commit: 60b6151fedcbdc9f137fb2d223eeb10c935a8378
+    license: BSD-3-Clause
+    category: mixed-cell-types-and-outputs
+    description: "Official nbformat 4.5 test notebook with markdown/code cells, cell IDs, and four output records."
+    strict_schema_test: PASS
+    production_reader_test: PASS
 
   - filename: valid/with-outputs.ipynb
-    source: project-owned-synthetic
-    source_url: "self-generated"
-    license: Apache-2.0
-    copyright: "format-factory project"
-    category: cell-outputs
-    description: "Notebook with code cells containing execution outputs. Tests output parsing including stream and display_data types."
-    structural_test: PASS
+    sha256: 03ac5f4dfae9bb393b88e39b11c2b12a7df7599e7918791e1ef837eb939e53ba
+    source: official-nbformat-v5.10.4
+    source_url: https://raw.githubusercontent.com/jupyter/nbformat/60b6151fedcbdc9f137fb2d223eeb10c935a8378/tests/test4jupyter_metadata_timings.ipynb
+    source_commit: 60b6151fedcbdc9f137fb2d223eeb10c935a8378
+    license: BSD-3-Clause
+    category: cell-outputs-and-timing-metadata
+    description: "Official valid nbformat 4.4 notebook with an execute_result and Jupyter timing metadata."
+    strict_schema_test: PASS
+    production_reader_test: PASS
 
 invalid_samples:
   - filename: invalid/missing-nbformat.ipynb
+    sha256: 4d0aac7aef4b22ff1fbdfce7c7f892745a919ccd265d3f54d87c95a85e664b3c
     source: project-owned-synthetic
     source_url: "self-generated"
     license: Apache-2.0
-    copyright: "format-factory project"
     category: invalid-missing-required-field
-    description: "JSON object missing the required 'nbformat' key. Tests mandatory field validation in parser."
+    description: "JSON object missing the required nbformat key."
     expected_error: true
     error_type: MissingRequiredField
+
+quarantined_samples:
+  - original_filename: valid/code-and-markdown.ipynb
+    quarantine_filename: quarantine/c8caeff0a36013b17b3c910f0b9ffe24b9b855aad958d02affb25147c9700b1a-code-and-markdown.ipynb
+    sha256: c8caeff0a36013b17b3c910f0b9ffe24b9b855aad958d02affb25147c9700b1a
+    reason: "Declared nbformat 4.5 but cells[0].id and cells[1].id are absent."
+    positive_evidence_eligible: false
+
+  - original_filename: valid/with-outputs.ipynb
+    quarantine_filename: quarantine/3b7d9f72565a7d916baa527976f00b5de4142ee148306bfed4bd16016b735e09-with-outputs.ipynb
+    sha256: 3b7d9f72565a7d916baa527976f00b5de4142ee148306bfed4bd16016b735e09
+    reason: "Declared nbformat 4.5 but cells[0].id is absent."
+    positive_evidence_eligible: false
 
 summary:
   valid_count: 3
   invalid_count: 1
-  total_count: 4
-  structural_pass_rate: "3/3"
+  quarantined_count: 2
+  total_active_count: 4
+  strict_structural_pass_rate: "3/3"
   error_detection_rate: "1/1"
+  independently_licensed_valid_count: 2
   categories_covered:
     - minimal-valid
-    - mixed-cell-types
-    - cell-outputs
+    - mixed-cell-types-and-outputs
+    - cell-outputs-and-timing-metadata
     - invalid-missing-required-field
   gate_3_categories_met: true
   awaiting_human_iv: true

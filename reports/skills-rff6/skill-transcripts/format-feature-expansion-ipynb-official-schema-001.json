@@ -141,7 +141,7 @@
       "The failure-first test could not collect because format_factory.ipynb.validation.schema did not exist.",
       "A pre-implementation differential matrix found ten cases accepted by the factory and rejected by nbformat 5.10.4, including additional root/cell/output properties, malformed kernelspec and language_info values, empty cell names, invalid collapsed metadata, and negative execution counts.",
       "The first full regression after schema integration failed three tests. Review showed that those tests embedded schema-invalid extension placement or assumed current-minor unknown structural fields were valid. The behaviors were preserved at the correct boundary: unknown structural fields now use future-minor preservation mode, and metadata fixtures use schema-valid extension values.",
-      "Two files labeled as valid corpus items were independently rejected by both implementations because they declare 4.5 without required cell IDs. Their hashes are retained as a separately queued corpus-remediation gap; they are not used as positive evidence."
+      "Two files labeled as valid corpus items were rejected by the exact normative 4.5 schema because required cell IDs are absent. A later discriminating check established that nbformat 5.10.4 instead mutates copies by inserting IDs and emits MissingIDFieldWarning; that oracle disagreement is resolved in favor of the declared-minor normative schema. Their original hashes are excluded from positive evidence and retained by the corpus-remediation task."
     ]
   },
   "implementation": {
