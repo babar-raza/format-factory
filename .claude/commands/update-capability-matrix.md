@@ -82,7 +82,35 @@ with: skill_id, matrix_entry, field_transitions, evidence_paths, verdict.
 #   focused_validation_commands: [dotnet test tests/net/fods/ --filter "FodsR93"]
 ```
 
+## Governance (TC-CAP-012 — 2026-07-01)
+
+**Capability Authority Chain:** `poc-targets.yaml` is a DASHBOARD REFERENCE SNAPSHOT, NOT a
+capability authority. The canonical authority chain is:
+  SAL facts → obligations → capability identity → evidence → gap/verified state → taskcard
+
+**This skill MAY:**
+- Update evidence-backed fields: `capability_state`, `test_count`, `dogfood_status`, `blocker`, `example_paths`, `next_action`
+- Mark a gap as closed when local proof exists and the capability is verified
+- Update `last_updated` and `sprint_id` fields
+
+**This skill MUST NOT:**
+- Set `commercial_product_ready`, `gate_11_approved`, or any gate authority field
+- Change `poc-targets.yaml` format IDs or product track assignments (these come from `registry/format-registry.yaml`)
+- Use `poc-targets.yaml` as the source of truth for what capabilities should exist (that is the SAL obligation register)
+- Grant publication authorization or commercial release status
+
+**Historical Separation (TC-CAP-008):** When a capability gap is closed:
+- Update `poc-targets.yaml` to reflect the new state
+- Do NOT delete the gap entry from the YAML — mark it `status: closed` with `closed_at` and evidence path
+- The canonical closure record lives in `reports/capability-layer/gap-ledger-archive.json`
+  and `reports/capability-layer/closure-receipt-index.json`
+
+**Generated vs. Maintained Sections in poc-targets.yaml:**
+- `generated_section: true` — auto-generated from capability maps; do not manually edit
+- `maintained_section: true` — human-governed priorities and gate decisions; may be manually updated
+
 ## Changelog
 
+- 1.2 (2026-07-01): TC-CAP-012 governance section added.
 - 1.0 (2026-06-02): Initial R90 governed minimum viable command.
 - 1.2 (2026-06-03): Added allowed/forbidden paths, rollback, transcript requirement, sample invocation (Skills R101).

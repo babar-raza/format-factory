@@ -73,6 +73,12 @@ _ARCHITECTURE_BLOCKED_SEED: frozenset[str] = frozenset({
 })
 
 # Map from gap_id → full proof descriptor (v5: proof-backed readiness)
+# TC-CAP-011: This dict is INTENTIONAL — it is the authoritative proof registry for
+# commercial .NET writer gaps (not the FOSS capability gap ledger).
+# These gap_ids are commercial-net-* dotnet writer verification records, distinct from
+# the capability layer gap-ledger.json (which tracks FOSS Python capability gaps).
+# DEFAULT_MATRIX (poc-targets.yaml) is used as the dashboard selection source for commercial
+# gap enumeration; it is NOT the capability authority for FOSS gaps (see capability-authority-model.yaml).
 _GAP_WRITER_PROOF: dict[str, dict[str, str]] = {
     "commercial-net-fods-dogfood-status-fods-to-csv-dotnet": {
         "target_writer_name": "FormatFactory.Csv.CsvWriter",
