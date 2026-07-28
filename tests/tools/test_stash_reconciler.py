@@ -127,3 +127,12 @@ def test_refuses_root_worktree(repository: dict[str, Path | str], tmp_path: Path
 def test_refuses_prohibited_paths(path: str) -> None:
     with pytest.raises(ValueError):
         stash_reconciler.safe_path(path)
+
+
+def test_load_manifest_accepts_windows_utf8_bom(tmp_path: Path) -> None:
+    manifest = tmp_path / "manifest.json"
+    manifest.write_text(
+        json.dumps({"mode": "unique", "paths": ["kept.txt"]}),
+        encoding="utf-8-sig",
+    )
+    assert stash_reconciler.load_manifest(manifest)["paths"] == ["kept.txt"]

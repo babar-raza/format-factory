@@ -141,7 +141,10 @@ def worktree_guard(repo: Path, worktree: Path) -> None:
 
 
 def load_manifest(path: Path) -> dict[str, Any]:
-    value = json.loads(path.read_text(encoding="utf-8"))
+    # Windows PowerShell 5.1 emits a UTF-8 BOM for ``-Encoding utf8``.
+    # Accepting it keeps machine-generated local manifests portable while
+    # preserving the exact-path and schema guards below.
+    value = json.loads(path.read_text(encoding="utf-8-sig"))
     if value.get("mode") not in {"unique", "three_way"}:
         raise ValueError("manifest mode must be unique or three_way")
     paths = value.get("paths")
