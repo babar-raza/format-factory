@@ -429,25 +429,18 @@ packages:
   format_id: csv
   install_proof:
     expected: dict
-    known_failure:
-      gap_id: GAP-FORENSIC-025
-      reason: >-
-        Python resolves stdlib before site-packages, so 'import csv' always finds
-        the stdlib module — the wheel installs but its module is unreachable by
-        construction. Requires an import-rename product decision (PYREL-001
-        amendment); tracked in forensic-gap-register GAP-FORENSIC-025.
     smoke_callable: parse_csv_strict
-    smoke_module: csv.csv_parser
+    smoke_module: ff_csv.csv_parser
     smoke_sample: samples/by-format/csv/minimal-2x2.csv
   license: Apache-2.0
-  module_import: csv
-  module_path: src/python/csv/
-  note: Required as dependency for dif dogfood export (dif_to_csv uses csv.csv_writer.write_csv)
+  module_import: ff_csv
+  module_path: src/python/ff_csv/
+  note: Required as dependency for DIF dogfood export; physical namespace ff_csv avoids stdlib csv shadowing.
   package_name: format-factory-csv
   publication_authorized: false
   publish_status: local_only_not_published
   python_version: '>=3.9'
-  source_path: src/python/csv/
+  source_path: src/python/ff_csv/
   tests_path: tests/python/csv/
 - acquisition_gates_passed:
   - 1

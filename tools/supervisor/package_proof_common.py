@@ -115,16 +115,29 @@ def proof_input_digest(repo_root: Path, package: dict[str, Any]) -> str:
     return hasher.hexdigest()
 
 
-def source_digest(repo_root: Path, fmt: str, *, committed: bool = False) -> str:
-    """Deterministic content hash of src/python/<fmt>/ — binds a proof to the
-    exact source state it was produced from. Sorted walk; ignores bytecode
-    caches and egg-info metadata (they vary without source meaning changing).
+def source_digest(
+    repo_root: Path,
+    fmt: str,
+    *,
+    committed: bool = False,
+    source_path: str | None = None,
+) -> str:
+    """Hash a package's physical source tree.
+
+    ``fmt`` is the logical matrix ID. ``source_path`` is the authoritative
+    physical root when the two differ, such as ``csv`` at
+    ``src/python/ff_csv``.
 
     When committed=True, reads from git HEAD instead of the working tree.
     This eliminates flapping when concurrent agents modify source files."""
     if committed:
-        return _source_digest_committed(repo_root, fmt)
-    src = Path(repo_root) / "src" / "python" / fmt
+        return _source_digest_committed(
+            repo_root,
+            fmt,
+            source_path=source_path,
+        )
+    prefix = (source_path or f"src/python/{fmt}").rstrip("/")
+    src = Path(repo_root) / prefix
     h = hashlib.sha256()
     for path in sorted(src.rglob("*")):
         if path.is_dir():
@@ -137,11 +150,16 @@ def source_digest(repo_root: Path, fmt: str, *, committed: bool = False) -> str:
     return h.hexdigest()
 
 
-def _source_digest_committed(repo_root: Path, fmt: str) -> str:
+def _source_digest_committed(
+    repo_root: Path,
+    fmt: str,
+    *,
+    source_path: str | None = None,
+) -> str:
     """Compute source_digest from git HEAD — immune to working-tree races."""
     from committed_fs import committed_list_files, committed_read_bytes
 
-    prefix = f"src/python/{fmt}"
+    prefix = (source_path or f"src/python/{fmt}").rstrip("/")
     files = committed_list_files(repo_root, prefix)
     h = hashlib.sha256()
     for fpath in files:

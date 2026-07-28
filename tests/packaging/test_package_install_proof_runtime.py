@@ -53,6 +53,19 @@ def test_ipynb_matrix_uses_native_dotted_distribution() -> None:
     ]
 
 
+def test_csv_matrix_uses_nonstdlib_physical_namespace() -> None:
+    matrix = yaml.safe_load(
+        (REPO_ROOT / "packaging/python/package-matrix.yaml").read_text(encoding="utf-8")
+    )
+    csv = next(pkg for pkg in matrix["packages"] if pkg["format_id"] == "csv")
+
+    assert csv["module_import"] == "ff_csv"
+    assert csv["module_path"] == "src/python/ff_csv/"
+    assert csv["source_path"] == "src/python/ff_csv/"
+    assert csv["install_proof"]["smoke_module"] == "ff_csv.csv_parser"
+    assert "known_failure" not in csv["install_proof"]
+
+
 def test_specs_preserve_dotted_module_import(
     proof: ModuleType,
     monkeypatch: pytest.MonkeyPatch,

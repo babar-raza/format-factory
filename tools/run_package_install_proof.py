@@ -114,9 +114,13 @@ def load_matrix() -> list[dict]:
     return packages
 
 
-def source_digest(fmt: str) -> str:
+def source_digest(fmt: str, package: dict | None = None) -> str:
     """Content hash binding proof to source state (shared impl — see package_proof_common)."""
-    return _shared_source_digest(REPO_ROOT, fmt)
+    return _shared_source_digest(
+        REPO_ROOT,
+        fmt,
+        source_path=(package or {}).get("source_path"),
+    )
 
 
 def sha256_file(path: Path) -> str:
@@ -545,7 +549,7 @@ def main() -> int:
     # Snapshot the complete selected input closure before any build or test.
     # A digest captured only after execution could falsely bind the result to
     # files that changed while the old bytes were still loaded by a subprocess.
-    digests = {fmt: source_digest(fmt) for fmt in formats}
+    digests = {fmt: source_digest(fmt, by_id[fmt]) for fmt in formats}
     input_digests = selected_input_digests(packages, formats)
 
     if not args.skip_build:
@@ -556,8 +560,8 @@ def main() -> int:
 
     py = create_proof_venv()
 
-    # csv intentionally shadows stdlib csv once installed; contain the blast
-    # radius by proving every other format first, then csv in its own pass.
+    # Preserve the isolated CSV pass used by historical proof manifests. The
+    # installed module now uses the non-stdlib ``ff_csv`` namespace.
     main_formats = [f for f in formats if f != "csv"]
     csv_requested = "csv" in formats
 

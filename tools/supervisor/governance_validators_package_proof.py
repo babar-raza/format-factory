@@ -58,6 +58,7 @@ def validate_package_install_proof_coverage(
         return _result("FAIL", f"V226: package-matrix.yaml unreadable: {exc}", True)
 
     matrix_ids = {p.get("format_id") for p in packages}
+    packages_by_id = {p["format_id"]: p for p in packages}
     no_spec = sorted(p.get("format_id") for p in packages if "install_proof" not in p)
 
     # DRIFT: every shipped-shaped source package must be in the matrix with a spec.
@@ -163,7 +164,11 @@ def validate_package_install_proof_coverage(
     # Always use working-tree digests here — proof runner builds from working tree
     stale = sorted(
         fmt for fmt in matrix_ids
-        if proven[fmt].get("source_digest") != source_digest(repo, fmt)
+        if proven[fmt].get("source_digest") != source_digest(
+            repo,
+            fmt,
+            source_path=packages_by_id[fmt].get("source_path"),
+        )
     )
     if stale:
         return _result(
