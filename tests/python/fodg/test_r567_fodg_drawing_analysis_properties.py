@@ -1,7 +1,7 @@
 """R567: FODG drawing analysis properties — is_multi_page, has_multiple_shapes, shapes_per_page.
 
 Tests for FodgDocument drawing analysis properties added in R567.
-Spec refs: FACT-FODG-001.
+Spec refs: SAL-FODG-00001.
 """
 
 import pytest

@@ -1,7 +1,7 @@
 """FODT spec Document — canonical implementation of office:document.
 
 spec_qname: office:document
-spec_fact_ref: FACT-FODT-001
+spec_fact_ref: SAL-FODT-00001
 Spec ref: ODF 1.3 §3.1 — Document Element (flat format)
 Facade: FodtDocument (Compat/fodt_document.py)
 """
@@ -18,7 +18,7 @@ class Document:
     """
 
     spec_qname: ClassVar[str] = "office:document"
-    spec_fact_ref: ClassVar[str] = "FACT-FODT-001"
+    spec_fact_ref: ClassVar[str] = "SAL-FODT-00001"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
     local_name: ClassVar[str] = "document"
     facade_names: ClassVar[list] = ["FodtDocument"]

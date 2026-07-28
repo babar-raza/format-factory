@@ -5,7 +5,7 @@ Properties under test:
     largest_sheet_fraction  — max_sheet_rows / total_row_count (0.0 if no rows)
     is_single_sheet_dominant — largest_sheet_fraction > 0.8
 
-spec_fact_ref: FACT-ODS-001
+spec_fact_ref: SAL-ODS-01068
 """
 
 import types

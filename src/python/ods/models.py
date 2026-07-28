@@ -20,7 +20,7 @@ class OdsCellModel:
     """Typed wrapper for ODS cell."""
 
     spec_qname: ClassVar[str] = "table:table-cell"
-    spec_fact_ref: ClassVar[str] = "FACT-ODS-003"
+    spec_fact_ref: ClassVar[str] = "SAL-ODS-01069"
 
     def __init__(self, cell: Any) -> None:
         self._cell = cell
@@ -52,7 +52,7 @@ class OdsSheetModel:
     """Typed wrapper for ODS sheet with cell access."""
 
     spec_qname: ClassVar[str] = "table:table"
-    spec_fact_ref: ClassVar[str] = "FACT-ODS-002"
+    spec_fact_ref: ClassVar[str] = "SAL-ODS-00001"
 
     def __init__(self, sheet: Any) -> None:
         self._sheet = sheet
@@ -97,7 +97,7 @@ class OdsModelDocument:
     """
 
     spec_qname: ClassVar[str] = "office:document"
-    spec_fact_ref: ClassVar[str] = "FACT-ODS-001"
+    spec_fact_ref: ClassVar[str] = "SAL-ODS-01068"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
     local_name: ClassVar[str] = "document"
     facade_names: ClassVar[list] = []
@@ -136,7 +136,7 @@ class OdsModelDocument:
         """Return all sheets as typed OdsSheetModel objects."""
         return [OdsSheetModel(s) for s in self._parsed.sheets]
 
-    # Workbook dimension properties (FACT-ODS-001)
+    # Workbook dimension properties (SAL-ODS-01068)
     @property
     def is_empty(self) -> bool:
         """True if the workbook has no sheets."""
@@ -168,7 +168,7 @@ class OdsModelDocument:
         counts = [s.row_count for s in self.sheets()]
         return max(counts) if counts else 0
 
-    # Workbook scale properties (FACT-ODS-001 R1236)
+    # Workbook scale properties (SAL-ODS-01068 R1236)
 
     @property
     def is_large_workbook(self) -> bool:
@@ -187,7 +187,7 @@ class OdsModelDocument:
             return 0.0
         return self.total_row_count / self.sheet_count
 
-    # Workbook density and shape properties (FACT-ODS-001 R1256)
+    # Workbook density and shape properties (SAL-ODS-01068 R1256)
 
     @property
     def is_uniform_sheet_size(self) -> bool:
@@ -212,7 +212,7 @@ class OdsModelDocument:
         counts = [s.row_count for s in sheets]
         return max(counts) - min(counts)
 
-    # Workbook structure analysis properties (FACT-ODS-001 R1276)
+    # Workbook structure analysis properties (SAL-ODS-01068 R1276)
 
     @property
     def has_data_sheets(self) -> bool:

@@ -1,6 +1,6 @@
 """FodsDateStyle — Compat facade for the FODS number:date-style element.
 
-Spec authority: number:date-style (FACT-FODS-010, ODF 1.3 §16.27)
+Spec authority: number:date-style (SAL-FODS-00010, ODF 1.3 §16.27)
 Canonical spec class: src/python/fods/spec/number/date_style.py::DateStyle
 Qname registry: shared/qname-registry/fods.yaml (facade_names: [FodsDateStyle])
 
@@ -23,5 +23,5 @@ class FodsDateStyle(_SpecDateStyle):
     """
 
     spec_qname: ClassVar[str] = "number:date-style"
-    spec_fact_ref: ClassVar[str] = "FACT-FODS-010"
+    spec_fact_ref: ClassVar[str] = "SAL-FODS-00010"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0"

@@ -5,7 +5,7 @@ Sprint: FORMAT-FACTORY-AUTHORITY-GATED-PRODUCT-DOGFOOD-FEATURES-AND-BACKFILL-001
 Added: 2026-06-09
 
 Tests for FODS workbook_count_matching_cells() API.
-Authority: P6 (FACT-FODS-001: ODF 1.3 spreadsheet MIME type)
+Authority: P6 (SAL-FODS-00001: ODF 1.3 spreadsheet MIME type)
 """
 from __future__ import annotations
 

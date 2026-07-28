@@ -8,8 +8,13 @@ License: Apache-2.0
 Package: format-factory-fodt v0.1.0
 """
 
+try:
+    from _shared._shared_exceptions import FormatFactoryError
+except ImportError:
+    FormatFactoryError = Exception
 
-class FodtError(ValueError):
+
+class FodtError(FormatFactoryError):
     """Base exception for all format-factory-fodt errors."""
 
 

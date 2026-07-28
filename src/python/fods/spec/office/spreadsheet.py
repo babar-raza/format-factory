@@ -2,7 +2,7 @@
 ODF spec element: office:spreadsheet
 
 Spec ref: ODF 1.3 §9 — Spreadsheet Document Content
-Fact ref: FACT-FODS-003
+Fact ref: SAL-FODS-00003
 QName: office:spreadsheet
 Namespace: urn:oasis:names:tc:opendocument:xmlns:office:1.0
 Canonical class: Office.Spreadsheet
@@ -19,7 +19,7 @@ class Spreadsheet:
     """
 
     spec_qname: ClassVar[str] = "office:spreadsheet"
-    spec_fact_ref: ClassVar[str] = "FACT-FODS-003"
+    spec_fact_ref: ClassVar[str] = "SAL-FODS-00003"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
     local_name: ClassVar[str] = "spreadsheet"
     facade_names: ClassVar[list] = []

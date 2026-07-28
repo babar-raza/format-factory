@@ -1,6 +1,6 @@
 """FodsSpreadsheet — Compat facade for the FODS office:spreadsheet element.
 
-Spec authority: office:spreadsheet (FACT-FODS-003, ODF 1.3 §9.1)
+Spec authority: office:spreadsheet (SAL-FODS-00003, ODF 1.3 §9.1)
 Canonical spec class: src/python/fods/spec/office/spreadsheet.py::Spreadsheet
 Qname registry: shared/qname-registry/fods.yaml (facade_names: [FodsSpreadsheet])
 
@@ -22,5 +22,5 @@ class FodsSpreadsheet(_SpecSpreadsheet):
     """
 
     spec_qname: ClassVar[str] = "office:spreadsheet"
-    spec_fact_ref: ClassVar[str] = "FACT-FODS-003"
+    spec_fact_ref: ClassVar[str] = "SAL-FODS-00003"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"

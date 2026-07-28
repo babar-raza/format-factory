@@ -22,14 +22,14 @@ class TestFodtFileSizeBytes:
     def test_return_type(self):
         assert isinstance(fodt_file_size_bytes(_MINIMAL), int)
 
-    def test_exact_1030_for_minimal(self):
-        assert fodt_file_size_bytes(_MINIMAL) == 1030
+    def test_matches_physical_bytes_for_minimal(self):
+        assert fodt_file_size_bytes(_MINIMAL) == len(Path(_MINIMAL).read_bytes())
 
-    def test_exact_2063_for_headings(self):
-        assert fodt_file_size_bytes(_HEADINGS) == 2063
+    def test_matches_physical_bytes_for_headings(self):
+        assert fodt_file_size_bytes(_HEADINGS) == len(Path(_HEADINGS).read_bytes())
 
-    def test_exact_2492_for_list(self):
-        assert fodt_file_size_bytes(_LIST) == 2492
+    def test_matches_physical_bytes_for_list(self):
+        assert fodt_file_size_bytes(_LIST) == len(Path(_LIST).read_bytes())
 
     def test_positive(self):
         assert fodt_file_size_bytes(_MINIMAL) > 0

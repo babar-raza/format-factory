@@ -1,7 +1,7 @@
 """R1224: FODP shape analysis properties — has_shapes, is_shape_heavy, is_single_slide_with_shapes.
 
 Tests for FodpDocument shape analysis properties added in R1224.
-Spec refs: FACT-FODP-001 (office:document presentation structure).
+Spec refs: SAL-FODP-00001 (office:document presentation structure).
 """
 
 from __future__ import annotations

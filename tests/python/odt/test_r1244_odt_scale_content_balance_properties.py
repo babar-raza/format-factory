@@ -5,7 +5,7 @@ Properties under test:
     has_only_paragraphs — paragraph_count > 0 and heading_count == 0
     paragraph_ratio   — paragraph_count / total_block_count (0.0 if no blocks)
 
-spec_fact_ref: FACT-ODT-001
+spec_fact_ref: SAL-ODT-01067
 """
 
 import types

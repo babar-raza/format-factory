@@ -7,7 +7,7 @@ Added: 2026-06-09
 Tests for new FODS API:
 - workbook_find_cells(workbook, value, case_sensitive=False) -> list[dict]
 
-Authority: P6 (FACT-FODS-001: ODF 1.3 spreadsheet MIME type
+Authority: P6 (SAL-FODS-00001: ODF 1.3 spreadsheet MIME type
 application/vnd.oasis.opendocument.spreadsheet-flat-xml)
 """
 from __future__ import annotations

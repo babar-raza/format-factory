@@ -2,7 +2,7 @@
 
 Spec authority: office:document
 Spec ref: ODF 1.3 §3.1
-Fact ref: FACT-FODT-001
+Fact ref: SAL-FODT-00001
 Canonical spec class: src/python/fodt/spec/office/document.py::Document
 """
 from __future__ import annotations
@@ -22,7 +22,7 @@ class FodtDocument(_SpecDocument):
     """
 
     spec_qname: ClassVar[str] = "office:document"
-    spec_fact_ref: ClassVar[str] = "FACT-FODT-001"
+    spec_fact_ref: ClassVar[str] = "SAL-FODT-00001"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
 
     @classmethod

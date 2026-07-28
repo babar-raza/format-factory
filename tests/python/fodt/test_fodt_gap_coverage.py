@@ -277,6 +277,11 @@ def test_every_exported_class_has_dedicated_coverage():
     expected = {
         "FodtDocument", "FodtParagraph", "FodtSpan",
         "FodtError", "FodtInputError", "FodtParseError", "FodtSizeError",
+        # FormatFactoryError is imported into exceptions.py so FodtError can
+        # be rooted at the shared base (matching every other format package's
+        # exceptions.py); it leaks into __all__ via the dynamic star-import
+        # computation the same way it already does for every other format.
+        "FormatFactoryError",
     }
     assert set(_ALL_CLASSES) == expected
 
@@ -780,7 +785,11 @@ class TestExceptions:
         assert issubclass(fodt.FodtInputError, fodt.FodtError)
         assert issubclass(fodt.FodtSizeError, fodt.FodtError)
         assert issubclass(fodt.FodtParseError, fodt.FodtError)
-        assert issubclass(fodt.FodtError, ValueError)
+        # Healed: FodtError now roots at FormatFactoryError (matching every
+        # other format package) instead of ValueError. See
+        # plans/.claude/quizzical-munching-gadget.md section 7 (TC-EHR-009).
+        from _shared._shared_exceptions import FormatFactoryError
+        assert issubclass(fodt.FodtError, FormatFactoryError)
 
     def test_parse_fodt_strict_raises_input_error_missing_file(self):
         with pytest.raises(fodt.FodtInputError):
@@ -807,8 +816,11 @@ class TestExceptions:
         result = fodt.parse_fodt(str(bad))
         assert "error" in result
 
-    def test_fodt_error_is_catchable_as_value_error(self):
-        with pytest.raises(ValueError):
+    def test_fodt_error_is_catchable_as_format_factory_error(self):
+        """Healed: FodtError is no longer ValueError-rooted; it is now
+        catchable via the shared FormatFactoryError hierarchy instead."""
+        from _shared._shared_exceptions import FormatFactoryError
+        with pytest.raises(FormatFactoryError):
             raise fodt.FodtError("boom")
 
 

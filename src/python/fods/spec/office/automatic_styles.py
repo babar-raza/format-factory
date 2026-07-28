@@ -2,7 +2,7 @@
 ODF spec element: office:automatic-styles
 
 Spec ref: ODF 1.3 §3.15 — Automatic Styles
-Fact ref: FACT-FODS-008
+Fact ref: SAL-FODS-00008
 QName: office:automatic-styles
 Namespace: urn:oasis:names:tc:opendocument:xmlns:office:1.0
 Canonical class: Office.AutomaticStyles
@@ -19,7 +19,7 @@ class AutomaticStyles:
     """
 
     spec_qname: ClassVar[str] = "office:automatic-styles"
-    spec_fact_ref: ClassVar[str] = "FACT-FODS-008"
+    spec_fact_ref: ClassVar[str] = "SAL-FODS-00008"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
     local_name: ClassVar[str] = "automatic-styles"
     facade_names: ClassVar[list] = []

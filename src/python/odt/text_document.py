@@ -1,11 +1,20 @@
 """
-ODT analytics functions extracted from odt_parser.py (TC-HEAL-FORMATS-BATCH2).
+text_document.py — ODT text-document domain module.
+
+Whole-document metric and summary operations over the parsed ODT text
+document (word / heading / paragraph / character / list counts and related
+whole-document properties). Each function accepts a file path, parses the
+document, and describes a property of the document as a whole — the
+sanctioned domain-module role for a ``*_document.py`` file (see
+tests/test_source_structure.py). Parser source: odt_parser.py
+(parse_odt_strict). Originally extracted from odt_parser.py
+(TC-HEAL-FORMATS-BATCH2).
 """
 from __future__ import annotations
 
 
 spec_qname = "office:document"
-spec_fact_ref = "FACT-ODT-001"
+spec_fact_ref = "SAL-ODT-01067"
 namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
 
 import zipfile

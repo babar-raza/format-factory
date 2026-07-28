@@ -20,7 +20,7 @@ def fodt_iter_paragraphs(source: "str | Path") -> Iterator[Paragraph]:
         source: Path to a .fodt Flat OpenDocument Text file.
 
     Yields:
-        Paragraph instances (spec class: text:p, FACT-FODT-003).
+        Paragraph instances (spec class: text:p, SAL-FODT-00003).
     """
     model = parse_fodt(str(Path(source).resolve()))
     for block in model.get("blocks", []):

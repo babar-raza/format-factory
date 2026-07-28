@@ -1,6 +1,6 @@
 """FodsAutomaticStyles — Compat facade for the FODS office:automatic-styles element.
 
-Spec authority: office:automatic-styles (FACT-FODS-008, ODF 1.3 §14.1)
+Spec authority: office:automatic-styles (SAL-FODS-00008, ODF 1.3 §14.1)
 Canonical spec class: src/python/fods/spec/office/automatic_styles.py::AutomaticStyles
 Qname registry: shared/qname-registry/fods.yaml (facade_names: [FodsAutomaticStyles])
 
@@ -23,5 +23,5 @@ class FodsAutomaticStyles(_SpecAutomaticStyles):
     """
 
     spec_qname: ClassVar[str] = "office:automatic-styles"
-    spec_fact_ref: ClassVar[str] = "FACT-FODS-008"
+    spec_fact_ref: ClassVar[str] = "SAL-FODS-00008"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"

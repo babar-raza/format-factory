@@ -1662,7 +1662,11 @@ class TestExceptions:
         assert issubclass(FodsInputError, FodsError)
         assert issubclass(FodsSizeError, FodsError)
         assert issubclass(FodsParseError, FodsError)
-        assert issubclass(FodsError, ValueError)
+        # Healed: FodsError now roots at FormatFactoryError (matching every
+        # other format package) instead of ValueError. See
+        # plans/.claude/quizzical-munching-gadget.md section 7 (TC-EHR-009).
+        from _shared._shared_exceptions import FormatFactoryError
+        assert issubclass(FodsError, FormatFactoryError)
 
     def test_exceptions_carry_message(self):
         exc = FodsInputError("boom")

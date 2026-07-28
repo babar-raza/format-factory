@@ -9,7 +9,7 @@ Tests for FODS APIs:
 - workbook_cell_type_matrix(workbook) -> list[dict]
 - workbook_merged_cell_summary(workbook) -> list[dict]
 
-Authority: P6 (FACT-FODS-001: ODF 1.3 spreadsheet MIME type)
+Authority: P6 (SAL-FODS-00001: ODF 1.3 spreadsheet MIME type)
 """
 from __future__ import annotations
 

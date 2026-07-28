@@ -151,7 +151,7 @@ class TestCanonicalSpecClassImportable:
         _spec.loader.exec_module(_mod)
         Document = _mod.Document
         assert Document.spec_qname == "office:document"
-        assert Document.spec_fact_ref == "FACT-FODS-001"
+        assert Document.spec_fact_ref == "SAL-FODS-00001"
         # Confirm it is NOT the same object as FodsDocument (they are separate layers)
         from fods.models import FodsDocument
         assert Document is not FodsDocument

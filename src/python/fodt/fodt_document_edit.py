@@ -537,7 +537,7 @@ def document_search_text(
     Searches paragraph and heading blocks for the query string. Returns a list
     of match dicts, one per block that contains the query.
 
-    Aligned with ODF 1.3 text content model (FACT-FODT-001): text content is
+    Aligned with ODF 1.3 text content model (SAL-FODT-00001): text content is
     stored in paragraph (text:p) and heading (text:h) blocks.
 
     Args:
@@ -553,7 +553,7 @@ def document_search_text(
             match_count (int): Number of times query appears in this block.
 
     Added in Sprint FORMAT-FACTORY-AUTHORITY-GATED-PRODUCT-PROGRESS-AND-FORMAT-BACKFILL-MEGA-TRAIN-001
-    as FODT product feature advancement (authority: P4, FACT-FODT-001).
+    as FODT product feature advancement (authority: P4, SAL-FODT-00001).
     """
     if not query:
         return []
@@ -686,7 +686,7 @@ def document_extract_headings(
     Returns headings filtered by level range. Useful for building a table of
     contents or understanding document structure.
 
-    Aligned with ODF 1.3 text heading model (FACT-FODT-001): headings are
+    Aligned with ODF 1.3 text heading model (SAL-FODT-00001): headings are
     stored as text:h elements with a text:outline-level attribute.
 
     Args:
@@ -701,7 +701,7 @@ def document_extract_headings(
             text (str): Heading text.
 
     Added in Sprint FORMAT-FACTORY-AUTHORITY-GATED-PRODUCT-DOGFOOD-FEATURES-AND-BACKFILL-001
-    (authority: P5, FACT-FODT-001).
+    (authority: P5, SAL-FODT-00001).
     """
     headings: list[dict[str, Any]] = []
     for idx, block in enumerate(document.get("blocks", [])):

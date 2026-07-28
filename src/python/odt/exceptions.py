@@ -20,3 +20,11 @@ class OdtParseError(OdtError):
 
 class OdtWriteError(OdtError):
     """Raised when a odt file cannot be written."""
+
+
+class OdtInvalidContainerError(OdtParseError):
+    """Raised when the ZIP container is invalid or missing required entries."""
+
+
+class OdtSizeError(OdtParseError):
+    """Raised when the file or decompressed content exceeds size limits."""

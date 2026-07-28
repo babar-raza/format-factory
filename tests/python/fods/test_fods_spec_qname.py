@@ -44,7 +44,7 @@ class TestFodsCompatLayerSpecQname:
 
     def test_fods_document_spec_fact_ref(self):
         from fods.Compat import FodsDocument
-        assert FodsDocument.spec_fact_ref == "FACT-FODS-001"
+        assert FodsDocument.spec_fact_ref == "SAL-FODS-00001"
 
     def test_fods_sheet_spec_qname(self):
         from fods.Compat import FodsSheet
@@ -60,7 +60,7 @@ class TestFodsCompatLayerSpecQname:
 
     def test_fods_cell_spec_fact_ref(self):
         from fods.Compat import FodsCell
-        assert FodsCell.spec_fact_ref == "FACT-FODS-006"
+        assert FodsCell.spec_fact_ref == "SAL-FODS-00006"
 
 
 class TestFodsSpecQnameRegistryLinkage:

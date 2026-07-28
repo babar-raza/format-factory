@@ -2,7 +2,7 @@
 ODF spec element: office:document
 
 Spec ref: ODF 1.3 §3.1 — Document Element (flat format)
-Fact ref: FACT-FODS-001
+Fact ref: SAL-FODS-00001
 QName: office:document
 Namespace: urn:oasis:names:tc:opendocument:xmlns:office:1.0
 Canonical class: Office.Document
@@ -22,7 +22,7 @@ class Document:
     """
 
     spec_qname: ClassVar[str] = "office:document"
-    spec_fact_ref: ClassVar[str] = "FACT-FODS-001"
+    spec_fact_ref: ClassVar[str] = "SAL-FODS-00001"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
     local_name: ClassVar[str] = "document"
     facade_names: ClassVar[list] = ["FodsDocument"]

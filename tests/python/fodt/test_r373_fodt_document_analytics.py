@@ -13,7 +13,7 @@ Covers 24 single-argument document analytics functions:
   document_reading_level, document_section_summary, document_total_words,
   document_word_count, document_table_summary, document_table_cell_count
 
-Spec refs: FACT-FODT-001 (text content model), FACT-FODT-013 (paragraph),
+Spec refs: SAL-FODT-00001 (text content model), SAL-FODT-00013 (paragraph),
            FACT-FODT-037 (headings), FACT-FODT-038 (document structure)
 """
 import sys

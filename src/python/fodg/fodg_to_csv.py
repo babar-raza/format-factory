@@ -15,15 +15,10 @@ License: Apache-2.0
 """
 from __future__ import annotations
 
-import sys
 from pathlib import Path
 
-_REPO = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(_REPO / "src" / "python" / "fodg"))
-sys.path.insert(0, str(_REPO))
-
 from fodg.fodg_codec import load as load_fodg  # Format Factory source reader
-from src.python.csv.csv_writer import write_csv_to_file  # Format Factory target writer
+from ff_csv.csv_writer import write_csv_to_file  # Format Factory target writer
 
 
 def fodg_to_csv(

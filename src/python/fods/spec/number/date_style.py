@@ -2,7 +2,7 @@
 ODF spec element: number:date-style
 
 Spec ref: ODF 1.3 §16.29 — Date Style
-Fact ref: FACT-FODS-010
+Fact ref: SAL-FODS-00010
 QName: number:date-style
 Namespace: urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0
 Canonical class: Number.DateStyle
@@ -19,7 +19,7 @@ class DateStyle:
     """
 
     spec_qname: ClassVar[str] = "number:date-style"
-    spec_fact_ref: ClassVar[str] = "FACT-FODS-010"
+    spec_fact_ref: ClassVar[str] = "SAL-FODS-00010"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0"
     local_name: ClassVar[str] = "date-style"
     facade_names: ClassVar[list] = []

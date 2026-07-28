@@ -22,7 +22,7 @@ class TestOdsModelDocumentSpecQname:
         assert isinstance(OdsModelDocument.spec_qname, str)
 
     def test_spec_fact_ref_class_level(self):
-        assert OdsModelDocument.spec_fact_ref == "FACT-ODS-001"
+        assert OdsModelDocument.spec_fact_ref == "SAL-ODS-01068"
 
     def test_from_file_returns_model(self):
         doc = OdsModelDocument.from_file(_SAMPLE)

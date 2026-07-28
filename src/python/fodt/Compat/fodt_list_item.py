@@ -1,6 +1,6 @@
 """FodtListItem — Compat facade for the FODT text:list-item element.
 
-Spec authority: text:list-item (FACT-FODT-005, ODF 1.3 §5.3)
+Spec authority: text:list-item (SAL-FODT-00005, ODF 1.3 §5.3)
 Canonical spec class: src/python/fodt/spec/text/list_item.py::ListItem
 Qname registry: shared/qname-registry/fodt.yaml (facade_names: [FodtListItem])
 
@@ -20,5 +20,5 @@ class FodtListItem(_SpecListItem):
     """
 
     spec_qname: ClassVar[str] = "text:list-item"
-    spec_fact_ref: ClassVar[str] = "FACT-FODT-005"
+    spec_fact_ref: ClassVar[str] = "SAL-FODT-00005"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:text:1.0"

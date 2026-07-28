@@ -20,7 +20,7 @@ def fodp_iter_slides(source: "str | Path") -> Iterator[Page]:
         source: Path to a .fodp Flat OpenDocument Presentation file.
 
     Yields:
-        Page instances (spec class: presentation:page, FACT-FODP-EX-0417).
+        Page instances (spec class: presentation:page, SAL-FODP-00414).
     """
     model = load(str(Path(source).resolve()))
     for page_dict in model.get("pages", []):

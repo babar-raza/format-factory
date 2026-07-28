@@ -14,12 +14,7 @@ License: Apache-2.0
 """
 from __future__ import annotations
 
-import sys
 from pathlib import Path
-
-_REPO = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(_REPO / "src" / "python" / "ods"))
-sys.path.insert(0, str(_REPO / "src" / "python" / "tsv"))
 
 from ods.ods_parser import parse_ods_strict  # Format Factory source reader
 from tsv.tsv_parser import write_tsv  # Format Factory target writer

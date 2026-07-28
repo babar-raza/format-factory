@@ -20,7 +20,7 @@ def fodg_iter_pages(source: "str | Path") -> Iterator[Page]:
         source: Path to a .fodg Flat OpenDocument Drawing file.
 
     Yields:
-        Page instances (spec class: draw:page, FACT-FODG-EX-0417).
+        Page instances (spec class: draw:page, SAL-FODG-00414).
     """
     model = load(str(Path(source).resolve()))
     for page_dict in model.get("pages", []):

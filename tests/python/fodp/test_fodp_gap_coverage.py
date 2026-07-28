@@ -31,8 +31,9 @@ Known-bug documentation:
     always return their empty-input default (0 / 0.0 / []) regardless of input.
     This is documented in TestMaxTextLengthFamilyAlwaysDefault.
 
-IMPORTANT: write_fodp is QUARANTINED (not exported from the `fodp` package).
-This file does not import or reference it — see test_fodp_write_stub.py.
+IMPORTANT: write_fodp no longer exists. It was a quarantined NotImplementedError
+sentinel, removed by TC-PA-012 (2026-07-17); FODP is read-only at this parser
+level. This file does not import or reference it — see test_fodp_write_stub.py.
 """
 from __future__ import annotations
 
@@ -163,7 +164,8 @@ class TestPackageExports:
             assert hasattr(fodp, name), f"{name} listed in __all__ but not an attribute of fodp"
 
     def test_write_fodp_absent_from_all(self):
-        # QF-1-004 quarantine — this module intentionally never imports write_fodp.
+        # TC-PA-012 removal (was: QF-1-004 quarantine) — the sentinel no longer
+        # exists at all. This module intentionally never imports write_fodp.
         assert "write_fodp" not in fodp.__all__
 
     def test_fodp_document_in_all(self):
@@ -305,13 +307,12 @@ class TestExceptions:
         else:
             pytest.fail("expected FodpParseError")
 
-    def test_exceptions_module_fodp_error_distinct_from_codec(self):
-        # fodp.FodpError (exported) comes from fodp_codec; fodp.exceptions.FodpError
-        # is a separate FormatFactoryError-rooted hierarchy used elsewhere in the
-        # package (not exported from the top-level fodp namespace).
-        assert fodp.FodpError is not fodp_exceptions.FodpError
-        assert fodp.FodpError.__module__ == "fodp.fodp_codec"
-        assert fodp_exceptions.FodpError.__module__ == "fodp.exceptions"
+    def test_exceptions_module_fodp_error_unified_with_codec(self):
+        """Healed: fodp_codec.py imports FodpError from exceptions.py rather
+        than redefining it -- both now resolve to the same class. See
+        plans/.claude/quizzical-munching-gadget.md section 7."""
+        assert fodp.FodpError is fodp_exceptions.FodpError
+        assert fodp.FodpError.__module__ == "fodp.exceptions"
 
     def test_exceptions_module_parse_error_subclass(self):
         assert issubclass(fodp_exceptions.FodpParseError, fodp_exceptions.FodpError)

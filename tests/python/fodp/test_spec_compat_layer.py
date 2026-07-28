@@ -25,7 +25,7 @@ class TestFodpDocumentMetadata:
         assert FodpDocument.spec_qname == "office:document"
 
     def test_spec_fact_ref(self):
-        assert "FACT-FODP" in FodpDocument.spec_fact_ref
+        assert "SAL-FODP" in FodpDocument.spec_fact_ref
 
     def test_namespace_uri_present(self):
         assert "oasis" in FodpDocument.namespace_uri

@@ -12,12 +12,7 @@ License: Apache-2.0
 
 from __future__ import annotations
 
-import sys
 from pathlib import Path
-
-_REPO = Path(__file__).resolve().parents[4]
-sys.path.insert(0, str(_REPO / "src" / "python" / "fodp"))
-sys.path.insert(0, str(_REPO / "src" / "python" / "ndjson"))
 
 from fodp.fodp_codec import load as load_fodp
 from ndjson.ndjson_codec import write_ndjson

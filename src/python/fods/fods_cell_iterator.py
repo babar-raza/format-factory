@@ -22,7 +22,7 @@ def fods_iter_cells(source: "str | Path") -> Iterator[FodsCell]:
         source: Path to a .fods flat XML OpenDocument Spreadsheet file.
 
     Yields:
-        FodsCell instances (spec class: table:table-cell, FACT-FODS-003).
+        FodsCell instances (spec class: table:table-cell, SAL-FODS-00003).
     """
     model = parse_fods(str(Path(source).resolve()))
     for sheet_dict in model.get("sheets", []):

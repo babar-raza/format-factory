@@ -5,7 +5,7 @@ Properties under test:
     has_lists       — list_count > 0
     is_complex      — has_tables or has_lists or has_headings
 
-spec_fact_ref: FACT-FODT-001
+spec_fact_ref: SAL-FODT-00001
 """
 
 import pytest

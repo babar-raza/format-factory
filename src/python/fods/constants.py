@@ -58,7 +58,7 @@ NS_DRAW: str   = "urn:oasis:names:tc:opendocument:xmlns:drawing:1.0"
 # Qualified element names (Clark notation: {uri}localname)
 # ---------------------------------------------------------------------------
 
-QN_DOCUMENT:    str = f"{{{NS_OFFICE}}}document"  # FACT-FODS-001: root element is office:document
+QN_DOCUMENT:    str = f"{{{NS_OFFICE}}}document"  # SAL-FODS-00001: root element is office:document
 QN_BODY:        str = f"{{{NS_OFFICE}}}body"
 QN_SPREADSHEET: str = f"{{{NS_OFFICE}}}spreadsheet"
 QN_SCRIPTS:     str = f"{{{NS_OFFICE}}}scripts"
@@ -77,7 +77,7 @@ QN_DRAW_FRAME:  str = f"{{{NS_DRAW}}}frame"
 # Qualified attribute names
 # ---------------------------------------------------------------------------
 
-ATTR_MIMETYPE:      str = f"{{{NS_OFFICE}}}mimetype"  # FACT-FODS-001: mimetype attribute identifies ODS flat-xml
+ATTR_MIMETYPE:      str = f"{{{NS_OFFICE}}}mimetype"  # SAL-FODS-00001: mimetype attribute identifies ODS flat-xml
 ATTR_VERSION:       str = f"{{{NS_OFFICE}}}version"
 ATTR_VALUE_TYPE:    str = f"{{{NS_OFFICE}}}value-type"
 ATTR_VALUE:         str = f"{{{NS_OFFICE}}}value"

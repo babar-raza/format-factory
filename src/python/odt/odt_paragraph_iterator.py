@@ -20,7 +20,7 @@ def odt_iter_paragraphs(source: "str | Path") -> Iterator[Paragraph]:
         source: Path to a .odt OpenDocument Text file.
 
     Yields:
-        Paragraph instances (spec class: text:p, FACT-ODT-EX-0094).
+        Paragraph instances (spec class: text:p, SAL-ODT-00091).
     """
     model = parse_odt(str(Path(source).resolve()))
     for para_dict in model.get("paragraphs", []):

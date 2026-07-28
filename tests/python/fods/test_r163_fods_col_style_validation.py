@@ -10,7 +10,7 @@ Tests for FODS APIs:
 - workbook_data_validation_summary(workbook) -> dict
 - workbook_column_width_summary(workbook) -> list[dict]
 
-Authority: P6 (FACT-FODS-001: ODF 1.3 spreadsheet MIME type)
+Authority: P6 (SAL-FODS-00001: ODF 1.3 spreadsheet MIME type)
 """
 from __future__ import annotations
 

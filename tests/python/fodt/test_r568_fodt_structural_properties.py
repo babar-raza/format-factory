@@ -1,7 +1,7 @@
 """R568: FODT structural properties — heading_count, is_multi_block, has_tables.
 
 Tests for FodtDocument structural properties added in R568.
-Spec refs: FACT-FODT-001, FACT-FODT-003.
+Spec refs: SAL-FODT-00001, SAL-FODT-00003.
 """
 
 import pytest

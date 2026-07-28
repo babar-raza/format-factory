@@ -78,7 +78,7 @@ def fodt_short_paragraph_count(file_path: "str | os.PathLike[str]", max_words: i
 
 # ---------------------------------------------------------------------------
 # Batch analytics functions -- FF-HEAL-QNAME-20260621-114042 (34 functions)
-# Spec refs: FACT-FODT-001, FACT-FODT-013, FACT-FODT-015, FACT-FODT-002
+# Spec refs: SAL-FODT-00001, SAL-FODT-00013, SAL-FODT-00015, SAL-FODT-00002
 # ---------------------------------------------------------------------------
 
 def _fodt_all_text(doc):
@@ -450,7 +450,7 @@ def fodt_paragraph_count_total(file_path: "str | os.PathLike[str]") -> int:
 def fodt_has_content(file_path: "str | os.PathLike[str]") -> bool:
     """Return True if any block has non-empty text content.
 
-    Spec: FODT text:p element (FACT-FODT-001)
+    Spec: FODT text:p element (SAL-FODT-00001)
     """
     from .parser import parse_fodt_strict
     doc = parse_fodt_strict(file_path)
@@ -460,7 +460,7 @@ def fodt_has_content(file_path: "str | os.PathLike[str]") -> bool:
 def fodt_first_block_type(file_path: "str | os.PathLike[str]") -> str:
     """Return the type of the first block ('heading' or 'paragraph'). '' if no blocks.
 
-    Spec: FODT text:h / text:p element (FACT-FODT-001)
+    Spec: FODT text:h / text:p element (SAL-FODT-00001)
     """
     from .parser import parse_fodt_strict
     doc = parse_fodt_strict(file_path)
@@ -471,7 +471,7 @@ def fodt_first_block_type(file_path: "str | os.PathLike[str]") -> str:
 def fodt_first_block_text(file_path: "str | os.PathLike[str]") -> str:
     """Return the text of the first block. Empty string if no blocks.
 
-    Spec: FODT text:p element (FACT-FODT-001)
+    Spec: FODT text:p element (SAL-FODT-00001)
     """
     from .parser import parse_fodt_strict
     doc = parse_fodt_strict(file_path)
@@ -482,7 +482,7 @@ def fodt_first_block_text(file_path: "str | os.PathLike[str]") -> str:
 def fodt_heading_texts(file_path: "str | os.PathLike[str]") -> list:
     """Return list of text strings from all heading blocks in order.
 
-    Spec: FODT text:h element (FACT-FODT-001)
+    Spec: FODT text:h element (SAL-FODT-00001)
     """
     from .parser import parse_fodt_strict
     doc = parse_fodt_strict(file_path)
@@ -492,7 +492,7 @@ def fodt_heading_texts(file_path: "str | os.PathLike[str]") -> list:
 def fodt_paragraph_texts(file_path: "str | os.PathLike[str]") -> list:
     """Return list of text strings from all paragraph blocks in order.
 
-    Spec: FODT text:p element (FACT-FODT-001)
+    Spec: FODT text:p element (SAL-FODT-00001)
     """
     from .parser import parse_fodt_strict
     doc = parse_fodt_strict(file_path)
@@ -502,7 +502,7 @@ def fodt_paragraph_texts(file_path: "str | os.PathLike[str]") -> list:
 def fodt_all_blocks_have_text(file_path: "str | os.PathLike[str]") -> bool:
     """Return True if every block has non-empty text. True vacuously if no blocks.
 
-    Spec: FODT text:p / text:h element (FACT-FODT-001)
+    Spec: FODT text:p / text:h element (SAL-FODT-00001)
     """
     from .parser import parse_fodt_strict
     doc = parse_fodt_strict(file_path)

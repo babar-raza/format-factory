@@ -6,7 +6,7 @@ class List:
     """Canonical spec-shaped class for text:list in FODT context (ODF §5.3.1)."""
 
     spec_qname: ClassVar[str] = "text:list"
-    spec_fact_ref: ClassVar[str] = "FACT-FODT-005"
+    spec_fact_ref: ClassVar[str] = "SAL-FODT-00005"
 
     def __init__(self, data: dict[str, Any]):
         self._data = data

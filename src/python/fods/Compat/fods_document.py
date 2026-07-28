@@ -1,6 +1,6 @@
 """FodsDocument — Production facade for the FODS document root element.
 
-Spec authority: office:document (FACT-FODS-001, ODF 1.3 §3.1)
+Spec authority: office:document (SAL-FODS-00001, ODF 1.3 §3.1)
 Canonical spec class: src/python/fods/spec/office/document.py::Document
 Qname registry: shared/qname-registry/fods.yaml (facade_names: [FodsDocument])
 
@@ -26,7 +26,7 @@ class FodsDocument(_SpecDocument):
     """
 
     spec_qname: ClassVar[str] = "office:document"
-    spec_fact_ref: ClassVar[str] = "FACT-FODS-001"
+    spec_fact_ref: ClassVar[str] = "SAL-FODS-00001"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
 
     def __init__(self, data: dict[str, Any] | None = None):

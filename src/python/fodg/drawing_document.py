@@ -7,7 +7,7 @@ All functions are grounded in ODF 1.3 Part 1 specification elements.
 Spec authority : ODF 1.3 Part 1
 QName          : office:document
 Namespace URI  : urn:oasis:names:tc:opendocument:xmlns:office:1.0
-Spec fact ref  : FACT-FODG-EX-0028
+Spec fact ref  : SAL-FODG-00030
 
 This module is a behavioral implementation module, NOT an architecture_only spec stub.
 The corresponding spec stub is at src/python/fodg/spec/office/document.py.
@@ -23,13 +23,13 @@ from typing import Any
 from .fodg_codec import load, get_shape_count, get_text_shapes
 
 spec_qname = "office:document"
-spec_fact_ref = "FACT-FODG-001"
+spec_fact_ref = "SAL-FODG-00001"
 namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
 
 def fodg_total_shape_count(file_path: "str | bytes | Path") -> int:
     """Return the total number of shapes across all pages in a FODG file.
 
-    Spec: ODF 1.3 draw:custom-shape child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:custom-shape child of draw:page (SAL-FODG-00002)
     """
     model = load(file_path)
     return get_shape_count(file_path)
@@ -38,7 +38,7 @@ def fodg_total_shape_count(file_path: "str | bytes | Path") -> int:
 def fodg_text_shape_count(file_path: "str | bytes | Path") -> int:
     """Return the total number of text shapes across all pages in a FODG file.
 
-    Spec: ODF 1.3 draw:text-box child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:text-box child of draw:page (SAL-FODG-00002)
     """
     model = load(file_path)
     return len(get_text_shapes(model))
@@ -56,7 +56,7 @@ def fodg_page_shape_count(model: dict[str, Any], page_idx: int) -> int:
 
     Returns:
         Integer count of shapes on the page. Returns 0 if page_idx is out of range.
-    Spec: ODF 1.3 draw:custom-shape child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:custom-shape child of draw:page (SAL-FODG-00002)
     """
     if not isinstance(model, dict):
         raise TypeError("model must be a dict")
@@ -77,7 +77,7 @@ def fodg_avg_shapes_per_page(file_path: "str | bytes | Path") -> float:
 
     Returns:
         Float average shape count per page, or 0.0 if no pages.
-    Spec: ODF 1.3 draw:custom-shape child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:custom-shape child of draw:page (SAL-FODG-00002)
     """
     doc = load(file_path)
     pages = doc.get("pages", [])
@@ -95,7 +95,7 @@ def fodg_has_empty_pages(file_path: "str | bytes | Path") -> bool:
 
     Returns:
         True if at least one page has no shapes, False otherwise.
-    Spec: ODF 1.3 draw:page child of office:drawing (FACT-FODG-002)
+    Spec: ODF 1.3 draw:page child of office:drawing (SAL-FODG-00002)
     """
     doc = load(file_path)
     pages = doc.get("pages", [])
@@ -105,7 +105,7 @@ def fodg_has_empty_pages(file_path: "str | bytes | Path") -> bool:
 def fodg_page_count(file_path: "str | bytes | Path") -> int:
     """Return the total number of pages in the FODG document
 
-    Spec: ODF 1.3 draw:page child of office:drawing (FACT-FODG-002)
+    Spec: ODF 1.3 draw:page child of office:drawing (SAL-FODG-00002)
     """
     doc = load(file_path)
     return len(doc.get("pages", []))
@@ -114,7 +114,7 @@ def fodg_page_count(file_path: "str | bytes | Path") -> int:
 def fodg_all_pages_have_shapes(file_path: "str | bytes | Path") -> bool:
     """Return True if every page has at least one shape; False otherwise
 
-    Spec: ODF 1.3 draw:custom-shape child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:custom-shape child of draw:page (SAL-FODG-00002)
     """
     doc = load(file_path)
     pages = doc.get("pages", [])
@@ -126,7 +126,7 @@ def fodg_all_pages_have_shapes(file_path: "str | bytes | Path") -> bool:
 def fodg_text_to_shape_ratio(file_path: "str | bytes | Path") -> float:
     """Return the ratio of text shapes to total shapes. 0.0 if no shapes
 
-    Spec: ODF 1.3 draw:text-box child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:text-box child of draw:page (SAL-FODG-00002)
     """
     total = get_shape_count(file_path)
     if total == 0:
@@ -139,7 +139,7 @@ def fodg_text_to_shape_ratio(file_path: "str | bytes | Path") -> float:
 def fodg_max_shapes_per_page(file_path: "str | bytes | Path") -> int:
     """Return the maximum number of shapes on any single page. 0 if no pages
 
-    Spec: ODF 1.3 draw:custom-shape child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:custom-shape child of draw:page (SAL-FODG-00002)
     """
     doc = load(file_path)
     pages = doc.get("pages", [])
@@ -151,7 +151,7 @@ def fodg_max_shapes_per_page(file_path: "str | bytes | Path") -> int:
 def fodg_min_shapes_per_page(file_path: "str | bytes | Path") -> int:
     """Return the minimum number of shapes on any single page. 0 if no pages
 
-    Spec: ODF 1.3 draw:custom-shape child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:custom-shape child of draw:page (SAL-FODG-00002)
     """
     doc = load(file_path)
     pages = doc.get("pages", [])
@@ -163,7 +163,7 @@ def fodg_min_shapes_per_page(file_path: "str | bytes | Path") -> int:
 def fodg_shape_density(file_path: "str | bytes | Path") -> float:
     """Return total shapes / page count. 0.0 if no pages
 
-    Spec: ODF 1.3 draw:custom-shape child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:custom-shape child of draw:page (SAL-FODG-00002)
     """
     doc = load(file_path)
     pages = doc.get("pages", [])
@@ -176,7 +176,7 @@ def fodg_shape_density(file_path: "str | bytes | Path") -> float:
 def fodg_empty_page_count(file_path: "str | bytes | Path") -> int:
     """Return the number of pages with zero shapes
 
-    Spec: ODF 1.3 draw:page child of office:drawing (FACT-FODG-002)
+    Spec: ODF 1.3 draw:page child of office:drawing (SAL-FODG-00002)
     """
     doc = load(file_path)
     pages = doc.get("pages", [])
@@ -186,7 +186,7 @@ def fodg_empty_page_count(file_path: "str | bytes | Path") -> int:
 def fodg_is_single_page(file_path: "str | bytes | Path") -> bool:
     """Return True if the drawing has exactly one page
 
-    Spec: ODF 1.3 draw:page child of office:drawing (FACT-FODG-002)
+    Spec: ODF 1.3 draw:page child of office:drawing (SAL-FODG-00002)
     """
     doc = load(file_path)
     return len(doc.get("pages", [])) == 1
@@ -195,7 +195,7 @@ def fodg_is_single_page(file_path: "str | bytes | Path") -> bool:
 def fodg_total_text_length(file_path: "str | bytes | Path") -> int:
     """Return total character count of all text content in the drawing
 
-    Spec: ODF 1.3 draw:text-box child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:text-box child of draw:page (SAL-FODG-00002)
     """
     doc = load(file_path)
     total = 0
@@ -208,7 +208,7 @@ def fodg_total_text_length(file_path: "str | bytes | Path") -> int:
 def fodg_has_text(file_path: "str | bytes | Path") -> bool:
     """Return True if any shape in the drawing contains text
 
-    Spec: ODF 1.3 draw:text-box child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:text-box child of draw:page (SAL-FODG-00002)
     """
     return fodg_total_text_length(file_path) > 0
 
@@ -216,7 +216,7 @@ def fodg_has_text(file_path: "str | bytes | Path") -> bool:
 def fodg_is_empty_document(file_path: "str | bytes | Path") -> bool:
     """Return True if the document has no shapes on any page
 
-    Spec: ODF 1.3 office:document root element (FACT-FODG-EX-0028)
+    Spec: ODF 1.3 office:document root element (SAL-FODG-00030)
     """
     return fodg_total_shape_count(file_path) == 0
 
@@ -224,7 +224,7 @@ def fodg_is_empty_document(file_path: "str | bytes | Path") -> bool:
 def fodg_non_text_shape_count(file_path: "str | bytes | Path") -> int:
     """Return the count of shapes that are not text shapes
 
-    Spec: ODF 1.3 draw:text-box child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:text-box child of draw:page (SAL-FODG-00002)
     """
     return fodg_total_shape_count(file_path) - fodg_text_shape_count(file_path)
 
@@ -232,7 +232,7 @@ def fodg_non_text_shape_count(file_path: "str | bytes | Path") -> int:
 def fodg_avg_text_per_page(file_path: "str | bytes | Path") -> float:
     """Return average character count of text per page. 0.0 if no pages
 
-    Spec: ODF 1.3 draw:text-box child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:text-box child of draw:page (SAL-FODG-00002)
     """
     doc = load(file_path)
     pages = doc.get("pages", [])
@@ -245,7 +245,7 @@ def fodg_avg_text_per_page(file_path: "str | bytes | Path") -> float:
 def fodg_has_multiple_pages(file_path: "str | bytes | Path") -> bool:
     """Return True if the drawing has more than one page
 
-    Spec: ODF 1.3 draw:page child of office:drawing (FACT-FODG-002)
+    Spec: ODF 1.3 draw:page child of office:drawing (SAL-FODG-00002)
     """
     return fodg_page_count(file_path) > 1
 
@@ -253,7 +253,7 @@ def fodg_has_multiple_pages(file_path: "str | bytes | Path") -> bool:
 def fodg_shape_to_page_variance(file_path: "str | bytes | Path") -> float:
     """Return variance of shape counts across pages. 0.0 if fewer than 2 pages
 
-    Spec: ODF 1.3 draw:custom-shape child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:custom-shape child of draw:page (SAL-FODG-00002)
     """
     doc = load(file_path)
     pages = doc.get("pages", [])
@@ -267,7 +267,7 @@ def fodg_shape_to_page_variance(file_path: "str | bytes | Path") -> float:
 def fodg_max_text_per_page(file_path: "str | bytes | Path") -> int:
     """Return the maximum text length on any single page. 0 if no pages
 
-    Spec: ODF 1.3 draw:text-box child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:text-box child of draw:page (SAL-FODG-00002)
     """
     doc = load(file_path)
     pages = doc.get("pages", [])
@@ -280,7 +280,7 @@ def fodg_max_text_per_page(file_path: "str | bytes | Path") -> int:
 def fodg_text_per_shape(file_path: "str | bytes | Path") -> float:
     """Return total text length / total shapes. 0.0 if no shapes
 
-    Spec: ODF 1.3 draw:text-box child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:text-box child of draw:page (SAL-FODG-00002)
     """
     shapes = fodg_total_shape_count(file_path)
     if shapes == 0:
@@ -291,7 +291,7 @@ def fodg_text_per_shape(file_path: "str | bytes | Path") -> float:
 def fodg_nonempty_page_count(file_path: "str | bytes | Path") -> int:
     """Return the count of pages that have at least one shape
 
-    Spec: ODF 1.3 draw:page child of office:drawing (FACT-FODG-002)
+    Spec: ODF 1.3 draw:page child of office:drawing (SAL-FODG-00002)
     """
     doc = load(file_path)
     pages = doc.get("pages", [])
@@ -301,7 +301,7 @@ def fodg_nonempty_page_count(file_path: "str | bytes | Path") -> int:
 def fodg_text_density(file_path: "str | bytes | Path") -> float:
     """Return total text length / total shape count. 0.0 if no shapes
 
-    Spec: ODF 1.3 draw:text-box child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:text-box child of draw:page (SAL-FODG-00002)
     """
     total_shapes = fodg_total_shape_count(file_path)
     if total_shapes == 0:
@@ -312,7 +312,7 @@ def fodg_text_density(file_path: "str | bytes | Path") -> float:
 def fodg_is_multi_page(file_path: "str | bytes | Path") -> bool:
     """Return True if document has more than one page
 
-    Spec: ODF 1.3 draw:page child of office:drawing (FACT-FODG-002)
+    Spec: ODF 1.3 draw:page child of office:drawing (SAL-FODG-00002)
     """
     return fodg_page_count(file_path) > 1
 
@@ -320,7 +320,7 @@ def fodg_is_multi_page(file_path: "str | bytes | Path") -> bool:
 def fodg_shape_count_variance(file_path: "str | bytes | Path") -> float:
     """Return variance of shape counts across pages. 0.0 if fewer than 2 pages
 
-    Spec: ODF 1.3 draw:custom-shape child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:custom-shape child of draw:page (SAL-FODG-00002)
     """
     doc = load(file_path)
     pages = doc.get("pages", [])
@@ -334,7 +334,7 @@ def fodg_shape_count_variance(file_path: "str | bytes | Path") -> float:
 def fodg_is_text_only(file_path: "str | bytes | Path") -> bool:
     """Return True if all shapes are text shapes (text_shape_count == total_shape_count)
 
-    Spec: ODF 1.3 draw:text-box child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:text-box child of draw:page (SAL-FODG-00002)
     """
     total = fodg_total_shape_count(file_path)
     if total == 0:
@@ -345,7 +345,7 @@ def fodg_is_text_only(file_path: "str | bytes | Path") -> bool:
 def fodg_avg_shapes_per_nonempty_page(file_path: "str | bytes | Path") -> float:
     """Return average shape count per non-empty page. 0.0 if no non-empty pages
 
-    Spec: ODF 1.3 draw:custom-shape child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:custom-shape child of draw:page (SAL-FODG-00002)
     """
     doc = load(file_path)
     pages = doc.get("pages", [])
@@ -358,7 +358,7 @@ def fodg_avg_shapes_per_nonempty_page(file_path: "str | bytes | Path") -> float:
 def fodg_has_single_shape(file_path: "str | bytes | Path") -> bool:
     """Return True if the document contains exactly one shape across all pages
 
-    Spec: ODF 1.3 draw:custom-shape child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:custom-shape child of draw:page (SAL-FODG-00002)
     """
     return fodg_total_shape_count(file_path) == 1
 
@@ -366,7 +366,7 @@ def fodg_has_single_shape(file_path: "str | bytes | Path") -> bool:
 def fodg_page_text_variance(file_path: "str | bytes | Path") -> float:
     """Return variance of text lengths across pages. 0.0 if fewer than 2 pages
 
-    Spec: ODF 1.3 draw:text-box child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:text-box child of draw:page (SAL-FODG-00002)
     """
     doc = load(file_path)
     pages = doc.get("pages", [])
@@ -385,7 +385,7 @@ def fodg_page_text_variance(file_path: "str | bytes | Path") -> float:
 def fodg_total_text_chars(file_path: "str | bytes | Path") -> int:
     """Return total character count of all text in all shapes across all pages
 
-    Spec: ODF 1.3 draw:text-box child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:text-box child of draw:page (SAL-FODG-00002)
     """
     doc = load(file_path)
     total = 0
@@ -398,7 +398,7 @@ def fodg_total_text_chars(file_path: "str | bytes | Path") -> int:
 def fodg_avg_text_per_shape(file_path: "str | bytes | Path") -> float:
     """Return average text length per shape. 0.0 if no shapes
 
-    Spec: ODF 1.3 draw:text-box child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:text-box child of draw:page (SAL-FODG-00002)
     """
     doc = load(file_path)
     lengths = []
@@ -413,7 +413,7 @@ def fodg_avg_text_per_shape(file_path: "str | bytes | Path") -> float:
 def fodg_min_text_per_page(file_path: "str | bytes | Path") -> int:
     """Return the minimum total text length of any page. 0 if no pages
 
-    Spec: ODF 1.3 draw:text-box child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:text-box child of draw:page (SAL-FODG-00002)
     """
     doc = load(file_path)
     pages = doc.get("pages", [])
@@ -429,7 +429,7 @@ def fodg_min_text_per_page(file_path: "str | bytes | Path") -> int:
 def fodg_total_text_items(file_path: "str | bytes | Path") -> int:
     """Return total count of text content items across all pages
 
-    Spec: ODF 1.3 draw:text-box child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:text-box child of draw:page (SAL-FODG-00002)
     """
     doc = load(file_path)
     pages = doc.get("pages", [])
@@ -439,7 +439,7 @@ def fodg_total_text_items(file_path: "str | bytes | Path") -> int:
 def fodg_nonempty_shape_ratio(file_path: "str | bytes | Path") -> float:
     """Return ratio of shapes with non-empty text to total shapes. 0.0 if no shapes
 
-    Spec: ODF 1.3 draw:custom-shape child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:custom-shape child of draw:page (SAL-FODG-00002)
     """
     doc = load(file_path)
     all_shapes = [s for p in doc.get("pages", []) for s in p.get("shapes", [])]
@@ -452,7 +452,7 @@ def fodg_nonempty_shape_ratio(file_path: "str | bytes | Path") -> float:
 def fodg_max_shape_text_length(file_path: "str | bytes | Path") -> int:
     """Return length of text in the shape with the most text. 0 if no shapes
 
-    Spec: ODF 1.3 draw:text-box child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:text-box child of draw:page (SAL-FODG-00002)
     """
     doc = load(file_path)
     lengths = [
@@ -466,7 +466,7 @@ def fodg_max_shape_text_length(file_path: "str | bytes | Path") -> int:
 def fodg_shapes_with_text_count(file_path: "str | bytes | Path") -> int:
     """Return count of shapes that have non-empty text content
 
-    Spec: ODF 1.3 draw:text-box child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:text-box child of draw:page (SAL-FODG-00002)
     """
     doc = load(file_path)
     return sum(
@@ -479,7 +479,7 @@ def fodg_shapes_with_text_count(file_path: "str | bytes | Path") -> int:
 def fodg_nonempty_page_ratio(file_path: "str | bytes | Path") -> float:
     """Return ratio of pages with at least one shape to total pages. 0.0 if no pages
 
-    Spec: ODF 1.3 draw:page child of office:drawing (FACT-FODG-002)
+    Spec: ODF 1.3 draw:page child of office:drawing (SAL-FODG-00002)
     """
     doc = load(file_path)
     pages = doc.get("pages", [])
@@ -492,7 +492,7 @@ def fodg_nonempty_page_ratio(file_path: "str | bytes | Path") -> float:
 def fodg_total_shapes_and_pages(file_path: "str | bytes | Path") -> int:
     """Return combined count of total shapes plus total pages
 
-    Spec: ODF 1.3 draw:custom-shape child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:custom-shape child of draw:page (SAL-FODG-00002)
     """
     doc = load(file_path)
     pages = doc.get("pages", [])
@@ -503,7 +503,7 @@ def fodg_total_shapes_and_pages(file_path: "str | bytes | Path") -> int:
 def fodg_has_non_text_shapes(file_path: "str | bytes | Path") -> bool:
     """Return True if any page contains at least one non-text shape
 
-    Spec: ODF 1.3 draw:text-box child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:text-box child of draw:page (SAL-FODG-00002)
     """
     return fodg_non_text_shape_count(file_path) > 0
 
@@ -511,7 +511,7 @@ def fodg_has_non_text_shapes(file_path: "str | bytes | Path") -> bool:
 def fodg_has_no_shapes(file_path: "str | bytes | Path") -> bool:
     """Return True if the document contains no shapes on any page
 
-    Spec: ODF 1.3 draw:custom-shape child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:custom-shape child of draw:page (SAL-FODG-00002)
     """
     doc = load(file_path)
     pages = doc.get("pages", [])
@@ -526,7 +526,7 @@ def fodg_all_pages_have_text(file_path: "str | bytes | Path") -> bool:
 
     Returns:
         True if all pages have non-empty text; False if any page has no text or doc is empty.
-    Spec: ODF 1.3 draw:text-box child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:text-box child of draw:page (SAL-FODG-00002)
     """
     doc = load(file_path)
     pages = doc.get("pages", [])
@@ -546,7 +546,7 @@ def fodg_max_text_item_length(file_path: "str | bytes | Path") -> int:
 
     Returns:
         Maximum text item character length as int; 0 if no text content found.
-    Spec: ODF 1.3 draw:text-box child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:text-box child of draw:page (SAL-FODG-00002)
     """
     doc = load(file_path)
     pages = doc.get("pages", [])
@@ -557,7 +557,7 @@ def fodg_max_text_item_length(file_path: "str | bytes | Path") -> int:
 def fodg_file_size_bytes(file_path: "str | bytes | Path") -> int:
     """Return the file size in bytes
 
-    Spec: ODF 1.3 office:document root element (FACT-FODG-EX-0028)
+    Spec: ODF 1.3 office:document root element (SAL-FODG-00030)
     """
     from pathlib import Path as _Path
     return _Path(file_path).stat().st_size
@@ -566,7 +566,7 @@ def fodg_file_size_bytes(file_path: "str | bytes | Path") -> int:
 def fodg_min_text_item_length(file_path: "str | bytes | Path") -> int:
     """Return the length of the shortest non-empty text item across all pages. 0 if none
 
-    Spec: ODF 1.3 draw:text-box child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:text-box child of draw:page (SAL-FODG-00002)
     """
     doc = load(file_path)
     pages = doc.get("pages", [])
@@ -577,7 +577,7 @@ def fodg_min_text_item_length(file_path: "str | bytes | Path") -> int:
 def fodg_avg_text_item_length(file_path: "str | bytes | Path") -> float:
     """Return average length of text items across all pages. 0.0 if none
 
-    Spec: ODF 1.3 draw:text-box child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:text-box child of draw:page (SAL-FODG-00002)
     """
     doc = load(file_path)
     pages = doc.get("pages", [])
@@ -588,7 +588,7 @@ def fodg_avg_text_item_length(file_path: "str | bytes | Path") -> float:
 def fodg_unique_text_item_count(file_path: "str | bytes | Path") -> int:
     """Return count of distinct non-empty text items across all pages
 
-    Spec: ODF 1.3 draw:text-box child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:text-box child of draw:page (SAL-FODG-00002)
     """
     doc = load(file_path)
     pages = doc.get("pages", [])
@@ -599,7 +599,7 @@ def fodg_unique_text_item_count(file_path: "str | bytes | Path") -> int:
 def fodg_text_item_count(file_path: "str | bytes | Path") -> int:
     """Return total count of non-empty text items across all pages
 
-    Spec: ODF 1.3 draw:text-box child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:text-box child of draw:page (SAL-FODG-00002)
     """
     doc = load(file_path)
     pages = doc.get("pages", [])
@@ -609,7 +609,7 @@ def fodg_text_item_count(file_path: "str | bytes | Path") -> int:
 def fodg_has_text_content(file_path: "str | bytes | Path") -> bool:
     """Return True if any page has non-empty text content
 
-    Spec: ODF 1.3 draw:text-box child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:text-box child of draw:page (SAL-FODG-00002)
     """
     doc = load(file_path)
     for p in doc.get("pages", []):
@@ -622,7 +622,7 @@ def fodg_has_text_content(file_path: "str | bytes | Path") -> bool:
 def fodg_max_shape_count(file_path: "str | bytes | Path") -> int:
     """Return the maximum shape count on any single page. 0 if no pages
 
-    Spec: ODF 1.3 draw:custom-shape child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:custom-shape child of draw:page (SAL-FODG-00002)
     """
     doc = load(file_path)
     pages = doc.get("pages", [])
@@ -634,7 +634,7 @@ def fodg_max_shape_count(file_path: "str | bytes | Path") -> int:
 def fodg_min_shape_count(file_path: "str | bytes | Path") -> int:
     """Return the minimum shape count on any single page. 0 if no pages
 
-    Spec: ODF 1.3 draw:custom-shape child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:custom-shape child of draw:page (SAL-FODG-00002)
     """
     doc = load(file_path)
     pages = doc.get("pages", [])
@@ -646,7 +646,7 @@ def fodg_min_shape_count(file_path: "str | bytes | Path") -> int:
 def fodg_is_empty_drawing(file_path: "str | bytes | Path") -> bool:
     """Return True if the drawing has no shapes on any page
 
-    Spec: ODF 1.3 office:document root element (FACT-FODG-EX-0028)
+    Spec: ODF 1.3 office:document root element (SAL-FODG-00030)
     """
     doc = load(file_path)
     pages = doc.get("pages", [])
@@ -656,7 +656,7 @@ def fodg_is_empty_drawing(file_path: "str | bytes | Path") -> bool:
 def fodg_has_multiple_shapes(file_path: "str | bytes | Path") -> bool:
     """Return True if the drawing contains more than one shape in total
 
-    Spec: ODF 1.3 draw:custom-shape child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:custom-shape child of draw:page (SAL-FODG-00002)
     """
     return fodg_total_shape_count(file_path) > 1
 
@@ -664,7 +664,7 @@ def fodg_has_multiple_shapes(file_path: "str | bytes | Path") -> bool:
 def fodg_has_single_page(file_path: "str | bytes | Path") -> bool:
     """Return True if the document contains exactly one page.
 
-    Spec: ODF 1.3 draw:page child of office:drawing (FACT-FODG-001)
+    Spec: ODF 1.3 draw:page child of office:drawing (SAL-FODG-00001)
     """
     doc = load(file_path)
     return doc.get("page_count", 0) == 1
@@ -673,7 +673,7 @@ def fodg_has_single_page(file_path: "str | bytes | Path") -> bool:
 def fodg_page_names(file_path: "str | bytes | Path") -> list:
     """Return list of page names in document order.
 
-    Spec: ODF 1.3 draw:page@draw:name attribute (FACT-FODG-001)
+    Spec: ODF 1.3 draw:page@draw:name attribute (SAL-FODG-00001)
     """
     doc = load(file_path)
     return [p.get("name", "") for p in doc.get("pages", [])]
@@ -682,7 +682,7 @@ def fodg_page_names(file_path: "str | bytes | Path") -> list:
 def fodg_average_shape_count(file_path: "str | bytes | Path") -> float:
     """Return average number of shapes per page. 0.0 if no pages.
 
-    Spec: ODF 1.3 draw:custom-shape child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:custom-shape child of draw:page (SAL-FODG-00002)
     """
     doc = load(file_path)
     pages = doc.get("pages", [])
@@ -694,7 +694,7 @@ def fodg_average_shape_count(file_path: "str | bytes | Path") -> float:
 def fodg_pages_with_shapes_count(file_path: "str | bytes | Path") -> int:
     """Return count of pages that contain at least one shape.
 
-    Spec: ODF 1.3 draw:custom-shape child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:custom-shape child of draw:page (SAL-FODG-00002)
     """
     doc = load(file_path)
     return sum(1 for p in doc.get("pages", []) if p.get("shape_count", 0) > 0)
@@ -703,7 +703,7 @@ def fodg_pages_with_shapes_count(file_path: "str | bytes | Path") -> int:
 def fodg_total_text_length(file_path: "str | bytes | Path") -> int:
     """Return total character count across all text items on all pages.
 
-    Spec: ODF 1.3 text:p child of draw elements (FACT-FODG-003)
+    Spec: ODF 1.3 text:p child of draw elements (SAL-FODG-00003)
     """
     doc = load(file_path)
     total = 0
@@ -716,7 +716,7 @@ def fodg_total_text_length(file_path: "str | bytes | Path") -> int:
 def fodg_has_text_on_all_pages(file_path: "str | bytes | Path") -> bool:
     """Return True if every page has at least one text item.
 
-    Spec: ODF 1.3 text:p child of draw elements (FACT-FODG-003)
+    Spec: ODF 1.3 text:p child of draw elements (SAL-FODG-00003)
     """
     doc = load(file_path)
     pages = doc.get("pages", [])
@@ -728,7 +728,7 @@ def fodg_has_text_on_all_pages(file_path: "str | bytes | Path") -> bool:
 def fodg_page_count(file_path: "str | bytes | Path") -> int:
     """Return the total number of pages in the FODG drawing document.
 
-    Spec: ODF 1.3 draw:page element (FACT-FODG-001)
+    Spec: ODF 1.3 draw:page element (SAL-FODG-00001)
     """
     doc = load(file_path)
     return doc.get("page_count", 0)
@@ -738,7 +738,7 @@ def fodg_is_fodg(file_path: "str | bytes | Path") -> bool:
     """Return True if the document is identified as a flat FODG file.
 
     Spec: ODF 1.3 MIME type application/vnd.oasis.opendocument.graphics-flat-xml
-    (FACT-FODG-001)
+    (SAL-FODG-00001)
     """
     doc = load(file_path)
     return bool(doc.get("is_fodg", False))
@@ -747,7 +747,7 @@ def fodg_is_fodg(file_path: "str | bytes | Path") -> bool:
 def fodg_shapes_total(file_path: "str | bytes | Path") -> int:
     """Return the aggregate shape count across all pages in the document.
 
-    Spec: ODF 1.3 draw:custom-shape child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:custom-shape child of draw:page (SAL-FODG-00002)
     """
     doc = load(file_path)
     return doc.get("shapes_total", 0)
@@ -756,7 +756,7 @@ def fodg_shapes_total(file_path: "str | bytes | Path") -> int:
 def fodg_pages_without_shapes_count(file_path: "str | bytes | Path") -> int:
     """Return count of pages that contain no shapes.
 
-    Spec: ODF 1.3 draw:custom-shape child of draw:page (FACT-FODG-002)
+    Spec: ODF 1.3 draw:custom-shape child of draw:page (SAL-FODG-00002)
     """
     doc = load(file_path)
     return sum(1 for p in doc.get("pages", []) if p.get("shape_count", 0) == 0)
@@ -765,7 +765,7 @@ def fodg_pages_without_shapes_count(file_path: "str | bytes | Path") -> int:
 def fodg_text_items_per_page(file_path: "str | bytes | Path") -> list:
     """Return a list of text item counts, one entry per page in document order.
 
-    Spec: ODF 1.3 text:p child of draw elements (FACT-FODG-003)
+    Spec: ODF 1.3 text:p child of draw elements (SAL-FODG-00003)
     """
     doc = load(file_path)
     return [len(p.get("text_content", [])) for p in doc.get("pages", [])]
@@ -777,7 +777,7 @@ def fodg_has_mixed_content(file_path: "str | bytes | Path") -> bool:
     A document has mixed content when at least one page has shapes and at
     least one page has no shapes — indicating heterogeneous page layouts.
 
-    Spec: ODF 1.3 draw:page (FACT-FODG-001), draw:custom-shape (FACT-FODG-002)
+    Spec: ODF 1.3 draw:page (SAL-FODG-00001), draw:custom-shape (SAL-FODG-00002)
     """
     doc = load(file_path)
     pages = doc.get("pages", [])

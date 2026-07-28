@@ -768,7 +768,7 @@ def document_paragraph_count(
 def document_count_tables(document: dict[str, Any]) -> int:
     """Return the number of table blocks in the document.
 
-    Aligned with ODF 1.3 text content model (FACT-FODT-001).
+    Aligned with ODF 1.3 text content model (SAL-FODT-00001).
 
     Args:
         document: Parsed FODT document dict.

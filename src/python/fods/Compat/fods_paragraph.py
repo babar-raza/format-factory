@@ -1,6 +1,6 @@
 """FodsParagraph — Compat facade for the FODS text:p element.
 
-Spec authority: text:p (FACT-FODS-007, ODF 1.3 §5.1)
+Spec authority: text:p (SAL-FODS-00007, ODF 1.3 §5.1)
 Canonical spec class: src/python/fods/spec/text/paragraph.py::Paragraph
 Qname registry: shared/qname-registry/fods.yaml (facade_names: [FodsParagraph])
 
@@ -23,5 +23,5 @@ class FodsParagraph(_SpecParagraph):
     """
 
     spec_qname: ClassVar[str] = "text:p"
-    spec_fact_ref: ClassVar[str] = "FACT-FODS-007"
+    spec_fact_ref: ClassVar[str] = "SAL-FODS-00007"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:text:1.0"

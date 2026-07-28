@@ -2,7 +2,7 @@
 ODF spec element: table:covered-table-cell
 
 Spec ref: ODF 1.3 §9.5.2 — Covered Table Cell
-Fact ref: FACT-FODS-023
+Fact ref: SAL-FODS-00023
 QName: table:covered-table-cell
 Namespace: urn:oasis:names:tc:opendocument:xmlns:table:1.0
 Canonical class: Table.CoveredTableCell
@@ -22,7 +22,7 @@ class CoveredTableCell:
     """
 
     spec_qname: ClassVar[str] = "table:covered-table-cell"
-    spec_fact_ref: ClassVar[str] = "FACT-FODS-023"
+    spec_fact_ref: ClassVar[str] = "SAL-FODS-00023"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
     local_name: ClassVar[str] = "covered-table-cell"
     spec_source: ClassVar[str] = "ODF 1.3 Part 3"

@@ -20,6 +20,7 @@ import xml.etree.ElementTree as ET
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, ClassVar
+from .exceptions import OdtError, OdtParseError, OdtInvalidContainerError, OdtSizeError
 
 
 # ODT constants
@@ -84,18 +85,6 @@ def get_capabilities() -> dict[str, Any]:
         "max_file_size": MAX_FILE_SIZE,
         "max_zip_entries": MAX_ZIP_ENTRIES,
     }
-
-
-class OdtError(Exception):
-    """Base exception for ODT parser errors."""
-
-
-class OdtInvalidContainerError(OdtError):
-    """Raised when the ZIP container is invalid or missing required entries."""
-
-
-class OdtSizeError(OdtError):
-    """Raised when the file or decompressed content exceeds size limits."""
 
 
 @dataclass

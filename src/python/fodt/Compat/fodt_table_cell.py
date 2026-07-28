@@ -2,7 +2,7 @@
 
 Spec authority: table:table-cell
 Spec ref: ODF 1.3 §9.5
-Fact ref: FACT-FODT-007
+Fact ref: SAL-FODT-00007
 Canonical spec class: src/python/fodt/spec/table/table_cell.py::TableCell
 """
 from __future__ import annotations
@@ -18,5 +18,5 @@ class FodtTableCell(_SpecTableCell):
     """
 
     spec_qname: ClassVar[str] = "table:table-cell"
-    spec_fact_ref: ClassVar[str] = "FACT-FODT-007"
+    spec_fact_ref: ClassVar[str] = "SAL-FODT-00007"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:table:1.0"

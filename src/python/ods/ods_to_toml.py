@@ -14,12 +14,7 @@ License: Apache-2.0
 """
 from __future__ import annotations
 
-import sys
 from pathlib import Path
-
-_REPO = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(_REPO / "src" / "python" / "ods"))
-sys.path.insert(0, str(_REPO))
 
 from ods.ods_parser import parse_ods_strict  # FF source reader
 from toml.toml_codec import write_toml  # FF target writer

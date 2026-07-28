@@ -1475,7 +1475,7 @@ class TestRowIterator:
 class TestSpecClasses:
     def test_table_qname_and_fact_ref(self):
         assert Table.spec_qname == "table:table"
-        assert Table.spec_fact_ref == "FACT-ODS-001"
+        assert Table.spec_fact_ref == "SAL-ODS-01068"
 
     def test_table_properties(self):
         t = Table({"name": "S1", "rows": [1, 2, 3]})
@@ -1502,7 +1502,7 @@ class TestSpecClasses:
 
     def test_table_cell_qname_and_fact_ref(self):
         assert TableCell.spec_qname == "table:table-cell"
-        assert TableCell.spec_fact_ref == "FACT-ODS-003"
+        assert TableCell.spec_fact_ref == "SAL-ODS-01069"
 
     def test_table_cell_properties(self):
         tc = TableCell({"value": "x", "value_type": "string", "col_span": 2})

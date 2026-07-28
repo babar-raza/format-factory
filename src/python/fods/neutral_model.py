@@ -537,7 +537,7 @@ def workbook_find_cells(
     Searches across all sheets. String comparisons are case-insensitive by
     default. Non-string values are compared with equality.
 
-    Aligned with ODF 1.3 spreadsheet content model (FACT-FODS-001): cell values
+    Aligned with ODF 1.3 spreadsheet content model (SAL-FODS-00001): cell values
     are stored in the workbook neutral model under sheets → rows → cells.
 
     Args:
@@ -553,7 +553,7 @@ def workbook_find_cells(
             value: The cell value that matched.
 
     Added in Sprint FORMAT-FACTORY-AUTHORITY-GATED-PRODUCT-PROGRESS-AND-FORMAT-BACKFILL-MEGA-TRAIN-001
-    as FODS product feature advancement (authority: P6, FACT-FODS-001).
+    as FODS product feature advancement (authority: P6, SAL-FODS-00001).
     """
     matches: list[dict[str, Any]] = []
     is_str_search = isinstance(value, str)
@@ -595,7 +595,7 @@ def workbook_count_matching_cells(
     """Count the number of cells whose value matches the given search value.
 
     Convenience wrapper around workbook_find_cells that returns only the count.
-    Aligned with ODF 1.3 spreadsheet content model (FACT-FODS-001).
+    Aligned with ODF 1.3 spreadsheet content model (SAL-FODS-00001).
 
     Args:
         workbook: Parsed FODS workbook dict.
@@ -606,7 +606,7 @@ def workbook_count_matching_cells(
         Integer count of matching cells across all sheets.
 
     Added in Sprint FORMAT-FACTORY-AUTHORITY-GATED-PRODUCT-DOGFOOD-FEATURES-AND-BACKFILL-001
-    (authority: P6, FACT-FODS-001).
+    (authority: P6, SAL-FODS-00001).
     """
     return len(workbook_find_cells(workbook, value, case_sensitive=case_sensitive))
 
@@ -652,7 +652,7 @@ def workbook_get_column_values(
 ) -> list[Any]:
     """Return all values in a column (0-based) from a given sheet.
 
-    Aligned with ODF 1.3 spreadsheet content model (FACT-FODS-001).
+    Aligned with ODF 1.3 spreadsheet content model (SAL-FODS-00001).
 
     Args:
         workbook: Parsed FODS workbook dict.

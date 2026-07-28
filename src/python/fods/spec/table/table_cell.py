@@ -2,7 +2,7 @@
 ODF spec element: table:table-cell
 
 Spec ref: ODF 1.3 §9.5 — Table Cell Elements
-Fact ref: FACT-FODS-006
+Fact ref: SAL-FODS-00006
 QName: table:table-cell
 Namespace: urn:oasis:names:tc:opendocument:xmlns:table:1.0
 Canonical class: Table.TableCell
@@ -23,7 +23,7 @@ class TableCell:
     """
 
     spec_qname: ClassVar[str] = "table:table-cell"
-    spec_fact_ref: ClassVar[str] = "FACT-FODS-006"
+    spec_fact_ref: ClassVar[str] = "SAL-FODS-00006"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
     local_name: ClassVar[str] = "table-cell"
     facade_names: ClassVar[list] = ["FodsCell"]

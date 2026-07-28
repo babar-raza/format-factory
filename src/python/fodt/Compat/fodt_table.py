@@ -1,6 +1,6 @@
 """FodtTable — Compat facade for the FODT table:table element.
 
-Spec authority: table:table (FACT-FODT-007, ODF 1.3 §9.1)
+Spec authority: table:table (SAL-FODT-00007, ODF 1.3 §9.1)
 Canonical spec class: src/python/fodt/spec/table/table.py::Table
 Qname registry: shared/qname-registry/fodt.yaml (facade_names: [FodtTable])
 
@@ -20,5 +20,5 @@ class FodtTable(_SpecTable):
     """
 
     spec_qname: ClassVar[str] = "table:table"
-    spec_fact_ref: ClassVar[str] = "FACT-FODT-007"
+    spec_fact_ref: ClassVar[str] = "SAL-FODT-00007"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:table:1.0"

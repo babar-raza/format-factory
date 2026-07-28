@@ -2,7 +2,7 @@
 ODF spec element: office:body
 
 Spec ref: ODF 1.3 §3.3 — Document Body
-Fact ref: FACT-FODS-003
+Fact ref: SAL-FODS-00003
 QName: office:body
 Namespace: urn:oasis:names:tc:opendocument:xmlns:office:1.0
 Canonical class: Office.Body
@@ -18,7 +18,7 @@ class Body:
     """
 
     spec_qname: ClassVar[str] = "office:body"
-    spec_fact_ref: ClassVar[str] = "FACT-FODS-003"
+    spec_fact_ref: ClassVar[str] = "SAL-FODS-00003"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
     local_name: ClassVar[str] = "body"
     facade_names: ClassVar[list] = []

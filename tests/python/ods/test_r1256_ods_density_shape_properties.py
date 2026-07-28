@@ -5,7 +5,7 @@ Properties under test:
     min_sheet_rows        — minimum row count in any single sheet (0 if no sheets)
     sheet_row_range       — max_sheet_rows - min_sheet_rows (0 if no sheets)
 
-spec_fact_ref: FACT-ODS-001
+spec_fact_ref: SAL-ODS-01068
 """
 
 import types

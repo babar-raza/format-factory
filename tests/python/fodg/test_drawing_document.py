@@ -5,7 +5,7 @@ Tests for src/python/fodg/drawing_document.py — spec-level domain module.
 
 Verifies all key domain analytics functions using real sample files.
 spec_qname: office:document
-spec_fact_ref: FACT-FODG-001
+spec_fact_ref: SAL-FODG-00001
 """
 from __future__ import annotations
 
@@ -56,8 +56,8 @@ class TestDrawingDocumentModuleAttributes:
         assert drawing_document.spec_qname == "office:document"
 
     def test_spec_fact_ref_attribute(self):
-        """Module must declare spec_fact_ref = 'FACT-FODG-001'."""
-        assert drawing_document.spec_fact_ref == "FACT-FODG-001"
+        """Module must declare spec_fact_ref = 'SAL-FODG-00001'."""
+        assert drawing_document.spec_fact_ref == "SAL-FODG-00001"
 
     def test_namespace_uri_attribute(self):
         """Module must declare namespace_uri."""

@@ -26,6 +26,7 @@ from .fods_sheet_iterator import *  # noqa: F401, F403
 from .fods_cell_iterator import *  # noqa: F401, F403
 from .constants import *  # noqa: F401, F403
 from .exceptions import *  # noqa: F401, F403
+from .fods_file_analytics import *  # noqa: F401, F403
 
 import sys as _sys
 import types as _types

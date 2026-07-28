@@ -1,7 +1,7 @@
 """FODT spec Paragraph — canonical implementation of text:p.
 
 spec_qname: text:p
-spec_fact_ref: FACT-FODT-003
+spec_fact_ref: SAL-FODT-00003
 """
 from __future__ import annotations
 from typing import Any, ClassVar
@@ -13,7 +13,7 @@ class Paragraph:
     """Canonical implementation of ODF text:p element."""
 
     spec_qname: ClassVar[str] = "text:p"
-    spec_fact_ref: ClassVar[str] = "FACT-FODT-003"
+    spec_fact_ref: ClassVar[str] = "SAL-FODT-00003"
 
     def __init__(self, data: dict[str, Any]):
         self._data = data

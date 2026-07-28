@@ -1,6 +1,6 @@
 """FodsBody — Compat facade for the FODS office:body element.
 
-Spec authority: office:body (FACT-FODS-002, ODF 1.3 §3.3)
+Spec authority: office:body (SAL-FODS-00002, ODF 1.3 §3.3)
 Canonical spec class: src/python/fods/spec/office/body.py::Body
 Qname registry: shared/qname-registry/fods.yaml (facade_names: [FodsBody])
 
@@ -22,5 +22,5 @@ class FodsBody(_SpecBody):
     """
 
     spec_qname: ClassVar[str] = "office:body"
-    spec_fact_ref: ClassVar[str] = "FACT-FODS-002"
+    spec_fact_ref: ClassVar[str] = "SAL-FODS-00002"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"

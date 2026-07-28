@@ -7,7 +7,7 @@ Added: 2026-06-10
 Demonstrates practical usage of format-factory-fods by creating a test results
 report spreadsheet from structured data, writing to FODS, and verifying roundtrip.
 
-Authority: P6 (FACT-FODS-001: ODF 1.3 spreadsheet MIME type)
+Authority: P6 (SAL-FODS-00001: ODF 1.3 spreadsheet MIME type)
 """
 from __future__ import annotations
 

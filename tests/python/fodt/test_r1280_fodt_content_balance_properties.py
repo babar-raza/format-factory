@@ -5,7 +5,7 @@ Properties under test:
     has_balanced_content — heading_ratio between 0.1 and 0.5
     is_prose_heavy      — paragraph_ratio > 0.8
 
-spec_fact_ref: FACT-FODT-001
+spec_fact_ref: SAL-FODT-00001
 """
 
 import pytest

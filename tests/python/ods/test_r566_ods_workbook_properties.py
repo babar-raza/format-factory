@@ -1,7 +1,7 @@
 """R566: ODS additional workbook properties — has_sheets, total_row_count, max_sheet_rows.
 
 Tests for OdsModelDocument workbook analysis properties added in R566.
-Spec refs: FACT-ODS-001 (office:document), FACT-ODS-002 (table:table).
+Spec refs: SAL-ODS-01068 (office:document), SAL-ODS-00001 (table:table).
 """
 
 import types

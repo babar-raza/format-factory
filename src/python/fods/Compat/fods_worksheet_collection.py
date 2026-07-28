@@ -1,6 +1,6 @@
 """FodsWorksheetCollection — Aspose-style navigable worksheet collection.
 
-Spec authority: office:spreadsheet (FACT-FODS-003, ODF 1.3 §9.1)
+Spec authority: office:spreadsheet (SAL-FODS-00003, ODF 1.3 §9.1)
 TC-W1-FODS-PY-002: Aspose-style deep navigation (FodsDocument → FodsWorksheetCollection).
 
 API:
@@ -24,7 +24,7 @@ class FodsWorksheetCollection:
     """
 
     spec_qname: ClassVar[str] = "office:spreadsheet"
-    spec_fact_ref: ClassVar[str] = "FACT-FODS-003"
+    spec_fact_ref: ClassVar[str] = "SAL-FODS-00003"
 
     def __init__(self, sheets: list[dict[str, Any]]):
         self._sheets = sheets

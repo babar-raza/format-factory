@@ -15,12 +15,7 @@ Ledger entry: R90-ODT-TO-NDJSON-DOGFOOD-001
 """
 from __future__ import annotations
 
-import sys
 from pathlib import Path
-
-_REPO = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(_REPO / "src" / "python" / "odt"))
-sys.path.insert(0, str(_REPO / "src" / "python" / "ndjson"))
 
 from odt.odt_parser import OdtHeading, OdtListItem, OdtParagraph, parse_odt_strict  # Format Factory source reader
 from ndjson.ndjson_codec import write_ndjson  # Format Factory target writer

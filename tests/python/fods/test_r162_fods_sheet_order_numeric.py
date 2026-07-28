@@ -9,7 +9,7 @@ Tests for FODS APIs:
 - workbook_numeric_summary(workbook) -> dict
 - workbook_column_count(workbook) -> dict
 
-Authority: P6 (FACT-FODS-001: ODF 1.3 spreadsheet MIME type)
+Authority: P6 (SAL-FODS-00001: ODF 1.3 spreadsheet MIME type)
 """
 from __future__ import annotations
 

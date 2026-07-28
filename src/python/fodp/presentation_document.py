@@ -20,13 +20,13 @@ for backward compatibility.
 from __future__ import annotations
 
 spec_qname = "office:document"
-spec_fact_ref = "FACT-FODP-001"
+spec_fact_ref = "SAL-FODP-00001"
 namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
 
 
 
 spec_qname = "office:document"
-spec_fact_ref = "FACT-FODP-001"
+spec_fact_ref = "SAL-FODP-00001"
 namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
 
 from pathlib import Path

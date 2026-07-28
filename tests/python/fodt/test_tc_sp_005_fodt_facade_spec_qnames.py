@@ -39,7 +39,7 @@ class TestFodtParagraphSpecQname:
         assert FodtParagraph.spec_qname == "text:p"
 
     def test_spec_fact_ref(self):
-        assert FodtParagraph.spec_fact_ref == "FACT-FODT-003"
+        assert FodtParagraph.spec_fact_ref == "SAL-FODT-00003"
 
     def test_namespace_uri(self):
         assert "oasis" in FodtParagraph.namespace_uri
@@ -56,7 +56,7 @@ class TestFodtHeadingSpecQname:
         assert FodtHeading.spec_qname == "text:h"
 
     def test_spec_fact_ref(self):
-        assert FodtHeading.spec_fact_ref == "FACT-FODT-004"
+        assert FodtHeading.spec_fact_ref == "SAL-FODT-00004"
 
     def test_namespace_uri(self):
         assert "oasis" in FodtHeading.namespace_uri
@@ -73,7 +73,7 @@ class TestFodtSpanSpecQname:
         assert FodtSpan.spec_qname == "text:span"
 
     def test_spec_fact_ref(self):
-        assert FodtSpan.spec_fact_ref == "FACT-FODT-006"
+        assert FodtSpan.spec_fact_ref == "SAL-FODT-00006"
 
     def test_namespace_uri(self):
         assert "oasis" in FodtSpan.namespace_uri
@@ -90,7 +90,7 @@ class TestFodtListSpecQname:
         assert FodtList.spec_qname == "text:list"
 
     def test_spec_fact_ref(self):
-        assert FodtList.spec_fact_ref == "FACT-FODT-005"
+        assert FodtList.spec_fact_ref == "SAL-FODT-00005"
 
     def test_namespace_uri(self):
         assert "oasis" in FodtList.namespace_uri
@@ -107,7 +107,7 @@ class TestFodtListItemSpecQname:
         assert FodtListItem.spec_qname == "text:list-item"
 
     def test_spec_fact_ref(self):
-        assert FodtListItem.spec_fact_ref == "FACT-FODT-005"
+        assert FodtListItem.spec_fact_ref == "SAL-FODT-00005"
 
     def test_namespace_uri(self):
         assert "oasis" in FodtListItem.namespace_uri
@@ -124,7 +124,7 @@ class TestFodtTableSpecQname:
         assert FodtTable.spec_qname == "table:table"
 
     def test_spec_fact_ref(self):
-        assert FodtTable.spec_fact_ref == "FACT-FODT-007"
+        assert FodtTable.spec_fact_ref == "SAL-FODT-00007"
 
     def test_namespace_uri(self):
         assert "oasis" in FodtTable.namespace_uri
@@ -141,7 +141,7 @@ class TestFodtTableRowSpecQname:
         assert FodtTableRow.spec_qname == "table:table-row"
 
     def test_spec_fact_ref(self):
-        assert FodtTableRow.spec_fact_ref == "FACT-FODT-007"
+        assert FodtTableRow.spec_fact_ref == "SAL-FODT-00007"
 
     def test_namespace_uri(self):
         assert "oasis" in FodtTableRow.namespace_uri
@@ -158,7 +158,7 @@ class TestFodtTableCellSpecQname:
         assert FodtTableCell.spec_qname == "table:table-cell"
 
     def test_spec_fact_ref(self):
-        assert FodtTableCell.spec_fact_ref == "FACT-FODT-007"
+        assert FodtTableCell.spec_fact_ref == "SAL-FODT-00007"
 
     def test_namespace_uri(self):
         assert "oasis" in FodtTableCell.namespace_uri

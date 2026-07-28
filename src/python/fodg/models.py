@@ -22,7 +22,7 @@ class FodgDocument:
     """
 
     spec_qname: ClassVar[str] = "office:document"
-    spec_fact_ref: ClassVar[str] = "FACT-FODG-001"
+    spec_fact_ref: ClassVar[str] = "SAL-FODG-00001"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
     local_name: ClassVar[str] = "document"
     facade_names: ClassVar[list] = []
@@ -56,7 +56,7 @@ class FodgDocument:
         """True if the file was recognised as a valid FODG document."""
         return bool(self._data.get("is_fodg", False))
 
-    # Drawing dimension properties (FACT-FODG-001)
+    # Drawing dimension properties (SAL-FODG-00001)
     @property
     def is_empty(self) -> bool:
         """True if the drawing has no pages."""
@@ -72,7 +72,7 @@ class FodgDocument:
         """True if the drawing contains at least one shape."""
         return self.shapes_total > 0
 
-    # Additional drawing analysis properties (FACT-FODG-001)
+    # Additional drawing analysis properties (SAL-FODG-00001)
 
     @property
     def is_multi_page(self) -> bool:
@@ -91,7 +91,7 @@ class FodgDocument:
             return 0.0
         return self.shapes_total / self.page_count
 
-    # Density and complexity properties (FACT-FODG-001 R1246)
+    # Density and complexity properties (SAL-FODG-00001 R1246)
 
     @property
     def is_dense(self) -> bool:
@@ -111,7 +111,7 @@ class FodgDocument:
             return 0
         return max(p.get("shape_count", 0) for p in pages)
 
-    # Shape distribution properties (FACT-FODG-001 R1266)
+    # Shape distribution properties (SAL-FODG-00001 R1266)
 
     @property
     def min_shapes_on_page(self) -> int:

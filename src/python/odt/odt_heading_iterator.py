@@ -20,7 +20,7 @@ def odt_iter_headings(source: "str | Path") -> Iterator[Heading]:
         source: Path to a .odt OpenDocument Text file.
 
     Yields:
-        Heading instances (spec class: text:h, FACT-ODT-EX-0094).
+        Heading instances (spec class: text:h, SAL-ODT-00091).
     """
     model = parse_odt(str(Path(source).resolve()))
     for heading in model.get("headings", []):

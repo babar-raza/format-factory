@@ -3,7 +3,7 @@
 Spec authority : OpenDocument Format 1.3 (OASIS ODF TC)
 QName         : office:document
 Namespace URI : urn:oasis:names:tc:opendocument:xmlns:office:1.0
-Spec fact ref : FACT-ODT-001
+Spec fact ref : SAL-ODT-01067
 
 Gap closure: GAP-PROD-INV-WRITE-001 (ODT was read-only; this adds write capability)
 

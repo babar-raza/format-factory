@@ -5,7 +5,7 @@ Properties under test:
     has_many_sheets   — sheet_count > 5
     avg_rows_per_sheet — total_row_count / sheet_count (0.0 if no sheets)
 
-spec_fact_ref: FACT-ODS-001
+spec_fact_ref: SAL-ODS-01068
 """
 
 import types

@@ -70,9 +70,12 @@ def test_dunder_version():
 # Exception hierarchy
 # ---------------------------------------------------------------------------
 
-def test_fods_error_is_value_error():
+def test_fods_error_is_format_factory_error():
+    """Healed: FodsError is no longer ValueError-rooted; it now roots at
+    the shared FormatFactoryError hierarchy instead."""
     from fods import FodsError
-    assert issubclass(FodsError, ValueError)
+    from _shared._shared_exceptions import FormatFactoryError
+    assert issubclass(FodsError, FormatFactoryError)
 
 
 def test_fods_input_error_is_fods_error():

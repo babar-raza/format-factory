@@ -5,7 +5,7 @@ Properties under test:
     is_complex        — has_shapes AND is_multi_page
     max_shapes_on_page — max shape_count across pages (0 if no pages)
 
-spec_fact_ref: FACT-FODG-001
+spec_fact_ref: SAL-FODG-00001
 """
 
 import pytest

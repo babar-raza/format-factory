@@ -5,7 +5,7 @@ Properties under test:
     has_titles        — any slide has a non-empty title
     max_shapes_on_slide — max shape_count across slides (0 if no slides)
 
-spec_fact_ref: FACT-FODP-001
+spec_fact_ref: SAL-FODP-00001
 """
 
 import pytest

@@ -22,7 +22,7 @@ class TestFodgDocumentSpecQname:
         assert isinstance(FodgDocument.spec_qname, str)
 
     def test_spec_fact_ref_class_level(self):
-        assert FodgDocument.spec_fact_ref == "FACT-FODG-001"
+        assert FodgDocument.spec_fact_ref == "SAL-FODG-00001"
 
     def test_from_file_returns_model(self):
         if not _SAMPLE.is_file():

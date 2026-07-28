@@ -17,13 +17,7 @@ License: Apache-2.0
 
 from __future__ import annotations
 
-import sys
 from pathlib import Path
-
-_REPO = Path(__file__).resolve().parents[4]
-sys.path.insert(0, str(_REPO / "src" / "python" / "fods"))
-sys.path.insert(0, str(_REPO / "src" / "python" / "ndjson"))
-sys.path.insert(0, str(_REPO))
 
 from fods.parser import parse_fods_strict  # Format Factory source reader
 from ndjson.ndjson_codec import write_ndjson  # Format Factory target writer

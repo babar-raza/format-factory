@@ -2,7 +2,7 @@
 ODF spec element: text:p
 
 Spec ref: ODF 1.3 §5.1 — Paragraphs
-Fact ref: FACT-FODS-007
+Fact ref: SAL-FODS-00007
 QName: text:p
 Namespace: urn:oasis:names:tc:opendocument:xmlns:text:1.0
 Canonical class: Text.Paragraph
@@ -18,7 +18,7 @@ class Paragraph:
     """
 
     spec_qname: ClassVar[str] = "text:p"
-    spec_fact_ref: ClassVar[str] = "FACT-FODS-007"
+    spec_fact_ref: ClassVar[str] = "SAL-FODS-00007"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:text:1.0"
     local_name: ClassVar[str] = "p"
     facade_names: ClassVar[list] = []

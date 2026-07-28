@@ -15,12 +15,7 @@ License: Apache-2.0
 """
 from __future__ import annotations
 
-import sys
 from pathlib import Path
-
-_REPO = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(_REPO / "src" / "python" / "odt"))
-sys.path.insert(0, str(_REPO))
 
 from odt.odt_parser import OdtHeading, OdtListItem, parse_odt_strict  # FF source reader
 from fods.writer import write_fods  # FF target writer

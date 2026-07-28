@@ -1,6 +1,6 @@
 """FodsCell — Production facade for the FODS table-cell element.
 
-Spec authority: table:table-cell (FACT-FODS-006, ODF 1.3 §9.5)
+Spec authority: table:table-cell (SAL-FODS-00006, ODF 1.3 §9.5)
 Canonical spec class: src/python/fods/spec/table/table_cell.py::TableCell
 Qname registry: shared/qname-registry/fods.yaml (facade_names: [FodsCell])
 
@@ -22,5 +22,5 @@ class FodsCell(_SpecTableCell):
     """
 
     spec_qname: ClassVar[str] = "table:table-cell"
-    spec_fact_ref: ClassVar[str] = "FACT-FODS-006"
+    spec_fact_ref: ClassVar[str] = "SAL-FODS-00006"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:table:1.0"

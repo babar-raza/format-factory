@@ -32,7 +32,7 @@ class TestOdtSampleRoundtrip:
     @pytest.mark.roundtrip
     def test_spec_qname_matches_registry(self):
         assert OdtModelDocument.spec_qname == "office:document"
-        assert OdtModelDocument.spec_fact_ref == "FACT-ODT-001"
+        assert OdtModelDocument.spec_fact_ref == "SAL-ODT-01067"
 
     @pytest.mark.roundtrip
     def test_sample_model_typed_properties(self):

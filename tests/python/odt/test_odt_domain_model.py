@@ -22,7 +22,7 @@ class TestOdtModelDocumentSpecQname:
         assert isinstance(OdtModelDocument.spec_qname, str)
 
     def test_spec_fact_ref_class_level(self):
-        assert OdtModelDocument.spec_fact_ref == "FACT-ODT-001"
+        assert OdtModelDocument.spec_fact_ref == "SAL-ODT-01067"
 
     def test_from_file_returns_model(self):
         doc = OdtModelDocument.from_file(_SAMPLE)

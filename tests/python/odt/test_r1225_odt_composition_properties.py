@@ -1,7 +1,7 @@
 """R1225: ODT document composition properties — is_heading_heavy, is_content_rich, heading_ratio.
 
 Tests for OdtModelDocument composition analysis properties added in R1225.
-Spec refs: FACT-ODT-001 (office:document text structure).
+Spec refs: SAL-ODT-01067 (office:document text structure).
 """
 
 from __future__ import annotations

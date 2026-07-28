@@ -1,7 +1,7 @@
 """R567: FODP presentation analysis properties — has_styles, total_shape_count, avg_shapes_per_slide.
 
 Tests for FodpDocument presentation analysis properties added in R567.
-Spec refs: FACT-FODP-001.
+Spec refs: SAL-FODP-00001.
 """
 
 import pytest

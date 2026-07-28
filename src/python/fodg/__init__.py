@@ -15,6 +15,7 @@ from .fodg_codec import *  # noqa: F401, F403
 # This import is placed BEFORE _core_names capture so all domain functions
 # are included in __all__ and part of the public API.
 from .drawing_document import *  # noqa: F401, F403
+from .exceptions import *  # noqa: F401, F403
 from .models import FodgDocument  # noqa: F401
 from .fodg_workflow import fodg_installed_workflow  # noqa: F401
 from .fodg_page_iterator import fodg_iter_pages  # noqa: F401

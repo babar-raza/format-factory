@@ -5,7 +5,7 @@ Properties under test:
     slide_shape_range   — max_shapes_on_slide - min_shapes_on_slide
     has_uniform_slides  — all slides have same shape count
 
-spec_fact_ref: FACT-FODP-001
+spec_fact_ref: SAL-FODP-00001
 """
 
 import pytest

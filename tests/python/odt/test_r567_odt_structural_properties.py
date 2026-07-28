@@ -1,7 +1,7 @@
 """R567: ODT structural properties — is_multi_paragraph, has_multiple_headings, total_block_count.
 
 Tests for OdtModelDocument structural properties added in R567.
-Spec refs: FACT-ODT-001.
+Spec refs: SAL-ODT-01067.
 """
 
 import types

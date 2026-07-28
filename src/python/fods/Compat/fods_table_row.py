@@ -1,6 +1,6 @@
 """FodsTableRow — Compat facade for the FODS table:table-row element.
 
-Spec authority: table:table-row (FACT-FODS-005, ODF 1.3 §9.4)
+Spec authority: table:table-row (SAL-FODS-00005, ODF 1.3 §9.4)
 Canonical spec class: src/python/fods/spec/table/table_row.py::TableRow
 Qname registry: shared/qname-registry/fods.yaml (facade_names: [FodsTableRow])
 
@@ -22,5 +22,5 @@ class FodsTableRow(_SpecTableRow):
     """
 
     spec_qname: ClassVar[str] = "table:table-row"
-    spec_fact_ref: ClassVar[str] = "FACT-FODS-005"
+    spec_fact_ref: ClassVar[str] = "SAL-FODS-00005"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:table:1.0"

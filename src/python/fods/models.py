@@ -182,7 +182,7 @@ class FodsDocument:
             return FodsSheet(sheets[index])
         return None
 
-    # Workbook dimension properties (FACT-FODS-001)
+    # Workbook dimension properties (SAL-FODS-00001)
     @property
     def is_empty(self) -> bool:
         """True if the workbook has no sheets."""
@@ -198,7 +198,7 @@ class FodsDocument:
         """True if the workbook has more than one sheet."""
         return self.sheet_count > 1
 
-    # Additional workbook analysis properties (FACT-FODS-001, FACT-FODS-002)
+    # Additional workbook analysis properties (SAL-FODS-00001, SAL-FODS-00002)
 
     @property
     def has_sheets(self) -> bool:
@@ -216,7 +216,7 @@ class FodsDocument:
         counts = [s.row_count for s in self.sheets()]
         return max(counts) if counts else 0
 
-    # Workbook scale properties (FACT-FODS-001 R1245)
+    # Workbook scale properties (SAL-FODS-00001 R1245)
 
     @property
     def is_large_workbook(self) -> bool:
@@ -235,7 +235,7 @@ class FodsDocument:
             return 0.0
         return self.total_row_count / self.sheet_count
 
-    # Sheet distribution properties (FACT-FODS-001 R1265)
+    # Sheet distribution properties (SAL-FODS-00001 R1265)
 
     @property
     def min_sheet_rows(self) -> int:

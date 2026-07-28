@@ -5,7 +5,7 @@ Properties under test:
     shape_range         — max_shapes_on_page - min_shapes_on_page
     is_uniform_density  — all pages have same shape count
 
-spec_fact_ref: FACT-FODG-001
+spec_fact_ref: SAL-FODG-00001
 """
 
 import pytest

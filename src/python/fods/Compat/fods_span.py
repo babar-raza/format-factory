@@ -1,6 +1,6 @@
 """FodsSpan — Compat facade for the FODS text:span element.
 
-Spec authority: text:span (FACT-FODS-007, ODF 1.3 §5.1)
+Spec authority: text:span (SAL-FODS-00007, ODF 1.3 §5.1)
 Canonical spec class: src/python/fods/spec/text/span.py::Span
 Qname registry: shared/qname-registry/fods.yaml (facade_names: [FodsSpan])
 
@@ -23,5 +23,5 @@ class FodsSpan(_SpecSpan):
     """
 
     spec_qname: ClassVar[str] = "text:span"
-    spec_fact_ref: ClassVar[str] = "FACT-FODS-007"
+    spec_fact_ref: ClassVar[str] = "SAL-FODS-00007"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:text:1.0"

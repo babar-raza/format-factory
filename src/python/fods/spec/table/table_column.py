@@ -2,7 +2,7 @@
 ODF spec element: table:table-column
 
 Spec ref: ODF 1.3 §9.3 — Table Columns
-Fact ref: FACT-FODS-020
+Fact ref: SAL-FODS-00020
 QName: table:table-column
 Namespace: urn:oasis:names:tc:opendocument:xmlns:table:1.0
 Canonical class: Table.TableColumn
@@ -22,7 +22,7 @@ class TableColumn:
     """
 
     spec_qname: ClassVar[str] = "table:table-column"
-    spec_fact_ref: ClassVar[str] = "FACT-FODS-020"
+    spec_fact_ref: ClassVar[str] = "SAL-FODS-00020"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
     local_name: ClassVar[str] = "table-column"
     spec_source: ClassVar[str] = "ODF 1.3 Part 3"

@@ -50,12 +50,21 @@ def scan_src_for_classes(src_root: Path, format_filter: str | None = None) -> li
 def _extract_spec_qname(cls_node: ast.ClassDef) -> str | None:
     """Return spec_qname class attribute value, or None if absent."""
     for stmt in cls_node.body:
-        if not isinstance(stmt, ast.Assign):
+        if isinstance(stmt, ast.Assign):
+            targets = stmt.targets
+            value = stmt.value
+        elif isinstance(stmt, ast.AnnAssign):
+            targets = [stmt.target]
+            value = stmt.value
+        else:
             continue
-        for target in stmt.targets:
-            if isinstance(target, ast.Name) and target.id == "spec_qname":
-                if isinstance(stmt.value, ast.Constant):
-                    return str(stmt.value.value)
+        for target in targets:
+            if (
+                isinstance(target, ast.Name)
+                and target.id == "spec_qname"
+                and isinstance(value, ast.Constant)
+            ):
+                return str(value.value)
     return None
 
 

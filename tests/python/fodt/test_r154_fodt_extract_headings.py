@@ -5,7 +5,7 @@ Sprint: FORMAT-FACTORY-AUTHORITY-GATED-PRODUCT-DOGFOOD-FEATURES-AND-BACKFILL-001
 Added: 2026-06-09
 
 Tests for FODT document_extract_headings() API.
-Authority: P6 (FACT-FODT-001: ODF 1.3 flat text format)
+Authority: P6 (SAL-FODT-00001: ODF 1.3 flat text format)
 """
 from __future__ import annotations
 

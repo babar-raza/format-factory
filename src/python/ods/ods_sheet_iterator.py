@@ -20,7 +20,7 @@ def ods_iter_sheets(source: "str | Path") -> Iterator[Table]:
         source: Path to an .ods OpenDocument Spreadsheet file.
 
     Yields:
-        Table instances (spec class: table:table, FACT-ODS-001).
+        Table instances (spec class: table:table, SAL-ODS-01068).
     """
     model = parse_ods(str(Path(source).resolve()))
     for sheet in model.get("sheets", []):

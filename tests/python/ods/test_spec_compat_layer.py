@@ -29,7 +29,7 @@ class TestOdsDocumentMetadata:
         assert OdsDocument.spec_qname == "office:document"
 
     def test_spec_fact_ref(self):
-        assert "FACT-ODS" in OdsDocument.spec_fact_ref
+        assert "SAL-ODS" in OdsDocument.spec_fact_ref
 
     def test_namespace_uri_present(self):
         assert "oasis" in OdsDocument.namespace_uri

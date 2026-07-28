@@ -1,7 +1,7 @@
 """R568: FODS workbook analysis properties — has_sheets, total_row_count, max_sheet_rows.
 
 Tests for FodsDocument workbook analysis properties added in R568.
-Spec refs: FACT-FODS-001, FACT-FODS-002.
+Spec refs: SAL-FODS-00001, SAL-FODS-00002.
 """
 
 import pytest

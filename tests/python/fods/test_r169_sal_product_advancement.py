@@ -4,8 +4,8 @@ Lane 8: FODS product advancement under SAL gates.
 Sprint: FORMAT-FACTORY-SAL-PHASE2-CLOSEOUT-AND-PRODUCT-GATED-ADVANCEMENT-001
 
 New functions (spec-fact-backed):
-  workbook_row_count(wb, sheet_index=0)  -- FACT-FODS-005
-  workbook_cell_text_at(wb, s, r, c)     -- FACT-FODS-006, FACT-FODS-007
+  workbook_row_count(wb, sheet_index=0)  -- SAL-FODS-00005
+  workbook_cell_text_at(wb, s, r, c)     -- SAL-FODS-00006, SAL-FODS-00007
 """
 import sys
 from pathlib import Path
@@ -40,7 +40,7 @@ def _make_cell(value=None, text=None, value_type="string"):
 
 
 class TestWorkbookRowCount:
-    """workbook_row_count: FACT-FODS-005 (rows are table:table-row children)."""
+    """workbook_row_count: SAL-FODS-00005 (rows are table:table-row children)."""
 
     def test_empty_workbook_returns_zero(self):
         wb = _make_workbook()
@@ -75,7 +75,7 @@ class TestWorkbookRowCount:
 
 
 class TestWorkbookCellTextAt:
-    """workbook_cell_text_at: FACT-FODS-006/007 (cells and text:p children)."""
+    """workbook_cell_text_at: SAL-FODS-00006/007 (cells and text:p children)."""
 
     def _wb_with_cell(self, value=None, text=None):
         cell = _make_cell(value=value, text=text)

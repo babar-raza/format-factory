@@ -12,16 +12,10 @@ License: Apache-2.0
 
 from __future__ import annotations
 
-import sys
 from pathlib import Path
 
-_REPO = Path(__file__).resolve().parents[4]
-sys.path.insert(0, str(_REPO / "src" / "python" / "fods"))
-sys.path.insert(0, str(_REPO / "src" / "python"))
-sys.path.insert(0, str(_REPO))
-
 from fods.parser import parse_fods_strict
-from src.python.csv.csv_writer import write_csv_to_file
+from ff_csv.csv_writer import write_csv_to_file
 
 
 def fods_to_csv(

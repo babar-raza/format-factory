@@ -10,7 +10,7 @@ Tests for FODS APIs:
 - workbook_rename_sheet(workbook, old, new) -> (bool, str)
 - workbook_remove_sheet(workbook, name) -> (bool, str)
 
-Authority: P6 (FACT-FODS-001: ODF 1.3 spreadsheet MIME type)
+Authority: P6 (SAL-FODS-00001: ODF 1.3 spreadsheet MIME type)
 """
 from __future__ import annotations
 

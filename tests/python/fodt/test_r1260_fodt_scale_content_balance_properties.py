@@ -5,7 +5,7 @@ Properties under test:
     heading_ratio     — heading_count / total_block_count (0.0 if no blocks)
     is_outline_heavy  — heading_ratio > 0.3
 
-spec_fact_ref: FACT-FODT-001
+spec_fact_ref: SAL-FODT-00001
 """
 
 import pytest

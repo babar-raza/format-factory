@@ -22,7 +22,7 @@ class FodpDocument:
     """
 
     spec_qname: ClassVar[str] = "office:document"
-    spec_fact_ref: ClassVar[str] = "FACT-FODP-001"
+    spec_fact_ref: ClassVar[str] = "SAL-FODP-00001"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
     local_name: ClassVar[str] = "document"
     facade_names: ClassVar[list] = []
@@ -56,7 +56,7 @@ class FodpDocument:
         """True if the file was recognised as a valid FODP document."""
         return bool(self._data.get("is_fodp", False))
 
-    # Presentation dimension properties (FACT-FODP-001)
+    # Presentation dimension properties (SAL-FODP-00001)
     @property
     def is_empty(self) -> bool:
         """True if the presentation has no slides."""
@@ -72,7 +72,7 @@ class FodpDocument:
         """True if the presentation has more than one slide."""
         return self.page_count > 1
 
-    # Additional presentation analysis properties (FACT-FODP-001)
+    # Additional presentation analysis properties (SAL-FODP-00001)
 
     @property
     def has_styles(self) -> bool:
@@ -91,7 +91,7 @@ class FodpDocument:
             return 0.0
         return self.total_shape_count / self.page_count
 
-    # Shape-based content analysis properties (FACT-FODP-001)
+    # Shape-based content analysis properties (SAL-FODP-00001)
 
     @property
     def has_shapes(self) -> bool:
@@ -108,7 +108,7 @@ class FodpDocument:
         """True if the presentation has exactly one slide and at least one shape."""
         return self.page_count == 1 and self.total_shape_count > 0
 
-    # Scale and content classification properties (FACT-FODP-001 R1247)
+    # Scale and content classification properties (SAL-FODP-00001 R1247)
 
     @property
     def is_large(self) -> bool:
@@ -128,7 +128,7 @@ class FodpDocument:
             return 0
         return max(p.get("shape_count", 0) for p in pages)
 
-    # Slide shape distribution properties (FACT-FODP-001 R1267)
+    # Slide shape distribution properties (SAL-FODP-00001 R1267)
 
     @property
     def min_shapes_on_slide(self) -> int:

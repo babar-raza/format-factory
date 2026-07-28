@@ -1,6 +1,6 @@
 """FodsCoveredCell — Compat facade for the FODS table:covered-table-cell element.
 
-Spec authority: table:covered-table-cell (FACT-FODS-023, ODF 1.3 §9.5.2)
+Spec authority: table:covered-table-cell (SAL-FODS-00023, ODF 1.3 §9.5.2)
 Canonical spec class: src/python/fods/spec/table/covered_table_cell.py::CoveredTableCell
 Qname registry: shared/qname-registry/fods.yaml (facade_names: [FodsCoveredCell])
 
@@ -23,5 +23,5 @@ class FodsCoveredCell(_SpecCoveredTableCell):
     """
 
     spec_qname: ClassVar[str] = "table:covered-table-cell"
-    spec_fact_ref: ClassVar[str] = "FACT-FODS-023"
+    spec_fact_ref: ClassVar[str] = "SAL-FODS-00023"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:table:1.0"

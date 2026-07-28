@@ -20,3 +20,11 @@ class OdsParseError(OdsError):
 
 class OdsWriteError(OdsError):
     """Raised when a ods file cannot be written."""
+
+
+class OdsInvalidContainerError(OdsParseError):
+    """Raised when the ZIP container is invalid or missing required entries."""
+
+
+class OdsSizeError(OdsParseError):
+    """Raised when the file or decompressed content exceeds size limits."""

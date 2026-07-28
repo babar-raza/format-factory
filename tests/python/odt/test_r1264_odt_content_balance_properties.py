@@ -5,7 +5,7 @@ Properties under test:
     has_balanced_content — heading_ratio in [0.1, 0.5]
     is_prose_heavy      — paragraph_ratio > 0.8
 
-spec_fact_ref: FACT-ODT-001
+spec_fact_ref: SAL-ODT-01067
 """
 
 import types

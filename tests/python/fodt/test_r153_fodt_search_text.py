@@ -7,7 +7,7 @@ Added: 2026-06-09
 Tests for new FODT API:
 - document_search_text(document, query, case_sensitive=False) -> list[dict]
 
-Authority: P4 (FACT-FODT-001: ODF 1.3 flat text format identified by MIME type
+Authority: P4 (SAL-FODT-00001: ODF 1.3 flat text format identified by MIME type
 application/vnd.oasis.opendocument.text-flat-xml)
 """
 from __future__ import annotations

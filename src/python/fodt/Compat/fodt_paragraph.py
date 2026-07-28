@@ -2,7 +2,7 @@
 
 Spec authority: text:p
 Spec ref: ODF 1.3 §5.1.3
-Fact ref: FACT-FODT-003
+Fact ref: SAL-FODT-00003
 Canonical spec class: src/python/fodt/spec/text/paragraph.py::Paragraph
 """
 from __future__ import annotations
@@ -19,5 +19,5 @@ class FodtParagraph(_SpecParagraph):
     """
 
     spec_qname: ClassVar[str] = "text:p"
-    spec_fact_ref: ClassVar[str] = "FACT-FODT-003"
+    spec_fact_ref: ClassVar[str] = "SAL-FODT-00003"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:text:1.0"

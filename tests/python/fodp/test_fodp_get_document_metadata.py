@@ -1,20 +1,22 @@
 """Tests for fodp.get_document_metadata — ODF document-level metadata extraction.
 
-Spec authority: ODF 1.3, section 4 (FACT-FODP-EX-0103, FACT-FODP-EX-0107, FACT-FODP-EX-0109).
+Spec authority: ODF 1.3, section 4 (SAL-FODP-00103, SAL-FODP-00107, SAL-FODP-00109).
 Gap: GAP-FODP-CODEC-DEBT (codec_quality, foss_reduced)
 """
-import importlib.util
 import sys
 from pathlib import Path
 
 import pytest
 
-# Load fodp_codec directly from source tree to avoid stale installed package
+# Load fodp_codec directly from source tree to avoid stale installed package.
+# Imported as a real `fodp.fodp_codec` submodule (not via spec_from_file_location
+# as a detached top-level module) so its `from .exceptions import ...` relative
+# import resolves correctly; inserting src/python at the front of sys.path still
+# guarantees the source tree wins over any installed package.
 _REPO = Path(__file__).resolve().parents[3]
-_CODEC_PATH = _REPO / "src" / "python" / "fodp" / "fodp_codec.py"
-_spec = importlib.util.spec_from_file_location("fodp_codec_src", str(_CODEC_PATH))
-_mod = importlib.util.module_from_spec(_spec)
-_spec.loader.exec_module(_mod)
+sys.path.insert(0, str(_REPO / "src" / "python"))
+
+from fodp import fodp_codec as _mod
 get_document_metadata = _mod.get_document_metadata
 FodpParseError = _mod.FodpParseError
 
@@ -111,7 +113,7 @@ class TestGetDocumentMetadataFullMeta:
         assert result["creator"] == "Unit Tester"
 
     def test_generator(self):
-        """FACT-FODP-EX-0109: meta:generator identifies the producer."""
+        """SAL-FODP-00109: meta:generator identifies the producer."""
         result = get_document_metadata(FODP_WITH_FULL_META)
         assert result["generator"] == "format-factory-test/1.0"
 

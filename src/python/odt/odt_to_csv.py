@@ -15,15 +15,10 @@ License: Apache-2.0
 """
 from __future__ import annotations
 
-import sys
 from pathlib import Path
 
-_REPO = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(_REPO / "src" / "python" / "odt"))
-sys.path.insert(0, str(_REPO))
-
 from odt.odt_parser import OdtHeading, OdtListItem, OdtParagraph, parse_odt_strict  # FF source reader
-from src.python.csv.csv_writer import write_csv_to_file  # FF target writer
+from ff_csv.csv_writer import write_csv_to_file  # FF target writer
 
 
 def odt_to_csv(

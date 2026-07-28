@@ -20,6 +20,7 @@ import xml.etree.ElementTree as ET
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, ClassVar
+from .exceptions import OdsError, OdsParseError, OdsInvalidContainerError, OdsSizeError
 
 
 # ODS constants
@@ -86,18 +87,6 @@ def get_capabilities() -> dict[str, Any]:
         "max_columns": MAX_COLUMNS,
         "max_rows": MAX_ROWS,
     }
-
-
-class OdsError(Exception):
-    """Base exception for ODS parser errors."""
-
-
-class OdsInvalidContainerError(OdsError):
-    """Raised when the ZIP container is invalid or missing required entries."""
-
-
-class OdsSizeError(OdsError):
-    """Raised when the file or decompressed content exceeds size limits."""
 
 
 @dataclass

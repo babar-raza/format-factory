@@ -6,7 +6,7 @@ class TableRow:
     """Canonical spec-shaped class for table:table-row in FODT context (ODF §9.4)."""
 
     spec_qname: ClassVar[str] = "table:table-row"
-    spec_fact_ref: ClassVar[str] = "FACT-FODT-007"
+    spec_fact_ref: ClassVar[str] = "SAL-FODT-00007"
 
     def __init__(self, data: dict[str, Any]):
         self._data = data

@@ -1482,11 +1482,13 @@ skills:
   idempotency: create_or_update
   implementation_paths:
   - src/python/**
+  - tools/validators/qname_structure_validator.py
   mechanism_type: ATOMIC_SKILL
   purpose: Backfill spec_qname authority classes for format QName registry entries
   skill_id: qname-backfill
   status: active
-  test_paths: []
+  test_paths:
+  - tests/specification-authority-layer/test_qname_structure_validator.py
   advisory_only: true
   product_track: governance
   mandatory_validations:

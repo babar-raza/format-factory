@@ -2,7 +2,7 @@
 ODF spec element: table:table-header-rows
 
 Spec ref: ODF 1.3 §9.4 — Table Header Rows
-Fact ref: FACT-FODS-021
+Fact ref: SAL-FODS-00021
 QName: table:table-header-rows
 Namespace: urn:oasis:names:tc:opendocument:xmlns:table:1.0
 Canonical class: Table.TableHeaderRows
@@ -22,7 +22,7 @@ class TableHeaderRows:
     """
 
     spec_qname: ClassVar[str] = "table:table-header-rows"
-    spec_fact_ref: ClassVar[str] = "FACT-FODS-021"
+    spec_fact_ref: ClassVar[str] = "SAL-FODS-00021"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
     local_name: ClassVar[str] = "table-header-rows"
     spec_source: ClassVar[str] = "ODF 1.3 Part 3"

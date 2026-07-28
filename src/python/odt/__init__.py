@@ -8,6 +8,7 @@ FOSS track only — no commercial readiness implied.
 from .odt_parser import *  # noqa: F401, F403
 from .text_document import *  # noqa: F401, F403
 from .exceptions import *  # noqa: F401, F403
+from .odt_doc_analytics import *  # noqa: F401, F403
 from .odt_writer import write_odt, odt_from_text, odt_from_model  # noqa: F401
 from .models import OdtModelDocument  # noqa: F401
 from .odt_workflow import odt_installed_workflow  # noqa: F401

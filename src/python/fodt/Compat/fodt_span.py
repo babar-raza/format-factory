@@ -2,7 +2,7 @@
 
 Spec authority: text:span
 Spec ref: ODF 1.3 §6.1.7
-Fact ref: FACT-FODT-006
+Fact ref: SAL-FODT-00006
 Canonical spec class: src/python/fodt/spec/text/span.py::Span
 """
 from __future__ import annotations
@@ -18,5 +18,5 @@ class FodtSpan(_SpecSpan):
     """
 
     spec_qname: ClassVar[str] = "text:span"
-    spec_fact_ref: ClassVar[str] = "FACT-FODT-006"
+    spec_fact_ref: ClassVar[str] = "SAL-FODT-00006"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:text:1.0"

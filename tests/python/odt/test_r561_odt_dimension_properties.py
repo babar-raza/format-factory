@@ -1,7 +1,7 @@
 """R561: ODT dimension properties — is_empty, has_content, is_single_paragraph, has_headings.
 
 Tests for OdtModelDocument dimension properties added in R561.
-Spec refs: FACT-ODT-001.
+Spec refs: SAL-ODT-01067.
 """
 
 import types

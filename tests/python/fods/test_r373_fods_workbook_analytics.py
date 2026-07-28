@@ -10,8 +10,8 @@ Covers:
   workbook_formula_edit_policy, workbook_named_range_list, workbook_type_distribution,
   workbook_cell_type_matrix, workbook_max_column_count
 
-Spec refs: FACT-FODS-008 (sheet model), FACT-FODS-013 (cell model),
-           FACT-FODS-037 (formula), FACT-FODS-038 (workbook structure)
+Spec refs: SAL-FODS-00008 (sheet model), SAL-FODS-00013 (cell model),
+           SAL-FODS-00037 (formula), SAL-FODS-00038 (workbook structure)
 """
 import sys
 from pathlib import Path

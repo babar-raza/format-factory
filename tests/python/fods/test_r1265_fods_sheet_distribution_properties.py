@@ -5,7 +5,7 @@ Properties under test:
     sheet_row_range     — max_sheet_rows - min_sheet_rows
     is_uniform_sheet_size — all sheets have same row count (sheet_row_range == 0)
 
-spec_fact_ref: FACT-FODS-001
+spec_fact_ref: SAL-FODS-00001
 """
 
 import pytest

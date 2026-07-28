@@ -41,7 +41,7 @@ class TestFodsBodySpecQname:
         assert FodsBody.spec_qname == "office:body"
 
     def test_spec_fact_ref(self):
-        assert FodsBody.spec_fact_ref == "FACT-FODS-002"
+        assert FodsBody.spec_fact_ref == "SAL-FODS-00002"
 
     def test_namespace_uri(self):
         assert "oasis" in FodsBody.namespace_uri
@@ -58,7 +58,7 @@ class TestFodsSpreadsheetSpecQname:
         assert FodsSpreadsheet.spec_qname == "office:spreadsheet"
 
     def test_spec_fact_ref(self):
-        assert FodsSpreadsheet.spec_fact_ref == "FACT-FODS-003"
+        assert FodsSpreadsheet.spec_fact_ref == "SAL-FODS-00003"
 
     def test_namespace_uri(self):
         assert "oasis" in FodsSpreadsheet.namespace_uri
@@ -75,7 +75,7 @@ class TestFodsTableRowSpecQname:
         assert FodsTableRow.spec_qname == "table:table-row"
 
     def test_spec_fact_ref(self):
-        assert FodsTableRow.spec_fact_ref == "FACT-FODS-005"
+        assert FodsTableRow.spec_fact_ref == "SAL-FODS-00005"
 
     def test_namespace_uri(self):
         assert "oasis" in FodsTableRow.namespace_uri
@@ -92,7 +92,7 @@ class TestFodsCoveredCellSpecQname:
         assert FodsCoveredCell.spec_qname == "table:covered-table-cell"
 
     def test_spec_fact_ref(self):
-        assert FodsCoveredCell.spec_fact_ref == "FACT-FODS-023"
+        assert FodsCoveredCell.spec_fact_ref == "SAL-FODS-00023"
 
     def test_namespace_uri(self):
         assert "oasis" in FodsCoveredCell.namespace_uri
@@ -109,7 +109,7 @@ class TestFodsParagraphSpecQname:
         assert FodsParagraph.spec_qname == "text:p"
 
     def test_spec_fact_ref(self):
-        assert FodsParagraph.spec_fact_ref == "FACT-FODS-007"
+        assert FodsParagraph.spec_fact_ref == "SAL-FODS-00007"
 
     def test_namespace_uri(self):
         assert "oasis" in FodsParagraph.namespace_uri
@@ -126,7 +126,7 @@ class TestFodsSpanSpecQname:
         assert FodsSpan.spec_qname == "text:span"
 
     def test_spec_fact_ref(self):
-        assert FodsSpan.spec_fact_ref == "FACT-FODS-007"
+        assert FodsSpan.spec_fact_ref == "SAL-FODS-00007"
 
     def test_namespace_uri(self):
         assert "oasis" in FodsSpan.namespace_uri
@@ -143,7 +143,7 @@ class TestFodsAutomaticStylesSpecQname:
         assert FodsAutomaticStyles.spec_qname == "office:automatic-styles"
 
     def test_spec_fact_ref(self):
-        assert FodsAutomaticStyles.spec_fact_ref == "FACT-FODS-008"
+        assert FodsAutomaticStyles.spec_fact_ref == "SAL-FODS-00008"
 
     def test_namespace_uri(self):
         assert "oasis" in FodsAutomaticStyles.namespace_uri
@@ -160,7 +160,7 @@ class TestFodsStyleSpecQname:
         assert FodsStyle.spec_qname == "style:style"
 
     def test_spec_fact_ref(self):
-        assert FodsStyle.spec_fact_ref == "FACT-FODS-009"
+        assert FodsStyle.spec_fact_ref == "SAL-FODS-00009"
 
     def test_namespace_uri(self):
         assert "oasis" in FodsStyle.namespace_uri
@@ -177,7 +177,7 @@ class TestFodsDateStyleSpecQname:
         assert FodsDateStyle.spec_qname == "number:date-style"
 
     def test_spec_fact_ref(self):
-        assert FodsDateStyle.spec_fact_ref == "FACT-FODS-010"
+        assert FodsDateStyle.spec_fact_ref == "SAL-FODS-00010"
 
     def test_namespace_uri(self):
         assert "oasis" in FodsDateStyle.namespace_uri

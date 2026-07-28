@@ -13,6 +13,7 @@ from __future__ import annotations
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Any
+from .exceptions import FodpError, FodpParseError
 
 # ODF namespace constants (ODF 1.3)
 NS = {
@@ -29,14 +30,6 @@ FODP_MIME = "application/vnd.oasis.opendocument.presentation-flat-xml"
 
 # Maximum file size guard (64 MiB) — protects against large XML files
 MAX_FILE_SIZE = 64 * 1024 * 1024
-
-
-class FodpError(Exception):
-    """Base exception for FODP codec errors."""
-
-
-class FodpParseError(FodpError):
-    """Raised when FODP parsing fails."""
 
 
 def load(source: str | bytes | Path) -> dict[str, Any]:
@@ -118,8 +111,8 @@ def get_document_metadata(source: str | bytes | Path) -> dict[str, Any]:
 
     Spec authority:
         ODF 1.3 Part 3, section 4 — Pre-defined metadata elements are stored
-        in the ``<office:meta>`` element (FACT-FODP-EX-0103, FACT-FODP-EX-0107,
-        FACT-FODP-EX-0109).
+        in the ``<office:meta>`` element (SAL-FODP-00103, SAL-FODP-00107,
+        SAL-FODP-00109).
 
     Args:
         source: Path to .fodp file, bytes, or XML string.
@@ -201,23 +194,23 @@ def export_to_json(source: str | bytes | Path) -> str:
 
 
 # ---------------------------------------------------------------------------
-# Write stub (read-only format — write is not supported)
+# Write support
 # ---------------------------------------------------------------------------
-
-def write_fodp(model: dict, dest: str | Path) -> None:
-    """Stub: FODP is a read-only format in Format Factory.
-
-    FODP (Flat OpenDocument Presentation) write support is not implemented.
-    Use load() + export_to_txt()/export_to_csv()/export_to_json() for read workflows.
-
-    Raises:
-        NotImplementedError: Always. FODP write is not supported.
-    """
-    raise NotImplementedError(
-        "write_fodp() is not supported. FODP is a read-only format in Format Factory. "
-        "Use load() to read presentations, export_to_txt() / export_to_csv() / "
-        "export_to_json() to extract content."
-    )
+#
+# FODP is a READ-ONLY format in Format Factory: there is deliberately no
+# write_fodp(). Use load() to read presentations and
+# export_to_txt() / export_to_csv() / export_to_json() to extract content.
+#
+# History (TC-PA-012, 2026-07-17): a write_fodp() sentinel that unconditionally
+# raised an "unsupported operation" error used to live here. QF-1-004 added it to
+# answer PQ-009 ("user gets no helpful error"), then quarantined it out of the
+# public API in the same fix — which neutralised its only benefit: it was never
+# in fodp.__all__, so `from fodp import write_fodp` raised ImportError and no
+# user could reach the helpful message through the public API. What remained was
+# a non-abstract function that always raised: an EP-1 letter violation kept alive
+# by three no_stub_scan allowlist regexes and six tests. Removed rather than
+# implemented — FODP write is out of scope at this parser level (PROB-006,
+# deferred post-Gate 11). Guarded by tests/python/fodp/test_fodp_write_stub.py.
 
 
 # ---------------------------------------------------------------------------

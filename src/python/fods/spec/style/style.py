@@ -2,7 +2,7 @@
 ODF spec element: style:style
 
 Spec ref: ODF 1.3 §14.1 — Style Element
-Fact ref: FACT-FODS-009
+Fact ref: SAL-FODS-00009
 QName: style:style
 Namespace: urn:oasis:names:tc:opendocument:xmlns:style:1.0
 Canonical class: Style.Style
@@ -19,7 +19,7 @@ class Style:
     """
 
     spec_qname: ClassVar[str] = "style:style"
-    spec_fact_ref: ClassVar[str] = "FACT-FODS-009"
+    spec_fact_ref: ClassVar[str] = "SAL-FODS-00009"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:style:1.0"
     local_name: ClassVar[str] = "style"
     facade_names: ClassVar[list] = []

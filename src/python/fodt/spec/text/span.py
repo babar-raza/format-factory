@@ -1,7 +1,7 @@
 """FODT spec Span — canonical implementation of text:span.
 
 spec_qname: text:span
-spec_fact_ref: FACT-FODT-006
+spec_fact_ref: SAL-FODT-00006
 """
 from __future__ import annotations
 from typing import Any, ClassVar
@@ -11,7 +11,7 @@ class Span:
     """Canonical implementation of ODF text:span element."""
 
     spec_qname: ClassVar[str] = "text:span"
-    spec_fact_ref: ClassVar[str] = "FACT-FODT-006"
+    spec_fact_ref: ClassVar[str] = "SAL-FODT-00006"
 
     def __init__(self, data: dict[str, Any]):
         self._data = data

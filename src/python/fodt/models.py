@@ -19,7 +19,7 @@ class FodtSpan:
     """Wraps an inline text span from a paragraph."""
 
     spec_qname: ClassVar[str] = "text:span"
-    spec_fact_ref: ClassVar[str] = "FACT-FODT-006"
+    spec_fact_ref: ClassVar[str] = "SAL-FODT-00006"
 
     def __init__(self, data: dict[str, Any]):
         self._data = data
@@ -46,7 +46,7 @@ class FodtParagraph:
     """Wraps a block dict (paragraph or heading) from the FODT neutral model."""
 
     spec_qname: ClassVar[str] = "text:p"
-    spec_fact_ref: ClassVar[str] = "FACT-FODT-003"
+    spec_fact_ref: ClassVar[str] = "SAL-FODT-00003"
 
     def __init__(self, data: dict[str, Any]):
         self._data = data
@@ -92,7 +92,7 @@ class FodtDocument:
     """Wraps a document dict from parse_fodt() with a class-based interface."""
 
     spec_qname: ClassVar[str] = "office:document"
-    spec_fact_ref: ClassVar[str] = "FACT-FODT-001"
+    spec_fact_ref: ClassVar[str] = "SAL-FODT-00001"
 
     def __init__(self, data: dict[str, Any]):
         self._data = data
@@ -144,7 +144,7 @@ class FodtDocument:
         """Return the number of lists in the document."""
         return len(self._data.get("lists", []))
 
-    # Document dimension properties (FACT-FODT-001)
+    # Document dimension properties (SAL-FODT-00001)
     @property
     def is_empty(self) -> bool:
         """True if the document has no content blocks."""
@@ -165,7 +165,7 @@ class FodtDocument:
         """True if the document contains at least one heading block."""
         return any(b.get("kind") == "heading" for b in self._data.get("blocks", []))
 
-    # Additional document analysis properties (FACT-FODT-001, FACT-FODT-003)
+    # Additional document analysis properties (SAL-FODT-00001, SAL-FODT-00003)
 
     @property
     def heading_count(self) -> int:
@@ -182,7 +182,7 @@ class FodtDocument:
         """True if the document contains at least one table."""
         return self.table_count > 0
 
-    # Structure classification properties (FACT-FODT-001 R1240)
+    # Structure classification properties (SAL-FODT-00001 R1240)
 
     @property
     def paragraph_count(self) -> int:
@@ -199,7 +199,7 @@ class FodtDocument:
         """True if has_tables or has_lists or has_headings."""
         return self.has_tables or self.has_lists or self.has_headings
 
-    # Scale and content balance properties (FACT-FODT-001 R1260)
+    # Scale and content balance properties (SAL-FODT-00001 R1260)
 
     @property
     def total_block_count(self) -> int:
@@ -219,7 +219,7 @@ class FodtDocument:
         """True if heading_ratio > 0.3."""
         return self.heading_ratio > 0.3
 
-    # Content balance and prose density properties (FACT-FODT-001 R1280)
+    # Content balance and prose density properties (SAL-FODT-00001 R1280)
 
     @property
     def paragraph_ratio(self) -> float:

@@ -25,7 +25,7 @@ class OdtModelDocument:
     """
 
     spec_qname: ClassVar[str] = "office:document"
-    spec_fact_ref: ClassVar[str] = "FACT-ODT-001"
+    spec_fact_ref: ClassVar[str] = "SAL-ODT-01067"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
     local_name: ClassVar[str] = "document"
     facade_names: ClassVar[list] = []
@@ -64,7 +64,7 @@ class OdtModelDocument:
         """List of OdtHeading objects."""
         return list(self._parsed.headings)
 
-    # Document dimension properties (FACT-ODT-001)
+    # Document dimension properties (SAL-ODT-01067)
 
     @property
     def is_empty(self) -> bool:
@@ -86,7 +86,7 @@ class OdtModelDocument:
         """True if the document has at least one heading."""
         return self.heading_count > 0
 
-    # Additional structural properties (FACT-ODT-001)
+    # Additional structural properties (SAL-ODT-01067)
 
     @property
     def is_multi_paragraph(self) -> bool:
@@ -103,7 +103,7 @@ class OdtModelDocument:
         """Total number of text blocks (paragraphs + headings)."""
         return self.paragraph_count + self.heading_count
 
-    # Document composition analysis properties (FACT-ODT-001)
+    # Document composition analysis properties (SAL-ODT-01067)
 
     @property
     def is_heading_heavy(self) -> bool:
@@ -122,7 +122,7 @@ class OdtModelDocument:
             return 0.0
         return self.heading_count / self.total_block_count
 
-    # Scale and content balance properties (FACT-ODT-001 R1244)
+    # Scale and content balance properties (SAL-ODT-01067 R1244)
 
     @property
     def is_large(self) -> bool:
@@ -141,7 +141,7 @@ class OdtModelDocument:
             return 0.0
         return self.paragraph_count / self.total_block_count
 
-    # Content balance and structure properties (FACT-ODT-001 R1264)
+    # Content balance and structure properties (SAL-ODT-01067 R1264)
 
     @property
     def is_outline_heavy(self) -> bool:

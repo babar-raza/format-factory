@@ -1,6 +1,6 @@
 """FodsWorksheet — Production facade for a FODS worksheet (table:table).
 
-Spec authority: table:table (FACT-FODS-004, ODF 1.3 §9.1)
+Spec authority: table:table (SAL-FODS-00004, ODF 1.3 §9.1)
 TC-W1-FODS-PY-002: Aspose-style deep navigation (FodsWorksheetCollection → FodsWorksheet → cells).
 """
 from __future__ import annotations
@@ -21,7 +21,7 @@ class FodsWorksheet:
     """
 
     spec_qname: ClassVar[str] = "table:table"
-    spec_fact_ref: ClassVar[str] = "FACT-FODS-004"
+    spec_fact_ref: ClassVar[str] = "SAL-FODS-00004"
 
     def __init__(self, data: dict[str, Any]):
         self._data = data

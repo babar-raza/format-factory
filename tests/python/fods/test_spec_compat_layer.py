@@ -17,7 +17,7 @@ class TestFodsDocumentMetadata:
         assert FodsDocument.spec_qname == "office:document"
 
     def test_spec_fact_ref(self):
-        assert FodsDocument.spec_fact_ref == "FACT-FODS-001"
+        assert FodsDocument.spec_fact_ref == "SAL-FODS-00001"
 
     def test_namespace_uri_present(self):
         assert "oasis" in FodsDocument.namespace_uri
@@ -42,7 +42,7 @@ class TestFodsSheetMetadata:
         assert FodsSheet.spec_qname == "table:table"
 
     def test_spec_fact_ref(self):
-        assert FodsSheet.spec_fact_ref == "FACT-FODS-004"
+        assert FodsSheet.spec_fact_ref == "SAL-FODS-00004"
 
     def test_namespace_uri_present(self):
         assert FodsSheet.namespace_uri
@@ -67,7 +67,7 @@ class TestFodsCellMetadata:
         assert FodsCell.spec_qname == "table:table-cell"
 
     def test_spec_fact_ref(self):
-        assert FodsCell.spec_fact_ref == "FACT-FODS-006"
+        assert FodsCell.spec_fact_ref == "SAL-FODS-00006"
 
     def test_namespace_uri_present(self):
         assert FodsCell.namespace_uri

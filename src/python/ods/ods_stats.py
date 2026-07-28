@@ -297,7 +297,7 @@ def ods_max_sheet_row_count(file_path: "str | Path") -> int:
 def ods_sheet_names_sorted(file_path: "str | Path") -> list:
     """Return alphabetically sorted list of sheet names from the ODS file.
 
-    Spec: ODS table:table element (FACT-ODS-001)
+    Spec: ODS table:table element (SAL-ODS-01068)
     """
     doc = _ods_load(file_path)
     return sorted(sheet.get("name", "") for sheet in doc.get("sheets", []))
@@ -306,7 +306,7 @@ def ods_sheet_names_sorted(file_path: "str | Path") -> list:
 def ods_has_single_sheet(file_path: "str | Path") -> bool:
     """Return True if the ODS file contains exactly one sheet.
 
-    Spec: ODS table:table element (FACT-ODS-001)
+    Spec: ODS table:table element (SAL-ODS-01068)
     """
     doc = _ods_load(file_path)
     return len(doc.get("sheets", [])) == 1
@@ -315,7 +315,7 @@ def ods_has_single_sheet(file_path: "str | Path") -> bool:
 def ods_first_sheet_row_count(file_path: "str | Path") -> int:
     """Return the row count of the first sheet. 0 if no sheets.
 
-    Spec: ODS table:table-row element (FACT-ODS-001)
+    Spec: ODS table:table-row element (SAL-ODS-01068)
     """
     doc = _ods_load(file_path)
     sheets = doc.get("sheets", [])
@@ -329,7 +329,7 @@ def ods_all_sheets_named(file_path: "str | Path") -> bool:
 
     True vacuously when there are no sheets.
 
-    Spec: ODS table:table element (FACT-ODS-001)
+    Spec: ODS table:table element (SAL-ODS-01068)
     """
     doc = _ods_load(file_path)
     sheets = doc.get("sheets", [])
@@ -339,7 +339,7 @@ def ods_all_sheets_named(file_path: "str | Path") -> bool:
 def ods_has_uniform_sheet_row_count(file_path: "str | Path") -> bool:
     """Return True if all sheets have the same row count. True if ≤1 sheet.
 
-    Spec: ODS table:table-row element (FACT-ODS-001)
+    Spec: ODS table:table-row element (SAL-ODS-01068)
     """
     doc = _ods_load(file_path)
     sheets = doc.get("sheets", [])
@@ -352,7 +352,7 @@ def ods_has_uniform_sheet_row_count(file_path: "str | Path") -> bool:
 def ods_min_sheet_row_count(file_path: "str | Path") -> int:
     """Return the minimum row count across all sheets. 0 if no sheets.
 
-    Spec: ODS table:table-row element (FACT-ODS-001)
+    Spec: ODS table:table-row element (SAL-ODS-01068)
     """
     doc = _ods_load(file_path)
     sheets = doc.get("sheets", [])
@@ -364,7 +364,7 @@ def ods_min_sheet_row_count(file_path: "str | Path") -> int:
 def ods_sheet_count(file_path: "str | Path") -> int:
     """Return the number of sheets in the ODS workbook.
 
-    Spec: ODS table:table element (FACT-ODS-001)
+    Spec: ODS table:table element (SAL-ODS-01068)
     """
     doc = _ods_load(file_path)
     return len(doc.get("sheets", []))
@@ -373,7 +373,7 @@ def ods_sheet_count(file_path: "str | Path") -> int:
 def ods_has_sheets(file_path: "str | Path") -> bool:
     """Return True if the ODS workbook contains at least one sheet.
 
-    Spec: ODS table:table element (FACT-ODS-001)
+    Spec: ODS table:table element (SAL-ODS-01068)
     """
     doc = _ods_load(file_path)
     return len(doc.get("sheets", [])) > 0
@@ -382,7 +382,7 @@ def ods_has_sheets(file_path: "str | Path") -> bool:
 def ods_max_sheet_name_length(file_path: "str | Path") -> int:
     """Return the maximum character length of any sheet name. 0 if no sheets.
 
-    Spec: ODS table:table element (FACT-ODS-001)
+    Spec: ODS table:table element (SAL-ODS-01068)
     """
     doc = _ods_load(file_path)
     sheets = doc.get("sheets", [])
@@ -394,7 +394,7 @@ def ods_max_sheet_name_length(file_path: "str | Path") -> int:
 def ods_last_sheet_name(file_path: "str | Path") -> str:
     """Return the name of the last sheet, or empty string if no sheets.
 
-    Spec: ODS table:table element (FACT-ODS-001)
+    Spec: ODS table:table element (SAL-ODS-01068)
     """
     doc = _ods_load(file_path)
     sheets = doc.get("sheets", [])

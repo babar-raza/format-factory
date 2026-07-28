@@ -43,7 +43,7 @@ class TestFodtCompatLayerSpecQname:
 
     def test_fodt_document_spec_fact_ref(self):
         from fodt.Compat import FodtDocument
-        assert FodtDocument.spec_fact_ref == "FACT-FODT-001"
+        assert FodtDocument.spec_fact_ref == "SAL-FODT-00001"
 
     def test_fodt_paragraph_spec_qname(self):
         from fodt.Compat import FodtParagraph

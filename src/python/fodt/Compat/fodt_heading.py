@@ -2,7 +2,7 @@
 
 Spec authority: text:h
 Spec ref: ODF 1.3 §5.1.2
-Fact ref: FACT-FODT-004
+Fact ref: SAL-FODT-00004
 Canonical spec class: src/python/fodt/spec/text/heading.py::Heading
 """
 from __future__ import annotations
@@ -18,5 +18,5 @@ class FodtHeading(_SpecHeading):
     """
 
     spec_qname: ClassVar[str] = "text:h"
-    spec_fact_ref: ClassVar[str] = "FACT-FODT-004"
+    spec_fact_ref: ClassVar[str] = "SAL-FODT-00004"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:text:1.0"

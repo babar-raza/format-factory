@@ -8,12 +8,7 @@ License: Apache-2.0
 """
 from __future__ import annotations
 
-import sys
 from pathlib import Path
-
-_REPO = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(_REPO / "src" / "python"))
-sys.path.insert(0, str(_REPO))
 
 from fodp.fodp_codec import load as load_fodp  # FF source reader
 from fodg.fodg_codec import create_fodg, write_fodg  # FF target writer

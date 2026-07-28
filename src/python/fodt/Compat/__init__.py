@@ -1,15 +1,15 @@
 """fodt.Compat -- production facade layer for FODT (Gate 11 P-ARCH-001).
 
 Exports:
-    FodtDocument   -- facade for office:document  (FACT-FODT-001)
-    FodtParagraph  -- facade for text:p           (FACT-FODT-003)
-    FodtHeading    -- facade for text:h           (FACT-FODT-004)
-    FodtSpan       -- facade for text:span        (FACT-FODT-006)
-    FodtTableCell  -- facade for table:table-cell (FACT-FODT-007)
-    FodtList       -- facade for text:list        (FACT-FODT-005)
-    FodtListItem   -- facade for text:list-item   (FACT-FODT-005)
-    FodtTable      -- facade for table:table      (FACT-FODT-007)
-    FodtTableRow   -- facade for table:table-row  (FACT-FODT-007)
+    FodtDocument   -- facade for office:document  (SAL-FODT-00001)
+    FodtParagraph  -- facade for text:p           (SAL-FODT-00003)
+    FodtHeading    -- facade for text:h           (SAL-FODT-00004)
+    FodtSpan       -- facade for text:span        (SAL-FODT-00006)
+    FodtTableCell  -- facade for table:table-cell (SAL-FODT-00007)
+    FodtList       -- facade for text:list        (SAL-FODT-00005)
+    FodtListItem   -- facade for text:list-item   (SAL-FODT-00005)
+    FodtTable      -- facade for table:table      (SAL-FODT-00007)
+    FodtTableRow   -- facade for table:table-row  (SAL-FODT-00007)
 """
 from .fodt_document import FodtDocument
 from .fodt_paragraph import FodtParagraph

@@ -2,7 +2,7 @@
 ODF spec element: office:annotation
 
 Spec ref: ODF 1.3 §14.1 — Annotations
-Fact ref: FACT-FODS-022
+Fact ref: SAL-FODS-00022
 QName: office:annotation
 Namespace: urn:oasis:names:tc:opendocument:xmlns:office:1.0
 Canonical class: Office.Annotation
@@ -23,7 +23,7 @@ class Annotation:
     """
 
     spec_qname: ClassVar[str] = "office:annotation"
-    spec_fact_ref: ClassVar[str] = "FACT-FODS-022"
+    spec_fact_ref: ClassVar[str] = "SAL-FODS-00022"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
     local_name: ClassVar[str] = "annotation"
     spec_source: ClassVar[str] = "ODF 1.3 Part 3"

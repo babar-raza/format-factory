@@ -1,6 +1,6 @@
 """FodsSheet — Production facade for the FODS table/sheet element.
 
-Spec authority: table:table (FACT-FODS-004, ODF 1.3 §9.1)
+Spec authority: table:table (SAL-FODS-00004, ODF 1.3 §9.1)
 Canonical spec class: src/python/fods/spec/table/table.py::Table
 Qname registry: shared/qname-registry/fods.yaml (facade_names: [FodsSheet])
 
@@ -22,5 +22,5 @@ class FodsSheet(_SpecTable):
     """
 
     spec_qname: ClassVar[str] = "table:table"
-    spec_fact_ref: ClassVar[str] = "FACT-FODS-004"
+    spec_fact_ref: ClassVar[str] = "SAL-FODS-00004"
     namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:table:1.0"

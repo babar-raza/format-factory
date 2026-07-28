@@ -1,13 +1,18 @@
 """
-fodt_analytics.py — file-level analytics functions for FODT format.
+text_document.py — FODT text-document domain module.
 
-Functions accept file_path as first argument, parse the document,
-and return a single analytic value.
+Whole-document metric and summary operations over the parsed FODT text
+document (paragraph / heading / word counts and related whole-document
+properties). Each function accepts a file path, parses the document, and
+describes a property of the document as a whole — the sanctioned
+domain-module role for a ``*_document.py`` file (see
+tests/test_source_structure.py). Parser source: parser.py
+(parse_fodt_strict); spec concept: OpenDocument office:document.
 """
 from __future__ import annotations
 
 spec_qname = "office:document"
-spec_fact_ref = "FACT-FODT-001"
+spec_fact_ref = "SAL-FODT-00001"
 namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
 
 import os
@@ -511,8 +516,8 @@ def fodt_is_text_heavy(file_path: "str | os.PathLike[str]") -> bool:
 
 # ---------------------------------------------------------------------------
 # Analytics functions added in FF-HEAL-QNAME-20260621-114042
-# Spec refs: FACT-FODT-001 (text content), FACT-FODT-013 (paragraph),
-#            FACT-FODT-015 (headings), FACT-FODT-002 (document structure)
+# Spec refs: SAL-FODT-00001 (text content), SAL-FODT-00013 (paragraph),
+#            SAL-FODT-00015 (headings), SAL-FODT-00002 (document structure)
 # ---------------------------------------------------------------------------
 
 def fodt_lowercase_ratio(file_path: "str | os.PathLike[str]") -> float:
