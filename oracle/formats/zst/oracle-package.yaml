@@ -5,7 +5,6 @@ oracle_version: 1
 family: archive
 generated_at: '2026-06-25'
 generator_skill: oracle-layer-hardening-mission
-status: VERIFIED
 authority:
   specification_refs:
   - id: RFC-8878
@@ -20,9 +19,9 @@ authority:
     url: https://github.com/facebook/zstd/blob/dev/doc/zstd_compression_format.md
     authority_class: SPEC_INFORMATIVE
   authorized_fact_refs:
-  - FACT-ZST-001
-  - FACT-ZST-002
-  - FACT-ZST-003
+  - SAL-ZST-00001
+  - SAL-ZST-00002
+  - SAL-ZST-00003
   authority_summary: 'RFC 8878 is normative (IETF, royalty-free). The Zstandard compression
     format is fully specified in the RFC. Decompression behavior is deterministic:
     any conforming decompressor must produce byte-identical output from the same input.

@@ -5,7 +5,6 @@ oracle_version: 1
 family: document
 generated_at: '2026-06-26'
 generator_skill: oracle-layer-hardening-mission
-status: VERIFIED
 authority:
   specification_refs:
   - id: ABIWORD-FORMAT
@@ -15,9 +14,9 @@ authority:
     legal_category: 1
     authority_class: SPEC_INFORMATIVE
   authorized_fact_refs:
-  - FACT-ABW-001
-  - FACT-ABW-002
-  - FACT-ABW-003
+  - SAL-ABW-00001
+  - SAL-ABW-00002
+  - SAL-ABW-00003
   authority_summary: 'ABW is the native XML format of AbiWord. Structure: <abiword>
     root containing <section> and <p> elements for paragraphs. Python load() function
     provides the reference parse result for format conformance.
@@ -45,7 +44,7 @@ valid_cases:
     - ${input_ref}
     expect_type: dict
     expect_no_exception: true
-  authority_ref: FACT-ABW-001
+  authority_ref: SAL-ABW-00001
 - case_id: abw-valid-002
   profile: ROUNDTRIP
   description: load on minimal-document returns a dict with expected keys
@@ -60,7 +59,7 @@ valid_cases:
     - ${input_ref}
     expect_type: dict
     expect_no_exception: true
-  authority_ref: FACT-ABW-001
+  authority_ref: SAL-ABW-00001
 - case_id: abw-valid-003
   purpose: Two-paragraph ABW document loads successfully
   authority_class: SPEC_INFORMATIVE

@@ -33,6 +33,7 @@ import sys
 import traceback
 from datetime import datetime, timezone
 from pathlib import Path
+from tools.oracle.enriched_generic import ENRICHED_LOADERS, execute_enriched_generic
 
 # ---------------------------------------------------------------------------
 # Repository root
@@ -41,10 +42,8 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 ORACLE_DIR = REPO_ROOT / "oracle"
 LOCAL_ORACLE_DIR = REPO_ROOT / ".local" / "oracle"
 SAMPLES_DIR = REPO_ROOT / "samples" / "by-format"
-
 # Authority classes that BLOCK a PASS verdict (cannot self-approve)
 BLOCKING_AUTHORITY_CLASSES = {"AI_DRAFT_UNVERIFIED", "IMPLEMENTATION_OBSERVED", "UNKNOWN", "REJECTED"}
-
 # Allowed result values
 RESULT_PASS = "PASS"
 RESULT_FAIL = "FAIL"
@@ -57,13 +56,11 @@ RESULT_INCONCLUSIVE = "INCONCLUSIVE"
 RESULT_NOT_APPLICABLE = "NOT_APPLICABLE"
 RESULT_SKIPPED_MISSING_PROVIDER = "SKIPPED_MISSING_PROVIDER"
 RESULT_SKIPPED_MISSING_DEPENDENCY = "SKIPPED_MISSING_DEPENDENCY"
-
 # Oracle depth levels (FF-XPLAN-001 W2A-002)
 DEPTH_D0 = "D0"  # Load didn't crash (no property comparison)
 DEPTH_D1 = "D1"  # Model properties compared against expected values
 DEPTH_D2 = "D2"  # Schema validation (e.g. ODF RelaxNG via lxml)
 DEPTH_D3 = "D3"  # External tool interop (e.g. LibreOffice)
-
 # Synthetic properties that are always True and add no discriminating information.
 # An oracle case with ONLY synthetic properties earns D0, not D1 (TC-OIS-003 / MCP-W5-001).
 SYNTHETIC_PROPERTIES: frozenset[str] = frozenset({"loaded", "result_type"})
@@ -184,7 +181,7 @@ def execute_csv_valid_case(case: dict, pkg: dict) -> dict:
             try:
                 import tempfile, os
                 sys.path.insert(0, str(REPO_ROOT))
-                from src.python.csv.csv_parser import parse_csv_strict
+                from src.python.ff_csv.csv_parser import parse_csv_strict
                 with tempfile.NamedTemporaryFile(mode="w", suffix=".csv", delete=False) as f:
                     f.write(inline)
                     tmp_path = f.name
@@ -252,7 +249,7 @@ def execute_csv_valid_case(case: dict, pkg: dict) -> dict:
 
     try:
         sys.path.insert(0, str(REPO_ROOT))
-        from src.python.csv.csv_parser import parse_csv_strict
+        from src.python.ff_csv.csv_parser import parse_csv_strict
 
         model = parse_csv_strict(str(sample_path))
         observed = {
@@ -333,7 +330,7 @@ def execute_csv_invalid_case(case: dict, pkg: dict) -> dict:
     try:
         import tempfile, os
         sys.path.insert(0, str(REPO_ROOT))
-        from src.python.csv.csv_parser import parse_csv_strict
+        from src.python.ff_csv.csv_parser import parse_csv_strict
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".csv", delete=False, encoding="utf-8") as f:
             f.write(case.get("input_inline", ""))
@@ -1213,118 +1210,6 @@ def execute_fodp_valid_case(case: dict, pkg: dict) -> dict:
     return execute_generic_load_case(case, pkg, "fodp", "fodp.fodp_codec", "load")
 
 
-def _enrich_model(result_val: dict, format_id: str) -> dict:
-    """Add derived properties so oracle expected_model_properties can match."""
-    if not isinstance(result_val, dict):
-        return result_val
-    enriched = dict(result_val)
-    if format_id == "safetensors":
-        tensors = result_val.get("tensors", {})
-        enriched["tensor_count"] = len(tensors) if isinstance(tensors, dict) else 0
-        enriched["tensor_names"] = sorted(tensors.keys()) if isinstance(tensors, dict) else []
-    elif format_id == "ipynb":
-        cells = result_val.get("cells", [])
-        enriched["cell_count"] = len(cells) if isinstance(cells, list) else 0
-    elif format_id == "mtlx":
-        materials = result_val.get("materials", [])
-        enriched["material_count"] = len(materials) if isinstance(materials, list) else 0
-    elif format_id == "nrrd":
-        shape = result_val.get("array_shape", result_val.get("header", {}).get("sizes", []))
-        enriched["dimension"] = len(shape) if isinstance(shape, list) else 0
-    elif format_id == "ubl":
-        lines = result_val.get("lines", [])
-        enriched["line_count"] = len(lines) if isinstance(lines, list) else 0
-    elif format_id == "xliff":
-        files = result_val.get("files", [])
-        unit_count = 0
-        for f in (files if isinstance(files, list) else []):
-            units = f.get("units", f.get("trans_units", []))
-            unit_count += len(units) if isinstance(units, list) else 0
-        enriched["unit_count"] = unit_count
-    return enriched
-
-
-def _execute_enriched_generic(case, pkg, format_id, module, callable_name):
-    """Generic executor with model enrichment for derived properties."""
-    case_id = case["case_id"]
-    sample_ref = case.get("input_ref") or case.get("sample_ref")
-    _, authority_status = check_authority(case, True)
-
-    if not sample_ref:
-        return make_verdict(
-            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
-            format_id=format_id, product_id=f"format-factory-{format_id}", language="python",
-            case_id=case_id, profile="PARSE_VALIDITY",
-            result=RESULT_NOT_APPLICABLE, authority_status=authority_status,
-            diagnostics=["No sample_ref"],
-        )
-
-    sample_path = REPO_ROOT / sample_ref
-    if not sample_path.exists():
-        return make_verdict(
-            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
-            format_id=format_id, product_id=f"format-factory-{format_id}", language="python",
-            case_id=case_id, profile="PARSE_VALIDITY",
-            result=RESULT_BLOCKED_MISSING_SAMPLE, authority_status=authority_status,
-            diagnostics=[f"Sample not found: {sample_path}"],
-        )
-
-    input_hash = sha256_file(sample_path)
-    try:
-        sys.path.insert(0, str(REPO_ROOT))
-        import importlib
-        mod = importlib.import_module(f"src.python.{module}")
-        fn = getattr(mod, callable_name)
-        result_val = fn(str(sample_path))
-        result_val = _enrich_model(result_val, format_id)
-
-        expected_props = case.get("expected_model_properties", [])
-        observed, deviations, depth, ds_diagnostics = _compare_model_properties(result_val, expected_props)
-
-        verdict_result = RESULT_FAIL if deviations else RESULT_PASS
-        return make_verdict(
-            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
-            format_id=format_id, product_id=f"format-factory-{format_id}", language="python",
-            case_id=case_id, profile="PARSE_VALIDITY",
-            result=verdict_result, authority_status=authority_status,
-            observed=observed, deviations=deviations, input_hash=input_hash,
-            depth_level=depth, diagnostics=ds_diagnostics,
-        )
-    except Exception as e:
-        return make_verdict(
-            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
-            format_id=format_id, product_id=f"format-factory-{format_id}", language="python",
-            case_id=case_id, profile="PARSE_VALIDITY",
-            result=RESULT_FAIL, authority_status=authority_status,
-            diagnostics=[f"{type(e).__name__}: {e}"], input_hash=input_hash,
-            depth_level=DEPTH_D0,
-        )
-
-
-def execute_ipynb_valid_case(case: dict, pkg: dict) -> dict:
-    return _execute_enriched_generic(case, pkg, "ipynb", "ipynb.ipynb_codec", "load_ipynb")
-
-
-def execute_mtlx_valid_case(case: dict, pkg: dict) -> dict:
-    return _execute_enriched_generic(case, pkg, "mtlx", "mtlx.mtlx_codec", "load_mtlx")
-
-
-def execute_nrrd_valid_case(case: dict, pkg: dict) -> dict:
-    return _execute_enriched_generic(case, pkg, "nrrd", "nrrd.nrrd_codec", "load_nrrd")
-
-
-def execute_safetensors_valid_case(case: dict, pkg: dict) -> dict:
-    return _execute_enriched_generic(case, pkg, "safetensors", "safetensors.safetensors_codec", "load_safetensors")
-
-
-def execute_ubl_valid_case(case: dict, pkg: dict) -> dict:
-    return _execute_enriched_generic(case, pkg, "ubl", "ubl.ubl_codec", "load_ubl")
-
-
-def execute_xliff_valid_case(case: dict, pkg: dict) -> dict:
-    return _execute_enriched_generic(case, pkg, "xliff", "xliff.xliff_codec", "load_xliff")
-
-
 def execute_zst_valid_case(case: dict, pkg: dict) -> dict:
     """Execute a ZST valid case against the product."""
     case_id = case["case_id"]
@@ -2180,18 +2065,9 @@ def run_oracle_for_format(format_id: str, profile_filter: str = None, case_filte
             verdict = execute_odt_valid_case(case, pkg)
         elif format_id == "fodp":
             verdict = execute_fodp_valid_case(case, pkg)
-        elif format_id == "ipynb":
-            verdict = execute_ipynb_valid_case(case, pkg)
-        elif format_id == "mtlx":
-            verdict = execute_mtlx_valid_case(case, pkg)
-        elif format_id == "nrrd":
-            verdict = execute_nrrd_valid_case(case, pkg)
-        elif format_id == "safetensors":
-            verdict = execute_safetensors_valid_case(case, pkg)
-        elif format_id == "ubl":
-            verdict = execute_ubl_valid_case(case, pkg)
-        elif format_id == "xliff":
-            verdict = execute_xliff_valid_case(case, pkg)
+        elif format_id in ENRICHED_LOADERS:
+            verdict = execute_enriched_generic(
+                sys.modules[__name__], case, pkg, format_id, *ENRICHED_LOADERS[format_id])
         else:
             verdict = make_verdict(
                 oracle_id=oracle_id, oracle_version=pkg["oracle_version"],

@@ -5,7 +5,6 @@ oracle_version: 1
 family: imaging
 generated_at: '2026-06-26'
 generator_skill: oracle-layer-hardening-mission
-status: VERIFIED
 authority:
   specification_refs:
   - id: NETPBM-SPEC
@@ -17,8 +16,8 @@ authority:
     note: 'PBM is 1-bit bitmap. Magic: P1 (ASCII) or P4 (binary). Width height then
       pixel data.'
   authorized_fact_refs:
-  - FACT-PBM-001
-  - FACT-PBM-002
+  - SAL-PBM-00001
+  - SAL-PBM-00002
   requirement_refs: []
   capability_refs:
   - pbm:parse

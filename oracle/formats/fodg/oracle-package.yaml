@@ -5,7 +5,6 @@ oracle_version: 1
 family: drawing
 generated_at: '2026-06-26'
 generator_skill: oracle-layer-hardening-mission
-status: VERIFIED
 authority:
   specification_refs:
   - id: ODF-1-3-PART3
@@ -15,9 +14,9 @@ authority:
     legal_category: 1
     authority_class: SPEC_NORMATIVE
   authorized_fact_refs:
-  - FACT-FODG-001
-  - FACT-FODG-002
-  - FACT-FODG-003
+  - SAL-FODG-00001
+  - SAL-FODG-00002
+  - SAL-FODG-00003
   authority_summary: 'FODG is the flat (single-file) variant of ODF Graphics (ODG).
     Root element is <office:document> with office:mimetype attribute set to application/vnd.oasis.opendocument.graphics-flat-xml.
 
@@ -44,7 +43,7 @@ valid_cases:
     - ${input_ref}
     expect_type: dict
     expect_no_exception: true
-  authority_ref: FACT-FODG-001
+  authority_ref: SAL-FODG-00001
   expected_model_properties:
   - property: is_fodg
     value: true
@@ -66,7 +65,7 @@ valid_cases:
     - ${input_ref}
     expect_return_value: true
     expect_no_exception: true
-  authority_ref: FACT-FODG-001
+  authority_ref: SAL-FODG-00001
   expected_model_properties:
   - property: is_fodg
     value: true
@@ -86,7 +85,7 @@ valid_cases:
     - ${input_ref}
     expect_type: dict
     expect_no_exception: true
-  authority_ref: FACT-FODG-001
+  authority_ref: SAL-FODG-00001
   expected_model_properties:
   - property: is_fodg
     value: true

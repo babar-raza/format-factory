@@ -18,8 +18,7 @@
     "comparators",
     "validators",
     "generated_at",
-    "generator_skill",
-    "status"
+    "generator_skill"
   ],
   "additionalProperties": false,
   "properties": {
@@ -197,6 +196,8 @@
     },
     "status": {
       "type": "string",
+      "deprecated": true,
+      "description": "DEPRECATED and REMOVED (TC-PA-041). This was a duplicate mirror of the registry's product_oracle_status with no producer. Oracle status now lives solely in oracle/registry/format-oracle-registry.yaml. Do not reintroduce this field — V245 fails on a reintroduced value that contradicts the registry.",
       "enum": [
         "SCAFFOLDED",
         "AUTHORITY_MAPPED",

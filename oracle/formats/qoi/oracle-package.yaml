@@ -5,7 +5,6 @@ oracle_version: 1
 family: imaging
 generated_at: '2026-06-26'
 generator_skill: oracle-layer-hardening-mission
-status: VERIFIED
 authority:
   specification_refs:
   - id: QOI-SPEC
@@ -17,8 +16,8 @@ authority:
     note: 'QOI uses ''qoif'' magic (4 bytes). Header: width (4B), height (4B), channels
       (1B), colorspace (1B).'
   authorized_fact_refs:
-  - FACT-QOI-001
-  - FACT-QOI-002
+  - SAL-QOI-00001
+  - SAL-QOI-00002
   requirement_refs: []
   capability_refs:
   - qoi:parse
