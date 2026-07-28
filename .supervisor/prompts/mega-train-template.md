@@ -49,7 +49,17 @@
 3. No direct ad-hoc `src/` edits are permitted. Use a governed skill or generated execution handoff.
 4. Every `src/` edit MUST be recorded in `reports/r90/product-code-change-ledger.json`.
 5. Run `python tools/supervisor/validate_product_code_ledger.py --ledger reports/r90/product-code-change-ledger.json` after product-code changes.
-6. Include at least one dogfood export lane and one package/install proof lane.
+6. Include one package/install proof lane. Include a dogfood export lane **only if** a
+   source-target pair is registered as `COMPATIBLE`, or as `PROJECTION` with a `loss_note`,
+   in `registry/converter-compatibility-matrix.yaml`. If no such pair is available, **omit the
+   dogfood lane** — do not substitute another pair to fill it.
+   Rationale (TC-PA-009 / PF-002): this rule previously read "include at least one dogfood
+   export lane", which mandated a converter every sprint regardless of whether a meaningful
+   pair existed. That mandate is the root cause of ~45 meaningless projections among the 222
+   converters under `src/python` (e.g. spreadsheet → 1-bit bitmap). A sprint with no
+   compatible pair left is a sprint with no dogfood work, not a sprint that needs a new
+   format pair invented for it. `/add-dogfood-export`'s Step 0 gate enforces this
+   independently and will block a converter for an unregistered or INCOMPATIBLE pair.
 
 ---
 
