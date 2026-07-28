@@ -97,3 +97,141 @@ facts:
     confidence: high
     added_by: TC-GWB-H01
     added_at: '2026-07-16'
+- fact_id: SAL-PGM-00007
+  qname: FACT-PGM-007
+  element_qname: pgm:file
+  claim: "Each PGM image is laid out in the order: magic number, whitespace, width, whitespace, height, whitespace, maxval, a single whitespace character, then the raster"
+  section: "pgm.html#format"
+  authority: "Netpbm format specification (netpbm.sourceforge.net)"
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-pgm-spec
+    section_id: "pgm.html#format"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-PA-019
+    added_at: '2026-07-17'
+- fact_id: SAL-PGM-00008
+  qname: FACT-PGM-008
+  element_qname: pgm:gray-range
+  claim: "Each gray sample is an integer from 0 to Maxval inclusive, giving Maxval+1 possible gray levels"
+  section: "pgm.html#format"
+  authority: "Netpbm format specification (netpbm.sourceforge.net)"
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-pgm-spec
+    section_id: "pgm.html#format"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-PA-019
+    added_at: '2026-07-17'
+- fact_id: SAL-PGM-00009
+  qname: FACT-PGM-009
+  element_qname: pgm:value-semantics
+  claim: "A gray value of zero is black; a value of Maxval represents CIE D65 white and the most intense value in the image"
+  section: "pgm.html#format"
+  authority: "Netpbm format specification (netpbm.sourceforge.net)"
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-pgm-spec
+    section_id: "pgm.html#format"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-PA-019
+    added_at: '2026-07-17'
+    verification_evidence: "Netpbm pgm(5): \"A value of zero is therefore black. A value of Maxval represents CIE D65 white and the most intense value in the image.\""
+- fact_id: SAL-PGM-00010
+  qname: FACT-PGM-010
+  element_qname: pgm:colorspace
+  claim: "Gray values follow the ITU-R Recommendation BT.709 gamma transfer function (approximately gamma 2.2 with a linear segment for small intensities)"
+  section: "pgm.html#format"
+  authority: "Netpbm format specification (netpbm.sourceforge.net)"
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-pgm-spec
+    section_id: "pgm.html#format"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-PA-019
+    added_at: '2026-07-17'
+- fact_id: SAL-PGM-00011
+  qname: FACT-PGM-011
+  element_qname: pgm:raster-raw
+  claim: "In the raw P5 format each gray value is represented in pure binary by either 1 byte (when Maxval is less than 256) or 2 bytes"
+  section: "pgm.html#format"
+  authority: "Netpbm format specification (netpbm.sourceforge.net)"
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-pgm-spec
+    section_id: "pgm.html#format"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-PA-019
+    added_at: '2026-07-17'
+    verification_evidence: "Netpbm pgm(5): \"Each gray value is represented in pure binary by either 1 or 2 bytes. If the Maxval is less than 256, it is 1 byte. Otherwise, it is 2 bytes.\""
+- fact_id: SAL-PGM-00012
+  qname: FACT-PGM-012
+  element_qname: pgm:byte-order
+  claim: "For 2-byte raw P5 gray values the most significant byte is stored first (big-endian)"
+  section: "pgm.html#format"
+  authority: "Netpbm format specification (netpbm.sourceforge.net)"
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-pgm-spec
+    section_id: "pgm.html#format"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-PA-019
+    added_at: '2026-07-17'
+    verification_evidence: "Netpbm pgm(5): \"The most significant byte is first.\""
+- fact_id: SAL-PGM-00013
+  qname: FACT-PGM-013
+  element_qname: pgm:raster-plain
+  claim: "In the plain P2 format each pixel in the raster is represented as an ASCII decimal number of arbitrary size"
+  section: "pgm.html#format"
+  authority: "Netpbm format specification (netpbm.sourceforge.net)"
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-pgm-spec
+    section_id: "pgm.html#format"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-PA-019
+    added_at: '2026-07-17'
+- fact_id: SAL-PGM-00014
+  qname: FACT-PGM-014
+  element_qname: pgm:comment
+  claim: "Strings starting with '#' may be comments, following the same convention as PBM"
+  section: "pgm.html#format"
+  authority: "Netpbm format specification (netpbm.sourceforge.net)"
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-pgm-spec
+    section_id: "pgm.html#format"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-PA-019
+    added_at: '2026-07-17'
+- fact_id: SAL-PGM-00015
+  qname: FACT-PGM-015
+  element_qname: pgm:line-length
+  claim: "In the plain P2 format no line of the file should be longer than 70 characters"
+  section: "pgm.html#format"
+  authority: "Netpbm format specification (netpbm.sourceforge.net)"
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-pgm-spec
+    section_id: "pgm.html#format"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-PA-019
+    added_at: '2026-07-17'

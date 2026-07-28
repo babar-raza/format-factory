@@ -2,12 +2,12 @@
   namespace_uri: urn:ietf:rfc:4180:csv
   local_name: record
   canonical_class: Csv.Record
-  spec_fact_ref: FACT-CSV-001
+  spec_fact_ref: SAL-CSV-00001
   status: implemented
   source_layer: Spec
   facade_names:
   - CsvRecord
-  python_file: src/python/csv/spec/record/record.py
+  python_file: src/python/ff_csv/spec/record/record.py
   dotnet_file: src/net/csv/Spec/CsvRecord.cs
   authority_source: informational_rfc
   spec_parser_available: false
@@ -15,12 +15,12 @@
   namespace_uri: urn:ietf:rfc:4180:csv
   local_name: field
   canonical_class: Csv.Field
-  spec_fact_ref: FACT-CSV-001
+  spec_fact_ref: SAL-CSV-00001
   status: implemented
   source_layer: Spec
   facade_names:
   - CsvField
-  python_file: src/python/csv/spec/record/field.py
+  python_file: src/python/ff_csv/spec/record/field.py
   dotnet_file: null
   authority_source: informational_rfc
   spec_parser_available: false
@@ -28,12 +28,12 @@
   namespace_uri: urn:ietf:rfc:4180:csv
   local_name: header
   canonical_class: Csv.Header
-  spec_fact_ref: FACT-CSV-001
+  spec_fact_ref: SAL-CSV-00001
   status: implemented
   source_layer: Spec
   facade_names:
   - CsvHeader
-  python_file: src/python/csv/spec/record/header.py
+  python_file: src/python/ff_csv/spec/record/header.py
   dotnet_file: null
   authority_source: informational_rfc
   spec_parser_available: false

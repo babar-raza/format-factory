@@ -1,0 +1,1101 @@
+contract_version: '1.0'
+generated_for: Format Factory feature planning and implementation agents
+normative_language:
+  MUST: Required for a production-complete library.
+  SHOULD: Expected unless a documented format-specific reason prevents it.
+  MAY: Optional or advanced capability.
+interpretation_rules:
+- Do not force one generic document API onto all formats.
+- Use a shared lifecycle API, but expose domain-native models and operations.
+- A parser-only implementation is not a complete library.
+- Round-trip preservation means load-save must not silently drop valid constructs, extensions, metadata, ordering constraints,
+  or payloads.
+- Validation must include semantic rules that schemas alone cannot express.
+- Unknown future-version or extension content must be preserved whenever safe and structurally possible.
+- Execution, rendering, shader generation, signing, and external resource resolution must be opt-in.
+shared_library_contract:
+  lifecycle_api:
+  - MUST provide load(path), load(stream), load_bytes(bytes), save(path), save(stream), and to_bytes() where applicable.
+  - MUST expose detected format version and declared version separately.
+  - MUST support strict and tolerant read modes.
+  - MUST expose validation as a first-class operation, not only as exceptions raised during parsing.
+  - MUST return structured diagnostics with code, severity, message, location, rule/source, and suggested repair.
+  - MUST offer deterministic serialization for reproducible builds and stable tests.
+  - MUST distinguish lossless round-trip mode from normalized/canonical output mode.
+  - MUST never resolve network resources, execute code, load plugins, or follow external references by default.
+  preservation:
+  - MUST preserve unknown attributes, elements, namespaces, metadata, and extension payloads unless explicitly removed.
+  - MUST preserve comments and processing instructions when the underlying format permits them and lossless mode is requested.
+  - MUST preserve the distinction between absent optional information and an explicit default/empty value.
+  - MUST report any construct that cannot be preserved before saving.
+  security:
+  - MUST provide configurable limits for input size, nesting depth, object count, decompressed size, referenced-file count,
+    and total resolved bytes.
+  - MUST prevent path traversal and unsafe absolute-path access when resolving detached or included resources.
+  - MUST disable XML external entities and unsafe DTD processing by default.
+  - MUST treat embedded scripts, notebook outputs, signatures, shader code, and external references as untrusted data.
+  - MUST avoid catastrophic regular expressions, integer-overflow size calculations, and unbounded recursion.
+  quality:
+  - MUST test official valid samples, official invalid samples where available, synthetic edge cases, malformed inputs, and
+    hostile inputs.
+  - MUST prove parse-save-parse semantic equivalence.
+  - MUST prove deterministic output with repeated serialization.
+  - MUST fuzz parsers and reference resolvers.
+  - MUST publish a capability manifest stating supported versions, constructs, encodings/modules, limitations, and lossless
+    guarantees.
+formats:
+  UBL:
+    format_identity:
+      name: OASIS Universal Business Language
+      target_standard: UBL 2.4
+      format_family: Schema-defined XML business documents
+      primary_product_role: Create, read, edit, validate, query, sign/preserve signatures, and exchange procurement, invoicing,
+        logistics, transport, and related business documents.
+    scope_decision:
+      production_complete: Support every UBL 2.4 maindoc schema and all referenced common component schemas.
+      recommended_first_wave:
+      - Invoice
+      - CreditNote
+      - DebitNote
+      - Order
+      - OrderChange
+      - OrderCancellation
+      - OrderResponse
+      - OrderResponseSimple
+      - DespatchAdvice
+      - ReceiptAdvice
+      - ApplicationResponse
+      - Catalogue
+      - CatalogueRequest
+      - Statement
+      - RemittanceAdvice
+      later_waves:
+      - Tendering and procurement documents
+      - Transportation, freight, customs, waybill, manifest, and status documents
+      - Forecasting, inventory, replenishment, and fulfilment documents
+      - Certificate, qualification, exception, and reporting documents
+    required_capabilities:
+    - id: UBL-PARSE-001
+      level: MUST
+      feature: Namespace-aware XML parsing
+      requirements:
+      - Recognize every UBL 2.4 document root by QName, not by local name alone.
+      - Support default and prefixed namespaces without changing semantic identity.
+      - Reject namespace spoofing and ambiguous QName resolution.
+      - Disable unsafe external entities and DTD expansion by default.
+    - id: UBL-MODEL-001
+      level: MUST
+      feature: Generated, QName-aligned typed object model
+      requirements:
+      - Generate classes from maindoc and common XSDs.
+      - Reflect schema hierarchy, element order, attributes, simple types, minOccurs, maxOccurs, choices, substitutions, and
+        inheritance.
+      - Use stable QName-to-class and QName-to-property registries.
+      - Represent CommonBasicComponents as strongly typed values while retaining lexical form where round-trip fidelity requires
+        it.
+      - Represent CommonAggregateComponents as typed composites.
+    - id: UBL-DOC-001
+      level: MUST
+      feature: Document factory and root-specific types
+      requirements:
+      - Expose a distinct root document class for each UBL maindoc type.
+      - Provide create_empty(document_type), detect_document_type(), and supported_document_types().
+      - Prevent creation of structurally impossible roots.
+    - id: UBL-EXT-001
+      level: MUST
+      feature: UBL extension preservation and authoring
+      requirements:
+      - Read and write UBLExtensions and extension content without data loss.
+      - Preserve arbitrary extension namespaces and payloads.
+      - Allow registered extension adapters to expose typed extension models.
+      - Do not interpret unknown extension payloads as core UBL.
+    - id: UBL-CORE-001
+      level: MUST
+      feature: Business component editing
+      requirements:
+      - CRUD for parties, party identifiers, contacts, addresses, tax schemes, payment means, payment terms, references, periods,
+        quantities, prices, allowances/charges, tax totals, monetary totals, document lines, shipments, deliveries, packages,
+        and attachments.
+      - Provide domain helpers without hiding underlying UBL structures.
+      - Support line insertion, removal, movement, and renumbering while preserving references.
+    - id: UBL-AMOUNT-001
+      level: MUST
+      feature: Monetary, quantity, identifier, date, and code value types
+      requirements:
+      - Use decimal arithmetic for amounts and quantities.
+      - Retain currencyID, unitCode, listID, schemeID, schemeAgencyID, languageID, and other supplementary attributes.
+      - Preserve timezone and lexical precision for date/time values.
+      - Provide explicit rounding policies; never silently use binary floating point for monetary calculations.
+    - id: UBL-PROFILE-001
+      level: MUST
+      feature: Customization and profile handling
+      requirements:
+      - Expose UBLVersionID, CustomizationID, ProfileID, ProfileExecutionID, and related identifiers.
+      - Allow profile-specific validators and rulesets to be plugged in.
+      - Do not claim conformance to Peppol, country CIUS, tax authority, or industry profiles unless that profile ruleset
+        is installed and passes.
+    - id: UBL-VALIDATE-001
+      level: MUST
+      feature: Layered validation
+      requirements:
+      - 'Layer 1: XML well-formedness and namespace checks.'
+      - 'Layer 2: UBL 2.4 XSD validation.'
+      - 'Layer 3: schema-independent UBL model constraints and referential integrity.'
+      - 'Layer 4: official code-list and context-value checks where applicable.'
+      - 'Layer 5: optional customization/profile business rules.'
+      - Return all diagnostics where possible rather than stopping at the first error.
+    - id: UBL-CODELIST-001
+      level: MUST
+      feature: Code-list infrastructure
+      requirements:
+      - Load official genericode/code-list resources and map them to coded properties.
+      - Validate list identifiers, agencies, versions, and allowed values.
+      - Support user-supplied or profile-supplied code lists.
+      - Cache immutable code lists and make validation deterministic/offline.
+    - id: UBL-REF-001
+      level: MUST
+      feature: Reference and identifier integrity
+      requirements:
+      - Index IDs and referenced document/line/item identifiers.
+      - Detect duplicate identifiers, broken references, and inconsistent line references.
+      - Provide safe ID regeneration with a reference rewrite map.
+    - id: UBL-CALC-001
+      level: SHOULD
+      feature: Business-total calculation and reconciliation
+      requirements:
+      - Calculate line extensions, allowances/charges, taxes, payable amounts, and selected logistics totals using explicit
+        policies.
+      - Compare declared totals to calculated totals with configurable tolerances and rounding rules.
+      - Never mutate declared totals during validation unless repair mode is explicitly requested.
+    - id: UBL-ATTACH-001
+      level: MUST
+      feature: Embedded and external attachments
+      requirements:
+      - Support embedded binary objects and external URI references.
+      - Expose media type, filename, encoding, description, and checksum metadata.
+      - External retrieval must be opt-in and governed by URI schemes, allowlists, byte limits, and timeouts.
+    - id: UBL-SIGN-001
+      level: MUST
+      feature: Signature-safe preservation
+      requirements:
+      - Preserve enveloped and detached XML signature structures and XAdES-related content.
+      - Report when an edit invalidates an existing signature.
+      - Do not rewrite signed subtrees in lossless mode.
+    - id: UBL-SIGN-002
+      level: SHOULD
+      feature: Signature verification and creation
+      requirements:
+      - Verify XMLDSig references, digests, signature value, certificate chain, and signed-property consistency through a
+        pluggable crypto provider.
+      - Support signing profiles only when explicitly configured.
+      - Separate cryptographic validity from business/profile conformance.
+    - id: UBL-QUERY-001
+      level: MUST
+      feature: Domain and QName query APIs
+      requirements:
+      - Find components by QName, type, ID, business role, line identifier, party identifier, item identifier, and document
+        reference.
+      - Provide path-aware results with source locations.
+      - Offer read-only indexed views for large documents.
+    - id: UBL-WRITE-001
+      level: MUST
+      feature: Schema-order-aware serialization
+      requirements:
+      - Write elements in schema-valid order.
+      - Preserve extension ordering and significant lexical values in lossless mode.
+      - Offer canonical namespace-prefix and formatting policies.
+      - Never emit an invalid element merely because a property was set out of order.
+    - id: UBL-UPGRADE-001
+      level: SHOULD
+      feature: Version inspection and migration framework
+      requirements:
+      - Detect older UBL versions where practical.
+      - Provide explicit migration reports describing mapped, dropped, synthesized, and unresolved constructs.
+      - Never silently label an older document as UBL 2.4 without structural migration and validation.
+    - id: UBL-DIFF-001
+      level: SHOULD
+      feature: Semantic diff and patch
+      requirements:
+      - Compare documents by business identity and typed value, not only raw XML text.
+      - Report path, old value, new value, and business impact.
+      - Support guarded patch application with preconditions.
+    suggested_public_api:
+      types:
+      - UblDocument
+      - UblDocumentType
+      - UblValidationProfile
+      - UblDiagnostic
+      - UblCodeListRegistry
+      - UblExtensionRegistry
+      - UblSignatureService
+      - UblDiff
+      operations:
+      - UblDocument.load(...)
+      - UblDocument.create(document_type)
+      - document.validate(options)
+      - document.calculate_totals(policy)
+      - document.reconcile_totals(policy)
+      - document.find_by_id(id)
+      - document.query(qname_or_domain_selector)
+      - document.save(..., mode='lossless|normalized')
+      - document.diff(other)
+    test_contract:
+    - Compile and load every UBL 2.4 maindoc and common schema.
+    - Parse and validate at least one official sample for every maindoc type.
+    - Run official good/bad syntax, model, and code validation cases.
+    - Round-trip every official sample and compare canonicalized XML plus typed semantics.
+    - Test UBLExtensions with unknown namespaces and large payloads.
+    - Test enveloped and detached signature preservation.
+    - Test namespace prefix variation, reordered attributes, empty optional fields, code-list failures, duplicate IDs, broken
+      references, and extreme decimal values.
+    release_gates:
+    - All UBL 2.4 roots recognized by QName.
+    - All official schemas load without unsupported constructs.
+    - No data loss across official-sample round trips.
+    - Layered validation has separate machine-readable results.
+    - Capability manifest lists document-type coverage and profile limitations.
+  XLIFF:
+    format_identity:
+      name: OASIS XML Localisation Interchange File Format
+      target_standard: XLIFF 2.2 Core and Extended
+      compatibility: Read, preserve, validate, and write XLIFF 2.0, 2.1, and 2.2. Treat XLIFF 1.2 as a separate compatibility
+        adapter.
+      format_family: XML localization interchange and workflow
+      primary_product_role: Create, inspect, segment, translate, annotate, validate, merge, and preserve localization assets.
+    required_capabilities:
+    - id: XLF-PARSE-001
+      level: MUST
+      feature: Version-aware namespace parsing
+      requirements:
+      - Recognize XLIFF 2.0, 2.1, and 2.2 namespaces and declared versions.
+      - Validate namespace/version consistency.
+      - Preserve custom extension namespaces and attributes.
+      - Do not treat XLIFF 1.2 as XLIFF 2.x.
+    - id: XLF-MODEL-001
+      level: MUST
+      feature: Complete core structural model
+      requirements:
+      - Model xliff, file, group, unit, segment, ignorable, skeleton, notes, source, target, and core metadata.
+      - Preserve tree order, IDs, references, inheritance, and scope.
+      - Support multiple files, nested groups, units, segments, and ignorable parts.
+    - id: XLF-INLINE-001
+      level: MUST
+      feature: Inline-code model
+      requirements:
+      - Support cp, ph, pc, sc, ec, mrk, sm, and em inline constructs.
+      - Preserve paired-code relationships, code identity, nesting, overlap markers, subflows, equivalence data, and original-data
+        references.
+      - Expose inline content as a token tree/sequence rather than flattening it to plain text.
+      - Prevent edits that orphan, duplicate, cross, or illegally reorder paired codes.
+    - id: XLF-TEXT-001
+      level: MUST
+      feature: Source/target text editing
+      requirements:
+      - Read and edit source and target content while preserving inline-code positions.
+      - Expose plain-text projection and token-aware projection.
+      - Support target creation from source with explicit code-copy policy.
+      - Preserve xml:lang, xml:space, whitespace, bidirectional markers, and Unicode code points.
+    - id: XLF-SEG-001
+      level: MUST
+      feature: Segmentation operations
+      requirements:
+      - Split, join, reorder where legal, and mark segments/ignorable content.
+      - Maintain IDs, state, inline-code validity, annotations, and references during segmentation changes.
+      - Provide a segment mapping report after structural edits.
+      - Implement source/target segmentation consistency checks.
+    - id: XLF-STATE-001
+      level: MUST
+      feature: Translation-state workflow
+      requirements:
+      - Expose target state and substate without inventing proprietary meanings.
+      - Allow configurable workflow transitions and validation.
+      - Record who/what changed content through extension or module metadata rather than corrupting core semantics.
+    - id: XLF-NOTE-001
+      level: MUST
+      feature: Notes and annotations
+      requirements:
+      - Support note groups, priorities, categories, and references.
+      - Support core annotations and spans with valid marker relationships.
+      - Preserve overlapping annotation structures supported by start/end markers.
+    - id: XLF-MODULE-001
+      level: MUST
+      feature: Translation Candidates module
+      requirements:
+      - Read, write, rank, add, remove, and preserve candidate matches.
+      - Expose candidate source/target, similarity/quality, provenance, origin, and references.
+    - id: XLF-MODULE-002
+      level: MUST
+      feature: Glossary module
+      requirements:
+      - Read, write, query, and preserve glossary entries, terms, translations, definitions, and references.
+      - Associate glossary terms with units and spans without losing core content.
+    - id: XLF-MODULE-003
+      level: MUST
+      feature: Format Style module
+      requirements:
+      - Preserve and expose style hints associated with inline and structural content.
+      - Validate references and inherited style information.
+    - id: XLF-MODULE-004
+      level: MUST
+      feature: Metadata module
+      requirements:
+      - Represent metadata groups and arbitrary metadata fields without flattening hierarchy.
+      - Preserve unknown metadata categories and values.
+    - id: XLF-MODULE-005
+      level: MUST
+      feature: Resource Data module
+      requirements:
+      - Represent resource data, references, source data, and binary/text payload metadata.
+      - Resolve external resources only through an opt-in secure resolver.
+    - id: XLF-MODULE-006
+      level: MUST
+      feature: Size and Length Restriction module
+      requirements:
+      - Represent storage, size, length, and profile constraints.
+      - Calculate constraints with Unicode-aware counting policies.
+      - Report actual, allowed, unit, profile, and violating span.
+    - id: XLF-MODULE-007
+      level: MUST
+      feature: Validation module
+      requirements:
+      - Represent validation rules, rule sets, and assertions.
+      - Execute supported rule types and report unsupported rules explicitly.
+      - Keep format validation separate from translation-quality checks.
+    - id: XLF-MODULE-008
+      level: MUST
+      feature: ITS module
+      requirements:
+      - Preserve and expose XLIFF mappings for Internationalization Tag Set annotations.
+      - Support inherited/local data category resolution where defined.
+      - Keep unknown ITS content round-trip safe.
+    - id: XLF-MODULE-009
+      level: MUST
+      feature: Plural, Gender, and Select module
+      requirements:
+      - Represent selector declarations, cases, defaults, and nested selections.
+      - Validate selector references, allowed values, and completeness rules.
+      - Provide APIs that do not flatten grammatical variants into unrelated units.
+    - id: XLF-VALIDATE-001
+      level: MUST
+      feature: Core and module validation
+      requirements:
+      - Check XML well-formedness and official schemas.
+      - Check semantic constraints not expressible in XSD.
+      - Validate IDs, references, inline-code pairing, marker pairing, source/target content consistency, module constraints,
+        inherited values, and version/module namespace compatibility.
+      - Offer document, file, unit, and segment validation scopes.
+    - id: XLF-ROLE-001
+      level: SHOULD
+      feature: Agent-role APIs
+      requirements:
+      - Provide explicit operation profiles for Extractor, Merger, Writer, Modifier, and Enricher behavior.
+      - Validate that an operation profile changes only constructs it is permitted to change.
+      - Produce a change ledger for each processing pass.
+    - id: XLF-MERGE-001
+      level: SHOULD
+      feature: Extraction and merge framework
+      requirements:
+      - Offer adapter interfaces for extracting source formats into XLIFF and merging targets back.
+      - Store skeleton/original-data mappings required for reversible merge.
+      - Detect source drift and stale skeletons before merge.
+      - Do not claim generic source-format extraction without format-specific adapters.
+    - id: XLF-QA-001
+      level: SHOULD
+      feature: Localization quality checks
+      requirements:
+      - Check missing targets, unchanged targets, placeholder/code mismatches, whitespace drift, punctuation drift, number/date
+        mismatch, glossary adherence, length violations, duplicate translations, and inconsistent translations.
+      - Keep QA warnings separate from XLIFF conformance errors.
+      - Make language-specific checks pluggable.
+    - id: XLF-WRITE-001
+      level: MUST
+      feature: Lossless and normalized serialization
+      requirements:
+      - Preserve custom extensions and module content.
+      - Write schema-valid order and namespaces.
+      - Offer deterministic prefixing and formatting.
+      - Report any version downgrade loss before writing.
+    suggested_public_api:
+      types:
+      - XliffDocument
+      - XliffFile
+      - XliffGroup
+      - XliffUnit
+      - XliffSegment
+      - InlineToken
+      - ModuleRegistry
+      - XliffDiagnostic
+      - XliffQaReport
+      - XliffChangeLedger
+      operations:
+      - XliffDocument.load(...)
+      - document.validate(scope, modules=True)
+      - document.units()
+      - unit.segments()
+      - segment.get_source_tokens()
+      - segment.get_target_tokens()
+      - segment.set_target_tokens(tokens)
+      - unit.split_segment(...)
+      - unit.join_segments(...)
+      - document.run_qa(profile)
+      - document.save(..., mode='lossless|normalized')
+    test_contract:
+    - Validate official core and extended examples for XLIFF 2.0, 2.1, and 2.2.
+    - Build a matrix covering every core structural and inline element.
+    - Build a matrix covering all nine optional modules.
+    - Test deeply nested and overlapping markers, paired-code errors, invalid references, whitespace preservation, bidi content,
+      supplementary Unicode code points, custom namespaces, and module inheritance.
+    - Round-trip custom extensions byte-semantically where exact lexical preservation is promised.
+    - Test extraction/merge adapters with source drift and broken skeleton references.
+    release_gates:
+    - Core 2.0/2.1/2.2 read-write-validation passes.
+    - All nine XLIFF 2.2 modules are either fully implemented or explicitly marked unsupported; production-complete status
+      requires all nine.
+    - Inline code and segmentation operations are proven not to corrupt mergeability.
+    - Custom extensions survive load-save unchanged in lossless mode.
+  IPYNB:
+    format_identity:
+      name: Jupyter Notebook format
+      target_standard: nbformat 4, schema minor 5
+      reference_implementation_line: nbformat 5.10.x
+      format_family: JSON document containing cells, metadata, attachments, and rich outputs
+      primary_product_role: Create, read, edit, validate, sanitize, trust, diff, merge, execute through an optional adapter,
+        and export notebooks.
+    required_capabilities:
+    - id: NB-PARSE-001
+      level: MUST
+      feature: Lossless JSON notebook parsing
+      requirements:
+      - Parse notebook-level nbformat and nbformat_minor.
+      - Support JSON text from path, stream, bytes, and in-memory objects.
+      - Accept multiline text fields represented as a string or list of strings and normalize them in the object API.
+      - Preserve unknown fields and metadata namespaces.
+      - Preserve numeric and Unicode JSON values without lossy coercion.
+    - id: NB-MODEL-001
+      level: MUST
+      feature: Notebook and cell object model
+      requirements:
+      - Model markdown, code, and raw cells.
+      - Expose source, metadata, attachments, execution_count, and outputs where valid.
+      - Allow future/unknown cell types to be preserved even when not semantically editable.
+    - id: NB-ID-001
+      level: MUST
+      feature: Cell ID management
+      requirements:
+      - Validate required cell IDs for schema 4.5.
+      - Enforce uniqueness and permitted syntax/length.
+      - Generate stable IDs for older notebooks only through an explicit upgrade operation.
+      - Rewrite ID-based references through a mapping when IDs change.
+    - id: NB-OUTPUT-001
+      level: MUST
+      feature: Complete output support
+      requirements:
+      - Support stream, display_data, execute_result, and error outputs.
+      - Preserve execution_count, traceback arrays, names, text, metadata, and transient data.
+      - Support arbitrary MIME bundles, including text, HTML, images, JSON, LaTeX, JavaScript, SVG, PDF, and vendor MIME types.
+      - Never execute or render active output content during parsing.
+    - id: NB-ATTACH-001
+      level: MUST
+      feature: Cell attachments
+      requirements:
+      - Read, add, remove, rename, and validate markdown/raw-cell attachments.
+      - Validate attachment URI references and MIME bundles.
+      - Detect orphaned attachments and missing attachment targets.
+    - id: NB-META-001
+      level: MUST
+      feature: Metadata preservation and typed common metadata
+      requirements:
+      - Preserve arbitrary notebook, cell, and output metadata.
+      - Provide typed adapters for kernelspec, language_info, authors, tags, slideshow, widgets, execution, and common Jupyter
+        namespaces.
+      - Never delete unknown metadata during normalization.
+    - id: NB-EDIT-001
+      level: MUST
+      feature: Cell collection editing
+      requirements:
+      - Insert, append, remove, move, copy, clone, and replace cells.
+      - Search by ID, type, tag, metadata, source text, execution count, and output MIME type.
+      - Provide bulk operations with an undo/change report.
+    - id: NB-CLEAN-001
+      level: MUST
+      feature: Output and execution-state cleanup
+      requirements:
+      - Clear all outputs, selected output types, or outputs from selected cells.
+      - Reset execution counts consistently.
+      - Strip transient metadata through configurable rules.
+      - Provide dry-run reporting before destructive cleanup.
+    - id: NB-VALIDATE-001
+      level: MUST
+      feature: Schema and semantic validation
+      requirements:
+      - Validate against the schema matching nbformat and nbformat_minor.
+      - Check cell ID uniqueness, field/type placement, MIME bundle shape, attachments, execution counts, output structure,
+        and JSON serializability.
+      - Support current-minor validation and declared-minor validation modes.
+      - Report forward-compatible unknown fields separately from errors.
+    - id: NB-UPGRADE-001
+      level: MUST
+      feature: Version conversion
+      requirements:
+      - Upgrade older notebook versions through explicit conversion paths.
+      - Where supported, downgrade only after reporting unsupported constructs and expected loss.
+      - Preserve unknown future additions when reading a higher minor version.
+      - Provide a conversion ledger.
+    - id: NB-TRUST-001
+      level: MUST
+      feature: Trust and signature integration
+      requirements:
+      - Compute, store, verify, and revoke notebook trust signatures through a pluggable notebook-notary backend.
+      - Expose trusted/untrusted state per notebook and relevant outputs.
+      - Never mark a modified notebook trusted automatically.
+      - Keep cryptographic trust separate from schema validity.
+    - id: NB-SANITIZE-001
+      level: MUST
+      feature: Active-content sanitization
+      requirements:
+      - Provide configurable sanitizers for HTML, SVG, JavaScript, external links, embedded data, and vendor outputs.
+      - Offer remove, quarantine, and preserve-but-mark-untrusted modes.
+      - Do not silently sanitize in lossless mode.
+    - id: NB-EXEC-001
+      level: SHOULD
+      feature: Optional execution adapter
+      requirements:
+      - Execution must be in a separate opt-in package/service.
+      - Support kernel selection, working directory, timeout, per-cell timeout, error policy, environment description, and
+        output capture.
+      - Use an isolated process/container boundary where possible.
+      - Return an execution report with cell IDs, durations, errors, and produced outputs.
+      - Never execute during load, validate, diff, or save.
+    - id: NB-EXPORT-001
+      level: SHOULD
+      feature: Exporter integration
+      requirements:
+      - Provide adapter interfaces for HTML, Markdown, script, PDF, slides, and other exporters.
+      - Keep exporter-specific resources and preprocessors outside the core parser.
+      - Return main output plus ancillary resources.
+    - id: NB-DIFF-001
+      level: MUST
+      feature: Notebook-aware diff
+      requirements:
+      - Compare cells by ID with move detection.
+      - Distinguish source, metadata, attachments, execution count, and outputs.
+      - Allow ignore policies for outputs, execution counts, transient metadata, or trusted signatures.
+      - Produce machine-applicable patches with preconditions.
+    - id: NB-MERGE-001
+      level: SHOULD
+      feature: Three-way merge
+      requirements:
+      - Merge by stable cell IDs and notebook structure.
+      - Detect move/edit, delete/edit, output/output, and metadata conflicts.
+      - Never hide conflicts inside executable source.
+      - Produce an explicit conflict report and optionally conflict-marked notebook.
+    - id: NB-WRITE-001
+      level: MUST
+      feature: Deterministic JSON serialization
+      requirements:
+      - Write valid UTF-8 JSON with configurable indentation and trailing newline.
+      - Offer canonical key ordering without changing array/cell order.
+      - Retain unknown fields.
+      - Never convert binary MIME payloads incorrectly.
+    suggested_public_api:
+      types:
+      - Notebook
+      - Cell
+      - MarkdownCell
+      - CodeCell
+      - RawCell
+      - NotebookOutput
+      - MimeBundle
+      - NotebookValidator
+      - NotebookNotary
+      - NotebookDiff
+      - ExecutionReport
+      operations:
+      - Notebook.load(...)
+      - Notebook.create()
+      - notebook.validate(mode='declared|current')
+      - notebook.cells.find(...)
+      - notebook.clear_outputs(filter=...)
+      - notebook.sanitize(policy)
+      - notebook.sign(notary)
+      - notebook.verify_trust(notary)
+      - notebook.convert(target_version)
+      - notebook.diff(other, policy)
+      - executor.execute(notebook, options)
+      - exporter.export(notebook, format, options)
+    test_contract:
+    - Schema fixtures for every cell and output type.
+    - Notebooks at older major versions and nbformat 4 minor versions through 4.5.
+    - Future unknown fields and vendor MIME bundles.
+    - Cell ID generation, duplicate IDs, invalid IDs, and move-aware diff.
+    - Large base64 attachments, malformed MIME bundles, HTML/SVG/JavaScript sanitization, and trust invalidation after edits.
+    - Execution tests must run only in isolated test environments and cover timeout, kernel failure, allowed errors, and partial
+      output.
+    release_gates:
+    - nbformat 4.5 schema compliance.
+    - No loss of unknown metadata or MIME bundle entries.
+    - Cell ID and trust behavior proven.
+    - Execution is physically and logically separated from parsing.
+    - Notebook-aware diff is stable under cell moves.
+  MTLX:
+    format_identity:
+      name: MaterialX
+      target_standard: MaterialX Specification 1.39
+      compatibility_target: MaterialX 1.39.x documents and standard libraries, including current patch-line compatibility
+      format_family: XML material, shader, node-graph, look, and geometry-assignment exchange
+      primary_product_role: Create, read, edit, validate, traverse, transform, resolve, and optionally generate shaders or
+        bake materials.
+    scope_decision:
+      core_library: Document model, XML I/O, graph model, type system, references, libraries, validation, upgrades, materials,
+        looks, variants, geometry metadata, units, and color-space metadata.
+      advanced_packages:
+      - Shader generation
+      - Material translation
+      - Texture baking
+      - Rendering and preview
+      - OpenColorIO integration
+      - Digital-content-creation application adapters
+    required_capabilities:
+    - id: MTLX-PARSE-001
+      level: MUST
+      feature: Secure MaterialX XML parsing
+      requirements:
+      - Recognize materialx root and version.
+      - Support UTF-8 XML, comments, namespaces, and XInclude.
+      - Disable arbitrary external entities.
+      - Expose source URI and source line/column where parser support permits.
+    - id: MTLX-INCLUDE-001
+      level: MUST
+      feature: Governed XInclude and search-path resolution
+      requirements:
+      - Resolve includes relative to the document and configured search paths.
+      - Detect include cycles and repeated inclusion.
+      - Enforce maximum include depth, file count, and total bytes.
+      - Block path traversal, unapproved absolute paths, and network access by default.
+      - Offer unresolved-reference mode so documents can still be inspected.
+    - id: MTLX-MODEL-001
+      level: MUST
+      feature: Lossless document object model
+      requirements:
+      - Model documents, elements, categories, names, types, attributes, child order, namespaces, and source provenance.
+      - Preserve unknown elements/attributes for forward compatibility.
+      - Expose generic element APIs plus typed wrappers.
+    - id: MTLX-TYPE-001
+      level: MUST
+      feature: MaterialX value and type system
+      requirements:
+      - Support scalar, vector, color, matrix, string, filename, array, and other standard MaterialX types.
+      - Parse and serialize lexical values exactly enough for lossless round trips.
+      - Support typedefs and structured/member types.
+      - Validate value/type compatibility and array/member shape.
+    - id: MTLX-NAME-001
+      level: MUST
+      feature: Naming and namespace semantics
+      requirements:
+      - Validate names and qualified references.
+      - Resolve namespaces, inherited namespace scope, and cross-library references.
+      - Support safe rename with reference rewriting and collision detection.
+    - id: MTLX-GRAPH-001
+      level: MUST
+      feature: Node and node-graph editing
+      requirements:
+      - Create, remove, clone, rename, and query nodes, inputs, outputs, and nodegraphs.
+      - Connect and disconnect ports with type checks.
+      - Support multiple outputs and interface connections.
+      - Detect directed cycles and invalid upstream references.
+      - Provide topological order, upstream/downstream traversal, dependency closure, and dead-node detection.
+    - id: MTLX-DEF-001
+      level: MUST
+      feature: NodeDef and implementation resolution
+      requirements:
+      - Resolve node instances to nodedefs by category, type, version, target, and namespace.
+      - Support default versions and explicit versions.
+      - Resolve implementations, implementation graphs, inheritance, and target compatibility.
+      - Report ambiguous, missing, or incompatible matches.
+    - id: MTLX-LIB-001
+      level: MUST
+      feature: Standard-library management
+      requirements:
+      - Load standard definitions, implementations, targets, types, units, and associated libraries.
+      - Support ordered search paths and library precedence.
+      - Cache parsed immutable libraries by version and content hash.
+      - Report shadowed definitions and version mismatches.
+    - id: MTLX-MAT-001
+      level: MUST
+      feature: Shader and material model
+      requirements:
+      - Model shader nodes, material nodes, surfaces, volumes, displacement, light-related definitions where present, and
+        their connections.
+      - Resolve material inputs through bound interfaces and upstream graphs.
+      - Provide material dependency and texture dependency inventories.
+    - id: MTLX-LOOK-001
+      level: MUST
+      feature: Looks, collections, and assignments
+      requirements:
+      - Model looks, look groups where supported, collections, material assignments, property assignments, visibility, and
+        inheritance.
+      - Resolve assignment precedence for a geometry path through applicable collections and looks.
+      - Report conflicting or unreachable assignments.
+    - id: MTLX-GEOM-001
+      level: MUST
+      feature: Geometry metadata and tokens
+      requirements:
+      - Represent geometry paths, collections, geometry properties, coordinate spaces, and filename-related tokens.
+      - Support file prefixes, geometric prefixes, substitutions, and UDIM/UV-tile style token resolution where defined.
+      - Keep actual geometry loading outside the core library unless supplied by an adapter.
+    - id: MTLX-VARIANT-001
+      level: MUST
+      feature: Variants
+      requirements:
+      - Model variant sets, variants, assignments, inheritance, and selections.
+      - Apply a variant selection to a resolved view without destructively rewriting the source by default.
+      - Detect invalid selection names and conflicting assignments.
+    - id: MTLX-COLOR-001
+      level: MUST
+      feature: Color-space metadata
+      requirements:
+      - Preserve document, node, input, and value color-space declarations.
+      - Resolve inherited color-space metadata.
+      - Provide an adapter interface for color transforms.
+      - Do not numerically transform colors unless a color-management backend and explicit policy are supplied.
+    - id: MTLX-UNIT-001
+      level: MUST
+      feature: Units and unit conversion
+      requirements:
+      - Load unit types, unit definitions, and converters.
+      - Resolve declared and inherited units.
+      - Convert values only through explicit operations and preserve original units in lossless mode.
+    - id: MTLX-VALIDATE-001
+      level: MUST
+      feature: Structural and semantic validation
+      requirements:
+      - Validate XML/root/version structure.
+      - Validate required attributes, names, types, values, child rules, and references.
+      - Validate graph acyclicity, port compatibility, nodedef matches, implementations, inheritance, materials, assignments,
+        variants, units, namespaces, and include resolution.
+      - Return stable diagnostic codes and element paths.
+    - id: MTLX-UPGRADE-001
+      level: MUST
+      feature: Document upgrade framework
+      requirements:
+      - Detect older document versions.
+      - Apply ordered, idempotent upgrade transforms.
+      - Produce a migration ledger for renamed nodes, ports, types, values, defaults, and structural changes.
+      - Preserve the original until upgraded output validates.
+    - id: MTLX-TRANSFORM-001
+      level: SHOULD
+      feature: Graph transforms
+      requirements:
+      - Flatten selected nodegraphs, import referenced definitions, clone subgraphs, prune unused nodes, normalize interfaces,
+        and extract reusable graphs.
+      - Each transform must preserve type correctness and provide an old-to-new path map.
+    - id: MTLX-SHADER-001
+      level: SHOULD
+      feature: Shader generation adapters
+      requirements:
+      - Provide a target-independent generation interface.
+      - Allow backends such as GLSL/ESSL, Vulkan GLSL, Metal, WGSL, OSL, MDL, and Slang according to available implementations.
+      - Resolve nodedef implementations, resources, uniforms, inputs, outputs, and target-specific options.
+      - Return source code, stage information, bindings, dependencies, diagnostics, and a reproducibility manifest.
+      - Never execute or compile generated code in the core parser.
+    - id: MTLX-BAKE-001
+      level: MAY
+      feature: Texture baking
+      requirements:
+      - Bake supported graph outputs to textures through a renderer/backend.
+      - Support resolution, color space, bit depth, file format, UDIM tiles, and constant detection.
+      - Write a baked MaterialX document and provenance report.
+    - id: MTLX-WRITE-001
+      level: MUST
+      feature: Lossless and canonical XML writing
+      requirements:
+      - Preserve unknown constructs, includes, namespaces, and comments in lossless mode.
+      - Offer flatten-includes as an explicit operation, not a side effect of save.
+      - Provide deterministic ordering/formatting policies.
+      - Validate before save or return a clear invalid-output warning according to policy.
+    suggested_public_api:
+      types:
+      - MaterialXDocument
+      - Element
+      - Node
+      - NodeGraph
+      - Input
+      - Output
+      - NodeDef
+      - Implementation
+      - Material
+      - Look
+      - Collection
+      - VariantSet
+      - LibrarySet
+      - Resolver
+      - ValidationReport
+      - ShaderGenerator
+      operations:
+      - MaterialXDocument.load(..., resolver=...)
+      - document.validate(options)
+      - document.load_libraries(paths)
+      - document.resolve_all()
+      - nodegraph.connect(output, input)
+      - nodegraph.topological_order()
+      - nodegraph.upstream(element)
+      - document.rename(element, new_name, rewrite_references=True)
+      - document.upgrade(target='1.39')
+      - document.apply_variants(selection)
+      - shader_generator.generate(material_or_output, target, options)
+      - document.save(..., mode='lossless|canonical')
+    test_contract:
+    - Official example documents and standard libraries for the targeted 1.39.x line.
+    - All standard value types, arrays, typedefs, namespaces, includes, versions, nodedef resolution, implementation selection,
+      targets, and inheritance.
+    - Graphs with legal DAGs, direct/indirect cycles, missing ports, type mismatches, multi-output nodes, interface connections,
+      and deep dependency chains.
+    - Looks, collections, assignments, variants, geometry paths, units, color spaces, tokens, and upgrade fixtures.
+    - Resolver security tests for traversal, include cycles, deep includes, oversized library trees, and network references.
+    - Shader backends tested against known generated-source fixtures and, separately, compiler validation where toolchains
+      are available.
+    release_gates:
+    - Complete 1.39 document model and validation.
+    - Standard libraries load and resolve without unsupported core constructs.
+    - Graph operations preserve DAG/type invariants.
+    - Include resolution is deterministic and secure.
+    - Shader generation is declared separately per backend and is not required to call the core parser production-complete.
+  NRRD:
+    format_identity:
+      name: Nearly Raw Raster Data
+      target_standard: NRRD0005
+      compatibility: Read NRRD0001 through NRRD0005 and write the lowest compatible or explicitly requested magic.
+      format_family: N-dimensional raster/array data with textual metadata and attached or detached payloads
+      primary_product_role: Read, write, inspect, validate, transform, and efficiently access scientific and medical raster
+        data.
+    required_capabilities:
+    - id: NRRD-HEADER-001
+      level: MUST
+      feature: Complete header parser
+      requirements:
+      - Recognize NRRD00.01 and NRRD0001 through NRRD0005 magics.
+      - Accept LF and CRLF line endings.
+      - Treat field identifiers case-insensitively while preserving original lexical form in lossless mode.
+      - Enforce field uniqueness and ordering constraints.
+      - Parse comments and key/value pairs.
+      - Preserve unknown key/value metadata and optional-field absence.
+    - id: NRRD-DATA-001
+      level: MUST
+      feature: Attached and detached payloads
+      requirements:
+      - Read and write attached .nrrd and detached .nhdr forms.
+      - Support one detached file, printf-style numbered file sequences, and LIST file declarations.
+      - Support subdim semantics and validate file count against dimensions/sizes.
+      - Resolve relative files against the header location.
+      - Offer a secure resolver policy for absolute paths and external files.
+    - id: NRRD-ENC-001
+      level: MUST
+      feature: All defined encodings
+      requirements:
+      - Read and write raw.
+      - Read and write txt/text/ascii.
+      - Read and write hex.
+      - Read and write gzip/gz using a gzip container, not a bare zlib stream.
+      - Read and write bzip2/bz2.
+      - Expose codec availability and fail explicitly when an optional codec is unavailable.
+    - id: NRRD-TYPE-001
+      level: MUST
+      feature: Complete scalar and block types
+      requirements:
+      - Support signed and unsigned 8, 16, 32, and 64-bit integers with all standard aliases.
+      - Support 32-bit float and 64-bit double.
+      - Support opaque block values with mandatory positive block size.
+      - Reject ascii encoding for block data.
+      - Represent data type independently from host-language native type names.
+    - id: NRRD-ENDIAN-001
+      level: MUST
+      feature: Endian handling
+      requirements:
+      - Parse little and big endian declarations.
+      - Require endian when binary encoding exposes byte order and element size exceeds one byte.
+      - Byte-swap transparently on read and write as required.
+      - Do not apply endian transformation to opaque block values.
+    - id: NRRD-SHAPE-001
+      level: MUST
+      feature: N-dimensional array shape and ordering
+      requirements:
+      - Support dimensions at least 1 through 16.
+      - Validate that every size is positive and all per-axis fields have exactly dimension entries.
+      - Represent NRRD axis order explicitly as fastest-to-slowest.
+      - Provide explicit conversion to host array order; never silently reverse axes.
+      - Use checked multiplication for sample and byte counts.
+    - id: NRRD-SKIP-001
+      level: MUST
+      feature: Line and byte skipping
+      requirements:
+      - Apply line skip before byte skip.
+      - Support non-negative byte skip.
+      - Support byte skip -1 only for raw encoding and calculate the data start from file end.
+      - For compressed encodings, apply byte skip to the decompressed stream as defined.
+      - Apply skip rules separately to every detached data file.
+    - id: NRRD-META-001
+      level: MUST
+      feature: Basic metadata
+      requirements:
+      - Support content, min, max, old min, old max, sample units, line skip, byte skip, data file, and legacy number handling.
+      - Ignore legacy number semantically while preserving it in lossless mode if requested.
+      - Distinguish unknown/absent values from explicit zero, empty, none, or NaN values.
+    - id: NRRD-AXIS-001
+      level: MUST
+      feature: Per-axis metadata
+      requirements:
+      - Support sizes, spacings, thicknesses, axis mins, axis maxs, centers, labels, units, and kinds.
+      - Validate finite/nonzero rules for spacings and legal values for centers.
+      - Validate fixed-size kinds such as RGB-color, quaternion, vectors, and matrices against axis size.
+      - Preserve labels and units with the format's quoting/escaping rules.
+    - id: NRRD-SPACE-001
+      level: MUST
+      feature: Space and orientation model
+      requirements:
+      - Support named spaces and explicit space dimension.
+      - Support space units, space origin, space directions, and measurement frame.
+      - Allow non-spatial axes with a none direction.
+      - Validate vector lengths against space dimension.
+      - Expose index-to-world transforms and measurement-frame-to-world transforms.
+      - Do not assume axis order from named RAS/LAS/LPS space.
+    - id: NRRD-ARRAY-001
+      level: MUST
+      feature: Typed N-dimensional array access
+      requirements:
+      - Expose shape, strides, dtype, endian, axis metadata, and raw buffer.
+      - Provide element access, slicing, axis permutation, axis flip, crop, and metadata-preserving clone.
+      - Update orientation and per-axis metadata correctly during axis operations.
+      - Provide zero-copy views where safe and explicit copies otherwise.
+    - id: NRRD-LAZY-001
+      level: MUST
+      feature: Large-data and lazy I/O
+      requirements:
+      - Allow header-only loading.
+      - Allow lazy payload loading.
+      - Use memory mapping for eligible uncompressed raw payloads.
+      - Support streaming decode for compressed and text payloads.
+      - Allow region/slice reading when the storage layout and encoding permit it.
+      - Report when a requested slice requires full decompression.
+    - id: NRRD-VALIDATE-001
+      level: MUST
+      feature: Header and payload validation
+      requirements:
+      - 'Check required fields: type, dimension, sizes, and encoding.'
+      - Check conditional requirements such as endian and block size.
+      - Check field order, per-axis arity, dimensions, sizes, kinds, vectors, data-file counts, skip values, and version-feature
+        compatibility.
+      - Check expected payload sample/byte count after decoding.
+      - Treat trailing payload data as permitted but optionally report it.
+    - id: NRRD-STATS-001
+      level: SHOULD
+      feature: Statistics and metadata verification
+      requirements:
+      - Compute min, max, finite count, NaN count, infinity count, histogram, and checksums in streaming mode.
+      - Compare declared min/max to actual values without silently changing metadata.
+      - Allow explicit repair/update of cached statistics.
+    - id: NRRD-CONVERT-001
+      level: SHOULD
+      feature: Data conversion
+      requirements:
+      - Convert dtype with explicit overflow, clipping, scaling, rounding, and NaN policies.
+      - Convert encoding, attached/detached form, and endian without changing array semantics.
+      - Provide a conversion report.
+    - id: NRRD-WRITE-001
+      level: MUST
+      feature: Canonical and lossless writing
+      requirements:
+      - Select the lowest magic compatible with used fields or honor an explicit target magic after validation.
+      - Write required/conditional fields correctly.
+      - Preserve optional absence in lossless mode.
+      - Offer deterministic field ordering and comment/key-value placement.
+      - Write multiple detached files according to explicit partition policy.
+    - id: NRRD-SEC-001
+      level: MUST
+      feature: Scientific-data security limits
+      requirements:
+      - Reject multiplicative overflow in sample/byte calculations.
+      - Limit decompressed bytes and compression ratio.
+      - Limit detached file count and total bytes.
+      - Prevent traversal outside configured roots.
+      - Limit header line length, metadata size, dimensions, and axis sizes by configurable policy.
+      - Avoid allocating the full payload before validating declared shape and encoded size.
+    suggested_public_api:
+      types:
+      - NrrdDocument
+      - NrrdHeader
+      - NrrdArray
+      - NrrdAxis
+      - NrrdDataSource
+      - NrrdResolver
+      - NrrdValidationReport
+      - NrrdWriteOptions
+      operations:
+      - NrrdDocument.load(..., data='eager|lazy|header_only')
+      - document.validate(check_payload=True)
+      - document.array.slice(...)
+      - document.array.permute_axes(order)
+      - document.array.flip_axis(axis)
+      - document.index_to_world(index)
+      - document.convert(dtype=..., encoding=..., endian=...)
+      - document.compute_statistics()
+      - document.save(..., attached=True|False, encoding=...)
+    test_contract:
+    - Every magic version from NRRD0001 through NRRD0005 plus legacy NRRD00.01 parsing.
+    - Every type alias, encoding, endian combination, and valid block-size case.
+    - Attached and all three detached data-file forms, including subdim.
+    - LF/CRLF headers, comments, key/value metadata, unknown metadata, long lines, quoted labels/units, NaN optional values,
+      and optional-field absence.
+    - Space/orientation matrices, non-spatial axes, RAS/LAS/LPS names, measurement frames, all axis kinds, and fixed-size
+      kind mismatches.
+    - Large raw memory-mapped data, streaming gzip/bzip2, truncated payloads, trailing payloads, decompression bombs, path
+      traversal, overflow shapes, invalid skips, and multi-file count errors.
+    release_gates:
+    - All NRRD0005 fields implemented.
+    - All defined encodings and data types round-trip.
+    - Attached, detached, sequence, and LIST payloads pass.
+    - Fastest-to-slowest axis semantics are proven against fixtures.
+    - Header-only, lazy, and bounded-memory paths pass large-data tests.
+recommended_delivery_order:
+- stage: 0
+  name: Foundation
+  exit_criteria:
+  - Shared diagnostics, limits, resolvers, deterministic writers, capability manifests, and test harnesses exist.
+  - Each format has a complete machine-readable schema/capability inventory.
+- stage: 1
+  name: Lossless I/O
+  exit_criteria:
+  - Official examples parse and save without semantic loss.
+  - Unknown extensions/metadata survive.
+  - No execution or external resolution happens implicitly.
+- stage: 2
+  name: Typed editing
+  exit_criteria:
+  - Domain-native model and CRUD APIs are complete.
+  - Mutation preserves structural invariants and references.
+- stage: 3
+  name: Full conformance validation
+  exit_criteria:
+  - Schema/structural plus semantic validation implemented.
+  - Stable diagnostics and repair suggestions generated.
+- stage: 4
+  name: Advanced domain operations
+  exit_criteria:
+  - UBL calculations/profiles, XLIFF QA/merge, IPYNB trust/diff/execution adapter, MaterialX graph transforms/shader adapters,
+    and NRRD lazy transforms implemented according to scope.
+- stage: 5
+  name: Production proof
+  exit_criteria:
+  - Official, negative, fuzz, hostile, round-trip, idempotency, performance, and compatibility suites pass.
+  - Capability manifest is independently verified against implementation and tests.
+  - No claimed feature lacks an executable proof.
+agent_execution_rules:
+- For every capability ID, create implementation tasks, API tasks, positive tests, negative tests, round-trip tests, and evidence
+  outputs.
+- Do not mark a capability complete because a class or method exists; prove representative depth and edge cases.
+- Do not replace unsupported content with generic dictionaries unless the public API also offers a typed model or explicitly
+  declares preservation-only support.
+- Do not silently normalize, repair, upgrade, sanitize, execute, resolve, sign, or calculate.
+- When an official rule is ambiguous, retain source data, emit a diagnostic, add an oracle fixture, and document the chosen
+  behavior.
+- Generate a per-format coverage matrix linking specification construct -> model symbol -> parser -> writer -> validator ->
+  tests -> evidence.

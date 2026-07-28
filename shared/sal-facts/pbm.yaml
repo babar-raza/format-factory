@@ -81,3 +81,157 @@ facts:
     confidence: high
     added_by: TC-GWB-H01
     added_at: '2026-07-16'
+- fact_id: SAL-PBM-00006
+  qname: FACT-PBM-006
+  element_qname: pbm:file
+  claim: "A PBM file consists of a sequence of one or more PBM images; there are no data, delimiters, or padding before, after, or between images"
+  section: "pbm.html#format"
+  authority: "Netpbm format specification (netpbm.sourceforge.net)"
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-pbm-spec
+    section_id: "pbm.html#format"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-PA-019
+    added_at: '2026-07-17'
+    verification_evidence: "Netpbm pbm(5): \"A PBM file consists of a sequence of one or more PBM images. There are no data, delimiters, or padding before, after, or between images.\""
+- fact_id: SAL-PBM-00007
+  qname: FACT-PBM-007
+  element_qname: pbm:whitespace
+  claim: "The magic number, width, and height fields are separated by whitespace, which may be blanks, TABs, CRs, or LFs"
+  section: "pbm.html#format"
+  authority: "Netpbm format specification (netpbm.sourceforge.net)"
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-pbm-spec
+    section_id: "pbm.html#format"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-PA-019
+    added_at: '2026-07-17'
+- fact_id: SAL-PBM-00008
+  qname: FACT-PBM-008
+  element_qname: pbm:header-terminator
+  claim: "A single whitespace character (usually a newline) follows the height value and immediately precedes the raster data"
+  section: "pbm.html#format"
+  authority: "Netpbm format specification (netpbm.sourceforge.net)"
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-pbm-spec
+    section_id: "pbm.html#format"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-PA-019
+    added_at: '2026-07-17'
+- fact_id: SAL-PBM-00009
+  qname: FACT-PBM-009
+  element_qname: pbm:raster-raw
+  claim: "In the raw P4 format each row of the raster is Width bits packed 8 to a byte, with don't-care bits filling out the last byte of the row when Width is not a multiple of 8"
+  section: "pbm.html#format"
+  authority: "Netpbm format specification (netpbm.sourceforge.net)"
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-pbm-spec
+    section_id: "pbm.html#format"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-PA-019
+    added_at: '2026-07-17'
+    verification_evidence: "Netpbm pbm(5): \"Each row is Width bits, packed 8 to a byte, with don't care bits to fill out the last byte in the row.\""
+- fact_id: SAL-PBM-00010
+  qname: FACT-PBM-010
+  element_qname: pbm:bit-order
+  claim: "In the raw P4 format the bits within each file byte are stored most significant bit first (MSB to LSB)"
+  section: "pbm.html#format"
+  authority: "Netpbm format specification (netpbm.sourceforge.net)"
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-pbm-spec
+    section_id: "pbm.html#format"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-PA-019
+    added_at: '2026-07-17'
+    verification_evidence: "Netpbm pbm(5): \"The order of their storage within each file byte is most significant bit to least significant bit.\""
+- fact_id: SAL-PBM-00011
+  qname: FACT-PBM-011
+  element_qname: pbm:raster-plain
+  claim: "In the plain P1 format each pixel of the raster is represented by a byte containing ASCII '1' or '0', and there are no fill bits at the end of a row"
+  section: "pbm.html#format"
+  authority: "Netpbm format specification (netpbm.sourceforge.net)"
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-pbm-spec
+    section_id: "pbm.html#format"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-PA-019
+    added_at: '2026-07-17'
+- fact_id: SAL-PBM-00012
+  qname: FACT-PBM-012
+  element_qname: pbm:raster-whitespace
+  claim: "In the plain P1 format, white space in the raster section is ignored"
+  section: "pbm.html#format"
+  authority: "Netpbm format specification (netpbm.sourceforge.net)"
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-pbm-spec
+    section_id: "pbm.html#format"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-PA-019
+    added_at: '2026-07-17'
+- fact_id: SAL-PBM-00013
+  qname: FACT-PBM-013
+  element_qname: pbm:comment
+  claim: "Any characters from a '#' up to but not including the next carriage return or newline character, or end of file, are a comment and are ignored"
+  section: "pbm.html#format"
+  authority: "Netpbm format specification (netpbm.sourceforge.net)"
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-pbm-spec
+    section_id: "pbm.html#format"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-PA-019
+    added_at: '2026-07-17'
+    verification_evidence: "Netpbm pbm(5): \"Any characters from a #  to but not including the next carriage return or newline character, or end of file, is a comment and is ignored.\""
+- fact_id: SAL-PBM-00014
+  qname: FACT-PBM-014
+  element_qname: pbm:line-length
+  claim: "In the plain P1 format no line of the file should be longer than 70 characters"
+  section: "pbm.html#format"
+  authority: "Netpbm format specification (netpbm.sourceforge.net)"
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-pbm-spec
+    section_id: "pbm.html#format"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-PA-019
+    added_at: '2026-07-17'
+- fact_id: SAL-PBM-00015
+  qname: FACT-PBM-015
+  element_qname: pbm:multi-image
+  claim: "Since about July 2000 a PBM file may contain multiple concatenated images with no delimiter between them; previously only a single image per file was allowed"
+  section: "pbm.html#format"
+  authority: "Netpbm format specification (netpbm.sourceforge.net)"
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-pbm-spec
+    section_id: "pbm.html#format"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-PA-019
+    added_at: '2026-07-17'

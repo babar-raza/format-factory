@@ -3,28 +3,31 @@
   local_name: notebook
   canonical_class: Ipynb.Notebook
   spec_fact_ref: FACT-IPYNB-001
-  status: seeded
+  status: implemented
   source_layer: Spec
-  facade_names: []
-  python_file: null
+  facade_names:
+  - IpynbNotebook
+  python_file: src/python/ipynb/spec/notebook/notebook.py
   dotnet_file: null
 - qname: ipynb:cell
   namespace_uri: urn:format:ipynb:4.5
   local_name: cell
   canonical_class: Ipynb.Cell
   spec_fact_ref: FACT-IPYNB-002
-  status: seeded
+  status: implemented
   source_layer: Spec
-  facade_names: []
-  python_file: null
+  facade_names:
+  - IpynbCell
+  python_file: src/python/ipynb/spec/notebook/cell.py
   dotnet_file: null
 - qname: ipynb:output
   namespace_uri: urn:format:ipynb:4.5
   local_name: output
   canonical_class: Ipynb.Output
   spec_fact_ref: FACT-IPYNB-003
-  status: seeded
+  status: implemented
   source_layer: Spec
-  facade_names: []
-  python_file: null
+  facade_names:
+  - IpynbOutput
+  python_file: src/python/ipynb/spec/notebook/output.py
   dotnet_file: null

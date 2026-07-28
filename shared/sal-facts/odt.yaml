@@ -1,0 +1,272 @@
+format_id: odt
+display_name: ODT
+schema_version: '1.0'
+canonical: true
+note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth;
+  .local/spec-cache/ copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
+facts:
+- fact_id: SAL-ODT-00001
+  qname: FACT-ODT-001
+  claim: ODT file is a ZIP archive container conforming to the ODF package format with well-defined file
+    structure
+  verification_status: verified_with_note
+  provenance:
+    format_id: odt
+    spec_id: odf-1.3
+    section_id: '3.1.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 2 Section 3: An ODT file is a ZIP-based package. The package
+      contains multiple XML files organized in a defined directory structure.'
+    confidence: high
+  claim_id: FACT-ODT-001
+- fact_id: SAL-ODT-00002
+  qname: FACT-ODT-002
+  claim: ODT package root contains content.xml as the primary document content stream with text body
+  verification_status: verified_with_note
+  provenance:
+    format_id: odt
+    spec_id: odf-1.3
+    section_id: '3.1.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 2: content.xml is required in the package root. It contains
+      the <office:document-content> root element with <office:body><office:text> holding all text content.'
+    confidence: high
+  claim_id: FACT-ODT-002
+- fact_id: SAL-ODT-00003
+  qname: FACT-ODT-003
+  claim: ODT package contains META-INF/manifest.xml listing all files in the archive with their media types
+  verification_status: verified_with_note
+  provenance:
+    format_id: odt
+    spec_id: odf-1.3
+    section_id: '4.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 2 Section 4: META-INF/manifest.xml is required. Root element
+      is <manifest:manifest>. Each file is listed as <manifest:file-entry> with manifest:full-path and
+      manifest:media-type attributes.'
+    confidence: high
+  claim_id: FACT-ODT-003
+- fact_id: SAL-ODT-00004
+  qname: FACT-ODT-004
+  claim: ODT package contains meta.xml with document metadata in <office:document-meta> root element
+  verification_status: verified_with_note
+  provenance:
+    format_id: odt
+    spec_id: odf-1.3
+    section_id: '3.1.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3: meta.xml contains <office:document-meta> with <office:meta> child.
+      Metadata elements include dc:title, dc:creator, dc:date, meta:creation-date using Dublin Core and ODF
+      meta namespace.'
+    confidence: high
+  claim_id: FACT-ODT-004
+- fact_id: SAL-ODT-00005
+  qname: FACT-ODT-005
+  claim: ODT package contains styles.xml with <office:document-styles> root element for document-level and
+    master page styles
+  verification_status: verified_with_note
+  provenance:
+    format_id: odt
+    spec_id: odf-1.3
+    section_id: '3.1.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3: styles.xml is optional but standard. Contains <office:document-styles>
+      with <office:styles>, <office:automatic-styles>, and <office:master-styles> for page layouts.'
+    confidence: high
+  claim_id: FACT-ODT-005
+- fact_id: SAL-ODT-00006
+  qname: FACT-ODT-006
+  claim: ODT MIME type is application/vnd.oasis.opendocument.text stored as first entry in the ZIP archive
+  verification_status: verified_with_note
+  provenance:
+    format_id: odt
+    spec_id: odf-1.3
+    section_id: '3.3'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 2 Section 3.3: The mimetype file must be the first file in
+      the ZIP archive, stored uncompressed (no compression, no extra fields), containing exactly the MIME
+      type string with no trailing newline.'
+    confidence: high
+  claim_id: FACT-ODT-006
+- fact_id: SAL-ODT-00007
+  qname: FACT-ODT-007
+  claim: ODT paragraph element is <text:p> which is the primary block-level text container in content.xml
+  verification_status: verified_with_note
+  provenance:
+    format_id: odt
+    spec_id: odf-1.3
+    section_id: '5.1.3'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 3 Section 5.1.3: <text:p> is the paragraph element. Paragraphs
+      are the basic building blocks of text documents and may contain inline elements.'
+    confidence: high
+  claim_id: FACT-ODT-007
+- fact_id: SAL-ODT-00008
+  qname: FACT-ODT-008
+  claim: ODT heading element is <text:h> with text:outline-level attribute specifying heading depth from 1
+    to 10
+  verification_status: verified_with_note
+  provenance:
+    format_id: odt
+    spec_id: odf-1.3
+    section_id: '5.1.2'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 3 Section 5.1.2: <text:h> represents a heading. text:outline-level
+      attribute is required and specifies the heading level (1 = top-level).'
+    confidence: high
+  claim_id: FACT-ODT-008
+- fact_id: SAL-ODT-00009
+  qname: FACT-ODT-009
+  claim: ODT span element is <text:span> for inline character formatting within paragraphs referencing a
+    text style
+  verification_status: verified_with_note
+  provenance:
+    format_id: odt
+    spec_id: odf-1.3
+    section_id: '6.1.7'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 3 Section 6.1.7: <text:span> applies a character style to
+      text. text:style-name attribute references a defined character style.'
+    confidence: high
+  claim_id: FACT-ODT-009
+- fact_id: SAL-ODT-00010
+  qname: FACT-ODT-010
+  claim: ODT list element is <text:list> containing <text:list-item> children for ordered and unordered lists
+  verification_status: verified_with_note
+  provenance:
+    format_id: odt
+    spec_id: odf-1.3
+    section_id: '5.3.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 3 Section 5.3.1: <text:list> contains <text:list-item>
+      children. List items may contain paragraphs, headings, or nested lists.'
+    confidence: high
+  claim_id: FACT-ODT-010
+- fact_id: SAL-ODT-00011
+  qname: FACT-ODT-011
+  claim: ODT section element is <text:section> which groups paragraphs and other block elements into a named
+    logical section
+  verification_status: verified_with_note
+  provenance:
+    format_id: odt
+    spec_id: odf-1.3
+    section_id: '5.4'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 3 Section 5.4: <text:section> groups content into sections.
+      Sections can be nested. text:name attribute provides a unique identifier.'
+    confidence: high
+  claim_id: FACT-ODT-011
+- fact_id: SAL-ODT-00012
+  qname: FACT-ODT-012
+  claim: ODT table element is <table:table> for inline tables within text documents containing rows and cells
+  verification_status: verified_with_note
+  provenance:
+    format_id: odt
+    spec_id: odf-1.3
+    section_id: '9.1.2'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 3 Section 9.1.2: <table:table> may appear within <office:text>
+      as an inline table. Contains <table:table-column>, <table:table-row>, and <table:table-cell> children.'
+    confidence: high
+  claim_id: FACT-ODT-012
+- fact_id: SAL-ODT-00013
+  qname: FACT-ODT-013
+  claim: ODT hyperlink element is <text:a> with xlink:href attribute for navigation links
+  verification_status: verified_with_note
+  provenance:
+    format_id: odt
+    spec_id: odf-1.3
+    section_id: '6.1.8'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 3 Section 6.1.8: <text:a> is the hyperlink element.
+      xlink:href contains the URL target. xlink:type is always "simple".'
+    confidence: high
+  claim_id: FACT-ODT-013
+- fact_id: SAL-ODT-00014
+  qname: FACT-ODT-014
+  claim: ODT mimetype file must be the first entry in the ZIP with no compression and no extra field data
+  verification_status: verified_with_note
+  provenance:
+    format_id: odt
+    spec_id: odf-1.3
+    section_id: '3.3'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 2 Section 3.3: The mimetype file shall be the first file in
+      the package. It shall not be compressed (stored method) and shall not use an extra field in its ZIP
+      entry header.'
+    confidence: high
+  claim_id: FACT-ODT-014
+- fact_id: SAL-ODT-00015
+  qname: FACT-ODT-015
+  claim: ODT text:h element must have a valid text:outline-level attribute; omitting it on a heading is
+    forbidden
+  verification_status: verified_with_note
+  provenance:
+    format_id: odt
+    spec_id: odf-1.3
+    section_id: '5.1.2'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3: text:outline-level attribute is required on <text:h>. A heading
+      without this attribute is invalid per the ODF schema.'
+    confidence: high
+  claim_id: FACT-ODT-015
+- fact_id: SAL-ODT-00016
+  qname: FACT-ODT-016
+  claim: ODT manifest.xml must list every file in the package; unlisted files are invalid and shall be
+    rejected by conforming processors
+  verification_status: verified_with_note
+  provenance:
+    format_id: odt
+    spec_id: odf-1.3
+    section_id: '4.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 2 Section 4: Every file in the package must have a
+      corresponding <manifest:file-entry>. The root entry "/" must have media-type set to the document
+      MIME type. Unlisted entries are non-conforming.'
+    confidence: high
+  claim_id: FACT-ODT-016
+- fact_id: SAL-ODT-00017
+  qname: FACT-ODT-017
+  claim: ODT content.xml root element is <office:document-content> with office:version attribute required
+  verification_status: verified_with_note
+  provenance:
+    format_id: odt
+    spec_id: odf-1.3
+    section_id: '3.1.3.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 3 Section 3.1.3.1: <office:document-content> is the root
+      element of content.xml in package-based ODF documents. office:version attribute is required.'
+    confidence: high
+  claim_id: FACT-ODT-017
+- fact_id: SAL-ODT-00018
+  qname: FACT-ODT-018
+  claim: ODT automatic styles in content.xml are in <office:automatic-styles> element as a child of the
+    document-content root
+  verification_status: verified_with_note
+  provenance:
+    format_id: odt
+    spec_id: odf-1.3
+    section_id: '3.15'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 3 Section 3.15: <office:automatic-styles> in content.xml
+      contains automatically generated paragraph, character, and page styles.'
+    confidence: high
+  claim_id: FACT-ODT-018

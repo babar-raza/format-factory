@@ -1,0 +1,273 @@
+format_id: fodg
+display_name: FODG
+schema_version: '1.0'
+canonical: true
+note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth;
+  .local/spec-cache/ copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
+facts:
+- fact_id: SAL-FODG-00001
+  qname: FACT-FODG-001
+  claim: FODG root element is <office:document> which serves as the top-level document container for flat
+    OpenDocument graphics documents
+  verification_status: verified_with_note
+  provenance:
+    format_id: fodg
+    spec_id: odf-1.3
+    section_id: '3.1.2'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 3 Section 3.1.2: The <office:document> element is the root
+      element for single-XML-file ODF documents. It combines content, styles, metadata, and settings in
+      one file. Namespace: urn:oasis:names:tc:opendocument:xmlns:office:1.0.'
+    confidence: high
+  claim_id: FACT-FODG-001
+- fact_id: SAL-FODG-00002
+  qname: FACT-FODG-002
+  claim: FODG document body is contained in <office:body> element which is a required child of the root element
+  verification_status: verified_with_note
+  provenance:
+    format_id: fodg
+    spec_id: odf-1.3
+    section_id: '3.3'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 3 Section 3.3: <office:body> is the container for the document
+      content. It must appear exactly once as a child of <office:document>.'
+    confidence: high
+  claim_id: FACT-FODG-002
+- fact_id: SAL-FODG-00003
+  qname: FACT-FODG-003
+  claim: FODG drawing content is wrapped in <office:drawing> element inside <office:body> identifying the
+    document as a graphic
+  verification_status: verified_with_note
+  provenance:
+    format_id: fodg
+    spec_id: odf-1.3
+    section_id: '3.5'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 3 Section 3.5: The <office:drawing> element identifies the
+      document as a drawing/graphics document. It is the sole child of <office:body> in graphics documents.'
+    confidence: high
+  claim_id: FACT-FODG-003
+- fact_id: SAL-FODG-00004
+  qname: FACT-FODG-004
+  claim: FODG drawing page element is <draw:page> representing a single page in the graphics document
+  verification_status: verified_with_note
+  provenance:
+    format_id: fodg
+    spec_id: odf-1.3
+    section_id: '10.2.4'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 3 Section 10.2.4: <draw:page> represents a drawing page.
+      Pages are children of <office:drawing>. draw:name attribute provides a unique page identifier.
+      draw:master-page-name references the master page layout.'
+    confidence: high
+  claim_id: FACT-FODG-004
+- fact_id: SAL-FODG-00005
+  qname: FACT-FODG-005
+  claim: FODG rectangle shape element is <draw:rect> with position and size attributes for drawing rectangles
+  verification_status: verified_with_note
+  provenance:
+    format_id: fodg
+    spec_id: odf-1.3
+    section_id: '10.3.2'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 3 Section 10.3.2: <draw:rect> draws a rectangle. Uses
+      svg:x, svg:y, svg:width, svg:height attributes for position and size. draw:corner-radius for
+      rounded corners.'
+    confidence: high
+  claim_id: FACT-FODG-005
+- fact_id: SAL-FODG-00006
+  qname: FACT-FODG-006
+  claim: FODG ellipse shape element is <draw:ellipse> with SVG-compatible position and size attributes
+  verification_status: verified_with_note
+  provenance:
+    format_id: fodg
+    spec_id: odf-1.3
+    section_id: '10.3.4'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 3 Section 10.3.4: <draw:ellipse> draws an ellipse or circle.
+      Uses svg:x, svg:y, svg:width, svg:height for bounding box. draw:kind attribute: full, section, arc, cut.'
+    confidence: high
+  claim_id: FACT-FODG-006
+- fact_id: SAL-FODG-00007
+  qname: FACT-FODG-007
+  claim: FODG line element is <draw:line> with svg:x1 svg:y1 svg:x2 svg:y2 coordinate attributes
+  verification_status: verified_with_note
+  provenance:
+    format_id: fodg
+    spec_id: odf-1.3
+    section_id: '10.3.3'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 3 Section 10.3.3: <draw:line> draws a line between two points.
+      svg:x1, svg:y1 define the start point; svg:x2, svg:y2 define the end point.'
+    confidence: high
+  claim_id: FACT-FODG-007
+- fact_id: SAL-FODG-00008
+  qname: FACT-FODG-008
+  claim: FODG custom shape element is <draw:custom-shape> with <draw:enhanced-geometry> child defining the
+    shape path
+  verification_status: verified_with_note
+  provenance:
+    format_id: fodg
+    spec_id: odf-1.3
+    section_id: '10.3.11'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 3 Section 10.3.11: <draw:custom-shape> contains a
+      <draw:enhanced-geometry> child with draw:enhanced-path attribute defining the shape using a path syntax.'
+    confidence: high
+  claim_id: FACT-FODG-008
+- fact_id: SAL-FODG-00009
+  qname: FACT-FODG-009
+  claim: FODG text box element is <draw:text-box> for embedding text content inside drawing shapes
+  verification_status: verified_with_note
+  provenance:
+    format_id: fodg
+    spec_id: odf-1.3
+    section_id: '10.4.3'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 3 Section 10.4.3: <draw:text-box> contains text paragraphs
+      (<text:p>) inside a drawing shape. It appears as a child of <draw:frame>.'
+    confidence: high
+  claim_id: FACT-FODG-009
+- fact_id: SAL-FODG-00010
+  qname: FACT-FODG-010
+  claim: FODG frame element is <draw:frame> serving as the container node for text boxes, images, and embedded
+    objects
+  verification_status: verified_with_note
+  provenance:
+    format_id: fodg
+    spec_id: odf-1.3
+    section_id: '10.4.2'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 3 Section 10.4.2: <draw:frame> is a container for embedded
+      content. It has svg:x, svg:y, svg:width, svg:height attributes and may contain <draw:text-box>,
+      <draw:image>, or <draw:object>.'
+    confidence: high
+  claim_id: FACT-FODG-010
+- fact_id: SAL-FODG-00011
+  qname: FACT-FODG-011
+  claim: FODG shape position uses SVG coordinate attributes svg:x and svg:y with length values in cm, mm,
+    or in
+  verification_status: verified_with_note
+  provenance:
+    format_id: fodg
+    spec_id: odf-1.3
+    section_id: '10.3'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3: Shape position attributes svg:x, svg:y accept length values with
+      units (cm, mm, in, pt, px). These follow the SVG attribute naming convention but use ODF length syntax.'
+    confidence: high
+  claim_id: FACT-FODG-011
+- fact_id: SAL-FODG-00012
+  qname: FACT-FODG-012
+  claim: FODG group element is <draw:g> for grouping multiple shapes into a single logical unit
+  verification_status: verified_with_note
+  provenance:
+    format_id: fodg
+    spec_id: odf-1.3
+    section_id: '10.3.15'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 3 Section 10.3.15: <draw:g> groups child shapes. Transformations
+      applied to the group affect all children. Groups may be nested.'
+    confidence: high
+  claim_id: FACT-FODG-012
+- fact_id: SAL-FODG-00013
+  qname: FACT-FODG-013
+  claim: FODG document encoding must be UTF-8 as declared in the XML declaration
+  verification_status: verified_with_note
+  provenance:
+    format_id: fodg
+    spec_id: odf-1.3
+    section_id: '2.2.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 3 Section 2.2.1: ODF documents encoded as single XML files
+      must use UTF-8 encoding. The XML declaration <?xml version="1.0" encoding="UTF-8"?> is required.'
+    confidence: high
+  claim_id: FACT-FODG-013
+- fact_id: SAL-FODG-00014
+  qname: FACT-FODG-014
+  claim: FODG uses XML character escaping for special characters in text content and attribute values
+  verification_status: verified_with_note
+  provenance:
+    format_id: fodg
+    spec_id: odf-1.3
+    section_id: '2.2'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3: As an XML format, FODG follows XML 1.0 character escaping rules.
+      Ampersand, less-than, greater-than, and quote characters must be escaped in text and attribute values.'
+    confidence: high
+  claim_id: FACT-FODG-014
+- fact_id: SAL-FODG-00015
+  qname: FACT-FODG-015
+  claim: FODG office:version attribute on the root element is required and must conform to the ODF version
+  verification_status: verified_with_note
+  provenance:
+    format_id: fodg
+    spec_id: odf-1.3
+    section_id: '3.1.2'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3: office:version attribute is required on the root element. For ODF
+      1.3 documents the value shall be "1.3". Conforming consumers must reject unknown versions.'
+    confidence: high
+  claim_id: FACT-FODG-015
+- fact_id: SAL-FODG-00016
+  qname: FACT-FODG-016
+  claim: FODG draw:page must have a valid draw:name attribute; pages without names are forbidden in conforming
+    documents
+  verification_status: verified_with_note
+  provenance:
+    format_id: fodg
+    spec_id: odf-1.3
+    section_id: '10.2.4'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3: draw:name attribute is required on <draw:page>. Each page must
+      have a unique name within the document. A page without draw:name is invalid per the ODF schema.'
+    confidence: high
+  claim_id: FACT-FODG-016
+- fact_id: SAL-FODG-00017
+  qname: FACT-FODG-017
+  claim: FODG office:document element must declare required XML namespaces including office, draw, svg, and
+    style
+  verification_status: verified_with_note
+  provenance:
+    format_id: fodg
+    spec_id: odf-1.3
+    section_id: '3.1.2'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3: The root element must declare namespace prefixes for all used
+      namespaces. Required for graphics: xmlns:office, xmlns:draw, xmlns:svg, xmlns:style, xmlns:fo, xmlns:text.
+      Missing required namespace declarations shall cause validation errors.'
+    confidence: high
+  claim_id: FACT-FODG-017
+- fact_id: SAL-FODG-00018
+  qname: FACT-FODG-018
+  claim: FODG styles section contains <office:automatic-styles> for inline styles and <office:styles> for
+    named reusable styles
+  verification_status: verified_with_note
+  provenance:
+    format_id: fodg
+    spec_id: odf-1.3
+    section_id: '3.15'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 3 Section 3.15: <office:automatic-styles> contains automatically
+      generated styles. <office:styles> contains named reusable styles. Both are direct children of
+      <office:document>.'
+    confidence: high
+  claim_id: FACT-FODG-018

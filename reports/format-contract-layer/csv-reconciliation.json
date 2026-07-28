@@ -2,9 +2,9 @@
   "format_id": "csv",
   "contract_id": "FC-CSV-V1",
   "contract_input_digests": {
-    "fact_categories_sha256": "27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468",
+    "fact_categories_sha256": "fe2732633cdf17bad0a5e152b1f8c845ab46e1d8e018cb29b67dfb7a66181fce",
     "family_pack_sha256": "a546af31bd73a7c0001896273606fa87ff836efcc06a9c0dec19158aa0718e53",
-    "qname_registry_sha256": "54ac3894254a4432c4fc3d67e897134d30533bea0b6e68f66fe092e49983540b",
+    "qname_registry_sha256": "102684596395beea835a34ec644401ccbf5d002264f04c0408b286096d6d81fc",
     "research_sha256": "9e9310764d6d9e2758fc7f09e69108bfe8a01678f9b9b70678ad530f7259c817",
     "sal_facts_sha256": "95ae72627eee3a93e68b84553cb25e83f556ff53d41012e8b3b9468b42f09379",
     "shared_contract_sha256": "ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494"
@@ -56,16 +56,9 @@
         "set_cell"
       ],
       "test_files": [
-        "tests/benchmarks/bench_csv.py",
-        "tests/python/abw/test_abw_export_html_csv_pipeline.py",
-        "tests/python/abw/test_abw_to_csv.py",
-        "tests/python/abw/test_r123_abw_csv_export.py",
-        "tests/python/csv/test_csv_advanced_roundtrip.py",
-        "tests/python/csv/test_csv_analytics_ext.py",
-        "tests/python/csv/test_csv_analytics_ext2.py",
-        "tests/python/csv/test_csv_conveyor_deepening.py",
         "tests/python/csv/test_csv_document_mutation.py",
-        "tests/python/csv/test_csv_gap_closure_batch.py"
+        "tests/python/csv_format/test_csv_gap_coverage.py",
+        "tests/python/ods/test_dogfood_ods_csv_pipeline.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -91,15 +84,15 @@
       ],
       "test_files": [
         "tests/benchmarks/bench_csv.py",
-        "tests/python/abw/test_abw_export_html_csv_pipeline.py",
-        "tests/python/abw/test_abw_to_csv.py",
-        "tests/python/abw/test_r123_abw_csv_export.py",
         "tests/python/csv/test_csv_advanced_roundtrip.py",
-        "tests/python/csv/test_csv_analytics_ext.py",
-        "tests/python/csv/test_csv_analytics_ext2.py",
         "tests/python/csv/test_csv_conveyor_deepening.py",
         "tests/python/csv/test_csv_document_mutation.py",
-        "tests/python/csv/test_csv_gap_closure_batch.py"
+        "tests/python/csv/test_csv_gap_closure_batch.py",
+        "tests/python/csv/test_csv_gate6_oracle.py",
+        "tests/python/csv/test_csv_mainstream_writer.py",
+        "tests/python/csv/test_csv_oracle_binding.py",
+        "tests/python/csv/test_csv_property_based.py",
+        "tests/python/csv/test_csv_stats_ext2.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -137,16 +130,16 @@
         "write_csv_to_file"
       ],
       "test_files": [
-        "tests/benchmarks/bench_csv.py",
-        "tests/python/abw/test_abw_export_html_csv_pipeline.py",
-        "tests/python/abw/test_abw_to_csv.py",
-        "tests/python/abw/test_r123_abw_csv_export.py",
         "tests/python/csv/test_csv_advanced_roundtrip.py",
-        "tests/python/csv/test_csv_analytics_ext.py",
-        "tests/python/csv/test_csv_analytics_ext2.py",
         "tests/python/csv/test_csv_conveyor_deepening.py",
         "tests/python/csv/test_csv_document_mutation.py",
-        "tests/python/csv/test_csv_gap_closure_batch.py"
+        "tests/python/csv/test_csv_gap_closure_batch.py",
+        "tests/python/csv/test_csv_to_abw.py",
+        "tests/python/csv/test_csv_to_dicts.py",
+        "tests/python/csv/test_csv_to_dif.py",
+        "tests/python/csv/test_csv_to_fodg.py",
+        "tests/python/csv/test_csv_to_fods.py",
+        "tests/python/csv/test_csv_to_fodt.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -173,15 +166,15 @@
       ],
       "test_files": [
         "tests/benchmarks/bench_csv.py",
-        "tests/python/abw/test_abw_export_html_csv_pipeline.py",
-        "tests/python/abw/test_abw_to_csv.py",
-        "tests/python/abw/test_r123_abw_csv_export.py",
         "tests/python/csv/test_csv_advanced_roundtrip.py",
-        "tests/python/csv/test_csv_analytics_ext.py",
-        "tests/python/csv/test_csv_analytics_ext2.py",
         "tests/python/csv/test_csv_conveyor_deepening.py",
         "tests/python/csv/test_csv_document_mutation.py",
-        "tests/python/csv/test_csv_gap_closure_batch.py"
+        "tests/python/csv/test_csv_gap_closure_batch.py",
+        "tests/python/csv/test_csv_gate6_oracle.py",
+        "tests/python/csv/test_csv_mainstream_writer.py",
+        "tests/python/csv/test_csv_oracle_binding.py",
+        "tests/python/csv/test_csv_property_based.py",
+        "tests/python/csv/test_csv_stats_ext2.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -213,16 +206,16 @@
         "Record"
       ],
       "test_files": [
-        "tests/benchmarks/bench_csv.py",
-        "tests/python/abw/test_abw_export_html_csv_pipeline.py",
         "tests/python/abw/test_abw_to_csv.py",
-        "tests/python/abw/test_r123_abw_csv_export.py",
-        "tests/python/csv/test_csv_advanced_roundtrip.py",
-        "tests/python/csv/test_csv_analytics_ext.py",
-        "tests/python/csv/test_csv_analytics_ext2.py",
-        "tests/python/csv/test_csv_conveyor_deepening.py",
         "tests/python/csv/test_csv_document_mutation.py",
-        "tests/python/csv/test_csv_gap_closure_batch.py"
+        "tests/python/csv/test_csv_gap_closure_batch.py",
+        "tests/python/csv/test_csv_gap_closure_foss.py",
+        "tests/python/csv/test_csv_gate6_oracle.py",
+        "tests/python/csv/test_csv_to_dicts.py",
+        "tests/python/csv/test_csv_to_ndjson.py",
+        "tests/python/csv/test_csv_to_tsv.py",
+        "tests/python/csv/test_mainstream_csv_writer.py",
+        "tests/python/csv/test_r1233_csv_scale_properties.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -248,15 +241,15 @@
       ],
       "test_files": [
         "tests/benchmarks/bench_csv.py",
-        "tests/python/abw/test_abw_export_html_csv_pipeline.py",
-        "tests/python/abw/test_abw_to_csv.py",
-        "tests/python/abw/test_r123_abw_csv_export.py",
         "tests/python/csv/test_csv_advanced_roundtrip.py",
-        "tests/python/csv/test_csv_analytics_ext.py",
-        "tests/python/csv/test_csv_analytics_ext2.py",
         "tests/python/csv/test_csv_conveyor_deepening.py",
         "tests/python/csv/test_csv_document_mutation.py",
-        "tests/python/csv/test_csv_gap_closure_batch.py"
+        "tests/python/csv/test_csv_gap_closure_batch.py",
+        "tests/python/csv/test_csv_gate6_oracle.py",
+        "tests/python/csv/test_csv_mainstream_writer.py",
+        "tests/python/csv/test_csv_oracle_binding.py",
+        "tests/python/csv/test_csv_property_based.py",
+        "tests/python/csv/test_csv_stats_ext2.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -312,16 +305,16 @@
         "delimiter"
       ],
       "test_files": [
-        "tests/benchmarks/bench_csv.py",
-        "tests/python/abw/test_abw_export_html_csv_pipeline.py",
-        "tests/python/abw/test_abw_to_csv.py",
-        "tests/python/abw/test_r123_abw_csv_export.py",
-        "tests/python/csv/test_csv_advanced_roundtrip.py",
         "tests/python/csv/test_csv_analytics_ext.py",
-        "tests/python/csv/test_csv_analytics_ext2.py",
         "tests/python/csv/test_csv_conveyor_deepening.py",
-        "tests/python/csv/test_csv_document_mutation.py",
-        "tests/python/csv/test_csv_gap_closure_batch.py"
+        "tests/python/csv/test_csv_gate6_oracle.py",
+        "tests/python/csv/test_csv_stats_ext3.py",
+        "tests/python/csv/test_mainstream_csv_writer.py",
+        "tests/python/csv/test_mdr11_csv_stats.py",
+        "tests/python/csv/test_mdr9_csv_exports.py",
+        "tests/python/csv/test_r1233_csv_scale_properties.py",
+        "tests/python/csv/test_r1253_csv_density_shape_properties.py",
+        "tests/python/csv/test_r1273_csv_extended_grid_analysis_properties.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -372,16 +365,16 @@
         "write_csv_to_file"
       ],
       "test_files": [
-        "tests/benchmarks/bench_csv.py",
-        "tests/python/abw/test_abw_export_html_csv_pipeline.py",
-        "tests/python/abw/test_abw_to_csv.py",
-        "tests/python/abw/test_r123_abw_csv_export.py",
         "tests/python/csv/test_csv_advanced_roundtrip.py",
-        "tests/python/csv/test_csv_analytics_ext.py",
-        "tests/python/csv/test_csv_analytics_ext2.py",
         "tests/python/csv/test_csv_conveyor_deepening.py",
         "tests/python/csv/test_csv_document_mutation.py",
-        "tests/python/csv/test_csv_gap_closure_batch.py"
+        "tests/python/csv/test_csv_gap_closure_batch.py",
+        "tests/python/csv/test_csv_mainstream_writer.py",
+        "tests/python/csv/test_csv_property_based.py",
+        "tests/python/csv/test_mainstream_csv_writer.py",
+        "tests/python/csv/test_mdr9_csv_exports.py",
+        "tests/python/csv/test_pbt_csv.py",
+        "tests/python/csv/test_r165_csv_coverage.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [

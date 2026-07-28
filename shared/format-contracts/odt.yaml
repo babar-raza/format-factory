@@ -1,0 +1,476 @@
+contract_metadata:
+  schema_version: '1.0'
+  contract_id: FC-ODT-V1
+  format_id: odt
+  format_canonical_name: OpenDocument Text
+  extensions:
+  - .odt
+  family: archive_container
+  target_spec_version: ODF 1.3 (ISO/IEC 26300-3:2021)
+  source_authority_status: NEEDS_AUTHORITY
+  generator_version: fcl-compiler/1.0.0
+  lifecycle_status: DRAFT
+  confidence: low
+  supersedes: null
+  input_digests:
+    fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
+    family_pack_sha256: 79ffac447b248a76ea0406b1e2347c4ed8b24440e9e9eaeb34adee92e5078416
+    qname_registry_sha256: 7b997e2ba50b4eca58ac08645713baef30229c5330c2d8e17f9f42f4bf7fd6c1
+    research_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    sal_facts_sha256: a25d4fcdba5a36e5b5e755d06f0eb1a9ac4e9e826150fd3f1ba9a029fb4b47d1
+    shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+format_identity:
+  active_content_model:
+    has_active_content: false
+    policy: Containers carry passive payloads; extraction paths are policy-governed; nothing embedded
+      is ever executed.
+  data_model_type: archive
+  description: 'OpenDocument Text: compressed container/stream format (OASIS Open Document Format TC ODF
+    1.3 (ISO/IEC 26300-3:2021)). Framed compressed payloads or entry-based archives carrying documents
+    and data.'
+  primary_use_cases:
+  - Compress and decompress payloads or archive entries reliably and safely
+  - Inspect container structure and metadata without full extraction
+  - Stream large payloads in bounded memory
+authoritative_sources:
+- title: OASIS Open Document Format TC ODF 1.3 (ISO/IEC 26300-3:2021)
+  source_id: SRC-ODT-001
+  organization: OASIS Open Document Format TC
+  version: ODF 1.3 (ISO/IEC 26300-3:2021)
+  canonical_url: null
+  authority_class: AUTHORITATIVE
+  acquisition_status: NEEDS_AUTHORITY
+scope_policy:
+  minimum_viable_support: Decode and encode conformant containers with integrity verification, bounded-memory
+    streaming, and decompression-bomb protection.
+  production_complete_target: 'Full container/frame model of the target specification: framing/entry structure,
+    checksums, metadata, streaming and random access where defined, safe extraction with limits, and deterministic
+    writing.'
+capabilities:
+- release_gates:
+  - Codec verified against reference vectors.
+  capability_id: ODT-CODEC-001
+  level: MUST
+  category: parse
+  title: Compression codec correctness
+  production_meaning: Compression and decompression are bit-correct against reference vectors with all
+    specified parameters/window rules honored.
+  developer_use_case: A developer decompresses reference-produced data and byte-identical content emerges.
+  provenance:
+  - POL-ARC-CODEC-01
+  - SAL-ODT-00005
+  - SAL-ODT-00007
+  - SAL-ODT-00008
+  - SAL-ODT-00014
+  - SAL-ODT-00015
+  required_behavior:
+  - Match reference implementation outputs on the specification's test vectors; honor declared parameters,
+    dictionaries, and window constraints.
+  normative_rules:
+  - (spec) ODT package contains styles.xml with <office:document-styles> root element for document-level
+    and master page styles
+  - (spec) ODT paragraph element is <text:p> which is the primary block-level text container in content.xml
+  - (spec) ODT heading element is <text:h> with text:outline-level attribute specifying heading depth
+    from 1 to 10
+  - (spec) ODT mimetype file must be the first entry in the ZIP with no compression and no extra field
+    data
+  - (spec) ODT text:h element must have a valid text:outline-level attribute; omitting it on a heading
+    is forbidden
+  depth_required: 2
+  depth_rationale: 'MUST parse capability: family depth floor 2, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Reference-vector round trips; parameter matrix.
+- release_gates:
+  - Container structure decoding covered against the specification's structure inventory.
+  capability_id: ODT-CONTAINER-001
+  level: MUST
+  category: parse
+  title: Frame/entry structure decoding
+  production_meaning: Magic numbers, frames or entries, headers, and checksums decode exactly per specification
+    with integrity verified.
+  developer_use_case: A developer probes a file, enumerates its frames/entries and metadata, and verifies
+    integrity without extraction.
+  provenance:
+  - POL-ARC-CONTAINER-01
+  - SAL-ODT-00006
+  - SAL-ODT-00007
+  - SAL-ODT-00011
+  - SAL-ODT-00014
+  required_behavior:
+  - Decode magic numbers, frame/entry headers, size fields, and checksums per specification; verify integrity
+    and report exact corruption positions.
+  normative_rules:
+  - (spec) ODT MIME type is application/vnd.oasis.opendocument.text stored as first entry in the ZIP archive
+  - (spec) ODT paragraph element is <text:p> which is the primary block-level text container in content.xml
+  - (spec) ODT section element is <text:section> which groups paragraphs and other block elements into
+    a named logical section
+  - (spec) ODT mimetype file must be the first entry in the ZIP with no compression and no extra field
+    data
+  depth_required: 2
+  depth_rationale: 'MUST parse capability: family depth floor 2, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Structure fixtures per frame/entry kind; corrupted-checksum and truncation negatives.
+- release_gates:
+  - Update operations proven consumer-compatible.
+  capability_id: ODT-EDIT-001
+  level: MUST
+  category: edit
+  title: Container update semantics
+  production_meaning: Payloads/entries can be added, replaced, and removed under the format's update rules
+    with integrity recomputed.
+  developer_use_case: A developer replaces one entry and the container remains valid for all consumers.
+  provenance:
+  - POL-ARC-EDIT-01
+  required_behavior:
+  - Add, replace, and remove payloads/entries per the format's update semantics with checksums and indexes
+    recomputed.
+  depth_required: 4
+  depth_rationale: 'MUST edit capability: family depth floor 4, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Update round trips verified by independent decode.
+- release_gates:
+  - All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: ODT-LIFECYCLE-001
+  level: MUST
+  category: lifecycle
+  title: Baseline lifecycle I/O
+  production_meaning: Load/save/bytes round-trip, version exposure, strict and tolerant read modes, first-class
+    validation, deterministic serialization.
+  developer_use_case: A developer integrates the library with only lifecycle APIs and never needs format-internal
+    knowledge for I/O plumbing.
+  provenance:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+  required_behavior:
+  - Provide load from filesystem path, readable stream, and in-memory bytes, returning the format's root
+    document/model object.
+  - Provide save to filesystem path and writable stream, plus serialization to bytes, producing output
+    the library's own loader accepts.
+  - Expose the detected format version and any declared version separately; never silently rewrite a declared
+    version.
+  - Support a strict read mode that rejects malformed input with diagnostics and a tolerant read mode
+    that recovers where the format permits, with recovery actions reported.
+  - Expose validation as a first-class callable operation returning structured diagnostics, not only as
+    exceptions raised during parsing.
+  - Offer deterministic serialization such that an unchanged loaded document serializes to identical bytes
+    across repeated calls in the same mode.
+  depth_required: 4
+  depth_rationale: Portfolio baseline (lifecycle_io) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test
+    proving refusal with diagnostics.
+- release_gates:
+  - Metadata model covers all specified header fields.
+  capability_id: ODT-MODEL-001
+  level: MUST
+  category: model
+  title: Container metadata model
+  production_meaning: Frames/entries, sizes, timestamps, and format metadata are typed and enumerable
+    without full decode.
+  developer_use_case: A developer lists entries with sizes and metadata from a large archive in milliseconds.
+  provenance:
+  - POL-ARC-MODEL-01
+  - SAL-ODT-00002
+  - SAL-ODT-00004
+  - SAL-ODT-00007
+  - SAL-ODT-00017
+  - SAL-ODT-00018
+  required_behavior:
+  - Expose typed container metadata (frames/entries, sizes, checksums, format flags) enumerable without
+    full payload decode.
+  normative_rules:
+  - (spec) ODT package root contains content.xml as the primary document content stream with text body
+  - (spec) ODT package contains meta.xml with document metadata in <office:document-meta> root element
+  - (spec) ODT paragraph element is <text:p> which is the primary block-level text container in content.xml
+  - (spec) ODT content.xml root element is <office:document-content> with office:version attribute required
+  - (spec) ODT automatic styles in content.xml are in <office:automatic-styles> element as a child of
+    the document-content root
+  depth_required: 3
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Metadata enumeration matches fixture truth without payload reads.
+- release_gates:
+  - All preservation baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: ODT-PRESERVE-001
+  level: MUST
+  category: preserve
+  title: Baseline preservation duties
+  production_meaning: Unknown constructs, absent-vs-default distinctions, and loss reporting are handled
+    so round trips never silently drop data.
+  developer_use_case: A developer round-trips files containing constructs the library does not model and
+    loses nothing silently.
+  provenance:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+  required_behavior:
+  - Preserve unknown or future-version constructs that can be carried safely; never silently drop unrecognized
+    content in lossless mode.
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty
+    value.
+  - Report every construct that cannot be preserved before saving, through a loss report API, rather than
+    failing silently.
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller
+    choice.
+  depth_required: 4
+  depth_rationale: Portfolio baseline (preservation) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each preservation baseline behavior has a focused positive test and, where refusable, a negative test
+    proving refusal with diagnostics.
+- release_gates:
+  - All security_limits baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: ODT-SEC-001
+  level: MUST
+  category: security
+  title: Baseline security posture
+  production_meaning: Input limits, no implicit external effects, traversal protection, untrusted-payload
+    discipline, and complexity-attack guards are enforced with diagnostics.
+  developer_use_case: A developer processes untrusted input with safe defaults and only opts into external
+    effects explicitly.
+  provenance:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+  required_behavior:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded
+    payload bytes, with safe defaults enabled.
+  - Never resolve network resources, execute embedded code, load plugins, or follow external references
+    during load, validate, or save unless explicitly enabled by the caller.
+  - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced
+    resource.
+  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing
+    must not evaluate them.
+  - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations
+    and bound recursion depth.
+  depth_required: 5
+  depth_rationale: Portfolio baseline (security_limits) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
+    test proving refusal with diagnostics.
+- release_gates:
+  - Streaming paths pass large-data tests.
+  capability_id: ODT-STREAM-001
+  level: MUST
+  category: performance
+  title: Bounded-memory streaming
+  production_meaning: Compression/decompression stream in bounded memory with random access where the
+    format defines it.
+  developer_use_case: A developer pipes multi-GB data through the codec with flat memory usage.
+  provenance:
+  - POL-ARC-STREAM-01
+  - SAL-ODT-00002
+  required_behavior:
+  - Stream encode/decode in bounded memory; support random access (seek tables/entry indexes) where the
+    specification defines it.
+  normative_rules:
+  - (spec) ODT package root contains content.xml as the primary document content stream with text body
+  depth_required: 4
+  depth_rationale: 'MUST performance capability: family depth floor 4, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Bounded-memory large-payload tests; random-access fixtures where applicable.
+- release_gates:
+  - Every integrity rule has negative coverage.
+  capability_id: ODT-VALIDATE-001
+  level: MUST
+  category: validate
+  title: Integrity and structure validation
+  production_meaning: Structure, checksums, and declared sizes validate with complete diagnostics before
+    extraction is attempted.
+  developer_use_case: A service validates uploads and rejects corrupt or hostile containers with exact
+    reasons.
+  provenance:
+  - POL-ARC-VALIDATE-01
+  - SAL-ODT-00014
+  - SAL-ODT-00015
+  - SAL-ODT-00016
+  required_behavior:
+  - Validate structure, checksums, and declared-vs-actual sizes with positions; run security checks (limits,
+    ratios, paths) as a distinct layer.
+  normative_rules:
+  - (spec) ODT mimetype file must be the first entry in the ZIP with no compression and no extra field
+    data
+  - (spec) ODT text:h element must have a valid text:outline-level attribute; omitting it on a heading
+    is forbidden
+  - (spec) ODT manifest.xml must list every file in the package; unlisted files are invalid and shall
+    be rejected by conforming processors
+  depth_required: 5
+  depth_rationale: 'MUST validate capability: family depth floor 5, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Corruption matrix negatives; bomb/traversal security fixtures.
+- release_gates:
+  - Writer output accepted by reference decoder.
+  capability_id: ODT-WRITE-001
+  level: MUST
+  category: write
+  title: Deterministic container writing
+  production_meaning: Writers emit specification-conformant containers deterministically; independent
+    decoders accept the output.
+  developer_use_case: A developer writes archives in CI and reruns produce identical bytes.
+  provenance:
+  - POL-ARC-WRITE-01
+  required_behavior:
+  - Emit conformant containers with deterministic framing/ordering; verify output by self-decode round
+    trip.
+  depth_required: 4
+  depth_rationale: 'MUST write capability: family depth floor 4, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Determinism byte-compare; independent-decoder acceptance fixture.
+preservation_contract:
+  lexical_roundtrip:
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller
+    choice.
+  loss_reporting_policy: Report every construct that cannot be preserved before saving, through a loss
+    report API, rather than failing silently.
+  structural_roundtrip:
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty
+    value.
+  unknown_construct_policy: Preserve unknown or future-version constructs that can be carried safely;
+    never silently drop unrecognized content in lossless mode.
+validation_contract:
+  diagnostic_schema:
+    fields:
+    - code
+    - severity
+    - message
+    - source_location
+    - object_path
+    - originating_rule
+    - repair_suggestion
+    - auto_repair_eligible
+  layers:
+  - description: Frame/entry structure, magic numbers, ordering, and size fields.
+    layer: structural
+  - description: Checksum/integrity verification and declared-vs-actual size checks.
+    layer: payload
+  - description: Decompression limits, ratio caps, path safety for entry names.
+    layer: security
+security_contract:
+  attack_surfaces:
+  - Decompression bombs exhausting memory or disk.
+  - Entry-name path traversal on extraction.
+  - Corrupted size fields causing over-allocation.
+  limits:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded
+    payload bytes, with safe defaults enabled.
+  - Never resolve network resources, execute embedded code, load plugins, or follow external references
+    during load, validate, or save unless explicitly enabled by the caller.
+  - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced
+    resource.
+  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing
+    must not evaluate them.
+  - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations
+    and bound recursion depth.
+  safe_defaults:
+  - Decompressed-size and ratio limits enforced before and during decode.
+  - Extraction confined to configured roots with entry-name sanitization.
+  - Size fields validated with checked arithmetic before allocation.
+test_contract:
+- Test official or authoritative valid samples, invalid samples, synthetic edge cases, malformed inputs,
+  and hostile inputs for every claimed capability.
+- Prove parse-save-parse semantic equivalence for representative documents of every supported construct.
+- Prove deterministic output by serializing the same document twice and byte-comparing.
+- Publish a capability manifest stating supported versions, constructs, limitations, and lossless guarantees,
+  verified against implementation and tests.
+- Reference-vector round trips; parameter matrix.
+- Structure fixtures per frame/entry kind; corrupted-checksum and truncation negatives.
+- Update round trips verified by independent decode.
+- Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test
+  proving refusal with diagnostics.
+- Metadata enumeration matches fixture truth without payload reads.
+- Each preservation baseline behavior has a focused positive test and, where refusable, a negative test
+  proving refusal with diagnostics.
+- Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
+  test proving refusal with diagnostics.
+- Bounded-memory large-payload tests; random-access fixtures where applicable.
+- Corruption matrix negatives; bomb/traversal security fixtures.
+- Determinism byte-compare; independent-decoder acceptance fixture.
+release_gates:
+- Codec verified against reference vectors.
+- Container structure decoding covered against the specification's structure inventory.
+- Update operations proven consumer-compatible.
+- All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- Metadata model covers all specified header fields.
+- All preservation baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- All security_limits baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- Streaming paths pass large-data tests.
+- Every integrity rule has negative coverage.
+- Writer output accepted by reference decoder.
+- Capability manifest published and independently verified against implementation and tests.
+coverage_map:
+- capability_id: ODT-CODEC-001
+  provenance:
+  - POL-ARC-CODEC-01
+  - SAL-ODT-00005
+  - SAL-ODT-00007
+  - SAL-ODT-00008
+  - SAL-ODT-00014
+  - SAL-ODT-00015
+- capability_id: ODT-CONTAINER-001
+  provenance:
+  - POL-ARC-CONTAINER-01
+  - SAL-ODT-00006
+  - SAL-ODT-00007
+  - SAL-ODT-00011
+  - SAL-ODT-00014
+- capability_id: ODT-EDIT-001
+  provenance:
+  - POL-ARC-EDIT-01
+- capability_id: ODT-LIFECYCLE-001
+  provenance:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+- capability_id: ODT-MODEL-001
+  provenance:
+  - POL-ARC-MODEL-01
+  - SAL-ODT-00002
+  - SAL-ODT-00004
+  - SAL-ODT-00007
+  - SAL-ODT-00017
+  - SAL-ODT-00018
+- capability_id: ODT-PRESERVE-001
+  provenance:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+- capability_id: ODT-SEC-001
+  provenance:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+- capability_id: ODT-STREAM-001
+  provenance:
+  - POL-ARC-STREAM-01
+  - SAL-ODT-00002
+- capability_id: ODT-VALIDATE-001
+  provenance:
+  - POL-ARC-VALIDATE-01
+  - SAL-ODT-00014
+  - SAL-ODT-00015
+  - SAL-ODT-00016
+- capability_id: ODT-WRITE-001
+  provenance:
+  - POL-ARC-WRITE-01

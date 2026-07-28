@@ -179,3 +179,99 @@ facts:
     confidence: high
     added_by: GAP-FORENSIC-008
     added_at: '2026-07-15'
+- fact_id: SAL-QOI-00011
+  qname: FACT-QOI-011
+  element_qname: qoi:header
+  claim: "The QOI header is 14 bytes: magic 'qoif' (4 bytes), width (uint32 big-endian), height (uint32 big-endian), channels (1 byte; 3=RGB, 4=RGBA), colorspace (1 byte; 0=sRGB with linear alpha, 1=all channels linear)"
+  section: "1.0"
+  authority: "QOI Specification 2021 (qoiformat.org)"
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: qoi-spec-1.0
+    section_id: "1.0"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-PA-019
+    added_at: '2026-07-17'
+    verification_evidence: "qoi.h struct qoi_header_t { char magic[4] qoif; uint32_t width (BE); uint32_t height (BE); uint8_t channels 3=RGB 4=RGBA; uint8_t colorspace 0=sRGB w/ linear alpha 1=all linear }"
+- fact_id: SAL-QOI-00012
+  qname: FACT-QOI-012
+  element_qname: qoi:colorspace-informative
+  claim: "The channels and colorspace header fields are purely informative; they are saved to the file header but do not affect how chunks are encoded or decoded"
+  section: "1.0"
+  authority: "QOI Specification 2021 (qoiformat.org)"
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: qoi-spec-1.0
+    section_id: "1.0"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-PA-019
+    added_at: '2026-07-17'
+    verification_evidence: "qoi.h: \"The colorspace is purely informative. It will be saved to the file header, but does not affect how chunks are en-/decoded.\""
+- fact_id: SAL-QOI-00013
+  qname: FACT-QOI-013
+  element_qname: qoi:encoding-order
+  claim: "Images are encoded row by row, left to right, top to bottom; the encoder and decoder start with the previous pixel value r=0, g=0, b=0, a=255"
+  section: "2.0"
+  authority: "QOI Specification 2021 (qoiformat.org)"
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: qoi-spec-1.0
+    section_id: "2.0"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-PA-019
+    added_at: '2026-07-17'
+    verification_evidence: "qoi.h: \"Images are encoded row by row, left to right, top to bottom. The decoder and encoder start with {r: 0, g: 0, b: 0, a: 255} as the previous pixel value.\""
+- fact_id: SAL-QOI-00014
+  qname: FACT-QOI-014
+  element_qname: qoi:index-array
+  claim: "A running array of 64 previously seen pixel values (zero-initialized) is maintained by both encoder and decoder; a pixel's array position is index_position = (r*3 + g*5 + b*7 + a*11) % 64"
+  section: "2.0"
+  authority: "QOI Specification 2021 (qoiformat.org)"
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: qoi-spec-1.0
+    section_id: "2.0"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-PA-019
+    added_at: '2026-07-17'
+    verification_evidence: "qoi.h: \"A running array[64] (zero-initialized) of previously seen pixel values is maintained by the encoder and decoder.\" index = (r*3 + g*5 + b*7 + a*11) % 64"
+- fact_id: SAL-QOI-00015
+  qname: FACT-QOI-015
+  element_qname: qoi:tag-precedence
+  claim: "The 8-bit tags (QOI_OP_RGB and QOI_OP_RGBA) have precedence over the 2-bit tags; a decoder must check for the presence of an 8-bit tag first"
+  section: "3.0"
+  authority: "QOI Specification 2021 (qoiformat.org)"
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: qoi-spec-1.0
+    section_id: "3.0"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-PA-019
+    added_at: '2026-07-17'
+    verification_evidence: "qoi.h: \"The 8-bit tags have precedence over the 2-bit tags. A decoder must check for the presence of an 8-bit tag first.\""
+- fact_id: SAL-QOI-00016
+  qname: FACT-QOI-016
+  element_qname: qoi:wraparound
+  claim: "Channel differences in QOI_OP_DIFF and QOI_OP_LUMA use wraparound (modulo 256) arithmetic: a value of 1 minus 2 yields 255, and 255 plus 1 yields 0"
+  section: "3.0"
+  authority: "QOI Specification 2021 (qoiformat.org)"
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: qoi-spec-1.0
+    section_id: "3.0"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-PA-019
+    added_at: '2026-07-17'
+    verification_evidence: "qoi.h: differences use wraparound; \"1 - 2\" is 255 and \"255 + 1\" is 0."

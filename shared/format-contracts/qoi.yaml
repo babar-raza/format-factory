@@ -17,7 +17,7 @@ contract_metadata:
     family_pack_sha256: 5811104a395d9a79ca5edf12d245ad9d699c7c1330f094884fe9d503dc0e0241
     qname_registry_sha256: ec4940c11965b71fa208b42caa6952a6620d37bcd9b55fa044ab1de53d3dcf5f
     research_sha256: 71485818d56195ec1e5e97815381fc14a8356988f34f9b5a54c838da8ca460be
-    sal_facts_sha256: 1467650c1564b32f817f025031bfb5e41b118db2bf790c58fb776dfc0142dc15
+    sal_facts_sha256: 257d9fe64fb1ebd424168a1c01a988454eee56155dec7024b2a514f7f3ec7188
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
 format_identity:
   active_content_model:
@@ -140,6 +140,10 @@ capabilities:
   - SAL-QOI-00001
   - SAL-QOI-00007
   - SAL-QOI-00008
+  - SAL-QOI-00011
+  - SAL-QOI-00012
+  - SAL-QOI-00013
+  - SAL-QOI-00016
   required_behavior:
   - Expose typed image structure (dimensions, channels, depth, layers/properties where defined) with header-only
     inspection.
@@ -149,6 +153,15 @@ capabilities:
     2-bit values each with a bias of 2 (range -2..1), alpha unchanged; 1 byte total'
   - '(3.0) QOI_OP_LUMA chunk: 2-bit tag 0b10 (mask 0x80), 6-bit green-channel difference dg with bias
     32, then 4-bit dr-dg and db-dg deltas each with bias 8, alpha unchanged; 2 bytes total'
+  - '(1.0) The QOI header is 14 bytes: magic ''qoif'' (4 bytes), width (uint32 big-endian), height (uint32
+    big-endian), channels (1 byte; 3=RGB, 4=RGBA), colorspace (1 byte; 0=sRGB with linear alpha, 1=all
+    channels linear)'
+  - (1.0) The channels and colorspace header fields are purely informative; they are saved to the file
+    header but do not affect how chunks are encoded or decoded
+  - (2.0) Images are encoded row by row, left to right, top to bottom; the encoder and decoder start with
+    the previous pixel value r=0, g=0, b=0, a=255
+  - '(3.0) Channel differences in QOI_OP_DIFF and QOI_OP_LUMA use wraparound (modulo 256) arithmetic:
+    a value of 1 minus 2 yields 255, and 255 plus 1 yields 0'
   depth_required: 3
   depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
     per L30 schema.'
@@ -172,6 +185,11 @@ capabilities:
   - SAL-QOI-00007
   - SAL-QOI-00008
   - SAL-QOI-00009
+  - SAL-QOI-00011
+  - SAL-QOI-00012
+  - SAL-QOI-00013
+  - SAL-QOI-00014
+  - SAL-QOI-00016
   - RF-QOI-00001
   required_behavior:
   - Decode every specified header variant and pixel encoding with dimension/depth validation before payload
@@ -193,6 +211,17 @@ capabilities:
   - '(3.0) QOI_OP_RUN chunk: 2-bit tag 0b11 (mask 0xC0), 6-bit run length with bias -1 encoding a run
     of 1..62 identical pixels (values 63 and 64 are reserved for QOI_OP_RGB/QOI_OP_RGBA tags); 1 byte
     total'
+  - '(1.0) The QOI header is 14 bytes: magic ''qoif'' (4 bytes), width (uint32 big-endian), height (uint32
+    big-endian), channels (1 byte; 3=RGB, 4=RGBA), colorspace (1 byte; 0=sRGB with linear alpha, 1=all
+    channels linear)'
+  - (1.0) The channels and colorspace header fields are purely informative; they are saved to the file
+    header but do not affect how chunks are encoded or decoded
+  - (2.0) Images are encoded row by row, left to right, top to bottom; the encoder and decoder start with
+    the previous pixel value r=0, g=0, b=0, a=255
+  - (2.0) A running array of 64 previously seen pixel values (zero-initialized) is maintained by both
+    encoder and decoder; a pixel's array position is index_position = (r*3 + g*5 + b*7 + a*11) % 64
+  - '(3.0) Channel differences in QOI_OP_DIFF and QOI_OP_LUMA use wraparound (modulo 256) arithmetic:
+    a value of 1 minus 2 yields 255, and 255 plus 1 yields 0'
   depth_required: 3
   depth_rationale: 'MUST parse capability: family depth floor 2, finding hints applied; depth scale 0-8
     per L30 schema.'
@@ -272,8 +301,12 @@ capabilities:
   developer_use_case: A pipeline rejects malformed images with exact reasons.
   provenance:
   - POL-IMG-VALIDATE-01
+  - SAL-QOI-00015
   required_behavior:
   - Validate header rules, declared-vs-actual payload sizes, and compression integrity with position diagnostics.
+  normative_rules:
+  - (3.0) The 8-bit tags (QOI_OP_RGB and QOI_OP_RGBA) have precedence over the 2-bit tags; a decoder must
+    check for the presence of an 8-bit tag first
   depth_required: 5
   depth_rationale: 'MUST validate capability: family depth floor 5, finding hints applied; depth scale
     0-8 per L30 schema.'
@@ -293,6 +326,9 @@ capabilities:
   - SAL-QOI-00004
   - SAL-QOI-00005
   - SAL-QOI-00010
+  - SAL-QOI-00012
+  - SAL-QOI-00013
+  - SAL-QOI-00014
   - RF-QOI-00002
   required_behavior:
   - Encode every supported variant conformantly and deterministically; decode-encode-decode is pixel-exact.
@@ -307,6 +343,12 @@ capabilities:
   - '(3.0) QOI_OP_END: the encoded data stream is terminated by an 8-byte sequence of seven 0x00 bytes
     followed by a single 0x01 byte; op-code-level encoding of the end marker (stream-termination semantics
     are recorded separately as FACT-QOI-003)'
+  - (1.0) The channels and colorspace header fields are purely informative; they are saved to the file
+    header but do not affect how chunks are encoded or decoded
+  - (2.0) Images are encoded row by row, left to right, top to bottom; the encoder and decoder start with
+    the previous pixel value r=0, g=0, b=0, a=255
+  - (2.0) A running array of 64 previously seen pixel values (zero-initialized) is maintained by both
+    encoder and decoder; a pixel's array position is index_position = (r*3 + g*5 + b*7 + a*11) % 64
   depth_required: 4
   depth_rationale: 'MUST write capability: family depth floor 4, finding hints applied; depth scale 0-8
     per L30 schema.'
@@ -416,6 +458,10 @@ coverage_map:
   - SAL-QOI-00001
   - SAL-QOI-00007
   - SAL-QOI-00008
+  - SAL-QOI-00011
+  - SAL-QOI-00012
+  - SAL-QOI-00013
+  - SAL-QOI-00016
 - capability_id: QOI-PARSE-001
   provenance:
   - POL-IMG-PARSE-01
@@ -426,6 +472,11 @@ coverage_map:
   - SAL-QOI-00007
   - SAL-QOI-00008
   - SAL-QOI-00009
+  - SAL-QOI-00011
+  - SAL-QOI-00012
+  - SAL-QOI-00013
+  - SAL-QOI-00014
+  - SAL-QOI-00016
   - RF-QOI-00001
 - capability_id: QOI-PRESERVE-001
   provenance:
@@ -443,6 +494,7 @@ coverage_map:
 - capability_id: QOI-VALIDATE-001
   provenance:
   - POL-IMG-VALIDATE-01
+  - SAL-QOI-00015
 - capability_id: QOI-WRITE-001
   provenance:
   - POL-IMG-WRITE-01
@@ -450,4 +502,7 @@ coverage_map:
   - SAL-QOI-00004
   - SAL-QOI-00005
   - SAL-QOI-00010
+  - SAL-QOI-00012
+  - SAL-QOI-00013
+  - SAL-QOI-00014
   - RF-QOI-00002

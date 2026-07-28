@@ -1,0 +1,577 @@
+contract_metadata:
+  schema_version: '1.0'
+  contract_id: FC-FODT-V1
+  format_id: fodt
+  format_canonical_name: Flat OpenDocument Text
+  extensions:
+  - .fodt
+  family: xml_document
+  target_spec_version: ODF 1.3
+  source_authority_status: AUTHORITATIVE
+  generator_version: fcl-compiler/1.0.0
+  lifecycle_status: DRAFT
+  confidence: low
+  supersedes: null
+  input_digests:
+    fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
+    family_pack_sha256: a0c9e6a36ee0bc426d4a9b2e12de9ce1b0ec10239395c8a492e9bd1feb498d19
+    qname_registry_sha256: e9ffff636120c9cfc8a8a15b06455a133065eb1cb6bc3f8d7123c13fb1bed9ca
+    research_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    sal_facts_sha256: bb1da87e102f9f704c25f10281eef7ec410a8534ace3ed359107b70efa394aae
+    shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+format_identity:
+  active_content_model:
+    has_active_content: false
+    policy: Documents may reference external resources and embedded objects; nothing is fetched or executed
+      implicitly; scripts/macros where present are preserved as opaque data.
+  data_model_type: xml
+  description: 'Flat OpenDocument Text: XML office-document format (OASIS ODF 1.3). Namespaced document
+    content (text, cells, shapes) with styles and metadata, produced and consumed by office applications.'
+  primary_use_cases:
+  - Load, inspect, edit, and save office documents programmatically
+  - Extract and transform document content (text, tables, cells, shapes)
+  - Export to interchange representations with fidelity reports
+authoritative_sources:
+- title: OASIS ODF 1.3
+  source_id: SRC-FODT-001
+  organization: OASIS
+  version: ODF 1.3
+  canonical_url: https://docs.oasis-open.org/office/OpenDocument/v1.3/
+  authority_class: AUTHORITATIVE
+  acquisition_status: URL_ONLY
+scope_policy:
+  minimum_viable_support: Parse into a typed content model, perform core content edits, save valid output
+    the producing application reopens, and validate structure with positions.
+  production_complete_target: 'Complete content model of the target specification''s document type: structure,
+    content elements, styles, and metadata with QName-aligned typed APIs, layered validation, lossless
+    round trip, and deterministic writing.'
+capabilities:
+- release_gates:
+  - Editing proven producer-compatible.
+  capability_id: FODT-CONTENT-001
+  level: MUST
+  category: edit
+  title: Content editing
+  production_meaning: Core content (text, cells, shapes as applicable) supports create/update/move/delete
+    with structure and reference invariants enforced.
+  developer_use_case: A developer edits cell values or paragraph text and the producing application reopens
+    the file cleanly.
+  provenance:
+  - POL-XDC-CONTENT-01
+  required_behavior:
+  - Support content CRUD maintaining structure rules and reference integrity (styles, links, objects).
+  depth_required: 4
+  depth_rationale: 'MUST edit capability: family depth floor 4, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Each mutation class save-reload-verifies; producer-reopen fixture where tooling exists.
+- release_gates:
+  - At least one export path consumer-verified.
+  capability_id: FODT-EXPORT-001
+  level: SHOULD
+  category: export
+  title: Interchange export
+  production_meaning: Content exports to at least one interchange representation (Format Factory libraries
+    where available) with a fidelity/loss report.
+  developer_use_case: A developer exports sheets to CSV or text content to another format with explicit
+    loss reporting.
+  provenance:
+  - POL-XDC-EXPORT-01
+  required_behavior:
+  - Export content to supported targets preserving values/structure where representable, with a loss report
+    for the rest.
+  depth_required: 4
+  depth_rationale: 'SHOULD export capability: family depth floor 4, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Export verified by target-format parser; loss report accuracy fixtures.
+- release_gates:
+  - All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: FODT-LIFECYCLE-001
+  level: MUST
+  category: lifecycle
+  title: Baseline lifecycle I/O
+  production_meaning: Load/save/bytes round-trip, version exposure, strict and tolerant read modes, first-class
+    validation, deterministic serialization.
+  developer_use_case: A developer integrates the library with only lifecycle APIs and never needs format-internal
+    knowledge for I/O plumbing.
+  provenance:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+  required_behavior:
+  - Provide load from filesystem path, readable stream, and in-memory bytes, returning the format's root
+    document/model object.
+  - Provide save to filesystem path and writable stream, plus serialization to bytes, producing output
+    the library's own loader accepts.
+  - Expose the detected format version and any declared version separately; never silently rewrite a declared
+    version.
+  - Support a strict read mode that rejects malformed input with diagnostics and a tolerant read mode
+    that recovers where the format permits, with recovery actions reported.
+  - Expose validation as a first-class callable operation returning structured diagnostics, not only as
+    exceptions raised during parsing.
+  - Offer deterministic serialization such that an unchanged loaded document serializes to identical bytes
+    across repeated calls in the same mode.
+  depth_required: 4
+  depth_rationale: Portfolio baseline (lifecycle_io) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test
+    proving refusal with diagnostics.
+- release_gates:
+  - Zero metadata loss proven.
+  capability_id: FODT-META-001
+  level: MUST
+  category: preserve
+  title: Metadata and settings preservation
+  production_meaning: Document metadata and application settings round-trip losslessly, including unknown
+    producer extensions.
+  developer_use_case: A developer updates content while author/settings metadata rides along untouched.
+  provenance:
+  - POL-XDC-META-01
+  required_behavior:
+  - Preserve document metadata, settings, and unknown producer extensions losslessly.
+  depth_required: 2
+  depth_rationale: 'MUST preserve capability: family depth floor 2, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Unknown-extension round trips.
+- release_gates:
+  - Model covers every first-wave content construct with QName traceability.
+  capability_id: FODT-MODEL-001
+  level: MUST
+  category: model
+  title: QName-aligned typed content model
+  production_meaning: Content constructs (paragraphs/runs, sheets/rows/cells, shapes/pages as applicable)
+    are typed with spec_qname alignment per repository RULE-LIB-002.
+  developer_use_case: A developer navigates document content through typed collections instead of raw
+    XML.
+  provenance:
+  - POL-XDC-MODEL-01
+  - SAL-FODT-00001
+  - SAL-FODT-00003
+  - SAL-FODT-00004
+  - SAL-FODT-00005
+  - SAL-FODT-00006
+  - SAL-FODT-00007
+  - SAL-FODT-00008
+  - SAL-FODT-00009
+  - SAL-FODT-00010
+  - SAL-FODT-00011
+  - SAL-FODT-00013
+  - SAL-FODT-00014
+  - SAL-FODT-00016
+  - SAL-FODT-00017
+  required_behavior:
+  - Expose QName-aligned typed models for the document type's content constructs with collection semantics
+    on child types (never on the root).
+  normative_rules:
+  - (spec) FODT root element is <office:document> which serves as the top-level document container for
+    flat OpenDocument text documents
+  - (spec) FODT text content is wrapped in <office:text> element inside <office:body> identifying the
+    document as text
+  - (spec) FODT paragraph element is <text:p> which is the primary block-level text container
+  - (spec) FODT heading element is <text:h> with text:outline-level attribute specifying heading depth
+    from 1 to 10
+  - (spec) FODT span element is <text:span> for inline character formatting within paragraphs
+  - (spec) FODT text:style-name attribute on paragraph and heading elements references a defined style
+    by name
+  - (spec) FODT list element is <text:list> containing <text:list-item> children for ordered and unordered
+    lists
+  - (spec) FODT section element is <text:section> which groups paragraphs and other block elements into
+    a named section
+  - (spec) FODT hyperlink element is <text:a> with xlink:href attribute for external and internal links
+  - (spec) FODT table element is <table:table> for inline tables within text documents containing rows
+    and cells
+  - (spec) FODT uses XML character escaping for special characters including &amp; &lt; &gt; in text content
+  - (spec) FODT whitespace handling uses <text:s text:c="N"/> for multiple consecutive spaces within paragraphs
+  - (spec) FODT text:h element must have a valid text:outline-level attribute; omitting it on a heading
+    is forbidden
+  - (spec) FODT office:document element must declare required XML namespaces including office, text, style,
+    and fo
+  depth_required: 3
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Typed access per construct; collection semantics fixtures.
+- release_gates:
+  - Structure rules covered against specification inventory.
+  capability_id: FODT-PARSE-001
+  level: MUST
+  category: parse
+  title: Namespace-aware document parsing
+  production_meaning: Namespaced structure parses by QName with the specification's structure rules enforced
+    and producer quirks tolerated only in explicit tolerant mode.
+  developer_use_case: A developer loads real-world producer output and receives a faithful typed structure.
+  provenance:
+  - POL-XDC-PARSE-01
+  - SAL-FODT-00001
+  - SAL-FODT-00002
+  - SAL-FODT-00003
+  - SAL-FODT-00004
+  - SAL-FODT-00005
+  - SAL-FODT-00006
+  - SAL-FODT-00007
+  - SAL-FODT-00008
+  - SAL-FODT-00009
+  - SAL-FODT-00010
+  - SAL-FODT-00011
+  - SAL-FODT-00012
+  - SAL-FODT-00013
+  - SAL-FODT-00015
+  - SAL-FODT-00016
+  - SAL-FODT-00017
+  - SAL-FODT-00018
+  required_behavior:
+  - Parse namespaced document structure by QName; enforce structure rules in strict mode; tolerate documented
+    producer quirks only in tolerant mode with reports.
+  normative_rules:
+  - (spec) FODT root element is <office:document> which serves as the top-level document container for
+    flat OpenDocument text documents
+  - (spec) FODT document body is contained in <office:body> element which is a required child of the root
+    element
+  - (spec) FODT text content is wrapped in <office:text> element inside <office:body> identifying the
+    document as text
+  - (spec) FODT paragraph element is <text:p> which is the primary block-level text container
+  - (spec) FODT heading element is <text:h> with text:outline-level attribute specifying heading depth
+    from 1 to 10
+  - (spec) FODT span element is <text:span> for inline character formatting within paragraphs
+  - (spec) FODT text:style-name attribute on paragraph and heading elements references a defined style
+    by name
+  - (spec) FODT list element is <text:list> containing <text:list-item> children for ordered and unordered
+    lists
+  - (spec) FODT section element is <text:section> which groups paragraphs and other block elements into
+    a named section
+  - (spec) FODT hyperlink element is <text:a> with xlink:href attribute for external and internal links
+  - (spec) FODT table element is <table:table> for inline tables within text documents containing rows
+    and cells
+  - (spec) FODT document encoding must be UTF-8 as declared in the XML declaration
+  - (spec) FODT uses XML character escaping for special characters including &amp; &lt; &gt; in text content
+  - (spec) FODT office:version attribute on the root element is required and must conform to the ODF version
+  - (spec) FODT text:h element must have a valid text:outline-level attribute; omitting it on a heading
+    is forbidden
+  - (spec) FODT office:document element must declare required XML namespaces including office, text, style,
+    and fo
+  - (spec) FODT automatic styles are in <office:automatic-styles> element and common styles in <office:styles>
+    as direct children of the root
+  depth_required: 2
+  depth_rationale: 'MUST parse capability: family depth floor 2, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Producer-corpus fixtures in strict and tolerant modes.
+- release_gates:
+  - All preservation baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: FODT-PRESERVE-001
+  level: MUST
+  category: preserve
+  title: Baseline preservation duties
+  production_meaning: Unknown constructs, absent-vs-default distinctions, and loss reporting are handled
+    so round trips never silently drop data.
+  developer_use_case: A developer round-trips files containing constructs the library does not model and
+    loses nothing silently.
+  provenance:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+  required_behavior:
+  - Preserve unknown or future-version constructs that can be carried safely; never silently drop unrecognized
+    content in lossless mode.
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty
+    value.
+  - Report every construct that cannot be preserved before saving, through a loss report API, rather than
+    failing silently.
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller
+    choice.
+  depth_required: 4
+  depth_rationale: Portfolio baseline (preservation) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each preservation baseline behavior has a focused positive test and, where refusable, a negative test
+    proving refusal with diagnostics.
+- release_gates:
+  - All security_limits baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  capability_id: FODT-SEC-001
+  level: MUST
+  category: security
+  title: Baseline security posture
+  production_meaning: Input limits, no implicit external effects, traversal protection, untrusted-payload
+    discipline, and complexity-attack guards are enforced with diagnostics.
+  developer_use_case: A developer processes untrusted input with safe defaults and only opts into external
+    effects explicitly.
+  provenance:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+  required_behavior:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded
+    payload bytes, with safe defaults enabled.
+  - Never resolve network resources, execute embedded code, load plugins, or follow external references
+    during load, validate, or save unless explicitly enabled by the caller.
+  - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced
+    resource.
+  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing
+    must not evaluate them.
+  - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations
+    and bound recursion depth.
+  depth_required: 5
+  depth_rationale: Portfolio baseline (security_limits) from shared-library-contract.yaml; depth reflects
+    enforced-with-diagnostics expectation.
+  required_tests:
+  - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
+    test proving refusal with diagnostics.
+- release_gates:
+  - Style preservation proven on styled fixtures.
+  capability_id: FODT-STYLE-001
+  level: MUST
+  category: model
+  title: Styles and formatting
+  production_meaning: Style definitions and references are modeled and preserved; edits keep style references
+    resolvable.
+  developer_use_case: A developer reads effective formatting and applies an existing style to new content.
+  provenance:
+  - POL-XDC-STYLE-01
+  - SAL-FODT-00006
+  - SAL-FODT-00007
+  - SAL-FODT-00017
+  - SAL-FODT-00018
+  required_behavior:
+  - Model style definitions/references with preservation on round trip; keep references resolvable through
+    edits.
+  normative_rules:
+  - (spec) FODT span element is <text:span> for inline character formatting within paragraphs
+  - (spec) FODT text:style-name attribute on paragraph and heading elements references a defined style
+    by name
+  - (spec) FODT office:document element must declare required XML namespaces including office, text, style,
+    and fo
+  - (spec) FODT automatic styles are in <office:automatic-styles> element and common styles in <office:styles>
+    as direct children of the root
+  depth_required: 3
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Style-reference integrity after edits; round-trip fidelity fixtures.
+- release_gates:
+  - Every rule class has negative coverage.
+  capability_id: FODT-VALIDATE-001
+  level: MUST
+  category: validate
+  title: Layered document validation
+  production_meaning: Syntax, schema (where provided), structural, and referential layers validate with
+    positions and stable codes.
+  developer_use_case: A pipeline validates documents before processing with machine-readable results.
+  provenance:
+  - POL-XDC-VALIDATE-01
+  - SAL-FODT-00012
+  - SAL-FODT-00015
+  - SAL-FODT-00016
+  - SAL-FODT-00017
+  required_behavior:
+  - Validate syntax, schema where available, structure, and references as separate layers with positions
+    and stable codes.
+  normative_rules:
+  - (spec) FODT document encoding must be UTF-8 as declared in the XML declaration
+  - (spec) FODT office:version attribute on the root element is required and must conform to the ODF version
+  - (spec) FODT text:h element must have a valid text:outline-level attribute; omitting it on a heading
+    is forbidden
+  - (spec) FODT office:document element must declare required XML namespaces including office, text, style,
+    and fo
+  depth_required: 5
+  depth_rationale: 'MUST validate capability: family depth floor 5, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Layer negatives with position assertions.
+- release_gates:
+  - Writer proven lossless and deterministic.
+  capability_id: FODT-WRITE-001
+  level: MUST
+  category: write
+  title: Lossless and deterministic writing
+  production_meaning: Output round-trips losslessly (unknown constructs intact), writes valid namespaced
+    structure, and is deterministic.
+  developer_use_case: A developer saves and diffs show only intended changes.
+  provenance:
+  - POL-XDC-WRITE-01
+  required_behavior:
+  - Write valid namespaced output preserving unknown constructs in lossless mode with deterministic ordering/formatting.
+  depth_required: 4
+  depth_rationale: 'MUST write capability: family depth floor 4, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Lossless round trip on producer corpus; determinism byte-compare.
+preservation_contract:
+  lexical_roundtrip:
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller
+    choice.
+  loss_reporting_policy: Report every construct that cannot be preserved before saving, through a loss
+    report API, rather than failing silently.
+  structural_roundtrip:
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty
+    value.
+  unknown_construct_policy: Preserve unknown or future-version constructs that can be carried safely;
+    never silently drop unrecognized content in lossless mode.
+validation_contract:
+  diagnostic_schema:
+    fields:
+    - code
+    - severity
+    - message
+    - source_location
+    - object_path
+    - originating_rule
+    - repair_suggestion
+    - auto_repair_eligible
+  layers:
+  - description: XML well-formedness and namespace conformance.
+    layer: syntax
+  - description: Schema/RNG validation where the specification provides one.
+    layer: schema
+  - description: Document-type structure rules - required sections, containment.
+    layer: structural
+  - description: Style references, internal links, and object references resolve.
+    layer: referential
+  - description: Entity hardening, size/nesting limits, external-reference policy.
+    layer: security
+security_contract:
+  attack_surfaces:
+  - XML external entities and DTD expansion.
+  - External resource references (images, links) triggering implicit retrieval.
+  - Deep nesting and oversized documents exhausting resources.
+  limits:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded
+    payload bytes, with safe defaults enabled.
+  - Never resolve network resources, execute embedded code, load plugins, or follow external references
+    during load, validate, or save unless explicitly enabled by the caller.
+  - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced
+    resource.
+  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing
+    must not evaluate them.
+  - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations
+    and bound recursion depth.
+  safe_defaults:
+  - External entities disabled; resource retrieval opt-in.
+  - Bounded size/nesting with configurable limits.
+test_contract:
+- Test official or authoritative valid samples, invalid samples, synthetic edge cases, malformed inputs,
+  and hostile inputs for every claimed capability.
+- Prove parse-save-parse semantic equivalence for representative documents of every supported construct.
+- Prove deterministic output by serializing the same document twice and byte-comparing.
+- Publish a capability manifest stating supported versions, constructs, limitations, and lossless guarantees,
+  verified against implementation and tests.
+- Each mutation class save-reload-verifies; producer-reopen fixture where tooling exists.
+- Export verified by target-format parser; loss report accuracy fixtures.
+- Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test
+  proving refusal with diagnostics.
+- Unknown-extension round trips.
+- Typed access per construct; collection semantics fixtures.
+- Producer-corpus fixtures in strict and tolerant modes.
+- Each preservation baseline behavior has a focused positive test and, where refusable, a negative test
+  proving refusal with diagnostics.
+- Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
+  test proving refusal with diagnostics.
+- Style-reference integrity after edits; round-trip fidelity fixtures.
+- Layer negatives with position assertions.
+- Lossless round trip on producer corpus; determinism byte-compare.
+release_gates:
+- Editing proven producer-compatible.
+- At least one export path consumer-verified.
+- All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- Zero metadata loss proven.
+- Model covers every first-wave content construct with QName traceability.
+- Structure rules covered against specification inventory.
+- All preservation baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- All security_limits baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+- Style preservation proven on styled fixtures.
+- Every rule class has negative coverage.
+- Writer proven lossless and deterministic.
+- Capability manifest published and independently verified against implementation and tests.
+coverage_map:
+- capability_id: FODT-CONTENT-001
+  provenance:
+  - POL-XDC-CONTENT-01
+- capability_id: FODT-EXPORT-001
+  provenance:
+  - POL-XDC-EXPORT-01
+- capability_id: FODT-LIFECYCLE-001
+  provenance:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+- capability_id: FODT-META-001
+  provenance:
+  - POL-XDC-META-01
+- capability_id: FODT-MODEL-001
+  provenance:
+  - POL-XDC-MODEL-01
+  - SAL-FODT-00001
+  - SAL-FODT-00003
+  - SAL-FODT-00004
+  - SAL-FODT-00005
+  - SAL-FODT-00006
+  - SAL-FODT-00007
+  - SAL-FODT-00008
+  - SAL-FODT-00009
+  - SAL-FODT-00010
+  - SAL-FODT-00011
+  - SAL-FODT-00013
+  - SAL-FODT-00014
+  - SAL-FODT-00016
+  - SAL-FODT-00017
+- capability_id: FODT-PARSE-001
+  provenance:
+  - POL-XDC-PARSE-01
+  - SAL-FODT-00001
+  - SAL-FODT-00002
+  - SAL-FODT-00003
+  - SAL-FODT-00004
+  - SAL-FODT-00005
+  - SAL-FODT-00006
+  - SAL-FODT-00007
+  - SAL-FODT-00008
+  - SAL-FODT-00009
+  - SAL-FODT-00010
+  - SAL-FODT-00011
+  - SAL-FODT-00012
+  - SAL-FODT-00013
+  - SAL-FODT-00015
+  - SAL-FODT-00016
+  - SAL-FODT-00017
+  - SAL-FODT-00018
+- capability_id: FODT-PRESERVE-001
+  provenance:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+- capability_id: FODT-SEC-001
+  provenance:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+- capability_id: FODT-STYLE-001
+  provenance:
+  - POL-XDC-STYLE-01
+  - SAL-FODT-00006
+  - SAL-FODT-00007
+  - SAL-FODT-00017
+  - SAL-FODT-00018
+- capability_id: FODT-VALIDATE-001
+  provenance:
+  - POL-XDC-VALIDATE-01
+  - SAL-FODT-00012
+  - SAL-FODT-00015
+  - SAL-FODT-00016
+  - SAL-FODT-00017
+- capability_id: FODT-WRITE-001
+  provenance:
+  - POL-XDC-WRITE-01

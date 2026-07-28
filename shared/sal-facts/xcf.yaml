@@ -578,3 +578,55 @@ facts:
     verification_evidence: 'GIMP XCF 2.10 spec: all uint32 and int32 values are big-endian'
     confidence: medium
   claim_id: FACT-XCF-042
+- fact_id: SAL-XCF-00043
+  qname: FACT-XCF-043
+  claim: "XCF files use UTF-8 encoding for all string data including layer names, channel names, and parasite data names"
+  verification_status: verified_with_note
+  provenance:
+    format_id: xcf
+    spec_id: xcf-gimp-2.10
+    section_id: '1.6'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: "GIMP XCF spec: strings are stored as length-prefixed UTF-8 byte sequences"
+    confidence: medium
+  claim_id: FACT-XCF-043
+- fact_id: SAL-XCF-00044
+  qname: FACT-XCF-044
+  claim: "The XCF magic bytes 'gimp xcf ' followed by a version identifier and null terminator must be present at offset 0; invalid magic shall cause rejection"
+  verification_status: verified_with_note
+  provenance:
+    format_id: xcf
+    spec_id: xcf-gimp-2.10
+    section_id: '1.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: "GIMP XCF spec: file must start with 'gimp xcf ' magic bytes"
+    confidence: high
+  claim_id: FACT-XCF-044
+- fact_id: SAL-XCF-00045
+  qname: FACT-XCF-045
+  claim: "Each property in XCF must have a valid property type identifier; unrecognized property types must be skipped by conforming readers"
+  verification_status: verified_with_note
+  provenance:
+    format_id: xcf
+    spec_id: xcf-gimp-2.10
+    section_id: '2.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: "GIMP XCF spec: properties are typed; unknown types are forward-compatible"
+    confidence: medium
+  claim_id: FACT-XCF-045
+- fact_id: SAL-XCF-00046
+  qname: FACT-XCF-046
+  claim: "XCF property syntax uses a type-length-value encoding where the type is a uint32, followed by the payload length as a uint32, then the payload bytes"
+  verification_status: verified_with_note
+  provenance:
+    format_id: xcf
+    spec_id: xcf-gimp-2.10
+    section_id: '2.2'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: "GIMP XCF spec: property records are {type:u32, length:u32, data:bytes}"
+    confidence: medium
+  claim_id: FACT-XCF-046

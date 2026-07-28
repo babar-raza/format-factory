@@ -98,3 +98,141 @@ facts:
     confidence: high
     added_by: TC-GWB-H01
     added_at: '2026-07-16'
+- fact_id: SAL-PPM-00007
+  qname: FACT-PPM-007
+  element_qname: ppm:file
+  claim: "Each PPM image is laid out in the order: magic number, whitespace, width, whitespace, height, whitespace, maxval, a single whitespace character (usually a newline), then the raster"
+  section: "ppm.html#format"
+  authority: "Netpbm format specification (netpbm.sourceforge.net)"
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-ppm-spec
+    section_id: "ppm.html#format"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-PA-019
+    added_at: '2026-07-17'
+- fact_id: SAL-PPM-00008
+  qname: FACT-PPM-008
+  element_qname: ppm:pixel
+  claim: "Each pixel is a triplet of red, green, and blue samples, in that order"
+  section: "ppm.html#format"
+  authority: "Netpbm format specification (netpbm.sourceforge.net)"
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-ppm-spec
+    section_id: "ppm.html#format"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-PA-019
+    added_at: '2026-07-17'
+    verification_evidence: "Netpbm ppm(5): \"Each pixel is a triplet of red, green, and blue samples, in that order.\""
+- fact_id: SAL-PPM-00009
+  qname: FACT-PPM-009
+  element_qname: ppm:colorspace
+  claim: "Sample values are proportional to the intensity of the ITU-R Recommendation BT.709 red, green, and blue primaries in the pixel, adjusted by the BT.709 gamma transfer function"
+  section: "ppm.html#format"
+  authority: "Netpbm format specification (netpbm.sourceforge.net)"
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-ppm-spec
+    section_id: "ppm.html#format"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-PA-019
+    added_at: '2026-07-17'
+- fact_id: SAL-PPM-00010
+  qname: FACT-PPM-010
+  element_qname: ppm:whitespace
+  claim: "The magic number, width, height, and maxval fields are separated by whitespace, which may be blanks, TABs, CRs, or LFs"
+  section: "ppm.html#format"
+  authority: "Netpbm format specification (netpbm.sourceforge.net)"
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-ppm-spec
+    section_id: "ppm.html#format"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-PA-019
+    added_at: '2026-07-17'
+- fact_id: SAL-PPM-00011
+  qname: FACT-PPM-011
+  element_qname: ppm:raster-raw
+  claim: "In the raw P6 format each sample is represented in pure binary by either 1 byte (when Maxval is less than 256) or 2 bytes"
+  section: "ppm.html#format"
+  authority: "Netpbm format specification (netpbm.sourceforge.net)"
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-ppm-spec
+    section_id: "ppm.html#format"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-PA-019
+    added_at: '2026-07-17'
+    verification_evidence: "Netpbm ppm(5): \"Each sample is represented in pure binary by either 1 or 2 bytes. If the Maxval is less than 256, it is 1 byte. Otherwise, it is 2 bytes.\""
+- fact_id: SAL-PPM-00012
+  qname: FACT-PPM-012
+  element_qname: ppm:byte-order
+  claim: "For 2-byte raw P6 samples the most significant byte is stored first (big-endian)"
+  section: "ppm.html#format"
+  authority: "Netpbm format specification (netpbm.sourceforge.net)"
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-ppm-spec
+    section_id: "ppm.html#format"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-PA-019
+    added_at: '2026-07-17'
+    verification_evidence: "Netpbm ppm(5): \"The most significant byte is first.\""
+- fact_id: SAL-PPM-00013
+  qname: FACT-PPM-013
+  element_qname: ppm:raster-plain
+  claim: "In the plain P3 format each sample in the raster is represented as an ASCII decimal number of arbitrary size"
+  section: "ppm.html#format"
+  authority: "Netpbm format specification (netpbm.sourceforge.net)"
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-ppm-spec
+    section_id: "ppm.html#format"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-PA-019
+    added_at: '2026-07-17'
+- fact_id: SAL-PPM-00014
+  qname: FACT-PPM-014
+  element_qname: ppm:comment
+  claim: "Strings starting with '#' may be comments, following the same convention as PBM"
+  section: "ppm.html#format"
+  authority: "Netpbm format specification (netpbm.sourceforge.net)"
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-ppm-spec
+    section_id: "ppm.html#format"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-PA-019
+    added_at: '2026-07-17'
+- fact_id: SAL-PPM-00015
+  qname: FACT-PPM-015
+  element_qname: ppm:line-length
+  claim: "In the plain P3 format no line of the file should be longer than 70 characters"
+  section: "ppm.html#format"
+  authority: "Netpbm format specification (netpbm.sourceforge.net)"
+  source: structural_fact_manual
+  fact_status: verified
+  provenance:
+    spec_id: netpbm-ppm-spec
+    section_id: "ppm.html#format"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-PA-019
+    added_at: '2026-07-17'

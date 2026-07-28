@@ -1,0 +1,272 @@
+format_id: fods
+display_name: FODS
+schema_version: '1.0'
+canonical: true
+note: 'Committed canonical SAL fact store for a manually-seeded format. This file is the source of truth;
+  .local/spec-cache/ copies are derived. Compile with: python tools/spec/merge_sal_facts.py'
+facts:
+- fact_id: SAL-FODS-00001
+  qname: FACT-FODS-001
+  claim: FODS root element is <office:document> which serves as the top-level document container for flat
+    OpenDocument spreadsheets
+  verification_status: verified_with_note
+  provenance:
+    format_id: fods
+    spec_id: odf-1.3
+    section_id: '3.1.2'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 3 Section 3.1.2: The <office:document> element is the root
+      element for single-XML-file ODF documents. It combines content, styles, metadata, and settings in
+      one file. Namespace: urn:oasis:names:tc:opendocument:xmlns:office:1.0.'
+    confidence: high
+  claim_id: FACT-FODS-001
+- fact_id: SAL-FODS-00002
+  qname: FACT-FODS-002
+  claim: FODS document body is contained in <office:body> element which is a required child of the root
+    <office:document>
+  verification_status: verified_with_note
+  provenance:
+    format_id: fods
+    spec_id: odf-1.3
+    section_id: '3.3'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 3 Section 3.3: <office:body> is the container for the document
+      content. It must appear exactly once as a child of <office:document>.'
+    confidence: high
+  claim_id: FACT-FODS-002
+- fact_id: SAL-FODS-00003
+  qname: FACT-FODS-003
+  claim: FODS spreadsheet content is wrapped in <office:spreadsheet> element inside <office:body>
+  verification_status: verified_with_note
+  provenance:
+    format_id: fods
+    spec_id: odf-1.3
+    section_id: '3.7'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 3 Section 3.7: The <office:spreadsheet> element identifies
+      the document as a spreadsheet. It is the sole child of <office:body> in spreadsheet documents.'
+    confidence: high
+  claim_id: FACT-FODS-003
+- fact_id: SAL-FODS-00004
+  qname: FACT-FODS-004
+  claim: FODS table element is <table:table> with table:name attribute identifying each sheet
+  verification_status: verified_with_note
+  provenance:
+    format_id: fods
+    spec_id: odf-1.3
+    section_id: '9.1.2'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 3 Section 9.1.2: <table:table> element represents a table
+      (sheet). The table:name attribute provides a unique name. Tables are children of <office:spreadsheet>.'
+    confidence: high
+  claim_id: FACT-FODS-004
+- fact_id: SAL-FODS-00005
+  qname: FACT-FODS-005
+  claim: FODS table row element is <table:table-row> containing cells within a table
+  verification_status: verified_with_note
+  provenance:
+    format_id: fods
+    spec_id: odf-1.3
+    section_id: '9.1.3'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 3 Section 9.1.3: <table:table-row> element represents a row.
+      Rows are children of <table:table> and contain <table:table-cell> elements.'
+    confidence: high
+  claim_id: FACT-FODS-005
+- fact_id: SAL-FODS-00006
+  qname: FACT-FODS-006
+  claim: FODS table cell element is <table:table-cell> with office:value-type attribute specifying the cell
+    data type
+  verification_status: verified_with_note
+  provenance:
+    format_id: fods
+    spec_id: odf-1.3
+    section_id: '9.1.4'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 3 Section 9.1.4: <table:table-cell> represents a cell.
+      office:value-type attribute values: float, string, date, time, boolean, currency, percentage.'
+    confidence: high
+  claim_id: FACT-FODS-006
+- fact_id: SAL-FODS-00007
+  qname: FACT-FODS-007
+  claim: FODS cell value attribute corresponds to office:value-type; float cells use office:value, string
+    cells use <text:p> child element for display text
+  verification_status: verified_with_note
+  provenance:
+    format_id: fods
+    spec_id: odf-1.3
+    section_id: '19.385'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3: For office:value-type="float", the typed value is in office:value.
+      For "string", the display value appears in a <text:p> child. For "date", office:date-value holds ISO 8601.'
+    confidence: high
+  claim_id: FACT-FODS-007
+- fact_id: SAL-FODS-00008
+  qname: FACT-FODS-008
+  claim: FODS column definition element is <table:table-column> specifying column properties and repeat count
+  verification_status: verified_with_note
+  provenance:
+    format_id: fods
+    spec_id: odf-1.3
+    section_id: '9.1.6'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 3 Section 9.1.6: <table:table-column> defines column attributes.
+      table:number-columns-repeated allows compact representation of identical columns.'
+    confidence: high
+  claim_id: FACT-FODS-008
+- fact_id: SAL-FODS-00009
+  qname: FACT-FODS-009
+  claim: FODS table:number-rows-repeated attribute on <table:table-row> allows compact representation of
+    repeated empty rows
+  verification_status: verified_with_note
+  provenance:
+    format_id: fods
+    spec_id: odf-1.3
+    section_id: '9.1.3'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3: table:number-rows-repeated attribute on <table:table-row> specifies
+      how many consecutive identical rows this element represents. Default is 1.'
+    confidence: high
+  claim_id: FACT-FODS-009
+- fact_id: SAL-FODS-00010
+  qname: FACT-FODS-010
+  claim: FODS cell formula attribute is table:formula using a namespace-prefixed expression syntax
+  verification_status: verified_with_note
+  provenance:
+    format_id: fods
+    spec_id: odf-1.3
+    section_id: '9.1.4'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3: table:formula attribute on <table:table-cell> contains a formula.
+      Format is namespace-prefixed, e.g. of:=SUM([.A1:.A10]) where of: denotes the OpenFormula namespace.'
+    confidence: high
+  claim_id: FACT-FODS-010
+- fact_id: SAL-FODS-00011
+  qname: FACT-FODS-011
+  claim: FODS document encoding must be UTF-8 as declared in the XML declaration
+  verification_status: verified_with_note
+  provenance:
+    format_id: fods
+    spec_id: odf-1.3
+    section_id: '2.2.1'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 3 Section 2.2.1: ODF documents encoded as single XML files
+      must use UTF-8 encoding. The XML declaration <?xml version="1.0" encoding="UTF-8"?> is required.'
+    confidence: high
+  claim_id: FACT-FODS-011
+- fact_id: SAL-FODS-00012
+  qname: FACT-FODS-012
+  claim: FODS uses XML character escaping for special characters including &amp; &lt; &gt; &quot; in text
+    content
+  verification_status: verified_with_note
+  provenance:
+    format_id: fods
+    spec_id: odf-1.3
+    section_id: '2.2'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3: As an XML format, FODS follows XML 1.0 character escaping rules.
+      Ampersand, less-than, greater-than, and quote characters must be escaped in text and attribute values.'
+    confidence: high
+  claim_id: FACT-FODS-012
+- fact_id: SAL-FODS-00013
+  qname: FACT-FODS-013
+  claim: FODS whitespace in cells is preserved using <text:s text:c="N"/> element for multiple spaces
+  verification_status: verified_with_note
+  provenance:
+    format_id: fods
+    spec_id: odf-1.3
+    section_id: '6.1.3'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 3 Section 6.1.3: <text:s> element represents one or more
+      whitespace characters. The text:c attribute specifies the count. Without it, exactly one space is encoded.'
+    confidence: high
+  claim_id: FACT-FODS-013
+- fact_id: SAL-FODS-00014
+  qname: FACT-FODS-014
+  claim: FODS office:version attribute on the root element must conform to the ODF specification version number
+  verification_status: verified_with_note
+  provenance:
+    format_id: fods
+    spec_id: odf-1.3
+    section_id: '3.1.2'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3: office:version attribute is required on the root <office:document>
+      element. For ODF 1.3 documents the value shall be "1.3". Conforming consumers must reject unknown versions.'
+    confidence: high
+  claim_id: FACT-FODS-014
+- fact_id: SAL-FODS-00015
+  qname: FACT-FODS-015
+  claim: FODS table:table-cell must have a valid office:value-type when office:value is present; omitting
+    value-type is forbidden for typed cells
+  verification_status: verified_with_note
+  provenance:
+    format_id: fods
+    spec_id: odf-1.3
+    section_id: '19.385'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3: When a cell carries a typed value attribute (office:value,
+      office:date-value, etc.), the office:value-type attribute is required. A cell without office:value-type
+      that contains an office:value attribute is invalid per the schema.'
+    confidence: high
+  claim_id: FACT-FODS-015
+- fact_id: SAL-FODS-00016
+  qname: FACT-FODS-016
+  claim: FODS requires that each <table:table> shall have a unique table:name within the document
+  verification_status: verified_with_note
+  provenance:
+    format_id: fods
+    spec_id: odf-1.3
+    section_id: '9.1.2'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3: The table:name attribute on <table:table> must be unique within
+      the spreadsheet. Duplicate table names shall be rejected by conforming processors.'
+    confidence: high
+  claim_id: FACT-FODS-016
+- fact_id: SAL-FODS-00017
+  qname: FACT-FODS-017
+  claim: FODS office:document element must declare required XML namespaces including office, table, text,
+    and style
+  verification_status: verified_with_note
+  provenance:
+    format_id: fods
+    spec_id: odf-1.3
+    section_id: '3.1.2'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3: The root element must declare namespace prefixes for all used
+      namespaces. Required for spreadsheets: xmlns:office, xmlns:table, xmlns:text, xmlns:style, xmlns:fo,
+      xmlns:number. Missing required namespace declarations shall cause validation errors.'
+    confidence: high
+  claim_id: FACT-FODS-017
+- fact_id: SAL-FODS-00018
+  qname: FACT-FODS-018
+  claim: FODS styles section is contained in <office:automatic-styles> element for automatic styles and
+    <office:styles> for common styles
+  verification_status: verified_with_note
+  provenance:
+    format_id: fods
+    spec_id: odf-1.3
+    section_id: '3.15'
+    extraction_method: structural_derivation
+    verification_status: verified_with_note
+    verification_evidence: 'OASIS ODF 1.3 Part 3 Section 3.15: <office:automatic-styles> contains styles
+      generated automatically (cell formatting). <office:styles> contains named reusable styles. Both are
+      direct children of <office:document>.'
+    confidence: high
+  claim_id: FACT-FODS-018
