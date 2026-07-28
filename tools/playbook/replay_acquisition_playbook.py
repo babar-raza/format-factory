@@ -464,7 +464,7 @@ def mode_export_review_queue(
             "cannot_replace_human_approval": True,
             "high_severity_blocks_apply": True,
             "gate_progress_requires_resolution": True,
-            "policy_doc_reference": "docs/playbook-layer.md",
+            "policy_doc_reference": "docs/governance/playbook-layer.md",
         },
     }
 

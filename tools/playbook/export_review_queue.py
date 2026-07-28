@@ -140,7 +140,7 @@ def build_review_queue(format_id: str, dry_run_report: dict) -> dict:
             "cannot_replace_human_approval": True,
             "high_severity_blocks_apply": True,
             "gate_progress_requires_resolution": True,
-            "policy_doc_reference": "docs/playbook-layer.md",
+            "policy_doc_reference": "docs/governance/playbook-layer.md",
         },
     }
 

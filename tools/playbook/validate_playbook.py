@@ -31,7 +31,7 @@ Exit codes:
 
 Policy: This tool is an evidence aid only. Validation PASS does not approve any gate,
 replace DEC-034 independent verification, or replace human approval.
-See docs/playbook-layer.md.
+See docs/governance/playbook-layer.md.
 """
 
 import argparse
