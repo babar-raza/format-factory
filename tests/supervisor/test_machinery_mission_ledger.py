@@ -106,6 +106,52 @@ class TestMachineryMissionLedgerCheck1c:
             f"Expected MACHINERY_AUDIT_REQUIRED reason, got: {result.get('reason')}"
         )
 
+    def test_audit_pending_is_non_terminal_exit_code(self, tmp_path):
+        """TC-MACH-008 regression: MACHINERY_AUDIT_REQUIRED's own detail text says
+        "Do NOT treat this as a terminal stop", but main() previously returned exit
+        code 1 for every STOP reason alike — indistinguishable from a genuine
+        terminal failure to a caller that only checks the process exit code. It
+        must now report terminal=False in the JSON body and exit with code 2
+        (not 1), while a genuinely terminal STOP (MISSION_COMPLETE) still exits 1.
+        """
+        _write_clean_signal(tmp_path, track="machinery")
+        _write_ledger(tmp_path, {
+            "mission_id": "test-mission-008",
+            "stop_status": "AUDIT_REQUIRED",
+            "open_gaps": ["GAP-001"],
+            "audit_pending": True,
+            "execution_pending": False,
+        })
+        proc = subprocess.run(
+            [sys.executable, str(_CC), "--repo-root", str(tmp_path), "--track", "machinery"],
+            capture_output=True, text=True, encoding="utf-8",
+        )
+        result = json.loads(proc.stdout)
+        assert result.get("reason") == "MACHINERY_AUDIT_REQUIRED"
+        assert result.get("terminal") is False, f"Expected terminal=False, got: {result.get('terminal')}"
+        assert proc.returncode == 2, f"Expected exit code 2 for non-terminal STOP, got {proc.returncode}"
+
+    def test_mission_complete_is_terminal_exit_code(self, tmp_path):
+        """Sibling to the above: a genuinely terminal STOP (MISSION_COMPLETE) must
+        still exit 1, not 2 — terminal=False is opt-in per stop reason, not a
+        blanket change to every STOP's exit code."""
+        _write_clean_signal(tmp_path, track="machinery")
+        _write_ledger(tmp_path, {
+            "mission_id": "test-mission-008b",
+            "stop_status": "MISSION_COMPLETE",
+            "open_gaps": [],
+            "audit_pending": False,
+            "execution_pending": False,
+        })
+        proc = subprocess.run(
+            [sys.executable, str(_CC), "--repo-root", str(tmp_path), "--track", "machinery"],
+            capture_output=True, text=True, encoding="utf-8",
+        )
+        result = json.loads(proc.stdout)
+        assert result.get("reason") == "MACHINERY_MISSION_COMPLETE"
+        assert result.get("terminal", True) is not False
+        assert proc.returncode == 1, f"Expected exit code 1 for terminal STOP, got {proc.returncode}"
+
     def test_no_ledger_does_not_block(self, tmp_path):
         """When mission-ledger.json is absent, machinery track should not be blocked by Check 1c."""
         _write_clean_signal(tmp_path, track="machinery")

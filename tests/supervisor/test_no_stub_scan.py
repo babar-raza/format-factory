@@ -318,20 +318,12 @@ class TestProductionScanIntegration:
             ("forbidden_term", "src/python/xcf/xcf_parser.py", 16),
         }
 
-        # Also allow violations in new/untracked files that are not yet in governance registry.
-        # These are files under active development (e.g. fods/fods/ nested package duplicates).
-        _GOVERNED_PREFIXES = (
-            "src/python/fods/fods/",  # nested duplicate package — active development
-        )
-
         unexpected = []
         for v in violations:
             file_rel = v["file"].replace(str(_REPO) + "\\", "").replace(str(_REPO) + "/", "")
             file_rel = file_rel.replace("\\", "/")
             key = (v["kind"], file_rel, v["line"])
             if key in GOVERNED_VIOLATIONS:
-                continue
-            if any(file_rel.startswith(pfx) for pfx in _GOVERNED_PREFIXES):
                 continue
             unexpected.append(v)
 

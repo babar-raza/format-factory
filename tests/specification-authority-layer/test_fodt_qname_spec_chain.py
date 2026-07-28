@@ -103,11 +103,11 @@ def test_fodt_paragraph_cs_qname_constant():
 
 
 def test_fodt_paragraph_cs_spec_fact_ref():
-    """Spec/Text/Paragraph.cs must declare SpecFactRef = 'FACT-FODT-003'."""
+    """Spec/Text/Paragraph.cs must declare SpecFactRef = 'SAL-FODT-00003'."""
     para_path = _REPO / "src" / "net" / "fodt" / "Spec" / "Text" / "Paragraph.cs"
     content = para_path.read_text()
-    assert 'SpecFactRef = "FACT-FODT-003"' in content, (
-        "Paragraph.cs must contain: SpecFactRef = \"FACT-FODT-003\"\n"
+    assert 'SpecFactRef = "SAL-FODT-00003"' in content, (
+        "Paragraph.cs must contain: SpecFactRef = \"SAL-FODT-00003\"\n"
         f"File content snippet: {content[:300]}"
     )
 

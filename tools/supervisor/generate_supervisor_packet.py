@@ -29,6 +29,10 @@ from datetime import datetime
 from pathlib import Path
 
 from atomic_io import atomic_write_json, atomic_write_text  # noqa: E402
+from dogfood_lane import (
+    available_dogfood_pairs as _available_dogfood_pairs,
+    build_dogfood_task,
+)
 
 SELECTED_PRODUCT_GAPS_PATH = ".local/supervisor/selected-product-gaps.json"
 NEXT_WORK_ITEMS_PATH = ".local/supervisor/next-work-items.json"
@@ -171,48 +175,6 @@ def _load_gap_ledger_ids(repo_root: Path) -> set:
         return {g.get("gap_id", "") for g in gaps if g.get("gap_id")}
     except Exception:
         return set()
-
-
-def _available_dogfood_pairs() -> tuple[list[str], str]:
-    """Converter pairs that MAY be generated: registered COMPATIBLE or PROJECTION.
-
-    TC-PA-009 / plan finding PF-002. Returns (pairs, status) where status is one of:
-
-      "ok"                -- matrix read; `pairs` is authoritative (possibly empty)
-      "matrix_absent"     -- no compatibility matrix yet (TC-PA-008 deliverable).
-                             EXPECTED today. Skip the lane quietly.
-      "gate_unavailable"  -- tools.governance.skill_gates could not be imported.
-                             This is a MACHINERY DEFECT and the caller surfaces it
-                             as a visible blocked task.
-
-    The status return exists because the two empty cases must not look alike.
-    "No pair is assessed yet" is a normal state; "the module that decides which
-    pairs are legal cannot be loaded" is a broken gate. Collapsing both to `[]`
-    would silently disable the dogfood lane forever the moment an import path
-    changed, and nothing would report it — the same fail-silent pattern this
-    plan exists to remove (cf. PA-F3, a zero-stub enforcer that returns PASS when
-    its own scanner will not import).
-
-    A PROJECTION without a loss_note is excluded: converter_compat blocks it at
-    the skill gate, so advertising it here would only produce a task that cannot
-    legally complete.
-    """
-    try:
-        from tools.governance.skill_gates import converter_compat
-    except ImportError:
-        return [], "gate_unavailable"
-    try:
-        matrix = converter_compat.load_matrix()
-    except converter_compat.MatrixError:
-        return [], "matrix_absent"
-    except Exception:
-        return [], "matrix_absent"
-    # Ask the shared checker; do NOT read `category`/`classification` here. The
-    # registry schema belongs to TC-PA-008, and a second reader of those field
-    # names drifts silently (it did: this function originally read the guessed
-    # `classification` field and returned [] against a registry of 183 allowable
-    # pairs — indistinguishable from "no dogfood work available").
-    return converter_compat.allowed_pairs(matrix), "ok"
 
 
 def load_selected_product_gaps(repo_root: Path) -> list[dict]:
@@ -713,69 +675,9 @@ def synthesize_sprint_tasks(review: dict, contradictions: dict, repo_root: Path,
         })
         task_seq += 1
 
-    # 5. Dogfood export lane — CONDITIONAL (TC-PA-009 / plan finding PF-002).
-    #
-    # This lane used to be unconditional ("5. Always: dogfood and package/install
-    # product-proof lanes"). Manufacturing a dogfood task every single sprint is
-    # the machinery root cause of the meaningless-converter population: it asks
-    # for a converter whether or not any compatible pair remains, so the agent
-    # supplies one, and the only pairs left are ones nobody chose. At HEAD that
-    # produced 222 converters under src/python, ~45 of them meaningless
-    # projections (spreadsheet -> 1-bit bitmap and similar).
-    #
-    # The lane is now emitted only when a compatible source->target pair is
-    # actually registered in registry/converter-compatibility-matrix.yaml
-    # (TC-PA-008 / V251). No compatible pair -> no dogfood task. An absent or
-    # unreadable matrix means "nothing is assessed", which is NOT a licence to
-    # invent work: the lane is skipped and the reason recorded.
-    _dogfood_pairs, _dogfood_status = _available_dogfood_pairs()
-    if _dogfood_status == "gate_unavailable":
-        # Broken gate machinery must be visible, not an invisibly-missing lane.
-        tasks.append({
-            "task_id": f"TASK-{task_seq:03d}",
-            "title": "BLOCKED: converter compatibility gate unavailable",
-            "description": (
-                "tools.governance.skill_gates.converter_compat could not be imported, "
-                "so no source-target pair can be assessed and the dogfood export lane "
-                "was skipped. This is a machinery defect, not an absence of work. "
-                "Repair the import before relying on dogfood lane scheduling. "
-                "See docs/governance/skill-gate-validator-seam.md."
-            ),
-            "status": "blocked",
-            "ff_doc_ref": "docs/governance/skill-gate-validator-seam.md",
-            "supervisor_task_ref": "TC-PA-009",
-            "acceptance_evidence": (
-                "python -m tools.governance.skill_gates.dogfood_export_gate "
-                "--source-format dif --target-format csv exits 0/1/2 (not ImportError)"
-            ),
-            "validation_command": (
-                "python -c \"from tools.governance.skill_gates import converter_compat\""
-            ),
-            "non_authoritative": False,
-            "lane": "C4",
-        })
-        task_seq += 1
-    elif _dogfood_pairs:
-        _pair_hint = ", ".join(_dogfood_pairs[:5])
-        tasks.append({
-            "task_id": f"TASK-{task_seq:03d}",
-            "title": "Advance one dogfood export path using a Format Factory library",
-            "description": (
-                f"Product objective: close or verify a selected dogfood export from "
-                f"{SELECTED_PRODUCT_GAPS_PATH}. Use a Format Factory-produced library and "
-                f"record truthful status. Only these pairs are registered as COMPATIBLE or "
-                f"PROJECTION and may be generated: {_pair_hint}. Invoke /add-dogfood-export, "
-                f"whose Step 0 gate re-checks the pair; do NOT generate a converter for an "
-                f"unlisted pair to satisfy this lane."
-            ),
-            "status": "pending",
-            "ff_doc_ref": "docs/export/dogfood-export-strategy.md",
-            "supervisor_task_ref": "R90-DOGFOOD-LANE",
-            "acceptance_evidence": "Dogfood test proves the Format Factory library path and matrix status is truthful",
-            "validation_command": "pytest tests/ -x -q",
-            "non_authoritative": True,
-            "lane": "C4",
-        })
+    dogfood_task = build_dogfood_task(task_seq, SELECTED_PRODUCT_GAPS_PATH)
+    if dogfood_task:
+        tasks.append(dogfood_task)
         task_seq += 1
 
     tasks.append({

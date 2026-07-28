@@ -28,7 +28,7 @@ TASKCARD_DIRS = [
 
 # Format -> module mapping
 FORMAT_MODULE_MAP = {
-    "CSV": "src.python.csv.csv_parser",
+    "CSV": "src.python.ff_csv.csv_parser",
     "DIF": "src.python.dif.dif_parser",
     "FODG": "src.python.fodg.fodg_codec",
     "ABW": "src.python.abw.abw_codec",
@@ -120,7 +120,7 @@ class TestTaskcardExecution:
     """Actually execute a subset of taskcard functions to prove end-to-end pipeline."""
 
     def test_csv_probe_csv_executes(self, tmp_path):
-        from src.python.csv.csv_parser import probe_csv
+        from src.python.ff_csv.csv_parser import probe_csv
         csv_file = tmp_path / "test.csv"
         csv_file.write_text("a,b,c\n1,2,3\n4,5,6\n", encoding="utf-8")
         result = probe_csv(str(csv_file))

@@ -1,0 +1,40 @@
+# Gate 9 spec-coverage-report grandfather baseline (TC-S6P4-SYS-001, select-6 Phase 4).
+#
+# Mirrors registry/source-structure-baseline.json's known_violations pattern:
+# formats whose implementation_authorized:true predates the spec-coverage-gate
+# machinery (tools/specification-authority-layer/compute_feature_coverage.py,
+# created 2026-07-15 in commit 46fbb3a3 by select-6 Phase 3) never had the
+# opportunity to produce a coverage report, since the requirement did not
+# exist yet. V227 (validate_gate9_implementation_authorization_linkage) skips
+# formats listed here so it enforces the rule going FORWARD without
+# retroactively blocking a portfolio authorized under the earlier R21 process.
+#
+# This file is WRITE-ONCE for existing entries: do not add a NEW format here
+# to dodge V227. Any format authorized after 2026-07-15 must produce a real,
+# gate_9_eligible coverage report -- no exceptions, no new grandfather entries.
+schema_version: "1.0"
+frozen_at: "2026-07-15"
+grandfathered_pre_phase3:
+  - format_id: zst
+    implementation_authorized_approved_date: "2026-05-17"
+    approved_by: delegated_agent_r21
+  - format_id: fodp
+    implementation_authorized_approved_date: "2026-05-17"
+    approved_by: delegated_agent_r21
+  - format_id: fodg
+    implementation_authorized_approved_date: "2026-05-17"
+    approved_by: delegated_agent_r21
+  - format_id: gnumeric
+    implementation_authorized_approved_date: "2026-05-17"
+    approved_by: delegated_agent_r21
+  - format_id: abw
+    implementation_authorized_approved_date: "2026-05-17"
+    approved_by: delegated_agent_r21
+  - format_id: ndjson
+    implementation_authorized_approved_date: null
+    approved_by: null
+    note: no gate_9 approval metadata recorded; predates gate_9 tracking entirely (gates block shows only gate_1/gate_4/gate_10)
+  - format_id: toml
+    implementation_authorized_approved_date: null
+    approved_by: null
+    note: no gate_9 approval metadata recorded; predates gate_9 tracking entirely (gates block shows only gate_1/gate_4/gate_10)

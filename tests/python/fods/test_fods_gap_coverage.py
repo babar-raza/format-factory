@@ -28,10 +28,10 @@ import sys
 from pathlib import Path
 
 import pytest
-
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO / "src" / "python"))
 
+from _shared._shared_exceptions import FormatFactoryError  # noqa: E402
 import fods  # noqa: E402
 from fods import (  # noqa: E402
     # exceptions
@@ -1662,10 +1662,6 @@ class TestExceptions:
         assert issubclass(FodsInputError, FodsError)
         assert issubclass(FodsSizeError, FodsError)
         assert issubclass(FodsParseError, FodsError)
-        # Healed: FodsError now roots at FormatFactoryError (matching every
-        # other format package) instead of ValueError. See
-        # plans/.claude/quizzical-munching-gadget.md section 7 (TC-EHR-009).
-        from _shared._shared_exceptions import FormatFactoryError
         assert issubclass(FodsError, FormatFactoryError)
 
     def test_exceptions_carry_message(self):

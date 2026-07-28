@@ -8,7 +8,6 @@ from __future__ import annotations
 
 import hashlib
 import secrets
-import subprocess
 import sys
 from datetime import datetime, timezone
 
@@ -51,16 +50,30 @@ def pid_start_time(pid: int, timeout: float = 3.0) -> str | None:
     """
     try:
         if sys.platform == "win32":
-            out = subprocess.run(
-                ["powershell", "-NoProfile", "-Command",
-                 f"(Get-Process -Id {int(pid)}).StartTime.ToFileTimeUtc()"],
-                capture_output=True, text=True, timeout=timeout,
-            )
-        else:
-            out = subprocess.run(
-                ["ps", "-p", str(int(pid)), "-o", "lstart="],
-                capture_output=True, text=True, timeout=timeout,
-            )
+            import ctypes
+            from ctypes import wintypes
+
+            process = ctypes.windll.kernel32.OpenProcess(0x1000, False, int(pid))
+            if not process:
+                return None
+            created = wintypes.FILETIME()
+            exited = wintypes.FILETIME()
+            kernel = wintypes.FILETIME()
+            user = wintypes.FILETIME()
+            try:
+                if not ctypes.windll.kernel32.GetProcessTimes(
+                    process, ctypes.byref(created), ctypes.byref(exited),
+                    ctypes.byref(kernel), ctypes.byref(user)
+                ):
+                    return None
+                return str((created.dwHighDateTime << 32) | created.dwLowDateTime)
+            finally:
+                ctypes.windll.kernel32.CloseHandle(process)
+        import subprocess
+        out = subprocess.run(
+            ["ps", "-p", str(int(pid)), "-o", "lstart="],
+            capture_output=True, text=True, timeout=timeout,
+        )
         value = out.stdout.strip()
         return value or None
     except (OSError, subprocess.SubprocessError, ValueError):

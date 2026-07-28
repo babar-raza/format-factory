@@ -281,6 +281,48 @@ def test_max_iterations_rollover_beyond(tmp_path):
     assert sig["iteration"] == 0
 
 
+def test_iteration_rollover_preserves_concurrent_signal_update(tmp_path, monkeypatch):
+    """TC-MACH-006 regression: `signal` is read once at the top of check(), then
+    many I/O operations happen before the iteration-rollover write. Previously
+    that write wrote back the ENTIRE stale in-memory `signal` dict (only
+    `iteration` changed), silently clobbering any field a concurrent agent
+    updated in continuation-signal.json during that window (AGENTS.md Section
+    CO — concurrent agents are the normal state, not an edge case). The fix
+    re-reads the file fresh immediately before writing and merges only
+    `iteration`. Simulate the race by mutating the on-disk file the moment the
+    rollover re-read happens, and assert that mutation survives the write.
+    """
+    _setup_all(tmp_path, {"iteration": 12, "max_iterations": 12})
+    signal_path = tmp_path / ".local" / "supervisor" / "continuation-signal.json"
+
+    _orig_read_text = Path.read_text
+    _state = {"injected": False}
+
+    def _patched_read_text(self, *a, **kw):
+        text = _orig_read_text(self, *a, **kw)
+        if self == signal_path and not _state["injected"]:
+            _state["injected"] = True
+            # Simulate a concurrent writer updating the signal file in the
+            # window between check()'s initial read and the rollover re-read.
+            concurrent = json.loads(text)
+            concurrent["injected_by_concurrent_writer"] = True
+            self.write_text(json.dumps(concurrent), encoding="utf-8")
+            return _orig_read_text(self, *a, **kw)
+        return text
+
+    monkeypatch.setattr(Path, "read_text", _patched_read_text)
+
+    result = check(tmp_path)
+    assert result["verdict"] == "CONTINUE"
+
+    final = json.loads(signal_path.read_text(encoding="utf-8"))
+    assert final["iteration"] == 0, "iteration should have rolled over to 0"
+    assert final.get("injected_by_concurrent_writer") is True, (
+        "TC-MACH-006 regression: rollover write clobbered a concurrent update "
+        "made between the initial signal read and the rollover write"
+    )
+
+
 # ── TC-PROD-H-081: Staleness detector regression (Check 6) ────────────
 
 def test_stale_gates_no_but_signal_yes_continues(tmp_path):
@@ -400,3 +442,39 @@ def test_no_gap_ledger_does_not_stop(tmp_path):
     # Deliberately do NOT write a gap ledger
     result = check(tmp_path)
     assert result["verdict"] == "CONTINUE"
+
+
+# ── TC-MACH-004: fail-closed on malformed gate-states.yaml / gap ledger ──
+
+def test_malformed_gap_ledger_fails_closed(tmp_path):
+    """TC-MACH-004: a gap ledger that EXISTS but fails to parse must STOP
+    (fail closed), not silently warn-and-CONTINUE. Previously this only
+    printed a WARNING to stderr and fell through to CONTINUE — a malformed
+    ledger (plausible under concurrent writes from other agents, see
+    AGENTS.md Section CO) would silently disable the BLOCKING-gap gate.
+    """
+    _setup_all(tmp_path, {"format_targets": ["fods"]})
+    ledger_dir = tmp_path / "reports" / "product-quality"
+    ledger_dir.mkdir(parents=True, exist_ok=True)
+    (ledger_dir / "product-code-gap-ledger.yaml").write_text(
+        "gaps: [unterminated: [oops\n", encoding="utf-8"
+    )
+    result = check(tmp_path)
+    assert result["verdict"] == "STOP"
+    assert result.get("reason") == "gap_ledger_unreadable"
+
+
+def test_malformed_gate_states_fails_closed(tmp_path):
+    """TC-MACH-004: gate-states.yaml that EXISTS but fails to parse must STOP
+    (fail closed), matching ACTIVE_PLAN_LOCK_CORRUPT's posture, rather than
+    silently skipping Check 11's TRUE_EXTERNAL_GATE (Gate 11 authorization).
+    """
+    _setup_all(tmp_path)
+    registry_dir = tmp_path / "registry"
+    registry_dir.mkdir(parents=True, exist_ok=True)
+    (registry_dir / "gate-states.yaml").write_text(
+        "format_gate_states: [unterminated: [oops\n", encoding="utf-8"
+    )
+    result = check(tmp_path)
+    assert result["verdict"] == "STOP"
+    assert result.get("reason") == "gate_11_state_unreadable"

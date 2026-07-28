@@ -31,9 +31,8 @@ Known-bug documentation:
     always return their empty-input default (0 / 0.0 / []) regardless of input.
     This is documented in TestMaxTextLengthFamilyAlwaysDefault.
 
-IMPORTANT: write_fodp no longer exists. It was a quarantined NotImplementedError
-sentinel, removed by TC-PA-012 (2026-07-17); FODP is read-only at this parser
-level. This file does not import or reference it — see test_fodp_write_stub.py.
+IMPORTANT: TC-PA-012 removed the quarantined write_fodp sentinel; FODP is
+read-only at this parser level. See test_fodp_write_stub.py.
 """
 from __future__ import annotations
 

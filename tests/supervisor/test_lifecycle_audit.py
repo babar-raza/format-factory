@@ -374,6 +374,80 @@ class TestReadyStatusParsing:
 
 
 # ---------------------------------------------------------------------------
+# TC-SFC-H-007: COMPLETED_VERIFIED/NOT_ATTEMPTED/BLOCKER vocabulary support
+# ---------------------------------------------------------------------------
+
+
+class TestPlanHardeningVocabularyParsing:
+    """TC-SFC-H-007: the PLAN FILE HARDENING MODE 15-field taskcard schema uses
+    completed_verified/not_attempted/blocker/follow_up (lowercase snake_case).
+    Before this fix, only follow_up was recognized at all -- the other three
+    words never matched any alternation branch, so a plan using this schema
+    either reported zero parsed taskcards, or silently miscounted totals."""
+
+    def test_completed_verified_recognized_and_terminal(self, tmp_path):
+        from tools.supervisor.lifecycle_audit import _TERMINAL_STATUSES, parse_plan_taskcards
+
+        plan = tmp_path / "test-plan.md"
+        plan.write_text(
+            "| Taskcard | Status |\n"
+            "|---|---|\n"
+            "| TC-TEST-001 | completed_verified |\n"
+        )
+        tcs = parse_plan_taskcards(plan)
+        assert len(tcs) == 1, "completed_verified row must be parsed"
+        assert tcs[0]["status"].upper() in _TERMINAL_STATUSES, (
+            "completed_verified must be treated as terminal (closed)"
+        )
+
+    def test_not_attempted_and_blocker_recognized_as_open(self, tmp_path):
+        from tools.supervisor.lifecycle_audit import _TERMINAL_STATUSES, parse_plan_taskcards
+
+        plan = tmp_path / "test-plan.md"
+        plan.write_text(
+            "| Taskcard | Status |\n"
+            "|---|---|\n"
+            "| TC-TEST-001 | not_attempted |\n"
+            "| TC-TEST-002 | blocker |\n"
+            "| TC-TEST-003 | completed_verified |\n"
+        )
+        tcs = parse_plan_taskcards(plan)
+        by_id = {tc["tc_id"]: tc for tc in tcs}
+        assert set(by_id) == {"TC-TEST-001", "TC-TEST-002", "TC-TEST-003"}
+        assert by_id["TC-TEST-001"]["status"].upper() not in _TERMINAL_STATUSES
+        assert by_id["TC-TEST-002"]["status"].upper() not in _TERMINAL_STATUSES
+        assert by_id["TC-TEST-003"]["status"].upper() in _TERMINAL_STATUSES
+
+    def test_mixed_schema_plan_reports_accurate_open_count(self, tmp_path):
+        """Regression for the exact shape of plans/.claude/plan-hardening-addendum-
+        from-latest-audit.md: 5 completed_verified rows + 1 follow_up row must
+        report all_taskcards_closed=False with exactly 1 open taskcard, not 0
+        parsed or a miscounted total."""
+        from tools.supervisor.lifecycle_audit import run_lifecycle_audit
+
+        plan = tmp_path / "mixed-plan.md"
+        plan.write_text(
+            "| Taskcard | Status |\n"
+            "|---|---|\n"
+            "| TC-TEST-001 | completed_verified |\n"
+            "| TC-TEST-002 | completed_verified |\n"
+            "| TC-TEST-003 | completed_verified |\n"
+            "| TC-TEST-004 | completed_verified |\n"
+            "| TC-TEST-005 | completed_verified |\n"
+            "| TC-TEST-006 | follow_up |\n"
+        )
+        result = run_lifecycle_audit(
+            repo_root=tmp_path,
+            mission_id="TEST-MISSION-SFC-H-007",
+            plan_path=str(plan),
+        )
+        assert result["total_taskcards_parsed"] == 6
+        assert result["all_taskcards_closed"] is False
+        assert len(result["open_taskcards"]) == 1
+        assert result["open_taskcards"][0]["tc_id"] == "TC-TEST-006"
+
+
+# ---------------------------------------------------------------------------
 # TC-RJO-NEW-002: --track parameter selects correct signal path
 # ---------------------------------------------------------------------------
 

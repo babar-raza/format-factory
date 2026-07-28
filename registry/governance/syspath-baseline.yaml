@@ -1,0 +1,21 @@
+schema_version: '1.0'
+taskcard: TC-PA-005
+validator: V249
+mission_id: PORTFOLIO-AUDIT-2026-07-16
+authority: 'Frozen decrease-only ratchet of pre-existing sys.path mutations in src/python/. V249 FAILs
+  on any file absent here, or any file exceeding its cap. Caps may only DECREASE: re-emit after each cleanup
+  batch to tighten the ratchet. Adding a file here to unblock a sprint is cap-inflation and is prohibited.'
+totals:
+  files: 0
+  occurrences: 0
+  load_bearing_occurrences: 0
+  redundant_occurrences: 0
+classification_semantics:
+  LOAD_BEARING: "Module imports src.python.*, which resolves ONLY with the repo root on sys.path. The\
+    \ editable-install .pth injects src/python and src, NOT the repo root \u2014 verified 2026-07-17 from\
+    \ a neutral cwd. Removing these inserts silently degrades imports (e.g. _ff_write_csv = None). Removable\
+    \ ONLY after TC-PA-013 renames the csv package, which is what forces src.python.* imports in the first\
+    \ place (csv is shadowed by stdlib csv \u2014 V250 MODE_1)."
+  REDUNDANT: "Every import resolves via the .pth-injected src/python entry with no mutation \u2014 verified\
+    \ 2026-07-17. Cargo-cult template copies; safe to delete (TC-PA-014)."
+files: {}

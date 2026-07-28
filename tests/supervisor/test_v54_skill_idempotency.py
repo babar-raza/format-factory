@@ -116,8 +116,20 @@ class TestV69SkillIdempotencyValidator:
         result = validate_skill_idempotency_declared(decl, _REPO)
         assert result["blocks_sprint"] is False
 
+    @pytest.mark.timeout(300)
     def test_v69_registered_in_runner(self):
-        """V69 must be wired into run_all_governance_validators."""
+        """V69 must be wired into run_all_governance_validators.
+
+        FI-042: this genuinely runs the full ~226-validator suite (not a
+        targeted subset) to prove real integration, not just source presence.
+        Measured runtime 131.37s standalone -- already past the repo-wide
+        120s default (pyproject.toml [tool.pytest.ini_options] timeout = 120)
+        even in isolation, and this repo's heavy concurrent multi-agent I/O
+        load pushes it further. This is a real, reproducible timeout, not a
+        hang: rerun with --timeout=600 passed cleanly in 131.37s. Root cause
+        is a timeout-budget mismatch for an inherently expensive integration
+        test, not a defect in the validator runner or this test's assertion.
+        """
         from governance_validator_runner import run_all_governance_validators
         decl = {"planned_work_items": []}
         output = run_all_governance_validators(decl, _REPO)

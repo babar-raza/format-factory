@@ -50,6 +50,20 @@ def _guard_production_db(tmp_path_factory):
 
 
 @pytest.fixture(autouse=True)
+def _guard_coordination_root(monkeypatch, tmp_path):
+    """Prevent tests from touching the production coordination DB.
+
+    The coordination root (Mission AGENT-COORD-2026-07-15) defaults to
+    %LOCALAPPDATA%/ff-coordination/<repo-key>/. Any test that exercises
+    coordination-aware code (WorkerClaims/MissionLock mirrors, hooks,
+    preflight) is redirected to an isolated per-test root. Tests that set
+    FF_AGENT_COORDINATION_ROOT themselves override this fixture value.
+    """
+    monkeypatch.setenv("FF_AGENT_COORDINATION_ROOT",
+                       str(tmp_path / "coordination-guard"))
+
+
+@pytest.fixture(autouse=True)
 def _subprocess_timeout_guard(monkeypatch):
     """Enforce a 60s default timeout on all subprocess.run calls.
 

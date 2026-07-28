@@ -1,0 +1,1228 @@
+schema_version: '1.0'
+taskcard: TC-PA-008
+validator: V251
+mission_id: PORTFOLIO-AUDIT-2026-07-16
+authority: 'Information-model compatibility classification for every converter module under src/python/.
+  V251 FAILs on any *_to_*.py module with no entry here. This registry is the gate /add-dogfood-export
+  never had: it forces the question ''does this conversion carry meaning?'' to be answered before code
+  is generated (TC-PA-009 wires it in).'
+categories:
+  COMPATIBLE: Source and target share an information model. Structure-preserving.
+  PROJECTION: Different models, defensible documented mapping, known loss.
+  INCOMPATIBLE: "No semantic relationship; the implementation must invent structure absent from the source.\
+    \ Should not exist \u2014 TC-PA-015 disposition."
+scope_limit: 'V251 gates the DECLARED relationship of a format pair, derived from format domains. It does
+  NOT read converter bodies: a faithful PROJECTION and a lazy one are indistinguishable to it. Implementation
+  semantics remain ungated (TC-PA-016).'
+format_domains:
+  abw: DOCUMENT
+  abw_typed_children: DOCUMENT
+  csv: TABULAR
+  dif: TABULAR
+  fodg: DRAWING
+  fodp: PRESENTATION
+  fods: TABULAR
+  fodt: DOCUMENT
+  gnumeric: TABULAR
+  ipynb: STRUCTURED_DATA
+  mtlx: STRUCTURED_DATA
+  ndjson: STRUCTURED_DATA
+  nrrd: TENSOR
+  ods: TABULAR
+  odt: DOCUMENT
+  pbm: RASTER
+  pgm: RASTER
+  ppm: RASTER
+  qoi: RASTER
+  safetensors: TENSOR
+  sylk: TABULAR
+  toml: STRUCTURED_DATA
+  tsv: TABULAR
+  ubl: STRUCTURED_DATA
+  xcf: RASTER
+  xliff: STRUCTURED_DATA
+  zst: CONTAINER
+totals:
+  converters: 183
+  COMPATIBLE: 54
+  PROJECTION: 129
+converters:
+  src/python/abw/abw_to_csv.py:
+    pair: abw->csv
+    source_domain: DOCUMENT
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Extracting each paragraph as a row is documented and useful; loses styling, structure,
+      and inline objects.
+  src/python/abw/abw_to_dif.py:
+    pair: abw->dif
+    source_domain: DOCUMENT
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Extracting each paragraph as a row is documented and useful; loses styling, structure,
+      and inline objects.
+  src/python/abw/abw_to_fodg.py:
+    pair: abw->fodg
+    source_domain: DOCUMENT
+    target_domain: DRAWING
+    category: PROJECTION
+    rationale: Paragraphs as positioned text shapes; loses flow.
+  src/python/abw/abw_to_fods.py:
+    pair: abw->fods
+    source_domain: DOCUMENT
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Extracting each paragraph as a row is documented and useful; loses styling, structure,
+      and inline objects.
+  src/python/abw/abw_to_fodt.py:
+    pair: abw->fodt
+    source_domain: DOCUMENT
+    target_domain: DOCUMENT
+    category: COMPATIBLE
+    rationale: 'Both abw and fodt are DOCUMENT: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/abw/abw_to_gnumeric.py:
+    pair: abw->gnumeric
+    source_domain: DOCUMENT
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Extracting each paragraph as a row is documented and useful; loses styling, structure,
+      and inline objects.
+  src/python/abw/abw_to_ndjson.py:
+    pair: abw->ndjson
+    source_domain: DOCUMENT
+    target_domain: STRUCTURED_DATA
+    category: PROJECTION
+    rationale: Document tree serialises to records; loses styling.
+  src/python/abw/abw_to_ods.py:
+    pair: abw->ods
+    source_domain: DOCUMENT
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Extracting each paragraph as a row is documented and useful; loses styling, structure,
+      and inline objects.
+  src/python/abw/abw_to_odt.py:
+    pair: abw->odt
+    source_domain: DOCUMENT
+    target_domain: DOCUMENT
+    category: COMPATIBLE
+    rationale: 'Both abw and odt are DOCUMENT: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/abw/abw_to_sylk.py:
+    pair: abw->sylk
+    source_domain: DOCUMENT
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Extracting each paragraph as a row is documented and useful; loses styling, structure,
+      and inline objects.
+  src/python/abw/abw_to_toml.py:
+    pair: abw->toml
+    source_domain: DOCUMENT
+    target_domain: STRUCTURED_DATA
+    category: PROJECTION
+    rationale: Document tree serialises to records; loses styling.
+  src/python/abw/abw_to_tsv.py:
+    pair: abw->tsv
+    source_domain: DOCUMENT
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Extracting each paragraph as a row is documented and useful; loses styling, structure,
+      and inline objects.
+  src/python/abw/abw_typed_children_to_ndjson.py:
+    pair: abw_typed_children->ndjson
+    source_domain: DOCUMENT
+    target_domain: STRUCTURED_DATA
+    category: PROJECTION
+    rationale: Document tree serialises to records; loses styling.
+  src/python/dif/dif_to_abw.py:
+    pair: dif->abw
+    source_domain: TABULAR
+    target_domain: DOCUMENT
+    category: PROJECTION
+    rationale: Rendering a grid as a document table or paragraph run; loses formulas and cell typing.
+  src/python/dif/dif_to_csv.py:
+    pair: dif->csv
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both dif and csv are TABULAR: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/dif/dif_to_fodg.py:
+    pair: dif->fodg
+    source_domain: TABULAR
+    target_domain: DRAWING
+    category: PROJECTION
+    rationale: Cells laid out as positioned shapes; loses cell semantics.
+  src/python/dif/dif_to_fods.py:
+    pair: dif->fods
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both dif and fods are TABULAR: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/dif/dif_to_fodt.py:
+    pair: dif->fodt
+    source_domain: TABULAR
+    target_domain: DOCUMENT
+    category: PROJECTION
+    rationale: Rendering a grid as a document table or paragraph run; loses formulas and cell typing.
+  src/python/dif/dif_to_gnumeric.py:
+    pair: dif->gnumeric
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both dif and gnumeric are TABULAR: they share an information model, so the mapping is
+      structure-preserving and round-trippable modulo format-specific features.'
+  src/python/dif/dif_to_ndjson.py:
+    pair: dif->ndjson
+    source_domain: TABULAR
+    target_domain: STRUCTURED_DATA
+    category: PROJECTION
+    rationale: Rows serialise to records; loses cell typing/formulas.
+  src/python/dif/dif_to_ods.py:
+    pair: dif->ods
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both dif and ods are TABULAR: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/dif/dif_to_odt.py:
+    pair: dif->odt
+    source_domain: TABULAR
+    target_domain: DOCUMENT
+    category: PROJECTION
+    rationale: Rendering a grid as a document table or paragraph run; loses formulas and cell typing.
+  src/python/dif/dif_to_sylk.py:
+    pair: dif->sylk
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both dif and sylk are TABULAR: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/dif/dif_to_toml.py:
+    pair: dif->toml
+    source_domain: TABULAR
+    target_domain: STRUCTURED_DATA
+    category: PROJECTION
+    rationale: Rows serialise to records; loses cell typing/formulas.
+  src/python/dif/dif_to_tsv.py:
+    pair: dif->tsv
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both dif and tsv are TABULAR: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/ff_csv/csv_to_abw.py:
+    pair: csv->abw
+    source_domain: TABULAR
+    target_domain: DOCUMENT
+    category: PROJECTION
+    rationale: Rendering a grid as a document table or paragraph run; loses formulas and cell typing.
+  src/python/ff_csv/csv_to_dif.py:
+    pair: csv->dif
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both csv and dif are TABULAR: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/ff_csv/csv_to_fodg.py:
+    pair: csv->fodg
+    source_domain: TABULAR
+    target_domain: DRAWING
+    category: PROJECTION
+    rationale: Cells laid out as positioned shapes; loses cell semantics.
+  src/python/ff_csv/csv_to_fods.py:
+    pair: csv->fods
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both csv and fods are TABULAR: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/ff_csv/csv_to_fodt.py:
+    pair: csv->fodt
+    source_domain: TABULAR
+    target_domain: DOCUMENT
+    category: PROJECTION
+    rationale: Rendering a grid as a document table or paragraph run; loses formulas and cell typing.
+  src/python/ff_csv/csv_to_gnumeric.py:
+    pair: csv->gnumeric
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both csv and gnumeric are TABULAR: they share an information model, so the mapping is
+      structure-preserving and round-trippable modulo format-specific features.'
+  src/python/ff_csv/csv_to_ndjson.py:
+    pair: csv->ndjson
+    source_domain: TABULAR
+    target_domain: STRUCTURED_DATA
+    category: PROJECTION
+    rationale: Rows serialise to records; loses cell typing/formulas.
+  src/python/ff_csv/csv_to_ods.py:
+    pair: csv->ods
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both csv and ods are TABULAR: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/ff_csv/csv_to_odt.py:
+    pair: csv->odt
+    source_domain: TABULAR
+    target_domain: DOCUMENT
+    category: PROJECTION
+    rationale: Rendering a grid as a document table or paragraph run; loses formulas and cell typing.
+  src/python/ff_csv/csv_to_sylk.py:
+    pair: csv->sylk
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both csv and sylk are TABULAR: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/ff_csv/csv_to_toml.py:
+    pair: csv->toml
+    source_domain: TABULAR
+    target_domain: STRUCTURED_DATA
+    category: PROJECTION
+    rationale: Rows serialise to records; loses cell typing/formulas.
+  src/python/ff_csv/csv_to_tsv.py:
+    pair: csv->tsv
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both csv and tsv are TABULAR: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/fodg/fodg_to_abw.py:
+    pair: fodg->abw
+    source_domain: DRAWING
+    target_domain: DOCUMENT
+    category: PROJECTION
+    rationale: Text elements extracted from the canvas; loses geometry.
+  src/python/fodg/fodg_to_csv.py:
+    pair: fodg->csv
+    source_domain: DRAWING
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Shape properties as rows; loses geometry and rendering.
+  src/python/fodg/fodg_to_dif.py:
+    pair: fodg->dif
+    source_domain: DRAWING
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Shape properties as rows; loses geometry and rendering.
+  src/python/fodg/fodg_to_fods.py:
+    pair: fodg->fods
+    source_domain: DRAWING
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Shape properties as rows; loses geometry and rendering.
+  src/python/fodg/fodg_to_fodt.py:
+    pair: fodg->fodt
+    source_domain: DRAWING
+    target_domain: DOCUMENT
+    category: PROJECTION
+    rationale: Text elements extracted from the canvas; loses geometry.
+  src/python/fodg/fodg_to_gnumeric.py:
+    pair: fodg->gnumeric
+    source_domain: DRAWING
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Shape properties as rows; loses geometry and rendering.
+  src/python/fodg/fodg_to_ndjson.py:
+    pair: fodg->ndjson
+    source_domain: DRAWING
+    target_domain: STRUCTURED_DATA
+    category: PROJECTION
+    rationale: Shape tree serialises to records; loses rendering.
+  src/python/fodg/fodg_to_ods.py:
+    pair: fodg->ods
+    source_domain: DRAWING
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Shape properties as rows; loses geometry and rendering.
+  src/python/fodg/fodg_to_odt.py:
+    pair: fodg->odt
+    source_domain: DRAWING
+    target_domain: DOCUMENT
+    category: PROJECTION
+    rationale: Text elements extracted from the canvas; loses geometry.
+  src/python/fodg/fodg_to_pbm.py:
+    pair: fodg->pbm
+    source_domain: DRAWING
+    target_domain: RASTER
+    category: PROJECTION
+    rationale: "Rasterising vector geometry is a legitimate, standard operation; lossy (resolution, editability).\
+      \ NOTE: V251 gates the declared relationship only \u2014 it does not verify that the implementation\
+      \ actually rasterises."
+  src/python/fodg/fodg_to_pgm.py:
+    pair: fodg->pgm
+    source_domain: DRAWING
+    target_domain: RASTER
+    category: PROJECTION
+    rationale: "Rasterising vector geometry is a legitimate, standard operation; lossy (resolution, editability).\
+      \ NOTE: V251 gates the declared relationship only \u2014 it does not verify that the implementation\
+      \ actually rasterises."
+  src/python/fodg/fodg_to_ppm.py:
+    pair: fodg->ppm
+    source_domain: DRAWING
+    target_domain: RASTER
+    category: PROJECTION
+    rationale: "Rasterising vector geometry is a legitimate, standard operation; lossy (resolution, editability).\
+      \ NOTE: V251 gates the declared relationship only \u2014 it does not verify that the implementation\
+      \ actually rasterises."
+  src/python/fodg/fodg_to_sylk.py:
+    pair: fodg->sylk
+    source_domain: DRAWING
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Shape properties as rows; loses geometry and rendering.
+  src/python/fodg/fodg_to_toml.py:
+    pair: fodg->toml
+    source_domain: DRAWING
+    target_domain: STRUCTURED_DATA
+    category: PROJECTION
+    rationale: Shape tree serialises to records; loses rendering.
+  src/python/fodg/fodg_to_tsv.py:
+    pair: fodg->tsv
+    source_domain: DRAWING
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Shape properties as rows; loses geometry and rendering.
+  src/python/fodp/fodp_to_abw.py:
+    pair: fodp->abw
+    source_domain: PRESENTATION
+    target_domain: DOCUMENT
+    category: PROJECTION
+    rationale: Slide text as flowed paragraphs; loses slide structure.
+  src/python/fodp/fodp_to_csv.py:
+    pair: fodp->csv
+    source_domain: PRESENTATION
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Slide text extracted as rows; loses layout and media.
+  src/python/fodp/fodp_to_dif.py:
+    pair: fodp->dif
+    source_domain: PRESENTATION
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Slide text extracted as rows; loses layout and media.
+  src/python/fodp/fodp_to_fodg.py:
+    pair: fodp->fodg
+    source_domain: PRESENTATION
+    target_domain: DRAWING
+    category: PROJECTION
+    rationale: Slide shapes onto a canvas; loses slide sequencing.
+  src/python/fodp/fodp_to_fods.py:
+    pair: fodp->fods
+    source_domain: PRESENTATION
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Slide text extracted as rows; loses layout and media.
+  src/python/fodp/fodp_to_fodt.py:
+    pair: fodp->fodt
+    source_domain: PRESENTATION
+    target_domain: DOCUMENT
+    category: PROJECTION
+    rationale: Slide text as flowed paragraphs; loses slide structure.
+  src/python/fodp/fodp_to_gnumeric.py:
+    pair: fodp->gnumeric
+    source_domain: PRESENTATION
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Slide text extracted as rows; loses layout and media.
+  src/python/fodp/fodp_to_ndjson.py:
+    pair: fodp->ndjson
+    source_domain: PRESENTATION
+    target_domain: STRUCTURED_DATA
+    category: PROJECTION
+    rationale: Slide tree serialises to records; loses layout.
+  src/python/fodp/fodp_to_ods.py:
+    pair: fodp->ods
+    source_domain: PRESENTATION
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Slide text extracted as rows; loses layout and media.
+  src/python/fodp/fodp_to_odt.py:
+    pair: fodp->odt
+    source_domain: PRESENTATION
+    target_domain: DOCUMENT
+    category: PROJECTION
+    rationale: Slide text as flowed paragraphs; loses slide structure.
+  src/python/fodp/fodp_to_sylk.py:
+    pair: fodp->sylk
+    source_domain: PRESENTATION
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Slide text extracted as rows; loses layout and media.
+  src/python/fodp/fodp_to_toml.py:
+    pair: fodp->toml
+    source_domain: PRESENTATION
+    target_domain: STRUCTURED_DATA
+    category: PROJECTION
+    rationale: Slide tree serialises to records; loses layout.
+  src/python/fodp/fodp_to_tsv.py:
+    pair: fodp->tsv
+    source_domain: PRESENTATION
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Slide text extracted as rows; loses layout and media.
+  src/python/fods/fods_to_abw.py:
+    pair: fods->abw
+    source_domain: TABULAR
+    target_domain: DOCUMENT
+    category: PROJECTION
+    rationale: Rendering a grid as a document table or paragraph run; loses formulas and cell typing.
+  src/python/fods/fods_to_csv.py:
+    pair: fods->csv
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both fods and csv are TABULAR: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/fods/fods_to_dif.py:
+    pair: fods->dif
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both fods and dif are TABULAR: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/fods/fods_to_fodg.py:
+    pair: fods->fodg
+    source_domain: TABULAR
+    target_domain: DRAWING
+    category: PROJECTION
+    rationale: Cells laid out as positioned shapes; loses cell semantics.
+  src/python/fods/fods_to_fodt.py:
+    pair: fods->fodt
+    source_domain: TABULAR
+    target_domain: DOCUMENT
+    category: PROJECTION
+    rationale: Rendering a grid as a document table or paragraph run; loses formulas and cell typing.
+  src/python/fods/fods_to_gnumeric.py:
+    pair: fods->gnumeric
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both fods and gnumeric are TABULAR: they share an information model, so the mapping is
+      structure-preserving and round-trippable modulo format-specific features.'
+  src/python/fods/fods_to_ndjson.py:
+    pair: fods->ndjson
+    source_domain: TABULAR
+    target_domain: STRUCTURED_DATA
+    category: PROJECTION
+    rationale: Rows serialise to records; loses cell typing/formulas.
+  src/python/fods/fods_to_ods.py:
+    pair: fods->ods
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both fods and ods are TABULAR: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/fods/fods_to_odt.py:
+    pair: fods->odt
+    source_domain: TABULAR
+    target_domain: DOCUMENT
+    category: PROJECTION
+    rationale: Rendering a grid as a document table or paragraph run; loses formulas and cell typing.
+  src/python/fods/fods_to_sylk.py:
+    pair: fods->sylk
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both fods and sylk are TABULAR: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/fods/fods_to_toml.py:
+    pair: fods->toml
+    source_domain: TABULAR
+    target_domain: STRUCTURED_DATA
+    category: PROJECTION
+    rationale: Rows serialise to records; loses cell typing/formulas.
+  src/python/fods/fods_to_tsv.py:
+    pair: fods->tsv
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both fods and tsv are TABULAR: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/fodt/fodt_to_abw.py:
+    pair: fodt->abw
+    source_domain: DOCUMENT
+    target_domain: DOCUMENT
+    category: COMPATIBLE
+    rationale: 'Both fodt and abw are DOCUMENT: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/fodt/fodt_to_csv.py:
+    pair: fodt->csv
+    source_domain: DOCUMENT
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Extracting each paragraph as a row is documented and useful; loses styling, structure,
+      and inline objects.
+  src/python/fodt/fodt_to_dif.py:
+    pair: fodt->dif
+    source_domain: DOCUMENT
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Extracting each paragraph as a row is documented and useful; loses styling, structure,
+      and inline objects.
+  src/python/fodt/fodt_to_fodg.py:
+    pair: fodt->fodg
+    source_domain: DOCUMENT
+    target_domain: DRAWING
+    category: PROJECTION
+    rationale: Paragraphs as positioned text shapes; loses flow.
+  src/python/fodt/fodt_to_fods.py:
+    pair: fodt->fods
+    source_domain: DOCUMENT
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Extracting each paragraph as a row is documented and useful; loses styling, structure,
+      and inline objects.
+  src/python/fodt/fodt_to_gnumeric.py:
+    pair: fodt->gnumeric
+    source_domain: DOCUMENT
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Extracting each paragraph as a row is documented and useful; loses styling, structure,
+      and inline objects.
+  src/python/fodt/fodt_to_ndjson.py:
+    pair: fodt->ndjson
+    source_domain: DOCUMENT
+    target_domain: STRUCTURED_DATA
+    category: PROJECTION
+    rationale: Document tree serialises to records; loses styling.
+  src/python/fodt/fodt_to_ods.py:
+    pair: fodt->ods
+    source_domain: DOCUMENT
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Extracting each paragraph as a row is documented and useful; loses styling, structure,
+      and inline objects.
+  src/python/fodt/fodt_to_odt.py:
+    pair: fodt->odt
+    source_domain: DOCUMENT
+    target_domain: DOCUMENT
+    category: COMPATIBLE
+    rationale: 'Both fodt and odt are DOCUMENT: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/fodt/fodt_to_sylk.py:
+    pair: fodt->sylk
+    source_domain: DOCUMENT
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Extracting each paragraph as a row is documented and useful; loses styling, structure,
+      and inline objects.
+  src/python/fodt/fodt_to_toml.py:
+    pair: fodt->toml
+    source_domain: DOCUMENT
+    target_domain: STRUCTURED_DATA
+    category: PROJECTION
+    rationale: Document tree serialises to records; loses styling.
+  src/python/fodt/fodt_to_tsv.py:
+    pair: fodt->tsv
+    source_domain: DOCUMENT
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Extracting each paragraph as a row is documented and useful; loses styling, structure,
+      and inline objects.
+  src/python/gnumeric/gnumeric_to_abw.py:
+    pair: gnumeric->abw
+    source_domain: TABULAR
+    target_domain: DOCUMENT
+    category: PROJECTION
+    rationale: Rendering a grid as a document table or paragraph run; loses formulas and cell typing.
+  src/python/gnumeric/gnumeric_to_csv.py:
+    pair: gnumeric->csv
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both gnumeric and csv are TABULAR: they share an information model, so the mapping is
+      structure-preserving and round-trippable modulo format-specific features.'
+  src/python/gnumeric/gnumeric_to_dif.py:
+    pair: gnumeric->dif
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both gnumeric and dif are TABULAR: they share an information model, so the mapping is
+      structure-preserving and round-trippable modulo format-specific features.'
+  src/python/gnumeric/gnumeric_to_fodg.py:
+    pair: gnumeric->fodg
+    source_domain: TABULAR
+    target_domain: DRAWING
+    category: PROJECTION
+    rationale: Cells laid out as positioned shapes; loses cell semantics.
+  src/python/gnumeric/gnumeric_to_fods.py:
+    pair: gnumeric->fods
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both gnumeric and fods are TABULAR: they share an information model, so the mapping is
+      structure-preserving and round-trippable modulo format-specific features.'
+  src/python/gnumeric/gnumeric_to_fodt.py:
+    pair: gnumeric->fodt
+    source_domain: TABULAR
+    target_domain: DOCUMENT
+    category: PROJECTION
+    rationale: Rendering a grid as a document table or paragraph run; loses formulas and cell typing.
+  src/python/gnumeric/gnumeric_to_ndjson.py:
+    pair: gnumeric->ndjson
+    source_domain: TABULAR
+    target_domain: STRUCTURED_DATA
+    category: PROJECTION
+    rationale: Rows serialise to records; loses cell typing/formulas.
+  src/python/gnumeric/gnumeric_to_ods.py:
+    pair: gnumeric->ods
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both gnumeric and ods are TABULAR: they share an information model, so the mapping is
+      structure-preserving and round-trippable modulo format-specific features.'
+  src/python/gnumeric/gnumeric_to_odt.py:
+    pair: gnumeric->odt
+    source_domain: TABULAR
+    target_domain: DOCUMENT
+    category: PROJECTION
+    rationale: Rendering a grid as a document table or paragraph run; loses formulas and cell typing.
+  src/python/gnumeric/gnumeric_to_sylk.py:
+    pair: gnumeric->sylk
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both gnumeric and sylk are TABULAR: they share an information model, so the mapping is
+      structure-preserving and round-trippable modulo format-specific features.'
+  src/python/gnumeric/gnumeric_to_toml.py:
+    pair: gnumeric->toml
+    source_domain: TABULAR
+    target_domain: STRUCTURED_DATA
+    category: PROJECTION
+    rationale: Rows serialise to records; loses cell typing/formulas.
+  src/python/gnumeric/gnumeric_to_tsv.py:
+    pair: gnumeric->tsv
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both gnumeric and tsv are TABULAR: they share an information model, so the mapping is
+      structure-preserving and round-trippable modulo format-specific features.'
+  src/python/ipynb/ipynb_to_csv.py:
+    pair: ipynb->csv
+    source_domain: STRUCTURED_DATA
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Records flatten to rows; loses nesting.
+  src/python/mtlx/mtlx_to_csv.py:
+    pair: mtlx->csv
+    source_domain: STRUCTURED_DATA
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Records flatten to rows; loses nesting.
+  src/python/ndjson/ndjson_to_abw.py:
+    pair: ndjson->abw
+    source_domain: STRUCTURED_DATA
+    target_domain: DOCUMENT
+    category: PROJECTION
+    rationale: Records rendered as paragraphs; loses type info.
+  src/python/ndjson/ndjson_to_csv.py:
+    pair: ndjson->csv
+    source_domain: STRUCTURED_DATA
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Records flatten to rows; loses nesting.
+  src/python/ndjson/ndjson_to_dif.py:
+    pair: ndjson->dif
+    source_domain: STRUCTURED_DATA
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Records flatten to rows; loses nesting.
+  src/python/ndjson/ndjson_to_fodg.py:
+    pair: ndjson->fodg
+    source_domain: STRUCTURED_DATA
+    target_domain: DRAWING
+    category: PROJECTION
+    rationale: Records as positioned shapes; loses structure.
+  src/python/ndjson/ndjson_to_fods.py:
+    pair: ndjson->fods
+    source_domain: STRUCTURED_DATA
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Records flatten to rows; loses nesting.
+  src/python/ndjson/ndjson_to_fodt.py:
+    pair: ndjson->fodt
+    source_domain: STRUCTURED_DATA
+    target_domain: DOCUMENT
+    category: PROJECTION
+    rationale: Records rendered as paragraphs; loses type info.
+  src/python/ndjson/ndjson_to_gnumeric.py:
+    pair: ndjson->gnumeric
+    source_domain: STRUCTURED_DATA
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Records flatten to rows; loses nesting.
+  src/python/ndjson/ndjson_to_ods.py:
+    pair: ndjson->ods
+    source_domain: STRUCTURED_DATA
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Records flatten to rows; loses nesting.
+  src/python/ndjson/ndjson_to_odt.py:
+    pair: ndjson->odt
+    source_domain: STRUCTURED_DATA
+    target_domain: DOCUMENT
+    category: PROJECTION
+    rationale: Records rendered as paragraphs; loses type info.
+  src/python/ndjson/ndjson_to_sylk.py:
+    pair: ndjson->sylk
+    source_domain: STRUCTURED_DATA
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Records flatten to rows; loses nesting.
+  src/python/ndjson/ndjson_to_toml.py:
+    pair: ndjson->toml
+    source_domain: STRUCTURED_DATA
+    target_domain: STRUCTURED_DATA
+    category: COMPATIBLE
+    rationale: 'Both ndjson and toml are STRUCTURED_DATA: they share an information model, so the mapping
+      is structure-preserving and round-trippable modulo format-specific features.'
+  src/python/ndjson/ndjson_to_tsv.py:
+    pair: ndjson->tsv
+    source_domain: STRUCTURED_DATA
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Records flatten to rows; loses nesting.
+  src/python/nrrd/nrrd_to_csv.py:
+    pair: nrrd->csv
+    source_domain: TENSOR
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: A 2-D slice of an array is a cell grid; loses rank>2 and dtype.
+  src/python/ods/ods_to_abw.py:
+    pair: ods->abw
+    source_domain: TABULAR
+    target_domain: DOCUMENT
+    category: PROJECTION
+    rationale: Rendering a grid as a document table or paragraph run; loses formulas and cell typing.
+  src/python/ods/ods_to_csv.py:
+    pair: ods->csv
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both ods and csv are TABULAR: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/ods/ods_to_dif.py:
+    pair: ods->dif
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both ods and dif are TABULAR: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/ods/ods_to_fodg.py:
+    pair: ods->fodg
+    source_domain: TABULAR
+    target_domain: DRAWING
+    category: PROJECTION
+    rationale: Cells laid out as positioned shapes; loses cell semantics.
+  src/python/ods/ods_to_fods.py:
+    pair: ods->fods
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both ods and fods are TABULAR: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/ods/ods_to_fodt.py:
+    pair: ods->fodt
+    source_domain: TABULAR
+    target_domain: DOCUMENT
+    category: PROJECTION
+    rationale: Rendering a grid as a document table or paragraph run; loses formulas and cell typing.
+  src/python/ods/ods_to_gnumeric.py:
+    pair: ods->gnumeric
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both ods and gnumeric are TABULAR: they share an information model, so the mapping is
+      structure-preserving and round-trippable modulo format-specific features.'
+  src/python/ods/ods_to_ndjson.py:
+    pair: ods->ndjson
+    source_domain: TABULAR
+    target_domain: STRUCTURED_DATA
+    category: PROJECTION
+    rationale: Rows serialise to records; loses cell typing/formulas.
+  src/python/ods/ods_to_odt.py:
+    pair: ods->odt
+    source_domain: TABULAR
+    target_domain: DOCUMENT
+    category: PROJECTION
+    rationale: Rendering a grid as a document table or paragraph run; loses formulas and cell typing.
+  src/python/ods/ods_to_sylk.py:
+    pair: ods->sylk
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both ods and sylk are TABULAR: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/ods/ods_to_toml.py:
+    pair: ods->toml
+    source_domain: TABULAR
+    target_domain: STRUCTURED_DATA
+    category: PROJECTION
+    rationale: Rows serialise to records; loses cell typing/formulas.
+  src/python/ods/ods_to_tsv.py:
+    pair: ods->tsv
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both ods and tsv are TABULAR: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/odt/odt_to_abw.py:
+    pair: odt->abw
+    source_domain: DOCUMENT
+    target_domain: DOCUMENT
+    category: COMPATIBLE
+    rationale: 'Both odt and abw are DOCUMENT: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/odt/odt_to_csv.py:
+    pair: odt->csv
+    source_domain: DOCUMENT
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Extracting each paragraph as a row is documented and useful; loses styling, structure,
+      and inline objects.
+  src/python/odt/odt_to_dif.py:
+    pair: odt->dif
+    source_domain: DOCUMENT
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Extracting each paragraph as a row is documented and useful; loses styling, structure,
+      and inline objects.
+  src/python/odt/odt_to_fodg.py:
+    pair: odt->fodg
+    source_domain: DOCUMENT
+    target_domain: DRAWING
+    category: PROJECTION
+    rationale: Paragraphs as positioned text shapes; loses flow.
+  src/python/odt/odt_to_fods.py:
+    pair: odt->fods
+    source_domain: DOCUMENT
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Extracting each paragraph as a row is documented and useful; loses styling, structure,
+      and inline objects.
+  src/python/odt/odt_to_fodt.py:
+    pair: odt->fodt
+    source_domain: DOCUMENT
+    target_domain: DOCUMENT
+    category: COMPATIBLE
+    rationale: 'Both odt and fodt are DOCUMENT: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/odt/odt_to_gnumeric.py:
+    pair: odt->gnumeric
+    source_domain: DOCUMENT
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Extracting each paragraph as a row is documented and useful; loses styling, structure,
+      and inline objects.
+  src/python/odt/odt_to_ndjson.py:
+    pair: odt->ndjson
+    source_domain: DOCUMENT
+    target_domain: STRUCTURED_DATA
+    category: PROJECTION
+    rationale: Document tree serialises to records; loses styling.
+  src/python/odt/odt_to_ods.py:
+    pair: odt->ods
+    source_domain: DOCUMENT
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Extracting each paragraph as a row is documented and useful; loses styling, structure,
+      and inline objects.
+  src/python/odt/odt_to_sylk.py:
+    pair: odt->sylk
+    source_domain: DOCUMENT
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Extracting each paragraph as a row is documented and useful; loses styling, structure,
+      and inline objects.
+  src/python/odt/odt_to_toml.py:
+    pair: odt->toml
+    source_domain: DOCUMENT
+    target_domain: STRUCTURED_DATA
+    category: PROJECTION
+    rationale: Document tree serialises to records; loses styling.
+  src/python/odt/odt_to_tsv.py:
+    pair: odt->tsv
+    source_domain: DOCUMENT
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Extracting each paragraph as a row is documented and useful; loses styling, structure,
+      and inline objects.
+  src/python/pbm/pbm_to_pgm.py:
+    pair: pbm->pgm
+    source_domain: RASTER
+    target_domain: RASTER
+    category: COMPATIBLE
+    rationale: 'Both pbm and pgm are RASTER: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/pbm/pbm_to_ppm.py:
+    pair: pbm->ppm
+    source_domain: RASTER
+    target_domain: RASTER
+    category: COMPATIBLE
+    rationale: 'Both pbm and ppm are RASTER: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/pgm/pgm_to_ppm.py:
+    pair: pgm->ppm
+    source_domain: RASTER
+    target_domain: RASTER
+    category: COMPATIBLE
+    rationale: 'Both pgm and ppm are RASTER: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/ppm/ppm_to_pgm.py:
+    pair: ppm->pgm
+    source_domain: RASTER
+    target_domain: RASTER
+    category: COMPATIBLE
+    rationale: 'Both ppm and pgm are RASTER: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/safetensors/safetensors_to_csv.py:
+    pair: safetensors->csv
+    source_domain: TENSOR
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: A 2-D slice of an array is a cell grid; loses rank>2 and dtype.
+  src/python/sylk/sylk_to_abw.py:
+    pair: sylk->abw
+    source_domain: TABULAR
+    target_domain: DOCUMENT
+    category: PROJECTION
+    rationale: Rendering a grid as a document table or paragraph run; loses formulas and cell typing.
+  src/python/sylk/sylk_to_csv.py:
+    pair: sylk->csv
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both sylk and csv are TABULAR: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/sylk/sylk_to_dif.py:
+    pair: sylk->dif
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both sylk and dif are TABULAR: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/sylk/sylk_to_fodg.py:
+    pair: sylk->fodg
+    source_domain: TABULAR
+    target_domain: DRAWING
+    category: PROJECTION
+    rationale: Cells laid out as positioned shapes; loses cell semantics.
+  src/python/sylk/sylk_to_fods.py:
+    pair: sylk->fods
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both sylk and fods are TABULAR: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/sylk/sylk_to_fodt.py:
+    pair: sylk->fodt
+    source_domain: TABULAR
+    target_domain: DOCUMENT
+    category: PROJECTION
+    rationale: Rendering a grid as a document table or paragraph run; loses formulas and cell typing.
+  src/python/sylk/sylk_to_gnumeric.py:
+    pair: sylk->gnumeric
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both sylk and gnumeric are TABULAR: they share an information model, so the mapping is
+      structure-preserving and round-trippable modulo format-specific features.'
+  src/python/sylk/sylk_to_ndjson.py:
+    pair: sylk->ndjson
+    source_domain: TABULAR
+    target_domain: STRUCTURED_DATA
+    category: PROJECTION
+    rationale: Rows serialise to records; loses cell typing/formulas.
+  src/python/sylk/sylk_to_ods.py:
+    pair: sylk->ods
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both sylk and ods are TABULAR: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/sylk/sylk_to_odt.py:
+    pair: sylk->odt
+    source_domain: TABULAR
+    target_domain: DOCUMENT
+    category: PROJECTION
+    rationale: Rendering a grid as a document table or paragraph run; loses formulas and cell typing.
+  src/python/sylk/sylk_to_toml.py:
+    pair: sylk->toml
+    source_domain: TABULAR
+    target_domain: STRUCTURED_DATA
+    category: PROJECTION
+    rationale: Rows serialise to records; loses cell typing/formulas.
+  src/python/sylk/sylk_to_tsv.py:
+    pair: sylk->tsv
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both sylk and tsv are TABULAR: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/toml/toml_to_abw.py:
+    pair: toml->abw
+    source_domain: STRUCTURED_DATA
+    target_domain: DOCUMENT
+    category: PROJECTION
+    rationale: Records rendered as paragraphs; loses type info.
+  src/python/toml/toml_to_csv.py:
+    pair: toml->csv
+    source_domain: STRUCTURED_DATA
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Records flatten to rows; loses nesting.
+  src/python/toml/toml_to_dif.py:
+    pair: toml->dif
+    source_domain: STRUCTURED_DATA
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Records flatten to rows; loses nesting.
+  src/python/toml/toml_to_fodg.py:
+    pair: toml->fodg
+    source_domain: STRUCTURED_DATA
+    target_domain: DRAWING
+    category: PROJECTION
+    rationale: Records as positioned shapes; loses structure.
+  src/python/toml/toml_to_fods.py:
+    pair: toml->fods
+    source_domain: STRUCTURED_DATA
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Records flatten to rows; loses nesting.
+  src/python/toml/toml_to_fodt.py:
+    pair: toml->fodt
+    source_domain: STRUCTURED_DATA
+    target_domain: DOCUMENT
+    category: PROJECTION
+    rationale: Records rendered as paragraphs; loses type info.
+  src/python/toml/toml_to_gnumeric.py:
+    pair: toml->gnumeric
+    source_domain: STRUCTURED_DATA
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Records flatten to rows; loses nesting.
+  src/python/toml/toml_to_ndjson.py:
+    pair: toml->ndjson
+    source_domain: STRUCTURED_DATA
+    target_domain: STRUCTURED_DATA
+    category: COMPATIBLE
+    rationale: 'Both toml and ndjson are STRUCTURED_DATA: they share an information model, so the mapping
+      is structure-preserving and round-trippable modulo format-specific features.'
+  src/python/toml/toml_to_ods.py:
+    pair: toml->ods
+    source_domain: STRUCTURED_DATA
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Records flatten to rows; loses nesting.
+  src/python/toml/toml_to_odt.py:
+    pair: toml->odt
+    source_domain: STRUCTURED_DATA
+    target_domain: DOCUMENT
+    category: PROJECTION
+    rationale: Records rendered as paragraphs; loses type info.
+  src/python/toml/toml_to_sylk.py:
+    pair: toml->sylk
+    source_domain: STRUCTURED_DATA
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Records flatten to rows; loses nesting.
+  src/python/toml/toml_to_tsv.py:
+    pair: toml->tsv
+    source_domain: STRUCTURED_DATA
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Records flatten to rows; loses nesting.
+  src/python/tsv/tsv_to_abw.py:
+    pair: tsv->abw
+    source_domain: TABULAR
+    target_domain: DOCUMENT
+    category: PROJECTION
+    rationale: Rendering a grid as a document table or paragraph run; loses formulas and cell typing.
+  src/python/tsv/tsv_to_csv.py:
+    pair: tsv->csv
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both tsv and csv are TABULAR: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/tsv/tsv_to_dif.py:
+    pair: tsv->dif
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both tsv and dif are TABULAR: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/tsv/tsv_to_fodg.py:
+    pair: tsv->fodg
+    source_domain: TABULAR
+    target_domain: DRAWING
+    category: PROJECTION
+    rationale: Cells laid out as positioned shapes; loses cell semantics.
+  src/python/tsv/tsv_to_fods.py:
+    pair: tsv->fods
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both tsv and fods are TABULAR: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/tsv/tsv_to_fodt.py:
+    pair: tsv->fodt
+    source_domain: TABULAR
+    target_domain: DOCUMENT
+    category: PROJECTION
+    rationale: Rendering a grid as a document table or paragraph run; loses formulas and cell typing.
+  src/python/tsv/tsv_to_gnumeric.py:
+    pair: tsv->gnumeric
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both tsv and gnumeric are TABULAR: they share an information model, so the mapping is
+      structure-preserving and round-trippable modulo format-specific features.'
+  src/python/tsv/tsv_to_ndjson.py:
+    pair: tsv->ndjson
+    source_domain: TABULAR
+    target_domain: STRUCTURED_DATA
+    category: PROJECTION
+    rationale: Rows serialise to records; loses cell typing/formulas.
+  src/python/tsv/tsv_to_ods.py:
+    pair: tsv->ods
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both tsv and ods are TABULAR: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/tsv/tsv_to_odt.py:
+    pair: tsv->odt
+    source_domain: TABULAR
+    target_domain: DOCUMENT
+    category: PROJECTION
+    rationale: Rendering a grid as a document table or paragraph run; loses formulas and cell typing.
+  src/python/tsv/tsv_to_sylk.py:
+    pair: tsv->sylk
+    source_domain: TABULAR
+    target_domain: TABULAR
+    category: COMPATIBLE
+    rationale: 'Both tsv and sylk are TABULAR: they share an information model, so the mapping is structure-preserving
+      and round-trippable modulo format-specific features.'
+  src/python/tsv/tsv_to_toml.py:
+    pair: tsv->toml
+    source_domain: TABULAR
+    target_domain: STRUCTURED_DATA
+    category: PROJECTION
+    rationale: Rows serialise to records; loses cell typing/formulas.
+  src/python/ubl/ubl_to_csv.py:
+    pair: ubl->csv
+    source_domain: STRUCTURED_DATA
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Records flatten to rows; loses nesting.
+  src/python/xliff/xliff_to_csv.py:
+    pair: xliff->csv
+    source_domain: STRUCTURED_DATA
+    target_domain: TABULAR
+    category: PROJECTION
+    rationale: Records flatten to rows; loses nesting.

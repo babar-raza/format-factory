@@ -453,3 +453,63 @@ def test_validate_plan_binding_blocks_forbidden_path(tmp_path):
         assert "forbidden_mutation_path" in reason, f"Expected reason to mention forbidden, got: {reason}"
     finally:
         wpl._plan_locks_dir = orig_dir
+
+
+# ---------------------------------------------------------------------------
+# TC-MACH-002: concurrent writers must not crash or clobber each other's .tmp files
+# ---------------------------------------------------------------------------
+
+def test_concurrent_write_lock_no_crash_on_shared_tmp_race(tmp_path):
+    """TC-MACH-002 regression: previously _shared_tmp/_keyed_tmp used a fixed
+    `<name>.tmp` filename, so concurrent writers could race on the same tmp
+    path and os.replace() could raise an uncaught FileNotFoundError once
+    another writer had already consumed/renamed it. With unique per-writer tmp
+    names this must no longer happen: many concurrent write_lock() calls
+    against the same shared/keyed paths must all complete without raising,
+    and the resulting shared/keyed files must be valid JSON from exactly one
+    of the writers (last-writer-wins on content is acceptable; a crash or a
+    torn/missing file is not).
+    """
+    import concurrent.futures
+    import write_plan_lock as wpl
+
+    shared = tmp_path / "active-plan-lock.json"
+    keyed_dir = tmp_path / "plan-locks"
+    keyed_dir.mkdir()
+    plan = "plans/test-plan-concurrent.md"
+    sid = "test-session-concurrent"
+
+    orig_shared = wpl._shared_lock_path
+    orig_dir = wpl._plan_locks_dir
+    wpl._shared_lock_path = shared
+    wpl._plan_locks_dir = keyed_dir
+
+    errors = []
+
+    def _writer(i):
+        try:
+            wpl.write_lock(plan, session_id=sid, last_taskcard=f"tc-{i}")
+        except Exception as exc:  # pragma: no cover - failure path under test
+            errors.append(exc)
+
+    try:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=16) as pool:
+            list(pool.map(_writer, range(40)))
+    finally:
+        wpl._shared_lock_path = orig_shared
+        wpl._plan_locks_dir = orig_dir
+
+    assert not errors, f"Concurrent write_lock() calls raised: {errors!r}"
+    # Both files must exist and be valid, parseable JSON from some writer.
+    assert shared.exists(), "shared lock file missing after concurrent writes"
+    shared_data = json.loads(shared.read_text(encoding="utf-8"))
+    assert shared_data["status"] == "IN_PROGRESS"
+    import hashlib
+    plan_hash = hashlib.sha256(plan.encode()).hexdigest()[:8]
+    keyed = keyed_dir / f"{sid}-{plan_hash}.json"
+    assert keyed.exists(), "keyed lock file missing after concurrent writes"
+    keyed_data = json.loads(keyed.read_text(encoding="utf-8"))
+    assert keyed_data["status"] == "IN_PROGRESS"
+    # No leftover .tmp files from any writer (all should have been renamed away).
+    leftover_tmp = list(keyed_dir.glob("*.tmp")) + list(shared.parent.glob("*.tmp"))
+    assert not leftover_tmp, f"Leftover .tmp files after concurrent writes: {leftover_tmp!r}"

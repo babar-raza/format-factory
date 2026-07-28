@@ -24,6 +24,17 @@ dev = [
 [tool.pytest.ini_options]
 addopts = "--import-mode=importlib"
 testpaths = ["tests"]
+# Repo root on sys.path for tests, set by pytest itself (pytest>=7 `pythonpath`).
+# This is the SUPPORTED substitute for `sys.path.insert(0, str(_REPO))` at the top
+# of a test module. Until this existed there was no way to `import tools.*` /
+# `import src.python.*` from a test without hand-mutating sys.path, which is why
+# the playbooks taught that hack and why ~2,600 sys.path calls accumulated under
+# tests/ (plan finding PA-F6). New tests must NOT mutate sys.path — see
+# playbooks/format-factory/new-format-kickstart-template.md.
+# Note: `src` and `src/python` are already injected by the venv's editable-install
+# .pth files, so format packages import without this; this entry is what makes
+# `tools.*` and `src.python.*` reachable.
+pythonpath = ["."]
 timeout = 120
 timeout_method = "thread"
 markers = [

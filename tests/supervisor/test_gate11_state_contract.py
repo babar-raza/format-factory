@@ -210,3 +210,119 @@ class TestCheck11GateEnforcement:
         assert result.get("reason") != "gate_11_ready_pending_authorization", (
             f"Check 11 should not block when no product is GATE_11_READY: {result}"
         )
+
+
+class TestTcMach003UnconditionalGatesBeforePlanLockContinue:
+    """TC-MACH-003 regression: the plan-lock block's COMPLETION_CANDIDATE branch
+    used to `return` a CONTINUE verdict directly, before Check 11 (Gate 11
+    TRUE_EXTERNAL_GATE authorization) ever ran. A plan reaching
+    COMPLETION_CANDIDATE could therefore CONTINUE even while an unrelated
+    product was simultaneously GATE_11_READY and awaiting Babar Raza's
+    authorization — a check CLAUDE.md documents as unconditional. This must
+    now STOP with gate_11_ready_pending_authorization instead.
+    """
+
+    def test_completion_candidate_does_not_bypass_gate11_ready(self, tmp_path: Path):
+        (tmp_path / "registry").mkdir()
+        gate_yaml = {
+            "gate_states": [{"state_id": "GATE_11_READY", "per_product": True}],
+            "format_gate_states": {
+                "csv": {"python": {"state": "GATE_11_READY", "p1_oracle_verified": True}}
+            },
+        }
+        (tmp_path / "registry" / "gate-states.yaml").write_text(
+            yaml.dump(gate_yaml), encoding="utf-8"
+        )
+
+        sig_dir = tmp_path / ".local" / "supervisor"
+        sig_dir.mkdir(parents=True)
+        signal = {
+            "autonomous_continue": True,
+            "continuation_state": "YES",
+            "iteration": 1,
+            "max_iterations": 12,
+            "rework_items": [],
+            "stop_reason": None,
+            "session_id": None,
+            "hard_stops_detected": [],
+        }
+        (sig_dir / "continuation-signal.json").write_text(json.dumps(signal))
+        gates = tmp_path / "reports" / "supervisor"
+        gates.mkdir(parents=True)
+        (gates / "approval-gates.md").write_text("AUTONOMOUS_CONTINUE: YES\n")
+        (sig_dir / "next-work-items.json").write_text(
+            json.dumps({"work_items": [{"id": "W1", "format": "csv"}]})
+        )
+
+        # A per-chat plan lock marked COMPLETION_CANDIDATE — the CONTINUE-producing
+        # branch this taskcard targets. Deliberately no session_id/track_type so
+        # the lock passes Check 1b's session/track filters unconditionally.
+        locks_dir = sig_dir / "plan-locks"
+        locks_dir.mkdir()
+        (locks_dir / "test-completion-candidate.json").write_text(
+            json.dumps({
+                "plan_path": "plans/.claude/some-plan.md",
+                "status": "COMPLETION_CANDIDATE",
+                "updated_at": "2026-07-16T12:00:00+00:00",
+            }),
+            encoding="utf-8",
+        )
+
+        from check_continuation import check
+        result = check(tmp_path)
+        assert result["verdict"] == "STOP", (
+            f"TC-MACH-003 regression: COMPLETION_CANDIDATE bypassed the Gate 11 "
+            f"TRUE_EXTERNAL_GATE instead of stopping. Got: {result}"
+        )
+        assert result.get("reason") == "gate_11_ready_pending_authorization", (
+            f"Expected gate_11_ready_pending_authorization, got: {result.get('reason')}"
+        )
+
+    def test_completion_candidate_continues_when_no_gate_pending(self, tmp_path: Path):
+        """Sibling control case: with no GATE_11_READY product, COMPLETION_CANDIDATE
+        must still produce its normal CONTINUE/completion_candidate_detected verdict
+        — TC-MACH-003 must not turn every COMPLETION_CANDIDATE into a STOP."""
+        (tmp_path / "registry").mkdir()
+        gate_yaml = {
+            "gate_states": [{"state_id": "NOT_READY", "per_product": True}],
+            "format_gate_states": {"fods": {"python": {"state": "NOT_READY"}}},
+        }
+        (tmp_path / "registry" / "gate-states.yaml").write_text(
+            yaml.dump(gate_yaml), encoding="utf-8"
+        )
+
+        sig_dir = tmp_path / ".local" / "supervisor"
+        sig_dir.mkdir(parents=True)
+        signal = {
+            "autonomous_continue": True,
+            "continuation_state": "YES",
+            "iteration": 1,
+            "max_iterations": 12,
+            "rework_items": [],
+            "stop_reason": None,
+            "session_id": None,
+            "hard_stops_detected": [],
+        }
+        (sig_dir / "continuation-signal.json").write_text(json.dumps(signal))
+        gates = tmp_path / "reports" / "supervisor"
+        gates.mkdir(parents=True)
+        (gates / "approval-gates.md").write_text("AUTONOMOUS_CONTINUE: YES\n")
+        (sig_dir / "next-work-items.json").write_text(
+            json.dumps({"work_items": [{"id": "W1", "format": "fods"}]})
+        )
+
+        locks_dir = sig_dir / "plan-locks"
+        locks_dir.mkdir()
+        (locks_dir / "test-completion-candidate.json").write_text(
+            json.dumps({
+                "plan_path": "plans/.claude/some-plan.md",
+                "status": "COMPLETION_CANDIDATE",
+                "updated_at": "2026-07-16T12:00:00+00:00",
+            }),
+            encoding="utf-8",
+        )
+
+        from check_continuation import check
+        result = check(tmp_path)
+        assert result["verdict"] == "CONTINUE", f"Expected CONTINUE, got: {result}"
+        assert result.get("reason") != "gate_11_ready_pending_authorization"

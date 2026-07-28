@@ -432,6 +432,76 @@ class TestG06_SessionIdStableAcrossMultipleCalls:
         assert "created_at" in data
 
 
+class TestTcMach001SlidingTtlRenewal:
+    """TC-MACH-001 (partial fix for F2 — same-chat identity drift): a
+    continuously-active session must not silently rotate its session_id just
+    because 4 wall-clock hours have passed since the file was first created.
+    Confirmed live in production: this exact machinery-audit session's own
+    session-product.id rotated (71d6552a09a4 -> 4d50707c8ce0) after 4h30m of
+    continuous, non-idle use. A genuine >4h GAP with no activity must still
+    mint a new id (that remains the correct behavior, and is what
+    TestG07_SessionIdChangesAfterTtlExpiry above already covers).
+    """
+
+    def test_active_session_past_old_ttl_cliff_does_not_rotate(self, tmp_path, monkeypatch):
+        import continuation_identity
+        from datetime import datetime, timezone, timedelta
+
+        monkeypatch.setattr(continuation_identity, "_REPO_ROOT", tmp_path)
+        monkeypatch.delenv("CLAUDE_SESSION_ID", raising=False)
+
+        # Simulate a session file created 5 hours ago (past the old fixed 4h
+        # cliff) but touched (last_seen_at) just 10 minutes ago — i.e. the
+        # process has been continuously active this whole time.
+        created = (datetime.now(timezone.utc) - timedelta(hours=5)).isoformat()
+        last_seen = (datetime.now(timezone.utc) - timedelta(minutes=10)).isoformat()
+        session_file = tmp_path / ".local" / "supervisor" / "session-product.id"
+        session_file.parent.mkdir(parents=True, exist_ok=True)
+        session_file.write_text(json.dumps({
+            "session_id": "still-the-same-session",
+            "track_type": "product",
+            "created_at": created,
+            "last_seen_at": last_seen,
+            "source": "git_nonce",
+        }), encoding="utf-8")
+
+        new_id = continuation_identity._derive_stable_session_id("product")
+        assert new_id == "still-the-same-session", (
+            "TC-MACH-001 regression: an actively-used session rotated its "
+            "session_id despite being touched 10 minutes ago, just because "
+            "created_at was more than 4h in the past."
+        )
+        # last_seen_at should have been renewed (slid forward).
+        updated = json.loads(session_file.read_text(encoding="utf-8"))
+        assert updated["last_seen_at"] != last_seen, "last_seen_at must be renewed on each active use"
+
+    def test_session_with_genuine_inactivity_gap_still_rotates(self, tmp_path, monkeypatch):
+        """Sibling control case: if the session was NOT touched for >4h (both
+        created_at and last_seen_at are stale), it must still rotate — sliding
+        renewal must not turn this into a permanently-cached identity."""
+        import continuation_identity
+        from datetime import datetime, timezone, timedelta
+
+        monkeypatch.setattr(continuation_identity, "_REPO_ROOT", tmp_path)
+        monkeypatch.delenv("CLAUDE_SESSION_ID", raising=False)
+
+        stale_time = (datetime.now(timezone.utc) - timedelta(hours=6)).isoformat()
+        session_file = tmp_path / ".local" / "supervisor" / "session-product.id"
+        session_file.parent.mkdir(parents=True, exist_ok=True)
+        session_file.write_text(json.dumps({
+            "session_id": "long-abandoned-session",
+            "track_type": "product",
+            "created_at": stale_time,
+            "last_seen_at": stale_time,
+            "source": "git_nonce",
+        }), encoding="utf-8")
+
+        new_id = continuation_identity._derive_stable_session_id("product")
+        assert new_id != "long-abandoned-session", (
+            "A session with no activity for >4h must still rotate to a new id"
+        )
+
+
 class TestG07_SessionIdChangesAfterTtlExpiry:
     """TC-CCI-G-07: Session file TTL — expired file creates new session_id."""
 
@@ -629,4 +699,158 @@ class TestH02_SessionMismatchCLIExitCode:
         assert result.returncode == 0, (
             f"Expected exit 0 on matching session, got {result.returncode}.\n"
             f"stdout: {result.stdout}\nstderr: {result.stderr}"
+        )
+
+
+class TestTcMach001CoordinationPlaneResolution:
+    """TC-MACH-001 (F1 mitigation — cross-chat session_id collision).
+
+    F1's root problem: `.local/supervisor/session-{track}.id` is a single file
+    shared by every process touching this repo, so two genuinely-concurrent
+    chats can mint/read the SAME session_id within the same TTL window. A full
+    fix needs the harness to pipe a real per-conversation identity into every
+    subprocess invocation, which does not currently exist as a channel in this
+    repo (confirmed: `CLAUDE_SESSION_ID` is never set anywhere, and the
+    PreToolUse hook that DOES see the real session_id has no mechanism to
+    inject env vars into the Bash command it gates).
+
+    This is the safely-achievable mitigation instead: when the Section CO
+    coordination registry shows EXACTLY ONE genuinely-fresh live agent for
+    this worktree, `continuation_identity` adopts that agent's real
+    harness-assigned `claude_session_id` instead of a self-generated nonce —
+    zero ambiguity, zero risk of collision. With zero or multiple fresh
+    agents it must defer unchanged to the existing nonce-based fallback.
+    """
+
+    @staticmethod
+    def _isolated_coord(tmp_path, monkeypatch):
+        from coordination import db as cdb
+        from coordination import root as croot
+
+        coord_root = tmp_path / "coord"
+        repo = tmp_path / "repo"
+        (repo / ".git").mkdir(parents=True)
+        monkeypatch.setenv(croot.ENV_ROOT, str(coord_root))
+        cdb.ensure_db(coord_root)
+        return coord_root, repo
+
+    def test_single_fresh_agent_adopts_real_harness_session_id(self, tmp_path, monkeypatch):
+        from coordination.registry import AgentRegistry
+        import continuation_identity
+
+        coord_root, repo = self._isolated_coord(tmp_path, monkeypatch)
+        AgentRegistry(coord_root, start=repo).register(
+            "claude-code", session_id="real-harness-session-abc"
+        )
+
+        monkeypatch.setattr(continuation_identity, "_REPO_ROOT", repo)
+        monkeypatch.delenv("CLAUDE_SESSION_ID", raising=False)
+
+        session_id = continuation_identity._derive_stable_session_id("product")
+        assert session_id == "real-harness-session-abc", (
+            "With exactly one genuinely-fresh live agent registered, the real "
+            f"harness session_id must be adopted verbatim. Got: {session_id}"
+        )
+
+        cache = json.loads(
+            (repo / ".local" / "supervisor" / "session-product.id").read_text(encoding="utf-8")
+        )
+        assert cache["source"] == "coordination_plane"
+
+        # A second call must be stable (reuses the now-cached value, not a
+        # fresh coordination lookup or a new nonce).
+        again = continuation_identity._derive_stable_session_id("product")
+        assert again == "real-harness-session-abc"
+
+    def test_two_fresh_agents_defers_to_nonce_fallback(self, tmp_path, monkeypatch):
+        """Ambiguity (>1 fresh agent) must change NOTHING — same behavior as
+        before this fix existed, never a guess."""
+        from coordination.registry import AgentRegistry
+        import continuation_identity
+
+        coord_root, repo = self._isolated_coord(tmp_path, monkeypatch)
+        reg = AgentRegistry(coord_root, start=repo)
+        reg.register("claude-code", session_id="agent-a-session")
+        reg.register("claude-code", session_id="agent-b-session")
+
+        monkeypatch.setattr(continuation_identity, "_REPO_ROOT", repo)
+        monkeypatch.delenv("CLAUDE_SESSION_ID", raising=False)
+
+        session_id = continuation_identity._derive_stable_session_id("product")
+        assert session_id not in ("agent-a-session", "agent-b-session"), (
+            f"Two genuinely-concurrent agents must not be disambiguated by a "
+            f"guess. Got: {session_id}"
+        )
+
+    def test_stale_agent_is_not_counted_as_fresh(self, tmp_path, monkeypatch):
+        """An agent whose heartbeat has expired past its own TTL must not
+        count toward the freshness check, even if its DB row status hasn't
+        been reaped to STALE_SUSPECT yet — this test injects a stale
+        last_heartbeat directly rather than waiting on the real reaper."""
+        from coordination import db as cdb
+        from coordination.registry import AgentRegistry
+        import continuation_identity
+        from datetime import datetime, timedelta, timezone
+
+        coord_root, repo = self._isolated_coord(tmp_path, monkeypatch)
+        reg = AgentRegistry(coord_root, start=repo)
+        ra = reg.register("claude-code", session_id="stale-agent-session", heartbeat_ttl_s=60)
+
+        conn = cdb.connect(coord_root)
+        try:
+            stale_hb = (datetime.now(timezone.utc) - timedelta(hours=2)).isoformat()
+            conn.execute(
+                "UPDATE agents SET last_heartbeat=? WHERE agent_id=?",
+                (stale_hb, ra.agent_id),
+            )
+            conn.commit()
+        finally:
+            conn.close()
+
+        monkeypatch.setattr(continuation_identity, "_REPO_ROOT", repo)
+        monkeypatch.delenv("CLAUDE_SESSION_ID", raising=False)
+
+        session_id = continuation_identity._derive_stable_session_id("product")
+        assert session_id != "stale-agent-session", (
+            "A stale (heartbeat past its own TTL) agent must not be adopted "
+            "as the resolved identity even if its DB status row still reads ACTIVE."
+        )
+
+    def test_no_coordination_db_falls_back_cleanly(self, tmp_path, monkeypatch):
+        """No coordination DB at all (bootstrap / never initialized) must not
+        raise and must fall through to the existing nonce-based behavior."""
+        from coordination import root as croot
+        import continuation_identity
+
+        repo = tmp_path / "repo"
+        (repo / ".git").mkdir(parents=True)
+        monkeypatch.setenv(croot.ENV_ROOT, str(tmp_path / "no-such-coord-root"))
+        monkeypatch.setattr(continuation_identity, "_REPO_ROOT", repo)
+        monkeypatch.delenv("CLAUDE_SESSION_ID", raising=False)
+
+        session_id = continuation_identity._derive_stable_session_id("product")
+        assert session_id, "Must still produce a usable id when coordination is unavailable"
+
+    def test_different_worktree_agent_is_not_adopted(self, tmp_path, monkeypatch):
+        """A fresh agent registered against a DIFFERENT worktree must not be
+        adopted just because it shares the same coordination DB (repo_key is
+        keyed on git COMMON dir, shared across worktrees of one repository)."""
+        from coordination.registry import AgentRegistry
+        import continuation_identity
+
+        coord_root, repo = self._isolated_coord(tmp_path, monkeypatch)
+        other_worktree = tmp_path / "other-worktree"
+        (other_worktree / ".git").mkdir(parents=True)
+
+        AgentRegistry(coord_root, start=other_worktree).register(
+            "claude-code", session_id="other-worktree-session"
+        )
+
+        monkeypatch.setattr(continuation_identity, "_REPO_ROOT", repo)
+        monkeypatch.delenv("CLAUDE_SESSION_ID", raising=False)
+
+        session_id = continuation_identity._derive_stable_session_id("product")
+        assert session_id != "other-worktree-session", (
+            "An agent registered against a different worktree must not be "
+            "adopted as this worktree's identity"
         )

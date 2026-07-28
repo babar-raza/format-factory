@@ -5105,7 +5105,7 @@ skills:
 - command: /reconcile-stashed-work
   command_file: .claude/commands/reconcile-stashed-work.md
   codex_supported: true
-  idempotency: deterministic_inventory_and_repeat_materialization_no_op
+  idempotency: idempotent
   implementation_paths:
   - tools/recovery/stash_reconciler.py
   mandatory_validations:

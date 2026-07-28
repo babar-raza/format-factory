@@ -406,12 +406,25 @@ class TestV157GovernanceBindingPaths:
 
 class TestRunnerIntegration:
 
-    def test_expected_validator_count_is_221(self):
-        """_EXPECTED_VALIDATOR_COUNT must be 221 (216 base + V172-V175 TC-VWR-007 + V224 TC-GOV-V224-001, 2026-07-15)."""
+    def test_expected_validator_count_matches_manifest(self):
+        """_EXPECTED_VALIDATOR_COUNT must equal the manifest module-count sum.
+
+        TC-PA-035 (2026-07-17): the prior form hardcoded `== 221`, a literal that went
+        stale the moment any validator was added or removed. It was already RED at 220
+        (GVD-2026-07-17 recalibration) before TC-PA-035 dropped the count to 219 by
+        superseding the V14 no-op. The enforced source of truth is
+        validator-manifest.yaml (read by _load_expected_count()); assert against the
+        module-count sum, not a frozen number, so this guard cannot go stale again.
+        """
         from governance_validator_runner import _EXPECTED_VALIDATOR_COUNT
-        assert _EXPECTED_VALIDATOR_COUNT == 221, (
-            f"Expected 221, got {_EXPECTED_VALIDATOR_COUNT}. "
-            "Update governance_validator_runner.py after adding/removing validators."
+        manifest = yaml.safe_load(
+            (REPO_ROOT / "tools" / "supervisor" / "validator-manifest.yaml").read_text(encoding="utf-8")
+        )
+        module_sum = sum(m.get("count", 0) for m in manifest["modules"].values())
+        assert _EXPECTED_VALIDATOR_COUNT == module_sum == manifest["expected_count"], (
+            f"_EXPECTED_VALIDATOR_COUNT={_EXPECTED_VALIDATOR_COUNT}, "
+            f"module-sum={module_sum}, manifest.expected_count={manifest['expected_count']} "
+            "must all agree. Reconcile tools/supervisor/validator-manifest.yaml."
         )
 
     def test_product_gov_validators_registered(self):

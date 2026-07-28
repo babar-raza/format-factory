@@ -46,14 +46,12 @@ import inspect
 import sys
 import tempfile
 from pathlib import Path
-
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO / "src" / "python"))
 
 import pytest  # noqa: E402
-
+from _shared._shared_exceptions import FormatFactoryError  # noqa: E402
 import fodt  # noqa: E402
-
 # ---------------------------------------------------------------------------
 # Sample corpus
 # ---------------------------------------------------------------------------
@@ -277,10 +275,6 @@ def test_every_exported_class_has_dedicated_coverage():
     expected = {
         "FodtDocument", "FodtParagraph", "FodtSpan",
         "FodtError", "FodtInputError", "FodtParseError", "FodtSizeError",
-        # FormatFactoryError is imported into exceptions.py so FodtError can
-        # be rooted at the shared base (matching every other format package's
-        # exceptions.py); it leaks into __all__ via the dynamic star-import
-        # computation the same way it already does for every other format.
         "FormatFactoryError",
     }
     assert set(_ALL_CLASSES) == expected
@@ -785,10 +779,6 @@ class TestExceptions:
         assert issubclass(fodt.FodtInputError, fodt.FodtError)
         assert issubclass(fodt.FodtSizeError, fodt.FodtError)
         assert issubclass(fodt.FodtParseError, fodt.FodtError)
-        # Healed: FodtError now roots at FormatFactoryError (matching every
-        # other format package) instead of ValueError. See
-        # plans/.claude/quizzical-munching-gadget.md section 7 (TC-EHR-009).
-        from _shared._shared_exceptions import FormatFactoryError
         assert issubclass(fodt.FodtError, FormatFactoryError)
 
     def test_parse_fodt_strict_raises_input_error_missing_file(self):
@@ -817,9 +807,7 @@ class TestExceptions:
         assert "error" in result
 
     def test_fodt_error_is_catchable_as_format_factory_error(self):
-        """Healed: FodtError is no longer ValueError-rooted; it is now
-        catchable via the shared FormatFactoryError hierarchy instead."""
-        from _shared._shared_exceptions import FormatFactoryError
+        """FodtError is catchable via the shared exception hierarchy."""
         with pytest.raises(FormatFactoryError):
             raise fodt.FodtError("boom")
 

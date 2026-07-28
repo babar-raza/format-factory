@@ -1079,9 +1079,7 @@ class TestExceptionsModule:
         assert issubclass(fodg_exceptions.FodgWriteError, fodg_exceptions.FodgError)
 
     def test_exceptions_module_fodg_error_unified_with_codec_fodg_error(self):
-        """Healed: fodg_codec.py imports FodgError from exceptions.py rather
-        than redefining it -- single source of truth. See
-        plans/.claude/quizzical-munching-gadget.md section 7."""
+        """The codec and exceptions module use one FodgError class."""
         assert fodg_exceptions.FodgError is fodg.FodgError
 
     def test_can_raise_and_catch_exceptions_module_errors(self):
