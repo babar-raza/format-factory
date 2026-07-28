@@ -242,16 +242,17 @@ python_format_proofs:
       - oracle/registry/format-oracle-registry.yaml
 
   - format_id: csv
-    proof_level: 3
-    proof_level_name: ORACLE_VERIFIED
+    proof_level: 4
+    proof_level_name: PACKAGE_INSTALL_PROOF
     oracle_verdict: VERIFIED
     oracle_pass_count: 5
     oracle_cases_status: ALL_PASS
     test_files: 84
     test_functions: 1102
     test_path: tests/python/csv/
-    packaging_proof: null
+    packaging_proof: "wheel install + API smoke PASS 2026-07-28 (proof-manifest.json)"
     evidence_paths:
+      - reports/package-install-proof/proof-manifest.json
       - oracle/registry/format-oracle-registry.yaml
 
   - format_id: tsv
