@@ -204,6 +204,25 @@ def test_initial_state_and_advanced_state_with_target_are_valid() -> None:
     assert validate(document).is_valid
 
 
+@pytest.mark.parametrize(
+    ("policy", "expected"),
+    [("copy", "Hello world!"), ("strip", "Hello world!"), ("empty", "")],
+)
+def test_target_creation_has_explicit_safe_code_policies(
+    policy: str, expected: str
+) -> None:
+    segment = next(loads(SAMPLE).iter_units()).segments[0]
+    segment.target = None
+    segment.create_target_from_source(code_policy=policy)
+    assert segment.target is not None
+    assert flatten_inline_content(segment.target) == expected
+    if policy == "copy":
+        assert isinstance(segment.target[1], InlineElement)
+        assert segment.target[1] is not segment.source[1]
+        segment.target[1].attributes["id"] = "changed"
+        assert segment.source[1].id == "1"
+
+
 def test_resource_limits_apply_before_xml_processing() -> None:
     limits = ResourceLimits(max_input_bytes=32)
     with pytest.raises(Exception, match="max_input_bytes"):

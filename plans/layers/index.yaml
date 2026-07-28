@@ -447,6 +447,7 @@ layers:
   - L12
   - L13
   skill_ids:
+  - plan-control
   - plan-hardening
   - build-context-pack
   - append-layer-verification-log
@@ -480,6 +481,7 @@ layers:
   - generate-execution-handoff
   - reproduce-master-plan
   command_ids:
+  - plan-control
   - plan-hardening
   - build-context-pack
   - append-layer-verification-log
@@ -518,7 +520,8 @@ layers:
   last_verified_at: null
   last_verified_revision: null
   handoff_id: null
-  evidence_paths: []
+  evidence_paths:
+  - .local/evidences/FF-PLAN-CONTROL-001/skill-registration.yaml
 - layer_id: L11
   canonical_name: Supervisor Sprint Layer
   permanent_plan_path: plans/layers/supervisor-sprint-layer.md

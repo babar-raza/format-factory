@@ -1,5 +1,5 @@
 {
-  "invocation_id": "PACKAGE-PROOF-F63A46BEB2FA4A402B1F2A5580F91F67CFDE18C0CD2716D03AEF651E1894FAC9-xliff",
+  "invocation_id": "PACKAGE-PROOF-C14B238A69A63D1EE66DE6E9B5EDB2B9F1FB89B217B005F9BE1B141F769DEE8B-xliff",
   "skill_id": "package-install-proof",
   "skill_version": "3.0",
   "mode": "live",
@@ -19,37 +19,30 @@
   ],
   "tests_run": [
     "wheel-origin import assertion",
-    "format_factory.xliff.load on samples/by-format/xliff/valid/minimal.xliff",
+    "xliff.xliff_codec.load_xliff on samples/by-format/xliff/valid/minimal.xliff",
     "deep installed-submodule import scan"
   ],
   "ledger_entry_id": null,
   "result": "PASS",
-  "timestamp": "2026-07-28T09:35:39+00:00",
+  "timestamp": "2026-07-26T08:43:46+00:00",
   "format_id": "xliff",
   "package_name": "format-factory-xliff",
-  "package_version": "0.2.0.dev0",
-  "wheel_path": "format_factory_xliff-0.2.0.dev0-py3-none-any.whl",
-  "wheel_sha256": "8798408728d264eee6c65c7c369af4e88be6be4b42bb4c4dc48fbda6a63db7dc",
-  "proof_id": "PACKAGE-PROOF-F63A46BEB2FA4A402B1F2A5580F91F67CFDE18C0CD2716D03AEF651E1894FAC9",
-  "source_digest": "38ed5328d25d8ddce1a002fa76331d97c2434cd0dba5cead083ecadbfdf8a790",
-  "proof_input_digest": "9ab7f0e2408381d8204dbbca512cee261959ed050dc53dba0344fd9b87976aad",
-  "local_dependencies": [
-    {
-      "package_name": "format-factory-core",
-      "wheel_file": "format_factory_core-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "c2180091e94db95474e24494fba89bd8f1cd4ba51814743e29070b5c5907d2bc",
-      "install_result": "PASS"
-    }
-  ],
+  "package_version": "0.1.0.dev0",
+  "wheel_path": "format_factory_xliff-0.1.0.dev0-py3-none-any.whl",
+  "wheel_sha256": "1537db64912db4a0fa263d8634adf8cc153fece86aeb66ce4c62d469cecd0b7a",
+  "proof_id": "PACKAGE-PROOF-C14B238A69A63D1EE66DE6E9B5EDB2B9F1FB89B217B005F9BE1B141F769DEE8B",
+  "source_digest": "614d1a84b03a407878740d125a52f97cf025d48ae1e12c98772337c0c687b890",
+  "proof_input_digest": "fbca446cf5dc1978953524975acdca2dce7b9615b3daa2af519c3c3ebe1ce6d4",
+  "local_dependencies": [],
   "install_method": "pip install --no-deps <wheel> (ephemeral venv)",
   "install_result": "PASS",
   "import_result": "PASS",
-  "import_statement": "import format_factory.xliff",
+  "import_statement": "import xliff",
   "smoke_result": "PASS",
-  "smoke_test": "format_factory.xliff.load on samples/by-format/xliff/valid/minimal.xliff",
+  "smoke_test": "xliff.xliff_codec.load_xliff on samples/by-format/xliff/valid/minimal.xliff",
   "verdict": "PASS",
   "proof_report": "reports/package-install-proof/proof-report.md",
   "notes": "B9 proof via tools/run_package_install_proof.py (GAP-FORENSIC-001)",
-  "generated_at": "2026-07-28T09:35:39+00:00",
+  "generated_at": "2026-07-26T08:43:46+00:00",
   "worker_agent": "codex"
 }

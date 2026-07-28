@@ -1,0 +1,93 @@
+contract_id: FF-PLAN-CONTROL-001
+version: "1.0"
+description: >-
+  Blocker bundle for the independently verified branch-local Plan Control
+  implementation. SCM closure and shared activation are blocked by inherited
+  repository governance failures and active product integration ownership.
+current_state_authority: bundle-metadata
+required_top_level_folders:
+  - repo
+  - bundle-metadata
+forbidden_patterns:
+  - ".git/**"
+  - ".env"
+  - ".local/**"
+  - "**/ocal/**"
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/*.sqlite"
+  - "**/*.db"
+  - "**/node_modules/**"
+require_clean_git: false
+emergency_blocker_bundle: true
+normal_pass_min_metadata: 30
+min_metadata_count: 30
+required_repo_files:
+  - .claude/commands/plan-control.md
+  - .claude/commands/command-registry.yaml
+  - .supervisor/skill-registry.yaml
+  - .supervisor/skill-command-registry-sync-report.yaml
+  - .supervisor/skill-contract-validation-results.yaml
+  - .supervisor/duplicate-skill-report.yaml
+  - plans/layers/index.yaml
+  - plans/.control/config.json
+  - plans/.control/schemas/event.schema.json
+  - plans/.control/schemas/registry.schema.json
+  - taskcards/TC-FFPC-SKILL-001.md
+  - taskcards/TC-FFPC-001.md
+  - taskcards/index.yaml
+  - tools/evidence/contracts/ff-plan-control-001.yaml
+  - tools/plan_control/__init__.py
+  - tools/plan_control/__main__.py
+  - tools/plan_control/cli.py
+  - tools/plan_control/coordination.py
+  - tools/plan_control/engine.py
+  - tools/plan_control/identity.py
+  - tools/plan_control/journal.py
+  - tools/plan_control/models.py
+  - tools/plan_control/parser.py
+  - tools/plan_control/portfolio.py
+  - tools/plan_control/producer.py
+  - tools/plan_control/projections.py
+  - tools/plan_control/worktrees.py
+  - tests/plan_control/__init__.py
+  - tests/plan_control/test_acceptance_scenarios.py
+  - tests/plan_control/test_cli.py
+  - tests/plan_control/test_concurrency_hardening.py
+  - tests/plan_control/test_identity_parser.py
+  - tests/plan_control/test_journal_engine.py
+  - tests/plan_control/test_worktrees_producer_portfolio.py
+required_metadata_files:
+  - git-log.txt
+  - git-status-final.txt
+  - bundle-manifest.yaml
+  - sprint-summary.md
+  - focused-tests.txt
+  - existing-baseline-tests.txt
+  - ruff-results.txt
+  - current-state-consistency.txt
+  - shadow-reconcile-run-1.json
+  - shadow-reconcile-run-2.json
+  - shadow-doctor.json
+  - journal-chain-proof.txt
+  - replay-proof.txt
+  - queue-determinism-proof.txt
+  - identity-proof.txt
+  - product-mission-observation.json
+  - external-worktree-boundary.md
+  - producer-checkpoint-proof.txt
+  - portfolio-accounting.json
+  - routing-violations.json
+  - source-no-loss-proof.txt
+  - skill-registration.yaml
+  - skill-transcript-validation.txt
+  - governance-validation.txt
+  - schema-validation.txt
+  - changed-files.txt
+  - git-diff-stat.txt
+  - git-diff-check.txt
+  - security-scan.txt
+  - independent-verification.md
+  - integration-barrier.md
+  - self-challenge.md
+  - final-verdict.md

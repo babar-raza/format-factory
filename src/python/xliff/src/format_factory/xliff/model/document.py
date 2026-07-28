@@ -5,7 +5,26 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Iterator
 
-from .inline import InlineNode
+from .inline import InlineElement, InlineNode, flatten_inline_content
+
+
+def _copy_inline_nodes(nodes: list[InlineNode]) -> list[InlineNode]:
+    """Deep-copy inline content so source and target never share mutable codes."""
+
+    result: list[InlineNode] = []
+    for node in nodes:
+        if isinstance(node, str):
+            result.append(node)
+        else:
+            result.append(
+                InlineElement(
+                    tag=node.tag,
+                    attributes=dict(node.attributes),
+                    content=_copy_inline_nodes(node.content),
+                    tail=node.tail,
+                )
+            )
+    return result
 
 
 @dataclass(slots=True)
@@ -40,6 +59,25 @@ class Segment:
     source_attributes: dict[str, str] = field(default_factory=dict)
     target_attributes: dict[str, str] = field(default_factory=dict)
     extensions: list[ExtensionNode] = field(default_factory=list)
+
+    def create_target_from_source(self, *, code_policy: str = "copy") -> None:
+        """Create a target using an explicit safe inline-code policy.
+
+        ``copy`` deep-copies all source text and inline codes, ``strip`` copies
+        only rendered text, and ``empty`` creates a deliberately empty target.
+        Existing targets are never overwritten implicitly.
+        """
+
+        if self.target is not None:
+            raise ValueError("target already exists; edit or replace it explicitly")
+        if code_policy == "copy":
+            self.target = _copy_inline_nodes(self.source)
+        elif code_policy == "strip":
+            self.target = [flatten_inline_content(self.source)]
+        elif code_policy == "empty":
+            self.target = []
+        else:
+            raise ValueError("code_policy must be 'copy', 'strip', or 'empty'")
 
 
 @dataclass(slots=True)
