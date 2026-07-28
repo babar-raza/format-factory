@@ -80,12 +80,8 @@ def _all_python_src_files():
     for py_file in sorted(_SRC_PYTHON.rglob("*.py")):
         if py_file.name in ("__init__.py", "conftest.py"):
             continue
-        # Skip build artifacts and nested duplicate packages (e.g. fods/fods/)
+        # Skip build artifacts
         if "build" in py_file.parts or "__pycache__" in py_file.parts:
-            continue
-        rel_to_src = py_file.relative_to(_SRC_PYTHON)
-        parts = rel_to_src.parts
-        if len(parts) >= 3 and parts[0] == parts[1]:
             continue
         rel = str(py_file.relative_to(_REPO)).replace("\\", "/")
         yield rel, py_file
@@ -253,6 +249,7 @@ class TestNoOrphanSourceFiles:
         "interchange_document", "spreadsheet_document", "spreadsheet_model_document",
         "text_document", "presentation_document", "workbook_document",
         "json_stream", "compressed_stream",
+        "frame_header",
         "bitmap_image", "grayscale_image", "color_image", "image_document",
         "drawing_metrics", "compression_metrics", "xcf_image_metrics",
         "config_document",
@@ -289,6 +286,15 @@ class TestNoOrphanSourceFiles:
                 return True
             # Iterator and inspector modules: {format}_{type}_{iterator|inspector}.py
             if suffix.endswith("_iterator") or suffix.endswith("_inspector"):
+                return True
+            # Metrics and operations split modules (TC-PA-017 monolith healing,
+            # PORTFOLIO-AUDIT-2026-07-16): {format}_{word}_metrics.py (e.g.
+            # fods_workbook_metrics, ndjson_stream_metrics, tsv_row_metrics),
+            # bare {format}_metrics.py (gnumeric_metrics, sylk_metrics), and
+            # {format}_{word}_ops.py (tsv_column_ops, fodg_page_ops). These are
+            # self-descriptive domain-split modules, exactly parallel to the
+            # sanctioned _stats/_analytics/_iterator/_inspector suffixes above.
+            if suffix == "metrics" or suffix.endswith("_metrics") or suffix.endswith("_ops"):
                 return True
         for pat in self._CONVERTER_PATTERNS:
             if pat in stem:

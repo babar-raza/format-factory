@@ -35,11 +35,11 @@ PPM_SAMPLE = _REPO / "samples" / "by-format" / "ppm" / "valid" / "2x2-rgbw.ppm"
 
 class TestDifTargetDogfoodInstalled:
     def test_csv_to_dif_import(self):
-        from src.python.csv.csv_to_dif import csv_to_dif
+        from src.python.ff_csv.csv_to_dif import csv_to_dif
         assert callable(csv_to_dif)
 
     def test_csv_to_dif_produces_output(self, tmp_path):
-        from src.python.csv.csv_to_dif import csv_to_dif
+        from src.python.ff_csv.csv_to_dif import csv_to_dif
         dest = tmp_path / "out.dif"
         count = csv_to_dif(CSV_SAMPLE, dest)
         assert isinstance(count, int) and count >= 0
@@ -59,11 +59,11 @@ class TestDifTargetDogfoodInstalled:
 
 class TestSylkTargetDogfoodInstalled:
     def test_csv_to_sylk_import(self):
-        from src.python.csv.csv_to_sylk import csv_to_sylk
+        from src.python.ff_csv.csv_to_sylk import csv_to_sylk
         assert callable(csv_to_sylk)
 
     def test_csv_to_sylk_produces_output(self, tmp_path):
-        from src.python.csv.csv_to_sylk import csv_to_sylk
+        from src.python.ff_csv.csv_to_sylk import csv_to_sylk
         dest = tmp_path / "out.slk"
         count = csv_to_sylk(CSV_SAMPLE, dest)
         assert isinstance(count, int) and count >= 0
@@ -83,11 +83,11 @@ class TestSylkTargetDogfoodInstalled:
 
 class TestFodgTargetDogfoodInstalled:
     def test_csv_to_fodg_import(self):
-        from src.python.csv.csv_to_fodg import csv_to_fodg
+        from src.python.ff_csv.csv_to_fodg import csv_to_fodg
         assert callable(csv_to_fodg)
 
     def test_csv_to_fodg_produces_output(self, tmp_path):
-        from src.python.csv.csv_to_fodg import csv_to_fodg
+        from src.python.ff_csv.csv_to_fodg import csv_to_fodg
         dest = tmp_path / "out.fodg"
         count = csv_to_fodg(CSV_SAMPLE, dest)
         assert isinstance(count, int) and count >= 0
@@ -155,7 +155,7 @@ class TestCsvToDifPipeline:
     """End-to-end pipeline: CSV → DIF → SYLK."""
 
     def test_csv_dif_sylk_pipeline(self, tmp_path):
-        from src.python.csv.csv_to_dif import csv_to_dif
+        from src.python.ff_csv.csv_to_dif import csv_to_dif
         from src.python.dif.dif_to_sylk import dif_to_sylk
 
         dif_out = tmp_path / "middle.dif"

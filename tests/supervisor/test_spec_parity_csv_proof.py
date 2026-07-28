@@ -42,13 +42,13 @@ CSV_SPEC_FUNCTION_MAP = {
 
 @pytest.fixture
 def csv_parser_module():
-    from src.python.csv import csv_parser
+    from src.python.ff_csv import csv_parser
     return csv_parser
 
 
 @pytest.fixture
 def csv_all():
-    from src.python import csv as csv_mod
+    from src.python import ff_csv as csv_mod
     return csv_mod.__all__
 
 
@@ -65,7 +65,7 @@ class TestCsvSpecFactCoverage:
 
     @pytest.mark.parametrize("qname", list(CSV_SPEC_FUNCTION_MAP.keys()))
     def test_functions_are_callable(self, qname):
-        from src.python import csv as csv_mod
+        from src.python import ff_csv as csv_mod
         for fn_name in CSV_SPEC_FUNCTION_MAP[qname]:
             fn = getattr(csv_mod, fn_name, None)
             assert fn is not None and callable(fn), f"{qname}: '{fn_name}' not callable"
@@ -79,31 +79,31 @@ class TestCsvSpecFactLiveExecution:
         return p
 
     def test_fact001_parse_csv(self, sample_csv):
-        from src.python.csv.csv_parser import parse_csv
+        from src.python.ff_csv.csv_parser import parse_csv
         result = parse_csv(str(sample_csv))
         assert isinstance(result, dict)
 
     def test_fact001_probe_csv(self, sample_csv):
-        from src.python.csv.csv_parser import probe_csv
+        from src.python.ff_csv.csv_parser import probe_csv
         result = probe_csv(str(sample_csv))
         assert result is not None
 
     def test_fact001_row_count(self, sample_csv):
-        from src.python.csv.csv_parser import get_row_count
+        from src.python.ff_csv.csv_parser import get_row_count
         count = get_row_count(str(sample_csv))
         assert count >= 2
 
     def test_fact002_get_cell_value(self, sample_csv):
-        from src.python.csv.csv_parser import get_cell_value
+        from src.python.ff_csv.csv_parser import get_cell_value
         val = get_cell_value(str(sample_csv), 0, 0)
         assert val is not None
 
     def test_fact002_column_count(self, sample_csv):
-        from src.python.csv.csv_parser import csv_column_count
+        from src.python.ff_csv.csv_parser import csv_column_count
         count = csv_column_count(str(sample_csv))
         assert count == 3
 
     def test_fact003_has_header(self, sample_csv):
-        from src.python.csv.csv_parser import csv_has_header
+        from src.python.ff_csv.csv_parser import csv_has_header
         result = csv_has_header(str(sample_csv))
         assert isinstance(result, bool)

@@ -143,7 +143,7 @@ Each format follows a similar pattern. See `examples/python/` for consumer round
 
 **Consumer Proof** means a runnable script that loads, inspects, mutates, writes, and reloads the format using only the installed package API — verifying the full workflow end-to-end. See `examples/python/` for all 20 scripts.
 
-**⚠️ CSV namespace note:** The `csv` package name collides with Python's stdlib `csv` module. Plain `import csv` resolves to stdlib in all standard Python environments. Use submodule imports instead: `from csv.csv_parser import parse_csv`. The consumer proof script handles this with an explicit sys.path workaround. All other 19 packages import without collision.
+**CSV namespace note:** The CSV package was renamed from `csv` to `ff_csv` (TC-PA-013) to eliminate the stdlib collision. Import as `from ff_csv.csv_parser import parse_csv`. The distribution name remains `format-factory-csv`.
 
 All packages: `publish_status: local_only_not_published`, `publication_authorized: false`. See `packaging/python/package-matrix.yaml`.
 

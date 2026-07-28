@@ -16,41 +16,23 @@ import tempfile
 from pathlib import Path
 
 _REPO = Path(__file__).resolve().parents[3]
-# CSV uses direct src/ import: the FF 'csv' package name conflicts with Python stdlib csv.py.
-# 'from csv.csv_parser import ...' fails because stdlib csv.py shadows the FF csv/ directory.
-# The only reliable path is src.python.csv.* with the repo root on sys.path.
-if str(_REPO) not in sys.path:
-    sys.path.insert(0, str(_REPO))
+# TC-PA-013: Package renamed from csv to ff_csv to avoid stdlib collision.
+# With ff_csv, direct import works without sys.path hacks.
+_SRC = _REPO / "src" / "python"
+if str(_SRC) not in sys.path:
+    sys.path.insert(0, str(_SRC))
 
-try:
-    from csv.csv_parser import (  # type: ignore
-        parse_csv,
-        csv_row_count,
-        csv_column_count,
-        csv_has_header,
-        csv_to_dicts,
-        csv_is_all_numeric,
-        csv_has_duplicates,
-        csv_numeric_sum,
-    )
-except ImportError:
-    from src.python.csv.csv_parser import (  # type: ignore
-        parse_csv,
-        csv_row_count,
-        csv_column_count,
-        csv_has_header,
-        csv_to_dicts,
-        csv_is_all_numeric,
-        csv_has_duplicates,
-        csv_numeric_sum,
-    )
-try:
-    from csv.models import CsvDocument  # type: ignore
-except ImportError:
-    import sys
-    from pathlib import Path as _Path
-    sys.path.insert(0, str(_Path(__file__).resolve().parents[3]))
-    from src.python.csv.models import CsvDocument  # type: ignore
+from ff_csv.csv_parser import (  # type: ignore
+    parse_csv,
+    csv_row_count,
+    csv_column_count,
+    csv_has_header,
+    csv_to_dicts,
+    csv_is_all_numeric,
+    csv_has_duplicates,
+    csv_numeric_sum,
+)
+from ff_csv.models import CsvDocument  # type: ignore
 
 SAMPLE_CSV = """\
 product,price,qty

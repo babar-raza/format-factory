@@ -1,9 +1,8 @@
 """Clean consumer proof: CSV load -> inspect -> mutate -> save -> reload.
 
-NOTE: The Format Factory CSV package (format-factory-csv) imports as 'csv', which
-shadows Python's stdlib csv module. For this reason, this example imports via
-src/ path insertion rather than the installed package.
-This is the established pattern for CSV examples in this repo.
+NOTE: The Format Factory CSV package (format-factory-csv) was renamed from 'csv' to
+'ff_csv' (TC-PA-013) to eliminate the stdlib csv namespace collision. Direct import
+via ff_csv.* now works without sys.path hacks.
 
 Steps:
   1. Load CSV file to neutral model dict
@@ -20,23 +19,14 @@ import sys
 from pathlib import Path
 
 _REPO = Path(__file__).resolve().parents[3]
-# CSV uses direct src/ import: the FF 'csv' package name conflicts with Python stdlib csv.py.
-# 'from csv.csv_parser import ...' fails because stdlib csv.py shadows the FF csv/ directory.
-# The only reliable path is src.python.csv.* with the repo root on sys.path.
-if str(_REPO) not in sys.path:
-    sys.path.insert(0, str(_REPO))
+# TC-PA-013: Package renamed from csv to ff_csv to avoid stdlib collision.
+_SRC = _REPO / "src" / "python"
+if str(_SRC) not in sys.path:
+    sys.path.insert(0, str(_SRC))
 
-try:
-    from csv.csv_parser import parse_csv  # type: ignore
-    from csv.csv_writer import write_csv_to_file  # type: ignore
-    from csv.models import CsvDocument  # type: ignore
-except ImportError:
-    import sys
-    from pathlib import Path as _Path
-    sys.path.insert(0, str(_Path(__file__).resolve().parents[3]))
-    from src.python.csv.csv_parser import parse_csv  # type: ignore
-    from src.python.csv.csv_writer import write_csv_to_file  # type: ignore
-    from src.python.csv.models import CsvDocument  # type: ignore
+from ff_csv.csv_parser import parse_csv  # type: ignore
+from ff_csv.csv_writer import write_csv_to_file  # type: ignore
+from ff_csv.models import CsvDocument  # type: ignore
 
 SAMPLE_CSV = _REPO / "samples" / "by-format" / "csv" / "minimal-2x2.csv"
 OUTPUT_DIR = _REPO / ".local" / "dogfood-proofs" / "csv-consumer"

@@ -34,7 +34,7 @@ class TestPackageBuildProof:
     def test_core_python_modules_importable(self):
         """Key Python format modules import successfully."""
         modules_to_check = [
-            "src.python.csv.csv_parser",
+            "src.python.ff_csv.csv_parser",
             "src.python.fods",
             "src.python.fodt",
             "src.python.dif",
@@ -105,6 +105,8 @@ class TestPackageBuildProof:
         missing = []
         for d in src_python.iterdir():
             if d.is_dir() and not d.name.startswith(("_", ".")) and ".egg-info" not in d.name:
+                if (d / "pyproject.toml").exists() and (d / "src").is_dir():
+                    continue  # PEP 517 src-layout distribution, not a flat package
                 init = d / "__init__.py"
                 if not init.exists():
                     missing.append(d.name)
