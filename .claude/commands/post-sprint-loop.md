@@ -1,6 +1,6 @@
 ---
-version: "1.1"
-last-updated: "2026-06-15"
+version: "1.2"
+last-updated: "2026-07-14"
 phase-available: "all"
 gate-required: null
 created-by: post-sprint-autonomy-loop sprint
@@ -106,3 +106,14 @@ Default: 3 outer loops. Configurable via --max-loops.
 ```
 /post-sprint-loop
 ```
+
+## Changelog
+
+- 1.2 (2026-07-14): Added Step 7 "Verification gate (before evidence packaging)" —
+  confirms `/post-sprint-audit`'s Pre-Closure Verification Checklist actually ran
+  before evidence packaging, merged from obra/superpowers `verification-before-completion`
+  (MIT license). (TC-EXT-015-02; version/changelog metadata backfilled 2026-07-15 — a
+  pilot-proof pass found the merge itself landed 2026-07-14 without a matching
+  frontmatter bump, unlike its 3 sibling merges.)
+- pre-1.2: not tracked in this file's Changelog (no changelog convention existed in
+  this file before this entry).

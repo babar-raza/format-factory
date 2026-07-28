@@ -13,12 +13,49 @@ import pytest
 _REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(_REPO / "tools" / "supervisor"))
 
+import capability_queue_consumer
 from capability_queue_consumer import (
     gap_to_compiler_input,
     compile_gaps_to_taskcards,
     load_foss_gaps,
     run_consumer,
 )
+
+
+# ---------------------------------------------------------------------------
+# TC-EXT-002 remediation (2026-07-15, GAP-TCEXT002-01 / FI-017 / RC-FIO-005):
+# capability_queue_consumer.py must resolve its compile_gap/compile_gap_to_feature_ir/
+# compile_feature_ir_to_taskcard functions from tools/capability_layer/capability_compiler.py
+# (L03's backward-compatible API, built specifically for this consumer per TC-CAP-011/TC-C8)
+# — NOT tools/supervisor/capability_compiler.py (L14, a different, unrelated implementation
+# that happens to define same-named functions). This used to depend on sys.path insertion
+# order silently breaking this tie; it is now an explicit importlib load. This test pins the
+# resolved module's identity so a future accidental regression (e.g. someone "cleaning up"
+# the import back to a bare sys.path-order-dependent one, or repointing it at the wrong file)
+# fails loudly here instead of silently producing the wrong Feature-IR/taskcard shape.
+# ---------------------------------------------------------------------------
+
+def test_capability_compiler_resolves_to_capability_layer_not_supervisor():
+    resolved_path = Path(capability_queue_consumer._capability_layer_compiler.__file__).resolve()
+    expected_path = (_REPO / "tools" / "capability_layer" / "capability_compiler.py").resolve()
+    wrong_path = (_REPO / "tools" / "supervisor" / "capability_compiler.py").resolve()
+    assert resolved_path == expected_path, (
+        f"capability_queue_consumer must resolve capability_compiler functions from "
+        f"{expected_path}, not {resolved_path}"
+    )
+    assert resolved_path != wrong_path
+
+
+def test_compile_gap_to_feature_ir_matches_capability_layer_shape():
+    """Confirms the resolved function is L03's backward-compatible API (expected_module
+    shaped as src/python/{fmt}/{fmt}_codec.py), not L14's differently-shaped output."""
+    gap = {"gap_id": "GAP-PINNING-001", "format": "CSV", "capability_name": "csv_row_count"}
+    ir = capability_queue_consumer.compile_gap_to_feature_ir(
+        capability_queue_consumer.gap_to_compiler_input(gap)
+    )
+    assert ir["expected_module"] == "src/python/csv/csv_codec.py"
+    taskcard = capability_queue_consumer.compile_feature_ir_to_taskcard(ir)
+    assert taskcard["required_skill"] == "add-python-api"
 
 
 # ---------------------------------------------------------------------------

@@ -880,6 +880,45 @@ def validate_file(
                 "but missing deepening_lane field — add deepening_lane: dom"
             )
 
+    # --- Phase 19 (lively-leaping-elephant, TC-GOV-LLE-006): code_quality_delta check ---
+    # For PRODUCT_SOURCE items targeting known_violations files, check that code_quality_delta
+    # is declared and shows improvement in at least one metric.
+    code_quality_warnings: list[str] = []
+    try:
+        import json as _json
+        _baseline_path = repo_root / "registry" / "source-structure-baseline.json"
+        if _baseline_path.exists():
+            _baseline_data = _json.loads(_baseline_path.read_text(encoding="utf-8"))
+            _known_violations = _baseline_data.get("known_violations", {})
+            for _wi in doc.get("planned_work_items", []) or []:
+                if not isinstance(_wi, dict):
+                    continue
+                if _wi.get("item_type") != "PRODUCT_SOURCE":
+                    continue
+                _target_files = _wi.get("target_files", []) or []
+                for _tf in _target_files:
+                    if _tf not in _known_violations:
+                        continue
+                    _delta = _wi.get("code_quality_delta")
+                    if _delta is None:
+                        code_quality_warnings.append(
+                            f"WARN(TC-GOV-LLE-006): PRODUCT_SOURCE item '{_wi.get('task_id', '?')}' "
+                            f"targets known_violation '{_tf}' but declares no code_quality_delta. "
+                            "Add code_quality_delta with loc_before/loc_after/fn_count_before/fn_count_after."
+                        )
+                    elif isinstance(_delta, dict):
+                        _loc_b = _delta.get("loc_before", 0)
+                        _loc_a = _delta.get("loc_after", 0)
+                        _fn_b = _delta.get("fn_count_before", 0)
+                        _fn_a = _delta.get("fn_count_after", 0)
+                        if _loc_a >= _loc_b and _fn_a >= _fn_b and _loc_b > 0:
+                            code_quality_warnings.append(
+                                f"WARN(TC-GOV-LLE-006): code_quality_delta for '{_tf}' shows no "
+                                f"improvement (loc: {_loc_b}->{_loc_a}, fn: {_fn_b}->{_fn_a})."
+                            )
+    except Exception:
+        pass  # Phase 19 is WARN-only; never block on checker failure
+
     return {
         "passed": len(errors) == 0,
         "errors": errors,
@@ -897,6 +936,7 @@ def validate_file(
         "mutation_guard_warnings": mutation_guard_warnings,
         "schema_warnings": schema_warnings,
         "dom_lane_warnings": dom_lane_warnings,
+        "code_quality_warnings": code_quality_warnings,
     }
 
 

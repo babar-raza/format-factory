@@ -1,6 +1,6 @@
 ---
-version: "1.1"
-last-updated: "2026-06-15"
+version: "1.2"
+last-updated: "2026-07-14"
 phase-available: "all"
 gate-required: null
 created-by: post-sprint-autonomy-loop sprint
@@ -89,3 +89,13 @@ re-verify before writing output:
 ```
 /post-sprint-audit
 ```
+
+## Changelog
+
+- 1.2 (2026-07-14): Added "Pre-Closure Verification Checklist" section — the Gate
+  Function (Identify -> Run -> Read -> Verify -> Claim), merged from obra/superpowers
+  `verification-before-completion` (MIT license). (TC-EXT-015-01; version/changelog
+  metadata backfilled 2026-07-15 — a pilot-proof pass found the merge itself landed
+  2026-07-14 without a matching frontmatter bump, unlike its 3 sibling merges.)
+- pre-1.2: not tracked in this file's Changelog (no changelog convention existed in
+  this file before this entry).

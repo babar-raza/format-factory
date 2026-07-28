@@ -41,6 +41,17 @@ STRUCTURAL_GOV_BLOCKS: frozenset[str] = frozenset(
 )
 
 # ---------------------------------------------------------------------------
+# Structural GOV_BLOCK stop-reason (shared constant)
+# ---------------------------------------------------------------------------
+# check_continuation.py emits this exact reason string when filter_structural_blocks()
+# finds a non-empty structural block; sprint_executor.py checks incoming reason strings
+# against it before deciding whether a STOP is overridable. Both import this constant
+# (rather than each hand-typing the literal) so a rename in one file becomes an
+# ImportError/NameError at load time instead of a silent runtime mismatch that would
+# reopen the override loophole TC-EXT-010 closed.
+STRUCTURAL_GOVBLOCK_STOP_REASON: str = "structural_govblock_must_be_resolved_first"
+
+# ---------------------------------------------------------------------------
 # Enforcement-level change policy (REQ-CQGA2-004)
 # ---------------------------------------------------------------------------
 # Any demotion from blocks_sprint=True → blocks_sprint=False requires:

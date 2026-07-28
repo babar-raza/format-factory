@@ -5,7 +5,10 @@ Advances the system-healing lane: Capability/gap/action queue consumption by tas
 
 This is the integration bridge between:
   1. Gap records (reports/capability-layer/gap-ledger.json)
-  2. Capability-to-feature compiler (tools/supervisor/capability_compiler.py)
+  2. The backward-compatible compile_gap/compile_gap_to_feature_ir/compile_feature_ir_to_taskcard
+     API in tools/capability_layer/capability_compiler.py (NOT tools/supervisor/capability_compiler.py
+     — see TC-EXT-002 remediation note below; the two files share function names for unrelated
+     purposes and this consumer needs the capability_layer (L03) implementation specifically)
   3. Autonomous loop runner (tools/supervisor/autonomous_loop_runner.py)
 
 It selects FOSS gaps from the gap ledger that are uncompiled, compiles them
@@ -20,6 +23,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import json
 import sys
 from datetime import datetime, timezone
@@ -38,9 +42,29 @@ try:
 except ImportError:
     _CONTROL_INDEX_AVAILABLE = False
 
-# TC-CAP-011: capability_compiler is in tools/capability_layer, not tools/supervisor
-sys.path.insert(0, str(REPO_ROOT / "tools" / "capability_layer"))
-from capability_compiler import compile_gap, compile_gap_to_feature_ir, compile_feature_ir_to_taskcard
+# TC-EXT-002 remediation (2026-07-15): tools/supervisor/capability_compiler.py (L14, feature
+# compilation) and tools/capability_layer/capability_compiler.py (L03, SAL-driven derivation)
+# both define same-named compile_gap/compile_gap_to_feature_ir/compile_feature_ir_to_taskcard
+# functions for genuinely different purposes. This consumer needs L03's file specifically — it
+# carries an explicit "Backward-compatible API (TC-CAP-011/TC-C8)" section built for exactly
+# this consumer (see tools/capability_layer/capability_compiler.py, and
+# tests/capability_layer/test_end_to_end_pipeline.py, which asserts this same resolution).
+# Previously this relied on sys.path insertion order (a later sys.path.insert(0, ...) here
+# happening to outrank an earlier one) to win a same-basename collision — correct today, but
+# silently reroutable to the wrong (L14) module by an unrelated future reordering, with no
+# import error, since both files' functions share signatures. Loaded explicitly by file path
+# instead, so the target is pinned regardless of sys.path state.
+_CAPABILITY_LAYER_COMPILER_PATH = REPO_ROOT / "tools" / "capability_layer" / "capability_compiler.py"
+_spec = importlib.util.spec_from_file_location(
+    "capability_layer_compiler", str(_CAPABILITY_LAYER_COMPILER_PATH)
+)
+if _spec is None or _spec.loader is None:
+    raise ImportError(f"Unable to load capability_layer compiler from {_CAPABILITY_LAYER_COMPILER_PATH}")
+_capability_layer_compiler = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_capability_layer_compiler)
+compile_gap = _capability_layer_compiler.compile_gap
+compile_gap_to_feature_ir = _capability_layer_compiler.compile_gap_to_feature_ir
+compile_feature_ir_to_taskcard = _capability_layer_compiler.compile_feature_ir_to_taskcard
 
 
 # ---------------------------------------------------------------------------

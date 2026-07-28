@@ -148,11 +148,34 @@ public_api_disposition:              # for each new public method/property
     test_only_consumer: false        # true = API only referenced in tests = VIOLATION
 ```
 
+**code_quality_delta (TC-GOV-LLE-006, lively-leaping-elephant, 2026-07-14):**
+
+REQUIRED for `PRODUCT_SOURCE` items where any path in `target_files[]` is a `known_violations`
+entry in `registry/source-structure-baseline.json`. OPTIONAL for all other PRODUCT_SOURCE items.
+
+```yaml
+# Add code_quality_delta alongside target_files for known_violation healing sprints:
+code_quality_delta:
+  file: "src/python/zst/zst_codec.py"   # must match a target_files path
+  loc_before: 1073                        # self-reported LOC before this sprint
+  loc_after: 650                          # self-reported LOC after this sprint
+  fn_count_before: 25                     # top-level function count before
+  fn_count_after: 15                      # top-level function count after
+  remediation_status_update: "in_progress"  # "in_progress" or "complete"
+  # Set remediation_status_update: "complete" ONLY when both conditions are satisfied:
+  #   loc_after < 800 AND fn_count_after < 80 (file exits known_violations)
+```
+
+Phase 19 in `sprint_executor_validate.py` checks this field and emits WARN (not FAIL) when:
+- Field is absent for a known_violation target (WARN — predates this requirement)
+- Both `loc_after >= loc_before` AND `fn_count_after >= fn_count_before` (no improvement)
+
 **Validation:**
 - `layout_approved: false` → V95 FAIL (file outside approved layout)
 - `file_content_reviewed: false` → V-PQLM-011 WARN
 - `test_only_consumer: true` → V93 FAIL
 - `roundtrip_proof` missing for setter → V92 WARN
+- `code_quality_delta` absent for known_violation target → V-GOV-LLE-006 WARN (Phase 19)
 
 **Reviewer rubric extension (product source items):**
 Reviewers must now score in addition to existing rubric:

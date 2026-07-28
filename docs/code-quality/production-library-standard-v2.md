@@ -269,7 +269,34 @@ New validators required in v2 (not present in v1):
 - Trigger: always (reads `registry/source-structure-baseline.json`)
 - Logic: for each entry in `known_violations` where `loc == baseline_loc_cap` AND file exists
   on disk → WARN (zero healing progress since baseline was frozen)
-- Does NOT read `remediation_deadline` — that field does not exist in the baseline JSON schema.
+- Reads `loc` and `baseline_loc_cap` from the baseline (NOT `remediation_deadline`).
+  NOTE: `remediation_deadline` IS a real field in the baseline schema — 337 entries have it
+  as of 2026-07-14. V72 intentionally ignores it; V193 covers deadline enforcement.
+
+**V187 `validate_function_count_per_file`** — `blocks_sprint: True` (new files); `False` (baseline) | enforcement: BLOCKING
+- Trigger: any `*.py` in `changed_files` under `src/python/`
+- Logic: AST-parse file; count `FunctionDef` + `AsyncFunctionDef` at module scope
+  - FAIL if fn_count > 80 AND file NOT in `known_violations` (new file, must be clean)
+  - FAIL if fn_count > 80 AND file IS in `known_violations` AND fn_count > `baseline_functions_cap` (regression)
+  - WARN if fn_count > 80 AND file IS in `known_violations` AND fn_count ≤ `baseline_functions_cap` (capped)
+  - PASS otherwise
+- Source: `tools/supervisor/governance_validators_ext5.py` (lively-leaping-elephant, TC-GOV-LLE-004)
+
+**V188 `validate_io_in_domain_model`** — `blocks_sprint: True` (new files); `False` (baseline) | enforcement: BLOCKING
+- Trigger: files matching `*models.py` or `*_document.py` in `changed_files` under `src/python/`
+- Logic: AST-check for `import os`, `import io`, `import pathlib`, `from pathlib import *`
+  - FAIL if found in a file NOT in `known_violations` (new violation)
+  - WARN if found in a file IS in `known_violations` (existing, grandfathered)
+- Source: `tools/supervisor/governance_validators_ext5.py`
+
+**V193 `validate_remediation_deadline_expired`** — `blocks_sprint: False` (advisory) | enforcement: ADVISORY
+- Trigger: always (reads `registry/source-structure-baseline.json`)
+- Logic: for entries where `remediation_deadline < today` AND `remediation_status != "complete"`:
+  emit WARN per expired entry (file path, deadline, healing_sprint value)
+- Complements V72: V72 detects zero-progress (LOC unchanged); V193 detects missed deadlines
+- Non-blocking by design — expired deadlines must not hard-block all sprints
+- Output also visible via `violation_pressure` field in `check_continuation.py` JSON output
+- Source: `tools/supervisor/governance_validators_ext5.py`
 
 **Existing validators upgraded in v2:**
 - V66 → `blocks_sprint: True` (was False)
