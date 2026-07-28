@@ -27,7 +27,7 @@ class TestGnumericWorkbookMetadata:
         assert GnumericWorkbook.spec_qname == "gnumeric:workbook"
 
     def test_spec_fact_ref(self):
-        assert GnumericWorkbook.spec_fact_ref == "FACT-GNUMERIC-001"
+        assert GnumericWorkbook.spec_fact_ref == "SAL-GNUMERIC-00001"
 
     def test_namespace_uri_present(self):
         assert GnumericWorkbook.namespace_uri

@@ -13,7 +13,7 @@ import pytest
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
-from src.python.csv.csv_parser import (
+from src.python.ff_csv.csv_parser import (
     csv_is_single_column,
     csv_is_all_numeric,
     csv_max_field_value_length,

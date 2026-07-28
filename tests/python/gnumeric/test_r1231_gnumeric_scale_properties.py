@@ -5,7 +5,7 @@ Properties under test:
     has_many_sheets   — sheet_count > 5
     is_cell_dense     — avg_cells_per_sheet > 1000
 
-spec_fact_ref: FACT-GNUMERIC-001
+spec_fact_ref: SAL-GNUMERIC-00001
 """
 
 import pytest

@@ -22,7 +22,7 @@ def toml_iter_tables(source: "str | Path") -> Iterator[Table]:
         source: Path to a .toml TOML file.
 
     Yields:
-        Table instances (spec class: toml:table, FACT-TOML-001).
+        Table instances (spec class: toml:table, SAL-TOML-00001).
     """
     data = load_toml(str(Path(source).resolve()))
     content = data.get("data", data)

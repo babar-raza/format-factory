@@ -15,6 +15,7 @@ import gzip
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Any
+from .exceptions import GnumericError, GnumericParseError
 
 # Gnumeric XML namespace
 GNM_NS = "http://www.gnumeric.org/v10.dtd"
@@ -25,14 +26,6 @@ GZIP_MAGIC = b"\x1f\x8b"
 
 # Maximum compressed file size guard (64 MiB)
 MAX_FILE_SIZE = 64 * 1024 * 1024
-
-
-class GnumericError(Exception):
-    """Base exception for Gnumeric codec errors."""
-
-
-class GnumericParseError(GnumericError):
-    """Raised when Gnumeric parsing fails."""
 
 
 def load(source: str | bytes | Path) -> dict[str, Any]:
@@ -313,12 +306,21 @@ def _check_size(path: Path) -> None:
         raise GnumericError(f"File size {size} exceeds {MAX_FILE_SIZE} byte limit")
 
 
+MAX_DECOMPRESSED_SIZE = 256 * 1024 * 1024
+
+
 def _decompress(raw: bytes) -> bytes:
     if raw[:2] == GZIP_MAGIC:
         try:
-            return gzip.decompress(raw)
+            result = gzip.decompress(raw)
         except OSError as exc:
             raise GnumericParseError(f"Gzip decompression failed: {exc}") from exc
+        if len(result) > MAX_DECOMPRESSED_SIZE:
+            raise GnumericParseError(
+                f"Decompressed size {len(result)} exceeds "
+                f"{MAX_DECOMPRESSED_SIZE} byte limit"
+            )
+        return result
     return raw
 
 

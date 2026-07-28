@@ -68,22 +68,22 @@ class TestPpmMaxDimension:
 
 class TestCsvNonemptyCellCount:
     def test_returns_int(self):
-        from src.python.csv.csv_parser import csv_nonempty_cell_count
+        from src.python.ff_csv.csv_parser import csv_nonempty_cell_count
         result = csv_nonempty_cell_count(CSV)
         assert isinstance(result, int)
 
     def test_non_negative(self):
-        from src.python.csv.csv_parser import csv_nonempty_cell_count
+        from src.python.ff_csv.csv_parser import csv_nonempty_cell_count
         assert csv_nonempty_cell_count(CSV) >= 0
 
 
 class TestCsvStringDensity:
     def test_returns_float(self):
-        from src.python.csv.csv_parser import csv_string_density
+        from src.python.ff_csv.csv_parser import csv_string_density
         result = csv_string_density(CSV)
         assert isinstance(result, float)
 
     def test_density_in_range(self):
-        from src.python.csv.csv_parser import csv_string_density
+        from src.python.ff_csv.csv_parser import csv_string_density
         result = csv_string_density(CSV)
         assert 0.0 <= result <= 1.0

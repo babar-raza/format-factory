@@ -1,7 +1,7 @@
 """R559: SYLK document dimension properties — is_empty, is_single_cell, is_wide, is_tall.
 
 Tests for SylkModelDocument dimension properties added in R559.
-Spec refs: FACT-SYLK-014 (B record bounds), FACT-SYLK-003 (C cell record).
+Spec refs: SAL-SYLK-00014 (B record bounds), SAL-SYLK-00003 (C cell record).
 """
 
 from pathlib import Path

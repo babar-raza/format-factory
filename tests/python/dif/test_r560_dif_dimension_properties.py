@@ -1,7 +1,7 @@
 """R560: DIF dimension properties — col_count, is_empty, is_single_row.
 
 Tests for DifModelDocument dimension properties added in R560.
-Spec refs: FACT-DIF-001.
+Spec refs: SAL-DIF-00001.
 """
 
 import types

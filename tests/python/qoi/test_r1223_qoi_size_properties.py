@@ -1,7 +1,7 @@
 """R1223: QOI image size classification properties — is_tiny, is_large_image, megapixels.
 
 Tests for QoiDocument size properties added in R1223.
-Spec refs: FACT-QOI-001 (qoi:image header width/height).
+Spec refs: SAL-QOI-00001 (qoi:image header width/height).
 """
 
 from __future__ import annotations

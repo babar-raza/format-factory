@@ -6,7 +6,7 @@ Added: 2026-06-11
 
 Tests for ZST compress_file and decompress_file functions.
 Closes gaps: GAP-ZST-FOSS-COMPRESS_FIL-001, GAP-ZST-FOSS-DECOMPRESS_F-001.
-Authority: P6 (FACT-ZST-001: magic 0xFD2FB528)
+Authority: P6 (SAL-ZST-00001: magic 0xFD2FB528)
 """
 from __future__ import annotations
 

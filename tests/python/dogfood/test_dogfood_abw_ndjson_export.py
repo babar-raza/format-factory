@@ -23,7 +23,7 @@ from src.python.ndjson.ndjson_codec import (
     to_jsonl_str,
     export_to_csv as ndjson_export_csv,
 )
-from src.python.csv.csv_parser import parse_csv
+from src.python.ff_csv.csv_parser import parse_csv
 
 
 def _write_file(content: str, suffix: str) -> Path:

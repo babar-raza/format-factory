@@ -1,7 +1,7 @@
 """R569: TOML key analysis properties — has_scalars, is_single_key, is_nested.
 
 Tests for TomlDocument key analysis properties added in R569.
-Spec refs: FACT-TOML-001.
+Spec refs: SAL-TOML-00001.
 """
 
 import pytest

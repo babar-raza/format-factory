@@ -6,7 +6,7 @@ Properties under test:
     long_edge      — max(width, height)
     short_edge     — min(width, height)
 
-spec_fact_ref: FACT-PGM-001
+spec_fact_ref: SAL-PGM-00001
 """
 
 import types

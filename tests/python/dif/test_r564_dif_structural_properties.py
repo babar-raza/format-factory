@@ -1,7 +1,7 @@
 """R564: DIF structural properties — is_single_col, has_title, is_multi_row.
 
 Tests for DifModelDocument structural properties added in R564.
-Spec refs: FACT-DIF-001 (dif:header, dif:document), FACT-DIF-002 (dif:vector).
+Spec refs: SAL-DIF-00001 (dif:header, dif:document), SAL-DIF-00002 (dif:vector).
 """
 
 import types

@@ -46,7 +46,7 @@ class TestGnumericDocumentSpec:
         assert GnumericDocument.spec_qname == "gnumeric:workbook"
 
     def test_spec_fact_ref(self):
-        assert GnumericDocument.spec_fact_ref == "FACT-GNUMERIC-001"
+        assert GnumericDocument.spec_fact_ref == "SAL-GNUMERIC-00001"
 
     def test_namespace_uri(self):
         assert "gnumeric.org" in GnumericDocument.namespace_uri

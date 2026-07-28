@@ -5,7 +5,7 @@ from __future__ import annotations
 
 
 spec_qname = "toml:document"
-spec_fact_ref = "FACT-TOML-001"
+spec_fact_ref = "SAL-TOML-00001"
 namespace_uri = "urn:toml:v1.0.0"
 
 from pathlib import Path

@@ -2,7 +2,7 @@
 TOML structural element: toml:table
 
 Spec ref: TOML v1.0.0 — Tables
-Fact ref: FACT-TOML-001
+Fact ref: SAL-TOML-00001
 QName: toml:table
 Canonical class: Table
 Facade: TomlTable
@@ -15,7 +15,7 @@ class Table:
     """Canonical spec-shaped class for toml:table."""
 
     spec_qname: ClassVar[str] = "toml:table"
-    spec_fact_ref: ClassVar[str] = "FACT-TOML-001"
+    spec_fact_ref: ClassVar[str] = "SAL-TOML-00001"
     namespace_uri: ClassVar[str] = "urn:format:toml:1.0"
     local_name: ClassVar[str] = "table"
     facade_names: ClassVar[list] = ["TomlTable"]

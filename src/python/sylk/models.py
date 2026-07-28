@@ -26,7 +26,7 @@ class SylkModelDocument:
     """
 
     spec_qname: ClassVar[str] = "sylk:document"
-    spec_fact_ref: ClassVar[str] = "FACT-SYLK-001"
+    spec_fact_ref: ClassVar[str] = "SAL-SYLK-00001"
     namespace_uri: ClassVar[str] = "urn:format:sylk:1.0"
     local_name: ClassVar[str] = "document"
     facade_names: ClassVar[list] = []
@@ -70,7 +70,7 @@ class SylkModelDocument:
         """List of SylkCell objects."""
         return list(self._parsed.cells)
 
-    # Document dimension properties (FACT-SYLK-014, FACT-SYLK-003)
+    # Document dimension properties (SAL-SYLK-00014, SAL-SYLK-00003)
 
     @property
     def is_empty(self) -> bool:
@@ -92,7 +92,7 @@ class SylkModelDocument:
         """True if there are more rows than columns."""
         return self.row_count > self.col_count
 
-    # Cell type analysis properties (FACT-SYLK-008, FACT-SYLK-016)
+    # Cell type analysis properties (SAL-SYLK-00008, SAL-SYLK-00016)
     @property
     def numeric_cell_count(self) -> int:
         """Number of cells with numeric values."""
@@ -108,7 +108,7 @@ class SylkModelDocument:
         """Number of cells with non-empty values (numeric or string)."""
         return sum(1 for c in self._parsed.cells if c.value_type != "empty")
 
-    # Additional cell analysis properties (FACT-SYLK-001)
+    # Additional cell analysis properties (SAL-SYLK-00001)
 
     @property
     def has_numeric_cells(self) -> bool:
@@ -127,7 +127,7 @@ class SylkModelDocument:
             return 0.0
         return self.nonempty_cell_count / self.cell_count
 
-    # Grid density properties (FACT-SYLK-001 R1228)
+    # Grid density properties (SAL-SYLK-00001 R1228)
 
     @property
     def is_dense(self) -> bool:
@@ -144,7 +144,7 @@ class SylkModelDocument:
         """True if cell_count > 1000."""
         return self.cell_count > 1000
 
-    # Geometry and type composition properties (FACT-SYLK-001 R1250)
+    # Geometry and type composition properties (SAL-SYLK-00001 R1250)
 
     @property
     def is_square(self) -> bool:
@@ -163,7 +163,7 @@ class SylkModelDocument:
             return 0.0
         return self.numeric_cell_count / self.cell_count
 
-    # Cell type distribution properties (FACT-SYLK-001 R1270)
+    # Cell type distribution properties (SAL-SYLK-00001 R1270)
 
     @property
     def string_ratio(self) -> float:
@@ -182,7 +182,7 @@ class SylkModelDocument:
         """True if nonempty cells exist and all non-empty cells are numeric."""
         return self.nonempty_cell_count > 0 and self.numeric_cell_count == self.nonempty_cell_count
 
-    # Cell type homogeneity properties (FACT-SYLK-001 R1286)
+    # Cell type homogeneity properties (SAL-SYLK-00001 R1286)
 
     @property
     def is_all_string(self) -> bool:

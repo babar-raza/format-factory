@@ -1,7 +1,7 @@
 """R565: QOI channel and colorspace properties — is_rgb, is_srgb, is_linear.
 
 Tests for QoiDocument channel and colorspace properties added in R565.
-Spec refs: FACT-QOI-001 (qoi:image).
+Spec refs: SAL-QOI-00001 (qoi:image).
 """
 
 import types

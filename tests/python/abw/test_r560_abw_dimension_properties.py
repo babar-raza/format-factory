@@ -1,7 +1,7 @@
 """R560: ABW dimension properties — is_empty, has_content, is_single_paragraph.
 
 Tests for AbwDocument dimension properties added in R560.
-Spec refs: FACT-ABW-001.
+Spec refs: SAL-ABW-00001.
 """
 
 import pytest

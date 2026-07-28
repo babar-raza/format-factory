@@ -1,8 +1,8 @@
 """toml.Compat — production facade layer for TOML.
 
 Exports:
-    TomlTable — facade for toml:table (FACT-TOML-001)
-    TomlKey   — facade for toml:key   (FACT-TOML-002)
+    TomlTable — facade for toml:table (SAL-TOML-00001)
+    TomlKey   — facade for toml:key   (SAL-TOML-00002)
 """
 from .toml_table import TomlTable
 from .toml_key import TomlKey

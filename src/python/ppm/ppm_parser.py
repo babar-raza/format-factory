@@ -22,6 +22,7 @@ import os
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, ClassVar
+from .exceptions import PpmError, PpmParseError, PpmInvalidMagicError, PpmInvalidHeaderError, PpmSizeError, PpmDecodeError
 
 
 MAX_FILE_SIZE = 64 * 1024 * 1024  # 64 MiB
@@ -33,26 +34,6 @@ MAX_MAXVAL = 65535
 # SAL-PPM-00002: "PPM binary format starts with magic 'P6' followed by whitespace"
 PPM_MAGIC_ASCII = "P3"   # SAL-PPM-00001
 PPM_MAGIC_BINARY = "P6"  # SAL-PPM-00002
-
-
-class PpmError(Exception):
-    """Base exception for PPM parser errors."""
-
-
-class PpmInvalidMagicError(PpmError):
-    """Raised when file does not start with P3 or P6."""
-
-
-class PpmInvalidHeaderError(PpmError):
-    """Raised when header fields are invalid."""
-
-
-class PpmSizeError(PpmError):
-    """Raised when file or image dimensions exceed limits."""
-
-
-class PpmDecodeError(PpmError):
-    """Raised when pixel data is malformed."""
 
 
 @dataclass

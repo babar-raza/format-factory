@@ -1,7 +1,7 @@
 """TsvField — production facade for tsv:field.
 
 Spec authority: tsv:field
-Fact ref: FACT-TSV-002
+Fact ref: SAL-TSV-00002
 Canonical spec class: src/python/tsv/spec/record/field.py::Field
 """
 from __future__ import annotations
@@ -14,5 +14,5 @@ class TsvField(_SpecField):
     """Production facade for tsv:field."""
 
     spec_qname: ClassVar[str] = "tsv:field"
-    spec_fact_ref: ClassVar[str] = "FACT-TSV-002"
+    spec_fact_ref: ClassVar[str] = "SAL-TSV-00002"
     namespace_uri: ClassVar[str] = "urn:iana:media-type:text:tab-separated-values"

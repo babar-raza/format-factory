@@ -1,7 +1,7 @@
 """ABW spec Document — canonical implementation of abw:abiword.
 
 spec_qname: abw:abiword
-spec_fact_ref: FACT-ABW-001
+spec_fact_ref: SAL-ABW-00001
 Spec ref: AbiWord AWML 1.0 — root document element
 Facade: AbwDocument (Compat/abw_document.py)
 """
@@ -21,7 +21,7 @@ class Document:
     """
 
     spec_qname: ClassVar[str] = "abiword:document"
-    spec_fact_ref: ClassVar[str] = "FACT-ABW-001"
+    spec_fact_ref: ClassVar[str] = "SAL-ABW-00001"
     namespace_uri: ClassVar[str] = "http://www.abisource.com/awml/"
     local_name: ClassVar[str] = "abiword"
     facade_names: ClassVar[list] = ["AbwDocument"]

@@ -5,7 +5,7 @@ Properties under test:
     is_sparse_grid     — is_tabular and cell_density_ratio < 0.2
     fill_classification — 'empty', 'sparse', 'partial', or 'dense'
 
-spec_fact_ref: FACT-DIF-001
+spec_fact_ref: SAL-DIF-00001
 """
 
 import types

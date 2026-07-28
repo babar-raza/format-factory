@@ -1,7 +1,7 @@
 """R560: XCF is_multilayer domain model property.
 
 Tests for XcfDocument.is_multilayer added in R560.
-Spec refs: FACT-XCF-001.
+Spec refs: SAL-XCF-00001.
 """
 
 import types

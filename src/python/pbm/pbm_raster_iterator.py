@@ -22,7 +22,7 @@ def pbm_iter_rasters(source: "str | Path") -> Iterator[Raster]:
         source: Path to a .pbm Portable Bitmap file.
 
     Yields:
-        Raster instances (spec class: pbm:raster, FACT-PBM-002).
+        Raster instances (spec class: pbm:raster, SAL-PBM-00002).
     """
     img = parse_pbm_strict(str(Path(source).resolve()))
     width = img.width

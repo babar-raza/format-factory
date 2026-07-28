@@ -1,7 +1,7 @@
 """ABW spec Paragraph — canonical implementation of abw:p.
 
 spec_qname: abw:p
-spec_fact_ref: FACT-ABW-003
+spec_fact_ref: SAL-ABW-00003
 Spec ref: AbiWord AWML 1.0 — paragraph block element
 Facade: AbwParagraph (Compat/abw_paragraph.py)
 """
@@ -17,7 +17,7 @@ class Paragraph:
     """
 
     spec_qname: ClassVar[str] = "abiword:p"
-    spec_fact_ref: ClassVar[str] = "FACT-ABW-003"
+    spec_fact_ref: ClassVar[str] = "SAL-ABW-00003"
     namespace_uri: ClassVar[str] = "http://www.abisource.com/awml/"
     local_name: ClassVar[str] = "p"
     facade_names: ClassVar[list] = ["AbwParagraph"]

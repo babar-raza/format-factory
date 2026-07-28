@@ -68,7 +68,7 @@ class TestDogfoodLibraryUsage:
         script = (
             f"import sys; sys.path.insert(0, {repo_root!r}); "
             "from src.python.dif.interchange_document import dif_to_csv; "
-            "from src.python.csv.csv_parser import parse_csv_strict; "
+            "from src.python.ff_csv.csv_parser import parse_csv_strict; "
             f"result = dif_to_csv({sample!r}); "
             "import tempfile, pathlib; "
             "tmp = tempfile.NamedTemporaryFile(mode='w', suffix='.csv', delete=False, encoding='utf-8'); "

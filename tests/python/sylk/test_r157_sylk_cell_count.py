@@ -5,7 +5,7 @@ Sprint: FORMAT-FACTORY-PRODUCT-DEEPENING-RNEXT16-001
 Added: 2026-06-10
 
 Tests for SYLK get_cell_count function.
-Authority: P5 (FACT-SYLK-001)
+Authority: P5 (SAL-SYLK-00001)
 """
 from __future__ import annotations
 

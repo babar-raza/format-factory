@@ -20,23 +20,12 @@ import os
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, ClassVar
+from .exceptions import DifError, DifParseError, DifInvalidFormatError, DifSizeError
 
 
 MAX_FILE_SIZE = 64 * 1024 * 1024  # 64 MiB
 MAX_ROWS = 1_048_576
 MAX_COLUMNS = 16_384
-
-
-class DifError(Exception):
-    """Base exception for DIF parser errors."""
-
-
-class DifInvalidFormatError(DifError):
-    """Raised when file structure is not valid DIF."""
-
-
-class DifSizeError(DifError):
-    """Raised when file or data exceeds limits."""
 
 
 @dataclass

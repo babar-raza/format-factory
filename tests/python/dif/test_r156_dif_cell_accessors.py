@@ -5,7 +5,7 @@ Sprint: FORMAT-FACTORY-PRODUCT-DEEPENING-RNEXT14-001
 Added: 2026-06-10
 
 Tests for DIF get_cell_value, set_cell_value, get_row_values functions.
-Authority: P5 (FACT-DIF-001)
+Authority: P5 (SAL-DIF-00001)
 """
 from __future__ import annotations
 

@@ -15,7 +15,7 @@ _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
 # CSV — stdlib conflict workaround
-from src.python.csv.csv_parser import (
+from src.python.ff_csv.csv_parser import (
     csv_column_type_counts,
     csv_row_length_variance,
 )

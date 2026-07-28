@@ -12,10 +12,7 @@ raises TsvWriteError if any field value contains a tab character.
 from __future__ import annotations
 
 from pathlib import Path
-
-
-class TsvWriteError(Exception):
-    """Raised when TSV output fails."""
+from .exceptions import TsvError, TsvParseError, TsvWriteError
 
 
 def _format_field(value: object) -> str:

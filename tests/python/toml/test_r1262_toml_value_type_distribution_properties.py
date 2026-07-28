@@ -5,7 +5,7 @@ Properties under test:
     string_key_count  — number of top-level string values
     numeric_key_count — number of top-level numeric (int/float, not bool) values
 
-spec_fact_ref: FACT-TOML-001
+spec_fact_ref: SAL-TOML-00001
 """
 
 import pytest

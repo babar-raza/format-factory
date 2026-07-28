@@ -6,7 +6,7 @@ Verifies that compress_string_to_file and decompress_file_to_string
 are properly exported through the public package API.
 
 Sprint: FORMAT-FACTORY-SAL-ENFORCEMENT-CLOSEOUT-AND-PRODUCT-ACCELERATION-RNEXT-001
-spec_fact_refs: FACT-ZST-001
+spec_fact_refs: SAL-ZST-00001
 Route decision: RDEC-RNEXT-LE-001
 """
 from __future__ import annotations
@@ -66,7 +66,7 @@ class TestZstSampleOutputProof:
         sample_text = (
             "Format Factory ZST sample output.\n"
             "Sprint: FORMAT-FACTORY-SAL-ENFORCEMENT-CLOSEOUT-AND-PRODUCT-ACCELERATION-RNEXT-001\n"
-            "spec_fact_refs: FACT-ZST-001\n"
+            "spec_fact_refs: SAL-ZST-00001\n"
             "This file was produced by compress_string_to_file() and verified by decompress_file_to_string().\n"
         )
         sample_path = tmp_path / "rnext-sample.zst"
@@ -75,7 +75,7 @@ class TestZstSampleOutputProof:
         assert sample_path.read_bytes()[:4] == b"\x28\xb5\x2f\xfd"
         recovered = decompress_file_to_string(sample_path)
         assert recovered == sample_text
-        assert "FACT-ZST-001" in recovered
+        assert "SAL-ZST-00001" in recovered
 
     def test_max_output_size_regression(self, tmp_path):
         from zst import compress_string_to_file, decompress_file_to_string, ZstError

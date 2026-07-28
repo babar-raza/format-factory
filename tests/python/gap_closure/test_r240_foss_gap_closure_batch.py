@@ -19,7 +19,7 @@ sys.path.insert(0, str(_REPO))
 
 class TestCsvAllRows:
     def test_returns_list(self):
-        from src.python.csv.csv_parser import csv_all_rows
+        from src.python.ff_csv.csv_parser import csv_all_rows
         fd, path = tempfile.mkstemp(suffix=".csv")
         os.close(fd)
         Path(path).write_text("a,b\n1,2\n3,4\n", encoding="utf-8")
@@ -31,7 +31,7 @@ class TestCsvAllRows:
             os.unlink(path)
 
     def test_row_contents(self):
-        from src.python.csv.csv_parser import csv_all_rows
+        from src.python.ff_csv.csv_parser import csv_all_rows
         fd, path = tempfile.mkstemp(suffix=".csv")
         os.close(fd)
         Path(path).write_text("x,y\nhello,world\n", encoding="utf-8")
@@ -42,7 +42,7 @@ class TestCsvAllRows:
             os.unlink(path)
 
     def test_empty_file(self):
-        from src.python.csv.csv_parser import csv_all_rows
+        from src.python.ff_csv.csv_parser import csv_all_rows
         fd, path = tempfile.mkstemp(suffix=".csv")
         os.close(fd)
         Path(path).write_text("", encoding="utf-8")

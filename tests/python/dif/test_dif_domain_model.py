@@ -27,7 +27,7 @@ class TestDifModelDocumentSpecQname:
         assert ":" in DifModelDocument.spec_qname
 
     def test_spec_fact_ref_class_level(self):
-        assert DifModelDocument.spec_fact_ref == "FACT-DIF-001"
+        assert DifModelDocument.spec_fact_ref == "SAL-DIF-00001"
 
     def test_alias_is_same_class(self):
         assert DifDoc is DifModelDocument

@@ -5,7 +5,7 @@ Properties under test:
     is_tiny          — row_count <= 5
     has_uniform_rows — all rows have column_count columns; True for empty docs
 
-spec_fact_ref: FACT-TSV-001
+spec_fact_ref: SAL-TSV-00001
 """
 
 import pytest

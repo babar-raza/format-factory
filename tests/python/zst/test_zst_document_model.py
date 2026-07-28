@@ -37,7 +37,7 @@ class TestZstDocumentClassAttributes:
         assert ZstDocument.spec_qname == "zst:frame"
 
     def test_spec_fact_ref(self):
-        assert ZstDocument.spec_fact_ref == "FACT-ZST-001"
+        assert ZstDocument.spec_fact_ref == "SAL-ZST-00001"
 
     def test_namespace_uri(self):
         assert ZstDocument.namespace_uri == "urn:ietf:rfc:8878:zstandard"

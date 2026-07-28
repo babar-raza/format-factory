@@ -5,7 +5,7 @@ Properties under test:
     megapixels     — pixel_count / 1_000_000
     is_large_image — pixel_count > 4_000_000
 
-spec_fact_ref: FACT-XCF-001
+spec_fact_ref: SAL-XCF-00001
 """
 
 import types

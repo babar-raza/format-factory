@@ -10,14 +10,9 @@ License: Apache-2.0
 """
 from __future__ import annotations
 
-import sys
 from pathlib import Path
 
-_REPO = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(_REPO / "src" / "python" / "ubl"))
-sys.path.insert(0, str(_REPO))
-
-from src.python.csv.csv_writer import write_csv_to_file
+from ff_csv.csv_writer import write_csv_to_file
 from ubl.ubl_codec import load_ubl
 
 

@@ -1,7 +1,7 @@
 """ABW spec Section — canonical implementation of abw:section.
 
 spec_qname: abw:section
-spec_fact_ref: FACT-ABW-002
+spec_fact_ref: SAL-ABW-00002
 Spec ref: AbiWord AWML 1.0 — section block element
 Facade: AbwSection is not a separate Compat class; sections are accessed
         via Document.section_count and the flat paragraph list.
@@ -21,7 +21,7 @@ class Section:
     """
 
     spec_qname: ClassVar[str] = "abiword:section"
-    spec_fact_ref: ClassVar[str] = "FACT-ABW-002"
+    spec_fact_ref: ClassVar[str] = "SAL-ABW-00002"
     namespace_uri: ClassVar[str] = "http://www.abisource.com/awml/"
     local_name: ClassVar[str] = "section"
     facade_names: ClassVar[list] = []

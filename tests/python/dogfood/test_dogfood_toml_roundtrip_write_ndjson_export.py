@@ -6,7 +6,6 @@ Covers GAP-TOML-FOSS-ROUNDTRIP-001: write_toml, roundtrip functions.
 """
 from __future__ import annotations
 
-import importlib.util
 import json
 import sys
 from pathlib import Path
@@ -14,15 +13,13 @@ from pathlib import Path
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO / "src" / "python"))
 
-# Load TOML codec via importlib (stdlib 'toml' conflict)
-_toml_spec = importlib.util.spec_from_file_location(
-    "toml_codec", str(_REPO / "src" / "python" / "toml" / "toml_codec.py")
-)
-_toml = importlib.util.module_from_spec(_toml_spec)
-_toml_spec.loader.exec_module(_toml)
-load_toml = _toml.load_toml
-write_toml = _toml.write_toml
-roundtrip = _toml.roundtrip
+# `toml` is a normal package import here. There is NO stdlib collision:
+# stdlib ships `tomllib`, not `toml`, and no third-party `toml` is installed.
+# (An earlier importlib workaround citing a "stdlib 'toml' conflict" was a
+# cargo-culted csv-shaped hack that loaded toml_codec.py without package
+# context, breaking its `from .exceptions import ...` relative import and
+# making this whole module uncollectable. See TC-PA-030 / ISS-TEST_GAP-0001.)
+from toml.toml_codec import load_toml, write_toml, roundtrip
 
 from ndjson.ndjson_codec import write_ndjson, load_ndjson
 

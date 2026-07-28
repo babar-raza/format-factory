@@ -1,8 +1,8 @@
 """R564: Gnumeric workbook analysis properties — has_cells, avg_cells_per_sheet, is_sparse.
 
 Tests for GnumericDocument workbook properties added in R564.
-Spec refs: FACT-GNUMERIC-001 (gnumeric:workbook), FACT-GNUMERIC-002 (gnumeric:sheet),
-           FACT-GNUMERIC-003 (gnumeric:cell).
+Spec refs: SAL-GNUMERIC-00001 (gnumeric:workbook), SAL-GNUMERIC-00002 (gnumeric:sheet),
+           SAL-GNUMERIC-00003 (gnumeric:cell).
 """
 
 import pytest

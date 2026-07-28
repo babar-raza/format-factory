@@ -43,7 +43,7 @@ class TestAbwCompatLayerSpecQname:
 
     def test_abw_document_spec_fact_ref(self):
         from abw.Compat import AbwDocument
-        assert AbwDocument.spec_fact_ref == "FACT-ABW-001"
+        assert AbwDocument.spec_fact_ref == "SAL-ABW-00001"
 
     def test_abw_document_namespace_uri(self):
         from abw.Compat import AbwDocument

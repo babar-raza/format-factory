@@ -13,7 +13,7 @@ from .sylk_parser import (
 )
 
 spec_qname = "sylk:cell"
-spec_fact_ref = "FACT-SYLK-001"
+spec_fact_ref = "SAL-SYLK-00001"
 namespace_uri = "urn:sylk:spreadsheet"
 
 
@@ -196,7 +196,7 @@ def sylk_is_tall(file_path: "str | Path") -> bool:
 def sylk_col_count(file_path: "str | Path") -> int:
     """Return the number of columns in the SYLK document.
 
-    Spec: SYLK B;Y record column count (FACT-SYLK-001)
+    Spec: SYLK B;Y record column count (SAL-SYLK-00001)
     """
     doc = parse_sylk_strict(file_path)
     return doc.cols
@@ -205,7 +205,7 @@ def sylk_col_count(file_path: "str | Path") -> int:
 def sylk_id_line(file_path: "str | Path") -> str:
     """Return the ID line (first record) of the SYLK file.
 
-    Spec: SYLK ID; record (FACT-SYLK-001)
+    Spec: SYLK ID; record (SAL-SYLK-00001)
     """
     doc = parse_sylk_strict(file_path)
     return doc.id_line
@@ -216,7 +216,7 @@ def sylk_all_cells_same_type(file_path: "str | Path") -> bool:
 
     True vacuously when there are no cells.
 
-    Spec: SYLK C; record value type (FACT-SYLK-001)
+    Spec: SYLK C; record value type (SAL-SYLK-00001)
     """
     doc = parse_sylk_strict(file_path)
     if not doc.cells:
@@ -230,7 +230,7 @@ def sylk_has_only_strings(file_path: "str | Path") -> bool:
 
     False if no cells.
 
-    Spec: SYLK C; record string value (FACT-SYLK-001)
+    Spec: SYLK C; record string value (SAL-SYLK-00001)
     """
     doc = parse_sylk_strict(file_path)
     if not doc.cells:
@@ -243,7 +243,7 @@ def sylk_has_only_numeric(file_path: "str | Path") -> bool:
 
     False if no cells.
 
-    Spec: SYLK C; record numeric value (FACT-SYLK-001)
+    Spec: SYLK C; record numeric value (SAL-SYLK-00001)
     """
     doc = parse_sylk_strict(file_path)
     if not doc.cells:
@@ -254,7 +254,7 @@ def sylk_has_only_numeric(file_path: "str | Path") -> bool:
 def sylk_first_cell_value(file_path: "str | Path") -> object:
     """Return the value of the first cell in row/col order. None if no cells.
 
-    Spec: SYLK C; record value (FACT-SYLK-001)
+    Spec: SYLK C; record value (SAL-SYLK-00001)
     """
     doc = parse_sylk_strict(file_path)
     return doc.cells[0].value if doc.cells else None

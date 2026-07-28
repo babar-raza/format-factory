@@ -1,7 +1,7 @@
 """R565: PBM additional dimension properties — is_tiny, is_large_image, megapixels.
 
 Tests for PbmDocument additional properties added in R565.
-Spec refs: FACT-PBM-001 (pbm:image).
+Spec refs: SAL-PBM-00001 (pbm:image).
 """
 
 import types

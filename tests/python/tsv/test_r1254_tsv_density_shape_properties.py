@@ -5,7 +5,7 @@ Properties under test:
     has_empty_cells — any cell in rows is an empty string
     aspect_ratio   — column_count / row_count (0.0 if no rows)
 
-spec_fact_ref: FACT-TSV-001
+spec_fact_ref: SAL-TSV-00001
 """
 
 import pytest

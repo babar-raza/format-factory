@@ -5,7 +5,7 @@ Properties under test:
     has_single_type    — all non-empty cells share one type (all numeric or all string)
     is_string_dominant — string_ratio > 0.5
 
-spec_fact_ref: FACT-SYLK-001
+spec_fact_ref: SAL-SYLK-00001
 """
 
 import types

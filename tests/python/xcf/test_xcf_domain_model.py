@@ -22,7 +22,7 @@ class TestXcfDocumentSpecQname:
         assert isinstance(XcfDocument.spec_qname, str)
 
     def test_spec_fact_ref_class_level(self):
-        assert XcfDocument.spec_fact_ref == "FACT-XCF-001"
+        assert XcfDocument.spec_fact_ref == "SAL-XCF-00001"
 
     def test_from_file_returns_model(self):
         doc = XcfDocument.from_file(_SAMPLE)

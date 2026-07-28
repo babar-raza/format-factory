@@ -20,7 +20,7 @@ def abw_iter_paragraphs(source: "str | bytes | Path") -> Iterator[Paragraph]:
         source: Path to a .abw AbiWord document file.
 
     Yields:
-        Paragraph instances (spec class: abiword:p, FACT-ABW-003).
+        Paragraph instances (spec class: abiword:p, SAL-ABW-00003).
     """
     model = load(source)
     for text in model.get("paragraphs", []):

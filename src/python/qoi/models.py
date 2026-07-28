@@ -22,7 +22,7 @@ class QoiDocument:
     """
 
     spec_qname: ClassVar[str] = "qoi:image"
-    spec_fact_ref: ClassVar[str] = "FACT-QOI-001"
+    spec_fact_ref: ClassVar[str] = "SAL-QOI-00001"
     namespace_uri: ClassVar[str] = "urn:format:qoi:1.0"
     local_name: ClassVar[str] = "image"
     facade_names: ClassVar[list] = []
@@ -71,7 +71,7 @@ class QoiDocument:
         """Path to the source QOI file."""
         return str(self._parsed.path)
 
-    # Dimension geometry properties (FACT-QOI-001)
+    # Dimension geometry properties (SAL-QOI-00001)
 
     @property
     def aspect_ratio(self) -> float:
@@ -93,7 +93,7 @@ class QoiDocument:
         """True if height is greater than width."""
         return self.height > self.width
 
-    # Image size classification properties (FACT-QOI-001)
+    # Image size classification properties (SAL-QOI-00001)
 
     @property
     def is_tiny(self) -> bool:
@@ -110,7 +110,7 @@ class QoiDocument:
         """Total pixel count expressed in megapixels (pixel_count / 1_000_000)."""
         return self.pixel_count / 1_000_000
 
-    # Additional channel and colorspace properties (FACT-QOI-001)
+    # Additional channel and colorspace properties (SAL-QOI-00001)
 
     @property
     def is_rgb(self) -> bool:
@@ -127,7 +127,7 @@ class QoiDocument:
         """True if the colorspace is linear light (colorspace == 1)."""
         return self.colorspace == 1
 
-    # Edge length and channel classification properties (FACT-QOI-001 R1243)
+    # Edge length and channel classification properties (SAL-QOI-00001 R1243)
 
     @property
     def long_edge(self) -> int:
@@ -144,7 +144,7 @@ class QoiDocument:
         """True if channels == 4 (RGBA)."""
         return self.channels == 4
 
-    # Canvas geometry and density properties (FACT-QOI-001 R1263)
+    # Canvas geometry and density properties (SAL-QOI-00001 R1263)
 
     @property
     def edge_ratio(self) -> float:
@@ -163,7 +163,7 @@ class QoiDocument:
         """Estimated bytes per pixel (= channels: 3 for RGB, 4 for RGBA)."""
         return self.channels
 
-    # Scale and density classification properties (FACT-QOI-001 R1283)
+    # Scale and density classification properties (SAL-QOI-00001 R1283)
 
     @property
     def is_banner(self) -> bool:

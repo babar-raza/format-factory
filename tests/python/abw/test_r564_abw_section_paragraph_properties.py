@@ -1,7 +1,7 @@
 """R564: ABW section and paragraph analysis properties — has_sections, has_multiple_paragraphs, is_multi_section.
 
 Tests for AbwDocument structural properties added in R564.
-Spec refs: FACT-ABW-001 (abiword:document, abiword:section, abiword:p).
+Spec refs: SAL-ABW-00001 (abiword:document, abiword:section, abiword:p).
 """
 
 import pytest

@@ -8,7 +8,7 @@ Tests for new ZST file-level API:
 - compress_file(input_path, output_path, level) -> dict
 - decompress_file(input_path, output_path) -> dict
 
-Authority: P6 (FACT-ZST-001: Zstandard magic 0xFD2FB528, RFC 8878 §3.1.1)
+Authority: P6 (SAL-ZST-00001: Zstandard magic 0xFD2FB528, RFC 8878 §3.1.1)
 """
 from __future__ import annotations
 
@@ -65,7 +65,7 @@ class TestCompressFile:
         assert result["input_bytes"] == len(data)
 
     def test_compress_file_output_is_valid_zstd(self, tmp_path):
-        """compress_file output must begin with Zstandard magic (FACT-ZST-001)."""
+        """compress_file output must begin with Zstandard magic (SAL-ZST-00001)."""
         src = tmp_path / "payload.txt"
         src.write_bytes(b"Zstandard magic test" * 10)
         dst = tmp_path / "payload.zst"

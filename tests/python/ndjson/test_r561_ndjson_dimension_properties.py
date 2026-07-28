@@ -1,7 +1,7 @@
 """R561: NDJSON dimension properties — is_empty, is_single_record, has_records.
 
 Tests for NdjsonDocument dimension properties added in R561.
-Spec refs: FACT-NDJSON-001.
+Spec refs: SAL-NDJSON-00001.
 """
 
 import pytest

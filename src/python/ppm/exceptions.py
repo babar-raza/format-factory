@@ -20,3 +20,19 @@ class PpmParseError(PpmError):
 
 class PpmWriteError(PpmError):
     """Raised when a ppm file cannot be written."""
+
+
+class PpmInvalidMagicError(PpmParseError):
+    """Raised when file does not start with P3 or P6."""
+
+
+class PpmInvalidHeaderError(PpmParseError):
+    """Raised when header fields are invalid."""
+
+
+class PpmSizeError(PpmParseError):
+    """Raised when file or image dimensions exceed limits."""
+
+
+class PpmDecodeError(PpmParseError):
+    """Raised when pixel data is malformed."""

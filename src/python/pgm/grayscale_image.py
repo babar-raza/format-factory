@@ -5,7 +5,7 @@ from __future__ import annotations
 
 
 spec_qname = "pgm:image"
-spec_fact_ref = "FACT-PGM-001"
+spec_fact_ref = "SAL-PGM-00001"
 namespace_uri = "urn:netpbm:portable-graymap"
 
 from pathlib import Path

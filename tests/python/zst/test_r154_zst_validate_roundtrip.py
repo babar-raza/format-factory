@@ -7,7 +7,7 @@ Added: 2026-06-09
 Tests for ZST validate_roundtrip() API:
 - validate_roundtrip(data, level) -> dict
 
-Authority: P6 (FACT-ZST-001: Zstandard magic 0xFD2FB528, RFC 8878 §3.1.1)
+Authority: P6 (SAL-ZST-00001: Zstandard magic 0xFD2FB528, RFC 8878 §3.1.1)
 """
 from __future__ import annotations
 

@@ -2,7 +2,7 @@
 DIF structural element: dif:datum
 
 Spec ref: DIF specification — data value cell
-Fact ref: FACT-DIF-003
+Fact ref: SAL-DIF-00003
 QName: dif:datum
 Canonical class: Datum
 Facade: DifDatum
@@ -15,7 +15,7 @@ class Datum:
     """Canonical spec-shaped class for dif:datum (cell value)."""
 
     spec_qname: ClassVar[str] = "dif:datum"
-    spec_fact_ref: ClassVar[str] = "FACT-DIF-003"
+    spec_fact_ref: ClassVar[str] = "SAL-DIF-00003"
     namespace_uri: ClassVar[str] = "urn:format:dif:1.0"
     local_name: ClassVar[str] = "datum"
     facade_names: ClassVar[list] = ["DifDatum"]

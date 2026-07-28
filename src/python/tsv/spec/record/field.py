@@ -2,7 +2,7 @@
 TSV structural element: tsv:field
 
 Spec ref: IANA text/tab-separated-values — field value
-Fact ref: FACT-TSV-002
+Fact ref: SAL-TSV-00002
 QName: tsv:field
 Canonical class: Field
 Facade: TsvField
@@ -15,7 +15,7 @@ class Field:
     """Canonical spec-shaped class for tsv:field."""
 
     spec_qname: ClassVar[str] = "tsv:field"
-    spec_fact_ref: ClassVar[str] = "FACT-TSV-002"
+    spec_fact_ref: ClassVar[str] = "SAL-TSV-00002"
     namespace_uri: ClassVar[str] = "urn:iana:media-type:text:tab-separated-values"
     local_name: ClassVar[str] = "field"
     facade_names: ClassVar[list] = ["TsvField"]

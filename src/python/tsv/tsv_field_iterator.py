@@ -22,7 +22,7 @@ def tsv_iter_fields(source: "str | Path") -> Iterator[Field]:
         source: Path to a .tsv Tab-Separated Values file.
 
     Yields:
-        Field instances (spec class: tsv:field, FACT-TSV-002).
+        Field instances (spec class: tsv:field, SAL-TSV-00002).
     """
     doc = parse_tsv_strict(str(Path(source).resolve()))
     headers = doc.get("headers", [])

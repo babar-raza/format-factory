@@ -5,7 +5,7 @@ Properties under test:
     is_text_heavy        — total_text_length > 5000
     paragraphs_per_section — paragraph_count / section_count (0.0 if no sections)
 
-spec_fact_ref: FACT-ABW-001
+spec_fact_ref: SAL-ABW-00001
 """
 
 import pytest

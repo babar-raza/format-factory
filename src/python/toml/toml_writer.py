@@ -15,10 +15,7 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import Any
-
-
-class TomlWriteError(Exception):
-    """Raised when TOML output fails."""
+from .exceptions import TomlError, TomlParseError, TomlWriteError
 
 
 def _toml_value(val: Any, context: str = "") -> str:

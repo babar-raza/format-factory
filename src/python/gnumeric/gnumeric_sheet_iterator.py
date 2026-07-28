@@ -20,7 +20,7 @@ def gnumeric_iter_sheets(source: "str | Path") -> Iterator[Sheet]:
         source: Path to a .gnumeric Gnumeric spreadsheet file.
 
     Yields:
-        Sheet instances (spec class: gnumeric:sheet, FACT-GNUMERIC-002).
+        Sheet instances (spec class: gnumeric:sheet, SAL-GNUMERIC-00002).
     """
     model = load(str(Path(source).resolve()))
     for sheet_dict in model.get("sheets", []):

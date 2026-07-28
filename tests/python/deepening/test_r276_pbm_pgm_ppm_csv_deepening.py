@@ -78,16 +78,16 @@ class TestPpmHasPureWhite:
 
 class TestCsvMinNumericValue:
     def test_returns_numeric_or_none(self):
-        from src.python.csv.csv_parser import csv_min_numeric_value
+        from src.python.ff_csv.csv_parser import csv_min_numeric_value
         result = csv_min_numeric_value(CSV)
         assert result is None or isinstance(result, (int, float))
 
 
 class TestCsvDataDensity:
     def test_returns_float(self):
-        from src.python.csv.csv_parser import csv_data_density
+        from src.python.ff_csv.csv_parser import csv_data_density
         assert isinstance(csv_data_density(CSV), float)
 
     def test_in_range(self):
-        from src.python.csv.csv_parser import csv_data_density
+        from src.python.ff_csv.csv_parser import csv_data_density
         assert 0.0 <= csv_data_density(CSV) <= 1.0

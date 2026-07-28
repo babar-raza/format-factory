@@ -2,7 +2,7 @@
 tests/python/zst/test_r267_zst_compression_summary.py
 
 Sprint: ff-sprint-s267-zst-compression-summary-20260626
-Authority: FACT-ZST-001 (RFC 8878 §3.1 — Zstandard frame structure)
+Authority: SAL-ZST-00001 (RFC 8878 §3.1 — Zstandard frame structure)
 
 Tests for get_compression_summary() in zst_codec.py.
 """

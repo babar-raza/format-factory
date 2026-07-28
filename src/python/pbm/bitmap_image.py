@@ -5,7 +5,7 @@ from __future__ import annotations
 
 
 spec_qname = "pbm:image"
-spec_fact_ref = "FACT-PBM-001"
+spec_fact_ref = "SAL-PBM-00001"
 namespace_uri = "urn:netpbm:portable-bitmap"
 
 from pathlib import Path
@@ -685,7 +685,7 @@ def pbm_isolation_score(file_path: "str | Path") -> float:
 def pbm_width(file_path: "str | Path") -> int:
     """Return the width (number of columns) of the PBM image.
 
-    Spec: Netpbm PBM header width field (FACT-PBM-001)
+    Spec: Netpbm PBM header width field (SAL-PBM-00001)
     """
     from .pbm_parser import parse_pbm_strict
     img = parse_pbm_strict(file_path)
@@ -695,7 +695,7 @@ def pbm_width(file_path: "str | Path") -> int:
 def pbm_height(file_path: "str | Path") -> int:
     """Return the height (number of rows) of the PBM image.
 
-    Spec: Netpbm PBM header height field (FACT-PBM-001)
+    Spec: Netpbm PBM header height field (SAL-PBM-00001)
     """
     from .pbm_parser import parse_pbm_strict
     img = parse_pbm_strict(file_path)
@@ -705,7 +705,7 @@ def pbm_height(file_path: "str | Path") -> int:
 def pbm_magic(file_path: "str | Path") -> str:
     """Return the magic number of the PBM file ('P1' ASCII or 'P4' binary).
 
-    Spec: Netpbm PBM magic number (FACT-PBM-001)
+    Spec: Netpbm PBM magic number (SAL-PBM-00001)
     """
     from .pbm_parser import parse_pbm_strict
     img = parse_pbm_strict(file_path)
@@ -715,7 +715,7 @@ def pbm_magic(file_path: "str | Path") -> str:
 def pbm_is_ascii_format(file_path: "str | Path") -> bool:
     """Return True if the PBM file uses ASCII (P1) encoding.
 
-    Spec: Netpbm PBM P1 magic (FACT-PBM-001)
+    Spec: Netpbm PBM P1 magic (SAL-PBM-00001)
     """
     from .pbm_parser import parse_pbm_strict
     img = parse_pbm_strict(file_path)
@@ -725,7 +725,7 @@ def pbm_is_ascii_format(file_path: "str | Path") -> bool:
 def pbm_is_single_pixel(file_path: "str | Path") -> bool:
     """Return True if the PBM image is exactly 1×1 pixels.
 
-    Spec: Netpbm PBM width/height fields (FACT-PBM-001)
+    Spec: Netpbm PBM width/height fields (SAL-PBM-00001)
     """
     from .pbm_parser import parse_pbm_strict
     img = parse_pbm_strict(file_path)

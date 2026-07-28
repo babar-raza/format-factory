@@ -5,7 +5,7 @@ Lane G — Product Advancement:
 Tests for get_frame_size_stats() added in RNEXT sprint.
 
 Sprint: FORMAT-FACTORY-SAL-ENFORCEMENT-CLOSEOUT-AND-PRODUCT-ACCELERATION-RNEXT-001
-spec_fact_refs: FACT-ZST-001
+spec_fact_refs: SAL-ZST-00001
 route_decision_id: RDEC-RNEXT-LG-001
 """
 from __future__ import annotations
@@ -16,10 +16,9 @@ from pathlib import Path
 import pytest
 
 REPO = Path(__file__).resolve().parent.parent.parent.parent
-sys.path.insert(0, str(REPO / "src" / "python" / "zst"))
 sys.path.insert(0, str(REPO / "src" / "python"))
 
-from zst_codec import compress_bytes, get_frame_size_stats, ZstError
+from zst.zst_codec import compress_bytes, get_frame_size_stats, ZstError
 from zst import get_frame_size_stats as pkg_get_frame_size_stats
 
 

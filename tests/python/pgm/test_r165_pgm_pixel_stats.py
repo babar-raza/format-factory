@@ -5,7 +5,7 @@ Sprint: FORMAT-FACTORY-PRODUCT-DEEPENING-RNEXT29-001
 Added: 2026-06-10
 
 Tests for PGM image_pixel_stats function.
-Authority: P5 (FACT-PGM-001: P2 magic, FACT-PGM-002: P5 magic)
+Authority: P5 (SAL-PGM-00001: P2 magic, SAL-PGM-00002: P5 magic)
 """
 from __future__ import annotations
 

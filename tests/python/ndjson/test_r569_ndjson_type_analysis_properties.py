@@ -1,7 +1,7 @@
 """R569: NDJSON type analysis properties — has_mixed_types, all_scalars, max_keys.
 
 Tests for NdjsonDocument type analysis properties added in R569.
-Spec refs: FACT-NDJSON-001.
+Spec refs: SAL-NDJSON-00001.
 """
 
 import pytest

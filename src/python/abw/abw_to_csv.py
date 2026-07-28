@@ -12,15 +12,10 @@ License: Apache-2.0
 
 from __future__ import annotations
 
-import sys
 from pathlib import Path
 
-_REPO = Path(__file__).resolve().parents[4]
-sys.path.insert(0, str(_REPO / "src" / "python" / "abw"))
-sys.path.insert(0, str(_REPO))
-
 from abw.abw_codec import load as load_abw
-from src.python.csv.csv_writer import write_csv_to_file
+from ff_csv.csv_writer import write_csv_to_file
 
 
 def abw_to_csv(

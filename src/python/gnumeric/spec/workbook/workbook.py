@@ -2,7 +2,7 @@
 Gnumeric structural element: gnm:Workbook
 
 Spec ref: Gnumeric XML format — Workbook root element
-Fact ref: FACT-GNUMERIC-001
+Fact ref: SAL-GNUMERIC-00001
 QName: gnm:Workbook
 Namespace: http://www.gnumeric.org/v10.dtd
 Canonical class: Workbook
@@ -16,7 +16,7 @@ class Workbook:
     """Canonical spec-shaped class for gnm:Workbook."""
 
     spec_qname: ClassVar[str] = "gnumeric:workbook"
-    spec_fact_ref: ClassVar[str] = "FACT-GNUMERIC-001"
+    spec_fact_ref: ClassVar[str] = "SAL-GNUMERIC-00001"
     namespace_uri: ClassVar[str] = "http://www.gnumeric.org/v10.dtd"
     local_name: ClassVar[str] = "Workbook"
     facade_names: ClassVar[list] = ["GnumericWorkbook"]

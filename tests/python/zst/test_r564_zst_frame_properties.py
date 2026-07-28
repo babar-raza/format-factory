@@ -1,7 +1,7 @@
 """R564: ZST additional frame properties — is_single_frame, decompressed_size_kb, is_large.
 
 Tests for ZstDocument frame properties added in R564.
-Spec refs: FACT-ZST-001 (zst:frame), FACT-ZST-002 (zst:block).
+Spec refs: SAL-ZST-00001 (zst:frame), SAL-ZST-00002 (zst:block).
 """
 
 import pytest

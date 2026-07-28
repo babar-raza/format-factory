@@ -20,7 +20,7 @@ class TestXcfHeaderMetadata:
         assert XcfHeader.spec_qname == "xcf:header"
 
     def test_spec_fact_ref(self):
-        assert XcfHeader.spec_fact_ref == "FACT-XCF-001"
+        assert XcfHeader.spec_fact_ref == "SAL-XCF-00001"
 
     def test_magic_constant(self):
         assert XcfHeader.MAGIC == b"gimp xcf "

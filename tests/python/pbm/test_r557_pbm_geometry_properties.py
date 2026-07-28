@@ -1,8 +1,8 @@
 """Tests for PBM PbmDocument geometry properties — R557 FOSS-NETPBM object model.
 
 Spec refs:
-  FACT-PBM-001: PBM ASCII format starts with magic 'P1' (structure implies width/height fields)
-  FACT-PBM-002: PBM binary format starts with magic 'P4'
+  SAL-PBM-00001: PBM ASCII format starts with magic 'P1' (structure implies width/height fields)
+  SAL-PBM-00002: PBM binary format starts with magic 'P4'
 
 New properties tested:
   aspect_ratio: float — width / height

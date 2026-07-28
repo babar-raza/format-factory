@@ -244,13 +244,12 @@ class TestFacadeExceptions:
         with pytest.raises(QoiWriteError):
             raise QoiWriteError("bad write")
 
-    def test_facade_qoi_error_is_distinct_from_parser_qoi_error(self):
-        """qoi.exceptions.QoiError and qoi.qoi_parser.QoiError are two
-        separate classes (not the same object) — documented so a future
-        consolidation is a deliberate change, not a silent regression."""
-        assert FacadeQoiError is not ParserQoiError
-        assert not issubclass(FacadeQoiError, ParserQoiError)
-        assert not issubclass(ParserQoiError, FacadeQoiError)
+    def test_facade_qoi_error_is_unified_with_parser_qoi_error(self):
+        """qoi.exceptions.QoiError and qoi.qoi_parser.QoiError are now the
+        SAME class object -- exceptions.py is the single source of truth,
+        qoi_parser.py imports from it rather than redefining it. See
+        plans/.claude/quizzical-munching-gadget.md section 7."""
+        assert FacadeQoiError is ParserQoiError
 
     def test_encoder_error_subclasses_parser_qoi_error(self):
         assert issubclass(QoiEncodeError, ParserQoiError)

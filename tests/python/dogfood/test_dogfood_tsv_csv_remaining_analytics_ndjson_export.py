@@ -19,7 +19,7 @@ sys.path.insert(0, str(_REPO))
 sys.path.insert(0, str(_REPO / "src" / "python"))
 
 from tsv import tsv_data_density, tsv_min_numeric_value
-from src.python.csv.csv_parser import (
+from src.python.ff_csv.csv_parser import (
     csv_avg_row_length,
     csv_data_density,
     csv_is_all_numeric,

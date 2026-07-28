@@ -32,7 +32,7 @@ class TestNdjsonDocumentSpec:
         assert NdjsonDocument.spec_qname == "ndjson:record"
 
     def test_spec_fact_ref(self):
-        assert NdjsonDocument.spec_fact_ref == "FACT-NDJSON-001"
+        assert NdjsonDocument.spec_fact_ref == "SAL-NDJSON-00001"
 
     def test_namespace_uri(self):
         assert "ndjson" in NdjsonDocument.namespace_uri.lower()

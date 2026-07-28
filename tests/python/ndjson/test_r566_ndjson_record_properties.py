@@ -1,7 +1,7 @@
 """R566: NDJSON record analysis properties — is_multi_record, all_objects, all_arrays.
 
 Tests for NdjsonDocument record analysis properties added in R566.
-Spec refs: FACT-NDJSON-001 (ndjson:record).
+Spec refs: SAL-NDJSON-00001 (ndjson:record).
 """
 
 import pytest

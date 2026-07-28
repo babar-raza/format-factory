@@ -22,7 +22,7 @@ def tsv_iter_records(source: "str | Path") -> Iterator[Record]:
         source: Path to a .tsv tab-separated values file.
 
     Yields:
-        Record instances (spec class: tsv:record, FACT-TSV-001).
+        Record instances (spec class: tsv:record, SAL-TSV-00001).
 
     Raises:
         TsvError subclasses on parse failure.

@@ -5,7 +5,7 @@ Properties under test:
     has_mixed_types — has_numeric_cells and has_string_cells
     numeric_ratio — numeric_cell_count / nonempty_cell_count (0.0 if no non-empty)
 
-spec_fact_ref: FACT-SYLK-001
+spec_fact_ref: SAL-SYLK-00001
 """
 
 import types

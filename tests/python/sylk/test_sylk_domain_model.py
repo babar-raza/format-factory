@@ -22,7 +22,7 @@ class TestSylkModelDocumentSpecQname:
         assert isinstance(SylkModelDocument.spec_qname, str)
 
     def test_spec_fact_ref_class_level(self):
-        assert SylkModelDocument.spec_fact_ref == "FACT-SYLK-001"
+        assert SylkModelDocument.spec_fact_ref == "SAL-SYLK-00001"
 
     def test_from_file_returns_model(self):
         doc = SylkModelDocument.from_file(_SAMPLE)

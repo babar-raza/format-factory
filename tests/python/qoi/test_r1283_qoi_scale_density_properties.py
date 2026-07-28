@@ -5,7 +5,7 @@ Properties under test:
     is_tall_strip      — is_narrow and is_portrait (tall strip)
     pixel_density_class — 'micro', 'small', 'medium', or 'large'
 
-spec_fact_ref: FACT-QOI-001
+spec_fact_ref: SAL-QOI-00001
 """
 
 import types

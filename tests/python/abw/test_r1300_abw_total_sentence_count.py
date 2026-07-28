@@ -3,7 +3,7 @@
 abw_total_sentence_count(file_path) loads an ABW file and counts
 sentence-ending punctuation (. ! ?) across all paragraphs.
 
-Spec authority: FACT-ABW-001 (AbiWord XML document format).
+Spec authority: SAL-ABW-00001 (AbiWord XML document format).
 """
 import pytest
 from pathlib import Path

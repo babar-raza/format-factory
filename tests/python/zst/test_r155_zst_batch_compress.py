@@ -5,7 +5,7 @@ Sprint: FORMAT-FACTORY-MAINSTREAM-PRODUCT-DEEPENING-RNEXT13-001
 Added: 2026-06-09
 
 Tests for ZST batch_compress function.
-Authority: P6 (FACT-ZST-001: Zstandard magic 0xFD2FB528, RFC 8878 §3.1.1)
+Authority: P6 (SAL-ZST-00001: Zstandard magic 0xFD2FB528, RFC 8878 §3.1.1)
 """
 from __future__ import annotations
 

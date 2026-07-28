@@ -22,6 +22,7 @@ import os
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, ClassVar
+from .exceptions import PbmError, PbmParseError, PbmInvalidMagicError, PbmInvalidHeaderError, PbmSizeError, PbmDecodeError
 
 
 MAX_FILE_SIZE = 64 * 1024 * 1024  # 64 MiB
@@ -32,26 +33,6 @@ MAX_DIMENSION = 65536
 # SAL-PBM-00002: "PBM binary format starts with magic 'P4' followed by whitespace"
 PBM_MAGIC_ASCII = "P1"   # SAL-PBM-00001
 PBM_MAGIC_BINARY = "P4"  # SAL-PBM-00002
-
-
-class PbmError(Exception):
-    """Base exception for PBM parser errors."""
-
-
-class PbmInvalidMagicError(PbmError):
-    """Raised when file does not start with P1 or P4."""
-
-
-class PbmInvalidHeaderError(PbmError):
-    """Raised when header fields are invalid."""
-
-
-class PbmSizeError(PbmError):
-    """Raised when file or image dimensions exceed limits."""
-
-
-class PbmDecodeError(PbmError):
-    """Raised when pixel data is malformed."""
 
 
 @dataclass

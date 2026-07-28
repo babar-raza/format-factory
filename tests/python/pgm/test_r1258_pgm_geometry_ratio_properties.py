@@ -5,7 +5,7 @@ Properties under test:
     is_narrow  — edge_ratio > 3.0
     is_micro   — width <= 64 and height <= 64
 
-spec_fact_ref: FACT-PGM-001
+spec_fact_ref: SAL-PGM-00001
 """
 
 import types

@@ -22,7 +22,7 @@ def sylk_iter_rows(source: "str | Path") -> Iterator[Row]:
         source: Path to a .slk SYLK file.
 
     Yields:
-        Row instances (spec class: sylk:row, FACT-SYLK-002).
+        Row instances (spec class: sylk:row, SAL-SYLK-00002).
     """
     doc = parse_sylk_strict(str(Path(source).resolve()))
     rows_dict: dict[int, list] = {}

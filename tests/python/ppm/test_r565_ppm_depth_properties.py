@@ -1,7 +1,7 @@
 """R565: PPM additional properties — is_high_depth, is_tiny, megapixels.
 
 Tests for PpmDocument depth and dimension properties added in R565.
-Spec refs: FACT-PPM-001 (ppm:image).
+Spec refs: SAL-PPM-00001 (ppm:image).
 """
 
 import types

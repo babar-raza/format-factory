@@ -2,7 +2,7 @@
 Gnumeric structural element: gnm:Sheet
 
 Spec ref: Gnumeric XML format — Sheet element
-Fact ref: FACT-GNUMERIC-002
+Fact ref: SAL-GNUMERIC-00002
 QName: gnm:Sheet
 Namespace: http://www.gnumeric.org/v10.dtd
 Canonical class: Sheet
@@ -16,7 +16,7 @@ class Sheet:
     """Canonical spec-shaped class for gnm:Sheet."""
 
     spec_qname: ClassVar[str] = "gnumeric:sheet"
-    spec_fact_ref: ClassVar[str] = "FACT-GNUMERIC-002"
+    spec_fact_ref: ClassVar[str] = "SAL-GNUMERIC-00002"
     namespace_uri: ClassVar[str] = "http://www.gnumeric.org/v10.dtd"
     local_name: ClassVar[str] = "Sheet"
     facade_names: ClassVar[list] = ["GnumericSheet"]

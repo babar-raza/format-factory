@@ -87,17 +87,14 @@ class TestParsePgm:
         with pytest.raises(pgm.PgmInvalidMagicError):
             pgm.parse_pgm_strict(_INVALID_MAGIC)
 
-    def test_exported_pgmerror_does_not_catch_parser_failures(self):
-        """Characterization: the facade PgmError (exceptions.py) is a
-        distinct class from pgm_parser.PgmError, so it must NOT catch
-        parser-raised exceptions."""
-        with pytest.raises(PgmParserError):
-            try:
-                pgm.parse_pgm_strict(_INVALID_MAGIC)
-            except pgm.PgmError:
-                pytest.fail("pgm.PgmError unexpectedly caught a parser error")
-            except PgmParserError:
-                raise
+    def test_parser_errors_catchable_via_package_error(self):
+        """Healed hierarchy: exceptions.py is the single source of truth,
+        so pgm_parser.PgmError (imported from .exceptions) IS pgm.PgmError
+        -- parser-raised errors are now catchable via the package-level
+        facade. See plans/.claude/quizzical-munching-gadget.md section 7."""
+        assert PgmParserError is pgm.PgmError
+        with pytest.raises(pgm.PgmError):
+            pgm.parse_pgm_strict(_INVALID_MAGIC)
 
     def test_probe_pgm_missing_file(self):
         result = pgm.probe_pgm(_SAMPLES / "absent.pgm")

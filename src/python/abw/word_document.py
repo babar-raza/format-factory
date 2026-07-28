@@ -10,7 +10,7 @@ All functions here import load/extract_text/count_words from the core codec.
 from __future__ import annotations
 
 spec_qname = "abw:document"
-spec_fact_ref = "FACT-ABW-001"
+spec_fact_ref = "SAL-ABW-00001"
 namespace_uri = "http://www.abisource.com/awml.dtd"
 
 import re

@@ -1146,8 +1146,9 @@ class TestAnalyticsEdgeCases:
 
 class TestDogfoodExportConverters:
     """GAP-TOML-FOSS-TOML_TO_{ABW,CSV,DIF,FODG,FODS,FODT,GNUMERIC,NDJSON,
-    ODS,ODT,PBM,PGM,PPM,SYLK,TSV}-001: each converter runs against
-    minimal.toml (5 top-level keys) and produces a non-empty output file."""
+    ODS,ODT,SYLK,TSV}-001: each converter runs against
+    minimal.toml (5 top-level keys) and produces a non-empty output file.
+    (toml_to_pbm/pgm/ppm removed by TC-PA-015 — INCOMPATIBLE raster projections.)"""
 
     @pytest.mark.parametrize(
         "module_name,func_name,ext",
@@ -1162,9 +1163,8 @@ class TestDogfoodExportConverters:
             ("toml.toml_to_ndjson", "toml_to_ndjson", "ndjson"),
             ("toml.toml_to_ods", "toml_to_ods", "ods"),
             ("toml.toml_to_odt", "toml_to_odt", "odt"),
-            ("toml.toml_to_pbm", "toml_to_pbm", "pbm"),
-            ("toml.toml_to_pgm", "toml_to_pgm", "pgm"),
-            ("toml.toml_to_ppm", "toml_to_ppm", "ppm"),
+            # toml_to_pbm/pgm/ppm removed by TC-PA-015 (PORTFOLIO-AUDIT-2026-07-16):
+            # INCOMPATIBLE (STRUCTURED_DATA has no pixel representation) — deprecated + deleted.
             ("toml.toml_to_sylk", "toml_to_sylk", "sylk"),
             ("toml.toml_to_tsv", "toml_to_tsv", "tsv"),
         ],

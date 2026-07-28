@@ -6,7 +6,7 @@ Proves that compress_string_to_file and decompress_file_to_string work
 correctly through the full pipeline.
 
 Sprint: FORMAT-FACTORY-SAL-RECONCILIATION-HARDENING-AND-PRODUCT-GATED-ADVANCEMENT-SPRINT-3
-spec_fact_refs: FACT-ZST-001
+spec_fact_refs: SAL-ZST-00001
 Queue item: sal3-product-q-001, sal3-product-q-002
 Authority: ZST P4 — dispatched with spec_fact_refs per Hard Rule 10
 """
@@ -18,9 +18,9 @@ from pathlib import Path
 import pytest
 
 REPO = Path(__file__).resolve().parent.parent.parent.parent
-sys.path.insert(0, str(REPO / "src" / "python" / "zst"))
+sys.path.insert(0, str(REPO / "src" / "python"))
 
-from zst_codec import compress_string_to_file, decompress_file_to_string, ZstError
+from zst.zst_codec import compress_string_to_file, decompress_file_to_string, ZstError
 
 
 class TestCompressStringToFile:
@@ -34,7 +34,7 @@ class TestCompressStringToFile:
         assert Path(result["output_path"]).exists()
 
     def test_file_is_valid_zst(self, tmp_path):
-        text = "Spec-backed product advancement via FACT-ZST-001."
+        text = "Spec-backed product advancement via SAL-ZST-00001."
         out = tmp_path / "out.zst"
         compress_string_to_file(text, out)
         raw = out.read_bytes()

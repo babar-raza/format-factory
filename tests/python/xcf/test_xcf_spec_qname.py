@@ -22,7 +22,7 @@ class TestXcfImageSpecQname:
         assert XcfImage.__dict__["spec_qname"] == "xcf:image"
 
     def test_spec_fact_ref_set(self):
-        assert XcfImage.spec_fact_ref == "FACT-XCF-001"
+        assert XcfImage.spec_fact_ref == "SAL-XCF-00001"
 
     def test_namespace_uri_set(self):
         assert XcfImage.namespace_uri == "https://www.gimp.org/standards/xcf"

@@ -13,9 +13,10 @@ from __future__ import annotations
 import io
 from pathlib import Path
 from typing import Any
+from .exceptions import ZstError, ZstParseError, ZstInvalidFrameError, ZstDecompressionError, ZstFileNotFoundError, ZstReadError, ZstDecompressError
 
-# Zstandard magic bytes (RFC 8878 §3.1.1)  # FACT-ZST-001: magic bytes 0x28 0xB5 0x2F 0xFD identify Zstandard frame
-ZSTD_MAGIC = b"\x28\xb5\x2f\xfd"  # FACT-ZST-001
+# Zstandard magic bytes (RFC 8878 §3.1.1)  # SAL-ZST-00001: magic bytes 0x28 0xB5 0x2F 0xFD identify Zstandard frame
+ZSTD_MAGIC = b"\x28\xb5\x2f\xfd"  # SAL-ZST-00001
 
 # Default decompression guard: 256 MiB output limit
 DEFAULT_MAX_OUTPUT_BYTES = 256 * 1024 * 1024
@@ -24,32 +25,8 @@ DEFAULT_MAX_OUTPUT_BYTES = 256 * 1024 * 1024
 DEFAULT_MAX_WINDOW_BYTES = 2 * 1024 * 1024 * 1024
 
 
-class ZstError(Exception):
-    """Base exception for ZST codec errors."""
-
-
-class ZstInvalidFrameError(ZstError):
-    """Raised when input is not a valid Zstandard frame."""
-
-
-class ZstDecompressionError(ZstError):
-    """Raised when decompression fails."""
-
-
 class ZstOutputLimitExceeded(ZstError):
     """Raised when decompressed output exceeds the configured size limit."""
-
-
-class ZstFileNotFoundError(ZstError):
-    """Raised when a ZST file does not exist."""
-
-
-class ZstReadError(ZstError):
-    """Raised when a ZST file cannot be read."""
-
-
-class ZstDecompressError(ZstError):
-    """Raised when decompression of a ZST file fails."""
 
 
 def _get_zstandard():
@@ -227,19 +204,10 @@ def probe_frame(data: bytes) -> dict[str, Any]:
 
     result["magic_ok"] = True
 
-    # Try to get declared content size using the prototype frame_header parser
+    # Get declared content size from the frame header (no full decompress needed)
     try:
-        import sys
-        import os
-        proto_path = os.path.join(
-            os.path.dirname(__file__), "..", "..", "..",
-            "prototypes", "by-format", "zst"
-        )
-        proto_path = os.path.normpath(proto_path)
-        if proto_path not in sys.path:
-            sys.path.insert(0, proto_path)
-        import frame_header  # type: ignore[import]
-        fhi = frame_header.parse_frame_header(data)
+        from zst.frame_header import parse_frame_header
+        fhi = parse_frame_header(data)
         if not fhi.is_unknown:
             result["valid"] = True
             result["content_size"] = fhi.content_size
@@ -262,7 +230,7 @@ def compress_file(
 ) -> dict[str, Any]:
     """Compress a file to a Zstandard .zst archive.
 
-    Reads input_path, compresses with Zstandard (RFC 8878 §3.1.1 — FACT-ZST-001),
+    Reads input_path, compresses with Zstandard (RFC 8878 §3.1.1 — SAL-ZST-00001),
     and writes the compressed frame to output_path.
 
     Args:
@@ -327,7 +295,7 @@ def decompress_file(
     """Decompress a Zstandard .zst file to a destination path.
 
     Reads the .zst archive at input_path and writes decompressed bytes to
-    output_path. Validates the Zstandard magic (FACT-ZST-001).
+    output_path. Validates the Zstandard magic (SAL-ZST-00001).
 
     Args:
         input_path: Path to the .zst file.
@@ -391,7 +359,7 @@ def validate_roundtrip(data: bytes, level: int = 3) -> dict[str, Any]:
     Compresses the input, immediately decompresses, and verifies byte equality.
     Useful as a quick integrity check before writing a .zst file.
 
-    This operation references FACT-ZST-001: the magic header 0xFD2FB528
+    This operation references SAL-ZST-00001: the magic header 0xFD2FB528
     (RFC 8878 §3.1.1) is verified as part of the decompress step.
 
     Args:
@@ -409,7 +377,7 @@ def validate_roundtrip(data: bytes, level: int = 3) -> dict[str, Any]:
             error (str | None): Error message if roundtrip failed.
 
     Added in Sprint FORMAT-FACTORY-AUTHORITY-GATED-PRODUCT-DOGFOOD-FEATURES-AND-BACKFILL-001
-    (authority: P6, FACT-ZST-001).
+    (authority: P6, SAL-ZST-00001).
     """
     result: dict[str, Any] = {
         "valid": False,
@@ -452,7 +420,7 @@ def get_frame_info(data: bytes) -> dict[str, Any]:
     Returns:
         Dict with keys:
             valid (bool): True if this is a valid Zstandard frame.
-            magic_ok (bool): True if magic bytes match FACT-ZST-001.
+            magic_ok (bool): True if magic bytes match SAL-ZST-00001.
             content_size (int | None): Declared decompressed size, or None.
             compressed_size (int): Size of the compressed data.
             compression_ratio (float | None): compressed/decompressed ratio, or None.
@@ -713,7 +681,7 @@ def decompress_to_string(data: bytes, encoding: str = "utf-8") -> str:
 # ---------------------------------------------------------------------------
 # Sprint: FORMAT-FACTORY-SAL-RECONCILIATION-HARDENING-AND-PRODUCT-GATED-ADVANCEMENT-SPRINT-3
 # Queue: sal3-product-q-001, sal3-product-q-002
-# spec_fact_refs: FACT-ZST-001 (Zstandard Frame Format, RFC-draft)
+# spec_fact_refs: SAL-ZST-00001 (Zstandard Frame Format, RFC-draft)
 # ---------------------------------------------------------------------------
 
 def compress_string_to_file(text: str, output_path: str | Path,
@@ -789,7 +757,7 @@ def decompress_file_to_string(path: str | Path, encoding: str = "utf-8",
 # ---------------------------------------------------------------------------
 # Sprint: FORMAT-FACTORY-SAL-ENFORCEMENT-CLOSEOUT-AND-PRODUCT-ACCELERATION-RNEXT-001
 # Queue: rnext-product-q-001
-# spec_fact_refs: FACT-ZST-001
+# spec_fact_refs: SAL-ZST-00001
 # route_decision_id: RDEC-RNEXT-LG-001
 # ---------------------------------------------------------------------------
 
@@ -891,10 +859,10 @@ def decompress_with_dict(data: bytes, dict_data: bytes) -> bytes:
     return dctx.decompress(data)
 
 
-# Skippable frame support (FACT-ZST-002, FACT-ZST-004)
+# Skippable frame support (SAL-ZST-00002, SAL-ZST-00004)
 # Skippable frames use magic numbers in [0x184D2A50, 0x184D2A5F] (16 valid values)
-_SKIPPABLE_MAGIC_LOW = 0x184D2A50  # FACT-ZST-002
-_SKIPPABLE_MAGIC_HIGH = 0x184D2A5F  # FACT-ZST-002
+_SKIPPABLE_MAGIC_LOW = 0x184D2A50  # SAL-ZST-00002
+_SKIPPABLE_MAGIC_HIGH = 0x184D2A5F  # SAL-ZST-00002
 _SKIPPABLE_FRAME_HEADER_SIZE = 8  # 4-byte magic + 4-byte frame size
 
 
@@ -911,7 +879,7 @@ def is_skippable_frame(data: bytes) -> bool:
         True if the first four bytes encode a valid skippable frame magic.
 
     References:
-        FACT-ZST-002: Skippable frames start with 4-byte magic in range
+        SAL-ZST-00002: Skippable frames start with 4-byte magic in range
                       0x184D2A50 to 0x184D2A5F (little-endian).
     """
     if len(data) < 4:
@@ -933,7 +901,7 @@ def has_skippable_frames(data: bytes) -> bool:
         True if one or more skippable frames are present.
 
     References:
-        FACT-ZST-004: Two frame formats — Zstandard frames and skippable frames.
+        SAL-ZST-00004: Two frame formats — Zstandard frames and skippable frames.
     """
     return get_skippable_frame_count(data) > 0
 
@@ -951,8 +919,8 @@ def get_skippable_frame_count(data: bytes) -> int:
         Number of skippable frames found (0 if none or stream is invalid).
 
     References:
-        FACT-ZST-002: Skippable frames start with magic in 0x184D2A50..0x184D2A5F.
-        FACT-ZST-004: Two frame formats co-exist in a stream.
+        SAL-ZST-00002: Skippable frames start with magic in 0x184D2A50..0x184D2A5F.
+        SAL-ZST-00004: Two frame formats co-exist in a stream.
     """
     count = 0
     offset = 0
@@ -1000,8 +968,8 @@ def extract_skippable_frames(data: bytes) -> list:
         List of payload bytes extracted from each skippable frame.
 
     References:
-        FACT-ZST-002: Skippable frame header: 4-byte magic + 4-byte frame_size.
-        FACT-ZST-004: Skippable frames carry arbitrary user metadata.
+        SAL-ZST-00002: Skippable frame header: 4-byte magic + 4-byte frame_size.
+        SAL-ZST-00004: Skippable frames carry arbitrary user metadata.
     """
     payloads: list = []
     offset = 0

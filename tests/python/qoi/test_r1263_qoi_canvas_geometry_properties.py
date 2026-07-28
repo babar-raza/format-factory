@@ -5,7 +5,7 @@ Properties under test:
     is_narrow             — edge_ratio > 3.0
     bytes_per_pixel_estimate — channels (RGB=3, RGBA=4)
 
-spec_fact_ref: FACT-QOI-001
+spec_fact_ref: SAL-QOI-00001
 """
 
 import types

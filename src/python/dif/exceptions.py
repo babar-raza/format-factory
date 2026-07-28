@@ -20,3 +20,11 @@ class DifParseError(DifError):
 
 class DifWriteError(DifError):
     """Raised when a dif file cannot be written."""
+
+
+class DifInvalidFormatError(DifParseError):
+    """Raised when file structure is not valid DIF."""
+
+
+class DifSizeError(DifParseError):
+    """Raised when file or data exceeds limits."""

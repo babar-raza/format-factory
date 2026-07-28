@@ -1,7 +1,7 @@
 """R569: SYLK cell analysis properties — has_numeric_cells, has_string_cells, fill_ratio.
 
 Tests for SylkModelDocument cell analysis properties added in R569.
-Spec refs: FACT-SYLK-001.
+Spec refs: SAL-SYLK-00001.
 """
 
 import types

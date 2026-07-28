@@ -1,11 +1,11 @@
-"""
-QOI analytics functions extracted from qoi_parser.py (TC-HEAL-FORMATS-BATCH2).
-"""
+"""image_document.py — QOI image-document domain module: whole-image metric / summary
+operations over the parsed QOI image (dimensions, pixel / channel counts, unique-color,
+opacity). Sanctioned ``*_document.py`` domain role; see tests/test_source_structure.py; parser: qoi_parser.py (parse_qoi_strict)."""
 from __future__ import annotations
 
 
 spec_qname = "qoi:image"
-spec_fact_ref = "FACT-QOI-001"
+spec_fact_ref = "SAL-QOI-00001"
 namespace_uri = "urn:qoi:quite-ok-image"
 
 from pathlib import Path

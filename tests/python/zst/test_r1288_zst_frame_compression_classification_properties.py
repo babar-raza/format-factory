@@ -5,7 +5,7 @@ Properties under test:
     compression_class  — 'none', 'low', 'moderate', 'high', or 'very_high'
     avg_frame_size_kb  — (compressed_size / frame_count) / 1024 (0.0 if no frames)
 
-spec_fact_ref: FACT-ZST-001
+spec_fact_ref: SAL-ZST-00001
 """
 
 import pytest

@@ -36,7 +36,7 @@ class TestTomlDocumentSpec:
         assert TomlDocument.spec_qname == "toml:table"
 
     def test_spec_fact_ref(self):
-        assert TomlDocument.spec_fact_ref == "FACT-TOML-001"
+        assert TomlDocument.spec_fact_ref == "SAL-TOML-00001"
 
     def test_namespace_uri(self):
         assert "toml" in TomlDocument.namespace_uri.lower()

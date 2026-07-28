@@ -22,7 +22,7 @@ def ppm_iter_pixmaps(source: "str | Path") -> Iterator[Pixmap]:
         source: Path to a .ppm Portable Pixmap file.
 
     Yields:
-        Pixmap instances (spec class: ppm:pixmap, FACT-PPM-002).
+        Pixmap instances (spec class: ppm:pixmap, SAL-PPM-00002).
     """
     img = parse_ppm_strict(str(Path(source).resolve()))
     width = img.width

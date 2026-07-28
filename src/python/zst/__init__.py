@@ -3,6 +3,7 @@
 
 from .zst_codec import *  # noqa: F401, F403
 from .compressed_stream import *  # noqa: F401, F403
+from .exceptions import *  # noqa: F401, F403
 
 # Explicit public API — 32 core functions + exceptions for Gate 11
 __all__ = [
@@ -37,7 +38,7 @@ __all__ = [
     # Dictionary-based compression
     "compress_with_dict",
     "decompress_with_dict",
-    # Derived metrics (spec-backed per FACT-ZST-001)
+    # Derived metrics (spec-backed per SAL-ZST-00001)
     "zst_compressed_size",
     "zst_is_valid_file",
     "zst_decompressed_size",
@@ -47,7 +48,7 @@ __all__ = [
     "zst_compression_ratio",
     "zst_max_frame_size",
     "zst_is_single_frame",
-    # Spec-level domain functions (compressed_stream module, FACT-ZST-001)
+    # Spec-level domain functions (compressed_stream module, SAL-ZST-00001)
     "zst_size_exceeds_50",
     "zst_frame_count_exceeds_one",
     "zst_max_byte_value",
@@ -59,7 +60,7 @@ __all__ = [
     "zst_is_single_byte",
     # Domain model class
     "ZstDocument",
-    # Skippable frame support (FACT-ZST-002, FACT-ZST-004)
+    # Skippable frame support (SAL-ZST-00002, SAL-ZST-00004)
     "is_skippable_frame",
     "has_skippable_frames",
     "get_skippable_frame_count",

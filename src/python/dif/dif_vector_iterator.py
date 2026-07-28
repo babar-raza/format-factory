@@ -20,7 +20,7 @@ def dif_iter_vectors(source: "str | Path") -> Iterator[Vector]:
         source: Path to a .dif Data Interchange Format file.
 
     Yields:
-        Vector instances (spec class: dif:vector, FACT-DIF-002).
+        Vector instances (spec class: dif:vector, SAL-DIF-00002).
     """
     model = parse_dif(str(Path(source).resolve()))
     for row in model.get("rows", []):

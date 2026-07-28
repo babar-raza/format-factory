@@ -1317,13 +1317,13 @@ class TestPackageExceptionHierarchy:
         with pytest.raises(SylkError):
             raise SylkWriteError("boom")
 
-    def test_exceptions_module_distinct_from_parser_module(self):
-        # sylk_parser.py defines its own SylkError/SylkParseError hierarchy
-        # (plain Exception-based) distinct from exceptions.py
-        # (FormatFactoryError-based). Both are real, both are tested.
+    def test_exceptions_module_unified_with_parser_module(self):
+        """Healed: sylk_parser.py imports SylkError from exceptions.py
+        rather than redefining it -- single source of truth. See
+        plans/.claude/quizzical-munching-gadget.md section 7."""
         from sylk.exceptions import SylkError as PkgSylkError
         from sylk.sylk_parser import SylkError as ParserSylkError
-        assert PkgSylkError is not ParserSylkError
+        assert PkgSylkError is ParserSylkError
 
 
 # ---------------------------------------------------------------------------
@@ -1519,26 +1519,9 @@ class TestDogfoodConverters:
         assert isinstance(count, int) and count >= 0
         assert dest.exists()
 
-    def test_sylk_to_pbm(self, tmp_path):
-        from sylk.sylk_to_pbm import sylk_to_pbm
-        dest = tmp_path / "out.pbm"
-        count = sylk_to_pbm(MINIMAL, dest)
-        assert isinstance(count, int) and count >= 1  # height == 2 data rows
-        assert dest.exists()
-
-    def test_sylk_to_pgm(self, tmp_path):
-        from sylk.sylk_to_pgm import sylk_to_pgm
-        dest = tmp_path / "out.pgm"
-        count = sylk_to_pgm(MINIMAL, dest)
-        assert isinstance(count, int) and count >= 0
-        assert dest.exists()
-
-    def test_sylk_to_ppm(self, tmp_path):
-        from sylk.sylk_to_ppm import sylk_to_ppm
-        dest = tmp_path / "out.ppm"
-        count = sylk_to_ppm(MINIMAL, dest)
-        assert isinstance(count, int) and count >= 0
-        assert dest.exists()
+    # test_sylk_to_pbm / _pgm / _ppm removed by TC-PA-015 (PORTFOLIO-AUDIT-2026-07-16):
+    # sylk->pbm/pgm/ppm are INCOMPATIBLE (TABULAR payload has no pixel representation);
+    # the converters were deprecated and removed. See converter-compatibility-matrix.yaml.
 
     def test_sylk_to_toml(self, tmp_path):
         from sylk.sylk_to_toml import sylk_to_toml

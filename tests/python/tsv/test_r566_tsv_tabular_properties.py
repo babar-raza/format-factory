@@ -1,7 +1,7 @@
 """R566: TSV additional tabular properties — is_multi_row, is_single_column, has_multiple_columns.
 
 Tests for TsvDocument tabular properties added in R566.
-Spec refs: FACT-TSV-001 (tsv:record).
+Spec refs: SAL-TSV-00001 (tsv:record).
 """
 
 import pytest

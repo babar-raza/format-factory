@@ -23,7 +23,7 @@ from sylk.sylk_parser import (
 )
 
 sys.path.insert(0, str(_REPO))
-from src.python.csv.csv_parser import parse_csv
+from src.python.ff_csv.csv_parser import parse_csv
 
 
 def _make_doc(*cells_data) -> SylkDocument:

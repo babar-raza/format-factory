@@ -2,7 +2,7 @@
 DIF structural element: dif:vector
 
 Spec ref: DIF specification — data vector
-Fact ref: FACT-DIF-002
+Fact ref: SAL-DIF-00002
 QName: dif:vector
 Canonical class: Vector
 Facade: DifVector
@@ -15,7 +15,7 @@ class Vector:
     """Canonical spec-shaped class for dif:vector (row or column vector)."""
 
     spec_qname: ClassVar[str] = "dif:vector"
-    spec_fact_ref: ClassVar[str] = "FACT-DIF-002"
+    spec_fact_ref: ClassVar[str] = "SAL-DIF-00002"
     namespace_uri: ClassVar[str] = "urn:format:dif:1.0"
     local_name: ClassVar[str] = "vector"
     facade_names: ClassVar[list] = ["DifVector"]

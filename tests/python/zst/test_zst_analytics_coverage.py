@@ -64,7 +64,7 @@ class TestZstDocument:
         assert zst.ZstDocument.spec_qname == "zst:frame"
 
     def test_spec_fact_ref(self):
-        assert zst.ZstDocument.spec_fact_ref == "FACT-ZST-001"
+        assert zst.ZstDocument.spec_fact_ref == "SAL-ZST-00001"
 
     def test_from_file_returns_instance(self):
         doc = zst.ZstDocument.from_file(_sample("text-compressed.zst"))

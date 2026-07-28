@@ -5,7 +5,7 @@ Properties under test:
     max_cells_per_sheet — max cell count in any sheet (0 if no sheets)
     is_valid          — alias for is_gnumeric
 
-spec_fact_ref: FACT-GNUMERIC-001
+spec_fact_ref: SAL-GNUMERIC-00001
 """
 
 import pytest

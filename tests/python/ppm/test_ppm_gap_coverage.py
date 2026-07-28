@@ -84,17 +84,14 @@ class TestParsePpm:
         with pytest.raises(ppm.PpmInvalidMagicError):
             ppm.parse_ppm_strict(_INVALID_MAGIC)
 
-    def test_exported_ppmerror_does_not_catch_parser_failures(self):
-        """Characterization: the facade PpmError (exceptions.py) is a
-        distinct class from ppm_parser.PpmError, so it must NOT catch
-        parser-raised exceptions."""
-        with pytest.raises(PpmParserError):
-            try:
-                ppm.parse_ppm_strict(_INVALID_MAGIC)
-            except ppm.PpmError:
-                pytest.fail("ppm.PpmError unexpectedly caught a parser error")
-            except PpmParserError:
-                raise
+    def test_parser_errors_catchable_via_package_error(self):
+        """Healed hierarchy: exceptions.py is the single source of truth,
+        so ppm_parser.PpmError (imported from .exceptions) IS ppm.PpmError
+        -- parser-raised errors are now catchable via the package-level
+        facade. See plans/.claude/quizzical-munching-gadget.md section 7."""
+        assert PpmParserError is ppm.PpmError
+        with pytest.raises(ppm.PpmError):
+            ppm.parse_ppm_strict(_INVALID_MAGIC)
 
     def test_probe_ppm_missing_file(self):
         result = ppm.probe_ppm(_SAMPLES / "absent.ppm")

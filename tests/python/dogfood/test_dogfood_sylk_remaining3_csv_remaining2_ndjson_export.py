@@ -18,7 +18,7 @@ sys.path.insert(0, str(_REPO))
 
 from sylk.sylk_analytics import sylk_unique_value_count
 from sylk.sylk_parser import get_row_values, sum_column, min_column_value, max_column_value, find_rows_by_value, get_all_values
-from src.python.csv.csv_parser import (
+from src.python.ff_csv.csv_parser import (
     get_capabilities as csv_get_capabilities,
     csv_row_count,
     csv_has_header,

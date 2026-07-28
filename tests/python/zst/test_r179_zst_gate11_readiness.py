@@ -12,7 +12,7 @@ test_r179_zst_gate11_readiness.py -- ZST Gate 11 commercial readiness scenario t
 
 Sprint: FORMAT-FACTORY-SAL-PHASE3-PRODUCT-DEEPENING-SPRINT3-001
 Gate: ZST Gate 11 readiness proof
-Spec ref: FACT-ZST-001 (magic bytes 0x28 0xB5 0x2F 0xFD)
+Spec ref: SAL-ZST-00001 (magic bytes 0x28 0xB5 0x2F 0xFD)
 """
 from __future__ import annotations
 
@@ -55,7 +55,7 @@ class TestZstGate11RoundTrip:
         assert recovered == _MEDIUM_TEXT
 
     def test_magic_header_present_in_compressed(self):
-        """FACT-ZST-001: compressed bytes must start with Zstandard magic 0x28 0xB5 0x2F 0xFD."""
+        """SAL-ZST-00001: compressed bytes must start with Zstandard magic 0x28 0xB5 0x2F 0xFD."""
         compressed = compress_bytes(_SMALL_TEXT)
         assert compressed[:4] == ZSTD_MAGIC
 

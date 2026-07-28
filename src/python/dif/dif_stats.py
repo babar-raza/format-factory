@@ -430,7 +430,7 @@ def dif_all_cells_numeric(file_path: "str | _Path") -> bool:
 def dif_title(file_path: "str | _Path") -> str:
     """Return the document title string, or empty string if not set.
 
-    Spec: DIF TABLE header directive (FACT-DIF-001)
+    Spec: DIF TABLE header directive (SAL-DIF-00001)
     """
     from .dif_parser import parse_dif_strict as _parse
     doc = _parse(file_path)
@@ -440,7 +440,7 @@ def dif_title(file_path: "str | _Path") -> str:
 def dif_row_count(file_path: "str | _Path") -> int:
     """Return the number of data rows in the DIF document.
 
-    Spec: DIF TABLE row structure (FACT-DIF-001)
+    Spec: DIF TABLE row structure (SAL-DIF-00001)
     """
     from .dif_parser import parse_dif_strict as _parse
     doc = _parse(file_path)
@@ -450,7 +450,7 @@ def dif_row_count(file_path: "str | _Path") -> int:
 def dif_first_row_cell_count(file_path: "str | _Path") -> int:
     """Return the cell count in the first data row. 0 if no rows.
 
-    Spec: DIF TABLE row structure (FACT-DIF-001)
+    Spec: DIF TABLE row structure (SAL-DIF-00001)
     """
     from .dif_parser import parse_dif_strict as _parse
     doc = _parse(file_path)
@@ -460,7 +460,7 @@ def dif_first_row_cell_count(file_path: "str | _Path") -> int:
 def dif_has_numeric_cells(file_path: "str | _Path") -> bool:
     """Return True if any cell in the document has value_type 'numeric'.
 
-    Spec: DIF numeric value type (FACT-DIF-001)
+    Spec: DIF numeric value type (SAL-DIF-00001)
     """
     from .dif_parser import parse_dif_strict as _parse
     doc = _parse(file_path)
@@ -473,7 +473,7 @@ def dif_has_numeric_cells(file_path: "str | _Path") -> bool:
 def dif_numeric_cell_values(file_path: "str | _Path") -> list:
     """Return list of float values from all numeric cells, in row-major order.
 
-    Spec: DIF numeric value type (FACT-DIF-001)
+    Spec: DIF numeric value type (SAL-DIF-00001)
     """
     from .dif_parser import parse_dif_strict as _parse
     doc = _parse(file_path)
@@ -487,7 +487,7 @@ def dif_numeric_cell_values(file_path: "str | _Path") -> list:
 def dif_cell_type_set(file_path: "str | _Path") -> list:
     """Return sorted list of distinct cell value_type strings across all rows.
 
-    Spec: DIF cell type taxonomy (FACT-DIF-001)
+    Spec: DIF cell type taxonomy (SAL-DIF-00001)
     """
     from .dif_parser import parse_dif_strict as _parse
     doc = _parse(file_path)

@@ -24,20 +24,20 @@ def _first_pbm():
 
 class TestCsvDistinctValueCount:
     def test_returns_int(self, tmp_path):
-        from src.python.csv.csv_parser import csv_distinct_value_count
+        from src.python.ff_csv.csv_parser import csv_distinct_value_count
         p = str(tmp_path / "test.csv")
         Path(p).write_text("a,b\n1,2\n1,3\n", encoding="utf-8")
         assert isinstance(csv_distinct_value_count(p), int)
 
     def test_correct_count(self, tmp_path):
-        from src.python.csv.csv_parser import csv_distinct_value_count
+        from src.python.ff_csv.csv_parser import csv_distinct_value_count
         p = str(tmp_path / "test.csv")
         Path(p).write_text("h1,h2\nA,B\nA,C\nD,B\n", encoding="utf-8")
         # Values: h1, h2, A, B, A, C, D, B -> distinct: h1, h2, A, B, C, D = 6
         assert csv_distinct_value_count(p) == 6
 
     def test_empty_file(self, tmp_path):
-        from src.python.csv.csv_parser import csv_distinct_value_count
+        from src.python.ff_csv.csv_parser import csv_distinct_value_count
         p = str(tmp_path / "empty.csv")
         Path(p).write_text("", encoding="utf-8")
         assert csv_distinct_value_count(p) == 0
@@ -45,26 +45,26 @@ class TestCsvDistinctValueCount:
 
 class TestCsvEmptyCellRatio:
     def test_returns_float(self, tmp_path):
-        from src.python.csv.csv_parser import csv_empty_cell_ratio
+        from src.python.ff_csv.csv_parser import csv_empty_cell_ratio
         p = str(tmp_path / "test.csv")
         Path(p).write_text("a,b\n1,2\n", encoding="utf-8")
         assert isinstance(csv_empty_cell_ratio(p), float)
 
     def test_no_empty_cells(self, tmp_path):
-        from src.python.csv.csv_parser import csv_empty_cell_ratio
+        from src.python.ff_csv.csv_parser import csv_empty_cell_ratio
         p = str(tmp_path / "full.csv")
         Path(p).write_text("a,b\n1,2\n3,4\n", encoding="utf-8")
         assert csv_empty_cell_ratio(p) == 0.0
 
     def test_some_empty(self, tmp_path):
-        from src.python.csv.csv_parser import csv_empty_cell_ratio
+        from src.python.ff_csv.csv_parser import csv_empty_cell_ratio
         p = str(tmp_path / "sparse.csv")
         Path(p).write_text("a,b\n1,\n,4\n", encoding="utf-8")
         ratio = csv_empty_cell_ratio(p)
         assert 0.0 < ratio < 1.0
 
     def test_range(self, tmp_path):
-        from src.python.csv.csv_parser import csv_empty_cell_ratio
+        from src.python.ff_csv.csv_parser import csv_empty_cell_ratio
         p = str(tmp_path / "test.csv")
         Path(p).write_text("a,b\n1,2\n", encoding="utf-8")
         ratio = csv_empty_cell_ratio(p)

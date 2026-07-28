@@ -1,7 +1,7 @@
 """R1227: NDJSON size classification properties — is_small, is_large, min_keys.
 
 Tests for NdjsonDocument size and key analysis properties added in R1227.
-Spec refs: FACT-NDJSON-001 (ndjson:record structure).
+Spec refs: SAL-NDJSON-00001 (ndjson:record structure).
 """
 
 from __future__ import annotations

@@ -29,7 +29,7 @@ class TestZstFrameMetadata:
         assert ZstFrame.spec_qname == "zst:frame"
 
     def test_spec_fact_ref(self):
-        assert ZstFrame.spec_fact_ref == "FACT-ZST-001"
+        assert ZstFrame.spec_fact_ref == "SAL-ZST-00001"
 
     def test_magic_constant(self):
         assert ZstFrame.MAGIC == 0xFD2FB528

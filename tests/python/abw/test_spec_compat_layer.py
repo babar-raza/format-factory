@@ -26,7 +26,7 @@ class TestAbwDocumentMetadata:
         assert AbwDocument.spec_qname == "abiword:document"
 
     def test_spec_fact_ref(self):
-        assert AbwDocument.spec_fact_ref == "FACT-ABW-001"
+        assert AbwDocument.spec_fact_ref == "SAL-ABW-00001"
 
     def test_namespace_uri(self):
         assert "abisource" in AbwDocument.namespace_uri

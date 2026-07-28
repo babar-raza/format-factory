@@ -5,7 +5,7 @@ Properties under test:
     is_flat_grid   — column_count > 3 * row_count (and row_count > 0)
     is_sparse_data — fill_density < 0.5 and total_cell_count > 0
 
-spec_fact_ref: FACT-TSV-001
+spec_fact_ref: SAL-TSV-00001
 """
 
 import math

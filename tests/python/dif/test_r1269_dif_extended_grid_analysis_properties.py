@@ -5,7 +5,7 @@ Properties under test:
     is_flat            — vectors > 3 * row_count (and row_count > 0)
     cell_density_ratio — cell_count / (row_count * vectors), 0.0 if empty
 
-spec_fact_ref: FACT-DIF-001
+spec_fact_ref: SAL-DIF-00001
 """
 
 import types

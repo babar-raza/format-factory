@@ -78,19 +78,19 @@ class TestXcfMaxSideLength:
 # ---------- CSV ----------
 class TestCsvFieldValueVariance:
     def test_returns_float(self):
-        from src.python.csv.csv_parser import csv_field_value_variance
+        from src.python.ff_csv.csv_parser import csv_field_value_variance
         assert isinstance(csv_field_value_variance(_CSV), (int, float))
 
     def test_non_negative(self):
-        from src.python.csv.csv_parser import csv_field_value_variance
+        from src.python.ff_csv.csv_parser import csv_field_value_variance
         assert csv_field_value_variance(_CSV) >= 0.0
 
 
 class TestCsvRowTextTotal:
     def test_returns_int(self):
-        from src.python.csv.csv_parser import csv_row_text_total
+        from src.python.ff_csv.csv_parser import csv_row_text_total
         assert isinstance(csv_row_text_total(_CSV), int)
 
     def test_non_negative(self):
-        from src.python.csv.csv_parser import csv_row_text_total
+        from src.python.ff_csv.csv_parser import csv_row_text_total
         assert csv_row_text_total(_CSV) >= 0

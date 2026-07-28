@@ -15,7 +15,7 @@ _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO / "src" / "python"))
 sys.path.insert(0, str(_REPO))
 
-from src.python.csv.csv_parser import (
+from src.python.ff_csv.csv_parser import (
     csv_distinct_value_count,
     csv_empty_cell_count,
     csv_empty_cell_ratio,

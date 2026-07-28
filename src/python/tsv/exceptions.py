@@ -20,3 +20,11 @@ class TsvParseError(TsvError):
 
 class TsvWriteError(TsvError):
     """Raised when a tsv file cannot be written."""
+
+
+class TsvInputError(TsvParseError):
+    """Raised when the file cannot be read."""
+
+
+class TsvSizeError(TsvParseError):
+    """Raised when the file exceeds size or row limits."""

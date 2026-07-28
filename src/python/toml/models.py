@@ -21,7 +21,7 @@ class TomlDocument:
     """
 
     spec_qname: ClassVar[str] = "toml:table"
-    spec_fact_ref: ClassVar[str] = "FACT-TOML-001"
+    spec_fact_ref: ClassVar[str] = "SAL-TOML-00001"
     namespace_uri: ClassVar[str] = "urn:format:toml:1.0"
     local_name: ClassVar[str] = "table"
     facade_names: ClassVar[list] = []
@@ -79,7 +79,7 @@ class TomlDocument:
         """Number of top-level keys whose value is a scalar (not a dict or list)."""
         return sum(1 for v in self._doc().values() if not isinstance(v, (dict, list)))
 
-    # Additional structural properties (FACT-TOML-002, FACT-TOML-004)
+    # Additional structural properties (SAL-TOML-00002, SAL-TOML-00004)
     @property
     def is_flat(self) -> bool:
         """True if the document has no nested tables."""
@@ -95,7 +95,7 @@ class TomlDocument:
         """Number of top-level keys whose value is a table (dict)."""
         return sum(1 for v in self._doc().values() if isinstance(v, dict))
 
-    # Additional key analysis properties (FACT-TOML-001)
+    # Additional key analysis properties (SAL-TOML-00001)
 
     @property
     def has_scalars(self) -> bool:
@@ -112,7 +112,7 @@ class TomlDocument:
         """True if the document has nested tables or arrays."""
         return self.has_nested_tables or self.has_arrays
 
-    # Document classification properties (FACT-TOML-001)
+    # Document classification properties (SAL-TOML-00001)
 
     @property
     def has_only_scalars(self) -> bool:
@@ -129,7 +129,7 @@ class TomlDocument:
         """Number of top-level keys whose value is an array (list)."""
         return sum(1 for v in self._doc().values() if isinstance(v, list))
 
-    # Size and value type properties (FACT-TOML-001 R1242)
+    # Size and value type properties (SAL-TOML-00001 R1242)
 
     @property
     def is_large(self) -> bool:
@@ -149,7 +149,7 @@ class TomlDocument:
         """True if any top-level value is a str."""
         return any(isinstance(v, str) for v in self._doc().values())
 
-    # Value type distribution properties (FACT-TOML-001 R1262)
+    # Value type distribution properties (SAL-TOML-00001 R1262)
 
     @property
     def has_mixed_values(self) -> bool:
@@ -170,7 +170,7 @@ class TomlDocument:
             if isinstance(v, (int, float)) and not isinstance(v, bool)
         )
 
-    # Value type inventory properties (FACT-TOML-001 R1282)
+    # Value type inventory properties (SAL-TOML-00001 R1282)
 
     @property
     def boolean_key_count(self) -> int:

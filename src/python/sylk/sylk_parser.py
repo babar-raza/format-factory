@@ -22,27 +22,12 @@ import os
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, ClassVar
+from .exceptions import SylkError, SylkParseError, SylkInvalidFormatError, SylkSizeError
 
 
 MAX_FILE_SIZE = 64 * 1024 * 1024  # 64 MiB
 MAX_ROWS = 1_048_576
 MAX_COLUMNS = 16_384
-
-
-class SylkError(Exception):
-    """Base exception for SYLK parser errors."""
-
-
-class SylkInvalidFormatError(SylkError):
-    """Raised when file does not start with ID record."""
-
-
-class SylkSizeError(SylkError):
-    """Raised when file size or dimensions exceed limits."""
-
-
-class SylkParseError(SylkError):
-    """Raised when record parsing fails."""
 
 
 @dataclass

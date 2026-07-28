@@ -47,21 +47,21 @@ class TestFodpShapeVariance:
 
 class TestCsvAvgRowLength:
     def test_returns_float(self):
-        from src.python.csv.csv_parser import csv_avg_row_length
+        from src.python.ff_csv.csv_parser import csv_avg_row_length
         assert isinstance(csv_avg_row_length(CSV), float)
 
     def test_positive(self):
-        from src.python.csv.csv_parser import csv_avg_row_length
+        from src.python.ff_csv.csv_parser import csv_avg_row_length
         assert csv_avg_row_length(CSV) > 0.0
 
 
 class TestCsvNumericColumnCount:
     def test_returns_int(self):
-        from src.python.csv.csv_parser import csv_numeric_column_count
+        from src.python.ff_csv.csv_parser import csv_numeric_column_count
         assert isinstance(csv_numeric_column_count(CSV), int)
 
     def test_non_negative(self):
-        from src.python.csv.csv_parser import csv_numeric_column_count
+        from src.python.ff_csv.csv_parser import csv_numeric_column_count
         assert csv_numeric_column_count(CSV) >= 0
 
 

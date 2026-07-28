@@ -20,7 +20,7 @@ def xcf_iter_layers(source: "str | Path") -> Iterator[Layer]:
         source: Path to a .xcf GIMP drawing file.
 
     Yields:
-        Layer instances (spec class: xcf:layer, FACT-XCF-002).
+        Layer instances (spec class: xcf:layer, SAL-XCF-00002).
     """
     img = parse_xcf_strict(str(Path(source).resolve()))
     layer_names = img.layer_names or []

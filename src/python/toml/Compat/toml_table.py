@@ -7,5 +7,5 @@ from ..spec.table.table import Table as _SpecTable
 class TomlTable(_SpecTable):
     """Production facade for toml:table."""
     spec_qname: ClassVar[str] = "toml:table"
-    spec_fact_ref: ClassVar[str] = "FACT-TOML-001"
+    spec_fact_ref: ClassVar[str] = "SAL-TOML-00001"
     namespace_uri: ClassVar[str] = "urn:format:toml:1.0"

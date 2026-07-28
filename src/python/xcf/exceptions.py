@@ -20,3 +20,15 @@ class XcfParseError(XcfError):
 
 class XcfWriteError(XcfError):
     """Raised when a xcf file cannot be written."""
+
+
+class XcfInvalidMagicError(XcfParseError):
+    """Raised when the file magic is not 'gimp xcf '."""
+
+
+class XcfInvalidHeaderError(XcfParseError):
+    """Raised when header fields are invalid."""
+
+
+class XcfSizeError(XcfParseError):
+    """Raised when file or image dimensions exceed limits."""

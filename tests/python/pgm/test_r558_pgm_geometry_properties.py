@@ -1,7 +1,7 @@
 """R558: PGM geometry properties — aspect_ratio, is_square, is_landscape, is_portrait.
 
 Tests for PgmDocument geometry properties added in R558.
-Spec refs: FACT-PGM-001 (P2 magic), FACT-PGM-002 (P5 magic).
+Spec refs: SAL-PGM-00001 (P2 magic), SAL-PGM-00002 (P5 magic).
 """
 
 import pytest

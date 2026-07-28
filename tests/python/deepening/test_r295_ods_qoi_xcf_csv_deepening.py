@@ -17,7 +17,7 @@ sys.path.insert(0, str(_REPO))
 from src.python.ods import ods_row_value_variance, ods_is_multi_sheet
 from src.python.qoi import qoi_is_monochrome, qoi_red_ratio
 from src.python.xcf import xcf_layer_area_variance, xcf_row_count
-from src.python.csv.csv_parser import csv_column_count_variance, csv_has_numeric_header
+from src.python.ff_csv.csv_parser import csv_column_count_variance, csv_has_numeric_header
 
 _ODS = _REPO / "samples" / "by-format" / "ods" / "valid" / "minimal-spreadsheet.ods"
 _QOI = _REPO / "samples" / "by-format" / "qoi" / "valid" / "2x2-black.qoi"

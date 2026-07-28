@@ -22,6 +22,7 @@ import os
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, ClassVar
+from .exceptions import PgmError, PgmParseError, PgmInvalidMagicError, PgmInvalidHeaderError, PgmSizeError, PgmDecodeError
 
 
 MAX_FILE_SIZE = 64 * 1024 * 1024  # 64 MiB
@@ -33,26 +34,6 @@ MAX_MAXVAL = 65535
 # SAL-PGM-00002: "PGM binary format starts with magic 'P5' followed by whitespace"
 PGM_MAGIC_ASCII = "P2"   # SAL-PGM-00001
 PGM_MAGIC_BINARY = "P5"  # SAL-PGM-00002
-
-
-class PgmError(Exception):
-    """Base exception for PGM parser errors."""
-
-
-class PgmInvalidMagicError(PgmError):
-    """Raised when file does not start with P2 or P5."""
-
-
-class PgmInvalidHeaderError(PgmError):
-    """Raised when header fields are invalid."""
-
-
-class PgmSizeError(PgmError):
-    """Raised when file or image dimensions exceed limits."""
-
-
-class PgmDecodeError(PgmError):
-    """Raised when pixel data is malformed."""
 
 
 @dataclass

@@ -11,7 +11,7 @@ from pathlib import Path
 from .qoi_parser import parse_qoi_strict
 
 spec_qname = "qoi:image"
-spec_fact_ref = "FACT-QOI-001"
+spec_fact_ref = "SAL-QOI-00001"
 
 
 def qoi_is_landscape(source: "str | Path") -> bool:
@@ -53,7 +53,7 @@ def qoi_is_monochrome(source: "str | Path") -> bool:
 def qoi_width(source: "str | Path") -> int:
     """Return image width in pixels.
 
-    Spec: QOI header width field (FACT-QOI-001)
+    Spec: QOI header width field (SAL-QOI-00001)
     """
     img = parse_qoi_strict(source)
     return img.width
@@ -62,7 +62,7 @@ def qoi_width(source: "str | Path") -> int:
 def qoi_height(source: "str | Path") -> int:
     """Return image height in pixels.
 
-    Spec: QOI header height field (FACT-QOI-001)
+    Spec: QOI header height field (SAL-QOI-00001)
     """
     img = parse_qoi_strict(source)
     return img.height
@@ -73,7 +73,7 @@ def qoi_colorspace(source: "str | Path") -> int:
 
     0 = sRGB with linear alpha, 1 = all channels linear.
 
-    Spec: QOI header colorspace field (FACT-QOI-001)
+    Spec: QOI header colorspace field (SAL-QOI-00001)
     """
     img = parse_qoi_strict(source)
     return img.colorspace
@@ -82,7 +82,7 @@ def qoi_colorspace(source: "str | Path") -> int:
 def qoi_is_rgb(source: "str | Path") -> bool:
     """Return True if the image uses 3-channel RGB (no alpha channel).
 
-    Spec: QOI header channels field (FACT-QOI-001)
+    Spec: QOI header channels field (SAL-QOI-00001)
     """
     img = parse_qoi_strict(source)
     return img.channels == 3
@@ -91,7 +91,7 @@ def qoi_is_rgb(source: "str | Path") -> bool:
 def qoi_min_channel_value(source: "str | Path") -> int:
     """Return the minimum individual channel value across all pixels. 0 if no pixels.
 
-    Spec: QOI pixel data channels (FACT-QOI-001)
+    Spec: QOI pixel data channels (SAL-QOI-00001)
     """
     img = parse_qoi_strict(source)
     if not img.pixels:
@@ -102,7 +102,7 @@ def qoi_min_channel_value(source: "str | Path") -> int:
 def qoi_max_channel_value(source: "str | Path") -> int:
     """Return the maximum individual channel value across all pixels. 0 if no pixels.
 
-    Spec: QOI pixel data channels (FACT-QOI-001)
+    Spec: QOI pixel data channels (SAL-QOI-00001)
     """
     img = parse_qoi_strict(source)
     if not img.pixels:
@@ -113,7 +113,7 @@ def qoi_max_channel_value(source: "str | Path") -> int:
 def qoi_channels(source: "str | Path") -> int:
     """Return the channel count from the QOI header (3=RGB, 4=RGBA).
 
-    Spec: QOI header channels field (FACT-QOI-001)
+    Spec: QOI header channels field (SAL-QOI-00001)
     """
     img = parse_qoi_strict(source)
     return img.channels
@@ -122,7 +122,7 @@ def qoi_channels(source: "str | Path") -> int:
 def qoi_is_single_pixel(source: "str | Path") -> bool:
     """Return True if the image is exactly 1x1 pixel.
 
-    Spec: QOI header width/height fields (FACT-QOI-001)
+    Spec: QOI header width/height fields (SAL-QOI-00001)
     """
     img = parse_qoi_strict(source)
     return img.width == 1 and img.height == 1
@@ -131,7 +131,7 @@ def qoi_is_single_pixel(source: "str | Path") -> bool:
 def qoi_aspect_ratio(source: "str | Path") -> float:
     """Return width / height as a float. 0.0 if height is 0.
 
-    Spec: QOI header width/height fields (FACT-QOI-001)
+    Spec: QOI header width/height fields (SAL-QOI-00001)
     """
     img = parse_qoi_strict(source)
     if img.height == 0:
@@ -144,7 +144,7 @@ def qoi_is_opaque(source: "str | Path") -> bool:
 
     For RGB images (3 channels) this always returns True.
 
-    Spec: QOI pixel data alpha channel (FACT-QOI-001)
+    Spec: QOI pixel data alpha channel (SAL-QOI-00001)
     """
     img = parse_qoi_strict(source)
     if img.channels == 3:
@@ -155,7 +155,7 @@ def qoi_is_opaque(source: "str | Path") -> bool:
 def qoi_unique_pixel_count(source: "str | Path") -> int:
     """Return the count of distinct pixel tuples in the image.
 
-    Spec: QOI pixel data (FACT-QOI-001)
+    Spec: QOI pixel data (SAL-QOI-00001)
     """
     img = parse_qoi_strict(source)
     return len(set(img.pixels))
@@ -164,7 +164,7 @@ def qoi_unique_pixel_count(source: "str | Path") -> int:
 def qoi_is_srgb(source: "str | Path") -> bool:
     """Return True if the image uses sRGB colorspace (colorspace == 0).
 
-    Spec: QOI header colorspace field (FACT-QOI-001)
+    Spec: QOI header colorspace field (SAL-QOI-00001)
     """
     img = parse_qoi_strict(source)
     return img.colorspace == 0
@@ -173,7 +173,7 @@ def qoi_is_srgb(source: "str | Path") -> bool:
 def qoi_is_linear(source: "str | Path") -> bool:
     """Return True if the image uses all-linear colorspace (colorspace == 1).
 
-    Spec: QOI header colorspace field (FACT-QOI-001)
+    Spec: QOI header colorspace field (SAL-QOI-00001)
     """
     img = parse_qoi_strict(source)
     return img.colorspace == 1
@@ -182,7 +182,7 @@ def qoi_is_linear(source: "str | Path") -> bool:
 def qoi_has_pixels(source: "str | Path") -> bool:
     """Return True if the image has at least one pixel.
 
-    Spec: QOI pixel data (FACT-QOI-001)
+    Spec: QOI pixel data (SAL-QOI-00001)
     """
     img = parse_qoi_strict(source)
     return len(img.pixels) > 0
@@ -191,7 +191,7 @@ def qoi_has_pixels(source: "str | Path") -> bool:
 def qoi_pixel_count(source: "str | Path") -> int:
     """Return the actual number of decoded pixels stored.
 
-    Spec: QOI pixel data (FACT-QOI-001)
+    Spec: QOI pixel data (SAL-QOI-00001)
     """
     img = parse_qoi_strict(source)
     return len(img.pixels)
@@ -200,7 +200,7 @@ def qoi_pixel_count(source: "str | Path") -> int:
 def qoi_avg_red(source: "str | Path") -> float:
     """Return the average red channel value across all pixels. 0.0 if no pixels.
 
-    Spec: QOI pixel data channels (FACT-QOI-001)
+    Spec: QOI pixel data channels (SAL-QOI-00001)
     """
     img = parse_qoi_strict(source)
     if not img.pixels:
@@ -211,7 +211,7 @@ def qoi_avg_red(source: "str | Path") -> float:
 def qoi_avg_green(source: "str | Path") -> float:
     """Return the average green channel value across all pixels. 0.0 if no pixels.
 
-    Spec: QOI pixel data channels (FACT-QOI-001)
+    Spec: QOI pixel data channels (SAL-QOI-00001)
     """
     img = parse_qoi_strict(source)
     if not img.pixels:
@@ -222,7 +222,7 @@ def qoi_avg_green(source: "str | Path") -> float:
 def qoi_avg_blue(source: "str | Path") -> float:
     """Return the average blue channel value across all pixels. 0.0 if no pixels.
 
-    Spec: QOI pixel data channels (FACT-QOI-001)
+    Spec: QOI pixel data channels (SAL-QOI-00001)
     """
     img = parse_qoi_strict(source)
     if not img.pixels:

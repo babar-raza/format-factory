@@ -22,7 +22,7 @@ class ZstDocument:
     """
 
     spec_qname: ClassVar[str] = "zst:frame"
-    spec_fact_ref: ClassVar[str] = "FACT-ZST-001"
+    spec_fact_ref: ClassVar[str] = "SAL-ZST-00001"
     namespace_uri: ClassVar[str] = "urn:ietf:rfc:8878:zstandard"
     local_name: ClassVar[str] = "frame"
     facade_names: ClassVar[list] = []
@@ -93,7 +93,7 @@ class ZstDocument:
             return 0.0
         return self.decompressed_size / self.compressed_size
 
-    # Additional frame properties (FACT-ZST-001, FACT-ZST-002)
+    # Additional frame properties (SAL-ZST-00001, SAL-ZST-00002)
 
     @property
     def is_single_frame(self) -> bool:
@@ -110,7 +110,7 @@ class ZstDocument:
         """True if the compressed size is >= 1 MB (1,048,576 bytes)."""
         return self.compressed_size >= 1_048_576
 
-    # Additional size analysis properties (FACT-ZST-001)
+    # Additional size analysis properties (SAL-ZST-00001)
 
     @property
     def is_heavily_compressed(self) -> bool:
@@ -127,7 +127,7 @@ class ZstDocument:
         """True if the compressed size is less than 1 KB (1,024 bytes)."""
         return self.compressed_size < 1_024
 
-    # Compression quality properties (FACT-ZST-001, FACT-ZST-002)
+    # Compression quality properties (SAL-ZST-00001, SAL-ZST-00002)
 
     @property
     def compressed_size_mb(self) -> float:

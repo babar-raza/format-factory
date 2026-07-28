@@ -89,7 +89,7 @@ def test_xcf_dimension_sum_positive():
         assert xcf_dimension_sum(s) > 0
 
 # CSV -------------------------------------------------------------------------
-from src.python.csv.csv_parser import csv_row_length_sum, csv_empty_field_ratio
+from src.python.ff_csv.csv_parser import csv_row_length_sum, csv_empty_field_ratio
 
 _CSV = _REPO / "samples" / "by-format" / "csv"
 

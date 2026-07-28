@@ -1,7 +1,7 @@
 """R563: TOML structural properties — is_flat, has_booleans, table_count.
 
 Tests for TomlDocument structural properties added in R563.
-Spec refs: FACT-TOML-002, FACT-TOML-004.
+Spec refs: SAL-TOML-00002, SAL-TOML-00004.
 """
 
 import pytest

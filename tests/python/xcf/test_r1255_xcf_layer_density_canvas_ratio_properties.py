@@ -5,7 +5,7 @@ Properties under test:
     is_grayscale_type    — image_type == 1
     long_edge            — max(width, height)
 
-spec_fact_ref: FACT-XCF-001
+spec_fact_ref: SAL-XCF-00001
 """
 
 import types

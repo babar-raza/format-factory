@@ -1,7 +1,7 @@
 """R558: PPM geometry properties — aspect_ratio, is_square, is_landscape, is_portrait.
 
 Tests for PpmDocument geometry properties added in R558.
-Spec refs: FACT-PPM-001 (P3 magic), FACT-PPM-002 (P6 magic).
+Spec refs: SAL-PPM-00001 (P3 magic), SAL-PPM-00002 (P6 magic).
 """
 
 import pytest

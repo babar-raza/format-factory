@@ -5,7 +5,7 @@ Properties under test:
     is_numeric_dominant — numeric_ratio > 0.5
     is_all_numeric     — all non-empty cells are numeric
 
-spec_fact_ref: FACT-SYLK-001
+spec_fact_ref: SAL-SYLK-00001
 """
 
 import types

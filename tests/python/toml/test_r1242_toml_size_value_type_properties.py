@@ -5,7 +5,7 @@ Properties under test:
     has_numbers — any top-level value is int or float (not bool)
     has_strings — any top-level value is str
 
-spec_fact_ref: FACT-TOML-001
+spec_fact_ref: SAL-TOML-00001
 """
 
 import pytest

@@ -42,7 +42,7 @@ class TestGnumericCompatLayerSpecQname:
 
     def test_gnumeric_workbook_spec_fact_ref(self):
         from gnumeric.Compat import GnumericWorkbook
-        assert GnumericWorkbook.spec_fact_ref == "FACT-GNUMERIC-001"
+        assert GnumericWorkbook.spec_fact_ref == "SAL-GNUMERIC-00001"
 
     def test_gnumeric_workbook_namespace_uri(self):
         from gnumeric.Compat import GnumericWorkbook
@@ -55,7 +55,7 @@ class TestGnumericCompatLayerSpecQname:
 
     def test_gnumeric_sheet_spec_fact_ref(self):
         from gnumeric.Compat import GnumericSheet
-        assert GnumericSheet.spec_fact_ref == "FACT-GNUMERIC-002"
+        assert GnumericSheet.spec_fact_ref == "SAL-GNUMERIC-00002"
 
 
 class TestGnumericSpecQnameRegistryLinkage:

@@ -27,7 +27,7 @@ from xcf.xcf_parser import get_capabilities as xcf_caps
 from dif.dif_parser import get_capabilities as dif_caps
 from sylk.sylk_parser import get_capabilities as sylk_caps
 from ods.ods_parser import get_capabilities as ods_caps
-from src.python.csv import get_capabilities as csv_caps
+from src.python.ff_csv import get_capabilities as csv_caps
 
 
 ALL_CAPS = [

@@ -1,7 +1,7 @@
 """R565: PGM additional properties — is_high_depth, is_tiny, megapixels.
 
 Tests for PgmDocument depth and dimension properties added in R565.
-Spec refs: FACT-PGM-001 (pgm:image).
+Spec refs: SAL-PGM-00001 (pgm:image).
 """
 
 import types

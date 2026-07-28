@@ -23,7 +23,7 @@ def qoi_iter_chunks(source: "str | Path") -> Iterator[Chunk]:
         source: Path to a .qoi Quite OK Image file.
 
     Yields:
-        Chunk instances (spec class: qoi:chunk, FACT-QOI-002).
+        Chunk instances (spec class: qoi:chunk, SAL-QOI-00002).
     """
     img = parse_qoi_strict(str(Path(source).resolve()))
     channels = img.channels

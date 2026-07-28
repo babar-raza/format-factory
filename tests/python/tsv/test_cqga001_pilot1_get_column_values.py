@@ -1,7 +1,7 @@
 """Tests for TsvDocument.get_column_values — CQGA-001 Pilot 1 governance proof.
 
 spec_qname: tsv:record
-spec_fact_ref: FACT-TSV-001
+spec_fact_ref: SAL-TSV-00001
 skill: /add-python-api
 pilot: CQGA-001 Pilot 1 (TC-CQGA-020)
 """

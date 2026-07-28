@@ -1227,35 +1227,9 @@ class TestDogfoodConverters:
         assert count == 3
         assert dest.exists() and dest.stat().st_size > 0
 
-    def test_ndjson_to_pbm(self, converter_source, tmp_path):
-        try:
-            from ndjson.ndjson_to_pbm import ndjson_to_pbm
-        except ImportError:
-            pytest.skip("ndjson_to_pbm dependency unavailable")
-        dest = tmp_path / "out.pbm"
-        count = ndjson_to_pbm(converter_source, dest)
-        assert count == 3
-        assert dest.exists() and dest.stat().st_size > 0
-
-    def test_ndjson_to_pgm(self, converter_source, tmp_path):
-        try:
-            from ndjson.ndjson_to_pgm import ndjson_to_pgm
-        except ImportError:
-            pytest.skip("ndjson_to_pgm dependency unavailable")
-        dest = tmp_path / "out.pgm"
-        count = ndjson_to_pgm(converter_source, dest)
-        assert count == 3
-        assert dest.exists() and dest.stat().st_size > 0
-
-    def test_ndjson_to_ppm(self, converter_source, tmp_path):
-        try:
-            from ndjson.ndjson_to_ppm import ndjson_to_ppm
-        except ImportError:
-            pytest.skip("ndjson_to_ppm dependency unavailable")
-        dest = tmp_path / "out.ppm"
-        count = ndjson_to_ppm(converter_source, dest)
-        assert count == 3
-        assert dest.exists() and dest.stat().st_size > 0
+    # test_ndjson_to_pbm / _pgm / _ppm removed by TC-PA-015 (PORTFOLIO-AUDIT-2026-07-16):
+    # ndjson->pbm/pgm/ppm are INCOMPATIBLE (STRUCTURED_DATA has no pixel representation);
+    # the converters were deprecated and removed. See converter-compatibility-matrix.yaml.
 
     def test_ndjson_to_sylk(self, converter_source, tmp_path):
         try:

@@ -1,7 +1,7 @@
 """R1226: TOML document classification properties — has_only_scalars, is_mixed, array_count.
 
 Tests for TomlDocument classification properties added in R1226.
-Spec refs: FACT-TOML-001 (toml:table structure).
+Spec refs: SAL-TOML-00001 (toml:table structure).
 """
 
 from __future__ import annotations

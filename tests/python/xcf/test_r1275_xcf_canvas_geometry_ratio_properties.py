@@ -5,7 +5,7 @@ Properties under test:
     edge_ratio — long_edge / short_edge (1.0 if short_edge is 0)
     is_narrow  — edge_ratio > 3.0
 
-spec_fact_ref: FACT-XCF-001
+spec_fact_ref: SAL-XCF-00001
 """
 
 import types

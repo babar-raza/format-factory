@@ -25,7 +25,7 @@ class AbwDocument:
     """
 
     spec_qname: ClassVar[str] = "abiword:document"
-    spec_fact_ref: ClassVar[str] = "FACT-ABW-001"
+    spec_fact_ref: ClassVar[str] = "SAL-ABW-00001"
     namespace_uri: ClassVar[str] = "http://www.abisource.com/awml/"
     local_name: ClassVar[str] = "document"
     facade_names: ClassVar[list] = []
@@ -66,7 +66,7 @@ class AbwDocument:
             return paras[index]
         return ""
 
-    # Document dimension properties (FACT-ABW-001)
+    # Document dimension properties (SAL-ABW-00001)
 
     @property
     def is_empty(self) -> bool:
@@ -98,7 +98,7 @@ class AbwDocument:
         """True if the document contains more than one section."""
         return self.section_count > 1
 
-    # Text content analysis properties (FACT-ABW-001 R1229)
+    # Text content analysis properties (SAL-ABW-00001 R1229)
 
     @property
     def total_text_length(self) -> int:
@@ -117,7 +117,7 @@ class AbwDocument:
         """True if any paragraph exceeds 200 characters."""
         return any(len(p) > 200 for p in self.paragraphs)
 
-    # Scale and density properties (FACT-ABW-001 R1251)
+    # Scale and density properties (SAL-ABW-00001 R1251)
 
     @property
     def is_large(self) -> bool:
@@ -136,7 +136,7 @@ class AbwDocument:
             return 0.0
         return self.paragraph_count / self.section_count
 
-    # Content balance properties (FACT-ABW-001 R1271)
+    # Content balance properties (SAL-ABW-00001 R1271)
 
     @property
     def avg_section_length(self) -> float:
@@ -155,7 +155,7 @@ class AbwDocument:
         """True if avg_paragraph_length < 50 and paragraph_count > 0."""
         return self.paragraph_count > 0 and self.avg_paragraph_length < 50
 
-    # Document structure properties (FACT-ABW-001 R1287)
+    # Document structure properties (SAL-ABW-00001 R1287)
 
     @property
     def is_moderate_text(self) -> bool:

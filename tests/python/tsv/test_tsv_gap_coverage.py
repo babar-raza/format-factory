@@ -1423,7 +1423,7 @@ class TestTsvDocumentModel:
 
     def test_class_metadata(self):
         assert tsv.TsvDocument.spec_qname == "tsv:record"
-        assert tsv.TsvDocument.spec_fact_ref == "FACT-TSV-001"
+        assert tsv.TsvDocument.spec_fact_ref == "SAL-TSV-00001"
         assert tsv.TsvDocument.local_name == "record"
 
 
@@ -1615,26 +1615,9 @@ class TestDogfoodConversions:
         assert dest.exists()
         assert count == 2
 
-    def test_tsv_to_pbm(self, tmp_path):
-        fn = _load_dogfood("tsv_to_pbm", "tsv_to_pbm")
-        dest = tmp_path / "out.pbm"
-        height = fn(str(MIN), str(dest))
-        assert dest.exists()
-        assert height >= 1
-
-    def test_tsv_to_pgm(self, tmp_path):
-        fn = _load_dogfood("tsv_to_pgm", "tsv_to_pgm")
-        dest = tmp_path / "out.pgm"
-        height = fn(str(MIN), str(dest))
-        assert dest.exists()
-        assert height >= 1
-
-    def test_tsv_to_ppm(self, tmp_path):
-        fn = _load_dogfood("tsv_to_ppm", "tsv_to_ppm")
-        dest = tmp_path / "out.ppm"
-        height = fn(str(MIN), str(dest))
-        assert dest.exists()
-        assert height >= 1
+    # test_tsv_to_pbm / _pgm / _ppm removed by TC-PA-015 (PORTFOLIO-AUDIT-2026-07-16):
+    # tsv->pbm/pgm/ppm are INCOMPATIBLE (TABULAR payload has no pixel representation);
+    # the converters were deprecated and removed. See converter-compatibility-matrix.yaml.
 
     def test_tsv_to_sylk(self, tmp_path):
         fn = _load_dogfood("tsv_to_sylk", "tsv_to_sylk")

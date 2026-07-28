@@ -113,24 +113,24 @@ def test_xcf_dimension_product_returns_int(xcf_sample):
 # ── CSV ──
 
 def test_csv_empty_field_count_importable():
-    from src.python.csv import csv_empty_field_count
+    from src.python.ff_csv import csv_empty_field_count
     assert callable(csv_empty_field_count)
 
 
 def test_csv_empty_field_count_returns_int(csv_sample):
-    from src.python.csv.csv_parser import csv_empty_field_count
+    from src.python.ff_csv.csv_parser import csv_empty_field_count
     result = csv_empty_field_count(csv_sample)
     assert isinstance(result, int)
     assert result >= 0
 
 
 def test_csv_numeric_field_count_importable():
-    from src.python.csv import csv_numeric_field_count
+    from src.python.ff_csv import csv_numeric_field_count
     assert callable(csv_numeric_field_count)
 
 
 def test_csv_numeric_field_count_returns_int(csv_sample):
-    from src.python.csv.csv_parser import csv_numeric_field_count
+    from src.python.ff_csv.csv_parser import csv_numeric_field_count
     result = csv_numeric_field_count(csv_sample)
     assert isinstance(result, int)
     assert result >= 0
@@ -143,7 +143,7 @@ def test_all_eight_functions_callable():
     from src.python.ods import ods_string_cell_ratio, ods_widest_column_index
     from src.python.qoi import qoi_red_channel_avg, qoi_alpha_pixel_count
     from src.python.xcf import xcf_diagonal_length, xcf_dimension_product
-    from src.python.csv.csv_parser import csv_empty_field_count, csv_numeric_field_count
+    from src.python.ff_csv.csv_parser import csv_empty_field_count, csv_numeric_field_count
     for fn in [
         ods_string_cell_ratio, ods_widest_column_index,
         qoi_red_channel_avg, qoi_alpha_pixel_count,

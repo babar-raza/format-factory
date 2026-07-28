@@ -22,7 +22,7 @@ class TsvDocument:
     """
 
     spec_qname: ClassVar[str] = "tsv:record"
-    spec_fact_ref: ClassVar[str] = "FACT-TSV-001"
+    spec_fact_ref: ClassVar[str] = "SAL-TSV-00001"
     namespace_uri: ClassVar[str] = "https://www.iana.org/assignments/media-types/text/tab-separated-values"
     local_name: ClassVar[str] = "record"
     facade_names: ClassVar[list] = []
@@ -84,11 +84,11 @@ class TsvDocument:
             Returns '' for rows that are shorter than col_index + 1.
 
         spec_qname: tsv:record
-        spec_fact_ref: FACT-TSV-001
+        spec_fact_ref: SAL-TSV-00001
         """
         return [row[col_index] if col_index < len(row) else "" for row in self.rows]
 
-    # Tabular dimension properties (FACT-TSV-001)
+    # Tabular dimension properties (SAL-TSV-00001)
 
     @property
     def is_empty(self) -> bool:
@@ -125,7 +125,7 @@ class TsvDocument:
         """True if the document has more than one column."""
         return self.column_count > 1
 
-    # Additional tabular analysis properties (FACT-TSV-001)
+    # Additional tabular analysis properties (SAL-TSV-00001)
 
     @property
     def has_data(self) -> bool:
@@ -142,7 +142,7 @@ class TsvDocument:
         """Total number of cells (row_count * column_count)."""
         return self.row_count * self.column_count
 
-    # Scale classification properties (FACT-TSV-001 R1234)
+    # Scale classification properties (SAL-TSV-00001 R1234)
 
     @property
     def is_large(self) -> bool:
@@ -163,7 +163,7 @@ class TsvDocument:
         expected = self.column_count
         return all(len(r) == expected for r in rows)
 
-    # Density and shape properties (FACT-TSV-001 R1254)
+    # Density and shape properties (SAL-TSV-00001 R1254)
 
     @property
     def fill_density(self) -> float:
@@ -186,7 +186,7 @@ class TsvDocument:
             return 0.0
         return self.column_count / self.row_count
 
-    # Extended grid analysis properties (FACT-TSV-001 R1274)
+    # Extended grid analysis properties (SAL-TSV-00001 R1274)
 
     @property
     def is_narrow_grid(self) -> bool:
@@ -203,7 +203,7 @@ class TsvDocument:
         """True if fill_density < 0.5 and total_cell_count > 0."""
         return self.total_cell_count > 0 and self.fill_density < 0.5
 
-    # Grid shape and fill completeness properties (FACT-TSV-001 R1290)
+    # Grid shape and fill completeness properties (SAL-TSV-00001 R1290)
 
     @property
     def is_square_grid(self) -> bool:

@@ -11,7 +11,7 @@ from pathlib import Path
 from .xcf_parser import parse_xcf_strict
 
 spec_qname = "xcf:image"
-spec_fact_ref = "FACT-XCF-001"
+spec_fact_ref = "SAL-XCF-00001"
 
 # XCF image type constants (GIMP XCF spec)
 _IMAGE_TYPE_RGB = 0
@@ -58,7 +58,7 @@ def xcf_layer_names(source: "str | Path") -> list:
 def xcf_num_layers(source: "str | Path") -> int:
     """Return the number of layers in the XCF image.
 
-    Spec: XCF image layer count (FACT-XCF-001)
+    Spec: XCF image layer count (SAL-XCF-00001)
     """
     img = parse_xcf_strict(source)
     return img.num_layers
@@ -67,7 +67,7 @@ def xcf_num_layers(source: "str | Path") -> int:
 def xcf_local_name(source: "str | Path") -> str:
     """Return the local element name for the XCF image object.
 
-    Spec: XCF image namespace (FACT-XCF-001)
+    Spec: XCF image namespace (SAL-XCF-00001)
     """
     img = parse_xcf_strict(source)
     return img.local_name
@@ -76,7 +76,7 @@ def xcf_local_name(source: "str | Path") -> str:
 def xcf_namespace_uri(source: "str | Path") -> str:
     """Return the namespace URI for the XCF format.
 
-    Spec: XCF image namespace (FACT-XCF-001)
+    Spec: XCF image namespace (SAL-XCF-00001)
     """
     img = parse_xcf_strict(source)
     return img.namespace_uri
@@ -85,7 +85,7 @@ def xcf_namespace_uri(source: "str | Path") -> str:
 def xcf_layer_names_sorted(source: "str | Path") -> list:
     """Return alphabetically sorted list of layer names.
 
-    Spec: XCF image layer (FACT-XCF-001)
+    Spec: XCF image layer (SAL-XCF-00001)
     """
     img = parse_xcf_strict(source)
     return sorted(img.layer_names)
@@ -94,7 +94,7 @@ def xcf_layer_names_sorted(source: "str | Path") -> list:
 def xcf_has_named_layers(source: "str | Path") -> bool:
     """Return True if the image has at least one layer with a non-empty name.
 
-    Spec: XCF image layer (FACT-XCF-001)
+    Spec: XCF image layer (SAL-XCF-00001)
     """
     img = parse_xcf_strict(source)
     return any(name.strip() for name in img.layer_names)
@@ -105,7 +105,7 @@ def xcf_all_layers_named(source: "str | Path") -> bool:
 
     True vacuously when there are no layers.
 
-    Spec: XCF image layer (FACT-XCF-001)
+    Spec: XCF image layer (SAL-XCF-00001)
     """
     img = parse_xcf_strict(source)
     return all(name.strip() for name in img.layer_names)
@@ -114,7 +114,7 @@ def xcf_all_layers_named(source: "str | Path") -> bool:
 def xcf_width(source: "str | Path") -> int:
     """Return image width in pixels.
 
-    Spec: XCF image header width (FACT-XCF-001)
+    Spec: XCF image header width (SAL-XCF-00001)
     """
     img = parse_xcf_strict(source)
     return img.width
@@ -123,7 +123,7 @@ def xcf_width(source: "str | Path") -> int:
 def xcf_height(source: "str | Path") -> int:
     """Return image height in pixels.
 
-    Spec: XCF image header height (FACT-XCF-001)
+    Spec: XCF image header height (SAL-XCF-00001)
     """
     img = parse_xcf_strict(source)
     return img.height
@@ -132,7 +132,7 @@ def xcf_height(source: "str | Path") -> int:
 def xcf_image_type(source: "str | Path") -> int:
     """Return image type integer (0=RGB, 1=Grayscale, 2=Indexed).
 
-    Spec: XCF image header image_type (FACT-XCF-001)
+    Spec: XCF image header image_type (SAL-XCF-00001)
     """
     img = parse_xcf_strict(source)
     return img.image_type
@@ -141,7 +141,7 @@ def xcf_image_type(source: "str | Path") -> int:
 def xcf_is_landscape(source: "str | Path") -> bool:
     """Return True if the image is wider than it is tall.
 
-    Spec: XCF image header width/height (FACT-XCF-001)
+    Spec: XCF image header width/height (SAL-XCF-00001)
     """
     img = parse_xcf_strict(source)
     return img.width > img.height
@@ -150,7 +150,7 @@ def xcf_is_landscape(source: "str | Path") -> bool:
 def xcf_aspect_ratio(source: "str | Path") -> float:
     """Return width / height as a float. 0.0 if height is zero.
 
-    Spec: XCF image header width/height (FACT-XCF-001)
+    Spec: XCF image header width/height (SAL-XCF-00001)
     """
     img = parse_xcf_strict(source)
     if img.height == 0:
@@ -161,7 +161,7 @@ def xcf_aspect_ratio(source: "str | Path") -> float:
 def xcf_first_layer_name(source: "str | Path") -> str:
     """Return the name of the first layer. Empty string if no layers.
 
-    Spec: XCF image layer (FACT-XCF-001)
+    Spec: XCF image layer (SAL-XCF-00001)
     """
     img = parse_xcf_strict(source)
     names = list(img.layer_names)
@@ -171,7 +171,7 @@ def xcf_first_layer_name(source: "str | Path") -> str:
 def xcf_last_layer_name(source: "str | Path") -> str:
     """Return the name of the last layer. Empty string if no layers.
 
-    Spec: XCF image layer (FACT-XCF-001)
+    Spec: XCF image layer (SAL-XCF-00001)
     """
     img = parse_xcf_strict(source)
     names = list(img.layer_names)
@@ -181,7 +181,7 @@ def xcf_last_layer_name(source: "str | Path") -> str:
 def xcf_is_portrait(source: "str | Path") -> bool:
     """Return True if the image is taller than it is wide.
 
-    Spec: XCF image header width/height (FACT-XCF-001)
+    Spec: XCF image header width/height (SAL-XCF-00001)
     """
     img = parse_xcf_strict(source)
     return img.height > img.width
@@ -190,7 +190,7 @@ def xcf_is_portrait(source: "str | Path") -> bool:
 def xcf_is_indexed(source: "str | Path") -> bool:
     """Return True if the XCF image is indexed type (image_type == 2).
 
-    Spec: XCF image header image_type (FACT-XCF-001)
+    Spec: XCF image header image_type (SAL-XCF-00001)
     """
     img = parse_xcf_strict(source)
     return img.image_type == _IMAGE_TYPE_INDEXED
@@ -199,7 +199,7 @@ def xcf_is_indexed(source: "str | Path") -> bool:
 def xcf_total_pixels(source: "str | Path") -> int:
     """Return total pixel count (width * height).
 
-    Spec: XCF image header width/height (FACT-XCF-001)
+    Spec: XCF image header width/height (SAL-XCF-00001)
     """
     img = parse_xcf_strict(source)
     return img.width * img.height
@@ -208,7 +208,7 @@ def xcf_total_pixels(source: "str | Path") -> int:
 def xcf_version(source: "str | Path") -> str:
     """Return the XCF format version string.
 
-    Spec: XCF image header version (FACT-XCF-001)
+    Spec: XCF image header version (SAL-XCF-00001)
     """
     img = parse_xcf_strict(source)
     return img.version
@@ -217,7 +217,7 @@ def xcf_version(source: "str | Path") -> str:
 def xcf_has_multiple_layers(source: "str | Path") -> bool:
     """Return True if the image has more than one layer.
 
-    Spec: XCF image layer count (FACT-XCF-001)
+    Spec: XCF image layer count (SAL-XCF-00001)
     """
     img = parse_xcf_strict(source)
     return img.num_layers > 1

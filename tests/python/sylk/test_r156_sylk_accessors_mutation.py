@@ -5,7 +5,7 @@ Sprint: FORMAT-FACTORY-PRODUCT-DEEPENING-RNEXT14-001
 Added: 2026-06-10
 
 Tests for SYLK get_row_count, get_column_count, set_cell_value functions.
-Authority: P5 (FACT-SYLK-001)
+Authority: P5 (SAL-SYLK-00001)
 """
 from __future__ import annotations
 

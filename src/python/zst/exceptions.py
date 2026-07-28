@@ -20,3 +20,23 @@ class ZstParseError(ZstError):
 
 class ZstWriteError(ZstError):
     """Raised when a zst file cannot be written."""
+
+
+class ZstInvalidFrameError(ZstParseError):
+    """Raised when input is not a valid Zstandard frame."""
+
+
+class ZstDecompressionError(ZstParseError):
+    """Raised when decompression fails."""
+
+
+class ZstFileNotFoundError(ZstParseError):
+    """Raised when a ZST file does not exist."""
+
+
+class ZstReadError(ZstParseError):
+    """Raised when a ZST file cannot be read."""
+
+
+class ZstDecompressError(ZstParseError):
+    """Raised when decompression of a ZST file fails."""

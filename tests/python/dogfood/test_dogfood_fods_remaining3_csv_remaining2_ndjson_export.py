@@ -25,7 +25,7 @@ from fods.neutral_model import (
     fods_cell_to_sheet_ratio,
 )
 from fods.parser import parse_fods
-from src.python.csv.csv_parser import (
+from src.python.ff_csv.csv_parser import (
     csv_has_numeric_header,
     csv_nonempty_row_ratio,
     csv_numeric_sum,

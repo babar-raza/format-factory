@@ -101,21 +101,21 @@ def test_xcf_total_layer_area_returns_int(xcf_sample):
 # ── CSV ──
 
 def test_csv_row_width_avg_importable():
-    from src.python.csv import csv_row_width_avg
+    from src.python.ff_csv import csv_row_width_avg
     assert callable(csv_row_width_avg)
 
 def test_csv_row_width_avg_returns_float(csv_sample):
-    from src.python.csv.csv_parser import csv_row_width_avg
+    from src.python.ff_csv.csv_parser import csv_row_width_avg
     result = csv_row_width_avg(csv_sample)
     assert isinstance(result, float)
     assert result >= 0.0
 
 def test_csv_distinct_header_count_importable():
-    from src.python.csv import csv_distinct_header_count
+    from src.python.ff_csv import csv_distinct_header_count
     assert callable(csv_distinct_header_count)
 
 def test_csv_distinct_header_count_returns_int(csv_sample):
-    from src.python.csv.csv_parser import csv_distinct_header_count
+    from src.python.ff_csv.csv_parser import csv_distinct_header_count
     result = csv_distinct_header_count(csv_sample)
     assert isinstance(result, int)
     assert result >= 0
@@ -127,7 +127,7 @@ def test_all_eight_functions_callable():
     from src.python.ods import ods_numeric_cell_ratio, ods_column_fill_rate
     from src.python.qoi import qoi_green_channel_avg, qoi_blue_channel_avg
     from src.python.xcf import xcf_is_square_canvas, xcf_total_layer_area
-    from src.python.csv.csv_parser import csv_row_width_avg, csv_distinct_header_count
+    from src.python.ff_csv.csv_parser import csv_row_width_avg, csv_distinct_header_count
     for fn in [
         ods_numeric_cell_ratio, ods_column_fill_rate,
         qoi_green_channel_avg, qoi_blue_channel_avg,

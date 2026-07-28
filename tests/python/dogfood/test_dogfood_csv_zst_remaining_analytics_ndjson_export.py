@@ -16,7 +16,7 @@ _REPO = Path(__file__).resolve().parents[3]
 
 # CSV uses repo-level path due to stdlib conflict
 sys.path.insert(0, str(_REPO))
-from src.python.csv.csv_parser import (
+from src.python.ff_csv.csv_parser import (
     csv_empty_cell_ratio,
     csv_distinct_value_count,
     csv_row_count,

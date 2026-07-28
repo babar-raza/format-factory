@@ -7,9 +7,9 @@ probe_frame metadata, validate_file, and dogfood pipeline.
 
 import sys
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "src" / "python" / "zst"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "src" / "python"))
 
-from zst_codec import (
+from zst.zst_codec import (
     compress_bytes,
     decompress_bytes,
     probe_frame,

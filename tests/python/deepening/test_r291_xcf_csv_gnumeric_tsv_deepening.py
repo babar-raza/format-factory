@@ -15,7 +15,7 @@ _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
 from src.python.xcf import xcf_is_wide, xcf_pixel_density
-from src.python.csv.csv_parser import csv_is_empty, csv_column_name_lengths
+from src.python.ff_csv.csv_parser import csv_is_empty, csv_column_name_lengths
 from src.python.gnumeric import gnumeric_column_variance, gnumeric_is_rectangular
 from src.python.tsv import tsv_string_density, tsv_avg_row_length
 

@@ -14,7 +14,7 @@ _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 sys.path.insert(0, str(_REPO / "src" / "python"))
 
-from src.python.csv.csv_parser import csv_column_count, csv_all_rows_same_length, csv_average_field_length, csv_avg_row_length
+from src.python.ff_csv.csv_parser import csv_column_count, csv_all_rows_same_length, csv_average_field_length, csv_avg_row_length
 from ods.ods_parser import count_sheets, count_nonempty_cells
 from ndjson.ndjson_codec import write_ndjson, load_ndjson
 

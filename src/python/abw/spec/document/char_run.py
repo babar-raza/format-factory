@@ -1,7 +1,7 @@
 """ABW spec CharRun — canonical implementation of abw:c.
 
 spec_qname: abw:c
-spec_fact_ref: FACT-ABW-004
+spec_fact_ref: SAL-ABW-00004
 Spec ref: AbiWord AWML 1.0 — character run inline element
 """
 from __future__ import annotations
@@ -18,7 +18,7 @@ class CharRun:
     """
 
     spec_qname: ClassVar[str] = "abw:c"
-    spec_fact_ref: ClassVar[str] = "FACT-ABW-004"
+    spec_fact_ref: ClassVar[str] = "SAL-ABW-00004"
     namespace_uri: ClassVar[str] = "http://www.abisource.com/awml/"
     local_name: ClassVar[str] = "c"
     facade_names: ClassVar[list] = []

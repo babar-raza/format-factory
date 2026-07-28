@@ -22,25 +22,10 @@ except ImportError:
         ) from _e
 from pathlib import Path
 from typing import Any
+from .exceptions import TomlError, TomlParseError, TomlWriteError, TomlInputError
 
 
 MAX_FILE_SIZE = 16 * 1024 * 1024  # 16 MiB
-
-
-class TomlError(Exception):
-    """Base exception for TOML codec errors."""
-
-
-class TomlInputError(TomlError):
-    """Raised when the file cannot be read."""
-
-
-class TomlParseError(TomlError):
-    """Raised when the TOML content is malformed."""
-
-
-class TomlWriteError(TomlError):
-    """Raised when writing TOML fails."""
 
 
 # ---------------------------------------------------------------------------

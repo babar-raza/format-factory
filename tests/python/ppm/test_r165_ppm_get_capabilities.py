@@ -5,7 +5,7 @@ Sprint: FORMAT-FACTORY-PRODUCT-DEEPENING-RNEXT30-001
 Added: 2026-06-10
 
 Tests for PPM get_capabilities function (Gate 5 neutral model).
-Authority: P4 (FACT-PPM-001, FACT-PPM-002)
+Authority: P4 (SAL-PPM-00001, SAL-PPM-00002)
 """
 from __future__ import annotations
 

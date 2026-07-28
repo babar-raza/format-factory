@@ -17,7 +17,7 @@ def zst_inspect_frame(data: bytes) -> Frame:
         data: Zstandard-compressed bytes containing at least one frame.
 
     Returns:
-        Frame instance (spec class: zst:frame, FACT-ZST-001).
+        Frame instance (spec class: zst:frame, SAL-ZST-00001).
 
     Raises:
         ZstInvalidFrameError: If data does not start with a valid Zstandard magic.

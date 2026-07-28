@@ -18,20 +18,13 @@ from __future__ import annotations
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Any
+from .exceptions import AbwError, AbwParseError
 
 ABW_ROOT_TAG = "abiword"
 ABW_MIME = "application/x-abiword"
 
 # Maximum file size guard (64 MiB)
 MAX_FILE_SIZE = 64 * 1024 * 1024
-
-
-class AbwError(Exception):
-    """Base exception for ABW codec errors."""
-
-
-class AbwParseError(AbwError):
-    """Raised when ABW parsing fails."""
 
 
 def load(source: str | bytes | Path) -> dict[str, Any]:

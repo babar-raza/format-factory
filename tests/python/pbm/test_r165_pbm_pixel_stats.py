@@ -5,7 +5,7 @@ Sprint: FORMAT-FACTORY-PRODUCT-DEEPENING-RNEXT29-001
 Added: 2026-06-10
 
 Tests for PBM image_pixel_stats function.
-Authority: P4 (FACT-PBM-001: P1 magic, FACT-PBM-002: P4 magic)
+Authority: P4 (SAL-PBM-00001: P1 magic, SAL-PBM-00002: P4 magic)
 """
 from __future__ import annotations
 

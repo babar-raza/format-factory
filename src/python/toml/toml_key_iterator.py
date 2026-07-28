@@ -20,7 +20,7 @@ def toml_iter_keys(source: "str | Path") -> Iterator[Key]:
         source: Path to a .toml file.
 
     Yields:
-        Key instances (spec class: toml:key, FACT-TOML-002).
+        Key instances (spec class: toml:key, SAL-TOML-00002).
     """
     data = load_toml(str(Path(source).resolve()))
     for name, value in data.items():

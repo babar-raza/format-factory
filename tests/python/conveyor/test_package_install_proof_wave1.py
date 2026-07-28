@@ -64,14 +64,14 @@ def test_all_format_modules_importable():
 def test_csv_module_importable():
     """CSV module importable via full repo path (stdlib collision)."""
     sys.path.insert(0, str(_REPO))
-    mod = importlib.import_module("src.python.csv.csv_parser")
+    mod = importlib.import_module("src.python.ff_csv.csv_parser")
     assert hasattr(mod, "parse_csv_strict")
 
 
 def test_pyproject_toml_exists_for_all_packaged_formats():
     """All 20 formats should have pyproject.toml."""
     expected = [
-        "abw", "csv", "dif", "fodg", "fodp", "fods", "fodt",
+        "abw", "ff_csv", "dif", "fodg", "fodp", "fods", "fodt",
         "gnumeric", "ndjson", "ods", "odt", "pbm", "pgm", "ppm",
         "qoi", "sylk", "toml", "tsv", "xcf", "zst",
     ]

@@ -5,7 +5,7 @@ Properties under test:
     avg_keys         — average key count across object records (0.0 if none)
     is_wide_objects  — max_keys > 20
 
-spec_fact_ref: FACT-NDJSON-001
+spec_fact_ref: SAL-NDJSON-00001
 """
 
 import pytest

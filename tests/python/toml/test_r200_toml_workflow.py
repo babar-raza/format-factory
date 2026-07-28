@@ -3,7 +3,7 @@ Installed workflow proof for aspose-format-factory-toml wheel.
 
 Closes: GAP-TOML-FOSS-INSTALLED_WO-001
 Capability: Installed Workflow
-Authority: FACT-TOML-001, FACT-TOML-002, FACT-TOML-003
+Authority: SAL-TOML-00001, SAL-TOML-00002, SAL-TOML-00003
 
 Tests that the installed TOML package (aspose-format-factory-toml wheel)
 supports all core operations: load, parse, write, roundtrip, and domain model.

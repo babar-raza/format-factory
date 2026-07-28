@@ -1,7 +1,7 @@
 """R563: SYLK cell type properties — numeric_cell_count, string_cell_count, nonempty_cell_count.
 
 Tests for SylkModelDocument cell type properties added in R563.
-Spec refs: FACT-SYLK-008 (numeric values), FACT-SYLK-016 (string values).
+Spec refs: SAL-SYLK-00008 (numeric values), SAL-SYLK-00016 (string values).
 """
 
 import types

@@ -2,7 +2,7 @@
 TSV structural element: tsv:record
 
 Spec ref: IANA text/tab-separated-values media type
-Fact ref: FACT-TSV-001
+Fact ref: SAL-TSV-00001
 QName: tsv:record
 Canonical class: Record
 Facade: TsvRecord
@@ -15,7 +15,7 @@ class Record:
     """Canonical spec-shaped class for tsv:record (TSV row)."""
 
     spec_qname: ClassVar[str] = "tsv:record"
-    spec_fact_ref: ClassVar[str] = "FACT-TSV-001"
+    spec_fact_ref: ClassVar[str] = "SAL-TSV-00001"
     namespace_uri: ClassVar[str] = "urn:iana:media-type:text:tab-separated-values"
     local_name: ClassVar[str] = "record"
     facade_names: ClassVar[list] = ["TsvRecord"]

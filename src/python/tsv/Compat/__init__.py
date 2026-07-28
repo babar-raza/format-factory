@@ -1,8 +1,8 @@
 """tsv.Compat — production facade layer for TSV.
 
 Exports:
-    TsvRecord — facade for tsv:record (FACT-TSV-001)
-    TsvField  — facade for tsv:field  (FACT-TSV-002)
+    TsvRecord — facade for tsv:record (SAL-TSV-00001)
+    TsvField  — facade for tsv:field  (SAL-TSV-00002)
 """
 from .tsv_record import TsvRecord
 from .tsv_field import TsvField

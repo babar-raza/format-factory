@@ -2,7 +2,7 @@
 ZST structural element: zst:block
 
 Spec ref: RFC 8878 — Zstandard Compression — Block format
-Fact ref: FACT-ZST-002
+Fact ref: SAL-ZST-00002
 QName: zst:block
 Canonical class: Block
 Facade: ZstBlock
@@ -15,7 +15,7 @@ class Block:
     """Canonical spec-shaped class for zst:block (Zstandard data block)."""
 
     spec_qname: ClassVar[str] = "zst:block"
-    spec_fact_ref: ClassVar[str] = "FACT-ZST-002"
+    spec_fact_ref: ClassVar[str] = "SAL-ZST-00002"
     namespace_uri: ClassVar[str] = "urn:ietf:rfc:8878:zstd"
     local_name: ClassVar[str] = "block"
     facade_names: ClassVar[list] = ["ZstBlock"]

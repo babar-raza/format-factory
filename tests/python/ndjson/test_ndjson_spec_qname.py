@@ -28,7 +28,7 @@ class TestNdjsonRecordCodecLevel:
         assert type(NdjsonRecord.__dict__["spec_qname"]) is str
 
     def test_spec_fact_ref_set(self):
-        assert NdjsonRecord.spec_fact_ref == "FACT-NDJSON-001"
+        assert NdjsonRecord.spec_fact_ref == "SAL-NDJSON-00001"
 
     def test_authority_only_true(self):
         assert NdjsonRecord.authority_only is True
@@ -49,7 +49,7 @@ class TestNdjsonRecordSpecLayer:
         assert Record.spec_qname == "ndjson:record"
 
     def test_canonical_class_spec_fact_ref(self):
-        assert Record.spec_fact_ref == "FACT-NDJSON-001"
+        assert Record.spec_fact_ref == "SAL-NDJSON-00001"
 
     def test_canonical_class_accessible(self):
         assert Record.spec_qname == "ndjson:record"

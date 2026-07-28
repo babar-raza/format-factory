@@ -21,7 +21,7 @@ class TestSylkHeaderMetadata:
         assert SylkHeader.spec_qname == "sylk:header"
 
     def test_spec_fact_ref(self):
-        assert SylkHeader.spec_fact_ref == "FACT-SYLK-001"
+        assert SylkHeader.spec_fact_ref == "SAL-SYLK-00001"
 
     def test_namespace_uri_present(self):
         assert SylkHeader.namespace_uri

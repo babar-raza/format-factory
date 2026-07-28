@@ -16,17 +16,10 @@ from __future__ import annotations
 import json
 from pathlib import Path
 from typing import Any, ClassVar
+from .exceptions import NdjsonError, NdjsonParseError
 
 MAX_FILE_SIZE = 64 * 1024 * 1024  # 64 MiB
 MAX_LINES = 1_000_000
-
-
-class NdjsonError(Exception):
-    """Base exception for NDJSON codec errors."""
-
-
-class NdjsonParseError(NdjsonError):
-    """Raised when NDJSON content cannot be parsed."""
 
 
 class NdjsonRecord:

@@ -5,7 +5,7 @@ Sprint: FORMAT-FACTORY-MAINSTREAM-PRODUCT-DEEPENING-RNEXT13-001
 Added: 2026-06-09
 
 Tests for PBM crop function.
-Authority: P5 (FACT-PBM-001, FACT-PBM-002)
+Authority: P5 (SAL-PBM-00001, SAL-PBM-00002)
 """
 from __future__ import annotations
 

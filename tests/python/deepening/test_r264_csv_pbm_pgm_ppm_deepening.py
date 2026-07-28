@@ -21,22 +21,22 @@ CSV_VALID = [CSV_DIR / "minimal-2x2.csv", CSV_DIR / "single-cell.csv", CSV_DIR /
 
 class TestCsvTotalCellCount:
     def test_returns_int(self):
-        from src.python.csv.csv_parser import csv_total_cell_count
+        from src.python.ff_csv.csv_parser import csv_total_cell_count
         assert isinstance(csv_total_cell_count(str(CSV_VALID[0])), int)
 
     def test_nonnegative(self):
-        from src.python.csv.csv_parser import csv_total_cell_count
+        from src.python.ff_csv.csv_parser import csv_total_cell_count
         for f in CSV_VALID:
             assert csv_total_cell_count(str(f)) >= 0
 
 
 class TestCsvMinRowLength:
     def test_returns_int(self):
-        from src.python.csv.csv_parser import csv_min_row_length
+        from src.python.ff_csv.csv_parser import csv_min_row_length
         assert isinstance(csv_min_row_length(str(CSV_VALID[0])), int)
 
     def test_le_max(self):
-        from src.python.csv.csv_parser import csv_min_row_length, csv_max_row_length
+        from src.python.ff_csv.csv_parser import csv_min_row_length, csv_max_row_length
         for f in CSV_VALID:
             assert csv_min_row_length(str(f)) <= csv_max_row_length(str(f))
 

@@ -32,7 +32,7 @@ class TestTsvDocumentClassAttributes:
 
     def test_spec_fact_ref_present(self):
         assert hasattr(TsvDocument, "spec_fact_ref")
-        assert TsvDocument.spec_fact_ref.startswith("FACT-TSV-")
+        assert TsvDocument.spec_fact_ref.startswith("SAL-TSV-")
 
 
 class TestTsvDocumentFromFile:

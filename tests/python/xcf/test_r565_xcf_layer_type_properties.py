@@ -1,7 +1,7 @@
 """R565: XCF additional layer and type properties — is_flat, has_layers, is_rgb_type.
 
 Tests for XcfDocument layer and image type properties added in R565.
-Spec refs: FACT-XCF-001 (xcf:image).
+Spec refs: SAL-XCF-00001 (xcf:image).
 """
 
 import types

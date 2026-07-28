@@ -19,7 +19,7 @@ class TestNdjsonRecordMetadata:
         assert NdjsonRecord.spec_qname == "ndjson:record"
 
     def test_spec_fact_ref(self):
-        assert NdjsonRecord.spec_fact_ref == "FACT-NDJSON-001"
+        assert NdjsonRecord.spec_fact_ref == "SAL-NDJSON-00001"
 
     def test_namespace_uri_present(self):
         assert NdjsonRecord.namespace_uri
@@ -61,7 +61,7 @@ class TestNdjsonFieldBehavior:
         assert NdjsonField.spec_qname == "ndjson:field"
 
     def test_spec_fact_ref(self):
-        assert NdjsonField.spec_fact_ref == "FACT-NDJSON-002"
+        assert NdjsonField.spec_fact_ref == "SAL-NDJSON-00002"
 
     def test_key_property(self):
         f = NdjsonField("name", "Alice")

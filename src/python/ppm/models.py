@@ -22,7 +22,7 @@ class PpmDocument:
     """
 
     spec_qname: ClassVar[str] = "ppm:image"
-    spec_fact_ref: ClassVar[str] = "FACT-PPM-001"
+    spec_fact_ref: ClassVar[str] = "SAL-PPM-00001"
     namespace_uri: ClassVar[str] = "urn:format:netpbm:ppm:1.0"
     local_name: ClassVar[str] = "image"
     facade_names: ClassVar[list] = []
@@ -71,7 +71,7 @@ class PpmDocument:
         """Path to the source PPM file."""
         return str(self._parsed.path)
 
-    # Dimension geometry properties (FACT-PPM-001, FACT-PPM-002)
+    # Dimension geometry properties (SAL-PPM-00001, SAL-PPM-00002)
 
     @property
     def aspect_ratio(self) -> float:
@@ -93,7 +93,7 @@ class PpmDocument:
         """True if height is greater than width."""
         return self.height > self.width
 
-    # Additional image analysis properties (FACT-PPM-001)
+    # Additional image analysis properties (SAL-PPM-00001)
 
     @property
     def is_high_depth(self) -> bool:
@@ -110,7 +110,7 @@ class PpmDocument:
         """Image size in megapixels (pixel_count / 1,000,000)."""
         return self.pixel_count / 1_000_000.0
 
-    # Encoding and size classification properties (FACT-PPM-001 R1239)
+    # Encoding and size classification properties (SAL-PPM-00001 R1239)
 
     @property
     def is_ascii(self) -> bool:
@@ -132,7 +132,7 @@ class PpmDocument:
         """Minimum of width and height."""
         return min(self.width, self.height)
 
-    # Geometry ratio properties (FACT-PPM-001 R1259)
+    # Geometry ratio properties (SAL-PPM-00001 R1259)
 
     @property
     def edge_ratio(self) -> float:
@@ -151,7 +151,7 @@ class PpmDocument:
         """True if width <= 64 and height <= 64."""
         return self.width <= 64 and self.height <= 64
 
-    # Scale and density classification properties (FACT-PPM-001 R1279)
+    # Scale and density classification properties (SAL-PPM-00001 R1279)
 
     @property
     def is_banner(self) -> bool:

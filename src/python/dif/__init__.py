@@ -9,6 +9,7 @@ from .exceptions import *  # noqa: F401, F403
 from .dif_parser import *  # noqa: F401, F403
 from .dif_stats import *  # noqa: F401, F403
 from .interchange_document import *  # noqa: F401, F403
+from .dif_interchange_analytics import *  # noqa: F401, F403
 from .models import DifModelDocument, DifDoc  # noqa: F401
 from .dif_workflow import dif_installed_workflow  # noqa: F401
 from .dif_vector_iterator import dif_iter_vectors  # noqa: F401

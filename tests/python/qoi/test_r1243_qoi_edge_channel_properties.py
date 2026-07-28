@@ -5,7 +5,7 @@ Properties under test:
     short_edge — min(width, height)
     is_rgba    — channels == 4
 
-spec_fact_ref: FACT-QOI-001
+spec_fact_ref: SAL-QOI-00001
 """
 
 import types

@@ -5,7 +5,7 @@ Properties under test:
     cell_count_range            — max_cells_per_sheet - min_cells_per_sheet
     has_uniform_cell_distribution — all sheets have same cell count
 
-spec_fact_ref: FACT-GNUMERIC-001
+spec_fact_ref: SAL-GNUMERIC-00001
 """
 
 import pytest

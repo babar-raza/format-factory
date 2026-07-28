@@ -5,7 +5,7 @@ Properties under test:
     is_sparse      — fill_ratio < 0.2
     is_large_grid  — cell_count > 1000
 
-spec_fact_ref: FACT-SYLK-001
+spec_fact_ref: SAL-SYLK-00001
 """
 
 import types

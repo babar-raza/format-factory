@@ -5,7 +5,7 @@ Properties under test:
     is_dense_text      — avg_paragraph_length > 200
     is_sparse_text     — avg_paragraph_length < 50 and paragraph_count > 0
 
-spec_fact_ref: FACT-ABW-001
+spec_fact_ref: SAL-ABW-00001
 """
 
 import pytest

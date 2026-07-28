@@ -5,7 +5,7 @@ Sprint: FORMAT-FACTORY-MAINSTREAM-PRODUCT-DEEPENING-RNEXT12-001
 Added: 2026-06-09
 
 Tests for PPM get_dimensions function.
-Authority: P5 (FACT-PPM-001: P3 magic, FACT-PPM-002: P6 magic)
+Authority: P5 (SAL-PPM-00001: P3 magic, SAL-PPM-00002: P6 magic)
 """
 from __future__ import annotations
 

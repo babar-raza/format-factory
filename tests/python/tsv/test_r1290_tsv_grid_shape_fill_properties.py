@@ -5,7 +5,7 @@ Properties under test:
     is_dense_data   — fill_density > 0.8
     empty_cell_count — round((1 - fill_density) * total_cell_count)
 
-spec_fact_ref: FACT-TSV-001
+spec_fact_ref: SAL-TSV-00001
 """
 
 import math

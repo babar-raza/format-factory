@@ -22,7 +22,7 @@ class XcfDocument:
     """
 
     spec_qname: ClassVar[str] = "xcf:image"
-    spec_fact_ref: ClassVar[str] = "FACT-XCF-001"
+    spec_fact_ref: ClassVar[str] = "SAL-XCF-00001"
     namespace_uri: ClassVar[str] = "urn:format:xcf:2.10"
     local_name: ClassVar[str] = "image"
     facade_names: ClassVar[list] = []
@@ -74,7 +74,7 @@ class XcfDocument:
         """Path to the source XCF file."""
         return str(self._parsed.path or "")
 
-    # Dimension geometry properties (FACT-XCF-001)
+    # Dimension geometry properties (SAL-XCF-00001)
 
     @property
     def aspect_ratio(self) -> float:
@@ -101,7 +101,7 @@ class XcfDocument:
         """True if the image has more than one layer."""
         return self.layer_count > 1
 
-    # Additional layer and type properties (FACT-XCF-001)
+    # Additional layer and type properties (SAL-XCF-00001)
 
     @property
     def is_flat(self) -> bool:
@@ -118,7 +118,7 @@ class XcfDocument:
         """True if the image type is RGB (image_type == 0)."""
         return self.image_type == 0
 
-    # Pixel count and image size properties (FACT-XCF-001 R1235)
+    # Pixel count and image size properties (SAL-XCF-00001 R1235)
 
     @property
     def pixel_count(self) -> int:
@@ -135,7 +135,7 @@ class XcfDocument:
         """True if pixel_count > 4,000,000."""
         return self.pixel_count > 4_000_000
 
-    # Layer density and canvas ratio properties (FACT-XCF-001 R1255)
+    # Layer density and canvas ratio properties (SAL-XCF-00001 R1255)
 
     @property
     def layers_per_megapixel(self) -> float:
@@ -154,7 +154,7 @@ class XcfDocument:
         """Maximum of width and height."""
         return max(self.width, self.height)
 
-    # Canvas geometry ratio properties (FACT-XCF-001 R1275)
+    # Canvas geometry ratio properties (SAL-XCF-00001 R1275)
 
     @property
     def short_edge(self) -> int:
@@ -173,7 +173,7 @@ class XcfDocument:
         """True if edge_ratio > 3.0."""
         return self.edge_ratio > 3.0
 
-    # Scale and density classification properties (FACT-XCF-001 R1291)
+    # Scale and density classification properties (SAL-XCF-00001 R1291)
 
     @property
     def is_banner(self) -> bool:

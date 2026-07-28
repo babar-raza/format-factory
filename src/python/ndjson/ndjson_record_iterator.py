@@ -20,7 +20,7 @@ def ndjson_iter_records(source: "str | Path") -> Iterator[Record]:
         source: Path to a .ndjson / .jsonl file.
 
     Yields:
-        Record instances (spec class: ndjson:record, FACT-NDJSON-001).
+        Record instances (spec class: ndjson:record, SAL-NDJSON-00001).
 
     Raises:
         NdjsonError subclasses on parse failure.

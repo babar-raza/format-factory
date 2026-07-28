@@ -45,21 +45,21 @@ class TestFodpAvgShapesPerSlide:
 
 class TestCsvMaxFieldValueLength:
     def test_returns_int(self):
-        from src.python.csv.csv_parser import csv_max_field_value_length
+        from src.python.ff_csv.csv_parser import csv_max_field_value_length
         assert isinstance(csv_max_field_value_length(CSV), int)
 
     def test_non_negative(self):
-        from src.python.csv.csv_parser import csv_max_field_value_length
+        from src.python.ff_csv.csv_parser import csv_max_field_value_length
         assert csv_max_field_value_length(CSV) >= 0
 
 
 class TestCsvUniqueValueCount:
     def test_returns_int(self):
-        from src.python.csv.csv_parser import csv_unique_value_count
+        from src.python.ff_csv.csv_parser import csv_unique_value_count
         assert isinstance(csv_unique_value_count(CSV), int)
 
     def test_non_negative(self):
-        from src.python.csv.csv_parser import csv_unique_value_count
+        from src.python.ff_csv.csv_parser import csv_unique_value_count
         assert csv_unique_value_count(CSV) >= 0
 
 

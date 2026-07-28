@@ -5,7 +5,7 @@ Properties under test:
     sheet_cell_variance  — cell_count_range / max_cells_per_sheet (0.0 if max=0)
     has_large_sheets     — max_cells_per_sheet > 1000
 
-spec_fact_ref: FACT-GNUMERIC-001
+spec_fact_ref: SAL-GNUMERIC-00001
 """
 
 import pytest

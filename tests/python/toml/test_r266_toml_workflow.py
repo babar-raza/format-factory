@@ -3,7 +3,7 @@ tests/python/toml/test_r266_toml_workflow.py
 
 Closes gap: GAP-TOML-FOSS-INSTALLED_WO-001
 Sprint: ff-sprint-s266-toml-installed-workflow-20260626
-Authority: FACT-TOML-001, FACT-TOML-002, FACT-TOML-003
+Authority: SAL-TOML-00001, SAL-TOML-00002, SAL-TOML-00003
 
 Tests for toml_installed_workflow() in toml_codec.py.
 """
@@ -27,7 +27,7 @@ class TestTomlInstalledWorkflowImport:
         assert callable(toml_installed_workflow)
 
     def test_importable_from_package(self):
-        import toml
+        import toml as toml
         assert hasattr(toml, "toml_installed_workflow")
         assert callable(toml.toml_installed_workflow)
 

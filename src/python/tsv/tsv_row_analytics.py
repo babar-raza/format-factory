@@ -11,7 +11,7 @@ from pathlib import Path
 from .tsv_parser import parse_tsv
 
 spec_qname = "tsv:tabular-data"
-spec_fact_ref = "FACT-TSV-001"
+spec_fact_ref = "SAL-TSV-00001"
 
 
 def tsv_numeric_column_count(source: "str | bytes | Path") -> int:
@@ -113,7 +113,7 @@ def tsv_header_names(source: "str | bytes | Path") -> list:
 
     Returns an empty list if the file has no header row or no columns.
 
-    Spec: TSV tabular-data (FACT-TSV-001)
+    Spec: TSV tabular-data (SAL-TSV-00001)
     """
     result = parse_tsv(source)
     return result.get("headers") or []
@@ -124,7 +124,7 @@ def tsv_first_row_values(source: "str | bytes | Path") -> list:
 
     Returns an empty list if there are no data rows.
 
-    Spec: TSV tabular-data (FACT-TSV-001)
+    Spec: TSV tabular-data (SAL-TSV-00001)
     """
     result = parse_tsv(source)
     rows = result.get("rows", [])
@@ -136,7 +136,7 @@ def tsv_last_row_values(source: "str | bytes | Path") -> list:
 
     Returns an empty list if there are no data rows.
 
-    Spec: TSV tabular-data (FACT-TSV-001)
+    Spec: TSV tabular-data (SAL-TSV-00001)
     """
     result = parse_tsv(source)
     rows = result.get("rows", [])
@@ -148,7 +148,7 @@ def tsv_has_duplicate_headers(source: "str | bytes | Path") -> bool:
 
     False when there are no headers or only a single header.
 
-    Spec: TSV tabular-data (FACT-TSV-001)
+    Spec: TSV tabular-data (SAL-TSV-00001)
     """
     result = parse_tsv(source)
     headers = result.get("headers") or []
@@ -160,7 +160,7 @@ def tsv_all_headers_nonempty(source: "str | bytes | Path") -> bool:
 
     Returns True vacuously when there are no headers.
 
-    Spec: TSV tabular-data (FACT-TSV-001)
+    Spec: TSV tabular-data (SAL-TSV-00001)
     """
     result = parse_tsv(source)
     headers = result.get("headers") or []
@@ -170,7 +170,7 @@ def tsv_all_headers_nonempty(source: "str | bytes | Path") -> bool:
 def tsv_is_wide(source: "str | bytes | Path") -> bool:
     """Return True if the file has more columns than data rows.
 
-    Spec: TSV tabular-data (FACT-TSV-001)
+    Spec: TSV tabular-data (SAL-TSV-00001)
     """
     result = parse_tsv(source)
     return result.get("column_count", 0) > result.get("row_count", 0)
@@ -179,7 +179,7 @@ def tsv_is_wide(source: "str | bytes | Path") -> bool:
 def tsv_row_count(source: "str | bytes | Path") -> int:
     """Return the number of data rows in the TSV file (excluding header).
 
-    Spec: TSV tabular-data (FACT-TSV-001)
+    Spec: TSV tabular-data (SAL-TSV-00001)
     """
     result = parse_tsv(source)
     return result.get("row_count", 0)
@@ -188,7 +188,7 @@ def tsv_row_count(source: "str | bytes | Path") -> int:
 def tsv_column_count(source: "str | bytes | Path") -> int:
     """Return the number of columns in the TSV file.
 
-    Spec: TSV tabular-data (FACT-TSV-001)
+    Spec: TSV tabular-data (SAL-TSV-00001)
     """
     result = parse_tsv(source)
     return result.get("column_count", 0)
@@ -197,7 +197,7 @@ def tsv_column_count(source: "str | bytes | Path") -> int:
 def tsv_has_rows(source: "str | bytes | Path") -> bool:
     """Return True if the TSV file contains at least one data row.
 
-    Spec: TSV tabular-data (FACT-TSV-001)
+    Spec: TSV tabular-data (SAL-TSV-00001)
     """
     result = parse_tsv(source)
     return result.get("row_count", 0) > 0
@@ -206,7 +206,7 @@ def tsv_has_rows(source: "str | bytes | Path") -> bool:
 def tsv_is_single_row(source: "str | bytes | Path") -> bool:
     """Return True if the TSV file contains exactly one data row.
 
-    Spec: TSV tabular-data (FACT-TSV-001)
+    Spec: TSV tabular-data (SAL-TSV-00001)
     """
     result = parse_tsv(source)
     return result.get("row_count", 0) == 1
@@ -215,7 +215,7 @@ def tsv_is_single_row(source: "str | bytes | Path") -> bool:
 def tsv_header_count(source: "str | bytes | Path") -> int:
     """Return the number of header columns. 0 if no header row.
 
-    Spec: TSV tabular-data (FACT-TSV-001)
+    Spec: TSV tabular-data (SAL-TSV-00001)
     """
     result = parse_tsv(source)
     headers = result.get("headers") or []
@@ -225,7 +225,7 @@ def tsv_header_count(source: "str | bytes | Path") -> int:
 def tsv_has_header(source: "str | bytes | Path") -> bool:
     """Return True if the TSV file was parsed as having a header row.
 
-    Spec: TSV tabular-data (FACT-TSV-001)
+    Spec: TSV tabular-data (SAL-TSV-00001)
     """
     result = parse_tsv(source)
     return bool(result.get("has_header", False))
@@ -234,7 +234,7 @@ def tsv_has_header(source: "str | bytes | Path") -> bool:
 def tsv_first_header(source: "str | bytes | Path") -> str:
     """Return the name of the first header column. Empty string if no headers.
 
-    Spec: TSV tabular-data (FACT-TSV-001)
+    Spec: TSV tabular-data (SAL-TSV-00001)
     """
     result = parse_tsv(source)
     headers = result.get("headers") or []
@@ -244,7 +244,7 @@ def tsv_first_header(source: "str | bytes | Path") -> str:
 def tsv_last_header(source: "str | bytes | Path") -> str:
     """Return the name of the last header column. Empty string if no headers.
 
-    Spec: TSV tabular-data (FACT-TSV-001)
+    Spec: TSV tabular-data (SAL-TSV-00001)
     """
     result = parse_tsv(source)
     headers = result.get("headers") or []
@@ -254,7 +254,7 @@ def tsv_last_header(source: "str | bytes | Path") -> str:
 def tsv_is_empty(source: "str | bytes | Path") -> bool:
     """Return True if the TSV file has no rows and no headers.
 
-    Spec: TSV tabular-data (FACT-TSV-001)
+    Spec: TSV tabular-data (SAL-TSV-00001)
     """
     result = parse_tsv(source)
     return result.get("row_count", 0) == 0 and not (result.get("headers") or [])
@@ -263,7 +263,7 @@ def tsv_is_empty(source: "str | bytes | Path") -> bool:
 def tsv_total_cells(source: "str | bytes | Path") -> int:
     """Return total cell count (row_count * column_count).
 
-    Spec: TSV tabular-data (FACT-TSV-001)
+    Spec: TSV tabular-data (SAL-TSV-00001)
     """
     result = parse_tsv(source)
     return result.get("row_count", 0) * result.get("column_count", 0)
@@ -272,7 +272,7 @@ def tsv_total_cells(source: "str | bytes | Path") -> int:
 def tsv_is_tall(source: "str | bytes | Path") -> bool:
     """Return True if row count exceeds column count.
 
-    Spec: TSV tabular-data (FACT-TSV-001)
+    Spec: TSV tabular-data (SAL-TSV-00001)
     """
     result = parse_tsv(source)
     return result.get("row_count", 0) > result.get("column_count", 0)
@@ -281,7 +281,7 @@ def tsv_is_tall(source: "str | bytes | Path") -> bool:
 def tsv_delimiter(source: "str | bytes | Path") -> str:
     """Return the delimiter character used in the TSV file.
 
-    Spec: TSV tabular-data (FACT-TSV-001)
+    Spec: TSV tabular-data (SAL-TSV-00001)
     """
     result = parse_tsv(source)
     return result.get("delimiter", "\t")

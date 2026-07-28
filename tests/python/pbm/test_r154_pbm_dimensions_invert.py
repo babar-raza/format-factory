@@ -5,7 +5,7 @@ Sprint: FORMAT-FACTORY-MAINSTREAM-PRODUCT-DEEPENING-RNEXT12-001
 Added: 2026-06-09
 
 Tests for PBM get_dimensions and invert functions.
-Authority: P5 (FACT-PBM-001: P1 magic, FACT-PBM-002: P4 magic)
+Authority: P5 (SAL-PBM-00001: P1 magic, SAL-PBM-00002: P4 magic)
 """
 from __future__ import annotations
 

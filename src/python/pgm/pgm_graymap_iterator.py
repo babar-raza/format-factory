@@ -22,7 +22,7 @@ def pgm_iter_graymaps(source: "str | Path") -> Iterator[Graymap]:
         source: Path to a .pgm Portable Graymap file.
 
     Yields:
-        Graymap instances (spec class: pgm:graymap, FACT-PGM-002).
+        Graymap instances (spec class: pgm:graymap, SAL-PGM-00002).
     """
     img = parse_pgm_strict(str(Path(source).resolve()))
     width = img.width

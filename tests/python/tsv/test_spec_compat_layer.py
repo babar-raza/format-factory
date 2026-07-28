@@ -16,7 +16,7 @@ class TestTsvRecordMetadata:
         assert TsvRecord.spec_qname == "tsv:record"
 
     def test_spec_fact_ref(self):
-        assert TsvRecord.spec_fact_ref == "FACT-TSV-001"
+        assert TsvRecord.spec_fact_ref == "SAL-TSV-00001"
 
     def test_namespace_uri_present(self):
         assert TsvRecord.namespace_uri
@@ -59,7 +59,7 @@ class TestTsvFieldBehavior:
         assert TsvField.spec_qname == "tsv:field"
 
     def test_spec_fact_ref(self):
-        assert TsvField.spec_fact_ref == "FACT-TSV-002"
+        assert TsvField.spec_fact_ref == "SAL-TSV-00002"
 
     def test_value_property(self):
         f = TsvField("hello")

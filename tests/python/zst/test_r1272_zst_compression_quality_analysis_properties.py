@@ -5,7 +5,7 @@ Properties under test:
     is_highly_compressible — savings_ratio > 0.9
     frames_per_mb         — frame_count / decompressed_size_mb (0.0 if no decompressed data)
 
-spec_fact_ref: FACT-ZST-001
+spec_fact_ref: SAL-ZST-00001
 """
 
 import pytest

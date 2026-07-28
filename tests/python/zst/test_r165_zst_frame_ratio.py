@@ -5,7 +5,7 @@ Sprint: FORMAT-FACTORY-PRODUCT-DEEPENING-RNEXT29-001
 Added: 2026-06-10
 
 Tests for ZST get_frame_info and estimate_ratio functions.
-Authority: P6 (FACT-ZST-001: magic 0xFD2FB528)
+Authority: P6 (SAL-ZST-00001: magic 0xFD2FB528)
 """
 from __future__ import annotations
 

@@ -79,17 +79,14 @@ class TestParsePbm:
         with pytest.raises(pbm.PbmInvalidMagicError):
             pbm.parse_pbm_strict(_INVALID_MAGIC)
 
-    def test_exported_pbmerror_does_not_catch_parser_failures(self):
-        """Characterization: the facade PbmError (exceptions.py) is a
-        distinct class from pbm_parser.PbmError, so it must NOT catch
-        parser-raised exceptions."""
-        with pytest.raises(PbmParserError):
-            try:
-                pbm.parse_pbm_strict(_INVALID_MAGIC)
-            except pbm.PbmError:
-                pytest.fail("pbm.PbmError unexpectedly caught a parser error")
-            except PbmParserError:
-                raise
+    def test_parser_errors_catchable_via_package_error(self):
+        """Healed hierarchy: exceptions.py is the single source of truth,
+        so pbm_parser.PbmError (imported from .exceptions) IS pbm.PbmError
+        -- parser-raised errors are now catchable via the package-level
+        facade. See plans/.claude/quizzical-munching-gadget.md section 7."""
+        assert PbmParserError is pbm.PbmError
+        with pytest.raises(pbm.PbmError):
+            pbm.parse_pbm_strict(_INVALID_MAGIC)
 
     def test_probe_pbm_missing_file(self):
         result = pbm.probe_pbm(_SAMPLES / "absent.pbm")

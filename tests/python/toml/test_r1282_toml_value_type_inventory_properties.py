@@ -5,7 +5,7 @@ Properties under test:
     list_key_count    — number of top-level list/array keys
     max_array_length  — max length of any top-level list value
 
-spec_fact_ref: FACT-TOML-001
+spec_fact_ref: SAL-TOML-00001
 """
 
 import pytest

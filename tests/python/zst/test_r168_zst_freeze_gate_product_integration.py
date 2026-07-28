@@ -8,7 +8,7 @@ Taskcard: LFI-4-F
 Execution-method: LOCAL_PYTEST_DETERMINISTIC
 Route-decision-id: RD-TEST-ONLY-ZST-FREEZE-GATE-001
 Idempotency-key: lfi-4-f-zst-freeze-gate-product-integration-v1
-Exception-classification: no_public_spec_available (Gnumeric). ZST uses FACT-ZST-001.
+Exception-classification: no_public_spec_available (Gnumeric). ZST uses SAL-ZST-00001.
 """
 from __future__ import annotations
 
@@ -67,9 +67,9 @@ class TestFreezeGateAgainstProductZst:
         assert report.results[0].sha256_in == report.results[0].sha256_out
 
     def test_contract_validation_passes_on_product_output(self, runner, product_zst_bytes):
-        """contract_validation (FACT-ZST-001) passes on product-codec-compressed bytes."""
+        """contract_validation (SAL-ZST-00001) passes on product-codec-compressed bytes."""
         compressed, _ = product_zst_bytes
-        # Verify FACT-ZST-001 holds for the product codec output directly
+        # Verify SAL-ZST-00001 holds for the product codec output directly
         assert compressed[:4] == ZSTD_MAGIC, "Product codec output must start with ZSTD magic"
 
         # Gate verification via runner
@@ -97,7 +97,7 @@ class TestFreezeGateAgainstProductZst:
 
 class TestFreezeGatePipelineWithProductData:
     def test_product_data_survives_zst_gate_pipeline(self):
-        """End-to-end: product data → ZST compress → FACT-ZST-001 check → decompress → SHA match."""
+        """End-to-end: product data → ZST compress → SAL-ZST-00001 check → decompress → SHA match."""
         # Simulate product output bytes (CSV-like content)
         original = b"id,name,value\n1,foo,100\n2,bar,200\n3,baz,300\n" * 10
         sha_in = hashlib.sha256(original).hexdigest()
@@ -105,8 +105,8 @@ class TestFreezeGatePipelineWithProductData:
         # Compress
         compressed = compress_bytes(original)
 
-        # FACT-ZST-001: magic bytes present
-        assert compressed[:4] == ZSTD_MAGIC, f"FACT-ZST-001 violated: {compressed[:4].hex()}"
+        # SAL-ZST-00001: magic bytes present
+        assert compressed[:4] == ZSTD_MAGIC, f"SAL-ZST-00001 violated: {compressed[:4].hex()}"
 
         # Decompress
         recovered = decompress_bytes(compressed)

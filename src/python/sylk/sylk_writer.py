@@ -13,16 +13,25 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import Any
+from .exceptions import SylkError, SylkParseError, SylkWriteError
 
 
-class SylkWriteError(Exception):
-    """Raised when SYLK output fails."""
-
-
-def _cell_record(row: int, col: int, value: Any) -> str:
+def _cell_record(
+    row: int,
+    col: int,
+    value: Any,
+    value_type: str | None = None,
+) -> str:
     """Emit a single SYLK cell record."""
     if isinstance(value, (int, float)) and not isinstance(value, bool):
         return f"C;X{col};Y{row};K{value}"
+    if value_type in {"number", "numeric"}:
+        try:
+            float(str(value))
+        except (TypeError, ValueError):
+            pass
+        else:
+            return f"C;X{col};Y{row};K{value}"
     escaped = str(value).replace('"', '""')
     return f'C;X{col};Y{row};K"{escaped}"'
 
@@ -49,9 +58,10 @@ def write_sylk_str(document: Any) -> str:
         row = getattr(cell, "row", None)
         col = getattr(cell, "col", None)
         val = getattr(cell, "value", None)
+        value_type = getattr(cell, "value_type", None)
         if row is None or col is None:
             raise SylkWriteError(f"Cell missing row or col: {cell!r}")
-        lines.append(_cell_record(row, col, val))
+        lines.append(_cell_record(row, col, val, value_type=value_type))
     lines.append("E")
     return "\n".join(lines) + "\n"
 

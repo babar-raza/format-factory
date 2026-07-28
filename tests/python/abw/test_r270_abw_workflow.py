@@ -2,7 +2,7 @@
 tests/python/abw/test_r270_abw_workflow.py
 
 Sprint: ff-sprint-s270-abw-installed-workflow-20260626
-Authority: FACT-ABW-001 (AbiWord XML document format)
+Authority: SAL-ABW-00001 (AbiWord XML document format)
 
 Tests for abw_installed_workflow() in abw_codec.py.
 """

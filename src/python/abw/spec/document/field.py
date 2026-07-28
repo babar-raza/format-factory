@@ -1,7 +1,7 @@
 """ABW spec Field — canonical implementation of abw:field.
 
 spec_qname: abw:field
-spec_fact_ref: FACT-ABW-005
+spec_fact_ref: SAL-ABW-00005
 Spec ref: AbiWord AWML 1.0 — field inline element
 """
 from __future__ import annotations
@@ -16,7 +16,7 @@ class Field:
     """
 
     spec_qname: ClassVar[str] = "abw:field"
-    spec_fact_ref: ClassVar[str] = "FACT-ABW-005"
+    spec_fact_ref: ClassVar[str] = "SAL-ABW-00005"
     namespace_uri: ClassVar[str] = "http://www.abisource.com/awml/"
     local_name: ClassVar[str] = "field"
     facade_names: ClassVar[list] = []

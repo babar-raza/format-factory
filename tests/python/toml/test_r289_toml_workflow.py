@@ -20,7 +20,7 @@ class TestTomlInstalledWorkflowImport:
         assert callable(toml_installed_workflow)
 
     def test_importable_from_package(self):
-        import toml
+        import toml as toml
         assert hasattr(toml, "toml_installed_workflow")
 
 

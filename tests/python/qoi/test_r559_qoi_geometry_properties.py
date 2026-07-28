@@ -1,7 +1,7 @@
 """R559: QOI geometry properties — aspect_ratio, is_square, is_landscape, is_portrait.
 
 Tests for QoiDocument geometry properties added in R559.
-Spec refs: FACT-QOI-001 (header with width/height).
+Spec refs: SAL-QOI-00001 (header with width/height).
 """
 
 import pytest

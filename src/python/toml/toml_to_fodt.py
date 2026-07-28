@@ -15,11 +15,7 @@ License: Apache-2.0
 from __future__ import annotations
 
 import json as _json
-import sys
 from pathlib import Path
-
-_REPO = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(_REPO / "src" / "python" / "toml"))
 
 from toml.toml_codec import load_toml  # FF source reader
 from fodt.writer import write_fodt  # FF target writer
@@ -45,7 +41,8 @@ def toml_to_fodt(
     dest_path = Path(dest_path)
     dest_path.parent.mkdir(parents=True, exist_ok=True)
 
-    data = load_toml(toml_path)  # Format Factory toml reader
+    doc = load_toml(toml_path)  # Format Factory toml reader
+    data = doc.get("data", doc) if isinstance(doc, dict) else doc
 
     blocks: list[dict] = []
     for key, value in data.items():

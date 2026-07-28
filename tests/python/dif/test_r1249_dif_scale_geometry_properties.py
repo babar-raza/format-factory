@@ -5,7 +5,7 @@ Properties under test:
     aspect_ratio — vectors / row_count (0.0 if no rows)
     is_square   — row_count == vectors and row_count > 0
 
-spec_fact_ref: FACT-DIF-001
+spec_fact_ref: SAL-DIF-00001
 """
 
 import types

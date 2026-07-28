@@ -22,7 +22,7 @@ class DifModelDocument:
     """
 
     spec_qname: ClassVar[str] = "dif:document"
-    spec_fact_ref: ClassVar[str] = "FACT-DIF-001"
+    spec_fact_ref: ClassVar[str] = "SAL-DIF-00001"
     namespace_uri: ClassVar[str] = "urn:format:dif:1.0"
     local_name: ClassVar[str] = "document"
     facade_names: ClassVar[list] = []
@@ -61,7 +61,7 @@ class DifModelDocument:
         """Total number of cells across all rows."""
         return sum(len(row) for row in self._parsed.rows)
 
-    # Document dimension properties (FACT-DIF-001)
+    # Document dimension properties (SAL-DIF-00001)
 
     @property
     def col_count(self) -> int:
@@ -108,7 +108,7 @@ class DifModelDocument:
         """True if the document has both rows and columns."""
         return self.row_count > 0 and self.vectors > 0
 
-    # Scale and geometry properties (FACT-DIF-001 R1249)
+    # Scale and geometry properties (SAL-DIF-00001 R1249)
 
     @property
     def is_large(self) -> bool:
@@ -127,7 +127,7 @@ class DifModelDocument:
         """True if row_count == vectors and both are positive."""
         return self.row_count > 0 and self.row_count == self.vectors
 
-    # Extended grid analysis properties (FACT-DIF-001 R1269)
+    # Extended grid analysis properties (SAL-DIF-00001 R1269)
 
     @property
     def is_narrow(self) -> bool:
@@ -147,7 +147,7 @@ class DifModelDocument:
             return 0.0
         return self.cell_count / denom
 
-    # Grid density properties (FACT-DIF-001 R1285)
+    # Grid density properties (SAL-DIF-00001 R1285)
 
     @property
     def is_dense_grid(self) -> bool:

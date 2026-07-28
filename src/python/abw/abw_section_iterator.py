@@ -23,7 +23,7 @@ def abw_iter_sections(source: "str | Path") -> Iterator[Section]:
         source: Path to a .abw AbiWord document file.
 
     Yields:
-        Section instances (spec class: abiword:section, FACT-ABW-002).
+        Section instances (spec class: abiword:section, SAL-ABW-00002).
     """
     model = load(str(Path(source).resolve()))
     paragraphs = model.get("paragraphs", [])

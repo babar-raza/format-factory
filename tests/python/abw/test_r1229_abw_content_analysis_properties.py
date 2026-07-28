@@ -5,7 +5,7 @@ Properties under test:
     avg_paragraph_length  — total_text_length / paragraph_count (0.0 if empty)
     has_long_paragraphs   — any paragraph > 200 characters
 
-spec_fact_ref: FACT-ABW-001
+spec_fact_ref: SAL-ABW-00001
 """
 
 import pytest

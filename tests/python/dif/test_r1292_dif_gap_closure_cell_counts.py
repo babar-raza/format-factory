@@ -7,8 +7,8 @@ Closes:
   GAP-DIF-FOSS-DIF_SPECIAL_-001   dif_special_cell_count   missing_test_coverage
 
 Grounded in DIF spec facts:
-  FACT-DIF-001: TABLE/VECTORS/TUPLES header directives define document dimensions
-  FACT-DIF-002: DATA section cell types with special markers (NA, boolean)
+  SAL-DIF-00001: TABLE/VECTORS/TUPLES header directives define document dimensions
+  SAL-DIF-00002: DATA section cell types with special markers (NA, boolean)
 
 Sprint: hazy-questing-peach (TC-HQP-007)
 """
@@ -27,7 +27,7 @@ NUMERIC = SAMPLES / "numeric-row.dif"   # VECTORS=3, no special cells
 class TestDifDeclaredVectorCountPrecise:
     """GAP-DIF-FOSS-DIF_DECLARED-001: precise value assertions for declared vector count.
 
-    FACT-DIF-001: VECTORS directive specifies the declared number of columns.
+    SAL-DIF-00001: VECTORS directive specifies the declared number of columns.
     Weak assertions (>= 0, isinstance) in test_r1290 don't constitute sufficient
     test coverage for this capability. These tests assert exact expected values.
     """
@@ -59,7 +59,7 @@ class TestDifDeclaredVectorCountPrecise:
 class TestDifBooleanCellCountPrecise:
     """GAP-DIF-FOSS-DIF_BOOLEAN_-001: precise value assertions for boolean cell count.
 
-    FACT-DIF-002: Boolean values use V/TRUE or V/FALSE markers in the DATA section.
+    SAL-DIF-00002: Boolean values use V/TRUE or V/FALSE markers in the DATA section.
     Standard DIF samples do not contain boolean cells; the function must return 0
     for files with no boolean-typed cells (not just >= 0).
     """
@@ -96,7 +96,7 @@ class TestDifBooleanCellCountPrecise:
 class TestDifSpecialCellCountPrecise:
     """GAP-DIF-FOSS-DIF_SPECIAL_-001: precise value assertions for special cell count.
 
-    FACT-DIF-002: Special/NA cells use V marker variants that do not resolve to
+    SAL-DIF-00002: Special/NA cells use V marker variants that do not resolve to
     numeric or string values. minimal-2x2.dif is known to contain 4 special cells
     (all cells are NA in the 2x2 grid).
     """

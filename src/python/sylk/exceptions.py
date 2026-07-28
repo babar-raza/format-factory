@@ -20,3 +20,11 @@ class SylkParseError(SylkError):
 
 class SylkWriteError(SylkError):
     """Raised when a sylk file cannot be written."""
+
+
+class SylkInvalidFormatError(SylkParseError):
+    """Raised when file does not start with ID record."""
+
+
+class SylkSizeError(SylkParseError):
+    """Raised when file size or dimensions exceed limits."""

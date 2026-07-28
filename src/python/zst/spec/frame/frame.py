@@ -2,7 +2,7 @@
 ZST structural element: zst:frame
 
 Spec ref: RFC 8878 — Zstandard Compression — Frame format
-Fact ref: FACT-ZST-001
+Fact ref: SAL-ZST-00001
 QName: zst:frame
 Canonical class: Frame
 Facade: ZstFrame
@@ -15,7 +15,7 @@ class Frame:
     """Canonical spec-shaped class for zst:frame (Zstandard frame)."""
 
     spec_qname: ClassVar[str] = "zst:frame"
-    spec_fact_ref: ClassVar[str] = "FACT-ZST-001"
+    spec_fact_ref: ClassVar[str] = "SAL-ZST-00001"
     namespace_uri: ClassVar[str] = "urn:ietf:rfc:8878:zstd"
     local_name: ClassVar[str] = "frame"
     facade_names: ClassVar[list] = ["ZstFrame"]

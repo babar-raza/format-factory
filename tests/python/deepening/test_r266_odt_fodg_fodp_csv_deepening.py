@@ -95,21 +95,21 @@ class TestFodpTitleCoverage:
 
 class TestCsvHeaderCount:
     def test_returns_int(self):
-        from src.python.csv.csv_parser import csv_header_count
+        from src.python.ff_csv.csv_parser import csv_header_count
         assert isinstance(csv_header_count(str(CSV_VALID[0])), int)
 
     def test_nonnegative(self):
-        from src.python.csv.csv_parser import csv_header_count
+        from src.python.ff_csv.csv_parser import csv_header_count
         for f in CSV_VALID:
             assert csv_header_count(str(f)) >= 0
 
 
 class TestCsvIsRectangular:
     def test_returns_bool(self):
-        from src.python.csv.csv_parser import csv_is_rectangular
+        from src.python.ff_csv.csv_parser import csv_is_rectangular
         assert isinstance(csv_is_rectangular(str(CSV_VALID[0])), bool)
 
     def test_valid_csvs_rectangular(self):
-        from src.python.csv.csv_parser import csv_is_rectangular
+        from src.python.ff_csv.csv_parser import csv_is_rectangular
         for f in CSV_VALID:
             assert csv_is_rectangular(str(f)) is True

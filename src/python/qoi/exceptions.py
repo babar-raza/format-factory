@@ -20,3 +20,19 @@ class QoiParseError(QoiError):
 
 class QoiWriteError(QoiError):
     """Raised when a qoi file cannot be written."""
+
+
+class QoiInvalidMagicError(QoiParseError):
+    """Raised when the file magic is not 'qoif'."""
+
+
+class QoiInvalidHeaderError(QoiParseError):
+    """Raised when header fields are invalid."""
+
+
+class QoiSizeError(QoiParseError):
+    """Raised when file or image dimensions exceed limits."""
+
+
+class QoiDecodeError(QoiParseError):
+    """Raised when pixel data cannot be decoded."""

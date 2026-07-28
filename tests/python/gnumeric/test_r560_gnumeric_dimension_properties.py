@@ -1,7 +1,7 @@
 """R560: GNUMERIC dimension properties — is_empty, is_single_sheet, is_multi_sheet.
 
 Tests for GnumericDocument dimension properties added in R560.
-Spec refs: FACT-GNUMERIC-001.
+Spec refs: SAL-GNUMERIC-00001.
 """
 
 import pytest

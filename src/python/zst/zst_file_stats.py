@@ -118,7 +118,7 @@ def zst_byte_overhead(path: "str | Path") -> int:
 def zst_compressed_size_kb(path: "str | Path") -> float:
     """Return the compressed file size in kilobytes.
 
-    Spec: Zstandard frame compressed size (FACT-ZST-001)
+    Spec: Zstandard frame compressed size (SAL-ZST-00001)
     """
     from .compression_metrics import zst_compressed_size
     return zst_compressed_size(path) / 1024.0
@@ -127,7 +127,7 @@ def zst_compressed_size_kb(path: "str | Path") -> float:
 def zst_decompressed_size_kb(path: "str | Path") -> float:
     """Return the decompressed content size in kilobytes.
 
-    Spec: Zstandard frame decompressed content size (FACT-ZST-001)
+    Spec: Zstandard frame decompressed content size (SAL-ZST-00001)
     """
     from .compression_metrics import zst_decompressed_size
     return zst_decompressed_size(path) / 1024.0
@@ -136,7 +136,7 @@ def zst_decompressed_size_kb(path: "str | Path") -> float:
 def zst_has_space_savings(path: "str | Path") -> bool:
     """Return True if the compressed size is strictly less than decompressed size.
 
-    Spec: Zstandard compression effectiveness (FACT-ZST-001)
+    Spec: Zstandard compression effectiveness (SAL-ZST-00001)
     """
     from .compression_metrics import zst_compressed_size, zst_decompressed_size
     return zst_compressed_size(path) < zst_decompressed_size(path)
@@ -148,7 +148,7 @@ def zst_ratio_below_half(path: "str | Path") -> bool:
     Ratio = compressed_size / decompressed_size. Returns False when
     decompressed_size is 0.
 
-    Spec: Zstandard compression ratio (FACT-ZST-001)
+    Spec: Zstandard compression ratio (SAL-ZST-00001)
     """
     from .compression_metrics import zst_compressed_size, zst_decompressed_size
     ds = zst_decompressed_size(path)
@@ -163,7 +163,7 @@ def zst_size_category(path: "str | Path") -> str:
     Categories: 'empty' (0 bytes), 'tiny' (<1 KB), 'small' (<1 MB),
     'medium' (<100 MB), 'large' (>=100 MB).
 
-    Spec: Zstandard decompressed content size (FACT-ZST-001)
+    Spec: Zstandard decompressed content size (SAL-ZST-00001)
     """
     from .compression_metrics import zst_decompressed_size
     ds = zst_decompressed_size(path)
@@ -183,7 +183,7 @@ def zst_is_ratio_above_one(path: "str | Path") -> bool:
 
     This occurs when Zstandard cannot compress the content effectively.
 
-    Spec: Zstandard compression ratio (FACT-ZST-001)
+    Spec: Zstandard compression ratio (SAL-ZST-00001)
     """
     from .compression_metrics import zst_compressed_size, zst_decompressed_size
     return zst_compressed_size(path) > zst_decompressed_size(path)
@@ -192,7 +192,7 @@ def zst_is_ratio_above_one(path: "str | Path") -> bool:
 def zst_frame_count(path: "str | Path") -> int:
     """Return the number of Zstandard frames in the file.
 
-    Spec: Zstandard frame format (FACT-ZST-001)
+    Spec: Zstandard frame format (SAL-ZST-00001)
     """
     from .compression_metrics import zst_frame_count as _frame_count
     return _frame_count(path)
@@ -201,7 +201,7 @@ def zst_frame_count(path: "str | Path") -> int:
 def zst_is_single_frame(path: "str | Path") -> bool:
     """Return True if the ZST file contains exactly one frame.
 
-    Spec: Zstandard frame format (FACT-ZST-001)
+    Spec: Zstandard frame format (SAL-ZST-00001)
     """
     from .compression_metrics import zst_is_single_frame as _is_single
     return _is_single(path)
@@ -210,7 +210,7 @@ def zst_is_single_frame(path: "str | Path") -> bool:
 def zst_magic_valid(path: "str | Path") -> bool:
     """Return True if the file begins with a valid Zstandard magic number.
 
-    Spec: Zstandard frame header magic (FACT-ZST-001)
+    Spec: Zstandard frame header magic (SAL-ZST-00001)
     """
     from .compression_metrics import zst_magic_valid as _magic_valid
     return _magic_valid(path)
@@ -219,7 +219,7 @@ def zst_magic_valid(path: "str | Path") -> bool:
 def zst_is_valid_file(path: "str | Path") -> bool:
     """Return True if the file is a structurally valid Zstandard archive.
 
-    Spec: Zstandard file format (FACT-ZST-001)
+    Spec: Zstandard file format (SAL-ZST-00001)
     """
     from .compression_metrics import zst_is_valid_file as _is_valid
     return _is_valid(path)
@@ -230,7 +230,7 @@ def zst_bytes_saved(path: "str | Path") -> int:
 
     Negative when the compressed file is larger than the original.
 
-    Spec: Zstandard compression effectiveness (FACT-ZST-001)
+    Spec: Zstandard compression effectiveness (SAL-ZST-00001)
     """
     from .compression_metrics import zst_bytes_saved as _bytes_saved
     return _bytes_saved(path)
@@ -239,7 +239,7 @@ def zst_bytes_saved(path: "str | Path") -> int:
 def zst_is_empty_content(path: "str | Path") -> bool:
     """Return True if the decompressed content is empty (zero bytes).
 
-    Spec: Zstandard decompressed content (FACT-ZST-001)
+    Spec: Zstandard decompressed content (SAL-ZST-00001)
     """
     from .compression_metrics import zst_is_empty_content as _is_empty
     return _is_empty(path)

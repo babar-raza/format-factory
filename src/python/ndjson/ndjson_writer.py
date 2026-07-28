@@ -13,10 +13,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-
-
-class NdjsonWriteError(Exception):
-    """Raised when NDJSON output fails."""
+from .exceptions import NdjsonError, NdjsonParseError, NdjsonWriteError
 
 
 def write_ndjson_str(records: list[dict]) -> str:

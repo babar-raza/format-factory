@@ -14,11 +14,8 @@ License: Apache-2.0
 """
 from __future__ import annotations
 
-import sys
 from pathlib import Path
 
-_REPO = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(_REPO / "src" / "python"))
 
 from abw.abw_codec import load as load_abw  # FF source reader
 from toml.toml_codec import write_toml  # FF target writer

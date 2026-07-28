@@ -20,3 +20,19 @@ class PbmParseError(PbmError):
 
 class PbmWriteError(PbmError):
     """Raised when a pbm file cannot be written."""
+
+
+class PbmInvalidMagicError(PbmParseError):
+    """Raised when file does not start with P1 or P4."""
+
+
+class PbmInvalidHeaderError(PbmParseError):
+    """Raised when header fields are invalid."""
+
+
+class PbmSizeError(PbmParseError):
+    """Raised when file or image dimensions exceed limits."""
+
+
+class PbmDecodeError(PbmParseError):
+    """Raised when pixel data is malformed."""

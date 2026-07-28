@@ -5,7 +5,7 @@ Properties under test:
     has_rich_sections — paragraphs_per_section > 5
     is_long_document  — total_text_length > 10,000 characters
 
-spec_fact_ref: FACT-ABW-001
+spec_fact_ref: SAL-ABW-00001
 """
 
 import pytest

@@ -22,7 +22,7 @@ class GnumericDocument:
     """
 
     spec_qname: ClassVar[str] = "gnumeric:workbook"
-    spec_fact_ref: ClassVar[str] = "FACT-GNUMERIC-001"
+    spec_fact_ref: ClassVar[str] = "SAL-GNUMERIC-00001"
     namespace_uri: ClassVar[str] = "http://www.gnumeric.org/v10.dtd"
     local_name: ClassVar[str] = "workbook"
     facade_names: ClassVar[list] = []
@@ -75,7 +75,7 @@ class GnumericDocument:
         grid = sheet.get("cell_grid", {})
         return str(grid.get((row, col), ""))
 
-    # Workbook dimension properties (FACT-GNUMERIC-001)
+    # Workbook dimension properties (SAL-GNUMERIC-00001)
 
     @property
     def is_empty(self) -> bool:
@@ -109,7 +109,7 @@ class GnumericDocument:
         """True if the workbook has sheets but no cells."""
         return self.sheet_count > 0 and self.cell_count == 0
 
-    # Workbook scale properties (FACT-GNUMERIC-001 R1231)
+    # Workbook scale properties (SAL-GNUMERIC-00001 R1231)
 
     @property
     def is_large_workbook(self) -> bool:
@@ -126,7 +126,7 @@ class GnumericDocument:
         """True if avg_cells_per_sheet > 1000."""
         return self.avg_cells_per_sheet > 1000
 
-    # Metadata and content properties (FACT-GNUMERIC-001 R1248)
+    # Metadata and content properties (SAL-GNUMERIC-00001 R1248)
 
     @property
     def sheet_names(self) -> list[str]:
@@ -146,7 +146,7 @@ class GnumericDocument:
         """True if source was a valid Gnumeric file (alias for is_gnumeric)."""
         return self.is_gnumeric
 
-    # Cell distribution properties (FACT-GNUMERIC-001 R1268)
+    # Cell distribution properties (SAL-GNUMERIC-00001 R1268)
 
     @property
     def min_cells_per_sheet(self) -> int:
@@ -174,7 +174,7 @@ class GnumericDocument:
         counts = [len(s.get("cell_grid", {})) for s in sheets]
         return len(set(counts)) == 1
 
-    # Sheet richness and variance properties (FACT-GNUMERIC-001 R1284)
+    # Sheet richness and variance properties (SAL-GNUMERIC-00001 R1284)
 
     @property
     def is_data_rich(self) -> bool:

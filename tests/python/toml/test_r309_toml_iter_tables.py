@@ -20,7 +20,7 @@ class TestTomlIterTablesImport:
         assert callable(toml_iter_tables)
 
     def test_importable_from_package(self):
-        import toml
+        import toml as toml
         assert hasattr(toml, "toml_iter_tables")
 
 

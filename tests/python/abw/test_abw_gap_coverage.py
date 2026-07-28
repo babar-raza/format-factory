@@ -1012,6 +1012,6 @@ def test_abw_document_constructed_directly_from_dict():
 
 def test_abw_document_spec_metadata_class_vars():
     assert abw.AbwDocument.spec_qname == "abiword:document"
-    assert abw.AbwDocument.spec_fact_ref == "FACT-ABW-001"
+    assert abw.AbwDocument.spec_fact_ref == "SAL-ABW-00001"
     assert "abisource" in abw.AbwDocument.namespace_uri
     assert abw.AbwDocument.local_name == "document"

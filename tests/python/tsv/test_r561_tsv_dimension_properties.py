@@ -1,7 +1,7 @@
 """R561: TSV dimension properties — is_empty, is_single_row, is_wide, is_tall.
 
 Tests for TsvDocument dimension properties added in R561.
-Spec refs: FACT-TSV-001.
+Spec refs: SAL-TSV-00001.
 """
 
 import pytest

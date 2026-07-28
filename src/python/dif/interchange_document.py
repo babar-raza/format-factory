@@ -9,7 +9,7 @@ from __future__ import annotations
 
 
 spec_qname = "dif:data"
-spec_fact_ref = "FACT-DIF-001"
+spec_fact_ref = "SAL-DIF-00001"
 namespace_uri = "urn:dif:data-interchange-format"
 
 import html as _html_module
@@ -19,26 +19,18 @@ from typing import Any
 from .dif_parser import DifCell, DifDocument, get_column_values, parse_dif, parse_dif_strict
 
 # dogfood_status: IMPLEMENTED — DIF→CSV uses FF csv_writer.write_csv (add-dogfood-export 2026-06-22)
-# TC-DIF-002 (2026-06-22): installed-package path first; sys.path-injected fallback for source-tree
 try:
-    from csv.csv_writer import write_csv as _ff_write_csv  # installed-package context
-except (ImportError, AttributeError):
-    try:
-        import sys as _sys
-        _sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent))
-        from src.python.csv.csv_writer import write_csv as _ff_write_csv  # source-tree context
-    except ImportError:
-        _ff_write_csv = None
+    from ff_csv.csv_writer import write_csv as _ff_write_csv
+except ModuleNotFoundError:  # Repository-root imports before package installation.
+    from src.python.ff_csv.csv_writer import write_csv as _ff_write_csv
 
 
 def dif_to_csv(file_path: str | Path) -> str:
     """Export a DIF file as CSV using FF csv_writer.write_csv (dogfood export).
 
-    dogfood_backend: src/python/csv/csv_writer.py::write_csv
+    dogfood_backend: src/python/ff_csv/csv_writer.py::write_csv
     dogfood_status: IMPLEMENTED
     """
-    if _ff_write_csv is None:
-        raise ImportError("dif_to_csv: FF csv_writer.write_csv unavailable")
     doc = parse_dif_strict(file_path)
     if not doc.rows:
         return ""

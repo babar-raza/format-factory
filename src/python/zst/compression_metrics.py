@@ -5,7 +5,7 @@ from __future__ import annotations
 
 
 spec_qname = "zst:frame"
-spec_fact_ref = "FACT-ZST-001"
+spec_fact_ref = "SAL-ZST-00001"
 namespace_uri = "urn:facebook:zstandard"
 
 from pathlib import Path

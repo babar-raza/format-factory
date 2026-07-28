@@ -5,7 +5,7 @@ Properties under test:
     is_tall     — row_count > vectors
     is_tabular  — row_count > 0 and vectors > 0
 
-spec_fact_ref: FACT-DIF-001
+spec_fact_ref: SAL-DIF-00001
 """
 
 import types

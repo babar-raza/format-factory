@@ -22,7 +22,7 @@ def ndjson_iter_fields(source: "str | Path") -> Iterator[Field]:
         source: Path to an .ndjson Newline Delimited JSON file.
 
     Yields:
-        Field instances (spec class: ndjson:field, FACT-NDJSON-002).
+        Field instances (spec class: ndjson:field, SAL-NDJSON-00002).
     """
     raw_records = load_ndjson(str(Path(source).resolve()))
     for record in raw_records:

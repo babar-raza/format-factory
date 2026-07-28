@@ -14,7 +14,7 @@ from pathlib import Path
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
-from src.python.csv.csv_parser import csv_row_count, csv_column_count, csv_total_cell_count
+from src.python.ff_csv.csv_parser import csv_row_count, csv_column_count, csv_total_cell_count
 sys.path.insert(0, str(_REPO / "src" / "python"))
 from sylk import sylk_row_count, sylk_column_count, sylk_total_cell_count
 from dif import parse_dif

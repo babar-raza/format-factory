@@ -2,7 +2,7 @@
 
 Spec authority: abw:abiword
 Spec ref: AbiWord AWML 1.0 — document root
-Fact ref: FACT-ABW-001
+Fact ref: SAL-ABW-00001
 Canonical spec class: src/python/abw/spec/document/document.py::Document
 """
 from __future__ import annotations
@@ -21,7 +21,7 @@ class AbwDocument(_SpecDocument):
     """
 
     spec_qname: ClassVar[str] = "abiword:document"
-    spec_fact_ref: ClassVar[str] = "FACT-ABW-001"
+    spec_fact_ref: ClassVar[str] = "SAL-ABW-00001"
     namespace_uri: ClassVar[str] = "http://www.abisource.com/awml/"
 
     @classmethod

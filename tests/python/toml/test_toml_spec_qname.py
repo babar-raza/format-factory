@@ -42,7 +42,7 @@ class TestTomlCompatLayerSpecQname:
 
     def test_toml_table_spec_fact_ref(self):
         from toml.Compat import TomlTable
-        assert TomlTable.spec_fact_ref == "FACT-TOML-001"
+        assert TomlTable.spec_fact_ref == "SAL-TOML-00001"
 
     def test_toml_table_namespace_uri(self):
         from toml.Compat import TomlTable
@@ -55,7 +55,7 @@ class TestTomlCompatLayerSpecQname:
 
     def test_toml_key_spec_fact_ref(self):
         from toml.Compat import TomlKey
-        assert TomlKey.spec_fact_ref == "FACT-TOML-002"
+        assert TomlKey.spec_fact_ref == "SAL-TOML-00002"
 
 
 class TestTomlSpecQnameRegistryLinkage:

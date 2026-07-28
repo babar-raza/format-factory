@@ -19,7 +19,7 @@ class TestTomlTableMetadata:
         assert TomlTable.spec_qname == "toml:table"
 
     def test_spec_fact_ref(self):
-        assert TomlTable.spec_fact_ref == "FACT-TOML-001"
+        assert TomlTable.spec_fact_ref == "SAL-TOML-00001"
 
     def test_namespace_uri_present(self):
         assert TomlTable.namespace_uri
@@ -65,7 +65,7 @@ class TestTomlKeyBehavior:
         assert TomlKey.spec_qname == "toml:key"
 
     def test_spec_fact_ref(self):
-        assert TomlKey.spec_fact_ref == "FACT-TOML-002"
+        assert TomlKey.spec_fact_ref == "SAL-TOML-00002"
 
     def test_name_property(self):
         k = TomlKey("title", "Example")

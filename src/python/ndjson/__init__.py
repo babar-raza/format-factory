@@ -12,6 +12,27 @@ FOSS track only — no commercial readiness implied.
 # Import all core codec functions and exception classes
 from .ndjson_codec import *  # noqa: F401, F403
 from .ndjson_record_stats import *  # noqa: F401, F403
+from .exceptions import *  # noqa: F401, F403
+
+# NOTE: ndjson_field_analytics.py defines 10 names that collide with
+# already-wired, already-tested functions of the same name in json_stream.py
+# (re-exported via ndjson_codec.py) and/or ndjson_record_stats.py, but with an
+# INCOMPATIBLE signature (raw source str/bytes/Path vs. an already-parsed
+# record list). A blind `import *` would silently shadow the canonical,
+# tested implementations -- exactly the defect class this fix exists to
+# eliminate. Only the genuinely non-colliding names are imported here; the
+# 10 colliding duplicates in ndjson_field_analytics.py remain dead code,
+# tracked as a separate cleanup (see found-issue-register.yaml FI-025).
+from .ndjson_field_analytics import (  # noqa: F401
+    ndjson_first_record_keys,
+    ndjson_first_record_field_count,
+    ndjson_has_consistent_keys,
+    ndjson_sorted_key_names,
+    ndjson_all_key_names,
+    ndjson_last_record_keys,
+    ndjson_has_nested_records,
+    ndjson_has_arrays,
+)
 
 # Import spec-level domain module (Compat facade)
 from .Compat.ndjson_record import NdjsonRecord  # noqa: F401

@@ -15,15 +15,10 @@ Ledger entry: R90-DIF-TO-CSV-DOGFOOD-001
 """
 from __future__ import annotations
 
-import sys
 from pathlib import Path
 
-_REPO = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(_REPO / "src" / "python" / "dif"))
-sys.path.insert(0, str(_REPO))
-
 from dif.dif_parser import parse_dif_strict  # Format Factory source reader
-from src.python.csv.csv_writer import write_csv_to_file  # Format Factory target writer
+from ff_csv.csv_writer import write_csv_to_file  # Format Factory target writer
 
 
 def dif_to_csv(

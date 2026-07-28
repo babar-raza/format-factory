@@ -21,7 +21,7 @@ class TestDifHeaderMetadata:
         assert DifHeader.spec_qname == "dif:header"
 
     def test_spec_fact_ref(self):
-        assert DifHeader.spec_fact_ref == "FACT-DIF-001"
+        assert DifHeader.spec_fact_ref == "SAL-DIF-00001"
 
     def test_namespace_uri_present(self):
         assert DifHeader.namespace_uri
@@ -80,7 +80,7 @@ class TestDifDatumBehavior:
         assert DifDatum.spec_qname == "dif:datum"
 
     def test_spec_fact_ref(self):
-        assert DifDatum.spec_fact_ref == "FACT-DIF-003"
+        assert DifDatum.spec_fact_ref == "SAL-DIF-00003"
 
     def test_value_property(self):
         d = DifDatum(42.0, "V")

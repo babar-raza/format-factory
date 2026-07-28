@@ -24,7 +24,7 @@ from fodt.neutral_model import (
     fodt_words_per_paragraph,
     fodt_is_text_heavy,
 )
-from src.python.csv.csv_parser import (
+from src.python.ff_csv.csv_parser import (
     csv_field_type_variance,
     csv_row_length_sum,
     csv_empty_field_ratio,

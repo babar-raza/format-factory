@@ -42,7 +42,7 @@ class TestTsvCompatLayerSpecQname:
 
     def test_tsv_record_spec_fact_ref(self):
         from tsv.Compat import TsvRecord
-        assert TsvRecord.spec_fact_ref == "FACT-TSV-001"
+        assert TsvRecord.spec_fact_ref == "SAL-TSV-00001"
 
     def test_tsv_record_namespace_uri(self):
         from tsv.Compat import TsvRecord
@@ -55,7 +55,7 @@ class TestTsvCompatLayerSpecQname:
 
     def test_tsv_field_spec_fact_ref(self):
         from tsv.Compat import TsvField
-        assert TsvField.spec_fact_ref == "FACT-TSV-002"
+        assert TsvField.spec_fact_ref == "SAL-TSV-00002"
 
 
 class TestTsvSpecQnameRegistryLinkage:

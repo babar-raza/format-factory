@@ -42,7 +42,7 @@ class TestZstCompatLayerSpecQname:
 
     def test_zst_frame_spec_fact_ref(self):
         from zst.Compat import ZstFrame
-        assert ZstFrame.spec_fact_ref == "FACT-ZST-001"
+        assert ZstFrame.spec_fact_ref == "SAL-ZST-00001"
 
     def test_zst_frame_namespace_uri(self):
         from zst.Compat import ZstFrame
@@ -55,7 +55,7 @@ class TestZstCompatLayerSpecQname:
 
     def test_zst_block_spec_fact_ref(self):
         from zst.Compat import ZstBlock
-        assert ZstBlock.spec_fact_ref == "FACT-ZST-002"
+        assert ZstBlock.spec_fact_ref == "SAL-ZST-00002"
 
 
 class TestZstSpecQnameRegistryLinkage:

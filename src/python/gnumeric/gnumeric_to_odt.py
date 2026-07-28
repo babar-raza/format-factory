@@ -15,12 +15,7 @@ License: Apache-2.0
 """
 from __future__ import annotations
 
-import sys
 from pathlib import Path
-
-_REPO = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(_REPO / "src" / "python" / "gnumeric"))
-sys.path.insert(0, str(_REPO))
 
 from gnumeric.gnumeric_codec import load as load_gnumeric  # FF source reader
 from odt.odt_writer import write_odt  # FF target writer

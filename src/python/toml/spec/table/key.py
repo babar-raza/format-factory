@@ -2,7 +2,7 @@
 TOML structural element: toml:key
 
 Spec ref: TOML v1.0.0 — Keys
-Fact ref: FACT-TOML-002
+Fact ref: SAL-TOML-00002
 QName: toml:key
 Canonical class: Key
 Facade: TomlKey
@@ -15,7 +15,7 @@ class Key:
     """Canonical spec-shaped class for toml:key."""
 
     spec_qname: ClassVar[str] = "toml:key"
-    spec_fact_ref: ClassVar[str] = "FACT-TOML-002"
+    spec_fact_ref: ClassVar[str] = "SAL-TOML-00002"
     namespace_uri: ClassVar[str] = "urn:format:toml:1.0"
     local_name: ClassVar[str] = "key"
     facade_names: ClassVar[list] = ["TomlKey"]

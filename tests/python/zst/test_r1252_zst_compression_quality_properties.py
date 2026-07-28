@@ -5,7 +5,7 @@ Properties under test:
     savings_ratio        — 1 - (compressed / decompressed); 0.0 if decompressed == 0
     is_lossless_verified — compressed > 0 and compressed < decompressed
 
-spec_fact_ref: FACT-ZST-001
+spec_fact_ref: SAL-ZST-00001
 """
 
 import pytest

@@ -5,7 +5,7 @@ Sprint: FORMAT-FACTORY-MAINSTREAM-PRODUCT-DEEPENING-RNEXT12-001
 Added: 2026-06-09
 
 Tests for PGM get_dimensions and normalize functions.
-Authority: P5 (FACT-PGM-001: P2 magic, FACT-PGM-002: P5 magic)
+Authority: P5 (SAL-PGM-00001: P2 magic, SAL-PGM-00002: P5 magic)
 """
 from __future__ import annotations
 

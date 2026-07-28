@@ -36,7 +36,7 @@ class TestXcfSampleRoundtrip:
     @pytest.mark.roundtrip
     def test_spec_qname_matches_registry(self):
         assert XcfDocument.spec_qname == "xcf:image"
-        assert XcfDocument.spec_fact_ref == "FACT-XCF-001"
+        assert XcfDocument.spec_fact_ref == "SAL-XCF-00001"
 
     @pytest.mark.roundtrip
     def test_sample_model_typed_properties_rgb(self):

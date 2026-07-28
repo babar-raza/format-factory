@@ -21,6 +21,7 @@ import struct
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, ClassVar
+from .exceptions import QoiError, QoiParseError, QoiInvalidMagicError, QoiInvalidHeaderError, QoiSizeError, QoiDecodeError
 
 
 # QOI constants
@@ -84,26 +85,6 @@ def get_capabilities() -> dict[str, Any]:
         "max_dimension": MAX_DIMENSION,
         "max_pixels": MAX_PIXELS,
     }
-
-
-class QoiError(Exception):
-    """Base exception for QOI parser errors."""
-
-
-class QoiInvalidMagicError(QoiError):
-    """Raised when the file magic is not 'qoif'."""
-
-
-class QoiInvalidHeaderError(QoiError):
-    """Raised when header fields are invalid."""
-
-
-class QoiSizeError(QoiError):
-    """Raised when file or image dimensions exceed limits."""
-
-
-class QoiDecodeError(QoiError):
-    """Raised when pixel data cannot be decoded."""
 
 
 @dataclass

@@ -1,8 +1,8 @@
 """Tests for ZST skippable frame support.
 
-FACT-ZST-002: Skippable frames start with 4-byte magic in range
+SAL-ZST-00002: Skippable frames start with 4-byte magic in range
               0x184D2A50 to 0x184D2A5F (16 valid values, little-endian).
-FACT-ZST-004: Two frame formats co-exist: Zstandard frames and skippable frames.
+SAL-ZST-00004: Two frame formats co-exist: Zstandard frames and skippable frames.
 
 Sprint R556 — add-python-object-model-feature
 """

@@ -5,7 +5,7 @@ Properties under test:
     long_edge  — max(width, height)
     short_edge — min(width, height)
 
-spec_fact_ref: FACT-PBM-001
+spec_fact_ref: SAL-PBM-00001
 """
 
 import types

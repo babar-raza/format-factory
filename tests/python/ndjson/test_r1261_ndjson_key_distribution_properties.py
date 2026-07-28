@@ -5,7 +5,7 @@ Properties under test:
     is_schema_consistent — all object records have the same key set
     object_count       — number of dict records
 
-spec_fact_ref: FACT-NDJSON-001
+spec_fact_ref: SAL-NDJSON-00001
 """
 
 import pytest

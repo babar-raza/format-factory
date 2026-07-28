@@ -5,7 +5,7 @@ Properties under test:
     scalar_count   — number of records that are scalar values (not dict or list)
     object_fraction — fraction of records that are JSON objects
 
-spec_fact_ref: FACT-NDJSON-001
+spec_fact_ref: SAL-NDJSON-00001
 """
 
 import pytest
