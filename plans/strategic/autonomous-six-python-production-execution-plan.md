@@ -11,9 +11,12 @@ generated_by: codex
 generated_at: 2026-07-24
 skill_id: create-taskcard
 status: READY_FOR_AUTONOMOUS_EXECUTION
-plan_version: 1
-execution_branch: codex/ff-six-python-production
-baseline_commit: 2f54fbcd57b631736b1a187c5a6cfd3d082cf168
+plan_version: 2
+canonical_forge: GitLab
+canonical_remote: origin
+canonical_branch: main
+execution_branch: main
+baseline_commit: 4647a085929f0027fe08245590acf3edc35a712e
 scope:
   - ipynb
   - openraster
@@ -24,6 +27,29 @@ scope:
 ---
 
 # Autonomous Production Execution Plan: Six Python Format Libraries
+
+## 0. Canonical GitLab mainline execution policy
+
+The only forge and integration target for this mission is the GitLab repository
+configured as `origin`. The only permitted integration branch is `main`
+(`origin/main`). GitHub is not a source, remote, mirror, publication target, or
+fallback for this mission.
+
+- Do not create, use, push, merge, or retain a feature, Codex, or other
+  non-`main` branch locally or remotely.
+- Before each bounded task, fetch `origin/main`; base the task on that exact
+  commit and fast-forward the completed commit directly to `origin/main`.
+- A dirty local `main` worktree is preserved and never reset, cleaned, or
+  overwritten. If it cannot safely advance, use a temporary **detached**
+  worktree from `origin/main` solely to create the next mainline commit, push
+  that commit directly to `origin/main`, and remove the detached worktree at
+  task closeout. A detached worktree is an isolation mechanism, not a branch.
+- If `origin/main` advances before push, fetch, rebase/reconcile the bounded
+  change against the new `origin/main`, rerun affected verification, then push
+  only the resulting fast-forward to `origin/main`.
+- Do not leave additional worktrees, branch names, or uncommitted mission work
+  as continuation state. Persist continuation through the controller journal,
+  content-addressed proof, current-gap projection, and committed plan records.
 
 ## 1. Purpose, authority, and non-negotiable outcome
 
@@ -84,8 +110,8 @@ semantic fidelity and safe unknown-data preservation.
 
 | Item | Status | Required treatment |
 |---|---|---|
-| Isolated branch | `codex/ff-six-python-production` at `2f54fbcd57b631736b1a187c5a6cfd3d082cf168` | Use as the pinned baseline until a successful bounded change is committed. |
-| Production controller | `IMPLEMENT` for all six formats | Resume from `.local/production-program/state.json` in this worktree; do not reconstruct state from prose. |
+| GitLab mainline | `origin/main` at `4647a085929f0027fe08245590acf3edc35a712e` | Fetch this ref before every task; commit and fast-forward directly to it. |
+| Production controller | Historical/partial state for all six formats | Recompute current state from committed contracts, proof, and current-gap projection; do not treat a prior worktree-local controller state as authoritative. |
 | Existing plans/statuses | Historical input only | Revalidate every claim against the canonical proof graph. |
 | Shared root worktree | Potentially dirty/concurrent | Preserve; never clean, stash, reset, restore, or broadly stage it. |
 | Current SafeTensors checkpoint | Uncommitted / unpromoted | Preserve and review; it is not certification evidence until rebuilt-wheel replay. |
