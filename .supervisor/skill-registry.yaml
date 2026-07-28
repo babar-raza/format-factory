@@ -5077,6 +5077,38 @@ skills:
   test_paths:
   - tests/plan_control/
   advisory_only: false
+- command: /reconcile-stashed-work
+  command_file: .claude/commands/reconcile-stashed-work.md
+  codex_supported: true
+  idempotency: deterministic_inventory_and_repeat_materialization_no_op
+  implementation_paths:
+  - tools/recovery/stash_reconciler.py
+  mandatory_validations:
+  - detached_registered_worktree
+  - immutable_commit_ids
+  - verified_recovery_archive
+  - exact_path_manifest
+  - base_or_stash_blob_guard
+  - execution_receipt_written
+  notes: Created by SKILL-GAP-STASH-RECONCILIATION-20260728.
+  product_track: machinery_repair
+  purpose: >-
+    Deterministically inventory and materialize exact paths from immutable
+    stash commits into an isolated detached worktree without committing,
+    pushing, creating branches, or dropping recovery refs.
+  required_handoff_fields:
+  - stash_commit
+  - base_commit
+  - main_commit
+  - worktree_path
+  - path_manifest
+  - archive_dir
+  skill_id: reconcile-stashed-work
+  spec_qname_required: false
+  status: active
+  test_paths:
+  - tests/tools/test_stash_reconciler.py
+  advisory_only: false
 sprint: FORMAT-FACTORY-R98-AUTONOMOUS-LOOP-TRUST-LAYER-ITERATION-SCALING-ACCELERATION-POC-MEGA-TRAIN-001
 version: '2.0'
 visibility: generated

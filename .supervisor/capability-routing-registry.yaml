@@ -655,9 +655,28 @@ routes:
       false scientific-raster obligations for detached files, compression,
       spatial axes, comments, and line endings.
 
+  - route_id: stash_reconciliation
+    description: >-
+      Inventory and recover exact paths from immutable stash commits into a
+      detached worktree with archive, blob, and receipt guards.
+    preferred_skill_ids:
+      - reconcile-stashed-work
+    fallback_skill_ids:
+      - rollback-and-recovery
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - stash_commit
+      - base_commit
+      - main_commit
+      - worktree_path
+      - path_manifest
+      - archive_dir
+    evidence_path_pattern: ".local/transcripts/reconcile-stashed-work-*.json"
+
 gap_count:
-  total_routes: 38
-  active_routes: 36
+  total_routes: 39
+  active_routes: 37
   missing_skill_routes: 1
   missing_skill_gap_ids:
     - GAP-ESP-SKILL-001
