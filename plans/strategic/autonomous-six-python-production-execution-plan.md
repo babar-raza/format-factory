@@ -10,13 +10,39 @@ commercial_allowed: false
 generated_by: codex
 generated_at: 2026-07-24
 skill_id: create-taskcard
-status: READY_FOR_AUTONOMOUS_EXECUTION
-plan_version: 2
+skill_ids:
+  - plan-control
+  - plan-hardening
+  - build-obligation-register
+  - create-taskcard
+  - product-source-task
+  - format-feature-expansion
+  - add-python-api
+  - add-python-object-model-feature
+  - add-roundtrip-test
+  - run-oracle
+  - package-install-proof
+  - spec-parity-source-regeneration-and-migration
+  - spec-parity-verification
+  - certification-ci-gate
+  - certification-mutation-tester
+  - certification-performance-benchmark
+  - build-evidence-bundle
+  - post-sprint-audit
+  - execution-handoff
+status: HARDENED_READY_FOR_AUTONOMOUS_EXECUTION
+plan_version: 3
+goal_id: FF6-PRODUCTION-LIBRARIES-001
+goal_status: ACTIVE
+quality_target: production_ready
+capability_target: comprehensive_developer_use
 canonical_forge: GitLab
 canonical_remote: origin
 canonical_branch: main
 execution_branch: main
-baseline_commit: 4647a085929f0027fe08245590acf3edc35a712e
+baseline_ref: origin/main
+baseline_commit: 54c4dacb2ed6ef8b89258db2d3f0d1ec00ab92fb
+baseline_commit_policy: refresh_per_task_from_origin_main
 scope:
   - ipynb
   - openraster
@@ -68,6 +94,22 @@ Build independently publishable, production-grade Python distributions for:
 5. SafeTensors (`format-factory-safetensors`)
 6. OASIS UBL (`format-factory-ubl`)
 
+### 1.1 Binding product goal
+
+The goal is to deliver **six production-ready format libraries, one for each
+selected format, with a comprehensive set of format-specific capabilities that
+application developers can safely compose into their own production systems**.
+The capability implementations are part of the product and must meet the same
+correctness, security, performance, typing, documentation, compatibility, and
+maintenance standard as the parser and writer. A broad API backed by shallow,
+synthetic, incomplete, or unverified behavior fails this goal.
+
+The program is not complete when six packages merely import, parse a minimal
+sample, or expose many method names. It is complete only when every package is
+independently publishable, its entire declared stable capability surface is
+production-grade, and all six packages satisfy the computed certification
+contract in this plan.
+
 The supporting distribution is `format-factory-core`. The mission ends only
 when all six have computed technical certification and extraction-ready source,
 or every remaining path is a true external block after all safe alternatives
@@ -104,13 +146,105 @@ useful but cannot be the sole interoperability proof. Byte-for-byte output is
 claimed only where the format profile explicitly supports it; otherwise claim
 semantic fidelity and safe unknown-data preservation.
 
-## 3. Baseline recovered on 2026-07-24
+### 2.1 Bounded meaning of comprehensive capabilities
+
+"All possible capabilities" is made finite and testable through a compiled
+capability universe. For each format, the inventory must include and classify:
+
+1. every normative requirement in every targeted stable specification profile;
+2. every optional module in a targeted stable profile;
+3. every read, write, edit, inspect, validate, transform, preserve, and repair
+   workflow supported by the format and reasonably useful to developers;
+4. security, resource-limit, streaming, random-access, lazy-access, and
+   deterministic-output capabilities applicable to the representation;
+5. interoperability behaviors exposed by official/reference implementations
+   and at least two materially independent ecosystem implementations where they
+   exist;
+6. format-native developer utilities, diagnostics, and typed builders that do
+   not require applications to manipulate untyped internal dictionaries;
+7. optional adapters for major Python ecosystems where the adapter adds real
+   developer value and can remain dependency-isolated;
+8. known extensions, preview profiles, and unsupported behavior, without
+   misrepresenting them as stable conformance.
+
+Every inventory item has exactly one release classification:
+
+- `STABLE_REQUIRED`: implemented and certified before 1.0;
+- `OPTIONAL_ADAPTER_REQUIRED`: implemented and certified in an install extra;
+- `PREVIEW_ISOLATED`: implemented behind an explicit preview API and excluded
+  from stable compatibility promises;
+- `EXCLUDED_WITH_AUTHORITY`: impossible, unsafe, legally unavailable, outside
+  the selected profile, or intentionally delegated to a future package, with a
+  primary-authority citation and user-visible documentation.
+
+No capability may remain unclassified. A written deferral, low priority, or
+large implementation cost cannot turn a feasible stable capability into an
+exclusion. Generic analytics added only to increase method count are not format
+capabilities and do not count toward breadth.
+
+### 2.2 Canonical capability record
+
+Compile one machine-readable record per capability with these required fields:
+
+```text
+capability_id, format_id, stable_name, classification, developer_use_cases,
+spec_profiles, authority_fact_ids, normative_obligation_ids, public_symbols,
+source_symbols, model_invariants, preservation_contract, error_contract,
+security_contract, resource_limits, performance_budget, dependency_policy,
+positive_tests, negative_tests, property_tests, roundtrip_tests, fixtures,
+independent_oracles, documentation_examples, compatibility_status,
+proof_node_ids, invalidation_inputs, taskcard_ids, release_state
+```
+
+Contract compilation fails on a missing field, duplicate identity, foreign
+format fact, dangling source/test/proof reference, or mandatory capability with
+no implementation task. The capability register, obligation graph, public API
+snapshot, documentation inventory, task register, and proof graph must agree.
+
+### 2.3 Production-grade capability definition
+
+A capability is complete only when all applicable conditions pass:
+
+- the public API is intentional, typed, documented, ergonomic, and exported;
+- behavior is correct for every declared profile, including invalid and
+  adversarial inputs;
+- read/edit/write operations preserve all declared information and never
+  silently discard unknown supported data;
+- errors use the package hierarchy and carry actionable source locations or
+  offsets where the representation permits;
+- resource use is bounded, configurable, and tested at and beyond limits;
+- large-input behavior meets its streaming, lazy, mmap, or allocation contract;
+- deterministic behavior is byte-stable where promised and semantically stable
+  otherwise;
+- positive, negative, property, metamorphic, roundtrip, fuzz, and regression
+  evidence covers the obligation decisions relevant to that capability;
+- at least one official or independent external implementation validates
+  interoperability when an external implementation exists;
+- examples execute against the installed wheel, not the source tree;
+- compatibility, deprecation, and optional-dependency behavior are tested;
+- exact source, test, fixture, authority, dependency, tool, environment, and
+  wheel digests are bound into live proof.
+
+### 2.4 Six-library completion rule
+
+Each package promotes independently, but the mission is `COMPLETE` only when all
+six packages are at least `RELEASE_CANDIDATE`, every stable capability is
+certified, every exclusion is authoritative and documented, standalone
+repository extraction passes, and the complete six-package co-installation and
+namespace test passes. One strong library cannot compensate for a shallow one.
+
+## 3. Baseline and truth-recovery contract
+
+The tables below retain the 2026-07-24 recovery snapshot as historical input.
+They are not current readiness evidence. Every task captures the fetched
+`origin/main` commit and recomputes contracts, capabilities, gaps, source/API
+inventory, installed-package proof, and invalidation state before selection.
 
 ### 3.1 Branch and workspace status
 
 | Item | Status | Required treatment |
 |---|---|---|
-| GitLab mainline | `origin/main` at `4647a085929f0027fe08245590acf3edc35a712e` | Fetch this ref before every task; commit and fast-forward directly to it. |
+| GitLab mainline planning snapshot | `origin/main` at `54c4dacb2ed6ef8b89258db2d3f0d1ec00ab92fb` | Historical planning input only; capture a fresh task baseline before every mutation. |
 | Production controller | Historical/partial state for all six formats | Recompute current state from committed contracts, proof, and current-gap projection; do not treat a prior worktree-local controller state as authoritative. |
 | Existing plans/statuses | Historical input only | Revalidate every claim against the canonical proof graph. |
 | Shared root worktree | Potentially dirty/concurrent | Preserve; never clean, stash, reset, restore, or broadly stage it. |
@@ -237,6 +371,31 @@ transition. Any changed source, test, fixture, contract, authority, generator,
 dependency lock, tool, or execution environment invalidates descendants and
 forces evidence replay. Manual status edits must have no promotion effect.
 
+### 5.4 Bounded task scope, ownership, and evidence paths
+
+The program taskcards compile exact file allowlists before any product write.
+Permitted product roots are only `src/python/<format>/` for the selected six
+formats plus explicitly named shared-core, test, authority, corpus, registry,
+taskcard, proof, plan, report, and documentation files in that taskcard.
+Forbidden paths include `src/dotnet/`, `src/python/open-source/`, unrelated
+formats, another agent's leased files, and every path not in the allowlist.
+
+Before staging, each changed file is classified as this taskcard's main sprint,
+an independently leased secondary sprint, memory-only work, another live
+agent's work, or unexplained preserved state. Only reviewed main-sprint files
+are staged. Secondary, memory, other-agent, and unexplained files remain
+untouched and are recorded in the run manifest.
+
+Every task writes its machine-readable run record under
+`.local/run-records/ff6/<taskcard-id>/`, proof transaction under
+`.local/proof/ff6/<taskcard-id>/`, and evidence contract under
+`.local/evidence-contracts/ff6/<taskcard-id>.yaml`. Successful gate transitions
+produce `.local/evidence-bundles/ff6-<taskcard-id>.zip`, update
+`.local/artifact-index.yaml`, and record a minimum metadata count defined by the
+taskcard. Committed continuation state is materialized under
+`plans/programs/ff6/` and `taskcards/ff6/`; local evidence is referenced by
+digest and never confused with committed product proof.
+
 ## 6. Target distribution architecture
 
 Create independently buildable packages:
@@ -267,7 +426,156 @@ Where meaningful, expose `probe`, `load`, `loads`, `dump`, `dumps`, and
 unknown data without claiming to understand it. Recovery mode is prohibited
 unless deterministic and documented. Support Python 3.11–3.14 only.
 
+### 6.1 Required professional package structure
+
+Each format distribution must converge on this reviewable structure:
+
+```text
+src/python/<format>/
+  pyproject.toml
+  README.md
+  CHANGELOG.md
+  SECURITY.md
+  LICENSE
+  src/format_factory/<format>/
+    __init__.py
+    py.typed
+    api.py
+    constants.py
+    exceptions.py
+    model/
+    codec/reader/
+    codec/writer/
+    validation/
+    security/
+    workflows/
+    adapters/
+    analytics/
+    cli/
+  tests/
+    unit/
+    behavior/
+    conformance/
+    roundtrip/
+    interoperability/
+    security/
+    property/
+    fuzz/
+    performance/
+    installed/
+  docs/
+  examples/
+```
+
+Small modules may be consolidated only when they retain one responsibility and
+remain within the limits in Section 6.3. Compatibility modules exist only for
+documented migrations. The typed `format_factory.<format>` namespace is the
+canonical 1.0 API; unsafe top-level aliases are not retained indefinitely.
+
+### 6.2 Enforced dependency direction
+
+The import graph is binding:
+
+```text
+model        -> core types only
+codec.reader -> model, constants, core protocols, security limits
+codec.writer -> model, constants, core protocols, security limits
+validation   -> model, constants, core diagnostics
+security     -> core policies only
+workflows    -> public reader, writer, validation, and model APIs
+analytics    -> model only
+adapters     -> public API plus one isolated optional dependency
+cli          -> public API and workflows
+api          -> model, codec, validation, and workflows
+```
+
+Models perform no I/O. Circular and upward imports fail certification. Optional
+dependency types cannot leak into the base public API. Product code cannot
+import agent, governance, registry, supervisor, or proof-runtime modules.
+Architecture and import-lint checks enforce these rules fail-closed.
+
+### 6.3 Code-quality and maintainability contract
+
+- New handwritten production modules target at most 600 logical lines and fail
+  at 800; a module may expose at most 60 top-level functions.
+- `__init__.py` and exception modules target 100 lines; constants modules target
+  200. Oversized legacy files require an explicit decomposition taskcard.
+- Cyclomatic complexity is at most 10 per function, except a documented and
+  mutation-tested parser state machine with a taskcard-approved justification.
+- Public APIs and model fields are completely typed and documented. Ruff has
+  zero findings; mypy and pyright run in strict mode over public production code.
+- Wildcard imports, mutable module-global runtime state, debug output, ambiguous
+  `utils`/`helpers` dumping grounds, and agent-facing references are prohibited.
+- Complex formats use typed domain models. Untyped dictionaries are confined to
+  explicitly preserved extension/metadata boundaries or a migration adapter;
+  they are never the primary document model.
+- Parser, writer, validation, security, workflow, and analytics decisions remain
+  separable and independently testable. No monolithic codec may own all layers.
+- Public compatibility follows Semantic Versioning. A documented deprecation
+  remains for at least two minor releases unless retaining it creates a security
+  or correctness defect.
+
+### 6.4 Generated-source contract
+
+UBL and schema-derived XLIFF source must separate generated and handwritten
+code. The generator records authority version and digest, configuration digest,
+naming and collision rules, generator/tool digest, and a complete output
+manifest. Three clean runs must be byte-identical. Generated files are never
+hand-edited; a generator or schema change invalidates all dependent source,
+tests, packages, and proof.
+
+### 6.5 Format-specific capability breadth floors
+
+These are minimum breadth floors, not substitutes for the compiled normative
+obligation inventory:
+
+| Library | Mandatory developer-capability families |
+|---|---|
+| IPYNB | nbformat 4.0-4.5 parse/write/convert; typed notebook, cell, output, attachment, MIME, and metadata models; cell-ID rules; schema and semantic validation; deterministic serialization; unknown metadata preservation; trust inspection without execution; output clearing, metadata filtering, ID normalization, structural inspection and transformation; size/depth limits; official `nbformat` interoperability |
+| OpenRaster | secure and deterministic archive read/write; versioned profiles; typed stack/group/layer/mask trees; offsets, opacity, visibility, nesting, isolation and documented compositing; PNG assets, thumbnail and merged image; rendering adapter; extension preservation; archive-bomb/path/duplicate defenses; roundtrips with at least two independent applications |
+| NRRD | NRRD0001-0005; every type/endian/encoding combination; attached and detached single/list/pattern payloads; full dimensional and spatial metadata; lossless raw-header plus normalized access; streaming, memory mapping and lazy payload access where legal; NumPy adapter; overflow/decompression/path/truncation defenses; Teem and pynrrd interoperability |
+| XLIFF | 2.0/2.1 Core and every official 2.1 module; typed vocabulary; inline-code-safe editing; segment split/join and state workflows; original data, skeleton, extensions, matches, glossary, metadata, resource data, size restriction, validation and ITS; schema plus processing validation; canonical XML; preview isolation; independent-tool interoperability |
+| SafeTensors | every defined dtype and descriptor edge case; lazy mmap, random tensor access and slicing; deterministic write; strict header/layout validation; NumPy and PyTorch adapters; sharded-index workflows; upstream co-installation and differential tests; duplicate/offset/overlap/hole/truncation/resource defenses |
+| OASIS UBL | all 91 UBL 2.3 roots; all common components, simple types, attributes, namespaces, order and cardinality; typed parse/build/edit/write for every root; XSD validation; extension and code-list hooks; streaming; typed signatures and invalidation-on-edit; curated Invoice/CreditNote/Order workflows; official examples and independent schema-engine cross-validation |
+
 ## 7. Execution waves and exact exit tests
+
+### 7.0 Taskcard compilation gate
+
+No executor may implement a broad wave directly. Before product mutation, the
+current contract and gap projection compile into bounded taskcards. One taskcard
+owns one coherent capability or 5-15 tightly related obligations. IDs are
+deterministic:
+`TC-FF6-<FORMAT>-<CAPABILITY-ID>-<IMPLEMENT|VERIFY|CERTIFY>`.
+
+Every taskcard records the program goal, capability and obligation IDs,
+authority and evidence digests, exact allowed paths, public API delta, source
+symbols, fixtures and external oracle, registered skill, exact commands and
+expected results, security/resource/performance/compatibility acceptance,
+proof-node and invalidation outputs, repair policy, dependencies, final states,
+and deterministic next-task rule. Compilation fails if any mandatory obligation
+is unowned, multiply owned without an integration card, missing authority, or
+assigned only presence-based/synthetic evidence.
+
+The first program taskcards execute in this order:
+
+1. `TC-FF6-PROGRAM-TRUTH-001` — refresh mainline, source, package, test,
+   authority, corpus, and proof truth.
+2. `TC-FF6-PROGRAM-CAPABILITIES-001` — compile and classify the complete
+   six-format capability and obligation universe.
+3. `TC-FF6-PROGRAM-ARCHITECTURE-001` — establish package boundaries,
+   dependency rules, and migration characterization.
+4. `TC-FF6-PROGRAM-TASKCARDS-001` — generate and validate all unblocked
+   implementation/verification/certification cards.
+5. `TC-FF6-PROGRAM-QUALITY-GATES-001` — install executable quality,
+   architecture, coverage, mutation, performance, and packaging gates.
+6. `TC-FF6-PROGRAM-REPLAY-001` — prove invalidation, isolation, deterministic
+   replay, and current-gap scheduling.
+
+Each format then receives separate contract, architecture/migration, capability
+implementation, independent verification, installed-package certification, and
+extraction task families. Work may run in isolated detached worktrees, but
+successful reviewed taskcards integrate serially to GitLab `main`.
 
 ### Wave 0 — Recover, snapshot, and quarantine
 
@@ -471,6 +779,63 @@ cross-platform/dependency matrices. Release: fresh checkout, full graph rebuild,
 two reproducible builds, namespace and third-party co-installation, docs examples
 against installed wheels, and computed promotion.
 
+### 8.1 Numeric release thresholds
+
+A format reaches `RELEASE_CANDIDATE` only when all thresholds hold:
+
+- 100% of `STABLE_REQUIRED` and `OPTIONAL_ADAPTER_REQUIRED` capabilities have
+  current digest-bound proof; every mandatory positive obligation and every
+  rejection obligation has executed positive or negative evidence respectively.
+- Handwritten production source has at least 95% statement and 90% branch
+  coverage, with no uncovered security, preservation, dispatch, or parser/writer
+  decision. Coverage never substitutes for obligation proof.
+- Mutation score is at least 90% over parser, writer, validator, security, and
+  preservation decisions, with zero surviving critical-behavior mutants.
+- Ruff, strict mypy, strict pyright, import architecture, API documentation, and
+  executable documentation examples are clean; every public symbol is typed and
+  documented.
+- Deterministic property, metamorphic, rejection, and coverage-guided fuzz suites
+  cover every public reader/writer/validator entrypoint with zero crash, hang,
+  unbounded allocation, or silent data-loss result.
+- Per-format small/medium/large performance budgets record wall time, peak
+  memory, throughput, and lazy/streaming behavior where promised. An unexplained
+  regression greater than 10% blocks promotion.
+- Built-wheel tests pass on Linux, Windows, and macOS for Python 3.11-3.14,
+  minimum and latest dependency sets, all optional extras, six-package
+  co-installation, upstream-name co-installation, and every published example.
+- Two fresh builds are byte-identical and have SBOM, license, provenance,
+  signature, and vulnerability evidence. Critical/high vulnerabilities are zero;
+  each medium finding has a current technical disposition.
+- Public API compatibility matches the approved snapshot or has a versioned,
+  tested migration and deprecation record.
+
+A threshold may be `NOT_APPLICABLE` only when the product contract cites the
+authority or architectural reason and the proof graph records that decision.
+
+### 8.2 Corpus and oracle minimums
+
+Each format corpus must cover valid minimum, representative, maximum-practical,
+boundary, malformed, adversarial, unknown-extension, version/profile,
+independently-produced, and writer-generated cases. Every item records origin,
+license, digest, format profile, expected semantics, and covered obligations.
+Adequacy is measured by the capability/obligation matrix, not a raw file count.
+
+Every mandatory positive obligation needs a valid corpus path; every rejection
+obligation needs a negative case; every stable profile needs independently
+produced interoperability evidence. Synthetic fixtures cannot be the sole
+evidence for interoperability or preservation. External oracles execute in a
+separate process or environment against their own installed implementation and
+record version and package digests.
+
+### 8.3 Mainline commit gate
+
+Because GitLab `main` is the only integration branch, a taskcard candidate is
+pushed only after its affected behavior tests, static and architecture gates,
+API snapshot, invalidation checks, built-wheel tests, coordination precommit
+check, and skill receipt pass. A failed candidate remains isolated and is never
+pushed as partial product progress. After a successful push, verify the exact
+remote SHA before removing the detached worktree.
+
 ## 9. Machinery regression controls
 
 Before certifying any product, prove all of these:
@@ -512,8 +877,10 @@ to recover. Failure handling is deterministic:
 
 ## 11. Concrete first task queue
 
-The successor must recompute this queue from the current-gap projection before
-executing. If unchanged, perform in this order:
+The successor must first execute the six `TC-FF6-PROGRAM-*` taskcards in Section
+7.0. Those cards recompute truth and compile the bounded per-capability queue
+from the current-gap projection. If the resulting product priorities are
+unchanged, perform in this order:
 
 1. `RFF6-ST-001`: rebuild core + SafeTensors wheel in a clean environment;
    inspect/preserve the uncommitted checkpoint; run the official differential
@@ -536,6 +903,26 @@ executing. If unchanged, perform in this order:
 The controller may reorder only when its current severity/root-cause projection
 shows a higher-priority unblocked obligation. It must journal the reason.
 
+### 11.1 Per-format release-candidate gates
+
+Each format independently reaches `RELEASE_CANDIDATE` only after:
+
+1. its complete capability inventory has no unclassified or unowned stable
+   obligation;
+2. its architecture, public API, typing, documentation, and installed-wheel
+   quality contracts pass;
+3. every capability has digest-bound behavior, rejection, preservation,
+   security/resource, and applicable performance proof;
+4. its official and independent corpus, external oracle, and contradiction
+   register are complete and current;
+5. its standalone extraction reproduces source and package digests and passes
+   certification; and
+6. its SBOM, provenance, signatures, license, vulnerability, compatibility, and
+   release documentation artifacts are complete.
+
+The program reaches `RELEASE_CANDIDATE` only after all six formats pass these
+gates and the aggregate six-package co-installation and namespace tests pass.
+
 ## 12. Required run record and handoff closeout
 
 Each bounded task records exact commands/selectors/exit codes; target-tree and
@@ -551,6 +938,80 @@ materialize current gaps, retain all failures, release coordination leases, and
 write a successor handoff pointing at this plan and the exact state/manifest
 paths. Do not leave a prose-only memory as the resume mechanism.
 
+### 12.1 Required current-state artifacts
+
+The controller must materialize and validate a product-goal record; per-format
+capability and obligation inventories; public-API/source-symbol map;
+architecture/dependency report; corpus/license/oracle inventory; current-gap
+projection; bounded task register; canonical proof graph and invalidation index;
+package certification records; and extraction/release manifests. The program
+taskcards must select existing repository schemas where adequate and record
+their canonical paths in a governed plan update. Legacy ledgers remain
+read-only historical inputs and cannot be current state.
+
+The first six program taskcards must create or adopt these canonical committed
+paths:
+
+- `plans/programs/ff6/product-goal.yaml`
+- `plans/programs/ff6/controller-state.yaml`
+- `plans/programs/ff6/current-state.yaml`
+- `plans/programs/ff6/capabilities/<format>.yaml`
+- `plans/programs/ff6/obligations/<format>.yaml`
+- `plans/programs/ff6/api-source-map/<format>.yaml`
+- `plans/programs/ff6/architecture/<format>.yaml`
+- `plans/programs/ff6/corpus-oracles/<format>.yaml`
+- `plans/programs/ff6/current-gaps.yaml`
+- `plans/programs/ff6/task-register.yaml`
+- `plans/programs/ff6/proof-index.yaml`
+- `plans/programs/ff6/certification/<format>.yaml`
+- `plans/programs/ff6/extraction/<format>.yaml`
+- `taskcards/ff6/`
+
+If an established repository authority already serves one of these purposes,
+the truth taskcard records the replacement path, schema, and migration mapping
+before later taskcards rely on it; it must not create a competing authority.
+
+### 12.2 Task final states and repair control
+
+Allowed taskcard final states are `PASS`, `NEEDS_REPAIR`, `PARTIAL`,
+`TECHNICALLY_BLOCKED`, `BLOCKED_POLICY_GATE`, `EXTERNAL_RELEASE_BLOCKED`, and
+`COMPLETE`. `PASS` closes only the taskcard; it never implies format completion.
+Any non-pass state records the failing obligation, root cause, exact evidence,
+attempt history, safe work that remains, and deterministic next task. Three
+materially different failed repairs may establish a technical block, but cannot
+satisfy, exclude, or promote the obligation.
+
+### 12.3 Taskcard self-challenge
+
+Before closing any taskcard, its independent verifier answers and records:
+
+1. Is this executed behavior rather than a file, method, or test count?
+2. Does every changed public symbol map to a classified capability and authority?
+3. Do positive, rejection, preservation, and resource cases have current proof?
+4. Can any valid supported input lose information silently?
+5. Was the built wheel, rather than a source-tree import, exercised?
+6. Is the claimed oracle truly independent and version/digest bound?
+7. Did the change preserve package boundaries and dependency direction?
+8. Are optional dependencies isolated and absent from the base API?
+9. Are public API, typing, documentation, examples, and compatibility complete?
+10. Do all changed inputs invalidate the correct descendants?
+11. Are performance and memory behavior bounded for the claimed scale?
+12. Are every discovered gap and contradiction retained in current state?
+13. Were all writes, staging, and generation confined to the exact task allowlist?
+14. Were current-state, taskcard, artifact-index, and evidence outputs updated?
+15. Did governance, phase, authority, visibility, and release boundaries remain
+    satisfied without self-approval?
+16. Were unapproved LLM calls, embeddings, hidden manual work, and synthetic
+    substitutes avoided?
+17. Does the evidence bundle validate with its required metadata count, and is
+    the claimed final state no stronger than its live proof?
+
+A missing or unfavorable answer prevents closure and generates a repair or gap
+task automatically.
+
+Every gate-transition response ends with exactly:
+`EVIDENCE_BUNDLE: <absolute Windows path to validated zip>`.
+
 ## 13. Hard prohibitions
 
 - Do not delete, reset, restore, stash, clean, or overwrite unexplained work.
@@ -562,12 +1023,54 @@ paths. Do not leave a prose-only memory as the resume mechanism.
 - Do not claim OpenRaster universal conformance, XLIFF 2.2 stable support, UBL
   national-profile correctness, or SafeTensors upstream replacement without the
   stated proof.
+- Do not count generic analytics, aliases, stubs, taskcards, schemas, or
+  synthetic-only fixtures as implemented capability breadth.
+- Do not wrap an external library thinly and claim that library's behavior as a
+  Format Factory implementation without explicit adapter classification.
+- Do not use an untyped dictionary as the canonical model for these six
+  libraries or consolidate format behavior into a monolithic codec.
+- Do not call production LLM endpoints, create embeddings/vector stores, or use
+  model output as authority, oracle, corpus, acceptance evidence, or promotion
+  proof unless a separately authorized taskcard and endpoint policy permit it.
+- Do not lower coverage, mutation, typing, architecture, security, corpus,
+  oracle, packaging, or reproducibility gates to make a task pass.
 - Do not create release/promotion claims from labels, test presence, or old
   reports; do not bypass Gate 10 or business authorization.
 
 ## 14. Plan acceptance status
 
-Status: **READY_FOR_AUTONOMOUS_EXECUTION**. This means the successor has a
-durable operational sequence, known baseline, known checkpoint caveat, explicit
-format scopes, validation gates, failure rules, and true policy block. It does
-**not** mean any of the six libraries is production-certified or release-ready.
+Status: **HARDENED_READY_FOR_AUTONOMOUS_EXECUTION**. This means the executor has
+a durable operational sequence, a bounded definition of comprehensive
+capabilities, professional package and code contracts, taskcard compilation,
+numeric quality gates, failure rules, and honest policy blocks. It does **not**
+mean any of the six libraries is production-certified or release-ready.
+
+## 15. Plan hardening assessment
+
+This version passes the repository plan-hardening checklist at the plan-design
+level (22/22 items). That is a statement about executable planning quality, not
+product evidence:
+
+- **Goals and outcomes:** one immutable six-library production goal, explicit
+  non-claims, format breadth floors, and measurable program completion.
+- **Scope and completeness:** normative and developer-use capability universes
+  are classified; no mandatory behavior can disappear into a percentage or
+  prose deferral.
+- **Execution clarity:** the controller, six program taskcards, deterministic
+  per-capability taskcard schema, state transitions, and mainline integration
+  rule remove reliance on agent memory or broad wave interpretation.
+- **Validation:** obligation proof, independent corpora/oracles, installed-wheel
+  matrices, numeric coverage/mutation/performance thresholds, reproducibility,
+  extraction, and security/supply-chain controls are explicit.
+- **Failure handling:** invalidation, bounded repair, technical/policy/external
+  block states, current-gap scheduling, and no-push-on-failure behavior preserve
+  truthful state.
+- **Maintainability:** professional source layout, dependency direction, module
+  and complexity limits, typed domain models, optional-adapter isolation,
+  generated-source reproducibility, SemVer, and compatibility controls are
+  binding.
+
+The first executor action is therefore not ad hoc feature implementation. It is
+`TC-FF6-PROGRAM-TRUTH-001`, followed by capability compilation and taskcard
+generation. Only evidence from those tasks may replace the historical baseline
+or promote a library.
