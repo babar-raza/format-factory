@@ -7,7 +7,7 @@ from pathlib import Path
 _REPO = Path(__file__).resolve().parent.parent.parent.parent
 sys.path.insert(0, str(_REPO))
 
-from src.python.csv.csv_parser import csv_max_numeric_value, csv_has_empty_rows
+from src.python.ff_csv.csv_parser import csv_max_numeric_value, csv_has_empty_rows
 
 _CSV_DIR = _REPO / "samples" / "by-format" / "csv"
 _MINIMAL = str(_CSV_DIR / "minimal-2x2.csv")   # Alice,30 / Bob,25 -> max=30.0

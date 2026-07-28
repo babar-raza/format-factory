@@ -11,7 +11,7 @@ import pytest
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
-from src.python.csv import (
+from src.python.ff_csv import (
     csv_avg_numeric_value,
     csv_empty_column_count,
     csv_is_single_row,

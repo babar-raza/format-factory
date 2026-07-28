@@ -12,7 +12,7 @@ _REPO = Path(__file__).resolve().parents[3]
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from src.python.csv.csv_parser import parse_csv, probe_csv  # type: ignore
+from src.python.ff_csv.csv_parser import parse_csv, probe_csv  # type: ignore
 
 
 def _write(tmp_path: Path, content: str, name: str = "test.csv") -> str:

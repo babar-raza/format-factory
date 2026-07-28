@@ -1,7 +1,7 @@
 """R561: CSV dimension properties — is_empty, is_single_row, is_wide, is_tall.
 
 Tests for CsvDocument dimension properties added in R561.
-Spec refs: FACT-CSV-001.
+Spec refs: SAL-CSV-00001.
 """
 
 import pytest
@@ -11,7 +11,7 @@ import sys
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
-from src.python.csv.models import CsvDocument
+from src.python.ff_csv.models import CsvDocument
 
 SAMPLES = Path("samples/by-format/csv")
 

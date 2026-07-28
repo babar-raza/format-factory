@@ -20,7 +20,7 @@ import pytest
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
-from src.python.csv.csv_parser import (
+from src.python.ff_csv.csv_parser import (
     CsvError,
     CsvInputError,
     CsvParseError,
@@ -33,13 +33,13 @@ from src.python.csv.csv_parser import (
     parse_csv_strict,
     probe_csv,
 )
-from src.python.csv.csv_writer import (
+from src.python.ff_csv.csv_writer import (
     CsvWriteError,
     parse_and_rewrite,
     write_csv,
     write_csv_to_file,
 )
-from src.python.csv.csv_stats import (
+from src.python.ff_csv.csv_stats import (
     column_value_counts,
     csv_empty_row_count,
     csv_field_type_summary,

@@ -31,8 +31,8 @@ sys.path.insert(0, str(_REPO))
 from hypothesis import assume, given, settings
 from hypothesis import strategies as st
 
-from src.python.csv.csv_parser import parse_csv_strict
-from src.python.csv.csv_writer import write_csv
+from src.python.ff_csv.csv_parser import parse_csv_strict
+from src.python.ff_csv.csv_writer import write_csv
 
 
 _NUMERIC_LOOKALIKES = frozenset({"nan", "inf", "infinity", "+inf", "-inf"})

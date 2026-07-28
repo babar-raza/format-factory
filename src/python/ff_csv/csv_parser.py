@@ -1,0 +1,407 @@
+"""
+csv_parser.py — CSV (RFC 4180) parser for format-factory-csv.
+
+Public API:
+  parse_csv(file_path)        — returns result dict (never raises)
+  parse_csv_strict(file_path) — raises CsvError on failure
+  probe_csv(file_path)        — returns header metadata without full parse
+
+Implements Gate 4 prototype + Gate 5 neutral model.
+Parses CSV files per RFC 4180 using an inline state-machine parser.
+Detects delimiter (comma/tab/semicolon/pipe heuristic), headers (first row),
+row count. Technology: Python stdlib only (no stdlib csv module needed).
+
+NOTE: Does NOT import the stdlib 'csv' module to avoid namespace collision
+with src/python/ff_csv/ when running under conftest.py sys.path injection.
+
+R55 : CSV Gate 4 prototype (TC-ACQN-CSV-001).
+
+License: Apache-2.0
+spec_concept: RFC 4180 comma-separated values record/field
+"""
+
+from __future__ import annotations
+
+from pathlib import Path
+from typing import Any
+from .exceptions import CsvError, CsvParseError, CsvInputError, CsvSizeError
+
+
+MAX_FILE_SIZE = 64 * 1024 * 1024  # 64 MiB
+MAX_ROWS = 1_000_000
+
+
+def _sniff_delimiter(sample: str) -> str:
+    """Heuristic delimiter detection from a text sample."""
+    candidates = [",", "\t", ";", "|"]
+    lines = [ln for ln in sample.splitlines()[:10] if ln.strip()]
+    if not lines:
+        return ","
+    best = ","
+    best_score = -1
+    for delim in candidates:
+        counts = [ln.count(delim) for ln in lines]
+        min_c = min(counts)
+        if min_c > best_score:
+            best_score = min_c
+            best = delim
+    return best
+
+
+def _parse_rfc4180(text: str, delimiter: str = ",") -> list[list[str]]:
+    """Parse RFC 4180 CSV text; returns list of rows (each row is list of fields)."""
+    rows: list[list[str]] = []
+    row: list[str] = []
+    field: list[str] = []
+    in_quotes = False
+    i = 0
+    n = len(text)
+
+    while i < n:
+        c = text[i]
+        if in_quotes:
+            if c == '"':
+                if i + 1 < n and text[i + 1] == '"':
+                    field.append('"')
+                    i += 2
+                else:
+                    in_quotes = False
+                    i += 1
+            else:
+                field.append(c)
+                i += 1
+        else:
+            if c == '"':
+                in_quotes = True
+                i += 1
+            elif c == delimiter:
+                row.append("".join(field))
+                field = []
+                i += 1
+            elif c == "\r":
+                row.append("".join(field))
+                field = []
+                rows.append(row)
+                row = []
+                i += 1
+                if i < n and text[i] == "\n":
+                    i += 1
+            elif c == "\n":
+                row.append("".join(field))
+                field = []
+                rows.append(row)
+                row = []
+                i += 1
+            else:
+                field.append(c)
+                i += 1
+
+    if field or row:
+        row.append("".join(field))
+        rows.append(row)
+
+    # Strip trailing empty row from files ending with newline
+    while rows and rows[-1] == [""]:
+        rows.pop()
+
+    return rows
+
+
+def _has_header_heuristic(rows: list[list[str]]) -> bool:
+    """Return True if first row looks like a text header over numeric data rows."""
+    if len(rows) < 2:
+        return False
+    first = rows[0]
+    for f in first:
+        try:
+            float(f.strip())
+            return False
+        except ValueError:
+            pass
+    for row in rows[1:3]:
+        for f in row:
+            try:
+                float(f.strip())
+                return True
+            except ValueError:
+                pass
+    return False
+
+
+def parse_csv_strict(file_path: str | Path) -> dict[str, Any]:
+    """Parse a CSV file and return the neutral model dict.
+
+    Returns:
+        {
+          "format": "csv",
+          "path": str,
+          "row_count": int,      # number of data rows (excluding header if detected)
+          "column_count": int,   # number of columns in first row
+          "headers": list[str] | None,  # first row used as headers
+          "rows": list[list[str]],      # data rows
+          "has_header": bool,
+          "delimiter": str,
+        }
+
+    Raises:
+        CsvInputError:  file not found or not readable
+        CsvSizeError:   file exceeds 64 MiB or 1M rows
+        CsvParseError:  malformed CSV
+    """
+    path = Path(file_path)
+    if not path.exists():
+        raise CsvInputError(f"File not found: {path}")
+    if not path.is_file():
+        raise CsvInputError(f"Path is not a regular file: {path}")
+
+    size = path.stat().st_size
+    if size > MAX_FILE_SIZE:
+        raise CsvSizeError(f"File size {size} exceeds limit of {MAX_FILE_SIZE}")
+
+    try:
+        raw = path.read_text(encoding="utf-8-sig", errors="replace")
+    except OSError as exc:
+        raise CsvInputError(f"Cannot read file {path}: {exc}") from exc
+
+    return _parse_csv_text(raw, str(path))
+
+
+def _parse_csv_text(raw: str, path_str: str) -> dict[str, Any]:
+    """Core CSV parse from string."""
+    delimiter = _sniff_delimiter(raw[:4096])
+    all_rows = _parse_rfc4180(raw, delimiter)
+
+    if len(all_rows) > MAX_ROWS:
+        raise CsvSizeError(f"Row count {len(all_rows)} exceeds limit of {MAX_ROWS}")
+
+    if not all_rows:
+        return {
+            "format": "csv",
+            "path": path_str,
+            "row_count": 0,
+            "column_count": 0,
+            "headers": None,
+            "rows": [],
+            "has_header": False,
+            "delimiter": delimiter,
+        }
+
+    has_header = _has_header_heuristic(all_rows)
+
+    if has_header and len(all_rows) > 1:
+        headers = all_rows[0]
+        rows = all_rows[1:]
+    else:
+        headers = None
+        rows = all_rows
+
+    column_count = len(all_rows[0]) if all_rows else 0
+
+    return {
+        "format": "csv",
+        "path": path_str,
+        "row_count": len(rows),
+        "column_count": column_count,
+        "headers": headers,
+        "rows": rows,
+        "has_header": has_header,
+        "delimiter": delimiter,
+    }
+
+
+def parse_csv(file_path: str | Path) -> dict[str, Any]:
+    """Parse a CSV file, returning a result dict (never raises)."""
+    try:
+        return parse_csv_strict(file_path)
+    except Exception as exc:
+        return {
+            "format": "csv",
+            "ok": False,
+            "error": str(exc),
+            "error_type": type(exc).__name__,
+        }
+
+
+def probe_csv(file_path: str | Path) -> dict[str, Any]:
+    """Probe a CSV file for metadata without full parse."""
+    path = Path(file_path)
+    result: dict[str, Any] = {"path": str(path), "exists": path.exists()}
+    if not path.exists():
+        return result
+    try:
+        size = path.stat().st_size
+        result["size_bytes"] = size
+        sample = path.read_text(encoding="utf-8-sig", errors="replace")[:4096]
+        lines = sample.splitlines()
+        result["first_line"] = lines[0] if lines else ""
+        result["sample_line_count"] = len(lines)
+        result["delimiter"] = _sniff_delimiter(sample)
+    except Exception as exc:
+        result["probe_error"] = str(exc)
+    return result
+
+
+# ---------------------------------------------------------------------------
+# Gate 5 — Neutral model: capability declaration
+# ---------------------------------------------------------------------------
+
+SUPPORTED_FEATURES: frozenset[str] = frozenset({
+    "rfc4180_parse",
+    "delimiter_sniff",
+    "header_detection",
+    "utf8_bom_strip",
+    "probe",
+    "row_count",
+    "column_count",
+    "size_guard",
+})
+
+UNSUPPORTED_FEATURES: frozenset[str] = frozenset({
+    "encoding_to_csv",
+    "streaming_decode",
+    "typed_cell_inference",
+    "formula_cells",
+    "multi_sheet",
+    "binary_csv",
+    "excel_dialect_quirks",
+})
+
+
+def get_capabilities() -> dict[str, Any]:
+    """Return a capability descriptor for the CSV parser (Gate 5 neutral model)."""
+    return {
+        "format": "csv",
+        "gate": 4,
+        "supported": sorted(SUPPORTED_FEATURES),
+        "unsupported": sorted(UNSUPPORTED_FEATURES),
+        "commercial_product_ready": False,
+    }
+
+
+def get_row_count(file_path: "str | Path") -> int:
+    """Return the number of data rows in a CSV file (excluding header if present).
+
+    Args:
+        file_path: Path to the CSV file.
+
+    Returns:
+        Integer count of data rows. Returns 0 if file is empty or header-only.
+
+    Raises:
+        CsvError subclasses on parse failure.
+    """
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    return len(rows)
+
+
+def get_column_names(file_path: "str | Path") -> "list[str]":
+    """Return the column names (header row) from a CSV file.
+
+    Args:
+        file_path: Path to the CSV file.
+
+    Returns:
+        List of column name strings. Empty list if no header detected.
+
+    Raises:
+        CsvError subclasses on parse failure.
+    """
+    model = parse_csv_strict(file_path)
+    return list(model.get("headers", []) or [])
+
+
+def get_cell_value(file_path: "str | Path", row: int, col: int) -> "str | None":
+    """Return the string value at the given row and column position.
+
+    Args:
+        file_path: Path to the CSV file.
+        row: 0-based row index (excluding header).
+        col: 0-based column index.
+
+    Returns:
+        Cell value as a string, or None if out of range.
+
+    Raises:
+        CsvError subclasses on parse failure.
+    """
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    if row < 0 or row >= len(rows):
+        return None
+    row_data = rows[row]
+    if col < 0 or col >= len(row_data):
+        return None
+    return str(row_data[col])
+
+
+def count_empty_cells(file_path: "str | Path", col_name: str) -> int:
+    """Return the number of empty (blank) cells in a named column.
+
+    Args:
+        file_path: Path to the CSV file.
+        col_name:  Column header name to inspect.
+
+    Returns:
+        Count of cells in that column whose stripped value is empty string.
+        Returns 0 if the column is not found or the file has no data rows.
+
+    Raises:
+        CsvError subclasses on parse failure.
+    """
+    model = parse_csv_strict(file_path)
+    headers = model.get("headers") or []
+    if col_name not in headers:
+        return 0
+    col_idx = headers.index(col_name)
+    rows = model.get("rows", [])
+    return sum(1 for row in rows if col_idx >= len(row) or row[col_idx].strip() == "")
+
+
+
+
+def csv_row_count(file_path: "str | Path") -> int:
+    """Return number of data rows in a CSV file (excluding header)."""
+    model = parse_csv_strict(file_path)
+    return len(model.get("rows", []))
+
+
+def csv_numeric_range(file_path: "str | Path") -> float:
+    """Return max - min of all numeric cell values. 0.0 if fewer than 2 numeric values."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    nums = []
+    for row in rows:
+        for val in row:
+            s = val.strip()
+            if s:
+                try:
+                    nums.append(float(s))
+                except (ValueError, TypeError):
+                    pass
+    if len(nums) < 2:
+        return 0.0
+    return float(max(nums) - min(nums))
+
+
+def csv_has_only_one_row(file_path: "str | Path") -> bool:
+    """Return True if the CSV has exactly one data row (excluding header)."""
+    model = parse_csv_strict(file_path)
+    return len(model.get("rows", [])) == 1
+
+
+# Analytics functions are in tabular_document.py and tabular_document_analytics.py.
+try:
+    from .tabular_document import *  # noqa: F401, F403
+except ImportError:
+    try:
+        from tabular_document import *  # noqa: F401, F403 — fallback for direct-module import
+    except ImportError:
+        pass
+try:
+    from .tabular_document_analytics import *  # noqa: F401, F403
+except ImportError:
+    try:
+        from tabular_document_analytics import *  # noqa: F401, F403
+    except ImportError:
+        pass

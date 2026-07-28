@@ -3,10 +3,12 @@ import sys
 from pathlib import Path
 
 _REPO = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(_REPO / "src" / "python" / "csv"))  # csv_parser importable directly
-sys.path.insert(0, str(_REPO / "src" / "python"))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from csv_parser import csv_max_field_count, csv_is_multi_row
+from _ff_csv_loader import ff_csv
+
+csv_max_field_count = ff_csv.csv_max_field_count
+csv_is_multi_row = ff_csv.csv_is_multi_row
 
 CSV_DIR = _REPO / "samples" / "by-format" / "csv"
 

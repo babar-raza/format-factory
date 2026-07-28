@@ -21,7 +21,7 @@ NOTE: This package is `src/python/csv/` (format-factory CSV), NOT the
 stdlib `csv` module. `tests/python/conftest.py` pins `sys.modules["csv"]`
 to the stdlib module so other formats' `import csv` keeps working: as a
 result, this package must be imported via its full dotted path
-(`src.python.csv.<module>`) with the repo root on `sys.path`, exactly as
+(`src.python.ff_csv.<module>`) with the repo root on `sys.path`, exactly as
 the existing tests in this directory do.
 """
 from __future__ import annotations
@@ -42,7 +42,7 @@ _SAMPLES = _REPO / "samples" / "by-format" / "csv"
 # on why aliasing is used for dict-based vs file-path-based duplicate names)
 # ---------------------------------------------------------------------------
 
-from src.python.csv.csv_parser import (  # type: ignore
+from src.python.ff_csv.csv_parser import (  # type: ignore
     CsvError,
     CsvInputError,
     CsvSizeError,
@@ -61,14 +61,14 @@ from src.python.csv.csv_parser import (  # type: ignore
     UNSUPPORTED_FEATURES,
 )
 
-from src.python.csv.csv_writer import (  # type: ignore
+from src.python.ff_csv.csv_writer import (  # type: ignore
     CsvWriteError,
     write_csv,
     write_csv_to_file,
     parse_and_rewrite,
 )
 
-from src.python.csv.csv_stats import (  # type: ignore
+from src.python.ff_csv.csv_stats import (  # type: ignore
     table_stats,
     column_value_counts,
     csv_row_length_distribution,
@@ -89,7 +89,7 @@ from src.python.csv.csv_stats import (  # type: ignore
     csv_first_header,
 )
 
-from src.python.csv.tabular_document import (  # type: ignore
+from src.python.ff_csv.tabular_document import (  # type: ignore
     csv_to_dicts,
     csv_column_count,
     csv_has_header,
@@ -123,7 +123,7 @@ from src.python.csv.tabular_document import (  # type: ignore
     csv_numeric_column_count,
 )
 
-from src.python.csv.tabular_document_analytics import (  # type: ignore
+from src.python.ff_csv.tabular_document_analytics import (  # type: ignore
     csv_is_single_column,
     csv_is_all_numeric,
     csv_max_field_value_length,
@@ -165,7 +165,7 @@ from src.python.csv.tabular_document_analytics import (  # type: ignore
     csv_row_text_total,
 )
 
-from src.python.csv.csv_analytics import (  # type: ignore
+from src.python.ff_csv.csv_analytics import (  # type: ignore
     csv_header_names,
     csv_first_row_values,
     csv_last_row_values,
@@ -175,11 +175,11 @@ from src.python.csv.csv_analytics import (  # type: ignore
     csv_has_uniform_row_length,
 )
 
-from src.python.csv.models import CsvDocument  # type: ignore
-from src.python.csv.csv_workflow import csv_installed_workflow  # type: ignore
-from src.python.csv.cli import main as cli_main  # type: ignore
+from src.python.ff_csv.models import CsvDocument  # type: ignore
+from src.python.ff_csv.csv_workflow import csv_installed_workflow  # type: ignore
+from src.python.ff_csv.cli import main as cli_main  # type: ignore
 
-from src.python.csv import exceptions as csv_exceptions_module  # type: ignore
+from src.python.ff_csv import exceptions as csv_exceptions_module  # type: ignore
 
 
 # ---------------------------------------------------------------------------
@@ -273,7 +273,7 @@ class TestCsvParserExceptions:
             parse_csv_strict(str(tmp_path))
 
     def test_csv_size_error_raised_for_oversized_file(self, tmp_path, monkeypatch):
-        import src.python.csv.csv_parser as csv_parser_mod
+        import src.python.ff_csv.csv_parser as csv_parser_mod
         monkeypatch.setattr(csv_parser_mod, "MAX_FILE_SIZE", 5)
         f = tmp_path / "big.csv"
         f.write_text("a,b,c\n1,2,3\n", encoding="utf-8")
@@ -1499,7 +1499,7 @@ class TestCsvDocumentSpecMetadata:
         assert CsvDocument.spec_qname == "csv:record"
 
     def test_spec_fact_ref(self):
-        assert CsvDocument.spec_fact_ref == "FACT-CSV-001"
+        assert CsvDocument.spec_fact_ref == "SAL-CSV-00001"
 
     def test_namespace_uri(self):
         assert "csv" in CsvDocument.namespace_uri
@@ -1577,22 +1577,22 @@ class TestCliMain:
 
 class TestCompatFacades:
     def test_csv_record_facade(self):
-        from src.python.csv.Compat import CsvRecord
+        from src.python.ff_csv.Compat import CsvRecord
         rec = CsvRecord(["a", "b", "c"])
         assert rec.spec_qname == "csv:record"
-        assert rec.spec_fact_ref == "FACT-CSV-001"
+        assert rec.spec_fact_ref == "SAL-CSV-00001"
         assert rec.field_count == 3
         assert rec.get(1) == "b"
         assert rec.to_list() == ["a", "b", "c"]
         assert "Record" in repr(rec)
 
     def test_csv_record_get_out_of_range(self):
-        from src.python.csv.Compat import CsvRecord
+        from src.python.ff_csv.Compat import CsvRecord
         rec = CsvRecord(["a"])
         assert rec.get(5) == ""
 
     def test_csv_header_facade(self):
-        from src.python.csv.Compat import CsvHeader
+        from src.python.ff_csv.Compat import CsvHeader
         hdr = CsvHeader({"names": ["a", "b", "a"]})
         assert hdr.spec_qname == "csv:header"
         assert hdr.count == 3
@@ -1600,44 +1600,44 @@ class TestCompatFacades:
         assert hdr.to_dict() == {"names": ["a", "b", "a"]}
 
     def test_csv_header_no_duplicates(self):
-        from src.python.csv.Compat import CsvHeader
+        from src.python.ff_csv.Compat import CsvHeader
         hdr = CsvHeader({"names": ["a", "b"]})
         assert hdr.has_duplicates is False
 
     def test_csv_field_facade(self):
-        from src.python.csv.Compat import CsvField
+        from src.python.ff_csv.Compat import CsvField
         field = CsvField("hello")
         assert field.spec_qname == "csv:field"
-        assert field.spec_fact_ref == "FACT-CSV-002"
+        assert field.spec_fact_ref == "SAL-CSV-00002"
         assert field.value == "hello"
         assert field.is_empty() is False
 
     def test_csv_field_is_empty(self):
-        from src.python.csv.Compat import CsvField
+        from src.python.ff_csv.Compat import CsvField
         assert CsvField("").is_empty() is True
 
     def test_csv_field_is_quoted(self):
-        from src.python.csv.Compat import CsvField
+        from src.python.ff_csv.Compat import CsvField
         assert CsvField('"quoted"').is_quoted() is True
         assert CsvField("bare").is_quoted() is False
 
 
 class TestSpecRecordClasses:
     def test_record_canonical_class(self):
-        from src.python.csv.spec.record.record import Record
+        from src.python.ff_csv.spec.record.record import Record
         rec = Record(["1", "2"])
         assert rec.fields == ["1", "2"]
         assert rec.field_count == 2
         assert "CsvRecord" in Record.facade_names
 
     def test_header_canonical_class(self):
-        from src.python.csv.spec.record.header import Header
+        from src.python.ff_csv.spec.record.header import Header
         hdr = Header({"names": ["x", "y"]})
         assert hdr.names == ["x", "y"]
         assert hdr.count == 2
 
     def test_field_canonical_class(self):
-        from src.python.csv.spec.record.field import Field
+        from src.python.ff_csv.spec.record.field import Field
         f = Field(42)
         assert f.value == "42"
         assert f.is_empty() is False
@@ -1650,21 +1650,18 @@ class TestSpecRecordClasses:
 MINIMAL_CSV = _SAMPLES / "minimal-2x2.csv"
 
 _CONVERSIONS = [
-    ("src.python.csv.csv_to_abw", "csv_to_abw", "out.abw"),
-    ("src.python.csv.csv_to_dif", "csv_to_dif", "out.dif"),
-    ("src.python.csv.csv_to_fodg", "csv_to_fodg", "out.fodg"),
-    ("src.python.csv.csv_to_fods", "csv_to_fods", "out.fods"),
-    ("src.python.csv.csv_to_fodt", "csv_to_fodt", "out.fodt"),
-    ("src.python.csv.csv_to_gnumeric", "csv_to_gnumeric", "out.gnumeric"),
-    ("src.python.csv.csv_to_ndjson", "csv_to_ndjson", "out.ndjson"),
-    ("src.python.csv.csv_to_ods", "csv_to_ods", "out.ods"),
-    ("src.python.csv.csv_to_odt", "csv_to_odt", "out.odt"),
-    ("src.python.csv.csv_to_pbm", "csv_to_pbm", "out.pbm"),
-    ("src.python.csv.csv_to_pgm", "csv_to_pgm", "out.pgm"),
-    ("src.python.csv.csv_to_ppm", "csv_to_ppm", "out.ppm"),
-    ("src.python.csv.csv_to_sylk", "csv_to_sylk", "out.sylk"),
-    ("src.python.csv.csv_to_toml", "csv_to_toml", "out.toml"),
-    ("src.python.csv.csv_to_tsv", "csv_to_tsv", "out.tsv"),
+    ("src.python.ff_csv.csv_to_abw", "csv_to_abw", "out.abw"),
+    ("src.python.ff_csv.csv_to_dif", "csv_to_dif", "out.dif"),
+    ("src.python.ff_csv.csv_to_fodg", "csv_to_fodg", "out.fodg"),
+    ("src.python.ff_csv.csv_to_fods", "csv_to_fods", "out.fods"),
+    ("src.python.ff_csv.csv_to_fodt", "csv_to_fodt", "out.fodt"),
+    ("src.python.ff_csv.csv_to_gnumeric", "csv_to_gnumeric", "out.gnumeric"),
+    ("src.python.ff_csv.csv_to_ndjson", "csv_to_ndjson", "out.ndjson"),
+    ("src.python.ff_csv.csv_to_ods", "csv_to_ods", "out.ods"),
+    ("src.python.ff_csv.csv_to_odt", "csv_to_odt", "out.odt"),
+    ("src.python.ff_csv.csv_to_sylk", "csv_to_sylk", "out.sylk"),
+    ("src.python.ff_csv.csv_to_toml", "csv_to_toml", "out.toml"),
+    ("src.python.ff_csv.csv_to_tsv", "csv_to_tsv", "out.tsv"),
 ]
 
 

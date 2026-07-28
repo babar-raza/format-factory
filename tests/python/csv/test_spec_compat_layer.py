@@ -6,10 +6,10 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent))
 
-from src.python.csv.Compat import CsvRecord, CsvField, CsvHeader
-from src.python.csv.spec.record.record import Record as SpecRecord
-from src.python.csv.spec.record.field import Field as SpecField
-from src.python.csv.spec.record.header import Header as SpecHeader
+from src.python.ff_csv.Compat import CsvRecord, CsvField, CsvHeader
+from src.python.ff_csv.spec.record.record import Record as SpecRecord
+from src.python.ff_csv.spec.record.field import Field as SpecField
+from src.python.ff_csv.spec.record.header import Header as SpecHeader
 
 
 class TestCsvRecordMetadata:
@@ -17,7 +17,7 @@ class TestCsvRecordMetadata:
         assert CsvRecord.spec_qname == "csv:record"
 
     def test_spec_fact_ref(self):
-        assert CsvRecord.spec_fact_ref == "FACT-CSV-001"
+        assert CsvRecord.spec_fact_ref == "SAL-CSV-00001"
 
     def test_namespace_uri_present(self):
         assert CsvRecord.namespace_uri
@@ -60,7 +60,7 @@ class TestCsvFieldBehavior:
         assert CsvField.spec_qname == "csv:field"
 
     def test_spec_fact_ref(self):
-        assert CsvField.spec_fact_ref == "FACT-CSV-002"
+        assert CsvField.spec_fact_ref == "SAL-CSV-00002"
 
     def test_value_property(self):
         f = CsvField("hello")
@@ -80,7 +80,7 @@ class TestCsvHeaderMetadata:
         assert CsvHeader.spec_qname == "csv:header"
 
     def test_spec_fact_ref(self):
-        assert CsvHeader.spec_fact_ref == "FACT-CSV-001"
+        assert CsvHeader.spec_fact_ref == "SAL-CSV-00001"
 
     def test_namespace_uri_present(self):
         assert CsvHeader.namespace_uri

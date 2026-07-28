@@ -22,7 +22,7 @@ if str(_REPO) not in sys.path:
 from hypothesis import given, settings, HealthCheck
 from hypothesis import strategies as st
 
-from src.python.csv.csv_parser import parse_csv  # type: ignore
+from src.python.ff_csv.csv_parser import parse_csv  # type: ignore
 
 # Safe cell value text (printable, no special CSV chars)
 _cell_text = st.text(

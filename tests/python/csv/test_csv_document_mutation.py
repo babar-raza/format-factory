@@ -11,8 +11,8 @@ import pytest
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
-from src.python.csv.models import CsvDocument
-from src.python.csv.exceptions import CsvError
+from src.python.ff_csv.models import CsvDocument
+from src.python.ff_csv.exceptions import CsvError
 
 
 SAMPLE_CSV = Path("samples/by-format/csv/minimal-2x2.csv")

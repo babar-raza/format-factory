@@ -23,7 +23,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-from src.python.csv.csv_parser import (
+from src.python.ff_csv.csv_parser import (
     csv_avg_numeric_value,
     csv_empty_column_count,
     csv_longest_row_index,

@@ -13,7 +13,7 @@ CSV_SAMPLES = REPO / "samples" / "by-format" / "csv"
 
 sys.path.insert(0, str(REPO))
 
-from src.python.csv.csv_parser import csv_has_header
+from src.python.ff_csv.csv_parser import csv_has_header
 
 
 def test_import():

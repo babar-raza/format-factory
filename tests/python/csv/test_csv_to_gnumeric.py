@@ -9,7 +9,7 @@ sys.path.insert(0, str(_REPO / "src" / "python"))
 sys.path.insert(0, str(_REPO))
 
 MINIMAL_CSV = _REPO / "samples" / "by-format" / "csv" / "minimal-2x2.csv"
-from src.python.csv.csv_to_gnumeric import csv_to_gnumeric
+from src.python.ff_csv.csv_to_gnumeric import csv_to_gnumeric
 
 
 class TestCsvToGnumericBasic:

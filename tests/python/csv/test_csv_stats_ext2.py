@@ -6,8 +6,8 @@ from pathlib import Path
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
-from src.python.csv.csv_parser import parse_csv
-from src.python.csv.csv_stats import (
+from src.python.ff_csv.csv_parser import parse_csv
+from src.python.ff_csv.csv_stats import (
     csv_header_count,
     csv_has_headers,
     csv_first_row,

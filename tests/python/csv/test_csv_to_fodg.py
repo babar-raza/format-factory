@@ -9,7 +9,7 @@ sys.path.insert(0, str(_REPO / "src" / "python"))
 sys.path.insert(0, str(_REPO))
 
 SAMPLE = _REPO / "samples" / "by-format" / "csv" / "minimal-2x2.csv"
-from src.python.csv.csv_to_fodg import csv_to_fodg
+from src.python.ff_csv.csv_to_fodg import csv_to_fodg
 
 
 class TestCSVToFodgBasic:

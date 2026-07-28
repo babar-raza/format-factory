@@ -9,8 +9,8 @@ import pytest
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
-from src.python.csv.csv_parser import CsvError, CsvInputError, CsvSizeError, CsvParseError
-from src.python.csv.csv_writer import CsvWriteError
+from src.python.ff_csv.csv_parser import CsvError, CsvInputError, CsvSizeError, CsvParseError
+from src.python.ff_csv.csv_writer import CsvWriteError
 
 
 class TestCsvErrorHierarchy:

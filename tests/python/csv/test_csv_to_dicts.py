@@ -14,7 +14,7 @@ import pytest
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
-from src.python.csv.csv_parser import csv_to_dicts, CsvInputError
+from src.python.ff_csv.csv_parser import csv_to_dicts, CsvInputError
 
 
 class TestCsvToDicts:

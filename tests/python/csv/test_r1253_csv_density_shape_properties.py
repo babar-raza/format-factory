@@ -5,21 +5,12 @@ Properties under test:
     has_empty_cells — any cell in rows is an empty string
     aspect_ratio   — column_count / row_count (0.0 if no rows)
 
-spec_fact_ref: FACT-CSV-001
+spec_fact_ref: SAL-CSV-00001
 """
-
-import sys
-from pathlib import Path
 
 import pytest
 
-# FF csv accessed via direct path to avoid stdlib csv collision
-_csv_ff_models = Path(__file__).resolve().parent.parent.parent.parent / "src" / "python" / "csv" / "models.py"
-import importlib.util as _ilu
-_spec = _ilu.spec_from_file_location("csv_ff_models", _csv_ff_models)
-_mod = _ilu.module_from_spec(_spec)
-_spec.loader.exec_module(_mod)
-CsvDocument = _mod.CsvDocument
+from ff_csv.models import CsvDocument
 
 
 def _make_doc(rows: list[list[str]], headers: list[str] | None = None, delimiter: str = ",") -> CsvDocument:

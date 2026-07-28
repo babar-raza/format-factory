@@ -11,7 +11,7 @@ from pathlib import Path
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
-from src.python.csv import (
+from src.python.ff_csv import (
     csv_row_length_distribution,
     csv_field_type_summary,
     csv_empty_row_count,

@@ -11,7 +11,7 @@ _REPO = Path(__file__).resolve().parents[3]
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from src.python.csv.csv_parser import (  # type: ignore
+from src.python.ff_csv.csv_parser import (  # type: ignore
     parse_csv, parse_csv_strict,
     csv_row_count, csv_column_count, csv_total_cell_count,
     csv_is_rectangular, csv_is_square, csv_is_single_row, csv_is_multi_row,

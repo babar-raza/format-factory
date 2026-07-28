@@ -18,7 +18,7 @@ import pytest
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
-from src.python.csv.csv_parser import probe_csv
+from src.python.ff_csv.csv_parser import probe_csv
 
 _SAMPLES = _REPO / "samples" / "by-format" / "csv"
 _MINIMAL = _SAMPLES / "minimal-2x2.csv"

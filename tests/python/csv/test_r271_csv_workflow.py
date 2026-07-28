@@ -5,7 +5,7 @@ Sprint: ff-sprint-s271-csv-installed-workflow-20260626
 Authority: RFC 4180 (IETF) — Common Format and MIME Type for CSV Files
 
 Tests for csv_installed_workflow() in csv_workflow.py.
-Note: Uses src.python.csv path due to stdlib csv shadowing.
+Note: Uses src.python.ff_csv path due to stdlib csv shadowing.
 """
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ import pytest
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
-from src.python.csv.csv_workflow import csv_installed_workflow
+from src.python.ff_csv.csv_workflow import csv_installed_workflow
 
 _CSV_BYTES = b"name,age,city\nAlice,30,London\nBob,25,Paris\n"
 _SAMPLE = _REPO / "samples" / "by-format" / "csv" / "minimal-2x2.csv"
@@ -27,7 +27,7 @@ class TestCsvInstalledWorkflowImport:
     """csv_installed_workflow is importable and callable."""
 
     def test_importable_from_csv_workflow(self):
-        from src.python.csv.csv_workflow import csv_installed_workflow as fn
+        from src.python.ff_csv.csv_workflow import csv_installed_workflow as fn
         assert callable(fn)
 
     def test_callable(self):

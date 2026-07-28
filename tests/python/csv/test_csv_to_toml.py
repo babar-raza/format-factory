@@ -17,7 +17,7 @@ sys.path.insert(0, str(_REPO))
 
 MINIMAL_CSV = _REPO / "samples" / "by-format" / "csv" / "minimal-2x2.csv"
 
-from src.python.csv.csv_to_toml import csv_to_toml
+from src.python.ff_csv.csv_to_toml import csv_to_toml
 
 
 class TestCsvToTomlBasic:

@@ -21,7 +21,7 @@ class TestCsvDocumentSpecQname:
     """CsvDocument domain model spec_qname compliance."""
 
     def test_spec_qname_defined(self):
-        from src.python.csv import CsvDocument
+        from src.python.ff_csv import CsvDocument
         assert CsvDocument.spec_qname == "csv:record"
 
     def test_spec_qname_matches_registry(self):
@@ -32,7 +32,7 @@ class TestCsvDocumentSpecQname:
             pytest.skip("CSV qname registry not found")
         entries = yaml.safe_load(registry_path.read_text(encoding="utf-8"))
         qnames = {e["qname"] for e in entries if isinstance(e, dict)}
-        from src.python.csv import CsvDocument
+        from src.python.ff_csv import CsvDocument
         assert CsvDocument.spec_qname in qnames or CsvDocument.spec_qname.startswith("csv:")
 
 
@@ -40,33 +40,33 @@ class TestCsvCompatLayerSpecQname:
     """CSV Compat layer spec qnames (csv:record, csv:header, csv:field)."""
 
     def test_csv_record_spec_qname(self):
-        from src.python.csv.Compat import CsvRecord
+        from src.python.ff_csv.Compat import CsvRecord
         assert CsvRecord.spec_qname == "csv:record"
 
     def test_csv_record_spec_fact_ref(self):
-        from src.python.csv.Compat import CsvRecord
-        assert CsvRecord.spec_fact_ref == "FACT-CSV-001"
+        from src.python.ff_csv.Compat import CsvRecord
+        assert CsvRecord.spec_fact_ref == "SAL-CSV-00001"
 
     def test_csv_record_namespace_uri(self):
-        from src.python.csv.Compat import CsvRecord
+        from src.python.ff_csv.Compat import CsvRecord
         assert CsvRecord.namespace_uri
         assert "csv" in CsvRecord.namespace_uri or "rfc" in CsvRecord.namespace_uri
 
     def test_csv_header_spec_qname(self):
-        from src.python.csv.Compat import CsvHeader
+        from src.python.ff_csv.Compat import CsvHeader
         assert CsvHeader.spec_qname == "csv:header"
 
     def test_csv_header_spec_fact_ref(self):
-        from src.python.csv.Compat import CsvHeader
+        from src.python.ff_csv.Compat import CsvHeader
         assert CsvHeader.spec_fact_ref
 
     def test_csv_field_spec_qname(self):
-        from src.python.csv.Compat import CsvField
+        from src.python.ff_csv.Compat import CsvField
         assert CsvField.spec_qname == "csv:field"
 
     def test_csv_field_spec_fact_ref(self):
-        from src.python.csv.Compat import CsvField
-        assert CsvField.spec_fact_ref == "FACT-CSV-002"
+        from src.python.ff_csv.Compat import CsvField
+        assert CsvField.spec_fact_ref == "SAL-CSV-00002"
 
 
 class TestCsvSpecQnameRegistryLinkage:

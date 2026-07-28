@@ -8,7 +8,7 @@ from pathlib import Path
 _REPO = Path(__file__).resolve().parent.parent.parent.parent
 sys.path.insert(0, str(_REPO))
 
-from src.python.csv.csv_parser import csv_numeric_density, csv_unique_row_count
+from src.python.ff_csv.csv_parser import csv_numeric_density, csv_unique_row_count
 
 
 class TestCsvNumericDensity:

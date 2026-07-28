@@ -8,14 +8,16 @@ import tempfile
 from pathlib import Path
 
 _REPO = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(_REPO / "src" / "python" / "csv"))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import pytest
 from hypothesis import given, settings, HealthCheck
 from hypothesis import strategies as st
 
-from csv_parser import parse_csv
-from csv_writer import write_csv
+from _ff_csv_loader import ff_csv
+
+parse_csv = ff_csv.parse_csv
+write_csv = ff_csv.write_csv
 
 
 # Strategy: generate valid CSV content as rows of strings

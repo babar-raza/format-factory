@@ -6,7 +6,7 @@ from pathlib import Path
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
-from src.python.csv.csv_analytics import (
+from src.python.ff_csv.csv_analytics import (
     csv_max_row_length,
     csv_min_row_length,
     csv_has_uniform_row_length,

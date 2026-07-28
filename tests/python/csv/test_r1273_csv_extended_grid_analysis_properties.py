@@ -5,23 +5,12 @@ Properties under test:
     is_flat_grid   — column_count > 3 * row_count (and row_count > 0)
     is_sparse_data — fill_density < 0.5 and total_cell_count > 0
 
-spec_fact_ref: FACT-CSV-001
+spec_fact_ref: SAL-CSV-00001
 """
 
-import sys
-import importlib
-from pathlib import Path
 import pytest
 
-# Direct path import to avoid stdlib csv collision
-import importlib.util
-spec = importlib.util.spec_from_file_location(
-    "csv_models",
-    Path(__file__).parents[3] / "src" / "python" / "csv" / "models.py",
-)
-_mod = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(_mod)
-CsvDocument = _mod.CsvDocument
+from ff_csv.models import CsvDocument
 
 
 def _make_doc(rows: list[list[str]], headers: list[str] | None = None, delimiter: str = ",") -> CsvDocument:

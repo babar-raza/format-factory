@@ -15,7 +15,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.python.csv.csv_stats import table_stats, column_value_counts
+from src.python.ff_csv.csv_stats import table_stats, column_value_counts
 
 
 # ---------------------------------------------------------------------------

@@ -5,19 +5,12 @@ Properties under test:
     is_tiny          — row_count <= 5
     has_uniform_rows — all rows have column_count columns; True for empty docs
 
-spec_fact_ref: FACT-CSV-001
+spec_fact_ref: SAL-CSV-00001
 """
 
 import pytest
-import sys
-from pathlib import Path
-# csv is pinned to stdlib in conftest.py; access FF csv via direct path import
-_csv_ff_models = Path(__file__).resolve().parent.parent.parent.parent / "src" / "python" / "csv" / "models.py"
-import importlib.util as _ilu
-_spec = _ilu.spec_from_file_location("csv_ff_models", _csv_ff_models)
-_mod = _ilu.module_from_spec(_spec)
-_spec.loader.exec_module(_mod)
-CsvDocument = _mod.CsvDocument
+
+from ff_csv.models import CsvDocument
 
 
 def _make_doc(row_count: int, col_count: int = 3, has_header: bool = True,

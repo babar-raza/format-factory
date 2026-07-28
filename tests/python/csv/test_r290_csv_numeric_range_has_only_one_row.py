@@ -4,10 +4,9 @@ from pathlib import Path
 import pytest
 
 _REPO = Path(__file__).parents[3]
-sys.path.insert(0, str(_REPO / "src" / "python"))
-sys.path.insert(0, str(_REPO / "src" / "python" / "csv"))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-import csv_parser as m
+from _ff_csv_loader import ff_csv as m
 
 CSV = _REPO / "samples" / "by-format" / "csv"
 

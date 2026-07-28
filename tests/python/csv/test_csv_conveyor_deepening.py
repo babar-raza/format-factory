@@ -12,8 +12,8 @@ from pathlib import Path
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
-from src.python.csv.csv_writer import write_csv, write_csv_to_file, parse_and_rewrite
-from src.python.csv.csv_stats import (
+from src.python.ff_csv.csv_writer import write_csv, write_csv_to_file, parse_and_rewrite
+from src.python.ff_csv.csv_stats import (
     table_stats,
     column_value_counts,
     csv_row_length_distribution,
@@ -21,7 +21,7 @@ from src.python.csv.csv_stats import (
     csv_empty_row_count,
     csv_max_field_length,
 )
-from src.python.csv.csv_parser import parse_csv_strict
+from src.python.ff_csv.csv_parser import parse_csv_strict
 
 
 def test_write_csv_basic():

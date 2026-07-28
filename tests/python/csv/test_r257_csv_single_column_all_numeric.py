@@ -5,7 +5,7 @@ from pathlib import Path
 _REPO = Path(__file__).resolve().parent.parent.parent.parent
 sys.path.insert(0, str(_REPO))
 
-from src.python.csv.csv_parser import csv_is_single_column, csv_is_all_numeric
+from src.python.ff_csv.csv_parser import csv_is_single_column, csv_is_all_numeric
 
 _DIR = _REPO / "samples" / "by-format" / "csv"
 _MINIMAL = str(_DIR / "minimal-2x2.csv")    # [['Alice', '30'], ['Bob', '25']] — 2 cols, not all numeric
@@ -33,7 +33,7 @@ class TestCsvIsSingleColumn:
         assert csv_is_single_column(_SINGLE) == csv_is_single_column(_SINGLE)
 
     def test_single_column_implies_max_row_len_1(self):
-        from src.python.csv.csv_parser import csv_max_row_length
+        from src.python.ff_csv.csv_parser import csv_max_row_length
         if csv_is_single_column(_SINGLE):
             assert csv_max_row_length(_SINGLE) == 1
 
@@ -58,6 +58,6 @@ class TestCsvIsAllNumeric:
         assert csv_is_all_numeric(_SINGLE) == csv_is_all_numeric(_SINGLE)
 
     def test_all_numeric_implies_no_string_cells(self):
-        from src.python.csv.csv_parser import csv_string_density
+        from src.python.ff_csv.csv_parser import csv_string_density
         if csv_is_all_numeric(_SINGLE):
             assert csv_string_density(_SINGLE) == 0.0

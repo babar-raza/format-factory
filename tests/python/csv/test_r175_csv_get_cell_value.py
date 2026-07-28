@@ -9,7 +9,7 @@ from pathlib import Path
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
-from src.python.csv.csv_parser import get_cell_value
+from src.python.ff_csv.csv_parser import get_cell_value
 
 
 def _make_csv(rows: list[list[str]], header: list[str] | None = None) -> str:

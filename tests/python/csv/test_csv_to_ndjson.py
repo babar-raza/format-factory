@@ -20,7 +20,7 @@ SAMPLE_CSV = _REPO / "samples" / "by-format" / "csv" / "minimal-2x2.csv"
 SINGLE_CELL_CSV = _REPO / "samples" / "by-format" / "csv" / "single-cell.csv"
 QUOTED_CSV = _REPO / "samples" / "by-format" / "csv" / "quoted-fields.csv"
 
-from src.python.csv.csv_to_ndjson import csv_to_ndjson
+from src.python.ff_csv.csv_to_ndjson import csv_to_ndjson
 
 
 class TestCsvToNdjsonBasic:

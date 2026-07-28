@@ -14,7 +14,7 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(PROJECT_ROOT))
-from src.python.csv.csv_stats import csv_field_type_summary
+from src.python.ff_csv.csv_stats import csv_field_type_summary
 
 
 class TestCsvFieldTypeSummary:
@@ -57,5 +57,5 @@ class TestCsvFieldTypeSummary:
         assert set(result.keys()) == {"numeric", "empty", "text"}
 
     def test_callable_from_module(self):
-        from src.python.csv import csv_stats
+        from src.python.ff_csv import csv_stats
         assert callable(csv_stats.csv_field_type_summary)

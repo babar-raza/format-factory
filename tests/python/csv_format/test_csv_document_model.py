@@ -15,7 +15,7 @@ from pathlib import Path
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
-from src.python.csv.models import CsvDocument
+from src.python.ff_csv.models import CsvDocument
 
 
 class TestCsvDocumentClassAttributes:
@@ -28,7 +28,7 @@ class TestCsvDocumentClassAttributes:
 
     def test_spec_fact_ref_present(self):
         assert hasattr(CsvDocument, "spec_fact_ref")
-        assert CsvDocument.spec_fact_ref.startswith("FACT-CSV-")
+        assert CsvDocument.spec_fact_ref.startswith("SAL-CSV-")
 
 
 class TestCsvDocumentProperties:

@@ -14,14 +14,14 @@ import pytest
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.python.csv.csv_writer import (
+from src.python.ff_csv.csv_writer import (
     write_csv,
     write_csv_to_file,
     parse_and_rewrite,
     CsvWriteError,
     _escape_field,
 )
-from src.python.csv.csv_parser import parse_csv_strict
+from src.python.ff_csv.csv_parser import parse_csv_strict
 
 
 class TestEscapeField:

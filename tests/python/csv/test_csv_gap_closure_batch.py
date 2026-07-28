@@ -13,21 +13,22 @@ from pathlib import Path
 import pytest
 
 _REPO = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(_REPO / "src" / "python" / "csv"))
-# Also add parent so csv_writer can do relative imports
-sys.path.insert(0, str(_REPO / "src" / "python"))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from csv_parser import (
-    CsvError,
-    CsvInputError,
-    CsvParseError,
-    CsvSizeError,
-    get_column_names,
-    get_row_count,
-    parse_csv,
-)
-from csv_stats import csv_empty_row_count, csv_row_length_distribution
-from csv_writer import CsvWriteError, write_csv, write_csv_to_file
+from _ff_csv_loader import ff_csv
+
+CsvError = ff_csv.CsvError
+CsvInputError = ff_csv.CsvInputError
+CsvParseError = ff_csv.CsvParseError
+CsvSizeError = ff_csv.CsvSizeError
+get_column_names = ff_csv.get_column_names
+get_row_count = ff_csv.get_row_count
+parse_csv = ff_csv.parse_csv
+csv_empty_row_count = ff_csv.csv_empty_row_count
+csv_row_length_distribution = ff_csv.csv_row_length_distribution
+CsvWriteError = ff_csv.CsvWriteError
+write_csv = ff_csv.write_csv
+write_csv_to_file = ff_csv.write_csv_to_file
 
 SAMPLE_CSV = "name,age,city\nAlice,30,NYC\nBob,25,LA\nCarol,35,SF\n"
 

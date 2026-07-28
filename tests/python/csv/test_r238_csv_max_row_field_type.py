@@ -10,7 +10,7 @@ from pathlib import Path
 _REPO = Path(__file__).resolve().parent.parent.parent.parent
 sys.path.insert(0, str(_REPO))
 
-from src.python.csv.csv_parser import csv_max_row_length, csv_field_type_ratio
+from src.python.ff_csv.csv_parser import csv_max_row_length, csv_field_type_ratio
 
 
 def _write_csv(content):

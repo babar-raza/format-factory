@@ -33,7 +33,7 @@ def _run_csv(sample_path: Path) -> dict:
     Uses explicit PROJECT_ROOT path insert like other CSV tests to avoid
     the stdlib csv module shadowing issue with --import-mode=importlib.
     """
-    from src.python.csv.csv_parser import parse_csv
+    from src.python.ff_csv.csv_parser import parse_csv
     return parse_csv(str(sample_path))
 
 

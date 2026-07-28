@@ -11,7 +11,7 @@ import pytest
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO / "src" / "python"))
 
-from src.python.csv.csv_parser import get_row_count, get_column_names, CsvError
+from src.python.ff_csv.csv_parser import get_row_count, get_column_names, CsvError
 
 
 def _write_csv(content: str) -> str:

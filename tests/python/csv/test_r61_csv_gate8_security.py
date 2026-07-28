@@ -17,7 +17,7 @@ import tempfile
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.python.csv.csv_parser import parse_csv, probe_csv  # noqa: E402
+from src.python.ff_csv.csv_parser import parse_csv, probe_csv  # noqa: E402
 
 
 def _parse_text(text: str) -> dict:

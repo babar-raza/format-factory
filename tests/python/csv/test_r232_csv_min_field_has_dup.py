@@ -1,6 +1,6 @@
 """Tests for csv_min_field_length and csv_has_duplicates (Sprint 20)."""
 import pytest
-from src.python.csv import write_csv_to_file, csv_min_field_length, csv_has_duplicates
+from src.python.ff_csv import write_csv_to_file, csv_min_field_length, csv_has_duplicates
 
 
 def _write(rows, path, headers=None):

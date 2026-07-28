@@ -15,8 +15,8 @@ import pytest
 from hypothesis import given, settings, assume
 from hypothesis import strategies as st
 
-from src.python.csv.csv_parser import parse_csv
-from src.python.csv.csv_writer import write_csv
+from src.python.ff_csv.csv_parser import parse_csv
+from src.python.ff_csv.csv_writer import write_csv
 
 
 FIELD_TEXT = st.text(

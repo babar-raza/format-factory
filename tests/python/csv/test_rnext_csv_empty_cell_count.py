@@ -7,7 +7,7 @@ import pytest
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
-from src.python.csv.csv_parser import csv_empty_cell_count
+from src.python.ff_csv.csv_parser import csv_empty_cell_count
 
 
 def _write_csv(tmp_path, content, name="test.csv"):
@@ -46,5 +46,5 @@ class TestCsvEmptyCellCount:
         assert isinstance(csv_empty_cell_count(path), int)
 
     def test_importable_from_package(self):
-        from src.python.csv.csv_parser import csv_empty_cell_count as fn
+        from src.python.ff_csv.csv_parser import csv_empty_cell_count as fn
         assert callable(fn)

@@ -19,7 +19,7 @@ MINIMAL_CSV = _REPO / "samples" / "by-format" / "csv" / "minimal-2x2.csv"
 SINGLE_CELL_CSV = _REPO / "samples" / "by-format" / "csv" / "single-cell.csv"
 QUOTED_CSV = _REPO / "samples" / "by-format" / "csv" / "quoted-fields.csv"
 
-from src.python.csv.csv_to_tsv import csv_to_tsv
+from src.python.ff_csv.csv_to_tsv import csv_to_tsv
 
 
 class TestCsvToTsvBasic:

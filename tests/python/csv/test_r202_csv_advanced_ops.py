@@ -20,14 +20,14 @@ from pathlib import Path
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
-from src.python.csv.csv_parser import (
+from src.python.ff_csv.csv_parser import (
     parse_csv, parse_csv_strict, probe_csv, get_capabilities,
     get_row_count, get_column_names, get_cell_value,
     csv_column_count, csv_has_header, csv_numeric_row_count,
     count_distinct_values,
 )
-from src.python.csv.csv_writer import write_csv, write_csv_to_file
-from src.python.csv.csv_stats import (
+from src.python.ff_csv.csv_writer import write_csv, write_csv_to_file
+from src.python.ff_csv.csv_stats import (
     table_stats, column_value_counts, csv_row_length_distribution,
     csv_field_type_summary, csv_empty_row_count, csv_max_field_length,
 )

@@ -9,7 +9,7 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
 
-from src.python.csv.csv_parser import (
+from src.python.ff_csv.csv_parser import (
     count_distinct_values,
     CsvError,
 )

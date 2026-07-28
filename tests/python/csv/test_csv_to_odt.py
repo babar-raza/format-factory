@@ -19,7 +19,7 @@ sys.path.insert(0, str(_REPO))
 MINIMAL_CSV = _REPO / "samples" / "by-format" / "csv" / "minimal-2x2.csv"
 QUOTED_CSV = _REPO / "samples" / "by-format" / "csv" / "quoted-fields.csv"
 
-from src.python.csv.csv_to_odt import csv_to_odt
+from src.python.ff_csv.csv_to_odt import csv_to_odt
 
 
 class TestCsvToOdtBasic:

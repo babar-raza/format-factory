@@ -1,7 +1,7 @@
 """R566: CSV additional tabular properties — is_multi_row, is_single_column, has_multiple_columns.
 
 Tests for CsvDocument tabular properties added in R566.
-Spec refs: FACT-CSV-001 (csv:record).
+Spec refs: SAL-CSV-00001 (csv:record).
 """
 
 import pytest
@@ -12,7 +12,7 @@ _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
 
-from src.python.csv.models import CsvDocument
+from src.python.ff_csv.models import CsvDocument
 
 SAMPLES = Path("samples/by-format/csv")
 
