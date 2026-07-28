@@ -1,0 +1,48 @@
+{
+  "invocation_id": "FF6-SAL-NEW-FORMAT-20260723",
+  "skill_id": "ingest-spec-sal",
+  "task_id": "SKILL-REPAIR-FF6-INGEST-SAL-NEW-FORMAT",
+  "mode": "live",
+  "inputs": {
+    "defect_id": "SAL-NEW-FORMAT-CIRCULAR-PREREQUISITE-001",
+    "root_cause": "The seeder required a pre-existing store and the command required downstream QName/product state before authority facts could exist.",
+    "authority_policy": "Every new fact must bind acquired source IDs and SHA-256 digests.",
+    "format_id": "ora",
+    "spec_source_uri": "https://www.freedesktop.org/wiki/Specifications/OpenRaster/Draft/",
+    "spec_version": "OpenRaster draft profiles 0.0.3, 0.0.4, and 0.0.5",
+    "spec_body": "freedesktop.org",
+    "target_fact_count_min": 20
+  },
+  "allowed_files": [
+    ".claude/commands/ingest-spec-sal.md",
+    "tools/spec/seed_sal_candidates.py",
+    "tests/tools/test_seed_sal_candidates.py"
+  ],
+  "actual_files_changed": [
+    ".claude/commands/ingest-spec-sal.md",
+    "tools/spec/seed_sal_candidates.py",
+    "tests/tools/test_seed_sal_candidates.py"
+  ],
+  "tests_run": [
+    "pytest tests/tools/test_seed_sal_candidates.py tests/tools/test_merge_sal_facts.py: PASS",
+    "pytest focused contract/machinery suite: 67 passed",
+    "ruff check seed tool and focused tests: PASS",
+    "mypy --strict seed tool: PASS",
+    "ORA seeder replay: 0 seeded, 20 skipped"
+  ],
+  "validations": {
+    "missing_store_initialized": "PASS",
+    "authority_digest_bound": "PASS",
+    "unacquired_source_rejected": "PASS",
+    "union_preserved": "PASS",
+    "idempotent_replay": "PASS"
+  },
+  "output_digests": {
+    ".claude/commands/ingest-spec-sal.md": "829f0ce21c75059b1be01e3d00fc86b7fefa8f818a04fcbfa28a3428fa7a2649",
+    "tools/spec/seed_sal_candidates.py": "f9fe5960d5aa66bc9de2379fa05b5ab7c1fdd79ae8757b59c28034175e6d4db6",
+    "tests/tools/test_seed_sal_candidates.py": "149d4f5312d8b9ed223bac1f2f5f192d5653949c5f407ba4077d6f69f2c75e5d"
+  },
+  "result": "PASS",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

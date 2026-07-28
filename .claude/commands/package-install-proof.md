@@ -1,9 +1,9 @@
 ---
-version: "2.0"
-last-updated: "2026-07-15"
+version: "3.0"
+last-updated: "2026-07-25"
 phase-available: "3+"
 gate-required: null
-generated_by: claude
+generated_by: codex
 visibility: generated
 ---
 
@@ -41,11 +41,16 @@ python tools/run_package_install_proof.py --format fods  # scoped
 4. **Prove**: runs `tests/python/packaging/test_package_install_proof_all_formats.py`
    inside the proof venv — wheel-origin import check + API smoke per format
 5. **Record**: writes the canonical machine-readable manifest
-   (wheel sha256 + **source digest** per format), the human report, per-format
-   transcripts, and machine-updates `feature-proof-register.yaml`
+   (wheel sha256 + **complete proof-input digest** per format), the human report,
+   per-format transcripts, and machine-updates `feature-proof-register.yaml`
 6. **Deep-import scan** (diagnostic): inventories wheel submodules that fail
    to import (e.g. cross-format converters assuming repo layout) — recorded
    as findings, does not flip the B9 verdict
+7. **Race check**: captures the complete proof-input closure before execution,
+   recomputes it afterward, and records nothing if any selected input changed
+8. **Canonicalize**: assigns a content-derived proof ID and excludes wall-clock
+   timestamps from the canonical manifest and report; execution time remains in
+   the per-run transcript only
 
 ## Single Source of Truth
 
@@ -64,7 +69,10 @@ No tool in this chain hardcodes a format list.
    - **DRIFT**: a `src/python/<fmt>/` package (with pyproject.toml) missing from
      the matrix or lacking an `install_proof` spec
    - **MISSING**: a matrix format with no PASS entry in the proof manifest
-   - **STALE**: source changed since the recorded proof (content digest mismatch)
+   - **STALE**: source, matrix contract, local dependency, builder, proof test,
+     requirements lock, or proof runtime changed since the recorded execution
+   - **INTEGRITY**: a canonical manifest entry does not match its
+     content-derived proof ID
      → re-prove scoped: `/package-install-proof <format>`
 
 ## Outputs (canonical locations)
@@ -87,11 +95,21 @@ No tool in this chain hardcodes a format list.
 
 ## Evidence Required
 
-Per format in the manifest: package name, version, wheel file + sha256,
-source digest, install result, import result, smoke result, verdict, proved_at.
+Per format in the manifest: content-derived proof ID, package name, module
+import, build mode, version,
+wheel file + sha256, source digest, complete proof-input digest, local dependency
+wheel hashes, install result, import result, smoke result, verdict, proved_at.
 
 ## Allowed Paths
 
+- `tools/run_package_install_proof.py` (orchestrator implementation)
+- `tools/supervisor/package_proof_common.py` (shared proof-input closure)
+- `tools/supervisor/governance_validators_package_proof.py` (V226 enforcement)
+- `packaging/python/build-local-packages.py` (matrix-driven builder)
+- `packaging/python/package-matrix.yaml` (product build/import contract)
+- `tests/python/packaging/test_package_install_proof_all_formats.py`
+- `tests/packaging/test_package_install_proof_runtime.py`
+- `tests/supervisor/test_validate_package_install_proof_coverage.py`
 - `packaging/` (matrix read; wheels built under `.local/package-builds/`)
 - `.local/package-install-proof-*` (ephemeral venv, workdir, junit)
 - `reports/package-install-proof/` (proof output)
@@ -134,6 +152,9 @@ install_result, import_result, smoke_result, verdict, generated_at).
 
 ## Changelog
 
+- 3.0 (2026-07-25): Own the orchestrator, builder, matrix, and proof-runtime
+  regression tests; support native per-distribution pyprojects and dotted
+  production namespace imports without treating legacy staging as equivalent.
 - 1.0 (2026-06-02): Initial version
 - 1.1 (2026-06-03): Frontmatter, allowed/forbidden paths, rollback (Skills R99)
 - 1.2 (2026-06-03): Validation, transcript requirement (Skills R101)

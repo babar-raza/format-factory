@@ -1,0 +1,55 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-compile-format-contract-ipynb-refresh-002",
+  "execution_id": "ff6-compile-format-contract-ipynb-refresh-002",
+  "task_id": "AUTO-REFRESH-SIX-PYTHON-CONTRACTS-IPYNB",
+  "skill_id": "compile-format-contract",
+  "selected_skill_ids": ["compile-format-contract", "validate-format-contract"],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260723T145613-3373a8",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "RFF6-MACH-CONTRACT-REFRESH-002",
+  "requested_operation": "regenerate the IPYNB product contract from current authority and policy digests",
+  "inputs": {
+    "format_id": "ipynb",
+    "family": "executable_document",
+    "target_spec_version": "nbformat v4.5",
+    "base_git_commit": "29c23d668d85a97a2584f524d79802ed2db576be"
+  },
+  "allowed_files": [
+    "shared/format-contracts/ipynb.yaml",
+    "registry/format-contract-registry.yaml",
+    "reports/skills-rff6/skill-transcripts/compile-format-contract-ipynb-refresh-002.json"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/ipynb.yaml",
+    "registry/format-contract-registry.yaml",
+    "reports/skills-rff6/skill-transcripts/compile-format-contract-ipynb-refresh-002.json"
+  ],
+  "outputs": {
+    "contract_sha256": "7c685d81ce287de6811292f0f05d52840b21d546b249ca06675c2534d2c85579",
+    "product_contract_digest": "3cfd3362ad167a7e7d6e7054813779f96c483c9dda2156dd07e7f135bc676be6",
+    "registry_sha256": "4a27395d11877327f108a73008e10250ccc8dd4036a478743f3ae08c29a3c5e4",
+    "capability_count": 20,
+    "obligation_count": 105,
+    "readiness_score": 1.0,
+    "readiness_threshold": 0.75,
+    "missing_categories": [],
+    "strict_ready": true,
+    "strict_issues": []
+  },
+  "tests_run": [
+    "compiler check: pass",
+    "compiler idempotency: pass",
+    "strict ProductContract: ready with 105 obligations"
+  ],
+  "computed_promotion_state": "CONTRACT_READY",
+  "open_gaps": ["Implementation proof descendants require replay against the refreshed contract digest."],
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "IPYNB_CONTRACT_REFRESHED_AND_STRICT_READY",
+  "timestamp": "2026-07-24T03:55:00+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

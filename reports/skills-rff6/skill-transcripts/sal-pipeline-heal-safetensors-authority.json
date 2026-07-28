@@ -1,0 +1,62 @@
+{
+  "invocation_id": "FF6-SAL-SAFETENSORS-AUTHORITY-20260723",
+  "skill_id": "sal-pipeline-heal",
+  "task_id": "AUTO-SAFETENSORS-FACT-AUTHORITY",
+  "taskcard_id": "AUTO-SAFETENSORS-FACT-AUTHORITY",
+  "mode": "live",
+  "inputs": {
+    "taskcard_id": "AUTO-SAFETENSORS-FACT-AUTHORITY",
+    "format_id": "safetensors",
+    "root_cause_id": "ROOT-PROOF-CLOSURE",
+    "spec_cache_path": ".local/format-contracts/acquired/safetensors/src-safetensors-002.bin",
+    "target_stage": "schema_migration",
+    "authority_source_id": "SRC-SAFETENSORS-002",
+    "authority_version": "v0.8.0 commit a406ca3e7a90598be0cd05a50069cb9bf5ef6ba6",
+    "authority_sha256": "3b4bf28d71a2b1323bab6a98adbb7e92443c8ae97fb96fa4c8612b25fab4d1b3"
+  },
+  "allowed_files": [
+    "shared/sal-facts/evidence/safetensors.yaml",
+    "reports/sal-verification/safetensors.json",
+    "shared/sal-facts/safetensors.yaml",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-safetensors-authority.json"
+  ],
+  "actual_files_changed": [
+    "shared/sal-facts/evidence/safetensors.yaml",
+    "reports/sal-verification/safetensors.json",
+    "shared/sal-facts/safetensors.yaml",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-safetensors-authority.json"
+  ],
+  "tests_run": [
+    "verify_sal_facts safetensors: 19 facts, 40 exact source assertions, PASS",
+    "three same-input SafeTensors verification runs: identical digest 96abc9581a14cfaf129301820466ae13fca744e0c0cbb8622d226f876f657512",
+    "live proof-closure validation: 19 of 19 facts valid",
+    "focused core, production namespace, SAL, controller, contract determinism, and machinery suite: 138 passed",
+    "Ruff production SafeTensors namespace, verifier, proof, merge, and controller: PASS"
+  ],
+  "validations": {
+    "spec_cache_verified": "PASS",
+    "tool_invoked": "PASS",
+    "output_artifact_produced": "PASS",
+    "fact_ids_in_correct_namespace": "PASS",
+    "exact_authority_assertions_pass": "PASS",
+    "reference_implementation_bound": "PASS",
+    "upstream_rejection_tests_bound": "PASS",
+    "content_addressed_receipt_bound": "PASS",
+    "live_gap_projection_recomputed": "PASS"
+  },
+  "regression_observations": [
+    "The legacy SafeTensors test collection requires NumPy, but the package's test extra does not declare NumPy; collection in the clean controller environment exposed this packaging gap.",
+    "With the NumPy-dependent legacy slice excluded, 335 tests passed and 4 skipped; one additional legacy accessor test imports NumPy before checking an unknown tensor name."
+  ],
+  "output_digests": {
+    "shared/sal-facts/evidence/safetensors.yaml": "e9809b131fe81c6a4f4245c652b1ac36affa7114ada2a7eb490ae0974bcb952c",
+    "reports/sal-verification/safetensors.json": "5aee99d9f6d49edad7e5bac758a8c8468b2f8d0b69a682412d6f8a355a53e872",
+    "shared/sal-facts/safetensors.yaml": "f2b4dad3b84930509f98e634486e9ae05dba8591e79158768184e231ad0ca7d2"
+  },
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "verdict": "PROCEED",
+  "timestamp": "2026-07-23T23:14:56+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

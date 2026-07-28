@@ -1224,7 +1224,8 @@ commands:
   status: active
 - command_file: .claude/commands/fix-exception-hierarchy.md
   command_id: fix-exception-hierarchy
-  description: Repair duplicate/shadow exception-class hierarchy in a Python format package
+  description: Repair duplicate/shadow exception-class hierarchy in a Python format
+    package
   file: .claude/commands/fix-exception-hierarchy.md
   skill_id: fix-exception-hierarchy
   skill_registry_ref: true
@@ -1238,11 +1239,36 @@ commands:
   status: active
 - command_file: .claude/commands/skills-first-audit.md
   command_id: skills-first-audit
-  description: Audit + enforce the Skills-First Control system (parity, manifest, closeout gate)
+  description: Audit + enforce the Skills-First Control system (parity, manifest,
+    closeout gate)
   file: .claude/commands/skills-first-audit.md
   phase: 3
   skill_id: skills-first-audit
   skill_registry_ref: true
+  status: active
+- command_file: .claude/commands/product-contract-runtime-repair.md
+  command_id: product-contract-runtime-repair
+  skill_id: product-contract-runtime-repair
+  status: active
+- command_file: .claude/commands/worktree-skill-guard-repair.md
+  command_id: worktree-skill-guard-repair
+  skill_id: worktree-skill-guard-repair
+  status: active
+- command_file: .claude/commands/format-contract-onboard.md
+  command_id: format-contract-onboard
+  skill_id: format-contract-onboard
+  status: active
+- command_file: .claude/commands/production-program-controller-repair.md
+  command_id: production-program-controller-repair
+  skill_id: production-program-controller-repair
+  status: active
+- command_file: .claude/commands/materialize-production-proof.md
+  command_id: materialize-production-proof
+  skill_id: materialize-production-proof
+  status: active
+- command_file: .claude/commands/create-format-family-pack.md
+  command_id: create-format-family-pack
+  skill_id: create-format-family-pack
   status: active
 generated_at: '2026-06-18'
 generated_by: TC-0004

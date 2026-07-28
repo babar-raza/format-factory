@@ -42696,9 +42696,1480 @@
       ],
       "test_count": 18,
       "description": "Add 6 analytics to fods_file_analytics: min/avg_sheet_row_count, has_single_sheet, sheet_names_sorted, first/last_sheet_row_count"
+    },
+    {
+      "entry_id": "FF6-IPYNB-PRODUCTION-CHASSIS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "RFF6-W2-IPYNB-CHASSIS",
+      "skill": "new-format-kickstart",
+      "task_id": "AUTO-IPYNB-PACKAGE-CHASSIS",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "GAP-75ADADFAFAF6FA37",
+      "capability_refs": [
+        "foss_python.ipynb.production_package_chassis",
+        "foss_python.ipynb.common_lifecycle",
+        "foss_python.ipynb.deterministic_packaging"
+      ],
+      "api_symbols": ["probe", "load", "loads", "dump", "dumps", "validate", "IpynbDocument"],
+      "source_files": [
+        {"path": "src/python/ipynb/_build_backend.py", "state": "present", "sha256": "4aaed32d8795bbf6f7571f06dde2fedd60bf3b0ef594cd9803cf5b55d508a0cf"},
+        {"path": "src/python/ipynb/CHANGELOG.md", "state": "present", "sha256": "f6c58a1db906df4e92eb360d2eedfd38763eb2f7dce5b721a7d4738bf2d42b34"},
+        {"path": "src/python/ipynb/MANIFEST.in", "state": "present", "sha256": "7805ed0cbf87b420125a96bf7b4f688c10c4f215b481a92bf4823eff508f9cb1"},
+        {"path": "src/python/ipynb/MIGRATION.md", "state": "present", "sha256": "ef1eb3df76cad32e3b038a07f41f5c280feba26f5ede4ca943047431964924e0"},
+        {"path": "src/python/ipynb/pyproject.toml", "state": "present", "sha256": "0681d9bc176afa27df47d91ac85bbf366d4f6b1d05296f1c4ed07b6ec9420e24"},
+        {"path": "src/python/ipynb/README.md", "state": "present", "sha256": "c9b562bdc29ba31124c6b351c1b33d087d0329febbab41572a81d8860b5e6a61"},
+        {"path": "src/python/ipynb/requirements-build.lock", "state": "present", "sha256": "a88db3e67994613ee602e58be5a17601e1317bbff6bccc07a95dbf14f15731c3"},
+        {"path": "src/python/ipynb/SECURITY.md", "state": "present", "sha256": "7bff5917bdc5ced930719c58b57861d2ace96c69840a65165248cf7f888f3c93"},
+        {"path": "src/python/ipynb/src/format_factory/ipynb/__init__.py", "state": "present", "sha256": "588aaf85d59956c197410e2f2ce80f3918e5172ca53620ffb87042b5a937d3ac"},
+        {"path": "src/python/ipynb/src/format_factory/ipynb/adapters/__init__.py", "state": "present", "sha256": "d5789676c980530ecb1e9dfc1ccae94c1e3b8041860191cdd36f4f032db5a9de"},
+        {"path": "src/python/ipynb/src/format_factory/ipynb/analytics/__init__.py", "state": "present", "sha256": "bde4b3d709eefd0c5ae9d0163cbd783a94f84e927846d00e54613ab7612b38df"},
+        {"path": "src/python/ipynb/src/format_factory/ipynb/analytics/notebook.py", "state": "present", "sha256": "4fc92eb0f4667a29b82fa3a90dfd4dcc70e8943db109eaea2df13e8fc8432334"},
+        {"path": "src/python/ipynb/src/format_factory/ipynb/cli/__init__.py", "state": "present", "sha256": "b8affe22309562059b94a123ffb53f0131967620f64e1d320431c8fb968d6b31"},
+        {"path": "src/python/ipynb/src/format_factory/ipynb/cli/main.py", "state": "present", "sha256": "a40792d575dc04f64c0f481320241eab66415276843f2f8fd23d84b729f58e24"},
+        {"path": "src/python/ipynb/src/format_factory/ipynb/codec/__init__.py", "state": "present", "sha256": "37f4433ae6dcd15f85a05763558103bac02a2fefa03c85fb56949007dfaf62cd"},
+        {"path": "src/python/ipynb/src/format_factory/ipynb/codec/reader/__init__.py", "state": "present", "sha256": "1d416a7c1ce827edad10249601cb70ab592aa524d4ba85ea18c9c6c7174c8d0a"},
+        {"path": "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py", "state": "present", "sha256": "11182de2d1489788c1a2a096531d5ba0988b45485324426637d80fecd3176557"},
+        {"path": "src/python/ipynb/src/format_factory/ipynb/codec/writer/__init__.py", "state": "present", "sha256": "6e6205532c1a07acc6ebb8816bbd2e1fd1fef7de86ab53a7428199bae522f245"},
+        {"path": "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py", "state": "present", "sha256": "e24f0085977e0639eb5af62eba9bb9ace533695dfc12955ef00fc2b37823c902"},
+        {"path": "src/python/ipynb/src/format_factory/ipynb/errors.py", "state": "present", "sha256": "8c476a4ca3d25ea37788df0436d0bb968e577d79ef0ccf7f21cd6d6cb2961e84"},
+        {"path": "src/python/ipynb/src/format_factory/ipynb/model/__init__.py", "state": "present", "sha256": "54ac40dec06f516f84f20d1809709cd0a9bc22a3ba6ba904d24d908b1b937d23"},
+        {"path": "src/python/ipynb/src/format_factory/ipynb/model/document.py", "state": "present", "sha256": "5dbdb08649fb7cfe243236f31633184490c12d76b89c700a0170efd7a2fd03da"},
+        {"path": "src/python/ipynb/src/format_factory/ipynb/model/output.py", "state": "present", "sha256": "0d480dd69be218031cc857b9602f3e0de1fdbea5466e92a75cae10e49405b878"},
+        {"path": "src/python/ipynb/src/format_factory/ipynb/py.typed", "state": "present", "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"},
+        {"path": "src/python/ipynb/src/format_factory/ipynb/security/__init__.py", "state": "present", "sha256": "a2614031de83694f8da8fa0391218cc409410b2d7a516855e2115c27613ccdb0"},
+        {"path": "src/python/ipynb/src/format_factory/ipynb/security/limits.py", "state": "present", "sha256": "f2b301ad48b265096f5a3cdfa586f5889ec4c68fd7bfb42c428a3a8d97d6a774"},
+        {"path": "src/python/ipynb/src/format_factory/ipynb/validation/__init__.py", "state": "present", "sha256": "45a643c9fa944c04d6045886689b505332024bfffaefcedb798613ed5d4ccd6f"},
+        {"path": "src/python/ipynb/src/format_factory/ipynb/validation/validator.py", "state": "present", "sha256": "24bb5e72a8498241552aa1b3e9016b040d7a4faf2048d21fae1861cb9c34d3c0"}
+      ],
+      "tests": "tests/python/ipynb/test_production_namespace.py; tests/python/ipynb/"
+    },
+    {
+      "entry_id": "FF6-NRRD-PRODUCTION-CHASSIS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "RFF6-W4-NRRD-CHASSIS",
+      "skill": "new-format-kickstart",
+      "task_id": "AUTO-NRRD-PACKAGE-CHASSIS",
+      "product": "Nearly Raw Raster Data Python FOSS",
+      "format": "NRRD",
+      "gap_ref": "GAP-4E5EFF08E75DF944",
+      "capability_refs": [
+        "foss_python.nrrd.production_package_chassis",
+        "foss_python.nrrd.common_lifecycle",
+        "foss_python.nrrd.deterministic_packaging",
+        "foss_python.nrrd.bounded_payload_codec"
+      ],
+      "api_symbols": ["probe", "load", "loads", "dump", "dumps", "validate", "NrrdDocument"],
+      "source_files": [
+        {"path": "src/python/nrrd/_build_backend.py", "state": "present", "sha256": "556f7c66c7ea25e77c07dae39ea9a0a9cb0e3394ed03d0179933d2bda178b089"},
+        {"path": "src/python/nrrd/CHANGELOG.md", "state": "present", "sha256": "9f2c143be7d0ed58fe19fe786f5d6e37213a5b84777ca17f3665cb24fe735ed5"},
+        {"path": "src/python/nrrd/MANIFEST.in", "state": "present", "sha256": "7805ed0cbf87b420125a96bf7b4f688c10c4f215b481a92bf4823eff508f9cb1"},
+        {"path": "src/python/nrrd/MIGRATION.md", "state": "present", "sha256": "9ce6e9d656561c9afa28ac341fe2371500bfae8a276e456c45529314e46347dd"},
+        {"path": "src/python/nrrd/pyproject.toml", "state": "present", "sha256": "8a3800ffac55214c487c7e57ae8a0238e88b6927d7478af5a030ce0da682bf3f"},
+        {"path": "src/python/nrrd/README.md", "state": "present", "sha256": "640260a4fa005cb93e31bec1b697ded7cb9d9fd83d642841073f5fe3bd04ebef"},
+        {"path": "src/python/nrrd/requirements-build.lock", "state": "present", "sha256": "a88db3e67994613ee602e58be5a17601e1317bbff6bccc07a95dbf14f15731c3"},
+        {"path": "src/python/nrrd/SECURITY.md", "state": "present", "sha256": "f4c1c7bc2e97e8e20a31eea49d1ba1d1b4b9c97472d0deaff1a6d123da42f24c"},
+        {"path": "src/python/nrrd/src/format_factory/nrrd/__init__.py", "state": "present", "sha256": "8a128f4d16ee20cd7dce408b34fb524fbe8b8e260a80f8f830eed7575f2b84a9"},
+        {"path": "src/python/nrrd/src/format_factory/nrrd/adapters/__init__.py", "state": "present", "sha256": "63e25dd943e5a7df329f3eb905e855fb11d3721e5c6f61169af50eb6aa08b463"},
+        {"path": "src/python/nrrd/src/format_factory/nrrd/analytics/__init__.py", "state": "present", "sha256": "44a632455029f6cad40dec6b64f9dc02fd67b8ceae612c54ac7f9f709aa90d9f"},
+        {"path": "src/python/nrrd/src/format_factory/nrrd/cli/__init__.py", "state": "present", "sha256": "b8622a0fb1b2e53d72d27896dc6393e50befeaaebfc579046a5b24f5e11a143b"},
+        {"path": "src/python/nrrd/src/format_factory/nrrd/codec/__init__.py", "state": "present", "sha256": "47e6051440ece5078321e3ee408aebfbeba0818eead4ecb6b3903dc6fdac826c"},
+        {"path": "src/python/nrrd/src/format_factory/nrrd/codec/payload.py", "state": "present", "sha256": "1576bb1e00aa59df0749533e5ebc05d76a39163ac04bca3c404cd31ee9e3e358"},
+        {"path": "src/python/nrrd/src/format_factory/nrrd/codec/reader/__init__.py", "state": "present", "sha256": "96df0909daed0603589f5ae370260b4fa25eaa957b12c941e88111eb019181a1"},
+        {"path": "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py", "state": "present", "sha256": "d25c83629bae84032a959096a6898bbdf2f29517c86b63a06588807e419c3f0d"},
+        {"path": "src/python/nrrd/src/format_factory/nrrd/codec/writer/__init__.py", "state": "present", "sha256": "54c2923a4542064acca5c25f536fbdec92710e77cd56042d8a49bbe66b8d4dd5"},
+        {"path": "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py", "state": "present", "sha256": "1486503a236597102a852c1af5ac9ea216cda09f1a0733c3ac7d5b98e265b09b"},
+        {"path": "src/python/nrrd/src/format_factory/nrrd/errors.py", "state": "present", "sha256": "378d96acbb5ed9cda305c5ec4a7ceb8e4835cd75854a5e2e5de08f714f186e72"},
+        {"path": "src/python/nrrd/src/format_factory/nrrd/model/__init__.py", "state": "present", "sha256": "fb5dd762e55949dc11393e9355be97164b3aa3c7f45d24a75068d30dbaea1fc4"},
+        {"path": "src/python/nrrd/src/format_factory/nrrd/model/document.py", "state": "present", "sha256": "017f1111dc18dd4ee70c084ee0dd6917c1639c95cf16374956624d64c18a1f4e"},
+        {"path": "src/python/nrrd/src/format_factory/nrrd/py.typed", "state": "present", "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"},
+        {"path": "src/python/nrrd/src/format_factory/nrrd/security/__init__.py", "state": "present", "sha256": "3f7365506d122f76531158c2f5e879bb5d5d0c3264d85b2faa9420e077e3be3e"},
+        {"path": "src/python/nrrd/src/format_factory/nrrd/security/limits.py", "state": "present", "sha256": "afa621520111d994765c102f1003cc1116edee4b257fea67aa2d97286464c146"},
+        {"path": "src/python/nrrd/src/format_factory/nrrd/validation/__init__.py", "state": "present", "sha256": "4885748c6bb4bcfbd2a42b675f626277a56782ecef29c53da68a21913860cfb4"},
+        {"path": "src/python/nrrd/src/format_factory/nrrd/validation/validator.py", "state": "present", "sha256": "5cf3ea4c4fcc3534b523f561e381c97b23922ff9b906dd23801d0a44327a14a8"}
+      ],
+      "tests": "tests/python/nrrd/test_production_namespace.py; tests/python/nrrd/"
+    },
+    {
+      "entry_id": "FF6-XLIFF-PRODUCTION-CHASSIS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "RFF6-W5-XLIFF-CHASSIS",
+      "skill": "new-format-kickstart",
+      "task_id": "AUTO-XLIFF-PACKAGE-CHASSIS",
+      "product": "XLIFF 2.x Python FOSS",
+      "format": "XLIFF",
+      "gap_ref": "GAP-D7DCA95220DD360C",
+      "capability_refs": [
+        "foss_python.xliff.production_package_chassis",
+        "foss_python.xliff.common_lifecycle",
+        "foss_python.xliff.deterministic_packaging",
+        "foss_python.xliff.structured_inline_preservation"
+      ],
+      "api_symbols": ["probe", "load", "loads", "dump", "dumps", "validate", "XliffDocument"],
+      "source_files": [
+        {"path": "src/python/xliff/_build_backend.py", "state": "present", "sha256": "9be029ef3fe448853d03d990124a3deeb7bb4df276f586d13d539ab5d1c5fd38"},
+        {"path": "src/python/xliff/CHANGELOG.md", "state": "present", "sha256": "e6a93588b83e4f71858dbdcdf404d1f3514203edf8132f0df5be13d5b88646d5"},
+        {"path": "src/python/xliff/MANIFEST.in", "state": "present", "sha256": "2623550da83e971a5e5572306bca05b0576dc9fdc27cc16f28b2a7cb1fa955dd"},
+        {"path": "src/python/xliff/MIGRATION.md", "state": "present", "sha256": "60de12843d43aefbde46531fb5f20db08347605a42501215fbf1e5e0d3fb6cab"},
+        {"path": "src/python/xliff/pyproject.toml", "state": "present", "sha256": "16d05df7b7f26c7af597f7e23a4b066cdf510ed20d143205b154cc755459c18b"},
+        {"path": "src/python/xliff/README.md", "state": "present", "sha256": "a9b2aa11590fc0877e758aef1631555803f6c00866704c404945f65248d74beb"},
+        {"path": "src/python/xliff/requirements-build.lock", "state": "present", "sha256": "2e9f08e76551e50d1a85d46d7f5821e7ab5af9b778604bfaab14d8ba4d4cf9fe"},
+        {"path": "src/python/xliff/SECURITY.md", "state": "present", "sha256": "51e5fd8c66962126e8fa0baec6bbc65201c415044a7701ae726817b7eb81cd15"},
+        {"path": "src/python/xliff/src/format_factory/xliff/__init__.py", "state": "present", "sha256": "6b3b7c107bb7c445eab04d28bef49d48f33bf6265b9b20845c9712f90877ea7f"},
+        {"path": "src/python/xliff/src/format_factory/xliff/adapters/__init__.py", "state": "present", "sha256": "ace06eee844e7ed633de06f6b1058816dd864c4b950cdc3b7947ca9a9ae37121"},
+        {"path": "src/python/xliff/src/format_factory/xliff/analytics/__init__.py", "state": "present", "sha256": "ad376c089f7886a8b932c88553751d40b8e6ff3934c685107704dd39a48d62bd"},
+        {"path": "src/python/xliff/src/format_factory/xliff/cli/__init__.py", "state": "present", "sha256": "4c4b4290478e3b137515bb3d5e1583fe9f22f5a12bd5090c32a4d625c518cf60"},
+        {"path": "src/python/xliff/src/format_factory/xliff/codec/__init__.py", "state": "present", "sha256": "8cd8a0f6924127c57a7f99292779eb145f09a0c45f4a632fdacbcda1fa48c332"},
+        {"path": "src/python/xliff/src/format_factory/xliff/codec/reader/__init__.py", "state": "present", "sha256": "438497db5c6aabdb09767e3cd618c8193a2199640d71b40facf2b19bb52fefcd"},
+        {"path": "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py", "state": "present", "sha256": "3094abca6d55309db19297f22b297f7caa552466254685864cf98d44b641d4a5"},
+        {"path": "src/python/xliff/src/format_factory/xliff/codec/writer/__init__.py", "state": "present", "sha256": "a9fe4d6515d826e9788317ff86a9d7dbfff0bae815c42bdd6889b2bd92b0c2c3"},
+        {"path": "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py", "state": "present", "sha256": "05f32643c959238008aa3c8372ed54b07a14a340af50e8951043aa2a5d3d966a"},
+        {"path": "src/python/xliff/src/format_factory/xliff/errors.py", "state": "present", "sha256": "c58d4c76fac41d0d9ffef98a5a86dc10c786fe55e0c018c0a654136c90850d9b"},
+        {"path": "src/python/xliff/src/format_factory/xliff/model/__init__.py", "state": "present", "sha256": "72b041da6c444c4c14c99a393857d39a9f97f82d80e4fc04fa2427f91c853328"},
+        {"path": "src/python/xliff/src/format_factory/xliff/model/document.py", "state": "present", "sha256": "481087a840d3c7800e79cc861085bfc4289f2c8e3c6d1fb7247973d20b43df33"},
+        {"path": "src/python/xliff/src/format_factory/xliff/model/inline.py", "state": "present", "sha256": "cc493b8fad529f88b5252948324279bb0c1dfc4c925eceeba08626a635232935"},
+        {"path": "src/python/xliff/src/format_factory/xliff/py.typed", "state": "present", "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"},
+        {"path": "src/python/xliff/src/format_factory/xliff/security/__init__.py", "state": "present", "sha256": "5a166f6efd6ef0e83285289922667d521124a6efafc2f54895b0c040ffe6561d"},
+        {"path": "src/python/xliff/src/format_factory/xliff/security/limits.py", "state": "present", "sha256": "3afd5a3755844998b6b5304c019ebb79ede25d0890320afa4ac287e2f9acb07c"},
+        {"path": "src/python/xliff/src/format_factory/xliff/validation/__init__.py", "state": "present", "sha256": "e4d6a2802d7956d5043bbc0cf63fd50a46d83fba0a4e089cc84ba1a0c890f23e"},
+        {"path": "src/python/xliff/src/format_factory/xliff/validation/validator.py", "state": "present", "sha256": "ecf3a1c584d41602b8a4d429fa48155b7fe31e9918c73338b3c1c40111d96589"}
+      ],
+      "tests": "tests/python/xliff/test_production_namespace.py; tests/python/xliff/"
+    },
+    {
+      "entry_id": "FF6-UBL-PRODUCTION-CHASSIS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "RFF6-W6-UBL-CHASSIS",
+      "skill": "new-format-kickstart",
+      "task_id": "AUTO-UBL-PACKAGE-CHASSIS",
+      "product": "OASIS UBL 2.3 Python FOSS",
+      "format": "UBL",
+      "gap_ref": "GAP-7E1C3EF944C7DC14",
+      "capability_refs": [
+        "foss_python.ubl.production_package_chassis",
+        "foss_python.ubl.common_lifecycle",
+        "foss_python.ubl.deterministic_packaging",
+        "foss_python.ubl.generated_91_root_inventory",
+        "foss_python.ubl.bounded_xml_security"
+      ],
+      "api_symbols": ["probe", "load", "loads", "dump", "dumps", "validate", "UblDocument", "XmlNode", "ROOT_CLASSES"],
+      "source_files": [
+        {"path": "src/python/ubl/_build_backend.py", "state": "present", "sha256": "9be029ef3fe448853d03d990124a3deeb7bb4df276f586d13d539ab5d1c5fd38"},
+        {"path": "src/python/ubl/CHANGELOG.md", "state": "present", "sha256": "cab04221c1f5d84921645fd543b1d9209b97004de70ab96af691a5f4a297372d"},
+        {"path": "src/python/ubl/LICENSE", "state": "present", "sha256": "eb9cff60986eee59c8b9ea5ee5d2a91edab6b9cd432bda18e26722ec47b1176c"},
+        {"path": "src/python/ubl/MANIFEST.in", "state": "present", "sha256": "0d66169d2f5223b751b499f4e34fe38c2ca3e90485262dcc32be187f7e862da0"},
+        {"path": "src/python/ubl/MIGRATION.md", "state": "present", "sha256": "04e16355447139c7560c6b24f1a32942707267d5dbd6388acd013100181b5d6b"},
+        {"path": "src/python/ubl/pyproject.toml", "state": "present", "sha256": "81dd831d016263f416c2ab502544be4f197229597ef86984879968d9a1aadd4f"},
+        {"path": "src/python/ubl/README.md", "state": "present", "sha256": "db6100f089ef9762566e133024db485b9c1a07f6ddd2b71f3e90c16b19c36b6d"},
+        {"path": "src/python/ubl/requirements-build.lock", "state": "present", "sha256": "99000b4540bf1e67248ac234b9f0bd39d6b13118ac16d903da20e06c8bb9e2c1"},
+        {"path": "src/python/ubl/SECURITY.md", "state": "present", "sha256": "257301c82b395bae6f8338e32ad9b40f635b6922f04dd70a9a25ef1204e3a6d1"},
+        {"path": "src/python/ubl/src/format_factory/ubl/__init__.py", "state": "present", "sha256": "2640d425e64da1f939e6c4cd13c51333d3b84d7b6e194a38786f031ba55bb611"},
+        {"path": "src/python/ubl/src/format_factory/ubl/_generated/__init__.py", "state": "present", "sha256": "2cd800aecf05c034da9e32b62008ce4568f81f8be286a02575656008ff9e5f95"},
+        {"path": "src/python/ubl/src/format_factory/ubl/_generated/root_catalog.py", "state": "present", "sha256": "cc987e4bfbe14b6fa18e6b3b9ee15b719c5a1bc3a1cf04b0546272e9aa380020"},
+        {"path": "src/python/ubl/src/format_factory/ubl/_generated/root_manifest.json", "state": "present", "sha256": "39c8aa9639a4594b0cb7463aab125f909616ddac5bca320d01a7981608707887"},
+        {"path": "src/python/ubl/src/format_factory/ubl/adapters/__init__.py", "state": "present", "sha256": "6e2f44e0d8306eeca6201de29d64e22a96f70e1033a5b337442533a7855b1ab1"},
+        {"path": "src/python/ubl/src/format_factory/ubl/analytics/__init__.py", "state": "present", "sha256": "1fa1b99529eb07a345f3b29fa8eacafb28ef9be6b3d64e00a42a6509a3bb3668"},
+        {"path": "src/python/ubl/src/format_factory/ubl/cli/__init__.py", "state": "present", "sha256": "01e31810a2913b48bb66fcf8853426a81a6669fe0a60af623e31b31b329cb20b"},
+        {"path": "src/python/ubl/src/format_factory/ubl/codec/__init__.py", "state": "present", "sha256": "e959222238d4650601e035149e55ba485b98ea2dc2e4cff609fd82e83dba5e8c"},
+        {"path": "src/python/ubl/src/format_factory/ubl/codec/reader/__init__.py", "state": "present", "sha256": "61a2d2fe1d9b620aa21766d5e5f96773232e4d18b8fb06973ca62bf96c7c6c21"},
+        {"path": "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py", "state": "present", "sha256": "b9ef3615ad9b1ef79c9ead0b4c50aa742399571738484355f48c54f409aacb8f"},
+        {"path": "src/python/ubl/src/format_factory/ubl/codec/writer/__init__.py", "state": "present", "sha256": "eda0ff7cef8e1ff279030ec7e4e8f9cff2377848fd2dda599aedad3c343de03a"},
+        {"path": "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py", "state": "present", "sha256": "c097192f33ef828def784410d54dc0f6392c43ddfdf44f6b8776e56625e67344"},
+        {"path": "src/python/ubl/src/format_factory/ubl/errors.py", "state": "present", "sha256": "794c1af5b850bee18d373817d7a576af99e774b85b528048e130dc6eb01d204c"},
+        {"path": "src/python/ubl/src/format_factory/ubl/model/__init__.py", "state": "present", "sha256": "12d9e296962bcf2fcc88948f4a507f77d25cbc166ab8a10579d8810192a9f8e0"},
+        {"path": "src/python/ubl/src/format_factory/ubl/model/document.py", "state": "present", "sha256": "bf0a9d740817ba58a8e1c08cfe921f6bb28201f60269b20670abf1fd2f0bf27f"},
+        {"path": "src/python/ubl/src/format_factory/ubl/model/root_types.py", "state": "present", "sha256": "6c9b8c43546cfc8d41edee023129e821f0a83277c2ea1c3019537d3d975a87a2"},
+        {"path": "src/python/ubl/src/format_factory/ubl/py.typed", "state": "present", "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"},
+        {"path": "src/python/ubl/src/format_factory/ubl/security/__init__.py", "state": "present", "sha256": "37ef937913af738f29761a33fe0878565564fb0c7c267ff0dc02ae7571b3a7ca"},
+        {"path": "src/python/ubl/src/format_factory/ubl/security/limits.py", "state": "present", "sha256": "eacfe7121ddee37e7b6df7ee5af4af00ca513c40b91fc14add56f0c60a7dd6d7"},
+        {"path": "src/python/ubl/src/format_factory/ubl/validation/__init__.py", "state": "present", "sha256": "c9076e87ce3b3acffc7dd64945646d6c2a5c9f1eda034402995a6b5ea3e996a2"},
+        {"path": "src/python/ubl/src/format_factory/ubl/validation/validator.py", "state": "present", "sha256": "59c976ce6752f6c7d4bd310de85c0b31038748ca6661560a4be862e2acd0bbb6"},
+        {"path": "src/python/ubl/tools/generate_roots.py", "state": "present", "sha256": "4a033e56b77241287610316b0a14cbaf961e3797980c4608666b04e70e599658"},
+        {"path": "tests/python/ubl/fixtures/hostile-extension-entity.xml", "state": "present", "sha256": "6d8b92cff5ed00dd994c7222c1fd92eeda7071f97f22ec913de84d554a88aacd"},
+        {"path": "tests/python/ubl/test_production_namespace.py", "state": "present", "sha256": "518c7558bdc67ee1122d34e664b318926267ea03b88830439ef7b7f5236a9a4f"}
+      ],
+      "tests": "tests/python/ubl/test_production_namespace.py; tests/python/ubl/"
+    },
+    {
+      "entry_id": "FF6-SAFETENSORS-LAZY-METADATA-PROOF-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "RFF6-W3-SAFETENSORS-LAZY-001",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-LAZY-001",
+      "product": "SafeTensors Python FOSS",
+      "format": "SAFETENSORS",
+      "gap_ref": "GAP-6BA98CFA34F0293B",
+      "capability_refs": [
+        "foss_python.safetensors.metadata_string_map",
+        "foss_python.safetensors.lazy_path_payload",
+        "foss_python.safetensors.borrowed_view_lifetime"
+      ],
+      "api_symbols": ["load", "loads", "dumps", "SafeTensorsDocument.tensor_bytes"],
+      "source_files": [
+        {"path": "tests/python/safetensors/test_production_namespace.py", "state": "present", "sha256": "360eea9e7abb85bcc2e5c86bdf93d7be3620cc22a12ea6c8936d4c7beb0d2aa1"}
+      ],
+      "tests": "tests/python/safetensors/test_production_namespace.py::test_string_metadata_and_path_backed_payload_contract"
+    },
+    {
+      "entry_id": "FF6-SAFETENSORS-LAZY-IO-002",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "RFF6-W3-SAFETENSORS-LAZY-IO-002",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-LAZY-001",
+      "product": "SafeTensors Python FOSS",
+      "format": "SAFETENSORS",
+      "gap_ref": "GAP-0400D9F77F528C68",
+      "capability_refs": [
+        "foss_python.safetensors.header_only",
+        "foss_python.safetensors.memory_mapped_regions",
+        "foss_python.safetensors.access_strategy_disclosure",
+        "foss_python.safetensors.bounded_large_file"
+      ],
+      "api_symbols": [
+        "read_header",
+        "PayloadAccess",
+        "PayloadAccessMode",
+        "SafeTensorsHeader",
+        "SafeTensorsDocument.tensor_region"
+      ],
+      "source_files": [
+        {"path": "src/python/safetensors/README.md", "state": "present", "sha256": "07569a4f582388c3574c8048a301797e23ca02a80c6126eabba6e9ce55c8104c"},
+        {"path": "src/python/safetensors/src/format_factory/safetensors/__init__.py", "state": "present", "sha256": "6c21fb7b921703e92e7194ac89edec3ea820a30992eaabdb5422eb266ada3aea"},
+        {"path": "src/python/safetensors/src/format_factory/safetensors/codec/__init__.py", "state": "present", "sha256": "5277c9508b5a5e1b395c16d8d31e8233c8e386a674b6779711ad25a43a0c249e"},
+        {"path": "src/python/safetensors/src/format_factory/safetensors/codec/reader/__init__.py", "state": "present", "sha256": "20eee1419b47e125dadcff13aa0c2ab0006f2f7aeca0b2ba49ab271f94723006"},
+        {"path": "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py", "state": "present", "sha256": "b82fe1789e221d342af05a82b56ac1e6392e9131a72f1667841fba74f72a3480"},
+        {"path": "src/python/safetensors/src/format_factory/safetensors/model/__init__.py", "state": "present", "sha256": "0b83c45ba09fda6fbf269f83a1818fc2bbc1d96511f1a8003ac685256b233778"},
+        {"path": "src/python/safetensors/src/format_factory/safetensors/model/document.py", "state": "present", "sha256": "dcd8a183d79e8edcf239b1554887ad17599d4ce9805a7780e52c9ccf3de5961f"},
+        {"path": "tests/python/safetensors/test_lazy_io.py", "state": "present", "sha256": "a99394a20847ce1a166241b01dc3fbd9d1de9ee48f7e41064e3cc43f9160be04"}
+      ],
+      "tests": "tests/python/safetensors/test_lazy_io.py; tests/python/safetensors/"
+    },
+    {
+      "entry_id": "FF6-SAFETENSORS-ENDIAN-ORDER-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-SAFETENSORS-ENDIAN-ORDER-001",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-MODEL-001",
+      "product": "SafeTensors Python FOSS",
+      "format": "SAFETENSORS",
+      "gap_ref": "GAP-F544FCB25C177A69",
+      "capability_refs": [
+        "foss_python.safetensors.little_endian_payload",
+        "foss_python.safetensors.c_row_major_order"
+      ],
+      "api_symbols": [
+        "format_factory.safetensors.loads",
+        "format_factory.safetensors.adapters.to_numpy"
+      ],
+      "source_files": [
+        {
+          "path": "tests/python/safetensors/test_production_namespace.py",
+          "state": "present",
+          "sha256": "46c71b7250fa93d938e4677b7bcfa777b371561456838830b90ec4f1e10a5743"
+        }
+      ],
+      "tests": "tests/python/safetensors/test_production_namespace.py::test_numpy_adapter_uses_little_endian_c_row_major_order"
+    },
+    {
+      "entry_id": "FF6-SAFETENSORS-INTEGER-OVERFLOW-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-SAFETENSORS-INTEGER-OVERFLOW-001",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-HEADER-001",
+      "product": "SafeTensors Python FOSS",
+      "format": "SAFETENSORS",
+      "gap_ref": "GAP-95F9E9FF0E74B319",
+      "capability_refs": [
+        "foss_python.safetensors.checked_shape_multiplication",
+        "foss_python.safetensors.checked_element_bit_multiplication"
+      ],
+      "api_symbols": [
+        "format_factory.safetensors.loads",
+        "format_factory.safetensors.model.TensorDescriptor"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/safetensors/src/format_factory/safetensors/model/document.py",
+          "state": "present",
+          "sha256": "0758d76eee2582e753b99c7fb2d8412ba4df07a80b4d46be1f80fe9dc7babe0e"
+        },
+        {
+          "path": "tests/python/safetensors/test_obligation_integer_overflow.py",
+          "state": "present",
+          "sha256": "3662988e943492abd0df79fbe4ebb95be6329725dd4bf174bb13a198cc44806b"
+        }
+      ],
+      "tests": "tests/python/safetensors/test_obligation_integer_overflow.py"
+    },
+    {
+      "entry_id": "FF6-SAFETENSORS-SHARDED-INDEX-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-SAFETENSORS-SHARDED-INDEX-001",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-SHARD-001",
+      "product": "SafeTensors Python FOSS",
+      "format": "SAFETENSORS",
+      "gap_ref": "SAL-SAFETENSORS-OBL-D549F06143FE4492",
+      "capability_refs": [
+        "foss_python.safetensors.sharded_index_model",
+        "foss_python.safetensors.sharded_index_codec",
+        "foss_python.safetensors.root_confined_shard_resolution"
+      ],
+      "api_symbols": [
+        "format_factory.safetensors.SafeTensorsShardIndex",
+        "format_factory.safetensors.load_index",
+        "format_factory.safetensors.loads_index",
+        "format_factory.safetensors.dump_index",
+        "format_factory.safetensors.dumps_index"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/safetensors/src/format_factory/safetensors/model/sharded.py",
+          "state": "present",
+          "sha256": "13aef93d144f8849d8b76dd1273d236af92213ab7750ec33e9a669263a356708"
+        },
+        {
+          "path": "src/python/safetensors/src/format_factory/safetensors/model/__init__.py",
+          "state": "present",
+          "sha256": "bb9fa871a6c82d69fa382057530c18904f04ec1e508f0eb952538f23f266e6f9"
+        },
+        {
+          "path": "src/python/safetensors/src/format_factory/safetensors/codec/sharded_index.py",
+          "state": "present",
+          "sha256": "57c07896a59da7415e905df7e0fd7419abc1c587c359c9f7894257998685a503"
+        },
+        {
+          "path": "src/python/safetensors/src/format_factory/safetensors/codec/__init__.py",
+          "state": "present",
+          "sha256": "7abb959b18ef62a263a6978680e73c5d189eb2e94b6326e21fdd6f5a1e55cd4b"
+        },
+        {
+          "path": "src/python/safetensors/src/format_factory/safetensors/__init__.py",
+          "state": "present",
+          "sha256": "2a278f213872fe1ce8c5409a3368a3fd180b3ee39328f322854c6e52fc526d1b"
+        },
+        {
+          "path": "src/python/safetensors/README.md",
+          "state": "present",
+          "sha256": "0ad746bbd30962b02db03008a9da02d05637efe039feb39456505f745c6aeb9c"
+        },
+        {
+          "path": "tests/python/safetensors/test_obligation_sharded_index.py",
+          "state": "present",
+          "sha256": "68da31f728fe10143da836ef4515ec842ca27663d105c874ac28a73b69d96cc9"
+        }
+      ],
+      "tests": "tests/python/safetensors/test_obligation_sharded_index.py"
+    },
+    {
+      "entry_id": "FF6-SAFETENSORS-OPTIONAL-ADAPTERS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-SAFETENSORS-OPTIONAL-ADAPTERS-001",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-ADAPTER-001",
+      "product": "SafeTensors Python FOSS",
+      "format": "SAFETENSORS",
+      "gap_ref": "SAL-SAFETENSORS-OBL-DA2E4F674AAAAAFC",
+      "capability_refs": [
+        "foss_python.safetensors.optional_numpy_adapter",
+        "foss_python.safetensors.safe_torch_copy_policy",
+        "foss_python.safetensors.torch_device_transfer",
+        "foss_python.safetensors.optional_dependency_isolation"
+      ],
+      "api_symbols": [
+        "format_factory.safetensors.adapters.to_numpy",
+        "format_factory.safetensors.adapters.to_torch"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/safetensors/src/format_factory/safetensors/adapters/numpy.py",
+          "state": "present",
+          "sha256": "56bf37cf5cb3954f86e7ac3a906eeb4b0cbdd08a35af048e910eb7150e4dafbd"
+        },
+        {
+          "path": "src/python/safetensors/src/format_factory/safetensors/adapters/torch.py",
+          "state": "present",
+          "sha256": "6f81bcabc1c584eab511c130e637565165bf8bef26b08c2d14ea6893e65fd6f8"
+        },
+        {
+          "path": "src/python/safetensors/README.md",
+          "state": "present",
+          "sha256": "985d3e86eeb0fe170da9ab75bddf33f91be833230fe7e84f53eb2673569ef39d"
+        },
+        {
+          "path": "tests/python/safetensors/test_obligation_optional_adapters.py",
+          "state": "present",
+          "sha256": "6cd797fcbbc8994a3122abce056d392d4e84c94b3d67e894136d8a8229bdc026"
+        }
+      ],
+      "tests": "tests/python/safetensors/test_obligation_optional_adapters.py"
+    },
+    {
+      "entry_id": "FF6-SAFETENSORS-VALIDATION-CONTRACT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-SAFETENSORS-VALIDATION-CONTRACT-001",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-VALIDATE-001",
+      "product": "SafeTensors Python FOSS",
+      "format": "SAFETENSORS",
+      "gap_ref": "GAP-9E8D26062317CBCE",
+      "capability_refs": [
+        "foss_python.safetensors.stable_validation_diagnostics",
+        "foss_python.safetensors.configurable_rank_limit",
+        "foss_python.safetensors.borrowed_view_close_retry",
+        "foss_python.safetensors.closed_document_guard"
+      ],
+      "api_symbols": [
+        "format_factory.safetensors.validate",
+        "format_factory.safetensors.SafeTensorsDocument.closed",
+        "format_factory.safetensors.SafeTensorsDocument.close",
+        "format_factory.safetensors.SafeTensorsDocument.tensor_region"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/safetensors/README.md",
+          "state": "present",
+          "sha256": "3349737fc8cf40de3e2fc0db633dbd95d4ae4f69fd73575e5d5ade30ae6595ae"
+        },
+        {
+          "path": "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py",
+          "state": "present",
+          "sha256": "fe8136cffabe87a5b6aaa825a9a97592f01ae2478f389b455d9edd8c2ca4b953"
+        },
+        {
+          "path": "src/python/safetensors/src/format_factory/safetensors/model/document.py",
+          "state": "present",
+          "sha256": "8be4a98c2ce66064a09a3ff8ed9610a4ee59498eced6c256f3034f3fbe6bb6b8"
+        },
+        {
+          "path": "src/python/safetensors/src/format_factory/safetensors/validation/validator.py",
+          "state": "present",
+          "sha256": "0209ee406d1bc1e262072c7817d1ba9c00b92cf4ba97132995fd2782c3bf38c1"
+        },
+        {
+          "path": "tests/python/safetensors/test_obligation_validation_contract.py",
+          "state": "present",
+          "sha256": "fa32f4fc5389af277ba096bac79a2659f87b817536020164b0d8596c1bbe36c6"
+        }
+      ],
+      "tests": "tests/python/safetensors/test_obligation_validation_contract.py; tests/python/safetensors/"
+    },
+    {
+      "entry_id": "FF6-SAFETENSORS-TENSOR-REGIONS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-SAFETENSORS-TENSOR-REGIONS-001",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-PAYLOAD-001",
+      "product": "SafeTensors Python FOSS",
+      "format": "SAFETENSORS",
+      "gap_ref": "SAL-SAFETENSORS-OBL-A91A04F261997A05",
+      "capability_refs": [
+        "foss_python.safetensors.path_backed_zero_copy_regions",
+        "foss_python.safetensors.tensor_relative_bounds_validation",
+        "foss_python.safetensors.read_only_mmap_views"
+      ],
+      "api_symbols": [
+        "format_factory.safetensors.safe_open",
+        "format_factory.safetensors.SafeTensorsDocument.tensor_region",
+        "format_factory.safetensors.PayloadAccessMode.MEMORY_MAPPED"
+      ],
+      "source_files": [
+        {
+          "path": "tests/python/safetensors/test_obligation_tensor_regions.py",
+          "state": "present",
+          "sha256": "eeda0fb18ce6ba2bc6de36ae51e40a3e982120b9ab0b2bc6d2c04467a353f37d"
+        }
+      ],
+      "tests": "tests/python/safetensors/test_obligation_tensor_regions.py"
+    },
+    {
+      "entry_id": "FF6-SAFETENSORS-BIDIRECTIONAL-INTEROP-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-SAFETENSORS-BIDIRECTIONAL-INTEROP-001",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-INTEROP-001",
+      "product": "SafeTensors Python FOSS",
+      "format": "SAFETENSORS",
+      "gap_ref": "SAL-SAFETENSORS-OBL-9229B611B9CCD5F8",
+      "capability_refs": [
+        "foss_python.safetensors.official_to_factory_interop",
+        "foss_python.safetensors.factory_to_official_interop",
+        "foss_python.safetensors.collision_free_coinstallation"
+      ],
+      "api_symbols": [
+        "format_factory.safetensors.loads",
+        "format_factory.safetensors.dumps",
+        "safetensors.serialize",
+        "safetensors.deserialize"
+      ],
+      "source_files": [
+        {
+          "path": "tests/python/safetensors/test_obligation_bidirectional_interop.py",
+          "state": "present",
+          "sha256": "b5a3a5bb310c97e1698cbd480619432643eea82e3dc187bda7beb70b694e2dde"
+        }
+      ],
+      "tests": "tests/python/safetensors/test_obligation_bidirectional_interop.py"
+    },
+    {
+      "entry_id": "FF6-SAFETENSORS-REAL-TORCH-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-SAFETENSORS-REAL-TORCH-001",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-ADAPTER-REAL-TORCH-001",
+      "product": "SafeTensors Python FOSS",
+      "format": "SAFETENSORS",
+      "gap_ref": "SAL-SAFETENSORS-OBL-DA2E4F674AAAAAFC",
+      "capability_refs": [
+        "foss_python.safetensors.real_torch_dtype_matrix",
+        "foss_python.safetensors.safe_torch_copy_ownership",
+        "foss_python.safetensors.torch_empty_tensor",
+        "foss_python.safetensors.hash_locked_torch_proof_environment"
+      ],
+      "api_symbols": [
+        "format_factory.safetensors.adapters.to_torch"
+      ],
+      "source_files": [
+        {
+          "path": "tests/python/safetensors/test_obligation_real_torch_adapter.py",
+          "state": "present",
+          "sha256": "a41f58cc4635f8c1c259bf4314c2adf92fc12d7868af171caf5b0f06d5d9ab17"
+        },
+        {
+          "path": "tests/python/safetensors/fixtures/torch-proof-wheelhouse.sha256.json",
+          "state": "present",
+          "sha256": "30b91cd3fc84cd6beb6a1461f71d25c48098f44f883f4c348b0ce1af111c698c"
+        }
+      ],
+      "tests": "tests/python/safetensors/test_obligation_real_torch_adapter.py"
+    },
+    {
+      "entry_id": "FF6-IPYNB-FORWARD-COMPATIBILITY-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-IPYNB-FORWARD-COMPATIBILITY-001",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-OUTPUT-001",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "SAL-IPYNB-OBL-010C554B8692D166",
+      "capability_refs": [
+        "foss_python.ipynb.future_minor_preservation",
+        "foss_python.ipynb.unknown_cell_output_preservation",
+        "foss_python.ipynb.declared_version_writer_profile",
+        "foss_python.ipynb.official_nbformat_differential"
+      ],
+      "api_symbols": [
+        "format_factory.ipynb.loads",
+        "format_factory.ipynb.dumps"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py",
+          "state": "present",
+          "sha256": "ef4138b5b40357fc1fc314451f6378dd3b7135ba2782a7cb89dd5d1c5475817b"
+        },
+        {
+          "path": "tests/python/ipynb/test_obligation_forward_compatibility.py",
+          "state": "present",
+          "sha256": "40a1579024d7ddc28b342199f98d119907bd25f4f581f616ccb1ac4613c6cd9b"
+        },
+        {
+          "path": "tests/python/ipynb/fixtures/oracle-wheelhouse.sha256.json",
+          "state": "present",
+          "sha256": "a1adeb0088adcaffb1ea41c164cd4e58b35dcf7fe7eef570051f54787f8dcacc"
+        }
+      ],
+      "tests": "tests/python/ipynb/test_obligation_forward_compatibility.py"
+    },
+    {
+      "entry_id": "FF6-IPYNB-ATTACHMENTS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-IPYNB-ATTACHMENTS-001",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-PARSE-001",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "SAL-IPYNB-OBL-029B1CD925618F17,SAL-IPYNB-OBL-02A00C213D2B0190,SAL-IPYNB-OBL-356297A15A50C85B,SAL-IPYNB-OBL-3EF5FF3B64091AB4,SAL-IPYNB-OBL-5CA1914777C61A9D,SAL-IPYNB-OBL-F1F17437C4D0257D,SAL-IPYNB-OBL-FD198DA5CD4E92A6",
+      "capability_refs": [
+        "foss_python.ipynb.markdown_raw_attachment_mapping",
+        "foss_python.ipynb.attachment_uri_reference",
+        "foss_python.ipynb.attachment_mime_bundle_preservation",
+        "foss_python.ipynb.official_nbformat_attachment_validation"
+      ],
+      "api_symbols": [
+        "format_factory.ipynb.loads",
+        "format_factory.ipynb.dumps",
+        "format_factory.ipynb.IpynbDocument.cells"
+      ],
+      "source_files": [
+        {
+          "path": "tests/python/ipynb/test_obligation_attachments.py",
+          "state": "present",
+          "sha256": "f3bea58041546c9b2e5c43613abc72363d931919a5e0826134bcec82b2d1d363"
+        }
+      ],
+      "tests": "tests/python/ipynb/test_obligation_attachments.py"
+    },
+    {
+      "entry_id": "FF6-IPYNB-NBFORMAT-CORE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-IPYNB-NBFORMAT-CORE-001",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-PARSE-001",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "SAL-IPYNB-OBL-06EFB1D8AC058AC6,SAL-IPYNB-OBL-13F3815D0E5C95E6,SAL-IPYNB-OBL-2558D9E311DA3594,SAL-IPYNB-OBL-27E9715B97C8FD8B,SAL-IPYNB-OBL-2B44543CA510ED94,SAL-IPYNB-OBL-3AE0DC2692EF0AD9,SAL-IPYNB-OBL-3B3B7588125383AB,SAL-IPYNB-OBL-3FA9A87DE3411DC4,SAL-IPYNB-OBL-4471354A239702DB,SAL-IPYNB-OBL-4651E92D2D018089,SAL-IPYNB-OBL-499CD4389B386A40,SAL-IPYNB-OBL-6998AFE571DA4FA3,SAL-IPYNB-OBL-6EA457DD191446C5,SAL-IPYNB-OBL-77C54BA16B30D129,SAL-IPYNB-OBL-793EE40165C8DB16,SAL-IPYNB-OBL-7B4D9801EC12E4D6,SAL-IPYNB-OBL-83A15CABF90C4B84,SAL-IPYNB-OBL-8CB6767A2C5B196C,SAL-IPYNB-OBL-91F2FEE89658B49D,SAL-IPYNB-OBL-9C6A2746BA63E841,SAL-IPYNB-OBL-A34640B83CC70822,SAL-IPYNB-OBL-A87B92BEB23E3B35,SAL-IPYNB-OBL-A9D840BD579F5C6F,SAL-IPYNB-OBL-AA72252FB6D0AA7C,SAL-IPYNB-OBL-AAB3BBF81F346B07,SAL-IPYNB-OBL-AF1F9CEECF5D7E42,SAL-IPYNB-OBL-B2FA0BFF8CA07D78,SAL-IPYNB-OBL-B3EFD046C72D3E4B,SAL-IPYNB-OBL-BBE5B3445AD56F9C,SAL-IPYNB-OBL-BCE9E0CCCCC2236B,SAL-IPYNB-OBL-BE024415D521227D,SAL-IPYNB-OBL-C1DA361949F015E7,SAL-IPYNB-OBL-C795205AC0A4BD0F,SAL-IPYNB-OBL-C98190C29177A3A6,SAL-IPYNB-OBL-CF73A081DA5F99EA,SAL-IPYNB-OBL-D2D8157D991DBDCA,SAL-IPYNB-OBL-DB0F793B92DED8A3,SAL-IPYNB-OBL-E561BFC0FADBA29D,SAL-IPYNB-OBL-EAD1D09BDE25610F,SAL-IPYNB-OBL-ECA691E11183033E,SAL-IPYNB-OBL-FDC73ED8FA39A31E",
+      "capability_refs": [
+        "foss_python.ipynb.nbformat_45_top_level",
+        "foss_python.ipynb.complete_cell_type_matrix",
+        "foss_python.ipynb.complete_output_type_matrix",
+        "foss_python.ipynb.mime_bundle_and_rendering_metadata",
+        "foss_python.ipynb.kernelspec_language_and_tag_metadata",
+        "foss_python.ipynb.cell_id_positive_invariants",
+        "foss_python.ipynb.inert_active_content_preservation",
+        "foss_python.ipynb.official_nbformat_core_validation"
+      ],
+      "api_symbols": [
+        "format_factory.ipynb.loads",
+        "format_factory.ipynb.dumps",
+        "format_factory.ipynb.validate",
+        "format_factory.ipynb.IpynbDocument.cells"
+      ],
+      "source_files": [
+        {
+          "path": "tests/python/ipynb/test_obligation_nbformat_core.py",
+          "state": "present",
+          "sha256": "2cbb1bb0a600475338d652bcf6b47fe454277ec3d9dcddf5e2b4f4d796219a19"
+        }
+      ],
+      "tests": "tests/python/ipynb/test_obligation_nbformat_core.py"
+    },
+    {
+      "entry_id": "FF6-IPYNB-TYPED-MODEL-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-IPYNB-TYPED-MODEL-001",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-MODEL-001",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "SAL-IPYNB-OBL-121BE1F7FB462D30,SAL-IPYNB-OBL-A416086282D30BB9,SAL-IPYNB-OBL-CA94E60DA1A97571",
+      "capability_refs": [
+        "foss_python.ipynb.typed_cell_hierarchy",
+        "foss_python.ipynb.typed_output_hierarchy",
+        "foss_python.ipynb.typed_mime_bundle",
+        "foss_python.ipynb.logical_multiline_source",
+        "foss_python.ipynb.unknown_preservation_nodes",
+        "foss_python.ipynb.typed_cell_search"
+      ],
+      "api_symbols": [
+        "format_factory.ipynb.IpynbDocument.cell_objects",
+        "format_factory.ipynb.IpynbDocument.find_cells",
+        "format_factory.ipynb.Cell.source",
+        "format_factory.ipynb.Cell.raw_source",
+        "format_factory.ipynb.MimeBundle",
+        "format_factory.ipynb.NotebookOutput"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/document.py",
+          "state": "present",
+          "sha256": "97fa3bd9ceff0513fb8763d77abfd6a345a7f395be33ec60465c29c9e15c9aca"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+          "state": "present",
+          "sha256": "35e4b5f40c7f105235af9a97afa7dc0f75b6561c95a01bad9aaf1818e24d0e86"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+          "state": "present",
+          "sha256": "fc5d05b43549aebbd32d007c54632295bcdb88fc1c9736f1596d1ded5c5bb768"
+        },
+        {
+          "path": "tests/python/ipynb/test_obligation_typed_model.py",
+          "state": "present",
+          "sha256": "08061434a33cc6f112f9b184e26127b1fd42b1ec55fa833b4958433f929d6782"
+        }
+      ],
+      "tests": "tests/python/ipynb/test_obligation_typed_model.py"
+    },
+    {
+      "entry_id": "FF6-IPYNB-SECURITY-LIMITS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-IPYNB-SECURITY-LIMITS-001",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-SEC-001",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "SAL-IPYNB-OBL-14DF9ED57CF9FC2E,SAL-IPYNB-OBL-9544ABFA3D62EC79",
+      "capability_refs": [
+        "foss_python.ipynb.iterative_complexity_measurement",
+        "foss_python.ipynb.entry_depth_and_payload_limits",
+        "foss_python.ipynb.controlled_json_complexity_failure"
+      ],
+      "api_symbols": [
+        "format_factory.ipynb.loads",
+        "format_factory.ipynb.IPYNB_DEFAULT_LIMITS"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py",
+          "state": "present",
+          "sha256": "972fc74488f5336e4f7a829572de4e7d5bd3f8348ebcfeabdb176b498cdc5596"
+        },
+        {
+          "path": "tests/python/ipynb/test_obligation_security_limits.py",
+          "state": "present",
+          "sha256": "f528f523ba5f49d527571962230383ae16ed30fb74ed2a7601a3e6ccba411a02"
+        }
+      ],
+      "tests": "tests/python/ipynb/test_obligation_security_limits.py"
+    },
+    {
+      "entry_id": "FF6-IPYNB-LIFECYCLE-PRESERVATION-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-IPYNB-SOURCE-003",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-IPYNB-LIFECYCLE-PRESERVATION-001",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "SAL-IPYNB-OBL-1CEEABB4EB56C405,SAL-IPYNB-OBL-6401915AE1FC1ECF,SAL-IPYNB-OBL-650D957D94A33790,SAL-IPYNB-OBL-6D98E9BE6A406DC3,SAL-IPYNB-OBL-6F4551856EC21F7B,SAL-IPYNB-OBL-733D902E103E53BD,SAL-IPYNB-OBL-C599FB180ACF8D49,SAL-IPYNB-OBL-C62F62D99CDA6EAF,SAL-IPYNB-OBL-FFF232183E2BB71E",
+      "capability_refs": [
+        "foss_python.ipynb.strict_preservation_recovery_modes",
+        "foss_python.ipynb.non_mutating_preservation",
+        "foss_python.ipynb.declared_and_detected_version",
+        "foss_python.ipynb.structured_parse_diagnostics",
+        "foss_python.ipynb.deterministic_recovery_ledger",
+        "foss_python.ipynb.explicit_version_upgrade",
+        "foss_python.ipynb.explicit_cell_id_rewrite_map",
+        "foss_python.ipynb.deterministic_serialization"
+      ],
+      "api_symbols": [
+        "format_factory.ipynb.load",
+        "format_factory.ipynb.loads",
+        "format_factory.ipynb.dump",
+        "format_factory.ipynb.dumps",
+        "format_factory.ipynb.upgrade",
+        "format_factory.ipynb.NotebookVersion",
+        "format_factory.ipynb.RecoveryAction",
+        "format_factory.ipynb.ConversionResult",
+        "format_factory.ipynb.CellIdRewrite",
+        "format_factory.ipynb.IpynbDocument.declared_version",
+        "format_factory.ipynb.IpynbDocument.detected_version",
+        "format_factory.ipynb.IpynbDocument.recovery_actions"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+          "state": "present",
+          "sha256": "2e0f2aae9ab01f50e065d59fbff46dc6c4b79e60c842f9fa566c4a71b5d464db"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py",
+          "state": "present",
+          "sha256": "74a141267aa9871cdc97cc5c239d57eda3f6d9ba92c4c1ae1c125a80740310bd"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py",
+          "state": "present",
+          "sha256": "43838d1e16df6bff02859675545e7277931e7e52e21c66bbf9854e48019ffe9b"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py",
+          "state": "present",
+          "sha256": "e9390b6822e3484903a24aee0723d214abc1351d6cf011e90b63690d083fa0d8"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+          "state": "present",
+          "sha256": "cec47c6e244a464db3b6a93c80871d6bf8b64230160cadb9d50b2e2c9e9e0f79"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/document.py",
+          "state": "present",
+          "sha256": "a231c9f6458aa436a87fc0eddb6d4eb1cb254d21e373a89110a1451411b18a03"
+        }
+      ],
+      "tests": "tests/python/ipynb/test_obligation_lifecycle_modes.py"
+    },
+    {
+      "entry_id": "FF6-IPYNB-VALIDATION-PROFILES-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-IPYNB-SOURCE-004",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-IPYNB-VALIDATION-PROFILES-001",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "SAL-IPYNB-OBL-1F8C3D9742EBC830,SAL-IPYNB-OBL-44E62E9AB8ECC2E3,SAL-IPYNB-OBL-679A623D14CBF763,SAL-IPYNB-OBL-CDB7DEE07F2275F7",
+      "capability_refs": [
+        "foss_python.ipynb.declared_current_validation_profiles",
+        "foss_python.ipynb.forward_compatible_warning_channel",
+        "foss_python.ipynb.attachment_reference_integrity",
+        "foss_python.ipynb.mime_bundle_shape_validation",
+        "foss_python.ipynb.complete_output_semantics",
+        "foss_python.ipynb.tag_and_source_semantics"
+      ],
+      "api_symbols": [
+        "format_factory.ipynb.validate",
+        "format_factory.ipynb.validate_notebook",
+        "format_factory.ipynb.validate_notebook_schema"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/validation/validator.py",
+          "state": "present",
+          "sha256": "6e8e77e1948a029520db573e1866d61b140fd5d855f6781faabab39e6de52f17"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/validation/rules.py",
+          "state": "present",
+          "sha256": "e222c5f5b74a5fe0a50441b44a7e46d9b6a394c9359ca8a7a6f61273c2846c7a"
+        }
+      ],
+      "tests": "tests/python/ipynb/test_obligation_validation_profiles.py"
+    },
+    {
+      "entry_id": "FF6-IPYNB-CLEANUP-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-IPYNB-SOURCE-005",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-IPYNB-CLEANUP-001",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "SAL-IPYNB-OBL-BB3A2A8AA8E143B3,SAL-IPYNB-OBL-C7460C113E33FAE7",
+      "capability_refs": [
+        "foss_python.ipynb.selective_output_cleanup",
+        "foss_python.ipynb.execution_count_reset",
+        "foss_python.ipynb.explicit_transient_metadata_cleanup",
+        "foss_python.ipynb.dry_run_change_report",
+        "foss_python.ipynb.idempotent_cleanup"
+      ],
+      "api_symbols": [
+        "format_factory.ipynb.cleanup",
+        "format_factory.ipynb.CleanupPolicy",
+        "format_factory.ipynb.ChangeReport",
+        "format_factory.ipynb.IpynbDocument.cleanup"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+          "state": "present",
+          "sha256": "a83e7ad1f1ed0b289e3e2c63f93eeef1b806e57b62f8d9265972ea70726a43ea"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+          "state": "present",
+          "sha256": "8f397abb752da7e0deb4aff2a932564fc2bdd00b653a2cf37ef1b1a5967125ac"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/document.py",
+          "state": "present",
+          "sha256": "6f8e07409e708d3424b5902b99669a58b73947785979ccc655d97269a8716af0"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/cleanup.py",
+          "state": "present",
+          "sha256": "09dd4d7bb529094d89d49dc8eb8df402725f0f1729d817fbba23352b155968bf"
+        }
+      ],
+      "tests": "tests/python/ipynb/test_obligation_cleanup.py"
+    },
+    {
+      "entry_id": "FF6-IPYNB-SANITIZATION-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-IPYNB-SOURCE-006",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-IPYNB-SANITIZE-001",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "SAL-IPYNB-OBL-F581800E69395375",
+      "capability_refs": [
+        "foss_python.ipynb.active_content_classification",
+        "foss_python.ipynb.lossless_security_reporting",
+        "foss_python.ipynb.active_payload_removal",
+        "foss_python.ipynb.active_payload_quarantine",
+        "foss_python.ipynb.untrusted_content_marking",
+        "foss_python.ipynb.external_reference_classification",
+        "foss_python.ipynb.bounded_non_rendering_sanitization"
+      ],
+      "api_symbols": [
+        "format_factory.ipynb.sanitize",
+        "format_factory.ipynb.SanitizationMode",
+        "format_factory.ipynb.SanitizationPolicy",
+        "format_factory.ipynb.SanitizationFinding",
+        "format_factory.ipynb.SanitizationReport",
+        "format_factory.ipynb.DEFAULT_ACTIVE_MIME_TYPES"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+          "state": "present",
+          "sha256": "4139a259497cf64648ff6bb0c52f264fc1734e9764d0a10070e6d134b57df2f3"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/security/__init__.py",
+          "state": "present",
+          "sha256": "c73d09ece31f0cd1dc57fed94623cf378cab2b81b1a757982c10b1ef8be161e6"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/security/sanitizer.py",
+          "state": "present",
+          "sha256": "36e4fd39c3313caaa34ca280e43ba19cb2de7810cf8cf16dd40651c38d001f41"
+        }
+      ],
+      "tests": "tests/python/ipynb/test_obligation_sanitization.py"
+    },
+    {
+      "entry_id": "FF6-IPYNB-TRUST-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-IPYNB-SOURCE-007",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-TRUST-001",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "SAL-IPYNB-OBL-80272AC687E3FBED,SAL-IPYNB-OBL-D9ECFCF32654F42A",
+      "capability_refs": [
+        "foss_python.ipynb.content_addressed_trust",
+        "foss_python.ipynb.official_compatible_hmac",
+        "foss_python.ipynb.pluggable_signature_store",
+        "foss_python.ipynb.edit_invalidates_trust",
+        "foss_python.ipynb.explicit_trust_revocation",
+        "foss_python.ipynb.trust_validity_separation",
+        "foss_python.ipynb.bounded_signature_computation"
+      ],
+      "api_symbols": [
+        "format_factory.ipynb.HmacNotebookNotary",
+        "format_factory.ipynb.MemorySignatureStore",
+        "format_factory.ipynb.SignatureStore",
+        "format_factory.ipynb.TrustNotary",
+        "format_factory.ipynb.TrustRecord",
+        "format_factory.ipynb.TrustStatus",
+        "format_factory.ipynb.TrustVerification"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+          "state": "present",
+          "sha256": "d1f03e4d31cdb156d591beafc764b178601c3427c2227e5c7a8c3d3950a0cd7d"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/security/__init__.py",
+          "state": "present",
+          "sha256": "421f448211e06f04a5b7e789d704233b37da65c14a23bd4f4c898e233604eb14"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/security/trust.py",
+          "state": "present",
+          "sha256": "d3e35776e8ba56862153ee1d86ffa76b13bca06b5082c954dca9d46e2fe22dc6"
+        }
+      ],
+      "tests": "tests/python/ipynb/test_obligation_trust_notary.py"
+    },
+    {
+      "entry_id": "FF6-IPYNB-ATTACHMENT-MANAGEMENT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-IPYNB-SOURCE-008",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-ATTACH-001",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "SAL-IPYNB-OBL-02A00C213D2B0190,SAL-IPYNB-OBL-356297A15A50C85B,SAL-IPYNB-OBL-44E62E9AB8ECC2E3",
+      "capability_refs": [
+        "foss_python.ipynb.attachment_management",
+        "foss_python.ipynb.reference_safe_attachment_rename",
+        "foss_python.ipynb.reference_guarded_attachment_removal",
+        "foss_python.ipynb.validated_attachment_mime_bundles",
+        "foss_python.ipynb.stable_cell_id_targeting",
+        "foss_python.ipynb.dry_run_attachment_reporting"
+      ],
+      "api_symbols": [
+        "format_factory.ipynb.AttachmentChange",
+        "format_factory.ipynb.AttachmentManager",
+        "format_factory.ipynb.AttachmentReferencePolicy",
+        "format_factory.ipynb.AttachmentReport",
+        "format_factory.ipynb.manage_attachments"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+          "state": "present",
+          "sha256": "0b461c54c8770adb7266bab12067ecdb9191aa116430f7fe0dcafebe6a7f6d5e"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+          "state": "present",
+          "sha256": "819b77af82e2d7da0f7e361642842e42683131ae4cb10d9a3cc92c58aff1c37d"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/attachments.py",
+          "state": "present",
+          "sha256": "8d898674ef00b55c51a698ec63a4a09af78cd2e91bd251ccf7e53552a740972e"
+        }
+      ],
+      "tests": "tests/python/ipynb/test_obligation_attachment_management.py"
+    },
+    {
+      "entry_id": "FF6-IPYNB-STRUCTURE-DIFF-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-IPYNB-SOURCE-009",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-DIFF-001",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "SAL-IPYNB-OBL-6790961797EE55CD,SAL-IPYNB-OBL-7B453CA0FD8BCD5D",
+      "capability_refs": [
+        "foss_python.ipynb.stable_identity_diff",
+        "foss_python.ipynb.minimum_move_detection",
+        "foss_python.ipynb.field_distinguished_changes",
+        "foss_python.ipynb.explicit_ignore_policy",
+        "foss_python.ipynb.machine_applicable_patch",
+        "foss_python.ipynb.patch_preconditions",
+        "foss_python.ipynb.ignored_value_preservation"
+      ],
+      "api_symbols": [
+        "format_factory.ipynb.CellChange",
+        "format_factory.ipynb.CellField",
+        "format_factory.ipynb.DiffPolicy",
+        "format_factory.ipynb.FieldChange",
+        "format_factory.ipynb.NotebookDiff",
+        "format_factory.ipynb.NotebookFieldChange",
+        "format_factory.ipynb.NotebookPatch",
+        "format_factory.ipynb.PatchPreconditionError",
+        "format_factory.ipynb.diff_notebooks"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+          "state": "present",
+          "sha256": "8308b8b8af9b3f93940ad0a1d2a4815e871cc7b0c4aff9a5fc1d0c98230b5474"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+          "state": "present",
+          "sha256": "8a8e8caa0e6e1296a2f66fa6decf655cab72eb09a5ed9dfcbe038de196f45029"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/diff.py",
+          "state": "present",
+          "sha256": "fb554f435bc058a07afbf23299d62d7bed30c4d163549df2310d1086d638d831"
+        }
+      ],
+      "tests": "tests/python/ipynb/test_obligation_structure_diff.py"
+    },
+    {
+      "entry_id": "FF6-IPYNB-CELL-EDITOR-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-IPYNB-SOURCE-010",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-EDIT-001",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "SAL-IPYNB-OBL-BD6E7B4AA7C7E06C",
+      "capability_refs": [
+        "foss_python.ipynb.stable_id_cell_crud",
+        "foss_python.ipynb.cell_move_copy_replace",
+        "foss_python.ipynb.metadata_aware_cell_search",
+        "foss_python.ipynb.bulk_cell_change_reports",
+        "foss_python.ipynb.atomic_validated_edits",
+        "foss_python.ipynb.deterministic_copy_ids",
+        "foss_python.ipynb.dry_run_cell_edits"
+      ],
+      "api_symbols": [
+        "format_factory.ipynb.CellEdit",
+        "format_factory.ipynb.CellEditOperation",
+        "format_factory.ipynb.CellEditReport",
+        "format_factory.ipynb.CellEditor",
+        "format_factory.ipynb.CellQuery",
+        "format_factory.ipynb.edit_cells"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+          "state": "present",
+          "sha256": "70ff2b076f070c149f7ae98cc494b5ee6dc35b3a7fb084f659a4c3e624a6f350"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+          "state": "present",
+          "sha256": "2d70e531e63aff12537d3f01c88c109c612a2622ae74f76daae1cfe2b4ca7c28"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/editor.py",
+          "state": "present",
+          "sha256": "6dce55f6a3b30024dee870f85a94186efa43f4da8b339877725235c8423387bf"
+        }
+      ],
+      "tests": "tests/python/ipynb/test_obligation_cell_editor.py"
+    },
+    {
+      "entry_id": "FF6-IPYNB-METADATA-ADAPTERS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-IPYNB-SOURCE-011",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-META-001",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "SAL-IPYNB-OBL-13F3815D0E5C95E6,SAL-IPYNB-OBL-346FB023299D218E,SAL-IPYNB-OBL-4471354A239702DB,SAL-IPYNB-OBL-DB0F793B92DED8A3",
+      "capability_refs": [
+        "foss_python.ipynb.typed_kernelspec_metadata",
+        "foss_python.ipynb.typed_language_info_metadata",
+        "foss_python.ipynb.validated_cell_tags",
+        "foss_python.ipynb.typed_slideshow_metadata",
+        "foss_python.ipynb.typed_execution_metadata",
+        "foss_python.ipynb.per_mime_output_metadata",
+        "foss_python.ipynb.lossless_unknown_metadata_preservation",
+        "foss_python.ipynb.defensive_metadata_snapshots"
+      ],
+      "api_symbols": [
+        "format_factory.ipynb.CellMetadataAdapter",
+        "format_factory.ipynb.ExecutionMetadata",
+        "format_factory.ipynb.KernelSpecMetadata",
+        "format_factory.ipynb.LanguageInfoMetadata",
+        "format_factory.ipynb.MetadataShapeError",
+        "format_factory.ipynb.MimeRenderingMetadata",
+        "format_factory.ipynb.NotebookMetadataAdapter",
+        "format_factory.ipynb.OutputMetadataAdapter",
+        "format_factory.ipynb.SlideshowMetadata",
+        "format_factory.ipynb.cell_metadata",
+        "format_factory.ipynb.notebook_metadata",
+        "format_factory.ipynb.output_metadata"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+          "state": "present",
+          "sha256": "9b85c5beb2de077df985c9befde5630e92bf51a94defa942a67a40f661023012"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+          "state": "present",
+          "sha256": "92546df38a660b3fb95ed14cdb8f5e09a273bd60f0eced6a2fc1b4bd4eb057be"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/metadata.py",
+          "state": "present",
+          "sha256": "c1271fd8e6a5ac9a9d29456d30d4cc9f82bd8f8acc21551905afa70cc1ae6fa5"
+        }
+      ],
+      "tests": "tests/python/ipynb/test_obligation_metadata_adapters.py"
+    },
+    {
+      "entry_id": "FF6-IPYNB-VERSION-CONVERSION-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-IPYNB-SOURCE-012",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-UPGRADE-001",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "SAL-IPYNB-OBL-C599FB180ACF8D49",
+      "capability_refs": [
+        "foss_python.ipynb.bound_downgrade_planning",
+        "foss_python.ipynb.explicit_downgrade_loss_acceptance",
+        "foss_python.ipynb.cell_id_downgrade_reporting",
+        "foss_python.ipynb.preserved_extension_reporting",
+        "foss_python.ipynb.future_minor_downgrade_block",
+        "foss_python.ipynb.all_supported_minor_conversion"
+      ],
+      "api_symbols": [
+        "format_factory.ipynb.ConversionDisposition",
+        "format_factory.ipynb.ConversionIssue",
+        "format_factory.ipynb.ConversionResult.losses",
+        "format_factory.ipynb.DowngradePlan",
+        "format_factory.ipynb.downgrade",
+        "format_factory.ipynb.plan_downgrade"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+          "state": "present",
+          "sha256": "da79a4d2f2e5ead26991c9a4b20ec124399cd7ef088b7a7fcc8668bda9b0b2e1"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+          "state": "present",
+          "sha256": "926393090e5beec261aaaff894ae627845f901d49248fc3b3f0a7ebdea84951a"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py",
+          "state": "present",
+          "sha256": "53124e416f65b9914975f9000c490be653555634956625a69765cf233bfbb391"
+        }
+      ],
+      "tests": "tests/python/ipynb/test_obligation_version_conversion.py"
+    },
+    {
+      "entry_id": "FF6-IPYNB-OFFICIAL-SCHEMA-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-IPYNB-SOURCE-013",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-SCHEMA-001",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "SAL-IPYNB-OBL-1F8C3D9742EBC830,SAL-IPYNB-OBL-7217D5542A605065,SAL-IPYNB-OBL-FE413358B1144149",
+      "capability_refs": [
+        "foss_python.ipynb.exact_minor_official_schema_validation",
+        "foss_python.ipynb.digest_checked_schema_resources",
+        "foss_python.ipynb.strict_load_schema_boundary",
+        "foss_python.ipynb.stable_schema_diagnostic_paths",
+        "foss_python.ipynb.future_minor_semantic_baseline",
+        "foss_python.ipynb.bounded_mapping_validation",
+        "foss_python.ipynb.vendored_schema_license_notice"
+      ],
+      "api_symbols": [
+        "format_factory.ipynb.load",
+        "format_factory.ipynb.loads",
+        "format_factory.ipynb.validate"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py",
+          "state": "present",
+          "sha256": "c8d8afe1f5686374d98cee6cf3a220c9a211dcc88e9cfd5ae5d3e20b844e50e7"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/security/limits.py",
+          "state": "present",
+          "sha256": "8d416053618ab3a6ae09fd7ed36894bbb7f5ea4f9c63758cf1d288637a57a80d"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/validation/schema.py",
+          "state": "present",
+          "sha256": "92dd8279ded4c4ebacb0e2f8dd65e10532ad9047cb979f966a61b4a69efcb152"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/validation/schemas/nbformat.v4.0.schema.json",
+          "state": "present",
+          "sha256": "573477534050198c20629c0dc2ef2b543479a41d5dbc87b3ba614e85a191c2de"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/validation/schemas/nbformat.v4.1.schema.json",
+          "state": "present",
+          "sha256": "eea4f3b35fae4fd3afafe96fa6ceebe64686e3457b3035ed43c0e7999bb30be0"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/validation/schemas/nbformat.v4.2.schema.json",
+          "state": "present",
+          "sha256": "08b23013c5148935f39184245ac96dbc001d526f2321ad82eb8dd98dabf732fd"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/validation/schemas/nbformat.v4.3.schema.json",
+          "state": "present",
+          "sha256": "1441b5c14cd69f0dc7de0e7ef85471b41119beb2dc401c209ca2433cfbd398a3"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/validation/schemas/nbformat.v4.4.schema.json",
+          "state": "present",
+          "sha256": "dddf3bff4c0bd42bd467117321d72bceddb8de7361b0cc9581bd8318e9b4d3c8"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/validation/schemas/nbformat.v4.5.schema.json",
+          "state": "present",
+          "sha256": "523e3578ddbfcad52933d2423dc5951114ef73f48df180b6a601498ba5ca071a"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/validation/validator.py",
+          "state": "present",
+          "sha256": "0d9f010090dbc7238d5445fb543ec6018b488a91b4f1f8a2822f52694774ee9e"
+        }
+      ],
+      "tests": "tests/python/ipynb/test_obligation_official_schema_validation.py"
+    },
+    {
+      "entry_id": "FF6-IPYNB-CORPUS-REMEDIATION-001",
+      "classification": "GOVERNED_PRODUCT_EVIDENCE_CHANGE",
+      "sprint_id": "FF6-IPYNB-CORPUS-001",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-IPYNB-CORPUS-REMEDIATE-001",
+      "product": "Jupyter Notebook Python FOSS",
+      "format": "IPYNB",
+      "gap_ref": "FI-042,RC-FIO-004",
+      "capability_refs": [
+        "foss_python.ipynb.raw_fixture_schema_validation",
+        "foss_python.ipynb.content_addressed_fixture_quarantine",
+        "foss_python.ipynb.licensed_independent_corpus",
+        "foss_python.ipynb.oracle_normalization_disagreement_control",
+        "foss_python.ipynb.corpus_provenance_digest_binding"
+      ],
+      "api_symbols": [],
+      "source_files": [
+        {
+          "path": "samples/by-format/ipynb/valid/code-and-markdown.ipynb",
+          "state": "present",
+          "sha256": "77c6d7cc3b70c2a34a2dc4f9c08a71ca20a146c579a9e41e21514bfc5c903a00"
+        },
+        {
+          "path": "samples/by-format/ipynb/valid/with-outputs.ipynb",
+          "state": "present",
+          "sha256": "03ac5f4dfae9bb393b88e39b11c2b12a7df7599e7918791e1ef837eb939e53ba"
+        },
+        {
+          "path": "samples/by-format/ipynb/quarantine/_manifest.yaml",
+          "state": "present",
+          "sha256": "f25e3a0cc30eff55600d2a7fe3b794f9b5e8760c923bf6018476da8988d22f9c"
+        },
+        {
+          "path": "samples/by-format/ipynb/LICENSE.nbformat-BSD-3-Clause.txt",
+          "state": "present",
+          "sha256": "41a8cd573abd9e43e6f644bb623ac1b0c1e977dae50b0c7740f82b84a427f78a"
+        },
+        {
+          "path": "samples/by-format/ipynb/_provenance.yaml",
+          "state": "present",
+          "sha256": "6321308cec04d7295b88636e8af8c8f63ced68763c282604a76f2bc035aeb8c8"
+        },
+        {
+          "path": "samples/by-format/ipynb/_corpus-manifest.yaml",
+          "state": "present",
+          "sha256": "e5f723ca33c8be87b80fb9b8396c852d35e8796d7e0d1151a8204ff819311eb9"
+        },
+        {
+          "path": "oracle/formats/ipynb/oracle-package.yaml",
+          "state": "present",
+          "sha256": "e7a2716b9d11568638a6f5b127c950255e0c36e9cf05a9bb676df8f9f9f7ca1c"
+        },
+        {
+          "path": "tests/python/ipynb/test_obligation_corpus_integrity.py",
+          "state": "present",
+          "sha256": "21352304f8a033fc461dbe4dd404d3ffc472aa4122c4381a9fe978ab77ea3564"
+        }
+      ],
+      "tests": "tests/python/ipynb/test_obligation_corpus_integrity.py"
+    },
+    {
+      "entry_id": "FF6-XLIFF-SEGMENTATION-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "AUTO-XLIFF-IMPLEMENT-XLIFF-SEG-001",
+      "capability": "XLIFF-SEG-001",
+      "capability_refs": [
+        "XLIFF-SEG-001",
+        "SAL-XLIFF-OBL-420141532D90D385"
+      ],
+      "api_symbols": [
+        "format_factory.xliff.split_segment",
+        "format_factory.xliff.join_segments",
+        "format_factory.xliff.SegmentMapping"
+      ],
+      "product": "XLIFF Python production package",
+      "format": "XLIFF",
+      "test_delta": "Split/join mapping reports preserve tokenized inline content and reject boundaries that orphan spanning inline pairs.",
+      "git_head": "03889149",
+      "skill": "format-feature-expansion",
+      "source_files": [
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/model/segmentation.py",
+          "state": "present",
+          "sha256": "c2c3f1f35573fa11fc4f6ae67bf0a9d4395824dc2589dd05d73d88d83b00576b"
+        },
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/model/__init__.py",
+          "state": "present",
+          "sha256": "ea78cebaf7d063c7b59063791502651b2a060ad2b8ac108db50b51a0f267a8c8"
+        },
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/__init__.py",
+          "state": "present",
+          "sha256": "7e734c7ac320542e3bfd0328209f16fea67739ee4030ec23adefd33229ef17c7"
+        }
+      ],
+      "test_files": [
+        "tests/python/xliff/test_production_namespace.py"
+      ],
+      "validation_command": "PYTHONPATH=src/python/core/src;src/python/xliff/src .local/venvs/ipynb-current-proof/Scripts/python.exe -m pytest tests/python/xliff -q",
+      "result": "186 passed",
+      "rollback": "Remove the segmentation module and public exports, restore the namespace test, and remove this ledger entry."
+    },
+    {
+      "entry_id": "FF6-XLIFF-TEXT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "AUTO-XLIFF-IMPLEMENT-XLIFF-TEXT-001",
+      "capability": "XLIFF-TEXT-001",
+      "capability_refs": [
+        "XLIFF-TEXT-001",
+        "SAL-XLIFF-OBL-E428FA846AA270C8"
+      ],
+      "api_symbols": [
+        "format_factory.xliff.copy_source_to_target",
+        "format_factory.xliff.replace_text_slots",
+        "format_factory.xliff.text_slots"
+      ],
+      "product": "XLIFF Python production package",
+      "format": "XLIFF",
+      "test_delta": "Target creation uses explicit code-copy policy; token-aware edits preserve inline code structure; source and target xml:lang/xml:space attributes survive parse and write.",
+      "git_head": "79bc89ef",
+      "skill": "format-feature-expansion",
+      "source_files": [
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/model/document.py",
+          "state": "present",
+          "sha256": "b79f8bae471830364c1d1a9b8318420bd0129d979d919d4b6bb3b6c5f297e2cb"
+        },
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/model/text_editing.py",
+          "state": "present",
+          "sha256": "16121ef4cdcf828c6595390ae56f1f9e1e5498b4dd884f8444cfe46e482e52d9"
+        },
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/model/__init__.py",
+          "state": "present",
+          "sha256": "ea78cebaf7d063c7b59063791502651b2a060ad2b8ac108db50b51a0f267a8c8"
+        },
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/__init__.py",
+          "state": "present",
+          "sha256": "7e734c7ac320542e3bfd0328209f16fea67739ee4030ec23adefd33229ef17c7"
+        },
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py",
+          "state": "present",
+          "sha256": "2a9373b24b935f0778955185c25b8f9b26f2fd9b5e293d2e841b498a7dda5e52"
+        },
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py",
+          "state": "present",
+          "sha256": "ce4d9bcc315425fb146846be3bdab9f1654c8f506ac4aaf64d8bf1b3fbe7f0cd"
+        }
+      ],
+      "test_files": [
+        "tests/python/xliff/test_production_namespace.py"
+      ],
+      "validation_command": "PYTHONPATH=src/python/core/src;src/python/xliff/src .local/venvs/ipynb-current-proof/Scripts/python.exe -m pytest tests/python/xliff -q; tools/run_package_install_proof.py --format xliff",
+      "result": "186 XLIFF tests passed; installed wheel proof PASS (2 passed, 1 skipped)",
+      "rollback": "Remove token-aware text-editing API and source/target child attributes, then restore the previous model, reader, writer, exports, and tests."
+    },
+    {
+      "entry_id": "FF6-XLIFF-STATE-TARGET-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "TC-FF6-XLIFF-STATE-001",
+      "capability": "XLIFF-STATE-001",
+      "capability_refs": [
+        "XLIFF-STATE-001",
+        "SAL-XLIFF-00018"
+      ],
+      "api_symbols": [
+        "format_factory.xliff.validate"
+      ],
+      "product": "XLIFF Python production package",
+      "format": "XLIFF",
+      "test_delta": "Advanced translation states translated, reviewed, and final require a target; initial/default state remains valid without one.",
+      "git_head": "5bdfd727",
+      "skill": "format-feature-expansion",
+      "task_id": "TC-FF6-XLIFF-STATE-001",
+      "source_files": [
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+          "state": "present",
+          "sha256": "82e472fba0627f62ac86077bea966810ab03027e9319f11baf85e2f3e2579e6a"
+        }
+      ],
+      "test_files": [
+        "tests/python/xliff/test_production_namespace.py"
+      ],
+      "validation_command": "PYTHONPATH=src/python/core/src;src/python/xliff/src .venv/Scripts/python.exe -m pytest tests/python/xliff -q",
+      "result": "190 passed",
+      "rollback": "Remove the advanced-state target diagnostic and its focused tests, then remove this ledger entry."
     }
   ],
-  "total_entries": 2748,
+  "total_entries": 2782,
   "changes": [
     {
       "file": "src/python/dif/models.py",
@@ -42869,6 +44340,74 @@
       "change_type": "ADD_GAP_CLOSURE_TESTS",
       "gap_ref": "GAP-DIF-FOSS-DIF_BOOLEAN_-001,GAP-DIF-FOSS-DIF_DECLARED-001,GAP-DIF-FOSS-DIF_SPECIAL_-001",
       "tests": "tests/python/dif/test_r1292_dif_gap_closure_cell_counts.py"
+    },
+    {
+      "entry_id": "FF6-NRRD-LIFECYCLE-VERSION-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FF6-NRRD-LIFECYCLE-VERSION-001",
+      "capability": "NRRD-LIFECYCLE-001",
+      "capability_refs": [
+        "NRRD-LIFECYCLE-001",
+        "SAL-NRRD-OBL-028C0109E783B8F3"
+      ],
+      "api_symbols": [
+        "format_factory.nrrd.dumps"
+      ],
+      "product": "NRRD Python production package",
+      "format": "NRRD",
+      "test_delta": "Preservation and explicit conversion assertions for declared NRRD version.",
+      "git_head": "2114f944",
+      "skill": "format-feature-expansion",
+      "source_files": [
+        {
+          "path": "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py",
+          "state": "present",
+          "sha256": "e8aa5d3e7efc03065752429c17281225b14d4c54c9e12d49fc5841a7f05b1c87"
+        }
+      ],
+      "test_files": [
+        "tests/python/nrrd/test_production_namespace.py"
+      ],
+      "validation_command": ".local/package-install-proof-venv/Scripts/python.exe -m pytest tests/python/nrrd/test_production_namespace.py -q",
+      "result": "11 passed",
+      "rollback": "Restore the default writer profile to NRRD0005, remove the explicit preservation assertion, and remove this ledger entry."
+    },
+    {
+      "entry_id": "FF6-NRRD-TYPES-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "AUTO-NRRD-IMPLEMENT-NRRD-TYPES-001",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-NRRD-IMPLEMENT-NRRD-TYPES-001",
+      "product": "Nearly Raw Raster Data Python production package",
+      "format": "NRRD",
+      "capability_refs": ["NRRD-TYPES-001"],
+      "api_symbols": ["parse_block_size", "is_block_type", "encode_binary", "decode_binary"],
+      "source_files": [
+        {"path": "src/python/nrrd/src/format_factory/nrrd/codec/payload.py", "state": "present", "sha256": "68a0b92c89982ba7ff04ddd804d80a7df1068c919c4069fc0e4e18570eb54ff8"},
+        {"path": "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py", "state": "present", "sha256": "dadd98a328bf3cfa1b3e8cff39e6ed9eadacb1d8ba61a8a1c0de3376536d4455"},
+        {"path": "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py", "state": "present", "sha256": "9e0ab540e46dd0117c98f52de7540a5ab0cf6dda24f5c56a49bede43f8af5bf4"},
+        {"path": "src/python/nrrd/src/format_factory/nrrd/validation/validator.py", "state": "present", "sha256": "3f564315c16236801347f40b38eb0e3681135039cfb8ae76903c0a19a6372ec1"}
+      ],
+      "test_files": ["tests/python/nrrd/test_production_namespace.py"],
+      "validation_command": "package-install-proof plus installed-wheel type/block tests",
+      "result": "276 source tests; 41 installed-wheel targeted tests; package proof PASS",
+      "rollback": "Revert this bounded NRRD type implementation and remove this ledger entry."
+    },
+    {
+      "entry_id": "FF6-NRRD-VALIDATE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "AUTO-NRRD-IMPLEMENT-NRRD-VALIDATE-001",
+      "skill": "format-feature-expansion",
+      "task_id": "AUTO-NRRD-IMPLEMENT-NRRD-VALIDATE-001",
+      "product": "Nearly Raw Raster Data Python production package",
+      "format": "NRRD",
+      "capability_refs": ["NRRD-VALIDATE-001"],
+      "api_symbols": ["validate"],
+      "source_files": [{"path": "src/python/nrrd/src/format_factory/nrrd/validation/validator.py", "state": "present", "sha256": "8185f66164905d7a10d679be52ddcc79ef375f1d4ef8391b21ec44fb5491684f"}],
+      "test_files": ["tests/python/nrrd/test_production_namespace.py"],
+      "validation_command": "277 source tests; clean wheel and installed validation test",
+      "result": "PASS",
+      "rollback": "Revert decoded-payload length validation and this ledger entry."
     }
   ]
 }

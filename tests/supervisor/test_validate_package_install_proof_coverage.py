@@ -24,7 +24,11 @@ sys.path.insert(0, str(_REPO / "tools" / "supervisor"))
 from governance_validators_package_proof import (  # noqa: E402
     validate_package_install_proof_coverage,
 )
-from package_proof_common import source_digest  # noqa: E402
+from package_proof_common import (  # noqa: E402
+    package_proof_id,
+    proof_input_digest,
+    source_digest,
+)
 
 _DECL = {"run_id": "v226-unit-test", "work_items": []}
 
@@ -56,21 +60,37 @@ def _make_repo(tmp_path: Path, formats: list[str]) -> Path:
     matrix_path = repo / "packaging" / "python" / "package-matrix.yaml"
     matrix_path.parent.mkdir(parents=True)
     matrix_path.write_text(yaml.dump(matrix))
+    runtime_inputs = [
+        "packaging/python/build-local-packages.py",
+        "packaging/python/proof-requirements.txt",
+        "tools/run_package_install_proof.py",
+        "tools/supervisor/package_proof_common.py",
+        "tests/python/packaging/test_package_install_proof_all_formats.py",
+    ]
+    for relative in runtime_inputs:
+        path = repo / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(f"# fixture for {relative}\n", encoding="utf-8")
     return repo
 
 
 def _write_manifest(repo: Path, formats: list[str], digests: dict[str, str]) -> None:
-    manifest = {
-        "schema_version": 1,
-        "formats": {
-            fmt: {
+    packages = yaml.safe_load(
+        (repo / "packaging/python/package-matrix.yaml").read_text(encoding="utf-8")
+    )["packages"]
+    by_format = {package["format_id"]: package for package in packages}
+    entries = {
+        fmt: {
                 "package_name": f"format-factory-{fmt}",
                 "verdict": "PASS",
                 "source_digest": digests[fmt],
+                "proof_input_digest": proof_input_digest(repo, by_format[fmt]),
             }
             for fmt in formats
-        },
     }
+    for entry in entries.values():
+        entry["proof_id"] = package_proof_id(entry)
+    manifest = {"schema_version": 3, "formats": entries}
     path = repo / "reports" / "package-install-proof" / "proof-manifest.json"
     path.parent.mkdir(parents=True)
     path.write_text(json.dumps(manifest))
@@ -102,6 +122,51 @@ def test_stale_digest_fails(tmp_path):
     assert "fods" in result["summary"]
 
 
+def test_changed_proof_runtime_invalidates_old_result(tmp_path):
+    """Executed results bind the proof implementation, not only product source."""
+    repo = _make_repo(tmp_path, ["fods"])
+    _write_manifest(repo, ["fods"], {"fods": source_digest(repo, "fods")})
+    (repo / "tools/run_package_install_proof.py").write_text(
+        "# changed proof semantics\n",
+        encoding="utf-8",
+    )
+
+    result = validate_package_install_proof_coverage(_DECL, repo_root=repo)
+
+    assert result["result"] == "FAIL"
+    assert "STALE_INPUT_CLOSURE" in result["summary"]
+
+
+def test_changed_matrix_import_target_invalidates_old_result(tmp_path):
+    """A changed import contract cannot reuse evidence from the prior target."""
+    repo = _make_repo(tmp_path, ["fods"])
+    _write_manifest(repo, ["fods"], {"fods": source_digest(repo, "fods")})
+    matrix_path = repo / "packaging/python/package-matrix.yaml"
+    matrix = yaml.safe_load(matrix_path.read_text(encoding="utf-8"))
+    matrix["packages"][0]["module_import"] = "format_factory.fods"
+    matrix_path.write_text(yaml.dump(matrix), encoding="utf-8")
+
+    result = validate_package_install_proof_coverage(_DECL, repo_root=repo)
+
+    assert result["result"] == "FAIL"
+    assert "STALE_INPUT_CLOSURE" in result["summary"]
+
+
+def test_manual_verdict_edit_breaks_proof_integrity(tmp_path):
+    """A hand-edited PASS cannot retain the identity of the executed result."""
+    repo = _make_repo(tmp_path, ["fods"])
+    _write_manifest(repo, ["fods"], {"fods": source_digest(repo, "fods")})
+    manifest_path = repo / "reports/package-install-proof/proof-manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["formats"]["fods"]["verdict"] = "FAIL"
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+
+    result = validate_package_install_proof_coverage(_DECL, repo_root=repo)
+
+    assert result["result"] == "FAIL"
+    assert "INTEGRITY" in result["summary"]
+
+
 def test_drift_unmatrixed_package_fails(tmp_path):
     """The next-Python-product hook: a src package outside the matrix blocks."""
     repo = _make_repo(tmp_path, ["fods"])
@@ -115,6 +180,31 @@ def test_drift_unmatrixed_package_fails(tmp_path):
     assert result["blocks_sprint"] is True
     assert "DRIFT" in result["summary"]
     assert "newfmt" in result["summary"]
+
+
+def test_referenced_local_dependency_is_not_misclassified_as_format_drift(tmp_path):
+    """A shared native dependency is proof input, not a new format product."""
+    repo = _make_repo(tmp_path, ["fods"])
+    core = repo / "src/python/core"
+    core.mkdir()
+    (core / "pyproject.toml").write_text(
+        '[project]\nname = "format-factory-core"\nversion = "0.1.0"\n',
+        encoding="utf-8",
+    )
+    matrix_path = repo / "packaging/python/package-matrix.yaml"
+    matrix = yaml.safe_load(matrix_path.read_text(encoding="utf-8"))
+    matrix["packages"][0]["local_dependencies"] = [
+        {
+            "package_name": "format-factory-core",
+            "source_path": "src/python/core",
+        }
+    ]
+    matrix_path.write_text(yaml.dump(matrix), encoding="utf-8")
+    _write_manifest(repo, ["fods"], {"fods": source_digest(repo, "fods")})
+
+    result = validate_package_install_proof_coverage(_DECL, repo_root=repo)
+
+    assert result["result"] == "PASS"
 
 
 def test_healthy_state_passes(tmp_path):
@@ -135,6 +225,9 @@ def test_failing_verdict_fails(tmp_path):
     manifest_path = repo / "reports" / "package-install-proof" / "proof-manifest.json"
     manifest = json.loads(manifest_path.read_text())
     manifest["formats"]["fods"]["verdict"] = "FAIL"
+    manifest["formats"]["fods"]["proof_id"] = package_proof_id(
+        manifest["formats"]["fods"]
+    )
     manifest_path.write_text(json.dumps(manifest))
     result = validate_package_install_proof_coverage(_DECL, repo_root=repo)
     assert result["result"] == "FAIL"
@@ -150,6 +243,9 @@ def test_waived_known_failure_warns_not_blocks(tmp_path):
     manifest_path = repo / "reports" / "package-install-proof" / "proof-manifest.json"
     manifest = json.loads(manifest_path.read_text())
     manifest["formats"]["csv"]["verdict"] = "FAIL"
+    manifest["formats"]["csv"]["proof_id"] = package_proof_id(
+        manifest["formats"]["csv"]
+    )
     manifest_path.write_text(json.dumps(manifest))
 
     matrix_path = repo / "packaging" / "python" / "package-matrix.yaml"
@@ -160,6 +256,12 @@ def test_waived_known_failure_warns_not_blocks(tmp_path):
         "reason": "stdlib csv shadows the wheel module",
     }
     matrix_path.write_text(yaml.dump(matrix))
+    manifest = json.loads(manifest_path.read_text())
+    manifest["formats"]["csv"]["proof_input_digest"] = proof_input_digest(repo, csv_entry)
+    manifest["formats"]["csv"]["proof_id"] = package_proof_id(
+        manifest["formats"]["csv"]
+    )
+    manifest_path.write_text(json.dumps(manifest))
 
     result = validate_package_install_proof_coverage(_DECL, repo_root=repo)
     assert result["result"] == "WARN"
@@ -173,6 +275,25 @@ def test_waived_known_failure_warns_not_blocks(tmp_path):
     result = validate_package_install_proof_coverage(_DECL, repo_root=repo)
     assert result["result"] == "FAIL"
     assert "no proof entry" in result["summary"]
+
+
+def test_source_and_proof_input_digests_ignore_root_build_byproducts(tmp_path):
+    """A native build must not invalidate the proof by writing ``build/``."""
+    repo = _make_repo(tmp_path, ["fods"])
+    package = next(
+        item for item in yaml.safe_load(
+            (repo / "packaging" / "python" / "package-matrix.yaml").read_text()
+        )["packages"]
+        if item["format_id"] == "fods"
+    )
+    before_source = source_digest(repo, "fods")
+    before_input = proof_input_digest(repo, package)
+    generated = repo / "src" / "python" / "fods" / "build" / "lib"
+    generated.mkdir(parents=True)
+    (generated / "generated.py").write_text("build output", encoding="utf-8")
+
+    assert source_digest(repo, "fods") == before_source
+    assert proof_input_digest(repo, package) == before_input
 
 
 if __name__ == "__main__":

@@ -630,9 +630,34 @@ routes:
       tools/governance/skills_first/ + tools/governance/validate_skills_first_control.py.
       Authority: docs/governance/skill-only-policy.yaml (SKILL-ONLY-POLICY-001).
 
+  - route_id: format_family_policy_authoring
+    description: >
+      Create a genuinely new reusable format-family policy pack, explicit
+      semantic and exclusion boundaries, fact-category readiness policy, and
+      deterministic representative-format routing.
+    preferred_skill_ids:
+      - create-format-family-pack
+    fallback_skill_ids:
+      - format-contract-onboard
+      - compile-format-contract
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - family_id
+      - representative_formats
+      - semantic_scope
+      - excluded_concepts
+      - required_fact_categories
+      - policy_pack_path
+    evidence_path_pattern: "reports/skills-*/skill-transcripts/create-format-family-pack-*.json"
+    note: >
+      Added by SKILL-GAP-FF6-FAMILY-PACK-AUTHORING after SafeTensors exposed
+      false scientific-raster obligations for detached files, compression,
+      spatial axes, comments, and line endings.
+
 gap_count:
-  total_routes: 36
-  active_routes: 35
+  total_routes: 38
+  active_routes: 36
   missing_skill_routes: 1
   missing_skill_gap_ids:
     - GAP-ESP-SKILL-001

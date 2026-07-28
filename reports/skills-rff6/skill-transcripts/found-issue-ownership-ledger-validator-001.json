@@ -1,0 +1,50 @@
+{
+  "invocation_id": "found-issue-ownership-ledger-validator-001",
+  "skill_id": "found-issue-ownership",
+  "mode": "live",
+  "inputs": {
+    "issue_id": "FI-033",
+    "issue_type": "schema_violation",
+    "severity": "P1",
+    "observed_behavior": "validate_product_code_ledger.py raises AttributeError on legacy source_files string records.",
+    "expected_behavior": "The validator emits a structured fail-closed result and separates historical records from current proof records.",
+    "affected_paths": [
+      "tools/supervisor/validate_product_code_ledger.py",
+      "tests/supervisor/test_validate_product_code_ledger.py",
+      "reports/r90/product-code-change-ledger.json"
+    ],
+    "task_id": "TC-FI-033-LEDGER-VALIDATOR-001"
+  },
+  "allowed_files": [
+    "tools/supervisor/validate_product_code_ledger.py",
+    "tests/supervisor/test_validate_product_code_ledger.py",
+    "registry/found-issue-register.yaml",
+    "registry/root-cause-register.yaml",
+    "registry/blast-radius-register.yaml",
+    "taskcards/TC-FI-033-LEDGER-VALIDATOR-001.md",
+    "taskcards/index.yaml",
+    "reports/skills-rff6/skill-transcripts/found-issue-ownership-ledger-validator-001.json"
+  ],
+  "actual_files_changed": [
+    "tools/supervisor/validate_product_code_ledger.py",
+    "tests/supervisor/test_validate_product_code_ledger.py",
+    "registry/found-issue-register.yaml",
+    "registry/root-cause-register.yaml",
+    "registry/blast-radius-register.yaml",
+    "taskcards/TC-FI-033-LEDGER-VALIDATOR-001.md",
+    "taskcards/index.yaml",
+    "reports/skills-rff6/skill-transcripts/found-issue-ownership-ledger-validator-001.json"
+  ],
+  "tests_run": [
+    "failing-first: tests/supervisor/test_validate_product_code_ledger.py failed with AttributeError on malformed current and historical string source records",
+    "python -m pytest tests/supervisor/test_validate_product_code_ledger.py tests/supervisor/test_r90_product_acceleration.py -q (22 passed, 1 xfailed)",
+    "real-ledger validate_ledger invocation: structured valid=false, 1,576 legacy entries, 3,233 current errors, no exception"
+  ],
+  "result": "PASS",
+  "evidence": {
+    "issue_id": "FI-033",
+    "root_cause_id": "RC-FIO-005",
+    "blast_radius_id": "BR-004",
+    "scope_limit": "The repair prevents a validator crash and makes legacy/current separation explicit. It deliberately does not suppress, rewrite, or promote the remaining malformed current proof records."
+  }
+}

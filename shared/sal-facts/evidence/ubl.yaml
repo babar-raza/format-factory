@@ -1,0 +1,1040 @@
+schema_version: '1.0'
+format_id: ubl
+coverage: complete
+authority_policy: >-
+  Every assertion is an exact structural or visible-text predicate over the
+  SHA-256 pinned UBL 2.3 OASIS Standard prose and release ZIP. XML assertions
+  parse only pinned bytes and never resolve schemas, entities, or network
+  resources. The maindoc inventory is bound by both count and exact-name digest.
+xsd_namespaces: &xsd_namespaces
+  xs: http://www.w3.org/2001/XMLSchema
+targets:
+  prose:
+    source_id: SRC-UBL-001
+    member_sha256: b2ac12afabc812ccfb49355a391dc1690260bbc2d216d3c9dd5b0931b6c1a2b6
+    encoding: iso-8859-1
+  package:
+    source_id: SRC-UBL-002
+    member_sha256: 623bef8310db4d979ff28000a96bcc56dbcdda4f6206cf094c0aa79b75817970
+  order:
+    source_id: SRC-UBL-002
+    member: xsd/maindoc/UBL-Order-2.3.xsd
+    member_sha256: 6fa7bf6bbf30eb57e2ef29149d729c62d7c3bb4aec81ad024df533a6baf283b0
+  invoice:
+    source_id: SRC-UBL-002
+    member: xsd/maindoc/UBL-Invoice-2.3.xsd
+    member_sha256: 17be67538966292a3e8e7bd6404c9017b38919184cb7d4c8dc12f0937358e1a4
+  credit_note:
+    source_id: SRC-UBL-002
+    member: xsd/maindoc/UBL-CreditNote-2.3.xsd
+    member_sha256: b464c19b50f350d6f287c4b2432ea77938ab4b3a01ca711126fcafb5ac469224
+  application_response:
+    source_id: SRC-UBL-002
+    member: xsd/maindoc/UBL-ApplicationResponse-2.3.xsd
+    member_sha256: 91448e273314d87bdf95fd1210700bfcc5524bbb195d083ffe835983b16f3247
+  despatch_advice:
+    source_id: SRC-UBL-002
+    member: xsd/maindoc/UBL-DespatchAdvice-2.3.xsd
+    member_sha256: 408c72a48a202967845b8f61d35f96e55116e7971a64329479de2ae559f01c90
+  cbc:
+    source_id: SRC-UBL-002
+    member: xsd/common/UBL-CommonBasicComponents-2.3.xsd
+    member_sha256: 9bc47430a6c550684412269dd65f26351b4c3e00b16d805595af581130c2f03a
+  cac:
+    source_id: SRC-UBL-002
+    member: xsd/common/UBL-CommonAggregateComponents-2.3.xsd
+    member_sha256: 9ff2b3cc1ad590f3fd7ee5c43f3556b4f12347c3d1672965b18c72958c054d65
+  extensions:
+    source_id: SRC-UBL-002
+    member: xsd/common/UBL-CommonExtensionComponents-2.3.xsd
+    member_sha256: 80dcae5d6aae596cca9d1047c753bb4323672569114a796c6979ac87d2ec530c
+  extension_content:
+    source_id: SRC-UBL-002
+    member: xsd/common/UBL-ExtensionContentDataType-2.3.xsd
+    member_sha256: 559c0d50c2b5c40c7a227b7dff76cdd1b3f3aebc8f8f3b393893a466474a36c5
+  udt:
+    source_id: SRC-UBL-002
+    member: xsd/common/BDNDR-UnqualifiedDataTypes-1.1.xsd
+    member_sha256: 6be0887f677a21d1fa2b363b0abe2385b713a20befee85d1a8fed5ef7d76993c
+  cct:
+    source_id: SRC-UBL-002
+    member: xsd/common/BDNDR-CCTS_CCT_SchemaModule-1.1.xsd
+    member_sha256: dd546e4809df86b6445589f69f0d6c9df162840ae386574ddfc1da7638103e15
+facts:
+- fact_id: SAL-UBL-00001
+  claim_sha256: 324b6434351f4609c1ddf15ba42165ea9a5e3ded61b3f7b53338ac1c8658c2b5
+  assertions:
+  - assertion_id: order-namespace
+    target: order
+    kind: xml_xpath_attributes_equal
+    xpath: .
+    attribute: targetNamespace
+    expected: [urn:oasis:names:specification:ubl:schema:xsd:Order-2]
+  - assertion_id: order-root
+    target: order
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='Order']"
+    attribute: type
+    expected: [OrderType]
+    namespaces: *xsd_namespaces
+  - assertion_id: order-id
+    target: order
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='OrderType']/xs:sequence/xs:element[@ref='cbc:ID']"
+    attribute: ref
+    expected: ['cbc:ID']
+    namespaces: *xsd_namespaces
+  - assertion_id: order-issue-date
+    target: order
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='OrderType']/xs:sequence/xs:element[@ref='cbc:IssueDate']"
+    attribute: ref
+    expected: ['cbc:IssueDate']
+    namespaces: *xsd_namespaces
+  - assertion_id: order-line
+    target: order
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='OrderType']/xs:sequence/xs:element[@ref='cac:OrderLine']"
+    attribute: ref
+    expected: ['cac:OrderLine']
+    namespaces: *xsd_namespaces
+- fact_id: SAL-UBL-00002
+  claim_sha256: 13d8607a608a61be36e41b09e3f07518709d33b3d858a3b17dd070ec884c1f81
+  assertions:
+  - assertion_id: invoice-namespace
+    target: invoice
+    kind: xml_xpath_attributes_equal
+    xpath: .
+    attribute: targetNamespace
+    expected: [urn:oasis:names:specification:ubl:schema:xsd:Invoice-2]
+  - assertion_id: invoice-root
+    target: invoice
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='Invoice']"
+    attribute: type
+    expected: [InvoiceType]
+    namespaces: *xsd_namespaces
+  - assertion_id: invoice-line-aggregate
+    target: invoice
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='InvoiceType']/xs:sequence/xs:element[@ref='cac:InvoiceLine']"
+    attribute: ref
+    expected: ['cac:InvoiceLine']
+    namespaces: *xsd_namespaces
+  - assertion_id: invoice-line-core-fields
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='InvoiceLineType']/xs:sequence/xs:element"
+    attribute: ref
+    expected:
+    - ext:UBLExtensions
+    - cbc:ID
+    - cbc:UUID
+    - cbc:Note
+    - cbc:InvoicedQuantity
+    - cbc:LineExtensionAmount
+    - cbc:TaxInclusiveLineExtensionAmount
+    - cbc:TaxPointDate
+    - cbc:AccountingCostCode
+    - cbc:AccountingCost
+    - cbc:PaymentPurposeCode
+    - cbc:FreeOfChargeIndicator
+    - cac:InvoicePeriod
+    - cac:OrderLineReference
+    - cac:DespatchLineReference
+    - cac:ReceiptLineReference
+    - cac:BillingReference
+    - cac:DocumentReference
+    - cac:PricingReference
+    - cac:OriginatorParty
+    - cac:Delivery
+    - cac:PaymentTerms
+    - cac:AllowanceCharge
+    - cac:TaxTotal
+    - cac:WithholdingTaxTotal
+    - cac:Item
+    - cac:Price
+    - cac:DeliveryTerms
+    - cac:SubInvoiceLine
+    - cac:ItemPriceExtension
+    namespaces: *xsd_namespaces
+- fact_id: SAL-UBL-00105
+  claim_sha256: 176db21ac5e390ad4775e7ffcaf2c4ff5ba86ffe4186f66e406c7cf096facd18
+  assertions:
+  - assertion_id: credit-note-namespace
+    target: credit_note
+    kind: xml_xpath_attributes_equal
+    xpath: .
+    attribute: targetNamespace
+    expected: [urn:oasis:names:specification:ubl:schema:xsd:CreditNote-2]
+  - assertion_id: credit-note-root
+    target: credit_note
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='CreditNote']"
+    attribute: type
+    expected: [CreditNoteType]
+    namespaces: *xsd_namespaces
+  - assertion_id: credit-note-line
+    target: credit_note
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='CreditNoteType']/xs:sequence/xs:element[@ref='cac:CreditNoteLine']"
+    attribute: ref
+    expected: ['cac:CreditNoteLine']
+    namespaces: *xsd_namespaces
+- fact_id: SAL-UBL-00106
+  claim_sha256: 6f9068a47002cb95705586c67d69ecb2558f6694d9b91d7f5a1a2d456dad09ec
+  assertions:
+  - assertion_id: application-response-root
+    target: application_response
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='ApplicationResponse']"
+    attribute: type
+    expected: [ApplicationResponseType]
+    namespaces: *xsd_namespaces
+  - assertion_id: document-response
+    target: application_response
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='ApplicationResponseType']/xs:sequence/xs:element[@ref='cac:DocumentResponse']"
+    attribute: ref
+    expected: ['cac:DocumentResponse']
+    namespaces: *xsd_namespaces
+- fact_id: SAL-UBL-00107
+  claim_sha256: c088fa067a5a81ea3b055fc2c2fca93d6c7a7a6cf452a697656400c57ce9a2f6
+  assertions:
+  - assertion_id: despatch-namespace
+    target: despatch_advice
+    kind: xml_xpath_attributes_equal
+    xpath: .
+    attribute: targetNamespace
+    expected: [urn:oasis:names:specification:ubl:schema:xsd:DespatchAdvice-2]
+  - assertion_id: despatch-root
+    target: despatch_advice
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='DespatchAdvice']"
+    attribute: type
+    expected: [DespatchAdviceType]
+    namespaces: *xsd_namespaces
+  - assertion_id: despatch-line
+    target: despatch_advice
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='DespatchAdviceType']/xs:sequence/xs:element[@ref='cac:DespatchLine']"
+    attribute: ref
+    expected: ['cac:DespatchLine']
+    namespaces: *xsd_namespaces
+- fact_id: SAL-UBL-00108
+  claim_sha256: 81505c032f4e25b68c3ae9c9ed1a2d94cb1ec901e1e83716167743cc278bafae
+  assertions:
+  - assertion_id: order-document-root
+    target: order
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='Order']"
+    attribute: type
+    expected: [OrderType]
+    namespaces: *xsd_namespaces
+  - assertion_id: order-document-line
+    target: order
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='OrderType']/xs:sequence/xs:element[@ref='cac:OrderLine']"
+    attribute: ref
+    expected: ['cac:OrderLine']
+    namespaces: *xsd_namespaces
+- fact_id: SAL-UBL-00109
+  claim_sha256: 4d7bf27e4451fc37fcff2d45cd3af22dc28f99cfe8c8a9b88038ccae233810d0
+  assertions:
+  - assertion_id: amount-currency-required
+    target: udt
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='AmountType']/xs:simpleContent/xs:restriction/xs:attribute[@name='currencyID']"
+    attribute: use
+    expected: [required]
+    namespaces: *xsd_namespaces
+  - assertion_id: amount-currency-type
+    target: udt
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='AmountType']/xs:simpleContent/xs:restriction/xs:attribute[@name='currencyID']"
+    attribute: type
+    expected: ['xsd:normalizedString']
+    namespaces: *xsd_namespaces
+- fact_id: SAL-UBL-00110
+  claim_sha256: ead948c79cb5fe2e6fc8cd85ad135c0d8a41166397ee5ea233f3110dd1e39a26
+  assertions:
+  - assertion_id: amount-decimal-base
+    target: cct
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='AmountType']/xs:simpleContent/xs:extension"
+    attribute: base
+    expected: ['xsd:decimal']
+    namespaces: *xsd_namespaces
+  - assertion_id: amount-currency-required-in-udt
+    target: udt
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='AmountType']/xs:simpleContent/xs:restriction/xs:attribute[@name='currencyID']"
+    attribute: use
+    expected: [required]
+    namespaces: *xsd_namespaces
+  - assertion_id: monetary-total-components
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='MonetaryTotalType']/xs:sequence/xs:element"
+    attribute: ref
+    expected:
+    - ext:UBLExtensions
+    - cbc:LineExtensionAmount
+    - cbc:TaxExclusiveAmount
+    - cbc:TaxInclusiveAmount
+    - cbc:AllowanceTotalAmount
+    - cbc:ChargeTotalAmount
+    - cbc:WithholdingTaxTotalAmount
+    - cbc:PrepaidAmount
+    - cbc:PayableRoundingAmount
+    - cbc:PayableAmount
+    - cbc:PayableAlternativeAmount
+    namespaces: *xsd_namespaces
+  - assertion_id: no-invoice-xsd-assertions
+    target: invoice
+    kind: xml_xpath_count
+    xpath: .//xs:assert
+    expected: 0
+    namespaces: *xsd_namespaces
+  - assertion_id: no-common-aggregate-xsd-assertions
+    target: cac
+    kind: xml_xpath_count
+    xpath: .//xs:assert
+    expected: 0
+    namespaces: *xsd_namespaces
+- fact_id: SAL-UBL-00111
+  claim_sha256: 0cdf54dd709efd43f41170aa1a538574c26abac98d737bda0d4e4a017e4f0668
+  assertions:
+  - assertion_id: tax-total-sequence-order
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='TaxTotalType']/xs:sequence/xs:element"
+    attribute: ref
+    expected:
+    - ext:UBLExtensions
+    - cbc:TaxAmount
+    - cbc:CalculationSequenceNumeric
+    - cbc:RoundingAmount
+    - cbc:TaxEvidenceIndicator
+    - cbc:TaxIncludedIndicator
+    - cac:TaxSubtotal
+    namespaces: *xsd_namespaces
+  - assertion_id: invoice-uses-sequence
+    target: invoice
+    kind: xml_xpath_count
+    xpath: ".//xs:complexType[@name='InvoiceType']/xs:sequence"
+    expected: 1
+    namespaces: *xsd_namespaces
+- fact_id: SAL-UBL-00112
+  claim_sha256: 4f8cf8e8c0cb73b876ef4843945b207a21c2da3d680f45f3fd02b4cfc8115735
+  assertions:
+  - assertion_id: code-normalized-string
+    target: cct
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='CodeType']/xs:simpleContent/xs:extension"
+    attribute: base
+    expected: ['xsd:normalizedString']
+    namespaces: *xsd_namespaces
+  - assertion_id: code-list-id-optional
+    target: cct
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='CodeType']//xs:attribute[@name='listID']"
+    attribute: use
+    expected: [optional]
+    namespaces: *xsd_namespaces
+  - assertion_id: code-list-version-optional
+    target: cct
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='CodeType']//xs:attribute[@name='listVersionID']"
+    attribute: use
+    expected: [optional]
+    namespaces: *xsd_namespaces
+  - assertion_id: no-code-enumerations-in-base-type
+    target: cct
+    kind: xml_xpath_count
+    xpath: ".//xs:complexType[@name='CodeType']//xs:enumeration"
+    expected: 0
+    namespaces: *xsd_namespaces
+  - assertion_id: two-phase-code-list-artifacts
+    target: prose
+    kind: html_text_contains
+    expected: >-
+      Code lists for constraint validation:
+      https://docs.oasis-open.org/ubl/os-UBL-2.3/cl/ Context/value Association
+      files for constraint validation:
+      https://docs.oasis-open.org/ubl/os-UBL-2.3/cva/
+- fact_id: SAL-UBL-00113
+  claim_sha256: f6e6711c40c4487967e4d7294d9a4698b8e8029f3230fb2fbf2222d2c09e8705
+  assertions:
+  - assertion_id: cac-namespace
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: .
+    attribute: targetNamespace
+    expected: [urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2]
+  - assertion_id: cac-composite-type
+    target: cac
+    kind: xml_xpath_count
+    xpath: ".//xs:complexType[@name='PartyType']/xs:sequence"
+    expected: 1
+    namespaces: *xsd_namespaces
+- fact_id: SAL-UBL-00114
+  claim_sha256: 41a9b7835f4975bb88db588866b9bc1c69f8a25b6a19c42c821970945f64eb7c
+  assertions:
+  - assertion_id: cbc-namespace
+    target: cbc
+    kind: xml_xpath_attributes_equal
+    xpath: .
+    attribute: targetNamespace
+    expected: [urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2]
+  - assertion_id: cbc-id-leaf-type
+    target: cbc
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='ID']"
+    attribute: type
+    expected: [IDType]
+    namespaces: *xsd_namespaces
+- fact_id: SAL-UBL-00115
+  claim_sha256: 767d681143076919df9fc8d870be0196f5f3331e9b751248e8b8994480c6d75f
+  assertions:
+  - assertion_id: exact-maindoc-file-set
+    target: package
+    kind: archive_members_match
+    pattern: 'xsd/maindoc/UBL-[^/]+-2\.3\.xsd'
+    expected_count: 91
+    expected_names_sha256: f9ab3f16a0ac89dbcd42f4e93d1eb5e59a4709bc7d151aedd8b2577c3fc114a2
+  - assertion_id: every-maindoc-target-namespace
+    target: package
+    kind: archive_xml_root_attributes_match
+    pattern: 'xsd/maindoc/UBL-(?P<document>[^/]+)-2\.3\.xsd'
+    attribute: targetNamespace
+    expected_template: 'urn:oasis:names:specification:ubl:schema:xsd:{document}-2'
+    expected_count: 91
+- fact_id: SAL-UBL-00116
+  claim_sha256: f2c55408b3b42b95b9b6c9d298b881d744129213f5dc41fb3299d2b4e3ace70e
+  assertions:
+  - assertion_id: quantity-decimal-base
+    target: cct
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='QuantityType']/xs:simpleContent/xs:extension"
+    attribute: base
+    expected: ['xsd:decimal']
+    namespaces: *xsd_namespaces
+  - assertion_id: quantity-unit-code-optional
+    target: cct
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='QuantityType']//xs:attribute[@name='unitCode']"
+    attribute: use
+    expected: [optional]
+    namespaces: *xsd_namespaces
+- fact_id: SAL-UBL-00117
+  claim_sha256: f30607d7f28f8c86ad2f7413ac07643478b710ef67e89af00db8c48c626abfb3
+  assertions:
+  - assertion_id: xsd-document-definition
+    target: prose
+    kind: html_text_contains
+    expected: >-
+      XSD schema , noun XML document definition conforming to the W3C XML
+      Schema language
+  - assertion_id: business-document-schema-library
+    target: prose
+    kind: html_text_contains
+    expected: >-
+      A set of XML schemas for common business documents such as “Order”,
+      “Despatch Advice”, and “Invoice” that are constructed from the UBL library
+      components and can be used in generic procurement and transportation contexts.
+  - assertion_id: invoice-root-schema-expression
+    target: invoice
+    kind: xml_xpath_text_contains
+    xpath: ".//xs:element[@name='Invoice']/xs:annotation"
+    expected: >-
+      This element MUST be conveyed as the root element in any instance
+      document based on this Schema expression
+    namespaces: *xsd_namespaces
+- fact_id: SAL-UBL-00118
+  claim_sha256: c0de13f53638a19caf44a0ae8bf60fb6568728dd6ff21b5801631011443d2c1c
+  assertions:
+  - assertion_id: allowance-charge-element
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='AllowanceCharge']"
+    attribute: type
+    expected: [AllowanceChargeType]
+    namespaces: *xsd_namespaces
+  - assertion_id: allowance-charge-components
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='AllowanceChargeType']/xs:sequence/xs:element"
+    attribute: ref
+    expected:
+    - ext:UBLExtensions
+    - cbc:ID
+    - cbc:ChargeIndicator
+    - cbc:AllowanceChargeReasonCode
+    - cbc:AllowanceChargeReason
+    - cbc:MultiplierFactorNumeric
+    - cbc:PrepaidIndicator
+    - cbc:SequenceNumeric
+    - cbc:Amount
+    - cbc:BaseAmount
+    - cbc:AccountingCostCode
+    - cbc:AccountingCost
+    - cbc:PerUnitAmount
+    - cac:TaxCategory
+    - cac:TaxTotal
+    - cac:PaymentMeans
+    namespaces: *xsd_namespaces
+- fact_id: SAL-UBL-00119
+  claim_sha256: 779bfe1870210d2e45d3a3bb6d7245caf282f8c495150ba57f10e97508ebcb15
+  assertions:
+  - assertion_id: external-reference-element
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='ExternalReference']"
+    attribute: type
+    expected: [ExternalReferenceType]
+    namespaces: *xsd_namespaces
+  - assertion_id: external-reference-components
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='ExternalReferenceType']/xs:sequence/xs:element"
+    attribute: ref
+    expected:
+    - ext:UBLExtensions
+    - cbc:URI
+    - cbc:DocumentHash
+    - cbc:HashAlgorithmMethod
+    - cbc:ExpiryDate
+    - cbc:ExpiryTime
+    - cbc:MimeCode
+    - cbc:FormatCode
+    - cbc:EncodingCode
+    - cbc:CharacterSetCode
+    - cbc:FileName
+    - cbc:Description
+    namespaces: *xsd_namespaces
+- fact_id: SAL-UBL-00120
+  claim_sha256: 844263e29927e012ebbfb311f5f13e70aa6a7007b5569387fc1da7fb863b0d3c
+  assertions:
+  - assertion_id: invoice-line-element
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='InvoiceLine']"
+    attribute: type
+    expected: [InvoiceLineType]
+    namespaces: *xsd_namespaces
+  - assertion_id: invoice-line-id
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='InvoiceLineType']/xs:sequence/xs:element[@ref='cbc:ID']"
+    attribute: ref
+    expected: ['cbc:ID']
+    namespaces: *xsd_namespaces
+  - assertion_id: invoice-line-quantity
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='InvoiceLineType']/xs:sequence/xs:element[@ref='cbc:InvoicedQuantity']"
+    attribute: ref
+    expected: ['cbc:InvoicedQuantity']
+    namespaces: *xsd_namespaces
+  - assertion_id: invoice-line-amount
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='InvoiceLineType']/xs:sequence/xs:element[@ref='cbc:LineExtensionAmount']"
+    attribute: ref
+    expected: ['cbc:LineExtensionAmount']
+    namespaces: *xsd_namespaces
+  - assertion_id: invoice-line-item
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='InvoiceLineType']/xs:sequence/xs:element[@ref='cac:Item']"
+    attribute: ref
+    expected: ['cac:Item']
+    namespaces: *xsd_namespaces
+- fact_id: SAL-UBL-00121
+  claim_sha256: 0141bf32d9ad05cb9c6b763925969278bf26ad1ab5f7399e07b1943572a4919f
+  assertions:
+  - assertion_id: item-element
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='Item']"
+    attribute: type
+    expected: [ItemType]
+    namespaces: *xsd_namespaces
+  - assertion_id: item-name
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='ItemType']/xs:sequence/xs:element[@ref='cbc:Name']"
+    attribute: ref
+    expected: ['cbc:Name']
+    namespaces: *xsd_namespaces
+  - assertion_id: item-identification
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='ItemType']/xs:sequence/xs:element[@ref='cac:StandardItemIdentification']"
+    attribute: ref
+    expected: ['cac:StandardItemIdentification']
+    namespaces: *xsd_namespaces
+  - assertion_id: item-classification
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='ItemType']/xs:sequence/xs:element[@ref='cac:CommodityClassification']"
+    attribute: ref
+    expected: ['cac:CommodityClassification']
+    namespaces: *xsd_namespaces
+- fact_id: SAL-UBL-00122
+  claim_sha256: 6d03f618a7426741ee48bf1074510797319a19c18cab3f6633c8d165c40cfc3d
+  assertions:
+  - assertion_id: legal-monetary-total-element
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='LegalMonetaryTotal']"
+    attribute: type
+    expected: [MonetaryTotalType]
+    namespaces: *xsd_namespaces
+  - assertion_id: legal-monetary-total-components
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='MonetaryTotalType']/xs:sequence/xs:element"
+    attribute: ref
+    expected:
+    - ext:UBLExtensions
+    - cbc:LineExtensionAmount
+    - cbc:TaxExclusiveAmount
+    - cbc:TaxInclusiveAmount
+    - cbc:AllowanceTotalAmount
+    - cbc:ChargeTotalAmount
+    - cbc:WithholdingTaxTotalAmount
+    - cbc:PrepaidAmount
+    - cbc:PayableRoundingAmount
+    - cbc:PayableAmount
+    - cbc:PayableAlternativeAmount
+    namespaces: *xsd_namespaces
+- fact_id: SAL-UBL-00123
+  claim_sha256: 6c5cfffbd1a65e1b542b34f5504e91b65355cb12c006e3f8a15e78fd100aa249
+  assertions:
+  - assertion_id: party-element
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='Party']"
+    attribute: type
+    expected: [PartyType]
+    namespaces: *xsd_namespaces
+  - assertion_id: party-identification
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='PartyType']/xs:sequence/xs:element[@ref='cac:PartyIdentification']"
+    attribute: ref
+    expected: ['cac:PartyIdentification']
+    namespaces: *xsd_namespaces
+  - assertion_id: party-name
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='PartyType']/xs:sequence/xs:element[@ref='cac:PartyName']"
+    attribute: ref
+    expected: ['cac:PartyName']
+    namespaces: *xsd_namespaces
+  - assertion_id: party-address
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='PartyType']/xs:sequence/xs:element[@ref='cac:PostalAddress']"
+    attribute: ref
+    expected: ['cac:PostalAddress']
+    namespaces: *xsd_namespaces
+  - assertion_id: party-tax
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='PartyType']/xs:sequence/xs:element[@ref='cac:PartyTaxScheme']"
+    attribute: ref
+    expected: ['cac:PartyTaxScheme']
+    namespaces: *xsd_namespaces
+  - assertion_id: party-contact
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='PartyType']/xs:sequence/xs:element[@ref='cac:Contact']"
+    attribute: ref
+    expected: ['cac:Contact']
+    namespaces: *xsd_namespaces
+- fact_id: SAL-UBL-00124
+  claim_sha256: 245a08df5e63f88ab4e0a87cca5f1a2a12d38bf91e8feae19b00a4173af4dfd2
+  assertions:
+  - assertion_id: payment-means-element
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='PaymentMeans']"
+    attribute: type
+    expected: [PaymentMeansType]
+    namespaces: *xsd_namespaces
+  - assertion_id: payment-means-code
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='PaymentMeansType']/xs:sequence/xs:element[@ref='cbc:PaymentMeansCode']"
+    attribute: ref
+    expected: ['cbc:PaymentMeansCode']
+    namespaces: *xsd_namespaces
+  - assertion_id: payment-due-date
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='PaymentMeansType']/xs:sequence/xs:element[@ref='cbc:PaymentDueDate']"
+    attribute: ref
+    expected: ['cbc:PaymentDueDate']
+    namespaces: *xsd_namespaces
+  - assertion_id: payee-account
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='PaymentMeansType']/xs:sequence/xs:element[@ref='cac:PayeeFinancialAccount']"
+    attribute: ref
+    expected: ['cac:PayeeFinancialAccount']
+    namespaces: *xsd_namespaces
+- fact_id: SAL-UBL-00125
+  claim_sha256: 47295d066195736b3b38a79858a6b922371773fbc98fab2a24b46f009f77b530
+  assertions:
+  - assertion_id: postal-address-element
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='PostalAddress']"
+    attribute: type
+    expected: [AddressType]
+    namespaces: *xsd_namespaces
+  - assertion_id: street-name
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='AddressType']/xs:sequence/xs:element[@ref='cbc:StreetName']"
+    attribute: ref
+    expected: ['cbc:StreetName']
+    namespaces: *xsd_namespaces
+  - assertion_id: city-name
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='AddressType']/xs:sequence/xs:element[@ref='cbc:CityName']"
+    attribute: ref
+    expected: ['cbc:CityName']
+    namespaces: *xsd_namespaces
+  - assertion_id: postal-zone
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='AddressType']/xs:sequence/xs:element[@ref='cbc:PostalZone']"
+    attribute: ref
+    expected: ['cbc:PostalZone']
+    namespaces: *xsd_namespaces
+  - assertion_id: address-country
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='AddressType']/xs:sequence/xs:element[@ref='cac:Country']"
+    attribute: ref
+    expected: ['cac:Country']
+    namespaces: *xsd_namespaces
+- fact_id: SAL-UBL-00126
+  claim_sha256: 0cd2f5ce249964d198b9a90a08da43a884585f7569130e38cad9509efc0b7936
+  assertions:
+  - assertion_id: price-element
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='Price']"
+    attribute: type
+    expected: [PriceType]
+    namespaces: *xsd_namespaces
+  - assertion_id: price-amount
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='PriceType']/xs:sequence/xs:element[@ref='cbc:PriceAmount']"
+    attribute: ref
+    expected: ['cbc:PriceAmount']
+    namespaces: *xsd_namespaces
+  - assertion_id: base-quantity
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='PriceType']/xs:sequence/xs:element[@ref='cbc:BaseQuantity']"
+    attribute: ref
+    expected: ['cbc:BaseQuantity']
+    namespaces: *xsd_namespaces
+- fact_id: SAL-UBL-00127
+  claim_sha256: 57735963bd21fb25d435d88511ca33de9ab3fb7d17b9354e11e2e7a359ed6395
+  assertions:
+  - assertion_id: tax-total-element
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='TaxTotal']"
+    attribute: type
+    expected: [TaxTotalType]
+    namespaces: *xsd_namespaces
+  - assertion_id: tax-amount
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='TaxTotalType']/xs:sequence/xs:element[@ref='cbc:TaxAmount']"
+    attribute: ref
+    expected: ['cbc:TaxAmount']
+    namespaces: *xsd_namespaces
+  - assertion_id: tax-subtotal
+    target: cac
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='TaxTotalType']/xs:sequence/xs:element[@ref='cac:TaxSubtotal']"
+    attribute: ref
+    expected: ['cac:TaxSubtotal']
+    namespaces: *xsd_namespaces
+- fact_id: SAL-UBL-00128
+  claim_sha256: 442ad1a202b9862eb8bb2e134f35b07f34383cc4bd4852bbc096bbfec599d7d0
+  assertions:
+  - assertion_id: customization-id-type
+    target: cbc
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='CustomizationID']"
+    attribute: type
+    expected: [CustomizationIDType]
+    namespaces: *xsd_namespaces
+  - assertion_id: profile-id-type
+    target: cbc
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='ProfileID']"
+    attribute: type
+    expected: [ProfileIDType]
+    namespaces: *xsd_namespaces
+  - assertion_id: order-profile-identifiers
+    target: order
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='OrderType']/xs:sequence/xs:element"
+    attribute: ref
+    expected:
+    - ext:UBLExtensions
+    - cbc:UBLVersionID
+    - cbc:CustomizationID
+    - cbc:ProfileID
+    - cbc:ProfileExecutionID
+    - cbc:ID
+    - cbc:SalesOrderID
+    - cbc:CopyIndicator
+    - cbc:UUID
+    - cbc:IssueDate
+    - cbc:IssueTime
+    - cbc:OrderTypeCode
+    - cbc:Note
+    - cbc:RequestedInvoiceCurrencyCode
+    - cbc:DocumentCurrencyCode
+    - cbc:PricingCurrencyCode
+    - cbc:TaxCurrencyCode
+    - cbc:CustomerReference
+    - cbc:AccountingCostCode
+    - cbc:AccountingCost
+    - cbc:LineCountNumeric
+    - cac:ValidityPeriod
+    - cac:QuotationDocumentReference
+    - cac:OrderDocumentReference
+    - cac:OriginatorDocumentReference
+    - cac:CatalogueReference
+    - cac:AdditionalDocumentReference
+    - cac:Contract
+    - cac:ProjectReference
+    - cac:Signature
+    - cac:BuyerCustomerParty
+    - cac:SellerSupplierParty
+    - cac:OriginatorCustomerParty
+    - cac:FreightForwarderParty
+    - cac:AccountingCustomerParty
+    - cac:Delivery
+    - cac:DeliveryTerms
+    - cac:PaymentMeans
+    - cac:PaymentTerms
+    - cac:TransactionConditions
+    - cac:AllowanceCharge
+    - cac:TaxExchangeRate
+    - cac:PricingExchangeRate
+    - cac:PaymentExchangeRate
+    - cac:DestinationCountry
+    - cac:TaxTotal
+    - cac:AnticipatedMonetaryTotal
+    - cac:OrderLine
+    namespaces: *xsd_namespaces
+- fact_id: SAL-UBL-00129
+  claim_sha256: 9088b34bf95719f0ef552f48fc58787b39b8234f3ca4a6e1c114b65bbb80751b
+  assertions:
+  - assertion_id: embedded-object-element
+    target: cbc
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='EmbeddedDocumentBinaryObject']"
+    attribute: type
+    expected: [EmbeddedDocumentBinaryObjectType]
+    namespaces: *xsd_namespaces
+  - assertion_id: embedded-object-udt-base
+    target: cbc
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='EmbeddedDocumentBinaryObjectType']/xs:simpleContent/xs:restriction"
+    attribute: base
+    expected: ['udt:BinaryObjectType']
+    namespaces: *xsd_namespaces
+  - assertion_id: binary-object-base64
+    target: cct
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='BinaryObjectType']/xs:simpleContent/xs:extension"
+    attribute: base
+    expected: ['xsd:base64Binary']
+    namespaces: *xsd_namespaces
+  - assertion_id: binary-object-mime-required
+    target: udt
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='BinaryObjectType']/xs:simpleContent/xs:restriction/xs:attribute[@name='mimeCode']"
+    attribute: use
+    expected: [required]
+    namespaces: *xsd_namespaces
+- fact_id: SAL-UBL-00130
+  claim_sha256: fdf4a745c6c0abf32470a070fe270b111a6412a83222898897347494415cb544
+  assertions:
+  - assertion_id: id-element-type
+    target: cbc
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='ID']"
+    attribute: type
+    expected: [IDType]
+    namespaces: *xsd_namespaces
+  - assertion_id: id-udt-base
+    target: cbc
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='IDType']/xs:simpleContent/xs:restriction"
+    attribute: base
+    expected: ['udt:IdentifierType']
+    namespaces: *xsd_namespaces
+  - assertion_id: id-scheme-id-optional
+    target: cct
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='IdentifierType']//xs:attribute[@name='schemeID']"
+    attribute: use
+    expected: [optional]
+    namespaces: *xsd_namespaces
+  - assertion_id: id-scheme-agency-optional
+    target: cct
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='IdentifierType']//xs:attribute[@name='schemeAgencyID']"
+    attribute: use
+    expected: [optional]
+    namespaces: *xsd_namespaces
+- fact_id: SAL-UBL-00131
+  claim_sha256: 1e551cd4d7eaf0f8da4739ae40f9eb4128d236e8f77d3e022b130e8d0088f730
+  assertions:
+  - assertion_id: ubl-version-id-type
+    target: cbc
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='UBLVersionID']"
+    attribute: type
+    expected: [UBLVersionIDType]
+    namespaces: *xsd_namespaces
+  - assertion_id: ubl-version-position
+    target: order
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='OrderType']/xs:sequence/xs:element[2]"
+    attribute: ref
+    expected: ['cbc:UBLVersionID']
+    namespaces: *xsd_namespaces
+- fact_id: SAL-UBL-00132
+  claim_sha256: 44aa297305754e362c8d4f1d721f008dbe0fbbe0f1b1c2307ff48a95ba46b704
+  assertions:
+  - assertion_id: extensions-first
+    target: order
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='OrderType']/xs:sequence/xs:element[1]"
+    attribute: ref
+    expected: ['ext:UBLExtensions']
+    namespaces: *xsd_namespaces
+  - assertion_id: extension-content-required
+    target: extensions
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='UBLExtensionType']/xs:sequence/xs:element[@ref='ExtensionContent']"
+    attribute: minOccurs
+    expected: ['1']
+    namespaces: *xsd_namespaces
+  - assertion_id: foreign-extension-namespace
+    target: extension_content
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='ExtensionContentType']/xs:sequence/xs:any"
+    attribute: namespace
+    expected: ['##other']
+    namespaces: *xsd_namespaces
+  - assertion_id: lax-extension-validation
+    target: extension_content
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='ExtensionContentType']/xs:sequence/xs:any"
+    attribute: processContents
+    expected: [lax]
+    namespaces: *xsd_namespaces
+  - assertion_id: one-extension-apex
+    target: extension_content
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:complexType[@name='ExtensionContentType']/xs:sequence/xs:any"
+    attribute: maxOccurs
+    expected: ['1']
+    namespaces: *xsd_namespaces
+- fact_id: SAL-UBL-00133
+  claim_sha256: 9a17d7a8af90a8f84e5db6ba150185c1132681dfb6e36872530ba5af5cf0a2dc
+  assertions:
+  - assertion_id: exact-91-maindoc-inventory
+    target: package
+    kind: archive_members_match
+    pattern: 'xsd/maindoc/UBL-[^/]+-2\.3\.xsd'
+    expected_count: 91
+    expected_names_sha256: f9ab3f16a0ac89dbcd42f4e93d1eb5e59a4709bc7d151aedd8b2577c3fc114a2
+- fact_id: SAL-UBL-50613DF5EFE944E0
+  claim_sha256: 836fe566c55f9db372f61161b58263c969667fd53c7dfc39735ed5080be84641
+  assertions:
+  - assertion_id: exact-91-maindoc-qualified-namespaces
+    target: package
+    kind: archive_xml_root_attributes_match
+    pattern: 'xsd/maindoc/UBL-(?P<document>[A-Za-z0-9]+)-2\.3\.xsd'
+    attribute: targetNamespace
+    expected_template: 'urn:oasis:names:specification:ubl:schema:xsd:{document}-2'
+    expected_count: 91
+  - assertion_id: exact-91-maindoc-qualified-elements
+    target: package
+    kind: archive_xml_root_attributes_match
+    pattern: 'xsd/maindoc/UBL-(?P<document>[A-Za-z0-9]+)-2\.3\.xsd'
+    attribute: elementFormDefault
+    expected_template: qualified
+    expected_count: 91
+- fact_id: SAL-UBL-6D5AF510AAF4874B
+  claim_sha256: cb95e81173010d5196afbe47c6382a5a3f04c284979f3d786541351d25a912b6
+  assertions:
+  - assertion_id: cbc-target-namespace
+    target: cbc
+    kind: xml_xpath_attributes_equal
+    xpath: .
+    attribute: targetNamespace
+    expected: [urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2]
+  - assertion_id: cbc-qualified-elements
+    target: cbc
+    kind: xml_xpath_attributes_equal
+    xpath: .
+    attribute: elementFormDefault
+    expected: [qualified]
+  - assertion_id: cbc-qualified-and-unqualified-type-imports
+    target: cbc
+    kind: xml_xpath_attributes_equal
+    xpath: "./xs:import"
+    attribute: namespace
+    expected:
+    - urn:oasis:names:specification:ubl:schema:xsd:QualifiedDataTypes-2
+    - urn:oasis:names:specification:bdndr:schema:xsd:UnqualifiedDataTypes-1
+    namespaces: *xsd_namespaces
+  - assertion_id: cbc-element-type-inventory
+    target: cbc
+    kind: xml_xpath_count
+    xpath: "./xs:element"
+    expected: 1105
+    namespaces: *xsd_namespaces
+- fact_id: SAL-UBL-87F7B313CE24D408
+  claim_sha256: fc8156344087ea8a601ea095f4021442533fbed516f3e3d42ddb76a93c262f21
+  assertions:
+  - assertion_id: udt-target-namespace
+    target: udt
+    kind: xml_xpath_attributes_equal
+    xpath: .
+    attribute: targetNamespace
+    expected: [urn:oasis:names:specification:bdndr:schema:xsd:UnqualifiedDataTypes-1]
+  - assertion_id: udt-simple-content-inventory
+    target: udt
+    kind: xml_xpath_count
+    xpath: ".//xs:simpleContent"
+    expected: 20
+    namespaces: *xsd_namespaces
+  - assertion_id: udt-restriction-inventory
+    target: udt
+    kind: xml_xpath_count
+    xpath: ".//xs:restriction"
+    expected: 7
+    namespaces: *xsd_namespaces

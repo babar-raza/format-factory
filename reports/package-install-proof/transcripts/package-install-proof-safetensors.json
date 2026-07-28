@@ -1,21 +1,55 @@
 {
+  "invocation_id": "PACKAGE-PROOF-27C133527C9F472F880CD2376B501D2689641231C74B0241B1D4D0EA0A147A1A-safetensors",
   "skill_id": "package-install-proof",
-  "skill_version": "2.0",
+  "skill_version": "3.0",
+  "mode": "live",
+  "inputs": {
+    "format_id": "safetensors",
+    "package_name": "format-factory-safetensors"
+  },
+  "allowed_files": [
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-safetensors.json"
+  ],
+  "actual_files_changed": [
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-safetensors.json"
+  ],
+  "tests_run": [
+    "wheel-origin import assertion",
+    "format_factory.safetensors.load on samples/by-format/safetensors/valid/single-tensor.safetensors",
+    "deep installed-submodule import scan"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-07-28T07:43:08+00:00",
   "format_id": "safetensors",
   "package_name": "format-factory-safetensors",
-  "package_version": "0.1.0.dev0",
-  "wheel_path": "format_factory_safetensors-0.1.0.dev0-py3-none-any.whl",
-  "wheel_sha256": "7c4c8c2dad7d5dca49709277b2c9ed4eff0edb64a907cdf7758958be1cac5f99",
-  "source_digest": "04a4ccc991c453f6a5ee3639cd7c375e82b583d9aa95cc61a8d5e759f868b6b5",
+  "package_version": "0.2.0.dev0",
+  "wheel_path": "format_factory_safetensors-0.2.0.dev0-py3-none-any.whl",
+  "wheel_sha256": "8effa664da5e9000f1ef3edff00ade0897b883ec14da89ef57803a0cd60241ae",
+  "proof_id": "PACKAGE-PROOF-27C133527C9F472F880CD2376B501D2689641231C74B0241B1D4D0EA0A147A1A",
+  "source_digest": "a9d2d7e8117dd2576a42f2f70d50c65475454ce63a144d261c916fce0c6fb895",
+  "proof_input_digest": "c1b16f0e87bcd670266bb7a891db373f6fc55e91d2d3ada3ebaedae38134ad73",
+  "local_dependencies": [
+    {
+      "package_name": "format-factory-core",
+      "wheel_file": "format_factory_core-0.1.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "c2180091e94db95474e24494fba89bd8f1cd4ba51814743e29070b5c5907d2bc",
+      "install_result": "PASS"
+    }
+  ],
   "install_method": "pip install --no-deps <wheel> (ephemeral venv)",
   "install_result": "PASS",
   "import_result": "PASS",
-  "import_statement": "import safetensors",
+  "import_statement": "import format_factory.safetensors",
   "smoke_result": "PASS",
-  "smoke_test": "safetensors.safetensors_codec.load_safetensors on samples/by-format/safetensors/valid/single-tensor.safetensors",
+  "smoke_test": "format_factory.safetensors.load on samples/by-format/safetensors/valid/single-tensor.safetensors",
   "verdict": "PASS",
   "proof_report": "reports/package-install-proof/proof-report.md",
   "notes": "B9 proof via tools/run_package_install_proof.py (GAP-FORENSIC-001)",
-  "generated_at": "2026-07-16T06:12:37+00:00",
-  "worker_agent": "claude"
+  "generated_at": "2026-07-28T07:43:08+00:00",
+  "worker_agent": "codex"
 }

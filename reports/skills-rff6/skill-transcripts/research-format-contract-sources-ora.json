@@ -1,0 +1,38 @@
+{
+  "invocation_id": "FF6-ORA-AUTHORITY-20260723",
+  "skill_id": "research-format-contract-sources",
+  "task_id": "TC-FF6-ORA-AUTHORITY-PINNING",
+  "mode": "live",
+  "inputs": {
+    "format_id": "ora",
+    "source_ids": [
+      "SRC-ORA-001",
+      "SRC-ORA-002",
+      "SRC-ORA-003"
+    ],
+    "certification_scope": "Named OpenRaster draft-profile interoperability"
+  },
+  "allowed_files": [
+    "shared/format-contracts/research/ora.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/research/ora.yaml"
+  ],
+  "tests_run": [
+    "All three official freedesktop authority records are ACQUIRED and SHA-256 pinned",
+    "research intake source closure: PASS",
+    "contract compiler --check ora: PASS"
+  ],
+  "validations": {
+    "review_gate_enforced": "PASS",
+    "source_closure": "PASS",
+    "normative_routing": "PASS",
+    "no_sal_store_write": "PASS"
+  },
+  "output_digests": {
+    "shared/format-contracts/research/ora.yaml": "196a4b2684dfe3be5fc70bd289cb0f5a731b31e844ca5f046ea0c783e9cdf70d"
+  },
+  "result": "PASS",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

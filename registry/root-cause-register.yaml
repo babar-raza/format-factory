@@ -1,6 +1,33 @@
 version: 1
 root_causes:
 
+- root_cause_id: RC-FIO-005
+  title: "R90 product-code ledger mixes historical schemas with current proof records"
+  first_failing_boundary: "validate_product_code_ledger.validate_ledger source_files iteration"
+  local_cause: >-
+    The validator assumed every entries[].source_files item was a mapping,
+    although historical test-coverage and old sprint entries store strings or
+    omit current proof fields.
+  systemic_cause: >-
+    The append-only historical ledger was never separated into a materialized
+    current proof projection. Callers scanned the entire mixed-schema history
+    as if every record were current and SHA-bound.
+  affected_producer: "R90 historical product-code-change-ledger accumulation"
+  affected_consumers:
+    - tools/supervisor/validate_product_code_ledger.py
+    - tools/supervisor/autonomous_cycle.py
+    - reports/r90/product-code-change-ledger.json
+    - six-format production proof and promotion calculations
+  recurrence_path: >-
+    Any future legacy append or current proof validation will either crash or
+    misclassify historical evidence until a versioned current-entry projection
+    and migration path are enforced.
+  confidence: HIGH
+  issue_ids:
+    - FI-033
+  repair_skill_id: found-issue-ownership
+  status: mitigated
+
 - root_cause_id: RC-FIO-001
   title: "Stale test fixture parametrize lists after analytics separation migration"
   first_failing_boundary: "tests/governance_pilots/test_separation_pilots.py (parametrize lists)"
@@ -52,3 +79,43 @@ root_causes:
     - FI-013
   repair_skill_id: null
   status: open
+
+- root_cause_id: RC-FIO-004
+  title: "IPYNB corpus validation conflated normalized model acceptance with immutable source validity"
+  first_failing_boundary: "samples/by-format/ipynb/_corpus-manifest.yaml structural_test PASS declarations"
+  local_cause: >-
+    The synthetic generator emitted nbformat 4.5 cells without the cell IDs
+    required since minor version 4.5, while retaining a 4.5 declaration.
+  systemic_cause: >-
+    Corpus checks exercised legacy probes/loaders and the official reference
+    implementation's normalizing validate path, then treated the repaired
+    in-memory object as evidence that original bytes were valid. No mandatory
+    pre-normalization exact-schema check bound the validity label, manifest,
+    oracle case, and fixture digest together.
+  affected_producer: "CORPUS-MANIFEST-BACKFILL-2026-07-14 synthetic IPYNB corpus pipeline"
+  affected_consumers:
+    - samples/by-format/ipynb/_corpus-manifest.yaml
+    - samples/by-format/ipynb/_provenance.yaml
+    - oracle/formats/ipynb/oracle-package.yaml
+    - oracle/formats/ipynb/reports/oracle-run-summary.json
+    - tests/python/ipynb/test_ipynb_codec.py
+    - tests/python/ipynb/test_ipynb_validation.py
+    - tests/python/ipynb/test_ipynb_cell_id.py
+    - tests/python/ipynb/test_ipynb_analytics.py
+    - tests/python/ipynb/test_ipynb_analytics_coverage.py
+    - tests/python/ipynb/test_ipynb_compat_facades.py
+    - tests/python/ipynb/test_ipynb_mutation_api.py
+    - tests/python/ipynb/test_ipynb_document_mutation.py
+    - tests/python/ipynb/test_ipynb_to_csv.py
+  recurrence_path: >-
+    Any corpus pipeline that parses, upgrades, repairs, or normalizes a fixture
+    before evaluating declared-profile validity can repeat the false-positive
+    evidence chain, even when every downstream behavioral test passes.
+  confidence: HIGH
+  issue_ids:
+    - FI-042
+  repair_skill_id: format-feature-expansion
+  supporting_skill_ids:
+    - quarantine-invalid-artifact
+    - found-issue-ownership
+  status: healed

@@ -1,0 +1,86 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-materialize-production-proof-ubl-extension-security-001",
+  "execution_id": "ff6-materialize-production-proof-ubl-extension-security-001",
+  "task_id": "AUTO-UBL-IMPLEMENT-UBL-EXT-001",
+  "skill_id": "materialize-production-proof",
+  "selected_skill_ids": [
+    "materialize-production-proof"
+  ],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-UBL-PROOF-001",
+  "pre_mutation_guard_authorization_id": "369b246a9c648410",
+  "requested_operation": "materialize exact negative executed proof that UBL extension payload inspection never resolves external entities",
+  "inputs": {
+    "defect_id": "GAP-FF6-UBL-EXTENSION-IMPLICIT-RESOLUTION-001",
+    "failing_regression": "tests/python/ubl/test_production_namespace.py::test_extension_payload_never_resolves_external_entities",
+    "invalidation_input": "tests/python/ubl/fixtures/hostile-extension-entity.xml",
+    "target_product": "ubl",
+    "obligation_id": "SAL-UBL-OBL-0B23187F233A25E2",
+    "polarity": "negative",
+    "base_git_commit": "d9a8b0829fa158420d253f5e7cecc504519b4dc2"
+  },
+  "allowed_files": [
+    "reports/skills-rff6/skill-transcripts/materialize-production-proof-ubl-extension-security-001.json"
+  ],
+  "actual_files_changed": [
+    "reports/skills-rff6/skill-transcripts/materialize-production-proof-ubl-extension-security-001.json"
+  ],
+  "behavior_added": [],
+  "tests_run": [
+    ".local/venvs/safetensors-current-proof/Scripts/python.exe -m pytest tests/python/ubl/test_production_namespace.py::test_extension_payload_never_resolves_external_entities -q: PASS",
+    "tools/supervisor/production_program.py prove --format ubl --obligation SAL-UBL-OBL-0B23187F233A25E2 --polarity negative --test tests/python/ubl/test_production_namespace.py --fixture tests/python/ubl/fixtures/hostile-extension-entity.xml --run <python> -m pytest tests/python/ubl/test_production_namespace.py::test_extension_payload_never_resolves_external_entities -q: exit 0"
+  ],
+  "validations": {
+    "one_obligation_per_executed_result": "PASS",
+    "exact_negative_polarity": "PASS",
+    "complete_execution_input_closure": "PASS",
+    "hostile_fixture_digest_bound": "PASS",
+    "external_entity_not_resolved": "PASS",
+    "promotion_claimed": "NO"
+  },
+  "proof": {
+    "format_id": "ubl",
+    "obligation_id": "SAL-UBL-OBL-0B23187F233A25E2",
+    "proof_id": "PROOF-3C60CB67D14B2645DB67B0098926036A97711ABBC0FADC786BF999EB19BF7AEC",
+    "polarity": "negative",
+    "source_digest": "6adc580007e4d3118d6924fb25aaaaa509f582cc6c9259b08a4cc6604ba2b46c",
+    "test_digest": "0ddc732a576bef01e8f3468b588d9bf53caf6718829e44f61d84160253a1ebf2",
+    "fixture_digest": "796c2ab8ae0ac35154b7543ab69ba8a465330c80c8802bd5f5788b2e8cbbff43",
+    "dependency_digest": "06008a08b375d411077d614222153526ca7f628cc486a3d8c198c0afb5f3380d",
+    "tool_digest": "b7c0f68d84382d04b000a97d01e8e625355513d0972a17a048f4cd241018ce20",
+    "environment_digest": "6daa46d6610b7161fc3691796895c606666ec969b36c9c29c79b6d28a62b1ccc",
+    "state_proof_digest": "66c170e65419bc51a8eb80c5d1ced9e146b29748ef4d540b1475ff0baf1e2c44",
+    "command_exit_code": 0,
+    "ubl_unmet_before": 185,
+    "ubl_unmet_after": 184,
+    "program_open_gaps_before": 616,
+    "program_open_gaps_after": 615
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for this single rejection obligation; no UBL certification claimed",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES, retained from the active mission session",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, retained in the mission receipt chain",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "UBL_EXTENSION_EXTERNAL_ENTITY_ISOLATION_PROOF_MATERIALIZED_NOT_CERTIFIED",
+  "timestamp": "2026-07-25T18:36:40.4135980Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

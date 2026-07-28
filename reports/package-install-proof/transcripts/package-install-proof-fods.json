@@ -1,12 +1,39 @@
 {
+  "invocation_id": "PACKAGE-PROOF-12C7404E2E843E3D587F1EBF145F9C73208164B95DA1BCDA3CC216EC6A6092C4-fods",
   "skill_id": "package-install-proof",
-  "skill_version": "2.0",
+  "skill_version": "3.0",
+  "mode": "live",
+  "inputs": {
+    "format_id": "fods",
+    "package_name": "format-factory-fods"
+  },
+  "allowed_files": [
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-fods.json"
+  ],
+  "actual_files_changed": [
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-fods.json"
+  ],
+  "tests_run": [
+    "wheel-origin import assertion",
+    "fods.parser.parse_fods_strict on samples/by-format/fods/minimal-spreadsheet.fods",
+    "deep installed-submodule import scan"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-07-25T18:28:06+00:00",
   "format_id": "fods",
   "package_name": "format-factory-fods",
   "package_version": "0.1.0.dev0",
   "wheel_path": "format_factory_fods-0.1.0.dev0-py3-none-any.whl",
-  "wheel_sha256": "48263e64aa1095b4670b735ad911fea5e62a45397bb5943d1937d5b891571123",
-  "source_digest": "1d6093836de64a8350edbd1c00852c815802427b6375b356b96890e3f4105922",
+  "wheel_sha256": "69ee5a39dcafa3d5272dd7ed8e92617e538ea870e86fe522a1733523a7822a9d",
+  "proof_id": "PACKAGE-PROOF-12C7404E2E843E3D587F1EBF145F9C73208164B95DA1BCDA3CC216EC6A6092C4",
+  "source_digest": "0794d0788d4387ed3e39337fed5c8a4a9eac1688aa4aa7242ded9ed6fb2fc884",
+  "proof_input_digest": "1e74d2bb0054d3253713f758d663a97ad267dbda600ce682cdfd4fa44cc79d8d",
+  "local_dependencies": [],
   "install_method": "pip install --no-deps <wheel> (ephemeral venv)",
   "install_result": "PASS",
   "import_result": "PASS",
@@ -16,6 +43,6 @@
   "verdict": "PASS",
   "proof_report": "reports/package-install-proof/proof-report.md",
   "notes": "B9 proof via tools/run_package_install_proof.py (GAP-FORENSIC-001)",
-  "generated_at": "2026-07-15T17:36:29+00:00",
-  "worker_agent": "claude"
+  "generated_at": "2026-07-25T18:28:06+00:00",
+  "worker_agent": "codex"
 }

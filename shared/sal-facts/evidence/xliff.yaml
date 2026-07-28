@@ -1,0 +1,826 @@
+schema_version: '1.0'
+format_id: xliff
+coverage: complete
+authority_policy: >-
+  Every assertion is an exact structural or normalized-text predicate over the
+  SHA-256 pinned XLIFF 2.1 OASIS Standard release package. XML assertions parse
+  only pinned archive bytes and never resolve schemas, entities, catalogs, or
+  network resources. Module inventories are bound by count and exact-name digest.
+xsd_namespaces: &xsd_namespaces
+  xs: http://www.w3.org/2001/XMLSchema
+sch_namespaces: &sch_namespaces
+  sch: http://purl.oclc.org/dsdl/schematron
+targets:
+  package:
+    source_id: SRC-XLF-002
+    member_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+  specification:
+    source_id: SRC-XLF-002
+    member: xliff-core-v2.1-os.xml
+    member_sha256: e8c72ec2314e1025f25886cd0ea2b6c10aa2405bd292026383afca2207c44e5b
+  core:
+    source_id: SRC-XLF-002
+    member: schemas/xliff_core_2.0.xsd
+    member_sha256: 5686d2dbe9dac95e34d1b06a805e1e0f4999db5d5a67dc8bb8514c780592a84d
+  core_schematron:
+    source_id: SRC-XLF-002
+    member: schemas/xliff_core_2.1.sch
+    member_sha256: d4275f2d2574f892624bcd8f83bcc3001c75d623e4eb36896d15d147f16ed7a2
+  matches:
+    source_id: SRC-XLF-002
+    member: schemas/matches.xsd
+    member_sha256: f8d348693907774259e162b9e4ab84fa673aa1655edb1eac8ff605b909e6ee46
+  glossary:
+    source_id: SRC-XLF-002
+    member: schemas/glossary.xsd
+    member_sha256: 54797c7fcc6931b0777f4c594f082ef4063d9a2f0152d6b3e8cc7588f5ada26d
+  metadata:
+    source_id: SRC-XLF-002
+    member: schemas/metadata.xsd
+    member_sha256: f00e5b225bd11bb71cc5494f25bd63a323730d78c1ce79a3c7bc144ef51a47e1
+  resource_data:
+    source_id: SRC-XLF-002
+    member: schemas/resource_data.xsd
+    member_sha256: 02249bcd1e608209fb51b0348afcee8daeb4a0b6819ac8592307cd076f6c5f10
+  size_restriction:
+    source_id: SRC-XLF-002
+    member: schemas/size_restriction.xsd
+    member_sha256: e90519360c7ecaaf8c35d246cd30147a804d220119bbc25eb729d19c84062614
+  validation:
+    source_id: SRC-XLF-002
+    member: schemas/validation.xsd
+    member_sha256: 80f7d811648d28b117c49a403bd039bc16f3c1e5a1c1ed703428ae2a34e4e4fc
+  format_style:
+    source_id: SRC-XLF-002
+    member: schemas/fs.xsd
+    member_sha256: bcbabcfe652c4f1b86c34e42010a5288c3b74f3fe44d6b817a121c3bca83ada9
+  its:
+    source_id: SRC-XLF-002
+    member: schemas/its.xsd
+    member_sha256: a85624c95acc7dd17ca27ec174f24bc284dbd95e26cc68cdd04c053ab6c3903c
+  its_mapping:
+    source_id: SRC-XLF-002
+    member: schemas/itsm.xsd
+    member_sha256: ae01e40a6c7ebfa40aba509a3b5d6b7f9830dafa092adcd60fb976aba0d02399
+  nvdl:
+    source_id: SRC-XLF-002
+    member: schemas/xliff_2_advanced_validation.nvdl
+    member_sha256: 40d3f5f292a7db57a9b8ccb60aa202b2927d8ec74c5aa88252233b05d24574c2
+facts:
+- fact_id: SAL-XLIFF-00001
+  claim_sha256: f0a23e38919c3692c40c4ae7d89452fd6c54b739c09cb8c5152020e389a1d8c6
+  assertions:
+  - assertion_id: core-namespace
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: .
+    attribute: targetNamespace
+    expected: [urn:oasis:names:tc:xliff:document:2.0]
+  - assertion_id: root-required-attributes
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='xliff']//xs:attribute[@name='version']"
+    attribute: use
+    expected: [required]
+    namespaces: *xsd_namespaces
+  - assertion_id: root-required-src-lang
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='xliff']//xs:attribute[@name='srcLang']"
+    attribute: use
+    expected: [required]
+    namespaces: *xsd_namespaces
+  - assertion_id: root-file-cardinality
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='xliff']//xs:element[@ref='xlf:file']"
+    attribute: maxOccurs
+    expected: [unbounded]
+    namespaces: *xsd_namespaces
+- fact_id: SAL-XLIFF-00002
+  claim_sha256: e584ca913561965660949a2ffa54acfb160ca97c4ff0ee99c757a4b3a2bf2367
+  assertions:
+  - assertion_id: unit-segment-or-ignorable
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='unit']//xs:choice/xs:element"
+    attribute: ref
+    expected: ['xlf:segment', 'xlf:ignorable']
+    namespaces: *xsd_namespaces
+  - assertion_id: segment-content
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='segment']//xs:sequence/xs:element"
+    attribute: ref
+    expected: ['xlf:source', 'xlf:target']
+    namespaces: *xsd_namespaces
+  - assertion_id: ignorable-content
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='ignorable']//xs:sequence/xs:element"
+    attribute: ref
+    expected: ['xlf:source', 'xlf:target']
+    namespaces: *xsd_namespaces
+- fact_id: SAL-XLIFF-00003
+  claim_sha256: 7d76d54dcaa229c57ee9edeb62ae5d8629f7ec81b82ea7e01225eacc452db12f
+  assertions:
+  - assertion_id: version-21-standard
+    target: specification
+    kind: xml_xpath_text_contains
+    xpath: .
+    expected: This document defines version 2.1 of the XML Localization Interchange File Format (XLIFF).
+  - assertion_id: version-21-core-namespace
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: .
+    attribute: targetNamespace
+    expected: [urn:oasis:names:tc:xliff:document:2.0]
+  - assertion_id: version-attribute-required
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='xliff']//xs:attribute[@name='version']"
+    attribute: use
+    expected: [required]
+    namespaces: *xsd_namespaces
+- fact_id: SAL-XLIFF-00004
+  claim_sha256: 060efe2667d9251b90494ad35275c3386328eb451110285f06d5763fd4ea7152
+  assertions:
+  - assertion_id: file-foreign-elements
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='file']//xs:any"
+    attribute: namespace
+    expected: ['##other']
+    namespaces: *xsd_namespaces
+  - assertion_id: file-foreign-processing
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='file']//xs:any"
+    attribute: processContents
+    expected: [lax]
+    namespaces: *xsd_namespaces
+  - assertion_id: extension-preservation-requirement
+    target: specification
+    kind: xml_xpath_text_contains
+    xpath: .
+    expected: >-
+      However, conformant applications should preserve existing custom extensions
+      when processing conformant XLIFF Documents
+- fact_id: SAL-XLIFF-00005
+  claim_sha256: 2bf57553f907611b59ee5dacefeb029c83415514aaa10259895842f024e606c6
+  assertions:
+  - assertion_id: data-reference-resolution
+    target: core_schematron
+    kind: xml_xpath_text_contains
+    xpath: .
+    expected: >-
+      'dataRef' attribute must point to a 'data' element within the same 'unit'
+      (allowed referencing pattern: dataRef="data-id").
+  - assertion_id: spanning-pair-resolution
+    target: core_schematron
+    kind: xml_xpath_text_contains
+    xpath: .
+    expected: >-
+      The end code must appear after the start code.
+  - assertion_id: end-code-reference-rule
+    target: core_schematron
+    kind: xml_xpath_text_contains
+    xpath: .
+    expected: >-
+      If 'isolated' is set to 'yes', only 'id' must be used and if set to 'no'
+      (or missing), only 'startRef' must be specified
+- fact_id: SAL-XLIFF-00006
+  claim_sha256: f5fd1fc0b783de607dbc3329e764c50f26d3f61f1bc849ed3ed8e51d6b2d25c5
+  assertions:
+  - assertion_id: ph-required-id
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='ph']//xs:attribute[@name='id']"
+    attribute: use
+    expected: [required]
+    namespaces: *xsd_namespaces
+  - assertion_id: pc-required-id
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='pc']//xs:attribute[@name='id']"
+    attribute: use
+    expected: [required]
+    namespaces: *xsd_namespaces
+  - assertion_id: sc-required-id
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='sc']//xs:attribute[@name='id']"
+    attribute: use
+    expected: [required]
+    namespaces: *xsd_namespaces
+  - assertion_id: ec-start-ref
+    target: core
+    kind: xml_xpath_count
+    xpath: ".//xs:element[@name='ec']//xs:attribute[@name='startRef']"
+    expected: 1
+    namespaces: *xsd_namespaces
+- fact_id: SAL-XLIFF-00007
+  claim_sha256: bcee8e90fceb2fe04cef36d0248110410f3147f15b52644f39f232e6731163fa
+  assertions:
+  - assertion_id: official-module-namespaces
+    target: specification
+    kind: xml_xpath_text_contains
+    xpath: .
+    expected: >-
+      urn:oasis:names:tc:xliff:matches:2.0
+      urn:oasis:names:tc:xliff:glossary:2.0
+      urn:oasis:names:tc:xliff:fs:2.0
+      urn:oasis:names:tc:xliff:metadata:2.0
+      urn:oasis:names:tc:xliff:resourcedata:2.0
+      urn:oasis:names:tc:xliff:sizerestriction:2.0
+      urn:oasis:names:tc:xliff:validation:2.0
+      http://www.w3.org/2005/11/its
+      urn:oasis:names:tc:xliff:itsm:2.1
+  - assertion_id: module-xsd-inventory
+    target: package
+    kind: archive_members_match
+    pattern: 'schemas/(?:itsm|resource_data|metadata|validation|size_restriction|fs|matches|glossary|its)\.xsd'
+    expected_count: 9
+    expected_names_sha256: 186653433bf92e23c309167853701e8013b062db317f91fad0d06ab7d6aabaf7
+- fact_id: SAL-XLIFF-00008
+  claim_sha256: 177fad6ae36fc049166780b9197daac90dec7a3bbe92b09198133aa7b766ca6d
+  assertions:
+  - assertion_id: resource-module-namespace
+    target: resource_data
+    kind: xml_xpath_attributes_equal
+    xpath: .
+    attribute: targetNamespace
+    expected: [urn:oasis:names:tc:xliff:resourcedata:2.0]
+  - assertion_id: source-href-optional
+    target: resource_data
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='source']//xs:attribute[@name='href']"
+    attribute: use
+    expected: [optional]
+    namespaces: *xsd_namespaces
+  - assertion_id: target-href-optional
+    target: resource_data
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='target']//xs:attribute[@name='href']"
+    attribute: use
+    expected: [optional]
+    namespaces: *xsd_namespaces
+  - assertion_id: reference-href-required
+    target: resource_data
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='reference']//xs:attribute[@name='href']"
+    attribute: use
+    expected: [required]
+    namespaces: *xsd_namespaces
+- fact_id: SAL-XLIFF-00009
+  claim_sha256: 3e7e8ff917a888cbdf59c97176094720183acbb5b49ec2aa9322d828a8bc57ac
+  assertions:
+  - assertion_id: root-version-required
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='xliff']//xs:attribute[@name='version']"
+    attribute: use
+    expected: [required]
+    namespaces: *xsd_namespaces
+  - assertion_id: root-src-lang-required
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='xliff']//xs:attribute[@name='srcLang']"
+    attribute: use
+    expected: [required]
+    namespaces: *xsd_namespaces
+  - assertion_id: root-trg-lang-optional
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='xliff']//xs:attribute[@name='trgLang']"
+    attribute: use
+    expected: [optional]
+    namespaces: *xsd_namespaces
+  - assertion_id: targets-require-trg-lang
+    target: core_schematron
+    kind: xml_xpath_text_contains
+    xpath: .
+    expected: >-
+      XLIFF document contains 'target' element(s), but the 'trgLang' attribute
+      of 'xliff' is missing.
+- fact_id: SAL-XLIFF-00010
+  claim_sha256: 4d5f5f2224a69a6df907f8150e1c9205564621d1e00ddf4faa176ab1baa97da1
+  assertions:
+  - assertion_id: file-id-required
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='file']//xs:attribute[@name='id']"
+    attribute: use
+    expected: [required]
+    namespaces: *xsd_namespaces
+  - assertion_id: file-id-scope
+    target: specification
+    kind: xml_xpath_text_contains
+    xpath: .
+    expected: >-
+      The prefix f indicates a <file> id and the value of that id is unique
+      among all <file> id attribute values within the enclosing <xliff> element.
+- fact_id: SAL-XLIFF-00011
+  claim_sha256: 917c68c1bfe0533c03bc346daccf0a0ca9b46e4223f68658b58950d58eec5832
+  assertions:
+  - assertion_id: core-xsd-present
+    target: package
+    kind: archive_members_match
+    pattern: 'schemas/xliff_core_2\.0\.xsd'
+    expected_count: 1
+    expected_names_sha256: 22bbe4c9f48a720ce2ae4a524822847f705db08ba46fb0b4262153d7f38a8996
+  - assertion_id: core-schematron-present
+    target: package
+    kind: archive_members_match
+    pattern: 'schemas/xliff_core_2\.1\.sch'
+    expected_count: 1
+    expected_names_sha256: c4644c4ce9994e3416b0e7619d696b59af4ef83c0bd27611db2b1772e822c9e2
+  - assertion_id: advanced-validator-present
+    target: package
+    kind: archive_members_match
+    pattern: 'schemas/xliff_2_advanced_validation\.nvdl'
+    expected_count: 1
+    expected_names_sha256: 2a905a95f400d6365adacaddc8eefa2dc2a8a85adb19057759734c461cc87b69
+- fact_id: SAL-XLIFF-00012
+  claim_sha256: b242656beecb856a937f9f40f1017725fe5d77025b658a2a880ec09ffffb1fd4
+  assertions:
+  - assertion_id: file-structural-children
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='file']//xs:choice/xs:element"
+    attribute: ref
+    expected: ['xlf:unit', 'xlf:group']
+    namespaces: *xsd_namespaces
+  - assertion_id: group-structural-children
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='group']//xs:choice/xs:element"
+    attribute: ref
+    expected: ['xlf:unit', 'xlf:group']
+    namespaces: *xsd_namespaces
+- fact_id: SAL-XLIFF-00013
+  claim_sha256: e65992068b8bcca3717fd1a58ec55316cf8ef6f7a0ab304ef1110fed72833c3b
+  assertions:
+  - assertion_id: required-file-id
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='file']//xs:attribute[@name='id']"
+    attribute: use
+    expected: [required]
+    namespaces: *xsd_namespaces
+  - assertion_id: required-group-id
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='group']//xs:attribute[@name='id']"
+    attribute: use
+    expected: [required]
+    namespaces: *xsd_namespaces
+  - assertion_id: required-unit-id
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='unit']//xs:attribute[@name='id']"
+    attribute: use
+    expected: [required]
+    namespaces: *xsd_namespaces
+  - assertion_id: inline-id-rule
+    target: core_schematron
+    kind: xml_xpath_text_contains
+    xpath: .
+    expected: >-
+      Invalid id used for element ' '. It must duplicate the id of its
+      corresponding element, enclosed within the 'source' element or be unique
+      in the scope of 'unit'.
+  - assertion_id: data-ref-resolution-rule
+    target: core_schematron
+    kind: xml_xpath_text_contains
+    xpath: .
+    expected: >-
+      'dataRef' attribute must point to a 'data' element within the same 'unit'
+- fact_id: SAL-XLIFF-00014
+  claim_sha256: c38dd1b649abdcdaae3f2ed748f4a1fccb0ed96d002bc28b45dcf300b645984c
+  assertions:
+  - assertion_id: mrk-required-id
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='mrk']//xs:attribute[@name='id']"
+    attribute: use
+    expected: [required]
+    namespaces: *xsd_namespaces
+  - assertion_id: sm-required-id
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='sm']//xs:attribute[@name='id']"
+    attribute: use
+    expected: [required]
+    namespaces: *xsd_namespaces
+  - assertion_id: em-required-start-ref
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='em']//xs:attribute[@name='startRef']"
+    attribute: use
+    expected: [required]
+    namespaces: *xsd_namespaces
+  - assertion_id: marker-pair-rule
+    target: core_schematron
+    kind: xml_xpath_text_contains
+    xpath: .
+    expected: >-
+      There must be an 'em' element corresponding to this start marker by the
+      'startRef' attribute
+- fact_id: SAL-XLIFF-00015
+  claim_sha256: a3a0c34764f45161ad4d9bb43617233f3968bb24646bb7e76fc59777d7f7331a
+  assertions:
+  - assertion_id: notes-contain-note
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='notes']//xs:element[@ref='xlf:note']"
+    attribute: maxOccurs
+    expected: [unbounded]
+    namespaces: *xsd_namespaces
+  - assertion_id: note-priority-default
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='note']//xs:attribute[@name='priority']"
+    attribute: default
+    expected: ['1']
+    namespaces: *xsd_namespaces
+  - assertion_id: note-category-optional
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='note']//xs:attribute[@name='category']"
+    attribute: use
+    expected: [optional]
+    namespaces: *xsd_namespaces
+- fact_id: SAL-XLIFF-00016
+  claim_sha256: f4290c2ab0489f65064600b3fe5631c1c7943d898b1e4160a891d54196883f85
+  assertions:
+  - assertion_id: original-data-contains-data
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='originalData']//xs:element[@ref='xlf:data']"
+    attribute: maxOccurs
+    expected: [unbounded]
+    namespaces: *xsd_namespaces
+  - assertion_id: data-required-id
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='data']//xs:attribute[@name='id']"
+    attribute: use
+    expected: [required]
+    namespaces: *xsd_namespaces
+  - assertion_id: original-data-reference-rule
+    target: core_schematron
+    kind: xml_xpath_text_contains
+    xpath: .
+    expected: >-
+      'dataRefStart' attribute must point to a 'data' element within the same 'unit'
+- fact_id: SAL-XLIFF-00017
+  claim_sha256: 330431735b8ae983fe481f2c64a05598cd91a4bb264a9c22eb599ab320bb9642
+  assertions:
+  - assertion_id: skeleton-href
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='skeleton']//xs:attribute[@name='href']"
+    attribute: use
+    expected: [optional]
+    namespaces: *xsd_namespaces
+  - assertion_id: inline-skeleton-rule
+    target: core_schematron
+    kind: xml_xpath_text_contains
+    xpath: .
+    expected: >-
+      'skeleton' element must not be empty when the 'href' attribute is missing.
+  - assertion_id: external-skeleton-rule
+    target: core_schematron
+    kind: xml_xpath_text_contains
+    xpath: .
+    expected: >-
+      'skeleton' element must be empty when containing 'href' attribute.
+- fact_id: SAL-XLIFF-00018
+  claim_sha256: cf705e1af888de45f6c052ff125244dfd4a03d116d3f4aeff6df55f6cffeee27
+  assertions:
+  - assertion_id: segment-state-default
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='segment']//xs:attribute[@name='state']"
+    attribute: default
+    expected: [initial]
+    namespaces: *xsd_namespaces
+  - assertion_id: state-values
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:simpleType[@name='stateType']//xs:enumeration"
+    attribute: value
+    expected: [initial, translated, reviewed, final]
+    namespaces: *xsd_namespaces
+  - assertion_id: advanced-state-target-rule
+    target: core_schematron
+    kind: xml_xpath_text_contains
+    xpath: .
+    expected: >-
+      Incorrect usage of 'state' attribute; when it is set to 'translated',
+      'reviewed' or 'final', the 'segment' must contain 'target' child.
+- fact_id: SAL-XLIFF-00019
+  claim_sha256: 03d212e97a9b5d4af65f36f81b4b3055359768e5d3e9e12c4b1f45030378bdd8
+  assertions:
+  - assertion_id: unit-content-choice
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='unit']//xs:choice/xs:element"
+    attribute: ref
+    expected: ['xlf:segment', 'xlf:ignorable']
+    namespaces: *xsd_namespaces
+  - assertion_id: segment-source-target
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='segment']//xs:sequence/xs:element"
+    attribute: ref
+    expected: ['xlf:source', 'xlf:target']
+    namespaces: *xsd_namespaces
+  - assertion_id: ignorable-source-target
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='ignorable']//xs:sequence/xs:element"
+    attribute: ref
+    expected: ['xlf:source', 'xlf:target']
+    namespaces: *xsd_namespaces
+- fact_id: SAL-XLIFF-00020
+  claim_sha256: 0be28d3e213cc44f7b8ebdf92d78525688561c6db7770bce34f9ed9ccca348b2
+  assertions:
+  - assertion_id: root-xml-space-default
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='xliff']//xs:attribute[@ref='xml:space']"
+    attribute: default
+    expected: [default]
+    namespaces: *xsd_namespaces
+  - assertion_id: source-xml-lang
+    target: core
+    kind: xml_xpath_count
+    xpath: ".//xs:element[@name='source']//xs:attribute[@ref='xml:lang']"
+    expected: 1
+    namespaces: *xsd_namespaces
+  - assertion_id: source-xml-space
+    target: core
+    kind: xml_xpath_count
+    xpath: ".//xs:element[@name='source']//xs:attribute[@ref='xml:space']"
+    expected: 1
+    namespaces: *xsd_namespaces
+  - assertion_id: target-xml-lang
+    target: core
+    kind: xml_xpath_count
+    xpath: ".//xs:element[@name='target']//xs:attribute[@ref='xml:lang']"
+    expected: 1
+    namespaces: *xsd_namespaces
+- fact_id: SAL-XLIFF-00021
+  claim_sha256: 5f78cc117244495f39cb1c2c96bf8898f0bb63a67a48cc654db729a5a76632e5
+  assertions:
+  - assertion_id: matches-namespace
+    target: matches
+    kind: xml_xpath_attributes_equal
+    xpath: .
+    attribute: targetNamespace
+    expected: [urn:oasis:names:tc:xliff:matches:2.0]
+  - assertion_id: matches-cardinality
+    target: matches
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='matches']//xs:element[@ref='mtc:match']"
+    attribute: maxOccurs
+    expected: [unbounded]
+    namespaces: *xsd_namespaces
+  - assertion_id: match-required-ref
+    target: matches
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='match']//xs:attribute[@name='ref']"
+    attribute: use
+    expected: [required]
+    namespaces: *xsd_namespaces
+  - assertion_id: match-content
+    target: matches
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='match']//xs:sequence/xs:element"
+    attribute: ref
+    expected: ['mda:metadata', 'xlf:originalData', 'xlf:source', 'xlf:target']
+    namespaces: *xsd_namespaces
+- fact_id: SAL-XLIFF-00022
+  claim_sha256: fa352c0ad7fa9c36bac708a8a41daabd08e38dec94bc3105a3ac10335dca516b
+  assertions:
+  - assertion_id: glossary-namespace
+    target: glossary
+    kind: xml_xpath_attributes_equal
+    xpath: .
+    attribute: targetNamespace
+    expected: [urn:oasis:names:tc:xliff:glossary:2.0]
+  - assertion_id: glossary-entry-cardinality
+    target: glossary
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='glossary']//xs:element[@ref='gls:glossEntry']"
+    attribute: maxOccurs
+    expected: [unbounded]
+    namespaces: *xsd_namespaces
+  - assertion_id: glossary-entry-shape
+    target: glossary
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='glossEntry']//xs:sequence/xs:element"
+    attribute: ref
+    expected: ['gls:term', 'gls:translation', 'gls:definition']
+    namespaces: *xsd_namespaces
+- fact_id: SAL-XLIFF-00023
+  claim_sha256: b9cac96b68163a756895177b55ec8f25dccfadc734df99f2a6533b675cc2f947
+  assertions:
+  - assertion_id: metadata-namespace
+    target: metadata
+    kind: xml_xpath_attributes_equal
+    xpath: .
+    attribute: targetNamespace
+    expected: [urn:oasis:names:tc:xliff:metadata:2.0]
+  - assertion_id: metadata-groups
+    target: metadata
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='metadata']//xs:element[@ref='mda:metaGroup']"
+    attribute: maxOccurs
+    expected: [unbounded]
+    namespaces: *xsd_namespaces
+  - assertion_id: meta-type-required
+    target: metadata
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='meta']//xs:attribute[@name='type']"
+    attribute: use
+    expected: [required]
+    namespaces: *xsd_namespaces
+- fact_id: SAL-XLIFF-00024
+  claim_sha256: 9ec56fcf87ca2f17276958c1fdcc9525231f7f1dffc2a425b5b0d48f28e255ef
+  assertions:
+  - assertion_id: size-restriction-namespace
+    target: size_restriction
+    kind: xml_xpath_attributes_equal
+    xpath: .
+    attribute: targetNamespace
+    expected: [urn:oasis:names:tc:xliff:sizerestriction:2.0]
+  - assertion_id: size-restriction-attribute
+    target: size_restriction
+    kind: xml_xpath_count
+    xpath: ".//xs:attribute[@name='sizeRestriction']"
+    expected: 1
+    namespaces: *xsd_namespaces
+  - assertion_id: storage-restriction-attribute
+    target: size_restriction
+    kind: xml_xpath_count
+    xpath: ".//xs:attribute[@name='storageRestriction']"
+    expected: 1
+    namespaces: *xsd_namespaces
+  - assertion_id: size-module-elements
+    target: size_restriction
+    kind: xml_xpath_attributes_equal
+    xpath: "./xs:element"
+    attribute: name
+    expected: [profiles, normalization, data]
+    namespaces: *xsd_namespaces
+- fact_id: SAL-XLIFF-00025
+  claim_sha256: 3fd134fb5f569723b99d85dcb8bab6a3155ebc009f8b16c71fb40fc9cea89127
+  assertions:
+  - assertion_id: validation-namespace
+    target: validation
+    kind: xml_xpath_attributes_equal
+    xpath: .
+    attribute: targetNamespace
+    expected: [urn:oasis:names:tc:xliff:validation:2.0]
+  - assertion_id: validation-rules
+    target: validation
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='validation']//xs:element[@ref='val:rule']"
+    attribute: maxOccurs
+    expected: [unbounded]
+    namespaces: *xsd_namespaces
+  - assertion_id: validation-rule-controls
+    target: validation
+    kind: xml_xpath_attributes_equal
+    xpath: ".//xs:element[@name='rule']//xs:attribute"
+    attribute: name
+    expected:
+    - isPresent
+    - occurs
+    - isNotPresent
+    - startsWith
+    - endsWith
+    - existsInSource
+    - caseSensitive
+    - normalization
+    - disabled
+    namespaces: *xsd_namespaces
+- fact_id: SAL-XLIFF-00026
+  claim_sha256: abba3a81514f6467fa249c336eb2f397738b07d64ade743746f539f74d7e8f77
+  assertions:
+  - assertion_id: format-style-namespace
+    target: format_style
+    kind: xml_xpath_attributes_equal
+    xpath: .
+    attribute: targetNamespace
+    expected: [urn:oasis:names:tc:xliff:fs:2.0]
+  - assertion_id: format-style-attributes
+    target: format_style
+    kind: xml_xpath_attributes_equal
+    xpath: "./xs:attribute"
+    attribute: name
+    expected: [fs, subFs]
+    namespaces: *xsd_namespaces
+  - assertion_id: format-style-value-count
+    target: format_style
+    kind: xml_xpath_count
+    xpath: ".//xs:simpleType[@name='fs_type']//xs:enumeration"
+    expected: 58
+    namespaces: *xsd_namespaces
+- fact_id: SAL-XLIFF-00027
+  claim_sha256: 94a6f5750fe61d0eb0c6f8f35c696cd02d3f456b17a09b874ba6bdbd34943453
+  assertions:
+  - assertion_id: its-namespace
+    target: its
+    kind: xml_xpath_attributes_equal
+    xpath: .
+    attribute: targetNamespace
+    expected: [http://www.w3.org/2005/11/its]
+  - assertion_id: its-mapping-namespace
+    target: its_mapping
+    kind: xml_xpath_attributes_equal
+    xpath: .
+    attribute: targetNamespace
+    expected: [urn:oasis:names:tc:xliff:itsm:2.1]
+  - assertion_id: its-mapping-attributes
+    target: its_mapping
+    kind: xml_xpath_attributes_equal
+    xpath: "./xs:attribute"
+    attribute: name
+    expected: [domains, lang]
+    namespaces: *xsd_namespaces
+- fact_id: SAL-XLIFF-00028
+  claim_sha256: b5882f5646adc19fea7ce3448a93e62678c070dcc087372bbc9c60e520fa2d5e
+  assertions:
+  - assertion_id: exact-module-xsd-inventory
+    target: package
+    kind: archive_members_match
+    pattern: 'schemas/(?:itsm|resource_data|metadata|validation|size_restriction|fs|matches|glossary|its)\.xsd'
+    expected_count: 9
+    expected_names_sha256: 186653433bf92e23c309167853701e8013b062db317f91fad0d06ab7d6aabaf7
+- fact_id: SAL-XLIFF-00029
+  claim_sha256: 70b6c998108839cdb9dce7d4c9baca6bc409fadd76f5b88cfa887839e47c62ee
+  assertions:
+  - assertion_id: exact-schematron-inventory
+    target: package
+    kind: archive_members_match
+    pattern: 'schemas/(?:resource_data|metadata|validation|size_restriction|fs|matches|glossary|its|xliff_core_2\.1)\.sch'
+    expected_count: 9
+    expected_names_sha256: 7c66b67d0025f48b477a6280501d07f3d72965cc9989d9160de2f091ed95de05
+- fact_id: SAL-XLIFF-00030
+  claim_sha256: 4f4249100b9e863129c8353dd7b29202e83517ee6115ab1a575f3b353720d13b
+  assertions:
+  - assertion_id: core-xsd-layer
+    target: core
+    kind: xml_xpath_count
+    xpath: "./xs:element"
+    expected: 21
+    namespaces: *xsd_namespaces
+  - assertion_id: core-schematron-layer
+    target: core_schematron
+    kind: xml_xpath_count
+    xpath: ".//sch:assert"
+    expected: 40
+    namespaces: *sch_namespaces
+  - assertion_id: module-xsd-layer
+    target: package
+    kind: archive_members_match
+    pattern: 'schemas/(?:itsm|resource_data|metadata|validation|size_restriction|fs|matches|glossary|its)\.xsd'
+    expected_count: 9
+    expected_names_sha256: 186653433bf92e23c309167853701e8013b062db317f91fad0d06ab7d6aabaf7
+  - assertion_id: module-schematron-layer
+    target: package
+    kind: archive_members_match
+    pattern: 'schemas/(?:resource_data|metadata|validation|size_restriction|fs|matches|glossary|its|xliff_core_2\.1)\.sch'
+    expected_count: 9
+    expected_names_sha256: 7c66b67d0025f48b477a6280501d07f3d72965cc9989d9160de2f091ed95de05
+  - assertion_id: nvdl-core-mode
+    target: nvdl
+    kind: xml_xpath_attributes_equal
+    xpath: .
+    attribute: startMode
+    expected: [core]
+- fact_id: SAL-XLIFF-10A6F1FB1C146A18
+  claim_sha256: 07219dd9ab516d8e9c9ad12ff6219a9588baaab9bd3eaec8252ebfbb781ddd39
+  assertions:
+  - assertion_id: core-xml-target-namespace
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: .
+    attribute: targetNamespace
+    expected: [urn:oasis:names:tc:xliff:document:2.0]
+  - assertion_id: core-qualified-elements
+    target: core
+    kind: xml_xpath_attributes_equal
+    xpath: .
+    attribute: elementFormDefault
+    expected: [qualified]
+  - assertion_id: core-document-root
+    target: core
+    kind: xml_xpath_count
+    xpath: "./xs:element[@name='xliff']"
+    expected: 1
+    namespaces: *xsd_namespaces

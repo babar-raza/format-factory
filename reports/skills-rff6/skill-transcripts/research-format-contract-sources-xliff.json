@@ -1,0 +1,41 @@
+{
+  "invocation_id": "FF6-XLIFF-AUTHORITY-20260723",
+  "skill_id": "research-format-contract-sources",
+  "task_id": "TC-FF6-XLIFF-AUTHORITY-PINNING",
+  "mode": "live",
+  "inputs": {
+    "format_id": "xliff",
+    "source_ids": [
+      "SRC-XLIFF-001",
+      "SRC-XLF-002"
+    ],
+    "prose_uri": "https://docs.oasis-open.org/xliff/xliff-core/v2.1/xliff-core-v2.1.html",
+    "release_uri": "https://docs.oasis-open.org/xliff/xliff-core/v2.1/os/xliff-core-v2.1-os.zip"
+  },
+  "allowed_files": [
+    "shared/format-contracts/research/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/research/xliff.yaml"
+  ],
+  "tests_run": [
+    "OASIS prose SHA-256 56e413be887fe88595d5af52d21d5000112898fbd332245417c43a7ecfa8e4e0",
+    "OASIS release ZIP SHA-256 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751",
+    "ZIP integrity: 31 entries, no bad member",
+    "Validation inventory: 10 OASIS XSDs, 2 separately informative third-party XSDs, 9 Schematron schemas, and 1 NVDL schema",
+    "reset-draft research replay and intake: PASS"
+  ],
+  "validations": {
+    "review_gate_enforced": "PASS",
+    "source_closure": "PASS",
+    "authority_digest_pinning": "PASS",
+    "complete_module_schema_inventory": "PASS",
+    "no_sal_store_write": "PASS"
+  },
+  "output_digests": {
+    "shared/format-contracts/research/xliff.yaml": "8be15851f44a44ecb019090f0c7f892de6db330d2b667b67bafa69190199f52f"
+  },
+  "result": "PASS",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

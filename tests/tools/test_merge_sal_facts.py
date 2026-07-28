@@ -1,10 +1,10 @@
 """
-Tests for tools/spec/merge_sal_facts.py union semantics.
+Tests for tools/spec/merge_sal_facts.py current-projection semantics.
 
-GAP-FORENSIC-008 Phase 2 regression controls:
-  - Union never drops facts that exist only in the combined DB
-    (the FACT-QOI-003 loss scenario under the old replace semantics).
-  - Claim conflicts are hard errors, never silent overwrites.
+Production current-state regression controls:
+  - A committed canonical store replaces stale derived state exactly.
+  - Corrected claims invalidate and replace their old derived projection.
+  - Direct additions to the derived combined DB never become authority.
   - Reruns are no-ops (deterministic, idempotent).
   - --check mode reports drift without writing.
 """
@@ -96,10 +96,9 @@ def _read_combined_facts(sandbox) -> list[dict]:
     return entry["spec_facts"]
 
 
-class TestUnionNeverDrops:
-    def test_fact_qoi_003_loss_regression(self, sandbox):
-        """Store lacks SAL-QOI-00003 (only in combined DB). Old replace
-        semantics destroyed it; union must preserve it."""
+class TestCanonicalCurrentProjection:
+    def test_combined_only_fact_is_removed_from_current_projection(self, sandbox):
+        """A mutable derived-cache addition cannot survive absent authority."""
         _write_store(sandbox, [
             _fact("SAL-QOI-00001", "FACT-QOI-001", "QOI file header"),
             _fact("SAL-QOI-00002", "FACT-QOI-002", "QOI encoded chunk"),
@@ -107,31 +106,32 @@ class TestUnionNeverDrops:
         ])
         summary = msf.merge_formats(formats=["qoi"])
         ids = {f["fact_id"] for f in _read_combined_facts(sandbox)}
-        assert "SAL-QOI-00003" in ids, "union dropped a combined-only fact"
+        assert "SAL-QOI-00003" not in ids
         assert "SAL-QOI-00004" in ids
-        assert len(ids) == 4
+        assert len(ids) == 3
         merged = summary["merged"][0]
         assert merged["added"] == 1
+        assert merged["removed"] == 1
 
-    def test_source_with_fewer_facts_never_downgrades(self, sandbox):
+    def test_source_with_fewer_facts_is_the_current_state(self, sandbox):
         _write_store(sandbox, [
             _fact("SAL-QOI-00001", "FACT-QOI-001", "QOI file header"),
         ])
         msf.merge_formats(formats=["qoi"])
-        assert len(_read_combined_facts(sandbox)) == 3
+        assert len(_read_combined_facts(sandbox)) == 1
 
 
-class TestConflictDetection:
-    def test_claim_conflict_is_hard_error(self, sandbox):
+class TestCanonicalCorrection:
+    def test_claim_correction_replaces_stale_derived_claim(self, sandbox):
         _write_store(sandbox, [
             _fact("SAL-QOI-00001", "FACT-QOI-001", "A DIFFERENT header claim"),
         ])
         summary = msf.merge_formats(formats=["qoi"])
-        assert summary["errors"], "claim conflict must surface as an error"
-        assert "conflict" in summary["errors"][0]["reason"]
-        # combined DB untouched on conflict
+        assert not summary["errors"]
         facts = _read_combined_facts(sandbox)
-        assert facts[0]["claim"] == "QOI file header"
+        assert facts[0]["claim"] == "A DIFFERENT header claim"
+        assert summary["merged"][0]["updated"] == 1
+        assert summary["merged"][0]["removed"] == 2
 
     def test_identical_claim_is_not_conflict(self, sandbox):
         _write_store(sandbox, [
@@ -167,6 +167,7 @@ class TestIdempotency:
         msf.merge_formats(formats=["qoi"])
         ids = [f["fact_id"] for f in _read_combined_facts(sandbox)]
         assert ids == sorted(ids)
+        assert ids == ["SAL-QOI-00004", "SAL-QOI-00009"]
 
 
 class TestCheckMode:
@@ -184,6 +185,8 @@ class TestCheckMode:
     def test_check_clean_when_in_sync(self, sandbox):
         _write_store(sandbox, [
             _fact("SAL-QOI-00001", "FACT-QOI-001", "QOI file header"),
+            _fact("SAL-QOI-00002", "FACT-QOI-002", "QOI encoded chunk"),
+            _fact("SAL-QOI-00003", "FACT-QOI-003", "QOI end marker"),
         ])
         summary = msf.merge_formats(formats=["qoi"], check=True)
         assert not summary["drift"]
@@ -196,7 +199,7 @@ class TestSpecFactsTotal:
         ])
         msf.merge_formats(formats=["qoi"])
         data = json.loads(sandbox["combined"].read_text(encoding="utf-8"))
-        assert data["spec_facts_total"] == 4
+        assert data["spec_facts_total"] == 1
 
     def test_legacy_fact_without_fact_id_resolved_via_alias(self, sandbox):
         _write_store(sandbox, [
@@ -207,7 +210,7 @@ class TestSpecFactsTotal:
         facts = _read_combined_facts(sandbox)
         target = next(f for f in facts if f["fact_id"] == "SAL-QOI-00002")
         assert target["section"] == "3.0"
-        assert len(facts) == 3  # matched existing, not duplicated
+        assert len(facts) == 1
 
 
 def _read_aliases(sandbox) -> dict:
@@ -316,3 +319,16 @@ class TestFreshCheckoutBootstrap:
         assert {f["fact_id"] for f in facts} == {"SAL-QOI-00001", "SAL-QOI-00004"}
         data = json.loads(sandbox["combined"].read_text(encoding="utf-8"))
         assert data["spec_facts_total"] == 2
+
+    def test_two_fresh_rebuilds_are_byte_identical(self, sandbox):
+        _write_store(sandbox, [
+            _fact("SAL-QOI-00001", "FACT-QOI-001", "QOI file header"),
+            _fact("SAL-QOI-00004", "FACT-QOI-004", "QOI_OP_RGB chunk"),
+        ])
+        sandbox["combined"].unlink()
+        msf.merge_formats(formats=["qoi"])
+        first = sandbox["combined"].read_bytes()
+        sandbox["combined"].unlink()
+        msf.merge_formats(formats=["qoi"])
+        second = sandbox["combined"].read_bytes()
+        assert first == second

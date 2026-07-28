@@ -1,0 +1,85 @@
+knowledge_id: KC-PYTHON-003
+stable_semantic_key: python_production_package_architecture
+title: Python Production Distribution and Package Architecture
+subject_type: DIRECTORY_LAYOUT
+scope: Python packages migrated to release_profile production_namespace_v1
+status: VERIFIED_CURRENT
+enforcement: PARTIALLY_ENFORCED
+last_verified_revision: "2026-07-23"
+generated_by: codex
+authority: >
+  The six-format production mission explicitly replaces the alpha package
+  layout before 1.0. PEP 420 supplies the namespace mechanism; each format's
+  compiled ProductContract supplies format-specific behavior. This contract
+  defines packaging and responsibility boundaries, not format semantics.
+authoritative_sources:
+  - plans/.claude/ff-six-python-production-autonomous.md
+  - https://peps.python.org/pep-0420/
+  - tools/format_contract/product_contract.py
+applies_to:
+  - src/python/core/
+  - src/python/ipynb/
+  - src/python/openraster/
+  - src/python/nrrd/
+  - src/python/xliff/
+  - src/python/safetensors/
+  - src/python/ubl/
+distribution_rules:
+  - "Distribution name is format-factory-<format_id>; core is format-factory-core."
+  - "Import namespace is format_factory.<format_id>."
+  - "There is no format_factory/__init__.py."
+  - "There is no top-level nrrd or safetensors package."
+  - "Every distribution owns its build, dependency lock, tests, docs, changelog, security policy, release manifest, and extraction boundary."
+  - "requires-python is >=3.11 and classifiers cover 3.11 through 3.14."
+required_layers:
+  - model
+  - codec/reader
+  - codec/writer
+  - validation
+  - security
+  - adapters
+  - analytics
+  - cli
+layer_invariants:
+  - "Models perform no filesystem, network, archive, decompression, or framework I/O."
+  - "Readers and writers contain no analytics."
+  - "Optional ecosystem dependencies are imported only inside adapters."
+  - "Generated source is checked in with a deterministic generator and pinned inputs."
+  - "Public product behavior imports no agent, supervisor, governance, or proof runtime."
+  - "The common core contains only errors, diagnostics/source locations, resource limits, and path/stream protocols."
+public_api:
+  lifecycle:
+    - "probe(source, *, limits=None) -> ProbeResult"
+    - "load(source, *, mode='strict', limits=None) -> Document"
+    - "loads(data, *, mode='strict', limits=None) -> Document"
+    - "dump(document, destination, *, profile=None) -> None"
+    - "dumps(document, *, profile=None) -> bytes | str"
+    - "validate(value, *, profile=None, limits=None) -> ValidationReport"
+  modes:
+    strict: "Reject invalid input."
+    preservation: "Retain safe unknown data without claiming semantic support."
+    recovery: "Absent unless deterministic rules are specified and tested."
+verification:
+  - "Build wheel and sdist from a hash-locked environment."
+  - "Run documentation and import tests against the installed wheel outside the source tree."
+  - "Bind results to complete source, test, fixture, authority, contract, lock, tool, package, and environment digests."
+  - "Run namespace collision and official-implementation co-installation tests."
+  - "Require two identical release builds and deterministic checked-in generation."
+  - "Compute readiness from the canonical proof graph; never accept a manual status."
+migration:
+  preserve:
+    - "Capture working alpha behavior with characterization tests."
+    - "Publish a symbol migration map for renamed imports."
+  remove_before_1_0:
+    - "Unsafe top-level import namespaces."
+    - "Legacy Compat facade as the primary implementation."
+    - "Monolithic codec ownership of model, I/O, validation, and analytics."
+  compatibility_policy: >
+    Alpha import compatibility may exist only as an explicitly temporary,
+    non-packaged test shim during migration. It must not ship in the 1.0 wheel.
+update_triggers:
+  - "The production namespace or distribution split changes."
+  - "The common lifecycle signature changes."
+  - "A new mandatory layer or responsibility boundary is adopted."
+validation_commands:
+  - ".venv/Scripts/python -m pytest tests/production_program/test_production_skills.py -q"

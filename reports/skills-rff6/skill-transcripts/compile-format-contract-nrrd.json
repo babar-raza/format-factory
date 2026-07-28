@@ -1,0 +1,36 @@
+{
+  "invocation_id": "FF6-NRRD-CONTRACT-20260723",
+  "skill_id": "compile-format-contract",
+  "task_id": "TC-FF6-NRRD-CONTRACT-COMPILE",
+  "mode": "live",
+  "inputs": {
+    "format_id": "nrrd",
+    "authority_sha256": "43ca6102cc998e0191e225d7954278547d491e29b74a132b3118571d85a8b0d5"
+  },
+  "allowed_files": [
+    "shared/format-contracts/nrrd.yaml",
+    "registry/format-contract-registry.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/nrrd.yaml",
+    "registry/format-contract-registry.yaml"
+  ],
+  "tests_run": [
+    "contract compiler --check nrrd: PASS",
+    "contract compiler --verify-idempotency nrrd: PASS",
+    "strict ProductContract: ready with 91 obligations"
+  ],
+  "validations": {
+    "readiness_gate_enforced": "PASS",
+    "deterministic_output": "PASS",
+    "registry_updated": "PASS",
+    "no_product_source_mutation": "PASS"
+  },
+  "output_digests": {
+    "shared/format-contracts/nrrd.yaml": "b908f24ad638b3fa59cda2d1266901e16f276d72d859245738c4d6c0af30ee72",
+    "strict_product_contract": "f23025c9236d1471581597415481efba9c130736b48fca24fa169b013c9642a2"
+  },
+  "result": "PASS",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

@@ -3,7 +3,7 @@ Unit tests for run_fact_verification.py — TC-SAL-002.
 
 Tests:
   1. calibration: ≥10/14 known-verified FODS facts found (precision gate)
-  2. promotion: pending fact with matching terms → verified
+  2. discovery: pending fact with matching terms remains conditional
   3. dry-run: YAML NOT modified when --dry-run passed
   4. no-spec-text: pending fact for format with no text.txt → skip, no error
   5. not-found: claim with terms not in spec text → stays pending
@@ -86,11 +86,11 @@ def test_calibration_fods_precision():
 
 
 # ---------------------------------------------------------------------------
-# Test 2: Promotion — pending fact with matching terms → verified
+# Test 2: Discovery — keyword overlap never promotes
 # ---------------------------------------------------------------------------
 
-def test_pending_fact_promoted_to_verified(tmp_path):
-    """A pending fact whose claim terms appear near the section header → verified."""
+def test_pending_fact_keyword_match_is_only_verified_with_note(tmp_path):
+    """A pending fact whose terms appear stays conditional."""
     # Create fake text.txt with section and matching content
     text_content = "\n" * 10
     text_content += "9.99  Test Section\n"
@@ -124,9 +124,7 @@ def test_pending_fact_promoted_to_verified(tmp_path):
     updated = json.loads(review_file.read_text(encoding="utf-8"))
     fact = updated["facts"][0]
     new_status = fact["provenance"]["verification_status"]
-    assert new_status in ("verified", "verified_with_note"), (
-        f"Expected verified/verified_with_note, got: {new_status}"
-    )
+    assert new_status == "verified_with_note"
     assert fact["provenance"]["validated_by"] == "deterministic_spec_text_search"
 
 
@@ -280,12 +278,12 @@ def test_find_section_line_finds_correct_line():
     assert idx == 1  # line index 1 (0-based) matches "9.4  Spreadsheet..."
 
 
-def test_score_claim_returns_verified_on_many_terms():
+def test_score_claim_never_promotes_on_many_terms():
     lines = ["9.99  Test Section\n"] + [
         "table:name attribute specifies the name of table elements value-type string\n"
     ] * 5
     status, matched = _score_claim(lines, 0, ["table:name", "attribute", "specifies", "name", "value-type"])
-    assert status in ("verified", "verified_with_note")
+    assert status == "verified_with_note"
     assert len(matched) >= 3
 
 

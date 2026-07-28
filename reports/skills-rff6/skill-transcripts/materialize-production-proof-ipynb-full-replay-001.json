@@ -1,0 +1,99 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-materialize-production-proof-ipynb-full-replay-001",
+  "execution_id": "ff6-materialize-production-proof-ipynb-full-replay-001",
+  "task_id": "AUTO-IPYNB-PROOF-REPLAY-001",
+  "skill_id": "materialize-production-proof",
+  "selected_skill_ids": [
+    "materialize-production-proof"
+  ],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260726T035718-0933e5",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-IPYNB-PROOF-REPLAY-001",
+  "pre_mutation_guard_authorization_id": "a9797ee9c4c95893",
+  "requested_operation": "Replay every IPYNB mandatory obligation against the corrected immutable corpus and final installed wheel; stop at a user-requested durable checkpoint after the first successful proof.",
+  "inputs": {
+    "defect_id": "FI-042",
+    "failing_regression": "Legacy proof attributed validity to normalized objects rather than the original immutable notebook bytes, and every earlier IPYNB proof was invalidated by later source, test, fixture, dependency, package, or environment changes.",
+    "invalidation_input": "commit 958552034f56f9ffa93728df0708c5afe37941ef changed source-bound proof inputs including tests, active fixtures, corpus manifests, oracle inputs, and the installed package closure",
+    "target_product": "ipynb",
+    "base_git_commit": "c8cb0445",
+    "checkpoint_reason": "user requested a checkpoint",
+    "exact_resume_task": "AUTO-IPYNB-PROOF-REPLAY-001"
+  },
+  "allowed_files": [
+    "reports/skills-rff6/skill-transcripts/materialize-production-proof-ipynb-full-replay-001.json",
+    ".local/production-program/current-gaps.json",
+    ".local/production-program/executed-proofs.json",
+    ".local/production-program/journal.jsonl",
+    ".local/production-program/proof-graphs/ipynb/edges.jsonl",
+    ".local/production-program/proof-graphs/ipynb/nodes.jsonl",
+    ".local/production-program/state.json"
+  ],
+  "actual_files_changed": [
+    "reports/skills-rff6/skill-transcripts/materialize-production-proof-ipynb-full-replay-001.json",
+    ".local/production-program/current-gaps.json",
+    ".local/production-program/executed-proofs.json",
+    ".local/production-program/journal.jsonl",
+    ".local/production-program/proof-graphs/ipynb/edges.jsonl",
+    ".local/production-program/proof-graphs/ipynb/nodes.jsonl",
+    ".local/production-program/state.json"
+  ],
+  "tests_run": [
+    ".local/venvs/ipynb-current-proof/Scripts/python.exe -m pip check: PASS",
+    ".local/venvs/ipynb-current-proof/Scripts/python.exe -m pytest tests/python/ipynb -q: 387 passed",
+    "production_program.py prove SAL-IPYNB-OBL-1F8C3D9742EBC830 using test_obligation_corpus_integrity.py, the complete IPYNB corpus, stale oracle input, final core wheel, and final IPYNB wheel: 9 passed, exit 0"
+  ],
+  "ledger_entry_id": null,
+  "proof": {
+    "obligation_id": "SAL-IPYNB-OBL-1F8C3D9742EBC830",
+    "polarity": "positive",
+    "proof_id": "PROOF-9AC3DEB63B0F324FECBFBA63ACC4655BFFE75438532B270C5047512F7D705B81",
+    "contract_digest": "56762498619ac994bbc5bceac7240357118f1046bda48d5e4bdffc6baa1129ac",
+    "source_digest": "deb7278e9dc3fbe2d7d54dacc1363c7acfae34d9bbfe8b00daecde6e68ff71c2",
+    "test_digest": "e727116c0a694f3ae6fb8103ebfce9b68da0a169e2756da7b2df55e912b590fc",
+    "fixture_digest": "f072c1263275ee60efb6a37be127a6ea250e6325945583ac56cb647be9f4e102",
+    "package_digest": "106dee04967e3a42314868bd53af0e4a06008c32ba096c5eaebc434e73a7f835",
+    "dependency_digest": "9c5278714f8581a73ec37181bb057bed0bac69c3fdef9d3ae92f727784678d78",
+    "environment_digest": "497bfca4ea6ee426ac8117c57a57fc449e38616aeb183908f8325c7e64e882f2",
+    "graph_digest": "b0fc2b342aa239c3edb6473e1d965c829fc4692eb44ac359ab8ef9ffdb36bdf6",
+    "command_exit_code": 0
+  },
+  "checkpoint": {
+    "mandatory_obligation_count": 98,
+    "current_final_source_proof_count": 1,
+    "historical_invalidated_proof_count": 49,
+    "remaining_mandatory_proof_gap_count": 97,
+    "promotion_state": "INVALIDATED",
+    "controller_state": "IMPLEMENT",
+    "certification_claimed": false,
+    "exact_resume_action": "Continue the same task by binding each of the remaining 97 obligations to a focused installed-wheel test and exact fixture closure; then run three same-input audits and mutation/deletion invalidation checks."
+  },
+  "output_digests": {
+    ".local/production-program/current-gaps.json": "b0b50aa3972954db34357606381a61cac6774a5936bcedbd554a8074bd6d4b8a",
+    ".local/production-program/executed-proofs.json": "377534a77b10ed2fdad47c9ad4edd7dd95d214d0a386a7e85f87fb58b23dedd9",
+    ".local/production-program/journal.jsonl": "f6782b58027907e4aa59b60fba977c8f7d850da099de36ba4063e1acdcdf8a42",
+    ".local/production-program/proof-graphs/ipynb/edges.jsonl": "5483e09cba0a2d82bb99ecd99f5a25b25cefeb84a8ea94d6b22e7b3ca378ad1e",
+    ".local/production-program/proof-graphs/ipynb/nodes.jsonl": "7b7330a40add75e730dd16a43f8522b87b64ff75c1f88fc9a0a446b6a7e1b565",
+    ".local/production-program/state.json": "51481de6cb6a3a023440239585d02eb15815508e784d5c1df114d07ccb9be1bf"
+  },
+  "validations": {
+    "mandatory_obligations_materialized": "PARTIAL: 1 current and 97 explicitly open",
+    "presence_is_not_proof": "PASS",
+    "one_obligation_per_executed_result": "PASS",
+    "complete_execution_input_closure": "PASS for the recorded corpus-integrity result",
+    "changed_test_or_fixture_invalidates": "PASS: 49 historical results remain invalidated",
+    "deleted_input_revokes_proof": "NOT RERUN AT THIS CHECKPOINT; machinery regression was previously verified",
+    "nonzero_execution_rejected": "PASS: two failed setup attempts created no proof",
+    "three_run_determinism": "PENDING FOR THE COMPLETED 98-OBLIGATION REPLAY",
+    "manual_promotion_cannot_override": "PASS: promotion remains INVALIDATED"
+  },
+  "result": "PASS",
+  "status": "IN_PROGRESS_CHECKPOINT",
+  "final_outcome": "ONE_CURRENT_IPYNB_PROOF_RECORDED_97_REMAINING_NOT_CERTIFIED",
+  "timestamp": "2026-07-26T04:01:24Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

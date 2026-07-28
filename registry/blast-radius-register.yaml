@@ -1,6 +1,31 @@
 version: 1
 blast_radii:
 
+- blast_radius_id: BR-004
+  issue_id: FI-033
+  search_pattern: "source_files.*string|classification outside current ledger schema"
+  surfaces_scanned:
+    - reports/r90/product-code-change-ledger.json
+    - tools/supervisor/validate_product_code_ledger.py
+    - tests/supervisor/test_validate_product_code_ledger.py
+    - tests/supervisor/test_r90_product_acceleration.py
+  confirmed_affected:
+    - "1,576 historical/non-current entries are excluded from the live projection"
+    - "1,205 records meet the current structural classification boundary"
+    - "3,233 current-projection errors remain and require a separate migration"
+    - "All six production formats depend on the resulting proof calculation"
+  suspected_affected:
+    - "Any caller that interpreted prior validator exceptions as a non-blocking unavailable tool"
+  unaffected_controls:
+    - "Mixed historical records are retained verbatim; no evidence was deleted or silently rewritten"
+    - "Malformed current source_files values now yield explicit diagnostics"
+  backfill_required: true
+  regression_scope:
+    - tests/supervisor/test_validate_product_code_ledger.py
+    - tests/supervisor/test_r90_product_acceleration.py
+    - tools/supervisor/validate_product_code_ledger.py
+  status: complete
+
 - blast_radius_id: BR-001
   issue_id: FI-001
   search_pattern: "spreadsheet_document"
@@ -47,3 +72,32 @@ blast_radii:
   regression_scope:
     - "tests/test_source_structure.py::test_no_loc_regression"
   status: open
+
+- blast_radius_id: BR-003
+  issue_id: FI-042
+  search_pattern: "code-and-markdown.ipynb|with-outputs.ipynb|c8caeff0a36013b17b3c910f0b9ffe24b9b855aad958d02affb25147c9700b1a|3b7d9f72565a7d916baa527976f00b5de4142ee148306bfed4bd16016b735e09"
+  surfaces_scanned:
+    - samples/by-format/ipynb/
+    - oracle/formats/ipynb/
+    - tests/python/ipynb/
+    - reports/skills-rff6/skill-transcripts/
+    - shared/format-contracts/ipynb.yaml
+    - src/python/ipynb/
+  confirmed_affected:
+    - "samples/by-format/ipynb/_corpus-manifest.yaml: both invalid hashes labeled structural_test PASS"
+    - "samples/by-format/ipynb/_provenance.yaml: both invalid hashes labeled confirmed valid corpus"
+    - "oracle/formats/ipynb/oracle-package.yaml: both invalid hashes used by positive cases/corpus refs"
+    - "tests/python/ipynb/: legacy behavioral tests load the named paths after automatic ID repair"
+    - "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-official-schema-001.json: initial prose overstated reference-implementation rejection"
+  suspected_affected:
+    - "oracle/formats/ipynb/reports/oracle-run-summary.json is historical D0 evidence and must remain non-promoting until full replay"
+  unaffected_controls:
+    - "src/python/ipynb/src/format_factory/ipynb/validation/schema.py validates raw mappings against exact minor schemas"
+    - "samples/by-format/ipynb/valid/minimal.ipynb passes exact nbformat 4.5 validation"
+    - "samples/by-format/ipynb/invalid/missing-nbformat.ipynb remains an intentional negative fixture"
+  backfill_required: true
+  regression_scope:
+    - tests/python/ipynb/test_obligation_corpus_integrity.py
+    - tests/python/ipynb/
+    - tools/oracle/detect_stale_oracles.py
+  status: complete

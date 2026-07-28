@@ -20,7 +20,71 @@ import subprocess
 import sys
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
+
+def _linked_worktree_root_from_git_environment() -> Path | None:
+    """Resolve a linked worktree when Git invokes a shared hook from its main root.
+
+    During a linked-worktree commit, Git can set ``GIT_DIR`` and
+    ``GIT_INDEX_FILE`` for the linked index while leaving the hook process in
+    the primary checkout.  In that shape ``git rev-parse --show-toplevel``
+    reports the primary checkout even though staged files and receipts belong
+    to the linked worktree.  The linked worktree administrative directory has
+    a ``gitdir`` pointer to that worktree's ``.git`` file, which is the
+    authoritative active-root signal.
+    """
+
+    raw_git_dir = os.environ.get("GIT_DIR")
+    if not raw_git_dir:
+        return None
+    git_dir = Path(raw_git_dir)
+    if not git_dir.is_absolute():
+        git_dir = Path.cwd() / git_dir
+    pointer = git_dir / "gitdir"
+    try:
+        raw_pointer = pointer.read_text(encoding="utf-8").strip()
+    except OSError:
+        return None
+    if not raw_pointer:
+        return None
+    worktree_git_file = Path(raw_pointer)
+    if not worktree_git_file.is_absolute():
+        worktree_git_file = git_dir / worktree_git_file
+    candidate = worktree_git_file.resolve().parent
+    if worktree_git_file.name == ".git" and (candidate / ".git").exists():
+        return candidate
+    return None
+
+
+def _resolve_repo_root() -> Path:
+    """Return the active worktree root, even when this hook is shared.
+
+    Linked worktrees commonly execute a hook whose physical file lives in the
+    primary checkout. Deriving the repository from ``__file__`` therefore
+    searches the wrong index, transcripts, receipts, and coordination scope.
+    Git is the authority for the active worktree; the physical hook checkout is
+    only a fallback for direct execution outside a Git context.
+    """
+    linked_worktree = _linked_worktree_root_from_git_environment()
+    if linked_worktree is not None:
+        return linked_worktree
+
+    fallback = Path(__file__).resolve().parent.parent
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "--show-toplevel"],
+            cwd=str(Path.cwd()),
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+    except (OSError, ValueError):
+        return fallback
+    if result.returncode != 0 or not result.stdout.strip():
+        return fallback
+    return Path(result.stdout.strip()).resolve()
+
+
+REPO_ROOT = _resolve_repo_root()
 SRC_PREFIX = "src/"
 TRANSCRIPT_DIRS = [
     REPO_ROOT / ".local" / "transcripts",

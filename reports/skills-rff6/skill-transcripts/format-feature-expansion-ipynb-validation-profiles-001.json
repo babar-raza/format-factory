@@ -1,0 +1,140 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-format-feature-expansion-ipynb-validation-profiles-001",
+  "execution_id": "ff6-format-feature-expansion-ipynb-validation-profiles-001",
+  "task_id": "AUTO-IPYNB-VALIDATION-PROFILES-001",
+  "skill_id": "format-feature-expansion",
+  "selected_skill_ids": [
+    "format-feature-expansion"
+  ],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-IPYNB-SOURCE-004",
+  "pre_mutation_guard_authorization_id": "8374acafdbf44ba9",
+  "requested_operation": "make notebook validation profile-aware and add complete attachment, MIME bundle, cell, tag, and output semantic diagnostics",
+  "inputs": {
+    "format_id": "ipynb",
+    "profile_id": "production",
+    "task_id": "AUTO-IPYNB-VALIDATION-PROFILES-001",
+    "obligation_id": "SAL-IPYNB-OBL-1F8C3D9742EBC830",
+    "obligation_ids": [
+      "SAL-IPYNB-OBL-1F8C3D9742EBC830",
+      "SAL-IPYNB-OBL-44E62E9AB8ECC2E3",
+      "SAL-IPYNB-OBL-679A623D14CBF763",
+      "SAL-IPYNB-OBL-CDB7DEE07F2275F7"
+    ],
+    "capability_ids": [
+      "IPYNB-VALIDATE-001",
+      "IPYNB-ATTACH-001",
+      "IPYNB-OUTPUT-001"
+    ],
+    "contract_digest": "56762498619ac994bbc5bceac7240357118f1046bda48d5e4bdffc6baa1129ac",
+    "authority_digests": {
+      "SRC-NB-002": "4d3750b55006e92d8063a6ac427a84eb1f91c44e376d90de53d03893674991d9"
+    },
+    "root_cause": "The validator conflated the declared version with the library's current target, rejected future minors before it could distinguish compatible unknown constructs, and checked only the presence of a few output fields. Attachment references, MIME bundle shapes, stream/error semantics, tag invariants, and forward-compatible warnings were absent.",
+    "affected_layer": "IPYNB validation orchestration and pure semantic rules",
+    "planned_paths": [
+      "src/python/ipynb/src/format_factory/ipynb/validation/validator.py",
+      "src/python/ipynb/src/format_factory/ipynb/validation/rules.py",
+      "tests/python/ipynb/test_obligation_validation_profiles.py",
+      "reports/r90/product-code-change-ledger.json",
+      "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-validation-profiles-001.json"
+    ],
+    "proof_inputs": [
+      "shared/format-contracts/ipynb.yaml",
+      ".local/format-contracts/acquired/ipynb/src-nb-002.bin",
+      "tests/python/ipynb/test_obligation_validation_profiles.py",
+      ".local/build/ipynb-validation-a/format_factory_ipynb-0.2.0.dev0-py3-none-any.whl",
+      ".local/venvs/ipynb-current-proof",
+      ".local/venvs/ipynb-static"
+    ],
+    "base_git_commit": "06494549"
+  },
+  "allowed_files": [
+    "src/python/ipynb/src/format_factory/ipynb/validation/validator.py",
+    "src/python/ipynb/src/format_factory/ipynb/validation/rules.py",
+    "tests/python/ipynb/test_obligation_validation_profiles.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-validation-profiles-001.json"
+  ],
+  "actual_files_changed": [
+    "src/python/ipynb/src/format_factory/ipynb/validation/validator.py",
+    "src/python/ipynb/src/format_factory/ipynb/validation/rules.py",
+    "tests/python/ipynb/test_obligation_validation_profiles.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-validation-profiles-001.json"
+  ],
+  "defect_reproduction": {
+    "result": "FAILURE_REPRODUCED",
+    "outcome": "All three new vectors failed because profile='declared' was rejected before any declared/current, attachment, or semantic diagnostics could run."
+  },
+  "implementation": {
+    "profile_selection": "The default and declared profiles use the document declaration; current requires exact 4.5; explicit 4.0-4.5 profiles remain supported.",
+    "forward_compatibility": "Future 4.x minors use the current 4.5 structural baseline while future version, top-level fields, cell types, and output types are preserved and reported as warnings, not false conformance errors.",
+    "attachments": "Attachment URI targets are percent-decoded and checked against per-cell mappings; missing targets are errors and orphaned attachments are warnings.",
+    "mime_and_outputs": "MIME objects, MIME keys, JSON payloads, binary image representation, stream names/text, rich-output metadata/counts, and error tracebacks have typed path-aware diagnostics.",
+    "cell_semantics": "Cell IDs, string/list sources, metadata, unique comma-free tags, code outputs/counts, and attachment placement are validated without mutation.",
+    "dependency_boundary": "Runtime validation remains framework-neutral and does not import optional nbformat or jsonschema dependencies."
+  },
+  "tests_run": [
+    "failure-first validation tests: 3 failed",
+    "focused validation, lifecycle, and forward-compatibility tests: 11 passed",
+    "source-tree format regression excluding installed-origin assertions: 272 passed, 3 deselected",
+    "Ruff 0.14.14 on validation source and new tests: PASS",
+    "Mypy 1.18.2 strict on production namespace: PASS, 21 source files",
+    "two isolated SOURCE_DATE_EPOCH=315532800 wheels: identical SHA-256 b1e8650752cf7f25ee6c07b456989ed450f40c26e52010fa538cd40f963ebf30",
+    "installed origin: format_factory.ipynb imported from ipynb-current-proof site-packages",
+    "installed-wheel full tests/python/ipynb suite: 275 passed"
+  ],
+  "ledger_entry_id": "FF6-IPYNB-VALIDATION-PROFILES-001",
+  "ledger_entry_path": "reports/r90/product-code-change-ledger.json",
+  "validations": {
+    "declared_profile": "PASS",
+    "current_profile": "PASS",
+    "forward_warning_separation": "PASS",
+    "attachment_reference_integrity": "PASS",
+    "orphan_detection": "PASS",
+    "mime_bundle_shape": "PASS",
+    "complete_output_semantics": "PASS",
+    "tag_and_source_semantics": "PASS",
+    "installed_wheel_origin": "PASS",
+    "reproducible_wheel": "PASS",
+    "typing_and_lint": "PASS",
+    "declared_regression_tier": "PASS: 275 tests",
+    "source_changed": "YES: canonical proof replay remains deferred to the consolidated source-wave boundary",
+    "promotion_claimed": "NO"
+  },
+  "output_digests": {
+    "src/python/ipynb/src/format_factory/ipynb/validation/validator.py": "6e8e77e1948a029520db573e1866d61b140fd5d855f6781faabab39e6de52f17",
+    "src/python/ipynb/src/format_factory/ipynb/validation/rules.py": "e222c5f5b74a5fe0a50441b44a7e46d9b6a394c9359ca8a7a6f61273c2846c7a",
+    "tests/python/ipynb/test_obligation_validation_profiles.py": "a4d9b62e92049c20a5a54e7c9a206b651ee41fb7c632ac6099e0dbfbda7a5055",
+    "reports/r90/product-code-change-ledger.json": "de93e7b2100d0caf8f54aa8e3ccd69a5525dee8527ed48b614136c76bfb937c8",
+    "format_factory_ipynb-0.2.0.dev0-py3-none-any.whl": "b1e8650752cf7f25ee6c07b456989ed450f40c26e52010fa538cd40f963ebf30"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for this bounded source slice; proof replay is deferred until the consolidated source wave is stable",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for implementation verification; no obligation closure or certification claimed",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES: future-minor hard errors were replaced by the contract-required warning channel",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "IPYNB_VALIDATION_PROFILES_IMPLEMENTED_CONSOLIDATED_PROOF_REPLAY_PENDING",
+  "timestamp": "2026-07-25T23:15:56.1438872Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

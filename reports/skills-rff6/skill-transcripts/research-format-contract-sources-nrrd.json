@@ -1,0 +1,37 @@
+{
+  "invocation_id": "FF6-NRRD-AUTHORITY-20260723",
+  "skill_id": "research-format-contract-sources",
+  "task_id": "TC-FF6-NRRD-AUTHORITY-PINNING",
+  "mode": "live",
+  "inputs": {
+    "format_id": "nrrd",
+    "source_ids": [
+      "SRC-NRRD-001",
+      "SRC-NRRD-002"
+    ],
+    "authority": "Teem NRRD format specification"
+  },
+  "allowed_files": [
+    "shared/format-contracts/research/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/research/nrrd.yaml"
+  ],
+  "tests_run": [
+    "Both acquired source records resolve to SHA-256 43ca6102cc998e0191e225d7954278547d491e29b74a132b3118571d85a8b0d5",
+    "contract compiler --check nrrd: PASS",
+    "contract compiler --verify-idempotency nrrd: PASS"
+  ],
+  "validations": {
+    "source_closure": "PASS",
+    "authority_digest_pinning": "PASS",
+    "review_gate_enforced": "PASS",
+    "no_sal_store_write": "PASS"
+  },
+  "output_digests": {
+    "shared/format-contracts/research/nrrd.yaml": "8f037d14ed2001ca78a901f0eb029fa3e417bb7a561fc7cd2c8ea5c7b7492ba8"
+  },
+  "result": "PASS",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

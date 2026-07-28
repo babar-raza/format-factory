@@ -3,9 +3,14 @@ format_id: ipynb
 format_version: nbformat v4.5
 oracle_version: 1
 family: data
-generated_at: '2026-07-14'
-generator_skill: select-6-acquisition
-status: VERIFIED
+generated_at: '2026-07-26'
+generator_skill: format-feature-expansion
+status: STALE
+stale_reason: >-
+  Two corpus items previously labeled valid were invalid under their declared
+  nbformat 4.5 schema and have been replaced with pinned, BSD-licensed upstream
+  nbformat vectors. Hashes are current, but this legacy oracle package remains
+  non-promoting until the production proof replay replaces its D0 executor path.
 authority:
   specification_refs:
   - id: IPYNB-SPEC
@@ -22,6 +27,16 @@ authority:
     legal_category: 1
     authority_class: ACCEPTED_EMPIRICAL_EVIDENCE
     note: Notebooks are JSON files parsed by json.loads(). Python stdlib json module provides reference parsing.
+  - id: NBFORMAT-REFERENCE-5.10.4
+    title: nbformat reference implementation v5.10.4
+    body: Jupyter Project
+    url: https://github.com/jupyter/nbformat/tree/60b6151fedcbdc9f137fb2d223eeb10c935a8378
+    legal_category: 1
+    authority_class: AUTHORITATIVE_REFERENCE_VECTOR
+    note: >-
+      Pinned official implementation and licensed test vectors. Its
+      MissingIDFieldWarning normalization is not permitted to override the
+      declared-minor normative schema at the strict production boundary.
   authorized_fact_refs:
   - FACT-IPYNB-001
   - FACT-IPYNB-002
@@ -33,7 +48,9 @@ authority:
   authority_summary: >
     Jupyter Notebook (.ipynb) is specified by the Jupyter Project as nbformat v4.5.
     Files are JSON documents with nbformat, nbformat_minor, metadata, and cells keys.
-    Python stdlib json module provides authoritative reference parsing.
+    The declared-minor JSON schema is normative. The pinned official nbformat
+    implementation and its BSD-licensed corpus provide reference behavior;
+    stdlib json establishes JSON syntax only.
 corpus_refs:
 - corpus_id: ipynb-minimal
   sample_ref: samples/by-format/ipynb/valid/minimal.ipynb
@@ -43,25 +60,24 @@ corpus_refs:
   description: Minimal notebook with one empty code cell
 - corpus_id: ipynb-code-and-markdown
   sample_ref: samples/by-format/ipynb/valid/code-and-markdown.ipynb
-  sha256: sha256:c8caeff0a36013b17b3c910f0b9ffe24b9b855aad958d02affb25147c9700b1a
-  license: project-owned-synthetic
-  authority_class: GENERATED_FROM_NEUTRAL_MODEL
-  description: Notebook with code and markdown cells
+  sha256: sha256:77c6d7cc3b70c2a34a2dc4f9c08a71ca20a146c579a9e41e21514bfc5c903a00
+  license: BSD-3-Clause
+  authority_class: AUTHORITATIVE_REFERENCE_VECTOR
+  description: Official nbformat v5.10.4 test4.5 notebook with code, markdown, cell IDs, and outputs
 - corpus_id: ipynb-with-outputs
   sample_ref: samples/by-format/ipynb/valid/with-outputs.ipynb
-  sha256: sha256:3b7d9f72565a7d916baa527976f00b5de4142ee148306bfed4bd16016b735e09
-  license: project-owned-synthetic
-  authority_class: GENERATED_FROM_NEUTRAL_MODEL
-  description: Notebook with code cells that have execution outputs
+  sha256: sha256:03ac5f4dfae9bb393b88e39b11c2b12a7df7599e7918791e1ef837eb939e53ba
+  license: BSD-3-Clause
+  authority_class: AUTHORITATIVE_REFERENCE_VECTOR
+  description: Official nbformat v5.10.4 timing-metadata notebook with an execute_result
 profiles:
 - STRUCTURAL_VALIDITY
 - PARSE_VALIDITY
 - DOMAIN_MODEL_MAPPING
 - ROUNDTRIP_SEMANTIC_EQUIVALENCE
 - SAME_FORMAT_SERIALIZATION
+- INTEROPERABILITY
 profiles_not_applicable:
-- profile: INTEROPERABILITY
-  reason: Python stdlib json module is the reference parser; no third-party tool required
 - profile: LOSSLESS_TRANSFORMATION
   reason: Notebook is a JSON document; no lossy compression involved
 - profile: SECURITY_ROBUSTNESS
@@ -86,7 +102,7 @@ valid_cases:
   expected_parse_result: SUCCESS
   expected_model_properties:
   - property: cell_count
-    value_min: 1
+    value_min: 0
     authority: IPYNB-SPEC
   applicable_profiles:
   - STRUCTURAL_VALIDITY
@@ -97,7 +113,7 @@ valid_cases:
   authority_refs:
   - IPYNB-SPEC -- cells array defines notebook content
   sample_ref: samples/by-format/ipynb/valid/code-and-markdown.ipynb
-  input_hash: sha256:c8caeff0a36013b17b3c910f0b9ffe24b9b855aad958d02affb25147c9700b1a
+  input_hash: sha256:77c6d7cc3b70c2a34a2dc4f9c08a71ca20a146c579a9e41e21514bfc5c903a00
   expected_parse_result: SUCCESS
   expected_model_properties:
   - property: cell_count
@@ -126,7 +142,7 @@ valid_cases:
   authority_refs:
   - PYTHON-JSON-STDLIB -- json roundtrip
   sample_ref: samples/by-format/ipynb/valid/code-and-markdown.ipynb
-  input_hash: sha256:c8caeff0a36013b17b3c910f0b9ffe24b9b855aad958d02affb25147c9700b1a
+  input_hash: sha256:77c6d7cc3b70c2a34a2dc4f9c08a71ca20a146c579a9e41e21514bfc5c903a00
   expected_parse_result: SUCCESS
   roundtrip_fields_equal:
   - cell_count

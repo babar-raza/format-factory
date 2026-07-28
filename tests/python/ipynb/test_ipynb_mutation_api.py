@@ -130,7 +130,7 @@ class TestClearOutputs:
 
     def test_clear_outputs_resets_execution_count_to_none(self):
         doc = IpynbDocument.from_file(str(VALID_DIR / "with-outputs.ipynb"))
-        assert doc.cells[0]["execution_count"] == 1
+        assert doc.cells[0]["execution_count"] == 5
         doc.clear_outputs(0)
         assert doc.cells[0]["execution_count"] is None
 

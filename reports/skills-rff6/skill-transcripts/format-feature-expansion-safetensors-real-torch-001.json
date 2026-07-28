@@ -1,0 +1,153 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-format-feature-expansion-safetensors-real-torch-001",
+  "execution_id": "ff6-format-feature-expansion-safetensors-real-torch-001",
+  "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-ADAPTER-REAL-TORCH-001",
+  "skill_id": "format-feature-expansion",
+  "selected_skill_ids": [
+    "format-feature-expansion"
+  ],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-SAFETENSORS-REAL-TORCH-001",
+  "pre_mutation_guard_authorization_id": "b0664ed399fbeb0b",
+  "requested_operation": "replace protocol-stub-only PyTorch evidence with a hash-locked real PyTorch CPU environment and complete installed-wheel adapter regression",
+  "inputs": {
+    "format_id": "safetensors",
+    "profile_id": "production",
+    "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-ADAPTER-REAL-TORCH-001",
+    "obligation_id": "SAL-SAFETENSORS-OBL-DA2E4F674AAAAAFC",
+    "capability_id": "SAFETENSORS-ADAPTER-001",
+    "contract_digest": "e7c4939500768fa6a3bc19a7bd849e1e1883e9c707d9ba868c87fbe25ab64806",
+    "authority_digests": {
+      "SRC-SAFETENSORS-002": "3b4bf28d71a2b1323bab6a98adbb7e92443c8ae97fb96fa4c8612b25fab4d1b3"
+    },
+    "root_cause": "The source adapter and protocol-level tests existed, but the active Python 3.13 proof environment did not contain PyTorch. Protocol substitutes could not prove real dtype exposure, frombuffer behavior, device dispatch, empty tensors, or framework-backed lifetime semantics.",
+    "affected_layer": "SafeTensors optional PyTorch adapter evidence and isolated installed-wheel framework environment; production source is unchanged",
+    "planned_paths": [
+      "tests/python/safetensors/test_obligation_real_torch_adapter.py",
+      "tests/python/safetensors/fixtures/torch-proof-wheelhouse.sha256.json",
+      "reports/r90/product-code-change-ledger.json",
+      "reports/skills-rff6/skill-transcripts/format-feature-expansion-safetensors-real-torch-001.json",
+      ".local/wheelhouse/safetensors-torch-001",
+      ".local/short-venvs/safetensors-torch-001"
+    ],
+    "proof_inputs": [
+      "shared/format-contracts/safetensors.yaml",
+      "src/python/safetensors/src/format_factory/safetensors/adapters/torch.py",
+      "tests/python/safetensors/test_obligation_optional_adapters.py",
+      "tests/python/safetensors/test_obligation_real_torch_adapter.py",
+      "tests/python/safetensors/fixtures/torch-proof-wheelhouse.sha256.json",
+      ".local/wheelhouse/safetensors-torch-001",
+      ".local/build/safetensors-current-proof/format_factory_core-0.1.0.dev0-py3-none-any.whl",
+      ".local/build/safetensors-validation-contract-001/format_factory_safetensors-0.2.0.dev0-py3-none-any.whl"
+    ],
+    "base_git_commit": "9977e2ad"
+  },
+  "allowed_files": [
+    "tests/python/safetensors/test_obligation_real_torch_adapter.py",
+    "tests/python/safetensors/fixtures/torch-proof-wheelhouse.sha256.json",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-safetensors-real-torch-001.json",
+    ".local/wheelhouse/safetensors-torch-001",
+    ".local/venvs/safetensors-torch-proof",
+    ".local/short-venvs/safetensors-torch-001"
+  ],
+  "actual_files_changed": [
+    "tests/python/safetensors/test_obligation_real_torch_adapter.py",
+    "tests/python/safetensors/fixtures/torch-proof-wheelhouse.sha256.json",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-safetensors-real-torch-001.json",
+    ".local/wheelhouse/safetensors-torch-001",
+    ".local/venvs/safetensors-torch-proof",
+    ".local/short-venvs/safetensors-torch-001"
+  ],
+  "environment_construction": {
+    "resolved_official_version": "torch 2.13.0, official cp313 win_amd64 CPU wheel",
+    "wheelhouse": "24 binary wheels downloaded once and validated byte-for-byte against the committed SHA-256/size manifest",
+    "installation": "all third-party proof packages installed with --no-index from the local wheelhouse; factory packages installed from the two previously reproducible local wheels",
+    "python": "CPython 3.13.2",
+    "platform": "Windows AMD64",
+    "real_torch_runtime": "2.13.0+cpu",
+    "numpy_runtime": "2.3.2",
+    "factory_runtime": "format-factory-safetensors 0.2.0.dev0"
+  },
+  "failure_and_recovery": {
+    "attempt_1": "Installing the official wheel into the deeply nested standard worktree venv failed while unpacking a long ATen header path, then torch._C could not load. The partial environment was preserved and was not used as evidence.",
+    "root_cause": "Windows path-length pressure from the repository plus worktree plus venv plus PyTorch's nested C++ include tree, not package incompatibility.",
+    "attempt_2": "A short S: drive alias mapped to the governed .local/short-venvs directory; the venv remained physically inside the isolated worktree and the official wheel installed successfully.",
+    "durability": "The proof command can recreate the S: alias from the recorded physical path. The wheelhouse and its committed digest manifest are independent of that alias.",
+    "evidence_control": "No result from the failed environment was credited."
+  },
+  "implementation": {
+    "real_dtype_matrix": "19 exact PyTorch-exposed dtypes are constructed by the installed factory wheel and checked for exact torch dtype, shape, CPU device, and byte identity.",
+    "copy_ownership": "A returned mutable tensor survives document closure, can be changed, and leaves the original serialized bytes unchanged.",
+    "device_policy": "Explicit CPU dispatch executes against real torch.Tensor.to behavior.",
+    "empty_tensor": "A (2, 0, 3) F32 tensor is constructed through real torch.empty with exact shape and dtype.",
+    "unsupported_subbyte_policy": "F4, F6_E2M3, and F6_E3M2 are rejected rather than reinterpreted.",
+    "base_environment": "The real-torch module skips as one unit when torch is absent, preserving the dependency-optional base package suite."
+  },
+  "tests_run": [
+    "first deep-path venv installation: FAIL, OSError for missing deeply nested ATen header followed by torch._C DLL import failure; not credited",
+    "short-path hash-locked environment import: PASS, torch 2.13.0+cpu, NumPy 2.3.2, factory wheel imported from S:/st1/Lib/site-packages",
+    "S:/st1/Scripts/python.exe -m pytest tests/python/safetensors/test_obligation_real_torch_adapter.py -q: 25 passed",
+    "S:/st1/Scripts/python.exe -m pytest tests/python/safetensors/test_obligation_optional_adapters.py tests/python/safetensors/test_obligation_real_torch_adapter.py -q: 32 passed",
+    "S:/st1/Scripts/python.exe -m pytest tests/python/safetensors -q: 389 passed",
+    ".local/venvs/safetensors-current-proof/Scripts/python.exe -m pytest tests/python/safetensors -q: 364 passed, 1 skipped",
+    ".local/venvs/safetensors-current-proof/Scripts/python.exe -m ruff check tests/python/safetensors/test_obligation_real_torch_adapter.py: PASS",
+    "wheelhouse manifest comparison: PASS, 24 exact names, SHA-256 digests, and byte sizes"
+  ],
+  "ledger_entry_id": "FF6-SAFETENSORS-REAL-TORCH-001",
+  "ledger_entry_path": "reports/r90/product-code-change-ledger.json",
+  "validations": {
+    "obligation_resolves_to_selected_format": "PASS",
+    "official_binary_wheel_available_for_python_313": "PASS",
+    "third_party_wheels_hash_locked": "PASS: 24 of 24",
+    "offline_install_from_wheelhouse": "PASS",
+    "factory_installed_wheel_origin": "PASS",
+    "real_torch_import": "PASS: 2.13.0+cpu",
+    "real_dtype_matrix": "PASS: 19 exact dtypes",
+    "safe_mutable_copy_lifetime": "PASS",
+    "explicit_cpu_device": "PASS",
+    "empty_tensor": "PASS",
+    "subbyte_rejection": "PASS: 3 dtypes",
+    "real_torch_full_package_regression": "PASS: 389 tests",
+    "base_optional_dependency_regression": "PASS: 364 passed, 1 skipped",
+    "ruff": "PASS",
+    "product_code_ledger_entry_count": "PASS: exactly one",
+    "product_code_ledger_entry_hashes": "PASS: declared test and fixture SHA-256 values equal current files",
+    "source_or_factory_package_digest_changed": "NO",
+    "controller_proof_required": "YES: real framework evidence and wheelhouse fixture must be bound to the live graph"
+  },
+  "output_digests": {
+    "tests/python/safetensors/test_obligation_real_torch_adapter.py": "a41f58cc4635f8c1c259bf4314c2adf92fc12d7868af171caf5b0f06d5d9ab17",
+    "tests/python/safetensors/fixtures/torch-proof-wheelhouse.sha256.json": "30b91cd3fc84cd6beb6a1461f71d25c48098f44f883f4c348b0ce1af111c698c",
+    "reports/r90/product-code-change-ledger.json": "897b77643ae1b57b9d074d0f76095c0feaa3ce747c1ea09983c37f8ebb9eda4a",
+    "torch-2.13.0-cp313-cp313-win_amd64.whl": "49b58f1e2c52440abb6f17c28f0335fe6c6d01ad1a7f55b0183b81e4b34d64e6"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for the real-framework implementation evidence; controller materialization is explicit next work",
+    "2_required_evidence_present": "YES for the real PyTorch environment and full package regression",
+    "3_evidence_sufficient": "YES for implementation verification; no obligation closure or certification claimed until controller proof",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES, retained from the active mission session",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, retained in the mission receipt chain",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "SAFETENSORS_REAL_TORCH_ENVIRONMENT_VERIFIED_PROOF_MATERIALIZATION_PENDING",
+  "timestamp": "2026-07-25T22:01:55.2965292Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

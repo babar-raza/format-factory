@@ -1,67 +1,82 @@
-# Format Factory — safetensors
+# format-factory-safetensors
 
-Parse, edit, and write SafeTensors (.safetensors) tensor files with Format Factory.
-
-## Installation
-
-<!-- BEGIN:README-INSTALLATION generated=2026-07-15T19:25:42+00:00 source=package-metadata -->
-```bash
-pip install format-factory-safetensors
-```
-<!-- END:README-INSTALLATION -->
-
-## Quick Start
+Framework-neutral SafeTensors v0.8.0 parsing, validation, lazy memory mapping,
+and deterministic writing under the collision-free namespace
+`format_factory.safetensors`.
 
 ```python
-from safetensors.safetensors_codec import load_safetensors, write_safetensors, get_tensor_bytes, get_tensor
+from format_factory.safetensors import read_header, safe_open
 
-model = load_safetensors("weights.safetensors")
-print(list(model["tensors"].keys()))
+header = read_header("model.safetensors")
+print(header.tensor_names)
 
-# Retrieve real tensor bytes / a decoded array
-raw = get_tensor_bytes(model, "layer1.weight")
-array, shape = get_tensor(model, "layer1.weight")
-
-write_safetensors(model, "weights-copy.safetensors")
+with safe_open("model.safetensors") as mapped:
+    weights = mapped.tensor_region("model.weight", 0, 4096)
+    print(mapped.access.mode, mapped.access.full_decode_required)
+    weights.release()
 ```
 
-## Features
+The reader executes no code and rejects duplicate JSON keys, unsupported
+dtypes, malformed shapes, integer-size overflow, sub-byte misalignment,
+overlapping offsets, holes, truncation, unindexed trailing bytes, non-string
+metadata, and configured resource-limit violations.
 
-- Real tensor byte retrieval (`get_tensor_bytes`) — not header-metadata-only
-- Array decode to numpy, including bf16 upcast and fp8 (F8_E4M3, F8_E5M2) dtypes
-- Real tensor data on write — `write_safetensors` preserves actual bytes, not a zero-fill placeholder
-- Offset overlap/bounds/coverage validation (`validate_tensor_offsets`)
-- Duplicate tensor key rejection
-- `__metadata__` string map support
+`read_header` neither maps nor copies the payload. Path-backed `safe_open`
+uses a read-only memory map and returns borrowed regions. Callers must release
+borrowed `memoryview` objects before the document context closes. SafeTensors
+has no compressed payload encoding, so access reports
+`full_decode_required=False`; non-path streams explicitly report that they
+were fully buffered.
 
-**Scope note:** true lazy/memory-mapped streaming access remains out of scope for this pass. See `reports/spec-coverage/safetensors-deferred.json`.
+`validate()` returns deterministic rule-specific diagnostic codes such as
+`SAFETENSORS_DTYPE`, `SAFETENSORS_TENSOR_SIZE`,
+`SAFETENSORS_OFFSET_COVERAGE`, and `SAFETENSORS_RESOURCE_LIMIT`. Resource
+diagnostics include the limit name, actual value, and configured maximum.
+Tensor rank is bounded by `ResourceLimits.max_nesting_depth`; header, input,
+and tensor-count ceilings use their corresponding resource-limit fields.
 
-## License
+Closing a mapped document while an exported region is alive raises
+`SafeTensorsError` with code `SAFETENSORS_BORROWED_VIEW_ACTIVE`. The document
+retains the mapping owner, so callers can release all regions and retry
+`close()` without leaking the mapping. Closed documents reject further region
+access with `SAFETENSORS_DOCUMENT_CLOSED`.
 
-<!-- BEGIN:README-LICENSE generated=2026-07-15T19:25:42+00:00 source=package-metadata -->
-Apache-2.0
-<!-- END:README-LICENSE -->
+The package does not install a top-level `safetensors` module and can be
+co-installed with Hugging Face's official implementation.
 
-## Package Info
+Sharded model indexes are a separate JSON lifecycle:
 
-<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-15T19:25:42+00:00 source=repository-metadata -->
-| Field | Value |
-|---|---|
-| Format | SafeTensors |
-| Track | python |
-| Package | format-factory-safetensors |
-| Version | 0.1.0.dev0 |
-| License | Apache-2.0 |
-| Python | >=3.9 |
-| .NET | unknown |
-| Spec | Hugging Face v0.4 |
-| QName coverage | 2/2 implemented |
-| Source files | 15 |
-| Test files | 6 |
-<!-- END:README-PACKAGE_INFO -->
+```python
+from format_factory.safetensors import load_index
 
-## Public API
+index = load_index("model.safetensors.index.json")
+shard_path = index.resolve_shard("model.weight", "model-directory")
+```
 
-<!-- BEGIN:README-PUBLIC_API generated=2026-07-15T19:25:42+00:00 source=src-python-init -->
-- `(dynamic)`
-<!-- END:README-PUBLIC_API -->
+`load_index` rejects duplicate JSON keys and unsafe shard references.
+References must be normalized relative POSIX paths. `dump_index` writes
+deterministic compact JSON, and `resolve_shard` proves the resolved path stays
+under the caller-provided root.
+
+Optional framework adapters remain separately importable:
+
+```python
+from format_factory.safetensors.adapters import to_numpy, to_torch
+
+with safe_open("model.safetensors") as mapped:
+    borrowed = to_numpy(mapped, "model.weight")  # read-only; mapped must stay open
+    independent = to_numpy(mapped, "model.weight", copy=True)  # writable copy
+    gpu_tensor = to_torch(
+        mapped,
+        "model.weight",
+        copy=True,
+        device="cuda:0",
+    )
+```
+
+Importing the base package or the adapter modules does not import NumPy or
+PyTorch. NumPy's `copy=False` path is a read-only borrowed view. PyTorch is
+intentionally copy-only because PyTorch tensors are mutable and cannot safely
+alias a read-only bytes object or memory map. Unsupported framework dtypes are
+rejected rather than reinterpreted, and device validation/transfer is delegated
+to PyTorch.

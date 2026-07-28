@@ -1,12 +1,39 @@
 {
+  "invocation_id": "PACKAGE-PROOF-DDB0F7224730F8020CC06D19C35593737ED7903885584613D89EB93D20796704-pgm",
   "skill_id": "package-install-proof",
-  "skill_version": "2.0",
+  "skill_version": "3.0",
+  "mode": "live",
+  "inputs": {
+    "format_id": "pgm",
+    "package_name": "format-factory-pgm"
+  },
+  "allowed_files": [
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-pgm.json"
+  ],
+  "actual_files_changed": [
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-pgm.json"
+  ],
+  "tests_run": [
+    "wheel-origin import assertion",
+    "pgm.pgm_parser.parse_pgm_strict on samples/by-format/pgm/valid/2x2-gradient.pgm",
+    "deep installed-submodule import scan"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-07-25T18:28:06+00:00",
   "format_id": "pgm",
   "package_name": "format-factory-pgm",
   "package_version": "0.1.0.dev0",
   "wheel_path": "format_factory_pgm-0.1.0.dev0-py3-none-any.whl",
-  "wheel_sha256": "3ed87972283d2d11d9205369f913231dce334c27ebb31450e9073f799c693ac6",
-  "source_digest": "539c36b72801103254b2ff12363c09090ef02900b192c15de8ef3448767b63f6",
+  "wheel_sha256": "a5d448930c090f6c2ab4c8c380b0f9e013754397212aad04d94ccc17482aa75b",
+  "proof_id": "PACKAGE-PROOF-DDB0F7224730F8020CC06D19C35593737ED7903885584613D89EB93D20796704",
+  "source_digest": "a63bfc5d6e49292b72bf3e8e1b68396eb245144bf67521e57ff1a184dc8be0b0",
+  "proof_input_digest": "8bb5616a4d9d1f71e7038e4b28b99d7b4b9b32a262762eda9258862da3d66860",
+  "local_dependencies": [],
   "install_method": "pip install --no-deps <wheel> (ephemeral venv)",
   "install_result": "PASS",
   "import_result": "PASS",
@@ -16,6 +43,6 @@
   "verdict": "PASS",
   "proof_report": "reports/package-install-proof/proof-report.md",
   "notes": "B9 proof via tools/run_package_install_proof.py (GAP-FORENSIC-001)",
-  "generated_at": "2026-07-15T17:36:29+00:00",
-  "worker_agent": "claude"
+  "generated_at": "2026-07-25T18:28:06+00:00",
+  "worker_agent": "codex"
 }

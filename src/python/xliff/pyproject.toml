@@ -1,32 +1,56 @@
 [build-system]
-requires = ["setuptools>=68"]
-build-backend = "setuptools.build_meta"
+requires = ["setuptools==80.9.0"]
+build-backend = "_build_backend"
+backend-path = ["."]
 
 [project]
 name = "format-factory-xliff"
-version = "0.1.0.dev0"
-description = "Format Factory XLIFF FOSS Python parser and writer"
-license = {text = "Apache-2.0"}
-requires-python = ">=3.9"
-
+version = "0.2.0.dev0"
+description = "Bounded XLIFF 2.0/2.1 model, reader, validator, and writer"
+license = "Apache-2.0"
+requires-python = ">=3.11"
 readme = "README.md"
-authors = [
-    {name = "Format Factory", email = "formatfactory@aspose.com"},
-]
-keywords = ["format-factory", "xliff", "localization", "translation", "oasis"]
+authors = [{name = "Format Factory", email = "formatfactory@aspose.com"}]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Typing :: Typed",
     "Operating System :: OS Independent",
 ]
+dependencies = ["format-factory-core==0.1.0.dev0"]
+
+[project.optional-dependencies]
+schema = ["xmlschema==4.1.0"]
+test = ["pytest>=8.3", "hypothesis>=6.100"]
 
 [project.urls]
 Homepage = "https://github.com/format-factory/format-factory"
+Repository = "https://github.com/format-factory/format-factory"
+Security = "https://github.com/format-factory/format-factory/security/policy"
 
 [project.scripts]
-ff-xliff = "xliff.cli:main"
+ff-xliff = "format_factory.xliff.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
-where = [".."]
-include = ["xliff*"]
+where = ["src"]
+include = ["format_factory.xliff*"]
+namespaces = true
+
+[tool.setuptools.package-data]
+"format_factory.xliff" = ["py.typed"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+packages = ["format_factory.xliff"]

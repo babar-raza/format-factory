@@ -1,21 +1,55 @@
 {
+  "invocation_id": "PACKAGE-PROOF-D063CE89929EA1F5E6F08DA1400CB073378D1C776A14EDB2998A12BE2894EFFC-ipynb",
   "skill_id": "package-install-proof",
-  "skill_version": "2.0",
+  "skill_version": "3.0",
+  "mode": "live",
+  "inputs": {
+    "format_id": "ipynb",
+    "package_name": "format-factory-ipynb"
+  },
+  "allowed_files": [
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-ipynb.json"
+  ],
+  "actual_files_changed": [
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-ipynb.json"
+  ],
+  "tests_run": [
+    "wheel-origin import assertion",
+    "format_factory.ipynb.load_ipynb on samples/by-format/ipynb/valid/minimal.ipynb",
+    "deep installed-submodule import scan"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-07-28T07:43:08+00:00",
   "format_id": "ipynb",
   "package_name": "format-factory-ipynb",
-  "package_version": "0.1.0.dev0",
-  "wheel_path": "format_factory_ipynb-0.1.0.dev0-py3-none-any.whl",
-  "wheel_sha256": "62cfa47b788bcb61f0fada5e0254768ebe0e4b4fb6d33f0a0d07b5fec238d14f",
-  "source_digest": "2607b191a1f60c96f7b44e48e14d2241af16cc6cc1cf3de73f1240d6c805ed10",
+  "package_version": "0.2.0.dev0",
+  "wheel_path": "format_factory_ipynb-0.2.0.dev0-py3-none-any.whl",
+  "wheel_sha256": "fc129bface776b6ff4fc787a33db1a50af155f64a63794b00c3f15e0c81711c0",
+  "proof_id": "PACKAGE-PROOF-D063CE89929EA1F5E6F08DA1400CB073378D1C776A14EDB2998A12BE2894EFFC",
+  "source_digest": "5c4d246bb5d2c1e16fb500797a7475f3003ebdc1f6ae3aa12bb728ddead66c1e",
+  "proof_input_digest": "0eac2ae10f229c0253d0196df826f40771fe060176f83557f464b42e9c67e317",
+  "local_dependencies": [
+    {
+      "package_name": "format-factory-core",
+      "wheel_file": "format_factory_core-0.1.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "c2180091e94db95474e24494fba89bd8f1cd4ba51814743e29070b5c5907d2bc",
+      "install_result": "PASS"
+    }
+  ],
   "install_method": "pip install --no-deps <wheel> (ephemeral venv)",
   "install_result": "PASS",
   "import_result": "PASS",
-  "import_statement": "import ipynb",
+  "import_statement": "import format_factory.ipynb",
   "smoke_result": "PASS",
-  "smoke_test": "ipynb.ipynb_codec.load_ipynb on samples/by-format/ipynb/valid/minimal.ipynb",
+  "smoke_test": "format_factory.ipynb.load_ipynb on samples/by-format/ipynb/valid/minimal.ipynb",
   "verdict": "PASS",
   "proof_report": "reports/package-install-proof/proof-report.md",
   "notes": "B9 proof via tools/run_package_install_proof.py (GAP-FORENSIC-001)",
-  "generated_at": "2026-07-16T06:12:37+00:00",
-  "worker_agent": "claude"
+  "generated_at": "2026-07-28T07:43:08+00:00",
+  "worker_agent": "codex"
 }

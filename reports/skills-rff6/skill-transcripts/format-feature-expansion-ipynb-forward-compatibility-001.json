@@ -1,0 +1,132 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-format-feature-expansion-ipynb-forward-compatibility-001",
+  "execution_id": "ff6-format-feature-expansion-ipynb-forward-compatibility-001",
+  "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-OUTPUT-001",
+  "skill_id": "format-feature-expansion",
+  "selected_skill_ids": [
+    "format-feature-expansion"
+  ],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-IPYNB-FORWARD-COMPATIBILITY-001",
+  "pre_mutation_guard_authorization_id": "1d7f706654763b35",
+  "requested_operation": "add explicit preservation-only serialization for future nbformat 4.x minor versions and differential evidence against pinned nbformat 5.10.4",
+  "inputs": {
+    "format_id": "ipynb",
+    "profile_id": "production",
+    "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-OUTPUT-001",
+    "obligation_id": "SAL-IPYNB-OBL-010C554B8692D166",
+    "capability_id": "IPYNB-OUTPUT-001",
+    "contract_digest": "56762498619ac994bbc5bceac7240357118f1046bda48d5e4bdffc6baa1129ac",
+    "authority_digests": {
+      "SRC-NB-002": "4d3750b55006e92d8063a6ac427a84eb1f91c44e376d90de53d03893674991d9"
+    },
+    "root_cause": "Preservation-mode loading accepted future nbformat 4.x minors and retained unknown dictionary data, but every writer path rewrote the declared version to a supported 4.0-4.5 profile. The system therefore had no explicit lossless carriage path for future-minor notebooks.",
+    "affected_layer": "IPYNB writer profile selection and installed-wheel forward-compatibility evidence",
+    "planned_paths": [
+      "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py",
+      "tests/python/ipynb/test_obligation_forward_compatibility.py",
+      "tests/python/ipynb/fixtures/oracle-wheelhouse.sha256.json",
+      "reports/r90/product-code-change-ledger.json",
+      "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-forward-compatibility-001.json"
+    ],
+    "proof_inputs": [
+      "shared/format-contracts/ipynb.yaml",
+      "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py",
+      "tests/python/ipynb/test_obligation_forward_compatibility.py",
+      "tests/python/ipynb/fixtures/oracle-wheelhouse.sha256.json",
+      ".local/build/core-r5/format_factory_core-0.1.0.dev0-py3-none-any.whl",
+      ".local/build/ipynb-forward-a/format_factory_ipynb-0.2.0.dev0-py3-none-any.whl",
+      ".local/venvs/ipynb-current-proof"
+    ],
+    "base_git_commit": "c8426478"
+  },
+  "allowed_files": [
+    "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py",
+    "tests/python/ipynb/test_obligation_forward_compatibility.py",
+    "tests/python/ipynb/fixtures/oracle-wheelhouse.sha256.json",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-forward-compatibility-001.json"
+  ],
+  "actual_files_changed": [
+    "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py",
+    "tests/python/ipynb/test_obligation_forward_compatibility.py",
+    "tests/python/ipynb/fixtures/oracle-wheelhouse.sha256.json",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-forward-compatibility-001.json"
+  ],
+  "defect_reproduction": {
+    "result": "FAILURE_REPRODUCED",
+    "command": ".local/venvs/ipynb-current-proof/Scripts/python.exe -m pytest tests/python/ipynb/test_obligation_forward_compatibility.py -q",
+    "outcome": "1 failed, 2 passed",
+    "failure": "dumps(document, profile='declared') rejected the only explicit preservation profile needed to retain nbformat 4.6"
+  },
+  "implementation": {
+    "declared_profile": "dumps/dump now accept profile='declared' (and the equivalent nbformat-declared spelling after prefix normalization) and retain a declared non-negative nbformat 4.x version.",
+    "strict_boundary": "Strict loading continues to reject versions outside 4.0-4.5; the new path is explicitly preservation-only and makes no future-version conformance claim.",
+    "default_boundary": "The default writer remains nbformat 4.5 and continues to generate required cell IDs.",
+    "unknown_data": "Unknown root members, future cell types, future output types, and nested vendor payloads survive load-write-load without dictionary loss.",
+    "oracle": "Official nbformat 5.10.4 independently reads, validates, writes, and rereads the same future-minor vector. Assertions account for its permitted multiline-string normalization while requiring preservation of declared version and unknown payloads.",
+    "dependency_lock": "All 16 wheels in the oracle environment are recorded by filename, byte size, and SHA-256."
+  },
+  "tests_run": [
+    "failure-first installed-wheel test: 1 failed, 2 passed",
+    "source-backed focused test after implementation: 3 passed",
+    "two SOURCE_DATE_EPOCH=0 wheel builds: byte-identical SHA-256 1caa02f4503539c3e2b0a0cadb2a9fa234b3473ae7531bc95f8352217bd4c020",
+    "installed-wheel focused test with nbformat 5.10.4: 3 passed",
+    "installed-wheel full tests/python/ipynb suite: 257 passed",
+    "oracle wheelhouse digest verification: 16 pinned wheels verified",
+    "Ruff on changed source and test: PASS"
+  ],
+  "ledger_entry_id": "FF6-IPYNB-FORWARD-COMPATIBILITY-001",
+  "ledger_entry_path": "reports/r90/product-code-change-ledger.json",
+  "validations": {
+    "obligation_resolves_to_selected_format": "PASS",
+    "strict_supported_profile_unchanged": "PASS",
+    "default_writer_profile_unchanged": "PASS",
+    "future_minor_declared_version_preserved": "PASS",
+    "unknown_cell_and_output_preserved": "PASS",
+    "official_nbformat_version": "PASS: 5.10.4",
+    "official_future_minor_validation": "PASS",
+    "installed_wheel_origin": "PASS",
+    "reproducible_wheel": "PASS",
+    "declared_regression_tier": "PASS: 257 tests",
+    "ruff": "PASS",
+    "product_code_ledger_entry_count": "PASS: exactly one",
+    "product_code_ledger_entry_hashes": "PASS",
+    "controller_proof_required": "YES: source and package digests changed, so the new result must be materialized and prior IPYNB results replayed if any existed"
+  },
+  "output_digests": {
+    "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py": "ef4138b5b40357fc1fc314451f6378dd3b7135ba2782a7cb89dd5d1c5475817b",
+    "tests/python/ipynb/test_obligation_forward_compatibility.py": "40a1579024d7ddc28b342199f98d119907bd25f4f581f616ccb1ac4613c6cd9b",
+    "tests/python/ipynb/fixtures/oracle-wheelhouse.sha256.json": "a1adeb0088adcaffb1ea41c164cd4e58b35dcf7fe7eef570051f54787f8dcacc",
+    "reports/r90/product-code-change-ledger.json": "c12144aa694cb725e00ce33caf1187800e7cb3006d7452902d6cd31862eaa45f",
+    "format_factory_ipynb-0.2.0.dev0-py3-none-any.whl": "1caa02f4503539c3e2b0a0cadb2a9fa234b3473ae7531bc95f8352217bd4c020"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for the bounded implementation; controller materialization is explicit next work",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for implementation verification; no product certification claimed",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES, retained from the active mission session",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, retained in the mission receipt chain",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "IPYNB_FORWARD_COMPATIBILITY_IMPLEMENTED_PROOF_MATERIALIZATION_PENDING",
+  "timestamp": "2026-07-25T22:18:50.1108579Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

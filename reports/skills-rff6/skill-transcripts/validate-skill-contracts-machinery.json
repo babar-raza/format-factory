@@ -1,0 +1,32 @@
+{
+  "invocation_id": "FF6-VALIDATE-SKILL-CONTRACTS-20260724",
+  "skill_id": "validate-skill-contracts",
+  "task_id": "AUTO-MACHINERY-INTEGRITY",
+  "mode": "live",
+  "inputs": {
+    "scope": "all active skill contracts",
+    "skill_id": "all"
+  },
+  "allowed_files": [
+    ".supervisor/skill-contract-validation-results.yaml",
+    "reports/skills-rff6/skill-transcripts/validate-skill-contracts-machinery.json"
+  ],
+  "actual_files_changed": [
+    ".supervisor/skill-contract-validation-results.yaml",
+    "reports/skills-rff6/skill-transcripts/validate-skill-contracts-machinery.json"
+  ],
+  "tests_run": ["validate_skill_contracts.py: 192 skills, 0 FAIL, 0 WARN"],
+  "validations": {
+    "skill_registry_parseable": "PASS",
+    "command_files_resolve": "PASS",
+    "all_active_contracts_valid": "PASS"
+  },
+  "output_digests": {
+    ".supervisor/skill-contract-validation-results.yaml": "1d089e8dd62d8d5e3993f0b6b10a0459dab068b02b743e2034e5f8a4fb72fc77"
+  },
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-07-24T00:18:01+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

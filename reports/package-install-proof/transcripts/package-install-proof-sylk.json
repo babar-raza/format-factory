@@ -1,12 +1,39 @@
 {
+  "invocation_id": "PACKAGE-PROOF-6E9AF2E5E095E2C2774F6E6ECA3C4E2F9CB05B993650AC3D10A5F263B0C8718E-sylk",
   "skill_id": "package-install-proof",
-  "skill_version": "2.0",
+  "skill_version": "3.0",
+  "mode": "live",
+  "inputs": {
+    "format_id": "sylk",
+    "package_name": "format-factory-sylk"
+  },
+  "allowed_files": [
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-sylk.json"
+  ],
+  "actual_files_changed": [
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-sylk.json"
+  ],
+  "tests_run": [
+    "wheel-origin import assertion",
+    "sylk.sylk_parser.parse_sylk on samples/by-format/sylk/valid/minimal-2x2.slk",
+    "deep installed-submodule import scan"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-07-25T18:28:06+00:00",
   "format_id": "sylk",
   "package_name": "format-factory-sylk",
   "package_version": "0.1.0.dev0",
   "wheel_path": "format_factory_sylk-0.1.0.dev0-py3-none-any.whl",
-  "wheel_sha256": "a73df43180c34c94e2775090bbd1aa9163915dc4d977977a477218249fc5a131",
-  "source_digest": "8ebef45ce74fe8325b71a66fd83ef1709de44c34fbd0b679ea9e6b0502426bae",
+  "wheel_sha256": "c3c7bd0d1cab4b184118a099537ca9ac4a710aca8494eab37f592b51bb3e441e",
+  "proof_id": "PACKAGE-PROOF-6E9AF2E5E095E2C2774F6E6ECA3C4E2F9CB05B993650AC3D10A5F263B0C8718E",
+  "source_digest": "3cf725d1927fe1e9d9101f337baf8f862f14f0b54c7c07f37994216d8e3a8b40",
+  "proof_input_digest": "ff9bc0643e852f3fc35f6a3edfe05f62f7f164b6756ebfda53c2486aab707155",
+  "local_dependencies": [],
   "install_method": "pip install --no-deps <wheel> (ephemeral venv)",
   "install_result": "PASS",
   "import_result": "PASS",
@@ -16,6 +43,6 @@
   "verdict": "PASS",
   "proof_report": "reports/package-install-proof/proof-report.md",
   "notes": "B9 proof via tools/run_package_install_proof.py (GAP-FORENSIC-001)",
-  "generated_at": "2026-07-15T17:36:29+00:00",
-  "worker_agent": "claude"
+  "generated_at": "2026-07-25T18:28:06+00:00",
+  "worker_agent": "codex"
 }

@@ -1,0 +1,111 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-materialize-production-proof-safetensors-scalar-001",
+  "execution_id": "ff6-materialize-production-proof-safetensors-scalar-001",
+  "task_id": "AUTO-SAFETENSORS-PROVE-SAFETENSORS-SCALAR-001",
+  "skill_id": "materialize-production-proof",
+  "selected_skill_ids": [
+    "materialize-production-proof"
+  ],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-SAFETENSORS-PROOF-019",
+  "pre_mutation_guard_authorization_id": "06302909bfb5427d",
+  "requested_operation": "bind existing installed-wheel scalar roundtrip behavior to the mandatory zero-rank tensor obligation without changing source",
+  "inputs": {
+    "defect_id": "GAP-0966820D26200419",
+    "failing_regression": "the mandatory zero-rank scalar obligation had no live digest-bound positive result even though characterized behavior existed",
+    "invalidation_input": "none; this is first current proof for the obligation",
+    "target_product": "safetensors",
+    "obligation_id": "SAL-SAFETENSORS-OBL-82F023366D266472",
+    "compiled_obligation_text": "(README Notes line 98 and tensor.rs test_empty_shapes_allowed) A zero-rank tensor with an empty shape list is a valid scalar whose data span contains exactly one element of its declared dtype.",
+    "base_git_commit": "f6c59cd6"
+  },
+  "allowed_files": [
+    "reports/skills-rff6/skill-transcripts/materialize-production-proof-safetensors-scalar-001.json",
+    ".local/production-program/current-gaps.json",
+    ".local/production-program/executed-proofs.json",
+    ".local/production-program/journal.jsonl",
+    ".local/production-program/proof-graphs/safetensors/edges.jsonl",
+    ".local/production-program/proof-graphs/safetensors/nodes.jsonl",
+    ".local/production-program/state.json"
+  ],
+  "actual_files_changed": [
+    "reports/skills-rff6/skill-transcripts/materialize-production-proof-safetensors-scalar-001.json",
+    ".local/production-program/current-gaps.json",
+    ".local/production-program/executed-proofs.json",
+    ".local/production-program/journal.jsonl",
+    ".local/production-program/proof-graphs/safetensors/edges.jsonl",
+    ".local/production-program/proof-graphs/safetensors/nodes.jsonl",
+    ".local/production-program/state.json"
+  ],
+  "behavior_added": [],
+  "tests_run": [
+    ".local/venvs/safetensors-current-proof/Scripts/python.exe -m pytest tests/python/safetensors/test_production_namespace.py::test_scalar_roundtrip_is_deterministic -q: 1 passed"
+  ],
+  "validations": {
+    "compiled_obligation_inspected": "PASS",
+    "existing_behavior_matches_obligation": "PASS",
+    "source_change_required": "NO",
+    "one_obligation_per_executed_result": "PASS",
+    "exact_positive_polarity": "PASS",
+    "complete_execution_input_closure": "PASS",
+    "installed_wheel_origin": "PASS",
+    "scalar_shape_is_empty_tuple": "PASS",
+    "scalar_payload_is_one_declared_element": "PASS",
+    "deterministic_roundtrip": "PASS",
+    "proof_input_invalidation": "PASS: no existing nodes invalidated",
+    "stale_proof_count_after_execution": 0,
+    "mandatory_obligations_remaining": 38,
+    "promotion_state": "IMPLEMENTATION_IN_PROGRESS",
+    "promotion_claimed": "NO"
+  },
+  "proof": {
+    "obligation_id": "SAL-SAFETENSORS-OBL-82F023366D266472",
+    "proof_id": "PROOF-905F664C80721184B316505F7EA59DAC39632523FFC0C6B2CADEA1C134DA5642",
+    "polarity": "positive",
+    "exit_code": 0,
+    "contract_digest": "e7c4939500768fa6a3bc19a7bd849e1e1883e9c707d9ba868c87fbe25ab64806",
+    "source_digest": "3d097bcc6b578dc788ec74ecede6ac9e8dbc62782f4fd33586aa83611f18b588",
+    "test_digest": "3e36eddfb2f6dd9cf6840488d42d9286c0b648790b86eb16de8317676befaa0b",
+    "fixture_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "package_digest": "81262893fe6e1b3cc6e830f71fa78acf131c3c77ca019a2ad81fbc8824eb68f9",
+    "dependency_digest": "bf8dee63c7abf526d178fe57c48e2d55ba04871cba72eea64a3c04dfbb9e269a",
+    "tool_digest": "b7c0f68d84382d04b000a97d01e8e625355513d0972a17a048f4cd241018ce20",
+    "environment_digest": "eadcbefaa781595624ab29fe00c09aea6265a73a6dfa72fd969c9f1fffad5c87",
+    "core_wheel_sha256": "948c1e9bad28121efbc4d1084bbf3e757a636dfe0889d6e7e3a34e2af4026077",
+    "safetensors_wheel_sha256": "bd811bda3d123298d63b53780eee69d919677310cf53d04a550be1ed1e440b87"
+  },
+  "controller_result": {
+    "final_graph_digest": "9f9942cf5b24cc315e231d7a285b04e5c1d216294fc3e79e0a70d5391779ce50",
+    "program_open_gaps": 568,
+    "next_gap_id": "GAP-D2E7734976D9AA8A",
+    "next_obligation_id": "SAL-SAFETENSORS-OBL-8329025ECE9B09AC",
+    "next_task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-VALIDATE-001"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for the scalar obligation; no certification claimed",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES, retained from the active mission session",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, retained in the mission receipt chain",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "SAFETENSORS_SCALAR_OBLIGATION_PROVED_WITHOUT_SOURCE_CHANGE_NOT_CERTIFIED",
+  "timestamp": "2026-07-25T20:10:15Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

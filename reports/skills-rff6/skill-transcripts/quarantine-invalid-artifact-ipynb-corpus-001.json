@@ -1,0 +1,82 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-quarantine-invalid-artifact-ipynb-corpus-001",
+  "execution_id": "ff6-quarantine-invalid-artifact-ipynb-corpus-001",
+  "task_id": "AUTO-IPYNB-CORPUS-REMEDIATE-001",
+  "skill_id": "quarantine-invalid-artifact",
+  "selected_skill_ids": [
+    "quarantine-invalid-artifact"
+  ],
+  "skill_route": {
+    "operation_class": "invalid_fixture_quarantine",
+    "resolution": "The registered skill owns the operational control-index quarantine record. Content retention and independently licensed replacement are executed separately through format-feature-expansion.",
+    "coverage_result": "SKILL_COVERAGE_CONFIRMED"
+  },
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260726T032732-500bac",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-IPYNB-CORPUS-001",
+  "pre_mutation_guard_authorization_id": "58d5af67f4b4bdb1",
+  "requested_operation": "Record two falsely valid-labeled IPYNB corpus artifacts as active high-severity quarantines without erasing source bytes or their digests.",
+  "artifact_path": [
+    "samples/by-format/ipynb/valid/code-and-markdown.ipynb",
+    "samples/by-format/ipynb/valid/with-outputs.ipynb"
+  ],
+  "severity": "HIGH",
+  "validation_failures": [
+    "The first artifact declares nbformat 4.5 but cells[0].id and cells[1].id are absent.",
+    "The second artifact declares nbformat 4.5 but cells[0].id is absent.",
+    "Both manifests and the legacy oracle package mislabeled the original hashes as valid positive evidence.",
+    "nbformat 5.10.4 normalizes copies and emits MissingIDFieldWarning; the exact normative schema rejects the immutable source bytes."
+  ],
+  "inputs": {
+    "format_id": "ipynb",
+    "artifact_path": [
+      "samples/by-format/ipynb/valid/code-and-markdown.ipynb",
+      "samples/by-format/ipynb/valid/with-outputs.ipynb"
+    ],
+    "severity": "HIGH",
+    "validation_failures": [
+      "nbformat 4.5 required cell IDs are absent",
+      "current corpus and oracle labels contradict immutable source validity"
+    ],
+    "quarantine_ids": [
+      "q:ipynb:c8caeff0a36013b17b3c910f0b9ffe24b9b855aad958d02affb25147c9700b1a",
+      "q:ipynb:3b7d9f72565a7d916baa527976f00b5de4142ee148306bfed4bd16016b735e09"
+    ],
+    "artifact_hashes": [
+      "c8caeff0a36013b17b3c910f0b9ffe24b9b855aad958d02affb25147c9700b1a",
+      "3b7d9f72565a7d916baa527976f00b5de4142ee148306bfed4bd16016b735e09"
+    ],
+    "database_path": ".local/supervisor/control-index.db"
+  },
+  "allowed_files": [
+    ".local/supervisor/control-index.db",
+    "reports/skills-rff6/skill-transcripts/quarantine-invalid-artifact-ipynb-corpus-001.json"
+  ],
+  "actual_files_changed": [
+    ".local/supervisor/control-index.db",
+    "reports/skills-rff6/skill-transcripts/quarantine-invalid-artifact-ipynb-corpus-001.json"
+  ],
+  "tests_run": [
+    "control-index schema initialized/migrated through ensure_db",
+    "two deterministic q:ipynb:<sha256> rows inserted or updated",
+    "query returned exactly two ACTIVE HIGH rows with exact artifact paths, failures, and hashes"
+  ],
+  "validations": {
+    "artifact_path_exists_or_documented": "PASS: both original paths existed at capture and their bytes are retained under content-addressed quarantine paths",
+    "idempotency": "PASS: deterministic primary keys and ON CONFLICT update",
+    "history_preserved": "PASS",
+    "positive_evidence_claimed": "NO"
+  },
+  "output_digests": {
+    ".local/supervisor/control-index.db": "20a6e94d8d5a90916700023e7975a7310f26867f084fda217bd276f50db3e097"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "TWO_IPYNB_CORPUS_ARTIFACTS_OPERATIONALLY_QUARANTINED",
+  "timestamp": "2026-07-26T03:43:00Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

@@ -82,7 +82,10 @@ def readiness(ctx: dict) -> dict:
         keywords = [k.lower() for k in cat["match_keywords"]]
         matched = [
             f.get("fact_id") for f in facts
-            if any(k in _fact_text(f) for k in keywords)
+            if (
+                cat_name in (f.get("readiness_categories") or [])
+                or any(k in _fact_text(f) for k in keywords)
+            )
         ]
         min_facts = int(overrides.get(cat_name, cat.get("min_facts", 1)))
         covered = len(matched) >= min_facts
@@ -102,10 +105,10 @@ def readiness(ctx: dict) -> dict:
     threshold = float(family_rules.get("threshold", policy.get("default_threshold", 0.7)))
     report["score"] = round(score, 4)
     report["threshold"] = threshold
-    report["ready"] = score >= threshold
     report["missing_categories"] = sorted(
         name for name, c in report["categories"].items() if not c["covered"]
     )
+    report["ready"] = score >= threshold and not report["missing_categories"]
     return report
 
 
@@ -287,7 +290,21 @@ def assemble(ctx: dict, capabilities: list[dict]) -> dict:
         display_name=display_name, spec_body=spec_body, spec_version=spec_version
     )
 
-    sources = [{
+    research_sources = [
+        dict(record)
+        for record in sorted(
+            research.get("source_records", []),
+            key=lambda record: str(record.get("source_id", "")),
+        )
+    ]
+    pinned_authorities = [
+        record
+        for record in research_sources
+        if record.get("authority_class") == "AUTHORITATIVE"
+        and record.get("acquisition_status") == "ACQUIRED"
+        and record.get("content_hash")
+    ]
+    registry_source = {
         "source_id": f"SRC-{fmt}-001",
         "title": f"{spec_body} {spec_version}".strip(),
         "organization": spec_body,
@@ -295,19 +312,83 @@ def assemble(ctx: dict, capabilities: list[dict]) -> dict:
         "canonical_url": reg.get("spec_url"),
         "authority_class": "AUTHORITATIVE",
         "acquisition_status": "URL_ONLY" if reg.get("spec_url") else "NEEDS_AUTHORITY",
-    }]
-    for idx, record in enumerate(
-        sorted(research.get("source_records", []), key=lambda r: str(r.get("source_id", ""))),
-        start=2,
-    ):
-        rec = dict(record)
-        rec.setdefault("source_id", f"SRC-{fmt}-{idx:03d}")
-        sources.append(rec)
+    }
+    # An acquired, digest-bound research authority supersedes the synthetic
+    # registry URL record. Keeping both would make production readiness
+    # impossible because the synthetic record is necessarily URL_ONLY.
+    sources = (
+        [
+            record
+            for record in research_sources
+            if record.get("authority_class") != "AUTHORITATIVE"
+            or (
+                record.get("acquisition_status") == "ACQUIRED"
+                and record.get("content_hash")
+            )
+        ]
+        if pinned_authorities
+        else [registry_source, *research_sources]
+    )
+    seen_source_ids: set[str] = set()
+    sources = [
+        source
+        for source in sources
+        if not (
+            source.get("source_id") in seen_source_ids
+            or seen_source_ids.add(str(source.get("source_id")))
+        )
+    ]
 
     shared_groups = shared_store["groups"]
-    preserve_items = {i["id"]: i["text"] for i in shared_groups["preservation"]["items"]}
-    sec_items = [i["text"] for i in shared_groups["security_limits"]["items"]]
-    quality_items = [i["text"] for i in shared_groups["quality_proof"]["items"]]
+    selected_shared_groups = set(pack.get("shared_groups", []))
+
+    if "preservation" in selected_shared_groups:
+        preserve_items = {
+            i["id"]: i["text"] for i in shared_groups["preservation"]["items"]
+        }
+        preservation_contract = {
+            "structural_roundtrip": [preserve_items["POL-SLC-PRESERVE-02"]],
+            "lexical_roundtrip": [preserve_items["POL-SLC-PRESERVE-04"]],
+            "unknown_construct_policy": preserve_items["POL-SLC-PRESERVE-01"],
+            "loss_reporting_policy": preserve_items["POL-SLC-PRESERVE-03"],
+        }
+    else:
+        preservation_defaults = pack.get("preservation_defaults")
+        if not isinstance(preservation_defaults, dict):
+            raise stores.StoreError(
+                f"family {ctx['family']} excludes shared preservation but has no "
+                "preservation_defaults"
+            )
+        preservation_contract = {
+            "structural_roundtrip": list(
+                preservation_defaults.get("structural_roundtrip", [])
+            ),
+            "lexical_roundtrip": list(
+                preservation_defaults.get("lexical_roundtrip", [])
+            ),
+            "unknown_construct_policy": str(
+                preservation_defaults.get("unknown_construct_policy", "")
+            ),
+            "loss_reporting_policy": str(
+                preservation_defaults.get("loss_reporting_policy", "")
+            ),
+        }
+
+    security_defaults = pack.get("security_defaults", {})
+    if "security_limits" in selected_shared_groups:
+        sec_items = [i["text"] for i in shared_groups["security_limits"]["items"]]
+    else:
+        sec_items = list(security_defaults.get("limits", []))
+        if not sec_items:
+            raise stores.StoreError(
+                f"family {ctx['family']} excludes shared security_limits but has no "
+                "security_defaults.limits"
+            )
+    quality_items = (
+        [i["text"] for i in shared_groups["quality_proof"]["items"]]
+        if "quality_proof" in selected_shared_groups
+        else []
+    )
 
     test_contract = list(quality_items)
     release_gates = []
@@ -318,7 +399,6 @@ def assemble(ctx: dict, capabilities: list[dict]) -> dict:
         "Capability manifest published and independently verified against implementation and tests."
     )
 
-    security_defaults = pack.get("security_defaults", {})
     doc = {
         "contract_metadata": {
             "schema_version": "1.0",
@@ -347,12 +427,7 @@ def assemble(ctx: dict, capabilities: list[dict]) -> dict:
             "minimum_viable_support": pack["scope_defaults"]["minimum_viable_support"],
         },
         "capabilities": capabilities,
-        "preservation_contract": {
-            "structural_roundtrip": [preserve_items["POL-SLC-PRESERVE-02"]],
-            "lexical_roundtrip": [preserve_items["POL-SLC-PRESERVE-04"]],
-            "unknown_construct_policy": preserve_items["POL-SLC-PRESERVE-01"],
-            "loss_reporting_policy": preserve_items["POL-SLC-PRESERVE-03"],
-        },
+        "preservation_contract": preservation_contract,
         "validation_contract": {
             "layers": [dict(layer) for layer in pack.get("validation_layers", [])],
             "diagnostic_schema": {"fields": list(shared_store["diagnostic_schema_fields"])},
@@ -480,6 +555,7 @@ def main(argv: list[str] | None = None) -> int:
         contract_path=str(target.relative_to(stores.REPO_ROOT)).replace("\\", "/"),
         readiness_score=report["score"],
         readiness_threshold=report["threshold"],
+        missing_categories=[],
         capability_count=len(doc["capabilities"]),
         generator_version=GENERATOR_VERSION,
         input_digests=doc["contract_metadata"]["input_digests"],

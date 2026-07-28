@@ -1,0 +1,19 @@
+{
+  "invocation_id": "format-feature-expansion-nrrd-metadata-test-001",
+  "skill_id": "format-feature-expansion",
+  "mode": "live",
+  "inputs": {
+    "format_id": "nrrd",
+    "profile_id": "production",
+    "obligation_id": "SAL-NRRD-OBL-11C804021E000822",
+    "root_cause": "Metadata behavior existed but lacked an installed-wheel obligation test for quoted explicit values, unknown metadata, and absent fields."
+  },
+  "actual_files_changed": [
+    "tests/python/nrrd/test_obligation_metadata_production.py"
+  ],
+  "tests_run": [
+    ".local/package-install-proof-venv/Scripts/python.exe -m pytest tests/python/nrrd/test_obligation_metadata_production.py -q (1 passed)"
+  ],
+  "result": "PASS",
+  "timestamp": "2026-07-26T08:25:00+00:00"
+}

@@ -1,0 +1,93 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-materialize-production-proof-safetensors-header-object-001",
+  "execution_id": "ff6-materialize-production-proof-safetensors-header-object-001",
+  "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-PRESERVE-001",
+  "skill_id": "materialize-production-proof",
+  "selected_skill_ids": [
+    "materialize-production-proof"
+  ],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-SAFETENSORS-PROOF-002",
+  "pre_mutation_guard_authorization_id": "ea83289b90a17b91",
+  "requested_operation": "materialize installed-wheel positive proof that the SafeTensors header is UTF-8 JSON with tensor-name entries and reserved file metadata",
+  "inputs": {
+    "defect_id": "GAP-94BEBAC435920DB5",
+    "failing_regression": "tests/python/safetensors/test_official_interop.py::test_preservation_roundtrip_is_officially_readable",
+    "invalidation_input": "installed Format Factory and official SafeTensors wheels plus the generated absent, empty, and string-map metadata cases",
+    "target_product": "safetensors",
+    "obligation_id": "SAL-SAFETENSORS-OBL-00A5D5CAF3AEF4AD",
+    "polarity": "positive",
+    "base_git_commit": "af0c240b"
+  },
+  "allowed_files": [
+    "reports/skills-rff6/skill-transcripts/materialize-production-proof-safetensors-header-object-001.json"
+  ],
+  "actual_files_changed": [
+    "reports/skills-rff6/skill-transcripts/materialize-production-proof-safetensors-header-object-001.json"
+  ],
+  "behavior_added": [],
+  "tests_run": [
+    ".local/venvs/safetensors-current-proof/Scripts/python.exe -m pytest tests/python/safetensors/test_official_interop.py::test_preservation_roundtrip_is_officially_readable -q: 1 passed",
+    "tools/supervisor/production_program.py prove --format safetensors --obligation SAL-SAFETENSORS-OBL-00A5D5CAF3AEF4AD --polarity positive --test tests/python/safetensors/test_official_interop.py --package <core-wheel> --package <safetensors-wheel> --run <python> -m pytest tests/python/safetensors/test_official_interop.py::test_preservation_roundtrip_is_officially_readable -q: exit 0"
+  ],
+  "validations": {
+    "one_obligation_per_executed_result": "PASS",
+    "exact_positive_polarity": "PASS",
+    "complete_execution_input_closure": "PASS",
+    "installed_wheel_origin": "PASS",
+    "official_safetensors_0_8_0_oracle": "PASS",
+    "header_object_and_reserved_metadata_semantics": "PASS",
+    "promotion_claimed": "NO"
+  },
+  "proof": {
+    "format_id": "safetensors",
+    "obligation_id": "SAL-SAFETENSORS-OBL-00A5D5CAF3AEF4AD",
+    "obligation_text": "(README Format lines 76-83) The SafeTensors header is UTF-8 JSON and its top-level object maps tensor-name keys to tensor entries, with __metadata__ reserved for file metadata.",
+    "proof_id": "PROOF-C600593C8D5CCC1CCB6573024AB03BA8E0017A062F47EF2D051D2CE4C107382E",
+    "polarity": "positive",
+    "contract_digest": "e7c4939500768fa6a3bc19a7bd849e1e1883e9c707d9ba868c87fbe25ab64806",
+    "source_digest": "2404b116b048c312a3c1956eeb5803ddd9e98a1eb40a87dcc11b7398849226f7",
+    "test_digest": "d0ff6b1693d481fb62900761f3625c4ca874254bbca0a8a5d1862fae03b58f9d",
+    "fixture_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "package_digest": "6f11e3c9a5f32c4e0fc17d839c218e8246d4fc210bcd912fa3feceae9a258102",
+    "dependency_digest": "bf8dee63c7abf526d178fe57c48e2d55ba04871cba72eea64a3c04dfbb9e269a",
+    "tool_digest": "b7c0f68d84382d04b000a97d01e8e625355513d0972a17a048f4cd241018ce20",
+    "environment_digest": "525a721d888decaff7d0fd6d189bc20f5ad1f783046860f72738eb579f09d9ac",
+    "format_factory_core_wheel_sha256": "948c1e9bad28121efbc4d1084bbf3e757a636dfe0889d6e7e3a34e2af4026077",
+    "format_factory_safetensors_wheel_sha256": "7e959303d64a4cadaae239af2eb29f20a64703986dc8731bab4f0062837ceca7",
+    "command_exit_code": 0,
+    "program_open_gaps_before": 615,
+    "program_open_gaps_after": 614
+  },
+  "open_gaps": [
+    "The controller correctly invalidates the older SAL-SAFETENSORS-OBL-099EBDB35E9C3CB6 result because its proof inputs no longer match the current source closure; it requires an independent replay.",
+    "Eighty-four SafeTensors mandatory obligations remain unmet after this proof."
+  ],
+  "self_challenge": {
+    "1_all_required_steps": "YES",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for this single header obligation; no SafeTensors certification claimed",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES, retained from the active mission session",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, retained in the mission receipt chain",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "SAFETENSORS_HEADER_OBJECT_INSTALLED_WHEEL_PROOF_MATERIALIZED_NOT_CERTIFIED",
+  "timestamp": "2026-07-25T18:39:37.7538716Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

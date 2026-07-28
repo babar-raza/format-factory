@@ -1,0 +1,39 @@
+{
+  "invocation_id": "FF6-UBL-CONTRACT-20260723",
+  "skill_id": "compile-format-contract",
+  "task_id": "TC-FF6-UBL-CONTRACT-COMPILE",
+  "mode": "live",
+  "inputs": {
+    "format_id": "ubl",
+    "target_spec_version": "UBL 2.3",
+    "required_document_roots": 91
+  },
+  "allowed_files": [
+    "shared/format-contracts/ubl.yaml",
+    "registry/format-contract-registry.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/ubl.yaml",
+    "registry/format-contract-registry.yaml"
+  ],
+  "tests_run": [
+    "contract compiler --check ubl: PASS",
+    "contract compiler --verify-idempotency ubl: PASS",
+    "strict ProductContract: ready with 179 obligations and no issues",
+    "production controller replay: both UBL authority gaps resolved"
+  ],
+  "validations": {
+    "readiness_gate_enforced": "PASS",
+    "deterministic_output": "PASS",
+    "registry_updated": "PASS",
+    "all_91_roots_authority_present": "PASS",
+    "no_product_source_mutation": "PASS"
+  },
+  "output_digests": {
+    "shared/format-contracts/ubl.yaml": "951d5a2283a7c3072485674525d28f84cc0d6add0bf95182343fde52893e77c2",
+    "strict_product_contract": "5ac255b55ca7ec7e8e9a8938b458ac55a52607f530e7bcee676145b91487126c"
+  },
+  "result": "PASS",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

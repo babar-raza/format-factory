@@ -1,0 +1,34 @@
+{
+  "invocation_id": "create-taskcard-ipynb-proof-checkpoint-001",
+  "skill_id": "create-taskcard",
+  "mode": "live",
+  "inputs": {
+    "taskcard_id": "TC-FF6-IPYNB-SAFE-001",
+    "title": "Persist user-requested checkpoint during canonical IPYNB proof replay",
+    "format_id": "ipynb",
+    "plan_path": "plans/.claude/ff-six-python-production-autonomous.md",
+    "route_id": "plan_creation",
+    "authorization_id": "40949185df365d38",
+    "verified_commit": "c8cb0445bc9d50c35561edfc839d470ecb390190",
+    "exact_next_task": "AUTO-IPYNB-PROOF-REPLAY-001",
+    "current_live_proof_count": 1,
+    "remaining_mandatory_proof_gaps": 97,
+    "proof_graph_digest": "b0fc2b342aa239c3edb6473e1d965c829fc4692eb44ac359ab8ef9ffdb36bdf6"
+  },
+  "allowed_files": [
+    "plans/.claude/ff-six-python-production-autonomous.md",
+    "reports/skills-rff6/skill-transcripts/create-taskcard-ipynb-proof-checkpoint-001.json"
+  ],
+  "actual_files_changed": [
+    "plans/.claude/ff-six-python-production-autonomous.md",
+    "reports/skills-rff6/skill-transcripts/create-taskcard-ipynb-proof-checkpoint-001.json"
+  ],
+  "tests_run": [
+    "python tools/governance/validate_plan_skill_routes.py plans/.claude/ff-six-python-production-autonomous.md",
+    "python tools/supervisor/validate_skill_transcript.py --json reports/skills-rff6/skill-transcripts/create-taskcard-ipynb-proof-checkpoint-001.json",
+    "git diff --check"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-07-26T04:02:09Z"
+}

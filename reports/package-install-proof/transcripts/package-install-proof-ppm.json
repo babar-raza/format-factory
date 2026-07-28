@@ -1,12 +1,39 @@
 {
+  "invocation_id": "PACKAGE-PROOF-8C6CE6137E6598EC14EBEB7B3A90A64FC3C00BAA49625B688E44120C7D6A3284-ppm",
   "skill_id": "package-install-proof",
-  "skill_version": "2.0",
+  "skill_version": "3.0",
+  "mode": "live",
+  "inputs": {
+    "format_id": "ppm",
+    "package_name": "format-factory-ppm"
+  },
+  "allowed_files": [
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-ppm.json"
+  ],
+  "actual_files_changed": [
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-ppm.json"
+  ],
+  "tests_run": [
+    "wheel-origin import assertion",
+    "ppm.ppm_parser.parse_ppm_strict on samples/by-format/ppm/valid/2x2-rgbw.ppm",
+    "deep installed-submodule import scan"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-07-25T18:28:06+00:00",
   "format_id": "ppm",
   "package_name": "format-factory-ppm",
   "package_version": "0.1.0.dev0",
   "wheel_path": "format_factory_ppm-0.1.0.dev0-py3-none-any.whl",
-  "wheel_sha256": "6e2d241c3629f60e2e5a5282c3df845752ad571b1ebbc7c0cb05538f7a540c49",
-  "source_digest": "eed36fa51f50145b6629c3519cf6010471e4efb9240994f40bbcaaa71a15dd2c",
+  "wheel_sha256": "11168e28a22fce60db9e5174b35068ef4994f24108a3c52b8f382a13160ed5be",
+  "proof_id": "PACKAGE-PROOF-8C6CE6137E6598EC14EBEB7B3A90A64FC3C00BAA49625B688E44120C7D6A3284",
+  "source_digest": "387f8e002ab2257293e50dd5c4816f7534a38f9bb56a03548be42ec8b1e810b7",
+  "proof_input_digest": "f4ac425cb985d1ed11a2b0f792cf59f58990b4058ecc335fdcfbae29b47d7376",
+  "local_dependencies": [],
   "install_method": "pip install --no-deps <wheel> (ephemeral venv)",
   "install_result": "PASS",
   "import_result": "PASS",
@@ -16,6 +43,6 @@
   "verdict": "PASS",
   "proof_report": "reports/package-install-proof/proof-report.md",
   "notes": "B9 proof via tools/run_package_install_proof.py (GAP-FORENSIC-001)",
-  "generated_at": "2026-07-15T17:36:29+00:00",
-  "worker_agent": "claude"
+  "generated_at": "2026-07-25T18:28:06+00:00",
+  "worker_agent": "codex"
 }

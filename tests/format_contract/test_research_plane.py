@@ -10,6 +10,7 @@ import pytest
 
 import contract_compiler as cc
 import research_intake as ri
+import source_researcher as sr
 import stores
 from canonical_io import canonical_write, load_yaml
 
@@ -110,3 +111,137 @@ def test_findings_reach_compiled_contract_provenance():
     assert any("streaming row iterator" in b.lower() or "bounded memory" in b.lower()
                for b in parse_cap["required_behavior"])
     assert "read_operations" in doc.get("public_api_contract", {})
+
+
+def test_researcher_upgrades_existing_url_only_authority(
+    tmp_path, monkeypatch
+):
+    monkeypatch.setattr(sr, "DRAFTS_DIR", tmp_path / "drafts")
+    monkeypatch.setattr(sr, "ACQUIRED_DIR", tmp_path / "acquired")
+    monkeypatch.setattr(
+        stores,
+        "load_format_registry_entry",
+        lambda _format_id: {
+            "display_name": "CSV",
+            "spec_body": "IETF",
+            "spec_version": "4180",
+            "spec_url": "https://example.invalid/old",
+        },
+    )
+    monkeypatch.setattr(
+        stores,
+        "load_research",
+        lambda _format_id: {
+            "source_records": [
+                {
+                    "source_id": "SRC-CSV-002",
+                    "title": "RFC",
+                    "authority_class": "AUTHORITATIVE",
+                    "canonical_url": "https://example.invalid/old",
+                    "acquisition_status": "URL_ONLY",
+                }
+            ],
+            "findings": _draft_base()["findings"],
+        },
+    )
+
+    def fake_fetch(_url: str, destination: Path) -> str:
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_bytes(b"authority")
+        return "a" * 64
+
+    monkeypatch.setattr(sr, "_fetch", fake_fetch)
+    result = sr.research_sources(
+        "csv",
+        True,
+        source_id="SRC-CSV-002",
+        source_url="https://example.invalid/pinned",
+        source_version="commit-123",
+        prepare_intake=True,
+    )
+    draft = load_yaml(Path(result["intake_draft"]))
+    source = next(
+        item
+        for item in draft["source_records"]
+        if item["source_id"] == "SRC-CSV-002"
+    )
+    assert source["acquisition_status"] == "ACQUIRED"
+    assert source["content_hash"] == "a" * 64
+    assert source["version"] == "commit-123"
+    assert draft["findings"] == _draft_base()["findings"]
+
+
+def test_researcher_preserves_multiple_sources_across_draft_runs(
+    tmp_path, monkeypatch
+):
+    monkeypatch.setattr(sr, "DRAFTS_DIR", tmp_path / "drafts")
+    monkeypatch.setattr(sr, "ACQUIRED_DIR", tmp_path / "acquired")
+    monkeypatch.setattr(
+        stores,
+        "load_format_registry_entry",
+        lambda _format_id: {
+            "display_name": "Multi",
+            "spec_body": "Authority",
+            "spec_version": "1",
+            "spec_url": None,
+        },
+    )
+    monkeypatch.setattr(
+        stores,
+        "load_research",
+        lambda _format_id: {"source_records": [], "findings": []},
+    )
+
+    sr.research_sources(
+        "multi",
+        source_id="SRC-MULTI-001",
+        source_url="https://example.invalid/prose",
+    )
+    result = sr.research_sources(
+        "multi",
+        source_id="SRC-MULTI-002",
+        source_url="https://example.invalid/schemas",
+        prepare_intake=True,
+    )
+
+    draft = load_yaml(Path(result["intake_draft"]))
+    assert [item["source_id"] for item in draft["source_records"]] == [
+        "SRC-MULTI-001",
+        "SRC-MULTI-002",
+    ]
+
+
+def test_researcher_allocates_lowest_unused_canonical_source_id(
+    tmp_path, monkeypatch
+):
+    monkeypatch.setattr(sr, "DRAFTS_DIR", tmp_path / "drafts")
+    monkeypatch.setattr(sr, "ACQUIRED_DIR", tmp_path / "acquired")
+    monkeypatch.setattr(
+        stores,
+        "load_format_registry_entry",
+        lambda _format_id: {
+            "display_name": "UBL",
+            "spec_body": "OASIS",
+            "spec_version": "2.3",
+            "spec_url": "https://example.invalid/spec",
+        },
+    )
+    monkeypatch.setattr(
+        stores,
+        "load_research",
+        lambda _format_id: {
+            "source_records": [
+                {"source_id": "SRC-UBL-002", "canonical_url": "urn:two"},
+                {"source_id": "SRC-UBL-003", "canonical_url": "urn:three"},
+            ],
+            "findings": [],
+        },
+    )
+
+    result = sr.research_sources("ubl", reset_draft=True)
+    draft = load_yaml(Path(result["out"]))
+    assert [item["source_id"] for item in draft["source_records"]] == [
+        "SRC-UBL-001",
+        "SRC-UBL-002",
+        "SRC-UBL-003",
+    ]

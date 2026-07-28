@@ -1,0 +1,233 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-ipynb-production-chassis-001",
+  "execution_id": "ff6-ipynb-production-chassis-001",
+  "task_id": "AUTO-IPYNB-PACKAGE-CHASSIS",
+  "skill_id": "new-format-kickstart",
+  "selected_skill_ids": ["new-format-kickstart"],
+  "skill_hashes": {
+    "new-format-kickstart": "1339c048cdbe303c037ca468d65881612ad65787982cecaaf3722ab7177bac39"
+  },
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260723T145613-3373a8",
+  "coordination_identity": "agent-codex-20260723T145613-3373a8",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "RFF6-W2-IPYNB-CHASSIS",
+  "requested_operation": "migrate the Jupyter Notebook alpha package to its production package chassis",
+  "inputs": {
+    "format_id": "ipynb",
+    "distribution_name": "format-factory-ipynb",
+    "namespace": "format_factory.ipynb",
+    "family": "json",
+    "product_contract_path": "shared/format-contracts/ipynb.yaml",
+    "product_contract_sha256": "4dfa3efefbf29c237712dc0334864fc617329cf2ff740677ca8183a6ef668510",
+    "authority_digests": {
+      "SRC-NB-002": "4d3750b55006e92d8063a6ac427a84eb1f91c44e376d90de53d03893674991d9"
+    },
+    "release_profile": "nbformat-4.0-through-4.5",
+    "source_root": "src/python/ipynb",
+    "test_root": "tests/python/ipynb",
+    "dependency_lock": "src/python/ipynb/requirements-build.lock",
+    "task_id": "AUTO-IPYNB-PACKAGE-CHASSIS"
+  },
+  "allowed_files": [
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/new-format-kickstart-ipynb-chassis.json",
+    "src/python/ipynb/_build_backend.py",
+    "src/python/ipynb/CHANGELOG.md",
+    "src/python/ipynb/MANIFEST.in",
+    "src/python/ipynb/MIGRATION.md",
+    "src/python/ipynb/README.md",
+    "src/python/ipynb/SECURITY.md",
+    "src/python/ipynb/pyproject.toml",
+    "src/python/ipynb/requirements-build.lock",
+    "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/adapters/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/analytics/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/analytics/notebook.py",
+    "src/python/ipynb/src/format_factory/ipynb/cli/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/cli/main.py",
+    "src/python/ipynb/src/format_factory/ipynb/codec/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/codec/reader/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py",
+    "src/python/ipynb/src/format_factory/ipynb/codec/writer/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py",
+    "src/python/ipynb/src/format_factory/ipynb/errors.py",
+    "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/model/document.py",
+    "src/python/ipynb/src/format_factory/ipynb/model/output.py",
+    "src/python/ipynb/src/format_factory/ipynb/py.typed",
+    "src/python/ipynb/src/format_factory/ipynb/security/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/security/limits.py",
+    "src/python/ipynb/src/format_factory/ipynb/validation/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/validation/validator.py",
+    "tests/python/ipynb/test_production_namespace.py"
+  ],
+  "actual_files_changed": [
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/new-format-kickstart-ipynb-chassis.json",
+    "src/python/ipynb/_build_backend.py",
+    "src/python/ipynb/CHANGELOG.md",
+    "src/python/ipynb/MANIFEST.in",
+    "src/python/ipynb/MIGRATION.md",
+    "src/python/ipynb/README.md",
+    "src/python/ipynb/SECURITY.md",
+    "src/python/ipynb/pyproject.toml",
+    "src/python/ipynb/requirements-build.lock",
+    "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/adapters/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/analytics/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/analytics/notebook.py",
+    "src/python/ipynb/src/format_factory/ipynb/cli/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/cli/main.py",
+    "src/python/ipynb/src/format_factory/ipynb/codec/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/codec/reader/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py",
+    "src/python/ipynb/src/format_factory/ipynb/codec/writer/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py",
+    "src/python/ipynb/src/format_factory/ipynb/errors.py",
+    "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/model/document.py",
+    "src/python/ipynb/src/format_factory/ipynb/model/output.py",
+    "src/python/ipynb/src/format_factory/ipynb/py.typed",
+    "src/python/ipynb/src/format_factory/ipynb/security/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/security/limits.py",
+    "src/python/ipynb/src/format_factory/ipynb/validation/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/validation/validator.py",
+    "tests/python/ipynb/test_production_namespace.py"
+  ],
+  "base_git_commit": "64692779c9fa96683ff13891bd2954525bade08f",
+  "target_tree_sha256": "7247b96f3e0462b291afb36579b61bfbcd964048a321ec619237163793ffa46b",
+  "clean_target_scope": true,
+  "input_digests": {
+    "authorities": {
+      "SRC-NB-002": "4d3750b55006e92d8063a6ac427a84eb1f91c44e376d90de53d03893674991d9"
+    },
+    "product_contracts": {
+      "contract_file": "4dfa3efefbf29c237712dc0334864fc617329cf2ff740677ca8183a6ef668510",
+      "compiled_contract": "f5954d930d99f651f17b3bb7397b3b85eb89bb229926d1d044ba433896d55c0c",
+      "sal_facts": "e517e9d9ad75b8e1c996ff316e7e54bab92a24feb00b36c870738aa50442be1f",
+      "KC-PYTHON-003": "0a5149579ff8356a9d690aa37d1095998db7b62e0ad2df00e3e99ff6048f726f"
+    },
+    "generators": {},
+    "tools": {
+      "_build_backend.py": "4aaed32d8795bbf6f7571f06dde2fedd60bf3b0ef594cd9803cf5b55d508a0cf",
+      "pyproject.toml": "0681d9bc176afa27df47d91ac85bbf366d4f6b1d05296f1c4ed07b6ec9420e24"
+    },
+    "corpora": {
+      "repository_ipynb_samples": "included in target_tree_sha256"
+    },
+    "dependency_locks": {
+      "requirements-build.lock": "a88db3e67994613ee602e58be5a17601e1317bbff6bccc07a95dbf14f15731c3"
+    },
+    "tests": {
+      "production_namespace": "db01f839a472a4927b222f12374b40e6938054500fae1e6fabcccf04bdbbb7b2"
+    },
+    "environment": {
+      "python": "3.13.2",
+      "os": "Windows",
+      "architecture": "AMD64",
+      "source_date_epoch": "315532800"
+    }
+  },
+  "tests_run": [
+    "pytest tests/python/ipynb/test_production_namespace.py -q: 6 passed",
+    "pytest tests/python/ipynb --ignore=test_production_namespace.py -q: 248 passed",
+    "ruff check production source and tests: pass",
+    "mypy --strict -p format_factory.ipynb: pass",
+    "two-build wheel and sdist equality: pass",
+    "isolated installed-wheel import and CLI probe: pass",
+    "production controller bootstrap: IPYNB chassis gap resolved"
+  ],
+  "commands_executed": [
+    {
+      "argv": ["python", "-m", "pytest", "-q", "tests/python/ipynb/test_production_namespace.py"],
+      "exit_code": 0,
+      "test_selector": "6 tests"
+    },
+    {
+      "argv": ["python", "-m", "pytest", "-q", "tests/python/ipynb", "--ignore=tests/python/ipynb/test_production_namespace.py"],
+      "exit_code": 0,
+      "test_selector": "248 characterization tests"
+    },
+    {
+      "argv": ["python", "-m", "ruff", "check", "src/python/ipynb/src/format_factory/ipynb", "tests/python/ipynb/test_production_namespace.py"],
+      "exit_code": 0
+    },
+    {
+      "argv": ["python", "-m", "mypy", "--strict", "--python-version", "3.11", "-p", "format_factory.ipynb"],
+      "exit_code": 0
+    },
+    {
+      "argv": ["python", "-m", "build", "--no-isolation", "--outdir", "<run3>", "src/python/ipynb"],
+      "exit_code": 0
+    },
+    {
+      "argv": ["python", "-m", "build", "--no-isolation", "--outdir", "<run4>", "src/python/ipynb"],
+      "exit_code": 0
+    },
+    {
+      "argv": ["<isolated-python>", "-c", "import format_factory.ipynb and load installed fixture"],
+      "exit_code": 0
+    },
+    {
+      "argv": ["<isolated-cli>", "probe", "<minimal.ipynb>"],
+      "exit_code": 0
+    },
+    {
+      "argv": ["python", "-m", "tools.supervisor.production_program", "bootstrap"],
+      "exit_code": 0
+    }
+  ],
+  "built_artifacts": [
+    {
+      "kind": "wheel",
+      "run": 1,
+      "sha256": "e40ba6f50219132552219fa3c6a5124e9db0f09b9c4d86a4957634761efc3041"
+    },
+    {
+      "kind": "wheel",
+      "run": 2,
+      "sha256": "e40ba6f50219132552219fa3c6a5124e9db0f09b9c4d86a4957634761efc3041"
+    },
+    {
+      "kind": "sdist",
+      "run": 1,
+      "sha256": "a2cea423ab352dd3e75285f2de7b679a327de49bbc1c4f6569ee5eb0dd39985f"
+    },
+    {
+      "kind": "sdist",
+      "run": 2,
+      "sha256": "a2cea423ab352dd3e75285f2de7b679a327de49bbc1c4f6569ee5eb0dd39985f"
+    }
+  ],
+  "reproducible_build_count": 2,
+  "wheel_reproducible": true,
+  "sdist_reproducible": true,
+  "installed_import_locations": [
+    "<isolated-venv>/Lib/site-packages/format_factory/ipynb/__init__.py"
+  ],
+  "ledger_entry_id": "FF6-IPYNB-PRODUCTION-CHASSIS-001",
+  "ledger_entry_path": "reports/r90/product-code-change-ledger.json",
+  "ledger_entry_source_hashes_valid": true,
+  "proof_nodes": [],
+  "computed_promotion_state": "IMPLEMENTATION_IN_PROGRESS",
+  "current_gap_projection": {
+    "program_open_gap_count": 620,
+    "ipynb_open_mandatory_obligations": 98,
+    "next_task": "AUTO-NRRD-PACKAGE-CHASSIS"
+  },
+  "open_gaps": [
+    "The IPYNB package chassis is verified but none of the 98 mandatory ProductContract obligations is promoted by this slice.",
+    "The historical product-code ledger validator remains structurally broken on legacy entry shapes; the new ledger entry was independently hash-checked but this is not a replacement for repairing the canonical validator.",
+    "Full schema differential, independent corpus, security, fuzz, mutation, cross-platform Python 3.11-3.14, SBOM, provenance, signature, vulnerability, and extraction evidence remain open.",
+    "The canonical proof controller does not yet bind package-chassis installed-wheel results as executed proof nodes; presence-based chassis closure must be redesigned before certification."
+  ],
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "IMPLEMENTATION_VERIFIED_NOT_CERTIFIED",
+  "timestamp": "2026-07-23T20:18:57Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

@@ -15,12 +15,19 @@ facts:
   authority: Hugging Face SafeTensors Specification v0.4
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: high
     added_by: TC-GWB-H03
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/safetensors.yaml
+      manifest_sha256: e9809b131fe81c6a4f4245c652b1ac36affa7114ada2a7eb490ae0974bcb952c
+      receipt_path: reports/sal-verification/safetensors.json
+      receipt_sha256: b5978e0eff9943ec9f1790efc95612bbc23c029308233f03bceb35b5bebc4525
+      fact_proof_sha256: 37f3e417eea24a31145384a68f2fddcdbd35f17ef06054824317390c0c5e556b
 - fact_id: SAL-SAFETENSORS-00002
   qname: FACT-SAFETENSORS-002
   element_qname: safetensors:tensor
@@ -31,9 +38,389 @@ facts:
   authority: Hugging Face SafeTensors Specification v0.4
   source: structural_fact_manual
   fact_status: verified
-  verification_status: structural_derivation
+  verification_status: verified
   provenance:
     extraction_method: structural_derivation
     confidence: high
     added_by: TC-GWB-H03
     added_at: '2026-07-16'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/safetensors.yaml
+      manifest_sha256: e9809b131fe81c6a4f4245c652b1ac36affa7114ada2a7eb490ae0974bcb952c
+      receipt_path: reports/sal-verification/safetensors.json
+      receipt_sha256: b5978e0eff9943ec9f1790efc95612bbc23c029308233f03bceb35b5bebc4525
+      fact_proof_sha256: de3298d2ffcbdd2eb91dd56e184c231290ab10faf99c511150ddb115a8a3f576
+- fact_id: SAL-SAFETENSORS-00003
+  qname: FACT-SAFETENSORS-3
+  element_qname: safetensors:header_length
+  claim: A SafeTensors file header prefix is exactly eight bytes interpreted as an unsigned little-endian
+    64-bit integer containing the UTF-8 JSON header byte length.
+  section: README Format lines 74-79
+  authority: SafeTensors v0.8.0 commit a406ca3
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: verified
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FF6-SAFETENSORS-SAL-INGEST
+    added_at: '2026-07-23'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/safetensors.yaml
+      manifest_sha256: e9809b131fe81c6a4f4245c652b1ac36affa7114ada2a7eb490ae0974bcb952c
+      receipt_path: reports/sal-verification/safetensors.json
+      receipt_sha256: b5978e0eff9943ec9f1790efc95612bbc23c029308233f03bceb35b5bebc4525
+      fact_proof_sha256: f40a746b499a40a93afb26b50e31864ad9b1453d3829e0419783db55f03bef7e
+- fact_id: SAL-SAFETENSORS-00004
+  qname: FACT-SAFETENSORS-4
+  element_qname: safetensors:file_coverage
+  claim: A complete SafeTensors file may not contain unindexed trailing payload bytes after the final
+    tensor because incomplete metadata coverage is invalid.
+  section: tensor.rs MetadataIncompleteBuffer and test_metadata_incomplete_buffer
+  authority: SafeTensors v0.8.0 commit a406ca3
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: verified
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FF6-SAFETENSORS-SAL-INGEST
+    added_at: '2026-07-23'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/safetensors.yaml
+      manifest_sha256: e9809b131fe81c6a4f4245c652b1ac36affa7114ada2a7eb490ae0974bcb952c
+      receipt_path: reports/sal-verification/safetensors.json
+      receipt_sha256: b5978e0eff9943ec9f1790efc95612bbc23c029308233f03bceb35b5bebc4525
+      fact_proof_sha256: 0100554b4d986166f214f8d2280935647b07aeb9d6c15335982c4e43cea84037
+- fact_id: SAL-SAFETENSORS-00005
+  qname: FACT-SAFETENSORS-5
+  element_qname: safetensors:header_validation
+  claim: A declared header length that exceeds the available file bytes, malformed UTF-8, or malformed
+    JSON is invalid and must be rejected.
+  section: tensor.rs read_metadata and invalid-header tests
+  authority: SafeTensors v0.8.0 commit a406ca3
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: verified
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FF6-SAFETENSORS-SAL-INGEST
+    added_at: '2026-07-23'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/safetensors.yaml
+      manifest_sha256: e9809b131fe81c6a4f4245c652b1ac36affa7114ada2a7eb490ae0974bcb952c
+      receipt_path: reports/sal-verification/safetensors.json
+      receipt_sha256: b5978e0eff9943ec9f1790efc95612bbc23c029308233f03bceb35b5bebc4525
+      fact_proof_sha256: 1563e3d1aa734298c45bf5cdf853369be03da7a0b7089426e9c7875747d9921c
+- fact_id: SAL-SAFETENSORS-00006
+  qname: FACT-SAFETENSORS-6
+  element_qname: safetensors:empty_tensor
+  claim: A tensor shape containing a zero dimension is valid and has an empty data span whose begin and
+    end offsets are equal.
+  section: tensor.rs test_zero_sized_tensor
+  authority: SafeTensors v0.8.0 commit a406ca3
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: verified
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FF6-SAFETENSORS-SAL-INGEST
+    added_at: '2026-07-23'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/safetensors.yaml
+      manifest_sha256: e9809b131fe81c6a4f4245c652b1ac36affa7114ada2a7eb490ae0974bcb952c
+      receipt_path: reports/sal-verification/safetensors.json
+      receipt_sha256: b5978e0eff9943ec9f1790efc95612bbc23c029308233f03bceb35b5bebc4525
+      fact_proof_sha256: ef69c4bc03d39d64a42db20e4491cd475c32879d1197effe4c8a98c588f91135
+- fact_id: SAL-SAFETENSORS-00007
+  qname: FACT-SAFETENSORS-7
+  element_qname: safetensors:scalar
+  claim: A zero-rank tensor with an empty shape list is a valid scalar whose data span contains exactly
+    one element of its declared dtype.
+  section: README Notes line 98 and tensor.rs test_empty_shapes_allowed
+  authority: SafeTensors v0.8.0 commit a406ca3
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: verified
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FF6-SAFETENSORS-SAL-INGEST
+    added_at: '2026-07-23'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/safetensors.yaml
+      manifest_sha256: e9809b131fe81c6a4f4245c652b1ac36affa7114ada2a7eb490ae0974bcb952c
+      receipt_path: reports/sal-verification/safetensors.json
+      receipt_sha256: b5978e0eff9943ec9f1790efc95612bbc23c029308233f03bceb35b5bebc4525
+      fact_proof_sha256: 21bef5d5946f6d9f8491bf069944af7a3b3a0d42d7e159a968b448a2923792da
+- fact_id: SAL-SAFETENSORS-00008
+  qname: FACT-SAFETENSORS-8
+  element_qname: safetensors:tensor_entry
+  claim: Each tensor entry has a dtype field, a shape field containing dimensions, and a data_offsets
+    field containing a begin and end byte offset.
+  section: README Format lines 80-82
+  authority: SafeTensors v0.8.0 commit a406ca3
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: verified
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FF6-SAFETENSORS-SAL-INGEST
+    added_at: '2026-07-23'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/safetensors.yaml
+      manifest_sha256: e9809b131fe81c6a4f4245c652b1ac36affa7114ada2a7eb490ae0974bcb952c
+      receipt_path: reports/sal-verification/safetensors.json
+      receipt_sha256: b5978e0eff9943ec9f1790efc95612bbc23c029308233f03bceb35b5bebc4525
+      fact_proof_sha256: b7bb23fab6a40eaf0e496a67e268c93fbae85256fd989aa6b4846e27bcb8de5d
+- fact_id: SAL-SAFETENSORS-00009
+  qname: FACT-SAFETENSORS-9
+  element_qname: safetensors:header_padding
+  claim: JSON whitespace may pad the beginning or end of the header, allowing writers to align the following
+    data section while preserving valid syntax.
+  section: tensor.rs test_whitespace_padded_header
+  authority: SafeTensors v0.8.0 commit a406ca3
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: verified
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FF6-SAFETENSORS-SAL-INGEST
+    added_at: '2026-07-23'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/safetensors.yaml
+      manifest_sha256: e9809b131fe81c6a4f4245c652b1ac36affa7114ada2a7eb490ae0974bcb952c
+      receipt_path: reports/sal-verification/safetensors.json
+      receipt_sha256: b5978e0eff9943ec9f1790efc95612bbc23c029308233f03bceb35b5bebc4525
+      fact_proof_sha256: 6d0c4797badf870db3eea2d330b692cc89f8b824e07b1e97694b86f19973d01a
+- fact_id: SAL-SAFETENSORS-00010
+  qname: FACT-SAFETENSORS-10
+  element_qname: safetensors:payload_encoding
+  claim: SafeTensors tensor payload values use little-endian byte order and C row-major element order.
+  section: README Notes lines 102-104
+  authority: SafeTensors v0.8.0 commit a406ca3
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: verified
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FF6-SAFETENSORS-SAL-INGEST
+    added_at: '2026-07-23'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/safetensors.yaml
+      manifest_sha256: e9809b131fe81c6a4f4245c652b1ac36affa7114ada2a7eb490ae0974bcb952c
+      receipt_path: reports/sal-verification/safetensors.json
+      receipt_sha256: b5978e0eff9943ec9f1790efc95612bbc23c029308233f03bceb35b5bebc4525
+      fact_proof_sha256: e69fad54bd14dba80773028769a221a2eea2f984a574f06141ff6f3107158df7
+- fact_id: SAL-SAFETENSORS-00011
+  qname: FACT-SAFETENSORS-11
+  element_qname: safetensors:shape
+  claim: Shape multiplication and element-bit multiplication overflow are invalid and must be rejected
+    instead of wrapping during validation.
+  section: tensor.rs Metadata.validate and test_validation_overflow
+  authority: SafeTensors v0.8.0 commit a406ca3
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: verified
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FF6-SAFETENSORS-SAL-INGEST
+    added_at: '2026-07-23'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/safetensors.yaml
+      manifest_sha256: e9809b131fe81c6a4f4245c652b1ac36affa7114ada2a7eb490ae0974bcb952c
+      receipt_path: reports/sal-verification/safetensors.json
+      receipt_sha256: b5978e0eff9943ec9f1790efc95612bbc23c029308233f03bceb35b5bebc4525
+      fact_proof_sha256: 91778c0b489f676966b2190e25f8b4baff645430638939306d5e4fd9dc3b9896
+- fact_id: SAL-SAFETENSORS-00012
+  qname: FACT-SAFETENSORS-12
+  element_qname: safetensors:subbyte_alignment
+  claim: Sub-byte F4 and six-bit tensor types are valid only when the complete tensor bit count ends on
+    a byte boundary; a misaligned slice is invalid.
+  section: tensor.rs Dtype.bitsize and Metadata.validate
+  authority: SafeTensors v0.8.0 commit a406ca3
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: verified
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FF6-SAFETENSORS-SAL-INGEST
+    added_at: '2026-07-23'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/safetensors.yaml
+      manifest_sha256: e9809b131fe81c6a4f4245c652b1ac36affa7114ada2a7eb490ae0974bcb952c
+      receipt_path: reports/sal-verification/safetensors.json
+      receipt_sha256: b5978e0eff9943ec9f1790efc95612bbc23c029308233f03bceb35b5bebc4525
+      fact_proof_sha256: 44c471149e8f829f9b7ffffaafb96886b1926de21b1868ff2512b96030127378
+- fact_id: SAL-SAFETENSORS-00013
+  qname: FACT-SAFETENSORS-13
+  element_qname: safetensors:data_offsets
+  claim: Tensor data offsets are relative to the beginning of the data buffer that immediately follows
+    the variable-length JSON header.
+  section: README Format line 81
+  authority: SafeTensors v0.8.0 commit a406ca3
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: verified
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FF6-SAFETENSORS-SAL-INGEST
+    added_at: '2026-07-23'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/safetensors.yaml
+      manifest_sha256: e9809b131fe81c6a4f4245c652b1ac36affa7114ada2a7eb490ae0974bcb952c
+      receipt_path: reports/sal-verification/safetensors.json
+      receipt_sha256: b5978e0eff9943ec9f1790efc95612bbc23c029308233f03bceb35b5bebc4525
+      fact_proof_sha256: 154564dce853b022e176cf538d4a8b204fea99ad45c83e7b9a18cc8516c81b2b
+- fact_id: SAL-SAFETENSORS-00014
+  qname: FACT-SAFETENSORS-14
+  element_qname: safetensors:header
+  claim: The SafeTensors header is UTF-8 JSON and its top-level object maps tensor-name keys to tensor
+    entries, with __metadata__ reserved for file metadata.
+  section: README Format lines 76-83
+  authority: SafeTensors v0.8.0 commit a406ca3
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: verified
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FF6-SAFETENSORS-SAL-INGEST
+    added_at: '2026-07-23'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/safetensors.yaml
+      manifest_sha256: e9809b131fe81c6a4f4245c652b1ac36affa7114ada2a7eb490ae0974bcb952c
+      receipt_path: reports/sal-verification/safetensors.json
+      receipt_sha256: b5978e0eff9943ec9f1790efc95612bbc23c029308233f03bceb35b5bebc4525
+      fact_proof_sha256: ade0de1cbb7899aa6d396c8dc65fdd3b0240734ad76a8f47dbabc7c88642ed73
+- fact_id: SAL-SAFETENSORS-00015
+  qname: FACT-SAFETENSORS-15
+  element_qname: safetensors:metadata
+  claim: The __metadata__ entry may contain only a free-form string-to-string map; arbitrary nested JSON
+    metadata values are not valid.
+  section: README Format line 83
+  authority: SafeTensors v0.8.0 commit a406ca3
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: verified
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FF6-SAFETENSORS-SAL-INGEST
+    added_at: '2026-07-23'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/safetensors.yaml
+      manifest_sha256: e9809b131fe81c6a4f4245c652b1ac36affa7114ada2a7eb490ae0974bcb952c
+      receipt_path: reports/sal-verification/safetensors.json
+      receipt_sha256: b5978e0eff9943ec9f1790efc95612bbc23c029308233f03bceb35b5bebc4525
+      fact_proof_sha256: 45023931a2dfdcc9ab7c88602ba178ed964759d55b033a6d7ba593e431e5e5c0
+- fact_id: SAL-SAFETENSORS-00016
+  qname: FACT-SAFETENSORS-16
+  element_qname: safetensors:data_buffer
+  claim: The data buffer must be entirely indexed by tensor entries without holes, and ordered tensor
+    offsets must be contiguous and non-overlapping.
+  section: README Notes line 99 and tensor.rs Metadata.validate
+  authority: SafeTensors v0.8.0 commit a406ca3
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: verified
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FF6-SAFETENSORS-SAL-INGEST
+    added_at: '2026-07-23'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/safetensors.yaml
+      manifest_sha256: e9809b131fe81c6a4f4245c652b1ac36affa7114ada2a7eb490ae0974bcb952c
+      receipt_path: reports/sal-verification/safetensors.json
+      receipt_sha256: b5978e0eff9943ec9f1790efc95612bbc23c029308233f03bceb35b5bebc4525
+      fact_proof_sha256: 011e41750932acac029be7a366f8f47cc863cde7dac6869e0da88167d10fce2b
+- fact_id: SAL-SAFETENSORS-00017
+  qname: FACT-SAFETENSORS-17
+  element_qname: safetensors:header_limit
+  claim: The official implementation limits a JSON header to 100,000,000 bytes and rejects a declared
+    header length above that resource limit.
+  section: tensor.rs MAX_HEADER_SIZE and read_metadata
+  authority: SafeTensors v0.8.0 commit a406ca3
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: verified
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FF6-SAFETENSORS-SAL-INGEST
+    added_at: '2026-07-23'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/safetensors.yaml
+      manifest_sha256: e9809b131fe81c6a4f4245c652b1ac36affa7114ada2a7eb490ae0974bcb952c
+      receipt_path: reports/sal-verification/safetensors.json
+      receipt_sha256: b5978e0eff9943ec9f1790efc95612bbc23c029308233f03bceb35b5bebc4525
+      fact_proof_sha256: 5c93501b7c3d3f2cd2dfdef7e64e8fd8671c4f2f7f506112620158e818f50d9f
+- fact_id: SAL-SAFETENSORS-00018
+  qname: FACT-SAFETENSORS-18
+  element_qname: safetensors:tensor_size
+  claim: The tensor byte span must equal the checked product of all shape dimensions and the dtype bit
+    width divided by eight.
+  section: tensor.rs Metadata.validate lines 627-659
+  authority: SafeTensors v0.8.0 commit a406ca3
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: verified
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FF6-SAFETENSORS-SAL-INGEST
+    added_at: '2026-07-23'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/safetensors.yaml
+      manifest_sha256: e9809b131fe81c6a4f4245c652b1ac36affa7114ada2a7eb490ae0974bcb952c
+      receipt_path: reports/sal-verification/safetensors.json
+      receipt_sha256: b5978e0eff9943ec9f1790efc95612bbc23c029308233f03bceb35b5bebc4525
+      fact_proof_sha256: 32fcbc079bf738db369d0dcd8e82f8d99cd16070b2bb4714b80b51e683aa4f5f
+- fact_id: SAL-SAFETENSORS-00019
+  qname: FACT-SAFETENSORS-19
+  element_qname: safetensors:dtype
+  claim: The v0.8.0 dtype inventory includes BOOL, F4, F6_E2M3, F6_E3M2, U8, I8, F8_E5M2, F8_E4M3, F8_E8M0,
+    F8_E4M3FNUZ, F8_E5M2FNUZ, I16, U16, F16, BF16, I32, U32, F32, C64, F64, I64, and U64.
+  section: tensor.rs Dtype enum lines 811-865
+  authority: SafeTensors v0.8.0 commit a406ca3
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: verified
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC-FF6-SAFETENSORS-SAL-INGEST
+    added_at: '2026-07-23'
+    verification:
+      method: declarative_authority_v1
+      manifest_path: shared/sal-facts/evidence/safetensors.yaml
+      manifest_sha256: e9809b131fe81c6a4f4245c652b1ac36affa7114ada2a7eb490ae0974bcb952c
+      receipt_path: reports/sal-verification/safetensors.json
+      receipt_sha256: b5978e0eff9943ec9f1790efc95612bbc23c029308233f03bceb35b5bebc4525
+      fact_proof_sha256: 6ce97adc221077da9c1d95cb7c9ae99c0dd8ad5f06f5aa4faa622e6dcbd434db

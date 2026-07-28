@@ -1,0 +1,26 @@
+{
+  "invocation_id": "package-install-proof-nrrd-transient-build-digest-001",
+  "skill_id": "package-install-proof",
+  "mode": "live",
+  "inputs": {
+    "format_id": "nrrd",
+    "root_cause": "Native wheel builds created src/python/nrrd/build/ output that was incorrectly treated as authored proof input."
+  },
+  "allowed_files": [
+    "tools/supervisor/package_proof_common.py",
+    "tests/supervisor/test_validate_package_install_proof_coverage.py",
+    "reports/skills-rff6/skill-transcripts/package-install-proof-nrrd-transient-build-digest-001.json"
+  ],
+  "actual_files_changed": [
+    "tools/supervisor/package_proof_common.py",
+    "tests/supervisor/test_validate_package_install_proof_coverage.py",
+    "reports/skills-rff6/skill-transcripts/package-install-proof-nrrd-transient-build-digest-001.json"
+  ],
+  "tests_run": [
+    ".local/venvs/ipynb-current-proof/Scripts/python.exe -m pytest tests/supervisor/test_validate_package_install_proof_coverage.py -q: 11 passed",
+    "tools/run_package_install_proof.py --format nrrd: PASS"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-07-26T07:31:32+00:00"
+}

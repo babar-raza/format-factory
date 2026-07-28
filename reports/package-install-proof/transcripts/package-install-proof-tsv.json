@@ -1,12 +1,39 @@
 {
+  "invocation_id": "PACKAGE-PROOF-664F5E9C9AF74BFE4C0BD73B0B7A8B5A5C81E9FC3CB5E871331F1A48FA183290-tsv",
   "skill_id": "package-install-proof",
-  "skill_version": "2.0",
+  "skill_version": "3.0",
+  "mode": "live",
+  "inputs": {
+    "format_id": "tsv",
+    "package_name": "format-factory-tsv"
+  },
+  "allowed_files": [
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-tsv.json"
+  ],
+  "actual_files_changed": [
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-tsv.json"
+  ],
+  "tests_run": [
+    "wheel-origin import assertion",
+    "tsv.tsv_parser.parse_tsv_strict on samples/by-format/tsv/minimal-2x2.tsv",
+    "deep installed-submodule import scan"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-07-25T18:28:06+00:00",
   "format_id": "tsv",
   "package_name": "format-factory-tsv",
   "package_version": "0.1.0.dev0",
   "wheel_path": "format_factory_tsv-0.1.0.dev0-py3-none-any.whl",
-  "wheel_sha256": "173125aaa23b9cffd97c717a3b1bbb617c6ca9553f3cb2d39e824aa525c88486",
-  "source_digest": "9fe08111aea41c4775f47cada57c08918e9adcdcb28a8db223c1d9cb29b03170",
+  "wheel_sha256": "52d75f4efdebac0199b5b161c404c4f94daf5804a51346dd232a868f7a7168f1",
+  "proof_id": "PACKAGE-PROOF-664F5E9C9AF74BFE4C0BD73B0B7A8B5A5C81E9FC3CB5E871331F1A48FA183290",
+  "source_digest": "6e310e44d539de63c1da9279ca0b700a7783512676c08d5f0c0b58449147838e",
+  "proof_input_digest": "780e414e6513ff9ad9ba0a347a38fd41e0b8767eeb4fb62c77383d2718bff582",
+  "local_dependencies": [],
   "install_method": "pip install --no-deps <wheel> (ephemeral venv)",
   "install_result": "PASS",
   "import_result": "PASS",
@@ -16,6 +43,6 @@
   "verdict": "PASS",
   "proof_report": "reports/package-install-proof/proof-report.md",
   "notes": "B9 proof via tools/run_package_install_proof.py (GAP-FORENSIC-001)",
-  "generated_at": "2026-07-15T17:36:29+00:00",
-  "worker_agent": "claude"
+  "generated_at": "2026-07-25T18:28:06+00:00",
+  "worker_agent": "codex"
 }

@@ -1,0 +1,124 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "execution_id": "ff6-safetensors-production-001",
+  "task_id": "TC-FF6-SAFETENSORS-PRODUCTION-PACKAGE",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260723T145613-3373a8",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "RFF6-W3-SAFETENSORS-IMPLEMENT",
+  "requested_operation": "create production SafeTensors v0.8.0 distribution",
+  "selected_skill_ids": [
+    "new-format-kickstart"
+  ],
+  "skill_hashes": {
+    "new-format-kickstart": "1339c048cdbe303c037ca468d65881612ad65787982cecaaf3722ab7177bac39"
+  },
+  "allowed_paths": [
+    "src/python/safetensors/**",
+    "tests/python/safetensors/**",
+    "reports/skills-rff6/skill-transcripts/**"
+  ],
+  "status": "CLOSED",
+  "created_at": "2026-07-23T16:10:00Z",
+  "updated_at": "2026-07-23T16:10:00Z",
+  "closed_at": "2026-07-23T16:10:00Z",
+  "expires_at": "2026-07-23T20:10:00Z",
+  "final_outcome": "IMPLEMENTATION_VERIFIED_NOT_CERTIFIED",
+  "git_commit": "8c4083de91dda2b7209e85ec7070c25f41c6fa12",
+  "commit_sha": "8c4083de91dda2b7209e85ec7070c25f41c6fa12",
+  "target_tree_sha256": "ef3b08f79b0780c9f277a26cf4faa4b3913ca538a4f4c6f8cf2c80a08aa52872",
+  "clean_target_scope": true,
+  "input_digests": {
+    "authorities": {
+      "safetensors-v0.8.0": "3b4bf28d71a2b1323bab6a98adbb7e92443c8ae97fb96fa4c8612b25fab4d1b3"
+    },
+    "product_contracts": {
+      "safetensors": "200dd864d95a5c81d81fe0e08ad9528d3126e9039b9a808e37946d67c624999b",
+      "contract_file": "a87ba80848864849509d677ab20a933ab7a859d1bac4ce69827a7d0a0dd851ae",
+      "sal_facts": "3aa8359e3e26e5a65addea0edcd7fd2b2bfbb20cb892000c6e19e7fe4504fb32",
+      "KC-PYTHON-003": "0a5149579ff8356a9d690aa37d1095998db7b62e0ad2df00e3e99ff6048f726f"
+    },
+    "generators": {},
+    "tools": {
+      "pyproject.toml": "30a4d8273d355f590f642999f32a319b42e1ee17e1a5700b69c1135ad9812157"
+    },
+    "corpora": {
+      "official_differential_vectors": "153da0421d24b269b7f121277662e55a057c503fa55a988fa235c05ea1ec0d51"
+    },
+    "dependency_locks": {
+      "requirements-build.lock": "55df70849202fe684ae88539f71475b285a4667a5a2ee23e39d6f42f46010c81"
+    },
+    "environment": {
+      "python": "3.13.2",
+      "os": "Windows",
+      "architecture": "AMD64",
+      "source_date_epoch": "315532800"
+    }
+  },
+  "commands_executed": [
+    {
+      "argv": ["python", "-m", "pytest", "tests/python/safetensors/test_production_namespace.py", "-q"],
+      "exit_code": 0,
+      "test_selector": "36 tests"
+    },
+    {
+      "argv": ["python", "-m", "pytest", "tests/python/safetensors", "--ignore=test_production_namespace.py", "-q"],
+      "exit_code": 0,
+      "test_selector": "233 characterization tests"
+    },
+    {
+      "argv": ["python", "-m", "ruff", "check", "src/python/safetensors/src"],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "-m",
+        "mypy",
+        "--strict",
+        "--namespace-packages",
+        "--explicit-package-bases",
+        "src/python/safetensors/src/format_factory/safetensors"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": ["python", "-m", "pip", "wheel", "--no-index", "--find-links", ".local/downloads/core-build", "src/python/safetensors"],
+      "exit_code": 0
+    },
+    {
+      "argv": ["<installed-python>", "-c", "co-install and bidirectional official 0.8.0 differential vectors"],
+      "exit_code": 0,
+      "test_selector": "3 bidirectional vectors plus F6 reader vector"
+    }
+  ],
+  "built_artifacts": [
+    {
+      "kind": "wheel",
+      "sha256": "df80053cfad8eccfa300b7b897043c3f63c7873f6b59480053d0de7bfb6336e8"
+    },
+    {
+      "kind": "sdist",
+      "sha256": "6720b445ffe8f869327e43578f950bc80c72a27ea1a6c7f29584837946e2c46b"
+    },
+    {
+      "kind": "sdist",
+      "sha256": "a1e39ca6bf1321399d4b6fbd2475221225000607672ac0c41df886d01be7ff12"
+    }
+  ],
+  "reproducible_build_count": 2,
+  "wheel_reproducible": true,
+  "sdist_reproducible": false,
+  "installed_import_locations": [
+    "<isolated-venv>/Lib/site-packages/format_factory/safetensors/__init__.py",
+    "<isolated-venv>/Lib/site-packages/safetensors/__init__.py"
+  ],
+  "coordination_identity": "agent-codex-20260723T145613-3373a8",
+  "proof_nodes": [],
+  "open_gaps": [
+    "Setuptools sdist gzip output is not byte-reproducible across equivalent builds; promotion remains blocked until the packaging pipeline normalizes the archive.",
+    "Full cross-platform Python 3.11-3.14 certification, fuzzing, mutation, SBOM, signature, provenance, vulnerability scan, and sharded-index support remain open."
+  ],
+  "generated_by": "codex",
+  "visibility": "generated"
+}

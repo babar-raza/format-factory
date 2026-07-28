@@ -26,7 +26,13 @@ from pathlib import Path
 import yaml
 
 from governance_validators_contract import validator
-from package_proof_common import PACKAGE_MATRIX_REL, PROOF_MANIFEST_REL, source_digest
+from package_proof_common import (
+    PACKAGE_MATRIX_REL,
+    PROOF_MANIFEST_REL,
+    package_proof_id,
+    proof_input_digest,
+    source_digest,
+)
 
 _NAME = "validate_package_install_proof_coverage"
 _REPROOF_HINT = "re-prove with: python tools/run_package_install_proof.py --format <fmt>"
@@ -69,7 +75,12 @@ def validate_package_install_proof_coverage(
         d.name for d in src_python.iterdir()
         if d.is_dir() and (d / "pyproject.toml").exists()
     ) if src_python.exists() else []
-    unmatrixed = sorted(set(src_formats) - matrix_dirs)
+    local_dependency_dirs = {
+        Path(dependency["source_path"]).name
+        for package in packages
+        for dependency in package.get("local_dependencies") or []
+    }
+    unmatrixed = sorted(set(src_formats) - matrix_dirs - local_dependency_dirs)
     if unmatrixed or no_spec:
         problems = []
         if unmatrixed:
@@ -93,9 +104,31 @@ def validate_package_install_proof_coverage(
             True,
         )
     try:
-        proven = json.loads(manifest_path.read_text(encoding="utf-8")).get("formats", {})
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        proven = manifest.get("formats", {})
     except Exception as exc:
         return _result("FAIL", f"V226: proof manifest unreadable: {exc}", True)
+    if manifest.get("schema_version") != 3:
+        return _result(
+            "FAIL",
+            "V226 STALE_SCHEMA: package proof manifest is not canonical schema 3; "
+            f"{_REPROOF_HINT}",
+            True,
+        )
+    invalid_ids = []
+    for fmt, entry in proven.items():
+        try:
+            if entry.get("proof_id") != package_proof_id(entry):
+                invalid_ids.append(fmt)
+        except (TypeError, ValueError):
+            invalid_ids.append(fmt)
+    if invalid_ids:
+        return _result(
+            "FAIL",
+            f"V226 INTEGRITY: invalid canonical proof IDs for {sorted(invalid_ids)}; "
+            f"{_REPROOF_HINT}",
+            True,
+        )
 
     # A known_failure waiver (install_proof.known_failure.gap_id in the matrix)
     # downgrades a recorded FAIL verdict to WARN — for defects that are tracked
@@ -137,6 +170,21 @@ def validate_package_install_proof_coverage(
             "FAIL",
             f"V226 STALE: source changed since proof for {stale} — proof of old source is "
             f"not proof of current source; {_REPROOF_HINT}",
+            True,
+        )
+
+    by_format = {package["format_id"]: package for package in packages}
+    stale_inputs = sorted(
+        fmt
+        for fmt in matrix_ids
+        if proven[fmt].get("proof_input_digest")
+        != proof_input_digest(repo, by_format[fmt])
+    )
+    if stale_inputs:
+        return _result(
+            "FAIL",
+            f"V226 STALE_INPUT_CLOSURE: proof runtime, matrix contract, local dependency, "
+            f"or source inputs changed for {stale_inputs}; {_REPROOF_HINT}",
             True,
         )
 

@@ -1,0 +1,58 @@
+{
+  "invocation_id": "format-feature-expansion-xliff-segmentation-001",
+  "skill_id": "format-feature-expansion",
+  "mode": "live",
+  "inputs": {
+    "format_id": "xliff",
+    "profile_id": "production",
+    "obligation_id": "SAL-XLIFF-OBL-420141532D90D385",
+    "contract_digest": "6fc15ced56dd222ca6396cfd9deda4818241dcba8c48d0fe922ae085acbe9c5a",
+    "authority_digests": [
+      "SRC-XLF-002:73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751",
+      "SRC-XLIFF-001:56e413be887fe88595d5af52d21d5000112898fbd332245417c43a7ecfa8e4e0"
+    ],
+    "affected_layer": "model",
+    "planned_paths": [
+      "src/python/xliff/src/format_factory/xliff/model/segmentation.py",
+      "src/python/xliff/src/format_factory/xliff/model/__init__.py",
+      "src/python/xliff/src/format_factory/xliff/__init__.py",
+      "tests/python/xliff/test_production_namespace.py"
+    ],
+    "proof_inputs": [
+      "tests/python/xliff/test_production_namespace.py",
+      "tests/python/xliff",
+      "reports/package-install-proof/proof-manifest.json"
+    ],
+    "task_id": "AUTO-XLIFF-IMPLEMENT-XLIFF-SEG-001"
+  },
+  "allowed_files": [
+    "src/python/xliff/src/format_factory/xliff/model/segmentation.py",
+    "src/python/xliff/src/format_factory/xliff/model/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/__init__.py",
+    "tests/python/xliff/test_production_namespace.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-xliff-segmentation-001.json"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/src/format_factory/xliff/model/segmentation.py",
+    "src/python/xliff/src/format_factory/xliff/model/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/__init__.py",
+    "tests/python/xliff/test_production_namespace.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-xliff-segmentation-001.json"
+  ],
+  "tests_run": [
+    "failing-first: tests/python/xliff/test_production_namespace.py failed collection because split_segment and join_segments were absent",
+    "PYTHONPATH=src/python/core/src;src/python/xliff/src .local/venvs/ipynb-current-proof/Scripts/python.exe -m pytest tests/python/xliff/test_production_namespace.py -q (11 passed)",
+    "PYTHONPATH=src/python/core/src;src/python/xliff/src .local/venvs/ipynb-current-proof/Scripts/python.exe -m pytest tests/python/xliff -q (184 passed)",
+    "package-install-proof xliff: wheel-origin import and smoke PASS (2 passed, 1 skipped)"
+  ],
+  "ledger_entry_id": "FF6-XLIFF-SEGMENTATION-001",
+  "result": "PASS",
+  "evidence": {
+    "capability": "XLIFF-SEG-001",
+    "scope": "Split and join direct adjacent XLIFF segment token sequences, preserve state/attributes and inline tokens, emit deterministic mapping reports, and reject boundaries that orphan sc/ec pairs.",
+    "package_proof_id": "PACKAGE-PROOF-93A5D9A51D033AC6EC852F8769DA2FCB52D2A4E89A27394EA88B3CC0C5283266",
+    "scope_limit": "Segment extensions and translated/untranslated joins are refused unless a future format-specific adapter supplies explicit semantics; this prevents silent reference loss."
+  }
+}

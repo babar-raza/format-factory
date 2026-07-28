@@ -368,6 +368,7 @@ layers:
   - collect-skill-execution-receipts
   - validate-product-code-ledger
   - run-governance-validators
+  - materialize-production-proof
   command_ids:
   - build-evidence-bundle
   - materialize-declaration-review
@@ -376,6 +377,7 @@ layers:
   - collect-skill-execution-receipts
   - validate-product-code-ledger
   - run-governance-validators
+  - materialize-production-proof
   last_started_at: null
   last_progress_at: '2026-06-26'
   last_updated_at: '2026-06-26'
@@ -384,6 +386,7 @@ layers:
   handoff_id: null
   evidence_paths:
   - .supervisor/schemas/evidence-declaration.schema.json
+  - .claude/commands/materialize-production-proof.md
 - layer_id: L09
   canonical_name: State and Continuation Layer
   permanent_plan_path: plans/layers/state-continuation-layer.md

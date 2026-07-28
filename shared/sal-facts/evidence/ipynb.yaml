@@ -1,0 +1,377 @@
+schema_version: '1.0'
+format_id: ipynb
+coverage: complete
+authority_policy: Every assertion is an exact executable predicate over a member of the pinned
+  Jupyter nbformat 5.10.4 source archive at commit 60b6151fedcbdc9f137fb2d223eeb10c935a8378.
+targets:
+  schema45:
+    source_id: SRC-NB-002
+    member: nbformat-60b6151fedcbdc9f137fb2d223eeb10c935a8378/nbformat/v4/nbformat.v4.5.schema.json
+    member_sha256: 523e3578ddbfcad52933d2423dc5951114ef73f48df180b6a601498ba5ca071a
+  format_docs:
+    source_id: SRC-NB-002
+    member: nbformat-60b6151fedcbdc9f137fb2d223eeb10c935a8378/docs/format_description.rst
+    member_sha256: 2f6f094c7d33de17da0aafb4693d75f063265613eb3bfb602ebe8623197c3d70
+  validator:
+    source_id: SRC-NB-002
+    member: nbformat-60b6151fedcbdc9f137fb2d223eeb10c935a8378/nbformat/validator.py
+    member_sha256: e12625e709dcb0f1ed7cb3d5bcaa29e6d752b9ee62ad11c680925a97e5dc23d3
+facts:
+- fact_id: SAL-IPYNB-00001
+  claim_sha256: 1e90708abe798ce9959b63fe21ba6c741d5b9ff3ddd8a0fb62d8d2fdccb9a987
+  assertions:
+  - assertion_id: notebook-object
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /type
+    expected: object
+  - assertion_id: notebook-required-fields
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /required
+    expected: [metadata, nbformat_minor, nbformat, cells]
+  - assertion_id: cells-array
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /properties/cells/type
+    expected: array
+- fact_id: SAL-IPYNB-00002
+  claim_sha256: 9d2ebee805543d11f58a938bf460e7772ff715b5fcb15be79ad5bf2449f54d8d
+  assertions:
+  - assertion_id: raw-required-fields
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /definitions/raw_cell/required
+    expected: [id, cell_type, metadata, source]
+  - assertion_id: markdown-required-fields
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /definitions/markdown_cell/required
+    expected: [id, cell_type, metadata, source]
+  - assertion_id: code-required-fields
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /definitions/code_cell/required
+    expected: [id, cell_type, metadata, source, outputs, execution_count]
+  - assertion_id: known-cell-kinds
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /definitions/cell/oneOf
+    expected:
+    - {$ref: '#/definitions/raw_cell'}
+    - {$ref: '#/definitions/markdown_cell'}
+    - {$ref: '#/definitions/code_cell'}
+- fact_id: SAL-IPYNB-00003
+  claim_sha256: 65dc08629177b8fd45772b4a32864c49aa3d0e5d7acd719b5ea239de49782670
+  assertions:
+  - assertion_id: output-kinds
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /definitions/output/oneOf
+    expected:
+    - {$ref: '#/definitions/execute_result'}
+    - {$ref: '#/definitions/display_data'}
+    - {$ref: '#/definitions/stream'}
+    - {$ref: '#/definitions/error'}
+  - assertion_id: execute-result-shape
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /definitions/execute_result/required
+    expected: [output_type, data, metadata, execution_count]
+  - assertion_id: display-data-shape
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /definitions/display_data/required
+    expected: [output_type, data, metadata]
+  - assertion_id: stream-shape
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /definitions/stream/required
+    expected: [output_type, name, text]
+  - assertion_id: error-shape
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /definitions/error/required
+    expected: [output_type, ename, evalue, traceback]
+- fact_id: SAL-IPYNB-00004
+  claim_sha256: 291e40d4735008b4c30a4d0097abcdcdefa90b4c7d095d139b015a8a04f7b552
+  assertions:
+  - assertion_id: duplicate-top-level-required-fields
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /required
+    expected: [metadata, nbformat_minor, nbformat, cells]
+  - assertion_id: top-level-types
+    target: schema45
+    kind: json_pointer_has_keys
+    pointer: /properties
+    expected: [metadata, nbformat_minor, nbformat, cells]
+- fact_id: SAL-IPYNB-00005
+  claim_sha256: c4e1ec4dcdc8728794081e2f9af4dce3edf964155b150eb81285096f3ceca021
+  assertions:
+  - assertion_id: attachment-reference-description
+    target: format_docs
+    kind: text_contains
+    expected: Markdown and raw cells can have a number of attachments, typically inline images that
+      can be referenced in the markdown content of a cell.
+  - assertion_id: attachment-uri-example
+    target: format_docs
+    kind: text_contains
+    expected: Here is an *inline* image ![inline image](attachment:test.png)
+  - assertion_id: attachment-key-example
+    target: format_docs
+    kind: text_contains
+    expected: 'attachments": {"test.png": {"image/png": "base64-encoded-png-data"}}'
+- fact_id: SAL-IPYNB-00006
+  claim_sha256: 3beb5b892503069753df5b8f021086145133e5fad3f8bfbdac4d7784338e8a10
+  assertions:
+  - assertion_id: unique-tags
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /definitions/misc/metadata_tags/uniqueItems
+    expected: true
+  - assertion_id: comma-free-tags
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /definitions/misc/metadata_tags/items/pattern
+    expected: ^[^,]+$
+  - assertion_id: arbitrary-cell-metadata
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /definitions/markdown_cell/properties/metadata/additionalProperties
+    expected: true
+  - assertion_id: custom-metadata-namespace
+    target: format_docs
+    kind: text_contains
+    expected: any custom metadata should use a sufficiently unique namespace
+- fact_id: SAL-IPYNB-00007
+  claim_sha256: f1792502ec8987b99beea74ca112c77a7f0916644313158f0092b1bbe2ab3e17
+  assertions:
+  - assertion_id: multiline-string-representations
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /definitions/misc/multiline_string/oneOf
+    expected:
+    - {type: string}
+    - type: array
+      items: {type: string}
+  - assertion_id: multiline-string-join-rule
+    target: format_docs
+    kind: text_contains
+    expected: they **may** be written as a list of strings, which should be joined with ``''`` when
+      reading back into memory
+- fact_id: SAL-IPYNB-00008
+  claim_sha256: 0e75c1378a9e5e8297837038c5b67a3952bf5a478df6cf13529595751a38ab98
+  assertions:
+  - assertion_id: code-execution-fields-required
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /definitions/code_cell/required
+    expected: [id, cell_type, metadata, source, outputs, execution_count]
+  - assertion_id: execution-count-types
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /definitions/misc/execution_count/type
+    expected: [integer, 'null']
+  - assertion_id: outputs-array
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /definitions/code_cell/properties/outputs/type
+    expected: array
+- fact_id: SAL-IPYNB-00009
+  claim_sha256: 714be61fff76ff90a2c3b91e2b9bc426c01648dbc5068ee142507c4e6bf774d2
+  assertions:
+  - assertion_id: markdown-attachments
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /definitions/markdown_cell/properties/attachments/$ref
+    expected: '#/definitions/misc/attachments'
+  - assertion_id: raw-attachments
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /definitions/raw_cell/properties/attachments/$ref
+    expected: '#/definitions/misc/attachments'
+  - assertion_id: attachments-mimebundle-description
+    target: format_docs
+    kind: text_contains
+    expected: The ``attachments`` dictionary of a cell contains a set of mime-bundles (see
+      :ref:`display_data`) keyed by filename that represents the files attached to the cell.
+- fact_id: SAL-IPYNB-00010
+  claim_sha256: 6296909c6cfbb1ec865e0ed3006694580971d6bcabfec0ad58d7c0d248ea3bef
+  assertions:
+  - assertion_id: notebook-metadata-keys
+    target: schema45
+    kind: json_pointer_has_keys
+    pointer: /properties/metadata/properties
+    expected: [kernelspec, language_info]
+  - assertion_id: kernelspec-name
+    target: schema45
+    kind: json_pointer_contains
+    pointer: /properties/metadata/properties/kernelspec/required
+    expected: name
+  - assertion_id: language-info-name
+    target: schema45
+    kind: json_pointer_contains
+    pointer: /properties/metadata/properties/language_info/required
+    expected: name
+- fact_id: SAL-IPYNB-00011
+  claim_sha256: 6c3c25507b103c4babd22a943e81801e2ef8d24a2ed432beb31c7558981cdf66
+  assertions:
+  - assertion_id: active-mime-payloads-accepted
+    target: schema45
+    kind: json_schema_accepts
+    pointer: /definitions/misc/mimebundle
+    instance:
+      text/html: <script>example()</script>
+      image/svg+xml: <svg xmlns="http://www.w3.org/2000/svg"/>
+      application/javascript: example()
+- fact_id: SAL-IPYNB-00012
+  claim_sha256: 7fe97b41f2c499944330c2d274ac6f1b3405ac20cc77e37a9577c0d5d14efd9a
+  assertions:
+  - assertion_id: validator-document-version
+    target: validator
+    kind: text_contains
+    expected: nbdict_version, nbdict_version_minor = get_version(nbdict)
+  - assertion_id: validator-schema-version-selection
+    target: validator
+    kind: text_contains
+    expected: schema_json = _get_schema_json(v, version=version, version_minor=version_minor)
+  - assertion_id: validator-future-minor-relaxation
+    target: validator
+    kind: text_contains
+    expected: if current_minor < version_minor
+- fact_id: SAL-IPYNB-00013
+  claim_sha256: 37216e29294a0dbb3e7d27d266ce5814947beff3c41f60e382f5a3eb3c0fa435
+  assertions:
+  - assertion_id: declared-output-types
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /definitions/output/oneOf
+    expected:
+    - {$ref: '#/definitions/execute_result'}
+    - {$ref: '#/definitions/display_data'}
+    - {$ref: '#/definitions/stream'}
+    - {$ref: '#/definitions/error'}
+  - assertion_id: stream-required
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /definitions/stream/required
+    expected: [output_type, name, text]
+  - assertion_id: error-required
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /definitions/error/required
+    expected: [output_type, ename, evalue, traceback]
+- fact_id: SAL-IPYNB-00014
+  claim_sha256: c82c538d4b73050886be8dd1486c54ec54328a21912f6bb7e3b7d602ca750eb2
+  assertions:
+  - assertion_id: code-cell-id-required
+    target: schema45
+    kind: json_pointer_contains
+    pointer: /definitions/code_cell/required
+    expected: id
+  - assertion_id: cell-id-pattern
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /definitions/cell_id/pattern
+    expected: ^[a-zA-Z0-9-_]+$
+  - assertion_id: cell-id-minimum
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /definitions/cell_id/minLength
+    expected: 1
+  - assertion_id: cell-id-maximum
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /definitions/cell_id/maxLength
+    expected: 64
+  - assertion_id: cell-id-uniqueness
+    target: format_docs
+    kind: text_contains
+    expected: These ids must be unique to any given Notebook following the nbformat spec.
+- fact_id: SAL-IPYNB-00015
+  claim_sha256: 4414598e254066f90c2eb034fd34eb938243a93726798cefa157fcedbf91c7ee
+  assertions:
+  - assertion_id: ordered-cells-array
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /properties/cells
+    expected:
+      description: Array of cells of the current notebook.
+      type: array
+      items: {$ref: '#/definitions/cell'}
+  - assertion_id: cell-type-branches
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /definitions/cell/oneOf
+    expected:
+    - {$ref: '#/definitions/raw_cell'}
+    - {$ref: '#/definitions/markdown_cell'}
+    - {$ref: '#/definitions/code_cell'}
+- fact_id: SAL-IPYNB-00016
+  claim_sha256: d59264828b329b13a3fcd3c4455f2e8e41a7c1cac41f37674f4097a697c5d61a
+  assertions:
+  - assertion_id: minor-version-evolution
+    target: format_docs
+    kind: text_contains
+    expected: When backward-compatible changes are made, the notebook format minor version is incremented.
+  - assertion_id: unknown-types-preserved
+    target: format_docs
+    kind: text_contains
+    expected: New cell or output types will not be rendered in versions that do not recognize them, but they
+      will be preserved.
+  - assertion_id: future-minor-allowed-types
+    target: validator
+    kind: text_contains
+    expected: schema_json = _allow_undefined(schema_json)
+- fact_id: SAL-IPYNB-00017
+  claim_sha256: 21dff10d1032f6b134136902d177e1347457d2d8ad7903dd0340c98db7966e39
+  assertions:
+  - assertion_id: backward-compatible-additions
+    target: format_docs
+    kind: text_contains
+    expected: 'As of nbformat 4.x, backward-compatible changes include: - new fields in any dictionary
+      (notebook, cell, output, metadata, etc.) - new cell types - new output types'
+  - assertion_id: relax-additional-properties
+    target: validator
+    kind: text_contains
+    expected: schema_json = _relax_additional_properties(schema_json)
+  - assertion_id: permit-unknown-cell-output-types
+    target: validator
+    kind: text_contains
+    expected: 'schema["definitions"]["cell"]["oneOf"].append({"$ref": "#/definitions/unrecognized_cell"})'
+- fact_id: SAL-IPYNB-00018
+  claim_sha256: 02f0980d0af21fd0e54b23fcdbe44e545cc0ac1cc666eae0ef9b9174aa36a38d
+  assertions:
+  - assertion_id: display-data-data-metadata
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /definitions/display_data/required
+    expected: [output_type, data, metadata]
+  - assertion_id: execute-result-data-metadata
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /definitions/execute_result/required
+    expected: [output_type, data, metadata, execution_count]
+  - assertion_id: per-mime-metadata
+    target: format_docs
+    kind: text_contains
+    expected: The metadata of these messages may be keyed by mime-type as well.
+- fact_id: SAL-IPYNB-00019
+  claim_sha256: 2d41d7e381c57874072242060ba384f11fcf2f7207cef48672156e4f14fbfed0
+  assertions:
+  - assertion_id: error-required-fields
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /definitions/error/required
+    expected: [output_type, ename, evalue, traceback]
+  - assertion_id: error-traceback-array
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /definitions/error/properties/traceback/type
+    expected: array
+  - assertion_id: error-traceback-strings
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /definitions/error/properties/traceback/items/type
+    expected: string

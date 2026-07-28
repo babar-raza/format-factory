@@ -1,0 +1,87 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-materialize-production-proof-safetensors-tensor-entry-replay-001",
+  "execution_id": "ff6-materialize-production-proof-safetensors-tensor-entry-replay-001",
+  "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-PAYLOAD-001",
+  "skill_id": "materialize-production-proof",
+  "selected_skill_ids": [
+    "materialize-production-proof"
+  ],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-SAFETENSORS-PROOF-006",
+  "pre_mutation_guard_authorization_id": "4a3b4b09b4da9816",
+  "requested_operation": "replay installed-wheel proof that each SafeTensors entry carries dtype, shape, and begin/end payload offsets",
+  "inputs": {
+    "defect_id": "GAP-C5FCC8B2DA189819",
+    "failing_regression": "tests/python/safetensors/test_production_namespace.py::test_scalar_roundtrip_is_deterministic",
+    "invalidation_input": "current production test-file digest and installed package closure",
+    "target_product": "safetensors",
+    "obligation_id": "SAL-SAFETENSORS-OBL-099EBDB35E9C3CB6",
+    "polarity": "positive",
+    "base_git_commit": "03c2a515"
+  },
+  "allowed_files": [
+    "reports/skills-rff6/skill-transcripts/materialize-production-proof-safetensors-tensor-entry-replay-001.json"
+  ],
+  "actual_files_changed": [
+    "reports/skills-rff6/skill-transcripts/materialize-production-proof-safetensors-tensor-entry-replay-001.json"
+  ],
+  "behavior_added": [],
+  "tests_run": [
+    "tools/supervisor/production_program.py prove --format safetensors --obligation SAL-SAFETENSORS-OBL-099EBDB35E9C3CB6 --polarity positive --test tests/python/safetensors/test_production_namespace.py --package <core-wheel> --package <safetensors-wheel> --run <python> -m pytest tests/python/safetensors/test_production_namespace.py::test_scalar_roundtrip_is_deterministic -q: exit 0"
+  ],
+  "validations": {
+    "one_obligation_per_executed_result": "PASS",
+    "exact_positive_polarity": "PASS",
+    "complete_execution_input_closure": "PASS",
+    "installed_wheel_origin": "PASS",
+    "dtype_shape_offsets_roundtrip": "PASS",
+    "stale_proof_count_after_replay": 0,
+    "promotion_claimed": "NO"
+  },
+  "proof": {
+    "format_id": "safetensors",
+    "obligation_id": "SAL-SAFETENSORS-OBL-099EBDB35E9C3CB6",
+    "obligation_text": "(README Format lines 80-82) Each tensor entry has a dtype field, a shape field containing dimensions, and a data_offsets field containing a begin and end byte offset.",
+    "proof_id": "PROOF-B35C93B5EF2AD3275585CCCD37933B06D8EE463940C3F8D68739DF16196EAABE",
+    "polarity": "positive",
+    "contract_digest": "e7c4939500768fa6a3bc19a7bd849e1e1883e9c707d9ba868c87fbe25ab64806",
+    "source_digest": "2404b116b048c312a3c1956eeb5803ddd9e98a1eb40a87dcc11b7398849226f7",
+    "test_digest": "3e36eddfb2f6dd9cf6840488d42d9286c0b648790b86eb16de8317676befaa0b",
+    "fixture_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "package_digest": "6f11e3c9a5f32c4e0fc17d839c218e8246d4fc210bcd912fa3feceae9a258102",
+    "dependency_digest": "bf8dee63c7abf526d178fe57c48e2d55ba04871cba72eea64a3c04dfbb9e269a",
+    "tool_digest": "b7c0f68d84382d04b000a97d01e8e625355513d0972a17a048f4cd241018ce20",
+    "environment_digest": "525a721d888decaff7d0fd6d189bc20f5ad1f783046860f72738eb579f09d9ac",
+    "state_proof_digest": "4b8fb2042f62893d5b65b75ba49d307fdfe5453ce8490e439d251d3fcd836de5",
+    "command_exit_code": 0,
+    "program_open_gaps_before": 612,
+    "program_open_gaps_after": 611
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for this single tensor-entry obligation; no SafeTensors certification claimed",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES, retained from the active mission session",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, retained in the mission receipt chain",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "SAFETENSORS_TENSOR_ENTRY_PROOF_REPLAYED_NOT_CERTIFIED",
+  "timestamp": "2026-07-25T18:51:42.7796961Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

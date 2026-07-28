@@ -1,0 +1,133 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-format-feature-expansion-ipynb-typed-model-001",
+  "execution_id": "ff6-format-feature-expansion-ipynb-typed-model-001",
+  "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-MODEL-001",
+  "skill_id": "format-feature-expansion",
+  "selected_skill_ids": ["format-feature-expansion"],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-IPYNB-TYPED-MODEL-001",
+  "pre_mutation_guard_authorization_id": "4803a9039268df5e",
+  "requested_operation": "implement typed notebook cells, outputs, MIME bundles, logical multiline text, preservation-only unknown nodes, and typed search",
+  "inputs": {
+    "format_id": "ipynb",
+    "profile_id": "production",
+    "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-MODEL-001",
+    "obligation_id": "SAL-IPYNB-OBL-121BE1F7FB462D30",
+    "obligation_ids": [
+      "SAL-IPYNB-OBL-121BE1F7FB462D30",
+      "SAL-IPYNB-OBL-A416086282D30BB9",
+      "SAL-IPYNB-OBL-CA94E60DA1A97571"
+    ],
+    "capability_ids": ["IPYNB-PARSE-001", "IPYNB-MODEL-001"],
+    "contract_digest": "56762498619ac994bbc5bceac7240357118f1046bda48d5e4bdffc6baa1129ac",
+    "authority_digests": {
+      "SRC-NB-002": "4d3750b55006e92d8063a6ac427a84eb1f91c44e376d90de53d03893674991d9"
+    },
+    "root_cause": "The production model exposed raw cell dictionaries and one generic Cell/Output wrapper. Cell.source leaked the JSON string-list representation, there were no typed cell/output discriminators or MIME-bundle view, and future nodes were not marked preservation-only.",
+    "affected_layer": "IPYNB pure model and public exports",
+    "planned_paths": [
+      "src/python/ipynb/src/format_factory/ipynb/model/document.py",
+      "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+      "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+      "tests/python/ipynb/test_obligation_typed_model.py",
+      "reports/r90/product-code-change-ledger.json",
+      "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-typed-model-001.json"
+    ],
+    "proof_inputs": [
+      "shared/format-contracts/ipynb.yaml",
+      "tests/python/ipynb/test_obligation_typed_model.py",
+      ".local/build/ipynb-model-a/format_factory_ipynb-0.2.0.dev0-py3-none-any.whl",
+      ".local/venvs/ipynb-current-proof"
+    ],
+    "base_git_commit": "6bbb49fc"
+  },
+  "allowed_files": [
+    "src/python/ipynb/src/format_factory/ipynb/model/document.py",
+    "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+    "tests/python/ipynb/test_obligation_typed_model.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-typed-model-001.json"
+  ],
+  "actual_files_changed": [
+    "src/python/ipynb/src/format_factory/ipynb/model/document.py",
+    "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+    "tests/python/ipynb/test_obligation_typed_model.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-typed-model-001.json"
+  ],
+  "defect_reproduction": {
+    "result": "FAILURE_REPRODUCED",
+    "outcome": "test collection failed because CodeCell and the other typed public symbols did not exist"
+  },
+  "implementation": {
+    "cells": "MarkdownCell, RawCell, CodeCell, and UnknownCell are selected by a central factory; unknown cells are explicitly preservation-only.",
+    "outputs": "StreamOutput, DisplayDataOutput, ExecuteResultOutput, ErrorOutput, and UnknownOutput provide typed discriminators; unknown outputs are preservation-only.",
+    "mime": "MimeBundle provides typed MIME-key access and defensive export.",
+    "multiline": "Cell.source returns concatenated logical text while Cell.raw_source defensively retains the original string or string-list representation.",
+    "search": "IpynbDocument.find_cells filters typed views by ID, cell type, tag, and logical source text.",
+    "compatibility": "IpynbDocument.cells remains the existing mutable raw list and Output remains an alias of NotebookOutput."
+  },
+  "tests_run": [
+    "failure-first installed wheel: collection error for missing CodeCell",
+    "source-backed focused model tests: 2 passed",
+    "source-backed full suite: 260 functional passes plus 3 expected installed-origin assertion failures caused by explicit source PYTHONPATH",
+    "two SOURCE_DATE_EPOCH=0 wheels: identical SHA-256 8a3e3e2565fd93ee4be2d5bf0767d18ccb89171e091db2188443936ef877c927",
+    "first pip reinstall: safely rolled back because SOURCE_DATE_EPOCH=0 is invalid for a Windows launcher ZIP timestamp",
+    "reinstall with build-only timestamp removed: PASS",
+    "installed-wheel focused tests: 2 passed",
+    "installed-wheel full tests/python/ipynb suite: 263 passed",
+    "Ruff on all changed source and test files: PASS"
+  ],
+  "ledger_entry_id": "FF6-IPYNB-TYPED-MODEL-001",
+  "ledger_entry_path": "reports/r90/product-code-change-ledger.json",
+  "validations": {
+    "logical_source_and_raw_representation": "PASS",
+    "all_specified_cell_types": "PASS",
+    "all_specified_output_types": "PASS",
+    "unknown_preservation_nodes": "PASS",
+    "typed_search": "PASS",
+    "lossless_declared_roundtrip": "PASS",
+    "installed_wheel_origin": "PASS",
+    "reproducible_wheel": "PASS",
+    "declared_regression_tier": "PASS: 263 tests",
+    "source_changed": "YES: all prior IPYNB proof descendants require replay after the consolidated source wave",
+    "promotion_claimed": "NO"
+  },
+  "output_digests": {
+    "src/python/ipynb/src/format_factory/ipynb/model/document.py": "97fa3bd9ceff0513fb8763d77abfd6a345a7f395be33ec60465c29c9e15c9aca",
+    "src/python/ipynb/src/format_factory/ipynb/model/__init__.py": "35e4b5f40c7f105235af9a97afa7dc0f75b6561c95a01bad9aaf1818e24d0e86",
+    "src/python/ipynb/src/format_factory/ipynb/__init__.py": "fc5d05b43549aebbd32d007c54632295bcdb88fc1c9736f1596d1ded5c5bb768",
+    "tests/python/ipynb/test_obligation_typed_model.py": "08061434a33cc6f112f9b184e26127b1fd42b1ec55fa833b4958433f929d6782",
+    "reports/r90/product-code-change-ledger.json": "c21b0c70ca0a8b1e2662d6fed5047b084ab0d43efa592ed34dacc94b6ff9b8a5",
+    "format_factory_ipynb-0.2.0.dev0-py3-none-any.whl": "8a3e3e2565fd93ee4be2d5bf0767d18ccb89171e091db2188443936ef877c927"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for this source slice; proof replay is deliberately deferred to the consolidated source-wave boundary",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for implementation verification; no obligation or certification closure claimed yet",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "IPYNB_TYPED_MODEL_IMPLEMENTED_CONSOLIDATED_PROOF_REPLAY_PENDING",
+  "timestamp": "2026-07-25T22:46:50.5703744Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

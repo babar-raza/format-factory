@@ -17,7 +17,7 @@ class TestIpynbToCsv:
     def test_returns_data_row_count(self, tmp_path):
         dest = tmp_path / "out.csv"
         count = ipynb_to_csv(SAMPLES / "code-and-markdown.ipynb", dest)
-        assert count == 2
+        assert count == 9
 
     def test_output_file_created_and_nonempty(self, tmp_path):
         dest = tmp_path / "out.csv"
@@ -37,7 +37,7 @@ class TestIpynbToCsv:
         content = dest.read_text(encoding="utf-8")
         assert "markdown" in content
         assert "code" in content
-        assert "Hello World" in content
+        assert "nbconvert latex test" in content
 
     def test_output_count_reflects_real_outputs(self, tmp_path):
         dest = tmp_path / "out.csv"

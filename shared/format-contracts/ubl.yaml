@@ -13,11 +13,11 @@ contract_metadata:
   confidence: medium
   supersedes: null
   input_digests:
-    fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
+    fact_categories_sha256: fe2732633cdf17bad0a5e152b1f8c845ab46e1d8e018cb29b67dfb7a66181fce
     family_pack_sha256: 6d0b519714dab6f50c35c67bbd11db29ccdba6e77d9a3ab4d2bcad2929ac4646
     qname_registry_sha256: 9ca85535d450af64bab3f26811be019bdebbd2701041ff291c043d096af87fb6
-    research_sha256: d6eb27174fb2b1c67fce6de254baf41e471c4ff9abd0e52b8df9f05da1fe5fcb
-    sal_facts_sha256: 8814fd9b67c33e142063077aa6e1e71493046c89033cad2788d190e8804a3a77
+    research_sha256: a1eca70e12ce35f789098bb5a8b2a9991d9b11644a5ee7ec1b00a09f1aaee0db
+    sal_facts_sha256: 1efe0b967ba828dbf9c87255d9e58235fabc39c3807831e9a61ee69244607f4f
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
 format_identity:
   active_content_model:
@@ -33,20 +33,24 @@ format_identity:
   - Programmatic document assembly from business data with schema-valid output
   - Compliance validation against schemas, code lists, and profile rules before transmission
 authoritative_sources:
-- title: OASIS UBL 2.3
+- title: OASIS UBL 2.3 OASIS Standard prose specification
   source_id: SRC-UBL-001
   organization: OASIS
   version: UBL 2.3
+  local_path: .local/format-contracts/acquired/ubl/src-ubl-001.bin
   canonical_url: https://docs.oasis-open.org/ubl/UBL-2.3.html
+  content_hash: b2ac12afabc812ccfb49355a391dc1690260bbc2d216d3c9dd5b0931b6c1a2b6
   authority_class: AUTHORITATIVE
-  acquisition_status: URL_ONLY
+  acquisition_status: ACQUIRED
 - title: OASIS Universal Business Language specification (maindoc and common component schemas)
   source_id: SRC-UBL-002
   organization: OASIS
-  version: UBL 2.x
-  canonical_url: https://docs.oasis-open.org/ubl/
+  version: UBL 2.3 OASIS Standard release package
+  local_path: .local/format-contracts/acquired/ubl/src-ubl-002.bin
+  canonical_url: https://docs.oasis-open.org/ubl/os-UBL-2.3/UBL-2.3.zip
+  content_hash: 623bef8310db4d979ff28000a96bcc56dbcdda4f6206cf094c0aa79b75817970
   authority_class: AUTHORITATIVE
-  acquisition_status: URL_ONLY
+  acquisition_status: ACQUIRED
 - title: Business-document library developer-workflow requirements (invoicing/procurement integration
     practice)
   source_id: SRC-UBL-003
@@ -77,11 +81,10 @@ capabilities:
   provenance:
   - POL-XBZ-CALC-01
   - SAL-UBL-00110
-  - SAL-UBL-00119
   - SAL-UBL-00122
   - SAL-UBL-00123
   - SAL-UBL-00127
-  - SAL-UBL-00129
+  - SAL-UBL-50613DF5EFE944E0
   - RF-UBL-00005
   required_behavior:
   - Calculate document totals under explicit rounding/tolerance policies and compare to declared totals
@@ -90,18 +93,16 @@ capabilities:
     rounding/tolerance policies and reconcile them against declared totals with per-total deltas, never
     mutating declared values outside explicit repair mode.
   normative_rules:
-  - (UBL document totals) Amounts in UBL are decimal values and totals reconciliation across line extension,
-    tax, and payable amounts must follow the arithmetic the specification defines
-  - (UBL common library - ExternalReference) cac:ExternalReference carries external URI references to
-    resources outside the document that consumers resolve at their own risk
+  - (UBL document totals) UBL AmountType is decimal and requires currencyID; aggregate definitions document
+    line extension, tax, and payable amounts, but the XSD does not encode cross-field arithmetic reconciliation.
   - (UBL common library - LegalMonetaryTotal) cac:LegalMonetaryTotal is an aggregate component type carrying
     line extension, tax-inclusive, allowance, charge, and payable amount elements
   - (UBL common library - Party) cac:Party is an aggregate component type carrying party identification,
     names, postal addresses, tax schemes, and contacts as child elements
   - (UBL common library - TaxTotal) cac:TaxTotal is an aggregate component type carrying cbc:TaxAmount
     and nested cac:TaxSubtotal elements per tax category
-  - (UBL common library - attachments) cbc:EmbeddedDocumentBinaryObject carries base64 binary payloads
-    with mimeCode attributes that consumers must treat as untrusted content with size limits
+  - (xsd/maindoc/UBL-*-2.3.xsd) Each UBL 2.3 maindoc XSD declares a document-type target namespace and
+    qualified XML element syntax for its document element and content model.
   depth_required: 6
   depth_rationale: 'SHOULD calculate capability: family depth floor 6, finding hints applied; depth scale
     0-8 per L30 schema.'
@@ -119,9 +120,11 @@ capabilities:
     lists without code changes.
   provenance:
   - POL-XBZ-CODELIST-01
+  - SAL-UBL-00110
   - SAL-UBL-00112
   - SAL-UBL-00116
   - SAL-UBL-00118
+  - SAL-UBL-00119
   - SAL-UBL-00121
   - SAL-UBL-00124
   - SAL-UBL-00129
@@ -132,18 +135,22 @@ capabilities:
   - Load official code lists from their distribution artifacts, cache them immutably, and validate coded
     values deterministically offline, with user- or profile-supplied lists pluggable at runtime.
   normative_rules:
-  - (UBL code lists) Coded-value basic components are constrained by code lists and values must conform
-    to the list identified by listID and related attributes where applied
+  - (UBL document totals) UBL AmountType is decimal and requires currencyID; aggregate definitions document
+    line extension, tax, and payable amounts, but the XSD does not encode cross-field arithmetic reconciliation.
+  - (UBL code lists) UBL CodeType values are normalized strings with optional listID and related list-identification
+    attributes; the base UBL XSD does not enumerate business code values.
   - (UBL unqualified data types - QuantityType) Quantity-typed basic components carry an optional unitCode
     attribute identifying the unit of measure
   - (UBL common library - AllowanceCharge) cac:AllowanceCharge is an aggregate component type with a charge
     indicator, reason codes, and amount elements applied at document or line level
+  - (UBL common library - ExternalReference) cac:ExternalReference is an aggregate with optional URI,
+    DocumentHash, MimeCode, FileName, and Description elements.
   - (UBL common library - Item) cac:Item is an aggregate component type describing traded items with names,
     identification schemes, and classification code elements
   - (UBL common library - PaymentMeans) cac:PaymentMeans is an aggregate component type carrying payment
     means codes, due dates, and payee financial account elements
-  - (UBL common library - attachments) cbc:EmbeddedDocumentBinaryObject carries base64 binary payloads
-    with mimeCode attributes that consumers must treat as untrusted content with size limits
+  - (UBL common library - attachments) cbc:EmbeddedDocumentBinaryObject restricts UDT BinaryObjectType,
+    whose value is base64Binary and whose mimeCode attribute is required in the UBL UDT.
   depth_required: 5
   depth_rationale: 'MUST validate capability: family depth floor 5, finding hints applied; depth scale
     0-8 per L30 schema.'
@@ -179,6 +186,8 @@ capabilities:
   - SAL-UBL-00129
   - SAL-UBL-00131
   - SAL-UBL-00132
+  - SAL-UBL-00133
+  - SAL-UBL-50613DF5EFE944E0
   - RF-UBL-00001
   required_behavior:
   - Expose a distinct typed root per supported document type plus create_empty, detect_document_type,
@@ -202,8 +211,8 @@ capabilities:
     document root element in its own maindoc namespace carrying cac:DespatchLine aggregates
   - (UBL maindoc schemas - Order) A UBL Order document is rooted at an Order document root element in
     its own maindoc namespace with order lines carried as cac:OrderLine aggregate components
-  - (UBL document totals) Amounts in UBL are decimal values and totals reconciliation across line extension,
-    tax, and payable amounts must follow the arithmetic the specification defines
+  - (UBL document totals) UBL AmountType is decimal and requires currencyID; aggregate definitions document
+    line extension, tax, and payable amounts, but the XSD does not encode cross-field arithmetic reconciliation.
   - (UBL naming and design rules - element order) Child elements inside UBL aggregate components must
     appear in the order declared by the schema sequence model for the document to be valid
   - (UBL naming and design rules - namespaces) Every UBL maindoc type declares its own document root namespace
@@ -212,18 +221,23 @@ capabilities:
     documents must be valid against the maindoc schema of their declared type
   - (UBL common library - AllowanceCharge) cac:AllowanceCharge is an aggregate component type with a charge
     indicator, reason codes, and amount elements applied at document or line level
-  - (UBL common library - ExternalReference) cac:ExternalReference carries external URI references to
-    resources outside the document that consumers resolve at their own risk
+  - (UBL common library - ExternalReference) cac:ExternalReference is an aggregate with optional URI,
+    DocumentHash, MimeCode, FileName, and Description elements.
   - (UBL common library - InvoiceLine) cac:InvoiceLine is an aggregate component type carrying cbc:ID,
     cbc:InvoicedQuantity, cbc:LineExtensionAmount, and a cac:Item element
   - (UBL document metadata - customization and profile) cbc:CustomizationID and cbc:ProfileID identify
     the customization profile and business process profile a document instance follows
-  - (UBL common library - attachments) cbc:EmbeddedDocumentBinaryObject carries base64 binary payloads
-    with mimeCode attributes that consumers must treat as untrusted content with size limits
+  - (UBL common library - attachments) cbc:EmbeddedDocumentBinaryObject restricts UDT BinaryObjectType,
+    whose value is base64Binary and whose mimeCode attribute is required in the UBL UDT.
   - (UBL document metadata - version identification) cbc:UBLVersionID identifies the UBL specification
     version a document instance declares
-  - (UBL extension model) ext:UBLExtensions is the extension container element preceding document content
-    and may carry arbitrary namespaced payloads including enveloped signatures
+  - (UBL extension model) ext:UBLExtensions is the first optional component in UBL document sequences;
+    each UBLExtension contains ExtensionContent, which permits one foreign-namespaced apex element with
+    lax validation.
+  - (UBL 2.3 schema package - maindoc inventory) The pinned UBL 2.3 OASIS Standard package contains exactly
+    91 maindoc XSD files, one for each supported UBL document root.
+  - (xsd/maindoc/UBL-*-2.3.xsd) Each UBL 2.3 maindoc XSD declares a document-type target namespace and
+    qualified XML element syntax for its document element and content model.
   depth_required: 4
   depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
     per L30 schema.'
@@ -292,14 +306,15 @@ capabilities:
   - (OASIS UBL 2.1 — Invoice document schema) A UBL Invoice document is rooted at an <Invoice> element
     in the UBL-Invoice-2 namespace; each invoice line is a cac:InvoiceLine aggregate carrying cbc:ID,
     cbc:InvoicedQuantity, and cbc:LineExtensionAmount (shared aggregate referenced by ubl:line-item)
-  - (UBL document totals) Amounts in UBL are decimal values and totals reconciliation across line extension,
-    tax, and payable amounts must follow the arithmetic the specification defines
+  - (UBL document totals) UBL AmountType is decimal and requires currencyID; aggregate definitions document
+    line extension, tax, and payable amounts, but the XSD does not encode cross-field arithmetic reconciliation.
   - (UBL common library - InvoiceLine) cac:InvoiceLine is an aggregate component type carrying cbc:ID,
     cbc:InvoicedQuantity, cbc:LineExtensionAmount, and a cac:Item element
   - (UBL common library - LegalMonetaryTotal) cac:LegalMonetaryTotal is an aggregate component type carrying
     line extension, tax-inclusive, allowance, charge, and payable amount elements
-  - (UBL extension model) ext:UBLExtensions is the extension container element preceding document content
-    and may carry arbitrary namespaced payloads including enveloped signatures
+  - (UBL extension model) ext:UBLExtensions is the first optional component in UBL document sequences;
+    each UBLExtension contains ExtensionContent, which permits one foreign-namespaced apex element with
+    lax validation.
   security_requirements:
   - Extension payload decoding never executes or resolves content implicitly.
   depth_required: 2
@@ -385,6 +400,10 @@ capabilities:
   - SAL-UBL-00129
   - SAL-UBL-00130
   - SAL-UBL-00131
+  - SAL-UBL-00132
+  - SAL-UBL-50613DF5EFE944E0
+  - SAL-UBL-6D5AF510AAF4874B
+  - SAL-UBL-87F7B313CE24D408
   required_behavior:
   - Represent shared aggregate components as typed composites and basic components as typed values retaining
     lexical form where round-trip fidelity requires it.
@@ -407,12 +426,12 @@ capabilities:
     its own maindoc namespace with order lines carried as cac:OrderLine aggregate components
   - (UBL unqualified data types - AmountType) Amount-typed basic components require a currencyID attribute
     identifying the ISO 4217 currency of the value
-  - (UBL document totals) Amounts in UBL are decimal values and totals reconciliation across line extension,
-    tax, and payable amounts must follow the arithmetic the specification defines
+  - (UBL document totals) UBL AmountType is decimal and requires currencyID; aggregate definitions document
+    line extension, tax, and payable amounts, but the XSD does not encode cross-field arithmetic reconciliation.
   - (UBL naming and design rules - element order) Child elements inside UBL aggregate components must
     appear in the order declared by the schema sequence model for the document to be valid
-  - (UBL code lists) Coded-value basic components are constrained by code lists and values must conform
-    to the list identified by listID and related attributes where applied
+  - (UBL code lists) UBL CodeType values are normalized strings with optional listID and related list-identification
+    attributes; the base UBL XSD does not enumerate business code values.
   - (UBL common library - CAC namespace) Common aggregate components live in the CommonAggregateComponents-2
     namespace conventionally prefixed cac and represent typed composite structures
   - (UBL common library - CBC namespace) Common basic components live in the CommonBasicComponents-2 namespace
@@ -425,8 +444,8 @@ capabilities:
     documents must be valid against the maindoc schema of their declared type
   - (UBL common library - AllowanceCharge) cac:AllowanceCharge is an aggregate component type with a charge
     indicator, reason codes, and amount elements applied at document or line level
-  - (UBL common library - ExternalReference) cac:ExternalReference carries external URI references to
-    resources outside the document that consumers resolve at their own risk
+  - (UBL common library - ExternalReference) cac:ExternalReference is an aggregate with optional URI,
+    DocumentHash, MimeCode, FileName, and Description elements.
   - (UBL common library - InvoiceLine) cac:InvoiceLine is an aggregate component type carrying cbc:ID,
     cbc:InvoicedQuantity, cbc:LineExtensionAmount, and a cac:Item element
   - (UBL common library - Item) cac:Item is an aggregate component type describing traded items with names,
@@ -445,12 +464,21 @@ capabilities:
     and nested cac:TaxSubtotal elements per tax category
   - (UBL document metadata - customization and profile) cbc:CustomizationID and cbc:ProfileID identify
     the customization profile and business process profile a document instance follows
-  - (UBL common library - attachments) cbc:EmbeddedDocumentBinaryObject carries base64 binary payloads
-    with mimeCode attributes that consumers must treat as untrusted content with size limits
+  - (UBL common library - attachments) cbc:EmbeddedDocumentBinaryObject restricts UDT BinaryObjectType,
+    whose value is base64Binary and whose mimeCode attribute is required in the UBL UDT.
   - (UBL common library - Identifier type) cbc:ID is a basic component element of UDT IdentifierType carrying
     optional schemeID and schemeAgencyID attributes
   - (UBL document metadata - version identification) cbc:UBLVersionID identifies the UBL specification
     version a document instance declares
+  - (UBL extension model) ext:UBLExtensions is the first optional component in UBL document sequences;
+    each UBLExtension contains ExtensionContent, which permits one foreign-namespaced apex element with
+    lax validation.
+  - (xsd/maindoc/UBL-*-2.3.xsd) Each UBL 2.3 maindoc XSD declares a document-type target namespace and
+    qualified XML element syntax for its document element and content model.
+  - (xsd/common/UBL-CommonBasicComponents-2.3.xsd) The UBL 2.3 Common Basic Components XSD declares namespace-qualified
+    XML elements whose values use the qualified and unqualified data-type schemas.
+  - (xsd/common/BDNDR-UnqualifiedDataTypes-1.1.xsd) The UBL 2.3 unqualified data-type XSD defines scalar
+    lexical representations through W3C XML Schema simple-content types and restrictions.
   depth_required: 3
   depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
     per L30 schema.'
@@ -482,6 +510,7 @@ capabilities:
   - SAL-UBL-00115
   - SAL-UBL-00117
   - SAL-UBL-00118
+  - SAL-UBL-00119
   - SAL-UBL-00120
   - SAL-UBL-00121
   - SAL-UBL-00122
@@ -492,6 +521,10 @@ capabilities:
   - SAL-UBL-00127
   - SAL-UBL-00130
   - SAL-UBL-00132
+  - SAL-UBL-00133
+  - SAL-UBL-50613DF5EFE944E0
+  - SAL-UBL-6D5AF510AAF4874B
+  - SAL-UBL-87F7B313CE24D408
   required_behavior:
   - Resolve every element and attribute by QName; default and prefixed namespace forms with identical
     expanded names behave identically.
@@ -524,6 +557,8 @@ capabilities:
     documents must be valid against the maindoc schema of their declared type
   - (UBL common library - AllowanceCharge) cac:AllowanceCharge is an aggregate component type with a charge
     indicator, reason codes, and amount elements applied at document or line level
+  - (UBL common library - ExternalReference) cac:ExternalReference is an aggregate with optional URI,
+    DocumentHash, MimeCode, FileName, and Description elements.
   - (UBL common library - InvoiceLine) cac:InvoiceLine is an aggregate component type carrying cbc:ID,
     cbc:InvoicedQuantity, cbc:LineExtensionAmount, and a cac:Item element
   - (UBL common library - Item) cac:Item is an aggregate component type describing traded items with names,
@@ -542,8 +577,17 @@ capabilities:
     and nested cac:TaxSubtotal elements per tax category
   - (UBL common library - Identifier type) cbc:ID is a basic component element of UDT IdentifierType carrying
     optional schemeID and schemeAgencyID attributes
-  - (UBL extension model) ext:UBLExtensions is the extension container element preceding document content
-    and may carry arbitrary namespaced payloads including enveloped signatures
+  - (UBL extension model) ext:UBLExtensions is the first optional component in UBL document sequences;
+    each UBLExtension contains ExtensionContent, which permits one foreign-namespaced apex element with
+    lax validation.
+  - (UBL 2.3 schema package - maindoc inventory) The pinned UBL 2.3 OASIS Standard package contains exactly
+    91 maindoc XSD files, one for each supported UBL document root.
+  - (xsd/maindoc/UBL-*-2.3.xsd) Each UBL 2.3 maindoc XSD declares a document-type target namespace and
+    qualified XML element syntax for its document element and content model.
+  - (xsd/common/UBL-CommonBasicComponents-2.3.xsd) The UBL 2.3 Common Basic Components XSD declares namespace-qualified
+    XML elements whose values use the qualified and unqualified data-type schemas.
+  - (xsd/common/BDNDR-UnqualifiedDataTypes-1.1.xsd) The UBL 2.3 unqualified data-type XSD defines scalar
+    lexical representations through W3C XML Schema simple-content types and restrictions.
   depth_required: 2
   depth_rationale: 'MUST parse capability: family depth floor 2, finding hints applied; depth scale 0-8
     per L30 schema.'
@@ -645,6 +689,7 @@ capabilities:
   - SAL-UBL-00001
   - SAL-UBL-00002
   - SAL-UBL-00109
+  - SAL-UBL-00110
   - SAL-UBL-00111
   - SAL-UBL-00112
   - SAL-UBL-00116
@@ -656,6 +701,7 @@ capabilities:
   - SAL-UBL-00128
   - SAL-UBL-00130
   - SAL-UBL-00131
+  - SAL-UBL-00132
   required_behavior:
   - Index identifiers and references; detect duplicate IDs, broken references, and inconsistent line references
     with locations.
@@ -668,16 +714,18 @@ capabilities:
     cbc:InvoicedQuantity, and cbc:LineExtensionAmount (shared aggregate referenced by ubl:line-item)
   - (UBL unqualified data types - AmountType) Amount-typed basic components require a currencyID attribute
     identifying the ISO 4217 currency of the value
+  - (UBL document totals) UBL AmountType is decimal and requires currencyID; aggregate definitions document
+    line extension, tax, and payable amounts, but the XSD does not encode cross-field arithmetic reconciliation.
   - (UBL naming and design rules - element order) Child elements inside UBL aggregate components must
     appear in the order declared by the schema sequence model for the document to be valid
-  - (UBL code lists) Coded-value basic components are constrained by code lists and values must conform
-    to the list identified by listID and related attributes where applied
+  - (UBL code lists) UBL CodeType values are normalized strings with optional listID and related list-identification
+    attributes; the base UBL XSD does not enumerate business code values.
   - (UBL unqualified data types - QuantityType) Quantity-typed basic components carry an optional unitCode
     attribute identifying the unit of measure
   - (UBL conformance - schema validation) UBL document schemas are W3C XML Schema definitions and conforming
     documents must be valid against the maindoc schema of their declared type
-  - (UBL common library - ExternalReference) cac:ExternalReference carries external URI references to
-    resources outside the document that consumers resolve at their own risk
+  - (UBL common library - ExternalReference) cac:ExternalReference is an aggregate with optional URI,
+    DocumentHash, MimeCode, FileName, and Description elements.
   - (UBL common library - InvoiceLine) cac:InvoiceLine is an aggregate component type carrying cbc:ID,
     cbc:InvoicedQuantity, cbc:LineExtensionAmount, and a cac:Item element
   - (UBL common library - Item) cac:Item is an aggregate component type describing traded items with names,
@@ -690,6 +738,9 @@ capabilities:
     optional schemeID and schemeAgencyID attributes
   - (UBL document metadata - version identification) cbc:UBLVersionID identifies the UBL specification
     version a document instance declares
+  - (UBL extension model) ext:UBLExtensions is the first optional component in UBL document sequences;
+    each UBLExtension contains ExtensionContent, which permits one foreign-namespaced apex element with
+    lax validation.
   depth_required: 5
   depth_rationale: 'MUST validate capability: family depth floor 5, finding hints applied; depth scale
     0-8 per L30 schema.'
@@ -742,7 +793,6 @@ capabilities:
   - POL-XBZ-SIGN-01
   - SAL-UBL-00111
   - SAL-UBL-00115
-  - SAL-UBL-00132
   - RF-UBL-00004
   required_behavior:
   - Preserve signature structures without rewriting signed subtrees in lossless mode; report edits that
@@ -755,8 +805,6 @@ capabilities:
     appear in the order declared by the schema sequence model for the document to be valid
   - (UBL naming and design rules - namespaces) Every UBL maindoc type declares its own document root namespace
     of the form urn:oasis:names:specification:ubl:schema:xsd:<Type>-2
-  - (UBL extension model) ext:UBLExtensions is the extension container element preceding document content
-    and may carry arbitrary namespaced payloads including enveloped signatures
   depth_required: 4
   depth_rationale: 'MUST preserve capability: family depth floor 2, finding hints applied; depth scale
     0-8 per L30 schema.'
@@ -806,12 +854,13 @@ capabilities:
   - SAL-UBL-00106
   - SAL-UBL-00107
   - SAL-UBL-00108
-  - SAL-UBL-00110
   - SAL-UBL-00111
-  - SAL-UBL-00112
   - SAL-UBL-00115
   - SAL-UBL-00117
-  - SAL-UBL-00129
+  - SAL-UBL-00132
+  - SAL-UBL-00133
+  - SAL-UBL-6D5AF510AAF4874B
+  - SAL-UBL-87F7B313CE24D408
   required_behavior:
   - Run syntax, schema, referential, code-list, and pluggable business-rule validation as separately reportable
     layers, returning all diagnostics with paths rather than stopping at the first error.
@@ -830,18 +879,21 @@ capabilities:
     document root element in its own maindoc namespace carrying cac:DespatchLine aggregates
   - (UBL maindoc schemas - Order) A UBL Order document is rooted at an Order document root element in
     its own maindoc namespace with order lines carried as cac:OrderLine aggregate components
-  - (UBL document totals) Amounts in UBL are decimal values and totals reconciliation across line extension,
-    tax, and payable amounts must follow the arithmetic the specification defines
   - (UBL naming and design rules - element order) Child elements inside UBL aggregate components must
     appear in the order declared by the schema sequence model for the document to be valid
-  - (UBL code lists) Coded-value basic components are constrained by code lists and values must conform
-    to the list identified by listID and related attributes where applied
   - (UBL naming and design rules - namespaces) Every UBL maindoc type declares its own document root namespace
     of the form urn:oasis:names:specification:ubl:schema:xsd:<Type>-2
   - (UBL conformance - schema validation) UBL document schemas are W3C XML Schema definitions and conforming
     documents must be valid against the maindoc schema of their declared type
-  - (UBL common library - attachments) cbc:EmbeddedDocumentBinaryObject carries base64 binary payloads
-    with mimeCode attributes that consumers must treat as untrusted content with size limits
+  - (UBL extension model) ext:UBLExtensions is the first optional component in UBL document sequences;
+    each UBLExtension contains ExtensionContent, which permits one foreign-namespaced apex element with
+    lax validation.
+  - (UBL 2.3 schema package - maindoc inventory) The pinned UBL 2.3 OASIS Standard package contains exactly
+    91 maindoc XSD files, one for each supported UBL document root.
+  - (xsd/common/UBL-CommonBasicComponents-2.3.xsd) The UBL 2.3 Common Basic Components XSD declares namespace-qualified
+    XML elements whose values use the qualified and unqualified data-type schemas.
+  - (xsd/common/BDNDR-UnqualifiedDataTypes-1.1.xsd) The UBL 2.3 unqualified data-type XSD defines scalar
+    lexical representations through W3C XML Schema simple-content types and restrictions.
   depth_required: 5
   depth_rationale: 'MUST validate capability: family depth floor 5, finding hints applied; depth scale
     0-8 per L30 schema.'
@@ -867,6 +919,7 @@ capabilities:
   - SAL-UBL-00112
   - SAL-UBL-00116
   - SAL-UBL-00118
+  - SAL-UBL-00119
   - SAL-UBL-00120
   - SAL-UBL-00121
   - SAL-UBL-00122
@@ -893,14 +946,16 @@ capabilities:
     cbc:InvoicedQuantity, and cbc:LineExtensionAmount (shared aggregate referenced by ubl:line-item)
   - (UBL unqualified data types - AmountType) Amount-typed basic components require a currencyID attribute
     identifying the ISO 4217 currency of the value
-  - (UBL document totals) Amounts in UBL are decimal values and totals reconciliation across line extension,
-    tax, and payable amounts must follow the arithmetic the specification defines
-  - (UBL code lists) Coded-value basic components are constrained by code lists and values must conform
-    to the list identified by listID and related attributes where applied
+  - (UBL document totals) UBL AmountType is decimal and requires currencyID; aggregate definitions document
+    line extension, tax, and payable amounts, but the XSD does not encode cross-field arithmetic reconciliation.
+  - (UBL code lists) UBL CodeType values are normalized strings with optional listID and related list-identification
+    attributes; the base UBL XSD does not enumerate business code values.
   - (UBL unqualified data types - QuantityType) Quantity-typed basic components carry an optional unitCode
     attribute identifying the unit of measure
   - (UBL common library - AllowanceCharge) cac:AllowanceCharge is an aggregate component type with a charge
     indicator, reason codes, and amount elements applied at document or line level
+  - (UBL common library - ExternalReference) cac:ExternalReference is an aggregate with optional URI,
+    DocumentHash, MimeCode, FileName, and Description elements.
   - (UBL common library - InvoiceLine) cac:InvoiceLine is an aggregate component type carrying cbc:ID,
     cbc:InvoicedQuantity, cbc:LineExtensionAmount, and a cac:Item element
   - (UBL common library - Item) cac:Item is an aggregate component type describing traded items with names,
@@ -913,8 +968,8 @@ capabilities:
     quantity-basis elements for unit pricing
   - (UBL common library - TaxTotal) cac:TaxTotal is an aggregate component type carrying cbc:TaxAmount
     and nested cac:TaxSubtotal elements per tax category
-  - (UBL common library - attachments) cbc:EmbeddedDocumentBinaryObject carries base64 binary payloads
-    with mimeCode attributes that consumers must treat as untrusted content with size limits
+  - (UBL common library - attachments) cbc:EmbeddedDocumentBinaryObject restricts UDT BinaryObjectType,
+    whose value is base64Binary and whose mimeCode attribute is required in the UBL UDT.
   - (UBL common library - Identifier type) cbc:ID is a basic component element of UDT IdentifierType carrying
     optional schemeID and schemeAgencyID attributes
   depth_required: 4
@@ -1077,18 +1132,19 @@ coverage_map:
   provenance:
   - POL-XBZ-CALC-01
   - SAL-UBL-00110
-  - SAL-UBL-00119
   - SAL-UBL-00122
   - SAL-UBL-00123
   - SAL-UBL-00127
-  - SAL-UBL-00129
+  - SAL-UBL-50613DF5EFE944E0
   - RF-UBL-00005
 - capability_id: UBL-CODELIST-001
   provenance:
   - POL-XBZ-CODELIST-01
+  - SAL-UBL-00110
   - SAL-UBL-00112
   - SAL-UBL-00116
   - SAL-UBL-00118
+  - SAL-UBL-00119
   - SAL-UBL-00121
   - SAL-UBL-00124
   - SAL-UBL-00129
@@ -1114,6 +1170,8 @@ coverage_map:
   - SAL-UBL-00129
   - SAL-UBL-00131
   - SAL-UBL-00132
+  - SAL-UBL-00133
+  - SAL-UBL-50613DF5EFE944E0
   - RF-UBL-00001
 - capability_id: UBL-EDIT-001
   provenance:
@@ -1172,6 +1230,10 @@ coverage_map:
   - SAL-UBL-00129
   - SAL-UBL-00130
   - SAL-UBL-00131
+  - SAL-UBL-00132
+  - SAL-UBL-50613DF5EFE944E0
+  - SAL-UBL-6D5AF510AAF4874B
+  - SAL-UBL-87F7B313CE24D408
 - capability_id: UBL-PARSE-001
   provenance:
   - POL-XBZ-PARSE-01
@@ -1188,6 +1250,7 @@ coverage_map:
   - SAL-UBL-00115
   - SAL-UBL-00117
   - SAL-UBL-00118
+  - SAL-UBL-00119
   - SAL-UBL-00120
   - SAL-UBL-00121
   - SAL-UBL-00122
@@ -1198,6 +1261,10 @@ coverage_map:
   - SAL-UBL-00127
   - SAL-UBL-00130
   - SAL-UBL-00132
+  - SAL-UBL-00133
+  - SAL-UBL-50613DF5EFE944E0
+  - SAL-UBL-6D5AF510AAF4874B
+  - SAL-UBL-87F7B313CE24D408
 - capability_id: UBL-PRESERVE-001
   provenance:
   - POL-SLC-PRESERVE-01
@@ -1219,6 +1286,7 @@ coverage_map:
   - SAL-UBL-00001
   - SAL-UBL-00002
   - SAL-UBL-00109
+  - SAL-UBL-00110
   - SAL-UBL-00111
   - SAL-UBL-00112
   - SAL-UBL-00116
@@ -1230,6 +1298,7 @@ coverage_map:
   - SAL-UBL-00128
   - SAL-UBL-00130
   - SAL-UBL-00131
+  - SAL-UBL-00132
 - capability_id: UBL-SEC-001
   provenance:
   - POL-SLC-SEC-01
@@ -1242,7 +1311,6 @@ coverage_map:
   - POL-XBZ-SIGN-01
   - SAL-UBL-00111
   - SAL-UBL-00115
-  - SAL-UBL-00132
   - RF-UBL-00004
 - capability_id: UBL-UPGRADE-001
   provenance:
@@ -1257,12 +1325,13 @@ coverage_map:
   - SAL-UBL-00106
   - SAL-UBL-00107
   - SAL-UBL-00108
-  - SAL-UBL-00110
   - SAL-UBL-00111
-  - SAL-UBL-00112
   - SAL-UBL-00115
   - SAL-UBL-00117
-  - SAL-UBL-00129
+  - SAL-UBL-00132
+  - SAL-UBL-00133
+  - SAL-UBL-6D5AF510AAF4874B
+  - SAL-UBL-87F7B313CE24D408
 - capability_id: UBL-VALUES-001
   provenance:
   - POL-XBZ-VALUES-01
@@ -1274,6 +1343,7 @@ coverage_map:
   - SAL-UBL-00112
   - SAL-UBL-00116
   - SAL-UBL-00118
+  - SAL-UBL-00119
   - SAL-UBL-00120
   - SAL-UBL-00121
   - SAL-UBL-00122

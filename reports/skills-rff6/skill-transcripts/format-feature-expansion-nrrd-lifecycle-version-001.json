@@ -1,0 +1,50 @@
+{
+  "invocation_id": "format-feature-expansion-nrrd-lifecycle-version-001",
+  "skill_id": "format-feature-expansion",
+  "mode": "live",
+  "inputs": {
+    "format_id": "nrrd",
+    "profile_id": "production",
+    "obligation_id": "SAL-NRRD-OBL-028C0109E783B8F3",
+    "contract_digest": "fb82ef1356b1d0e41d14d1c64af95812073638f96e006fb4982ce568dff94fe5",
+    "authority_digests": [],
+    "affected_layer": "codec/writer",
+    "planned_paths": [
+      "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py",
+      "tests/python/nrrd/test_production_namespace.py"
+    ],
+    "proof_inputs": [
+      "tests/python/nrrd/test_production_namespace.py",
+      "samples/by-format/nrrd/valid/1d-int8.nrrd",
+      "reports/package-install-proof/proof-manifest.json"
+    ],
+    "task_id": "AUTO-NRRD-IMPLEMENT-NRRD-LIFECYCLE-001",
+    "root_cause": "The default writer profile silently rewrote NrrdDocument.version to NRRD0005."
+  },
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py",
+    "tests/python/nrrd/test_production_namespace.py",
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/transcripts/package-install-proof-nrrd.json",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-nrrd-lifecycle-version-001.json"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py",
+    "tests/python/nrrd/test_production_namespace.py",
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/transcripts/package-install-proof-nrrd.json",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-nrrd-lifecycle-version-001.json"
+  ],
+  "tests_run": [
+    "installed-wheel regression failed before change: test_big_endian_decode_and_default_profile",
+    "installed-wheel focused regression passed after change (1 passed)",
+    "installed-wheel NRRD production namespace suite (11 passed)",
+    "package proof digest regression suite (11 passed)",
+    "package-install-proof nrrd (PASS)"
+  ],
+  "ledger_entry_id": "FF6-NRRD-LIFECYCLE-VERSION-001",
+  "result": "PASS",
+  "timestamp": "2026-07-26T06:35:00+00:00"
+}

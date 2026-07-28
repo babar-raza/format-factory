@@ -48,6 +48,16 @@ def _good_ledger(**overrides):
 
 class TestLedgerValidatorNegative:
 
+    def test_malformed_current_source_record_fails_closed_without_exception(self):
+        ledger = _good_ledger()
+        ledger["entries"][0]["source_files"] = ["src/python/test/test_file.py"]
+        with patch("validate_product_code_ledger.collect_changed_src_files", return_value=set()):
+            result = validate_ledger(ledger, REPO_ROOT)
+        assert not result["valid"]
+        assert result["errors"] == [
+            "TEST-001: source_files[0] must be an object"
+        ]
+
     def test_backfilled_rejected_for_post_governance(self):
         ledger = _good_ledger()
         ledger["entries"][0]["classification"] = "BACKFILLED_PRE_GOVERNANCE"
@@ -124,6 +134,20 @@ class TestLedgerValidatorNegative:
 
 
 class TestLedgerValidatorPositive:
+
+    def test_legacy_non_product_record_is_reported_but_does_not_poison_current_projection(self):
+        ledger = _good_ledger()
+        ledger["entries"].append(
+            {
+                "entry_id": "LEGACY-TEST-001",
+                "classification": "TEST_COVERAGE",
+                "source_files": ["tests/python/demo/test_api.py"],
+            }
+        )
+        with patch("validate_product_code_ledger.collect_changed_src_files", return_value=set()):
+            result = validate_ledger(ledger, REPO_ROOT)
+        assert result["valid"]
+        assert result["legacy_entry_ids"] == ["LEGACY-TEST-001"]
 
     def test_valid_ledger_passes(self):
         ledger = _good_ledger()

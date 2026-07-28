@@ -1,0 +1,40 @@
+{
+  "invocation_id": "FF6-ORA-SAL-20260723",
+  "skill_id": "ingest-spec-sal",
+  "task_id": "TC-FF6-ORA-SAL-INGEST",
+  "mode": "live",
+  "inputs": {
+    "format_id": "ora",
+    "spec_source_uri": "https://www.freedesktop.org/wiki/Specifications/OpenRaster/Draft/",
+    "spec_version": "OpenRaster draft profiles 0.0.3, 0.0.4, and 0.0.5",
+    "spec_body": "freedesktop.org",
+    "target_fact_count_min": 20
+  },
+  "allowed_files": [
+    "shared/sal-facts/ora.yaml",
+    "shared/sal-fact-id-aliases.json"
+  ],
+  "actual_files_changed": [
+    "shared/sal-facts/ora.yaml",
+    "shared/sal-fact-id-aliases.json"
+  ],
+  "tests_run": [
+    "20 reviewed candidates seeded",
+    "replay seeded 0 and skipped 20",
+    "merge_sal_facts --check: PASS",
+    "strict ProductContract resolves 31 obligations"
+  ],
+  "validations": {
+    "sal_facts_nonzero": "PASS",
+    "spec_fact_refs_populated": "PASS",
+    "authority_digest_bound": "PASS",
+    "strict_contract_resolves": "PASS",
+    "schema_valid": "BLOCKED_BY_CURRENT_GLOBAL_SAL_STATUS_ENUM_GAP"
+  },
+  "output_digests": {
+    "shared/sal-facts/ora.yaml": "9807abb88fcc7b124629f83736f84d4d39a9b8a97ffb272bb439e036822d0b00"
+  },
+  "result": "PASS",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

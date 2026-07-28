@@ -1,0 +1,79 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-certification-generate-security-tests-safetensors-invalid-headers-001",
+  "execution_id": "ff6-certification-generate-security-tests-safetensors-invalid-headers-001",
+  "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-VALIDATE-001",
+  "skill_id": "certification-generate-security-tests",
+  "selected_skill_ids": [
+    "certification-generate-security-tests"
+  ],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-SAFETENSORS-INVALID-HEADERS-001",
+  "pre_mutation_guard_authorization_id": "da9f0b58101de308",
+  "requested_operation": "add isolated installed-package rejection tests for truncated header extents, malformed UTF-8, and malformed JSON",
+  "inputs": {
+    "format_id": "safetensors",
+    "test_path": "tests/python/safetensors/test_obligation_invalid_headers.py",
+    "obligation_id": "SAL-SAFETENSORS-OBL-1FCACA122285E0E0",
+    "obligation_text": "(tensor.rs read_metadata and invalid-header tests) A declared header length that exceeds the available file bytes, malformed UTF-8, or malformed JSON is invalid and must be rejected.",
+    "target_namespace": "format_factory.safetensors",
+    "base_git_commit": "066bdf10"
+  },
+  "allowed_files": [
+    "tests/python/safetensors/test_obligation_invalid_headers.py",
+    "reports/skills-rff6/skill-transcripts/certification-generate-security-tests-safetensors-invalid-headers-001.json"
+  ],
+  "actual_files_changed": [
+    "tests/python/safetensors/test_obligation_invalid_headers.py",
+    "reports/skills-rff6/skill-transcripts/certification-generate-security-tests-safetensors-invalid-headers-001.json"
+  ],
+  "behavior_added": [
+    "A declared header extent beyond available bytes is rejected before JSON decoding.",
+    "A complete declared header containing invalid UTF-8 is rejected.",
+    "A complete declared header containing malformed JSON is rejected.",
+    "The obligation uses a dedicated test file to isolate its future proof digest."
+  ],
+  "tests_run": [
+    ".local/venvs/safetensors-current-proof/Scripts/python.exe -m pytest tests/python/safetensors/test_obligation_invalid_headers.py -q: 3 passed",
+    ".local/venvs/safetensors-current-proof/Scripts/python.exe -m ruff check tests/python/safetensors/test_obligation_invalid_headers.py: PASS",
+    "installed-wheel SafeTensors regression tier: 53 passed"
+  ],
+  "validations": {
+    "security_tests_generated": "PASS",
+    "declared_header_extent_rejected": "PASS",
+    "malformed_utf8_rejected": "PASS",
+    "malformed_json_rejected": "PASS",
+    "installed_package_execution": "PASS",
+    "regression_suite": "PASS",
+    "source_behavior_changed": "NO"
+  },
+  "output_digests": {
+    "tests/python/safetensors/test_obligation_invalid_headers.py": "1f2168043f69ec649b7d7ec1ea41cf8e490dab9d5e63d0fdbd34f9fb0757c712"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for generation of this isolated rejection regression; controller proof remains a separate action",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES, retained from the active mission session",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, retained in the mission receipt chain",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "SAFETENSORS_INVALID_HEADER_REGRESSION_ADDED_PROOF_PENDING",
+  "timestamp": "2026-07-25T19:11:17.6020211Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

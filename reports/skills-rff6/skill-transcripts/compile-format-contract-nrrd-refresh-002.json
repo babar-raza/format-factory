@@ -1,0 +1,55 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-compile-format-contract-nrrd-refresh-002",
+  "execution_id": "ff6-compile-format-contract-nrrd-refresh-002",
+  "task_id": "AUTO-REFRESH-SIX-PYTHON-CONTRACTS-NRRD",
+  "skill_id": "compile-format-contract",
+  "selected_skill_ids": ["compile-format-contract", "validate-format-contract"],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260723T145613-3373a8",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "RFF6-MACH-CONTRACT-REFRESH-002",
+  "requested_operation": "regenerate the NRRD product contract from current authority and policy digests",
+  "inputs": {
+    "format_id": "nrrd",
+    "family": "scientific_raster",
+    "target_spec_version": "NRRD0005",
+    "base_git_commit": "29c23d668d85a97a2584f524d79802ed2db576be"
+  },
+  "allowed_files": [
+    "shared/format-contracts/nrrd.yaml",
+    "registry/format-contract-registry.yaml",
+    "reports/skills-rff6/skill-transcripts/compile-format-contract-nrrd-refresh-002.json"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/nrrd.yaml",
+    "registry/format-contract-registry.yaml",
+    "reports/skills-rff6/skill-transcripts/compile-format-contract-nrrd-refresh-002.json"
+  ],
+  "outputs": {
+    "contract_sha256": "2f9244df9dae31a69856bc9efe2e0bdca5d3b1d222568c188846e22d99fd890f",
+    "product_contract_digest": "dec661f33cff0eeddb15996022f4b4502eff095605eb11e237eb963d0e0e5aaa",
+    "registry_sha256": "4a27395d11877327f108a73008e10250ccc8dd4036a478743f3ae08c29a3c5e4",
+    "capability_count": 15,
+    "obligation_count": 94,
+    "readiness_score": 1.0,
+    "readiness_threshold": 0.75,
+    "missing_categories": [],
+    "strict_ready": true,
+    "strict_issues": []
+  },
+  "tests_run": [
+    "compiler check: pass",
+    "compiler idempotency: pass",
+    "strict ProductContract: ready with 94 obligations"
+  ],
+  "computed_promotion_state": "CONTRACT_READY",
+  "open_gaps": ["Implementation proof descendants require replay against the refreshed contract digest."],
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "NRRD_CONTRACT_REFRESHED_AND_STRICT_READY",
+  "timestamp": "2026-07-24T03:55:00+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

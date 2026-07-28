@@ -14,11 +14,11 @@ contract_metadata:
   confidence: medium
   supersedes: null
   input_digests:
-    fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
+    fact_categories_sha256: fe2732633cdf17bad0a5e152b1f8c845ab46e1d8e018cb29b67dfb7a66181fce
     family_pack_sha256: 407c11dd45eae83afef02160f90a357d086b4fcbfff4ad408463f374e3361a86
     qname_registry_sha256: b1d86cceffe18233a731a2216be51a74fe1690f3c6d89fda64c92690598fe8ba
-    research_sha256: 5efc3d82a30045dac295461a67a481abb8c28b6e2b9cbcfcaf4434a81657f58c
-    sal_facts_sha256: 566738660e95f95e4d70a1027635090936c1cb147f753cbf75b7f1a5af9d211d
+    research_sha256: 8be15851f44a44ecb019090f0c7f892de6db330d2b667b67bafa69190199f52f
+    sal_facts_sha256: d0856a8c662242b64b094fb73b6e865195e43c138a03b144cb87a9b741d8a941
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
 format_identity:
   active_content_model:
@@ -34,26 +34,30 @@ format_identity:
   - Segment, annotate, and track translation state across tool chains
   - Preserve inline formatting codes and tool-specific extensions through round trips
 authoritative_sources:
-- title: OASIS XLIFF 2.1
-  source_id: SRC-XLIFF-001
-  organization: OASIS
-  version: XLIFF 2.1
-  canonical_url: https://docs.oasis-open.org/xliff/xliff-core/v2.1/xliff-core-v2.1.html
-  authority_class: AUTHORITATIVE
-  acquisition_status: URL_ONLY
 - title: OASIS XLIFF Version 2.x specification (core and modules)
   source_id: SRC-XLF-002
   organization: OASIS
-  version: XLIFF 2.x
-  canonical_url: https://docs.oasis-open.org/xliff/xliff-core/v2.1/xliff-core-v2.1.html
+  version: XLIFF 2.1 OASIS Standard release package
+  local_path: .local/format-contracts/acquired/xliff/src-xlf-002.bin
+  canonical_url: https://docs.oasis-open.org/xliff/xliff-core/v2.1/os/xliff-core-v2.1-os.zip
+  content_hash: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
   authority_class: AUTHORITATIVE
-  acquisition_status: URL_ONLY
+  acquisition_status: ACQUIRED
 - title: Localization-pipeline developer-workflow requirements (extraction/translation/merge practice)
   source_id: SRC-XLF-003
   organization: Format Factory
   version: null
   canonical_url: null
   authority_class: PRODUCT_REQUIREMENT
+  acquisition_status: ACQUIRED
+- title: OASIS XLIFF 2.1 OASIS Standard prose specification
+  source_id: SRC-XLIFF-001
+  organization: OASIS
+  version: XLIFF 2.1
+  local_path: .local/format-contracts/acquired/xliff/src-xliff-001.bin
+  canonical_url: https://docs.oasis-open.org/xliff/xliff-core/v2.1/xliff-core-v2.1.html
+  content_hash: 56e413be887fe88595d5af52d21d5000112898fbd332245417c43a7ecfa8e4e0
+  authority_class: AUTHORITATIVE
   acquisition_status: ACQUIRED
 scope_policy:
   minimum_viable_support: Parse core structure (files, groups, units, segments) with the inline-code model
@@ -91,10 +95,12 @@ capabilities:
     edits that orphan, cross, duplicate, or illegally reorder paired codes - the mergeability guarantee
     translation tools depend on.
   normative_rules:
-  - (XLIFF core - inline constraints) Inline code elements must reference existing originalData entries
-    and paired codes must nest without crossing for the document to be valid
-  - (XLIFF core - inline elements) Inline placeholder codes are represented by ph elements and paired
-    codes by pc elements or sc/ec start-end pairs with id attributes binding the pair
+  - (XLIFF core - inline constraints) Inline original-data references must resolve to data elements in
+    the same unit. Paired container codes use pc, while spanning start and end codes use sc id and ec
+    startRef with the pairing constraints defined by the core Schematron.
+  - (XLIFF core - inline elements) Standalone placeholders use ph with a required id; paired containers
+    use pc with a required id; spanning pairs use sc with a required id and non-isolated ec with a startRef
+    to that id.
   - (XLIFF core - identifier constraints) id attributes on file group unit and inline elements must be
     unique within their specification-defined scope and references must resolve
   - (XLIFF core - annotations) mrk elements annotate inline spans and sm/em elements mark span boundaries
@@ -181,12 +187,16 @@ capabilities:
   - POL-XLC-MODEL-01
   - SAL-XLIFF-00001
   - SAL-XLIFF-00002
+  - SAL-XLIFF-00005
   - SAL-XLIFF-00010
   - SAL-XLIFF-00012
   - SAL-XLIFF-00013
   - SAL-XLIFF-00015
   - SAL-XLIFF-00017
+  - SAL-XLIFF-00018
   - SAL-XLIFF-00019
+  - SAL-XLIFF-00023
+  - SAL-XLIFF-00024
   - RF-XLF-00001
   required_behavior:
   - Model the full core hierarchy with tree order, IDs, references, inheritance, and scope preserved through
@@ -198,9 +208,11 @@ capabilities:
   - (OASIS XLIFF 2.0 — document and file elements) An XLIFF 2.0 document is rooted at <xliff> (namespace
     urn:oasis:names:tc:xliff:document:2.0) with required version and srcLang attributes; it contains one
     or more <file> elements each holding translation units
-  - (OASIS XLIFF 2.0 — unit and segment elements) A <unit> element carries translatable content as one
-    or more <segment> children, each holding a <source> and optional <target>; segments may be interleaved
-    with <ignorable> content (shared structural fact referenced by xliff:unit and xliff:segment)
+  - (OASIS XLIFF 2.0 — unit and segment elements) A unit contains at least one segment or ignorable child;
+    each segment and ignorable contains exactly one source followed by at most one target.
+  - (XLIFF core - inline constraints) Inline original-data references must resolve to data elements in
+    the same unit. Paired container codes use pc, while spanning start and end codes use sc id and ec
+    startRef with the pairing constraints defined by the core Schematron.
   - (XLIFF core - file element) The xliff root element contains one or more file elements each carrying
     an id attribute unique within the document
   - (XLIFF core - structural elements) file elements contain unit elements optionally nested in group
@@ -211,8 +223,16 @@ capabilities:
     attached to files groups or units
   - (XLIFF core - skeleton) skeleton elements carry or reference the non-translatable document skeleton
     needed to reconstruct the original file on merge
+  - (XLIFF core - translation state) Segment elements carry an optional state attribute defaulting to
+    initial with values initial, translated, reviewed, and final; translated, reviewed, or final requires
+    a target child.
   - (XLIFF core - segment and ignorable) unit elements contain segment and ignorable elements whose source
     children carry translatable text and whose target children carry translations
+  - (XLIFF 2.1 Metadata module) The Metadata module uses namespace urn:oasis:names:tc:xliff:metadata:2.0;
+    metadata contains one or more metaGroup elements, and meta elements require a type attribute.
+  - (XLIFF 2.1 Size and Length Restriction module) The Size and Length Restriction module uses namespace
+    urn:oasis:names:tc:xliff:sizerestriction:2.0 and defines profiles, normalization, data, and restriction
+    attributes including sizeRestriction and storageRestriction.
   depth_required: 4
   depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
     per L30 schema.'
@@ -235,6 +255,16 @@ capabilities:
   - SAL-XLIFF-00008
   - SAL-XLIFF-00011
   - SAL-XLIFF-00015
+  - SAL-XLIFF-00021
+  - SAL-XLIFF-00022
+  - SAL-XLIFF-00023
+  - SAL-XLIFF-00024
+  - SAL-XLIFF-00025
+  - SAL-XLIFF-00026
+  - SAL-XLIFF-00027
+  - SAL-XLIFF-00028
+  - SAL-XLIFF-00029
+  - SAL-XLIFF-00030
   - RF-XLF-00003
   required_behavior:
   - Declare per-module coverage (modeled/preservation-only/unsupported); preserve unknown module content
@@ -246,15 +276,42 @@ capabilities:
   - (OASIS XLIFF 2.0 — document and file elements) An XLIFF 2.0 document is rooted at <xliff> (namespace
     urn:oasis:names:tc:xliff:document:2.0) with required version and srcLang attributes; it contains one
     or more <file> elements each holding translation units
-  - (XLIFF modules overview) Optional modules such as translation candidates glossary metadata resource
-    data size restriction validation and ITS occupy their own namespaces and extend core elements at defined
-    extension points
-  - (XLIFF modules - resource data with external references) The Resource Data module references external
-    resource payloads that processors resolve only under explicit policy
+  - (XLIFF modules overview) The XLIFF 2.1 standard package defines the Translation Candidates, Glossary,
+    Format Style, Metadata, Resource Data, Size and Length Restriction, Validation, and ITS modules in
+    their own namespaces.
+  - (XLIFF modules - resource data with external references) The Resource Data module models resource
+    items and references; source and target resource payloads may use optional href attributes, while
+    a reference element requires href.
   - (XLIFF conformance) XLIFF documents must be well-formed XML and valid against the core schema with
     module content valid against its module schema
   - (XLIFF core - notes) notes elements carry note children with optional priority and category attributes
     attached to files groups or units
+  - (XLIFF 2.1 Translation Candidates module) The Translation Candidates module uses namespace urn:oasis:names:tc:xliff:matches:2.0;
+    matches contains one or more match elements, and each match requires ref plus one source and one target.
+  - (XLIFF 2.1 Glossary module) The Glossary module uses namespace urn:oasis:names:tc:xliff:glossary:2.0;
+    a glossary contains one or more glossEntry elements, each with one term, zero or more translations,
+    and at most one definition.
+  - (XLIFF 2.1 Metadata module) The Metadata module uses namespace urn:oasis:names:tc:xliff:metadata:2.0;
+    metadata contains one or more metaGroup elements, and meta elements require a type attribute.
+  - (XLIFF 2.1 Size and Length Restriction module) The Size and Length Restriction module uses namespace
+    urn:oasis:names:tc:xliff:sizerestriction:2.0 and defines profiles, normalization, data, and restriction
+    attributes including sizeRestriction and storageRestriction.
+  - (XLIFF 2.1 Validation module) The Validation module uses namespace urn:oasis:names:tc:xliff:validation:2.0;
+    validation contains one or more rule elements whose constraints include presence, occurrence, boundary,
+    source-existence, case, normalization, and disabled controls.
+  - (XLIFF 2.1 Format Style module) The Format Style module uses namespace urn:oasis:names:tc:xliff:fs:2.0
+    and defines fs and subFs attributes; fs values are constrained by the module schema.
+  - (XLIFF 2.1 ITS module) The ITS module uses the W3C ITS namespace http://www.w3.org/2005/11/its and
+    the XLIFF 2.1 mapping adds urn:oasis:names:tc:xliff:itsm:2.1 attributes for domains and language.
+  - (XLIFF 2.1 normative schema inventory) The official XLIFF 2.1 schema bundle contains exactly nine
+    first-party module XSDs covering Format Style, Glossary, ITS, ITS mapping, Translation Candidates,
+    Metadata, Resource Data, Size and Length Restriction, and Validation.
+  - (XLIFF 2.1 processing-requirement schema inventory) The official XLIFF 2.1 schema bundle contains
+    exactly nine Schematron rule sets covering core processing constraints and the modules that define
+    Schematron constraints.
+  - '(XLIFF 2.1 advanced validation artifacts) XLIFF 2.1 validation is layered: the release package supplies
+    the core XSD, a core Schematron, module XSDs and Schematrons, and an NVDL advanced-validation dispatch
+    artifact.'
   depth_required: 4
   depth_rationale: 'MUST preserve capability: family depth floor 2, finding hints applied; depth scale
     0-8 per L30 schema.'
@@ -273,6 +330,7 @@ capabilities:
   - POL-XLC-NOTE-01
   - SAL-XLIFF-00014
   - SAL-XLIFF-00015
+  - SAL-XLIFF-00027
   required_behavior:
   - Support notes with priorities/categories and annotation spans with valid marker relationships, including
     overlapping structures the standard permits.
@@ -281,6 +339,8 @@ capabilities:
     where spans overlap element structure
   - (XLIFF core - notes) notes elements carry note children with optional priority and category attributes
     attached to files groups or units
+  - (XLIFF 2.1 ITS module) The ITS module uses the W3C ITS namespace http://www.w3.org/2005/11/its and
+    the XLIFF 2.1 mapping adds urn:oasis:names:tc:xliff:itsm:2.1 attributes for domains and language.
   depth_required: 3
   depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
     per L30 schema.'
@@ -320,6 +380,17 @@ capabilities:
   - SAL-XLIFF-00018
   - SAL-XLIFF-00019
   - SAL-XLIFF-00020
+  - SAL-XLIFF-00021
+  - SAL-XLIFF-00022
+  - SAL-XLIFF-00023
+  - SAL-XLIFF-00024
+  - SAL-XLIFF-00025
+  - SAL-XLIFF-00026
+  - SAL-XLIFF-00027
+  - SAL-XLIFF-00028
+  - SAL-XLIFF-00029
+  - SAL-XLIFF-00030
+  - SAL-XLIFF-10A6F1FB1C146A18
   required_behavior:
   - Recognize supported version namespaces, validate namespace/version consistency, and preserve custom
     extension namespaces and attributes.
@@ -329,24 +400,28 @@ capabilities:
   - (OASIS XLIFF 2.0 — document and file elements) An XLIFF 2.0 document is rooted at <xliff> (namespace
     urn:oasis:names:tc:xliff:document:2.0) with required version and srcLang attributes; it contains one
     or more <file> elements each holding translation units
-  - (OASIS XLIFF 2.0 — unit and segment elements) A <unit> element carries translatable content as one
-    or more <segment> children, each holding a <source> and optional <target>; segments may be interleaved
-    with <ignorable> content (shared structural fact referenced by xliff:unit and xliff:segment)
-  - (XLIFF core - document root) An XLIFF 2.x document is rooted at an xliff element in the urn:oasis:names:tc:xliff:document
-    namespace with a required version attribute and srcLang attribute
-  - (XLIFF core - extensibility and agent obligations) Custom extension elements and attributes from foreign
-    namespaces are permitted at defined extension points and must be preserved by conforming agents
-  - (XLIFF core - inline constraints) Inline code elements must reference existing originalData entries
-    and paired codes must nest without crossing for the document to be valid
-  - (XLIFF core - inline elements) Inline placeholder codes are represented by ph elements and paired
-    codes by pc elements or sc/ec start-end pairs with id attributes binding the pair
-  - (XLIFF modules overview) Optional modules such as translation candidates glossary metadata resource
-    data size restriction validation and ITS occupy their own namespaces and extend core elements at defined
-    extension points
-  - (XLIFF modules - resource data with external references) The Resource Data module references external
-    resource payloads that processors resolve only under explicit policy
-  - (XLIFF core - version attribute) The version attribute on the xliff root identifies the specification
-    version and namespace-version consistency is required for validity
+  - (OASIS XLIFF 2.0 — unit and segment elements) A unit contains at least one segment or ignorable child;
+    each segment and ignorable contains exactly one source followed by at most one target.
+  - (XLIFF core - document root) XLIFF 2.0 and 2.1 use the core namespace urn:oasis:names:tc:xliff:document:2.0;
+    the XLIFF 2.1 standard identifies version 2.1 through the required version attribute.
+  - (XLIFF core - extensibility and agent obligations) Foreign-namespace elements and attributes are permitted
+    at defined wildcard extension points. Conformant applications should preserve existing custom extensions
+    unless their containing elements are removed under applicable processing requirements.
+  - (XLIFF core - inline constraints) Inline original-data references must resolve to data elements in
+    the same unit. Paired container codes use pc, while spanning start and end codes use sc id and ec
+    startRef with the pairing constraints defined by the core Schematron.
+  - (XLIFF core - inline elements) Standalone placeholders use ph with a required id; paired containers
+    use pc with a required id; spanning pairs use sc with a required id and non-isolated ec with a startRef
+    to that id.
+  - (XLIFF modules overview) The XLIFF 2.1 standard package defines the Translation Candidates, Glossary,
+    Format Style, Metadata, Resource Data, Size and Length Restriction, Validation, and ITS modules in
+    their own namespaces.
+  - (XLIFF modules - resource data with external references) The Resource Data module models resource
+    items and references; source and target resource payloads may use optional href attributes, while
+    a reference element requires href.
+  - (XLIFF core - version attribute) The version and srcLang attributes are required on the xliff root.
+    The trgLang attribute is optional in the XSD but required by the core Schematron when target elements
+    are present.
   - (XLIFF core - file element) The xliff root element contains one or more file elements each carrying
     an id attribute unique within the document
   - (XLIFF conformance) XLIFF documents must be well-formed XML and valid against the core schema with
@@ -363,12 +438,41 @@ capabilities:
     via dataRef attributes
   - (XLIFF core - skeleton) skeleton elements carry or reference the non-translatable document skeleton
     needed to reconstruct the original file on merge
-  - (XLIFF core - translation state) target elements carry a state attribute whose values progress through
-    the specification-defined translation states
+  - (XLIFF core - translation state) Segment elements carry an optional state attribute defaulting to
+    initial with values initial, translated, reviewed, and final; translated, reviewed, or final requires
+    a target child.
   - (XLIFF core - segment and ignorable) unit elements contain segment and ignorable elements whose source
     children carry translatable text and whose target children carry translations
-  - (XLIFF core - whitespace and language) xml:space and xml:lang attributes govern whitespace handling
-    and language identification and must be honored on round trip
+  - (XLIFF core - whitespace and language) The xliff root declares xml:space with default value default,
+    and source and target permit optional xml:lang and xml:space attributes.
+  - (XLIFF 2.1 Translation Candidates module) The Translation Candidates module uses namespace urn:oasis:names:tc:xliff:matches:2.0;
+    matches contains one or more match elements, and each match requires ref plus one source and one target.
+  - (XLIFF 2.1 Glossary module) The Glossary module uses namespace urn:oasis:names:tc:xliff:glossary:2.0;
+    a glossary contains one or more glossEntry elements, each with one term, zero or more translations,
+    and at most one definition.
+  - (XLIFF 2.1 Metadata module) The Metadata module uses namespace urn:oasis:names:tc:xliff:metadata:2.0;
+    metadata contains one or more metaGroup elements, and meta elements require a type attribute.
+  - (XLIFF 2.1 Size and Length Restriction module) The Size and Length Restriction module uses namespace
+    urn:oasis:names:tc:xliff:sizerestriction:2.0 and defines profiles, normalization, data, and restriction
+    attributes including sizeRestriction and storageRestriction.
+  - (XLIFF 2.1 Validation module) The Validation module uses namespace urn:oasis:names:tc:xliff:validation:2.0;
+    validation contains one or more rule elements whose constraints include presence, occurrence, boundary,
+    source-existence, case, normalization, and disabled controls.
+  - (XLIFF 2.1 Format Style module) The Format Style module uses namespace urn:oasis:names:tc:xliff:fs:2.0
+    and defines fs and subFs attributes; fs values are constrained by the module schema.
+  - (XLIFF 2.1 ITS module) The ITS module uses the W3C ITS namespace http://www.w3.org/2005/11/its and
+    the XLIFF 2.1 mapping adds urn:oasis:names:tc:xliff:itsm:2.1 attributes for domains and language.
+  - (XLIFF 2.1 normative schema inventory) The official XLIFF 2.1 schema bundle contains exactly nine
+    first-party module XSDs covering Format Style, Glossary, ITS, ITS mapping, Translation Candidates,
+    Metadata, Resource Data, Size and Length Restriction, and Validation.
+  - (XLIFF 2.1 processing-requirement schema inventory) The official XLIFF 2.1 schema bundle contains
+    exactly nine Schematron rule sets covering core processing constraints and the modules that define
+    Schematron constraints.
+  - '(XLIFF 2.1 advanced validation artifacts) XLIFF 2.1 validation is layered: the release package supplies
+    the core XSD, a core Schematron, module XSDs and Schematrons, and an NVDL advanced-validation dispatch
+    artifact.'
+  - (schemas/xliff_core_2.1.xsd) The XLIFF 2.1 core XSD defines namespace-qualified XML element syntax
+    for the core document vocabulary in urn:oasis:names:tc:xliff:document:2.0.
   depth_required: 2
   depth_rationale: 'MUST parse capability: family depth floor 2, finding hints applied; depth scale 0-8
     per L30 schema.'
@@ -470,6 +574,7 @@ capabilities:
   provenance:
   - POL-XLC-SEG-01
   - SAL-XLIFF-00002
+  - SAL-XLIFF-00018
   - SAL-XLIFF-00019
   - RF-XLF-00004
   required_behavior:
@@ -478,9 +583,11 @@ capabilities:
   - Produce a machine-readable segment mapping report after every split/join so downstream merge tooling
     can rebind references across re-segmentation.
   normative_rules:
-  - (OASIS XLIFF 2.0 — unit and segment elements) A <unit> element carries translatable content as one
-    or more <segment> children, each holding a <source> and optional <target>; segments may be interleaved
-    with <ignorable> content (shared structural fact referenced by xliff:unit and xliff:segment)
+  - (OASIS XLIFF 2.0 — unit and segment elements) A unit contains at least one segment or ignorable child;
+    each segment and ignorable contains exactly one source followed by at most one target.
+  - (XLIFF core - translation state) Segment elements carry an optional state attribute defaulting to
+    initial with values initial, translated, reviewed, and final; translated, reviewed, or final requires
+    a target child.
   - (XLIFF core - segment and ignorable) unit elements contain segment and ignorable elements whose source
     children carry translatable text and whose target children carry translations
   depth_required: 5
@@ -505,8 +612,9 @@ capabilities:
   - Expose target state and substate without inventing proprietary semantics; allow configurable workflow
     transition validation.
   normative_rules:
-  - (XLIFF core - translation state) target elements carry a state attribute whose values progress through
-    the specification-defined translation states
+  - (XLIFF core - translation state) Segment elements carry an optional state attribute defaulting to
+    initial with values initial, translated, reviewed, and final; translated, reviewed, or final requires
+    a target child.
   depth_required: 3
   depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
     per L30 schema.'
@@ -527,24 +635,43 @@ capabilities:
   - SAL-XLIFF-00002
   - SAL-XLIFF-00007
   - SAL-XLIFF-00008
+  - SAL-XLIFF-00009
   - SAL-XLIFF-00018
   - SAL-XLIFF-00019
+  - SAL-XLIFF-00020
+  - SAL-XLIFF-00021
+  - SAL-XLIFF-00025
+  - SAL-XLIFF-00028
   required_behavior:
   - Edit source/target with inline-code positions preserved; expose plain-text and token-aware projections;
     support target creation from source with explicit code-copy policy.
   normative_rules:
-  - (OASIS XLIFF 2.0 — unit and segment elements) A <unit> element carries translatable content as one
-    or more <segment> children, each holding a <source> and optional <target>; segments may be interleaved
-    with <ignorable> content (shared structural fact referenced by xliff:unit and xliff:segment)
-  - (XLIFF modules overview) Optional modules such as translation candidates glossary metadata resource
-    data size restriction validation and ITS occupy their own namespaces and extend core elements at defined
-    extension points
-  - (XLIFF modules - resource data with external references) The Resource Data module references external
-    resource payloads that processors resolve only under explicit policy
-  - (XLIFF core - translation state) target elements carry a state attribute whose values progress through
-    the specification-defined translation states
+  - (OASIS XLIFF 2.0 — unit and segment elements) A unit contains at least one segment or ignorable child;
+    each segment and ignorable contains exactly one source followed by at most one target.
+  - (XLIFF modules overview) The XLIFF 2.1 standard package defines the Translation Candidates, Glossary,
+    Format Style, Metadata, Resource Data, Size and Length Restriction, Validation, and ITS modules in
+    their own namespaces.
+  - (XLIFF modules - resource data with external references) The Resource Data module models resource
+    items and references; source and target resource payloads may use optional href attributes, while
+    a reference element requires href.
+  - (XLIFF core - version attribute) The version and srcLang attributes are required on the xliff root.
+    The trgLang attribute is optional in the XSD but required by the core Schematron when target elements
+    are present.
+  - (XLIFF core - translation state) Segment elements carry an optional state attribute defaulting to
+    initial with values initial, translated, reviewed, and final; translated, reviewed, or final requires
+    a target child.
   - (XLIFF core - segment and ignorable) unit elements contain segment and ignorable elements whose source
     children carry translatable text and whose target children carry translations
+  - (XLIFF core - whitespace and language) The xliff root declares xml:space with default value default,
+    and source and target permit optional xml:lang and xml:space attributes.
+  - (XLIFF 2.1 Translation Candidates module) The Translation Candidates module uses namespace urn:oasis:names:tc:xliff:matches:2.0;
+    matches contains one or more match elements, and each match requires ref plus one source and one target.
+  - (XLIFF 2.1 Validation module) The Validation module uses namespace urn:oasis:names:tc:xliff:validation:2.0;
+    validation contains one or more rule elements whose constraints include presence, occurrence, boundary,
+    source-existence, case, normalization, and disabled controls.
+  - (XLIFF 2.1 normative schema inventory) The official XLIFF 2.1 schema bundle contains exactly nine
+    first-party module XSDs covering Format Style, Glossary, ITS, ITS mapping, Translation Candidates,
+    Metadata, Resource Data, Size and Length Restriction, and Validation.
   depth_required: 4
   depth_rationale: 'MUST edit capability: family depth floor 4, finding hints applied; depth scale 0-8
     per L30 schema.'
@@ -566,10 +693,12 @@ capabilities:
   - SAL-XLIFF-00004
   - SAL-XLIFF-00005
   - SAL-XLIFF-00007
-  - SAL-XLIFF-00009
   - SAL-XLIFF-00011
   - SAL-XLIFF-00013
-  - SAL-XLIFF-00020
+  - SAL-XLIFF-00025
+  - SAL-XLIFF-00028
+  - SAL-XLIFF-00029
+  - SAL-XLIFF-00030
   - RF-XLF-00005
   required_behavior:
   - Validate schema plus semantic constraints not expressible in schema (IDs, references, pairing, source/target
@@ -578,21 +707,31 @@ capabilities:
     including deeply nested and overlapping markers, paired-code errors, bidi content, and supplementary
     Unicode code points.
   normative_rules:
-  - (XLIFF core - extensibility and agent obligations) Custom extension elements and attributes from foreign
-    namespaces are permitted at defined extension points and must be preserved by conforming agents
-  - (XLIFF core - inline constraints) Inline code elements must reference existing originalData entries
-    and paired codes must nest without crossing for the document to be valid
-  - (XLIFF modules overview) Optional modules such as translation candidates glossary metadata resource
-    data size restriction validation and ITS occupy their own namespaces and extend core elements at defined
-    extension points
-  - (XLIFF core - version attribute) The version attribute on the xliff root identifies the specification
-    version and namespace-version consistency is required for validity
+  - (XLIFF core - extensibility and agent obligations) Foreign-namespace elements and attributes are permitted
+    at defined wildcard extension points. Conformant applications should preserve existing custom extensions
+    unless their containing elements are removed under applicable processing requirements.
+  - (XLIFF core - inline constraints) Inline original-data references must resolve to data elements in
+    the same unit. Paired container codes use pc, while spanning start and end codes use sc id and ec
+    startRef with the pairing constraints defined by the core Schematron.
+  - (XLIFF modules overview) The XLIFF 2.1 standard package defines the Translation Candidates, Glossary,
+    Format Style, Metadata, Resource Data, Size and Length Restriction, Validation, and ITS modules in
+    their own namespaces.
   - (XLIFF conformance) XLIFF documents must be well-formed XML and valid against the core schema with
     module content valid against its module schema
   - (XLIFF core - identifier constraints) id attributes on file group unit and inline elements must be
     unique within their specification-defined scope and references must resolve
-  - (XLIFF core - whitespace and language) xml:space and xml:lang attributes govern whitespace handling
-    and language identification and must be honored on round trip
+  - (XLIFF 2.1 Validation module) The Validation module uses namespace urn:oasis:names:tc:xliff:validation:2.0;
+    validation contains one or more rule elements whose constraints include presence, occurrence, boundary,
+    source-existence, case, normalization, and disabled controls.
+  - (XLIFF 2.1 normative schema inventory) The official XLIFF 2.1 schema bundle contains exactly nine
+    first-party module XSDs covering Format Style, Glossary, ITS, ITS mapping, Translation Candidates,
+    Metadata, Resource Data, Size and Length Restriction, and Validation.
+  - (XLIFF 2.1 processing-requirement schema inventory) The official XLIFF 2.1 schema bundle contains
+    exactly nine Schematron rule sets covering core processing constraints and the modules that define
+    Schematron constraints.
+  - '(XLIFF 2.1 advanced validation artifacts) XLIFF 2.1 validation is layered: the release package supplies
+    the core XSD, a core Schematron, module XSDs and Schematrons, and an NVDL advanced-validation dispatch
+    artifact.'
   depth_required: 5
   depth_rationale: 'MUST validate capability: family depth floor 5, finding hints applied; depth scale
     0-8 per L30 schema.'
@@ -763,12 +902,16 @@ coverage_map:
   - POL-XLC-MODEL-01
   - SAL-XLIFF-00001
   - SAL-XLIFF-00002
+  - SAL-XLIFF-00005
   - SAL-XLIFF-00010
   - SAL-XLIFF-00012
   - SAL-XLIFF-00013
   - SAL-XLIFF-00015
   - SAL-XLIFF-00017
+  - SAL-XLIFF-00018
   - SAL-XLIFF-00019
+  - SAL-XLIFF-00023
+  - SAL-XLIFF-00024
   - RF-XLF-00001
 - capability_id: XLIFF-MODULE-001
   provenance:
@@ -778,12 +921,23 @@ coverage_map:
   - SAL-XLIFF-00008
   - SAL-XLIFF-00011
   - SAL-XLIFF-00015
+  - SAL-XLIFF-00021
+  - SAL-XLIFF-00022
+  - SAL-XLIFF-00023
+  - SAL-XLIFF-00024
+  - SAL-XLIFF-00025
+  - SAL-XLIFF-00026
+  - SAL-XLIFF-00027
+  - SAL-XLIFF-00028
+  - SAL-XLIFF-00029
+  - SAL-XLIFF-00030
   - RF-XLF-00003
 - capability_id: XLIFF-NOTE-001
   provenance:
   - POL-XLC-NOTE-01
   - SAL-XLIFF-00014
   - SAL-XLIFF-00015
+  - SAL-XLIFF-00027
 - capability_id: XLIFF-PARSE-001
   provenance:
   - POL-XLC-PARSE-01
@@ -808,6 +962,17 @@ coverage_map:
   - SAL-XLIFF-00018
   - SAL-XLIFF-00019
   - SAL-XLIFF-00020
+  - SAL-XLIFF-00021
+  - SAL-XLIFF-00022
+  - SAL-XLIFF-00023
+  - SAL-XLIFF-00024
+  - SAL-XLIFF-00025
+  - SAL-XLIFF-00026
+  - SAL-XLIFF-00027
+  - SAL-XLIFF-00028
+  - SAL-XLIFF-00029
+  - SAL-XLIFF-00030
+  - SAL-XLIFF-10A6F1FB1C146A18
 - capability_id: XLIFF-PRESERVE-001
   provenance:
   - POL-SLC-PRESERVE-01
@@ -828,6 +993,7 @@ coverage_map:
   provenance:
   - POL-XLC-SEG-01
   - SAL-XLIFF-00002
+  - SAL-XLIFF-00018
   - SAL-XLIFF-00019
   - RF-XLF-00004
 - capability_id: XLIFF-STATE-001
@@ -840,18 +1006,25 @@ coverage_map:
   - SAL-XLIFF-00002
   - SAL-XLIFF-00007
   - SAL-XLIFF-00008
+  - SAL-XLIFF-00009
   - SAL-XLIFF-00018
   - SAL-XLIFF-00019
+  - SAL-XLIFF-00020
+  - SAL-XLIFF-00021
+  - SAL-XLIFF-00025
+  - SAL-XLIFF-00028
 - capability_id: XLIFF-VALIDATE-001
   provenance:
   - POL-XLC-VALIDATE-01
   - SAL-XLIFF-00004
   - SAL-XLIFF-00005
   - SAL-XLIFF-00007
-  - SAL-XLIFF-00009
   - SAL-XLIFF-00011
   - SAL-XLIFF-00013
-  - SAL-XLIFF-00020
+  - SAL-XLIFF-00025
+  - SAL-XLIFF-00028
+  - SAL-XLIFF-00029
+  - SAL-XLIFF-00030
   - RF-XLF-00005
 - capability_id: XLIFF-WRITE-001
   provenance:

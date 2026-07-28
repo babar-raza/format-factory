@@ -1,0 +1,154 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-format-feature-expansion-safetensors-optional-adapters-001",
+  "execution_id": "ff6-format-feature-expansion-safetensors-optional-adapters-001",
+  "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-ADAPTER-001",
+  "skill_id": "format-feature-expansion",
+  "selected_skill_ids": [
+    "format-feature-expansion"
+  ],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-SAFETENSORS-OPTIONAL-ADAPTERS-001",
+  "pre_mutation_guard_authorization_id": "c6234b4465b8623c",
+  "requested_operation": "implement separately importable optional NumPy and PyTorch adapters with explicit dtype, device, copy, and optional-dependency behavior",
+  "inputs": {
+    "format_id": "safetensors",
+    "profile_id": "production",
+    "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-ADAPTER-001",
+    "obligation_id": "SAL-SAFETENSORS-OBL-DA2E4F674AAAAAFC",
+    "capability_id": "SAFETENSORS-ADAPTER-001",
+    "contract_digest": "e7c4939500768fa6a3bc19a7bd849e1e1883e9c707d9ba868c87fbe25ab64806",
+    "authority_digests": {
+      "SRC-SAFETENSORS-002": "3b4bf28d71a2b1323bab6a98adbb7e92443c8ae97fb96fa4c8612b25fab4d1b3"
+    },
+    "root_cause": "The NumPy adapter's copy policy was implicit, while the PyTorch adapter routed a read-only NumPy view into a mutable tensor, accepted copy=False without a safety contract, had no device parameter, inherited NumPy's narrower dtype behavior, and did not handle empty tensors explicitly.",
+    "affected_layer": "SafeTensors optional framework adapters, installed-wheel behavior, and adapter documentation",
+    "planned_paths": [
+      "src/python/safetensors/src/format_factory/safetensors/adapters/numpy.py",
+      "src/python/safetensors/src/format_factory/safetensors/adapters/torch.py",
+      "src/python/safetensors/README.md",
+      "tests/python/safetensors/test_obligation_optional_adapters.py",
+      "reports/r90/product-code-change-ledger.json",
+      "reports/skills-rff6/skill-transcripts/format-feature-expansion-safetensors-optional-adapters-001.json"
+    ],
+    "proof_inputs": [
+      "shared/format-contracts/safetensors.yaml",
+      "src/python/safetensors/src/format_factory/safetensors/adapters/numpy.py",
+      "src/python/safetensors/src/format_factory/safetensors/adapters/torch.py",
+      "tests/python/safetensors/test_obligation_optional_adapters.py",
+      ".local/build/safetensors-current-proof/format_factory_core-0.1.0.dev0-py3-none-any.whl",
+      ".local/build/safetensors-adapters-001/format_factory_safetensors-0.2.0.dev0-py3-none-any.whl",
+      ".local/venvs/safetensors-current-proof"
+    ],
+    "base_git_commit": "4e8ae9e0"
+  },
+  "allowed_files": [
+    "src/python/safetensors/src/format_factory/safetensors/adapters/numpy.py",
+    "src/python/safetensors/src/format_factory/safetensors/adapters/torch.py",
+    "src/python/safetensors/README.md",
+    "tests/python/safetensors/test_obligation_optional_adapters.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-safetensors-optional-adapters-001.json"
+  ],
+  "actual_files_changed": [
+    "src/python/safetensors/src/format_factory/safetensors/adapters/numpy.py",
+    "src/python/safetensors/src/format_factory/safetensors/adapters/torch.py",
+    "src/python/safetensors/README.md",
+    "tests/python/safetensors/test_obligation_optional_adapters.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-safetensors-optional-adapters-001.json"
+  ],
+  "defect_reproduction": {
+    "environment": ".local/venvs/safetensors-current-proof before installing the rebuilt wheel",
+    "result": "FAIL_CONFIRMED",
+    "observations": [
+      "to_torch(copy=False) did not reject an unsafe mutable alias over a read-only payload",
+      "to_torch(..., device='cuda:1') raised TypeError because device was not part of the API",
+      "an empty tensor was routed through the NumPy bridge without an explicit shaped empty-tensor path",
+      "an unavailable PyTorch dtype leaked the NumPy adapter's error instead of reporting the PyTorch capability boundary"
+    ],
+    "test_result": "4 failed, 3 passed"
+  },
+  "implementation": {
+    "optional_import_isolation": "base and adapter-module imports load neither NumPy nor PyTorch; frameworks are imported only when the conversion function is called",
+    "numpy_copy_false": "returns a read-only C-order view borrowed from the document payload; the document lifetime remains binding",
+    "numpy_copy_true": "returns an independent writable C-order copy",
+    "numpy_dtype_policy": "requires an exact NumPy storage dtype and rejects unsupported BF16, float8, and sub-byte types rather than reinterpreting bytes",
+    "torch_copy_policy": "copy=True is the safe default and copy=False is rejected because PyTorch exposes mutable tensors but SafeTensors path payloads are read-only memory maps",
+    "torch_storage": "copies tensor bytes into an independent writable bytearray and constructs the CPU tensor with torch.frombuffer",
+    "torch_device_policy": "optional device is passed to tensor.to after safe CPU construction; framework device parsing and transfer errors remain PyTorch's responsibility",
+    "torch_dtype_policy": "maps exact framework dtype attributes dynamically and rejects dtypes unavailable in the installed PyTorch version",
+    "empty_tensor_policy": "uses torch.empty with the exact descriptor shape and dtype because frombuffer cannot construct a tensor from an empty buffer",
+    "endianness_policy": "fails explicitly on non-little-endian hosts rather than silently interpreting SafeTensors little-endian bytes in native order",
+    "tradeoff": "PyTorch zero-copy is deliberately unavailable; this sacrifices a potential CPU performance optimization to avoid writable aliases over immutable bytes and read-only memory maps"
+  },
+  "tests_run": [
+    "pre-repair installed-wheel focused test: 4 failed, 3 passed",
+    "source-tree focused test with explicit package path: 7 passed",
+    ".local/venvs/build-runner/Scripts/python.exe -m build --wheel --outdir .local/build/safetensors-adapters-001 src/python/safetensors: PASS",
+    "force-install rebuilt wheel into .local/venvs/safetensors-current-proof: PASS",
+    ".local/venvs/safetensors-current-proof/Scripts/python.exe -m pytest tests/python/safetensors/test_obligation_optional_adapters.py -q: 7 passed",
+    "installed selected SafeTensors regression tier: 102 passed",
+    ".local/venvs/safetensors-current-proof/Scripts/python.exe -m ruff check src/python/safetensors/src/format_factory/safetensors tests/python/safetensors/test_obligation_optional_adapters.py: PASS",
+    "installed to_torch import location assertion: PASS, resolved under .local/venvs/safetensors-current-proof/Lib/site-packages"
+  ],
+  "ledger_entry_id": "FF6-SAFETENSORS-OPTIONAL-ADAPTERS-001",
+  "ledger_entry_path": "reports/r90/product-code-change-ledger.json",
+  "validations": {
+    "obligation_resolves_to_selected_format": "PASS",
+    "authority_digest_pinned": "PASS",
+    "reproduced_failure": "PASS",
+    "framework_import_isolation": "PASS",
+    "numpy_read_only_zero_copy": "PASS",
+    "numpy_independent_writable_copy": "PASS",
+    "numpy_unsupported_dtype_rejection": "PASS",
+    "torch_unsafe_zero_copy_rejection": "PASS",
+    "torch_device_dispatch": "PASS with framework protocol stub",
+    "torch_empty_tensor_path": "PASS with framework protocol stub",
+    "torch_unavailable_dtype_rejection": "PASS with framework protocol stub",
+    "installed_wheel_behavior": "PASS",
+    "installed_wheel_origin_outside_source_tree": "PASS",
+    "declared_regression_tier": "PASS: 102 tests",
+    "ruff_production_package": "PASS",
+    "ruff_legacy_src_wrapper": "FAIL_PREEXISTING: src/python/safetensors/safetensors_to_csv.py has two E402 findings outside the production namespace and this obligation",
+    "mypy": "NOT_RUN_MISSING_TOOL: the proof environment does not contain mypy",
+    "real_pytorch_minimum_latest_matrix": "PENDING_SEPARATE_CERTIFICATION: PyTorch is not installed in the current Python 3.13 proof environment; protocol tests do not substitute for an installed PyTorch oracle",
+    "product_code_ledger_entry_count": "PASS: exactly one",
+    "product_code_ledger_entry_hashes": "PASS: declared source, documentation, and test SHA-256 values equal current files",
+    "controller_proof_replay_required": "YES: the complete SafeTensors source and installed wheel digests changed, so every prior live SafeTensors proof must be replayed"
+  },
+  "output_digests": {
+    "src/python/safetensors/src/format_factory/safetensors/adapters/numpy.py": "56bf37cf5cb3954f86e7ac3a906eeb4b0cbdd08a35af048e910eb7150e4dafbd",
+    "src/python/safetensors/src/format_factory/safetensors/adapters/torch.py": "6f81bcabc1c584eab511c130e637565165bf8bef26b08c2d14ea6893e65fd6f8",
+    "src/python/safetensors/README.md": "985d3e86eeb0fe170da9ab75bddf33f91be833230fe7e84f53eb2673569ef39d",
+    "tests/python/safetensors/test_obligation_optional_adapters.py": "6cd797fcbbc8994a3122abce056d392d4e84c94b3d67e894136d8a8229bdc026",
+    "reports/r90/product-code-change-ledger.json": "72a6682a701be761d25351991cd8d7c2c66c67a387fd1a383910b84b8928d30c",
+    "built_wheel_sha256": "2af3f3c40eabafc5b56df8b483f5186d5ace8f61fed19284238eb69e8807429b"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for the bounded source implementation; controller proof, invalidated proof replays, and real PyTorch environment evidence remain explicit next work",
+    "2_required_evidence_present": "YES for the implemented source behavior; the real PyTorch certification gap is not concealed",
+    "3_evidence_sufficient": "YES for implementation verification, NO for final adapter certification; no obligation closure or certification claimed",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES, retained from the active mission session",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, retained in the mission receipt chain",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "SAFETENSORS_OPTIONAL_ADAPTER_SOURCE_VERIFIED_REAL_TORCH_MATRIX_AND_PROOF_REPLAY_PENDING",
+  "timestamp": "2026-07-25T20:18:00Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

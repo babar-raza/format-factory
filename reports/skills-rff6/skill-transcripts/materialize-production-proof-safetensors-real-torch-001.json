@@ -1,0 +1,119 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-materialize-production-proof-safetensors-real-torch-001",
+  "execution_id": "ff6-materialize-production-proof-safetensors-real-torch-001",
+  "task_id": "AUTO-SAFETENSORS-PROVE-REAL-TORCH-001",
+  "skill_id": "materialize-production-proof",
+  "selected_skill_ids": [
+    "materialize-production-proof"
+  ],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-SAFETENSORS-PROOF-026",
+  "pre_mutation_guard_authorization_id": "966030486298792a",
+  "requested_operation": "bind real PyTorch 2.13.0 CPU adapter evidence and its hash-locked wheelhouse to the exact live SafeTensors proof graph",
+  "inputs": {
+    "defect_id": "SAFETENSORS_REAL_TORCH_PROOF_GAP",
+    "failing_regression": "SAL-SAFETENSORS-OBL-DA2E4F674AAAAAFC was the last unmet obligation because protocol stubs could not serve as installed-framework proof",
+    "invalidation_input": "none; production source and factory wheels are unchanged; a separate environment and fixture closure is intentional",
+    "target_product": "safetensors",
+    "obligation_id": "SAL-SAFETENSORS-OBL-DA2E4F674AAAAAFC",
+    "base_git_commit": "c9265180"
+  },
+  "allowed_files": [
+    "reports/skills-rff6/skill-transcripts/materialize-production-proof-safetensors-real-torch-001.json",
+    ".local/production-program/current-gaps.json",
+    ".local/production-program/executed-proofs.json",
+    ".local/production-program/journal.jsonl",
+    ".local/production-program/proof-graphs/safetensors/edges.jsonl",
+    ".local/production-program/proof-graphs/safetensors/nodes.jsonl",
+    ".local/production-program/state.json"
+  ],
+  "actual_files_changed": [
+    "reports/skills-rff6/skill-transcripts/materialize-production-proof-safetensors-real-torch-001.json",
+    ".local/production-program/current-gaps.json",
+    ".local/production-program/executed-proofs.json",
+    ".local/production-program/journal.jsonl",
+    ".local/production-program/proof-graphs/safetensors/edges.jsonl",
+    ".local/production-program/proof-graphs/safetensors/nodes.jsonl",
+    ".local/production-program/state.json"
+  ],
+  "behavior_added": [],
+  "tests_run": [
+    "controller-executed real-framework installed-wheel command: tests/python/safetensors/test_obligation_real_torch_adapter.py -q: 25 passed",
+    "controller audit: 86 current SafeTensors obligations, zero stale obligations, zero unmet obligations"
+  ],
+  "proof_closure": {
+    "contract_digest": "e7c4939500768fa6a3bc19a7bd849e1e1883e9c707d9ba868c87fbe25ab64806",
+    "source_digest": "c12310d3dcf425c953107b7ee7bcea5b6c074ead29f7e9be0d3c8b2978dabac9",
+    "test_digest": "606ac0ee7fe2e80c5a44e856ee5521a8d839e578bafe2295deee3342e0f66bde",
+    "fixture_digest": "4b9ac844f411756d19ded48344c496b6f837e4aa04a27fa26d1753e575ab6a46",
+    "fixture_paths": [
+      ".local/wheelhouse/safetensors-torch-001",
+      "tests/python/safetensors/fixtures/torch-proof-wheelhouse.sha256.json"
+    ],
+    "package_digest": "9e401b1adccc0744348fb43381138f12469c35511f7d262c277544a94e6f3b07",
+    "dependency_digest": "bf8dee63c7abf526d178fe57c48e2d55ba04871cba72eea64a3c04dfbb9e269a",
+    "tool_digest": "b7c0f68d84382d04b000a97d01e8e625355513d0972a17a048f4cd241018ce20",
+    "environment_digest": "2f20050c7cef1e72b080fac5a8e9093ab3411ae2247b117c72c68b3ed9e17d54",
+    "runtime": "CPython 3.13.2, Windows AMD64, torch 2.13.0, NumPy 2.3.2",
+    "factory_wheels": {
+      "format_factory_core": "948c1e9bad28121efbc4d1084bbf3e757a636dfe0889d6e7e3a34e2af4026077",
+      "format_factory_safetensors": "0e39d5a2f13259ba4f79a934ee147742549c0d8dcb910b5ff042dfa35a19a8a7"
+    }
+  },
+  "proofs": [
+    {
+      "obligation_id": "SAL-SAFETENSORS-OBL-DA2E4F674AAAAAFC",
+      "proof_id": "PROOF-AB53653CCD79959F2ED2BD3835D9FD873909F4422C524AC317E4CFDBDF2BACC4"
+    }
+  ],
+  "validations": {
+    "required_positive_polarity": "PASS",
+    "complete_execution_input_closure": "PASS",
+    "installed_factory_wheel_origin": "PASS",
+    "real_torch_distribution_in_environment": "PASS: 2.13.0",
+    "wheelhouse_bound_as_fixture": "PASS",
+    "committed_hash_manifest_bound_as_fixture": "PASS",
+    "command_exit_zero": "PASS",
+    "source_and_factory_package_closure_unchanged": "PASS",
+    "preexisting_proofs_invalidated": "NO",
+    "unique_current_obligation_count": 86,
+    "stale_proof_count": 0,
+    "mandatory_obligations_remaining": 0,
+    "computed_promotion_state": "RELEASE_CANDIDATE",
+    "certification_claimed": "NO: broader certification matrix and release evidence remain separate gates"
+  },
+  "controller_result": {
+    "final_graph_digest": "77bd5f1c63e11a9ec5977bf5f25a5303b5ea1dc54bfa84ad7446b1fef0426279",
+    "program_open_gaps": 530,
+    "safetensors_open_gaps": 0,
+    "next_format": "ipynb",
+    "next_obligation_id": "SAL-IPYNB-OBL-010C554B8692D166"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for mandatory-obligation proof closure",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for the final obligation and computed release-candidate state; broader certification is not claimed",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES, retained from the active mission session",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, retained in the mission receipt chain",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "SAFETENSORS_ALL_MANDATORY_OBLIGATIONS_PROVEN_COMPUTED_RELEASE_CANDIDATE_NOT_CERTIFIED",
+  "timestamp": "2026-07-25T22:04:56.7383097Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

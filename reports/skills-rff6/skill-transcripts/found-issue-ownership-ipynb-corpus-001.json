@@ -1,0 +1,92 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-found-issue-ownership-ipynb-corpus-001",
+  "execution_id": "ff6-found-issue-ownership-ipynb-corpus-001",
+  "task_id": "AUTO-IPYNB-CORPUS-REMEDIATE-001",
+  "skill_id": "found-issue-ownership",
+  "selected_skill_ids": [
+    "found-issue-ownership"
+  ],
+  "skill_route": {
+    "operation_class": "found_issue_capture_root_cause_blast_radius_heal_close",
+    "resolution": "The invalid fixtures contaminated manifests, oracle claims, and many tests, so durable closure required all four found-issue registers rather than a local byte edit.",
+    "coverage_result": "SKILL_COVERAGE_CONFIRMED"
+  },
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260726T032732-500bac",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-IPYNB-CORPUS-001",
+  "pre_mutation_guard_authorization_id": "d6d3e177fd3f3afc",
+  "requested_operation": "Capture, classify, root-cause, scan, heal, verify, and close the false-valid IPYNB corpus evidence chain.",
+  "inputs": {
+    "issue_id": "FI-042",
+    "issue_type": "broken_fixture",
+    "severity": "P2",
+    "observed_behavior": "Two declared-4.5 fixtures without required IDs were labeled valid after normalizing loaders repaired them.",
+    "expected_behavior": "Immutable source bytes must pass exact declared-minor validation before any positive evidence label or normalization.",
+    "affected_paths": [
+      "samples/by-format/ipynb/",
+      "oracle/formats/ipynb/oracle-package.yaml",
+      "tests/python/ipynb/",
+      "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-official-schema-001.json"
+    ],
+    "root_cause_id": "RC-FIO-004",
+    "blast_radius_id": "BR-003",
+    "fixture_ids": [
+      "FX-003",
+      "FX-004"
+    ],
+    "healing_taskcard_id": "TC-FF6-IPYNB-SAFE-001"
+  },
+  "allowed_files": [
+    "registry/found-issue-register.yaml",
+    "registry/root-cause-register.yaml",
+    "registry/blast-radius-register.yaml",
+    "registry/fixture-analysis-register.yaml",
+    "reports/skills-rff6/skill-transcripts/found-issue-ownership-ipynb-corpus-001.json"
+  ],
+  "actual_files_changed": [
+    "registry/found-issue-register.yaml",
+    "registry/root-cause-register.yaml",
+    "registry/blast-radius-register.yaml",
+    "registry/fixture-analysis-register.yaml",
+    "reports/skills-rff6/skill-transcripts/found-issue-ownership-ipynb-corpus-001.json"
+  ],
+  "root_cause": {
+    "first_failing_boundary": "The corpus manifest declared structural PASS without applying the exact declared-minor schema to immutable source bytes.",
+    "local_cause": "The synthetic generator emitted 4.5 cells without required IDs.",
+    "systemic_cause": "Legacy loaders and nbformat.validate normalize IDs, so downstream tests proved repaired model behavior while manifests and oracle cases attributed validity to original bytes."
+  },
+  "tests_run": [
+    "content-addressed corpus integrity selector: PASS",
+    "focused corpus/legacy behavior selector: 98 passed",
+    "complete tests/python/ipynb regression: 387 passed",
+    "Ruff on all changed IPYNB tests: PASS",
+    "V140 issue accounting: PASS",
+    "V142 disposition allowlist: PASS"
+  ],
+  "validations": {
+    "capture": "PASS: FI-042",
+    "classification": "PASS: broken_fixture P2 always reproducible",
+    "root_cause": "PASS: RC-FIO-004",
+    "blast_radius": "PASS: BR-003",
+    "fixture_analysis": "PASS: FX-003 and FX-004",
+    "healing": "PASS",
+    "verification": "PASS",
+    "closure": "PASS: HEALED_AND_VERIFIED",
+    "unlogged_gap": "NO: legacy oracle schema mismatch remains explicitly STALE pending production replay"
+  },
+  "output_digests": {
+    "registry/found-issue-register.yaml": "ff8d5336362332a601846315faab4cad76ffc6262e08af811585b68f205441cb",
+    "registry/root-cause-register.yaml": "a0659720e4903a289927b8c6e462e2f1c8375014b35d9ea95fbb900b86ab48b7",
+    "registry/blast-radius-register.yaml": "cfaf22d8ab196f29b62f428d0e67bd0b4b6d0268d45475f8ba0862e8c222edc0",
+    "registry/fixture-analysis-register.yaml": "0adcaef3344f037191be6ad16709beca833d8378eed4f74707d9d09f9323b4cb"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "FI_032_HEALED_AND_VERIFIED_WITH_SYSTEMIC_REGRESSION_CONTROL",
+  "timestamp": "2026-07-26T03:43:00Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

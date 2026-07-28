@@ -1,0 +1,232 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-nrrd-production-chassis-001",
+  "execution_id": "ff6-nrrd-production-chassis-001",
+  "task_id": "AUTO-NRRD-PACKAGE-CHASSIS",
+  "skill_id": "new-format-kickstart",
+  "selected_skill_ids": ["new-format-kickstart"],
+  "skill_hashes": {
+    "new-format-kickstart": "1339c048cdbe303c037ca468d65881612ad65787982cecaaf3722ab7177bac39"
+  },
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260723T145613-3373a8",
+  "coordination_identity": "agent-codex-20260723T145613-3373a8",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "RFF6-W4-NRRD-CHASSIS",
+  "requested_operation": "migrate the NRRD alpha package to its production package chassis",
+  "inputs": {
+    "format_id": "nrrd",
+    "distribution_name": "format-factory-nrrd",
+    "namespace": "format_factory.nrrd",
+    "family": "header_plus_payload",
+    "product_contract_path": "shared/format-contracts/nrrd.yaml",
+    "product_contract_sha256": "7baf635e90537286545d27b9df47e1e4815437eea135447ebd78d87087e70e8a",
+    "authority_digests": {
+      "SRC-NRRD-001": "43ca6102cc998e0191e225d7954278547d491e29b74a132b3118571d85a8b0d5",
+      "SRC-NRRD-002": "43ca6102cc998e0191e225d7954278547d491e29b74a132b3118571d85a8b0d5"
+    },
+    "release_profile": "NRRD0001-through-NRRD0005",
+    "source_root": "src/python/nrrd",
+    "test_root": "tests/python/nrrd",
+    "dependency_lock": "src/python/nrrd/requirements-build.lock",
+    "task_id": "AUTO-NRRD-PACKAGE-CHASSIS"
+  },
+  "allowed_files": [
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/new-format-kickstart-nrrd-chassis.json",
+    "src/python/nrrd/_build_backend.py",
+    "src/python/nrrd/CHANGELOG.md",
+    "src/python/nrrd/MANIFEST.in",
+    "src/python/nrrd/MIGRATION.md",
+    "src/python/nrrd/pyproject.toml",
+    "src/python/nrrd/README.md",
+    "src/python/nrrd/requirements-build.lock",
+    "src/python/nrrd/SECURITY.md",
+    "src/python/nrrd/src/format_factory/nrrd/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/adapters/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/analytics/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/cli/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/payload.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py",
+    "src/python/nrrd/src/format_factory/nrrd/errors.py",
+    "src/python/nrrd/src/format_factory/nrrd/model/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/model/document.py",
+    "src/python/nrrd/src/format_factory/nrrd/py.typed",
+    "src/python/nrrd/src/format_factory/nrrd/security/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/security/limits.py",
+    "src/python/nrrd/src/format_factory/nrrd/validation/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/validation/validator.py",
+    "tests/python/nrrd/test_production_namespace.py"
+  ],
+  "actual_files_changed": [
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/new-format-kickstart-nrrd-chassis.json",
+    "src/python/nrrd/_build_backend.py",
+    "src/python/nrrd/CHANGELOG.md",
+    "src/python/nrrd/MANIFEST.in",
+    "src/python/nrrd/MIGRATION.md",
+    "src/python/nrrd/pyproject.toml",
+    "src/python/nrrd/README.md",
+    "src/python/nrrd/requirements-build.lock",
+    "src/python/nrrd/SECURITY.md",
+    "src/python/nrrd/src/format_factory/nrrd/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/adapters/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/analytics/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/cli/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/payload.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py",
+    "src/python/nrrd/src/format_factory/nrrd/errors.py",
+    "src/python/nrrd/src/format_factory/nrrd/model/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/model/document.py",
+    "src/python/nrrd/src/format_factory/nrrd/py.typed",
+    "src/python/nrrd/src/format_factory/nrrd/security/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/security/limits.py",
+    "src/python/nrrd/src/format_factory/nrrd/validation/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/validation/validator.py",
+    "tests/python/nrrd/test_production_namespace.py"
+  ],
+  "base_git_commit": "6ecf6623b819548fc77606fb1e818df9c0c7adc1",
+  "target_tree_sha256": "62a649db151435bbf0bd26678fcd75d4d73924f80e2ade5940b86fc886ec76d1",
+  "clean_target_scope": true,
+  "input_digests": {
+    "authorities": {
+      "SRC-NRRD-001": "43ca6102cc998e0191e225d7954278547d491e29b74a132b3118571d85a8b0d5",
+      "SRC-NRRD-002": "43ca6102cc998e0191e225d7954278547d491e29b74a132b3118571d85a8b0d5"
+    },
+    "product_contracts": {
+      "contract_file": "7baf635e90537286545d27b9df47e1e4815437eea135447ebd78d87087e70e8a",
+      "compiled_contract": "6240cd80be0a74c38f04fe8a109debdb361904cdefb709b833778f331dd1c518",
+      "sal_facts": "42c5e3030f73cb7c97ec6de18c64be948af0c1cc61f84024b0a02ae76111d5ff",
+      "KC-PYTHON-003": "0a5149579ff8356a9d690aa37d1095998db7b62e0ad2df00e3e99ff6048f726f"
+    },
+    "generators": {},
+    "tools": {
+      "_build_backend.py": "556f7c66c7ea25e77c07dae39ea9a0a9cb0e3394ed03d0179933d2bda178b089",
+      "pyproject.toml": "8a3800ffac55214c487c7e57ae8a0238e88b6927d7478af5a030ce0da682bf3f"
+    },
+    "corpora": {
+      "legacy_nrrd_characterization": "included in base_git_commit"
+    },
+    "dependency_locks": {
+      "requirements-build.lock": "a88db3e67994613ee602e58be5a17601e1317bbff6bccc07a95dbf14f15731c3"
+    },
+    "tests": {
+      "production_namespace": "b8ea1fed2df7b788282e2bafdc0967d0193a1f4d1ef483eb83c4c4b61cdcf1c9"
+    },
+    "environment": {
+      "python": "3.13.2",
+      "os": "Windows",
+      "architecture": "AMD64",
+      "source_date_epoch": "315532800"
+    }
+  },
+  "tests_run": [
+    "pytest tests/python/nrrd/test_production_namespace.py -q: 11 passed",
+    "pytest legacy NRRD characterization suite -q: 219 passed",
+    "ruff check production source and tests: pass",
+    "mypy --strict -p format_factory.nrrd: pass",
+    "two-build wheel and sdist equality: pass",
+    "isolated installed-wheel import and CLI probe: pass",
+    "production controller bootstrap: NRRD chassis gap resolved"
+  ],
+  "commands_executed": [
+    {
+      "argv": ["python", "-m", "pytest", "-q", "tests/python/nrrd/test_production_namespace.py"],
+      "exit_code": 0,
+      "test_selector": "11 tests"
+    },
+    {
+      "argv": ["python", "-m", "pytest", "-q", "tests/python/nrrd/test_nrrd_*.py"],
+      "exit_code": 0,
+      "test_selector": "219 characterization tests"
+    },
+    {
+      "argv": ["python", "-m", "ruff", "check", "src/python/nrrd/src", "tests/python/nrrd/test_production_namespace.py"],
+      "exit_code": 0
+    },
+    {
+      "argv": ["python", "-m", "mypy", "--strict", "-p", "format_factory.nrrd"],
+      "exit_code": 0
+    },
+    {
+      "argv": ["python", "-m", "build", "--no-isolation", "--outdir", "<run1>", "src/python/nrrd"],
+      "exit_code": 0
+    },
+    {
+      "argv": ["python", "-m", "build", "--no-isolation", "--outdir", "<run2>", "src/python/nrrd"],
+      "exit_code": 0
+    },
+    {
+      "argv": ["<isolated-python>", "-I", "-c", "import installed format_factory.nrrd and load fixture"],
+      "exit_code": 0
+    },
+    {
+      "argv": ["<isolated-cli>", "<minimal.nrrd>"],
+      "exit_code": 0
+    },
+    {
+      "argv": ["python", "-m", "tools.supervisor.production_program", "bootstrap"],
+      "exit_code": 0
+    }
+  ],
+  "built_artifacts": [
+    {
+      "kind": "wheel",
+      "run": 1,
+      "sha256": "bea5300fe5e54e303a13270c70ed8a601dc8bcd6fbe3b3f10c8b50b45f010ebf"
+    },
+    {
+      "kind": "wheel",
+      "run": 2,
+      "sha256": "bea5300fe5e54e303a13270c70ed8a601dc8bcd6fbe3b3f10c8b50b45f010ebf"
+    },
+    {
+      "kind": "sdist",
+      "run": 1,
+      "sha256": "9c06c14080a832addfebd68426bb931b30bbefc29f910b6d1f1fddea95268540"
+    },
+    {
+      "kind": "sdist",
+      "run": 2,
+      "sha256": "9c06c14080a832addfebd68426bb931b30bbefc29f910b6d1f1fddea95268540"
+    }
+  ],
+  "reproducible_build_count": 2,
+  "wheel_reproducible": true,
+  "sdist_reproducible": true,
+  "installed_import_locations": [
+    "<isolated-venv>/Lib/site-packages/format_factory/nrrd/__init__.py"
+  ],
+  "ledger_entry_id": "FF6-NRRD-PRODUCTION-CHASSIS-001",
+  "ledger_entry_path": "reports/r90/product-code-change-ledger.json",
+  "ledger_entry_source_hashes_valid": true,
+  "proof_nodes": [],
+  "computed_promotion_state": "IMPLEMENTATION_IN_PROGRESS",
+  "current_gap_projection": {
+    "program_open_gap_count": 619,
+    "nrrd_open_mandatory_obligations": 93,
+    "next_task": "AUTO-OPENRASTER-PACKAGE-CHASSIS"
+  },
+  "open_gaps": [
+    "The NRRD package chassis is verified but none of the remaining 93 mandatory ProductContract obligations is promoted by this slice.",
+    "Detached LIST and printf-pattern payloads, block samples, complete metadata typing, memory mapping, streaming, Teem/pynrrd differential evidence, and independent corpora remain open.",
+    "The historical product-code ledger validator remains structurally broken on legacy entry shapes; the new entry was independently hash-checked but this does not repair the canonical validator.",
+    "Full security, fuzz, mutation, cross-platform Python 3.11-3.14, SBOM, provenance, signature, vulnerability, and extraction evidence remain open.",
+    "The canonical proof controller still treats the package chassis as presence-based; installed-wheel results must become digest-bound executed proof nodes before certification."
+  ],
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "IMPLEMENTATION_VERIFIED_NOT_CERTIFIED",
+  "timestamp": "2026-07-23T20:41:45Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

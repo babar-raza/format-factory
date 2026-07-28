@@ -11,7 +11,12 @@
   ],
   "additionalProperties": true,
   "properties": {
-    "schema": {"const": "skills-first-control/execution-manifest@1"},
+    "schema": {
+      "enum": [
+        "skills-first-control/execution-manifest@1",
+        "skills-first-control/execution-manifest@2"
+      ]
+    },
     "execution_id": {"type": "string", "minLength": 6},
     "task_id": {"type": "string", "minLength": 1},
     "agent_type": {
@@ -62,6 +67,73 @@
     "expires_at": {
       "type": "string",
       "description": "SFC-GAP-C: manifest TTL (default 4h from created_at). A manifest lacking or past this timestamp is treated as expired -- fail closed, never perpetually live."
+    },
+    "git_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "target_tree_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "clean_target_scope": {"type": "boolean"},
+    "input_digests": {
+      "type": "object",
+      "required": [
+        "authorities", "product_contracts", "generators", "tools",
+        "corpora", "dependency_locks", "environment"
+      ],
+      "properties": {
+        "authorities": {"type": "object", "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}},
+        "product_contracts": {"type": "object", "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}},
+        "generators": {"type": "object", "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}},
+        "tools": {"type": "object", "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}},
+        "corpora": {"type": "object", "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}},
+        "dependency_locks": {"type": "object", "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}},
+        "environment": {"type": "object", "additionalProperties": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "commands_executed": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["argv", "exit_code"],
+        "properties": {
+          "argv": {"type": "array", "items": {"type": "string"}},
+          "exit_code": {"type": "integer"},
+          "test_selector": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "built_artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["kind", "sha256"],
+        "properties": {
+          "kind": {"enum": ["sdist", "wheel", "sbom", "provenance", "signature"]},
+          "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "installed_import_locations": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "coordination_identity": {"type": "string"},
+    "proof_nodes": {"type": "array", "items": {"type": "string"}}
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "schema": {"const": "skills-first-control/execution-manifest@2"}
+        }
+      },
+      "then": {
+        "required": [
+          "git_commit", "target_tree_sha256", "clean_target_scope",
+          "input_digests", "commands_executed", "built_artifacts",
+          "installed_import_locations", "coordination_identity", "proof_nodes"
+        ]
+      }
     }
-  }
+  ]
 }

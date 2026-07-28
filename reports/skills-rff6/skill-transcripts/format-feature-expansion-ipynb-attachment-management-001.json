@@ -1,0 +1,159 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-format-feature-expansion-ipynb-attachment-management-001",
+  "execution_id": "ff6-format-feature-expansion-ipynb-attachment-management-001",
+  "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-ATTACH-001",
+  "skill_id": "format-feature-expansion",
+  "selected_skill_ids": [
+    "format-feature-expansion"
+  ],
+  "skill_route": {
+    "operation_class": "production_product_contract_obligation_expansion",
+    "legacy_route_considered": "product_deepening",
+    "resolution": "The mission-approved production registry entry and TC-FF6-MACH-001 bind complete ProductContract obligation slices to format-feature-expansion. The older generic route does not include digest-bound installed-package and independent-oracle requirements.",
+    "coverage_result": "SKILL_COVERAGE_CONFIRMED: skill_id=format-feature-expansion, work_type=production_product_contract_obligation"
+  },
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-IPYNB-SOURCE-008",
+  "pre_mutation_guard_authorization_id": "971b97f20951ed59",
+  "requested_operation": "implement typed attachment add, replace, remove, and rename operations targeted by stable cell ID, with reference safety, validated MIME bundles, deterministic dry-run reports, and representation preservation",
+  "inputs": {
+    "format_id": "ipynb",
+    "profile_id": "production",
+    "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-ATTACH-001",
+    "obligation_id": "SAL-IPYNB-OBL-02A00C213D2B0190",
+    "obligation_ids": [
+      "SAL-IPYNB-OBL-02A00C213D2B0190",
+      "SAL-IPYNB-OBL-356297A15A50C85B",
+      "SAL-IPYNB-OBL-44E62E9AB8ECC2E3"
+    ],
+    "capability_id": "IPYNB-ATTACH-001",
+    "contract_digest": "56762498619ac994bbc5bceac7240357118f1046bda48d5e4bdffc6baa1129ac",
+    "authority_digests": {
+      "SRC-NB-002": "4d3750b55006e92d8063a6ac427a84eb1f91c44e376d90de53d03893674991d9"
+    },
+    "root_cause": "The package preserved and validated notebook attachment mappings but exposed no bounded mutation contract. Callers therefore had to edit nested dictionaries directly, could target cells by unstable position, and could silently create dangling attachment references or alter source representation.",
+    "affected_layer": "IPYNB typed model utilities, public lifecycle API, preservation behavior, and package documentation",
+    "planned_paths": [
+      "src/python/ipynb/src/format_factory/ipynb/model/attachments.py",
+      "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+      "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+      "src/python/ipynb/README.md",
+      "tests/python/ipynb/test_obligation_attachment_management.py",
+      "reports/r90/product-code-change-ledger.json",
+      "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-attachment-management-001.json"
+    ],
+    "proof_inputs": [
+      "shared/format-contracts/ipynb.yaml",
+      "shared/format-contracts/research/ipynb.yaml",
+      "tests/python/ipynb/test_obligation_attachment_management.py",
+      ".local/build/ipynb-attachments-a/format_factory_ipynb-0.2.0.dev0-py3-none-any.whl",
+      ".local/build/ipynb-attachments-b/format_factory_ipynb-0.2.0.dev0-py3-none-any.whl",
+      ".local/venvs/ipynb-current-proof",
+      ".local/venvs/ipynb-static"
+    ],
+    "base_git_commit": "83d03e7b62cae954040ba83cd78f46e61a103cbf"
+  },
+  "allowed_files": [
+    "src/python/ipynb/src/format_factory/ipynb/model/attachments.py",
+    "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+    "src/python/ipynb/README.md",
+    "tests/python/ipynb/test_obligation_attachment_management.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-attachment-management-001.json"
+  ],
+  "actual_files_changed": [
+    "src/python/ipynb/src/format_factory/ipynb/model/attachments.py",
+    "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+    "src/python/ipynb/README.md",
+    "tests/python/ipynb/test_obligation_attachment_management.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-attachment-management-001.json"
+  ],
+  "defect_reproduction": {
+    "result": "FAILURE_REPRODUCED",
+    "command": "pytest -q tests/python/ipynb/test_obligation_attachment_management.py",
+    "outcome": "Test collection failed because format_factory.ipynb exported no AttachmentReferencePolicy or attachment-management lifecycle."
+  },
+  "implementation": {
+    "targeting": "Every operation resolves one markdown or raw cell by a required unique stable cell ID and rejects absent, duplicate, or unsupported code-cell targets.",
+    "add_replace": "Add validates non-empty attachment names and non-empty JSON-compatible MIME bundles; replacement requires an explicit replace flag.",
+    "rename": "Rename preserves attachment mapping order and rewrites literal and percent-encoded attachment URIs by default.",
+    "remove": "Removal refuses referenced attachments by default and requires the explicit LEAVE_DANGLING policy to retain invalid references.",
+    "source_preservation": "Reference rewriting preserves whether cell source was represented as a string or a string array.",
+    "reporting": "Immutable reports capture operation, target path, deep-copied before/after values, reference counts, dangling-reference counts, and whether a mutation was applied.",
+    "dry_run": "Every operation executes against an isolated deep copy and can return the exact report without mutating the document.",
+    "unknown_data": "Notebook, cell, and attachment MIME-extension data outside the selected mutation are preserved.",
+    "tradeoff": "Reference parsing is deliberately limited to nbformat attachment URI syntax in cell source. The library does not parse or rewrite arbitrary HTML, CSS, or vendor metadata references that merely resemble attachment links."
+  },
+  "tests_run": [
+    "failure-first attachment test: collection failed because AttachmentReferencePolicy did not exist",
+    "focused attachment obligation tests: 6 passed",
+    "source-tree format regression excluding installed-origin assertions: 297 passed, 3 deselected",
+    "Ruff 0.14.14 on production namespace and attachment test: PASS",
+    "Mypy 1.18.2 strict on production namespace: PASS, 25 source files",
+    "two isolated SOURCE_DATE_EPOCH=315532800 wheels: identical SHA-256 b944b24970f6e00f6c8d36560c2adf9c56eee6a8cf5c6007501900b257a88d11",
+    "installed-wheel full tests/python/ipynb suite: 300 passed",
+    "production control-plane and production-skill regression: 43 passed",
+    "repository real-ledger test remains the known non-strict xfail because historical entries use the legacy mixed source_files schema"
+  ],
+  "ledger_entry_id": "FF6-IPYNB-ATTACHMENT-MANAGEMENT-001",
+  "ledger_entry_path": "reports/r90/product-code-change-ledger.json",
+  "validations": {
+    "stable_cell_id_targeting": "PASS",
+    "mime_bundle_validation": "PASS",
+    "explicit_replacement": "PASS",
+    "literal_and_encoded_reference_rewrite": "PASS",
+    "string_and_array_source_shape_preservation": "PASS",
+    "default_dangling_reference_refusal": "PASS",
+    "explicit_dangling_reference_policy": "PASS",
+    "unknown_metadata_preservation": "PASS",
+    "dry_run_non_mutation_and_report_equivalence": "PASS",
+    "installed_wheel_origin": "PASS",
+    "reproducible_wheel": "PASS",
+    "typing_and_lint": "PASS",
+    "declared_regression_tier": "PASS: 300 installed-wheel tests",
+    "product_ledger_exact_source_hashes": "PASS: all three current source entries match the current files",
+    "legacy_product_ledger_validator": "KNOWN GLOBAL XFAIL: historical mixed-schema entries prevent a whole-ledger pass; no global pass claimed",
+    "source_changed": "YES: canonical proof replay remains deferred to the consolidated source-wave boundary",
+    "new_proof_nodes": "NONE: no stale source proof was materialized",
+    "promotion_claimed": "NO"
+  },
+  "output_digests": {
+    "src/python/ipynb/src/format_factory/ipynb/model/attachments.py": "8d898674ef00b55c51a698ec63a4a09af78cd2e91bd251ccf7e53552a740972e",
+    "src/python/ipynb/src/format_factory/ipynb/model/__init__.py": "819b77af82e2d7da0f7e361642842e42683131ae4cb10d9a3cc92c58aff1c37d",
+    "src/python/ipynb/src/format_factory/ipynb/__init__.py": "0b461c54c8770adb7266bab12067ecdb9191aa116430f7fe0dcafebe6a7f6d5e",
+    "src/python/ipynb/README.md": "f96404aca3bdec889508a992d9fa8373b3ff016555310167cd4c1152111b8291",
+    "tests/python/ipynb/test_obligation_attachment_management.py": "d6035a1c2ba3fbabdbcec4bcd5348439e6a4929eab8b63679508d6f299ee743f",
+    "reports/r90/product-code-change-ledger.json": "02a870dfa7065643a08d41a5e01922acbfc019ccb99ce5d14bbce7034ec61fac",
+    "format_factory_ipynb-0.2.0.dev0-py3-none-any.whl": "b944b24970f6e00f6c8d36560c2adf9c56eee6a8cf5c6007501900b257a88d11"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for this bounded source slice; proof replay is deferred until the consolidated source wave is stable",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for implementation verification; no obligation closure or certification claimed",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES: no contradiction was found",
+    "14_memory_update_trigger": "NOT APPLICABLE: no gate, phase, or architecture transition occurred",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "IPYNB_ATTACHMENT_MANAGEMENT_IMPLEMENTED_CONSOLIDATED_PROOF_REPLAY_PENDING",
+  "timestamp": "2026-07-26T01:58:13.4572810Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

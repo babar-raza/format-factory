@@ -1,0 +1,258 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-ubl-production-chassis-001",
+  "execution_id": "ff6-ubl-production-chassis-001",
+  "task_id": "AUTO-UBL-PACKAGE-CHASSIS",
+  "skill_id": "new-format-kickstart",
+  "selected_skill_ids": ["new-format-kickstart"],
+  "skill_hashes": {
+    "new-format-kickstart": "1339c048cdbe303c037ca468d65881612ad65787982cecaaf3722ab7177bac39"
+  },
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260723T145613-3373a8",
+  "coordination_identity": "agent-codex-20260723T145613-3373a8",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "RFF6-W6-UBL-CHASSIS",
+  "requested_operation": "migrate the UBL alpha package to its generated production package chassis",
+  "inputs": {
+    "format_id": "ubl",
+    "distribution_name": "format-factory-ubl",
+    "namespace": "format_factory.ubl",
+    "family": "large_schema_family",
+    "product_contract_path": "shared/format-contracts/ubl.yaml",
+    "product_contract_sha256": "05df5d1813ee00f45f303a988e9d77d66eeb6068b84b4dfd09afe993a87e5138",
+    "authority_digests": {
+      "SRC-UBL-001": "b2ac12afabc812ccfb49355a391dc1690260bbc2d216d3c9dd5b0931b6c1a2b6",
+      "SRC-UBL-002": "623bef8310db4d979ff28000a96bcc56dbcdda4f6206cf094c0aa79b75817970"
+    },
+    "release_profile": "UBL-2.3-core",
+    "source_root": "src/python/ubl",
+    "test_root": "tests/python/ubl",
+    "dependency_lock": "src/python/ubl/requirements-build.lock",
+    "task_id": "AUTO-UBL-PACKAGE-CHASSIS"
+  },
+  "allowed_files": [
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/new-format-kickstart-ubl-chassis.json",
+    "src/python/ubl/_build_backend.py",
+    "src/python/ubl/CHANGELOG.md",
+    "src/python/ubl/LICENSE",
+    "src/python/ubl/MANIFEST.in",
+    "src/python/ubl/MIGRATION.md",
+    "src/python/ubl/pyproject.toml",
+    "src/python/ubl/README.md",
+    "src/python/ubl/requirements-build.lock",
+    "src/python/ubl/SECURITY.md",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/_generated/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/_generated/root_catalog.py",
+    "src/python/ubl/src/format_factory/ubl/_generated/root_manifest.json",
+    "src/python/ubl/src/format_factory/ubl/adapters/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/analytics/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/cli/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/codec/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/codec/reader/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py",
+    "src/python/ubl/src/format_factory/ubl/codec/writer/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py",
+    "src/python/ubl/src/format_factory/ubl/errors.py",
+    "src/python/ubl/src/format_factory/ubl/model/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/model/document.py",
+    "src/python/ubl/src/format_factory/ubl/model/root_types.py",
+    "src/python/ubl/src/format_factory/ubl/py.typed",
+    "src/python/ubl/src/format_factory/ubl/security/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/security/limits.py",
+    "src/python/ubl/src/format_factory/ubl/validation/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/validation/validator.py",
+    "src/python/ubl/tools/generate_roots.py",
+    "tests/python/ubl/fixtures/hostile-extension-entity.xml",
+    "tests/python/ubl/test_production_namespace.py"
+  ],
+  "actual_files_changed": [
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/new-format-kickstart-ubl-chassis.json",
+    "src/python/ubl/_build_backend.py",
+    "src/python/ubl/CHANGELOG.md",
+    "src/python/ubl/LICENSE",
+    "src/python/ubl/MANIFEST.in",
+    "src/python/ubl/MIGRATION.md",
+    "src/python/ubl/pyproject.toml",
+    "src/python/ubl/README.md",
+    "src/python/ubl/requirements-build.lock",
+    "src/python/ubl/SECURITY.md",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/_generated/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/_generated/root_catalog.py",
+    "src/python/ubl/src/format_factory/ubl/_generated/root_manifest.json",
+    "src/python/ubl/src/format_factory/ubl/adapters/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/analytics/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/cli/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/codec/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/codec/reader/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py",
+    "src/python/ubl/src/format_factory/ubl/codec/writer/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py",
+    "src/python/ubl/src/format_factory/ubl/errors.py",
+    "src/python/ubl/src/format_factory/ubl/model/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/model/document.py",
+    "src/python/ubl/src/format_factory/ubl/model/root_types.py",
+    "src/python/ubl/src/format_factory/ubl/py.typed",
+    "src/python/ubl/src/format_factory/ubl/security/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/security/limits.py",
+    "src/python/ubl/src/format_factory/ubl/validation/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/validation/validator.py",
+    "src/python/ubl/tools/generate_roots.py",
+    "tests/python/ubl/fixtures/hostile-extension-entity.xml",
+    "tests/python/ubl/test_production_namespace.py"
+  ],
+  "base_git_commit": "bebdf9a7c1f7963a909e69a98af2aea79a34811e",
+  "target_tree_sha256": "50703fab0191c478ba372d9bbbbed1df4d72dacc88bb8275572db8d4ea50ae16",
+  "clean_target_scope": true,
+  "input_digests": {
+    "authorities": {
+      "SRC-UBL-001": "b2ac12afabc812ccfb49355a391dc1690260bbc2d216d3c9dd5b0931b6c1a2b6",
+      "SRC-UBL-002": "623bef8310db4d979ff28000a96bcc56dbcdda4f6206cf094c0aa79b75817970",
+      "archive_member_names": "f9ab3f16a0ac89dbcd42f4e93d1eb5e59a4709bc7d151aedd8b2577c3fc114a2"
+    },
+    "product_contracts": {
+      "contract_file": "05df5d1813ee00f45f303a988e9d77d66eeb6068b84b4dfd09afe993a87e5138",
+      "compiled_contract": "0d7bdfb44143cf7cc2b2cc4717a918e8fe443a812d5b048f34d8d67b9c3074ec",
+      "sal_facts": "50378e9ec94777a8d516fac29ebd641ba325520ee1f33f0a268ec88515672982",
+      "KC-PYTHON-003": "0a5149579ff8356a9d690aa37d1095998db7b62e0ad2df00e3e99ff6048f726f"
+    },
+    "generators": {
+      "generate_roots.py": "4a033e56b77241287610316b0a14cbaf961e3797980c4608666b04e70e599658",
+      "root_manifest.json": "39c8aa9639a4594b0cb7463aab125f909616ddac5bca320d01a7981608707887"
+    },
+    "tools": {
+      "_build_backend.py": "9be029ef3fe448853d03d990124a3deeb7bb4df276f586d13d539ab5d1c5fd38",
+      "pyproject.toml": "81dd831d016263f416c2ab502544be4f197229597ef86984879968d9a1aadd4f"
+    },
+    "corpora": {
+      "legacy_ubl_characterization": "included in base_git_commit",
+      "hostile_extension_fixture": "6d8b92cff5ed00dd994c7222c1fd92eeda7071f97f22ec913de84d554a88aacd"
+    },
+    "dependency_locks": {
+      "requirements-build.lock": "99000b4540bf1e67248ac234b9f0bd39d6b13118ac16d903da20e06c8bb9e2c1"
+    },
+    "tests": {
+      "production_namespace": "518c7558bdc67ee1122d34e664b318926267ea03b88830439ef7b7f5236a9a4f"
+    },
+    "environment": {
+      "python": "3.13.2",
+      "os": "Windows",
+      "architecture": "AMD64",
+      "source_date_epoch": "315532800"
+    }
+  },
+  "tests_run": [
+    "pytest tests/python/ubl/test_production_namespace.py -q: 102 passed",
+    "pytest legacy UBL characterization suite -q: 232 passed",
+    "ruff check production source, generator, and tests: pass",
+    "mypy --strict production namespace: pass",
+    "checked-in generated source reproduction: pass",
+    "two clean-snapshot wheel and sdist builds: byte-identical",
+    "isolated installed-wheel import, typed-root, namespace, and CLI proof: pass",
+    "production controller bootstrap: UBL chassis gap resolved"
+  ],
+  "commands_executed": [
+    {
+      "argv": ["python", "-m", "pytest", "-q", "tests/python/ubl/test_production_namespace.py"],
+      "exit_code": 0,
+      "test_selector": "102 tests"
+    },
+    {
+      "argv": ["python", "-m", "pytest", "-q", "tests/python/ubl", "--ignore=tests/python/ubl/test_production_namespace.py"],
+      "exit_code": 0,
+      "test_selector": "232 characterization tests"
+    },
+    {
+      "argv": ["python", "-m", "ruff", "check", "src/python/ubl/src", "src/python/ubl/tools", "tests/python/ubl/test_production_namespace.py"],
+      "exit_code": 0
+    },
+    {
+      "argv": ["python", "-m", "mypy", "--strict", "src/python/ubl/src/format_factory/ubl"],
+      "exit_code": 0
+    },
+    {
+      "argv": ["python", "src/python/ubl/tools/generate_roots.py", "--check"],
+      "exit_code": 0
+    },
+    {
+      "argv": ["python", "-m", "build", "--no-isolation", "src/python/ubl"],
+      "exit_code": 1,
+      "reason": "PEP 639 license expression conflicted with the superseded license classifier; metadata was repaired before replay"
+    },
+    {
+      "argv": ["python", "-m", "build", "--no-isolation", "--outdir", "<clean-run-1>", "<clean-source-snapshot>"],
+      "exit_code": 0
+    },
+    {
+      "argv": ["python", "-m", "build", "--no-isolation", "--outdir", "<clean-run-2>", "<clean-source-snapshot>"],
+      "exit_code": 0
+    },
+    {
+      "argv": ["<isolated-python>", "-", "import installed format_factory.ubl and verify all typed roots"],
+      "exit_code": 0
+    },
+    {
+      "argv": ["python", "tools/supervisor/production_program.py", "bootstrap"],
+      "exit_code": 0
+    }
+  ],
+  "built_artifacts": [
+    {
+      "kind": "wheel",
+      "run": 1,
+      "sha256": "12a17e5f572473e58241439b59749deef11bf4d775dc78426ee67bd7a6e6b382"
+    },
+    {
+      "kind": "wheel",
+      "run": 2,
+      "sha256": "12a17e5f572473e58241439b59749deef11bf4d775dc78426ee67bd7a6e6b382"
+    },
+    {
+      "kind": "sdist",
+      "run": 1,
+      "sha256": "19bd691b19ee900df973bdb418cb2371ddfd25f4d21eca394d3bc7be93e6f60f"
+    },
+    {
+      "kind": "sdist",
+      "run": 2,
+      "sha256": "19bd691b19ee900df973bdb418cb2371ddfd25f4d21eca394d3bc7be93e6f60f"
+    }
+  ],
+  "reproducible_build_count": 2,
+  "wheel_reproducible": true,
+  "sdist_reproducible": true,
+  "installed_import_locations": [
+    "<isolated-venv>/Lib/site-packages/format_factory/ubl/__init__.py"
+  ],
+  "ledger_entry_id": "FF6-UBL-PRODUCTION-CHASSIS-001",
+  "ledger_entry_path": "reports/r90/product-code-change-ledger.json",
+  "ledger_entry_source_hashes_valid": true,
+  "proof_nodes": [],
+  "computed_promotion_state": "IMPLEMENTATION_IN_PROGRESS",
+  "current_gap_projection": {
+    "program_open_gap_count": 617,
+    "ubl_open_mandatory_obligations": 176,
+    "blocked_gap_count": 1,
+    "next_task": "AUTO-UBL-IMPLEMENT-UBL-EXT-001"
+  },
+  "open_gaps": [
+    "The UBL package chassis is verified but none of the remaining mandatory ProductContract obligations is promoted merely by this slice.",
+    "The generated source currently provides explicit typed document-root classes, not the complete generated common-component, simple-type, attribute, order, and cardinality model.",
+    "XSD validation, independent schema-engine cross-validation, code-list hooks, streaming parsing, curated Invoice/CreditNote/Order workflows, and cryptographic verification remain open.",
+    "The 91 minimal-root tests prove root recognition and semantic preservation, not schema-valid minimal instances or business-rule conformance.",
+    "The historical product-code ledger validator remains broken on legacy entry shapes; this entry is independently hash-checked.",
+    "Full fuzz, mutation, official corpus, cross-platform Python 3.11-3.14, SBOM, provenance, vulnerability, and extraction evidence remain open.",
+    "The canonical controller still requires every obligation to receive digest-bound executed proof before certification."
+  ],
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "IMPLEMENTATION_VERIFIED_NOT_CERTIFIED",
+  "timestamp": "2026-07-24T02:27:11+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

@@ -1,0 +1,49 @@
+{
+  "invocation_id": "autonomous-loop-main-reconcile-001",
+  "skill_id": "autonomous-loop",
+  "mode": "live",
+  "inputs": {
+    "sprint_track": "integration_reconciliation",
+    "task_id": "TC-FF6-MAIN-RECONCILE-001",
+    "base_ref": "origin/main@8566e7239aa34363c98f309a42ed720e7d3ce4a9",
+    "integration_ref": "codex/ff-six-python-consolidated@a2afa156b046c39fdf028135376d3ab2db3fe15a"
+  },
+  "allowed_files": [
+    ".supervisor/skill-registry.yaml",
+    "registry/blast-radius-register.yaml",
+    "registry/fixture-analysis-register.yaml",
+    "registry/found-issue-register.yaml",
+    "registry/root-cause-register.yaml",
+    "tools/supervisor/governance_validators_package_proof.py",
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/transcripts/package-install-proof-ipynb.json",
+    "reports/package-install-proof/transcripts/package-install-proof-nrrd.json",
+    "reports/package-install-proof/transcripts/package-install-proof-safetensors.json",
+    "reports/package-install-proof/transcripts/package-install-proof-xliff.json",
+    "reports/package-install-proof/transcripts/package-install-proof-ubl.json",
+    "reports/skills-rff6/skill-transcripts/autonomous-loop-main-reconcile-001.json"
+  ],
+  "actual_files_changed": [
+    ".supervisor/skill-registry.yaml",
+    "registry/found-issue-register.yaml",
+    "tools/supervisor/governance_validators_package_proof.py",
+    "registry/blast-radius-register.yaml",
+    "registry/fixture-analysis-register.yaml",
+    "registry/root-cause-register.yaml",
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/transcripts/package-install-proof-ipynb.json",
+    "reports/package-install-proof/transcripts/package-install-proof-nrrd.json",
+    "reports/package-install-proof/transcripts/package-install-proof-safetensors.json",
+    "reports/package-install-proof/transcripts/package-install-proof-xliff.json",
+    "reports/package-install-proof/transcripts/package-install-proof-ubl.json"
+  ],
+  "tests_run": [
+    "pytest focused merge suite: 320 passed",
+    "package-install-proof ipynb,nrrd,safetensors,xliff,ubl: 5/5 PASS; 10 passed, 1 skipped",
+    "structured YAML/JSON parse and Python compile checks: PASS",
+    "git diff --cached --check: PASS"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-07-28T07:40:00Z"
+}

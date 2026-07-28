@@ -1,0 +1,133 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-materialize-production-proof-safetensors-span-size-001",
+  "execution_id": "ff6-materialize-production-proof-safetensors-span-size-001",
+  "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-HEADER-001",
+  "skill_id": "materialize-production-proof",
+  "selected_skill_ids": [
+    "materialize-production-proof"
+  ],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-SAFETENSORS-PROOF-021",
+  "pre_mutation_guard_authorization_id": "753bfaaa67fa5061",
+  "requested_operation": "bind installed-wheel reader and writer behavior to the mandatory checked tensor-span size obligation without changing product source",
+  "inputs": {
+    "defect_id": "GAP-D2BBA065959E9837",
+    "failing_regression": "the mandatory tensor span size-equation obligation had no live digest-bound executed positive result",
+    "invalidation_input": "none; this is the first current proof for the obligation under the adapter-hardened source and package closure",
+    "target_product": "safetensors",
+    "obligation_id": "SAL-SAFETENSORS-OBL-833E2C047D1E5C91",
+    "compiled_obligation_text": "(tensor.rs Metadata.validate lines 627-659) The tensor byte span must equal the checked product of all shape dimensions and the dtype bit width divided by eight.",
+    "base_git_commit": "45e9d8fa"
+  },
+  "allowed_files": [
+    "reports/skills-rff6/skill-transcripts/materialize-production-proof-safetensors-span-size-001.json",
+    ".local/production-program/current-gaps.json",
+    ".local/production-program/executed-proofs.json",
+    ".local/production-program/journal.jsonl",
+    ".local/production-program/proof-graphs/safetensors/edges.jsonl",
+    ".local/production-program/proof-graphs/safetensors/nodes.jsonl",
+    ".local/production-program/state.json"
+  ],
+  "actual_files_changed": [
+    "reports/skills-rff6/skill-transcripts/materialize-production-proof-safetensors-span-size-001.json",
+    ".local/production-program/current-gaps.json",
+    ".local/production-program/executed-proofs.json",
+    ".local/production-program/journal.jsonl",
+    ".local/production-program/proof-graphs/safetensors/edges.jsonl",
+    ".local/production-program/proof-graphs/safetensors/nodes.jsonl",
+    ".local/production-program/state.json"
+  ],
+  "behavior_added": [],
+  "tests_run": [
+    ".local/venvs/safetensors-current-proof/Scripts/python.exe -m pytest tests/python/safetensors/test_obligation_writer_matrix.py::test_every_dtype_writes_deterministically_and_roundtrips tests/python/safetensors/test_obligation_writer_matrix.py::test_scalar_and_empty_tensor_writes_preserve_semantics tests/python/safetensors/test_obligation_writer_matrix.py::test_writer_rejects_inconsistent_payload_extent tests/python/safetensors/test_production_namespace.py::test_unsafe_offsets_rejected -q: 28 passed",
+    ".local/venvs/safetensors-current-proof/Scripts/python.exe -m pytest tests/production_program/test_production_program.py -q: 39 passed"
+  ],
+  "execution_notes": {
+    "non_proof_startup_attempts": [
+      "The first controller startup used the system Python and stopped before test execution because jsonschema was not installed in that interpreter.",
+      "The second controller startup used the proof environment but stopped before test execution because the nested Windows executable path was relative.",
+      "The successful execution used the absolute digest-identified proof-environment executable. Neither failed startup produced or journaled proof."
+    ],
+    "test_scope": "The single controller result binds one obligation to two declared test files and four selectors. It covers every declared dtype, scalar and zero-element shapes, deterministic valid roundtrips, writer payload-extent rejection, and reader byte-span rejection.",
+    "promotion_scope": "This closes only SAL-SAFETENSORS-OBL-833E2C047D1E5C91. It does not certify SafeTensors or satisfy any other obligation by test presence."
+  },
+  "validations": {
+    "mandatory_obligations_materialized": "PASS: 86 compiled mandatory obligations remain represented in the canonical graph",
+    "presence_is_not_proof": "PASS: the gap closed only after successful controller execution",
+    "one_obligation_per_executed_result": "PASS",
+    "complete_execution_input_closure": "PASS",
+    "installed_wheel_origin": "PASS",
+    "compiled_obligation_inspected": "PASS",
+    "valid_spans_equal_checked_shape_dtype_size": "PASS",
+    "invalid_reader_span_rejected": "PASS",
+    "invalid_writer_extent_rejected": "PASS",
+    "all_declared_dtypes_exercised": "PASS",
+    "scalar_and_empty_shape_semantics_exercised": "PASS",
+    "changed_test_or_fixture_invalidates": "PASS: controller regression suite",
+    "deleted_input_revokes_proof": "PASS: controller regression suite",
+    "nonzero_execution_rejected": "PASS: controller regression suite",
+    "three_run_determinism": "PASS: controller regression suite",
+    "manual_promotion_cannot_override": "PASS: controller regression suite",
+    "stale_proof_count_after_execution": 0,
+    "current_source_bound_proof_count": 50,
+    "mandatory_obligations_remaining": 36,
+    "promotion_state": "IMPLEMENTATION_IN_PROGRESS",
+    "promotion_claimed": "NO"
+  },
+  "proof": {
+    "obligation_id": "SAL-SAFETENSORS-OBL-833E2C047D1E5C91",
+    "proof_id": "PROOF-ACADCF49589A82FD0FA3833A61F546810A3A2AB4C26842E313865EBFDB4BF880",
+    "polarity": "positive",
+    "exit_code": 0,
+    "contract_digest": "e7c4939500768fa6a3bc19a7bd849e1e1883e9c707d9ba868c87fbe25ab64806",
+    "source_digest": "2808357e9ff54882bcc64430ed69bd8114cfff0d83d995629925b81c269bc068",
+    "test_digest": "bb95692135cb5a80cb992c875583e0b0eefc3be763138d55f5d3908fae7928cc",
+    "fixture_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "package_digest": "20eac2398a4a122154a3ba05abc4e41955cae4c797d71c72ca89ff7df2afd05a",
+    "dependency_digest": "bf8dee63c7abf526d178fe57c48e2d55ba04871cba72eea64a3c04dfbb9e269a",
+    "tool_digest": "b7c0f68d84382d04b000a97d01e8e625355513d0972a17a048f4cd241018ce20",
+    "environment_digest": "75b07074cd2557c80a5f5ae68d4d013376ebf5f0e922faad3bee4b03ba5d8b76",
+    "stdout_sha256": "0d0bff9a1520fd42175a9214e0dacf31a52e85ab34e9a6426330a3077116f90b",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "core_wheel_sha256": "948c1e9bad28121efbc4d1084bbf3e757a636dfe0889d6e7e3a34e2af4026077",
+    "safetensors_wheel_sha256": "2af3f3c40eabafc5b56df8b483f5186d5ace8f61fed19284238eb69e8807429b",
+    "installed_core_content_digest": "a805d232be2f4337001146c9719f1a955e5ad607a049d4ae19dab466d0299a2c",
+    "installed_safetensors_content_digest": "80b443fa9fa3e7e602af0cb9cdccbe1f21646b7d91ad8d6ff07fbf6a64622704"
+  },
+  "controller_result": {
+    "final_graph_digest": "8a2abc0fa8b56a0327ae9790f1aa648b8480e9fea4eeb8575219aadea5087ac2",
+    "program_open_gaps": 566,
+    "safetensors_open_gaps": 36,
+    "stale_proof_obligations": [],
+    "next_gap_id": "GAP-9E8D26062317CBCE",
+    "next_obligation_id": "SAL-SAFETENSORS-OBL-83A3FF76296963EE",
+    "next_task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-VALIDATE-001"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for this tensor-span obligation; no certification claimed",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES, retained from the active mission session",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, retained in the mission receipt chain",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "SAFETENSORS_CHECKED_SPAN_SIZE_OBLIGATION_PROVED_WITHOUT_SOURCE_CHANGE_NOT_CERTIFIED",
+  "timestamp": "2026-07-25T21:00:29.4390971Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

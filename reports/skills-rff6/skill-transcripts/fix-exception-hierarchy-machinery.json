@@ -1,0 +1,42 @@
+{
+  "invocation_id": "FF6-FIX-EXCEPTION-HIERARCHY-20260724",
+  "skill_id": "fix-exception-hierarchy",
+  "task_id": "AUTO-MACHINERY-INTEGRITY-EXCEPTIONS",
+  "mode": "live",
+  "inputs": {"format_id": "_machinery"},
+  "allowed_files": [
+    ".claude/commands/fix-exception-hierarchy.md",
+    "tools/backfill/exception_hierarchy_backfill.py",
+    "tests/tools/test_backfill_healing.py",
+    "reports/skills-rff6/skill-transcripts/fix-exception-hierarchy-machinery.json"
+  ],
+  "actual_files_changed": [
+    ".claude/commands/fix-exception-hierarchy.md",
+    "tools/backfill/exception_hierarchy_backfill.py",
+    "tests/tools/test_backfill_healing.py",
+    "reports/skills-rff6/skill-transcripts/fix-exception-hierarchy-machinery.json"
+  ],
+  "tests_run": [
+    "tests/tools/test_backfill_healing.py: 8 passed",
+    "Ruff exception repair, analytics wiring, and regression tests: PASS",
+    "validate_skill_contracts: fix-exception-hierarchy PASS"
+  ],
+  "validations": {
+    "exception_root_is_format_factory_error": "PASS",
+    "no_shadow_class_redefinition": "PASS",
+    "focused_tests": "PASS",
+    "dry_run_default": "PASS",
+    "atomic_apply": "PASS",
+    "idempotent_replay": "PASS"
+  },
+  "output_digests": {
+    ".claude/commands/fix-exception-hierarchy.md": "edbb361e70b00cb16eafc2edf5440ad50a88b733fc21c452819106f528ca7e10",
+    "tools/backfill/exception_hierarchy_backfill.py": "3fbd6488be3e3b0ca18fe44fa1a7bd7a4be969e09c5e9b0965f63de55a20a31a",
+    "tests/tools/test_backfill_healing.py": "4dd46161a05a8d013ee610f2ebfe21afc5796f05049ff933b9607b680a2c7ca2"
+  },
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-07-24T00:18:01+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

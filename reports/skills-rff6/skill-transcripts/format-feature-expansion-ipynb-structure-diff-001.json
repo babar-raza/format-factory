@@ -1,0 +1,175 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-format-feature-expansion-ipynb-structure-diff-001",
+  "execution_id": "ff6-format-feature-expansion-ipynb-structure-diff-001",
+  "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-DIFF-001",
+  "skill_id": "format-feature-expansion",
+  "selected_skill_ids": [
+    "format-feature-expansion"
+  ],
+  "skill_route": {
+    "operation_class": "production_product_contract_obligation_expansion",
+    "legacy_route_considered": "product_deepening",
+    "resolution": "The mission-approved production registry entry and TC-FF6-MACH-001 bind complete ProductContract obligation slices to format-feature-expansion. The historical reconciler's TESTED label was rejected because it mapped unrelated analytics symbols to the diff capability.",
+    "coverage_result": "SKILL_COVERAGE_CONFIRMED: skill_id=format-feature-expansion, work_type=production_product_contract_obligation"
+  },
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-IPYNB-SOURCE-009",
+  "pre_mutation_guard_authorization_id": "8f7718d7ff7bf7a9",
+  "requested_operation": "implement a stable-cell-identity notebook diff with minimum move detection, field-distinguished reports, explicit ignore policies, and atomic machine-applicable patches guarded by logical-base preconditions",
+  "inputs": {
+    "format_id": "ipynb",
+    "profile_id": "production",
+    "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-DIFF-001",
+    "obligation_id": "SAL-IPYNB-OBL-6790961797EE55CD",
+    "obligation_ids": [
+      "SAL-IPYNB-OBL-6790961797EE55CD",
+      "SAL-IPYNB-OBL-7B453CA0FD8BCD5D"
+    ],
+    "capability_id": "IPYNB-DIFF-001",
+    "contract_digest": "56762498619ac994bbc5bceac7240357118f1046bda48d5e4bdffc6baa1129ac",
+    "contract_source_digest": "e33340b8d1a9ee1b299d51140c1dc8079386000cab2b294f8aaa2a2f91d49cad",
+    "authority_digests": {
+      "SRC-NB-002": "4d3750b55006e92d8063a6ac427a84eb1f91c44e376d90de53d03893674991d9"
+    },
+    "independent_oracle": {
+      "distribution": "nbdime",
+      "version": "4.0.2",
+      "schema_validator": "nbformat 5.10.4"
+    },
+    "root_cause": "The package had analytics queries but no structural diff or patch model. The historical contract reconciler incorrectly credited IPYNB-DIFF-001 from unrelated get_* symbols, so repeated runs could preserve a TESTED label without any move detection, ignore policy, patch precondition, or executable patch behavior.",
+    "affected_layer": "IPYNB pure model, public API, version-control workflow, preservation behavior, and package documentation",
+    "planned_paths": [
+      "src/python/ipynb/src/format_factory/ipynb/model/diff.py",
+      "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+      "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+      "src/python/ipynb/README.md",
+      "tests/python/ipynb/test_obligation_structure_diff.py",
+      "reports/r90/product-code-change-ledger.json",
+      "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-structure-diff-001.json"
+    ],
+    "proof_inputs": [
+      "shared/format-contracts/ipynb.yaml",
+      "shared/format-contracts/research/ipynb.yaml",
+      "tests/python/ipynb/test_obligation_structure_diff.py",
+      ".local/build/ipynb-diff-final-a/format_factory_ipynb-0.2.0.dev0-py3-none-any.whl",
+      ".local/build/ipynb-diff-final-b/format_factory_ipynb-0.2.0.dev0-py3-none-any.whl",
+      ".local/venvs/ipynb-current-proof",
+      ".local/venvs/ipynb-diff-oracle",
+      ".local/venvs/ipynb-static"
+    ],
+    "base_git_commit": "c9c5ba6d59daecb58c85ef9df93e568182860fb8"
+  },
+  "allowed_files": [
+    "src/python/ipynb/src/format_factory/ipynb/model/diff.py",
+    "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+    "src/python/ipynb/README.md",
+    "tests/python/ipynb/test_obligation_structure_diff.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-structure-diff-001.json"
+  ],
+  "actual_files_changed": [
+    "src/python/ipynb/src/format_factory/ipynb/model/diff.py",
+    "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+    "src/python/ipynb/README.md",
+    "tests/python/ipynb/test_obligation_structure_diff.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-structure-diff-001.json"
+  ],
+  "defect_reproduction": {
+    "result": "FAILURE_REPRODUCED",
+    "command": "pytest -q tests/python/ipynb/test_obligation_structure_diff.py",
+    "outcome": "Test collection failed because format_factory.ipynb exported no CellField, diff_notebooks, patch type, or patch-precondition error."
+  },
+  "implementation": {
+    "identity": "Both notebooks must provide unique non-empty cell IDs. Added, removed, moved, and modified cells are reconciled by ID rather than position.",
+    "move_detection": "An O(n log n) longest-increasing-subsequence calculation returns a minimum deterministic moved-cell set. Insertions and removals do not create move noise for unchanged common order.",
+    "field_model": "Cell changes separately report cell type, source, metadata, attachments, execution count, outputs, and unknown fields; notebook-level fields are reported independently. Presence flags distinguish a missing member from explicit JSON null.",
+    "policy": "DiffPolicy can ignore outputs, execution counts, and named transient metadata keys. The same projection controls both reporting and patch preconditions.",
+    "patch": "NotebookPatch stores a defensive complete target snapshot and a SHA-256 logical-base fingerprint. Apply is non-mutating and atomic; a visible concurrent change raises PatchPreconditionError before producing a result.",
+    "ignored_value_preservation": "Policy-ignored values are restored from matching existing cells during patch application. Values are not copied across cell-type or output-type changes, and complete target values remain on newly added cells.",
+    "input_integrity": "Complete source and target documents must be finite JSON-compatible values even when a policy would hide a field.",
+    "unknown_data": "The target snapshot preserves unknown JSON members exactly; no renderer, executor, or schema coercion is invoked.",
+    "tradeoff": "A patch retains a complete target snapshot, so patch memory is proportional to target document size. This is intentionally traded for atomicity and unknown-field fidelity; compact operation serialization remains a future optimization and is not claimed."
+  },
+  "tests_run": [
+    "failure-first structure-diff test: collection failed because CellField did not exist",
+    "focused structure-diff obligation tests: 16 passed, including all six cell-order permutations and reverse-patch metamorphic checks",
+    "source-tree format regression excluding installed-origin assertions: 313 passed, 3 deselected",
+    "Ruff 0.14.14 on production namespace and structure-diff test: PASS",
+    "Mypy 1.18.2 strict on production namespace: PASS, 26 source files",
+    "two isolated SOURCE_DATE_EPOCH=315532800 wheels: identical SHA-256 fbdf260e516b8ac3b60911614cb1908fdb81f950ecbac645130d592213f8dbf7",
+    "installed-wheel full tests/python/ipynb suite: 316 passed",
+    "installed independent differential oracle: four valid move/edit/add/remove notebooks applied identically by nbdime 4.0.2 and format-factory-ipynb; nbformat 5.10.4 accepted every vector",
+    "installed 10,000-cell scale check: one end-to-front move detected as exactly one move in 0.142 seconds",
+    "production control-plane and production-skill regression: 43 passed",
+    "repository real-ledger test remains the known non-strict xfail because historical entries use the legacy mixed source_files schema"
+  ],
+  "ledger_entry_id": "FF6-IPYNB-STRUCTURE-DIFF-001",
+  "ledger_entry_path": "reports/r90/product-code-change-ledger.json",
+  "validations": {
+    "obligation_and_format_integrity": "PASS: two current IPYNB-DIFF-001 obligations",
+    "failure_first": "PASS",
+    "stable_identity_matching": "PASS",
+    "minimum_deterministic_move_detection": "PASS",
+    "insertion_and_removal_move_noise_control": "PASS",
+    "field_distinction_and_presence_semantics": "PASS",
+    "ignore_policy_matrix": "PASS",
+    "atomic_non_mutating_patch": "PASS",
+    "stale_base_precondition_rejection": "PASS",
+    "ignored_value_preservation": "PASS",
+    "different_type_restore_guard": "PASS",
+    "complete_json_input_validation": "PASS",
+    "permutation_and_reverse_patch_metamorphic": "PASS",
+    "independent_nbdime_oracle": "PASS: 4 valid vectors",
+    "official_nbformat_schema_validation": "PASS: oracle corpus",
+    "large_cell_order_behavior": "PASS: O(n log n) move detection observed on 10,000 cells",
+    "installed_wheel_origin": "PASS",
+    "reproducible_wheel": "PASS",
+    "typing_and_lint": "PASS",
+    "public_api_blast_radius": "PASS: nine additive pre-1.0 symbols; no existing symbol removed or renamed",
+    "declared_regression_tier": "PASS: 316 installed-wheel tests",
+    "product_ledger_exact_source_hashes": "PASS: all three current source entries match the current files",
+    "legacy_product_ledger_validator": "KNOWN GLOBAL XFAIL: historical mixed-schema entries prevent a whole-ledger pass; no global pass claimed",
+    "source_changed": "YES: canonical proof replay remains deferred to the consolidated source-wave boundary",
+    "new_proof_nodes": "NONE: no stale source proof was materialized",
+    "promotion_claimed": "NO"
+  },
+  "output_digests": {
+    "src/python/ipynb/src/format_factory/ipynb/model/diff.py": "fb554f435bc058a07afbf23299d62d7bed30c4d163549df2310d1086d638d831",
+    "src/python/ipynb/src/format_factory/ipynb/model/__init__.py": "8a8e8caa0e6e1296a2f66fa6decf655cab72eb09a5ed9dfcbe038de196f45029",
+    "src/python/ipynb/src/format_factory/ipynb/__init__.py": "8308b8b8af9b3f93940ad0a1d2a4815e871cc7b0c4aff9a5fc1d0c98230b5474",
+    "src/python/ipynb/README.md": "a75e38ff5045ec7bc37cfbb5e84c50d7b0eb64db7d68f84045476102444a5142",
+    "tests/python/ipynb/test_obligation_structure_diff.py": "9e092b59e75e08178cb7cdaeff2b8a82ce19744df14f32f1e89c9402cd8b148e",
+    "reports/r90/product-code-change-ledger.json": "3a34595a99530a3907bf174baf72344abd510e2fe9d9ffb2c1cbfe1099032046",
+    "format_factory_ipynb-0.2.0.dev0-py3-none-any.whl": "fbdf260e516b8ac3b60911614cb1908fdb81f950ecbac645130d592213f8dbf7"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for this bounded source slice; proof replay is deferred until the consolidated source wave is stable",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for implementation verification; no obligation closure or certification claimed",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES: no contradiction was found",
+    "14_memory_update_trigger": "NOT APPLICABLE: no gate, phase, or architecture transition occurred",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "IPYNB_STRUCTURE_DIFF_AND_GUARDED_PATCH_IMPLEMENTED_CONSOLIDATED_PROOF_REPLAY_PENDING",
+  "timestamp": "2026-07-26T02:18:21.7339839Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

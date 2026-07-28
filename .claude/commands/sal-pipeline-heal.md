@@ -1,6 +1,6 @@
 ---
-version: "1.0"
-last-updated: "2026-06-21"
+version: "1.2"
+last-updated: "2026-07-23"
 phase-available: "all"
 gate-required: null
 created-by: TC-SAL-SKILL-001 (skill-governance-sync-sprint)
@@ -11,7 +11,8 @@ product_track: sal_infrastructure
 
 Execute one governed sprint of SAL (Specification Authority Layer) pipeline healing work.
 This skill governs all implementation work against ROOT-01..ROOT-08 root causes documented
-in `plans/strategic/snoopy-juggling-seal.md`.
+in `plans/strategic/snoopy-juggling-seal.md` and current SAL integrity gaps materialized by
+the production controller.
 
 **This is the REQUIRED skill for all TC-SAL-IMPL-* and TC-SAL-DIAG-* taskcards that are
 NOT STARTED. No agent may modify SAL implementation files without first invoking this skill.**
@@ -47,6 +48,7 @@ Run this skill BEFORE any sprint that involves:
 - Running `sal_master_runner.py` with source-modifying flags
 - Producing or validating `FACT-<FORMAT>-NNN` fact IDs
 - Modifying `sal-facts-latest.json` or context packs
+- Defining or applying content-addressed authority proofs for a SAL fact
 
 Do NOT run for read-only recon or evidence reviews.
 
@@ -68,6 +70,8 @@ Do NOT run for read-only recon or evidence reviews.
 4. Confirm the spec cache path exists and contains a SHA-256 verified source file.
    - If spec cache is missing: this is a TRUE_EXTERNAL_GATE (spec acquisition required).
    - Do NOT proceed with empty or missing spec cache. Report: `BLOCKED_SPEC_CACHE_MISSING`.
+   - For `schema_migration`, committed canonical stores plus their derived combined
+     projection satisfy this precondition; a single-format source cache is not required.
 5. Confirm `tools/specification-authority-layer/` contains the tool for the target stage.
 6. Read the preservation constraints in Section 12 of snoopy-juggling-seal.md.
 
@@ -89,9 +93,13 @@ Do NOT run for read-only recon or evidence reviews.
    - Each fact has: format_id, spec_id, spec_version, source_sha256, section_id, verification_status.
    - Facts stored in `verified-facts-review.yaml` under the format's workbench directory.
 5. **Run focused tests** if test files exist for the modified tool.
-6. **Write skill transcript** to `reports/skills-r<N>/skill-transcripts/sal-pipeline-heal-<taskcard_id>.json`
+6. For authority promotion, run `tools/spec/verify_sal_facts.py`. A literal
+   `verification_status: verified` edit is not proof. The verifier must bind
+   the exact claim, evidence manifest, authority artifact/member, verifier
+   closure, and passing receipt before updating a canonical store.
+7. **Write skill transcript** to `reports/skills-r<N>/skill-transcripts/sal-pipeline-heal-<taskcard_id>.json`
    with schema: `{skill_id, taskcard_id, format_id, root_cause_id, changed_files, output_artifacts, test_results, verdict}`.
-7. **Update plan** status for this taskcard in `plans/strategic/snoopy-juggling-seal.md`.
+8. **Update plan** status for this taskcard in `plans/strategic/snoopy-juggling-seal.md`.
 
 ## Mandatory Validations
 
@@ -104,6 +112,14 @@ Do NOT run for read-only recon or evidence reviews.
 ## Allowed Paths
 
 - `tools/specification-authority-layer/` (read + targeted repair)
+- `tools/spec/` (targeted SAL merge/status repair)
+- `schemas/sal-facts/` (schema migration only)
+- `shared/sal-facts/evidence/` (reviewed declarative authority assertions)
+- `shared/sal-facts/{format_id}.yaml` (verifier-mediated status and proof only)
+- `reports/sal-verification/` (content-addressed verification receipts)
+- `tests/tools/` and `tests/spec_authority/` (focused regression controls)
+- `tools/supervisor/production_program.py` and
+  `tests/production_program/test_production_program.py` (live gap projection only)
 - `.local/spec-cache/<format>/<version>/workbench/` (write fact artifacts)
 - `.local/sal-output/` (write runner output)
 - `plans/strategic/snoopy-juggling-seal.md` (update taskcard status only)
@@ -120,6 +136,8 @@ Do NOT run for read-only recon or evidence reviews.
 
 **NEVER:**
 - Delete or overwrite verified facts already in workbench YAML files
+- Promote a fact from a label, keyword count, filename, or test presence
+- Hand-author a passing receipt or bypass a failed declarative assertion
 - Modify `validate_spec_fact_refs.py` in ways that weaken validation
 - Change fact IDs for already-validated facts
 - Mark a taskcard COMPLETE without a skill transcript
@@ -172,6 +190,11 @@ Per Section 22 of snoopy-juggling-seal.md, do NOT:
 ## Changelog
 
 - 1.0 (2026-06-21): Initial version — TC-SAL-SKILL-001 (skill-governance-sync-sprint, SKILL-GAP-011)
+
+- 1.1 (2026-07-23): Added controller-materialized schema-migration coverage,
+  canonical-status policy checks, and live gap projection.
+- 1.2 (2026-07-23): Required content-addressed, exact-assertion receipts for
+  authority promotion; labels and keyword overlap are non-promoting.
 
 ## Stop Conditions
 

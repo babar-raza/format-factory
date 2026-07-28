@@ -1,66 +1,27 @@
-# Format Factory — xliff
+# format-factory-xliff
 
-Parse, edit, and write OASIS XLIFF 2.1 (.xliff, .xlf) localization files with Format Factory.
-
-## Installation
-
-<!-- BEGIN:README-INSTALLATION generated=2026-07-15T19:25:43+00:00 source=package-metadata -->
-```bash
-pip install format-factory-xliff
-```
-<!-- END:README-INSTALLATION -->
-
-## Quick Start
+Typed, bounded XLIFF 2.0/2.1 lifecycle support under the implicit
+`format_factory` namespace.
 
 ```python
-from xliff.xliff_codec import load_xliff, write_xliff
+from format_factory.xliff import dump, load, validate
 
-model = load_xliff("translation.xliff")
-for f in model["files"]:
-    for unit in f["units"]:
-        print(unit["segment"]["source"], "->", unit["segment"]["target"])
-
-# Mutate a segment's translation state, then write back
-model["files"][0]["units"][0]["segment"]["state"] = "reviewed"
-write_xliff(model, "translation-reviewed.xliff")
+document = load("messages.xlf")
+report = validate(document)
+if report.is_valid:
+    dump(document, "canonical.xlf")
 ```
 
-## Features
+This production chassis provides strict XML safety checks, typed core
+containers, structured inline content, deterministic XML output, unknown
+namespace preservation, validation diagnostics, and resource limits. It never
+resolves skeleton or external resource references.
 
-- Structural inline markup preservation (`pc`/`sc`/`ec`/`ph`/`mrk`) — survives load→edit→save without flattening
-- Segment `state` write-back (translated/reviewed/final, etc.)
-- Notes preservation (file-level and unit-level)
-- Group hierarchy preservation, including nested groups
-- Core file/unit/segment structure with source/target language
+The package is still `0.2.0.dev0`. Complete XLIFF 2.1 module typing, official
+schema execution, processing-requirement coverage, independent interoperability,
+fuzzing, mutation, and release matrices remain certification obligations. XLIFF
+2.2 is not accepted by the stable profile and XLIFF 1.2 is intentionally not
+represented by this model.
 
-**Scope note:** optional OASIS modules and XLIFF 1.2 write support remain out of scope for this pass. See `reports/spec-coverage/xliff-deferred.json`.
-
-## License
-
-<!-- BEGIN:README-LICENSE generated=2026-07-15T19:25:43+00:00 source=package-metadata -->
-Apache-2.0
-<!-- END:README-LICENSE -->
-
-## Package Info
-
-<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-15T19:25:43+00:00 source=repository-metadata -->
-| Field | Value |
-|---|---|
-| Format | XLIFF (XML Localisation Interchange File Format) |
-| Track | python |
-| Package | format-factory-xliff |
-| Version | 0.1.0.dev0 |
-| License | Apache-2.0 |
-| Python | >=3.9 |
-| .NET | unknown |
-| Spec | OASIS XLIFF 2.1 |
-| QName coverage | 3/3 implemented |
-| Source files | 16 |
-| Test files | 7 |
-<!-- END:README-PACKAGE_INFO -->
-
-## Public API
-
-<!-- BEGIN:README-PUBLIC_API generated=2026-07-15T19:25:43+00:00 source=src-python-init -->
-- `(dynamic)`
-<!-- END:README-PUBLIC_API -->
+See `MIGRATION.md` for alpha import-path changes and `SECURITY.md` for the
+untrusted-input policy.

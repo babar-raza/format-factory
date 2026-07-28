@@ -1,0 +1,107 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-repair-format-contract-schema-vocabulary-003",
+  "execution_id": "ff6-repair-format-contract-schema-vocabulary-003",
+  "task_id": "REPAIR-FORMAT-CONTRACT-SCHEMA-VOCAB",
+  "skill_id": "compile-format-contract",
+  "selected_skill_ids": [
+    "compile-format-contract",
+    "product-contract-runtime-repair"
+  ],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260723T145613-3373a8",
+  "coordination_identity": "agent-codex-20260723T145613-3373a8",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "RFF6-MACH-FORMAT-CONTRACT-SCHEMA-003",
+  "requested_operation": "repair the strict schema vocabulary needed to represent binary-tensor interoperability without semantic relabeling",
+  "inputs": {
+    "format_id": "safetensors",
+    "defect_id": "RC-FORMAT-CONTRACT-SCHEMA-VOCAB-003",
+    "failing_regression": "Strict ProductContract compilation rejected the generated SafeTensors contract on data model, interoperability category, and descriptor-layer enums.",
+    "expected_invalidation_input": "format-contract schema digest and binary-tensor family-pack digest"
+  },
+  "decision": {
+    "data_model_type": "Use the existing cross-format 'binary' model type; do not create a family-specific enum.",
+    "validation_layer": "Map descriptor validation to the existing semantic 'type' layer.",
+    "capability_category": "Add 'interoperability' as a first-class cross-format category because external implementation exchange is a release-blocking capability, not a convenience feature.",
+    "schema_boundary": "Unknown categories remain rejected; the enum was extended by one named concept rather than opened to arbitrary strings."
+  },
+  "allowed_files": [
+    "schemas/format-contracts/format-contract.schema.json",
+    "shared/format-contracts/policy/family-packs/binary_tensor.yaml",
+    "tests/format_contract/test_determinism_foundation.py",
+    ".claude/commands/compile-format-contract.md",
+    ".supervisor/skill-registry.yaml",
+    ".supervisor/skill-contract-validation-results.yaml",
+    "reports/skills-rff6/skill-transcripts/repair-format-contract-schema-vocabulary-003.json"
+  ],
+  "actual_files_changed": [
+    "schemas/format-contracts/format-contract.schema.json",
+    "shared/format-contracts/policy/family-packs/binary_tensor.yaml",
+    "tests/format_contract/test_determinism_foundation.py",
+    ".claude/commands/compile-format-contract.md",
+    ".supervisor/skill-registry.yaml",
+    "reports/skills-rff6/skill-transcripts/repair-format-contract-schema-vocabulary-003.json"
+  ],
+  "base_git_commit": "6d6231ef04f5a039df795a47ae2cf5e803f347c2",
+  "input_digests": {
+    "contract_schema": "f759eec8bb412da038fd2738a8989b1869221e6130944285bcfeccb2c67ba86b",
+    "binary_tensor_pack": "229a99aeb5e4d5787049adb59ba7f07f21205977c583fe5268b8a84f19535574",
+    "determinism_tests": "ee05eb67bcb302574ef5a6de4cc338ff472cf963181d99f52d4aab16a3fa42bf",
+    "compile_skill_command": "90123db5f979ed3e3a11c6a3c42a72cfade0e6879bfe24f09d157fc4517ba7e0",
+    "skill_registry": "e533e8d8c0226964740898ca6ea3173590b873c72fb87f820da5f2cb38c158a8"
+  },
+  "tests_run": [
+    "SafeTensors in-memory contract compiles and passes the legacy JSON schema: pass",
+    "interoperability remains a distinct capability category: pass",
+    "unregistered capability category remains rejected: pass",
+    "combined family and contract focused suite: 36 passed",
+    "binary-tensor family validation and deterministic replay: pass",
+    "Ruff focused regression: pass",
+    "skill registry contracts: 194 skills, 0 FAIL, 0 WARN"
+  ],
+  "commands_executed": [
+    {
+      "argv": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/format_contract/test_family_pack_validator.py",
+        "tests/format_contract/test_determinism_foundation.py",
+        "-q"
+      ],
+      "exit_code": 0,
+      "test_selector": "36 tests"
+    },
+    {
+      "argv": [
+        "python",
+        "tools/format_contract/family_pack_validator.py",
+        "--pack",
+        "shared/format-contracts/policy/family-packs/binary_tensor.yaml",
+        "--verify-idempotency"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "tools/supervisor/validate_skill_contracts.py"
+      ],
+      "exit_code": 0,
+      "test_selector": "194 skills"
+    }
+  ],
+  "proof_nodes": [],
+  "computed_promotion_state": "NOT_APPLICABLE_SCHEMA_REPAIR",
+  "open_gaps": [
+    "The committed schema and family inputs must be forward-compiled before strict SafeTensors readiness can be recomputed."
+  ],
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "STRICT_SCHEMA_REPRESENTS_BINARY_TENSOR_INTEROPERABILITY_AND_REMAINS_CLOSED",
+  "timestamp": "2026-07-24T03:30:34+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

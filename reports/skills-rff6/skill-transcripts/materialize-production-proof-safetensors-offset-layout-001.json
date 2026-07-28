@@ -1,0 +1,90 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-materialize-production-proof-safetensors-offset-layout-001",
+  "execution_id": "ff6-materialize-production-proof-safetensors-offset-layout-001",
+  "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-MODEL-001",
+  "skill_id": "materialize-production-proof",
+  "selected_skill_ids": [
+    "materialize-production-proof"
+  ],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-SAFETENSORS-PROOF-007",
+  "pre_mutation_guard_authorization_id": "e626de32bb60d437",
+  "requested_operation": "materialize installed-wheel proof of contiguous, non-overlapping, hole-free SafeTensors payload indexing",
+  "inputs": {
+    "defect_id": "GAP-95F9E9FF0E74B319",
+    "target_product": "safetensors",
+    "obligation_id": "SAL-SAFETENSORS-OBL-0C953736CF0A664C",
+    "polarity": "positive",
+    "test_path": "tests/python/safetensors/test_obligation_offset_layout.py",
+    "base_git_commit": "0bd7c9b4"
+  },
+  "allowed_files": [
+    "reports/skills-rff6/skill-transcripts/materialize-production-proof-safetensors-offset-layout-001.json"
+  ],
+  "actual_files_changed": [
+    "reports/skills-rff6/skill-transcripts/materialize-production-proof-safetensors-offset-layout-001.json"
+  ],
+  "behavior_added": [],
+  "tests_run": [
+    "tools/supervisor/production_program.py prove --format safetensors --obligation SAL-SAFETENSORS-OBL-0C953736CF0A664C --polarity positive --test tests/python/safetensors/test_obligation_offset_layout.py --package <core-wheel> --package <safetensors-wheel> --run <python> -m pytest tests/python/safetensors/test_obligation_offset_layout.py -q: exit 0, 4 passed"
+  ],
+  "validations": {
+    "one_obligation_per_executed_result": "PASS",
+    "exact_positive_polarity": "PASS",
+    "complete_execution_input_closure": "PASS",
+    "installed_wheel_origin": "PASS",
+    "contiguous_offsets_accepted": "PASS",
+    "gaps_rejected": "PASS",
+    "overlaps_rejected": "PASS",
+    "unindexed_trailing_bytes_rejected": "PASS",
+    "stale_proof_count_after_execution": 0,
+    "promotion_claimed": "NO"
+  },
+  "proof": {
+    "format_id": "safetensors",
+    "obligation_id": "SAL-SAFETENSORS-OBL-0C953736CF0A664C",
+    "obligation_text": "(README Notes line 99 and tensor.rs Metadata.validate) The data buffer must be entirely indexed by tensor entries without holes, and ordered tensor offsets must be contiguous and non-overlapping.",
+    "proof_id": "PROOF-1B8C0F1F7ABE732476D94CE2E1A7A5BDDDA104284EE5DE889B32B0B5CCCF0F9B",
+    "polarity": "positive",
+    "contract_digest": "e7c4939500768fa6a3bc19a7bd849e1e1883e9c707d9ba868c87fbe25ab64806",
+    "source_digest": "2404b116b048c312a3c1956eeb5803ddd9e98a1eb40a87dcc11b7398849226f7",
+    "test_digest": "2d9470485b3425977f97db2ad0ab7948f5f1452951bb7f3e18e167e72b01b4f3",
+    "fixture_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "package_digest": "6f11e3c9a5f32c4e0fc17d839c218e8246d4fc210bcd912fa3feceae9a258102",
+    "dependency_digest": "bf8dee63c7abf526d178fe57c48e2d55ba04871cba72eea64a3c04dfbb9e269a",
+    "tool_digest": "b7c0f68d84382d04b000a97d01e8e625355513d0972a17a048f4cd241018ce20",
+    "environment_digest": "525a721d888decaff7d0fd6d189bc20f5ad1f783046860f72738eb579f09d9ac",
+    "state_proof_digest": "52709ff25a9516f37b32524a7846c51882ac4d24a491851e70eabe772bcc40f9",
+    "command_exit_code": 0,
+    "program_open_gaps_before": 611,
+    "program_open_gaps_after": 610,
+    "mandatory_obligations_remaining": 80
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for this single offset-layout obligation; no SafeTensors certification claimed",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES, retained from the active mission session",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, retained in the mission receipt chain",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "SAFETENSORS_OFFSET_LAYOUT_OBLIGATION_PROVED_NOT_CERTIFIED",
+  "timestamp": "2026-07-25T18:58:00.0000000Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

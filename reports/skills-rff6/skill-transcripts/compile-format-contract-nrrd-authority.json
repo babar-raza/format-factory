@@ -1,0 +1,48 @@
+{
+  "invocation_id": "FF6-NRRD-CONTRACT-AUTHORITY-20260723",
+  "skill_id": "compile-format-contract",
+  "task_id": "AUTO-NRRD-CONTRACT-REFRESH",
+  "mode": "live",
+  "inputs": {
+    "format_id": "nrrd",
+    "authority_sha256": "43ca6102cc998e0191e225d7954278547d491e29b74a132b3118571d85a8b0d5",
+    "sal_store_sha256": "bfcc20a61e50658a1c29633b70cdffc98cafae6d2587dc268e9ea074bcda1ba6"
+  },
+  "allowed_files": [
+    "shared/format-contracts/ipynb.yaml",
+    "shared/format-contracts/nrrd.yaml",
+    "registry/format-contract-registry.yaml",
+    "reports/skills-rff6/skill-transcripts/compile-format-contract-nrrd-authority.json"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/ipynb.yaml",
+    "shared/format-contracts/nrrd.yaml",
+    "registry/format-contract-registry.yaml",
+    "reports/skills-rff6/skill-transcripts/compile-format-contract-nrrd-authority.json"
+  ],
+  "tests_run": [
+    "contract compiler --verify-idempotency ipynb: PASS",
+    "contract compiler --verify-idempotency nrrd: PASS",
+    "strict NRRD ProductContract: ready with 91 obligations",
+    "production controller contract readiness: PASS"
+  ],
+  "validations": {
+    "readiness_gate_enforced": "PASS",
+    "deterministic_output": "PASS",
+    "registry_updated": "PASS",
+    "no_product_source_mutation": "PASS",
+    "live_sal_proof_closure": "PASS"
+  },
+  "output_digests": {
+    "shared/format-contracts/ipynb.yaml": "ee07f3208e27429a1d7d5f4128dba90f97cb34cf37a914aa756ae21cbc1df45a",
+    "shared/format-contracts/nrrd.yaml": "9e7d2dff3f9ec1b3ea0bada62a685cfee8d61cd7e630cc85464fcfb0acd201f2",
+    "registry/format-contract-registry.yaml": "22648fc7b34bb2392a90a2f97f8b2ba09ccba3fdcd03d157428fa46b234a9dbb",
+    "strict_ipynb_product_contract": "c4f9437af8e7bebb917a3defc10e98b1f16f02e0394ea84853e4b11559d9a6e1",
+    "strict_nrrd_product_contract": "44465e78cdbff35b40a6e38db183657db8408823431f13d8292e56ca28622464"
+  },
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-07-23T23:30:00+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

@@ -2,7 +2,7 @@ knowledge_id: KC-PYTHON-002
 stable_semantic_key: python_format_source_structure
 title: Python Format Package Directory Layout (Three-Layer)
 subject_type: DIRECTORY_LAYOUT
-scope: All Python format packages in src/python/*/
+scope: Legacy Python format packages in src/python/*/ until a package is migrated under KC-PYTHON-003
 status: VERIFIED_CURRENT
 enforcement: PARTIALLY_ENFORCED
 authority: 'Verified from full survey of all 20 Python format packages: abw, csv,
@@ -19,11 +19,14 @@ source_hashes:
 - path: src/python/csv/__init__.py
   sha256: c0ddf9a71fbd5b9af0fa63d0877a2b2ab3414a3fa684346bac58b187af243543
 - path: src/python/ndjson/__init__.py
-  sha256: ddb1b9aab040f247704f012ffd0de9d282f966d6fc95e70d1d8d2b9b85cb2642
+  sha256: bd3f0a2b4cf97f6a51275df90100573eadfc634c55eb7ab6f28a015f093364c2
 - path: src/python/odt/__init__.py
   sha256: 068aae74b17225328e799a87ced9573cc5934b9d6600579a85fcee1b6d7d4d6e
 applies_to:
 - src/python/*/
+scope_exclusions:
+- "A format carrying release_profile: production_namespace_v1 is governed by KC-PYTHON-003."
+- "Jupyter Notebook, OpenRaster, NRRD, XLIFF, SafeTensors, and UBL migrate to KC-PYTHON-003 under TC-FF6-CHASSIS-001."
 required_fields_or_components:
 - name: __init__.py (root)
   description: 'Every format package root must have __init__.py. Exports public API
@@ -174,4 +177,10 @@ update_triggers:
 - Any authoritative_sources __init__.py is modified (hash will diverge)
 - A 21st format package is added to src/python/
 - The three-layer structure changes (new mandatory component)
-last_verified_revision: '2026-06-24'
+last_verified_revision: '2026-07-23'
+legacy_status:
+  classification: VERIFIED_CURRENT
+  meaning: >
+    This contract remains an accurate description of the pre-production source
+    tree. It is not the target architecture for independently publishable
+    production packages. KC-PYTHON-003 supersedes it per migrated package.

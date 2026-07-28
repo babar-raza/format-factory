@@ -1,0 +1,294 @@
+schema_version: '1.0'
+format_id: nrrd
+coverage: complete
+authority_policy: Every assertion is an exact visible-text predicate over the SHA-256 pinned Teem NRRD0005
+  format definition. HTML markup is discarded without loading resources or executing content.
+targets:
+  teem_spec:
+    source_id: SRC-NRRD-001
+    member_sha256: 43ca6102cc998e0191e225d7954278547d491e29b74a132b3118571d85a8b0d5
+facts:
+- fact_id: SAL-NRRD-00002
+  claim_sha256: 3517b4f3dbde328b3d80a47ebd32a9a2b4eda1f0972a6271057baae43a978f04
+  assertions:
+  - assertion_id: attached-header-shape
+    target: teem_spec
+    kind: html_text_contains
+    expected: 'The general format of a NRRD file (with attached header) is: NRRD000 X < field >:
+      < desc > < field >: < desc > # < comment >'
+  - assertion_id: magic-version
+    target: teem_spec
+    kind: html_text_contains
+    expected: The " X " in " NRRD000 X " identifies which version of the file format is being used.
+  - assertion_id: blank-line-terminator
+    target: teem_spec
+    kind: html_text_contains
+    expected: After the header, there is a single blank line containing zero characters. This separates the
+      header from the data, which follows.
+- fact_id: SAL-NRRD-00003
+  claim_sha256: c96bc2b92fa260cc051df744d4fdff346940232946c79ff16dcf6755ac2b351f
+  assertions:
+  - assertion_id: attached-data-follows-header
+    target: teem_spec
+    kind: html_text_contains
+    expected: The header, the blank line, and the data comprise the NRRD file.
+  - assertion_id: detached-data-field-forms
+    target: teem_spec
+    kind: html_text_contains
+    expected: 'data file: < filename > data file: < format > < min > < max > < step > [< subdim >]
+      data file: LIST [< subdim >]'
+  - assertion_id: encoding-values
+    target: teem_spec
+    kind: html_text_contains
+    expected: '" txt ", " text ", " ascii " Integral values are written/read as with printf() / sscanf()'
+  - assertion_id: raw-hex-gzip-bzip2
+    target: teem_spec
+    kind: html_text_contains
+    expected: '" hex " The data is raw, but written with two (case-insensitive) hexadecimal characters per byte.'
+- fact_id: SAL-NRRD-00004
+  claim_sha256: e73ed7f60b96ca03a2bd5922dfca8b194c607b6beee684a254113e17c2ecd368
+  assertions:
+  - assertion_id: magic-first-line
+    target: teem_spec
+    kind: html_text_contains
+    expected: The very first line contains nothing but the NRRD "magic".
+  - assertion_id: magic-form
+    target: teem_spec
+    kind: html_text_contains
+    expected: For NRRD files, the first four characters are always " NRRD ", and the remaining characters
+      give information about the file format version.
+  - assertion_id: header-blank-line
+    target: teem_spec
+    kind: html_text_contains
+    expected: The magic, field specifications, key/value pairs, and comments comprise the NRRD header. After
+      the header, there is a single blank line containing zero characters.
+- fact_id: SAL-NRRD-00005
+  claim_sha256: 1a74ec2898f12a6edfd2885d8eaa7c80c0e99ed70a31d65a958ed338472717b7
+  assertions:
+  - assertion_id: comment-prefix
+    target: teem_spec
+    kind: html_text_contains
+    expected: Comment lines start with a pound, " # ", with no proceeding whitespace.
+  - assertion_id: comments-interspersed
+    target: teem_spec
+    kind: html_text_contains
+    expected: Comment lines may be interspersed with field specifications in any order.
+  - assertion_id: optional-comment-retention
+    target: teem_spec
+    kind: html_text_contains
+    expected: Gracious NRRD readers should store all the comments seen in the header, but this is not a
+      requirement.
+- fact_id: SAL-NRRD-00006
+  claim_sha256: e3d0d91bd7933103882a1a0c894119dc85584bfb45584bdb62f46422870b14ca
+  assertions:
+  - assertion_id: detached-three-forms
+    target: teem_spec
+    kind: html_text_contains
+    expected: This field specification can take one of three possible forms
+  - assertion_id: numbered-format
+    target: teem_spec
+    kind: html_text_contains
+    expected: contain a single format specification for an integral value, for example " %d.raw " or "
+      I.%03d "
+  - assertion_id: list-form
+    target: teem_spec
+    kind: html_text_contains
+    expected: 'data file: LIST [< subdim >]'
+  - assertion_id: relative-detached-path
+    target: teem_spec
+    kind: html_text_contains
+    expected: it is taken to be the filename of the data file, relative to the location of the detached
+      header file
+- fact_id: SAL-NRRD-00007
+  claim_sha256: 33f9451c4dc2efdb1bcc095e8e5cc969bb438ab637b3eb07f47fe81c32d7464a
+  assertions:
+  - assertion_id: field-unique
+    target: teem_spec
+    kind: html_text_contains
+    expected: Each field specification may appear no more than once in the nrrd header.
+  - assertion_id: field-case-insensitive
+    target: teem_spec
+    kind: html_text_contains
+    expected: All field identifiers are case insensitive.
+- fact_id: SAL-NRRD-00008
+  claim_sha256: e98c918d0af18c562d266cb90c3c83cd3ae9a3ee0d906f78c999efad0fc6d6e5
+  assertions:
+  - assertion_id: field-specification-syntax
+    target: teem_spec
+    kind: html_text_contains
+    expected: 'All the field specifications have the same structure: a string "< field >" identifying the
+      field (called the field identifier), then a colon followed by a single space " : ", and then the
+      information describing the field'
+  - assertion_id: key-value-syntax
+    target: teem_spec
+    kind: html_text_contains
+    expected: Each of the "< key >:=< value >" lines specifies a key/value pair in the nrrd.
+- fact_id: SAL-NRRD-00009
+  claim_sha256: 170916342e39b11de498b2810f64bed7cff6991fdf62fd51bfea719fbaf68703
+  assertions:
+  - assertion_id: label-quoting
+    target: teem_spec
+    kind: html_text_contains
+    expected: As shown above, each label is delimited by double quotes.
+  - assertion_id: label-escaping
+    target: teem_spec
+    kind: html_text_contains
+    expected: Within each label, double quotes may be included by escaping them ( \" ), but no other form
+      of escaping is supported.
+  - assertion_id: units-quote-delimited
+    target: teem_spec
+    kind: html_text_contains
+    expected: the field gives a quote-delimited string for each axis
+- fact_id: SAL-NRRD-00010
+  claim_sha256: 9f8c07b69207d37bccc927c5506e707a629c803168422feb9b79d5454a1b0f9f
+  assertions:
+  - assertion_id: per-axis-field-inventory
+    target: teem_spec
+    kind: html_text_contains
+    expected: Per-axis field specifications sizes , spacings , thicknesses , axis mins , axis maxs , centers
+      , labels , units , kinds
+  - assertion_id: per-axis-cardinality
+    target: teem_spec
+    kind: html_text_contains
+    expected: Per-axis specifications must have as many components as there are dimensions in the array
+- fact_id: SAL-NRRD-00011
+  claim_sha256: 169fb48b17fd10f0f2aaa381299fd472f275d5c58e12977e9cf5ca002251b0c2
+  assertions:
+  - assertion_id: payload-byte-count
+    target: teem_spec
+    kind: html_text_contains
+    expected: The number of bytes in the (perhaps uncompressed) data can always be determined by the product
+      of the sizes , multiplied by the byte length of one element, which is determined from the type , and
+      possibly blocksize fields.
+- fact_id: SAL-NRRD-00012
+  claim_sha256: 763d4d679d98210439b017c5bf9ff0a5b643414f17ec10222288ba6943b41eda
+  assertions:
+  - assertion_id: dimension-always-necessary
+    target: teem_spec
+    kind: html_text_contains
+    expected: 'dimension: < int > Always necessary Type: int'
+  - assertion_id: dimension-meaning
+    target: teem_spec
+    kind: html_text_contains
+    expected: This gives the dimension of the array stored in the nrrd
+  - assertion_id: per-axis-dimension-count
+    target: teem_spec
+    kind: html_text_contains
+    expected: Per-axis specifications must have as many components as there are dimensions in the array
+- fact_id: SAL-NRRD-00013
+  claim_sha256: 227ff0d87dd0ab05273a702a51d5467c8ba545182c90478d4aa8016ee9fa1822
+  assertions:
+  - assertion_id: encoding-required
+    target: teem_spec
+    kind: html_text_contains
+    expected: 'encoding: < encoding > Always necessary'
+  - assertion_id: raw-ascii-hex
+    target: teem_spec
+    kind: html_text_contains
+    expected: Possible values for the encoding field descriptor, with associated meaning are
+  - assertion_id: gzip-encoding
+    target: teem_spec
+    kind: html_text_contains
+    expected: '" gz ", " gzip " The data is raw, but compressed with the gzip program.'
+  - assertion_id: bzip2-encoding
+    target: teem_spec
+    kind: html_text_contains
+    expected: '" bz2 ", " bzip2 " The data is raw, but compressed with the bzip2 program.'
+- fact_id: SAL-NRRD-00014
+  claim_sha256: 76f1512a9a0895c07b997288ec3c70346a183ad9e30fc8d3b6134f706d109264
+  assertions:
+  - assertion_id: endian-condition
+    target: teem_spec
+    kind: html_text_contains
+    expected: Necessary for non- block type nrrds if and only if the size of the type is greater than one byte,
+      and, the encoding chosen exposes the endianness of the architecture
+  - assertion_id: endian-values
+    target: teem_spec
+    kind: html_text_contains
+    expected: '" little " Most significant bytes are at higher addresses ("little end first")'
+  - assertion_id: big-endian-value
+    target: teem_spec
+    kind: html_text_contains
+    expected: '" big " Most significant bytes are at lower addresses ("big end first")'
+- fact_id: SAL-NRRD-00015
+  claim_sha256: 1d1ae31195fef000e3f7277147a50f72f25a73e6d9e233ba343c4c1d81c4ba02
+  assertions:
+  - assertion_id: sizes-required
+    target: teem_spec
+    kind: html_text_contains
+    expected: 'sizes: < size[0] > < size[1] > ... < size[dim-1] > Always necessary Type: int'
+  - assertion_id: sizes-positive
+    target: teem_spec
+    kind: html_text_contains
+    expected: All the < size[i] > are integers greater than 0.
+  - assertion_id: fastest-axis-order
+    target: teem_spec
+    kind: html_text_contains
+    expected: the axis ordering is always (reading left to right) fastest to slowest
+- fact_id: SAL-NRRD-00016
+  claim_sha256: e77482d9b036518a9bd794f72237ecf4556972117aaf846a672521d33a2d4332
+  assertions:
+  - assertion_id: type-required
+    target: teem_spec
+    kind: html_text_contains
+    expected: 'type: < type > Always necessary'
+  - assertion_id: type-integer-float
+    target: teem_spec
+    kind: html_text_contains
+    expected: '" int " means a 32-bit signed integer, " float " means 32-bit floating point'
+  - assertion_id: type-alias
+    target: teem_spec
+    kind: html_text_contains
+    expected: Useful variants like " uchar " (same as " unsigned char ") are allowed.
+  - assertion_id: block-type
+    target: teem_spec
+    kind: html_text_contains
+    expected: There is also the block type, which is used to represent some chunk of opaque memory, of
+      user-specified size
+- fact_id: SAL-NRRD-00017
+  claim_sha256: a39e5b3292f3f72bc33b74a6ebf414551a80bb1f26211d9d1884328d48d91306
+  assertions:
+  - assertion_id: positive-block-size
+    target: teem_spec
+    kind: html_text_contains
+    expected: The block size specification gives the size of that chunk, it must be greater than zero.
+  - assertion_id: block-no-ascii
+    target: teem_spec
+    kind: html_text_contains
+    expected: ascii encoding is not possible with block type
+- fact_id: SAL-NRRD-00018
+  claim_sha256: 7ecf1729fa81f4d9e0c63d25120d225df761830b9fd6a265d600de817f607516
+  assertions:
+  - assertion_id: line-skip-meaning
+    target: teem_spec
+    kind: html_text_contains
+    expected: It tells the NRRD reader to skip some number of lines (greater than or equal to zero) in the
+      data file in order to get to the where the data actually begins.
+  - assertion_id: byte-skip-meaning
+    target: teem_spec
+    kind: html_text_contains
+    expected: it tells how many bytes to skip in a data file in order to get to the beginning of the data
+  - assertion_id: skip-order
+    target: teem_spec
+    kind: html_text_contains
+    expected: When used in combination with line skip , the byte skipping is done after the line skipping.
+- fact_id: SAL-NRRD-00019
+  claim_sha256: 0ca63315b0e0c32a15ef1049afe09a4497d956811fa5eb14628b7b2eaf177642
+  assertions:
+  - assertion_id: space-or-dimension-first
+    target: teem_spec
+    kind: html_text_contains
+    expected: 'Identify the space around array (or at least its dimension). Done with basic field
+      specifications " space: " and " space dimensions: "'
+  - assertion_id: space-origin
+    target: teem_spec
+    kind: html_text_contains
+    expected: 'space origin: < vector > Always optional, and is an optional part of defining orientation'
+  - assertion_id: space-directions
+    target: teem_spec
+    kind: html_text_contains
+    expected: 'space directions: < vector[0] > < vector[1] > ... < vector[dim-1] >'
+  - assertion_id: measurement-frame-cardinality
+    target: teem_spec
+    kind: html_text_contains
+    expected: 'measurement frame: < vector[0] > < vector[1] > ... < vector[spaceDim-1] >'

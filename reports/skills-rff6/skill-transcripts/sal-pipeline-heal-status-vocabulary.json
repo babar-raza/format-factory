@@ -1,0 +1,58 @@
+{
+  "invocation_id": "FF6-SAL-STATUS-POLICY-20260723",
+  "skill_id": "sal-pipeline-heal",
+  "task_id": "TC-SAL-IMPL-STATUS-VOCAB-001",
+  "taskcard_id": "TC-SAL-IMPL-STATUS-VOCAB-001",
+  "mode": "live",
+  "inputs": {
+    "taskcard_id": "TC-SAL-IMPL-STATUS-VOCAB-001",
+    "format_id": "all",
+    "root_cause_id": "ROOT-03",
+    "spec_cache_path": ".local/spec-cache/sal-facts-latest.json",
+    "target_stage": "schema_migration",
+    "defect_id": "SAL-VERIFICATION-STATUS-OVERCLAIM-001",
+    "root_cause": "Stored verification labels had no single promotion policy, so structural derivations could be mistaken for authority-verified facts."
+  },
+  "allowed_files": [
+    ".claude/commands/sal-pipeline-heal.md",
+    "schemas/sal-facts/sal-facts-schema.json",
+    "tools/spec/sal_status.py",
+    "tests/tools/test_sal_status_schema.py",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-status-vocabulary.json"
+  ],
+  "actual_files_changed": [
+    ".claude/commands/sal-pipeline-heal.md",
+    "schemas/sal-facts/sal-facts-schema.json",
+    "tools/spec/sal_status.py",
+    "tests/tools/test_sal_status_schema.py",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-status-vocabulary.json"
+  ],
+  "tests_run": [
+    "pytest tests/tools/test_sal_status_schema.py tests/production_program/test_production_program.py tests/tools/test_seed_sal_candidates.py tests/tools/test_merge_sal_facts.py tests/format_contract/test_research_plane.py -q: 58 passed",
+    "ruff check tools/spec/sal_status.py tests/tools/test_sal_status_schema.py tools/supervisor/production_program.py tests/production_program/test_production_program.py: PASS",
+    "mypy --strict tools/spec/sal_status.py tools/supervisor/production_program.py: PASS",
+    "jsonschema current .local/spec-cache/sal-facts-latest.json: 591 facts across 21 formats, 0 errors"
+  ],
+  "validations": {
+    "spec_cache_verified": "PASS",
+    "tool_invoked": "PASS",
+    "output_artifact_produced": "PASS",
+    "fact_ids_in_correct_namespace": "PASS",
+    "status_vocabulary_closed": "PASS",
+    "unknown_status_fails_closed": "PASS",
+    "structural_derivation_non_promoting": "PASS",
+    "legacy_alias_requires_canonical_identity": "PASS"
+  },
+  "output_digests": {
+    ".claude/commands/sal-pipeline-heal.md": "c34c2f9e404d88baf2dddd1a7e85ba65e79b8684a382db055828949d35ddd547",
+    "schemas/sal-facts/sal-facts-schema.json": "641436e478bf26c1647b13d4e969d728d7a9100fb6ef33dbb781455b368c7394",
+    "tools/spec/sal_status.py": "9f764ec3b11dd9bd82854cf40395b72d8789a9f246d857455d27ae6b297ce2d1",
+    "tests/tools/test_sal_status_schema.py": "ec9f5b0ac324710624c44edb8b8423d6821e00b7abc2d22fc87184fd899dd8aa"
+  },
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "verdict": "PROCEED",
+  "timestamp": "2026-07-23T22:26:25+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

@@ -1,0 +1,109 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-materialize-production-proof-safetensors-bidirectional-interop-001",
+  "execution_id": "ff6-materialize-production-proof-safetensors-bidirectional-interop-001",
+  "task_id": "AUTO-SAFETENSORS-PROVE-BIDIRECTIONAL-INTEROP-001",
+  "skill_id": "materialize-production-proof",
+  "selected_skill_ids": [
+    "materialize-production-proof"
+  ],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-SAFETENSORS-PROOF-025",
+  "pre_mutation_guard_authorization_id": "0603dcbc582d08e4",
+  "requested_operation": "bind bidirectional official SafeTensors 0.8.0 interoperability and collision-free co-installation evidence to the live graph",
+  "inputs": {
+    "defect_id": "SAFETENSORS_BIDIRECTIONAL_INTEROP_PROOF_GAP",
+    "failing_regression": "SAL-SAFETENSORS-OBL-9229B611B9CCD5F8 remained open because one-way interoperability evidence did not satisfy the compiled bidirectional and co-installation obligation",
+    "invalidation_input": "none; production source and installed wheels are unchanged",
+    "target_product": "safetensors",
+    "obligation_id": "SAL-SAFETENSORS-OBL-9229B611B9CCD5F8",
+    "base_git_commit": "b81ec16c"
+  },
+  "allowed_files": [
+    "reports/skills-rff6/skill-transcripts/materialize-production-proof-safetensors-bidirectional-interop-001.json",
+    ".local/production-program/current-gaps.json",
+    ".local/production-program/executed-proofs.json",
+    ".local/production-program/journal.jsonl",
+    ".local/production-program/proof-graphs/safetensors/edges.jsonl",
+    ".local/production-program/proof-graphs/safetensors/nodes.jsonl",
+    ".local/production-program/state.json"
+  ],
+  "actual_files_changed": [
+    "reports/skills-rff6/skill-transcripts/materialize-production-proof-safetensors-bidirectional-interop-001.json",
+    ".local/production-program/current-gaps.json",
+    ".local/production-program/executed-proofs.json",
+    ".local/production-program/journal.jsonl",
+    ".local/production-program/proof-graphs/safetensors/edges.jsonl",
+    ".local/production-program/proof-graphs/safetensors/nodes.jsonl",
+    ".local/production-program/state.json"
+  ],
+  "behavior_added": [],
+  "tests_run": [
+    "controller-executed installed-wheel command: tests/python/safetensors/test_obligation_bidirectional_interop.py -q: 3 passed",
+    "controller audit: 85 current SafeTensors obligations, zero stale obligations, 1 unmet obligation"
+  ],
+  "common_proof_closure": {
+    "contract_digest": "e7c4939500768fa6a3bc19a7bd849e1e1883e9c707d9ba868c87fbe25ab64806",
+    "source_digest": "c12310d3dcf425c953107b7ee7bcea5b6c074ead29f7e9be0d3c8b2978dabac9",
+    "test_digest": "46d9aa8b7970043ea0b0b0762a02a61d789650fc55ff85a4791c3cfa3bb43b63",
+    "fixture_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "package_digest": "9e401b1adccc0744348fb43381138f12469c35511f7d262c277544a94e6f3b07",
+    "dependency_digest": "bf8dee63c7abf526d178fe57c48e2d55ba04871cba72eea64a3c04dfbb9e269a",
+    "tool_digest": "b7c0f68d84382d04b000a97d01e8e625355513d0972a17a048f4cd241018ce20",
+    "environment_digest": "87883bffdf35ae4abd26ef684ff459e5ae2090686fbee314f1109f580a13cb6a"
+  },
+  "proofs": [
+    {
+      "obligation_id": "SAL-SAFETENSORS-OBL-9229B611B9CCD5F8",
+      "proof_id": "PROOF-17C3959B0844501E01916273FD59BF1C1724EDA6B5F63B0036B2EBF0BB2EA413"
+    }
+  ],
+  "validations": {
+    "required_positive_polarity": "PASS",
+    "complete_execution_input_closure": "PASS",
+    "installed_wheel_origin": "PASS",
+    "official_distribution_in_environment": "PASS: safetensors 0.8.0",
+    "bidirectional_vectors": "PASS",
+    "collision_free_coinstallation": "PASS",
+    "command_exit_zero": "PASS",
+    "source_and_package_closure_unchanged": "PASS",
+    "preexisting_proofs_invalidated": "NO",
+    "unique_current_obligation_count": 85,
+    "stale_proof_count": 0,
+    "mandatory_obligations_remaining": 1,
+    "promotion_state": "IMPLEMENTATION_IN_PROGRESS",
+    "promotion_claimed": "NO"
+  },
+  "controller_result": {
+    "final_graph_digest": "c397abdb24682dfa29d70e4280fbed7221507c70aef8e295b8e015d56d8aac8f",
+    "program_open_gaps": 531,
+    "safetensors_open_gaps": 1,
+    "next_obligation_id": "SAL-SAFETENSORS-OBL-DA2E4F674AAAAAFC"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for this obligation; no SafeTensors certification claimed",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES, retained from the active mission session",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, retained in the mission receipt chain",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "SAFETENSORS_BIDIRECTIONAL_INTEROP_OBLIGATION_PROVEN_NOT_CERTIFIED",
+  "timestamp": "2026-07-25T21:50:34.4191073Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

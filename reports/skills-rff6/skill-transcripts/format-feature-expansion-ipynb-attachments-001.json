@@ -1,0 +1,133 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-format-feature-expansion-ipynb-attachments-001",
+  "execution_id": "ff6-format-feature-expansion-ipynb-attachments-001",
+  "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-PARSE-001",
+  "skill_id": "format-feature-expansion",
+  "selected_skill_ids": [
+    "format-feature-expansion"
+  ],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-IPYNB-ATTACHMENTS-001",
+  "pre_mutation_guard_authorization_id": "4e18ede4f6ffc4ed",
+  "requested_operation": "add installed-production-namespace attachment mapping, reference, roundtrip, and official-oracle evidence",
+  "inputs": {
+    "format_id": "ipynb",
+    "profile_id": "production",
+    "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-PARSE-001",
+    "obligation_id": "SAL-IPYNB-OBL-029B1CD925618F17",
+    "obligation_ids": [
+      "SAL-IPYNB-OBL-029B1CD925618F17",
+      "SAL-IPYNB-OBL-02A00C213D2B0190",
+      "SAL-IPYNB-OBL-356297A15A50C85B",
+      "SAL-IPYNB-OBL-3EF5FF3B64091AB4",
+      "SAL-IPYNB-OBL-5CA1914777C61A9D",
+      "SAL-IPYNB-OBL-F1F17437C4D0257D",
+      "SAL-IPYNB-OBL-FD198DA5CD4E92A6"
+    ],
+    "capability_ids": [
+      "IPYNB-PARSE-001",
+      "IPYNB-ATTACH-001",
+      "IPYNB-MODEL-001",
+      "IPYNB-OUTPUT-001"
+    ],
+    "contract_digest": "56762498619ac994bbc5bceac7240357118f1046bda48d5e4bdffc6baa1129ac",
+    "authority_digests": {
+      "SRC-NB-002": "4d3750b55006e92d8063a6ac427a84eb1f91c44e376d90de53d03893674991d9"
+    },
+    "root_cause": "Existing attachment tests imported the legacy unpackaged ipynb facade. They did not independently prove that the installed format_factory.ipynb wheel preserved valid attachment mappings or that its vectors were accepted by the official implementation.",
+    "affected_layer": "IPYNB installed-wheel attachment evidence only; production source and package are unchanged",
+    "planned_paths": [
+      "tests/python/ipynb/test_obligation_attachments.py",
+      "reports/r90/product-code-change-ledger.json",
+      "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-attachments-001.json"
+    ],
+    "proof_inputs": [
+      "shared/format-contracts/ipynb.yaml",
+      "tests/python/ipynb/test_obligation_attachments.py",
+      "tests/python/ipynb/fixtures/oracle-wheelhouse.sha256.json",
+      ".local/build/core-r5/format_factory_core-0.1.0.dev0-py3-none-any.whl",
+      ".local/build/ipynb-forward-a/format_factory_ipynb-0.2.0.dev0-py3-none-any.whl",
+      ".local/venvs/ipynb-current-proof"
+    ],
+    "base_git_commit": "1a42da36"
+  },
+  "allowed_files": [
+    "tests/python/ipynb/test_obligation_attachments.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-attachments-001.json"
+  ],
+  "actual_files_changed": [
+    "tests/python/ipynb/test_obligation_attachments.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-attachments-001.json"
+  ],
+  "defect_reproduction": {
+    "result": "EVIDENCE_GAP_CONFIRMED",
+    "observations": [
+      "The legacy tests import ipynb.ipynb_codec rather than format_factory.ipynb.",
+      "No prior live controller proof existed for any IPYNB attachment obligation.",
+      "No attachment test simultaneously asserted installed module origin and official nbformat validation."
+    ]
+  },
+  "implementation": {
+    "markdown_and_raw": "A single current-profile vector carries attachment mappings on both specified attachment-bearing cell types.",
+    "references": "Each attachment URI is checked against the filename key in its own cell mapping.",
+    "mime_bundles": "The vector includes image/png, text/plain, and a vendor application MIME entry and requires exact load-write-load retention.",
+    "oracle": "Official nbformat 5.10.4 reads and validates the same vector.",
+    "installed_origin": "The test fails unless format_factory.ipynb resolves from site-packages rather than src/python/ipynb.",
+    "scope": "No production source behavior changed; this slice replaces weak legacy-only evidence."
+  },
+  "tests_run": [
+    ".local/venvs/ipynb-current-proof/Scripts/python.exe -m pytest tests/python/ipynb/test_obligation_attachments.py -q: 2 passed",
+    ".local/venvs/ipynb-current-proof/Scripts/python.exe -m pytest tests/python/ipynb -q: 259 passed",
+    "Ruff on tests/python/ipynb/test_obligation_attachments.py: PASS"
+  ],
+  "ledger_entry_id": "FF6-IPYNB-ATTACHMENTS-001",
+  "ledger_entry_path": "reports/r90/product-code-change-ledger.json",
+  "validations": {
+    "obligations_resolve_to_selected_format": "PASS",
+    "official_distribution_version": "PASS: 5.10.4",
+    "markdown_attachment_mapping": "PASS",
+    "raw_attachment_mapping": "PASS",
+    "attachment_uri_targets": "PASS",
+    "vendor_mime_preservation": "PASS",
+    "installed_wheel_origin": "PASS",
+    "declared_regression_tier": "PASS: 259 tests",
+    "ruff": "PASS",
+    "product_code_ledger_entry_count": "PASS: exactly one",
+    "product_code_ledger_entry_hashes": "PASS",
+    "source_or_package_digest_changed": "NO",
+    "controller_proof_required": "YES"
+  },
+  "output_digests": {
+    "tests/python/ipynb/test_obligation_attachments.py": "f3bea58041546c9b2e5c43613abc72363d931919a5e0826134bcec82b2d1d363",
+    "reports/r90/product-code-change-ledger.json": "b3d64a7df01b5841e7aee0285c0ce410b2a55ddb61c2636b12655fcf60bea43e"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for the bounded evidence implementation; controller materialization is explicit next work",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for the listed positive attachment obligations; malformed-bundle rejection and attachment-management API obligations remain open",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES, retained from the active mission session",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, retained in the mission receipt chain",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "IPYNB_ATTACHMENTS_INSTALLED_ORACLE_EVIDENCE_READY_FOR_PROOF",
+  "timestamp": "2026-07-25T22:23:52.9664638Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

@@ -1,12 +1,39 @@
 {
+  "invocation_id": "PACKAGE-PROOF-020389FF76AC2972C4572B8D3BFAE901C6BDE865257A201CA2C3FBCB61C56883-zst",
   "skill_id": "package-install-proof",
-  "skill_version": "2.0",
+  "skill_version": "3.0",
+  "mode": "live",
+  "inputs": {
+    "format_id": "zst",
+    "package_name": "format-factory-zst"
+  },
+  "allowed_files": [
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-zst.json"
+  ],
+  "actual_files_changed": [
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-zst.json"
+  ],
+  "tests_run": [
+    "wheel-origin import assertion",
+    "zst.zst_codec.compress_bytes on inline bytes",
+    "deep installed-submodule import scan"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-07-25T18:28:06+00:00",
   "format_id": "zst",
   "package_name": "format-factory-zst",
   "package_version": "0.1.0.dev0",
   "wheel_path": "format_factory_zst-0.1.0.dev0-py3-none-any.whl",
-  "wheel_sha256": "99fef7cb0b77db4804e134f2dfa90985825643d5af6637bf9831a2b286318c13",
-  "source_digest": "5072c3a37bab3fe4cb80763914b661d901608bf47a6a85bab8eff681cd647a28",
+  "wheel_sha256": "cad6e1034d515680c5c2d0decf1a6140a5dc258d8996d37ac640f06f3b525529",
+  "proof_id": "PACKAGE-PROOF-020389FF76AC2972C4572B8D3BFAE901C6BDE865257A201CA2C3FBCB61C56883",
+  "source_digest": "3ea69be40aaed8b065ffc5f30b17231ea4f6d148a7da4bde4b4febeb33aa3abc",
+  "proof_input_digest": "eae5a602ad7d8389004e4c3c116f9fd1dcc90c7a3a49e6f2b9d1c0ea36ff5e09",
+  "local_dependencies": [],
   "install_method": "pip install --no-deps <wheel> (ephemeral venv)",
   "install_result": "PASS",
   "import_result": "PASS",
@@ -16,6 +43,6 @@
   "verdict": "PASS",
   "proof_report": "reports/package-install-proof/proof-report.md",
   "notes": "B9 proof via tools/run_package_install_proof.py (GAP-FORENSIC-001)",
-  "generated_at": "2026-07-15T17:36:29+00:00",
-  "worker_agent": "claude"
+  "generated_at": "2026-07-25T18:28:06+00:00",
+  "worker_agent": "codex"
 }

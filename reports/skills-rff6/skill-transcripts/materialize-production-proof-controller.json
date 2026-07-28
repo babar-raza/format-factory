@@ -1,0 +1,57 @@
+{
+  "invocation_id": "FF6-MATERIALIZE-PRODUCTION-PROOF-20260724",
+  "skill_id": "materialize-production-proof",
+  "task_id": "AUTO-PRODUCTION-PROOF-MATERIALIZATION",
+  "mode": "live",
+  "inputs": {
+    "defect_id": "FF6-FALSE-ZERO-IMPLEMENTATION-GAPS",
+    "failing_regression": "compiled contracts produced zero live gaps without executed implementation evidence",
+    "invalidation_input": "contract, source, test, fixture, dependency, or environment digest",
+    "target_product": "all-six"
+  },
+  "allowed_files": [
+    "tools/supervisor/production_program.py",
+    "tests/production_program/test_production_program.py",
+    "reports/skills-rff6/skill-transcripts/materialize-production-proof-controller.json",
+    ".local/production-program/state.json",
+    ".local/production-program/current-gaps.json",
+    ".local/production-program/journal.jsonl",
+    ".local/production-program/executed-proofs.json",
+    ".local/production-program/proof-graphs/**"
+  ],
+  "actual_files_changed": [
+    "tools/supervisor/production_program.py",
+    "tests/production_program/test_production_program.py",
+    "reports/skills-rff6/skill-transcripts/materialize-production-proof-controller.json",
+    ".local/production-program/state.json",
+    ".local/production-program/current-gaps.json",
+    ".local/production-program/journal.jsonl",
+    ".local/production-program/executed-proofs.json",
+    ".local/production-program/proof-graphs/**"
+  ],
+  "tests_run": [
+    "pytest tests/production_program tests/supervisor/test_requirements_authority_integration.py tests/format_contract/test_determinism_foundation.py -q: 74 passed",
+    "three full production-program bootstrap runs: 12 graph files byte-identical and 621 stable open gaps",
+    "ruff check production controller, ProductContract runtime, and focused regression tests: PASS"
+  ],
+  "validations": {
+    "mandatory_obligations_materialized": "PASS: 616 MUST obligations became live current gaps",
+    "presence_is_not_proof": "PASS",
+    "one_obligation_per_executed_result": "PASS",
+    "complete_execution_input_closure": "PASS",
+    "changed_test_or_fixture_invalidates": "PASS",
+    "deleted_input_revokes_proof": "PASS",
+    "nonzero_execution_rejected": "PASS",
+    "three_run_determinism": "PASS",
+    "manual_promotion_cannot_override": "PASS"
+  },
+  "output_digests": {
+    "tools/supervisor/production_program.py": "a19bfc0402b2d800358af7e2eafe19f20c23bccfcf15a5b9efb6e7957834e6bc",
+    "tests/production_program/test_production_program.py": "7ae124ab011d0311a49024eb364bd6c616d21b06ef4cb6698ce04ed54f8b8248"
+  },
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-07-24T01:10:00+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

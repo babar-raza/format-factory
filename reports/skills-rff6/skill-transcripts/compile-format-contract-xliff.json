@@ -1,0 +1,44 @@
+{
+  "invocation_id": "FF6-XLIFF-CONTRACT-20260723",
+  "skill_id": "compile-format-contract",
+  "task_id": "TC-FF6-XLIFF-CONTRACT-COMPILE",
+  "mode": "live",
+  "inputs": {
+    "format_id": "xliff",
+    "stable_profiles": [
+      "2.0",
+      "2.1"
+    ],
+    "preview_profiles": [
+      "2.2"
+    ]
+  },
+  "allowed_files": [
+    "shared/format-contracts/xliff.yaml",
+    "registry/format-contract-registry.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/xliff.yaml",
+    "registry/format-contract-registry.yaml"
+  ],
+  "tests_run": [
+    "contract compiler --check xliff: PASS",
+    "contract compiler --verify-idempotency xliff: PASS",
+    "strict ProductContract: ready with 91 obligations and no issues",
+    "production controller replay: both XLIFF authority gaps resolved"
+  ],
+  "validations": {
+    "readiness_gate_enforced": "PASS",
+    "deterministic_output": "PASS",
+    "registry_updated": "PASS",
+    "complete_module_authority_present": "PASS",
+    "no_product_source_mutation": "PASS"
+  },
+  "output_digests": {
+    "shared/format-contracts/xliff.yaml": "d28acd242bc218733b69d2fc679d821fc621cf0713746d8f2225f0ec4053ebdd",
+    "strict_product_contract": "a3789815ae554ae8fbd2fa2f237df5e83fa72d9fceb0293c97572abc485ced7c"
+  },
+  "result": "PASS",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

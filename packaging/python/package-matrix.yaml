@@ -582,6 +582,7 @@ packages:
   - 1
   capability_level: alpha-foss-preview
   commercial_ready: false
+  build_mode: native_pyproject
   dependencies: []
   description: Minimal FOSS Jupyter Notebook (.ipynb) codec
   examples_path: null
@@ -589,16 +590,19 @@ packages:
   install_proof:
     expected: dict
     smoke_callable: load_ipynb
-    smoke_module: ipynb.ipynb_codec
+    smoke_module: format_factory.ipynb
     smoke_sample: samples/by-format/ipynb/valid/minimal.ipynb
   license: Apache-2.0
-  module_import: ipynb
+  local_dependencies:
+  - package_name: format-factory-core
+    source_path: src/python/core
+  module_import: format_factory.ipynb
   module_path: src/python/ipynb/
   onboarding_note: Onboarded 2026-07-15 by GAP-FORENSIC-001 system heal; gate history in registry/format-registry.yaml
   package_name: format-factory-ipynb
   publication_authorized: false
   publish_status: local_only_not_published
-  python_version: '>=3.9'
+  python_version: '>=3.11'
   source_path: src/python/ipynb/
   tests_path: tests/python/ipynb/
 - acquisition_gates_passed:
@@ -628,47 +632,55 @@ packages:
   - 1
   capability_level: alpha-foss-preview
   commercial_ready: false
+  build_mode: native_pyproject
   dependencies: []
-  description: Minimal FOSS Nearly Raw Raster Data (.nrrd) codec
+  description: Production Nearly Raw Raster Data (.nrrd) package
   examples_path: null
   format_id: nrrd
   install_proof:
     expected: dict
     smoke_callable: load_nrrd
-    smoke_module: nrrd.nrrd_codec
+    smoke_module: format_factory.nrrd
     smoke_sample: samples/by-format/nrrd/valid/1d-int8.nrrd
   license: Apache-2.0
-  module_import: nrrd
+  local_dependencies:
+  - package_name: format-factory-core
+    source_path: src/python/core
+  module_import: format_factory.nrrd
   module_path: src/python/nrrd/
   onboarding_note: Onboarded 2026-07-15 by GAP-FORENSIC-001 system heal; gate history in registry/format-registry.yaml
   package_name: format-factory-nrrd
   publication_authorized: false
   publish_status: local_only_not_published
-  python_version: '>=3.9'
+  python_version: '>=3.11'
   source_path: src/python/nrrd/
   tests_path: tests/python/nrrd/
 - acquisition_gates_passed:
   - 1
   capability_level: alpha-foss-preview
   commercial_ready: false
+  build_mode: native_pyproject
   dependencies:
   - numpy>=1.24
-  description: Minimal FOSS Safetensors (.safetensors) codec
+  description: Production SafeTensors (.safetensors) package
   examples_path: null
   format_id: safetensors
   install_proof:
-    expected: dict
-    smoke_callable: load_safetensors
-    smoke_module: safetensors.safetensors_codec
+    expected: object
+    smoke_callable: load
+    smoke_module: format_factory.safetensors
     smoke_sample: samples/by-format/safetensors/valid/single-tensor.safetensors
   license: Apache-2.0
-  module_import: safetensors
+  local_dependencies:
+  - package_name: format-factory-core
+    source_path: src/python/core
+  module_import: format_factory.safetensors
   module_path: src/python/safetensors/
   onboarding_note: Onboarded 2026-07-15 by GAP-FORENSIC-001 system heal; gate history in registry/format-registry.yaml
   package_name: format-factory-safetensors
   publication_authorized: false
   publish_status: local_only_not_published
-  python_version: '>=3.9'
+  python_version: '>=3.11'
   source_path: src/python/safetensors/
   tests_path: tests/python/safetensors/
 - acquisition_gates_passed:
@@ -698,22 +710,26 @@ packages:
   - 1
   capability_level: alpha-foss-preview
   commercial_ready: false
+  build_mode: native_pyproject
   dependencies: []
-  description: Minimal FOSS XLIFF (.xliff) codec
+  description: Production XLIFF 2.0/2.1 package
   examples_path: null
   format_id: xliff
   install_proof:
-    expected: dict
-    smoke_callable: load_xliff
-    smoke_module: xliff.xliff_codec
+    expected: object
+    smoke_callable: load
+    smoke_module: format_factory.xliff
     smoke_sample: samples/by-format/xliff/valid/minimal.xliff
   license: Apache-2.0
-  module_import: xliff
+  local_dependencies:
+  - package_name: format-factory-core
+    source_path: src/python/core
+  module_import: format_factory.xliff
   module_path: src/python/xliff/
   onboarding_note: Onboarded 2026-07-15 by GAP-FORENSIC-001 system heal; gate history in registry/format-registry.yaml
   package_name: format-factory-xliff
   publication_authorized: false
   publish_status: local_only_not_published
-  python_version: '>=3.9'
+  python_version: '>=3.11'
   source_path: src/python/xliff/
   tests_path: tests/python/xliff/

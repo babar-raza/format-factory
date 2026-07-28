@@ -1,0 +1,182 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-format-feature-expansion-ipynb-version-conversion-001",
+  "execution_id": "ff6-format-feature-expansion-ipynb-version-conversion-001",
+  "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-UPGRADE-001",
+  "skill_id": "format-feature-expansion",
+  "selected_skill_ids": [
+    "format-feature-expansion"
+  ],
+  "skill_route": {
+    "operation_class": "production_product_contract_obligation_expansion",
+    "legacy_route_considered": "product_deepening",
+    "resolution": "The mission-approved production registry entry and TC-FF6-MACH-001 bind complete ProductContract obligation slices to format-feature-expansion. IPYNB-UPGRADE-001 remained incomplete because its existing implementation explicitly refused all downgrades despite the contract requiring preflight reporting of unsupported constructs and expected loss.",
+    "coverage_result": "SKILL_COVERAGE_CONFIRMED: skill_id=format-feature-expansion, work_type=production_product_contract_obligation"
+  },
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-IPYNB-SOURCE-012",
+  "pre_mutation_guard_authorization_id": "c544e12d6c4c5edd",
+  "requested_operation": "complete explicit nbformat 4.0 through 4.5 version conversion with deterministic downgrade planning, complete loss and extension reporting, stale-plan protection, explicit loss acceptance, and official-schema validation",
+  "inputs": {
+    "format_id": "ipynb",
+    "profile_id": "production",
+    "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-UPGRADE-001",
+    "obligation_id": "SAL-IPYNB-OBL-C599FB180ACF8D49",
+    "obligation_ids": [
+      "SAL-IPYNB-OBL-C599FB180ACF8D49"
+    ],
+    "capability_id": "IPYNB-UPGRADE-001",
+    "contract_digest": "56762498619ac994bbc5bceac7240357118f1046bda48d5e4bdffc6baa1129ac",
+    "contract_source_digest": "e33340b8d1a9ee1b299d51140c1dc8079386000cab2b294f8aaa2a2f91d49cad",
+    "authority_digests": {
+      "SRC-NB-002": "4d3750b55006e92d8063a6ac427a84eb1f91c44e376d90de53d03893674991d9"
+    },
+    "independent_oracle": {
+      "distribution": "nbformat",
+      "version": "5.10.4",
+      "schemas": [
+        "nbformat.v4.0.schema.json",
+        "nbformat.v4.1.schema.json",
+        "nbformat.v4.2.schema.json",
+        "nbformat.v4.3.schema.json",
+        "nbformat.v4.4.schema.json",
+        "nbformat.v4.5.schema.json"
+      ]
+    },
+    "root_cause": "The earlier lifecycle repair correctly stopped silent relabeling but deferred downgrade design entirely. The remaining contract gap was structural: no loss-report object was bound to exact source content, no executor verified that the report remained complete, and no explicit acceptance separated inspection from destructive conversion.",
+    "affected_layer": "IPYNB pure version-conversion model, public API, preservation guarantees, official-schema interoperability, and package documentation",
+    "planned_paths": [
+      "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py",
+      "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+      "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+      "src/python/ipynb/README.md",
+      "tests/python/ipynb/test_obligation_version_conversion.py",
+      "reports/r90/product-code-change-ledger.json",
+      "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-version-conversion-001.json"
+    ],
+    "proof_inputs": [
+      "shared/format-contracts/ipynb.yaml",
+      "shared/format-contracts/research/ipynb.yaml",
+      ".local/format-contracts/acquired/ipynb/src-nb-002.bin",
+      "tests/python/ipynb/test_obligation_version_conversion.py",
+      ".local/build/ipynb-version-conversion-a/format_factory_ipynb-0.2.0.dev0-py3-none-any.whl",
+      ".local/build/ipynb-version-conversion-b/format_factory_ipynb-0.2.0.dev0-py3-none-any.whl",
+      ".local/venvs/ipynb-current-proof",
+      ".local/venvs/ipynb-static"
+    ],
+    "base_git_commit": "837565e7"
+  },
+  "allowed_files": [
+    "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py",
+    "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+    "src/python/ipynb/README.md",
+    "tests/python/ipynb/test_obligation_version_conversion.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-version-conversion-001.json"
+  ],
+  "actual_files_changed": [
+    "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py",
+    "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+    "src/python/ipynb/README.md",
+    "tests/python/ipynb/test_obligation_version_conversion.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-version-conversion-001.json"
+  ],
+  "defect_reproduction": {
+    "result": "FAILURE_REPRODUCED_AND_DESIGN_WEAKNESS_CAUGHT",
+    "observations": [
+      "The failure-first test could not collect because format_factory.ipynb exported no ConversionDisposition, downgrade, or plan_downgrade.",
+      "The existing upgrade docstring stated that every downgrade was deliberately refused pending a loss-report policy, directly confirming the unmet mandatory behavior.",
+      "After the initial implementation passed 19 tests, adversarial review exposed that a caller could construct or edit a public plan with omitted losses. Execution was hardened to recompute the entire expected plan, and a twentieth negative test now prevents that bypass."
+    ]
+  },
+  "implementation": {
+    "conversion_scope": "The named production profile is nbformat 4.0 through 4.5. Historical v1-v3 conversion references remain outside this release profile and are not claimed.",
+    "schema_analysis": "Official 4.0-4.5 schema comparison shows that cell IDs are introduced and required in 4.5 but disallowed as additional cell properties in 4.0-4.4. Other later-minor metadata constructs are accepted as extension metadata by older schemas.",
+    "planning": "plan_downgrade returns an immutable DowngradePlan with source and target versions, a canonical source-content SHA-256, actual removals, preserved-as-extension notices, and blockers.",
+    "loss_boundary": "Cell IDs are enumerated path-by-path as removed loss. Execution, jupyter, title, and authors metadata is preserved exactly and reported as target-version extension semantics rather than falsely labeled lossless target semantics.",
+    "execution_binding": "downgrade recomputes the exact plan and rejects modified source, changed targets, omitted issues, or forged issue lists. Actual loss requires accept_loss=True after the report exists.",
+    "future_versions": "A source minor above 4.5 produces a blocking plan because unknown future semantics cannot be safely down-converted. Preservation-mode read/write remains available without a conversion claim.",
+    "validation": "Every produced version is validated against the exact official target-minor schema through the independent nbformat implementation and the library's own declared profile.",
+    "compatibility": "Existing upgrade behavior and ConversionResult fields remain compatible; issues and losses are additive. No existing symbol was removed or renamed.",
+    "tradeoff": "Planning deep-copies and canonically hashes the complete notebook, and execution repeats the plan computation before mutation. This is O(document bytes) with roughly two validation/hash passes at execution time; it prevents stale or incomplete loss reports. The installed 10,000-cell check completed planning plus execution in 0.197 seconds on the recorded environment."
+  },
+  "tests_run": [
+    "failure-first version-conversion test: collection failed because ConversionDisposition did not exist",
+    "initial focused conversion run: 19 passed",
+    "post-hardening focused conversion run with forged-plan negative: 20 passed",
+    "source-tree format regression excluding installed-origin assertions: 356 passed, 3 deselected",
+    "Ruff 0.14.14 on production namespace and conversion test: PASS",
+    "Mypy 1.18.2 strict on production namespace: PASS, 28 source files",
+    "two isolated SOURCE_DATE_EPOCH=315532800 wheels: identical SHA-256 99cf72ece650bd00e73fd7ddee70ec31375b540ce0bc6d53a7dbad900bdceda2",
+    "installed-wheel full tests/python/ipynb suite: 359 passed",
+    "installed official oracle: every 4.5-to-4.0-through-4.4 result accepted and round-tripped by nbformat 5.10.4 using the exact target-minor schema",
+    "installed 10,000-cell planning-plus-downgrade scale check: 10,000 losses reported and IDs removed in 0.197 seconds",
+    "production control-plane and production-skill regression: 43 passed",
+    "repository real-ledger test remains the known non-strict xfail because historical entries use the legacy mixed source_files schema"
+  ],
+  "ledger_entry_id": "FF6-IPYNB-VERSION-CONVERSION-001",
+  "ledger_entry_path": "reports/r90/product-code-change-ledger.json",
+  "validations": {
+    "obligation_and_format_integrity": "PASS: current IPYNB-UPGRADE-001 required-behavior obligation SAL-IPYNB-OBL-C599FB180ACF8D49",
+    "failure_first": "PASS",
+    "all_supported_older_minor_upgrades": "PASS: 4.0, 4.1, 4.2, 4.3, 4.4 to 4.5",
+    "all_supported_downgrade_targets": "PASS: 4.5 to 4.0, 4.1, 4.2, 4.3, 4.4",
+    "complete_path_level_loss_report": "PASS",
+    "preserved_extension_report": "PASS",
+    "explicit_loss_acceptance": "PASS",
+    "source_digest_binding": "PASS",
+    "plan_completeness_recomputation": "PASS",
+    "future_minor_block": "PASS",
+    "source_non_mutation": "PASS",
+    "official_target_minor_validation_and_roundtrip": "PASS",
+    "installed_scale_behavior": "PASS: 10,000 cells",
+    "installed_wheel_origin": "PASS",
+    "reproducible_wheel": "PASS",
+    "typing_and_lint": "PASS",
+    "public_api_blast_radius": "PASS: five additive types/functions plus an additive ConversionResult property; no existing symbol removed or renamed",
+    "declared_regression_tier": "PASS: 359 installed-wheel tests",
+    "product_ledger_exact_source_hashes": "PASS: all three current source entries match the current files",
+    "legacy_product_ledger_validator": "KNOWN GLOBAL XFAIL: historical mixed-schema entries prevent a whole-ledger pass; no global pass claimed",
+    "source_changed": "YES: canonical proof replay remains deferred to the consolidated source-wave boundary",
+    "new_proof_nodes": "NONE: no stale source proof was materialized",
+    "promotion_claimed": "NO"
+  },
+  "output_digests": {
+    "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py": "53124e416f65b9914975f9000c490be653555634956625a69765cf233bfbb391",
+    "src/python/ipynb/src/format_factory/ipynb/model/__init__.py": "926393090e5beec261aaaff894ae627845f901d49248fc3b3f0a7ebdea84951a",
+    "src/python/ipynb/src/format_factory/ipynb/__init__.py": "da79a4d2f2e5ead26991c9a4b20ec124399cd7ef088b7a7fcc8668bda9b0b2e1",
+    "src/python/ipynb/README.md": "b38e5d2f7189bce211c11d3fc4d35eec764dde2188e0b894394d4959d328df2c",
+    "tests/python/ipynb/test_obligation_version_conversion.py": "b7ecb50f5b45dbeea035bf17074f0c34cc70ce3064dbee24bc3bacce8e855107",
+    "reports/r90/product-code-change-ledger.json": "1d8d51baca74a13534d4b34a12ee1eb21c5e859dceb4c9030a41ede72c484495",
+    "format_factory_ipynb-0.2.0.dev0-py3-none-any.whl": "99cf72ece650bd00e73fd7ddee70ec31375b540ce0bc6d53a7dbad900bdceda2"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for this bounded source slice; proof replay is deferred until the consolidated source wave is stable",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for implementation verification; no obligation closure or certification claimed",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES: the historical coverage xref mentions v1-v3 conversion, but the current mission and ProductContract release profile explicitly target nbformat 4.0-4.5; no v1-v3 support is claimed",
+    "14_memory_update_trigger": "NOT APPLICABLE: no gate, phase, or architecture transition occurred",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "IPYNB_VERSION_CONVERSION_IMPLEMENTED_CONSOLIDATED_PROOF_REPLAY_PENDING",
+  "timestamp": "2026-07-26T02:51:54.6451867Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

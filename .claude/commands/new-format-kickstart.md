@@ -1,114 +1,126 @@
 ---
-version: "1.0"
-last-updated: "2026-07-02"
+version: "2.0"
+last-updated: "2026-07-23"
 phase-available: "3+"
 gate-required: "Explicit product implementation authorization"
-generated_by: claude
+skill_type: "ROUTING_SKILL"
+idempotency: "The same pinned ProductContract and input digests generate the same package chassis, obligation projection, checked-in generated source, and package artifacts."
+loc_budget: "Production source is split by layer; no parser, writer, model, or generated module may become a multi-responsibility mega-file."
+test_path: "tests/production_program/test_production_skills.py"
+risk_level: "HIGH"
+created-by: "TC-FF6-MACH-001"
+product_track: "foss_python"
+generated_by: codex
 visibility: generated
 ---
 
 # /new-format-kickstart
 
-Start a brand-new Python FOSS format codec from scratch. Produces the minimum viable slice:
-probe function, load function, write function, and a passing test suite. Uses the canonical
-contract defined in `playbooks/format-factory/new-format-kickstart-template.md`.
-
-Proven from NDJSON, FODG, and TSV acquisitions.
+Create or migrate an independently publishable Python format library from a
+compiled `ProductContract`. This is the production entry point for JSON,
+binary, header-plus-payload, ZIP/container, schema-defined XML, and large
+schema-generated families. A probe/load/write slice is an intermediate
+checkpoint, never completion.
 
 ## Required Inputs
 
-- `format_name` — short identifier for the new format (e.g. `ndjson`, `fodg`)
-- `file_extensions` — list of file extensions (e.g. `[".ndjson", ".jsonl"]`)
-- `format_spec_ref` — reference to the format spec or SAL fact (e.g. `FACT-NDJSON-001`)
-- `detection_signature` — bytes or pattern used to detect this format (e.g. `b'{'` first byte)
-- `stdlib_module` — Python stdlib module used for parsing (e.g. `json`, `csv`); `None` if custom
+- `format_id`
+- `distribution_name`
+- `namespace` (must be `format_factory.<format_id>`)
+- `family` (`json`, `binary`, `header_payload`, `zip_container`,
+  `schema_xml`, or `large_schema_family`)
+- `product_contract_path`
+- `product_contract_sha256`
+- `authority_digests`
+- `release_profile`
+- `source_root` (must resolve beneath `src/python/<format_id>/`)
+- `test_root`
+- `dependency_lock`
+- `task_id`
 
-## Steps
+## Routing
 
-1. Design the codec module structure: `src/python/<format>/` with `__init__.py`, `<format>_codec.py`
-2. Implement the `probe` function: returns `True` if the file matches the format's detection signature
-3. Implement the `load` function: parses a file and returns a canonical model dict
-4. Implement the `create`/`write` function: serializes a model dict to the format's byte representation
-5. Write minimum test suite in `tests/python/<format>/`: at least 7 tests covering probe/load/write
-6. Verify: `from <format> import probe, load` must succeed in the installed package context
-7. Run focused tests and confirm all pass
-8. Register the format in `__all__` and update any required registry entries
+1. `json`: typed JSON model, schema/version validation, preservation, canonical
+   serialization, differential oracle.
+2. `binary`: bounded header decoder, checked arithmetic, lazy payload access,
+   deterministic writer, official implementation oracle.
+3. `header_payload`: raw header preservation plus normalized typed metadata,
+   streaming/detached payload policy, decompression limits.
+4. `zip_container`: central-directory and entry validation before extraction,
+   path/duplicate/ratio limits, deterministic member order and timestamps.
+5. `schema_xml`: namespace-aware secure XML, schema validation, extension
+   preservation, canonical output, processing-requirement tests.
+6. `large_schema_family`: deterministic schema compiler, stable collision
+   rules, checked-in generated source, all-root inventory and regeneration
+   proof.
+
+## Execution
+
+1. Run `/check-skill-coverage` and the Codex pre-mutation guard. Acquire a
+   coordination lease for the exact product and test roots.
+2. Load `KC-PYTHON-003`; refuse stale or missing knowledge.
+3. Compile the ProductContract. Fail closed on missing/pending authority
+   digests, foreign or unresolved SAL facts, or missing mandatory obligations.
+4. Snapshot existing public behavior. If migrating an alpha package, add
+   characterization tests and a symbol migration map before moving code.
+5. Create a PEP 420 package. There is no `format_factory/__init__.py` and no
+   top-level package that can collide with an upstream implementation.
+6. Create `model/`, `codec/reader/`, `codec/writer/`, `validation/`,
+   `security/`, `adapters/`, `analytics/`, and `cli/`. Models perform no I/O;
+   analytics never enter codecs; optional dependencies remain in adapters.
+7. Implement the common lifecycle API and format-specific obligations in
+   deterministic, bounded task slices. Generated source is checked in with its
+   generator and exact input digests.
+8. Build wheel and sdist from a hash-locked environment. Verification imports
+   only from the installed wheel in an empty working directory.
+9. Bind every executed result to source, test, fixture, contract, authority,
+   lock, tool, package, and environment digests in the canonical proof graph.
+10. Compute promotion from live proof. Presence, prose deferrals, historical
+    evidence, LLM output, and manual status edits never satisfy obligations.
+
+## Mandatory Validations
+
+- contract and referential integrity
+- package namespace and architecture
+- positive and rejection evidence for every MUST obligation
+- semantic roundtrip and safe unknown-data preservation
+- official and independent corpus/oracle evidence
+- security/resource-limit, property, fuzz, mutation, typing, lint, and API checks
+- installed-wheel tests on the supported Python matrix
+- reproducible generation and two-build artifact equality
+- SBOM, provenance, license, vulnerability, and extraction-boundary checks
 
 ## Allowed Paths
 
-- `src/python/<format_name>/` — new codec source directory (create and write)
-- `tests/python/<format_name>/` — new test directory (create and write)
-- `examples/python/<format_name>/` — example files (optional, create)
-- `reports/` — evidence output (write)
+- `src/python/<format_id>/**`
+- `tests/python/<format_id>/**`
+- `shared/format-contracts/<format_id>.yaml`
+- format-owned corpus, schemas, examples, docs, reports, and package manifests
+- canonical proof and execution-manifest outputs
 
 ## Forbidden Paths
 
-- `src/net/**` — .NET product source is out of scope for Python kickstart
-- `poc-targets.yaml` — no POC state changes during kickstart
-- `registry/format-registry.yaml` — registry updates require separate gate authorization
-- `AGENTS.md`, `CLAUDE.md`, `GOVERNANCE.md` — governance docs are read-only
-- `.supervisor/skill-registry.yaml` — skill registry is read-only here
-- `plans/strategic/**` — strategic plans are read-only
+- `src/python/open-source/**`
+- `src/dotnet/**`
+- unrelated format roots
+- `format_factory/__init__.py`
+- top-level packages named `nrrd` or `safetensors`
+- manual promotion fields
+- mutable shared certification fixtures
+- `plans/strategic/**`
 
 ## Stop Conditions
 
-- Stop if the format requires an external library not already available in the project's venv
-- Stop if the format is too complex for a single sprint (no complete spec available)
-- Stop if probe detection would conflict with an existing format's signature
-- Stop if governance validators fail on the new codec
-- Stop if fewer than 7 tests pass for the new codec
+- Stop the affected obligation, not the program, if authority or proof closure
+  is broken; create a current-state gap and continue another safe obligation.
+- Do not install an undeclared dependency or weaken a validator to get green.
+- Do not claim certification from source-tree imports, synthetic-only corpora,
+  advisory checks, percentages, file presence, or self-review.
+- After three materially different failed repairs for one root cause, mark that
+  obligation technically blocked and continue other formats.
 
-## Output Format
+## Output
 
-Report at the end of execution:
-- New directory structure created: list of all files created
-- Probe detection proof: sample invocation result
-- Load round-trip proof: load a sample file and confirm model dict fields
-- Test result summary: `N/N tests pass`
-- Import proof: the import command and its success output
-
-## Output Safety Defaults (MA-SYSTEM-WIDE-2026-07-04 — mandatory)
-
-Any export function that emits JSON, HTML, or XML MUST use a safe escaping primitive:
-
-- **Python JSON output:** Use `json.dumps()` — never manual `.replace("\\", "\\\\")` chains.
-  - Correct: `json.dumps({"key": value})`
-  - Forbidden: `s.replace("\\", "\\\\").replace('"', '\\"')`
-
-- **Python HTML output:** Use `html.escape()` or `str.maketrans()` for ALL cell/paragraph values.
-  - Correct: `f"<td>{html.escape(str(val))}</td>"`
-  - Forbidden: `f"<td>{val}</td>"`
-
-These defaults are enforced by governance validators V134 (.NET JSON), V135 (.NET HTML), V136 (Python HTML).
-
-## Validation
-
-- `governance_validators_pass` — all governance validators must pass (includes V134/V135/V136)
-- `min_7_tests` — at least 7 tests across probe, load, write
-- `no_new_external_imports` — no new third-party imports added beyond what's in venv
-- `probe_never_raises` — probe function must never raise; returns True/False only
-- `output_safety` — any to_json/to_html/to_xml function must use safe escaping primitives (see Output Safety Defaults)
-
-## Rollback
-
-Delete the newly created format directory `src/python/<format_name>/` and
-`tests/python/<format_name>/`. Confirm no other files were modified.
-
-Transcript mention: execution produces a skill invocation transcript at
-`reports/skills-r<N>/skill-transcripts/new-format-kickstart-<format>.json`.
-
-## Sample Invocation
-
-```
-/new-format-kickstart
-format_name: sylk
-file_extensions: [".slk", ".sylk"]
-format_spec_ref: FACT-SYLK-001
-detection_signature: "ID;P" (first 4 bytes of valid SYLK file)
-stdlib_module: None
-```
-
-## Changelog
-
-- 1.0 (2026-07-02): Initial command file. Skill registered FF-PLAYBOOK-SYSTEM-001.
-  Playbook contract at playbooks/format-factory/new-format-kickstart-template.md v1.1.
+Emit a machine-readable execution manifest, changed-path list, input/output
+digests, exact commands and exit codes, proof node IDs, current gaps, computed
+promotion state, and the automatically selected next obligation.

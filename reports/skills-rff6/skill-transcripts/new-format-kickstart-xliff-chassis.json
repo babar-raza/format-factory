@@ -1,0 +1,239 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-xliff-production-chassis-001",
+  "execution_id": "ff6-xliff-production-chassis-001",
+  "task_id": "AUTO-XLIFF-PACKAGE-CHASSIS",
+  "skill_id": "new-format-kickstart",
+  "selected_skill_ids": ["new-format-kickstart"],
+  "skill_hashes": {
+    "new-format-kickstart": "1339c048cdbe303c037ca468d65881612ad65787982cecaaf3722ab7177bac39"
+  },
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260723T145613-3373a8",
+  "coordination_identity": "agent-codex-20260723T145613-3373a8",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "RFF6-W5-XLIFF-CHASSIS",
+  "requested_operation": "migrate the XLIFF alpha package to its production package chassis",
+  "inputs": {
+    "format_id": "xliff",
+    "distribution_name": "format-factory-xliff",
+    "namespace": "format_factory.xliff",
+    "family": "schema_defined_xml",
+    "product_contract_path": "shared/format-contracts/xliff.yaml",
+    "product_contract_sha256": "527c645f1f97007e0c770f904aca4ccaa67ceb6ff24dcf494c04e6c0d8353b42",
+    "authority_digests": {
+      "SRC-XLF-002": "73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751",
+      "SRC-XLIFF-001": "56e413be887fe88595d5af52d21d5000112898fbd332245417c43a7ecfa8e4e0"
+    },
+    "release_profile": "XLIFF-2.0-and-2.1",
+    "source_root": "src/python/xliff",
+    "test_root": "tests/python/xliff",
+    "dependency_lock": "src/python/xliff/requirements-build.lock",
+    "task_id": "AUTO-XLIFF-PACKAGE-CHASSIS"
+  },
+  "allowed_files": [
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/new-format-kickstart-xliff-chassis.json",
+    "src/python/xliff/_build_backend.py",
+    "src/python/xliff/CHANGELOG.md",
+    "src/python/xliff/MANIFEST.in",
+    "src/python/xliff/MIGRATION.md",
+    "src/python/xliff/pyproject.toml",
+    "src/python/xliff/README.md",
+    "src/python/xliff/requirements-build.lock",
+    "src/python/xliff/SECURITY.md",
+    "src/python/xliff/src/format_factory/xliff/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/adapters/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/analytics/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/cli/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/codec/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/codec/reader/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py",
+    "src/python/xliff/src/format_factory/xliff/codec/writer/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py",
+    "src/python/xliff/src/format_factory/xliff/errors.py",
+    "src/python/xliff/src/format_factory/xliff/model/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/model/document.py",
+    "src/python/xliff/src/format_factory/xliff/model/inline.py",
+    "src/python/xliff/src/format_factory/xliff/py.typed",
+    "src/python/xliff/src/format_factory/xliff/security/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/security/limits.py",
+    "src/python/xliff/src/format_factory/xliff/validation/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+    "tests/python/xliff/test_production_namespace.py"
+  ],
+  "actual_files_changed": [
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/new-format-kickstart-xliff-chassis.json",
+    "src/python/xliff/_build_backend.py",
+    "src/python/xliff/CHANGELOG.md",
+    "src/python/xliff/MANIFEST.in",
+    "src/python/xliff/MIGRATION.md",
+    "src/python/xliff/pyproject.toml",
+    "src/python/xliff/README.md",
+    "src/python/xliff/requirements-build.lock",
+    "src/python/xliff/SECURITY.md",
+    "src/python/xliff/src/format_factory/xliff/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/adapters/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/analytics/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/cli/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/codec/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/codec/reader/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py",
+    "src/python/xliff/src/format_factory/xliff/codec/writer/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py",
+    "src/python/xliff/src/format_factory/xliff/errors.py",
+    "src/python/xliff/src/format_factory/xliff/model/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/model/document.py",
+    "src/python/xliff/src/format_factory/xliff/model/inline.py",
+    "src/python/xliff/src/format_factory/xliff/py.typed",
+    "src/python/xliff/src/format_factory/xliff/security/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/security/limits.py",
+    "src/python/xliff/src/format_factory/xliff/validation/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+    "tests/python/xliff/test_production_namespace.py"
+  ],
+  "base_git_commit": "995139245a5e463a9f1c32d9290f984131aa7a3e",
+  "target_tree_sha256": "94f12e9fa8d48800e365caea1c526cfe6e2965ee406f3a84a8e1717c4017c32b",
+  "clean_target_scope": true,
+  "input_digests": {
+    "authorities": {
+      "SRC-XLF-002": "73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751",
+      "SRC-XLIFF-001": "56e413be887fe88595d5af52d21d5000112898fbd332245417c43a7ecfa8e4e0"
+    },
+    "product_contracts": {
+      "contract_file": "527c645f1f97007e0c770f904aca4ccaa67ceb6ff24dcf494c04e6c0d8353b42",
+      "compiled_contract": "3269b91f62a390c3a8d43c14c66101cbda870d24125f5a21015fdcc712d428d5",
+      "sal_facts": "04940368a7659b606e53eb4668d90f71ddda879a6cd66ca2e6c86816b1344339",
+      "KC-PYTHON-003": "0a5149579ff8356a9d690aa37d1095998db7b62e0ad2df00e3e99ff6048f726f"
+    },
+    "generators": {},
+    "tools": {
+      "_build_backend.py": "9be029ef3fe448853d03d990124a3deeb7bb4df276f586d13d539ab5d1c5fd38",
+      "pyproject.toml": "16d05df7b7f26c7af597f7e23a4b066cdf510ed20d143205b154cc755459c18b"
+    },
+    "corpora": {
+      "legacy_xliff_characterization": "included in base_git_commit"
+    },
+    "dependency_locks": {
+      "requirements-build.lock": "2e9f08e76551e50d1a85d46d7f5821e7ab5af9b778604bfaab14d8ba4d4cf9fe"
+    },
+    "tests": {
+      "production_namespace": "ce6975c9c0ec25a103a5e1a229df5c65a79d8aed0e4a615ddd84d02b95405299"
+    },
+    "environment": {
+      "python": "3.13.2",
+      "os": "Windows",
+      "architecture": "AMD64",
+      "source_date_epoch": "315532800"
+    }
+  },
+  "tests_run": [
+    "pytest tests/python/xliff/test_production_namespace.py -q: 9 passed",
+    "pytest legacy XLIFF characterization suite -q: 173 passed",
+    "ruff check production source and tests: pass",
+    "mypy --strict -p format_factory.xliff: pass",
+    "two-build wheel and sdist equality: pass",
+    "isolated installed-wheel import and CLI inspection: pass",
+    "production controller bootstrap: XLIFF chassis gap resolved"
+  ],
+  "commands_executed": [
+    {
+      "argv": ["python", "-m", "pytest", "-q", "tests/python/xliff/test_production_namespace.py"],
+      "exit_code": 0,
+      "test_selector": "9 tests"
+    },
+    {
+      "argv": ["python", "-m", "pytest", "-q", "tests/python/xliff/test_xliff_*.py"],
+      "exit_code": 0,
+      "test_selector": "173 characterization tests"
+    },
+    {
+      "argv": ["python", "-m", "ruff", "check", "src/python/xliff/src", "tests/python/xliff/test_production_namespace.py"],
+      "exit_code": 0
+    },
+    {
+      "argv": ["python", "-m", "mypy", "--strict", "-p", "format_factory.xliff"],
+      "exit_code": 0
+    },
+    {
+      "argv": ["python", "-m", "build", "--no-isolation", "--outdir", "<initial-run>", "src/python/xliff"],
+      "exit_code": 1,
+      "reason": "_build_backend.py was absent from the sdist manifest; MANIFEST.in was repaired before replay"
+    },
+    {
+      "argv": ["python", "-m", "build", "--no-isolation", "--outdir", "<run1>", "src/python/xliff"],
+      "exit_code": 0
+    },
+    {
+      "argv": ["python", "-m", "build", "--no-isolation", "--outdir", "<run2>", "src/python/xliff"],
+      "exit_code": 0
+    },
+    {
+      "argv": ["<isolated-python>", "-I", "-", "import installed format_factory.xliff and parse fixture"],
+      "exit_code": 0
+    },
+    {
+      "argv": ["<isolated-cli>", "<minimal.xlf>"],
+      "exit_code": 0
+    },
+    {
+      "argv": ["python", "-m", "tools.supervisor.production_program", "bootstrap"],
+      "exit_code": 0
+    }
+  ],
+  "built_artifacts": [
+    {
+      "kind": "wheel",
+      "run": 1,
+      "sha256": "60af887cfc04f978aaf6d52f05228374ccab3d410f7b3f143066ca8eb77624e9"
+    },
+    {
+      "kind": "wheel",
+      "run": 2,
+      "sha256": "60af887cfc04f978aaf6d52f05228374ccab3d410f7b3f143066ca8eb77624e9"
+    },
+    {
+      "kind": "sdist",
+      "run": 1,
+      "sha256": "860fd0025c63efc4c1aec31db13ae1a22a038823a05bbfc673ded412d1526c33"
+    },
+    {
+      "kind": "sdist",
+      "run": 2,
+      "sha256": "860fd0025c63efc4c1aec31db13ae1a22a038823a05bbfc673ded412d1526c33"
+    }
+  ],
+  "reproducible_build_count": 2,
+  "wheel_reproducible": true,
+  "sdist_reproducible": true,
+  "installed_import_locations": [
+    "<isolated-venv>/Lib/site-packages/format_factory/xliff/__init__.py"
+  ],
+  "ledger_entry_id": "FF6-XLIFF-PRODUCTION-CHASSIS-001",
+  "ledger_entry_path": "reports/r90/product-code-change-ledger.json",
+  "ledger_entry_source_hashes_valid": true,
+  "proof_nodes": [],
+  "computed_promotion_state": "IMPLEMENTATION_IN_PROGRESS",
+  "current_gap_projection": {
+    "program_open_gap_count": 618,
+    "xliff_open_mandatory_obligations": 121,
+    "blocked_gap_count": 1,
+    "next_task": "AUTO-UBL-PACKAGE-CHASSIS"
+  },
+  "open_gaps": [
+    "The XLIFF package chassis is verified but none of the remaining 121 mandatory ProductContract obligations is promoted by this slice.",
+    "Complete typed Core semantics, all XLIFF 2.1 modules, schema and processing-requirement validation, ITS mapping, independent corpora, and reference interoperability remain open.",
+    "The stable package deliberately rejects XLIFF 2.2 and 1.2; 2.2 preview and 1.2 compatibility require isolated models.",
+    "The historical product-code ledger validator remains broken on legacy entry shapes; the new entry was independently hash-checked.",
+    "Full fuzz, mutation, cross-platform Python 3.11-3.14, SBOM, provenance, signature, vulnerability, and extraction evidence remain open.",
+    "The canonical proof controller still treats package-chassis closure as presence-based; installed-wheel results must become digest-bound executed proof nodes before certification."
+  ],
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "IMPLEMENTATION_VERIFIED_NOT_CERTIFIED",
+  "timestamp": "2026-07-23T21:04:24Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

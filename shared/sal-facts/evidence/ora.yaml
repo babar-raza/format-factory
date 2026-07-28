@@ -1,0 +1,239 @@
+schema_version: '1.0'
+format_id: ora
+coverage: complete
+authority_policy: >-
+  Every assertion is an exact visible-text predicate over one of the three
+  SHA-256 pinned freedesktop.org OpenRaster 0.0.5 draft pages. HTML markup is
+  discarded without loading resources or executing content. This verifies the
+  published draft facts; it does not convert the draft into a formal standard.
+targets:
+  draft:
+    source_id: SRC-ORA-001
+    member_sha256: b6d041b4880556cb3e0a86612b203e82787078bacbc810ea0735e806a200568a
+  file_layout:
+    source_id: SRC-ORA-002
+    member_sha256: e1dac00ff0d9c27cb40b04cc21ae44fcf0ddb50f23ef49a12dc8057c5a6f20d6
+  layer_stack:
+    source_id: SRC-ORA-003
+    member_sha256: 78c993f79cfd831b6b4afcbdbc38eb8b156397d3b6995da41688fac603f6bba5
+facts:
+- fact_id: SAL-ORA-00001
+  claim_sha256: c5a14d0e3b911d3a635465b465c59e7c7b6107ad971217953a7244afc408c347
+  assertions:
+  - assertion_id: stack-child-kinds
+    target: layer_stack
+    kind: html_text_contains
+    expected: They may contain sub- stack s, layer s, or text elements.
+  - assertion_id: visual-layer-order
+    target: layer_stack
+    kind: html_text_contains
+    expected: The first element in a stack is the uppermost.
+- fact_id: SAL-ORA-00002
+  claim_sha256: f7fc053e274fbdcd24e05d5d155b1a91b95d25de5ab25fe406618a59b6ac4d14
+  assertions:
+  - assertion_id: separate-layer-file
+    target: layer_stack
+    kind: html_text_contains
+    expected: The layer element defines a graphical layer within a layer stack, stored in a separate file within the OpenRaster file.
+  - assertion_id: required-src
+    target: layer_stack
+    kind: html_text_contains
+    expected: 'The following attribute is required: " src ": the path to the stored data file for this layer.'
+- fact_id: SAL-ORA-00003
+  claim_sha256: b39c357441b3ebc2a286ab67afa20a9c56e51ca28442a06912cc3935d7e335ed
+  assertions:
+  - assertion_id: data-directory-convention
+    target: file_layout
+    kind: html_text_contains
+    expected: This directory is (by convention) where data files are usually stored.
+  - assertion_id: root-relative-complete-path
+    target: file_layout
+    kind: html_text_contains
+    expected: Files must be referenced in stack.xml by their full path relative to the OpenRaster file's root, e.g. " data/layer2.png ".
+- fact_id: SAL-ORA-00004
+  claim_sha256: 908291d95cf1cd1cbd15dd7d6b82af3818284f518002db926e374f7811918dae
+  assertions:
+  - assertion_id: case-sensitive-utf8
+    target: file_layout
+    kind: html_text_contains
+    expected: The file names within OpenRaster "zip files" are case-sensitive and must be UTF-8 encoded.
+  - assertion_id: non-ascii-utf8-flag
+    target: file_layout
+    kind: html_text_contains
+    expected: If you decide to write non-ascii file names, be aware that the Zip format has an UTF-8 flag for each file name. Make sure this flag is set
+- fact_id: SAL-ORA-00005
+  claim_sha256: ddb8f860fae570bf4f6f86b00f413bb51f80047cc84a13161bc74ec2eaf07b39
+  assertions:
+  - assertion_id: signed-position-default
+    target: layer_stack
+    kind: html_text_contains
+    expected: 'x and y attributes Position attributes. These are signed integers with a default value of 0.'
+  - assertion_id: non-root-common-attributes
+    target: layer_stack
+    kind: html_text_contains
+    expected: Common attributes for layer and non-root stack elements
+- fact_id: SAL-ORA-00006
+  claim_sha256: d11bdd0f9f380347b8bae359f346b786601e865778c5cd0cf59d4b65a2f77f9f
+  assertions:
+  - assertion_id: baseline-exchange-intent
+    target: draft
+    kind: html_text_contains
+    expected: Every OpenRaster file is compliant to Baseline. This intent is for exchange between applications and it is allowed to have custom extensions in such a file.
+  - assertion_id: extensions-safe-with-baseline
+    target: layer_stack
+    kind: html_text_contains
+    expected: Layer Stack format permits extensions, which should be individually specified in detail, and work safely with the baseline profile.
+- fact_id: SAL-ORA-00007
+  claim_sha256: fc0a287fb632c6c9c836c177ae5a3579793f0228f593de30520ba80a3d6f2d30
+  assertions:
+  - assertion_id: allowed-zip-compression
+    target: file_layout
+    kind: html_text_contains
+    expected: Only DEFLATED and STORED should be used for OpenRaster files.
+- fact_id: SAL-ORA-00008
+  claim_sha256: d07c289b9e2329649049be8bab38a7e16b441dfec9165cf8fda11b8967f5923d
+  assertions:
+  - assertion_id: ora-extension
+    target: file_layout
+    kind: html_text_contains
+    expected: OpenRaster files have the file name extension .ora .
+  - assertion_id: zip-wrapper
+    target: file_layout
+    kind: html_text_contains
+    expected: The data is stored within a Zip file wrapper.
+- fact_id: SAL-ORA-00009
+  claim_sha256: 59d9f4a5c5f878da58573b647b65f4ec497bee08e443fcab52cd3b77eb8953e8
+  assertions:
+  - assertion_id: full-baseline
+    target: layer_stack
+    kind: html_text_contains
+    expected: '"Full baseline", which allows reading and editing'
+  - assertion_id: viewing-baseline
+    target: layer_stack
+    kind: html_text_contains
+    expected: '"Viewing baseline" which guarantees visualization of the file, but editing might damage the result'
+- fact_id: SAL-ORA-00010
+  claim_sha256: 1746264b0171e08c6be34e92c7c0869fd7fed8ccd67c59323d8ac77b86a67a16
+  assertions:
+  - assertion_id: resolution-domain
+    target: layer_stack
+    kind: html_text_contains
+    expected: The optional xres and yres attributes specify the nominal resolution of the document as a whole in the horizontal and vertical dimensions, in pixels per inch. Values are xsd:int s with a minimum value of 1.
+  - assertion_id: resolution-default-pair
+    target: layer_stack
+    kind: html_text_contains
+    expected: The default value, if unspecified, is 72. If either is specified, the other must also be specified.
+  - assertion_id: resolution-version
+    target: layer_stack
+    kind: html_text_contains
+    expected: '(Since: 0.0.3) Common attributes for layer and non-root stack elements'
+- fact_id: SAL-ORA-00011
+  claim_sha256: d80ee2daedd7c9f466dcfdb765476e871209d3ce0f772a115cbd71500564eb03
+  assertions:
+  - assertion_id: isolation-conditions
+    target: layer_stack
+    kind: html_text_contains
+    expected: 'Non-root stacks should be rendered as isolated groups if: a) their isolation property is isolate (and not auto ); or b) their opacity is less that 1.0; or c) they use a composite-op other than svg:src-over .'
+  - assertion_id: isolation-version
+    target: layer_stack
+    kind: html_text_contains
+    expected: "If they do so, they must declare when writing OpenRaster files that their layer groups are isolated ( isolation='isolate' ). (Since: 0.0.4)"
+- fact_id: SAL-ORA-00012
+  claim_sha256: 355e55e1fb4800faa00f73a76373bc572607ac29e0b62a5bf9bdcb9234d0d19b
+  assertions:
+  - assertion_id: opacity-range
+    target: layer_stack
+    kind: html_text_contains
+    expected: The object's opacity, expressed as a simple floating-point number. Values between 0.0 for fully transparent, and 1.0 for fully opaque.
+  - assertion_id: opacity-common
+    target: layer_stack
+    kind: html_text_contains
+    expected: Common attributes for layer and non-root stack elements
+- fact_id: SAL-ORA-00013
+  claim_sha256: b77b18dc3d46ffc005748c918fe4f19f7dbeebda8b1ee7f82cb1626c82107217
+  assertions:
+  - assertion_id: visibility-enum
+    target: layer_stack
+    kind: html_text_contains
+    expected: 'The visibility of the object. Valid values are either visible , or hidden . Default value: visible .'
+  - assertion_id: visibility-common
+    target: layer_stack
+    kind: html_text_contains
+    expected: Common attributes for layer and non-root stack elements
+- fact_id: SAL-ORA-00014
+  claim_sha256: 09c4b36df1c6dcde211d9b489bc2b4b092ed412e96be175e451587026c987030
+  assertions:
+  - assertion_id: early-draft-warning
+    target: layer_stack
+    kind: html_text_contains
+    expected: 'Note: this is an early draft of the specification, do not take anything on this page for granted. Pretty much everything is open for discussion.'
+  - assertion_id: draft-version
+    target: layer_stack
+    kind: html_text_contains
+    expected: This page is part of the Draft OpenRaster specification at version 0.0.5
+- fact_id: SAL-ORA-00015
+  claim_sha256: 7236c54507adcc413575ab9d1a1723e4324bb2e8104c4f8349c50e1dcb6b3a9d
+  assertions:
+  - assertion_id: composite-operation-model
+    target: layer_stack
+    kind: html_text_contains
+    expected: 'The effect is to be calculated as described in Compositing-1: General Formula for Compositing and Blending , namely as combinations of a colour blending function and a Porter-Duff alpha compositing operator .'
+  - assertion_id: composite-default
+    target: layer_stack
+    kind: html_text_contains
+    expected: The default value is svg:src-over , which represents simple alpha compositing.
+- fact_id: SAL-ORA-00016
+  claim_sha256: 45591670867ce3beb9b20c72eef9acb8e9e46025bbbc40035f557e42fb236dd2
+  assertions:
+  - assertion_id: mimetype-first-stored
+    target: file_layout
+    kind: html_text_contains
+    expected: The first file in the archive must be called " mimetype ", without a file name extension. It must be STORED without compression.
+  - assertion_id: mimetype-exact-content
+    target: file_layout
+    kind: html_text_contains
+    expected: This file must contain the string " image/openraster ", with no whitespace or trailing newline.
+- fact_id: SAL-ORA-00017
+  claim_sha256: 8c21716550ea7d3c2484a224b5a82a054dd9e6b27a0c73e96380caeaf2433697
+  assertions:
+  - assertion_id: stack-xml-encoding-format
+    target: file_layout
+    kind: html_text_contains
+    expected: stack.xml This is the UTF-8 encoded XML file from the Layers Stack Specification .
+- fact_id: SAL-ORA-00018
+  claim_sha256: 2cffd31327f2c8153a2f2e85111b1e945c8d9dd80a5b84314325bb07f340f388
+  assertions:
+  - assertion_id: image-size
+    target: layer_stack
+    kind: html_text_contains
+    expected: The logical size of the image is given by the mandatory " w " and " h " attributes, which are positive integers.
+  - assertion_id: image-version
+    target: layer_stack
+    kind: html_text_contains
+    expected: The mandatory " version " attribute specifies the version of the OpenRaster specification to which the OpenRaster file as a whole conforms.
+- fact_id: SAL-ORA-00019
+  claim_sha256: 5ee19775b33c98d476977f78f27f012a6894d57926c91e7ff4d983aace4ea1ad
+  assertions:
+  - assertion_id: thumbnail-required
+    target: file_layout
+    kind: html_text_contains
+    expected: An OpenRaster file must have a thumbnail.png in order to allow file browser software to render the thumbnail efficiently.
+  - assertion_id: thumbnail-png-constraints
+    target: file_layout
+    kind: html_text_contains
+    expected: It must be a non-interlaced PNG with 8 bits per channel of at most 256x256 pixels.
+- fact_id: SAL-ORA-00020
+  claim_sha256: 784a1cf44a58c447c7d7fefaa7d6e69db6698dd7c7b5a74c5f0a96d65b475261
+  assertions:
+  - assertion_id: merged-image-required
+    target: file_layout
+    kind: html_text_contains
+    expected: An OpenRaster file must have a mergedimage.png in order to accommodate viewer software.
+  - assertion_id: merged-image-content
+    target: file_layout
+    kind: html_text_contains
+    expected: It must contain the final rendered image without any frame or decoration. This file must be a PNG file with 8 or 16 bits per channel.
+  - assertion_id: merged-image-version
+    target: file_layout
+    kind: html_text_contains
+    expected: '(Since 0.0.2, this file is mandatory)'

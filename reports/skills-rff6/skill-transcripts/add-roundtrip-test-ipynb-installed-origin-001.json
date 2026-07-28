@@ -1,0 +1,79 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-add-roundtrip-test-ipynb-installed-origin-001",
+  "execution_id": "ff6-add-roundtrip-test-ipynb-installed-origin-001",
+  "task_id": "TC-FF6-IPYNB-INSTALLED-ORIGIN-001",
+  "skill_id": "add-roundtrip-test",
+  "selected_skill_ids": [
+    "add-roundtrip-test"
+  ],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "RFF6-IPYNB-INSTALLED-ORIGIN-001",
+  "pre_mutation_guard_authorization_id": "7c57a8c1c0453517",
+  "requested_operation": "separate IPYNB source characterization from installed-wheel origin proof and reject source shadowing",
+  "inputs": {
+    "format_id": "ipynb",
+    "language": "python",
+    "defect_id": "GAP-FF6-IPYNB-INSTALLED-ORIGIN-001",
+    "roundtrip_scope": "source-only characterization, installed-wheel origin, and negative source-shadow rejection",
+    "exact_test_paths": [
+      "tests/python/ipynb/test_production_namespace.py"
+    ],
+    "base_git_commit": "89387552"
+  },
+  "allowed_files": [
+    "tests/python/ipynb/test_production_namespace.py",
+    "reports/skills-rff6/skill-transcripts/add-roundtrip-test-ipynb-installed-origin-001.json"
+  ],
+  "actual_files_changed": [
+    "tests/python/ipynb/test_production_namespace.py",
+    "reports/skills-rff6/skill-transcripts/add-roundtrip-test-ipynb-installed-origin-001.json"
+  ],
+  "behavior_proven": [
+    "source-only execution accepts the production package rooted at src/python/ipynb/src",
+    "source egg-info is not misclassified as an installed wheel",
+    "when an installed distribution exists, format_factory.ipynb must originate under that installed distribution",
+    "an installed environment shadowed by PYTHONPATH source fails the origin assertion",
+    "the installed suite can execute from outside the repository without PYTHONPATH"
+  ],
+  "tests_run": [
+    "complete IPYNB source characterization with explicit production and legacy roots: 254 passed",
+    "installed-wheel production namespace suite from C:/ff6-v with PYTHONPATH absent: 6 passed",
+    "negative installed environment with PYTHONPATH source shadow: expected failure observed, pytest exit 1"
+  ],
+  "wheel_evidence": {
+    "format_factory_core_sha256": "948c1e9bad28121efbc4d1084bbf3e757a636dfe0889d6e7e3a34e2af4026077",
+    "format_factory_ipynb_sha256": "e40ba6f50219132552219fa3c6a5124e9db0f09b9c4d86a4957634761efc3041",
+    "installed_import": "C:/ff6-v/prod-ipynb-proof/Lib/site-packages/format_factory/ipynb/__init__.py",
+    "reference_distribution": "nbformat==5.10.4"
+  },
+  "obligation_binding": {
+    "status": "CHASSIS_EVIDENCE_ONLY",
+    "reason": "The compiled IPYNB contract contains no mandatory installed-package obligation; this test is not attached to an unrelated format-conformance obligation."
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for installed-origin regression; no package or format certification claimed",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES, retained from the active mission session",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, retained in the mission receipt chain",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "IPYNB_INSTALLED_ORIGIN_AND_SOURCE_SHADOW_REGRESSION_REPAIRED_NOT_CERTIFIED",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

@@ -1,0 +1,167 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-safetensors-lazy-io-002",
+  "execution_id": "ff6-safetensors-lazy-io-002",
+  "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-LAZY-001",
+  "skill_id": "format-feature-expansion",
+  "selected_skill_ids": ["format-feature-expansion"],
+  "skill_hashes": {
+    "format-feature-expansion": "df65862c51ce23ed43189f28e15a21156d13e51b9ecd345a93b1649274733aaf"
+  },
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260723T145613-3373a8",
+  "coordination_identity": "agent-codex-20260723T145613-3373a8",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "RFF6-W3-SAFETENSORS-LAZY-IO-002",
+  "requested_operation": "implement explicit header-only inspection, bounded path-backed region access, and access-strategy disclosure",
+  "inputs": {
+    "task_id": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-LAZY-001",
+    "format_id": "safetensors",
+    "profile_id": "production",
+    "obligation_id": "SAL-SAFETENSORS-OBL-117F7126A23370CB",
+    "contract_digest": "d3686fd5aad7e0184dde65d6e4746acb32b4bc1833dcfd255a2b1a74eb09a00f",
+    "authority_digests": {
+      "contract_file": "62bd59f1e04b87ad8ca5b49076847834bc018c2a4ecb5c87d429b7239768ed30",
+      "sal_facts": "c9ae14874c3cd0f00a767ee3a61b7cce40520ce6d7f9010bf1e95f4885777de6"
+    },
+    "affected_layer": "src/python/safetensors",
+    "planned_paths": [
+      "src/python/safetensors/",
+      "tests/python/safetensors/test_lazy_io.py",
+      "reports/r90/product-code-change-ledger.json",
+      "reports/skills-rff6/skill-transcripts/format-feature-expansion-safetensors-lazy-io-002.json"
+    ],
+    "proof_inputs": [
+      "tests/python/safetensors/test_lazy_io.py"
+    ]
+  },
+  "allowed_files": [
+    "src/python/safetensors/README.md",
+    "src/python/safetensors/src/format_factory/safetensors/__init__.py",
+    "src/python/safetensors/src/format_factory/safetensors/codec/__init__.py",
+    "src/python/safetensors/src/format_factory/safetensors/codec/reader/__init__.py",
+    "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py",
+    "src/python/safetensors/src/format_factory/safetensors/model/__init__.py",
+    "src/python/safetensors/src/format_factory/safetensors/model/document.py",
+    "tests/python/safetensors/test_lazy_io.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-safetensors-lazy-io-002.json"
+  ],
+  "actual_files_changed": [
+    "src/python/safetensors/README.md",
+    "src/python/safetensors/src/format_factory/safetensors/__init__.py",
+    "src/python/safetensors/src/format_factory/safetensors/codec/__init__.py",
+    "src/python/safetensors/src/format_factory/safetensors/codec/reader/__init__.py",
+    "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py",
+    "src/python/safetensors/src/format_factory/safetensors/model/__init__.py",
+    "src/python/safetensors/src/format_factory/safetensors/model/document.py",
+    "tests/python/safetensors/test_lazy_io.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-safetensors-lazy-io-002.json"
+  ],
+  "base_git_commit": "3b9bb9668560735578dc6ce3926aa65c0908f2c4",
+  "input_digests": {
+    "reader": "b82fe1789e221d342af05a82b56ac1e6392e9131a72f1667841fba74f72a3480",
+    "model": "dcd8a183d79e8edcf239b1554887ad17599d4ce9805a7780e52c9ccf3de5961f",
+    "test": "a99394a20847ce1a166241b01dc3fbd9d1de9ee48f7e41064e3cc43f9160be04",
+    "contract": "d3686fd5aad7e0184dde65d6e4746acb32b4bc1833dcfd255a2b1a74eb09a00f",
+    "package_wheel": "7e959303d64a4cadaae239af2eb29f20a64703986dc8731bab4f0062837ceca7"
+  },
+  "behavior_added": [
+    "read_header validates only the prefix and JSON header while leaving payload bytes unread and unmapped",
+    "path-backed safe_open reports read-only memory-mapped zero-copy access",
+    "tensor_region returns a bounds-checked borrowed view for a tensor-relative byte range",
+    "stream-backed load reports that the entire payload was buffered",
+    "all access paths report that SafeTensors has no compressed payload and therefore requires no decompression"
+  ],
+  "tests_run": [
+    "new large sparse-file bounded-memory and access-disclosure tests: 2 passed",
+    "complete SafeTensors test suite with declared NumPy test dependency: 272 passed",
+    "Ruff source and new test: pass",
+    "strict mypy for the production package from its distribution root: pass",
+    "two isolated wheel builds: byte-identical",
+    "installed-wheel header-only and mapped-region workflow outside the source tree: pass",
+    "official safetensors 0.8.0 co-installation and independent import paths: pass"
+  ],
+  "commands_executed": [
+    {
+      "argv": ["python", "-m", "pytest", "tests/python/safetensors/test_lazy_io.py", "-q"],
+      "exit_code": 0,
+      "test_selector": "2 tests"
+    },
+    {
+      "argv": ["python", "-m", "pytest", "tests/python/safetensors", "-q"],
+      "exit_code": 0,
+      "test_selector": "272 tests"
+    },
+    {
+      "argv": ["python", "-m", "ruff", "check", "src/python/safetensors/src", "tests/python/safetensors/test_lazy_io.py"],
+      "exit_code": 0
+    },
+    {
+      "argv": ["python", "-m", "mypy", "--strict", "--namespace-packages", "--explicit-package-bases", "src/format_factory/safetensors"],
+      "cwd": "src/python/safetensors",
+      "exit_code": 0,
+      "test_selector": "20 production source files"
+    },
+    {
+      "argv": ["python", "-m", "build", "--no-isolation", "<clean-package-copy>"],
+      "exit_code": 0,
+      "repeat_count": 2
+    },
+    {
+      "argv": ["<installed-python>", "-", "exercise read_header and safe_open from the installed wheel"],
+      "exit_code": 0
+    },
+    {
+      "argv": ["<installed-python>", "-c", "co-import official safetensors 0.8.0 and format_factory.safetensors"],
+      "exit_code": 0
+    },
+    {
+      "argv": ["python", "tools/supervisor/production_program.py", "prove", "--format", "safetensors", "--obligation", "SAL-SAFETENSORS-OBL-117F7126A23370CB", "--polarity", "positive", "--test", "tests/python/safetensors/test_lazy_io.py", "--run", "<tooling-python>", "-m", "pytest", "tests/python/safetensors/test_lazy_io.py::test_header_only_and_mapped_region_access_stay_bounded", "-q"],
+      "exit_code": 0,
+      "proof_id": "PROOF-38AF83B1BC27127DB30E237648D3A88CB1E276DA31A5FB10B095CDEB848E39E0"
+    }
+  ],
+  "built_artifacts": [
+    {
+      "kind": "wheel",
+      "sha256": "7e959303d64a4cadaae239af2eb29f20a64703986dc8731bab4f0062837ceca7",
+      "reproducible_across_two_clean_copies": true
+    },
+    {
+      "kind": "sdist",
+      "run_1_sha256": "dccee01ef242996dacc9acd37a95649043c5394f1d7365e41e3390b157429b6f",
+      "run_2_sha256": "3404357ba538b8034ce1f4b5c700afedb545d5ad78551b161f3947006a0dc917",
+      "reproducible_across_two_clean_copies": false,
+      "root_cause": "setuptools sdist embeds build-time gzip and generated PKG-INFO timestamps"
+    }
+  ],
+  "installed_import_locations": [
+    "<isolated-venv>/Lib/site-packages/format_factory/safetensors/__init__.py",
+    "<isolated-venv>/Lib/site-packages/safetensors/__init__.py"
+  ],
+  "ledger_entry_id": "FF6-SAFETENSORS-LAZY-IO-002",
+  "ledger_entry_path": "reports/r90/product-code-change-ledger.json",
+  "proof_nodes": [
+    "PROOF-38AF83B1BC27127DB30E237648D3A88CB1E276DA31A5FB10B095CDEB848E39E0"
+  ],
+  "computed_promotion_state": "IMPLEMENTATION_IN_PROGRESS",
+  "current_gap_projection": {
+    "program_open_gap_count": 613,
+    "safetensors_open_mandatory_obligations": 93,
+    "blocked_gap_count": 1,
+    "next_task": "AUTO-SAFETENSORS-IMPLEMENT-SAFETENSORS-HEADER-001"
+  },
+  "open_gaps": [
+    "The two earlier SafeTensors obligations were replayed successfully against the current source and environment digests.",
+    "The wheel is reproducible, but the setuptools sdist is not; release promotion remains blocked until the canonical sdist builder normalizes archive and generated-metadata timestamps."
+  ],
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "EXECUTED_PROOF_RECORDED_NOT_CERTIFIED",
+  "timestamp": "2026-07-24T03:15:00+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

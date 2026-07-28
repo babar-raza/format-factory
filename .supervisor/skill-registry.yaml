@@ -1257,7 +1257,12 @@ skills:
 - command: /package-install-proof
   command_file: .claude/commands/package-install-proof.md
   idempotency: create_or_update
-  implementation_paths: []
+  implementation_paths:
+  - tools/run_package_install_proof.py
+  - tools/supervisor/package_proof_common.py
+  - tools/supervisor/governance_validators_package_proof.py
+  - packaging/python/build-local-packages.py
+  - packaging/python/package-matrix.yaml
   mandatory_validations:
   - wheel_builds
   - import_succeeds
@@ -1269,7 +1274,10 @@ skills:
   skill_id: package-install-proof
   spec_qname_required: false
   status: active
-  test_paths: []
+  test_paths:
+  - tests/python/packaging/test_package_install_proof_all_formats.py
+  - tests/packaging/test_package_install_proof_runtime.py
+  - tests/supervisor/test_validate_package_install_proof_coverage.py
   advisory_only: true
 - command: /sync-installed-packages
   command_file: .claude/commands/sync-installed-packages.md
@@ -1644,13 +1652,26 @@ skills:
 - command: /sal-pipeline-heal
   command_file: .claude/commands/sal-pipeline-heal.md
   idempotency: create_or_update
-  implementation_paths: []
+  implementation_paths:
+  - tools/specification-authority-layer/
+  - tools/spec/
+  - schemas/sal-facts/
+  - shared/sal-facts/evidence/
+  - shared/sal-facts/
+  - reports/sal-verification/
+  - tools/supervisor/production_program.py
   mandatory_validations:
   - spec_cache_verified
   - tool_invoked
   - output_artifact_produced
   - fact_ids_in_correct_namespace
   - skill_transcript_written
+  - canonical_status_vocabulary_closed
+  - unknown_status_rejected
+  - live_gap_projection_recomputed
+  - exact_authority_assertions_pass
+  - content_addressed_receipt_bound
+  - manual_status_edit_non_promoting
   notes: SAL infrastructure skill. Blocks all NOT STARTED SAL taskcards until registered.
     Added 2026-06-21 (SKILL-GAP-011, TC-SAL-SKILL-001).
   product_track: sal_infrastructure
@@ -1669,7 +1690,10 @@ skills:
   skill_id: sal-pipeline-heal
   spec_qname_required: false
   status: active
-  test_paths: []
+  test_paths:
+  - tests/tools/
+  - tests/spec_authority/
+  - tests/production_program/test_production_program.py
   advisory_only: true
 - command: /scan-residual-bypasses
   command_file: .claude/commands/scan-residual-bypasses.md
@@ -2325,6 +2349,8 @@ skills:
   implementation_paths:
   - tools/spec/extract_sal_facts.py
   - tools/spec/merge_sal_facts.py
+  - tools/spec/seed_sal_candidates.py
+  - schemas/sal-facts/sal-facts-schema.json
   mandatory_validations:
   - sal_facts_nonzero
   - spec_fact_refs_populated
@@ -2332,8 +2358,9 @@ skills:
   notes: Created TC-LA-004 (2026-06-26). Governs SAL ingestion for the 14 formats
     with zero spec_facts. For stdlib-backed formats, see /run-oracle as alternative.
   product_track: sal_ingestion
-  purpose: Ingest a format specification into the SAL to produce FACT-{FORMAT}-NNN
-    entries in sal-facts-latest.json. Only governed entry point for adding spec facts.
+  purpose: Ingest a format specification into the SAL with stable canonical
+    SAL-{FORMAT}-{content-id} identities, compatibility FACT aliases, explicit
+    readiness categories, and acquired-authority digests.
   required_handoff_fields:
   - format_id
   - spec_source_uri
@@ -2346,7 +2373,8 @@ skills:
   skill_id: ingest-spec-sal
   spec_qname_required: false
   status: active
-  test_paths: []
+  test_paths:
+  - tests/tools/test_seed_sal_candidates.py
 - command: /run-oracle
   command_file: .claude/commands/run-oracle.md
   idempotency: idempotent
@@ -3473,28 +3501,31 @@ skills:
   command_file: .claude/commands/format-feature-expansion.md
   idempotency: create_or_update
   implementation_paths:
-  - src/python/<format>/<codec>.py
-  - src/python/<format>/__init__.py
+  - src/python/<format>/format_factory/<format>/
   - tests/python/<format>/
   mandatory_validations:
   - governance_validators_pass
-  - min_7_tests_per_function
-  - no_new_external_imports
-  - init_all_export_updated
+  - obligation_and_sal_integrity
+  - executed_positive_and_negative_evidence
+  - complete_input_digest_closure
+  - installed_wheel_proof
+  - public_api_and_blast_radius
   - product_code_ledger_validator
-  notes: Registered FF-PLAYBOOK-SYSTEM-001 (2026-07-01). Sprint Task Template (NOT
-    an acquisition playbook). Proven from R119-R122 sprints.
+  notes: Upgraded by TC-FF6-MACH-001 from test-count-driven POC expansion to
+    bounded ProductContract obligation execution with digest-bound proof.
   product_track: foss_python
-  purpose: Add a new export, transform, or accessor function to existing Python FOSS
-    codec. Generates bounded taskcards via tools/playbook/generate_playbook_taskcards.py.
+  purpose: Implement one unmet ProductContract obligation in an existing production
+    Python format library and bind executed evidence to the complete input closure.
   required_handoff_fields:
-  - format_name
-  - codec_file
-  - init_file
-  - test_dir
-  - function_name
-  - function_signature
-  - capability_label
+  - format_id
+  - profile_id
+  - obligation_id
+  - contract_digest
+  - authority_digests
+  - affected_layer
+  - planned_paths
+  - proof_inputs
+  - task_id
   skill_id: format-feature-expansion
   status: active
   test_paths:
@@ -3506,30 +3537,43 @@ skills:
   - src/python/<format>/
   - tests/python/<format>/
   mandatory_validations:
+  - product_contract_compiles
+  - authority_digests_pinned
+  - production_namespace_architecture
+  - mandatory_obligation_evidence
+  - independent_oracle_evidence
+  - installed_wheel_proof
+  - reproducible_generation_and_build
   - governance_validators_pass
-  - min_7_tests
-  - no_new_external_imports
   - probe_never_raises
   - product_code_ledger_validator
   - format_name_collision_gate
   - no_syspath_mutation
   pre_execution_gate_command: python -m tools.governance.skill_gates.format_name_gate
     --format-name {format_name}
-  notes: Registered FF-PLAYBOOK-SYSTEM-001 (2026-07-01). Sprint Task Template (NOT
-    an acquisition playbook). Proven from NDJSON, FODG, TSV acquisitions. TC-PA-010
-    (2026-07-17) added the stdlib/popular-package name collision gate — run it BEFORE
-    creating src/python/<format>/; the defect it prevents (src/python/csv/) is
+  notes: >-
+    Upgraded by TC-FF6-MACH-001 into the production family router for JSON,
+    binary, header/payload, ZIP/container, schema XML, and large generated schema
+    libraries. A probe/load/write slice is non-promoting. Retains the
+    TC-PA-010 stdlib/popular-package name collision gate: run it before creating
+    src/python/<format>/ because the defect it prevents (src/python/csv/) is
     unfixable once code imports the package.
   product_track: foss_python
-  purpose: Start a brand-new Python FOSS format codec from scratch. Produces minimum
-    slice probe, load, write, tests. Uses canonical contract in playbook_contract
-    front-matter.
+  purpose: Create or migrate an independently publishable Python format library
+    from a pinned ProductContract through the registered production family pipeline.
   required_handoff_fields:
-  - format_name
-  - file_extensions
-  - format_spec_ref
-  - detection_signature
-  - stdlib_module
+  - format_id
+  - distribution_name
+  - namespace
+  - family
+  - product_contract_path
+  - product_contract_sha256
+  - authority_digests
+  - release_profile
+  - source_root
+  - test_root
+  - dependency_lock
+  - task_id
   skill_id: new-format-kickstart
   status: active
   test_paths:
@@ -3539,26 +3583,31 @@ skills:
   command_file: .claude/commands/product-source-task.md
   idempotency: create_or_update
   implementation_paths:
-  - src/python/<format>/<codec>.py
-  - src/python/<format>/__init__.py
+  - src/python/<format>/
   - tests/python/<format>/
   mandatory_validations:
+  - reproduced_failure_or_characterization
+  - complete_input_digest_closure
+  - transitive_invalidation
+  - architecture_and_public_api
+  - installed_wheel_proof
+  - generated_source_reproducibility
   - governance_validators_pass
-  - min_9_tests_per_function
-  - no_new_external_imports
-  - init_all_export_updated
   - product_code_ledger_validator
-  notes: Registered FF-PLAYBOOK-SYSTEM-001 (2026-07-01). Sprint Task Template (NOT
-    an acquisition playbook). General template for any bounded source change.
+  notes: Upgraded by TC-FF6-MACH-001 to own one production defect, migration,
+    refactor, or generated-source responsibility with complete proof invalidation.
   product_track: foss_python
-  purpose: Execute single bounded product source change to existing Python FOSS codec.
-    General template; format-feature-expansion specializes for export/transform.
+  purpose: Execute one bounded production source repair, namespace migration,
+    internal refactor, or generated-source task with installed-package proof.
   required_handoff_fields:
-  - format_name
-  - function_name
-  - codec_file
-  - init_file
-  - test_sprint
+  - format_id
+  - task_id
+  - task_kind
+  - root_cause
+  - planned_paths
+  - input_digests
+  - acceptance_evidence
+  - regression_tier
   skill_id: product-source-task
   status: active
   test_paths:
@@ -4478,6 +4527,7 @@ skills:
   - tools/format_contract/canonical_io.py
   - tools/format_contract/stores.py
   - tools/format_contract/contract_registry.py
+  - schemas/format-contracts/format-contract.schema.json
   mandatory_validations:
   - readiness_gate_enforced
   - deterministic_output
@@ -4809,6 +4859,189 @@ skills:
   test_paths: [tests/governance/test_skills_first_manifest_resolve.py, tests/governance/test_skills_first_closeout_exceptions.py,
     tests/governance/test_skills_first_integration_adversarial.py]
   risk_level: LOW
+- command: /product-contract-runtime-repair
+  command_file: .claude/commands/product-contract-runtime-repair.md
+  created_at: '2026-07-23'
+  created_by: SKILL-GAP-FF6-PRODUCT-CONTRACT-RUNTIME
+  idempotency: idempotent
+  implementation_paths:
+  - tools/format_contract/product_contract.py
+  mandatory_validations:
+  - complete_contract_digest_closure
+  - obligation_fact_edges_preserved
+  - equivalent_rerun_determinism
+  - changed_contract_input_invalidates_digest
+  output_paths:
+  - reports/skills-rff6/skill-transcripts/
+  product_track: format_contract
+  purpose: Repair and extend strict ProductContract content addressing, obligation
+    fact edges, fail-closed semantics, and deterministic regression controls.
+  required_handoff_fields:
+  - defect_id
+  - failing_regression
+  - expected_invalidation_input
+  skill_id: product-contract-runtime-repair
+  spec_qname_required: false
+  status: active
+  test_paths:
+  - tests/production_program/test_production_program.py
+  risk_level: HIGH
+- command: /worktree-skill-guard-repair
+  command_file: .claude/commands/worktree-skill-guard-repair.md
+  created_at: '2026-07-23'
+  created_by: SKILL-GAP-FF6-WORKTREE-SKILL-GUARD
+  idempotency: idempotent
+  implementation_paths:
+  - .hooks/pre-commit-skill-guard
+  mandatory_validations:
+  - linked_hook_resolves_active_worktree
+  - transcript_search_is_worktree_scoped
+  - coordination_check_uses_active_worktree
+  - shared_checkout_behavior_is_preserved
+  output_paths:
+  - reports/skills-*/skill-transcripts/
+  product_track: machinery_governance
+  purpose: Repair pre-commit skill-attribution and coordination root resolution for
+    linked Git worktrees without weakening fail-closed commit enforcement.
+  required_handoff_fields:
+  - defect_id
+  - linked_worktree_reproduction
+  - expected_repository_root
+  skill_id: worktree-skill-guard-repair
+  spec_qname_required: false
+  status: active
+  test_paths:
+  - tests/governance/test_pre_commit_skill_guard_worktree.py
+  risk_level: HIGH
+- command: /create-format-family-pack
+  command_file: .claude/commands/create-format-family-pack.md
+  created_at: '2026-07-24'
+  created_by: SKILL-GAP-FF6-FAMILY-PACK-AUTHORING
+  idempotency: idempotent
+  implementation_paths:
+  - tools/format_contract/family_pack_validator.py
+  - shared/format-contracts/policy/family-packs/
+  - shared/format-contracts/policy/format-family-map.yaml
+  - shared/format-contracts/policy/fact-category-requirements.yaml
+  mandatory_validations:
+  - family_pack_schema_valid
+  - baseline_ids_unique
+  - readiness_weights_normalized
+  - mapping_resolves
+  - excluded_concepts_do_not_leak
+  - semantic_applicability_review_recorded
+  - validator_idempotent
+  output_paths:
+  - reports/skills-*/skill-transcripts/
+  product_track: format_contract
+  purpose: Create and validate a reusable format-family policy pack with explicit
+    semantic boundaries, readiness policy, deterministic routing, and excluded-concept
+    controls.
+  required_handoff_fields:
+  - family_id
+  - representative_formats
+  - semantic_scope
+  - excluded_concepts
+  - required_fact_categories
+  - policy_pack_path
+  skill_id: create-format-family-pack
+  spec_qname_required: false
+  status: active
+  test_paths:
+  - tests/format_contract/test_family_pack_validator.py
+  risk_level: MEDIUM
+- command: /format-contract-onboard
+  command_file: .claude/commands/format-contract-onboard.md
+  created_at: '2026-07-23'
+  created_by: SKILL-GAP-FF6-FORMAT-CONTRACT-ONBOARD
+  idempotency: idempotent
+  implementation_paths:
+  - shared/format-contracts/policy/format-family-map.yaml
+  mandatory_validations:
+  - registry_entry_exists
+  - family_pack_exists
+  - authority_sources_acquired
+  - sal_store_nonempty
+  - deterministic_contract_compilation
+  output_paths:
+  - reports/skills-*/skill-transcripts/
+  product_track: format_contract
+  purpose: Add a registry-backed format to the canonical format-contract family
+    policy after acquired authority and SAL readiness are proven.
+  required_handoff_fields:
+  - format_id
+  - family
+  - authority_source_ids
+  - sal_store_path
+  skill_id: format-contract-onboard
+  spec_qname_required: false
+  status: active
+  test_paths:
+  - tests/format_contract/test_determinism_foundation.py
+  risk_level: MEDIUM
+- command: /production-program-controller-repair
+  command_file: .claude/commands/production-program-controller-repair.md
+  created_at: '2026-07-23'
+  created_by: SKILL-GAP-FF6-PRODUCTION-PROGRAM-IDENTITY
+  idempotency: idempotent
+  implementation_paths:
+  - tools/supervisor/production_program.py
+  mandatory_validations:
+  - canonical_contract_registry_mapping
+  - stable_product_state_identity
+  - stable_gap_ownership_identity
+  - identity_target_regression
+  - deterministic_bootstrap
+  output_paths:
+  - reports/skills-rff6/skill-transcripts/
+  product_track: machinery_repair
+  purpose: Repair explicit product, canonical contract, and source-package identity
+    routing in the persistent six-format production controller.
+  required_handoff_fields:
+  - defect_id
+  - product_id
+  - contract_format_id
+  - source_package_id
+  skill_id: production-program-controller-repair
+  spec_qname_required: false
+  status: active
+  test_paths:
+  - tests/production_program/test_production_program.py
+  risk_level: HIGH
+- command: /materialize-production-proof
+  command_file: .claude/commands/materialize-production-proof.md
+  created_at: '2026-07-24'
+  created_by: SKILL-GAP-FF6-PRODUCTION-PROOF
+  idempotency: idempotent
+  implementation_paths:
+  - tools/supervisor/production_program.py
+  mandatory_validations:
+  - mandatory_obligations_materialized
+  - presence_is_not_proof
+  - one_obligation_per_executed_result
+  - complete_execution_input_closure
+  - changed_test_or_fixture_invalidates
+  - deleted_input_revokes_proof
+  - nonzero_execution_rejected
+  - three_run_determinism
+  - manual_promotion_cannot_override
+  output_paths:
+  - reports/skills-rff6/skill-transcripts/
+  - .local/production-program/
+  product_track: governance
+  purpose: Materialize mandatory production obligations and digest-complete executed
+    evidence into the canonical proof graph and current-gap projection.
+  required_handoff_fields:
+  - defect_id
+  - failing_regression
+  - invalidation_input
+  - target_product
+  skill_id: materialize-production-proof
+  spec_qname_required: false
+  status: active
+  test_paths:
+  - tests/production_program/test_production_program.py
+  risk_level: HIGH
 sprint: FORMAT-FACTORY-R98-AUTONOMOUS-LOOP-TRUST-LAYER-ITERATION-SCALING-ACCELERATION-POC-MEGA-TRAIN-001
 version: '2.0'
 visibility: generated

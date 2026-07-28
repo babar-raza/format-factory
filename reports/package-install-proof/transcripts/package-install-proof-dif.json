@@ -1,12 +1,39 @@
 {
+  "invocation_id": "PACKAGE-PROOF-94D755CF5826FE6D821CED1E029199F781596FE7612BD559BD80E75703E6E990-dif",
   "skill_id": "package-install-proof",
-  "skill_version": "2.0",
+  "skill_version": "3.0",
+  "mode": "live",
+  "inputs": {
+    "format_id": "dif",
+    "package_name": "format-factory-dif"
+  },
+  "allowed_files": [
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-dif.json"
+  ],
+  "actual_files_changed": [
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-dif.json"
+  ],
+  "tests_run": [
+    "wheel-origin import assertion",
+    "dif.dif_parser.parse_dif on samples/by-format/dif/valid/minimal-2x2.dif",
+    "deep installed-submodule import scan"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-07-25T18:28:06+00:00",
   "format_id": "dif",
   "package_name": "format-factory-dif",
   "package_version": "0.1.0.dev0",
   "wheel_path": "format_factory_dif-0.1.0.dev0-py3-none-any.whl",
-  "wheel_sha256": "40e379e14159f7504980db5374c862db569058ad027bf6a208075c02fadfd7b8",
-  "source_digest": "330f15ddcaabee8165299cd228ce84fde92bb99bd443590a2ae8267a70ece16f",
+  "wheel_sha256": "92e62ab228c7f525c0688c3521946c3debdb6400f25a4798db69d4c22ae5e9ef",
+  "proof_id": "PACKAGE-PROOF-94D755CF5826FE6D821CED1E029199F781596FE7612BD559BD80E75703E6E990",
+  "source_digest": "0e37ed3619e6a78f5c85cb3c3f4d7df6dcbfb3caee83c5e308b232fe74537f9e",
+  "proof_input_digest": "db12e64a6b60357baa78a188ee59ca65a73bded2dea1b9acf597b055d0b6ade4",
+  "local_dependencies": [],
   "install_method": "pip install --no-deps <wheel> (ephemeral venv)",
   "install_result": "PASS",
   "import_result": "PASS",
@@ -16,6 +43,6 @@
   "verdict": "PASS",
   "proof_report": "reports/package-install-proof/proof-report.md",
   "notes": "B9 proof via tools/run_package_install_proof.py (GAP-FORENSIC-001)",
-  "generated_at": "2026-07-15T17:36:29+00:00",
-  "worker_agent": "claude"
+  "generated_at": "2026-07-25T18:28:06+00:00",
+  "worker_agent": "codex"
 }

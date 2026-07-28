@@ -1,0 +1,147 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-create-format-family-pack-binary-tensor-001",
+  "execution_id": "ff6-create-format-family-pack-binary-tensor-001",
+  "task_id": "AUTO-FAMILY-PACK-BINARY-TENSOR",
+  "skill_id": "create-format-family-pack",
+  "selected_skill_ids": [
+    "create-format-family-pack"
+  ],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260723T145613-3373a8",
+  "coordination_identity": "agent-codex-20260723T145613-3373a8",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "RFF6-MACH-BINARY-TENSOR-FAMILY-001",
+  "requested_operation": "replace SafeTensors' false scientific-raster policy inheritance with a production binary-tensor family",
+  "inputs": {
+    "family_id": "binary_tensor",
+    "representative_formats": [
+      "safetensors"
+    ],
+    "semantic_scope": "bounded metadata describing named typed tensor regions in one raw byte payload",
+    "excluded_concepts": [
+      "detached",
+      "compression",
+      "spatial",
+      "raster",
+      "line ending",
+      "comment",
+      "magic"
+    ],
+    "required_fact_categories": [
+      "structure_roots",
+      "data_model",
+      "syntax_encoding",
+      "constraints_validation",
+      "security_behavior"
+    ],
+    "policy_pack_path": "shared/format-contracts/policy/family-packs/binary_tensor.yaml",
+    "prior_family": "scientific_raster",
+    "prior_generated_obligation_count": 96
+  },
+  "allowed_files": [
+    "shared/format-contracts/policy/family-packs/binary_tensor.yaml",
+    "shared/format-contracts/policy/format-family-map.yaml",
+    "shared/format-contracts/policy/fact-category-requirements.yaml",
+    "reports/skills-rff6/skill-transcripts/create-format-family-pack-binary-tensor-001.json"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/policy/family-packs/binary_tensor.yaml",
+    "shared/format-contracts/policy/format-family-map.yaml",
+    "shared/format-contracts/policy/fact-category-requirements.yaml",
+    "reports/skills-rff6/skill-transcripts/create-format-family-pack-binary-tensor-001.json"
+  ],
+  "base_git_commit": "a67626866f1f168b8ad4093adbeda243181b05f8",
+  "input_digests": {
+    "family_pack": "229a99aeb5e4d5787049adb59ba7f07f21205977c583fe5268b8a84f19535574",
+    "family_map": "f306be8511ffe45470600cdfd0716cedc58e0a8a5d9d49b597cc48f80cbeb3c7",
+    "fact_category_requirements": "1a12376206dba61c43ad49967a5492444f80fe77038e93f8dc4573eb885e2999"
+  },
+  "semantic_applicability_review": {
+    "decision": "NEW_FAMILY_REQUIRED",
+    "rationale": "SafeTensors has a fixed-length JSON header and a single raw tensor payload. The former scientific-raster mapping generated mandatory detached-file, compression, spatial-axis, line-ending, comment, magic/version, and image-style obligations that are absent from the official format definition.",
+    "version_policy": "The file grammar has no on-disk version/profile field. The exact upstream release remains authority-pinned; versioning was therefore excluded from fact-category coverage rather than fabricated as a format feature.",
+    "threshold_policy": "The readiness threshold remains 0.80. Category weights were normalized around applicable evidence and were not reduced to force a pass."
+  },
+  "readiness": {
+    "score": 1.0,
+    "threshold": 0.8,
+    "missing_categories": [],
+    "ready": true
+  },
+  "tests_run": [
+    "family pack schema, duplicate policy IDs, normalized readiness weights, mapping, excluded concepts, and deterministic replay: pass",
+    "SafeTensors fact-category readiness: 1.0 with no missing applicable categories",
+    "family-pack and contract projection focused regression: 36 passed",
+    "Ruff focused validator regression: pass",
+    "broader format-contract regression: 65 passed, 5 failed on pre-existing CSV ledger/hash and empty reference-oracle fixture state unrelated to this family"
+  ],
+  "commands_executed": [
+    {
+      "argv": [
+        "python",
+        "tools/format_contract/family_pack_validator.py",
+        "--pack",
+        "shared/format-contracts/policy/family-packs/binary_tensor.yaml",
+        "--verify-idempotency"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "tools/format_contract/contract_compiler.py",
+        "--format-id",
+        "safetensors",
+        "--readiness-only"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/format_contract/test_family_pack_validator.py",
+        "-q"
+      ],
+      "exit_code": 0,
+      "test_selector": "3 tests"
+    },
+    {
+      "argv": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/format_contract",
+        "-q"
+      ],
+      "exit_code": 1,
+      "test_selector": "70 tests",
+      "reason": "65 passed; five baseline failures are bound to missing historical CSV gap records, changed CSV/qname input hashes, and an empty reference-oracle fixture"
+    }
+  ],
+  "proof_nodes": [],
+  "computed_promotion_state": "NOT_APPLICABLE_POLICY_AUTHORING",
+  "invalidation_impact": {
+    "prior_contract": "shared/format-contracts/safetensors.yaml",
+    "prior_capability_count": 15,
+    "prior_obligation_count": 96,
+    "new_capability_count": 11,
+    "new_obligation_count": 86,
+    "new_contract_sha256": "38dccef4ad4d8898300e9d8cdd75cbf502591e00569569bfea2ff2e037e61efe",
+    "new_product_contract_digest": "a60f33fd57d8ac98ada72b5a1ea8d03e0dc0852ae1e936e46fefb8ae38809574",
+    "effect": "False scientific-raster obligations were removed; every descendant proof bound to the prior contract digest must be invalidated and selectively replayed against the new obligation identities.",
+    "legacy_evidence_policy": "No old proof is promoted across the contract change without replay."
+  },
+  "open_gaps": [
+    "The five unrelated format-contract baseline failures remain visible and were not suppressed."
+  ],
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "BINARY_TENSOR_POLICY_FORWARD_COMPILED_WITH_FALSE_OBLIGATIONS_REMOVED",
+  "timestamp": "2026-07-24T03:15:36+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

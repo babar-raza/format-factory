@@ -42,7 +42,11 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
 sys.path.insert(0, str(REPO_ROOT / "tools" / "supervisor"))
-from package_proof_common import source_digest as _shared_source_digest  # noqa: E402
+from package_proof_common import (  # noqa: E402
+    package_proof_id,
+    proof_input_digest,
+    source_digest as _shared_source_digest,
+)
 MATRIX_PATH = REPO_ROOT / "packaging" / "python" / "package-matrix.yaml"
 BUILD_SCRIPT = REPO_ROOT / "packaging" / "python" / "build-local-packages.py"
 BUILD_DIR = REPO_ROOT / ".local" / "package-builds" / "python-foss"
@@ -55,7 +59,7 @@ MANIFEST_PATH = REPORT_DIR / "proof-manifest.json"
 REGISTER_PATH = REPO_ROOT / "reports" / "spec-to-code-forensic-audit" / "feature-proof-register.yaml"
 
 SKILL_ID = "package-install-proof"
-SKILL_VERSION = "2.0"
+SKILL_VERSION = "3.0"
 
 # Deep-import scan script, executed with the proof venv's python. Inventories
 # which submodules of each installed wheel actually import — converter modules
@@ -145,6 +149,48 @@ def find_wheel(package_name: str) -> Path:
     return wheels[0]
 
 
+def dependency_wheels(packages: list[dict], formats: list[str]) -> dict[str, Path]:
+    """Return the local wheels required by selected native projects."""
+    dependencies: dict[str, Path] = {}
+    selected = {pkg["format_id"]: pkg for pkg in packages}
+    for fmt in formats:
+        for dependency in selected[fmt].get("local_dependencies") or []:
+            name = dependency["package_name"]
+            wheel = find_wheel(name)
+            existing = dependencies.get(name)
+            if existing is not None and existing != wheel:
+                raise SystemExit(
+                    f"LOCAL_DEPENDENCY_CONTRADICTION: {name} resolved to both "
+                    f"{existing} and {wheel}"
+                )
+            dependencies[name] = wheel
+    return dependencies
+
+
+def selected_input_digests(packages: list[dict], formats: list[str]) -> dict[str, str]:
+    by_id = {package["format_id"]: package for package in packages}
+    return {
+        fmt: proof_input_digest(REPO_ROOT, by_id[fmt])
+        for fmt in formats
+    }
+
+
+def assert_input_closure_unchanged(
+    before: dict[str, str],
+    after: dict[str, str],
+) -> None:
+    changed = sorted(
+        fmt
+        for fmt in before
+        if after.get(fmt) != before[fmt]
+    )
+    if changed:
+        raise SystemExit(
+            "PROOF_INPUT_CHANGED_DURING_RUN: no result recorded for "
+            f"{changed}"
+        )
+
+
 def create_proof_venv() -> Path:
     if VENV_DIR.exists():
         shutil.rmtree(VENV_DIR)
@@ -183,6 +229,7 @@ def write_specs_json(packages: list[dict], formats: list[str]) -> Path:
             "smoke_callable": ip["smoke_callable"],
             "expected": ip["expected"],
             "package_name": pkg["package_name"],
+            "module_import": pkg["module_import"],
         }
         if "smoke_inline_bytes" in ip:
             spec["smoke_inline_bytes"] = ip["smoke_inline_bytes"]
@@ -246,21 +293,42 @@ def parse_junit(junit_files: list[Path]) -> dict[str, dict[str, str]]:
     return verdicts
 
 
-def deep_import_scan(py: Path, formats: list[str], out_name: str) -> dict:
+def deep_import_scan(
+    py: Path,
+    module_imports: dict[str, str],
+    out_name: str,
+) -> dict:
     script = WORK_DIR / "deep_import_scan.py"
     script.write_text(_DEEP_IMPORT_SCRIPT, encoding="utf-8")
     out = WORK_DIR / out_name
-    proc = run([str(py), str(script), *sorted(formats), str(out)], cwd=str(WORK_DIR), timeout=900)
+    proc = run(
+        [str(py), str(script), *sorted(module_imports.values()), str(out)],
+        cwd=str(WORK_DIR),
+        timeout=900,
+    )
     if proc.returncode != 0 or not out.exists():
         log(f"deep-import scan failed (non-blocking): {proc.stderr[-300:]}")
         return {}
-    return json.loads(out.read_text(encoding="utf-8"))
+    raw = json.loads(out.read_text(encoding="utf-8"))
+    return {
+        fmt: raw.get(module_import, {})
+        for fmt, module_import in module_imports.items()
+    }
 
 
 def load_manifest() -> dict:
     if MANIFEST_PATH.exists():
-        return json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
-    return {"schema_version": 1, "generated_by": "tools/run_package_install_proof.py", "formats": {}}
+        manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+        manifest["schema_version"] = 3
+        return manifest
+    return {"schema_version": 3, "generated_by": "tools/run_package_install_proof.py", "formats": {}}
+
+
+def write_canonical_manifest(manifest: dict) -> None:
+    MANIFEST_PATH.write_text(
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
 
 
 def write_report(manifest: dict) -> None:
@@ -269,11 +337,11 @@ def write_report(manifest: dict) -> None:
         "",
         "Proves GAP-FORENSIC-001's B9 boundary: wheel build -> pip install into an",
         "ephemeral venv -> import -> primary API smoke on the oracle sample corpus.",
-        f"Canonical machine-readable source: `proof-manifest.json`. Orchestrator:",
+        "Canonical machine-readable source: `proof-manifest.json`. Orchestrator:",
         "`tools/run_package_install_proof.py` via the `/package-install-proof` skill.",
         "",
-        "| # | Format | Package | Version | Import | API Smoke | Verdict | Deep-import | Proved at (UTC) |",
-        "|---|--------|---------|---------|--------|-----------|---------|-------------|-----------------|",
+        "| # | Format | Package | Version | Import | API Smoke | Verdict | Deep-import |",
+        "|---|--------|---------|---------|--------|-----------|---------|-------------|",
     ]
     for i, (fmt, e) in enumerate(sorted(manifest["formats"].items()), 1):
         deep = e.get("deep_import") or {}
@@ -282,7 +350,7 @@ def write_report(manifest: dict) -> None:
         lines.append(
             f"| {i} | {fmt} | {e['package_name']} | {e['version']} | "
             f"{e['import_result'].split(':')[0]} | {e['smoke_result'].split(':')[0]} | "
-            f"**{e['verdict']}** | {deep_str} | {e['proved_at']} |"
+            f"**{e['verdict']}** | {deep_str} |"
         )
     fails = {f: e for f, e in manifest["formats"].items() if e["verdict"] != "PASS"}
     lines += ["", f"**{len(manifest['formats']) - len(fails)}/{len(manifest['formats'])} PASS**"]
@@ -306,46 +374,78 @@ def write_report(manifest: dict) -> None:
             lines.append(f"- **{fmt}**: {deep['failed']}/{deep['total']} failing — {mods}{more}")
     lines += [
         "", "## Evidence chain", "",
-        "wheel sha256 + source digest per format are in `proof-manifest.json`;",
+        "wheel sha256 + complete proof-input digest per format are in `proof-manifest.json`;",
         "junit XML at `.local/package-install-proof-results-*.xml`;",
         "staleness is enforced by the package-install-proof coverage governance validator.", "",
     ]
     (REPORT_DIR / "proof-report.md").write_text("\n".join(lines), encoding="utf-8")
 
 
-def write_transcripts(manifest: dict, formats: list[str]) -> None:
+def write_transcripts(manifest: dict, formats: list[str], run_at: str) -> None:
     tdir = REPORT_DIR / "transcripts"
     tdir.mkdir(parents=True, exist_ok=True)
     for fmt in formats:
         e = manifest["formats"].get(fmt)
         if not e:
             continue
+        transcript_path = (
+            f"reports/package-install-proof/transcripts/"
+            f"package-install-proof-{fmt}.json"
+        )
+        changed_outputs = [
+            "reports/package-install-proof/proof-manifest.json",
+            "reports/package-install-proof/proof-report.md",
+            transcript_path,
+        ]
         transcript = {
+            "invocation_id": f"{e['proof_id']}-{fmt}",
             "skill_id": SKILL_ID,
             "skill_version": SKILL_VERSION,
+            "mode": "live",
+            "inputs": {
+                "format_id": fmt,
+                "package_name": e["package_name"],
+            },
+            "allowed_files": changed_outputs,
+            "actual_files_changed": changed_outputs,
+            "tests_run": [
+                "wheel-origin import assertion",
+                e["smoke_test"],
+                "deep installed-submodule import scan",
+            ],
+            "ledger_entry_id": None,
+            "result": e["verdict"],
+            "timestamp": run_at,
             "format_id": fmt,
             "package_name": e["package_name"],
             "package_version": e["version"],
             "wheel_path": e["wheel_file"],
             "wheel_sha256": e["wheel_sha256"],
+            "proof_id": e["proof_id"],
             "source_digest": e["source_digest"],
+            "proof_input_digest": e["proof_input_digest"],
+            "local_dependencies": e.get("local_dependencies", []),
             "install_method": "pip install --no-deps <wheel> (ephemeral venv)",
             "install_result": e["install_result"],
             "import_result": e["import_result"],
-            "import_statement": f"import {fmt}",
+            "import_statement": f"import {e['module_import']}",
             "smoke_result": e["smoke_result"],
             "smoke_test": e["smoke_test"],
             "verdict": e["verdict"],
             "proof_report": "reports/package-install-proof/proof-report.md",
             "notes": "B9 proof via tools/run_package_install_proof.py (GAP-FORENSIC-001)",
-            "generated_at": e["proved_at"],
-            "worker_agent": "claude",
+            "generated_at": run_at,
+            "worker_agent": "codex",
         }
         (tdir / f"package-install-proof-{fmt}.json").write_text(
             json.dumps(transcript, indent=2), encoding="utf-8")
 
 
-def update_feature_proof_register(manifest: dict, formats: list[str]) -> None:
+def update_feature_proof_register(
+    manifest: dict,
+    formats: list[str],
+    run_at: str,
+) -> None:
     """Surgical text update of the forensic register (preserves comments/banners).
     Only upgrades formats already in the register whose verdict is PASS; formats
     absent from the register (the 6 onboarded ones) are appended with an honest
@@ -372,7 +472,7 @@ def update_feature_proof_register(manifest: dict, formats: list[str]) -> None:
                                  "proof_level_name: PACKAGE_INSTALL_PROOF", 1)
                         .replace("packaging_proof: null",
                                  f'packaging_proof: "wheel install + API smoke PASS '
-                                 f'{e["proved_at"][:10]} (proof-manifest.json)"', 1)
+                                 f'{run_at[:10]} (proof-manifest.json)"', 1)
                     )
                     if evidence_line not in new_block and "evidence_paths:" in new_block:
                         new_block = new_block.replace(
@@ -391,7 +491,7 @@ def update_feature_proof_register(manifest: dict, formats: list[str]) -> None:
                     "    proof_level: 2",
                     "    proof_level_name: UNIT_TESTS",
                     "    oracle_verdict: null",
-                    f'    packaging_proof: "wheel install + API smoke PASS {e["proved_at"][:10]} '
+                    f'    packaging_proof: "wheel install + API smoke PASS {run_at[:10]} '
                     '(proof-manifest.json); oracle verification pending"',
                     "    evidence_paths:",
                     evidence_line,
@@ -442,11 +542,17 @@ def main() -> int:
     WORK_DIR.mkdir(parents=True, exist_ok=True)
     REPORT_DIR.mkdir(parents=True, exist_ok=True)
 
+    # Snapshot the complete selected input closure before any build or test.
+    # A digest captured only after execution could falsely bind the result to
+    # files that changed while the old bytes were still loaded by a subprocess.
+    digests = {fmt: source_digest(fmt) for fmt in formats}
+    input_digests = selected_input_digests(packages, formats)
+
     if not args.skip_build:
         build_wheels(formats, full_fleet)
 
     wheels = {fmt: find_wheel(by_id[fmt]["package_name"]) for fmt in formats}
-    digests = {fmt: source_digest(fmt) for fmt in formats}
+    dependencies = dependency_wheels(packages, formats)
 
     py = create_proof_venv()
 
@@ -455,23 +561,53 @@ def main() -> int:
     main_formats = [f for f in formats if f != "csv"]
     csv_requested = "csv" in formats
 
+    dependency_install_results = install_wheels(py, dependencies)
+    failed_dependencies = {
+        name: result
+        for name, result in dependency_install_results.items()
+        if result != "PASS"
+    }
+    if failed_dependencies:
+        raise SystemExit(f"local dependency installation failed: {failed_dependencies}")
+
     install_results = install_wheels(py, {f: wheels[f] for f in main_formats})
     specs_path = write_specs_json(packages, formats)
 
     junits = []
     if main_formats:
         junits.append(run_pytest(py, specs_path, main_formats, "results-main.xml"))
-    deep = deep_import_scan(py, main_formats, "deep-import-main.json")
+    deep = deep_import_scan(
+        py,
+        {fmt: by_id[fmt]["module_import"] for fmt in main_formats},
+        "deep-import-main.json",
+    )
 
     if csv_requested:
         install_results.update(install_wheels(py, {"csv": wheels["csv"]}))
         junits.append(run_pytest(py, specs_path, ["csv"], "results-csv.xml"))
-        deep.update(deep_import_scan(py, ["csv"], "deep-import-csv.json"))
+        deep.update(
+            deep_import_scan(
+                py,
+                {"csv": by_id["csv"]["module_import"]},
+                "deep-import-csv.json",
+            )
+        )
 
     verdicts = parse_junit(junits)
     now = datetime.now(timezone.utc).isoformat(timespec="seconds")
 
+    final_input_digests = selected_input_digests(packages, formats)
+    assert_input_closure_unchanged(input_digests, final_input_digests)
+
     manifest = load_manifest()
+    if full_fleet:
+        manifest["formats"] = {}
+    else:
+        manifest["formats"] = {
+            fmt: entry
+            for fmt, entry in manifest.get("formats", {}).items()
+            if fmt in by_id
+        }
     manifest["python_version"] = sys.version.split()[0]
     for fmt in formats:
         pkg = by_id[fmt]
@@ -485,30 +621,47 @@ def main() -> int:
         smoke_desc = (f"{ip['smoke_module']}.{ip['smoke_callable']}"
                       + (f" on {ip['smoke_sample']}" if "smoke_sample" in ip
                          else " on inline bytes"))
-        manifest["formats"][fmt] = {
+        entry = {
             "package_name": pkg["package_name"],
+            "module_import": pkg["module_import"],
+            "build_mode": pkg.get("build_mode", "legacy_staging"),
             "version": wheels[fmt].name.split("-")[1],
             "wheel_file": wheels[fmt].name,
             "wheel_sha256": sha256_file(wheels[fmt]),
             "source_digest": digests[fmt],
+            "proof_input_digest": input_digests[fmt],
             "install_result": install_res,
             "import_result": import_res,
             "smoke_result": smoke_res,
             "smoke_test": smoke_desc,
             "verdict": verdict,
             "deep_import": deep.get(fmt, {}),
-            "proved_at": now,
+            "local_dependencies": [
+                {
+                    "package_name": dependency["package_name"],
+                    "wheel_file": dependencies[dependency["package_name"]].name,
+                    "wheel_sha256": sha256_file(
+                        dependencies[dependency["package_name"]]
+                    ),
+                    "install_result": dependency_install_results[
+                        dependency["package_name"]
+                    ],
+                }
+                for dependency in pkg.get("local_dependencies") or []
+            ],
         }
-    manifest["last_run"] = {"at": now, "formats": formats, "full_fleet": full_fleet}
-    MANIFEST_PATH.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+        entry["proof_id"] = package_proof_id(entry)
+        manifest["formats"][fmt] = entry
+    manifest["last_run"] = {"formats": formats, "full_fleet": full_fleet}
+    write_canonical_manifest(manifest)
 
     # keep junits where the validator + humans can find them
     for junit in junits:
         shutil.copy2(junit, REPO_ROOT / ".local" / f"package-install-proof-{junit.stem}.xml")
 
     write_report(manifest)
-    write_transcripts(manifest, formats)
-    update_feature_proof_register(manifest, formats)
+    write_transcripts(manifest, formats, now)
+    update_feature_proof_register(manifest, formats, now)
 
     passed = [f for f in formats if manifest["formats"][f]["verdict"] == "PASS"]
     failed = [f for f in formats if f not in passed]

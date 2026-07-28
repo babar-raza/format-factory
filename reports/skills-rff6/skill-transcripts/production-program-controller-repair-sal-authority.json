@@ -1,0 +1,47 @@
+{
+  "invocation_id": "FF6-CONTROLLER-SAL-AUTHORITY-20260723",
+  "skill_id": "production-program-controller-repair",
+  "task_id": "FF6-PRODUCTION-CONTROLLER-SAL-AUTHORITY",
+  "mode": "live",
+  "inputs": {
+    "defect_id": "PRODUCTION-CONTROLLER-SAL-AUTHORITY-OVERCLAIM-001",
+    "product_id": "all-six-targets",
+    "contract_format_id": "per-target canonical mapping",
+    "source_package_id": "per-target production package",
+    "root_cause": "The controller proved contract referential integrity but did not project the promotion class of mandatory SAL facts into live readiness gaps."
+  },
+  "allowed_files": [
+    "tools/supervisor/production_program.py",
+    "tests/production_program/test_production_program.py",
+    "reports/skills-rff6/skill-transcripts/production-program-controller-repair-sal-authority.json"
+  ],
+  "actual_files_changed": [
+    "tools/supervisor/production_program.py",
+    "tests/production_program/test_production_program.py",
+    "reports/skills-rff6/skill-transcripts/production-program-controller-repair-sal-authority.json"
+  ],
+  "tests_run": [
+    "pytest tests/tools/test_sal_status_schema.py tests/production_program/test_production_program.py tests/tools/test_seed_sal_candidates.py tests/tools/test_merge_sal_facts.py tests/format_contract/test_research_plane.py -q: 58 passed",
+    "ruff check tools/supervisor/production_program.py tests/production_program/test_production_program.py: PASS",
+    "mypy --strict tools/supervisor/production_program.py: PASS",
+    "python -m tools.supervisor.production_program bootstrap: schema gap resolved and six mandatory-fact authority gaps materialized"
+  ],
+  "validations": {
+    "canonical_contract_registry_mapping": "PASS",
+    "stable_product_state_identity": "PASS",
+    "stable_gap_ownership_identity": "PASS",
+    "identity_target_regression": "PASS",
+    "deterministic_bootstrap": "PASS",
+    "mandatory_fact_promotion_projected": "PASS",
+    "manual_contract_completeness_cannot_promote": "PASS"
+  },
+  "output_digests": {
+    "tools/supervisor/production_program.py": "a2718faebc15a15a1fc269cc8098e0f8335b2ed74baf612858aa51c2508fd29f",
+    "tests/production_program/test_production_program.py": "94e7ca2432d655a92c6e80bc752cf23f5aa11960a2ca2a96cc3825461627ea4a"
+  },
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-07-23T22:26:25+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

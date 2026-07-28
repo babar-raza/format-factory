@@ -1,0 +1,70 @@
+{
+  "invocation_id": "FF6-SAL-NRRD-AUTHORITY-20260723",
+  "skill_id": "sal-pipeline-heal",
+  "task_id": "AUTO-NRRD-FACT-AUTHORITY",
+  "taskcard_id": "AUTO-NRRD-FACT-AUTHORITY",
+  "mode": "live",
+  "inputs": {
+    "taskcard_id": "AUTO-NRRD-FACT-AUTHORITY",
+    "format_id": "nrrd",
+    "root_cause_id": "ROOT-PROOF-CLOSURE",
+    "spec_cache_path": ".local/format-contracts/acquired/nrrd/src-nrrd-001.bin",
+    "target_stage": "schema_migration",
+    "authority_source_id": "SRC-NRRD-001",
+    "authority_sha256": "43ca6102cc998e0191e225d7954278547d491e29b74a132b3118571d85a8b0d5"
+  },
+  "allowed_files": [
+    "tools/spec/verify_sal_facts.py",
+    "tests/tools/test_verify_sal_facts.py",
+    "shared/sal-facts/evidence/nrrd.yaml",
+    "reports/sal-verification/nrrd.json",
+    "shared/sal-facts/nrrd.yaml",
+    "reports/sal-verification/ipynb.json",
+    "shared/sal-facts/ipynb.yaml",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-nrrd-authority.json"
+  ],
+  "actual_files_changed": [
+    "tools/spec/verify_sal_facts.py",
+    "tests/tools/test_verify_sal_facts.py",
+    "shared/sal-facts/evidence/nrrd.yaml",
+    "reports/sal-verification/nrrd.json",
+    "shared/sal-facts/nrrd.yaml",
+    "reports/sal-verification/ipynb.json",
+    "shared/sal-facts/ipynb.yaml",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-nrrd-authority.json"
+  ],
+  "tests_run": [
+    "pytest focused SAL, controller, contract suite: 91 passed, 1 skipped",
+    "ruff verifier and tests: PASS",
+    "mypy --strict verifier/proof modules: PASS",
+    "verify_sal_facts nrrd: 18 facts, 53 exact HTML-visible-text assertions, PASS",
+    "three same-input NRRD verification runs: identical digest 28b4f46a54cc81698ce0fb2cee099be12d01dcd0ed1338587b692cc092c91f1c",
+    "IPYNB proof replay after verifier closure change: PASS",
+    "production controller: NRRD authority gap resolved; next deterministic gap OpenRaster"
+  ],
+  "validations": {
+    "spec_cache_verified": "PASS",
+    "tool_invoked": "PASS",
+    "output_artifact_produced": "PASS",
+    "fact_ids_in_correct_namespace": "PASS",
+    "exact_authority_assertions_pass": "PASS",
+    "html_resources_not_loaded": "PASS",
+    "content_addressed_receipt_bound": "PASS",
+    "prior_format_invalidated_and_replayed": "PASS",
+    "live_gap_projection_recomputed": "PASS"
+  },
+  "output_digests": {
+    "tools/spec/verify_sal_facts.py": "a4c856a8eb2f501c6ad653bed2daa0221829f4608e50ebcac87c47d4abeaa4bf",
+    "shared/sal-facts/evidence/nrrd.yaml": "e7bbe971bc72deb833ed31e307d57e5dac4ffcb6e09419251436a1016507ecc4",
+    "reports/sal-verification/nrrd.json": "b813f268ddbb8f68777dbbff1af99ffa17f4a5cd6a0afca0f2464cd98221cd19",
+    "shared/sal-facts/nrrd.yaml": "bfcc20a61e50658a1c29633b70cdffc98cafae6d2587dc268e9ea074bcda1ba6",
+    "reports/sal-verification/ipynb.json": "045bb39fae61c3d0729caf2a947631541d6e8c7ffb32f1ccaaf358f4ef6ae00f",
+    "shared/sal-facts/ipynb.yaml": "f7be2fa8c63d198987d0d53c7880dec39397ac11b9e0ea78267115d664b43dd9"
+  },
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "verdict": "PROCEED",
+  "timestamp": "2026-07-23T23:30:00+05:00",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

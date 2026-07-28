@@ -1,12 +1,39 @@
 {
+  "invocation_id": "PACKAGE-PROOF-B8EEDFA2F052FEE0C494AE6060FA2AEDB24544A1E0E2D064389A6A439A9694F2-toml",
   "skill_id": "package-install-proof",
-  "skill_version": "2.0",
+  "skill_version": "3.0",
+  "mode": "live",
+  "inputs": {
+    "format_id": "toml",
+    "package_name": "format-factory-toml"
+  },
+  "allowed_files": [
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-toml.json"
+  ],
+  "actual_files_changed": [
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-toml.json"
+  ],
+  "tests_run": [
+    "wheel-origin import assertion",
+    "toml.toml_codec.load_toml on samples/by-format/toml/minimal.toml",
+    "deep installed-submodule import scan"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-07-25T18:28:06+00:00",
   "format_id": "toml",
   "package_name": "format-factory-toml",
   "package_version": "0.1.0.dev0",
   "wheel_path": "format_factory_toml-0.1.0.dev0-py3-none-any.whl",
-  "wheel_sha256": "957d9091e82adbfcfb8aedf36ee0af4bfd751b382e6f632a094913a4b0b239fa",
-  "source_digest": "812a48d26c98ad1b412bedf183f4700175873b2874e20079addc60255c432ead",
+  "wheel_sha256": "f4290e7b92b291af64369242bb3dc2280fb92501f4e4f6db6e708da2961b9a9e",
+  "proof_id": "PACKAGE-PROOF-B8EEDFA2F052FEE0C494AE6060FA2AEDB24544A1E0E2D064389A6A439A9694F2",
+  "source_digest": "9cbeb69050c0ad229896a4e2d0b32940b172b28ab182fa6c6a3d0ab00b467605",
+  "proof_input_digest": "92014779dae5e844f19ca7843d87c8a380d4874308927e0b2a8e6d02bf9d81d3",
+  "local_dependencies": [],
   "install_method": "pip install --no-deps <wheel> (ephemeral venv)",
   "install_result": "PASS",
   "import_result": "PASS",
@@ -16,6 +43,6 @@
   "verdict": "PASS",
   "proof_report": "reports/package-install-proof/proof-report.md",
   "notes": "B9 proof via tools/run_package_install_proof.py (GAP-FORENSIC-001)",
-  "generated_at": "2026-07-15T17:36:29+00:00",
-  "worker_agent": "claude"
+  "generated_at": "2026-07-25T18:28:06+00:00",
+  "worker_agent": "codex"
 }

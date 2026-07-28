@@ -37,8 +37,8 @@ class TestCellTypeHistogram:
 
     def test_code_and_markdown_counts(self):
         result = ipynb_cell_type_histogram(VALID_DIR / "code-and-markdown.ipynb")
-        assert result.get("markdown") == 1
-        assert result.get("code") == 1
+        assert result.get("markdown") == 5
+        assert result.get("code") == 4
 
     def test_accepts_bytes(self):
         data = _nb([{"cell_type": "code", "source": "x", "metadata": {}}])
@@ -77,7 +77,9 @@ class TestOutputTypeHistogram:
         assert result.get("execute_result") == 1
 
     def test_markdown_only_cells_ignored(self):
-        result = ipynb_output_type_histogram(VALID_DIR / "code-and-markdown.ipynb")
+        result = ipynb_output_type_histogram(
+            _nb([{"cell_type": "markdown", "source": "# no outputs", "metadata": {}}])
+        )
         assert result == {}
 
     def test_accepts_bytes(self):

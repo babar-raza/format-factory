@@ -1,0 +1,117 @@
+{
+  "schema": "skills-first-control/execution-manifest@2",
+  "invocation_id": "ff6-format-feature-expansion-ipynb-security-limits-001",
+  "execution_id": "ff6-format-feature-expansion-ipynb-security-limits-001",
+  "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-SEC-001",
+  "skill_id": "format-feature-expansion",
+  "selected_skill_ids": ["format-feature-expansion"],
+  "mode": "live",
+  "agent_type": "CODEX",
+  "agent_instance": "agent-codex-20260725T152151-4da361",
+  "mission_id": "FF-SIX-PYTHON-PRODUCTION-AUTONOMOUS",
+  "sprint_id": "FF6-IPYNB-SECURITY-LIMITS-001",
+  "pre_mutation_guard_authorization_id": "fc5b4d6258c51ddd",
+  "requested_operation": "replace recursive JSON complexity measurement with checked iterative accounting and enforce all applicable byte, entry, and nesting limits",
+  "inputs": {
+    "format_id": "ipynb",
+    "profile_id": "production",
+    "task_id": "AUTO-IPYNB-IMPLEMENT-IPYNB-SEC-001",
+    "obligation_id": "SAL-IPYNB-OBL-14DF9ED57CF9FC2E",
+    "obligation_ids": [
+      "SAL-IPYNB-OBL-14DF9ED57CF9FC2E",
+      "SAL-IPYNB-OBL-9544ABFA3D62EC79"
+    ],
+    "capability_id": "IPYNB-SEC-001",
+    "contract_digest": "56762498619ac994bbc5bceac7240357118f1046bda48d5e4bdffc6baa1129ac",
+    "authority_digests": {
+      "SRC-NB-002": "4d3750b55006e92d8063a6ac427a84eb1f91c44e376d90de53d03893674991d9"
+    },
+    "root_cause": "The reader checked input bytes and used an unbounded recursive depth walker, but did not enforce max_entries or decoded payload bytes. Deep JSON could raise RecursionError from the safety check itself.",
+    "affected_layer": "IPYNB reader security accounting",
+    "planned_paths": [
+      "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py",
+      "tests/python/ipynb/test_obligation_security_limits.py",
+      "reports/r90/product-code-change-ledger.json",
+      "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-security-limits-001.json"
+    ],
+    "proof_inputs": [
+      "shared/format-contracts/ipynb.yaml",
+      "tests/python/ipynb/test_obligation_security_limits.py",
+      ".local/build/ipynb-security-a/format_factory_ipynb-0.2.0.dev0-py3-none-any.whl",
+      ".local/venvs/ipynb-current-proof"
+    ],
+    "base_git_commit": "9687fbd1"
+  },
+  "allowed_files": [
+    "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py",
+    "tests/python/ipynb/test_obligation_security_limits.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-security-limits-001.json"
+  ],
+  "actual_files_changed": [
+    "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py",
+    "tests/python/ipynb/test_obligation_security_limits.py",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-ipynb-security-limits-001.json"
+  ],
+  "defect_reproduction": {
+    "result": "FAILURE_REPRODUCED",
+    "outcome": "3 failed, 1 passed: max_entries was ignored, depth returned the wrong error class, and deeply nested JSON leaked RecursionError"
+  },
+  "implementation": {
+    "structure": "An iterative stack measures nesting and aggregate dictionary/list entries with ResourceLimits.enforce after every checked addition.",
+    "bytes": "Every source path enforces both max_input_bytes and max_decompressed_bytes on its decoded UTF-8 representation.",
+    "parser_failures": "JSON RecursionError and MemoryError become deterministic IpynbParseError complexity diagnostics.",
+    "scope": "No network, plugin, external reference, or code execution path was introduced."
+  },
+  "tests_run": [
+    "failure-first source test: 3 failed, 1 passed",
+    "corrected source security and typed-model tests: 6 passed",
+    "Ruff on changed reader and security tests: PASS",
+    "two SOURCE_DATE_EPOCH=0 wheels: identical SHA-256 42f4e57b47a16b80d75ab9dcbefdbd776087af1dec57c1b486580e158d627aa4",
+    "installed-wheel focused tests: 6 passed",
+    "installed-wheel full tests/python/ipynb suite: 267 passed"
+  ],
+  "ledger_entry_id": "FF6-IPYNB-SECURITY-LIMITS-001",
+  "ledger_entry_path": "reports/r90/product-code-change-ledger.json",
+  "validations": {
+    "entry_count_limit": "PASS",
+    "nesting_depth_limit": "PASS",
+    "input_and_decoded_byte_limits": "PASS",
+    "controlled_complexity_failure": "PASS",
+    "installed_wheel_origin": "PASS",
+    "reproducible_wheel": "PASS",
+    "declared_regression_tier": "PASS: 267 tests",
+    "source_changed": "YES: proof replay remains deferred to the consolidated source-wave boundary",
+    "promotion_claimed": "NO"
+  },
+  "output_digests": {
+    "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py": "972fc74488f5336e4f7a829572de4e7d5bd3f8348ebcfeabdb176b498cdc5596",
+    "tests/python/ipynb/test_obligation_security_limits.py": "f528f523ba5f49d527571962230383ae16ed30fb74ed2a7601a3e6ccba411a02",
+    "reports/r90/product-code-change-ledger.json": "21dffa1d2869a6a65c40d31bc7331797c083fc3b8d3df00608407a0d10618d7e",
+    "format_factory_ipynb-0.2.0.dev0-py3-none-any.whl": "42f4e57b47a16b80d75ab9dcbefdbd776087af1dec57c1b486580e158d627aa4"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for this source slice; proof replay is deferred to the consolidated source-wave boundary",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for implementation verification; no obligation closure claimed yet",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "result": "PASS",
+  "status": "CLOSED",
+  "final_outcome": "IPYNB_SECURITY_LIMITS_IMPLEMENTED_CONSOLIDATED_PROOF_REPLAY_PENDING",
+  "timestamp": "2026-07-25T22:50:38.6306447Z",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

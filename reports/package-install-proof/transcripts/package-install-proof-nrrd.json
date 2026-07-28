@@ -1,21 +1,55 @@
 {
+  "invocation_id": "PACKAGE-PROOF-0D48B96E2B6A47AFBA4FD850807E0E307A800526212D302B822BF70509725B19-nrrd",
   "skill_id": "package-install-proof",
-  "skill_version": "2.0",
+  "skill_version": "3.0",
+  "mode": "live",
+  "inputs": {
+    "format_id": "nrrd",
+    "package_name": "format-factory-nrrd"
+  },
+  "allowed_files": [
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-nrrd.json"
+  ],
+  "actual_files_changed": [
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-nrrd.json"
+  ],
+  "tests_run": [
+    "wheel-origin import assertion",
+    "format_factory.nrrd.load_nrrd on samples/by-format/nrrd/valid/1d-int8.nrrd",
+    "deep installed-submodule import scan"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-07-28T07:43:08+00:00",
   "format_id": "nrrd",
   "package_name": "format-factory-nrrd",
-  "package_version": "0.1.0.dev0",
-  "wheel_path": "format_factory_nrrd-0.1.0.dev0-py3-none-any.whl",
-  "wheel_sha256": "66bd121d8523d5130548bc49bde9ecc886d5fcb066a8dfababdf18a19dd8f7f8",
-  "source_digest": "de56fca8299c8b93525fdea2388a822a008c912e7970c98d1ce34719d1465816",
+  "package_version": "0.2.0.dev0",
+  "wheel_path": "format_factory_nrrd-0.2.0.dev0-py3-none-any.whl",
+  "wheel_sha256": "caced0c989552415db6db963d821646b15b3aa198b17510389d37927f8b7fea5",
+  "proof_id": "PACKAGE-PROOF-0D48B96E2B6A47AFBA4FD850807E0E307A800526212D302B822BF70509725B19",
+  "source_digest": "b70e793c79cc9e4f90d522a97e68f80296a9df93d9f1755d4e3a15cc4601841e",
+  "proof_input_digest": "fc6f9202c30e59098aed3ffe249bf12b7d187ffe684637db56a5be46effd1868",
+  "local_dependencies": [
+    {
+      "package_name": "format-factory-core",
+      "wheel_file": "format_factory_core-0.1.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "c2180091e94db95474e24494fba89bd8f1cd4ba51814743e29070b5c5907d2bc",
+      "install_result": "PASS"
+    }
+  ],
   "install_method": "pip install --no-deps <wheel> (ephemeral venv)",
   "install_result": "PASS",
   "import_result": "PASS",
-  "import_statement": "import nrrd",
+  "import_statement": "import format_factory.nrrd",
   "smoke_result": "PASS",
-  "smoke_test": "nrrd.nrrd_codec.load_nrrd on samples/by-format/nrrd/valid/1d-int8.nrrd",
+  "smoke_test": "format_factory.nrrd.load_nrrd on samples/by-format/nrrd/valid/1d-int8.nrrd",
   "verdict": "PASS",
   "proof_report": "reports/package-install-proof/proof-report.md",
   "notes": "B9 proof via tools/run_package_install_proof.py (GAP-FORENSIC-001)",
-  "generated_at": "2026-07-16T06:12:37+00:00",
-  "worker_agent": "claude"
+  "generated_at": "2026-07-28T07:43:08+00:00",
+  "worker_agent": "codex"
 }

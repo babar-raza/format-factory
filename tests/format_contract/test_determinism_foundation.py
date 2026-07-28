@@ -85,6 +85,54 @@ def test_thin_sal_store_is_blocked(tmp_path, monkeypatch):
     assert report["missing_categories"], "blocked report must name missing categories"
 
 
+def test_weighted_score_cannot_mask_a_missing_required_category():
+    context = {
+        "format_id": "synthetic",
+        "family": "synthetic_family",
+        "sal": {
+            "facts": [
+                {
+                    "fact_id": "SAL-SYNTHETIC-00001",
+                    "claim": "root document structure",
+                }
+            ]
+        },
+        "research": {"findings": []},
+        "categories_policy": {
+            "categories": {
+                "structure_roots": {
+                    "match_keywords": ["root"],
+                    "min_facts": 1,
+                },
+                "syntax_encoding": {
+                    "match_keywords": ["encoding"],
+                    "min_facts": 1,
+                },
+            },
+            "families": {
+                "synthetic_family": {
+                    "threshold": 0.8,
+                    "required_categories": [
+                        "structure_roots",
+                        "syntax_encoding",
+                    ],
+                    "weights": {
+                        "structure_roots": 0.9,
+                        "syntax_encoding": 0.1,
+                    },
+                }
+            },
+        },
+    }
+
+    report = cc.readiness(context)
+
+    assert report["score"] == 0.9
+    assert report["score"] >= report["threshold"]
+    assert report["missing_categories"] == ["syntax_encoding"]
+    assert report["ready"] is False
+
+
 @pytest.mark.parametrize("fmt", ["ubl", "xliff", "ipynb", "mtlx", "nrrd"])
 def test_seeded_pilot_stores_are_ready(fmt):
     """Post-TC-FCL-050 state: pilots were seeded through the governed research
@@ -107,6 +155,43 @@ def test_compile_csv_idempotent():
     assert canonical_io.canonical_dump(doc1) == canonical_io.canonical_dump(doc2)
 
 
+def test_safetensors_contract_respects_expanded_family_exclusions():
+    report, document = cc.compile_contract("safetensors")
+    assert report["ready"] is True
+    text = canonical_io.canonical_dump(document).casefold()
+    for excluded in (
+        "detached",
+        "compression",
+        "spatial",
+        "raster",
+        "line ending",
+        "comment",
+        "magic",
+    ):
+        assert excluded not in text, (
+            f"compiled SafeTensors contract leaked excluded concept {excluded!r}"
+        )
+    assert document["security_contract"]["limits"]
+    assert all(
+        "tensor" in limit.casefold() or "payload" in limit.casefold()
+        for limit in document["security_contract"]["limits"]
+    )
+    assert cv.check_schema(document)["result"] == "PASS"
+    interoperability = [
+        capability
+        for capability in document["capabilities"]
+        if capability["category"] == "interoperability"
+    ]
+    assert len(interoperability) == 1
+
+
+def test_schema_still_rejects_unknown_capability_category():
+    _, document = cc.compile_contract("safetensors")
+    bad = copy.deepcopy(document)
+    bad["capabilities"][0]["category"] = "convenient_but_unregistered"
+    assert cv.check_schema(bad)["result"] == "FAIL"
+
+
 def test_compiled_csv_has_traceable_capabilities():
     _, doc = cc.compile_contract("csv")
     assert len(doc["capabilities"]) >= 8
@@ -115,6 +200,38 @@ def test_compiled_csv_has_traceable_capabilities():
         assert cap["depth_required"] >= 2
     ids = [c["capability_id"] for c in doc["capabilities"]]
     assert ids == sorted(ids), "capabilities must be ID-ordered for determinism"
+
+
+def test_acquired_research_authority_replaces_synthetic_url_record(
+    monkeypatch,
+):
+    original = stores.load_research
+
+    def acquired(format_id: str) -> dict:
+        document = copy.deepcopy(original(format_id))
+        document["source_records"].insert(
+            0,
+            {
+                "source_id": "SRC-CSV-099",
+                "title": "Pinned authority",
+                "authority_class": "AUTHORITATIVE",
+                "canonical_url": "https://example.invalid/pinned",
+                "content_hash": "a" * 64,
+                "acquisition_status": "ACQUIRED",
+            },
+        )
+        return document
+
+    monkeypatch.setattr(stores, "load_research", acquired)
+    _, document = cc.compile_contract("csv")
+    assert any(
+        source["source_id"] == "SRC-CSV-099"
+        for source in document["authoritative_sources"]
+    )
+    assert all(
+        source["source_id"] != "SRC-CSV-001"
+        for source in document["authoritative_sources"]
+    )
 
 
 def test_contract_body_has_no_timestamps():
@@ -145,6 +262,14 @@ def test_schema_rejects_capability_without_provenance():
     bad = copy.deepcopy(doc)
     bad["capabilities"][0]["provenance"] = []
     assert cv.check_schema(bad)["result"] == "FAIL"
+
+
+def test_schema_accepts_content_stable_sal_provenance_ids():
+    _, doc = cc.compile_contract("csv")
+    doc["capabilities"][0]["provenance"].append(
+        "SAL-CSV-0123456789ABCDEF"
+    )
+    assert cv.check_schema(doc)["result"] == "PASS"
 
 
 def test_validator_rejects_duplicate_ids():
@@ -230,3 +355,31 @@ def test_registry_rejects_invalid_state(tmp_path, monkeypatch):
     monkeypatch.setattr(contract_registry, "REGISTRY_PATH", tmp_path / "reg.yaml")
     with pytest.raises(ValueError):
         contract_registry.update_entry("csv", state="NOT_A_STATE")
+
+
+def test_successful_compile_clears_stale_missing_categories(tmp_path, monkeypatch):
+    captured: dict[str, object] = {}
+    report = {
+        "ready": True,
+        "score": 1.0,
+        "threshold": 0.8,
+        "missing_categories": [],
+    }
+    document = {
+        "capabilities": [],
+        "contract_metadata": {"input_digests": {}},
+    }
+
+    monkeypatch.setattr(cc, "compile_contract", lambda _format_id: (report, document))
+    monkeypatch.setattr(stores, "REPO_ROOT", tmp_path)
+    monkeypatch.setattr(stores, "contract_path", lambda _format_id: tmp_path / "contract.yaml")
+    monkeypatch.setattr(cc, "canonical_write", lambda _path, _document: None)
+    monkeypatch.setattr(
+        contract_registry,
+        "update_entry",
+        lambda _format_id, **fields: captured.update(fields),
+    )
+
+    assert cc.main(["--format-id", "synthetic"]) == 0
+    assert captured["state"] == "COMPILED"
+    assert captured["missing_categories"] == []

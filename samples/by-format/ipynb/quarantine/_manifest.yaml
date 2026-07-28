@@ -1,0 +1,52 @@
+artifact_id: IPYNB-CORPUS-QUARANTINE-001
+artifact_type: corpus_quarantine_manifest
+format_id: ipynb
+created_at: "2026-07-26"
+created_by_task: AUTO-IPYNB-CORPUS-REMEDIATE-001
+generated_by: codex
+visibility: evidence-only
+status: ACTIVE
+
+authority:
+  normative_profile: nbformat-4.5
+  schema_source: src/python/ipynb/src/format_factory/ipynb/validation/schemas/nbformat.v4.5.schema.json
+  reference_implementation: nbformat-5.10.4
+  resolution: "The normative schema controls strict validity. Reference-implementation normalization and MissingIDFieldWarning behavior is recorded as an oracle disagreement, not as positive evidence."
+
+entries:
+  - quarantine_id: q:ipynb:c8caeff0a36013b17b3c910f0b9ffe24b9b855aad958d02affb25147c9700b1a
+    original_path: samples/by-format/ipynb/valid/code-and-markdown.ipynb
+    retained_path: samples/by-format/ipynb/quarantine/c8caeff0a36013b17b3c910f0b9ffe24b9b855aad958d02affb25147c9700b1a-code-and-markdown.ipynb
+    sha256: c8caeff0a36013b17b3c910f0b9ffe24b9b855aad958d02affb25147c9700b1a
+    validation_failures:
+      - "cells[0].id is required by nbformat 4.5"
+      - "cells[1].id is required by nbformat 4.5"
+    reference_behavior:
+      result: NORMALIZED_WITH_WARNING
+      warning: MissingIDFieldWarning
+      inserted_id_count: 2
+    replacement:
+      path: samples/by-format/ipynb/valid/code-and-markdown.ipynb
+      sha256: 77c6d7cc3b70c2a34a2dc4f9c08a71ca20a146c579a9e41e21514bfc5c903a00
+      source_commit: 60b6151fedcbdc9f137fb2d223eeb10c935a8378
+      source_path: tests/test4.5.ipynb
+      license: BSD-3-Clause
+    positive_evidence_eligible: false
+
+  - quarantine_id: q:ipynb:3b7d9f72565a7d916baa527976f00b5de4142ee148306bfed4bd16016b735e09
+    original_path: samples/by-format/ipynb/valid/with-outputs.ipynb
+    retained_path: samples/by-format/ipynb/quarantine/3b7d9f72565a7d916baa527976f00b5de4142ee148306bfed4bd16016b735e09-with-outputs.ipynb
+    sha256: 3b7d9f72565a7d916baa527976f00b5de4142ee148306bfed4bd16016b735e09
+    validation_failures:
+      - "cells[0].id is required by nbformat 4.5"
+    reference_behavior:
+      result: NORMALIZED_WITH_WARNING
+      warning: MissingIDFieldWarning
+      inserted_id_count: 1
+    replacement:
+      path: samples/by-format/ipynb/valid/with-outputs.ipynb
+      sha256: 03ac5f4dfae9bb393b88e39b11c2b12a7df7599e7918791e1ef837eb939e53ba
+      source_commit: 60b6151fedcbdc9f137fb2d223eeb10c935a8378
+      source_path: tests/test4jupyter_metadata_timings.ipynb
+      license: BSD-3-Clause
+    positive_evidence_eligible: false

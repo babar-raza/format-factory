@@ -18,20 +18,121 @@ Exit codes: 0 seeded (or nothing to do) · 1 error.
 from __future__ import annotations
 
 import argparse
+import hashlib
+import json
 import subprocess
 import sys
 from datetime import date
 from pathlib import Path
+from typing import Any, cast
 
 import yaml
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 QUEUE_DIR = REPO_ROOT / ".local" / "supervisor" / "sal-candidates"
 SAL_DIR = REPO_ROOT / "shared" / "sal-facts"
+RESEARCH_DIR = REPO_ROOT / "shared" / "format-contracts" / "research"
+FORMAT_REGISTRY = REPO_ROOT / "registry" / "format-registry.yaml"
 MERGE = REPO_ROOT / "tools" / "spec" / "merge_sal_facts.py"
 
 
-def seed(format_id: str, added_by: str) -> dict:
+def _format_metadata(format_id: str) -> dict[str, Any]:
+    registry = cast(
+        dict[str, Any],
+        yaml.safe_load(FORMAT_REGISTRY.read_text(encoding="utf-8")) or {},
+    )
+    for entry in registry.get("formats", []):
+        if str(entry.get("format_id", "")).lower() == format_id:
+            return cast(dict[str, Any], entry)
+    return {}
+
+
+def _new_store(format_id: str) -> dict[str, Any]:
+    metadata = _format_metadata(format_id)
+    return {
+        "format_id": format_id,
+        "display_name": metadata.get("display_name", format_id.upper()),
+        "schema_version": "1.0",
+        "canonical": True,
+        "note": (
+            "Committed canonical SAL fact store initialized from reviewed, "
+            "digest-bound authority candidates."
+        ),
+        "facts": [],
+    }
+
+
+def _authority_sources(format_id: str) -> dict[str, str]:
+    research_path = RESEARCH_DIR / f"{format_id}.yaml"
+    if not research_path.is_file():
+        return {}
+    research = yaml.safe_load(research_path.read_text(encoding="utf-8")) or {}
+    sources: dict[str, str] = {}
+    for record in research.get("source_records", []):
+        source_id = str(record.get("source_id", ""))
+        digest = str(record.get("content_hash", ""))
+        if (
+            source_id
+            and record.get("acquisition_status") == "ACQUIRED"
+            and len(digest) == 64
+        ):
+            sources[source_id] = digest
+    return sources
+
+
+def _candidate_authority(
+    candidate: dict[str, Any], acquired_sources: dict[str, str]
+) -> list[dict[str, str]]:
+    source_ids = candidate.get("source_ids")
+    if source_ids is None and candidate.get("source_id"):
+        source_ids = [candidate["source_id"]]
+    if not isinstance(source_ids, list) or not source_ids:
+        raise RuntimeError("new SAL candidate has no acquired source_ids")
+    resolved = []
+    for source_id in source_ids:
+        source_id = str(source_id)
+        digest = acquired_sources.get(source_id)
+        if not digest:
+            raise RuntimeError(
+                f"new SAL candidate references an unacquired authority: {source_id}"
+            )
+        declared = candidate.get("source_sha256")
+        if declared and str(declared) != digest:
+            raise RuntimeError(
+                f"candidate source digest mismatch for {source_id}: "
+                f"declared {declared}, acquired {digest}"
+            )
+        resolved.append({"source_id": source_id, "sha256": digest})
+    return resolved
+
+
+def _stable_fact_id(
+    format_id: str,
+    candidate: dict[str, Any],
+    authority_sources: list[dict[str, str]],
+) -> str:
+    identity = {
+        "format_id": format_id,
+        "claim": str(candidate.get("claim", "")).strip(),
+        "element_qname": str(candidate.get("element_qname", "")).strip(),
+        "section": str(candidate.get("section", "")).strip(),
+        "authority_sources": sorted(
+            authority_sources,
+            key=lambda item: (item["source_id"], item["sha256"]),
+        ),
+    }
+    digest = hashlib.sha256(
+        json.dumps(
+            identity,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()[:16].upper()
+    return f"SAL-{format_id.upper()}-{digest}"
+
+
+def seed(format_id: str, added_by: str) -> dict[str, Any]:
     queue_path = QUEUE_DIR / f"{format_id}.yaml"
     if not queue_path.is_file():
         return {"seeded": 0, "skipped": 0, "note": "no candidate queue"}
@@ -41,9 +142,19 @@ def seed(format_id: str, added_by: str) -> dict:
         return {"seeded": 0, "skipped": 0, "note": "empty queue"}
 
     store_path = SAL_DIR / f"{format_id}.yaml"
-    store = yaml.safe_load(store_path.read_text(encoding="utf-8"))
+    store = (
+        yaml.safe_load(store_path.read_text(encoding="utf-8"))
+        if store_path.is_file()
+        else _new_store(format_id)
+    )
     facts = store.setdefault("facts", [])
     existing_claims = {str(f.get("claim", "")).strip() for f in facts}
+    existing_ids = {
+        str(f.get("fact_id", "")): str(f.get("claim", "")).strip()
+        for f in facts
+        if f.get("fact_id")
+    }
+    acquired_sources = _authority_sources(format_id)
     max_num = 0
     for fact in facts:
         fid = str(fact.get("fact_id", ""))
@@ -63,9 +174,23 @@ def seed(format_id: str, added_by: str) -> dict:
         if claim in existing_claims:
             skipped += 1
             continue
+        authority_sources = _candidate_authority(cand, acquired_sources)
+        fact_id = _stable_fact_id(format_id, cand, authority_sources)
+        existing_claim = existing_ids.get(fact_id)
+        if existing_claim is not None and existing_claim != claim:
+            raise RuntimeError(
+                f"stable SAL identity collision for {fact_id}: "
+                "existing and candidate claims differ"
+            )
+        readiness_categories = cand.get("readiness_categories", [])
+        if not isinstance(readiness_categories, list) or not all(
+            isinstance(category, str) and category.strip()
+            for category in readiness_categories
+        ):
+            raise RuntimeError("readiness_categories must be a list of non-empty strings")
         max_num += 1
         facts.append({
-            "fact_id": f"SAL-{format_id.upper()}-{max_num:05d}",
+            "fact_id": fact_id,
             "qname": f"FACT-{format_id.upper()}-{max_num}",
             "element_qname": cand.get("element_qname", f"{format_id}:unspecified"),
             "claim": claim,
@@ -74,18 +199,22 @@ def seed(format_id: str, added_by: str) -> dict:
             "source": "structural_fact_manual",
             "fact_status": "verified",
             "verification_status": "structural_derivation",
+            "readiness_categories": sorted(set(readiness_categories)),
             "provenance": {
                 "extraction_method": "structural_derivation",
                 "confidence": "medium",
                 "added_by": added_by,
                 "added_at": today,
+                "authority_sources": authority_sources,
             },
         })
         existing_claims.add(claim)
+        existing_ids[fact_id] = claim
         seeded += 1
 
     if seeded:
-        with open(store_path, "w", encoding="utf-8", newline="\n") as fh:
+        store_path.parent.mkdir(parents=True, exist_ok=True)
+        with store_path.open("w", encoding="utf-8", newline="\n") as fh:
             yaml.safe_dump(store, fh, sort_keys=False, allow_unicode=True, width=110)
         merge = subprocess.run(
             [sys.executable, str(MERGE)], cwd=str(REPO_ROOT),
