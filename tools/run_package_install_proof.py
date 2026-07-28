@@ -267,6 +267,11 @@ def run_pytest(py: Path, specs_path: Path, formats: list[str], junit_name: str) 
     log(f"pytest ({junit_name}): {tail[-1] if tail else proc.returncode}")
     if not junit.exists():
         raise SystemExit(f"pytest produced no junit xml:\n{proc.stdout[-2000:]}\n{proc.stderr[-2000:]}")
+    if proc.returncode != 0:
+        raise SystemExit(
+            f"package proof pytest failed ({junit_name}):\n"
+            f"{proc.stdout[-2000:]}\n{proc.stderr[-2000:]}"
+        )
     return junit
 
 

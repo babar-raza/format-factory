@@ -82,10 +82,9 @@ def test_wheel_import(fmt: str) -> None:
 
 
 def test_csv_is_format_factory_not_stdlib() -> None:
-    """The csv wheel intentionally shadows stdlib csv inside this ephemeral venv.
-    Prove the import is Format Factory's package: stdlib csv has no csv_parser."""
+    """The CSV wheel uses the non-stdlib ``ff_csv`` import namespace."""
     _skip_if_not_requested("csv")
-    csv_parser = importlib.import_module("csv.csv_parser")
+    csv_parser = importlib.import_module("ff_csv.csv_parser")
     assert hasattr(csv_parser, "parse_csv_strict")
 
 

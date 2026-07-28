@@ -92,6 +92,32 @@ def test_specs_preserve_dotted_module_import(
     assert specs["ipynb"]["module_import"] == "format_factory.ipynb"
 
 
+def test_run_pytest_rejects_nonzero_status_with_junit(
+    proof: ModuleType,
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    monkeypatch.setattr(proof, "WORK_DIR", tmp_path)
+
+    def fake_run(command: list[str], **_: object) -> SimpleNamespace:
+        junit_arg = next(arg for arg in command if arg.startswith("--junitxml="))
+        Path(junit_arg.split("=", 1)[1]).write_text(
+            "<testsuites><testsuite failures='1'/></testsuites>",
+            encoding="utf-8",
+        )
+        return SimpleNamespace(returncode=1, stdout="1 failed", stderr="")
+
+    monkeypatch.setattr(proof, "run", fake_run)
+
+    with pytest.raises(SystemExit, match="package proof pytest failed"):
+        proof.run_pytest(
+            Path("python"),
+            tmp_path / "specs.json",
+            ["csv"],
+            "results.xml",
+        )
+
+
 def test_deep_import_results_map_back_to_format_id(
     proof: ModuleType,
     monkeypatch: pytest.MonkeyPatch,
