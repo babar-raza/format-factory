@@ -109,9 +109,20 @@ This is the most common task type in the Format Factory product train.
    - No new imports beyond stdlib
 4. **Update `__init__.py`** — add to both import list and `__all__`
 5. **Write test file** `tests/python/<format>/test_<sprint>_<function>.py`
-   - Import pattern depends on installation status:
-     - **Installed** (has .egg-info): `sys.path.insert(0, str(_REPO / "src" / "python"))` → `from <format>.<codec> import ...`
-     - **Not installed**: `sys.path.insert(0, str(_REPO))` → `from src.python.<format>.<codec> import ...`
+   - **Import the package by name. Do NOT mutate `sys.path`:**
+     ```python
+     from <format>.<codec> import <symbol>
+     ```
+     The import pattern does **not** depend on installation status — that rule was
+     never true (verified 2026-07-17). The venv's editable-install `.pth` files put
+     `src/python` itself on `sys.path`, so every format package is importable by
+     name whether or not it has its own `.egg-info`. `pythonpath = ["."]` in
+     `pyproject.toml` covers `tools.*` imports.
+   - **Never use `from src.python.<format>...`** — it loads the same code under a
+     second module identity, so cross-module `isinstance` fails and module state
+     duplicates; it also shadows the real package attribute.
+   - Hygiene check (exit 0 required, AST-based and alias-aware):
+     `python -m tools.governance.skill_gates.import_hygiene tests/python/<format>`
 6. **Run targeted tests** — all must pass
 7. **Run family tests** — `tests/python/` — no regressions
 

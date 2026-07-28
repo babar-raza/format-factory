@@ -224,11 +224,6 @@ def scan_paths(paths: list[Path], exclude_patterns: list[str] | None = None) -> 
                 parts = py_file.parts
                 if any(ex in parts for ex in excludes):
                     continue
-                # TC-SC-002: Skip nested duplicate packages (pip editable-install artifacts)
-                rel_to_root = py_file.relative_to(root_path)
-                rel_parts = rel_to_root.parts
-                if len(rel_parts) >= 2 and rel_parts[0] == rel_parts[1]:
-                    continue
                 all_violations.extend(scan_file(py_file))
     return all_violations
 

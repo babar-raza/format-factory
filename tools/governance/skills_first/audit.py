@@ -246,6 +246,12 @@ def build_hash_drift(skills, baseline: dict[str, str]) -> dict[str, Any]:
 # Governed operation -> route keywords used to prove routing coverage.
 _OP_ROUTE_HINTS = {
     "creating_editing_moving_deleting_files": ["product_source", "source", "taskcard_execution"],
+    # applying_patches / changing_project_files are specializations of the
+    # same file-mutation operation above, not a distinct governed activity --
+    # they share its hint list rather than gaming a synthetic new one
+    # (TC-SFC-H-004, 2026-07-25).
+    "applying_patches": ["product_source", "source", "taskcard_execution"],
+    "changing_project_files": ["product_source", "source", "taskcard_execution"],
     "generating_code": ["source", "kickstart", "stub", "product"],
     "changing_tests_or_fixtures": ["test", "roundtrip"],
     "modifying_validators": ["validator", "governance"],
@@ -256,6 +262,17 @@ _OP_ROUTE_HINTS = {
     "producing_canonical_evidence": ["evidence"],
     "running_migrations_or_backfills": ["backfill", "migrat"],
     "marking_gates_complete": ["gate", "certification"],
+    # updating_product_capability_documentation / creating_release_artifacts:
+    # confident 1:1 matches to newly-routed skills (TC-SFC-H-004, 2026-07-25).
+    "updating_product_capability_documentation": ["capability_documentation", "capability_sync"],
+    "creating_release_artifacts": ["release_artifact", "changelog"],
+    # changing_package_metadata / changing_approval_gates: deliberately left
+    # WITHOUT a hint override. No active skill's route confidently covers
+    # standalone package-metadata mutation (distinct from a product-source
+    # task that incidentally touches it) or approval-gate *mutation* (as
+    # opposed to check-gate's audit/report-only capability_audit route).
+    # Falls back to the op.split("_")[0] default below, which stays
+    # uncovered -- see TC-SFC-H-004 disposition table in the locked plan.
 }
 
 

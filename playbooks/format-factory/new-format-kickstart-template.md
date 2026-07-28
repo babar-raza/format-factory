@@ -45,6 +45,7 @@ playbook_contract:
     - "Sprint task templates only"
   phases:
     - design_codec_structure
+    - create_exceptions_module
     - implement_probe
     - implement_load
     - implement_create
@@ -67,6 +68,9 @@ Start a brand-new Python FOSS format from scratch.
 Use when a format has NO existing codec in `src/python/`.
 
 Produces the minimum slice: probe → load → write → tests.
+
+See `docs/governance/python-library-standard.md` §2.4 (Exceptions) for the full
+exception-hierarchy contract this template implements.
 
 ---
 
@@ -109,22 +113,55 @@ Produces the minimum slice: probe → load → write → tests.
 
 1. **Create directory**: `src/python/<format>/`
 2. **Create `__init__.py`** — module header, imports, `__all__`, `__version__`
-3. **Create `<format>_codec.py`** with:
-   - Error classes: `<Format>Error`, `<Format>ParseError`
+3. **Create `exceptions.py` FIRST** — before the codec module. This is the single
+   source of truth for the format's error hierarchy:
+   ```python
+   try:
+       from _shared._shared_exceptions import FormatFactoryError
+   except ImportError:
+       FormatFactoryError = Exception
+
+   class <Format>Error(FormatFactoryError):
+       """Base exception for all <format> format errors."""
+
+   class <Format>ParseError(<Format>Error):
+       """Raised when a <format> file cannot be parsed."""
+
+   class <Format>WriteError(<Format>Error):
+       """Raised when a <format> file cannot be written."""  # only if format is writable
+   ```
+4. **Create `<format>_codec.py`** with:
+   - Import error classes: `from .exceptions import <Format>Error, <Format>ParseError`
+     (and `<Format>WriteError` if writable).
+     **NEVER define `<Format>Error`-named classes here — `exceptions.py` is the
+     single source of truth.**
    - `MAX_FILE_SIZE = 64 * 1024 * 1024`
    - `_read_source(source) -> bytes` helper (Path / str / bytes support)
    - `_check_size(path) -> None`
    - `probe_<format>(source) -> bool` — never raises, returns bool
    - `load_<format>(source) -> list | dict` — raises on bad input
    - `write_<format>(records, dest)` — if writable format
-4. **Create `tests/python/<format>/__init__.py`** (empty)
-5. **Write test file** `tests/python/<format>/test_r<sprint>_<format>_codec.py`
-   - Use non-installed import pattern:
+5. **Create `tests/python/<format>/__init__.py`** (empty)
+6. **Write test file** `tests/python/<format>/test_r<sprint>_<format>_codec.py`
+   - Import the package by name. **Do NOT mutate `sys.path`:**
      ```python
-     sys.path.insert(0, str(_REPO))
-     from src.python.<format>.<format>_codec import ...
+     from <format>.<format>_codec import probe_<format>, load_<format>, write_<format>
      ```
-6. **Run tests** — all must pass
+     No path code is needed: the venv's editable-install `.pth` files put
+     `src/python` on `sys.path`, so a new package under `src/python/<format>/`
+     is importable by name as soon as it exists (verified 2026-07-17 — the old
+     "non-installed formats need `sys.path.insert`" rule was never true).
+     `pythonpath = ["."]` in `pyproject.toml` covers `tools.*` imports.
+   - **Never use `from src.python.<format>...`** — it creates a second module
+     identity for the same code and silently shadows the real package attribute.
+   - This is the same import the skill's own acceptance check uses
+     (`from <format> import probe, load` in the installed-package context), so a
+     test that needs a path hack to pass is a test that is not proving the
+     package works.
+7. **Run tests** — all must pass
+   - Then confirm hygiene:
+     `python -m tools.governance.skill_gates.import_hygiene src/python/<format> tests/python/<format>`
+     (exit 0 required; AST-based and alias-aware, so `import sys as _sys` does not evade it)
 
 ---
 
@@ -156,12 +193,14 @@ Produces the minimum slice: probe → load → write → tests.
 
 | Pitfall | Prevention |
 |---------|------------|
-| Installed vs non-installed path | New formats never pip-installed; use `sys.path.insert(0, str(_REPO))` + `from src.python.<format>...` |
+| "Installed vs non-installed path" | **Myth — ignore it.** `src/python` is on `sys.path` via the editable-install `.pth` files, so a brand-new `src/python/<format>/` imports as `from <format>.<format>_codec import ...` immediately. Never `sys.path.insert`; never `from src.python.<format>...` (second module identity) |
+| Name collides with stdlib / a popular package | Run `python -m tools.governance.skill_gates.format_name_gate --format-name <format>` **before** creating the directory. `src/python/csv/` shows why: the name is unfixable once taken — stdlib wins by path order (our package unreachable), and forcing ours to win hijacks stdlib csv process-wide |
 | Over-claiming capabilities | Only claim probe/load/write PASS when tests exist |
 | External spec dependency | Note spec URL in module docstring; cache locally if needed |
 | Binary format complexity | Start with probe only if full parser is risky |
 | Unsafe JSON output | NEVER use manual `.replace("\\", "\\\\")` chains — use `json.dumps()` |
 | Unsafe HTML output | NEVER use raw f-string `<td>{value}</td>` — use `html.escape(str(value))` |
+| Error class duplication | NEVER define `<Format>Error` in the codec file — always import from `.exceptions`. Two classes with the same name in different files silently shadow each other via star-imports. |
 
 ## Output Safety Defaults (MA-SYSTEM-WIDE-2026-07-04 — mandatory)
 
@@ -195,6 +234,6 @@ def to_html_table(records: list[dict], headers: list[str]) -> str:
 
 ## Evidence Required
 
-- `src/python/<format>/` — codec + __init__
+- `src/python/<format>/` — codec + __init__ + exceptions
 - `tests/python/<format>/test_r<sprint>_<format>_codec.py`
 - Test log showing N/N pass

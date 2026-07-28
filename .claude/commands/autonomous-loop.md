@@ -98,6 +98,27 @@ sys.exit(1 if found else 0)
   Execute it. Do NOT proceed to Step 1. Do NOT read next-sprint.md.
   This stop CANNOT be overridden by the Supreme Directive.
 
+### Step 0c — Coordination preflight (Mission AGENT-COORD-2026-07-15)
+
+Claude Code sessions are coordinated ambiently by the hooks in
+`.claude/settings.json` (SessionStart auto-registers; PreToolUse auto-claims
+and attributes; PostToolUse journals). Before starting loop work, verify the
+plane and claim the loop's broad scope explicitly:
+
+```
+python -m tools.supervisor.coordination status
+python -m tools.supervisor.coordination claim --resource logical:mission:format-factory-main --mode EXCLUSIVE_WRITE
+```
+
+- `status` exit 1 means OPEN conflicts exist: resolve them first
+  (`conflicts list` / `conflicts resolve --id ... --state ... --note ...`).
+- A claim conflict (exit 2) means another controller/agent owns the mission
+  scope — do NOT proceed with overlapping work; coordinate or take over a
+  STALE lease via `takeover --reason` only.
+- On loop exit: `release --all`, then `complete`.
+- Never `git add -A`/`git add .`; never clean or revert unexplained changes
+  (AGENTS.md Section CO).
+
 ### Step 1 — Check continuation signal
 
 ```

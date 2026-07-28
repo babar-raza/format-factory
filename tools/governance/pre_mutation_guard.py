@@ -125,6 +125,78 @@ def _check_path_ownership(target_paths: list[str], skill_id: str, registry_data:
     return True, ""
 
 
+def _coordination_lease_check(agent_type: str, target_paths: list[str],
+                              require_lease: bool | None) -> tuple[bool, dict | None, list[str]]:
+    """TC-COORD-007: verify the caller holds live coordination leases covering
+    target_paths. Auto-enabled when the coordination DB exists; --no-require-lease
+    skips but the skip is recorded in the authorization. Returns
+    (checked, blocked_result_or_None, lease_ids)."""
+    if require_lease is False:
+        return False, None, []
+    try:
+        sys.path.insert(0, str(REPO_ROOT / "tools" / "supervisor"))
+        from coordination.db import connect
+        from coordination.leases import LeaseManager
+        from coordination.preflight import resolve_identity
+        from coordination.registry import AgentRegistry
+        from coordination.root import (canonical_resource, db_path,
+                                       is_logical, worktree_identity)
+    except ImportError:
+        return False, None, []
+    if not db_path().exists():
+        if require_lease is True:
+            return True, {"verdict": "BLOCKED",
+                          "reason": "--require-lease set but coordination db"
+                                    " does not exist; register and claim first",
+                          "rejection_condition": "no_coordination_db"}, []
+        return False, None, []
+
+    registry = AgentRegistry()
+    ident = resolve_identity(registry)
+    if ident is None:
+        return True, {
+            "verdict": "BLOCKED",
+            "reason": "coordination db present but no agent identity"
+                      " (FF_AGENT_ID/FF_AGENT_TOKEN or runtime token file);"
+                      " run: python -m tools.supervisor.coordination register",
+            "rejection_condition": "no_coordination_identity"}, []
+    aid, _tok = ident
+    lm = LeaseManager()
+    wt_id, wt_path = worktree_identity()
+    conn = connect()
+    lease_ids: list[str] = []
+    try:
+        for t in target_paths:
+            if any(t.startswith(ep) for ep in GLOBAL_EXEMPT_PATHS):
+                continue
+            key, _display = canonical_resource(t, wt_path)
+            scope = "global" if is_logical(key) else wt_id
+            own = lm.find_covering(conn, aid, key, scope, write_capable=True)
+            if own is None:
+                foreign = [o for o in lm._overlapping_live(
+                    conn, key, scope, exclude_agent=aid)
+                    if o["mode"] in ("EXCLUSIVE_WRITE", "SRSW", "APPEND")]
+                if foreign:
+                    return True, {
+                        "verdict": "BLOCKED",
+                        "reason": f"'{t}' is under live lease"
+                                  f" {foreign[0]['lease_id']} of agent"
+                                  f" {foreign[0]['agent_id']}",
+                        "rejection_condition": "coordination_lease_conflict"}, []
+                return True, {
+                    "verdict": "BLOCKED",
+                    "reason": f"no live coordination lease covers '{t}';"
+                              " claim first: python -m"
+                              " tools.supervisor.coordination claim"
+                              f" --resource {t}",
+                    "rejection_condition": "coordination_lease_missing"}, []
+            if own["lease_id"] not in lease_ids:
+                lease_ids.append(own["lease_id"])
+    finally:
+        conn.close()
+    return True, None, lease_ids
+
+
 def _write_authorization(auth: dict, auth_id: str) -> Path:
     AUTH_DIR.mkdir(parents=True, exist_ok=True)
     auth_path = AUTH_DIR / f"{auth_id}.json"
@@ -145,6 +217,7 @@ def run(
     mission_id: str,
     sprint_id: str,
     dry_run: bool = False,
+    require_lease: bool | None = None,
 ) -> dict:
     """Core guard logic. Returns result dict."""
     now = datetime.now(timezone.utc)
@@ -193,6 +266,14 @@ def run(
             "rejection_condition": "target_path_outside_ownership",
         }
 
+    # 4b. Check: coordination leases cover the targets (TC-COORD-007;
+    #     closes EP-002-GAP for adapter-driven agents when the coordination
+    #     db is active).
+    lease_checked, lease_block, lease_ids = _coordination_lease_check(
+        agent_type, target_paths, require_lease)
+    if lease_block is not None:
+        return lease_block
+
     # 5. AUTHORIZED — build record
     auth_id = _make_auth_id(task_id, skill_id, agent_type, now)
     auth_record = {
@@ -208,6 +289,9 @@ def run(
         "single_use_or_reusable": "single_use",
         "issued_by": "pre_mutation_guard.py",
         "dry_run": dry_run,
+        "coordination_lease_checked": lease_checked,
+        "coordination_lease_ids": lease_ids,
+        "coordination_lease_skipped": require_lease is False,
     }
 
     if not dry_run:
@@ -240,6 +324,17 @@ def main() -> None:
     parser.add_argument("--sprint-id", default="UNKNOWN", help="Current sprint ID")
     parser.add_argument("--dry-run", action="store_true",
                         help="Check only; do not write authorization file")
+    lease_group = parser.add_mutually_exclusive_group()
+    lease_group.add_argument("--require-lease", dest="require_lease",
+                             action="store_true", default=None,
+                             help="Require live coordination leases covering"
+                                  " target paths (auto-on when the"
+                                  " coordination db exists)")
+    lease_group.add_argument("--no-require-lease", dest="require_lease",
+                             action="store_false",
+                             help="Skip the coordination lease check;"
+                                  " the skip is recorded in the"
+                                  " authorization (audited)")
     args = parser.parse_args()
 
     result = run(
@@ -250,6 +345,7 @@ def main() -> None:
         mission_id=args.mission_id,
         sprint_id=args.sprint_id,
         dry_run=args.dry_run,
+        require_lease=args.require_lease,
     )
 
     print(json.dumps(result, indent=2))

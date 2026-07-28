@@ -125,9 +125,24 @@ Use this when a format already has probe/load/create/write but is missing a usef
 3. **Insert before `# Internal helpers`** or after the last public function
 4. **Update `__init__.py`** — add to import list and `__all__`
 5. **Write tests** in `tests/python/<format>/test_r<sprint>_<feature>.py`
-   - Use the import pattern matching the format's installation status:
-     - **Installed formats** (have .egg-info): `sys.path.insert(0, str(_REPO / "src" / "python"))` then `from <format>.<codec> import ...`
-     - **Non-installed formats**: `sys.path.insert(0, str(_REPO))` then `from src.python.<format>.<codec> import ...`
+   - **Import directly. Do NOT mutate `sys.path`:**
+     ```python
+     from <format>.<codec> import <symbol>          # any format package
+     from tools.governance.skill_gates import ...   # repo tooling, if needed
+     ```
+     This works for **every** format with no path code, and the old
+     "installed vs non-installed formats need different import patterns" rule
+     was never true (verified 2026-07-17): the venv's editable-install `.pth`
+     files put `src/python` itself on `sys.path`, so every package under it is
+     importable by name whether or not that specific format has its own
+     `.pth`. `pythonpath = ["."]` in `pyproject.toml` covers `tools.*`.
+   - **Never use `from src.python.<format>...`.** It imports the same code under a
+     second module identity, so `src.python.tsv.x` and `tsv.x` become different
+     objects, isinstance checks fail across them, and module-level state
+     duplicates. It also re-binds the package attribute and silently shadows the
+     real one (this is the known dogfood namespace-conflict bug in SYLK and DIF).
+   - If an import genuinely fails, that is a packaging gap to report — not
+     something to route around with `sys.path.insert`.
    - Cover: returns correct type, accepts path/bytes/string, edge cases, roundtrip if applicable
 6. **Run targeted tests** — all must pass before proceeding
 7. **Run family tests** — no regressions
@@ -182,7 +197,7 @@ After completing this playbook:
 | Pitfall | Prevention |
 |---------|------------|
 | `export_to_json(model_dict)` — function expects source not model | Always check the function signature; `load()` takes source (file/bytes/string), not a dict |
-| Installed vs non-installed import path | Check for `.egg-info` in `src/python/`; use appropriate sys.path strategy |
+| "Installed vs non-installed import path" | **Myth — ignore it.** `src/python` is itself on `sys.path` via the editable-install `.pth` files, so `from <format>.<codec> import ...` works for every format regardless of `.egg-info`. Never `sys.path.insert`; never `from src.python.<format>...` |
 | TSV header heuristic | `has_header` is True when all rows have same column count; tests must account for this |
-| csv module shadowing | Never import stdlib csv in gnumeric/ods/fods tests without conftest pin |
+| csv module shadowing | **Read the direction carefully:** stdlib `Lib` is at `sys.path[3]`, `src/python` at `[7]`, so plain `import csv` gets **stdlib csv, not ours** — our csv package is unreachable under its own name. The danger is the reverse fix: a `sys.path.insert(0, .../src/python)` makes ours win, and ours has no `reader`/`writer`/`DictReader`, which breaks stdlib csv for the whole process. Do not "fix" csv imports with a path insert |
 | ABW DOCTYPE stripping | `_strip_doctype` returns str in some versions; use `_parse_xml` on its output |

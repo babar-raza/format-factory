@@ -3,7 +3,10 @@
     python -m tools.supervisor.coordination <verb> [...]
 
 ASCII-only output. Exit codes: 0 ok / 1 error / 2 conflict / 3 not-registered
-/ 4 stale / 5 baseline-drift-preserve / 6 takeover-denied.
+/ 4 stale / 5 baseline-drift-preserve / 6 takeover-denied / 7 skill-gate-blocked
+(preflight only -- check_mode:skill_resolution is enforcing for this path and
+no live execution manifest covers it; see tools/supervisor/coordination/
+hooks/skill_gate.py).
 `status` exits 1 while OPEN conflicts exist (conflicts are not silently
 ignorable). Identity resolves from --agent/--token, FF_AGENT_ID/FF_AGENT_TOKEN,
 or runtime token files under <root>/runtime/.
@@ -21,7 +24,8 @@ from .errors import CoordinationError
 from .leases import LeaseManager
 from .preflight import preflight, record_write, resolve_identity
 from .registry import AgentRegistry
-from .root import is_anchored, resolve_coordination_root, worktree_identity
+from .root import (canonical_resource, is_anchored, resolve_coordination_root,
+                   worktree_identity)
 
 
 def _emit(args, ok: bool, exit_code: int, verb: str, data=None, error=None):
@@ -217,14 +221,27 @@ def build_parser() -> argparse.ArgumentParser:
     cmsub = cm.add_subparsers(dest="check_mode_cmd", required=True)
     cmg = cmsub.add_parser("get")
     cmg.add_argument("--check", required=True)
+    cmg.add_argument("--path-prefix", default=None,
+                     help="resolve the effective mode for this path scope"
+                          " (longest configured prefix wins, falling back to"
+                          " the bare global check_id key); omit for the bare"
+                          " global key itself")
     cms = cmsub.add_parser("set")
     cms.add_argument("--check", required=True)
     cms.add_argument("--to", required=True, choices=["advisory", "enforcing"])
     cms.add_argument("--reason", required=True)
+    cms.add_argument("--path-prefix", default=None,
+                     help="scope this promotion/demotion to one path prefix"
+                          " (e.g. tools/governance/, src/python/) instead of"
+                          " the bare global check_id key -- smallest blast"
+                          " radius first")
 
     ar = sub.add_parser("advisory-report")
     ar.add_argument("--check", required=True)
     ar.add_argument("--window-hours", type=float, default=None)
+    ar.add_argument("--path-prefix", default=None,
+                    help="filter events to those whose file path falls under"
+                         " this prefix")
 
     pc = sub.add_parser("precommit-check")
     pc.add_argument("--staged-file", action="append", default=[])
@@ -304,6 +321,59 @@ def main(argv: list[str] | None = None) -> int:
                     "classification": res.classification,
                     "conflict_id": res.conflict_id,
                     "auto_claimed": res.auto_claimed}
+
+            # SFC parity (2026-07-24): the coordination-lease check above is
+            # only half of "no src/ mutation without a governed skill." Claude
+            # Code's PreToolUse hook (gate.py) has always additionally run the
+            # skill-resolution gate after an allowed write; this CLI verb --
+            # Codex's own mandatory entry point per docs/governance/
+            # codex-adapter.md §3a -- did not, which meant Codex got lease
+            # protection but not skill protection even though both governance
+            # docs state the policy applies equally to both agents. Never runs
+            # when the lease check itself already denied (same "can never
+            # override a coordination denial" invariant gate.py's hook uses).
+            if res.allowed:
+                try:
+                    from .hooks import skill_gate
+                    _, wt_path = worktree_identity()
+                    key, _display = canonical_resource(args.file, wt_path)
+                    decision = skill_gate.decide(root, key)
+                except Exception:
+                    decision = None  # a bug in this NEW check must fail open
+                if decision is not None and decision.verdict.block_eligible:
+                    payload = {"tool": "cli:preflight", "file": key,
+                              "check": skill_gate.CHECK_ID,
+                              "tier": decision.verdict.tier,
+                              "detail": decision.verdict.detail,
+                              "agent": res.agent_id}
+                    if decision.action == "block":
+                        from .db import emit_event, immediate
+                        conn2 = connect(root)
+                        try:
+                            with immediate(conn2):
+                                emit_event(conn2, "system", "hook", "HOOK_BLOCK",
+                                          actor=res.agent_id,
+                                          detail={**payload,
+                                                  "would_block": False})
+                        finally:
+                            conn2.close()
+                        hint = skill_gate.owning_skill_hint(key)
+                        reason = (
+                            f"[skill-gate] BLOCKED: {decision.verdict.detail}. "
+                            "Create an execution manifest before this write: "
+                            "python -m tools.governance.skills_first.manifest "
+                            "create --task-id <T> --agent-type CODEX "
+                            f"--operation \"<what you're doing>\" "
+                            f"--skill {hint} "
+                            f"--allowed-paths {key.rsplit('/', 1)[0] if '/' in key else key}/** "
+                            "--write"
+                        )
+                        return _emit(args, False, 7, verb,
+                                     {**data, "skill_gate_tier": decision.verdict.tier},
+                                     reason)
+                    payload["would_block"] = True
+                    skill_gate.log_advisory_event(root, payload)
+
             return _emit(args, res.allowed, res.exit_code, verb, data,
                          None if res.allowed else res.reason)
 
@@ -401,25 +471,38 @@ def main(argv: list[str] | None = None) -> int:
                 conn.close()
 
         if verb == "check-mode":
-            from .db import get_check_mode, set_check_mode
+            from .db import (get_check_mode, get_check_mode_for_path,
+                             set_check_mode, set_check_mode_for_path)
             ensure_db(root)
             conn = connect(root)
             try:
                 if args.check_mode_cmd == "get":
+                    if args.path_prefix:
+                        mode = get_check_mode_for_path(conn, args.check,
+                                                       args.path_prefix)
+                    else:
+                        mode = get_check_mode(conn, args.check)
                     return _emit(args, True, 0, verb,
                                  {"check": args.check,
-                                  "mode": get_check_mode(conn, args.check)})
+                                  "path_prefix": args.path_prefix,
+                                  "mode": mode})
                 ident = _identity(args, registry)
                 actor = ident[0] if ident else "operator"
-                set_check_mode(conn, args.check, args.to, actor, args.reason)
+                if args.path_prefix:
+                    set_check_mode_for_path(conn, args.check, args.path_prefix,
+                                            args.to, actor, args.reason)
+                else:
+                    set_check_mode(conn, args.check, args.to, actor, args.reason)
                 return _emit(args, True, 0, verb,
-                             {"check": args.check, "mode": args.to})
+                             {"check": args.check, "path_prefix": args.path_prefix,
+                              "mode": args.to})
             finally:
                 conn.close()
 
         if verb == "advisory-report":
             from .advisory_analyzer import analyze
-            report = analyze(root, args.check, args.window_hours)
+            report = analyze(root, args.check, args.window_hours,
+                             path_prefix=args.path_prefix)
             return _emit(args, True, 0, verb, report)
 
         if verb == "precommit-check":

@@ -31,6 +31,28 @@ When executing tasks:
 6. **Review** — Run `autonomous_cycle.py` for sprint review [UNKNOWN]
 7. **Continue** — Read `continuation-signal.json`; verify session_id before consuming [UNKNOWN]
 
+### 2a. Coordination Protocol (MANDATORY — Mission AGENT-COORD-2026-07-15)
+
+Kilo shares the working tree with concurrent agents and MUST drive the shared
+coordination plane through the provider-neutral CLI
+(`python -m tools.supervisor.coordination <verb>`) — script execution is the
+same [UNKNOWN if script exec available] surface as the pre-mutation guard in
+section 5; if Kilo cannot execute scripts, ALL Kilo mutations remain blocked
+by RC-016 anyway, so the coordination requirement adds no new platform
+demand. Verb authority: `tools/supervisor/coordination/verbs.py`; parity
+enforced by validator V194; rules in AGENTS.md Section CO.
+
+1. `register --provider kilo-code --mode headless --task <task_id>` at entry.
+2. `claim --resource <path>` before any mutation (exit 2 = foreign owner).
+3. `preflight --file <path>` before each write; `record-write --file <path>`
+   after each write.
+4. `heartbeat` periodically; `release --all` + `complete` on exit.
+5. Never `git add -A`/`git add .`; never clean/revert unexplained changes;
+   never release another agent's lease (use governed `takeover --reason`
+   only on STALE leases).
+6. The pre-commit hook (`.hooks/pre-commit-skill-guard`) blocks commits of
+   files under another agent's live lease regardless of platform.
+
 ## 3. State File Paths
 
 | File | Purpose |

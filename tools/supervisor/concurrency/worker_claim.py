@@ -130,6 +130,28 @@ class WorkerClaims:
         if not paths:
             return []
 
+        # TC-COORD-008: mirror into the coordination plane FIRST. Interactive
+        # agents (hook auto-claims) live there; a foreign coordination lease
+        # must block this legacy claim exactly like a legacy row would.
+        from . import coordination_bridge as _bridge
+        _lc_type = _bridge.lease_conflict_type()
+        _mirror_leases: list[str] | None = None
+        try:
+            _mirror_leases = _bridge.mirror_claim(worker_id, task_id, paths,
+                                                  mode)
+        except Exception as _exc:
+            if _lc_type is not None and isinstance(_exc, _lc_type):
+                raise PathOwnershipConflict(
+                    path=_exc.resource_key,
+                    existing_worker_id=_bridge.resolve_owner_display(
+                        _exc.holder_agent_id),
+                    existing_task_id=_exc.holder_task_id or "unknown",
+                    existing_claim_id=_exc.holder_lease_id,
+                ) from _exc
+            import warnings as _warnings
+            _warnings.warn(f"[worker-claims] coordination mirror failed:"
+                           f" {_exc}", stacklevel=2)
+
         now_str = _now_iso()
         expires = _iso_plus_minutes(self.lease_minutes)
 
@@ -183,18 +205,26 @@ class WorkerClaims:
             return claim_ids
 
         except PathOwnershipConflict:
+            # Legacy-side conflict: roll the mirror back so the plane does
+            # not carry a lease the caller never got.
+            if _mirror_leases:
+                _bridge.mirror_release(worker_id)
             raise
         except Exception:
             try:
                 conn.execute("ROLLBACK")
             except Exception:
                 pass
+            if _mirror_leases:
+                _bridge.mirror_release(worker_id)
             raise
         finally:
             conn.close()
 
     def release_all(self, worker_id: str) -> int:
         """Release all ACTIVE claims for this worker. Returns count released."""
+        from . import coordination_bridge as _bridge
+        _bridge.mirror_release(worker_id)
         conn = _get_db_connection(self.db_path)
         try:
             cursor = conn.execute(

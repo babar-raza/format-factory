@@ -64,10 +64,10 @@ PACKAGES = {
         ),
         "stub": (
             '"""Type stubs for format-factory-csv (PQ-020)."""\n'
-            "from csv.csv_parser import parse_csv_strict as parse_csv_strict\n"
-            "from csv.csv_writer import write_csv_to_file as write_csv_to_file\n"
-            "from csv.models import CsvDocument as CsvDocument\n"
-            "from csv.exceptions import CsvError as CsvError\n\n"
+            "from ff_csv.csv_parser import parse_csv_strict as parse_csv_strict\n"
+            "from ff_csv.csv_writer import write_csv_to_file as write_csv_to_file\n"
+            "from ff_csv.models import CsvDocument as CsvDocument\n"
+            "from ff_csv.exceptions import CsvError as CsvError\n\n"
             "__all__: list[str]\n"
         ),
     },

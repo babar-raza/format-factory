@@ -72,6 +72,29 @@ def validate_targets(targets: list[tuple[str, str, Path]]) -> int:
     return 1 if failed else 0
 
 
+def _guarded(args):
+    """Coordination generator guard (TC-COORD-009): lease the README output
+    set before writing. Read-only modes and --dry-run stay unguarded."""
+    import sys
+    from contextlib import nullcontext
+    from pathlib import Path
+
+    if args.mode not in ("full", "single") or args.dry_run:
+        return nullcontext()
+    repo = Path(__file__).resolve().parents[2]
+    try:
+        supervisor_dir = repo / "tools" / "supervisor"
+        if str(supervisor_dir) not in sys.path:
+            sys.path.insert(0, str(supervisor_dir))
+        from coordination.generator_guard import guarded_generation
+        return guarded_generation(
+            "readme_sync", repo / "tools" / "readme_sync" /
+            "output-manifest.yaml")
+    except ImportError as exc:
+        print(f"WARNING: coordination guard unavailable ({exc}); running unguarded")
+        return nullcontext()
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Synchronize per-format README generated blocks")
     parser.add_argument("--mode", choices=["full", "single", "validate", "drift-only"], default="full")
@@ -82,6 +105,18 @@ def main() -> int:
 
     if args.mode in {"single", "drift-only"} and bool(args.format) ^ bool(args.track):
         parser.error("--format and --track must be supplied together")
+
+    try:
+        with _guarded(args):
+            return _run_modes(args, parser)
+    except Exception as exc:
+        if type(exc).__name__ == "GeneratorBlocked":
+            print(f"BLOCKED: {exc}")
+            return 2
+        raise
+
+
+def _run_modes(args, parser) -> int:
 
     if args.mode == "single":
         if not args.format or not args.track:

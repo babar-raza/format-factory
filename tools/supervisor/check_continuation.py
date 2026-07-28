@@ -7,7 +7,10 @@ Returns machine-readable JSON to stdout.
 
 Exit codes:
   0 — CONTINUE (all conditions met)
-  1 — STOP (at least one condition failed)
+  1 — STOP, terminal (at least one condition failed; do not retry blindly)
+  2 — STOP, non-terminal (e.g. MACHINERY_AUDIT_REQUIRED — an action is expected
+      before the next call, see result["next_action"]; do not treat as a
+      terminal failure — TC-MACH-008)
 
 Usage:
   python tools/supervisor/check_continuation.py [--repo-root <path>]
@@ -72,6 +75,182 @@ def _scan_pending_promotions(repo_root: Path) -> list:
         return pending
     except Exception:
         return []
+
+
+# --- TC-MACH-003: unconditional TRUE_EXTERNAL_GATE-class checks, extracted -------
+#
+# These four checks (Check 4, Check 8, Check 11, Check 2d) are meant to be
+# unconditional per CLAUDE.md (§GOV_BLOCK Exception, §Hard Stops) — but the
+# plan-lock block's COMPLETION_CANDIDATE / same-session ITERATION_REQUIRED
+# branches used to `return` a CONTINUE verdict directly, before any of these
+# ever ran. A plan reaching COMPLETION_CANDIDATE could therefore CONTINUE even
+# while an unrelated GATE_11_READY or structural GOV_BLOCK was simultaneously
+# active. Extracted to standalone functions so the SAME logic can run both at
+# its normal sequential position and, early, from inside those two branches —
+# no duplicated/divergent copies of the check logic itself.
+#
+# Each returns a STOP dict (via _stop()) if it fires, or None otherwise.
+
+def _check_hard_stops(signal: dict, iteration: int, max_iterations: int) -> dict | None:
+    """Check 4: hard_stops_detected must be empty."""
+    hard_stops = signal.get("hard_stops_detected", [])
+    if hard_stops:
+        return _stop("HARD_STOP", f"hard_stops_detected: {hard_stops}",
+                      iteration=iteration, max_iterations=max_iterations)
+    return None
+
+
+def _check_structural_govblock(signal: dict, iteration: int, max_iterations: int) -> dict | None:
+    """Check 8 (TC-GOVBLK-001): structural GOV_BLOCK carve-out."""
+    rework_items = signal.get("rework_items", [])
+    if not signal.get("govblock_resolved_by"):
+        structural_blocks = filter_structural_blocks(rework_items)
+        if structural_blocks:
+            return _stop(
+                STRUCTURAL_GOVBLOCK_STOP_REASON,
+                (
+                    f"Structural GOV_BLOCK detected — product deepening is blocked until "
+                    f"analytics separation resolves: {structural_blocks[:3]}. "
+                    "Run the analytics separation sprint (TC-HEAL-PY-{FORMAT}-001) for the "
+                    "blocking format(s). Set 'govblock_resolved_by' in continuation-signal.json "
+                    "once the refactor sprint is complete."
+                ),
+                iteration=iteration,
+                max_iterations=max_iterations,
+                structural_govblock_items=structural_blocks,
+                next_action=(
+                    "Read docs/code-quality/production-readiness-standard.md §8.1 "
+                    "(Analytics Separation Protocol). Execute the analytics separation for "
+                    "the blocking format. Update continuation-signal.json with "
+                    "'govblock_resolved_by': 'TC-HEAL-PY-{FORMAT}-001' when done."
+                ),
+            )
+    return None
+
+
+def _check_gate11_ready(repo_root: Path, iteration: int, max_iterations: int) -> dict | None:
+    """Check 11 (TC-GFB-022): per-product Gate 11 TRUE_EXTERNAL_GATE enforcement."""
+    _gate_states_path = repo_root / "registry" / "gate-states.yaml"
+    if _gate_states_path.exists():
+        try:
+            import yaml as _gs_yaml
+            _gs_data = _gs_yaml.safe_load(_gate_states_path.read_text(encoding="utf-8")) or {}
+            _format_states = _gs_data.get("format_gate_states", {})
+            _gate11_ready_products = []
+            for _fmt_id, _langs in _format_states.items():
+                if not isinstance(_langs, dict):
+                    continue
+                for _lang, _criteria in _langs.items():
+                    if not isinstance(_criteria, dict):
+                        continue
+                    if _criteria.get("state") == "GATE_11_READY":
+                        _gate11_ready_products.append(f"{_fmt_id}/{_lang}")
+            if _gate11_ready_products:
+                return _stop(
+                    "gate_11_ready_pending_authorization",
+                    (
+                        f"Product(s) {_gate11_ready_products} have reached GATE_11_READY state "
+                        "(P1-P10 all met) and are awaiting Babar Raza commercial authorization (P11/C20). "
+                        "This is a TRUE_EXTERNAL_GATE — autonomous deepening for these product(s) must stop "
+                        "until Babar Raza grants authorization. Other products may continue deepening."
+                    ),
+                    iteration=iteration,
+                    max_iterations=max_iterations,
+                    gate11_ready_products=_gate11_ready_products,
+                    stop_classification="BLOCKED_EXTERNAL",
+                    next_action="Report GATE_11_READY to Babar Raza for G11-G authorization decision.",
+                )
+        except Exception as _gs_err:
+            # TC-MACH-004: this check gates a TRUE_EXTERNAL_GATE (Gate 11 commercial
+            # authorization). A malformed gate-states.yaml (plausible under concurrent
+            # writes from other agents, see AGENTS.md Section CO) must not silently
+            # disable it — fail closed, matching ACTIVE_PLAN_LOCK_CORRUPT's posture,
+            # rather than warn-and-continue past a potentially-real GATE_11_READY state.
+            return _stop(
+                "gate_11_state_unreadable",
+                (
+                    f"registry/gate-states.yaml exists but could not be parsed ({_gs_err}). "
+                    "This file gates Check 11's TRUE_EXTERNAL_GATE (Gate 11 commercial "
+                    "authorization) — failing closed rather than silently skipping the check. "
+                    "Fix or regenerate gate-states.yaml, then retry."
+                ),
+                iteration=iteration,
+                max_iterations=max_iterations,
+                next_action="Repair registry/gate-states.yaml (parse error above), then re-run check_continuation.py.",
+            )
+    return None
+
+
+def _check_blocking_gap(repo_root: Path, signal: dict, iteration: int, max_iterations: int) -> dict | None:
+    """Check 2d (TC-SPW-003B): BLOCKING open gap gate."""
+    _gap_ledger_path = repo_root / "reports" / "product-quality" / "product-code-gap-ledger.yaml"
+    if _gap_ledger_path.exists():
+        try:
+            import yaml as _gap_yaml
+            _gap_data = _gap_yaml.safe_load(_gap_ledger_path.read_text(encoding="utf-8")) or {}
+            _gaps = _gap_data.get("gaps", [])
+            # Infer format targets from signal (format_targets or rework_items)
+            _sig_format_targets = set(signal.get("format_targets", []))
+            _blocking_open = []
+            for _gap in _gaps:
+                if not isinstance(_gap, dict):
+                    continue
+                _sev = str(_gap.get("severity", "")).lower()
+                _status = str(_gap.get("status", "")).upper()
+                _confirmed = bool(_gap.get("severity_confirmed", False))
+                _product = str(_gap.get("product", "")).lower()
+                if _sev == "blocking" and _status == "OPEN" and _confirmed:
+                    # Only stop when the format is explicitly in scope
+                    if _sig_format_targets and _product in _sig_format_targets:
+                        _blocking_open.append(_gap.get("gap_id", "unknown"))
+            if _blocking_open:
+                return _stop(
+                    "blocking_gap_unresolved",
+                    (
+                        f"BLOCKING open gap(s) exist for targeted format(s): {_blocking_open}. "
+                        "Resolve PCG-* gaps before advancing autonomous deepening. "
+                        "Update severity or status in product-code-gap-ledger.yaml once fixed."
+                    ),
+                    iteration=iteration,
+                    max_iterations=max_iterations,
+                    blocking_gaps=_blocking_open,
+                    next_action=(
+                        "Read reports/product-quality/product-code-gap-ledger.yaml for gap details. "
+                        "Fix root cause for each BLOCKING gap, then mark status=CLOSED with evidence."
+                    ),
+                )
+        except Exception as _gap_err:
+            # TC-MACH-004: same fail-closed rationale as Check 11 above — a malformed
+            # product-code-gap-ledger.yaml must not silently disable the BLOCKING-gap
+            # gate.
+            return _stop(
+                "gap_ledger_unreadable",
+                (
+                    f"reports/product-quality/product-code-gap-ledger.yaml exists but could "
+                    f"not be parsed ({_gap_err}). This file gates Check 2d's BLOCKING-gap "
+                    "stop — failing closed rather than silently skipping the check. "
+                    "Fix or regenerate the gap ledger, then retry."
+                ),
+                iteration=iteration,
+                max_iterations=max_iterations,
+                next_action="Repair reports/product-quality/product-code-gap-ledger.yaml (parse error above), then re-run check_continuation.py.",
+            )
+    return None
+
+
+def _run_unconditional_gates(repo_root: Path, signal: dict, iteration: int, max_iterations: int) -> dict | None:
+    """TC-MACH-003: run all unconditional TRUE_EXTERNAL_GATE-class checks in order.
+
+    Returns the first STOP dict encountered, or None if none fire. Used by the
+    plan-lock block's CONTINUE-producing branches (COMPLETION_CANDIDATE,
+    same-session ITERATION_REQUIRED) so they cannot bypass these gates.
+    """
+    return (
+        _check_hard_stops(signal, iteration, max_iterations)
+        or _check_structural_govblock(signal, iteration, max_iterations)
+        or _check_gate11_ready(repo_root, iteration, max_iterations)
+        or _check_blocking_gap(repo_root, signal, iteration, max_iterations)
+    )
 
 
 def check(repo_root: Path, *, session_id: str | None = None,
@@ -347,6 +526,13 @@ def check(repo_root: Path, *, session_id: str | None = None,
 
         # --- M6c: COMPLETION_CANDIDATE — plan ready for completion audit (TC-TCF-005) ---
         if _newest_status == "COMPLETION_CANDIDATE":
+            # TC-MACH-003: this branch used to return CONTINUE unconditionally,
+            # before Checks 4/8/11/2d (hard_stops, structural GOV_BLOCK, Gate 11
+            # authorization, blocking gap) ever ran — bypassing TRUE_EXTERNAL_GATE
+            # -class checks CLAUDE.md documents as unconditional. Run them first.
+            _gate = _run_unconditional_gates(repo_root, signal, iteration, max_iterations)
+            if _gate is not None:
+                return _gate
             return {
                 "verdict": "CONTINUE",
                 "reason": "completion_candidate_detected",
@@ -364,6 +550,12 @@ def check(repo_root: Path, *, session_id: str | None = None,
         if _newest_status == "ITERATION_REQUIRED":
             lock_iter_session = _newest_lock.get("session_id")
             if lock_iter_session and session_id and lock_iter_session == session_id:
+                # TC-MACH-003: same rationale as COMPLETION_CANDIDATE above — this
+                # branch also returns CONTINUE and must not bypass the unconditional
+                # gates.
+                _gate = _run_unconditional_gates(repo_root, signal, iteration, max_iterations)
+                if _gate is not None:
+                    return _gate
                 return {
                     "verdict": "CONTINUE",
                     "reason": "plan_iteration_required",
@@ -456,6 +648,12 @@ def check(repo_root: Path, *, session_id: str | None = None,
                         "Run post-execution lifecycle audit. Do NOT treat this as a terminal stop. "
                         "lifecycle_audit.py will produce AUDIT_PASS or AUDIT_REQUIRES_ITERATION."
                     ),
+                    # TC-MACH-008: this verdict says STOP but the detail/next_action_description
+                    # explicitly say "do NOT treat this as a terminal stop" — a caller branching
+                    # purely on main()'s exit code (as main() itself used to) couldn't see that
+                    # nuance. `terminal=False` lets main() (and any other exit-code-only caller)
+                    # distinguish this from a genuine terminal failure.
+                    terminal=False,
                 )
 
     # --- TC-MA2-SIGNAL-001-04: Read-time coherence diagnostic ---
@@ -509,17 +707,28 @@ def check(repo_root: Path, *, session_id: str | None = None,
         return _stop(cont_state, f"continuation_state={cont_state}",
                       iteration=iteration, max_iterations=max_iterations)
 
-    # --- Check 4: hard_stops_detected is empty ---
-    hard_stops = signal.get("hard_stops_detected", [])
-    if hard_stops:
-        return _stop("HARD_STOP", f"hard_stops_detected: {hard_stops}",
-                      iteration=iteration, max_iterations=max_iterations)
+    # --- Check 4: hard_stops_detected is empty (see _check_hard_stops, TC-MACH-003) ---
+    _r4 = _check_hard_stops(signal, iteration, max_iterations)
+    if _r4 is not None:
+        return _r4
 
     # --- Check 5: iteration < max_iterations (TC-PROD-H-003R: auto-rollover) ---
     if iteration >= max_iterations:
         _old_iter = iteration
+        # TC-MACH-006: `signal` was read once at the top of this function; many I/O
+        # operations happen between that read and this write. Writing the stale
+        # in-memory `signal` back would silently clobber any concurrent update to
+        # e.g. hard_stops_detected/rework_items made by another agent in the
+        # meantime (AGENTS.md Section CO — concurrent agents are the normal state).
+        # Re-read fresh immediately before writing and merge only `iteration`,
+        # rather than overwriting the whole record with a stale snapshot.
+        try:
+            _fresh_signal = json.loads(signal_path.read_text(encoding="utf-8"))
+        except Exception:
+            _fresh_signal = dict(signal)  # re-read failed — fall back to what we have
+        _fresh_signal["iteration"] = 0
+        atomic_write_json(signal_path, _fresh_signal)
         signal["iteration"] = 0
-        atomic_write_json(signal_path, signal)
         iteration = 0
         print(f"GOVERNED_ROLLOVER: iteration reset from {_old_iter} to 0", file=sys.stderr)
 
@@ -592,30 +801,12 @@ def check(repo_root: Path, *, session_id: str | None = None,
     #
     # Override: if the current sprint IS an analytics separation sprint (declared via
     # "govblock_resolved_by" field in the signal), skip this check.
-    # _STRUCTURAL_GOVBLOCK_VALIDATORS now sourced from governance_block_registry (TC-CQGA2-R1)
+    # See _check_structural_govblock (TC-MACH-003) for the extracted gate logic.
+    # rework_items is also used later (TC-INT-005) when building the CONTINUE result.
     rework_items = signal.get("rework_items", [])
-    if not signal.get("govblock_resolved_by"):
-        structural_blocks = filter_structural_blocks(rework_items)
-        if structural_blocks:
-            return _stop(
-                STRUCTURAL_GOVBLOCK_STOP_REASON,
-                (
-                    f"Structural GOV_BLOCK detected — product deepening is blocked until "
-                    f"analytics separation resolves: {structural_blocks[:3]}. "
-                    "Run the analytics separation sprint (TC-HEAL-PY-{FORMAT}-001) for the "
-                    "blocking format(s). Set 'govblock_resolved_by' in continuation-signal.json "
-                    "once the refactor sprint is complete."
-                ),
-                iteration=iteration,
-                max_iterations=max_iterations,
-                structural_govblock_items=structural_blocks,
-                next_action=(
-                    "Read docs/code-quality/production-readiness-standard.md §8.1 "
-                    "(Analytics Separation Protocol). Execute the analytics separation for "
-                    "the blocking format. Update continuation-signal.json with "
-                    "'govblock_resolved_by': 'TC-HEAL-PY-{FORMAT}-001' when done."
-                ),
-            )
+    _r8 = _check_structural_govblock(signal, iteration, max_iterations)
+    if _r8 is not None:
+        return _r8
 
     # --- Check 9: Product deepening architecture gate (TC-HEAL-PD-003) ---
     # Block continuation when selected product gaps contain architecture-non-compliant formats.
@@ -684,81 +875,19 @@ def check(repo_root: Path, *, session_id: str | None = None,
     # Reads registry/gate-states.yaml; if any product/language has state=GATE_11_READY,
     # emits BLOCKED_EXTERNAL stop for that product only.
     # Non-blocking if gate-states.yaml is absent (bootstrap — not yet populated).
-    _gate_states_path = repo_root / "registry" / "gate-states.yaml"
-    if _gate_states_path.exists():
-        try:
-            import yaml as _gs_yaml
-            _gs_data = _gs_yaml.safe_load(_gate_states_path.read_text(encoding="utf-8")) or {}
-            _format_states = _gs_data.get("format_gate_states", {})
-            _gate11_ready_products = []
-            for _fmt_id, _langs in _format_states.items():
-                if not isinstance(_langs, dict):
-                    continue
-                for _lang, _criteria in _langs.items():
-                    if not isinstance(_criteria, dict):
-                        continue
-                    if _criteria.get("state") == "GATE_11_READY":
-                        _gate11_ready_products.append(f"{_fmt_id}/{_lang}")
-            if _gate11_ready_products:
-                return _stop(
-                    "gate_11_ready_pending_authorization",
-                    (
-                        f"Product(s) {_gate11_ready_products} have reached GATE_11_READY state "
-                        "(P1-P10 all met) and are awaiting Babar Raza commercial authorization (P11/C20). "
-                        "This is a TRUE_EXTERNAL_GATE — autonomous deepening for these product(s) must stop "
-                        "until Babar Raza grants authorization. Other products may continue deepening."
-                    ),
-                    iteration=iteration,
-                    max_iterations=max_iterations,
-                    gate11_ready_products=_gate11_ready_products,
-                    stop_classification="BLOCKED_EXTERNAL",
-                    next_action="Report GATE_11_READY to Babar Raza for G11-G authorization decision.",
-                )
-        except Exception as _gs_err:
-            print(f"WARNING [Check11]: gate-states.yaml read error: {_gs_err}", file=sys.stderr)
+    # See _check_gate11_ready (TC-MACH-003) for the extracted logic.
+    _r11 = _check_gate11_ready(repo_root, iteration, max_iterations)
+    if _r11 is not None:
+        return _r11
 
     # --- Check 2d (TC-SPW-003B): BLOCKING open gap gate ---
     # If the declaration targets a format that has severity=BLOCKING, status=OPEN,
     # severity_confirmed=True gaps in product-code-gap-ledger.yaml, stop continuation
     # until those gaps are resolved. Non-blocking if ledger is absent.
-    _gap_ledger_path = repo_root / "reports" / "product-quality" / "product-code-gap-ledger.yaml"
-    if _gap_ledger_path.exists():
-        try:
-            import yaml as _gap_yaml
-            _gap_data = _gap_yaml.safe_load(_gap_ledger_path.read_text(encoding="utf-8")) or {}
-            _gaps = _gap_data.get("gaps", [])
-            # Infer format targets from signal (format_targets or rework_items)
-            _sig_format_targets = set(signal.get("format_targets", []))
-            _blocking_open = []
-            for _gap in _gaps:
-                if not isinstance(_gap, dict):
-                    continue
-                _sev = str(_gap.get("severity", "")).lower()
-                _status = str(_gap.get("status", "")).upper()
-                _confirmed = bool(_gap.get("severity_confirmed", False))
-                _product = str(_gap.get("product", "")).lower()
-                if _sev == "blocking" and _status == "OPEN" and _confirmed:
-                    # Only stop when the format is explicitly in scope
-                    if _sig_format_targets and _product in _sig_format_targets:
-                        _blocking_open.append(_gap.get("gap_id", "unknown"))
-            if _blocking_open:
-                return _stop(
-                    "blocking_gap_unresolved",
-                    (
-                        f"BLOCKING open gap(s) exist for targeted format(s): {_blocking_open}. "
-                        "Resolve PCG-* gaps before advancing autonomous deepening. "
-                        "Update severity or status in product-code-gap-ledger.yaml once fixed."
-                    ),
-                    iteration=iteration,
-                    max_iterations=max_iterations,
-                    blocking_gaps=_blocking_open,
-                    next_action=(
-                        "Read reports/product-quality/product-code-gap-ledger.yaml for gap details. "
-                        "Fix root cause for each BLOCKING gap, then mark status=CLOSED with evidence."
-                    ),
-                )
-        except Exception as _gap_err:
-            print(f"WARNING [Check2d]: gap ledger read error: {_gap_err}", file=sys.stderr)
+    # See _check_blocking_gap (TC-MACH-003) for the extracted logic.
+    _r2d = _check_blocking_gap(repo_root, signal, iteration, max_iterations)
+    if _r2d is not None:
+        return _r2d
 
     # --- All checks passed ---
     # Resolve product chat_id (advisory — TC-PSC-003 Part A)
@@ -1038,7 +1167,15 @@ def main(argv: list[str] | None = None) -> int:
     result = check(args.repo_root, session_id=args.session_id,
                    track=args.track, chat_id=args.chat_id)
     print(json.dumps(result, indent=2))
-    return 0 if result["verdict"] == "CONTINUE" else 1
+    if result["verdict"] == "CONTINUE":
+        return 0
+    # TC-MACH-008: a STOP verdict with terminal=False (e.g. MACHINERY_AUDIT_REQUIRED)
+    # is an expected, non-terminal, immediately-actionable state — not a true stop.
+    # Give it its own exit code so a caller that only checks the process exit code
+    # (not the JSON body) can't mistake it for a genuine terminal failure.
+    if result.get("terminal", True) is False:
+        return 2
+    return 1
 
 
 if __name__ == "__main__":

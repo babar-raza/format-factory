@@ -85,8 +85,7 @@ def _init_logic_free(init_path: Path) -> bool:
 def audit_python(fmt: str) -> dict:
     """Audit src/python/{fmt}/ and return classification + criteria."""
     src_dir = SRC_PY / fmt
-    # Handle nested package structure (e.g. src/python/fods/fods/)
-    pkg_dir = src_dir / fmt if (src_dir / fmt).is_dir() else src_dir
+    pkg_dir = src_dir
 
     criteria: dict[str, bool] = {}
     violations: list[str] = []

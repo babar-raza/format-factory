@@ -168,13 +168,44 @@ class MissionLock:
                                         session_id, branch) as lock_id:
                 ...
         """
-        lock_id = self._acquire(
-            mission_id=mission_id,
-            controller_type=controller_type,
-            session_id=session_id,
-            branch=branch,
-            plan_version=plan_version,
-        )
+        # TC-COORD-008: mirror the mission lock into the coordination plane
+        # FIRST so interactive agents can see (and be blocked by) the
+        # controller, and so a coordination-side holder blocks this one.
+        from . import coordination_bridge as _bridge
+        _bridge_worker = f"mission-{controller_type}-{session_id}"
+        _lc_type = _bridge.lease_conflict_type()
+        _mirrored = False
+        try:
+            _mirrored = _bridge.mirror_claim_logical(
+                _bridge_worker, mission_id,
+                f"logical:mission:{mission_id}") is not None
+        except Exception as _exc:
+            if _lc_type is not None and isinstance(_exc, _lc_type):
+                raise MissionLockConflict(
+                    mission_id=mission_id,
+                    existing_lock_id=_exc.holder_lease_id,
+                    existing_controller=_bridge.resolve_owner_display(
+                        _exc.holder_agent_id),
+                    existing_pid=0,
+                    heartbeat_at=_exc.lease_expires_hint or "unknown",
+                ) from _exc
+            import warnings as _warnings
+            _warnings.warn(f"[mission-lock] coordination mirror failed:"
+                           f" {_exc}", stacklevel=2)
+
+        try:
+            lock_id = self._acquire(
+                mission_id=mission_id,
+                controller_type=controller_type,
+                session_id=session_id,
+                branch=branch,
+                plan_version=plan_version,
+            )
+        except Exception:
+            if _mirrored:
+                _bridge.mirror_release(_bridge_worker)
+            raise
+        self._bridge_worker = _bridge_worker
         hb_stop = threading.Event()
         hb_thread = self._start_heartbeat_thread(lock_id, hb_stop)
         hb_thread.start()
@@ -184,6 +215,9 @@ class MissionLock:
             hb_stop.set()
             hb_thread.join(timeout=5)
             self._release(lock_id)
+            if _mirrored:
+                _bridge.mirror_release(_bridge_worker)
+            self._bridge_worker = None
 
     def get_active_lock(self, mission_id: str) -> dict | None:
         """Return the current ACTIVE lock for a mission, or None."""
@@ -331,6 +365,14 @@ class MissionLock:
 
     def _heartbeat(self, lock_id: str) -> None:
         """Refresh heartbeat_at and extend lease_expires."""
+        # Keep the coordination-plane mirror fresh too (TC-COORD-008).
+        bridge_worker = getattr(self, "_bridge_worker", None)
+        if bridge_worker:
+            try:
+                from . import coordination_bridge as _bridge
+                _bridge.mirror_renew(bridge_worker)
+            except Exception:
+                pass
         new_expiry = _iso_plus(self.lease_seconds)
         conn = _get_db_connection(self.db_path)
         try:

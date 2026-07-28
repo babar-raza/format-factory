@@ -1031,13 +1031,50 @@ def validate_spec_fact_refs_wired(declaration: dict,
 # ── REQ-GOV-001 / REQ-GOV-002: Gate 11 Spec-Literal Depth Validators ────────
 
 
-@validator(rule_id="V_VALIDATE_SPEC_FACT_COUNT", domain="structural")
+@validator(
+    rule_id="V_VALIDATE_SPEC_FACT_COUNT",
+    domain="structural",
+    dispatch="superseded",
+    deferred_reason=(
+        "TC-PA-035 (PORTFOLIO-AUDIT-2026-07-16): deliberate no-op, fully covered by "
+        "V13 validate_spec_fact_refs_wired (blocking, zero-refs case) and V19 "
+        "validate_min_spec_facts_per_format (per-format count). Its explicit call site "
+        "in run_all_governance_validators() was removed (ran_count 220 -> 219); the "
+        "function is retained only as an audit trail."
+    ),
+)
 def validate_spec_fact_count(declaration: dict) -> dict:
-    """V14: Verify at least min_spec_facts_cited spec facts are referenced.
+    """V14: DELIBERATE NO-OP, SUPERSEDED. Returns unconditional PASS. Not a gate.
 
-    ADVISORY only — GOVERNANCE_DOC and EVIDENCE items are exempt.
-    Only fires for PRODUCT_SOURCE/READINESS/RELEASE_GATE items that have
-    spec_fact_refs populated.
+    TC-PA-032 (PORTFOLIO-AUDIT-2026-07-16, F-06) — honesty correction.
+    TC-PA-035 (same mission) — disposition decided: SUPERSEDED.
+
+    The previous docstring claimed: "Verify at least min_spec_facts_cited spec facts
+    are referenced." That was FALSE in two ways:
+      1. No `min_spec_facts_cited` parameter exists — it was never implemented.
+      2. The loop body below is `if len(refs) == 0: pass` — it builds a `violations`
+         list that is never appended to, then returns PASS unconditionally. It cannot
+         fail for any input.
+
+    It is redundant, not merely unimplemented. Its stated job is fully covered:
+      - zero spec_fact_refs      -> V13 validate_spec_fact_refs_wired (BLOCKING).
+        V14's own inline comment already delegates this case to V13.
+      - per-format fact minimum  -> V19 validate_min_spec_facts_per_format
+        (repaired in this same taskcard; it was reading a "formats" key the
+        producer never writes, so it too could not fail).
+
+    Disposition (TC-PA-035): SUPERSEDED. The `@validator` decorator now carries
+    dispatch="superseded" and the explicit call site in run_all_governance_validators()
+    was removed, dropping ran_count 220 -> 219. validator-manifest.yaml (expected_count
+    and the `core` module count) and registry/governance/validator-id-authority.yaml
+    (runner_expected_count) were decremented to match; three-way count reconciled at 219.
+    Supersede was chosen over inventing a new threshold because the coverage it promised
+    is genuinely redundant (V13 + V19), not merely unimplemented. The superseded validator
+    is allowed to be uninvoked — V_DISPATCH_COMPLETENESS classifies it and stays PASS.
+
+    Kept deliberately: this function and docstring are the audit trail. A validator that
+    cannot fail is worse than no validator, because it reads as coverage; leaving it
+    callable (but no longer dispatched) preserves the record without faking a gate.
     """
     validator = "validate_spec_fact_count"
     items = declaration.get("planned_work_items", [])
@@ -1291,7 +1328,17 @@ def validate_min_spec_facts_per_format(
 
     # Build per-format fact counts from SAL output
     format_fact_counts: dict[str, int] = {}
-    formats_list = sal_data.get("formats", [])
+    # TC-PA-032 (PORTFOLIO-AUDIT-2026-07-16, F-06): this read `sal_data.get("formats", [])`,
+    # but the producer of .local/sal-output/sal-facts-latest.json writes its per-format array
+    # under "results" — top-level keys are:
+    #   generated_at, generator, formats_processed, spec_facts_total,
+    #   workbench_verified_fact_total, results
+    # There is NO "formats" key. Consequence: format_fact_counts was ALWAYS empty, every item
+    # hit `count is None -> continue`, items_checked stayed empty, and the validator returned
+    # an unconditional PASS. It could not fail, for any input, since the schema drifted.
+    # The per-entry field names below (format_id, spec_facts) were and remain correct —
+    # only the top-level key was wrong, which is why this went unnoticed.
+    formats_list = sal_data.get("results", [])
     for fmt_entry in formats_list:
         fmt_id = (fmt_entry.get("format_id") or "").upper()
         facts = fmt_entry.get("spec_facts", [])

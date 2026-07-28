@@ -63,7 +63,11 @@ VALID_DOMAINS = frozenset({
     "found_issue",
     "general",
     "control_layer",
+    "format_contract",
 })
+
+
+VALID_DISPATCH = frozenset({"explicit", "deferred", "superseded"})
 
 
 def validator(
@@ -71,6 +75,8 @@ def validator(
     domain: str,
     description: str = "",
     skill_ids: "list[str] | None" = None,
+    dispatch: str = "explicit",
+    deferred_reason: "str | None" = None,
 ) -> Callable[[Callable], Callable]:
     """Decorator that registers a governance validator in _VALIDATOR_REGISTRY.
 
@@ -82,6 +88,12 @@ def validator(
             must mention this validator in their command files. Used by
             validate_skill_contracts.py to detect stale skill documentation.
             Example: ["add-python-api", "add-dotnet-api"]
+        dispatch: Dispatch status — "explicit" (has a call site in the runner),
+            "deferred" (intentionally not wired, needs future work), or
+            "superseded" (replaced by another validator, kept for reference).
+            Non-"explicit" values require deferred_reason.
+        deferred_reason: Required when dispatch is not "explicit". Explains why
+            this validator is not wired into the sprint governance runner.
 
     Returns:
         The original function unchanged (decorator is metadata-only).
@@ -91,12 +103,18 @@ def validator(
         def validate_source_architecture(context):
             ...
     """
+    if dispatch not in VALID_DISPATCH:
+        raise ValueError(f"dispatch must be one of {VALID_DISPATCH}, got {dispatch!r}")
+    if dispatch != "explicit" and not deferred_reason:
+        raise ValueError(f"dispatch={dispatch!r} requires deferred_reason")
     def decorator(fn: Callable) -> Callable:
         _VALIDATOR_REGISTRY.append({
             "rule_id": rule_id,
             "domain": domain,
             "description": description,
             "skill_ids": skill_ids or [],
+            "dispatch": dispatch,
+            "deferred_reason": deferred_reason,
             "fn": fn,
         })
         return fn

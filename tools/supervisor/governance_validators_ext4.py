@@ -199,7 +199,9 @@ def validate_nested_concept_on_root_document(source_text: str, file_path: str = 
 
 # ── V114 ──────────────────────────────────────────────────────────────────────
 
-@validator(rule_id="V_VALIDATE_GETTER_WITHOUT_PARSER_OBLIGATION", domain="naming")
+@validator(rule_id="V_VALIDATE_GETTER_WITHOUT_PARSER_OBLIGATION", domain="naming",
+           dispatch="deferred",
+           deferred_reason="Requires portfolio-wide symbol_entry registry that does not exist yet. These validators are skill-time advisory (per validator-gap-mapping.md), not sprint governance.")
 def validate_getter_without_parser_obligation(symbol_entry: dict) -> dict:
     """V114: Getter symbols must have parser_path defined."""
     violations: list[str] = []
@@ -217,7 +219,9 @@ def validate_getter_without_parser_obligation(symbol_entry: dict) -> dict:
 
 # ── V115 ──────────────────────────────────────────────────────────────────────
 
-@validator(rule_id="V_VALIDATE_SETTER_WITHOUT_WRITER_OBLIGATION", domain="naming")
+@validator(rule_id="V_VALIDATE_SETTER_WITHOUT_WRITER_OBLIGATION", domain="naming",
+           dispatch="deferred",
+           deferred_reason="Requires portfolio-wide symbol_entry registry that does not exist yet. These validators are skill-time advisory (per validator-gap-mapping.md), not sprint governance.")
 def validate_setter_without_writer_obligation(symbol_entry: dict) -> dict:
     """V115: Setter symbols must have writer_path defined."""
     violations: list[str] = []
@@ -362,7 +366,9 @@ def validate_missing_public_documentation(source_text: str, file_path: str = "")
 
 # ── V122 ──────────────────────────────────────────────────────────────────────
 
-@validator(rule_id="V_VALIDATE_BROKEN_TRACEABILITY_CHAIN", domain="naming")
+@validator(rule_id="V_VALIDATE_BROKEN_TRACEABILITY_CHAIN", domain="naming",
+           dispatch="deferred",
+           deferred_reason="Requires portfolio-wide symbol_entry registry that does not exist yet. These validators are skill-time advisory (per validator-gap-mapping.md), not sprint governance.")
 def validate_broken_traceability_chain(symbol_entry: dict) -> dict:
     """V122: Public symbols must have spec_fact_ids in the API-to-QName map."""
     violations: list[str] = []
@@ -569,7 +575,9 @@ class ArchitectureGateNotPassed(Exception):
     """Raised when a format has not passed the PRODUCT_ARCHITECTURE_READY gate."""
 
 
-@validator(rule_id="V_VALIDATE_PRODUCT_ARCHITECTURE_READY", domain="naming")
+@validator(rule_id="V_VALIDATE_PRODUCT_ARCHITECTURE_READY", domain="naming",
+           dispatch="superseded",
+           deferred_reason="V125 (validate_new_product_bypassing_architecture_gate) absorbed this validator's role. This function also raises ArchitectureGateNotPassed instead of returning a dict, violating the uniform result contract.")
 def validate_product_architecture_ready(
     format_id: str,
     organization_plan_entries: list[dict],
@@ -802,6 +810,38 @@ def validate_maintenance_obligations_current(
 # ---------------------------------------------------------------------------
 
 
+def _load_no_stub_report():
+    """Load ``tools/review/no_stub_scan.report`` by absolute path — NO sys.path mutation.
+
+    TC-PA-029 (PORTFOLIO-AUDIT-2026-07-16): V149 previously did
+    ``import sys as _sys; _sys.path.insert(0, str(repo / "tools" / "review"))`` to import the
+    scanner — the exact aliased sys.path anti-pattern V249 bans (PA-F3 / PA-F4). The enforcer
+    of import hygiene must not itself mutate the interpreter-global import path. The scanner is
+    now loaded from an absolute path anchored on THIS file via importlib (the
+    ``skill_gate_bridge`` pattern TC-PA-033's V249 wiring used): no sys.path mutation, no cwd
+    dependency, no duplication.
+
+    The scanner is repo tooling: it always lives at the real repo anchored on ``__file__``,
+    independent of a caller's ``repo_root`` override (which only redirects WHICH src/python tree
+    is scanned, never where the scanner code lives). ``no_stub_scan`` imports only stdlib and has
+    no relative imports, so loading it standalone is sound.
+
+    Raises on any load failure so V149 can fail CLOSED — an enforcer that cannot load its scanner
+    has certified nothing (contrast the pre-TC-PA-029 behaviour, PA-F3).
+    """
+    import importlib.util
+
+    scanner = Path(__file__).resolve().parent.parent.parent / "tools" / "review" / "no_stub_scan.py"
+    if not scanner.is_file():
+        raise ImportError(f"no_stub_scan scanner not found at {scanner}")
+    spec = importlib.util.spec_from_file_location("_ff_no_stub_scan_v149", scanner)
+    if spec is None or spec.loader is None:
+        raise ImportError(f"could not build an import spec for {scanner}")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod.report
+
+
 @validator(rule_id="V149", domain="governance", description=(
     "Block sprints introducing forbidden stub patterns in product source"
 ))
@@ -823,19 +863,36 @@ def validate_source_stubs(
     AND violations survive the scanner's allowlist.
 
     Implemented: TC-PFF-R1 (parallel-foraging-fairy, 2026-07-09).
+    TC-PA-029 (2026-07-17): the ``sys.path.insert`` was removed — the scanner is now loaded via
+    importlib (see ``_load_no_stub_report``) so V149 no longer uses the aliased sys.path
+    anti-pattern that V249 bans (PA-F3). Fail-closed semantics on load error are preserved.
     """
-    import sys as _sys
-
     repo = Path(repo_root) if repo_root is not None else Path(__file__).resolve().parent.parent.parent
-    _sys.path.insert(0, str(repo / "tools" / "review"))
     try:
-        from no_stub_scan import report as _stub_report  # type: ignore[import-untyped]
-    except ImportError:
+        _stub_report = _load_no_stub_report()
+    except Exception as _exc:  # noqa: BLE001 — fail CLOSED on any scanner-load failure (PA-F3/TC-PA-029)
+        # PA-F3 (TC-PA-004, 2026-07-17): this path used to return PASS/blocks_sprint=False —
+        # a FAIL-OPEN enforcer. V149 is in STRUCTURAL_GOV_BLOCKS: it is the gate that certifies
+        # src/ is stub-free. An enforcer that cannot run has not certified anything, and
+        # reporting PASS actively converts "we did not check" into "we checked and it is clean".
+        # That is materially worse than the stub it guards, because downstream consumers of the
+        # sweep cannot distinguish the two. Now fails CLOSED, using V149's existing gating
+        # semantics: it blocks only when there is product source whose cleanliness it was
+        # supposed to certify.
+        _has_product = any(
+            i.get("work_item_type") in ("PRODUCT_SOURCE", "RELEASE_GATE")
+            for i in declaration.get("planned_work_items", [])
+        )
         return {
             "validator": "validate_source_stubs",
-            "result": "PASS",
-            "summary": "V149: no_stub_scan unavailable (skipped)",
-            "blocks_sprint": False,
+            "result": "FAIL" if _has_product else "WARN",
+            "summary": (
+                f"V149: no_stub_scan could not be imported ({_exc}) — stub enforcement did NOT "
+                "run. This is an unverified state, not a clean one"
+                + (" (blocking: PRODUCT_SOURCE/RELEASE_GATE items present and uncertified)"
+                   if _has_product else " (non-blocking: no product source items to certify)")
+            ),
+            "blocks_sprint": _has_product,
         }
 
     scan_root = repo / "src" / "python"

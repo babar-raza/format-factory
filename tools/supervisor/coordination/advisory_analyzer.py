@@ -38,11 +38,22 @@ def _parse_ts(raw: Any) -> "datetime | None":
     return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
 
 
+def _norm_path(path: str) -> str:
+    return path.replace("\\", "/").strip("/")
+
+
 def analyze(root: Path, check_id: str,
-           window_hours: "float | None" = None) -> dict[str, Any]:
+           window_hours: "float | None" = None,
+           path_prefix: "str | None" = None) -> dict[str, Any]:
     """Read advisory-log.jsonl filtered to `check == check_id`. Returns total
     events, would-block count/rate, a tier breakdown, a bounded sample of
     would-block events, and distinct agents/paths affected.
+
+    `path_prefix`, when given, further filters to events whose `file` falls
+    under that prefix -- lets a scope-specific promotion decision (e.g.
+    src/python/_shared/ before all of src/python/) be reviewed against only
+    its own adoption evidence, not the aggregate across every scope this
+    check governs.
 
     A missing log file is a valid, common state (no events yet) -- returns an
     empty-but-well-formed report, not an error; this module has nothing to
@@ -52,6 +63,7 @@ def analyze(root: Path, check_id: str,
     log_path = root / "advisory-log.jsonl"
     cutoff = (datetime.now(timezone.utc) - timedelta(hours=window_hours)
              if window_hours else None)
+    norm_prefix = _norm_path(path_prefix) if path_prefix else None
 
     events: list[dict] = []
     if log_path.exists():
@@ -69,6 +81,11 @@ def analyze(root: Path, check_id: str,
                 ts = _parse_ts(rec.get("ts"))
                 if ts is not None and ts < cutoff:
                     continue
+            if norm_prefix is not None:
+                file_path = _norm_path(rec.get("file") or "")
+                if file_path != norm_prefix and not file_path.startswith(
+                        norm_prefix + "/"):
+                    continue
             events.append(rec)
 
     total = len(events)
@@ -80,6 +97,7 @@ def analyze(root: Path, check_id: str,
     return {
         "check_id": check_id,
         "window_hours": window_hours,
+        "path_prefix": path_prefix,
         "total_events": total,
         "would_block_count": len(would_block),
         "would_block_rate": (len(would_block) / total) if total else None,
@@ -103,10 +121,12 @@ def _main(argv=None) -> int:
     ap.add_argument("--check", required=True, help="check_id to filter (e.g. skill_resolution)")
     ap.add_argument("--root", default=None)
     ap.add_argument("--window-hours", type=float, default=None)
+    ap.add_argument("--path-prefix", default=None,
+                    help="filter to events whose file falls under this prefix")
     args = ap.parse_args(argv)
 
     root = Path(args.root) if args.root else resolve_coordination_root()
-    report = analyze(root, args.check, args.window_hours)
+    report = analyze(root, args.check, args.window_hours, path_prefix=args.path_prefix)
     print(json.dumps(report, indent=2, default=str))
     return 0
 

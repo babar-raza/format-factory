@@ -211,6 +211,64 @@ Total active capabilities: 148
 
 ---
 
+## Section CO — Multi-Agent Coordination Protocol (Mission AGENT-COORD-2026-07-15)
+
+Several autonomous agents (Claude Code, Codex, Kilo Code, headless supervisor
+loops) intentionally operate concurrently on this single main-branch working
+tree. A heavily dirty worktree is the NORMAL state, never a cleanup signal.
+Coordination state lives OFF-repo in a machine-local SQLite plane
+(`%LOCALAPPDATA%/ff-coordination/<repo-key>/coordination.db`; override with
+`FF_AGENT_COORDINATION_ROOT`). Library + CLI:
+`tools/supervisor/coordination/`; `python -m tools.supervisor.coordination <verb>`.
+
+**CO1. Binding rules for every agent, every provider:**
+- Never run `git add -A`, `git add .`, or repository-wide formatters/generators
+  while other agents are live. Stage an explicit reviewed file list only.
+- Never use `git checkout --`, `git restore`, `git clean`, `git stash`, or
+  `git reset --hard` on unexplained state. An unexpected modification is
+  NEVER assumed stale, disposable, or your own — it is classified via the
+  coordination write journal, and anything unattributable is PRESERVED.
+- Never release another agent's lease. Recovering from a crashed/stale agent
+  requires the governed `takeover --reason` verb (audited), and the successor
+  recaptures baselines before writing. Expiry never authorizes discarding
+  filesystem content.
+- Conflicts are never silently ignored: `status` exits non-zero while OPEN
+  conflicts exist; validator V195 fails sprints carrying stale open conflicts
+  or unexplained FAIL_OPEN/BYPASS degradations.
+
+**CO2. Protocol verbs** (canonical list: `tools/supervisor/coordination/verbs.py`;
+parity across providers is enforced by validator V194):
+`register` -> `claim` -> `preflight` (before each write) -> `record-write`
+(after each write) -> `heartbeat` -> `release` / `complete`. Plus:
+`status`/`who`, `check`, `conflicts list|resolve`, `takeover`,
+`precommit-check`, `guard-run`, `mode`, `doctor`.
+
+**CO3. Provider enforcement surfaces:**
+- **Claude Code (ambient — zero ceremony):** hooks in `.claude/settings.json`
+  auto-register the session (SessionStart), auto-claim single-file leases and
+  attribute changes on PreToolUse, journal writes on PostToolUse, and release
+  auto-leases on SessionEnd. Explicit `claim` is still required for broad
+  scopes (directories, generated output sets, `logical:`/`cmd:` resources).
+- **Codex:** mandatory CLI protocol steps in
+  `docs/governance/codex-adapter.md` section 3a; `pre_mutation_guard.py`
+  verifies live leases (`--require-lease`, auto-on when the coordination DB
+  exists).
+- **Kilo:** same CLI protocol per `docs/governance/kilo-adapter.md` section 2a.
+- **All providers:** `.hooks/pre-commit-skill-guard` blocks committing files
+  under another agent's live lease or carrying unresolved conflicts
+  (fail-closed; governed bypass via `.local/exceptions/`).
+- **Generators:** broad-output generators declare `output-manifest.yaml` and
+  run under `guarded_generation` (or `guard-run`) — they fail BEFORE writing
+  when outputs overlap a live lease.
+
+**CO4. Degradation policy:** the interactive hook layer fails OPEN (a hook
+bug must not brick sessions) but every fail-open/bypass/mode-change is an
+audited event; the commit layer fails CLOSED. `FF_COORD_BYPASS=<reason>`
+allows an emergency write but records it. Mode changes only via
+`mode set --to <off|advisory|enforcing> --reason`.
+
+---
+
 ## B. Phase and Plan Verification
 
 **B1.** Before taking any action, read `AGENTS.md` and verify the current phase in `plans/master-plan.md`.

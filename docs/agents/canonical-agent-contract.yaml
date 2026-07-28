@@ -3,9 +3,11 @@ version: "1.0"
 date: "2026-07-12"
 generated_by: TC-ACP-003
 scope_note: >
-  Lifecycle semantics for 22 Required Capabilities across Claude/Codex/Kilo.
+  Lifecycle semantics for 23 Required Capabilities across Claude/Codex/Kilo.
   Does NOT govern skill mechanics (skill-only-policy.yaml) or platform
   availability (required-capability-model.yaml). Read all three together.
+  RC-023 coordination_protocol added by mission AGENT-COORD-2026-07-15
+  (AGENTS.md Section CO; verbs: tools/supervisor/coordination/verbs.py).
 authority_order:
   - plans/master-plan.md
   - plans/strategic/spec-to-feature-radical-correction-plan.md
@@ -60,6 +62,15 @@ capability_semantics:
     platform_notes:
       codex: unknown
       kilo: unknown
+  - capability_id: RC-023
+    name: coordination_protocol
+    proof_level: VERIFIED
+    continuation_rule: CONTINUE
+    model_suitability: {minimum_tier: low}
+    platform_notes:
+      claude: ambient hook plane (.claude/settings.json -> coordination/hooks/gate.py); 16/16 pilots
+      codex: adapter contract 3a + pre_mutation_guard --require-lease (pending live instantiation)
+      kilo: adapter contract 2a + pre-commit gate (script execution availability unknown)
 delivery_mechanisms:
   claude_code: {verification_status: VERIFIED}
   codex:

@@ -1,6 +1,14 @@
 """skill_gate.py — SFC-GAP-C (2026-07-17): tool-layer skill-resolution check.
 
-Called from gate.py's `_on_pre_file` AFTER the existing coordination-lease logic.
+Called from gate.py's `_on_pre_file` (Claude Code's PreToolUse hook) AND from
+cli.py's `preflight` verb (Codex's entry point per its adapter's mandatory
+§3a contract, `docs/governance/codex-adapter.md`) -- both AFTER the existing
+coordination-lease logic has already allowed the write. docs/governance/
+skill-only-policy.yaml and the codex adapter both state the policy "applies
+equally to Claude Code and Codex"; `decide()` below is the one function both
+callers resolve through so that claim is actually true in code, not just in
+the two agents' separate procedural documentation.
+
 Answers, for a single file path, one of three non-binary verdicts — deliberately
 non-binary to avoid false-blocking legitimate work during the staged rollout:
 
@@ -124,6 +132,14 @@ def _skill_scope_covers(rel_path: str) -> "str | None":
     return None
 
 
+def owning_skill_hint(rel_path: str) -> str:
+    """Public wrapper over _skill_scope_covers for callers (gate.py's block
+    message) that need just the skill_id to build an actionable remediation
+    command, without re-deriving the full evaluate_path() verdict. Returns
+    an empty string, never None, so callers can safely interpolate it."""
+    return _skill_scope_covers(rel_path) or ""
+
+
 def evaluate_path(rel_path: str) -> SkillGateVerdict:
     """Core, side-effect-free evaluation for a single repo-relative path."""
     covering = _manifest_covers(rel_path)
@@ -147,3 +163,58 @@ def evaluate_path(rel_path: str) -> SkillGateVerdict:
         f"skill '{owning_skill}' governs this path but no live manifest exists",
         True,
     )
+
+
+class SkillGateDecision(NamedTuple):
+    verdict: SkillGateVerdict
+    check_mode: str          # 'advisory' | 'enforcing' -- meaningless if not block_eligible
+    action: str              # 'allow' | 'block'
+
+
+def decide(root: Path, rel_path: str) -> SkillGateDecision:
+    """Full decision: evaluate_path() + path-scoped check_mode resolution.
+
+    Shared by BOTH enforcement entry points -- docs/governance/skill-only-policy.yaml
+    and docs/governance/codex-adapter.md line 21 both state the policy "applies
+    equally to Claude Code and Codex," but until this function existed only
+    gate.py's PreToolUse hook (Claude Code-only; Codex has no such hook and
+    instead drives `python -m tools.supervisor.coordination preflight` per its
+    adapter's mandatory §3a contract) ever called evaluate_path() at all. A
+    Codex session following its own documented, mandatory procedure got
+    coordination-lease protection but NOT skill-resolution protection -- an
+    unintentional asymmetry, not a deliberate agent-specific carve-out. This
+    function is the one place both callers (gate.py's hook, cli.py's
+    `preflight` verb) resolve the same rule against the same state, so neither
+    can drift from the other.
+    """
+    verdict = evaluate_path(rel_path)
+    if not verdict.block_eligible:
+        return SkillGateDecision(verdict, "advisory", "allow")
+    from ..db import connect, get_check_mode_for_path
+    conn = connect(root)
+    try:
+        mode = get_check_mode_for_path(conn, CHECK_ID, rel_path)
+    finally:
+        conn.close()
+    return SkillGateDecision(verdict, mode,
+                             "block" if mode == "enforcing" else "allow")
+
+
+def log_advisory_event(root: Path, detail: dict) -> None:
+    """Append one advisory-mode event to <root>/advisory-log.jsonl.
+
+    The one write path both entry points use (gate.py's hook previously wrote
+    this same shape via its own private `_advisory()`; cli.py's `preflight`
+    verb has no equivalent of its own). Sharing it means
+    `advisory_analyzer.analyze()` sees one unified picture across both
+    agents' would-block events -- the Phase 3 promotion decision (see
+    docs/governance/skill-only-policy.yaml EP-010-GAP) is evidence-gated on
+    that aggregate, so a gap here would silently bias it toward whichever
+    agent happened to be logging. Never raises -- a logging failure must
+    never turn an allowed write into a blocked one or vice versa."""
+    try:
+        from ..ids import iso
+        with (Path(root) / "advisory-log.jsonl").open("a", encoding="utf-8") as fh:
+            fh.write(json.dumps({"ts": iso(), **detail}, default=str) + "\n")
+    except Exception:
+        pass

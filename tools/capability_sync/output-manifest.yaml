@@ -1,0 +1,17 @@
+# Generator output manifest (TC-COORD-009, mission AGENT-COORD-2026-07-15).
+# guarded_generation() claims these paths before the first write; a run whose
+# declared outputs overlap another agent's live lease fails BEFORE writing.
+generator_id: capability_sync
+mode: exclusive
+outputs:
+  - .governance/capabilities/registry.yaml
+  - .governance/capabilities/parity-report.yaml
+  - .governance/capabilities/inventory-report.yaml
+  - CLAUDE.md
+  - AGENTS.md
+  - docs/agents/bundles/codex-bundle.yaml
+  - docs/agents/bundles/kilo-bundle.yaml
+notes: >
+  Highest blast radius generator in the repo: rewrites generated sections of
+  CLAUDE.md and AGENTS.md and both provider bundles. Never run it unguarded
+  while other agents are live.

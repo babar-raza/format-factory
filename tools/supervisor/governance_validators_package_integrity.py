@@ -332,9 +332,55 @@ def validate_analytics_module_wiring(declaration: dict, repo_root: "Path | None"
     }
 
 
+# TC-PA-041: the oracle-package.yaml `status:` field was a DUPLICATE MIRROR of the
+# registry's `product_oracle_status` with no producer — a static template literal
+# (commit 1adfdc47's select-6 onboarding wrote `status: VERIFIED` into 6 packages
+# whose oracles had actually run 1/5 PASS). TC-PA-031 guarded the drift; TC-PA-041
+# ELIMINATED the source: the mirror field was removed from all packages and its only
+# consumer (tools/oracle/calculate_oracle_coverage.py) now reads product_oracle_status
+# from the registry. The DESIRED state is therefore no `status:` field at all.
+#
+# This validator now guards REINTRODUCTION: if a revert-to-HEAD or a re-onboard writes
+# a `status:` back into a package and it contradicts the registry, that is drift ->
+# FAIL. A reintroduced-but-matching value is tolerated (harmless); absence is the goal.
+# The registry (`product_oracle_status`: VERIFIED, CASES_DEFINED, OBLIGATION_CREATED)
+# remains the single source of truth. Only CASES_DEFINED/VERIFIED are comparable to a
+# reintroduced package value; other pairs are reported, never silently passed.
+_ORACLE_STATUS_SHARED_VOCAB = frozenset({"CASES_DEFINED", "VERIFIED"})
+
+
 @validator(rule_id="V245", domain="oracle")
 def validate_oracle_registry_reconciliation(declaration: dict, repo_root: "Path | None" = None) -> dict:
-    """V245: oracle-package.yaml on disk must have a non-null registry entry."""
+    """V245: oracle-package.yaml must reconcile with its registry entry.
+
+    Checks:
+      1. (original) on-disk oracle-package.yaml has a non-null registry entry -> WARN
+      2. (TC-PA-031/TC-PA-041) the duplicate package `status:` mirror is eliminated.
+         Absence is the reconciled state. If a package RE-INTRODUCES a `status:` that
+         contradicts registry `product_oracle_status` (shared vocabulary) -> FAIL,
+         blocks_sprint=True. A reintroduced-but-matching value is tolerated.
+
+    Authority: `oracle/registry/format-oracle-registry.yaml` is the single source of
+    truth for oracle status. It is declared so in oracle/reports/final-oracle-audit.md,
+    it is the iteration root of /detect-stale-oracles, /generate-oracle-verdict-report
+    and /calculate-oracle-coverage, and it is the only side read by a BLOCKING validator
+    (V145 validate_future_format_oracle_onboarding). It alone carries the audit trail:
+    depth_achieved, current_proof_level, blockers, terminal_state.
+
+    The package `status:` WAS a DERIVED MIRROR with no producer. Nothing promoted it from
+    evidence: scaffold_oracle_obligation.py writes a constant, and the select-6
+    acquisition generator emitted `status: VERIFIED` as a template literal at authoring
+    time. That is exactly how ipynb, mtlx, nrrd, safetensors, ubl and xliff came to claim
+    VERIFIED on the day their oracles actually ran 1/5 PASS + 4 NOT_APPLICABLE, while the
+    registry honestly recorded CASES_DEFINED at proof level 1 of 4. TC-PA-031 guarded that
+    drift but the field kept reverting (the fix was never committed; HEAD still carried
+    VERIFIED), so TC-PA-041 removed the SOURCE: the mirror field was deleted from every
+    package and calculate_oracle_coverage.py repointed at the registry.
+
+    With the field gone, the false-green surface no longer exists — `summary.verified_formats`
+    derives from product_oracle_status directly. This check now exists only to catch a
+    REINTRODUCTION of the mirror (revert-to-HEAD / re-onboard) that contradicts the registry.
+    """
     repo = Path(repo_root) if repo_root else Path(__file__).resolve().parent.parent.parent
 
     registry_path = repo / "oracle" / "registry" / "format-oracle-registry.yaml"
@@ -375,18 +421,86 @@ def validate_oracle_registry_reconciliation(declaration: dict, repo_root: "Path 
         reg_entries[fid] = entry
 
     mismatches = []
+    status_drift = []
+    checked = 0
     for fmt_dir in sorted(formats_dir.iterdir()):
         if not fmt_dir.is_dir():
             continue
-        pkg = fmt_dir / "oracle-package.yaml"
-        if not pkg.exists():
+        pkg_path = fmt_dir / "oracle-package.yaml"
+        if not pkg_path.exists():
             continue
         fmt = fmt_dir.name
         reg = reg_entries.get(fmt)
         if reg is None:
             mismatches.append({"format": fmt, "issue": "on-disk oracle-package.yaml but no registry entry"})
-        elif not reg.get("oracle_package"):
+            continue
+        if not reg.get("oracle_package"):
             mismatches.append({"format": fmt, "issue": "oracle_package is null despite on-disk file"})
+
+        # TC-PA-031: status must not contradict the authoritative registry.
+        try:
+            pkg_doc = yaml.safe_load(pkg_path.read_text(encoding="utf-8")) or {}
+        except Exception as exc:
+            mismatches.append({"format": fmt, "issue": f"oracle-package.yaml unreadable: {exc}"})
+            continue
+
+        pkg_status = pkg_doc.get("status")
+        reg_status = reg.get("product_oracle_status")
+        checked += 1
+
+        if pkg_status is None:
+            # TC-PA-041 DESIRED STATE: the duplicate `status:` mirror has been eliminated
+            # from oracle-package.yaml (its only consumer, calculate_oracle_coverage.py,
+            # now reads product_oracle_status from the registry). Absence IS reconciliation
+            # — there is no longer a package-authored value that can drift or go false-green.
+            pass  # reconciled (mirror removed)
+        elif pkg_status == reg_status:
+            pass  # reconciled (mirror reintroduced but matching)
+        elif pkg_status in _ORACLE_STATUS_SHARED_VOCAB and reg_status in _ORACLE_STATUS_SHARED_VOCAB:
+            # REINTRODUCTION GUARD (TC-PA-041): the mirror field was removed, but a
+            # revert-to-HEAD or a re-onboard has written a conflicting `status:` back in.
+            # Both sides speak the shared vocabulary and disagree -> hard contradiction.
+            status_drift.append({
+                "format": fmt,
+                "issue": "STATUS_DRIFT: oracle-package.yaml re-introduced a status that contradicts the authoritative registry",
+                "package_status": pkg_status,
+                "registry_product_oracle_status": reg_status,
+                "authority": "oracle/registry/format-oracle-registry.yaml",
+                "depth_achieved": reg.get("depth_achieved"),
+                "current_proof_level": reg.get("current_proof_level"),
+                "target_proof_level": reg.get("target_proof_level"),
+                "blockers": reg.get("blockers") or [],
+                "remedy": (
+                    f"remove the re-introduced `status:` field from oracle/formats/{fmt}/oracle-package.yaml "
+                    "(TC-PA-041 eliminated this mirror; the registry is authoritative and coverage reads "
+                    "product_oracle_status directly — do NOT promote the registry to match the package)"
+                ),
+            })
+        else:
+            # One side uses a value the other vocabulary cannot express. Not silently OK.
+            mismatches.append({
+                "format": fmt,
+                "issue": "UNCOMPARABLE_STATUS_VOCABULARY: reconcile manually",
+                "package_status": pkg_status,
+                "registry_product_oracle_status": reg_status,
+            })
+
+    if status_drift:
+        drifting = ", ".join(f"{d['format']}({d['package_status']}!={d['registry_product_oracle_status']})"
+                             for d in status_drift)
+        return {
+            "validator": "validate_oracle_registry_reconciliation",
+            "result": "FAIL",
+            "blocks_sprint": True,
+            "items": status_drift + mismatches,
+            "summary": (
+                f"V245 STATUS_DRIFT: {len(status_drift)} oracle package(s) re-introduced a "
+                f"`status:` mirror that contradicts format-oracle-registry.yaml (authoritative): "
+                f"{drifting}. TC-PA-041 removed this duplicate field; a revert-to-HEAD or a "
+                "re-onboard has written it back. Remove the `status:` field from the package — "
+                "the registry is the single source of truth."
+            ),
+        }
 
     result = "WARN" if mismatches else "PASS"
     return {
@@ -398,7 +512,9 @@ def validate_oracle_registry_reconciliation(declaration: dict, repo_root: "Path 
             f"V245: {len(mismatches)} format(s) have oracle-package.yaml on disk "
             "but stale/missing registry entries"
             if mismatches else
-            "V245: all on-disk oracle packages have matching registry entries"
+            f"V245: all {checked} on-disk oracle packages reconcile with the registry "
+            "(status mirror removed per TC-PA-041, or — if reintroduced — matching "
+            "product_oracle_status)"
         ),
     }
 

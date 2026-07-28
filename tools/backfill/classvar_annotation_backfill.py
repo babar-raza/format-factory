@@ -197,19 +197,9 @@ def find_py_files(fmt: str) -> list[Path]:
     return results
 
 
-def run(fmt: str, dry_run: bool = False, include_nested: bool = False) -> dict:
+def run(fmt: str, dry_run: bool = False) -> dict:
     """Run the backfill for a single format. Returns summary dict."""
     files = find_py_files(fmt)
-
-    if include_nested:
-        nested_dir = SRC_PYTHON / fmt / fmt
-        if nested_dir.is_dir():
-            for py_file in sorted(nested_dir.rglob("*.py")):
-                parts = py_file.relative_to(nested_dir).parts
-                if any(p in SKIP_DIRS for p in parts):
-                    continue
-                if py_file not in files:
-                    files.append(py_file)
 
     total_changed = 0
     files_changed = 0
@@ -237,11 +227,9 @@ def main():
     parser = argparse.ArgumentParser(description="Add ClassVar annotations to spec_qname attributes")
     parser.add_argument("--format", required=True, help="Format package name (e.g., csv, abw)")
     parser.add_argument("--dry-run", action="store_true", help="Report changes without writing")
-    parser.add_argument("--include-nested", action="store_true",
-                        help="Also process nested duplicate packages (e.g., fods/fods/)")
     args = parser.parse_args()
 
-    result = run(args.format, dry_run=args.dry_run, include_nested=args.include_nested)
+    result = run(args.format, dry_run=args.dry_run)
 
     mode = "DRY RUN" if result["dry_run"] else "APPLIED"
     print(f"\n[{mode}] Format: {result['format']}")

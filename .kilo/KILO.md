@@ -80,6 +80,16 @@ These RC capabilities are BLOCKED on Kilo with routing to alternative agent:
 All other capabilities: UNVERIFIABLE_PLATFORM_UNKNOWN — see `docs/agents/agent-inventory.yaml`
 kilo entries for current status. Route to Claude Code for any capability not confirmed on Kilo.
 
+## Coordination Preflight (MANDATORY — Mission AGENT-COORD-2026-07-15)
+
+Kilo shares the working tree with concurrent agents. Before any mutation,
+follow `docs/governance/kilo-adapter.md` section 2a: `register` at entry,
+`claim` before writing, `preflight` before / `record-write` after each write,
+`heartbeat` periodically, `release` + `complete` on exit — all via
+`python -m tools.supervisor.coordination <verb>`. Never `git add -A`, never
+clean/revert unexplained changes, never touch files under another agent's
+lease. Rules: AGENTS.md Section CO.
+
 ## Full Reference
 
 - `docs/governance/kilo-adapter.md` — full lifecycle contract (8 sections)

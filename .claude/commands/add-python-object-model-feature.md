@@ -11,6 +11,23 @@ visibility: generated
 
 Add a new object-model feature to a Python FOSS product (fods, fodt, pbm, pgm, ppm, sylk, zst).
 
+## Step 0 — Execution Manifest (run BEFORE the mandatory pre-check below and every other step)
+
+```
+python -m tools.governance.skills_first.manifest create \
+  --task-id <task_id> --agent-type CLAUDE_CODE \
+  --operation "<one-line description of this invocation>" \
+  --skill add-python-object-model-feature \
+  --allowed-paths src/python/<format_id>/** \
+  --write
+```
+
+Record the printed `execution_id`. On `ManifestError`, STOP -- do not proceed
+until the manifest is created. This is what lets the tool-layer skill gate
+(`tools/supervisor/coordination/hooks/skill_gate.py`) recognize this invocation
+as `MANIFEST_COVERING` instead of blocking it once `check_mode:skill_resolution`
+is promoted to `enforcing` for `src/python/`.
+
 ## MANDATORY PRE-CHECK: File-Type and Wildcard Prohibition
 
 **Before Step 0:**

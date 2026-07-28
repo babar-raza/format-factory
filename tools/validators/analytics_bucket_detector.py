@@ -59,16 +59,9 @@ def scan(src_root: Path = _SRC) -> dict:
     clean_files: list[str] = []
 
     for fpath in sorted(src_root.rglob("*.py")):
-        # Skip build artifacts and nested duplicate packages
+        # Skip build artifacts
         parts = fpath.parts
         if "build" in parts or "__pycache__" in parts:
-            continue
-        try:
-            rel_to_src = fpath.relative_to(src_root)
-        except ValueError:
-            continue
-        rel_parts = rel_to_src.parts
-        if len(rel_parts) >= 2 and rel_parts[0] == rel_parts[1]:
             continue
 
         rel_str = fpath.relative_to(_REPO).as_posix()

@@ -104,16 +104,15 @@ desktop.ini
 # Do not add binary sample files without an LFS policy entry.
 
 # ============================================================
-# PIP EDITABLE-INSTALL ARTIFACTS (nested package copies)
-# When packages under src/python/ are installed with pip install -e,
-# pip may create a copy of the package inside its own directory.
-# Example: src/python/fods/fods/fods/ is a copy of src/python/fods/fods/
-# These are build artifacts and must NOT be committed.
-# NOTE: Only exclude build artifacts and nested pip copies — NOT the source tree itself.
+# NESTED DUPLICATE PACKAGE PREVENTION
+# Self-nested format directories (e.g. src/python/fods/fods/) are structural
+# violations. V246 validator blocks sprints when these exist. This gitignore
+# entry prevents accidental re-commitment of the fods/fods/ directory that
+# was removed in the skills-first anti-ad-hoc healing sprint (2026-07-16).
 # ============================================================
-src/python/fods/fods/build/
-src/python/fods/fods/__pycache__/
-src/python/fods/fods/fods/
+src/python/*/build/
+src/python/*/__pycache__/
+src/python/fods/fods/
 
 # ============================================================
 # IN-PROGRESS SPRINT ARTIFACTS (untracked, not yet committed)
@@ -195,3 +194,4 @@ output*/
 
 # Runner system identity (session-specific, not a repo artifact)
 .runner_system_id
+/.supervisor/state

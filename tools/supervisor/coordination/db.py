@@ -191,6 +191,76 @@ def set_check_mode(conn: sqlite3.Connection, check_id: str, mode: str,
                    detail={"reason": reason, "check_id": check_id}, now_fn=now_fn)
 
 
+# ---------------------------------------------------------------------------
+# Path-scoped check mode: the policy's own remediation plan for EP-010-GAP
+# ("promote check_mode:skill_resolution to enforcing per path-scope, smallest
+# blast radius first -- tools/governance/** before src/**") assumed this was
+# already possible. It wasn't: the flat `check_mode:<check_id>` key above is a
+# single global on/off per check, with no path concept anywhere. Promoting the
+# bare global key today would flip every path that check governs at once --
+# exactly the repo-wide-freeze risk a staged rollout exists to avoid.
+#
+# `check_mode:<check_id>:<path_prefix>` rows layer on top, additively (no
+# migration -- `settings` is a plain key-value table). Longest-matching
+# configured prefix wins; unmatched paths fall back to the bare global key,
+# which itself still defaults to 'advisory' per get_check_mode() above.
+# ---------------------------------------------------------------------------
+
+
+def _norm_prefix(path_prefix: str) -> str:
+    return path_prefix.replace("\\", "/").strip("/")
+
+
+def _scoped_check_mode_prefixes(conn: sqlite3.Connection, check_id: str) -> list[str]:
+    """Every configured path-prefix scope for this check, longest first."""
+    key_prefix = f"{_CHECK_MODE_PREFIX}{check_id}:"
+    rows = conn.execute(
+        "SELECT key FROM settings WHERE key LIKE ? ESCAPE '\\'",
+        (key_prefix.replace("_", "\\_").replace("%", "\\%") + "%",),
+    ).fetchall()
+    prefixes = [r["key"][len(key_prefix):] for r in rows]
+    return sorted(prefixes, key=len, reverse=True)
+
+
+def get_check_mode_for_path(conn: sqlite3.Connection, check_id: str,
+                            rel_path: str) -> str:
+    """Per-check, per-path-scope advisory/enforcing state. The longest
+    configured path-prefix scope covering rel_path wins; if none match, falls
+    back to the bare global check_id key (get_check_mode); defaults to
+    'advisory' at every level -- a NEW scope must be explicitly promoted, it
+    never inherits 'enforcing' from a broader or sibling scope."""
+    norm = _norm_prefix(rel_path)
+    for prefix in _scoped_check_mode_prefixes(conn, check_id):
+        if norm == prefix or norm.startswith(prefix + "/"):
+            mode = get_setting(conn, f"{_CHECK_MODE_PREFIX}{check_id}:{prefix}",
+                               "advisory")
+            return mode if mode in ("advisory", "enforcing") else "advisory"
+    return get_check_mode(conn, check_id)
+
+
+def set_check_mode_for_path(conn: sqlite3.Connection, check_id: str,
+                            path_prefix: str, mode: str, actor: str, reason: str,
+                            now_fn: NowFn = default_now) -> None:
+    if mode not in ("advisory", "enforcing"):
+        raise ValueError(f"invalid check mode: {mode}")
+    norm = _norm_prefix(path_prefix)
+    if not norm:
+        raise ValueError("path_prefix must be non-empty")
+    key = f"{_CHECK_MODE_PREFIX}{check_id}:{norm}"
+    with immediate(conn):
+        old = get_setting(conn, key, "advisory")
+        conn.execute(
+            "INSERT INTO settings(key, value) VALUES(?, ?)"
+            " ON CONFLICT(key) DO UPDATE SET value=excluded.value",
+            (key, mode),
+        )
+        emit_event(conn, "system", f"check_mode:{check_id}:{norm}",
+                   "CHECK_MODE_CHANGE", from_status=old, to_status=mode,
+                   actor=actor,
+                   detail={"reason": reason, "check_id": check_id,
+                           "path_prefix": norm}, now_fn=now_fn)
+
+
 # SQL fragment: seconds elapsed since a stored ISO timestamp, evaluated
 # against a single caller-supplied "as-of" instant (bind one `?` per use).
 # One evaluating clock for all rows -> row-writer clock skew is tolerated via

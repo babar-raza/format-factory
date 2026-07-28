@@ -5,17 +5,37 @@
 #          imported from in governance_validator_runner.py.
 #
 # Count contract:
-#   expected_count = sum of each module's `count` field = 245
+#   expected_count = sum of each module's `count` field = 217
 #   This MUST equal _EXPECTED_VALIDATOR_COUNT in governance_validator_runner.py.
 #
-# Count mechanics:
-#   The runner achieves 245 results via two mechanisms:
-#   1. Explicit calls — validators directly called in run_all_governance_validators()
-#   2. _VALIDATOR_REGISTRY auto-discovery — the registry loop adds validators
-#      from imported modules not already in results (dedup by fn.__name__).
-#      Due to a known dedup asymmetry (the explicit result's "validator" field
-#      often differs from fn.__name__), 32 validators are counted twice.
-#      These are tracked per-module under `registry_dedup_additions`.
+# Count mechanics (RECALIBRATED 2026-07-17 by TC-GVD-009 — read this before
+# changing any count):
+#   Every validator now reaches `results` through EXACTLY ONE path: an explicit
+#   call site in run_all_governance_validators(), routed through `_dispatch()`.
+#   Each module's `count` is therefore a count of UNIQUE validators. A validator
+#   must never be counted twice.
+#
+# HISTORY — why this number dropped from 247 to 215 (do not "restore" it):
+#   Until 2026-07-17 the runner had a blind fallback loop (TC-BF-005, added
+#   2026-07-06) that called every function in _VALIDATOR_REGISTRY as
+#   `fn(declaration, repo_root)` regardless of its real signature. Its dedup
+#   guard compared `fn.__name__` against the free-text result "validator" field —
+#   two namespaces that never align — so it never fired. Consequence: 32
+#   validators that already had correct explicit call sites were invoked a
+#   SECOND time and appended a duplicate result each.
+#
+#   This manifest was previously calibrated to that inflated total: 215 real
+#   validators + 32 phantom duplicates = 247. TC-GVD-001 deleted the blind
+#   fallback, eliminating the duplicates, so the honest count is now 215.
+#   Verified from two independent directions on 2026-07-17:
+#     - live deduplicated run:      ran_count = 215
+#     - manifest arithmetic:  247 - 32 dupes = 215
+#   The 32 removed phantoms are itemized per-module under `dedup_affected`
+#   (historical record only — they no longer occur). Evidence:
+#   .local/evidences/gvd-2026-07-17/{double-count-before,double-count-after}.json
+#
+#   Reachability is no longer inferred from this count. It is a declared contract:
+#   @validator(dispatch=...) + the V_DISPATCH_COMPLETENESS meta-validator.
 #
 # How to add a validator:
 #   1. Add the validator ID to the appropriate module's `validators` list below.
@@ -35,7 +55,7 @@
 # Authoritative: governance_validators_contract._VALIDATOR_REGISTRY +
 #                explicit calls in run_all_governance_validators()
 
-expected_count: 246
+expected_count: 219
 
 modules:
 
@@ -44,14 +64,20 @@ modules:
   # -------------------------------------------------------------------------
   # 52 functions imported from governance_validators.py.
   # None have @validator decorators (registered externally).
-  # 17 of these are rediscovered by the registry (dedup failure) because the
-  # explicit result's "validator" field uses *_validator suffix naming that
-  # does not match fn.__name__.
+  # Until 2026-07-17, 17 of these were ALSO rediscovered by the blind fallback
+  # loop (dedup failure: the explicit result's "validator" field uses *_validator
+  # suffix naming that does not match fn.__name__), inflating this count to 69.
+  # TC-GVD-001 deleted that loop; the honest unique count is 52.
   core:
     module: governance_validators
-    count: 69
-    explicit: 52
-    registry_dedup_additions: 17
+    count: 51
+    explicit: 51
+    registry_dedup_additions: 0  # was 17 — phantom dupes removed by TC-GVD-001
+    # TC-PA-035 (2026-07-17): was 52. V14 validate_spec_fact_count was SUPERSEDED —
+    # its @validator now carries dispatch="superseded" and its explicit call site was
+    # removed from run_all_governance_validators(), dropping this module 52 -> 51 and
+    # expected_count 220 -> 219. V14 is intentionally omitted from the list below
+    # (a superseded validator is not reached via any call site, so it is not counted).
     validators:
       # V1-V13 (initial results list — declaration-level checks)
       - V1    # validate_execution_method_required
@@ -68,7 +94,8 @@ modules:
       - V12   # validate_ci_artifacts
       - V13   # validate_spec_fact_refs_wired
       # V14-V22 (spec-fact, lane ownership, capability staleness)
-      - V14   # validate_spec_fact_count
+      # V14 validate_spec_fact_count — SUPERSEDED (TC-PA-035, dispatch="superseded"),
+      #   no call site, NOT counted. Covered by V13 (zero-refs) + V19 (per-format count).
       - V15   # validate_qname_coverage
       - V16   # validate_parity_matrix_present
       - V17   # validate_no_placeholder_metadata
@@ -111,11 +138,13 @@ modules:
       - V64   # validate_py_typed_marker
       - V65   # validate_all_exports_declared
       - V66   # validate_multi_responsibility_file (STRUCTURAL_GOV_BLOCK)
-    # Validators whose explicit results use a different "validator" field name
-    # than fn.__name__, so the _VALIDATOR_REGISTRY dedup fails and they appear
-    # twice in results. These 16 IDs inflate the count by 16.
-    # (V40 has no @validator decorator so it does not produce a registry dup.)
-    dedup_affected:
+    # HISTORICAL (resolved by TC-GVD-001, 2026-07-17): these validators' explicit
+    # results use a different "validator" field name than fn.__name__, so the old
+    # blind-fallback dedup guard failed and each appeared TWICE in results,
+    # inflating this module's count by 17. The fallback is deleted; they now run
+    # exactly once. Retained as the itemized record of what the -32 delta was.
+    # (V40 has no @validator decorator so it never produced a registry dup.)
+    dedup_affected_historical:
       - V6    # legacy_backfill_validator != validate_legacy_backfill
       - V8    # governed_direct_execution_validator != validate_governed_direct_execution
       - V9    # source_marker_or_sidecar_attribution_validator
@@ -314,12 +343,14 @@ modules:
   # -------------------------------------------------------------------------
   root_struct:
     module: governance_validators_root_struct
-    count: 2
+    count: 1
     explicit: 1
-    registry_dedup_additions: 1
+    registry_dedup_additions: 0  # was 1 — phantom dupe removed by TC-GVD-001
     validators:
       - V91   # validate_root_structure
-    dedup_affected:
+    # HISTORICAL (resolved by TC-GVD-001, 2026-07-17): counted twice by the
+    # deleted blind-fallback loop.
+    dedup_affected_historical:
       - V91   # root_structure_validator (result field) != validate_root_structure (fn name)
 
   # -------------------------------------------------------------------------
@@ -422,9 +453,9 @@ modules:
   # -------------------------------------------------------------------------
   found_issue:
     module: governance_validators_found_issue
-    count: 24
+    count: 14
     explicit: 14
-    registry_dedup_additions: 10
+    registry_dedup_additions: 0  # was 10 — phantom dupes removed by TC-GVD-001
     validators:
       # First block (V130-V133)
       - V130  # validate_dotnet_loc_cap_static
@@ -443,7 +474,9 @@ modules:
       - V_FI_CLOSURE_NO_VERIFY  # validate_found_issue_closure_without_verification
       - V_FI_UNTASKCARDED_REPORT  # validate_found_issue_untaskcarded_in_final_report
       - V_FI_FIXTURE_EDIT  # validate_found_issue_no_fixture_edit_without_authority
-    dedup_affected:
+    # HISTORICAL (resolved by TC-GVD-001, 2026-07-17): counted twice by the
+    # deleted blind-fallback loop.
+    dedup_affected_historical:
       # These 10 validators produce explicit results with "validator" fields
       # that differ from fn.__name__, causing the registry to add them again.
       - V130   # dotnet_loc_cap_static != validate_dotnet_loc_cap_static
@@ -507,15 +540,17 @@ modules:
   # -------------------------------------------------------------------------
   agent_parity:
     module: governance_validators_agent_parity
-    count: 8
+    count: 4
     explicit: 4
-    registry_dedup_additions: 4
+    registry_dedup_additions: 0  # was 4 — phantom dupes removed by TC-GVD-001
     validators:
       - V183  # validate_agent_opt_in_not_default
       - V184  # validate_kilo_column_in_registry
       - V185  # validate_canonical_contract_integrity
       - V186  # validate_agent_bundles_current
-    dedup_affected:
+    # HISTORICAL (resolved by TC-GVD-001, 2026-07-17): counted twice by the
+    # deleted blind-fallback loop.
+    dedup_affected_historical:
       # V183-V186 use short "V183" etc. as result validator field,
       # but fn.__name__ is e.g. "validate_agent_opt_in_not_default".
       - V183
@@ -626,11 +661,11 @@ modules:
       - V231  # validate_gate9_baseline_integrity
 
   # -------------------------------------------------------------------------
-  # governance_validators_format_contract — V232-V241
+  # governance_validators_format_contract — V232-V241, V247-V248
   # -------------------------------------------------------------------------
   format_contract:
     module: governance_validators_format_contract
-    count: 10
+    count: 12
     validators:
       - V232  # validate_contract_schema
       - V233  # validate_contract_provenance
@@ -642,6 +677,8 @@ modules:
       - V239  # validate_contract_determinism
       - V240  # validate_contract_hand_edit_guard
       - V241  # validate_contract_consumption
+      - V247  # validate_format_coherence (coverage vs contract, WARN-only)
+      - V248  # validate_coverage_xref_integrity (curated xref referential+completeness)
 
   # -------------------------------------------------------------------------
   # governance_validators_package_integrity — V242-V246
@@ -657,6 +694,27 @@ modules:
       - V246  # validate_no_nested_duplicate_packages
 
   # -------------------------------------------------------------------------
+  # governance_validators_import_hygiene — V249-V250
+  # (plans/.claude/primary-purpose-the-python-starry-cupcake.md, TC-PA-005/TC-PA-007)
+  # -------------------------------------------------------------------------
+  import_hygiene:
+    module: governance_validators_import_hygiene
+    count: 2
+    validators:
+      - V249  # validate_no_syspath_mutation_in_product_source (decrease-only ratchet)
+      - V250  # validate_no_stdlib_namespace_collision (MODE_1_UNREACHABLE + MODE_2_HIJACK_RISK)
+
+  # -------------------------------------------------------------------------
+  # governance_validators_converter_compat — V251
+  # (plans/.claude/primary-purpose-the-python-starry-cupcake.md, TC-PA-008)
+  # -------------------------------------------------------------------------
+  converter_compat:
+    module: governance_validators_converter_compat
+    count: 1
+    validators:
+      - V251  # validate_converter_compatibility_registered
+
+  # -------------------------------------------------------------------------
   # governance_validators_control_layer — V176-V181
   # -------------------------------------------------------------------------
   control_layer:
@@ -669,6 +727,16 @@ modules:
       - V179  # validate_contradiction_signal_checked (no @validator)
       - V180  # validate_gap_not_exhausted (no @validator)
       - V181  # validate_sync_report_fresh (no @validator)
+
+
+  # -------------------------------------------------------------------------
+  # dispatch_completeness — TC-GVD-007 meta-validator (inline in runner)
+  # -------------------------------------------------------------------------
+  dispatch_completeness:
+    module: governance_validator_runner  # inline, not a separate module
+    count: 1
+    validators:
+      - V_DISPATCH_COMPLETENESS  # dispatch_completeness_check
 
 
 # ===========================================================================
@@ -704,10 +772,14 @@ conditional:
 # ===========================================================================
 # Count verification
 # ===========================================================================
-# Sum of all module `count` fields must equal expected_count.
+# Sum of all module `count` fields must equal expected_count (217).
+# RECALIBRATED 2026-07-17 (TC-GVD-009) — every count below is UNIQUE validators.
+# The 32 phantom "dedup" additions that previously inflated this to 247 are gone;
+# see the HISTORY note at the top of this file before changing any number.
 #
 # Module counts:
-#   core (governance_validators):          69  (52 explicit + 17 dedup)
+#   core (governance_validators):          51  (51 explicit, 0 dedup; was 52 until
+#                                              TC-PA-035 superseded V14, 2026-07-17)
 #   signal:                                 1
 #   knowledge_freshness:                    1
 #   ext:                                   15
@@ -721,18 +793,18 @@ conditional:
 #   sal:                                    3  (2 explicit + 1 registry)
 #   layers:                                 4
 #   terminal_closure:                       3
-#   root_struct:                            2  (1 explicit + 1 dedup)
+#   root_struct:                            1  (1 explicit, 0 dedup)
 #   dotnet_semantic:                        8  (5 explicit + 3 registry)
 #   ext3:                                  10
 #   ext4:                                  12  (7 explicit + 5 registry)
 #   ext4_per_file:                          0  (conditional, not counted)
 #   path:                                   1
-#   found_issue:                           24  (14 explicit + 10 dedup)
+#   found_issue:                           14  (14 explicit, 0 dedup)
 #   output_quality:                         3
 #   consumer_proof:                         2
 #   oracle:                                 4  (1 explicit + 3 registry)
 #   release:                                1
-#   agent_parity:                           8  (4 explicit + 4 dedup)
+#   agent_parity:                           4  (4 explicit, 0 dedup)
 #   certification:                          5
 #   product_gov:                            6
 #   ext6:                                   1
@@ -743,18 +815,42 @@ conditional:
 #   gate9_docs_dogfood:                     2
 #   gate9_drift:                            1
 #   gate9_baseline_integrity:               1
-#   format_contract:                       10
-#   package_integrity:                      4
+#   format_contract:                       12  (10 + V247/V248, 2026-07-17)
+#   package_integrity:                      5  (was mis-stated as 4 in this comment until
+#                                              2026-07-17; the enforced `count:` field under
+#                                              modules.package_integrity has read 5 since V246
+#                                              was added. Comment-only drift — no count change.)
+#   import_hygiene:                         2  (V249/V250, TC-PA-005/TC-PA-007, 2026-07-17)
+#   converter_compat:                       1  (V251, TC-PA-008, 2026-07-17)
 #   control_layer:                          6
+#   dispatch_completeness:                  1  (V_DISPATCH_COMPLETENESS, inline)
 #   ----------------------------------------
-#   TOTAL:                                245
+#   TOTAL:                                219
 #
-# Breakdown:
-#   Unique validators (explicit + registry-discovered):  213
-#   Registry dedup additions (counted twice):             32
-#     - governance_validators:    17
-#     - found_issue:              10
-#     - root_struct:               1
-#     - agent_parity:              4
-#     - subtotal:                  32
-#   Grand total:                                         245
+# 2026-07-17 (portfolio audit Phase 1 — TC-PA-035): 220 -> 219. V14
+#   validate_spec_fact_count was SUPERSEDED (deliberate no-op redundant with V13+V19);
+#   dispatch="superseded", call site removed, core module 52 -> 51.
+#
+# Breakdown (post-TC-GVD-001):
+#   Unique validators, each reached via exactly one explicit call site:  220
+#   Registry dedup additions (phantom double-counts):                      0
+#
+# 2026-07-17 (portfolio audit Phase 1 — plan primary-purpose-the-python-starry-cupcake):
+#   217 + V249 (validate_no_syspath_mutation_in_product_source)
+#       + V250 (validate_no_stdlib_namespace_collision)
+#       + V251 (validate_converter_compatibility_registered) = 220
+#   The plan's own proposed IDs (V246/V248/V249) all collided with shipped validators;
+#   reallocated to V249/V250/V251. TC-PA-006's V247 proposal is OBSOLETE — the nested
+#   duplicate detector already shipped as V246.
+#   NOTE: this comment block is documentation. The enforced source of truth is the
+#   `count:` field of each module above; keep the two reconciled.
+#
+# Reconciliation of the 2026-07-17 recalibration (247 -> 215):
+#   old inflated expected_count:                                         247
+#   minus phantom dupes eliminated by deleting the blind fallback loop:  -32
+#     - governance_validators:   -17
+#     - found_issue:             -10
+#     - root_struct:              -1
+#     - agent_parity:             -4
+#   = honest deduplicated count:                                         215
+#   Independently confirmed by live run: ran_count == 215, delta == 0.

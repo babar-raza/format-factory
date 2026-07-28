@@ -1,0 +1,11 @@
+# Generator output manifest (TC-COORD-009, mission AGENT-COORD-2026-07-15).
+# Globs are expanded against the worktree at claim time and the matches are
+# leased individually (never the whole src tree).
+generator_id: readme_sync
+mode: exclusive
+outputs:
+  - "src/python/*/README.md"
+  - "src/net/*/README.md"
+notes: >
+  Per-format README generated-block writer. Well-scoped with rollback; the
+  guard adds cross-agent arbitration on the README files themselves.

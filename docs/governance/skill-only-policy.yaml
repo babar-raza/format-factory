@@ -318,9 +318,9 @@ enforcement_points:
 
   - id: EP-010
     name: tool_layer_skill_gate
-    mechanism: pretooluse_hook_skill_resolution
+    mechanism: pretooluse_hook_and_cli_preflight_skill_resolution
     enforced_by: tools/supervisor/coordination/hooks/skill_gate.py
-    tool_neutral: false
+    tool_neutral: true  # CORRECTED 2026-07-24 (was false) -- see note
     current_status: IMPLEMENTED_ADVISORY_MODE  # RECONCILED 2026-07-17 (SFC production hardening)
     gap: EP-010-GAP  # promotion to enforcing is the remaining, deliberately deferred step
     compensating_controls:
@@ -343,6 +343,32 @@ enforcement_points:
       guess. Promotion itself (`check-mode set --to enforcing`) has NOT happened
       — this remains the honest residual: the check is live and logging, not yet
       blocking. See EP-010-GAP for the remaining step.
+
+      CORRECTED 2026-07-24 (strict skills-first hardening): `tool_neutral` was
+      previously (and incorrectly) declared `false` — the check ran ONLY inside
+      gate.py's PreToolUse hook, which is Claude Code-specific plumbing; Codex's
+      own mandatory entry point (`python -m tools.supervisor.coordination
+      preflight`, docs/governance/codex-adapter.md §3a) never called
+      evaluate_path() at all, so a Codex session following its own documented
+      procedure got coordination-lease protection but not skill-resolution
+      protection — an unintentional asymmetry the "applies equally to Claude
+      Code and Codex" claim (codex-adapter.md line 21) did not actually hold in
+      code. Both entry points now resolve through one shared function,
+      `skill_gate.decide()`, and the CLI `preflight` verb gained a new exit
+      code (7 = skill-gate-blocked) mirroring the hook's block behavior, plus
+      identical advisory-log.jsonl telemetry either way (proof:
+      tests/supervisor/test_cli_skill_gate_parity.py). Also added path-scoped
+      check_mode (tools/supervisor/coordination/db.py
+      get_check_mode_for_path/set_check_mode_for_path) since a single global
+      on/off switch made "promote per path-scope, smallest blast radius first"
+      (the remediation this same file already recommended below) mechanically
+      impossible — both callers now honor per-prefix promotion identically.
+      Registry path declarations for every src/-mutating skill were also
+      fixed (`.supervisor/skill-registry.yaml`'s implementation_paths were
+      empty or contained unmatchable `<format>` template tokens for every one
+      of them, so `evaluate_path()` could never resolve `src/` at all before
+      this pass — see tools/governance/skills_first/path_scope_lint.py, the
+      new regression guard against this exact class of registry bug).
 
 # ─────────────────────────────────────────────
 # 8. EXCEPTION POLICY

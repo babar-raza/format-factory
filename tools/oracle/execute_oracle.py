@@ -1213,6 +1213,118 @@ def execute_fodp_valid_case(case: dict, pkg: dict) -> dict:
     return execute_generic_load_case(case, pkg, "fodp", "fodp.fodp_codec", "load")
 
 
+def _enrich_model(result_val: dict, format_id: str) -> dict:
+    """Add derived properties so oracle expected_model_properties can match."""
+    if not isinstance(result_val, dict):
+        return result_val
+    enriched = dict(result_val)
+    if format_id == "safetensors":
+        tensors = result_val.get("tensors", {})
+        enriched["tensor_count"] = len(tensors) if isinstance(tensors, dict) else 0
+        enriched["tensor_names"] = sorted(tensors.keys()) if isinstance(tensors, dict) else []
+    elif format_id == "ipynb":
+        cells = result_val.get("cells", [])
+        enriched["cell_count"] = len(cells) if isinstance(cells, list) else 0
+    elif format_id == "mtlx":
+        materials = result_val.get("materials", [])
+        enriched["material_count"] = len(materials) if isinstance(materials, list) else 0
+    elif format_id == "nrrd":
+        shape = result_val.get("array_shape", result_val.get("header", {}).get("sizes", []))
+        enriched["dimension"] = len(shape) if isinstance(shape, list) else 0
+    elif format_id == "ubl":
+        lines = result_val.get("lines", [])
+        enriched["line_count"] = len(lines) if isinstance(lines, list) else 0
+    elif format_id == "xliff":
+        files = result_val.get("files", [])
+        unit_count = 0
+        for f in (files if isinstance(files, list) else []):
+            units = f.get("units", f.get("trans_units", []))
+            unit_count += len(units) if isinstance(units, list) else 0
+        enriched["unit_count"] = unit_count
+    return enriched
+
+
+def _execute_enriched_generic(case, pkg, format_id, module, callable_name):
+    """Generic executor with model enrichment for derived properties."""
+    case_id = case["case_id"]
+    sample_ref = case.get("input_ref") or case.get("sample_ref")
+    _, authority_status = check_authority(case, True)
+
+    if not sample_ref:
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id=format_id, product_id=f"format-factory-{format_id}", language="python",
+            case_id=case_id, profile="PARSE_VALIDITY",
+            result=RESULT_NOT_APPLICABLE, authority_status=authority_status,
+            diagnostics=["No sample_ref"],
+        )
+
+    sample_path = REPO_ROOT / sample_ref
+    if not sample_path.exists():
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id=format_id, product_id=f"format-factory-{format_id}", language="python",
+            case_id=case_id, profile="PARSE_VALIDITY",
+            result=RESULT_BLOCKED_MISSING_SAMPLE, authority_status=authority_status,
+            diagnostics=[f"Sample not found: {sample_path}"],
+        )
+
+    input_hash = sha256_file(sample_path)
+    try:
+        sys.path.insert(0, str(REPO_ROOT))
+        import importlib
+        mod = importlib.import_module(f"src.python.{module}")
+        fn = getattr(mod, callable_name)
+        result_val = fn(str(sample_path))
+        result_val = _enrich_model(result_val, format_id)
+
+        expected_props = case.get("expected_model_properties", [])
+        observed, deviations, depth, ds_diagnostics = _compare_model_properties(result_val, expected_props)
+
+        verdict_result = RESULT_FAIL if deviations else RESULT_PASS
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id=format_id, product_id=f"format-factory-{format_id}", language="python",
+            case_id=case_id, profile="PARSE_VALIDITY",
+            result=verdict_result, authority_status=authority_status,
+            observed=observed, deviations=deviations, input_hash=input_hash,
+            depth_level=depth, diagnostics=ds_diagnostics,
+        )
+    except Exception as e:
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id=format_id, product_id=f"format-factory-{format_id}", language="python",
+            case_id=case_id, profile="PARSE_VALIDITY",
+            result=RESULT_FAIL, authority_status=authority_status,
+            diagnostics=[f"{type(e).__name__}: {e}"], input_hash=input_hash,
+            depth_level=DEPTH_D0,
+        )
+
+
+def execute_ipynb_valid_case(case: dict, pkg: dict) -> dict:
+    return _execute_enriched_generic(case, pkg, "ipynb", "ipynb.ipynb_codec", "load_ipynb")
+
+
+def execute_mtlx_valid_case(case: dict, pkg: dict) -> dict:
+    return _execute_enriched_generic(case, pkg, "mtlx", "mtlx.mtlx_codec", "load_mtlx")
+
+
+def execute_nrrd_valid_case(case: dict, pkg: dict) -> dict:
+    return _execute_enriched_generic(case, pkg, "nrrd", "nrrd.nrrd_codec", "load_nrrd")
+
+
+def execute_safetensors_valid_case(case: dict, pkg: dict) -> dict:
+    return _execute_enriched_generic(case, pkg, "safetensors", "safetensors.safetensors_codec", "load_safetensors")
+
+
+def execute_ubl_valid_case(case: dict, pkg: dict) -> dict:
+    return _execute_enriched_generic(case, pkg, "ubl", "ubl.ubl_codec", "load_ubl")
+
+
+def execute_xliff_valid_case(case: dict, pkg: dict) -> dict:
+    return _execute_enriched_generic(case, pkg, "xliff", "xliff.xliff_codec", "load_xliff")
+
+
 def execute_zst_valid_case(case: dict, pkg: dict) -> dict:
     """Execute a ZST valid case against the product."""
     case_id = case["case_id"]
@@ -2068,6 +2180,18 @@ def run_oracle_for_format(format_id: str, profile_filter: str = None, case_filte
             verdict = execute_odt_valid_case(case, pkg)
         elif format_id == "fodp":
             verdict = execute_fodp_valid_case(case, pkg)
+        elif format_id == "ipynb":
+            verdict = execute_ipynb_valid_case(case, pkg)
+        elif format_id == "mtlx":
+            verdict = execute_mtlx_valid_case(case, pkg)
+        elif format_id == "nrrd":
+            verdict = execute_nrrd_valid_case(case, pkg)
+        elif format_id == "safetensors":
+            verdict = execute_safetensors_valid_case(case, pkg)
+        elif format_id == "ubl":
+            verdict = execute_ubl_valid_case(case, pkg)
+        elif format_id == "xliff":
+            verdict = execute_xliff_valid_case(case, pkg)
         else:
             verdict = make_verdict(
                 oracle_id=oracle_id, oracle_version=pkg["oracle_version"],

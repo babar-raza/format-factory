@@ -525,7 +525,7 @@ def main() -> None:
         default=None,
         help="Output path for next-work-items.json",
     )
-    parser.add_argument("--max-items", type=int, default=20, help="Max work items to emit")
+    parser.add_argument("--max-items", type=int, default=60, help="Max work items to emit")
     parser.add_argument("--dry-run", action="store_true", help="Print to stdout, no file write")
     parser.add_argument(
         "--validate-qnames",

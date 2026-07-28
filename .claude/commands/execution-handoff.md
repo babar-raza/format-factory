@@ -22,6 +22,11 @@ Convert a hardened plan into a single-go autonomous execution prompt with intern
 8. Add the final response format ending with EVIDENCE_BUNDLE: <absolute Windows path to zip>.
 9. Produce the complete execution handoff prompt using docs/prompts/execution-handoff-prompt-template.md as the structure.
 10. Do not execute the plan. Do not create repo files. Do not commit. Do not push.
+11. Record the coordination state in the handoff (Mission AGENT-COORD-2026-07-15):
+    run `python -m tools.supervisor.coordination --json status` and include the
+    active agents, live leases relevant to the handed-off scope, and any OPEN
+    conflicts. The receiving agent must `register` and `claim` its scope before
+    writing (AGENTS.md Section CO).
 
 ## Output Format
 

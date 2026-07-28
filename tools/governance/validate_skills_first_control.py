@@ -2,7 +2,7 @@
 
 Standalone, FAIL-CLOSED validator that a CI job, a closeout step, or a pre-commit
 hook can call to assert the skills-first control system is internally consistent.
-It composes three checks:
+It composes four checks:
 
   A. Parity/coverage audit (tools.governance.skills_first.audit)
      -> CRITICAL findings always fail; HIGH fail unless --warn-high.
@@ -12,6 +12,12 @@ It composes three checks:
      the concrete primitives (execution manifest schema) and carries no known
      stale enforcement-status (EP-007 must not claim NOT_IMPLEMENTED while the
      pre-commit hook is installed).
+  D. Path-scope lint (tools.governance.skills_first.path_scope_lint): every
+     active src/-mutating skill's declared implementation_paths/allowed_paths
+     is non-empty, template-token-free, and actually matches a representative
+     real path -- without this, the PreToolUse skill_gate.py check can never
+     resolve SKILL_EXISTS_BUT_NO_MANIFEST for that skill's real files, no
+     matter what enforcement mode is configured.
 
 Exit codes:
   0 = PASS (or PASS_WITH_WARNINGS under --warn-high)
@@ -37,6 +43,7 @@ if str(REPO_ROOT) not in sys.path:
 from tools.governance.skills_first import audit as sfc_audit  # noqa: E402
 from tools.governance.skills_first import exceptions as sfc_exc  # noqa: E402
 from tools.governance.skills_first import manifest as sfc_manifest  # noqa: E402
+from tools.governance.skills_first import path_scope_lint as sfc_path_lint  # noqa: E402
 from tools.governance.skills_first.registries import (  # noqa: E402
     RegistryError, load_policy,
 )
@@ -113,8 +120,14 @@ def run(warn_high: bool) -> dict:
         schema_errs = check_manifest_schema()
         policy_errs = check_policy_consistency()
         accepted_sigs, invalid_exceptions = sfc_exc.active_accepted_signatures()
+        path_scope_report = sfc_path_lint.lint()
     except (RegistryError, sfc_exc.ExceptionError) as exc:
         return {"verdict": "CONFIG_ERROR", "error": str(exc)}
+
+    path_scope_errs = [
+        f"{v['skill_id']}: [{v['category']}] {v['detail']}"
+        for v in path_scope_report["violations"]
+    ]
 
     sc = report["severity_counts"]
 
@@ -135,6 +148,7 @@ def run(warn_high: bool) -> dict:
         or bool(schema_errs)
         or bool(policy_errs)
         or bool(invalid_exceptions)
+        or bool(path_scope_errs)
     )
     if uncovered_high and not warn_high:
         fail = True
@@ -147,6 +161,7 @@ def run(warn_high: bool) -> dict:
         "schema_errors": schema_errs,
         "policy_errors": policy_errs,
         "invalid_exceptions": invalid_exceptions,
+        "path_scope_errors": path_scope_errs,
         "uncovered_high_signatures": uncovered_high,
         "accepted_exception_count": len(accepted_sigs),
         "audit_critical": [f for f in report["findings"]
@@ -169,7 +184,8 @@ def main(argv=None) -> int:
         print(f"[skills-first-control] verdict={result['verdict']}")
         if result.get("error"):
             print("  error:", result["error"])
-        for k in ("schema_errors", "policy_errors", "uncovered_high_signatures"):
+        for k in ("schema_errors", "policy_errors", "path_scope_errors",
+                  "uncovered_high_signatures"):
             for e in result.get(k, []):
                 print(f"  {k}: {e}")
         for ie in result.get("invalid_exceptions", []):

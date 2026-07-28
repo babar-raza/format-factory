@@ -42,6 +42,13 @@ Check whether a per-chat plan file is loaded. Look for a system message containi
 
    **For MACHINERY or LIFECYCLE_HARDENING plans (plan type: machinery_hardening):**
    Before writing `--terminal`, run the post-completion audit:
+   (Note — TC-MACH-007: `write_plan_lock.py`'s `_should_require_audit()` also auto-triggers
+   this same audit-gate flow for ANY plan whose file contains `TC-[A-Z0-9]+-[A-Z0-9-]+`
+   taskcard-ID text, i.e. the standard taskcard convention used repo-wide — not only plans
+   with `plan_type: machinery_hardening`. This is intentional (TC-TCF-003): it is a broader
+   automatic safety net beyond what this section documents, not a bug. An ordinary product
+   plan using plain `--terminal` may still transparently downgrade to `ITERATION_REQUIRED`
+   if the audit finds unresolved work — this is expected, not a scope leak.)
    ```
    python tools/supervisor/lifecycle_audit.py \
      --mission-id <mission-id-from-plan-header> \
@@ -270,12 +277,8 @@ and proceed to the next sprint immediately.
    changed = False
    for rel in sorted(Path('src/python').rglob('*.py')):
        parts = rel.parts
-       # Skip build artifacts and nested duplicate packages
+       # Skip build artifacts
        if 'build' in parts or '__pycache__' in parts:
-           continue
-       # Skip nested duplicate packages (e.g. fods/fods/)
-       rel_to_src = rel.relative_to('src/python')
-       if len(rel_to_src.parts) >= 2 and rel_to_src.parts[0] == rel_to_src.parts[1]:
            continue
        rel_str = rel.as_posix()
        if rel_str in k:
@@ -470,6 +473,13 @@ Configurable in `.supervisor/policies.yaml` under `autonomous_continuation.max_i
 ## Governance (always applies)
 
 - Read `AGENTS.md` before taking any action.
+- **Multi-agent coordination (AGENTS.md Section CO):** concurrent agents share this
+  working tree. Claude Code sessions are coordinated ambiently by the hooks in
+  `.claude/settings.json` (auto register/claim/preflight/record-write via
+  `tools/supervisor/coordination/hooks/gate.py`). Claim broad scopes explicitly with
+  `python -m tools.supervisor.coordination claim --resource <dir|logical:NAME>`.
+  Never `git add -A`/`git add .` or clean/revert unexplained changes while other
+  agents are live; a dirty worktree is normal state, not failure.
 - Commit and push follow SCM Agent policy (AGENTS.md §AG4) — not an unconditional human requirement.
 - Gate approval preparation is always agent-owned; Gate 11 G11-G EXECUTION (commercial release) requires Babar Raza's business authority.
 - Format Factory gate authority is in `registry/format-registry.yaml` — supervisor output is advisory only.

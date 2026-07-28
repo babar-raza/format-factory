@@ -107,7 +107,8 @@ skills:
 - command: /add-spec-analytics-function
   command_file: .claude/commands/add-spec-analytics-function.md
   idempotency: idempotent
-  implementation_paths: []
+  implementation_paths:
+  - src/python/**
   mandatory_validations:
   - spec_fact_ref_in_sal_output
   - loc_cap_not_exceeded
@@ -145,7 +146,9 @@ skills:
 - command: /add-dogfood-export
   command_file: .claude/commands/add-dogfood-export.md
   idempotency: create_or_update
-  implementation_paths: []
+  implementation_paths:
+  - src/python/**
+  - src/net/**
   mandatory_validations:
   - product_code_ledger_validator
   - dogfood_backend_is_format_factory_library
@@ -185,7 +188,8 @@ skills:
 - command: /add-dotnet-api
   command_file: .claude/commands/add-dotnet-api.md
   idempotency: create_or_update
-  implementation_paths: []
+  implementation_paths:
+  - src/net/**
   mandatory_validations:
   - product_code_ledger_validator
   - focused_dotnet_tests
@@ -317,7 +321,8 @@ skills:
 - command: /add-dotnet-object-model-feature
   command_file: .claude/commands/add-dotnet-object-model-feature.md
   idempotency: create_or_update
-  implementation_paths: []
+  implementation_paths:
+  - src/net/**
   mandatory_validations:
   - product_code_ledger_validator
   - focused_dotnet_tests
@@ -421,7 +426,8 @@ skills:
 - command: /add-python-api
   command_file: .claude/commands/add-python-api.md
   idempotency: create_or_update
-  implementation_paths: []
+  implementation_paths:
+  - src/python/**
   mandatory_validations:
   - product_code_ledger_validator
   - focused_python_tests
@@ -502,7 +508,8 @@ skills:
 - command: /add-python-object-model-feature
   command_file: .claude/commands/add-python-object-model-feature.md
   idempotency: create_or_update
-  implementation_paths: []
+  implementation_paths:
+  - src/python/**
   mandatory_validations:
   - product_code_ledger_validator
   - focused_python_tests
@@ -597,7 +604,9 @@ skills:
 - command: /add-same-format-writer-feature
   command_file: .claude/commands/add-same-format-writer-feature.md
   idempotency: create_or_update
-  implementation_paths: []
+  implementation_paths:
+  - src/python/**
+  - src/net/**
   mandatory_validations:
   - product_code_ledger_validator
   - roundtrip_test_pass
@@ -1072,7 +1081,8 @@ skills:
 - command: /extract-analytics-from-monolith
   command_file: .claude/commands/extract-analytics-from-monolith.md
   idempotency: create_or_update
-  implementation_paths: []
+  implementation_paths:
+  - src/python/**
   mandatory_validations:
   - analytics_target_below_loc_cap
   - baseline_tests_pass_before_extraction
@@ -1107,7 +1117,11 @@ skills:
 - command: /generate-execution-handoff
   command_file: .claude/commands/generate-execution-handoff.md
   idempotency: create_or_update
-  implementation_paths: []
+  implementation_paths:
+  - src/python/**
+  - src/net/**
+  - tests/python/**
+  - tests/net/**
   mandatory_validations:
   - handoff_yaml_valid
   product_track: planning
@@ -1124,7 +1138,8 @@ skills:
 - command: /implement-spec-stub
   command_file: .claude/commands/implement-spec-stub.md
   idempotency: create_or_update
-  implementation_paths: []
+  implementation_paths:
+  - src/python/fodt/spec/**
   mandatory_validations:
   - stub_has_architecture_only_marker
   - spec_qname_in_qname_registry
@@ -1434,7 +1449,8 @@ skills:
 - command: /python-reduced-spec-parity-model
   command_file: .claude/commands/python-reduced-spec-parity-model.md
   idempotency: create_or_update
-  implementation_paths: []
+  implementation_paths:
+  - src/python/**
   mandatory_validations:
   - product_code_ledger_validator
   - spec_qname_present
@@ -1464,7 +1480,8 @@ skills:
   created_at: '2026-06-25'
   created_by: TC-SF-011
   idempotency: create_or_update
-  implementation_paths: []
+  implementation_paths:
+  - src/python/**
   mechanism_type: ATOMIC_SKILL
   purpose: Backfill spec_qname authority classes for format QName registry entries
   skill_id: qname-backfill
@@ -1777,7 +1794,9 @@ skills:
 - command: /spec-parity-source-regeneration-and-migration
   command_file: .claude/commands/spec-parity-source-regeneration-and-migration.md
   idempotency: create_or_update
-  implementation_paths: []
+  implementation_paths:
+  - src/python/**
+  - tests/python/**
   mandatory_validations:
   - product_code_ledger_validator
   - spec_parity_validator_pass
@@ -2148,7 +2167,9 @@ skills:
 - command: /verify-dogfood-path
   command_file: .claude/commands/verify-dogfood-path.md
   idempotency: create_or_update
-  implementation_paths: []
+  implementation_paths:
+  - src/python/**
+  - tests/python/**
   mandatory_validations:
   - product_code_ledger_validator
   - no_external_imaging_backends
@@ -3501,8 +3522,8 @@ skills:
   command_file: .claude/commands/format-feature-expansion.md
   idempotency: create_or_update
   implementation_paths:
-  - src/python/<format>/format_factory/<format>/
-  - tests/python/<format>/
+  - src/python/**
+  - tests/python/**
   mandatory_validations:
   - governance_validators_pass
   - obligation_and_sal_integrity
@@ -3534,8 +3555,8 @@ skills:
   command_file: .claude/commands/new-format-kickstart.md
   idempotency: create_or_update
   implementation_paths:
-  - src/python/<format>/
-  - tests/python/<format>/
+  - src/python/**
+  - tests/python/**
   mandatory_validations:
   - product_contract_compiles
   - authority_digests_pinned
@@ -3583,8 +3604,8 @@ skills:
   command_file: .claude/commands/product-source-task.md
   idempotency: create_or_update
   implementation_paths:
-  - src/python/<format>/
-  - tests/python/<format>/
+  - src/python/**
+  - tests/python/**
   mandatory_validations:
   - reproduced_failure_or_characterization
   - complete_input_digest_closure
@@ -4800,7 +4821,8 @@ skills:
   command_file: .claude/commands/fix-exception-hierarchy.md
   created_at: '2026-07-16'
   idempotency: idempotent
-  implementation_paths: []
+  implementation_paths:
+  - src/python/**
   mandatory_validations: [exception_root_is_format_factory_error, no_shadow_class_redefinition,
     focused_tests]
   notes: Thin governed wrapper around tools/backfill/exception_hierarchy_backfill.py.
@@ -4820,7 +4842,8 @@ skills:
   command_file: .claude/commands/wire-analytics-module.md
   created_at: '2026-07-16'
   idempotency: idempotent
-  implementation_paths: []
+  implementation_paths:
+  - src/python/**
   mandatory_validations: [analytics_module_reachable_via_import, all_list_updated,
     focused_tests]
   notes: Thin governed wrapper around tools/backfill/analytics_wiring_backfill.py.

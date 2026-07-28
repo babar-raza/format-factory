@@ -192,23 +192,35 @@ import re as _re
 _TC_TABLE_RE = _re.compile(
     r"\|\s*(TC-[A-Z0-9]+-[A-Z0-9-]+)\s*\|\s*"
     r"(CLOSED|OPEN|IN_PROGRESS|PENDING|SUPERSEDED|EXCLUDED"
-    r"|READY|PARTIALLY_COMPLETED|COMPLETED_BUT_WEAKLY_VERIFIED|FOLLOW_UP)\s*\|",
+    r"|READY|PARTIALLY_COMPLETED|COMPLETED_BUT_WEAKLY_VERIFIED|FOLLOW_UP"
+    r"|COMPLETED_VERIFIED|NOT_ATTEMPTED|BLOCKER)\s*\|",
     _re.IGNORECASE,
 )
 _TC_BLOCK_RE = _re.compile(
     r"^#{1,4}\s+(TC-[A-Z0-9]+-[A-Z0-9-]+)\b[^\n]*\n"
     r"(?:[^\n]*\n){0,4}?"
     r"[^\n]*\*{0,2}Status:?\*{0,2}\s*(CLOSED|OPEN|IN_PROGRESS|PENDING|SUPERSEDED|EXCLUDED"
-    r"|READY|PARTIALLY_COMPLETED|COMPLETED_BUT_WEAKLY_VERIFIED|FOLLOW_UP)",
+    r"|READY|PARTIALLY_COMPLETED|COMPLETED_BUT_WEAKLY_VERIFIED|FOLLOW_UP"
+    r"|COMPLETED_VERIFIED|NOT_ATTEMPTED|BLOCKER)",
     _re.IGNORECASE | _re.MULTILINE,
 )
 _TC_INLINE_RE = _re.compile(
     "(TC-[A-Z0-9]+-[A-Z0-9-]+)\\s*(?:\u2014|:|-)\\s*\\*{0,2}"
     "(CLOSED|OPEN|IN_PROGRESS|PENDING|SUPERSEDED|EXCLUDED"
-    "|READY|PARTIALLY_COMPLETED|COMPLETED_BUT_WEAKLY_VERIFIED|FOLLOW_UP)\\*{0,2}",
+    "|READY|PARTIALLY_COMPLETED|COMPLETED_BUT_WEAKLY_VERIFIED|FOLLOW_UP"
+    "|COMPLETED_VERIFIED|NOT_ATTEMPTED|BLOCKER)\\*{0,2}",
     _re.IGNORECASE,
 )
-_TERMINAL_STATUSES = frozenset({"CLOSED", "SUPERSEDED", "EXCLUDED"})
+# COMPLETED_VERIFIED/NOT_ATTEMPTED/BLOCKER added (TC-SFC-H-007, 2026-07-25):
+# the PLAN FILE HARDENING MODE 15-field taskcard schema (see
+# plans/.claude/plan-hardening-addendum-from-latest-audit.md) uses this
+# lowercase snake_case vocabulary; it was previously entirely invisible to
+# this parser (no alternation branch matched it), which meant a plan using
+# that schema either silently reported zero parsed taskcards, or -- for any
+# row that happened to also say "follow_up" -- reported it as open without
+# ever recognizing a completed_verified row as closed. Purely additive: no
+# previously-matching status word changed meaning or matching behavior.
+_TERMINAL_STATUSES = frozenset({"CLOSED", "SUPERSEDED", "EXCLUDED", "COMPLETED_VERIFIED"})
 
 
 def parse_plan_taskcards(plan_path: str | Path) -> list[dict]:

@@ -1,6 +1,6 @@
 ---
-version: "1.0"
-last-updated: "2026-06-21"
+version: "1.1"
+last-updated: "2026-07-24"
 phase-available: "all"
 gate-required: null
 created-by: skill-governance-sync-sprint
@@ -33,7 +33,10 @@ This command is OPTIONAL for non-product work (reports, docs, tools, governance 
 
 - `work_type` — one of: python_api, dotnet_api, python_object_model, dotnet_object_model,
   dogfood_export, writer_feature, roundtrip_test, installed_example, analytics_function,
-  spec_literal_migration, sal_pipeline_heal, capability_compiler, other
+  spec_literal_migration, python_reduced_parity, qname_mapping, architecture_blueprint,
+  sal_pipeline_heal, capability_compiler, new_format_creation, format_feature_expansion,
+  bounded_source_task, exception_hierarchy_fix, analytics_module_wiring,
+  spec_stub_implementation, other
 - `format_id` — the format being worked on
 - `planned_paths` — list of src/ paths that would be modified
 
@@ -66,13 +69,19 @@ This command is OPTIONAL for non-product work (reports, docs, tools, governance 
 | writer_feature | add-same-format-writer-feature |
 | roundtrip_test | add-roundtrip-test (tests only) |
 | installed_example | add-installed-package-example |
-| analytics_function | add-analytics-function |
+| analytics_function | add-spec-analytics-function |
 | spec_literal_migration | spec-parity-source-regeneration-and-migration |
 | python_reduced_parity | python-reduced-spec-parity-model |
 | qname_mapping | spec-literal-qname-to-code-mapping |
 | architecture_blueprint | spec-shaped-product-architecture-blueprint |
 | sal_pipeline_heal | sal-pipeline-heal |
 | capability_compiler | SKILL_GAP (no skill registered — creates taskcard) |
+| new_format_creation | new-format-kickstart |
+| format_feature_expansion | format-feature-expansion |
+| bounded_source_task | product-source-task |
+| exception_hierarchy_fix | fix-exception-hierarchy |
+| analytics_module_wiring | wire-analytics-module |
+| spec_stub_implementation | implement-spec-stub |
 | other | SKILL_GAP if involves src/ changes — creates taskcard |
 
 ## Skill-Gap Taskcard Schema
@@ -135,6 +144,18 @@ Command is complete when:
 
 ## Changelog
 
+- 1.1 (2026-07-24): Strict skills-first hardening. Added 6 missing work_types
+  (new_format_creation, format_feature_expansion, bounded_source_task,
+  exception_hierarchy_fix, analytics_module_wiring, spec_stub_implementation)
+  for skills registered 2026-07-01/2026-07-16 that this file predated and
+  never recognized — literal use of this command for that work previously
+  fell through to `other -> SKILL_GAP` despite an active, registered skill
+  already covering it. Added python_reduced_parity, qname_mapping, and
+  architecture_blueprint to the declared enum (they already had mapping rows
+  but were missing from the enum itself — a self-contradiction where the
+  file documented mappings for work types it didn't allow as valid input).
+  Corrected `analytics_function`'s mapped skill from the deprecated
+  `add-analytics-function` to its active successor `add-spec-analytics-function`.
 - 1.0 (2026-06-21): Initial version — skill-governance-sync-sprint (SKILL-GAP-010)
 
 ## Forbidden Paths

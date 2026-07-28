@@ -56,6 +56,45 @@ Before any governed mutation, Codex MUST:
 7. **Write an execution receipt** (transcript YAML at `.local/transcripts/<id>.json`)
 8. **Validate receipt** using `validate-skill-transcript`
 
+### 3a. Coordination Protocol (MANDATORY — Mission AGENT-COORD-2026-07-15)
+
+Codex shares the working tree with concurrent agents. Before and around every
+governed mutation, Codex MUST drive the shared coordination plane
+(`python -m tools.supervisor.coordination <verb>`; state at
+`%LOCALAPPDATA%/ff-coordination/<repo-key>/`, override
+`FF_AGENT_COORDINATION_ROOT`). See AGENTS.md Section CO; verb authority:
+`tools/supervisor/coordination/verbs.py` (validator V194 enforces parity).
+
+1. `register --provider codex --mode headless --task <task_id>` at session
+   start (persist the returned identity via the runtime token file or
+   `FF_AGENT_ID`/`FF_AGENT_TOKEN`).
+2. `claim --resource <path|dir|logical:NAME> --mode EXCLUSIVE_WRITE` before
+   mutating; exit 2 means another agent owns it — wait, coordinate, or use a
+   governed `takeover --reason` only if the lease is STALE.
+3. `preflight --file <path>` before EACH write (exit 5 = the file changed
+   underneath you: PRESERVE it, resolve the conflict, `renew --rebaseline`;
+   **exit 7 (2026-07-24) = skill-resolution blocked** — a registered active
+   skill's declared path scope covers this file and `check_mode:
+   skill_resolution` is `enforcing` for it, but no live execution manifest
+   covers it. Run `python -m tools.governance.skills_first.manifest create
+   --skill <id> --allowed-paths <scope> --write` first, then retry. This is
+   the same check `tools/supervisor/coordination/hooks/skill_gate.py`'s
+   `decide()` runs for Claude Code's PreToolUse hook — before this date the
+   CLI `preflight` verb only ran the coordination-lease check, so Codex had
+   lease protection but not skill protection even though line 21 above says
+   the policy applies equally to both agents. It now runs the identical
+   decision either way.).
+4. `record-write --file <path>` after EACH successful write (attribution).
+5. `heartbeat` periodically (piggybacked on every CLI verb).
+6. `release --all` then `complete` when the task ends.
+
+Step 5 of the main contract is no longer optional in coordinated mode: the
+mutation guard verifies a live lease covering `--target-paths`
+(`--require-lease` is auto-on when the coordination DB exists;
+`--no-require-lease` skips are recorded in the authorization and audited by
+V195). Never `git add -A`/`git add .`; never clean or revert unexplained
+changes — see AGENTS.md Section CO1.
+
 ## 4. If No Skill Matches
 
 When `check-skill-coverage` returns `BLOCKED_SKILL_GAP`:

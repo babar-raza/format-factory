@@ -2,9 +2,9 @@ generated_by: TC-ACP-012
 source: docs/agents/agent-inventory.yaml
 date: '2026-07-13'
 schema_version: '1.0'
-total_capabilities: 22
+total_capabilities: 23
 semantic_parity_count: 3
-gap_count: 19
+gap_count: 20
 blocking_count: 4
 capability_parity_matrix:
 - capability_id: RC-001
@@ -426,3 +426,30 @@ capability_parity_matrix:
   - 'codex: COMPLETE_UNVERIFIED (pending live instantiation)'
   blocking:
   - kilo BLOCKED on RC-022
+- capability_id: RC-023
+  name: coordination_protocol
+  claude:
+    status: COMPLETE_VERIFIED
+    mechanism: >-
+      Ambient hook plane (.claude/settings.json SessionStart/PreToolUse/
+      PostToolUse/SessionEnd -> tools/supervisor/coordination/hooks/gate.py):
+      auto-register, auto-claim, attribution journal, conflict refusal.
+      Proven by 16/16 coordination pilots (reports/coordination/pilot-evidence/).
+    verified: true
+  codex:
+    status: COMPLETE_UNVERIFIED
+    mechanism: >-
+      Adapter contract steps (codex-adapter.md section 3a) + pre_mutation_guard
+      --require-lease (auto-on) + provider-neutral pre-commit gate.
+    verified: false
+  kilo:
+    status: PARTIAL_UNVERIFIED
+    mechanism: >-
+      Adapter contract steps (kilo-adapter.md section 2a) + pre-commit gate;
+      depends on script execution availability [RC-016 lineage].
+    verified: false
+  semantic_parity: false
+  remaining_gaps:
+  - 'codex: COMPLETE_UNVERIFIED (pending live instantiation)'
+  - 'kilo: PARTIAL_UNVERIFIED (script execution availability unknown)'
+  blocking: []

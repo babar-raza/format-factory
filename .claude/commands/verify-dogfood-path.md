@@ -11,6 +11,23 @@ visibility: generated
 
 Verify that a dogfood export path works end-to-end using an installed Format Factory library.
 
+## Step 0 — Execution Manifest (run BEFORE any other step)
+
+```
+python -m tools.governance.skills_first.manifest create \
+  --task-id <task_id> --agent-type CLAUDE_CODE \
+  --operation "<one-line description of this invocation>" \
+  --skill verify-dogfood-path \
+  --allowed-paths tests/python/<format>/** src/python/<format>/** \
+  --write
+```
+
+Record the printed `execution_id`. On `ManifestError`, STOP -- do not proceed
+until the manifest is created. This is what lets the tool-layer skill gate
+(`tools/supervisor/coordination/hooks/skill_gate.py`) recognize this invocation
+as `MANIFEST_COVERING` instead of blocking it once `check_mode:skill_resolution`
+is promoted to `enforcing` for `src/python/`.
+
 ## Usage
 
 ```

@@ -13,6 +13,26 @@ Generate a formal execution handoff document for a src/* change that cannot be
 performed via an existing governed skill directly (e.g., multi-file refactor,
 complex algorithmic change, format-specific knowledge required).
 
+## Step 0 — Execution Manifest (run BEFORE any other step)
+
+```
+python -m tools.governance.skills_first.manifest create \
+  --task-id <task_id> --agent-type CLAUDE_CODE \
+  --operation "<one-line description of this invocation>" \
+  --skill generate-execution-handoff \
+  --allowed-paths src/python/<format>/** src/net/<format>/** tests/python/<format>/** tests/net/<format>/** \
+  --write
+```
+
+Record the printed `execution_id`. On `ManifestError`, STOP -- do not proceed
+until the manifest is created. This is what lets the tool-layer skill gate
+(`tools/supervisor/coordination/hooks/skill_gate.py`) recognize this invocation
+as `MANIFEST_COVERING` instead of blocking it once `check_mode:skill_resolution`
+is promoted to `enforcing` for the relevant track. Scope `--allowed-paths` down
+to the exact target file(s) named in step 3's handoff document, not the whole
+format directory, since this skill's whole purpose is a narrow, documented,
+one-off change.
+
 ## Usage
 
 ```

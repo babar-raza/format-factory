@@ -5,6 +5,23 @@
 **Track:** spec_parity
 **Status:** active
 
+## Step 0 — Execution Manifest (run BEFORE any other step)
+
+```
+python -m tools.governance.skills_first.manifest create \
+  --task-id <task_id> --agent-type CLAUDE_CODE \
+  --operation "<one-line description of this invocation>" \
+  --skill spec-parity-source-regeneration-and-migration \
+  --allowed-paths src/python/<format_id>/** tests/python/<format_id>/** \
+  --write
+```
+
+Record the printed `execution_id`. On `ManifestError`, STOP -- do not proceed
+until the manifest is created. This is what lets the tool-layer skill gate
+(`tools/supervisor/coordination/hooks/skill_gate.py`) recognize this invocation
+as `MANIFEST_COVERING` instead of blocking it once `check_mode:skill_resolution`
+is promoted to `enforcing` for `src/python/`.
+
 ## Purpose
 
 Regenerate or migrate existing source code to match the spec-shaped blueprint.

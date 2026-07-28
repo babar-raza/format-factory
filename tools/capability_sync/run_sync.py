@@ -69,6 +69,28 @@ def run_build_agent_bundles() -> int:
         return 0  # Best-effort — never blocks sync
 
 
+def _guarded(mode: str):
+    """Coordination generator guard (TC-COORD-009). Write-modes only; a
+    conflicting live lease on any declared output fails the run BEFORE the
+    first write. Best-effort when the coordination package is unavailable."""
+    from contextlib import nullcontext
+
+    if mode not in ("full", "inventory-only"):
+        return nullcontext()
+    try:
+        supervisor_dir = _REPO / "tools" / "supervisor"
+        if str(supervisor_dir) not in sys.path:
+            sys.path.insert(0, str(supervisor_dir))
+        from coordination.generator_guard import guarded_generation
+        return guarded_generation(
+            "capability_sync", _REPO / "tools" / "capability_sync" /
+            "output-manifest.yaml")
+    except ImportError as exc:
+        print(f"  WARNING: coordination guard unavailable ({exc});"
+              " running unguarded")
+        return nullcontext()
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Capability sync orchestrator")
     parser.add_argument(
@@ -79,6 +101,17 @@ def main() -> int:
     )
     args = parser.parse_args()
 
+    try:
+        with _guarded(args.mode):
+            return _run_modes(args)
+    except Exception as exc:
+        if type(exc).__name__ == "GeneratorBlocked":
+            print(f"BLOCKED: {exc}")
+            return 2
+        raise
+
+
+def _run_modes(args) -> int:
     codes = []
 
     if args.mode == "inventory-only":

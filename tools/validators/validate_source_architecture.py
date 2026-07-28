@@ -124,15 +124,6 @@ def scan(src_root: Path, baseline: dict, repo_root: Path) -> dict:
     ]
 
     for fpath in sorted(py_files):
-        # Skip nested duplicate packages (e.g. src/python/fods/fods/)
-        try:
-            rel_to_src = fpath.relative_to(src_root)
-        except ValueError:
-            continue
-        parts = rel_to_src.parts
-        if len(parts) >= 2 and parts[0] == parts[1]:
-            continue
-
         try:
             rel_posix = fpath.relative_to(repo_root).as_posix()
         except ValueError:

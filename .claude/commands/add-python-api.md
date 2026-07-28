@@ -1,6 +1,6 @@
 ---
-version: "1.6"
-last-updated: "2026-07-13"
+version: "1.7"
+last-updated: "2026-07-16"
 phase-available: "3+"
 gate-required: "Explicit product implementation authorization for the named format"
 generated_by: codex
@@ -8,6 +8,23 @@ visibility: generated
 ---
 
 # /add-python-api
+
+## Step 0 — Execution Manifest (run BEFORE the mandatory pre-check below and every other step)
+
+```
+python -m tools.governance.skills_first.manifest create \
+  --task-id <task_id> --agent-type CLAUDE_CODE \
+  --operation "<one-line description of this invocation>" \
+  --skill add-python-api \
+  --allowed-paths src/python/<format_id>/** \
+  --write
+```
+
+Record the printed `execution_id`. On `ManifestError`, STOP -- do not proceed
+until the manifest is created. This is what lets the tool-layer skill gate
+(`tools/supervisor/coordination/hooks/skill_gate.py`) recognize this invocation
+as `MANIFEST_COVERING` instead of blocking it once `check_mode:skill_resolution`
+is promoted to `enforcing` for `src/python/`.
 
 ## MANDATORY PRE-CHECK ZERO: Work-Shape Rejection and File-Type Check
 
@@ -27,6 +44,8 @@ visibility: generated
 **After implementation:**
 - Verify or update `__all__` in `<format>/__init__.py` to explicitly list new public names.
 - Wildcard imports in `__init__.py` are PROHIBITED — use explicit name lists only.
+- New error classes for a format must be added to that format's `exceptions.py` (never
+  redefined in the codec/parser file), rooted at `FormatFactoryError`.
 
 ---
 
@@ -221,3 +240,5 @@ containing output from this skill will be checked by each of these validators:
 - 1.4 (2026-07-03): TC-PQLM-007 — Added MANDATORY PRE-CHECK ZERO: analytics masquerade rejection, wildcard import prohibition, __all__ update requirement, file-type check before writing.
 - 1.5 (2026-07-07): TC-CQGA-033-04 — Added Governance Validators section with rule IDs V_VALIDATE_SUSPICIOUS_FILENAMES through V_VALIDATE_FILES_OUTSIDE_APPROVED_LAYOUT.
 - 1.6 (2026-07-13): DRIVERS-PRODUCTION-INTEGRATION-001 (TC-INT-004) — Replaced Step 7 with Steps 7a/7b/7c scaffold generation and promotion (MANDATORY); added V_VALIDATE_WEAK_TEST_ASSERTIONS to governance validators table.
+- 1.7 (2026-07-16): Root-cause fix — added rule that new error classes must be added to
+  the format's `exceptions.py` (never redefined elsewhere), rooted at `FormatFactoryError`.

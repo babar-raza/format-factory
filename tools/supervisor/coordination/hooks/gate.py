@@ -289,7 +289,6 @@ def _on_pre_file_skill_gate(root: Path, wt_path: str, tool: str,
     here (any exception) fails OPEN with an incident record, never silently
     escalates to block."""
     try:
-        from ..db import connect, get_check_mode
         from . import skill_gate
     except ImportError:
         return 0  # SFC package not present in this checkout; fail open
@@ -299,30 +298,36 @@ def _on_pre_file_skill_gate(root: Path, wt_path: str, tool: str,
     rel = p[len(wt) + 1:] if p != wt and p.startswith(wt + "/") else p
 
     try:
-        verdict = skill_gate.evaluate_path(rel)
+        # decide() is the single shared decision both this Claude Code hook
+        # and cli.py's `preflight` verb (Codex's entry point) resolve through
+        # -- see skill_gate.decide()'s docstring for why that sharing matters.
+        decision = skill_gate.decide(root, rel)
     except Exception as exc:
         _incident(root, "FAIL_OPEN", {"stage": "skill_gate",
                                       "error": f"{type(exc).__name__}: {exc}"})
         return 0  # a bug in a NEW check must never block existing work
 
+    verdict, check_mode = decision.verdict, decision.check_mode
     if not verdict.block_eligible:
         return 0  # MANIFEST_COVERING / NO_SKILL_RESOLVED_FOR_PATH: always allow
-
-    conn = connect(root)
-    try:
-        check_mode = get_check_mode(conn, skill_gate.CHECK_ID)
-    finally:
-        conn.close()
 
     payload = {"tool": tool, "file": rel, "check": skill_gate.CHECK_ID,
               "tier": verdict.tier, "detail": verdict.detail,
               "agent": agent_id}
-    if check_mode == "enforcing":
+    if decision.action == "block":
         payload["would_block"] = False
         _db_event(root, "HOOK_BLOCK", payload, actor=agent_id)
-        return _block(f"[skill-gate] BLOCKED: {verdict.detail}")
+        return _block(f"[skill-gate] BLOCKED: {verdict.detail}\n"
+                       f"  Create an execution manifest before editing this"
+                       f" path, e.g.:\n"
+                       f"  python -m tools.governance.skills_first.manifest"
+                       f" create --task-id <T> --agent-type CLAUDE_CODE"
+                       f" --operation \"<what you're doing>\""
+                       f" --skill {skill_gate.owning_skill_hint(rel)}"
+                       f" --allowed-paths {os.path.dirname(rel) or rel}/**"
+                       f" --write")
     payload["would_block"] = True
-    _advisory(root, payload)
+    skill_gate.log_advisory_event(root, payload)
     return 0
 
 

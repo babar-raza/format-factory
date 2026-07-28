@@ -51,10 +51,6 @@ def _scan_format_source(format_name: str) -> dict[str, Any]:
     for py_file in sorted(fmt_dir.rglob("*.py")):
         if "__pycache__" in py_file.parts or "build" in py_file.parts:
             continue
-        # Skip nested duplicate packages
-        rel = py_file.relative_to(SRC_PYTHON)
-        if len(rel.parts) >= 2 and rel.parts[0] == rel.parts[1]:
-            continue
 
         try:
             source = py_file.read_text(encoding="utf-8", errors="replace")
