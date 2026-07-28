@@ -44034,9 +44034,142 @@
         }
       ],
       "tests": "tests/python/ipynb/test_obligation_corpus_integrity.py"
+    },
+    {
+      "entry_id": "FF6-XLIFF-SEGMENTATION-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "AUTO-XLIFF-IMPLEMENT-XLIFF-SEG-001",
+      "capability": "XLIFF-SEG-001",
+      "capability_refs": [
+        "XLIFF-SEG-001",
+        "SAL-XLIFF-OBL-420141532D90D385"
+      ],
+      "api_symbols": [
+        "format_factory.xliff.split_segment",
+        "format_factory.xliff.join_segments",
+        "format_factory.xliff.SegmentMapping"
+      ],
+      "product": "XLIFF Python production package",
+      "format": "XLIFF",
+      "test_delta": "Split/join mapping reports preserve tokenized inline content and reject boundaries that orphan spanning inline pairs.",
+      "git_head": "03889149",
+      "skill": "format-feature-expansion",
+      "source_files": [
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/model/segmentation.py",
+          "state": "present",
+          "sha256": "c2c3f1f35573fa11fc4f6ae67bf0a9d4395824dc2589dd05d73d88d83b00576b"
+        },
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/model/__init__.py",
+          "state": "present",
+          "sha256": "ea78cebaf7d063c7b59063791502651b2a060ad2b8ac108db50b51a0f267a8c8"
+        },
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/__init__.py",
+          "state": "present",
+          "sha256": "7e734c7ac320542e3bfd0328209f16fea67739ee4030ec23adefd33229ef17c7"
+        }
+      ],
+      "test_files": [
+        "tests/python/xliff/test_production_namespace.py"
+      ],
+      "validation_command": "PYTHONPATH=src/python/core/src;src/python/xliff/src .local/venvs/ipynb-current-proof/Scripts/python.exe -m pytest tests/python/xliff -q",
+      "result": "186 passed",
+      "rollback": "Remove the segmentation module and public exports, restore the namespace test, and remove this ledger entry."
+    },
+    {
+      "entry_id": "FF6-XLIFF-TEXT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "AUTO-XLIFF-IMPLEMENT-XLIFF-TEXT-001",
+      "capability": "XLIFF-TEXT-001",
+      "capability_refs": [
+        "XLIFF-TEXT-001",
+        "SAL-XLIFF-OBL-E428FA846AA270C8"
+      ],
+      "api_symbols": [
+        "format_factory.xliff.copy_source_to_target",
+        "format_factory.xliff.replace_text_slots",
+        "format_factory.xliff.text_slots"
+      ],
+      "product": "XLIFF Python production package",
+      "format": "XLIFF",
+      "test_delta": "Target creation uses explicit code-copy policy; token-aware edits preserve inline code structure; source and target xml:lang/xml:space attributes survive parse and write.",
+      "git_head": "79bc89ef",
+      "skill": "format-feature-expansion",
+      "source_files": [
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/model/document.py",
+          "state": "present",
+          "sha256": "b79f8bae471830364c1d1a9b8318420bd0129d979d919d4b6bb3b6c5f297e2cb"
+        },
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/model/text_editing.py",
+          "state": "present",
+          "sha256": "16121ef4cdcf828c6595390ae56f1f9e1e5498b4dd884f8444cfe46e482e52d9"
+        },
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/model/__init__.py",
+          "state": "present",
+          "sha256": "ea78cebaf7d063c7b59063791502651b2a060ad2b8ac108db50b51a0f267a8c8"
+        },
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/__init__.py",
+          "state": "present",
+          "sha256": "7e734c7ac320542e3bfd0328209f16fea67739ee4030ec23adefd33229ef17c7"
+        },
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py",
+          "state": "present",
+          "sha256": "2a9373b24b935f0778955185c25b8f9b26f2fd9b5e293d2e841b498a7dda5e52"
+        },
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py",
+          "state": "present",
+          "sha256": "ce4d9bcc315425fb146846be3bdab9f1654c8f506ac4aaf64d8bf1b3fbe7f0cd"
+        }
+      ],
+      "test_files": [
+        "tests/python/xliff/test_production_namespace.py"
+      ],
+      "validation_command": "PYTHONPATH=src/python/core/src;src/python/xliff/src .local/venvs/ipynb-current-proof/Scripts/python.exe -m pytest tests/python/xliff -q; tools/run_package_install_proof.py --format xliff",
+      "result": "186 XLIFF tests passed; installed wheel proof PASS (2 passed, 1 skipped)",
+      "rollback": "Remove token-aware text-editing API and source/target child attributes, then restore the previous model, reader, writer, exports, and tests."
+    },
+    {
+      "entry_id": "FF6-XLIFF-STATE-TARGET-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "TC-FF6-XLIFF-STATE-001",
+      "capability": "XLIFF-STATE-001",
+      "capability_refs": [
+        "XLIFF-STATE-001",
+        "SAL-XLIFF-00018"
+      ],
+      "api_symbols": [
+        "format_factory.xliff.validate"
+      ],
+      "product": "XLIFF Python production package",
+      "format": "XLIFF",
+      "test_delta": "Advanced translation states translated, reviewed, and final require a target; initial/default state remains valid without one.",
+      "git_head": "5bdfd727",
+      "skill": "format-feature-expansion",
+      "task_id": "TC-FF6-XLIFF-STATE-001",
+      "source_files": [
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+          "state": "present",
+          "sha256": "82e472fba0627f62ac86077bea966810ab03027e9319f11baf85e2f3e2579e6a"
+        }
+      ],
+      "test_files": [
+        "tests/python/xliff/test_production_namespace.py"
+      ],
+      "validation_command": "PYTHONPATH=src/python/core/src;src/python/xliff/src .venv/Scripts/python.exe -m pytest tests/python/xliff -q",
+      "result": "190 passed",
+      "rollback": "Remove the advanced-state target diagnostic and its focused tests, then remove this ledger entry."
     }
   ],
-  "total_entries": 2779,
+  "total_entries": 2782,
   "changes": [
     {
       "file": "src/python/dif/models.py",

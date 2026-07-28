@@ -77,22 +77,57 @@ def latest_entries_by_path(entries: list[dict]) -> dict[str, dict]:
     latest: dict[str, dict] = {}
     for entry in entries:
         for source in entry.get("source_files", []):
+            if not isinstance(source, dict):
+                continue
             path = str(source.get("path", "")).replace("\\", "/")
             if path:
                 latest[path] = {"entry": entry, "source": source}
     return latest
 
 
+def partition_current_entries(entries: list[object]) -> tuple[list[dict], list[str]]:
+    """Separate governed v2 records from append-only historical records.
+
+    The R90 file predates its current schema and contains earlier test-coverage
+    and sprint records.  Those records remain audit history, but they cannot
+    prove the current SHA-bound product state.  Only entries using a current
+    product classification participate in the live ledger projection.
+    """
+
+    current: list[dict] = []
+    legacy_ids: list[str] = []
+    for index, raw_entry in enumerate(entries):
+        if not isinstance(raw_entry, dict):
+            legacy_ids.append(f"entries[{index}]")
+            continue
+        if raw_entry.get("classification") in VALID_CLASSIFICATIONS:
+            current.append(raw_entry)
+        elif (
+            isinstance(raw_entry.get("source_files"), list)
+            and all(isinstance(source, dict) for source in raw_entry["source_files"])
+            and "capability_refs" in raw_entry
+            and "api_symbols" in raw_entry
+        ):
+            # A record shaped as the current schema but using an unknown
+            # classification must fail closed rather than being silently
+            # downgraded to history.
+            current.append(raw_entry)
+        else:
+            legacy_ids.append(str(raw_entry.get("entry_id") or f"entries[{index}]"))
+    return current, legacy_ids
+
+
 def validate_ledger(ledger: dict, repo_root: Path, base_ref: str | None = None) -> dict:
     errors: list[str] = []
-    entries = ledger.get("entries")
-    if not isinstance(entries, list):
+    raw_entries = ledger.get("entries")
+    if not isinstance(raw_entries, list):
         return {"valid": False, "errors": ["entries must be a list"], "changed_src_files": []}
 
     configured_base = base_ref or ledger.get("tracking_base_ref")
     if not configured_base:
         return {"valid": False, "errors": ["tracking_base_ref is required"], "changed_src_files": []}
 
+    entries, legacy_entry_ids = partition_current_entries(raw_entries)
     seen_ids: set[str] = set()
     for index, entry in enumerate(entries):
         entry_id = entry.get("entry_id")
@@ -127,7 +162,12 @@ def validate_ledger(ledger: dict, repo_root: Path, base_ref: str | None = None) 
         if not isinstance(sources, list) or not sources:
             errors.append(f"{entry_id or index}: source_files must not be empty")
             continue
-        for source in sources:
+        for source_index, source in enumerate(sources):
+            if not isinstance(source, dict):
+                errors.append(
+                    f"{entry_id or index}: source_files[{source_index}] must be an object"
+                )
+                continue
             path = str(source.get("path", "")).replace("\\", "/")
             if not _is_src_path(path):
                 errors.append(f"{entry_id or index}: invalid src path: {path}")
@@ -165,6 +205,8 @@ def validate_ledger(ledger: dict, repo_root: Path, base_ref: str | None = None) 
         "tracking_base_ref": configured_base,
         "changed_src_files": sorted(changed),
         "referenced_src_files": sorted(referenced),
+        "current_entry_ids": [str(entry.get("entry_id", "")) for entry in entries],
+        "legacy_entry_ids": legacy_entry_ids,
     }
 
 

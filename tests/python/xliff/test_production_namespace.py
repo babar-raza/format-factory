@@ -15,13 +15,19 @@ from format_factory.xliff import (
     XliffDocument,
     XliffFile,
     XliffParseError,
+    XliffValidationError,
+    copy_source_to_target,
     dump,
     dumps,
     flatten_inline_content,
     load,
     loads,
     probe,
+    join_segments,
+    replace_text_slots,
+    text_slots,
     validate,
+    split_segment,
 )
 
 
@@ -150,6 +156,54 @@ def test_validation_detects_duplicate_ids_and_unpaired_inline_codes() -> None:
     } <= codes
 
 
+@pytest.mark.parametrize("state", ["translated", "reviewed", "final"])
+def test_advanced_translation_state_requires_target(state: str) -> None:
+    document = XliffDocument(
+        version="2.1",
+        source_language="en",
+        target_language="fr",
+        children=[
+            XliffFile(
+                id="f",
+                children=[Unit(id="u", children=[Segment("s", ["Hello"], state=state)])],
+            )
+        ],
+    )
+
+    codes = {item.code for item in validate(document).diagnostics}
+
+    assert "xliff.segment.state.target_required" in codes
+
+
+def test_initial_state_and_advanced_state_with_target_are_valid() -> None:
+    document = XliffDocument(
+        version="2.1",
+        source_language="en",
+        target_language="fr",
+        children=[
+            XliffFile(
+                id="f",
+                children=[
+                    Unit(
+                        id="u",
+                        children=[
+                            Segment("initial", ["Source"]),
+                            Segment(
+                                "translated",
+                                ["Source"],
+                                target=["Target"],
+                                state="translated",
+                            ),
+                        ],
+                    )
+                ],
+            )
+        ],
+    )
+
+    assert validate(document).is_valid
+
+
 def test_resource_limits_apply_before_xml_processing() -> None:
     limits = ResourceLimits(max_input_bytes=32)
     with pytest.raises(Exception, match="max_input_bytes"):
@@ -159,3 +213,112 @@ def test_resource_limits_apply_before_xml_processing() -> None:
 def test_production_package_has_no_parent_namespace_initializer() -> None:
     package = Path(__file__).parents[3] / "src/python/xliff/src/format_factory"
     assert not (package / "__init__.py").exists()
+
+
+def test_segment_split_join_reports_mapping_and_preserves_inline_content() -> None:
+    unit = Unit(
+        id="u1",
+        children=[
+            Segment(
+                id="s1",
+                source=[
+                    "Hello ",
+                    InlineElement("pc", {"id": "code"}, ["world"]),
+                    "!",
+                ],
+                target=[
+                    "Bonjour ",
+                    InlineElement("pc", {"id": "code"}, ["monde"]),
+                    "!",
+                ],
+                state="translated",
+            )
+        ],
+    )
+
+    split = split_segment(
+        unit,
+        "s1",
+        source_index=1,
+        target_index=1,
+        first_id="s1a",
+        second_id="s1b",
+    )
+
+    assert split.operation == "split"
+    assert split.replacements == {"s1": ("s1a", "s1b")}
+    assert [segment.id for segment in unit.segments] == ["s1a", "s1b"]
+    assert flatten_inline_content(unit.segments[0].source) == "Hello "
+    assert flatten_inline_content(unit.segments[1].source) == "world!"
+    assert validate(
+        XliffDocument("2.1", "en", "fr", [XliffFile("f1", [unit])])
+    ).is_valid
+
+    joined = join_segments(unit, "s1a", "s1b", new_id="s1")
+
+    assert joined.operation == "join"
+    assert joined.replacements == {"s1a": ("s1",), "s1b": ("s1",)}
+    assert [segment.id for segment in unit.segments] == ["s1"]
+    assert flatten_inline_content(unit.segments[0].source) == "Hello world!"
+    assert flatten_inline_content(unit.segments[0].target or []) == "Bonjour monde!"
+
+
+def test_segment_split_rejects_boundary_that_orphans_a_spanning_code() -> None:
+    unit = Unit(
+        id="u1",
+        children=[
+            Segment(
+                id="s1",
+                source=[
+                    InlineElement("sc", {"id": "open"}),
+                    "inside",
+                    InlineElement("ec", {"startRef": "open"}),
+                ],
+            )
+        ],
+    )
+
+    with pytest.raises(XliffValidationError, match="paired inline code"):
+        split_segment(unit, "s1", source_index=1, first_id="s1a", second_id="s1b")
+
+    assert [segment.id for segment in unit.segments] == ["s1"]
+
+
+def test_target_creation_and_token_aware_edit_preserve_inline_codes_and_xml_attributes() -> None:
+    source = b'''<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0"
+        version="2.1" srcLang="en" trgLang="fr"><file id="f"><unit id="u"><segment id="s">
+        <source xml:lang="en-GB" xml:space="preserve">Hello <pc id="code">world</pc>!</source>
+        </segment></unit></file></xliff>'''
+    document = loads(source)
+    segment = next(document.iter_units()).segments[0]
+
+    copy_source_to_target(
+        segment, code_copy_policy="all", target_language="fr-FR"
+    )
+
+    assert segment.source_attributes == {
+        "{http://www.w3.org/XML/1998/namespace}lang": "en-GB",
+        "{http://www.w3.org/XML/1998/namespace}space": "preserve",
+    }
+    assert segment.target_attributes == {
+        "{http://www.w3.org/XML/1998/namespace}lang": "fr-FR",
+        "{http://www.w3.org/XML/1998/namespace}space": "preserve",
+    }
+    assert text_slots(segment.target or []) == ("Hello ", "world", "!")
+    replace_text_slots(segment, ["Bonjour ", "monde", "!"], target=True)
+    assert flatten_inline_content(segment.target or []) == "Bonjour monde!"
+    assert isinstance((segment.target or [])[1], InlineElement)
+    assert dumps(document) == dumps(loads(dumps(document)))
+
+
+def test_text_editing_rejects_implicit_code_loss_or_slot_mismatch() -> None:
+    segment = Segment(
+        id="s",
+        source=["Hello ", InlineElement("pc", {"id": "code"}, ["world"]), "!"],
+    )
+
+    with pytest.raises(XliffValidationError, match="code_copy_policy"):
+        copy_source_to_target(segment, code_copy_policy="invalid")
+    with pytest.raises(XliffValidationError, match="text slots"):
+        replace_text_slots(segment, ["only one"], target=False)
+    assert segment.target is None

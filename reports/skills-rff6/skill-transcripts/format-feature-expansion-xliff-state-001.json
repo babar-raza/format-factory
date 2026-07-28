@@ -1,0 +1,58 @@
+{
+  "invocation_id": "format-feature-expansion-xliff-state-001",
+  "skill_id": "format-feature-expansion",
+  "mode": "live",
+  "inputs": {
+    "format_id": "xliff",
+    "profile_id": "production",
+    "obligation_id": "SAL-XLIFF-00018",
+    "contract_digest": "670416ada043c6c4962ea41812c4e449655d4207a44ebc32c8e242a7ff4e20cd",
+    "authority_digests": [
+      "SRC-XLF-002:73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751"
+    ],
+    "affected_layer": "validation",
+    "planned_paths": [
+      "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+      "tests/python/xliff/test_production_namespace.py"
+    ],
+    "proof_inputs": [
+      "shared/format-contracts/xliff.yaml",
+      "shared/sal-facts/xliff.yaml",
+      "shared/sal-facts/evidence/xliff.yaml",
+      "tests/python/xliff",
+      "reports/package-install-proof/transcripts/package-install-proof-xliff.json"
+    ],
+    "task_id": "TC-FF6-XLIFF-STATE-001"
+  },
+  "allowed_files": [
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+    "tests/python/xliff/test_production_namespace.py",
+    "reports/r90/product-code-change-ledger.json",
+    "taskcards/TC-FF6-XLIFF-STATE-001.md",
+    "taskcards/index.yaml",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-xliff-state-001.json"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+    "tests/python/xliff/test_production_namespace.py",
+    "reports/r90/product-code-change-ledger.json",
+    "taskcards/TC-FF6-XLIFF-STATE-001.md",
+    "taskcards/index.yaml",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-xliff-state-001.json"
+  ],
+  "tests_run": [
+    "red: PYTHONPATH=src/python/core/src;src/python/xliff/src .venv/Scripts/python.exe -m pytest tests/python/xliff/test_production_namespace.py -k 'advanced_translation_state or initial_state' -q (3 failed, 1 passed)",
+    "green: PYTHONPATH=src/python/core/src;src/python/xliff/src .venv/Scripts/python.exe -m pytest tests/python/xliff/test_production_namespace.py -k 'advanced_translation_state or initial_state' -q (4 passed)",
+    "regression: PYTHONPATH=src/python/core/src;src/python/xliff/src .venv/Scripts/python.exe -m pytest tests/python/xliff -q (190 passed)",
+    "installed wheel: tools/run_package_install_proof.py --format xliff (2 passed, 1 skipped; PASS)"
+  ],
+  "ledger_entry_id": "FF6-XLIFF-STATE-TARGET-001",
+  "result": "PASS",
+  "evidence": {
+    "capability": "XLIFF-STATE-001",
+    "authority_fact": "SAL-XLIFF-00018",
+    "source_sha256": "82e472fba0627f62ac86077bea966810ab03027e9319f11baf85e2f3e2579e6a",
+    "package_proof_id": "PACKAGE-PROOF-4E859712536392E1B2ACFEC5A46717F2DB348F08192F98AB670A9728984A24EE",
+    "scope_limit": "This enforces only the standard state-to-target implication; it intentionally does not impose an ordering policy for workflow transitions or proprietary subState semantics."
+  }
+}

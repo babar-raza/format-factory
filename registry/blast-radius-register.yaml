@@ -1,6 +1,31 @@
 version: 1
 blast_radii:
 
+- blast_radius_id: BR-004
+  issue_id: FI-033
+  search_pattern: "source_files.*string|classification outside current ledger schema"
+  surfaces_scanned:
+    - reports/r90/product-code-change-ledger.json
+    - tools/supervisor/validate_product_code_ledger.py
+    - tests/supervisor/test_validate_product_code_ledger.py
+    - tests/supervisor/test_r90_product_acceleration.py
+  confirmed_affected:
+    - "1,576 historical/non-current entries are excluded from the live projection"
+    - "1,205 records meet the current structural classification boundary"
+    - "3,233 current-projection errors remain and require a separate migration"
+    - "All six production formats depend on the resulting proof calculation"
+  suspected_affected:
+    - "Any caller that interpreted prior validator exceptions as a non-blocking unavailable tool"
+  unaffected_controls:
+    - "Mixed historical records are retained verbatim; no evidence was deleted or silently rewritten"
+    - "Malformed current source_files values now yield explicit diagnostics"
+  backfill_required: true
+  regression_scope:
+    - tests/supervisor/test_validate_product_code_ledger.py
+    - tests/supervisor/test_r90_product_acceleration.py
+    - tools/supervisor/validate_product_code_ledger.py
+  status: complete
+
 - blast_radius_id: BR-001
   issue_id: FI-001
   search_pattern: "spreadsheet_document"

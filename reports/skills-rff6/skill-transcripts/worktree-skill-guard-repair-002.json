@@ -1,0 +1,35 @@
+{
+  "invocation_id": "worktree-skill-guard-repair-002",
+  "skill_id": "worktree-skill-guard-repair",
+  "mode": "live",
+  "inputs": {
+    "defect_id": "FF6-WORKTREE-SKILL-GUARD-ROOT-002",
+    "linked_worktree_reproduction": "Git invokes the shared physical hook from the primary checkout while GIT_DIR and GIT_INDEX_FILE select the linked worktree index. The previous root resolver therefore searched the primary checkout for the linked worktree's staged receipt.",
+    "expected_repository_root": "The worktree identified by the GIT_DIR administrative directory's gitdir pointer, before the ordinary git rev-parse fallback.",
+    "task_id": "TC-FF6-WORKTREE-SKILL-GUARD-REPAIR-002"
+  },
+  "allowed_files": [
+    ".hooks/pre-commit-skill-guard",
+    "tests/governance/test_pre_commit_skill_guard_worktree.py",
+    "reports/skills-rff6/skill-transcripts/worktree-skill-guard-repair-002.json"
+  ],
+  "actual_files_changed": [
+    ".hooks/pre-commit-skill-guard",
+    "tests/governance/test_pre_commit_skill_guard_worktree.py",
+    "reports/skills-rff6/skill-transcripts/worktree-skill-guard-repair-002.json"
+  ],
+  "tests_run": [
+    "python -m pytest tests/governance/test_pre_commit_skill_guard_worktree.py tests/governance/test_precommit_exception_scoping.py -q (15 passed)",
+    "simulated shared-hook invocation with GIT_DIR and GIT_INDEX_FILE bound to the linked worktree (PASS: transcript discovered from linked worktree)"
+  ],
+  "result": "PASS",
+  "evidence": {
+    "linked_hook_resolves_active_worktree": "PASS",
+    "transcript_search_is_worktree_scoped": "PASS",
+    "coordination_check_uses_active_worktree": "PASS",
+    "shared_checkout_behavior_is_preserved": "PASS",
+    "scope_limit": "The change only resolves the active worktree before existing fail-closed coordination, exception, and source-mutation policies run."
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}
