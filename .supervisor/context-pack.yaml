@@ -1,21 +1,21 @@
 schema_version: '1.0'
-generated_at: '2026-07-14T00:26:20.610916'
-repo_root: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
+generated_at: '2026-07-28T20:08:56.586586'
+repo_root: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\worktrees\ff6-truth-001
 git:
-  head: b6c95658
+  head: e4f8f5f0
   status:
-    modified_count: 273
-    untracked_count: 368
-    staged_count: 1
-    total_changed: 642
-    clean: false
+    modified_count: 0
+    untracked_count: 0
+    staged_count: 0
+    total_changed: 0
+    clean: true
 supervisor_mode: 4
 latest_sprint:
   sprint_id: unknown
   run_id: unknown
-  autonomous_continue: true
-  iteration: 6
-  max_iterations: 12
+  autonomous_continue: false
+  iteration: 0
+  max_iterations: 5
   hard_stops: []
   rework_items: []
 poc_matrix:
@@ -36,8 +36,8 @@ poc_matrix:
       commercial_ready: false
   foss_python_products: {}
 skill_registry:
-  total_skills: 149
-  active_skills: 146
+  total_skills: 196
+  active_skills: 193
   skill_ids:
   - add-spec-analytics-function
   - add-dogfood-export
@@ -54,6 +54,7 @@ skill_registry:
   - build-capability-routes
   - build-context-pack
   - build-evidence-bundle
+  - capability-compiler
   - check-gate
   - check-release-boundary
   - check-skill-coverage
@@ -79,11 +80,15 @@ skill_registry:
   - plan-hardening
   - post-sprint-audit
   - post-sprint-loop
+  - pre-sprint-governance-hook
   - promote-gap-to-taskcard
   - python-qname-code-reviewer
   - python-reduced-spec-parity-model
   - qname-backfill
   - preflight-skill-entry
+  - skill-scanner
+  - systematic-debugging
+  - test-driven-development
   - record-lane-execution
   - reproduce-master-plan
   - run-skill-idempotency
@@ -185,19 +190,60 @@ skill_registry:
   - validate-operational-index
   - quarantine-invalid-artifact
   - audit-enhanced-control-layer
+  - silent-failure-hunter
+  - type-design-analyzer
+  - comment-analyzer
+  - pr-test-analyzer
+  - sharp-edges
+  - receiving-code-review
+  - property-based-testing
+  - gh-fix-ci
+  - gh-address-comments
+  - create-ff-skill
+  - skill-improver
+  - gha-security-review
+  - agent-supply-chain
+  - agent-owasp-compliance
+  - audit-context-building
+  - trailmark
+  - github-release
+  - dependabot-config
+  - mcp-builder
+  - compile-format-contract
+  - validate-format-contract
+  - research-format-contract-sources
+  - check-contract-sal-readiness
+  - reconcile-contract-capabilities
+  - compile-contract-gaps
+  - refresh-format-contract
+  - review-format-contract
+  - audit-contract-portfolio
+  - investigate-format-contract
+  - backfill-format-contracts
+  - prove-format-contract
+  - fix-exception-hierarchy
+  - wire-analytics-module
+  - skills-first-audit
+  - product-contract-runtime-repair
+  - worktree-skill-guard-repair
+  - create-format-family-pack
+  - format-contract-onboard
+  - production-program-controller-repair
+  - materialize-production-proof
+  - plan-control
+  - reconcile-stashed-work
   source_edits_require_handoff: true
   ledger_required: true
 product_code_ledger:
-  total_entries: 2748
-  governed_changes: 971
+  total_entries: 2782
+  governed_changes: 1004
   backfilled: 4
   ledger_path: reports\r90\product-code-change-ledger.json
 mcp_status:
-  classification: MCP_CONFIG_PRESENT_MODE4_ACTIVE
-  file_present: true
+  classification: MCP_CONFIG_MISSING
+  file_present: false
   mode: 4
-  server_count: 3
-  description: .vscode/mcp.json present with 3 server(s); MODE 4
+  description: .vscode/mcp.json not found
 authority:
   supervisor_is_advisory: true
   gate_approval_requires_babar_raza: true

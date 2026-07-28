@@ -1,0 +1,392 @@
+schema: ff6/current-state@1
+goal_id: FF6-PRODUCTION-LIBRARIES-001
+task_id: TC-FF6-PROGRAM-TRUTH-001
+generated_by: codex
+visibility: internal
+snapshot_status: ASSESSMENT_REQUIRED
+promotion_effect: none
+baseline:
+  git_commit: e4f8f5f086b5e627c07c2ef2d940eda2601a22a8
+  git_tree_oid: 214495607aff1452e36efb48c32fb9395c46c3f2
+  commit_time: "2026-07-28T19:59:14+05:00"
+  canonical_remote: origin
+  canonical_branch: main
+  worktree_mode: detached_clean_snapshot
+  execution_plan_sha256: c863c253ac80904f9a91304b7349c3dc394334c1f2e4ade7b47dba2ecc78972f
+input_authorities:
+  format_contract_registry:
+    path: registry/format-contract-registry.yaml
+    sha256: 7060dd8a71ec8e238cb348a8b3f1bd1230c585112fd74fbd7f1ea73da5070d64
+  package_matrix:
+    path: packaging/python/package-matrix.yaml
+    sha256: 15b21daffeb43c038b3add65d529b125e194b78b62a90978e83f29ea1b18e72b
+  package_proof_manifest:
+    path: reports/package-install-proof/proof-manifest.json
+    sha256: 58af0bf9b1045e9599189e42d5703bcfabb829bccb53909fd429b09f97dc6061
+  advisory_context_pack:
+    path: .supervisor/context-pack.yaml
+    sha256: 0e1fd6738ebd48a09cf20e78da657ed18ebfb15ac3453324b14a90d81e56ac67
+    authority: advisory_only
+path_authority:
+  product_state:
+    planned_path: plans/programs/ff6/
+    adopted_path: plans/strategic/ff6/
+    reason: >-
+      plans/strategic is an existing approved plan-control root; creating an
+      unregistered plans/programs root would create a competing plan authority.
+  taskcards:
+    planned_path: taskcards/ff6/
+    adopted_path: taskcards/
+    index: taskcards/index.yaml
+    reason: >-
+      The registered create-taskcard skill and canonical taskcard index use the
+      repository root taskcards directory.
+global_findings:
+  - id: FF6-TRUTH-001
+    severity: critical
+    finding: OpenRaster has no Python source distribution, product tests, sample corpus, oracle package, or install proof.
+  - id: FF6-TRUTH-002
+    severity: high
+    finding: Every selected format contract is lifecycle DRAFT; registry COMPILED/readiness 1.0 describes contract compilation only.
+  - id: FF6-TRUTH-003
+    severity: high
+    finding: The five existing oracle summaries are PARTIAL_PASS at depth D0 with one passing case and all remaining cases NOT_APPLICABLE.
+  - id: FF6-TRUTH-004
+    severity: high
+    finding: The five install-proof entries match current product source but their complete proof-input digests are stale.
+  - id: FF6-TRUTH-005
+    severity: high
+    finding: A clean checkout cannot collect the five product suites without built packages and required dependencies; the attempted source-tree run stopped with 39 collection errors.
+  - id: FF6-TRUTH-006
+    severity: high
+    finding: IPYNB, NRRD, and XLIFF fail the current source-architecture validator because public package initializers exceed the 100-line cap.
+  - id: FF6-TRUTH-007
+    severity: high
+    finding: Existing per-format sample directories contain only 6-10 files and have no current obligation-by-corpus adequacy proof in this snapshot.
+  - id: FF6-TRUTH-008
+    severity: high
+    finding: No committed FF6 controller state existed before this task; old reports and transcripts cannot serve as resumable current state.
+evidence_interpretation:
+  sal_verification_pass: Referential and authority-artifact verification only; not product behavior proof.
+  registry_compiled: Contract compiler success only; not implementation or release readiness.
+  install_proof_pass: Wheel build/install/import/smoke result only; currently non-promoting because proof-input closure is stale.
+  source_and_test_counts: Inventory evidence only; never capability or correctness proof.
+  oracle_partial_pass: Non-promoting shallow harness evidence.
+test_execution:
+  command: python -m pytest tests/python/ipynb tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q
+  result: COLLECTION_BLOCKED
+  collection_errors: 39
+  cause:
+    - format_factory wheels were not installed in the clean base interpreter
+    - optional/reference dependencies such as nbformat were absent
+  interpretation: Environment/bootstrap evidence; not counted as a product regression.
+package_proof_fleet_validator:
+  validator: V226
+  result: FAIL
+  selected_product_source_digests_current: true
+  selected_product_input_closures_current: false
+  unrelated_stale_source_formats:
+    - dif
+    - fodg
+    - fods
+    - gnumeric
+    - ndjson
+    - ods
+    - sylk
+    - tsv
+    - xcf
+formats:
+  ipynb:
+    target: nbformat 4.0-4.5; default writer 4.5
+    contract:
+      path: shared/format-contracts/ipynb.yaml
+      sha256: 7e2f0851059c24aaf5b1b7741d42ad0f974dde1228e89c91cf253f44f6acab7a
+      lifecycle: DRAFT
+      authority_status: AUTHORITATIVE
+      confidence: medium
+      compiled_capability_records: 20
+      registry_state: COMPILED
+    sal:
+      facts: 19
+      sha256: a51321c18230497ec932b5132657f2b29897696f5ec20dc87a4710df0e89a04b
+      verification_result: PASS
+    source:
+      exists: true
+      git_tree_oid: 96ecc9a1a6fdf573645fe6c7a49203391040045c
+      tree_sha256: aa05298f4cf793d6d60b34850864582a1c1d0e475aa3e0404b11c2663e8b7885
+      python_files: 46
+      python_lines: 7226
+      package_version: 0.2.0.dev0
+      public_export_count: 108
+      observed_families:
+        - typed notebook, cell, output, attachment, MIME, and metadata models
+        - reader and writer lifecycle
+        - schema validation and version conversion
+        - cleanup, metadata editing, sanitization, trust, diff, and structural editing
+      certification: not_certified
+    tests:
+      git_tree_oid: 4a2b95230ea4d9674b27f11929cc6cf0fb26707d
+      python_files: 30
+      test_functions: 344
+    corpus:
+      git_tree_oid: 7f616aae3f7207e1c4d62df3ba73352c73112f71
+      files: 10
+      adequacy: unproven
+    architecture:
+      result: FAIL
+      violations:
+        - src/python/ipynb/src/format_factory/ipynb/__init__.py: 231 > 100
+        - src/python/ipynb/src/format_factory/ipynb/model/__init__.py: 148 > 100
+    oracle:
+      verdict: PARTIAL_PASS
+      depth: D0
+      passed: 1
+      total: 5
+    install_proof:
+      verdict: PASS_NON_PROMOTING_STALE_INPUT_CLOSURE
+      wheel_sha256: fc129bface776b6ff4fc787a33db1a50af155f64a63794b00c3f15e0c81711c0
+      source_digest_current: true
+      recorded_input_digest: 7ab7e3d50cc81b3879da43677e7942acdc35de70acd5816309eb55a5ec8fde84
+      current_input_digest: 1f11239bef7e4a61da58b3a13c03a004635908fb31e394fe13d6505973ffd8af
+  ora:
+    target: named OpenRaster 0.0.3, 0.0.4, and 0.0.5 interoperability profiles
+    contract:
+      path: shared/format-contracts/ora.yaml
+      sha256: b7578b4d30fc0fecc18b17aa3892d71170061c19c800f459c1bbd021ea72f8d7
+      lifecycle: DRAFT
+      authority_status: NEEDS_AUTHORITY
+      confidence: low
+      target_spec_in_contract: OpenRaster 0.0.3 (informal)
+      compiled_capability_records: 10
+      registry_state: COMPILED
+    sal:
+      facts: 20
+      sha256: 310ea4f1a3b67b19c91e5e6f76b4e6d2c188328be099f2abe162d4eb894eb2a0
+      verification_result: PASS
+    source:
+      exists: false
+      python_files: 0
+      certification: absent
+    tests:
+      exists: false
+      test_functions: 0
+    corpus:
+      exists: false
+      files: 0
+    oracle:
+      exists: false
+    install_proof:
+      exists: false
+    next_constraint: Repair authority/profile contract and complete policy prerequisites before product source.
+  nrrd:
+    target: NRRD0001-NRRD0005
+    contract:
+      path: shared/format-contracts/nrrd.yaml
+      sha256: 832fef34917313ff8d7d2c1d6bf3f5813f9394b6dfe25ec3dc6adc2f9d318be8
+      lifecycle: DRAFT
+      authority_status: AUTHORITATIVE
+      confidence: medium
+      compiled_capability_records: 15
+      registry_state: COMPILED
+    sal:
+      facts: 18
+      sha256: bc462d49a23e4e0f9b10a61bd2d4b188a2a4fbc2b28598c56d4deea61d927789
+      verification_result: PASS
+    source:
+      exists: true
+      git_tree_oid: 26a484537dc2bfef8c178c948c2a58fb50bb5f55
+      tree_sha256: f8a018920a6e248c4eda1d7984370f51fb2f6d10b54c02b1739af1e3ff9baadd
+      python_files: 32
+      python_lines: 2661
+      package_version: 0.2.0.dev0
+      public_export_count: 29
+      observed_families:
+        - attached and detached lifecycle entry points
+        - payload encoding and decoding
+        - header, comments, key-value, and preservation model
+        - resource limits and validation
+      structural_limit: Header and array semantics remain primarily string/dictionary/list based.
+      certification: not_certified
+    tests:
+      git_tree_oid: 823cac8ba9b42a6cba8e0209863d33fa422c3549
+      python_files: 11
+      test_functions: 227
+    corpus:
+      git_tree_oid: b6cfd1a1bd2f2eeee7ac0771065569e44a60075d
+      files: 6
+      adequacy: unproven
+    architecture:
+      result: FAIL
+      violations:
+        - src/python/nrrd/src/format_factory/nrrd/__init__.py: 129 > 100
+    oracle:
+      verdict: PARTIAL_PASS
+      depth: D0
+      passed: 1
+      total: 5
+    install_proof:
+      verdict: PASS_NON_PROMOTING_STALE_INPUT_CLOSURE
+      wheel_sha256: caced0c989552415db6db963d821646b15b3aa198b17510389d37927f8b7fea5
+      source_digest_current: true
+      recorded_input_digest: 18c5f98a4ef66fca060f99b286ad2305a557b40665c3c24f0679ddd0cd4e3827
+      current_input_digest: 531de4ee05f998910003e4eda9cd6fc9d32756da6f1ccf6f14dd754bcde3f55e
+  xliff:
+    target: XLIFF 2.0 and 2.1 core plus every 2.1 module
+    contract:
+      path: shared/format-contracts/xliff.yaml
+      sha256: 84e4d0bbf7d549b5b9fd888e26fd4c8af16db1f960a42f59a7763bc581f73ff9
+      lifecycle: DRAFT
+      authority_status: AUTHORITATIVE
+      confidence: medium
+      compiled_capability_records: 15
+      registry_state: COMPILED
+    sal:
+      facts: 31
+      sha256: 1b8ff411cc5901ed40dde7c1d20c371ccb91c1b93f0d104b176888dd8bff12f5
+      verification_result: PASS
+    source:
+      exists: true
+      git_tree_oid: 745de6d53e791ee4f2567dcc7dd3afe151169c53
+      tree_sha256: 34aeabf5b0b96b3af3fc482bad74cd74063ee56073f1cd00bdf7b9fdf3ca1353
+      python_files: 38
+      python_lines: 2932
+      package_version: 0.2.0.dev0
+      public_export_count: 40
+      observed_families:
+        - files, groups, units, segments, ignorable content, and notes
+        - inline-code model and text-safe editing
+        - segmentation and translation-state helpers
+        - extension preservation and resource limits
+      structural_limit: Optional 2.1 modules are not represented by complete typed module models.
+      certification: not_certified
+    tests:
+      git_tree_oid: 91d549f40954c6fd50a407e9347fd2e3f0b10599
+      python_files: 11
+      test_functions: 186
+    corpus:
+      git_tree_oid: 080a4dbe339d21c12da9b01f81ddba4fa4d93abc
+      files: 6
+      adequacy: unproven
+    architecture:
+      result: FAIL
+      violations:
+        - src/python/xliff/src/format_factory/xliff/__init__.py: 127 > 100
+    oracle:
+      verdict: PARTIAL_PASS
+      depth: D0
+      passed: 1
+      total: 4
+    install_proof:
+      verdict: PASS_NON_PROMOTING_STALE_INPUT_CLOSURE
+      wheel_sha256: a01b50f7d9aed36c33c08693dcfd608fa62a0c93aa1a62163b936016956928bd
+      source_digest_current: true
+      recorded_input_digest: ae37d330af3ced994618793c494193f031c446171698bda3112c76dd35a5b59a
+      current_input_digest: d44e82302cd96d2fc755f1b5d047429baa2e1c10dad56af8b5410874fcf6b25d
+  safetensors:
+    target: official v0.8.0 commit a406ca3e7a90598be0cd05a50069cb9bf5ef6ba6
+    contract:
+      path: shared/format-contracts/safetensors.yaml
+      sha256: b09281bfe726fe369107e82a6e8929e66bf4bf36c2bef26b4c535345aa7255b1
+      lifecycle: DRAFT
+      authority_status: AUTHORITATIVE
+      confidence: low
+      compiled_capability_records: 11
+      registry_state: COMPILED
+    sal:
+      facts: 19
+      sha256: b8c33558232408bcdd6a4baca20adeea347fef156753f1c035d50849378440a8
+      verification_result: PASS
+    source:
+      exists: true
+      git_tree_oid: 4511988513e8fac5bb2585e6237b81a092598191
+      tree_sha256: 0587fa56313d148fcde62a94e28d9c591e84982bcdc4f3042bcb0da4b8c2aadf
+      python_files: 38
+      python_lines: 2441
+      package_version: 0.2.0.dev0
+      public_export_count: 22
+      observed_families:
+        - typed descriptors and complete declared dtype enumeration
+        - strict header and layout validation
+        - lazy memory-mapped and region access
+        - deterministic writer and sharded index
+        - NumPy and PyTorch adapters
+      certification: not_certified
+    tests:
+      git_tree_oid: 5a610617014aab8aa35d67a9e17eef7dd40b6ad6
+      python_files: 24
+      test_functions: 269
+    corpus:
+      git_tree_oid: af178efbf3d81b13cf5ad6b6e10208dca8872fa5
+      files: 6
+      adequacy: unproven
+    architecture:
+      result: PASS
+    oracle:
+      verdict: PARTIAL_PASS
+      depth: D0
+      passed: 1
+      total: 5
+    install_proof:
+      verdict: PASS_NON_PROMOTING_STALE_INPUT_CLOSURE
+      wheel_sha256: 8effa664da5e9000f1ef3edff00ade0897b883ec14da89ef57803a0cd60241ae
+      source_digest_current: true
+      recorded_input_digest: 841e8f4fd6eeecb17cc516c1fb49feda8ba808e4b02769167c71dcb6b30f93c9
+      current_input_digest: bfc64c95f8fc1ea1384a3c215f04ea31424ccc336a26128cf5edd235c5504199
+  ubl:
+    target: OASIS UBL 2.3 all 91 document roots and full component model
+    contract:
+      path: shared/format-contracts/ubl.yaml
+      sha256: c3400f1a86ab2fd9aa598f248dbd1d45a5592d84655e691272bff5f171c90d96
+      lifecycle: DRAFT
+      authority_status: AUTHORITATIVE
+      confidence: medium
+      compiled_capability_records: 18
+      registry_state: COMPILED
+    sal:
+      facts: 34
+      sha256: 78e329c698b7a660cf93bc3a4f142bfe240fb6d55973ca2c7def3334d31094d3
+      verification_result: PASS
+    source:
+      exists: true
+      git_tree_oid: addee3b1ae301796f644839af86b51575ee1ff4e
+      tree_sha256: 72670c8af9ad9bb40842ad5019d30896f9ce76a8b66c5fe6c4e96b21361a2c07
+      python_files: 39
+      python_lines: 3159
+      package_version: 0.2.0.dev0
+      public_export_count: 25
+      observed_families:
+        - generated inventory and subclasses for all 91 document roots
+        - generic ordered XML node parse, edit, and write
+        - extension preservation, resource limits, and signature invalidation
+      structural_limit: >-
+        The 91 root subclasses only set ROOT_NAME over a generic UblDocument;
+        common components, simple types, attributes, cardinalities, and root
+        content models are not fully schema-typed.
+      certification: not_certified
+    tests:
+      git_tree_oid: b1497fc4dd4194af65cd7894df851e6ab2327408
+      python_files: 11
+      test_functions: 239
+    corpus:
+      git_tree_oid: 27129249d8ad63dceba51ff2badeefa7a225e189
+      files: 9
+      adequacy: unproven
+    architecture:
+      result: PASS
+    oracle:
+      verdict: PARTIAL_PASS
+      depth: D0
+      passed: 1
+      total: 5
+    install_proof:
+      verdict: PASS_NON_PROMOTING_STALE_INPUT_CLOSURE
+      wheel_sha256: 95955a8dbe79095941e6e4d17d7ce645ceb81713b5815cb78ae60d3dad92604b
+      source_digest_current: true
+      recorded_input_digest: f991be5226af30724340a4213ccced87776b3dc6b281b6d8e7601cee6ef483db
+      current_input_digest: a4cd672b91fd5e1f066af7b4a49bd357f72e05c634fe7934271b68c7596a3a2e
+next_task:
+  task_id: TC-FF6-PROGRAM-CAPABILITIES-001
+  reason: >-
+    The snapshot is sufficient to prove that counts and legacy readiness
+    labels are non-promoting; the next required step is to compile the complete
+    classified capability and normative obligation universe for all six formats.

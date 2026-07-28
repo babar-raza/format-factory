@@ -1,0 +1,46 @@
+schema: ff6/controller-state@1
+goal_id: FF6-PRODUCTION-LIBRARIES-001
+goal_status: ACTIVE
+generated_by: codex
+visibility: internal
+controller_state: SNAPSHOT
+transition_sequence: 4
+last_verified_event:
+  event_id: FF6-EVENT-000004
+  event_hash: 90c4687d41a95842a65913c4a57765a008108325642322e3ec7942d213b6d22c
+event_journal: plans/strategic/ff6/events.jsonl
+baseline_commit: e4f8f5f086b5e627c07c2ef2d940eda2601a22a8
+snapshot:
+  path: plans/strategic/ff6/current-state.yaml
+  sha256: 09fe7783d0fd40cdb1803f3ead2582e3ed9cf8782f23d740904ce7dd39e0ebbf
+product_goal:
+  path: plans/strategic/ff6/product-goal.yaml
+  sha256: a7683f75ef62c72e88e3c0e4ff14df240fa0f9b80be9b0cf4cdacc96c62811c8
+active_task:
+  task_id: TC-FF6-PROGRAM-TRUTH-001
+  state: COMPLETE
+next_task:
+  task_id: TC-FF6-PROGRAM-CAPABILITIES-001
+  state: READY
+  unlock_condition: satisfied
+promotion:
+  program: UNASSESSED
+  ipynb: UNASSESSED
+  ora: UNASSESSED
+  nrrd: UNASSESSED
+  xliff: UNASSESSED
+  safetensors: UNASSESSED
+  ubl: UNASSESSED
+current_gap_summary:
+  critical: 1
+  high: 7
+  source_packages_present: 5
+  source_packages_absent: 1
+  product_contracts_draft: 6
+  production_certifications: 0
+invariants:
+  - Only journaled verified transitions may update this projection.
+  - A changed baseline or input digest invalidates the snapshot and descendants.
+  - Product promotion is computed from current proof and cannot be edited here.
+  - Failure of one format does not stop safe work on the others.
+  - Publication authority is external and cannot be bypassed.

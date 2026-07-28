@@ -1,0 +1,57 @@
+schema: ff6/product-goal@1
+goal_id: FF6-PRODUCTION-LIBRARIES-001
+status: ACTIVE
+generated_by: codex
+visibility: internal
+canonical_plan: plans/strategic/autonomous-six-python-production-execution-plan.md
+canonical_forge: GitLab
+canonical_remote: origin
+canonical_branch: main
+objective: >-
+  Deliver six independently publishable, production-ready Python format
+  libraries whose format-specific developer capabilities are themselves
+  production-grade, professionally structured, secure, typed, documented,
+  maintainable, interoperable, and supported by current digest-bound proof.
+products:
+  - format_id: ipynb
+    distribution: format-factory-ipynb
+    import_namespace: format_factory.ipynb
+  - format_id: ora
+    display_name: OpenRaster
+    distribution: format-factory-openraster
+    import_namespace: format_factory.openraster
+  - format_id: nrrd
+    distribution: format-factory-nrrd
+    import_namespace: format_factory.nrrd
+  - format_id: xliff
+    distribution: format-factory-xliff
+    import_namespace: format_factory.xliff
+  - format_id: safetensors
+    distribution: format-factory-safetensors
+    import_namespace: format_factory.safetensors
+  - format_id: ubl
+    display_name: OASIS UBL
+    distribution: format-factory-ubl
+    import_namespace: format_factory.ubl
+supporting_distribution:
+  distribution: format-factory-core
+  import_namespace: format_factory.core
+completion_invariants:
+  - Every stable normative obligation is classified, implemented, and proven.
+  - Every declared developer capability meets the same production standard as the parser and writer.
+  - No mandatory obligation is satisfied by a filename, test count, synthetic-only fixture, or prose deferral.
+  - Every product passes installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, and reproducible-build gates.
+  - Every distribution extracts to an independent repository with preserved canonical source and package digests.
+  - All six distributions co-install without namespace or third-party collisions.
+  - Technical certification is computed from current proof; publication remains subject to external release authority.
+non_claims:
+  - This goal record does not certify any library.
+  - Contract compilation and SAL verification are not implementation proof.
+  - Package installation smoke proof is not format conformance or production certification.
+  - OpenRaster certification is interoperability-profile based, not universal conformance.
+continuation_policy:
+  autonomous: true
+  ask_for_continuation: false
+  single_format_failure_stops_program: false
+  preserve_existing_work: true
+  publication_authority_bypass_allowed: false
