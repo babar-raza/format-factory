@@ -698,9 +698,31 @@ routes:
       checkpoint omitted 508 canonical obligations while still claiming
       complete integrity.
 
+  - route_id: provider_neutral_checkpoint_handover
+    description: >-
+      Refresh a tracked mission handover from canonical Git, controller,
+      journal, task, proof, and coordination state for safe provider shifts.
+    preferred_skill_ids:
+      - refresh-provider-neutral-handover
+    fallback_skill_ids:
+      - build-resume-context
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - mission_id
+      - source_checkpoint
+      - canonical_remote
+      - canonical_branch
+      - controller_path
+      - journal_path
+      - current_taskcard
+      - exact_next_task
+      - packet_root
+    evidence_path_pattern: ".local/transcripts/refresh-provider-neutral-handover-*.json"
+
 gap_count:
-  total_routes: 40
-  active_routes: 38
+  total_routes: 41
+  active_routes: 39
   missing_skill_routes: 1
   missing_skill_gap_ids:
     - GAP-ESP-SKILL-001

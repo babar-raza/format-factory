@@ -5175,6 +5175,41 @@ skills:
   - tests/production_program/test_capability_universe.py
   risk_level: HIGH
   advisory_only: false
+- command: /refresh-provider-neutral-handover
+  command_file: .claude/commands/refresh-provider-neutral-handover.md
+  created_at: '2026-07-29'
+  created_by: TC-FF6-HANDOVER-CLAUDE-001
+  idempotency: create_or_update
+  implementation_paths: []
+  mandatory_validations:
+  - packet_internal_links
+  - packet_manifest_hashes
+  - event_chain_head
+  - task_registration
+  - gitlab_main_ancestry
+  - no_product_or_promotion_mutation
+  output_paths:
+  - plans/codex/handover/
+  product_track: planning
+  purpose: >-
+    Refresh a commit-bound provider-neutral mission handover from canonical
+    controller, journal, task, proof, GitLab, and coordination state.
+  required_handoff_fields:
+  - mission_id
+  - source_checkpoint
+  - canonical_remote
+  - canonical_branch
+  - controller_path
+  - journal_path
+  - current_taskcard
+  - exact_next_task
+  - packet_root
+  skill_id: refresh-provider-neutral-handover
+  spec_qname_required: false
+  status: active
+  test_paths: []
+  risk_level: MEDIUM
+  advisory_only: false
 sprint: FORMAT-FACTORY-R98-AUTONOMOUS-LOOP-TRUST-LAYER-ITERATION-SCALING-ACCELERATION-POC-MEGA-TRAIN-001
 version: '2.0'
 visibility: generated

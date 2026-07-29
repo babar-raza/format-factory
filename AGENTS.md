@@ -42,7 +42,7 @@ Prohibited (must never be created):
 5. DEC-014 status: **activated** (2026-06-25). See `docs/governance/codex-adapter.md` for pilot results.
 
 
-<!-- BEGIN:CAPABILITY-DISCOVERY generated=2026-07-29T05:28:14+00:00 source=.governance/capabilities/registry.yaml -->
+<!-- BEGIN:CAPABILITY-DISCOVERY generated=2026-07-29T05:42:20+00:00 source=.governance/capabilities/registry.yaml -->
 
 ## A2b. Capability Discovery Index (generated — do not edit manually)
 
@@ -53,7 +53,7 @@ Run `/sync-capabilities` or `python tools/capability_sync/run_sync.py --mode ful
 **Skill contracts:** `.supervisor/skill-registry.yaml`
 **Capability routing:** `.supervisor/capability-routing-registry.yaml`
 
-Total active capabilities: 194
+Total active capabilities: 195
 
 | capability_id | product_track | parity_status | claude_code | codex | ci | routing_routes |
 |---|---|---|---|---|---|---|
@@ -228,6 +228,7 @@ Total active capabilities: 194
 | `plan-hardening` | planning | FULL_PARITY | Y | N | Y | plan_creation, plan_hardening |
 | `promote-gap-to-taskcard` | planning | FULL_PARITY | Y | N | Y | feature_planning, taskcard_generation |
 | `record-lane-execution` | planning | FULL_PARITY | Y | N | Y | task_closure |
+| `refresh-provider-neutral-handover` | planning | FULL_PARITY | Y | N | Y | provider_neutral_checkpoint_handover |
 | `reproduce-master-plan` | planning | FULL_PARITY | Y | N | Y | status_and_recon |
 | `select-poc-gap` | planning | FULL_PARITY | Y | N | Y | feature_planning |
 | `validate-product-code-ledger` | planning | FULL_PARITY | Y | N | Y | ledger_reconciliation |

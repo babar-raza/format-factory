@@ -4,10 +4,10 @@ goal_status: ACTIVE
 generated_by: codex
 visibility: internal
 controller_state: CONTRACT
-transition_sequence: 12
+transition_sequence: 13
 last_verified_event:
-  event_id: FF6-EVENT-000012
-  event_hash: ed5a7fc4be94f8010243ec668fef46901309251d58c582513aeaff62c8adba1f
+  event_id: FF6-EVENT-000013
+  event_hash: f6cd635eaa0a4ba6b6e785f9cdbb965fa300107b64ba4ea0f74b1b839f7dafc6
 event_journal: plans/strategic/ff6/events.jsonl
 baseline_commit: e4f8f5f086b5e627c07c2ef2d940eda2601a22a8
 digest_policy:
@@ -32,12 +32,12 @@ active_task:
   state: NEEDS_REPAIR
   completed_subtask_id: TC-FF6-CAPABILITY-COMPILER-001
 next_task:
-  task_id: TC-FF6-PROGRAM-CAPABILITIES-001
-  state: NEEDS_REPAIR
+  task_id: TC-FF6-AUTHORITY-CLOSURE-001
+  state: READY
   unlock_condition: >-
-    Architecture remains blocked until the complete authority-backed obligation
-    universe, exact release classifications, and three-run deterministic proof
-    pass and the controller records a new valid close.
+    Begin from the 15-source authority inventory in capability-manifest.json.
+    Product source and architecture remain blocked until authority closure and
+    OpenRaster profile/surface repair both pass.
 promotion:
   program: UNASSESSED
   ipynb: UNASSESSED
