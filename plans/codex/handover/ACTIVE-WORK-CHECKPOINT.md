@@ -23,7 +23,7 @@ Handover source checkpoint: `18bb295f94e43338611ef88caff073eed17411c9`
 Controller Event 26 commit: `15ab7d0455e109bd88289e16d73c0835324a21ab`
 
 Latest bounded implementation ancestor:
-`7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce`
+`7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c`
 
 Native controller:
 
@@ -73,9 +73,10 @@ Truth limit:
 - Candidate routing to 45 IDs is not obligation resolution.
 - All existing obligation rows remain `SOURCE_BOUND_UNVERIFIED`.
 - XLF-04 and XLF-05 through XLF-08 remain.
-- UBL package/root census exists, but UBL-01 full SAL authority replay,
-  UBL-03 through UBL-08, product implementation, verification, certification,
-  extraction, and release preparation remain.
+- UBL package/root census and full 34-fact SAL authority replay exist, but the
+  native UBL-01/UBL-02 state transition, UBL-03 through UBL-08, product
+  implementation, verification, certification, extraction, and release
+  preparation remain.
 - Production certification remains `0/6`; promotion remains `UNASSESSED`.
 
 Exact next action: follow [CLAUDE-START.md](CLAUDE-START.md) and the immutable
@@ -146,16 +147,15 @@ deterministic UBL 2.3 package census with:
 - three byte-identical report generations with SHA-256
   `787c8d9258dc25a8662ee934b9b0b14096de790db87826dab970792b9494976d`.
 
-This is `VERIFIED_PARTIAL_NON_PROMOTING`. It does not change the native Event
-26 head. The UBL taskcard remains `READY` because UBL-01 is not complete and
-no serialized task-state event was appended. Full UBL SAL replay fails on the
-stale `SRC-UBL-001` prose target:
+Commit `7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c` then repaired the stale
+prose-target closure, replayed the canonical receipt deterministically, proved
+all 34 facts promotable, and regenerated all descendant capability/
+obligation invalidation inputs without changing their semantic scope.
 
-```text
-authority member digest mismatch: SRC-UBL-001:None
-```
-
-If Batch 005 remains live-leased to another worker, the exact safe disjoint
-resume is `FF6-UBL-SAL-PROSE-TARGET-STALE-001`, followed by full UBL proof
-replay and a serialized task-state checkpoint. See
+This remains `VERIFIED_PARTIAL_NON_PROMOTING`. It does not change the native
+Event 26 head. The UBL taskcard remains `READY` because no serialized
+task-state event was appended. If Batch 005 remains live-leased to another
+worker, do not repeat the repair. The next UBL action is a serialized
+plan-control checkpoint for UBL-01 and UBL-02, followed by UBL-03 only after
+the projection validates. See
 [PARALLEL-UBL-CHECKPOINT.yaml](PARALLEL-UBL-CHECKPOINT.yaml).

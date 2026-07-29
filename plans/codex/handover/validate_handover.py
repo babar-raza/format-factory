@@ -48,6 +48,7 @@ CURRENT_TEXT_PATHS = (
 ALLOWED_CHANGED_PATHS = {
     "taskcards/TC-FF6-HANDOVER-CLAUDE-001.md",
     "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-ubl-checkpoint-001.json",
+    "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-ubl-authority-001.json",
 }
 ALLOWED_CHANGED_PREFIX = "plans/codex/handover/"
 
@@ -637,7 +638,7 @@ def _parallel_ubl_projection_errors(
         errors,
         "parallel UBL bounded result",
         parallel.get("bounded_result", {}).get("completed_artifact"),
-        "UBL-02_PACKAGE_AND_ROOT_CENSUS",
+        "UBL-01_AUTHORITY_AND_UBL-02_PACKAGE_ROOT_CENSUS",
     )
     _expect(
         errors,
@@ -651,7 +652,7 @@ def _parallel_ubl_projection_errors(
         parallel.get("truth_boundary", {}).get(
             "full_authority_sal_replay_complete"
         ),
-        False,
+        True,
     )
     _expect(
         errors,
@@ -678,10 +679,10 @@ def _parallel_ubl_projection_errors(
     open_failures = parallel.get("open_failures")
     if not isinstance(open_failures, list) or not any(
         isinstance(item, Mapping)
-        and item.get("gap_id") == "FF6-UBL-SAL-PROSE-TARGET-STALE-001"
+        and item.get("gap_id") == "FF6-UBL-STATE-SERIALIZATION-001"
         for item in open_failures
     ):
-        errors.append("parallel UBL checkpoint lacks stale SAL closure gap")
+        errors.append("parallel UBL checkpoint lacks state serialization gap")
     if "COMMITTED_PARALLEL_CHECKPOINT_NON_CONTROLLER" not in texts.get(
         "plans/codex/handover/START-HERE.md", ""
     ):
@@ -1129,11 +1130,11 @@ def run_self_test(context: dict[str, Any]) -> dict[str, Any]:
     ] = "not-a-sha256"
     cases.append(("invalid_recovery_asset_identity", invalid_recovery_identity))
 
-    false_ubl_completion = copy.deepcopy(context)
-    false_ubl_completion["parallel"]["truth_boundary"][
+    false_ubl_authority = copy.deepcopy(context)
+    false_ubl_authority["parallel"]["truth_boundary"][
         "full_authority_sal_replay_complete"
-    ] = True
-    cases.append(("false_ubl_authority_completion", false_ubl_completion))
+    ] = False
+    cases.append(("false_ubl_authority_regression", false_ubl_authority))
 
     false_active_freeze = copy.deepcopy(context)
     false_active_freeze["machine"]["latest_xliff_refresh_observation"][

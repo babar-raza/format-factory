@@ -1,0 +1,72 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "refresh-provider-neutral-handover-ubl-authority-001",
+  "skill_id": "refresh-provider-neutral-handover",
+  "task_id": "TC-FF6-HANDOVER-CLAUDE-001",
+  "mode": "live",
+  "timestamp": "2026-07-29T20:06:48Z",
+  "inputs": {
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "source_checkpoint": "7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c",
+    "canonical_remote": "origin",
+    "canonical_branch": "main",
+    "controller_path": "plans/strategic/ff6/controller-state.yaml",
+    "journal_path": "plans/strategic/ff6/events.jsonl",
+    "current_taskcard": "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
+    "exact_next_task": "TC-FF6-XLIFF-PROFILE-SURFACE-001/XLF-04-BATCH-005",
+    "packet_root": "plans/codex/handover",
+    "execution_manifest_id": "sfx-8307b3df4b510f7f"
+  },
+  "allowed_files": [
+    "plans/codex/handover/START-HERE.md",
+    "plans/codex/handover/CLAUDE-START.md",
+    "plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md",
+    "plans/codex/handover/CURRENT-MACHINE-STATE.yaml",
+    "plans/codex/handover/INFLIGHT-RECOVERY.yaml",
+    "plans/codex/handover/checkpoint.yaml",
+    "plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml",
+    "plans/codex/handover/CURRENT-SHIFT-HANDOVER.md",
+    "plans/codex/handover/manifest.yaml",
+    "plans/codex/handover/validate_handover.py",
+    "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-ubl-authority-001.json",
+    ".local/transcripts/refresh-provider-neutral-handover-ubl-authority-001.json"
+  ],
+  "actual_files_changed": [
+    "plans/codex/handover/START-HERE.md",
+    "plans/codex/handover/CLAUDE-START.md",
+    "plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md",
+    "plans/codex/handover/CURRENT-MACHINE-STATE.yaml",
+    "plans/codex/handover/INFLIGHT-RECOVERY.yaml",
+    "plans/codex/handover/checkpoint.yaml",
+    "plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml",
+    "plans/codex/handover/CURRENT-SHIFT-HANDOVER.md",
+    "plans/codex/handover/manifest.yaml",
+    "plans/codex/handover/validate_handover.py",
+    "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-ubl-authority-001.json",
+    ".local/transcripts/refresh-provider-neutral-handover-ubl-authority-001.json"
+  ],
+  "tests_run": [
+    "provider-neutral handover validator: PASS",
+    "eight semantic negative controls: PASS_8_OF_8",
+    "60-file LF-normalized manifest: PASS before adding this receipt",
+    "internal links and YAML/JSON parse: PASS",
+    "native FF6 event chain through Event 26: PASS",
+    "GitLab main ancestry through 7fc49c29: PASS",
+    "active XLIFF working-set non-transferability: PASS",
+    "completed UBL authority replay and false-regression rejection: PASS"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "controller_event": "FF6-EVENT-000026",
+    "controller_event_hash": "34b36bf5dc4344713ac1c0f026b30e6b15fb6a63b86f4876ee98230952fabcd0",
+    "canonical_next": "XLF-04-BATCH-005",
+    "bounded_ubl_commit": "7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c",
+    "ubl_sal_receipt_sha256": "2cc0f2cac163b7f42ab18bbe5220837d1f49a808904ac964c536085ca6d111a0",
+    "ubl_next_projection": "UBL_01_UBL_02_SERIALIZED_STATE_CHECKPOINT",
+    "production_certifications": "0/6",
+    "product_or_promotion_effect": "none"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

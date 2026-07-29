@@ -24,8 +24,8 @@ C:\Users\prora\OneDrive\Documents\GitHub\format-factory\plans\codex\handover\STA
 | Field | Verified value |
 |---|---|
 | Forge / branch | GitLab `origin/main` only |
-| Packet input checkpoint | `9ff40eb0900efe417b36a2d10486630b1c4b635a` |
-| Latest bounded implementation ancestor | `7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce` |
+| Packet input checkpoint | `7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c` |
+| Latest bounded implementation ancestor | `7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c` |
 | Controller handover source | `18bb295f94e43338611ef88caff073eed17411c9` |
 | Controller Event 26 commit | `15ab7d0455e109bd88289e16d73c0835324a21ab` |
 | Controller state | `CONTRACT` |
@@ -43,10 +43,13 @@ C:\Users\prora\OneDrive\Documents\GitHub\format-factory\plans\codex\handover\STA
 The packet commit that contains this file must descend from the source
 checkpoint. It cannot truthfully embed its own final commit hash.
 
-At the final refresh, the committed handover scope was clean and remote
-verified, while a separately leased Batch 005 worker owned two untracked
-implementation paths in the shared worktree. Those classified paths are
-preserved and are not part of this handover commit.
+At the final refresh, the UBL authority-closure checkpoint was committed and
+remote verified. A separately leased Batch 005 worker still owned five dirty
+XLIFF implementation/report paths in the shared worktree. Those classified
+paths are preserved and are not part of the UBL or handover commits.
+
+Read [the current shift handover](CURRENT-SHIFT-HANDOVER.md) immediately after
+this entrypoint. It is the exact delta from the older Event 26 packet.
 
 ## Current transfer state
 
@@ -55,7 +58,12 @@ Two different states exist and must never be collapsed into one status:
 | Boundary | State | Meaning |
 |---|---|---|
 | Committed Event 26 checkpoint | `RESUMABLE` | A clean checkout of GitLab `origin/main` can reconstruct the last verified state without local-only files |
-| Shared workspace at 2026-07-29T18:36Z | `IN_FLIGHT_RED_NOT_TRANSFERABLE` | Another live Codex identity owns Batch 005 RED work; Claude must not claim, overwrite, commit, or present those bytes as a clean checkpoint |
+| Shared workspace at 2026-07-29T19:57Z | `ACTIVE_XLIFF_BATCH005_FOREIGN_WORKING_SET` | Another live Codex identity owns five dirty Batch 005 paths; Claude must not claim, overwrite, commit, or present those bytes as a clean checkpoint |
+
+The earlier captured transfer classifier
+`IN_FLIGHT_RED_NOT_TRANSFERABLE` remains a valid historical description of
+the same uncommitted XLIFF lane. The later active-working-set label is more
+specific and does not make the bytes transferable.
 
 The live owner observed at capture was
 `agent-codex-20260729T181022-74dc4a`. It owned:
@@ -104,10 +112,9 @@ owner completes, Claude must not touch those eleven paths. This distinction
 prevents a provider shift from converting a process-level observation into an
 unsafe filesystem write.
 
-The three UBL paths that were live during the prior packet are no longer
-foreign untracked work. They were independently verified, committed, and
-pushed to GitLab main at
-`7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce`.
+The UBL package census and subsequent authority-closure repair are committed
+and pushed to GitLab main. The latest bounded checkpoint is
+`7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c`.
 
 State: `COMMITTED_PARALLEL_CHECKPOINT_NON_CONTROLLER`.
 
@@ -115,15 +122,23 @@ State: `COMMITTED_PARALLEL_CHECKPOINT_NON_CONTROLLER`.
 - `tests/tools/test_compile_ubl_schema_graph.py`
 - `tools/spec/compile_ubl_schema_graph.py`
 
-They establish a secure, deterministic census of 890 UBL 2.3 package members
-and exactly 91 document roots. The report digest is
+Together they establish a secure, deterministic census of 890 UBL 2.3
+package members and exactly 91 document roots, plus a current three-source
+authority audit and deterministic full SAL replay for all 34 UBL facts. The
+report digest is
 `787c8d9258dc25a8662ee934b9b0b14096de790db87826dab970792b9494976d`.
-This is real bounded progress, but it does not change Event 26, complete
-UBL-01, advance the UBL taskcard from `READY`, prove the reachable schema
-graph, or prove product readiness. The full UBL SAL replay fails closed on a
-stale `SRC-UBL-001` prose-target digest. Read the
+The SAL receipt digest is
+`2cc0f2cac163b7f42ab18bbe5220837d1f49a808904ac964c536085ca6d111a0`.
+This is real bounded evidence for UBL-01 and UBL-02, but it does not change
+Event 26, advance the UBL taskcard from `READY`, prove the reachable schema
+graph, or prove product readiness. A serialized plan-control checkpoint must
+record those transitions before UBL-03 begins. Read the
 [parallel UBL checkpoint](PARALLEL-UBL-CHECKPOINT.yaml) before resuming that
 lane.
+
+Historical gap `FF6-UBL-SAL-PROSE-TARGET-STALE-001` is closed by
+`7fc49c29`; its name is retained only to prevent duplicate execution. It is
+not the exact UBL resume task.
 
 At resume time, query the coordination plane and GitLab again. The captured
 identity and test counts are forensic observations, not transferable
@@ -135,7 +150,10 @@ Claude's first executable decision is deterministic:
 1. If Event 27 or later is on GitLab, recompute from the journal and ignore
    this runtime observation.
 2. If the XLIFF lease is still live, leave the five current dirty XLIFF paths
-   untouched and execute the disjoint UBL stale-SAL closure repair.
+   untouched. Do not repeat the completed UBL stale-SAL repair. Use a safe
+   serialized window to record the UBL-01/UBL-02 projection, or continue
+   another controller-authorized path-disjoint obligation that does not skip
+   a task state.
 3. If the XLIFF lease is stale and no newer commit exists, use governed
    `takeover --reason`, recapture every baseline, and continue Batch 005 from
    the preserved bytes.
@@ -178,7 +196,7 @@ obligation rows and 80 remain missing.
 | NRRD | profile surface repaired; 21 / 65 | existing partial package | not certified |
 | XLIFF | profile compilation in progress; 15 / 125 | existing partial package | not certified |
 | SafeTensors | compiled planning surface; 11 / 86 | existing partial package | not certified |
-| UBL | exact package/root census verified; full SAL replay and typing repair remain; 18 / 194 | existing partial package | not certified |
+| UBL | exact package/root census and 34-fact SAL authority replay verified; state serialization and UBL-03 typing graph remain; 18 / 194 | existing partial package | not certified |
 
 All six ProductContracts remain lifecycle `DRAFT`. Five existing oracle
 summaries are shallow `D0` partial evidence, the existing install proofs have
@@ -211,11 +229,11 @@ promotion, release, or gate work. Do not skip to XLF-05 while this mandatory
 XLF-04 work is safely executable.
 
 If live coordination shows another agent owns the XLIFF Batch 005 scope, do
-not wait and do not compete for those paths. Resume the disjoint
-`TC-FF6-UBL-TYPING-001` lane at
-`FF6-UBL-SAL-PROSE-TARGET-STALE-001`: repair and replay the stale prose-target
-proof closure. Only after that full replay passes may the UBL state advance to
-`AUTHORITY_REVALIDATED` and UBL-03 reachable-schema-graph work begin.
+not compete for those paths and do not repeat commit `7fc49c29`. The UBL
+authority replay is already complete. At the next safe serialized
+plan-control window, record the UBL-01 and UBL-02 evidence, advance the UBL
+projection through `AUTHORITY_REVALIDATED` and `PACKAGE_CENSUS_COMPLETE`, and
+only then begin UBL-03 reachable-schema-graph work.
 
 Read [Claude/Codex execution instructions](CLAUDE-START.md), the
 [active checkpoint](ACTIVE-WORK-CHECKPOINT.md), and the
@@ -231,7 +249,7 @@ git fetch origin
 git status --short --branch
 git rev-parse HEAD
 git rev-parse origin/main
-git merge-base --is-ancestor 9ff40eb0900efe417b36a2d10486630b1c4b635a origin/main
+git merge-base --is-ancestor 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c origin/main
 git merge-base --is-ancestor 7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce origin/main
 git merge-base --is-ancestor 18bb295f94e43338611ef88caff073eed17411c9 origin/main
 .venv\Scripts\python.exe plans\codex\handover\validate_handover.py --self-test

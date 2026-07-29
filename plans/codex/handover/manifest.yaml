@@ -9,10 +9,10 @@ source_checkpoint:
   remote: origin
   branch: main
   required_remote_ref: origin/main
-  required_ancestor: 9ff40eb0900efe417b36a2d10486630b1c4b635a
+  required_ancestor: 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c
   controller_event_ancestor: 15ab7d0455e109bd88289e16d73c0835324a21ab
   implementation_ancestor: 1fef79b9d6c1ee1f6667e0c5c70435562c97544c
-  parallel_ubl_ancestor: 7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce
+  parallel_ubl_ancestor: 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c
   packet_commit_rule: >-
     The fetched origin/main commit containing this packet must descend from
     required_ancestor. The packet cannot hash the commit containing its own
@@ -57,7 +57,7 @@ truth_boundary:
   xlf_04_complete: false
   ubl_package_census_complete: true
   ubl_root_denominator_complete: true
-  ubl_full_authority_sal_replay_complete: false
+  ubl_full_authority_sal_replay_complete: true
   ubl_reachable_schema_graph_complete: false
   products_certified: 0
   promotion_effect: none
@@ -100,8 +100,8 @@ files:
     sha256: d4e6b3d7f68dd3d31c38e2b99b190b2222499acf81281f67d3713feafa2653b4
     canonical_bytes: 3978
   - path: plans/strategic/ff6/capability-manifest.json
-    sha256: 58e284acd5bd3b13c35a9f2ca3a0cec152faa19bd194a3641cf8077cd72fcf1e
-    canonical_bytes: 14868
+    sha256: 6b13a1a15c6d83c1d0d65ed1cbce78a6ee4366afedc7ce399f7b39c89681299b
+    canonical_bytes: 15870
   - path: taskcards/index.yaml
     sha256: 65cdf630cbf07328125cc17edbb4b07cf8b6bb07e1cab8b1756a44f7e5cdf261
     canonical_bytes: 2484
@@ -162,27 +162,51 @@ files:
   - path: reports/skills-rff6/skill-transcripts/sal-pipeline-heal-ubl-package-census-001.json
     sha256: e4b6a43aab1395a92e65b7060b0718f605fa4ca4c6cbcee29a857766cb461a79
     canonical_bytes: 2330
+  - path: shared/sal-facts/evidence/ubl.yaml
+    sha256: a1b9d30bd0b59bf4aa88757e1857284523bb7a1764d5aa1c54d1767e14cc32e5
+    canonical_bytes: 37439
+  - path: reports/sal-verification/ubl.json
+    sha256: 2cc0f2cac163b7f42ab18bbe5220837d1f49a808904ac964c536085ca6d111a0
+    canonical_bytes: 64245
+  - path: shared/sal-facts/ubl.yaml
+    sha256: 0de10d403fead08373c7a3e137ea3b7a84090b2adf24787bf066dc1dc24a3103
+    canonical_bytes: 34154
+  - path: tests/tools/test_verify_sal_facts.py
+    sha256: b50c70b85f111f729de570100f7ab999af46638c7e1c547b6301611f6bc156a4
+    canonical_bytes: 14397
+  - path: reports/skills-rff6/skill-transcripts/test-driven-development-ubl-prose-closure-001.json
+    sha256: 1e4789eb891a7655fe910be936417a854dea0771b6adf28f553e63fb853fa3e2
+    canonical_bytes: 2219
+  - path: reports/skills-rff6/skill-transcripts/sal-pipeline-heal-ubl-prose-closure-001.json
+    sha256: 84594bbda78ee64bf20784c02f07a9af87a584b995c37a296afdc3d56c755860
+    canonical_bytes: 2499
+  - path: reports/skills-rff6/skill-transcripts/compile-production-capability-universe-ubl-prose-closure-001.json
+    sha256: 0e0ed5f28c871c62f240b41ce69f578a1eedbdb35fd8fec245383aced1d88d95
+    canonical_bytes: 3427
   - path: plans/codex/handover/START-HERE.md
-    sha256: aa092599d82223c214d63fac05457893ce871bc5c04b14f14c825f1d47fd4ecd
-    canonical_bytes: 15103
+    sha256: 15e3b61efe6ed80612a986888b04788ff12b97ccfbebe1557b253d94ca526bce
+    canonical_bytes: 16136
   - path: plans/codex/handover/CLAUDE-START.md
-    sha256: c31632e5671946456c58f0acb963aea688fd2537e050c92749c0f614e8df1883
-    canonical_bytes: 19363
+    sha256: 9707094cf6a4e0d6c25385ae07b4484e3792eb8a7d264bf74aed2d53edfdac65
+    canonical_bytes: 18682
   - path: plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md
-    sha256: 9223d339ec80849fafac9eabf53d2fc867327e979eb730d48968dd92d3850981
-    canonical_bytes: 6406
+    sha256: 8c1a851c9af11e39e1fef5ecb91624158c28a084a2fa68225178f8411326a61c
+    canonical_bytes: 6611
   - path: plans/codex/handover/CURRENT-MACHINE-STATE.yaml
-    sha256: fb102699a54a86c1b8d6a7d8feb23b43ec26cd0e4a3517438651588962bdd3ca
-    canonical_bytes: 13294
+    sha256: 871836592da11cadb4628f3f8c49b058b8e5bd049d52945bcb9252d3f7de240e
+    canonical_bytes: 13782
   - path: plans/codex/handover/checkpoint.yaml
-    sha256: db3e2a4a7caedd8ab2410b1f4963be398745d779c0cbeca84c1f7ef86af5a21b
-    canonical_bytes: 4237
+    sha256: 87c560c3c0db4a5954026f24ff4bafd743a45bfb298aa24df16e66d90d751749
+    canonical_bytes: 4702
   - path: plans/codex/handover/INFLIGHT-RECOVERY.yaml
-    sha256: 43f7a0f73bf6257de5b66dad2014a2467fdf51a0a699a29ef74187e6b7764df1
-    canonical_bytes: 9662
+    sha256: 2bf3b0986dc016a2393e8cbf858b8cc016c99f86805070596cd39497f9f05d5d
+    canonical_bytes: 9899
   - path: plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml
-    sha256: e744bc3cf2e5af1f158fa528ae88b9f837be737ce4dbbdc37bd9176a2c4cd5a7
-    canonical_bytes: 5339
+    sha256: 0dd0d18b95a81f8e403f058aaf883923674441dcacb3cba6e5224befe826476f
+    canonical_bytes: 5791
+  - path: plans/codex/handover/CURRENT-SHIFT-HANDOVER.md
+    sha256: e7830659a89cb910cf7db80598b846fd82f87fccced49080ee7b6fac4883c214
+    canonical_bytes: 16941
   - path: plans/codex/handover/CURRENT-STATE-AND-ROOT-CAUSES.md
     sha256: b3b5dfb9ff85c8868498c64c61467c11c9ec371cb46f82c390004886deb8994c
     canonical_bytes: 20707
@@ -199,11 +223,14 @@ files:
     sha256: 02212e5ef33f59c7d544440c114aacbcc8faa1e94c4f933d3248ca5f33cf5eb7
     canonical_bytes: 13652
   - path: plans/codex/handover/validate_handover.py
-    sha256: d355fbbb5fd9aaf1d447e09869e7290cee4d6151bad5b1f357a809d80959d07c
-    canonical_bytes: 43790
+    sha256: 5bfdf585551bedc35d8e2e8d71806ebe50770175b8ade51460ab2dc58af3ad9f
+    canonical_bytes: 43905
   - path: reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-ubl-checkpoint-001.json
     sha256: 8bb650bce720b5ee5e2b867037d3da35ee028723cb3ef4eefaf740b7fb03f294
     canonical_bytes: 3639
+  - path: reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-ubl-authority-001.json
+    sha256: 8872006731413b3f9183e4cc3063e04ea52f2ec3b889926551c2eeeebb5412a3
+    canonical_bytes: 3360
   - path: plans/codex/handover/event-26/START-HERE.md
     sha256: ebb85eade29b862213a1cfe147636f1ebe1f4adc8d74b908197e4d656425b2bd
     canonical_bytes: 1508
@@ -221,7 +248,7 @@ files:
     canonical_bytes: 4754
 
 validation:
-  expected_manifest_files: 52
+  expected_manifest_files: 61
   packet_internal_links: PASS
   yaml_json_parse: PASS
   root_manifest_hashes: PASS

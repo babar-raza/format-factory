@@ -9,11 +9,11 @@ source_checkpoint:
   forge: GitLab
   remote: origin
   branch: main
-  required_ancestor: 9ff40eb0900efe417b36a2d10486630b1c4b635a
-  latest_bounded_implementation_ancestor: 7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce
+  required_ancestor: 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c
+  latest_bounded_implementation_ancestor: 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c
   controller_event_ancestor: 15ab7d0455e109bd88289e16d73c0835324a21ab
   implementation_ancestor: 1fef79b9d6c1ee1f6667e0c5c70435562c97544c
-  parallel_ubl_ancestor: 7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce
+  parallel_ubl_ancestor: 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c
   worktree_at_capture: CLASSIFIED_CONCURRENT_BATCH005_WORK_PRESENT
   committed_handover_scope: CLEAN_AND_REMOTE_VERIFIED
   packet_commit_rule: >-
@@ -109,26 +109,31 @@ latest_xliff_refresh_observation:
     resume; use governed takeover only after the plane reports the lease stale.
 
 parallel_ubl_checkpoint:
-  observed_at: "2026-07-29T19:08:00Z"
+  observed_at: "2026-07-29T19:52:00Z"
   status: COMMITTED_PARALLEL_CHECKPOINT_NON_CONTROLLER
   task_id: TC-FF6-UBL-TYPING-001
-  implementation_commit: 7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce
+  implementation_commit: 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c
   paths:
     - reports/ff6/ubl-package-root-census.yaml
     - tests/tools/test_compile_ubl_schema_graph.py
     - tools/spec/compile_ubl_schema_graph.py
+    - shared/sal-facts/evidence/ubl.yaml
+    - reports/sal-verification/ubl.json
+    - shared/sal-facts/ubl.yaml
+    - tests/tools/test_verify_sal_facts.py
   report_sha256: 787c8d9258dc25a8662ee934b9b0b14096de790db87826dab970792b9494976d
-  bounded_result: UBL_02_PACKAGE_AND_ROOT_CENSUS_VERIFIED
+  sal_receipt_sha256: 2cc0f2cac163b7f42ab18bbe5220837d1f49a808904ac964c536085ca6d111a0
+  bounded_result: UBL_01_AUTHORITY_AND_UBL_02_CENSUS_VERIFIED
   taskcard_projection: READY
   native_event_recorded: false
   controller_effect: NONE
   product_or_promotion_effect: NONE
-  first_unmet_work: FF6-UBL-SAL-PROSE-TARGET-STALE-001
+  first_unmet_work: UBL_01_UBL_02_SERIALIZED_STATE_CHECKPOINT
   rule: >-
-    These paths are now committed evidence on GitLab main and are safe to
-    inspect. They prove only the package/root census. The full UBL SAL replay
-    remains invalidated, the UBL taskcard has not advanced through its native
-    state machine, and no product or promotion status changed.
+    These paths are committed evidence on GitLab main and are safe to inspect.
+    They prove the current authority replay and package/root census. The UBL
+    taskcard has not advanced through its native state machine, the reachable
+    schema graph is absent, and no product or promotion status changed.
 
 goal:
   goal_id: FF6-PRODUCTION-LIBRARIES-001
@@ -197,9 +202,9 @@ products:
   ubl:
     capabilities: 18
     obligations: 194
-    profile_surface: PACKAGE_ROOT_CENSUS_VERIFIED_TYPING_REPAIR_OPEN
+    profile_surface: AUTHORITY_AND_PACKAGE_CENSUS_VERIFIED_STATE_TRANSITION_OPEN
     package_census: VERIFIED_890_MEMBERS_91_ROOTS
-    authority_sal_replay: INVALIDATED_STALE_PROSE_TARGET
+    authority_sal_replay: VERIFIED_34_OF_34
     taskcard_projection: READY
     reachable_schema_graph: absent
     source_package: present_partial
@@ -312,8 +317,8 @@ verified_at_event_26:
   census_replay: 3 byte-identical
 
 verified_parallel_ubl_checkpoint:
-  implementation_commit: 7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce
-  focused_tests: 12 passed
+  implementation_commit: 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c
+  focused_tests: 13 verifier and 12 census tests passed
   production_program_regression: 69 passed
   ruff: PASS
   mypy_strict: PASS
@@ -323,7 +328,10 @@ verified_parallel_ubl_checkpoint:
   census_check_mode: PASS
   census_replay: 3 byte-identical
   census_sha256: 787c8d9258dc25a8662ee934b9b0b14096de790db87826dab970792b9494976d
-  sal_replay: FAIL_STALE_SRC_UBL_001_MEMBER_DIGEST
+  sal_replay: PASS_34_OF_34
+  sal_receipt_sha256: 2cc0f2cac163b7f42ab18bbe5220837d1f49a808904ac964c536085ca6d111a0
+  capability_compiler_check: PASS
+  capability_three_run_digest: eafd6f8657ed83b73dbd5975046698d24fda6d8fd58c3d6aea962e6b6a85cf7c
   format_contract_regression: 94 passed, 1 unrelated CSV idempotency failure
 
 current_gaps:
@@ -342,6 +350,6 @@ truth_boundary:
   products_certified: 0
   product_or_promotion_change_in_event_26: false
   ubl_package_census_is_product_proof: false
-  ubl_full_authority_replay_complete: false
+  ubl_full_authority_replay_complete: true
   ubl_reachable_schema_graph_complete: false
   product_or_promotion_change_in_parallel_ubl_checkpoint: false

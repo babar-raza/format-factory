@@ -6,7 +6,7 @@ generated_at: "2026-07-29"
 
 clean_checkpoint:
   status: RESUMABLE
-  source_commit: 9ff40eb0900efe417b36a2d10486630b1c4b635a
+  source_commit: 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c
   controller_handover_source: 18bb295f94e43338611ef88caff073eed17411c9
   controller_event_commit: 15ab7d0455e109bd88289e16d73c0835324a21ab
   implementation_commit: 1fef79b9d6c1ee1f6667e0c5c70435562c97544c
@@ -84,26 +84,30 @@ latest_xliff_refresh_observation:
     or take over before the coordination plane reports a stale lease.
 
 committed_parallel_checkpoint:
-  observed_at: "2026-07-29T19:08:00Z"
+  observed_at: "2026-07-29T19:52:00Z"
   status: COMMITTED_PARALLEL_CHECKPOINT_NON_CONTROLLER
   task: TC-FF6-UBL-TYPING-001
-  implementation_commit: 7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce
+  implementation_commit: 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c
   paths:
     - reports/ff6/ubl-package-root-census.yaml
     - tests/tools/test_compile_ubl_schema_graph.py
     - tools/spec/compile_ubl_schema_graph.py
+    - shared/sal-facts/evidence/ubl.yaml
+    - reports/sal-verification/ubl.json
+    - shared/sal-facts/ubl.yaml
+    - tests/tools/test_verify_sal_facts.py
   report_sha256: 787c8d9258dc25a8662ee934b9b0b14096de790db87826dab970792b9494976d
-  bounded_result: UBL_02_PACKAGE_AND_ROOT_CENSUS_VERIFIED
+  sal_receipt_sha256: 2cc0f2cac163b7f42ab18bbe5220837d1f49a808904ac964c536085ca6d111a0
+  bounded_result: UBL_01_AUTHORITY_AND_UBL_02_CENSUS_VERIFIED
   taskcard_projection: READY
   native_event_recorded: false
-  first_unmet_work: FF6-UBL-SAL-PROSE-TARGET-STALE-001
+  first_unmet_work: UBL_01_UBL_02_SERIALIZED_STATE_CHECKPOINT
   action: >-
     Treat the committed paths as read-only evidence until a new UBL mutation
-    task owns them. Do not treat UBL-02 as UBL-01 completion, a native taskcard
-    transition, product implementation, or promotion. If XLIFF remains
-    live-leased, the safe disjoint resume is the stale UBL prose-target SAL
-    repair, followed by a full proof replay and serialized plan-control state
-    update.
+    task owns them. Do not repeat the authority repair or treat the evidence
+    as a native taskcard transition, reachable schema graph, product
+    implementation, or promotion. At a safe serialized plan-control window,
+    record UBL-01 and UBL-02, then begin UBL-03 only after projections agree.
 
 resolved_history:
   batch_003:
