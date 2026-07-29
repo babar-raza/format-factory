@@ -1459,10 +1459,16 @@ def test_core_authority_census_extracts_reconciled_profile_delta(
         policy_sources=policy_sources,
     )
 
-    assert census["schema"] == "ff6/xliff-core-authority-census@1"
+    assert census["schema"] == "ff6/xliff-core-authority-census@2"
     assert census["candidate_scope_complete"] is True
+    assert census["non_modal_prose_census_complete"] is True
+    assert census["non_modal_prose_disposition_complete"] is True
+    assert census["non_modal_prose_classification_verified"] is False
+    assert census["disposition_verification_complete"] is False
+    assert census["unverified_disposition_count"] == census["candidate_count"]
     assert census["normative_obligation_inventory_complete"] is False
     assert census["candidate_scope_definition"]["prose_selector"]
+    assert census["candidate_scope_definition"]["non_modal_prose_selector"]
     assert census["candidate_scope_definition"]["xsd_node_kinds"]
     assert census["candidate_scope_definition"]["schematron_node_kinds"] == [
         "assert",
@@ -1508,6 +1514,12 @@ def test_core_authority_census_extracts_reconciled_profile_delta(
     }
     for row in candidates:
         assert len(row["occurrences"]) in {1, 2}
+        assert row["candidate_class"] in extractor._CORE_CANDIDATE_CLASSES
+        assert len(row["candidate_content_sha256"]) == 64
+        assert all(
+            len(occurrence["occurrence_sha256"]) == 64
+            for occurrence in row["occurrences"]
+        )
         disposition = row["disposition"]
         assert disposition["kind"] in {
             "MAP_EXPECTED_OBLIGATION",
@@ -1516,8 +1528,10 @@ def test_core_authority_census_extracts_reconciled_profile_delta(
         assert disposition["rationale"]
         assert disposition["mapping_rule_ids"]
         assert disposition["mapping_precision"] in {
-            "SPECIFIC_SEMANTIC_TOKEN_WITH_STRUCTURAL_FALLBACK",
-            "COARSE_STRUCTURAL_FALLBACK",
+            "SEMANTIC_TOKEN_MAPPING_UNVERIFIED",
+            "STRUCTURAL_CLASS_MAPPING_UNVERIFIED",
+            "SEMANTIC_TOKEN_AND_STRUCTURAL_CLASS_MAPPING_UNVERIFIED",
+            "REASONED_NON_OBLIGATION_UNVERIFIED",
         }
         if disposition["kind"] == "MAP_EXPECTED_OBLIGATION":
             assert set(disposition["obligation_ids"]) <= expected_ids
@@ -1537,6 +1551,75 @@ def test_core_authority_census_extracts_reconciled_profile_delta(
         "short inline element names must be routed as semantic tokens, not "
         "as substrings of schema vocabulary"
     )
+
+
+def test_core_authority_census_authority_replay_rejects_rehashed_content(
+    tmp_path: Path,
+) -> None:
+    extractor = _load_module()
+    sources = []
+    for profile in ("xliff_2.0", "xliff_2.1"):
+        path = tmp_path / f"{profile}.zip"
+        member, digest = _write_core_census_archive(path, profile=profile)
+        sources.append(
+            extractor.ProfileSource(
+                profile=profile,
+                source_id=f"SRC-{profile.upper()}",
+                package_path=path,
+                expected_sha256=digest,
+                prose_member=member,
+            )
+        )
+    policy_sources = extractor._default_core_policy_sources()
+    denominator = extractor.compile_xliff_core_denominator(
+        sources,
+        policy_sources=policy_sources,
+    )
+    tampered = extractor.compile_xliff_core_authority_census(
+        sources,
+        expected_obligation_inventory=denominator,
+        policy_sources=policy_sources,
+    )
+    candidate = next(
+        row
+        for row in tampered["candidates"]
+        if len(row["occurrences"]) == 1
+        and row["source_kind"] in {"NORMATIVE_PROSE", "NON_MODAL_PROSE"}
+    )
+    occurrence = candidate["occurrences"][0]
+    base_fields = {
+        key: occurrence[key]
+        for key in (
+            "profile",
+            "source_id",
+            "source_sha256",
+            "member",
+            "member_sha256",
+            "location",
+            "candidate_class",
+            "normalized_requirement",
+        )
+    }
+    base_fields["normalized_requirement"] += " forged but rehashed"
+    candidate["occurrences"][0] = extractor.bind_occurrence(base_fields)
+    candidate["candidate_content_sha256"] = extractor.candidate_content_sha256(
+        candidate
+    )
+    candidate["disposition"] = extractor._candidate_disposition(
+        candidate,
+        {
+            row["obligation_id"]
+            for row in denominator["expectations"]
+        },
+    )
+
+    with pytest.raises(extractor.ExtractionError, match="authority replay"):
+        extractor.validate_xliff_core_authority_census(
+            tampered,
+            expected_obligation_inventory=denominator,
+            profile_sources=sources,
+            policy_sources=policy_sources,
+        )
 
 
 def test_cli_writes_and_checks_core_authority_census(tmp_path: Path) -> None:

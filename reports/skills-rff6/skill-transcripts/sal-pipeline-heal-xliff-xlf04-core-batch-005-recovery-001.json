@@ -1,0 +1,75 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "sal-pipeline-heal-xliff-xlf04-core-batch-005-recovery-001",
+  "skill_id": "sal-pipeline-heal",
+  "mode": "live",
+  "timestamp": "2026-07-29T22:21:43.7874342Z",
+  "inputs": {
+    "taskcard_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "format_id": "xliff",
+    "root_cause_id": "ROOT-08",
+    "spec_cache_path": ".local/format-contracts/acquired/xliff/",
+    "target_stage": "census",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "execution_manifest": ".local/skills-first/manifests/sfx-e1f2c51243229aa6.json"
+  },
+  "allowed_files": [
+    "tools/spec/xliff_core_candidate_binding.py",
+    "tools/spec/extract_sal_facts.py",
+    "tests/tools/test_extract_sal_facts_candidate_binding.py",
+    "reports/ff6/xliff-core-authority-candidate-census.yaml",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-xliff-xlf04-core-batch-005-recovery-001.json",
+    ".local/transcripts/sal-pipeline-heal-xliff-xlf04-core-batch-005-recovery-001.json"
+  ],
+  "actual_files_changed": [
+    "tools/spec/xliff_core_candidate_binding.py",
+    "tools/spec/extract_sal_facts.py",
+    "tests/tools/test_extract_sal_facts_candidate_binding.py",
+    "reports/ff6/xliff-core-authority-candidate-census.yaml",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-xliff-xlf04-core-batch-005-recovery-001.json",
+    ".local/transcripts/sal-pipeline-heal-xliff-xlf04-core-batch-005-recovery-001.json"
+  ],
+  "tests_run": [
+    "Exact five-path recovery identity: MATCH before adoption.",
+    "Pinned specification packages: SHA-256 MATCH.",
+    "Candidate occurrence and candidate-content binding negative controls: PASS.",
+    "Deterministic disposition recomputation negative control: PASS.",
+    "Rehashed content versus authority replay negative control: PASS.",
+    "64 focused, 94 affected format-contract, and 69 production-program tests: PASS.",
+    "Three-run generation, artifact checks, static analysis, and authority audit: PASS."
+  ],
+  "result": "PASS",
+  "evidence": {
+    "spec_cache_verified": true,
+    "tool_invoked": "tools/spec/extract_sal_facts.py --artifact core-census",
+    "output_artifact_produced": "reports/ff6/xliff-core-authority-candidate-census.yaml",
+    "authority_sources_match": "5/5",
+    "candidate_count": 1130,
+    "fact_count_produced": 0,
+    "fact_id_namespace_valid": true,
+    "canonical_status_vocabulary_closed": true,
+    "manual_status_edit_non_promoting": true,
+    "content_addressed_receipt_bound": true,
+    "xlf_04_complete": false,
+    "truth_boundary": "The complete declared Core candidate surface is content-addressed and mechanically dispositioned, but all 1130 dispositions remain unverified, 60 expected IDs remain unresolved, 80 source-bound obligations remain missing, and no product or promotion state changes."
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for this bounded census-healing increment",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for candidate binding and replay; not for obligation or task completion",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_checkpoint_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES; no contradiction to log",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

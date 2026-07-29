@@ -1,0 +1,93 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "test-driven-development-xliff-xlf04-core-batch-005-recovery-001",
+  "skill_id": "test-driven-development",
+  "mode": "live",
+  "timestamp": "2026-07-29T22:21:43.7874342Z",
+  "inputs": {
+    "task_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "batch_id": "XLF-04-BATCH-005",
+    "target_behavior_description": "Adopt the preserved candidate-binding recovery safely, make dispositions deterministic rather than label-trusting, and add exact replay against pinned authority bytes.",
+    "source_checkpoint": "f5d07c0951db9c2350c55c763471e8f665744e31",
+    "execution_manifest": ".local/skills-first/manifests/sfx-e1f2c51243229aa6.json"
+  },
+  "allowed_files": [
+    "tests/tools/test_extract_sal_facts.py",
+    "tests/tools/test_extract_sal_facts_candidate_binding.py",
+    "reports/skills-rff6/skill-transcripts/test-driven-development-xliff-xlf04-core-batch-005-recovery-001.json",
+    ".local/transcripts/test-driven-development-xliff-xlf04-core-batch-005-recovery-001.json"
+  ],
+  "actual_files_changed": [
+    "tests/tools/test_extract_sal_facts.py",
+    "tests/tools/test_extract_sal_facts_candidate_binding.py",
+    "reports/skills-rff6/skill-transcripts/test-driven-development-xliff-xlf04-core-batch-005-recovery-001.json",
+    ".local/transcripts/test-driven-development-xliff-xlf04-core-batch-005-recovery-001.json"
+  ],
+  "delegated_source_changes": {
+    "ingest-spec-sal": [
+      "tools/spec/extract_sal_facts.py",
+      "reports/ff6/xliff-core-authority-candidate-census.yaml"
+    ],
+    "sal-pipeline-heal": [
+      "tools/spec/xliff_core_candidate_binding.py"
+    ]
+  },
+  "cycles": [
+    {
+      "behavior": "Fail closed on forged disposition labels and preserve non-promoting status",
+      "red_command": ".venv\\Scripts\\python.exe -m pytest -q tests\\tools\\test_extract_sal_facts_candidate_binding.py -k \"classifies_non_modal_prose_without_coarse_fallbacks or recomputes_dispositions_instead_of_trusting_labels\"",
+      "red_result": "2 failed for the intended missing metadata and missing deterministic-disposition recomputation",
+      "green_result": "2 passed, 27 deselected",
+      "refactor": "Replaced misleading EXACT precision labels with explicit UNVERIFIED mapping classes."
+    },
+    {
+      "behavior": "Reject internally rehashed candidate content that is absent from pinned authority bytes",
+      "harness_correction": "The first probe selected Schematron JSON and failed before the target assertion; the fixture was narrowed to a prose candidate.",
+      "red_command": ".venv\\Scripts\\python.exe -m pytest -q tests\\tools\\test_extract_sal_facts.py -k authority_replay_rejects_rehashed_content",
+      "red_result": "1 failed because validate_xliff_core_authority_census lacked profile_sources authority replay",
+      "green_result": "1 passed, 34 deselected",
+      "refactor": "Documented the boundary between structural validation and source-authentic authority replay."
+    }
+  ],
+  "tests_run": [
+    "Recovered pre-change focused baseline: 62 passed.",
+    "Final focused extractor and binding suite: 64 passed.",
+    "Affected format-contract suite: 94 passed, 1 named baseline-known stateful CSV test deselected.",
+    "Production-program regression: 69 passed.",
+    "Four tracked artifact check modes: PASS.",
+    "Three clean census generations: byte-identical SHA-256 24c1902b6387cc9fa3402f78392ba91c6e6656407719ec11cfaab1c4f3d22b9e.",
+    "Real authority replay and five-source authority audit: PASS.",
+    "Ruff, strict Mypy, Pyright 1.1.411, and py_compile: PASS."
+  ],
+  "result": "PASS",
+  "evidence": {
+    "candidate_count": 1130,
+    "candidate_content_binding": "PASS",
+    "deterministic_disposition_recomputation": "PASS",
+    "authority_replay_forgery_rejection": "PASS",
+    "unverified_disposition_count": 1130,
+    "unresolved_expected_obligation_count": 60,
+    "xlf_04_complete": false,
+    "promotion_effect": "none"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for this bounded recovery and hardening increment",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for the bounded increment; NO claim of XLF-04 completion",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_checkpoint_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES; no contradiction to log",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}
