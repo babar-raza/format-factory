@@ -1,0 +1,41 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "sal-pipeline-heal-ipynb-profile-surface-001",
+  "skill_id": "sal-pipeline-heal",
+  "mode": "live",
+  "timestamp": "2026-07-29T10:20:00Z",
+  "inputs": {
+    "taskcard_id": "TC-FF6-IPYNB-PROFILE-SURFACE-001",
+    "format_id": "ipynb",
+    "root_cause_id": "FF6-IPYNB-PROFILE-001",
+    "spec_cache_path": ".local/format-contracts/acquired/ipynb/src-nb-002.bin",
+    "target_stage": "verified SAL facts and exact nbformat 4.0-4.5 profile delta"
+  },
+  "allowed_files": [
+    "shared/sal-facts/ipynb.yaml",
+    "shared/sal-facts/evidence/ipynb.yaml",
+    "reports/sal-verification/ipynb.json",
+    "reports/ff6/ipynb-profile-delta-matrix.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/sal-facts/ipynb.yaml",
+    "shared/sal-facts/evidence/ipynb.yaml",
+    "reports/sal-verification/ipynb.json",
+    "reports/ff6/ipynb-profile-delta-matrix.yaml"
+  ],
+  "tests_run": [
+    "python tools/spec/verify_sal_facts.py --format-id ipynb --apply",
+    "python tools/spec/verify_sal_facts.py --format-id ipynb",
+    "python -m pytest tests/tools/test_verify_sal_facts.py -q"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "authority_archive_sha256": "4d3750b55006e92d8063a6ac427a84eb1f91c44e376d90de53d03893674991d9",
+    "verified_fact_count": 25,
+    "failed_fact_count": 0,
+    "recursive_schema_delta_leaf_count": 62
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

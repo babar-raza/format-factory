@@ -1,0 +1,243 @@
+schema: ff6/ipynb-profile-delta-matrix@1
+format_id: ipynb
+task_id: TC-FF6-IPYNB-PROFILE-SURFACE-001
+generated_by: codex
+visibility: evidence-only
+status: VERIFIED_CURRENT
+method:
+  authority_rule: "Only members of the pinned SRC-NB-002 archive are normative for this matrix."
+  comparison: "Parse each JSON schema, recursively compare JSON values by RFC 6901 pointer, and group newly added subtrees without discarding their canonical digest."
+  canonical_value_digest: "SHA-256 of UTF-8 JSON with sorted keys and compact separators."
+  non_behavioral_changes: "Schema title/description version labels are retained in the matrix but do not create product capabilities."
+authority:
+  source_id: SRC-NB-002
+  repository_path: .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  archive_sha256: 4d3750b55006e92d8063a6ac427a84eb1f91c44e376d90de53d03893674991d9
+  upstream_commit: 60b6151fedcbdc9f137fb2d223eeb10c935a8378
+  schemas:
+  - profile_id: nbformat_v4.0
+    member: nbformat-60b6151fedcbdc9f137fb2d223eeb10c935a8378/nbformat/v4/nbformat.v4.0.schema.json
+    member_sha256: 573477534050198c20629c0dc2ef2b543479a41d5dbc87b3ba614e85a191c2de
+  - profile_id: nbformat_v4.1
+    member: nbformat-60b6151fedcbdc9f137fb2d223eeb10c935a8378/nbformat/v4/nbformat.v4.1.schema.json
+    member_sha256: eea4f3b35fae4fd3afafe96fa6ceebe64686e3457b3035ed43c0e7999bb30be0
+  - profile_id: nbformat_v4.2
+    member: nbformat-60b6151fedcbdc9f137fb2d223eeb10c935a8378/nbformat/v4/nbformat.v4.2.schema.json
+    member_sha256: 08b23013c5148935f39184245ac96dbc001d526f2321ad82eb8dd98dabf732fd
+  - profile_id: nbformat_v4.3
+    member: nbformat-60b6151fedcbdc9f137fb2d223eeb10c935a8378/nbformat/v4/nbformat.v4.3.schema.json
+    member_sha256: 1441b5c14cd69f0dc7de0e7ef85471b41119beb2dc401c209ca2433cfbd398a3
+  - profile_id: nbformat_v4.4
+    member: nbformat-60b6151fedcbdc9f137fb2d223eeb10c935a8378/nbformat/v4/nbformat.v4.4.schema.json
+    member_sha256: dddf3bff4c0bd42bd467117321d72bceddb8de7361b0cc9581bd8318e9b4d3c8
+  - profile_id: nbformat_v4.5
+    member: nbformat-60b6151fedcbdc9f137fb2d223eeb10c935a8378/nbformat/v4/nbformat.v4.5.schema.json
+    member_sha256: 523e3578ddbfcad52933d2423dc5951114ef73f48df180b6a601498ba5ca071a
+adjacent_deltas:
+- from_profile: nbformat_v4.0
+  to_profile: nbformat_v4.1
+  recursive_leaf_change_count: 2
+  changes:
+  - pointer: /description
+    old: "IPython Notebook v4.0 JSON schema."
+    new: "IPython Notebook v4.1 JSON schema."
+    disposition: NON_BEHAVIORAL_LABEL
+  - pointer: /properties/nbformat_minor/minimum
+    old: 0
+    new: 1
+    disposition: VALIDATION_PROFILE_FLOOR
+- from_profile: nbformat_v4.1
+  to_profile: nbformat_v4.2
+  recursive_leaf_change_count: 10
+  changes:
+  - pointer: /description
+    old: "IPython Notebook v4.1 JSON schema."
+    new: "Jupyter Notebook v4.2 JSON schema."
+    disposition: NON_BEHAVIORAL_LABEL
+  - pointer: /properties/nbformat_minor/minimum
+    old: 1
+    new: 2
+    disposition: VALIDATION_PROFILE_FLOOR
+  - pointer: /properties/metadata/properties/title
+    old: ABSENT
+    new_subtree_sha256: 928dbfc97ea8781f5bda295f3ea775028161fc0a1a5120b12605c6e35e159b40
+    disposition: CAPABILITY_IPYNB_DOCMETA_001
+  - pointer: /properties/metadata/properties/authors
+    old: ABSENT
+    new_subtree_sha256: c243edc0445bc28b8c393c96387f0561b9945b2a2d0076a80d03f5e4f05ac547
+    disposition: CAPABILITY_IPYNB_DOCMETA_001
+  - pointer: /definitions/misc/metadata_name/description
+    old: "The cell's name. If present, must be a non-empty string."
+    new: "The cell's name. If present, must be a non-empty string. Must be unique across all the cells of a given notebook."
+    disposition: CAPABILITY_IPYNB_CELLNAMEUNIQUE_001
+- from_profile: nbformat_v4.2
+  to_profile: nbformat_v4.3
+  recursive_leaf_change_count: 19
+  changes:
+  - pointer: /description
+    old: "Jupyter Notebook v4.2 JSON schema."
+    new: "Jupyter Notebook v4.3 JSON schema."
+    disposition: NON_BEHAVIORAL_LABEL
+  - pointer: /properties/nbformat_minor/minimum
+    old: 2
+    new: 3
+    disposition: VALIDATION_PROFILE_FLOOR
+  - pointer: /definitions/code_cell/properties/metadata/properties/jupyter
+    old: ABSENT
+    new_subtree_sha256: dd9c24d3d574e90104f1b04c210c40fa207fede848897f7bd2a0d5007b00a8db
+    disposition: CAPABILITY_IPYNB_HIDDEN_001
+  - pointer: /definitions/markdown_cell/properties/metadata/properties/jupyter
+    old: ABSENT
+    new_subtree_sha256: 7fe34b8f7c405e535ba46bb4f628dbeff47d2bcb311c9877a4a8d28cfbf7321f
+    disposition: CAPABILITY_IPYNB_HIDDEN_001
+  - pointer: /definitions/raw_cell/properties/metadata/properties/jupyter
+    old: ABSENT
+    new_subtree_sha256: fbc244fd2ba615042a5f620cc31662400de4c378b57b694cc027579223c59f3d
+    disposition: CAPABILITY_IPYNB_HIDDEN_001
+- from_profile: nbformat_v4.3
+  to_profile: nbformat_v4.4
+  recursive_leaf_change_count: 18
+  changes:
+  - pointer: /description
+    old: "Jupyter Notebook v4.3 JSON schema."
+    new: "Jupyter Notebook v4.4 JSON schema."
+    disposition: NON_BEHAVIORAL_LABEL
+  - pointer: /properties/nbformat_minor/minimum
+    old: 3
+    new: 4
+    disposition: VALIDATION_PROFILE_FLOOR
+  - pointer: /definitions/code_cell/properties/metadata/properties/collapsed/description
+    old: "Whether the cell is collapsed/expanded."
+    new: "Whether the cell's output is collapsed/expanded."
+    disposition: CLARIFICATION_EXISTING_METADATA
+  - pointer: /definitions/code_cell/properties/metadata/properties/execution
+    old: ABSENT
+    new_subtree_sha256: 4dfa6bffdd4ac73db0694d5b504a716ac279497b66d1bd4c538fa1b204a30543
+    disposition: CAPABILITY_IPYNB_EXECMETA_001
+  - pointer: /definitions/misc/metadata_name/description
+    old: "The cell's name. If present, must be a non-empty string. Must be unique across all the cells of a given notebook."
+    new: "The cell's name. If present, must be a non-empty string. Cell names are expected to be unique across all the cells in a given notebook. This criterion cannot be checked by the json schema and must be established by an additional check."
+    disposition: CAPABILITY_IPYNB_CELLNAMEUNIQUE_001
+- from_profile: nbformat_v4.4
+  to_profile: nbformat_v4.5
+  recursive_leaf_change_count: 13
+  changes:
+  - pointer: /description
+    old: "Jupyter Notebook v4.4 JSON schema."
+    new: "Jupyter Notebook v4.5 JSON schema."
+    disposition: NON_BEHAVIORAL_LABEL
+  - pointer: /properties/nbformat_minor/minimum
+    old: 4
+    new: 5
+    disposition: VALIDATION_PROFILE_FLOOR
+  - pointer: /definitions/cell_id
+    old: ABSENT
+    new_subtree_sha256: 1175231b71254a444128111007ececf9c441a7bacac569c54fce4d34415cb79c
+    disposition: CAPABILITY_IPYNB_ID_001
+  - pointer: /definitions/code_cell/properties/id/$ref
+    old: ABSENT
+    new: '#/definitions/cell_id'
+    disposition: CAPABILITY_IPYNB_ID_001
+  - pointer: /definitions/code_cell/required
+    old: [cell_type, metadata, source, outputs, execution_count]
+    new: [id, cell_type, metadata, source, outputs, execution_count]
+    disposition: CAPABILITY_IPYNB_ID_001
+  - pointer: /definitions/markdown_cell/properties/id/$ref
+    old: ABSENT
+    new: '#/definitions/cell_id'
+    disposition: CAPABILITY_IPYNB_ID_001
+  - pointer: /definitions/markdown_cell/required
+    old: [cell_type, metadata, source]
+    new: [id, cell_type, metadata, source]
+    disposition: CAPABILITY_IPYNB_ID_001
+  - pointer: /definitions/raw_cell/properties/id/$ref
+    old: ABSENT
+    new: '#/definitions/cell_id'
+    disposition: CAPABILITY_IPYNB_ID_001
+  - pointer: /definitions/raw_cell/required
+    old: [cell_type, metadata, source]
+    new: [id, cell_type, metadata, source]
+    disposition: CAPABILITY_IPYNB_ID_001
+profile_applicability:
+  all_profiles: &all_profiles
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
+  - nbformat_v4.5
+  capability_groups:
+  - capability_ids:
+    - IPYNB-ATTACH-001
+    - IPYNB-CELLNAME-001
+    - IPYNB-CLEAN-001
+    - IPYNB-DIFF-001
+    - IPYNB-EDIT-001
+    - IPYNB-EXEC-001
+    - IPYNB-EXPORT-001
+    - IPYNB-LIFECYCLE-001
+    - IPYNB-MERGE-001
+    - IPYNB-META-001
+    - IPYNB-MODEL-001
+    - IPYNB-OUTPUT-001
+    - IPYNB-PARSE-001
+    - IPYNB-PRESERVE-001
+    - IPYNB-SANITIZE-001
+    - IPYNB-SEC-001
+    - IPYNB-TRUST-001
+    - IPYNB-UPGRADE-001
+    - IPYNB-VALIDATE-001
+    - IPYNB-WRITE-001
+    profiles: *all_profiles
+  - capability_ids: [IPYNB-DOCMETA-001, IPYNB-CELLNAMEUNIQUE-001]
+    profiles: [nbformat_v4.2, nbformat_v4.3, nbformat_v4.4, nbformat_v4.5]
+  - capability_ids: [IPYNB-HIDDEN-001]
+    profiles: [nbformat_v4.3, nbformat_v4.4, nbformat_v4.5]
+  - capability_ids: [IPYNB-EXECMETA-001]
+    profiles: [nbformat_v4.4, nbformat_v4.5]
+  - capability_ids: [IPYNB-ID-001]
+    profiles: [nbformat_v4.5]
+  no_execution_boundary:
+    capability_id: IPYNB-EXEC-001
+    classification: EXCLUDED_WITH_AUTHORITY
+    applies_to_profiles: *all_profiles
+    rule: "The core and IPYNB distribution never execute notebook code; stored source, output, kernel, and timing metadata remain passive data."
+fact_ownership:
+  mode: explicit_complete
+  sal_fact_count: 25
+  duplicate_owners: 0
+  unassigned_facts: 0
+  domains:
+    IPYNB-PARSE-001: [SAL-IPYNB-00001, SAL-IPYNB-00004, SAL-IPYNB-00007, SAL-IPYNB-00017]
+    IPYNB-MODEL-001: [SAL-IPYNB-00002, SAL-IPYNB-00015]
+    IPYNB-ID-001: [SAL-IPYNB-00014]
+    IPYNB-CELLNAME-001: [SAL-IPYNB-00023]
+    IPYNB-CELLNAMEUNIQUE-001: [SAL-IPYNB-00024]
+    IPYNB-OUTPUT-001: [SAL-IPYNB-00003, SAL-IPYNB-00008, SAL-IPYNB-00013, SAL-IPYNB-00018, SAL-IPYNB-00019]
+    IPYNB-ATTACH-001: [SAL-IPYNB-00005, SAL-IPYNB-00009]
+    IPYNB-META-001: [SAL-IPYNB-00006, SAL-IPYNB-00010]
+    IPYNB-DOCMETA-001: [SAL-IPYNB-00020]
+    IPYNB-HIDDEN-001: [SAL-IPYNB-00021]
+    IPYNB-EXECMETA-001: [SAL-IPYNB-00022]
+    IPYNB-VALIDATE-001: [SAL-IPYNB-00012, SAL-IPYNB-00025]
+    IPYNB-SANITIZE-001: [SAL-IPYNB-00011]
+    IPYNB-UPGRADE-001: [SAL-IPYNB-00016]
+known_authority_peculiarities:
+- id: IPYNB-AUTH-PEC-001
+  profiles: [nbformat_v4.2, nbformat_v4.3, nbformat_v4.4, nbformat_v4.5]
+  observation: "The authors schema uses 'item' rather than the Draft 4 'items' keyword."
+  effect: "The official schema establishes authors as an array but does not schema-enforce the author item shape. The library may provide typed author access based on the companion official documentation, while preservation accepts additional author fields."
+- id: IPYNB-AUTH-PEC-002
+  profiles: [nbformat_v4.3, nbformat_v4.4, nbformat_v4.5]
+  observation: "The source_hidden and outputs_hidden definitions are direct members of the Jupyter metadata schema object rather than entries under 'properties'."
+  effect: "The pinned JSON Schema does not enforce these members as ordinary properties. The companion official format documentation supplies their boolean meaning; library validation must distinguish documented semantics from schema-enforced constraints."
+- id: IPYNB-AUTH-PEC-003
+  profiles: [nbformat_v4.2, nbformat_v4.3, nbformat_v4.4, nbformat_v4.5]
+  observation: "Cell-name uniqueness is a cross-cell invariant and cannot be expressed by the local metadata_name string schema."
+  effect: "Implement an explicit semantic validator; do not claim JSON-Schema enforcement."
+uncertainty:
+  unresolved_authority_contradictions: 0
+  interpretation_limits:
+  - "This matrix proves the selected schema surface and companion documentation at the pinned commit; it does not prove behavior of third-party notebook producers."
+  - "Profile applicability is a contract obligation, not implementation or interoperability proof."
+  - "The profile closes only after generated capability and obligation projections reproduce deterministically and retain the no-execution exclusion."

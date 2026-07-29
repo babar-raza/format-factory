@@ -41,6 +41,32 @@ def scaffold_enrichment(
     applicability = format_policy.get("profile_applicability", {}) or {}
     locks = format_policy.get("classification_locks", {}) or {}
 
+    target = safe_path(root, output_path)
+    existing_by_id: dict[str, dict[str, Any]] = {}
+    if target.is_file():
+        existing, _ = load_yaml(root, output_path)
+        if existing.get("format_id") != format_id:
+            raise UniverseError(
+                f"{output_path}: existing enrichment format_id does not match "
+                f"{format_id}"
+            )
+        existing_records = existing.get("capabilities", [])
+        if not isinstance(existing_records, list):
+            raise UniverseError(
+                f"{output_path}: existing enrichment capabilities must be a list"
+            )
+        for record in existing_records:
+            if not isinstance(record, dict) or not record.get("capability_id"):
+                raise UniverseError(
+                    f"{output_path}: every existing enrichment must have capability_id"
+                )
+            capability_id = str(record["capability_id"])
+            if capability_id in existing_by_id:
+                raise UniverseError(
+                    f"{output_path}: duplicate existing capability {capability_id}"
+                )
+            existing_by_id[capability_id] = record
+
     preservation = contract.get("preservation_contract", {}) or {}
     preservation_rules = [
         str(item)
@@ -83,8 +109,7 @@ def scaffold_enrichment(
         ] or [
             "Bound input bytes, expanded bytes, nesting, object count, and decoded payload size."
         ]
-        records.append(
-            {
+        scaffold = {
                 "capability_id": capability_id,
                 "stable_name": str(capability.get("title", capability_id)),
                 "classification": str(
@@ -129,14 +154,35 @@ def scaffold_enrichment(
                 "taskcard_ids": [task_id],
                 "release_state": "PLANNED",
             }
+        previous = existing_by_id.get(capability_id)
+        record = {**scaffold, **previous} if previous else scaffold
+        # These fields are contract/policy projections, not manually curated
+        # implementation detail. Refresh them on every scaffold replay so a
+        # source-contract expansion cannot retain stale fact or profile claims.
+        record["capability_id"] = capability_id
+        record["spec_profiles"] = profiles
+        record["authority_fact_ids"] = list(capability.get("provenance", []))
+        record["classification"] = str(
+            locks.get(capability_id, record.get("classification", "STABLE_REQUIRED"))
         )
+        taskcard_ids = [
+            str(item) for item in record.get("taskcard_ids", []) if str(item)
+        ]
+        if task_id not in taskcard_ids:
+            taskcard_ids.append(task_id)
+        record["taskcard_ids"] = taskcard_ids
+        exclusion = (format_policy.get("exclusions", {}) or {}).get(capability_id)
+        if exclusion is not None:
+            record["exclusion"] = exclusion
+        else:
+            record.pop("exclusion", None)
+        records.append(record)
     payload = {
         "schema": "ff6/capability-enrichment@1",
         "goal_id": policy.get("goal_id"),
         "format_id": format_id,
         "capabilities": sorted(records, key=lambda item: item["capability_id"]),
     }
-    target = safe_path(root, output_path)
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_bytes(yaml_bytes(payload))
 
@@ -273,3 +319,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     except UniverseError as exc:
         print(f"CAPABILITY_UNIVERSE_ERROR: {exc}")
         return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

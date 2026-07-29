@@ -4,6 +4,14 @@
 # STYLE RULE: quoted block-style scalars only.
 schema_version: '1.0'
 family: executable_document
+applicability:
+  representative_formats: [ipynb]
+  semantic_scope: "Passive, lossless handling of JSON notebook documents, their cells, stored outputs, attachments, metadata, validation rules, and explicit document transformations."
+  excluded_concepts:
+  - "kernel transport protocol"
+  - "kernel process management"
+  - "interactive rendering engine"
+fact_ownership: explicit_complete
 identity_defaults:
   data_model_type: executable_document
   description_template: "{display_name}: JSON executable-document format ({spec_body} {spec_version}). Ordered cells with sources, rich MIME outputs, attachments, and metadata; documents can carry executable code and active content that must never run implicitly."
@@ -56,6 +64,7 @@ domains:
   - id: POL-EXD-PARSE-02
     text: "Preserve unknown fields and metadata namespaces; never coerce numeric or Unicode JSON values lossily."
   fact_keywords: [json, nbformat, cell, notebook, version]
+  fact_ids: [SAL-IPYNB-00001, SAL-IPYNB-00004, SAL-IPYNB-00007, SAL-IPYNB-00017]
   required_tests:
   - "Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip."
   release_gates:
@@ -70,6 +79,7 @@ domains:
   - id: POL-EXD-MODEL-01
     text: "Model every specified cell type with typed accessors; preserve future/unknown cell types as preservation-only nodes."
   fact_keywords: [markdown, code, raw, source, cell_type]
+  fact_ids: [SAL-IPYNB-00002, SAL-IPYNB-00015]
   required_tests:
   - "Typed access per cell type; unknown-cell-type preservation fixture."
   release_gates:
@@ -84,10 +94,41 @@ domains:
   - id: POL-EXD-ID-01
     text: "Validate required cell IDs (uniqueness, syntax, length); generate IDs only via explicit upgrade with a rewrite map for references."
   fact_keywords: [id, unique, identifier]
+  fact_ids: [SAL-IPYNB-00014]
   required_tests:
   - "Duplicate/invalid ID negatives; upgrade fixture verifies mapping."
   release_gates:
   - "ID behavior matches the target schema minor exactly."
+- domain: CELLNAME
+  category: validate
+  level: MUST
+  title: Non-empty cell names
+  production_meaning: "Optional cell metadata names are non-empty strings in every supported nbformat 4.x profile."
+  developer_use_case: "A developer assigns stable human-readable cell names and receives a precise diagnostic for an empty name."
+  baseline_behavior:
+  - id: POL-EXD-CELLNAME-01
+    text: "Validate every present cell metadata name as a non-empty string without synthesizing names during passive reads."
+  fact_keywords: [cell, metadata, name, non-empty]
+  fact_ids: [SAL-IPYNB-00023]
+  required_tests:
+  - "Present non-empty names pass and empty names fail in every supported profile."
+  release_gates:
+  - "The non-empty name rule has positive and negative evidence for nbformat 4.0 through 4.5."
+- domain: CELLNAMEUNIQUE
+  category: validate
+  level: MUST
+  title: Notebook-wide cell-name uniqueness
+  production_meaning: "From nbformat 4.2 onward, present cell names are checked for notebook-wide uniqueness outside JSON Schema."
+  developer_use_case: "A developer detects duplicate logical cell names before downstream tools resolve the wrong cell."
+  baseline_behavior:
+  - id: POL-EXD-CELLNAMEUNIQUE-01
+    text: "For profiles 4.2 and later, perform an additional notebook-wide uniqueness check for present cell metadata names."
+  fact_keywords: [cell, metadata, name, unique]
+  fact_ids: [SAL-IPYNB-00024]
+  required_tests:
+  - "Duplicate-name fixtures fail the semantic check while distinct and absent names pass."
+  release_gates:
+  - "Uniqueness is not falsely claimed as JSON-Schema-enforced and has explicit semantic validation evidence."
 - domain: OUTPUT
   category: model
   level: MUST
@@ -98,6 +139,7 @@ domains:
   - id: POL-EXD-OUTPUT-01
     text: "Support every specified output type and arbitrary MIME bundles, preserving execution counts, tracebacks, metadata, and unknown bundle entries."
   fact_keywords: [output, stream, display, mime, execute_result, error]
+  fact_ids: [SAL-IPYNB-00003, SAL-IPYNB-00008, SAL-IPYNB-00013, SAL-IPYNB-00018, SAL-IPYNB-00019]
   required_tests:
   - "MIME-bundle matrix round-trips including vendor types and binary payloads."
   release_gates:
@@ -112,6 +154,7 @@ domains:
   - id: POL-EXD-ATTACH-01
     text: "Manage attachments with MIME-bundle validation and reference checks; detect orphans and missing targets."
   fact_keywords: [attachment]
+  fact_ids: [SAL-IPYNB-00005, SAL-IPYNB-00009]
   required_tests:
   - "Orphan and missing-target fixtures produce diagnostics."
   release_gates:
@@ -126,10 +169,56 @@ domains:
   - id: POL-EXD-META-01
     text: "Preserve arbitrary metadata at all levels; provide typed adapters for common namespaces; never delete unknown metadata during normalization."
   fact_keywords: [metadata, kernelspec, language, tags]
+  fact_ids: [SAL-IPYNB-00006, SAL-IPYNB-00010]
   required_tests:
   - "Unknown-metadata round trip; typed adapter reads on real fixtures."
   release_gates:
   - "Zero unknown-metadata loss proven."
+- domain: DOCMETA
+  category: model
+  level: MUST
+  title: Notebook title and author metadata
+  production_meaning: "Nbformat 4.2 and later notebook metadata exposes the document title and author collection while preserving additional author properties."
+  developer_use_case: "A cataloging system reads and writes notebook title and author metadata without flattening vendor extensions."
+  baseline_behavior:
+  - id: POL-EXD-DOCMETA-01
+    text: "For profiles 4.2 and later, model notebook title and author metadata and preserve additional author fields."
+  fact_keywords: [metadata, title, author]
+  fact_ids: [SAL-IPYNB-00020]
+  required_tests:
+  - "Title and multi-author fixtures round-trip for every applicable profile, including additional author properties."
+  release_gates:
+  - "Title and author metadata is explicitly absent from 4.0-4.1 claims and proven for 4.2-4.5."
+- domain: HIDDEN
+  category: model
+  level: MUST
+  title: Jupyter cell visibility metadata
+  production_meaning: "Nbformat 4.3 and later typed Jupyter metadata exposes source-hidden and code-output-hidden flags without changing display state implicitly."
+  developer_use_case: "A publishing system inspects cell visibility hints while preserving unknown Jupyter metadata."
+  baseline_behavior:
+  - id: POL-EXD-HIDDEN-01
+    text: "For profiles 4.3 and later, model source_hidden for all known cells and outputs_hidden for code cells under the Jupyter metadata namespace."
+  fact_keywords: [jupyter, source_hidden, outputs_hidden]
+  fact_ids: [SAL-IPYNB-00021]
+  required_tests:
+  - "Visibility metadata fixtures cover all cell types, boolean validation, and unknown Jupyter fields."
+  release_gates:
+  - "Visibility metadata is proven only for 4.3-4.5 and never interpreted as permission to render or execute."
+- domain: EXECMETA
+  category: model
+  level: MUST
+  title: Code-cell execution timing metadata
+  production_meaning: "Nbformat 4.4 and later code-cell metadata exposes the standard iopub and shell timing fields and preserves additional string timing keys."
+  developer_use_case: "A profiling system reads kernel-message timing metadata without executing the notebook."
+  baseline_behavior:
+  - id: POL-EXD-EXECMETA-01
+    text: "For profiles 4.4 and later, model the four standard execution timing fields and preserve additional string-valued timing entries."
+  fact_keywords: [execution, iopub, shell, timing]
+  fact_ids: [SAL-IPYNB-00022]
+  required_tests:
+  - "Four standard timing keys, additional string keys, and non-string negatives are covered."
+  release_gates:
+  - "Execution timing metadata is proven only for 4.4-4.5 and remains passive data."
 - domain: EDIT
   category: edit
   level: MUST
@@ -140,6 +229,7 @@ domains:
   - id: POL-EXD-EDIT-01
     text: "Provide cell CRUD plus search by ID, type, tag, metadata, and source text; bulk operations return change reports."
   fact_keywords: [insert, add, remove, move, replace]
+  fact_ids: []
   required_tests:
   - "Each mutation class save-reload-verifies with IDs stable."
   release_gates:
@@ -154,6 +244,7 @@ domains:
   - id: POL-EXD-CLEAN-01
     text: "Clear outputs (all/by type/by cell), reset execution counts consistently, and strip transient metadata via configurable rules with dry-run reporting."
   fact_keywords: [clear, clean, strip]
+  fact_ids: []
   required_tests:
   - "Dry-run report matches actual mutation; selective clearing fixtures."
   release_gates:
@@ -168,6 +259,7 @@ domains:
   - id: POL-EXD-VALIDATE-01
     text: "Validate against the schema matching declared version and optionally current minor; report unknown forward-compatible fields separately from errors."
   fact_keywords: [valid, schema, must, conform]
+  fact_ids: [SAL-IPYNB-00012, SAL-IPYNB-00025]
   required_tests:
   - "Both validation modes on fixtures per schema construct; unknown-field separation asserted."
   release_gates:
@@ -182,6 +274,7 @@ domains:
   - id: POL-EXD-TRUST-01
     text: "Integrate a pluggable trust notary (compute/store/verify/revoke); never mark modified content trusted automatically; keep trust separate from validity."
   fact_keywords: [trust, signature, sign]
+  fact_ids: []
   required_tests:
   - "Edit-invalidates-trust fixture; notary plug-in contract test."
   release_gates:
@@ -196,6 +289,7 @@ domains:
   - id: POL-EXD-SANITIZE-01
     text: "Provide configurable sanitizers for active content with remove, quarantine, and preserve-but-mark modes; never sanitize silently in lossless mode."
   fact_keywords: [sanitize, html, script, svg]
+  fact_ids: [SAL-IPYNB-00011]
   required_tests:
   - "Hostile active-content fixtures per mode; lossless mode leaves content intact and reported."
   release_gates:
@@ -210,6 +304,7 @@ domains:
   - id: POL-EXD-EXEC-01
     text: "Keep execution in an opt-in adapter with kernel selection, timeouts, error policy, and isolation boundary; return a structured execution report; never execute during load/validate/diff/save."
   fact_keywords: [execute, kernel, run]
+  fact_ids: []
   required_tests:
   - "Isolated-environment execution tests covering timeout, kernel failure, and partial output; core-path no-execution proof."
   release_gates:
@@ -224,6 +319,7 @@ domains:
   - id: POL-EXD-DIFF-01
     text: "Diff by stable cell identity with move detection; distinguish source, metadata, attachments, execution counts, and outputs; support ignore policies and machine-applicable patches with preconditions."
   fact_keywords: [diff, compare, patch, merge]
+  fact_ids: []
   required_tests:
   - "Move-detection fixtures; ignore-policy matrix; patch precondition failures."
   release_gates:
@@ -238,6 +334,7 @@ domains:
   - id: POL-EXD-UPGRADE-01
     text: "Upgrade older versions through explicit conversion paths producing a conversion ledger; downgrade only after reporting unsupported constructs and expected loss; preserve unknown future additions when reading higher minors."
   fact_keywords: [version, upgrade, convert, minor]
+  fact_ids: [SAL-IPYNB-00016]
   required_tests:
   - "Fixtures at each supported older version upgrade with ledger assertions; downgrade-loss reporting fixture."
   release_gates:
@@ -252,6 +349,7 @@ domains:
   - id: POL-EXD-MERGE-01
     text: "Merge by stable cell identity and structure; detect move/edit, delete/edit, output, and metadata conflicts; produce an explicit conflict report and never hide conflicts inside executable source."
   fact_keywords: [merge, conflict]
+  fact_ids: []
   required_tests:
   - "Conflict-matrix fixtures (move/edit, delete/edit, output, metadata)."
   release_gates:
@@ -266,6 +364,7 @@ domains:
   - id: POL-EXD-EXPORT-01
     text: "Provide exporter adapter interfaces returning main output plus ancillary resources; keep exporter-specific preprocessors and resources outside the core parser."
   fact_keywords: [export, convert]
+  fact_ids: []
   required_tests:
   - "Exporter adapter contract test with ancillary-resource collection."
   release_gates:
@@ -280,6 +379,7 @@ domains:
   - id: POL-EXD-WRITE-01
     text: "Write valid UTF-8 JSON with configurable formatting and canonical key ordering that never reorders cells or outputs; retain unknown fields and binary MIME payloads exactly."
   fact_keywords: [write, serialize, save]
+  fact_ids: []
   required_tests:
   - "Determinism byte-compare; binary-payload integrity fixtures."
   release_gates:

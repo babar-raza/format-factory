@@ -1,9 +1,31 @@
 schema_version: '1.0'
 format_id: ipynb
+generated_by: codex
+visibility: evidence-only
 coverage: complete
 authority_policy: Every assertion is an exact executable predicate over a member of the pinned
   Jupyter nbformat 5.10.4 source archive at commit 60b6151fedcbdc9f137fb2d223eeb10c935a8378.
 targets:
+  schema40:
+    source_id: SRC-NB-002
+    member: nbformat-60b6151fedcbdc9f137fb2d223eeb10c935a8378/nbformat/v4/nbformat.v4.0.schema.json
+    member_sha256: 573477534050198c20629c0dc2ef2b543479a41d5dbc87b3ba614e85a191c2de
+  schema41:
+    source_id: SRC-NB-002
+    member: nbformat-60b6151fedcbdc9f137fb2d223eeb10c935a8378/nbformat/v4/nbformat.v4.1.schema.json
+    member_sha256: eea4f3b35fae4fd3afafe96fa6ceebe64686e3457b3035ed43c0e7999bb30be0
+  schema42:
+    source_id: SRC-NB-002
+    member: nbformat-60b6151fedcbdc9f137fb2d223eeb10c935a8378/nbformat/v4/nbformat.v4.2.schema.json
+    member_sha256: 08b23013c5148935f39184245ac96dbc001d526f2321ad82eb8dd98dabf732fd
+  schema43:
+    source_id: SRC-NB-002
+    member: nbformat-60b6151fedcbdc9f137fb2d223eeb10c935a8378/nbformat/v4/nbformat.v4.3.schema.json
+    member_sha256: 1441b5c14cd69f0dc7de0e7ef85471b41119beb2dc401c209ca2433cfbd398a3
+  schema44:
+    source_id: SRC-NB-002
+    member: nbformat-60b6151fedcbdc9f137fb2d223eeb10c935a8378/nbformat/v4/nbformat.v4.4.schema.json
+    member_sha256: dddf3bff4c0bd42bd467117321d72bceddb8de7361b0cc9581bd8318e9b4d3c8
   schema45:
     source_id: SRC-NB-002
     member: nbformat-60b6151fedcbdc9f137fb2d223eeb10c935a8378/nbformat/v4/nbformat.v4.5.schema.json
@@ -375,3 +397,149 @@ facts:
     kind: json_pointer_equals
     pointer: /definitions/error/properties/traceback/items/type
     expected: string
+- fact_id: SAL-IPYNB-00020
+  claim_sha256: 460f64876586cfaa2e0f4b3714322f9581fbff6056811a18ff3c1e3425279804
+  assertions:
+  - assertion_id: title-is-string
+    target: schema42
+    kind: json_pointer_equals
+    pointer: /properties/metadata/properties/title/type
+    expected: string
+  - assertion_id: authors-is-array
+    target: schema42
+    kind: json_pointer_equals
+    pointer: /properties/metadata/properties/authors/type
+    expected: array
+  - assertion_id: pinned-author-keyword-spelling
+    target: schema42
+    kind: json_pointer_has_keys
+    pointer: /properties/metadata/properties/authors
+    expected: [description, type, item]
+  - assertion_id: author-additional-fields
+    target: format_docs
+    kind: text_contains
+    expected: A notebook's authors is a list of dictionaries containing information about each author
+      of the notebook. Currently, only the name is required. Additional fields may be added.
+- fact_id: SAL-IPYNB-00021
+  claim_sha256: 85e5fc5cea285956f0907c0a2ea4216a5ec653b1acf043d8da476cd2fe91f963
+  assertions:
+  - assertion_id: code-jupyter-keys
+    target: schema43
+    kind: json_pointer_has_keys
+    pointer: /definitions/code_cell/properties/metadata/properties/jupyter
+    expected: [source_hidden, outputs_hidden]
+  - assertion_id: markdown-jupyter-source-hidden
+    target: schema43
+    kind: json_pointer_has_keys
+    pointer: /definitions/markdown_cell/properties/metadata/properties/jupyter
+    expected: [source_hidden]
+  - assertion_id: raw-jupyter-source-hidden
+    target: schema43
+    kind: json_pointer_has_keys
+    pointer: /definitions/raw_cell/properties/metadata/properties/jupyter
+    expected: [source_hidden]
+  - assertion_id: visibility-types-and-meaning
+    target: format_docs
+    kind: text_contains
+    expected: source_hidden bool Whether the cell's source should be shown outputs_hidden bool Whether
+      the cell's outputs should be shown
+- fact_id: SAL-IPYNB-00022
+  claim_sha256: c043cbee5dc9d7dce71632c2ed6c141cfb96cb1e43f9886d080c0034030cbb5e
+  assertions:
+  - assertion_id: execution-timing-properties
+    target: schema44
+    kind: json_pointer_has_keys
+    pointer: /definitions/code_cell/properties/metadata/properties/execution/properties
+    expected: [iopub.execute_input, iopub.status.busy, shell.execute_reply, iopub.status.idle]
+  - assertion_id: execution-additional-string-values
+    target: schema44
+    kind: json_pointer_equals
+    pointer: /definitions/code_cell/properties/metadata/properties/execution/patternProperties/^.*$/type
+    expected: string
+  - assertion_id: execution-timing-documentation
+    target: format_docs
+    kind: text_contains
+    expected: These are lower level fields capturing common kernel message timestamps for better visibility
+      in applications where needed.
+- fact_id: SAL-IPYNB-00023
+  claim_sha256: 83450ba89f7c1fc66fa6fbb3ed47e61edb407f2f876c184c1a5f56a85cb4e8bf
+  assertions:
+  - assertion_id: name-pattern-40
+    target: schema40
+    kind: json_pointer_equals
+    pointer: /definitions/misc/metadata_name/pattern
+    expected: ^.+$
+  - assertion_id: name-pattern-41
+    target: schema41
+    kind: json_pointer_equals
+    pointer: /definitions/misc/metadata_name/pattern
+    expected: ^.+$
+  - assertion_id: name-pattern-42
+    target: schema42
+    kind: json_pointer_equals
+    pointer: /definitions/misc/metadata_name/pattern
+    expected: ^.+$
+  - assertion_id: name-pattern-43
+    target: schema43
+    kind: json_pointer_equals
+    pointer: /definitions/misc/metadata_name/pattern
+    expected: ^.+$
+  - assertion_id: name-pattern-44
+    target: schema44
+    kind: json_pointer_equals
+    pointer: /definitions/misc/metadata_name/pattern
+    expected: ^.+$
+  - assertion_id: name-pattern-45
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /definitions/misc/metadata_name/pattern
+    expected: ^.+$
+- fact_id: SAL-IPYNB-00024
+  claim_sha256: 9c40488994d18a1ae1af9fe70381d8cf8aa3204b0d2242bbdb683ca8e61a7c6d
+  assertions:
+  - assertion_id: uniqueness-introduced-42
+    target: schema42
+    kind: json_pointer_equals
+    pointer: /definitions/misc/metadata_name/description
+    expected: The cell's name. If present, must be a non-empty string. Must be unique across all
+      the cells of a given notebook.
+  - assertion_id: uniqueness-needs-extra-check-44
+    target: schema44
+    kind: json_pointer_equals
+    pointer: /definitions/misc/metadata_name/description
+    expected: The cell's name. If present, must be a non-empty string. Cell names are expected
+      to be unique across all the cells in a given notebook. This criterion cannot be checked by
+      the json schema and must be established by an additional check.
+- fact_id: SAL-IPYNB-00025
+  claim_sha256: 4f0f96888fa15b5017a82893aaeea73e57a6caf351c0416063453dd4a83ca039
+  assertions:
+  - assertion_id: minor-floor-40
+    target: schema40
+    kind: json_pointer_equals
+    pointer: /properties/nbformat_minor/minimum
+    expected: 0
+  - assertion_id: minor-floor-41
+    target: schema41
+    kind: json_pointer_equals
+    pointer: /properties/nbformat_minor/minimum
+    expected: 1
+  - assertion_id: minor-floor-42
+    target: schema42
+    kind: json_pointer_equals
+    pointer: /properties/nbformat_minor/minimum
+    expected: 2
+  - assertion_id: minor-floor-43
+    target: schema43
+    kind: json_pointer_equals
+    pointer: /properties/nbformat_minor/minimum
+    expected: 3
+  - assertion_id: minor-floor-44
+    target: schema44
+    kind: json_pointer_equals
+    pointer: /properties/nbformat_minor/minimum
+    expected: 4
+  - assertion_id: minor-floor-45
+    target: schema45
+    kind: json_pointer_equals
+    pointer: /properties/nbformat_minor/minimum
+    expected: 5

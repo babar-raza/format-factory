@@ -22,6 +22,52 @@ formats:
       - nbformat_v4.3
       - nbformat_v4.4
       - nbformat_v4.5
+    required_capability_ids:
+      - IPYNB-ATTACH-001
+      - IPYNB-CELLNAME-001
+      - IPYNB-CELLNAMEUNIQUE-001
+      - IPYNB-CLEAN-001
+      - IPYNB-DIFF-001
+      - IPYNB-DOCMETA-001
+      - IPYNB-EDIT-001
+      - IPYNB-EXEC-001
+      - IPYNB-EXECMETA-001
+      - IPYNB-EXPORT-001
+      - IPYNB-HIDDEN-001
+      - IPYNB-ID-001
+      - IPYNB-LIFECYCLE-001
+      - IPYNB-MERGE-001
+      - IPYNB-META-001
+      - IPYNB-MODEL-001
+      - IPYNB-OUTPUT-001
+      - IPYNB-PARSE-001
+      - IPYNB-PRESERVE-001
+      - IPYNB-SANITIZE-001
+      - IPYNB-SEC-001
+      - IPYNB-TRUST-001
+      - IPYNB-UPGRADE-001
+      - IPYNB-VALIDATE-001
+      - IPYNB-WRITE-001
+    profile_applicability:
+      IPYNB-CELLNAMEUNIQUE-001:
+        - nbformat_v4.2
+        - nbformat_v4.3
+        - nbformat_v4.4
+        - nbformat_v4.5
+      IPYNB-DOCMETA-001:
+        - nbformat_v4.2
+        - nbformat_v4.3
+        - nbformat_v4.4
+        - nbformat_v4.5
+      IPYNB-HIDDEN-001:
+        - nbformat_v4.3
+        - nbformat_v4.4
+        - nbformat_v4.5
+      IPYNB-EXECMETA-001:
+        - nbformat_v4.4
+        - nbformat_v4.5
+      IPYNB-ID-001:
+        - nbformat_v4.5
     classification_locks:
       IPYNB-EXEC-001: EXCLUDED_WITH_AUTHORITY
       IPYNB-EXPORT-001: OPTIONAL_ADAPTER_REQUIRED
@@ -39,12 +85,7 @@ formats:
         user_disposition: >-
           Use a separately isolated and audited notebook execution service. The
           format-factory-ipynb distribution never executes code.
-    known_surface_gaps:
-      - gap_id: FF6-IPYNB-PROFILE-001
-        description: >-
-          The authored contract names 4.5 as its target and the submitted
-          enrichments claim only 4.5; explicit 4.0-4.4 per-capability coverage
-          remains to be compiled from pinned official schemas.
+    known_surface_gaps: []
   ora:
     target_profiles:
       - openraster_0.0.3

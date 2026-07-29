@@ -1,0 +1,76 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "compile-production-capability-universe-ipynb-profile-surface-001",
+  "skill_id": "compile-production-capability-universe",
+  "mode": "live",
+  "timestamp": "2026-07-29T10:20:00Z",
+  "inputs": {
+    "format_ids": [
+      "ipynb",
+      "ora",
+      "nrrd",
+      "xliff",
+      "safetensors",
+      "ubl"
+    ],
+    "policy_path": "plans/strategic/ff6/capability-policy.yaml",
+    "enrichment_dir": "plans/strategic/ff6/capability-enrichments",
+    "output_dir": "plans/strategic/ff6"
+  },
+  "allowed_files": [
+    "tools/format_contract/capability_universe_command.py",
+    "tests/production_program/test_capability_universe.py",
+    "plans/strategic/ff6/capability-policy.yaml",
+    "plans/strategic/ff6/capability-enrichments/ipynb.yaml",
+    "plans/strategic/ff6/capabilities/ipynb.yaml",
+    "plans/strategic/ff6/capabilities/ora.yaml",
+    "plans/strategic/ff6/capabilities/nrrd.yaml",
+    "plans/strategic/ff6/capabilities/xliff.yaml",
+    "plans/strategic/ff6/capabilities/safetensors.yaml",
+    "plans/strategic/ff6/capabilities/ubl.yaml",
+    "plans/strategic/ff6/obligations/ipynb.yaml",
+    "plans/strategic/ff6/obligations/ora.yaml",
+    "plans/strategic/ff6/obligations/nrrd.yaml",
+    "plans/strategic/ff6/obligations/xliff.yaml",
+    "plans/strategic/ff6/obligations/safetensors.yaml",
+    "plans/strategic/ff6/obligations/ubl.yaml",
+    "plans/strategic/ff6/capability-coverage.yaml",
+    "plans/strategic/ff6/capability-manifest.json"
+  ],
+  "actual_files_changed": [
+    "tools/format_contract/capability_universe_command.py",
+    "tests/production_program/test_capability_universe.py",
+    "plans/strategic/ff6/capability-policy.yaml",
+    "plans/strategic/ff6/capability-enrichments/ipynb.yaml",
+    "plans/strategic/ff6/capabilities/ipynb.yaml",
+    "plans/strategic/ff6/capabilities/ora.yaml",
+    "plans/strategic/ff6/capabilities/nrrd.yaml",
+    "plans/strategic/ff6/capabilities/xliff.yaml",
+    "plans/strategic/ff6/capabilities/safetensors.yaml",
+    "plans/strategic/ff6/capabilities/ubl.yaml",
+    "plans/strategic/ff6/obligations/ipynb.yaml",
+    "plans/strategic/ff6/obligations/ora.yaml",
+    "plans/strategic/ff6/obligations/nrrd.yaml",
+    "plans/strategic/ff6/obligations/xliff.yaml",
+    "plans/strategic/ff6/obligations/safetensors.yaml",
+    "plans/strategic/ff6/obligations/ubl.yaml",
+    "plans/strategic/ff6/capability-coverage.yaml",
+    "plans/strategic/ff6/capability-manifest.json"
+  ],
+  "tests_run": [
+    "python -m tools.format_contract.capability_universe compile --repo-root . --policy plans/strategic/ff6/capability-policy.yaml --enrichment-dir plans/strategic/ff6/capability-enrichments --output-dir plans/strategic/ff6 --format ipynb --format ora --format nrrd --format xliff --format safetensors --format ubl --check --verify-idempotency",
+    "python -m pytest tests/production_program/test_capability_universe.py -q"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "portfolio_capabilities": 104,
+    "portfolio_obligations": 701,
+    "ipynb_capabilities": 25,
+    "ipynb_obligations": 68,
+    "aggregate_sha256": "e0747efbf376f081fd6550afed48100c7e1872a055bf6155332ed9358ac05b5f",
+    "three_run_digest": "dc33648ffa8f8b676de98f7b145dc2180630d5c470148ca0f46b13ec1492b554"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

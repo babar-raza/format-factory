@@ -7,7 +7,7 @@ generated_by: codex
 generated_at: 2026-07-29
 goal_id: FF6-PRODUCTION-LIBRARIES-001
 parent_task_id: TC-FF6-PROGRAM-CAPABILITIES-001
-status: READY
+status: PASS
 format_id: ipynb
 skill_ids:
   - ingest-spec-sal
@@ -65,3 +65,42 @@ permission to execute notebook code.
 - Three identical strict runs; all 15 authorities `MATCH`; affected tests and
   static checks pass.
 - No product or promotion state changes.
+
+## Verified completion
+
+Status: `PASS`
+
+- Pinned nbformat 4.0-4.5 schemas were compared by JSON pointer. The retained
+  matrix records 62 recursive leaf changes, grouped without losing canonical
+  subtree digests, at
+  `reports/ff6/ipynb-profile-delta-matrix.yaml`.
+- Six new exact SAL facts bring IPYNB to 25/25 content-addressed passing facts.
+  The evidence retains two official-schema peculiarities instead of silently
+  strengthening them: `authors` uses `item`, and the Jupyter hidden-field
+  declarations are not nested under `properties`.
+- The executable-document family now has a valid applicability boundary and
+  22 format domains. `fact_ownership: explicit_complete` requires every IPYNB
+  SAL fact to have exactly one owner; unknown, duplicate, or unassigned facts
+  fail compilation.
+- IPYNB has 25 capabilities and 68 canonical obligations. Every capability and
+  obligation has a non-empty exact subset of nbformat 4.0-4.5.
+- Cell names apply to 4.0-4.5; notebook title/authors and cell-name uniqueness
+  apply from 4.2; Jupyter hidden metadata from 4.3; execution timing from 4.4;
+  cell IDs only to 4.5.
+- `IPYNB-EXEC-001` remains `EXCLUDED_WITH_AUTHORITY` across all profiles. No
+  notebook code execution, product source, product tests, certification,
+  promotion, release, or gate state changed.
+- Six-format strict compilation is byte-identical over three runs:
+  aggregate `e0747efbf376f081fd6550afed48100c7e1872a055bf6155332ed9358ac05b5f`;
+  three-run digest
+  `dc33648ffa8f8b676de98f7b145dc2180630d5c470148ca0f46b13ec1492b554`.
+- All 15 authority artifacts remain `MATCH`. Affected behavioral regression:
+  126 passed, with the pre-existing stateful CSV idempotency test deselected
+  and its three test-generated tracked artifacts restored exactly to `HEAD`.
+- Ruff passes. Pyright 1.1.411 reports zero errors on all three changed
+  compiler modules. Strict mypy passes on the new family-pack validator;
+  repository-wide strict mypy remains outside this task because the legacy
+  contract compiler/import graph is not strict-mypy-clean.
+
+The remaining parent blockers are `FF6-NRRD-PROFILE-001`,
+`FF6-XLIFF-PROFILE-001`, and `FF6-UBL-TYPING-001`.

@@ -268,6 +268,16 @@ def validate_family_pack(
         domains = []
     domain_ids: set[str] = set()
     policy_ids: set[str] = set(shared_policy_ids)
+    fact_ownership = str(pack.get("fact_ownership", "keyword")).strip()
+    if fact_ownership not in {"keyword", "explicit_complete"}:
+        issues.append(
+            _issue(
+                "FACT_OWNERSHIP_MODE_INVALID",
+                "fact_ownership must be 'keyword' or 'explicit_complete'",
+                "fact_ownership",
+            )
+        )
+    fact_owners: dict[str, str] = {}
     for index, raw_domain in enumerate(domains):
         path = f"domains[{index}]"
         if not isinstance(raw_domain, dict):
@@ -281,6 +291,50 @@ def validate_family_pack(
         if domain_id in domain_ids:
             issues.append(_issue("DUPLICATE_DOMAIN", f"duplicate domain {domain_id!r}", path))
         domain_ids.add(domain_id)
+        if fact_ownership == "explicit_complete":
+            fact_ids = raw_domain.get("fact_ids")
+            if not isinstance(fact_ids, list):
+                issues.append(
+                    _issue(
+                        "FACT_IDS_MISSING",
+                        "explicit_complete ownership requires a fact_ids list on every domain",
+                        f"{path}.fact_ids",
+                    )
+                )
+                fact_ids = []
+            local_fact_ids: set[str] = set()
+            for fact_index, raw_fact_id in enumerate(fact_ids):
+                fact_path = f"{path}.fact_ids[{fact_index}]"
+                fact_id = str(raw_fact_id).strip()
+                if not fact_id.startswith("SAL-"):
+                    issues.append(
+                        _issue(
+                            "FACT_ID_INVALID",
+                            "explicit fact IDs must use the SAL- namespace",
+                            fact_path,
+                        )
+                    )
+                    continue
+                if fact_id in local_fact_ids:
+                    issues.append(
+                        _issue(
+                            "DUPLICATE_FACT_OWNER",
+                            f"fact {fact_id!r} is repeated in domain {domain_id!r}",
+                            fact_path,
+                        )
+                    )
+                previous_owner = fact_owners.get(fact_id)
+                if previous_owner is not None:
+                    issues.append(
+                        _issue(
+                            "DUPLICATE_FACT_OWNER",
+                            f"fact {fact_id!r} is owned by both "
+                            f"{previous_owner!r} and {domain_id!r}",
+                            fact_path,
+                        )
+                    )
+                local_fact_ids.add(fact_id)
+                fact_owners[fact_id] = domain_id
         if raw_domain.get("level") not in {"MUST", "SHOULD", "MAY"}:
             issues.append(
                 _issue(

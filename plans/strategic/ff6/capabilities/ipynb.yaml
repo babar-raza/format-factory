@@ -11,23 +11,23 @@ target_profiles:
 - nbformat_v4.4
 - nbformat_v4.5
 authority_status: READY
-capability_count: 20
+capability_count: 25
 source_input_digests:
   .local/format-contracts/acquired/ipynb/src-nb-002.bin: 4d3750b55006e92d8063a6ac427a84eb1f91c44e376d90de53d03893674991d9
-  plans/strategic/ff6/capability-enrichments/ipynb.yaml: 1a56d12b5db2ecc0ee29344ca15e9dd7bf36d118c723607d91ce6b8300980158
-  plans/strategic/ff6/capability-policy.yaml: 7550817db7772d46b18802df0992ec90f2430facf36447aef381224f55cf2457
+  plans/strategic/ff6/capability-enrichments/ipynb.yaml: a1ee247f0c37123154292cbc60efb2eb1c49024bb50231bdc2edf525322f05c0
+  plans/strategic/ff6/capability-policy.yaml: b8bfad505340b274c7dd82712fe96a4c17c2000f69e05727566a837d45594ef2
   schemas/ff6/capability-universe.schema.json: fea60893c5bfc54e3a6fedebdd6220a572a36f7c72f1fc2f20dec8dfe03d8974
   schemas/format-contracts/authority-lock.schema.json: a8b860f4bef1ceae1b9dd6348c29cc99b35f2bde2dca032217398bddb061f913
   shared/format-contracts/authority-lock.yaml: 8eefb28e3ef24b5b533496b54860daee981853d9c872fddc1ba5de4ff150f249
-  shared/format-contracts/ipynb.yaml: bd45c8409debd0724df5c34698a35e8e1585b3a57c66c28c16e3b84e064af637
-  shared/format-contracts/policy/family-packs/executable_document.yaml: bdc43666de37ffe17cbc827308747c60389ecb7e6e7d52a759e78f071ab32456
+  shared/format-contracts/ipynb.yaml: fa9eb823a26b366d350d25b59e7b6649fec2e9f5f6d6d023be1963edc265588b
+  shared/format-contracts/policy/family-packs/executable_document.yaml: f37690dc81844402c7ec115deb6a7d750782553327fa153c152c19475e0a28dc
   shared/format-contracts/policy/shared-library-contract.yaml: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
   shared/format-contracts/product-requirements/ipynb.yaml: 903b5e9c4d3f371105d209794221a342ee676f4bd5f36dc15c3ddacb7ceadccd
   shared/format-contracts/research/ipynb.yaml: ef4b130cf19a916eaaed86629d80c14eeaaa4dbd2be943400a8b508ff1eb9b7a
-  shared/sal-facts/evidence/ipynb.yaml: 223238c07e531daddb9d8c1b596ddeed9365775c625a77ccc86a0cbb9335887b
-  shared/sal-facts/ipynb.yaml: a51321c18230497ec932b5132657f2b29897696f5ec20dc87a4710df0e89a04b
+  shared/sal-facts/evidence/ipynb.yaml: 8cf9130640deeea4fe0f9701d47b2b473442ea53d1c8e66527b0368027d3d69f
+  shared/sal-facts/ipynb.yaml: a00f801aa1de05e9b6427c543abfb73a33faa6235d22164035a688f163e1e8c6
   tools/format_contract/capability_universe.py: d8dbd5018acd0737786db9d81f9e0ddddafb2a8a27001d9567998125943ad708
-  tools/format_contract/capability_universe_command.py: 60432981f60025a71b334f20bf63935cf26d4c9b21ddc37de38219f86d5c72a5
+  tools/format_contract/capability_universe_command.py: d56f18d163c37b82d5b32b4f59391e24b22368edfa45c3696c99a7ee6eeef2d5
   tools/format_contract/capability_universe_runtime.py: d3df691b1c6e09c3a5746bfdde655bb99f51e878e4eca4b4caf469c2a57f1b4a
   tools/format_contract/capability_universe_validation.py: 8cd57b1fc32754181a0b4e243e09fde56249a5f3769d340778a3b2f436cd44ea
   tools/format_contract/product_contract.py: 3e1e0ca49852751b1ce8bda9a1f996574832460d33844a77618cea591a605205
@@ -39,6 +39,11 @@ capabilities:
   developer_use_cases:
   - A developer embeds an image attachment and validation confirms its reference resolves.
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   authority_fact_ids:
   - POL-EXD-ATTACH-01
@@ -83,6 +88,111 @@ capabilities:
   - Authority source SRC-NB-002 update changing attachment schema
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-IPYNB-PROFILE-SURFACE-001
+  release_state: PLANNED
+- capability_id: IPYNB-CELLNAME-001
+  format_id: ipynb
+  stable_name: Non-empty cell names
+  classification: STABLE_REQUIRED
+  developer_use_cases:
+  - A developer assigns stable human-readable cell names and receives a precise diagnostic for an empty name.
+  spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
+  - nbformat_v4.5
+  authority_fact_ids:
+  - POL-EXD-CELLNAME-01
+  - SAL-IPYNB-00023
+  normative_obligation_ids:
+  - SAL-IPYNB-OBL-0ADDA3341B91C271
+  - SAL-IPYNB-OBL-E9E64A65284001E4
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Validate every present cell metadata name as a non-empty string without synthesizing names during passive reads.
+  preservation_contract: &id001
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller choice.
+  - Report every construct that cannot be preserved before saving, through a loss report API, rather than failing silently.
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty value.
+  - Preserve unknown or future-version constructs that can be carried safely; never silently drop unrecognized content in lossless mode.
+  error_contract: &id002
+  - code
+  - severity
+  - message
+  - source_location
+  - object_path
+  - originating_rule
+  - repair_suggestion
+  - auto_repair_eligible
+  security_contract:
+  - Treat all input as untrusted and enforce configured resource limits before allocation or external access.
+  resource_limits:
+  - Bound input bytes, expanded bytes, nesting, object count, and decoded payload size.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - canonical authority lock and materialized authority bytes
+  - canonical format contract and SAL facts/evidence
+  - FF6 capability and profile policy
+  taskcard_ids:
+  - TC-FF6-IPYNB-PROFILE-SURFACE-001
+  release_state: PLANNED
+- capability_id: IPYNB-CELLNAMEUNIQUE-001
+  format_id: ipynb
+  stable_name: Notebook-wide cell-name uniqueness
+  classification: STABLE_REQUIRED
+  developer_use_cases:
+  - A developer detects duplicate logical cell names before downstream tools resolve the wrong cell.
+  spec_profiles:
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
+  - nbformat_v4.5
+  authority_fact_ids:
+  - POL-EXD-CELLNAMEUNIQUE-01
+  - SAL-IPYNB-00024
+  normative_obligation_ids:
+  - SAL-IPYNB-OBL-1FA16EB9033A30BD
+  - SAL-IPYNB-OBL-B227B25AB9838FFD
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - For profiles 4.2 and later, perform an additional notebook-wide uniqueness check for present cell metadata names.
+  preservation_contract: *id001
+  error_contract: *id002
+  security_contract:
+  - Treat all input as untrusted and enforce configured resource limits before allocation or external access.
+  resource_limits:
+  - Bound input bytes, expanded bytes, nesting, object count, and decoded payload size.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - canonical authority lock and materialized authority bytes
+  - canonical format contract and SAL facts/evidence
+  - FF6 capability and profile policy
+  taskcard_ids:
+  - TC-FF6-IPYNB-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: IPYNB-CLEAN-001
   format_id: ipynb
@@ -91,6 +201,11 @@ capabilities:
   developer_use_cases:
   - A pre-commit hook clears outputs with a dry-run report before mutating.
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   authority_fact_ids:
   - POL-EXD-CLEAN-01
@@ -133,6 +248,7 @@ capabilities:
   - New transient metadata namespaces introduced by spec
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-IPYNB-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: IPYNB-DIFF-001
   format_id: ipynb
@@ -141,6 +257,11 @@ capabilities:
   developer_use_cases:
   - A review tool shows a moved, edited cell as move+edit instead of delete+add noise.
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   authority_fact_ids:
   - POL-EXD-DIFF-01
@@ -184,6 +305,52 @@ capabilities:
   - Cell identity model change (e.g., new ID format requirements)
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-IPYNB-PROFILE-SURFACE-001
+  release_state: PLANNED
+- capability_id: IPYNB-DOCMETA-001
+  format_id: ipynb
+  stable_name: Notebook title and author metadata
+  classification: STABLE_REQUIRED
+  developer_use_cases:
+  - A cataloging system reads and writes notebook title and author metadata without flattening vendor extensions.
+  spec_profiles:
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
+  - nbformat_v4.5
+  authority_fact_ids:
+  - POL-EXD-DOCMETA-01
+  - SAL-IPYNB-00020
+  normative_obligation_ids:
+  - SAL-IPYNB-OBL-1805FD97C77EDC3D
+  - SAL-IPYNB-OBL-C2890074D83A8170
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - For profiles 4.2 and later, model notebook title and author metadata and preserve additional author fields.
+  preservation_contract: *id001
+  error_contract: *id002
+  security_contract:
+  - Treat all input as untrusted and enforce configured resource limits before allocation or external access.
+  resource_limits:
+  - Bound input bytes, expanded bytes, nesting, object count, and decoded payload size.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - canonical authority lock and materialized authority bytes
+  - canonical format contract and SAL facts/evidence
+  - FF6 capability and profile policy
+  taskcard_ids:
+  - TC-FF6-IPYNB-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: IPYNB-EDIT-001
   format_id: ipynb
@@ -192,16 +359,15 @@ capabilities:
   developer_use_cases:
   - A publishing pipeline removes setup cells by tag and appends a colophon cell with a change report.
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   authority_fact_ids:
   - POL-EXD-EDIT-01
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00017
   normative_obligation_ids:
-  - SAL-IPYNB-OBL-44833AF0A0BFC6C5
-  - SAL-IPYNB-OBL-6998AFE571DA4FA3
-  - SAL-IPYNB-OBL-8CB6767A2C5B196C
   - SAL-IPYNB-OBL-BD6E7B4AA7C7E06C
   public_symbols: PLANNED
   source_symbols: PLANNED
@@ -240,6 +406,7 @@ capabilities:
   - New cell types introduced by spec requiring edit support
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-IPYNB-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: IPYNB-EXEC-001
   format_id: ipynb
@@ -248,19 +415,16 @@ capabilities:
   developer_use_cases:
   - A CI job executes notebooks in a container with per-cell timeouts and consumes a structured execution report.
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   authority_fact_ids:
   - POL-EXD-EXEC-01
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00018
   normative_obligation_ids:
-  - SAL-IPYNB-OBL-4D73E1AD5BFDA838
   - SAL-IPYNB-OBL-63250AAB7522792F
-  - SAL-IPYNB-OBL-7A3434FAAB98570C
-  - SAL-IPYNB-OBL-867F546314F11812
-  - SAL-IPYNB-OBL-EE733D1EEE459015
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -299,6 +463,7 @@ capabilities:
   - New output types introduced by spec
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-IPYNB-PROFILE-SURFACE-001
   release_state: PLANNED
   exclusion:
     authority_basis: The nbformat authority defines stored code, outputs, execution counts, kernelspec, and language metadata but no execution protocol. The mission's security boundary explicitly prohibits notebook execution.
@@ -307,6 +472,49 @@ capabilities:
     - SAL-IPYNB-00008
     - SAL-IPYNB-00010
     user_disposition: Use a separately isolated and audited notebook execution service. The format-factory-ipynb distribution never executes code.
+- capability_id: IPYNB-EXECMETA-001
+  format_id: ipynb
+  stable_name: Code-cell execution timing metadata
+  classification: STABLE_REQUIRED
+  developer_use_cases:
+  - A profiling system reads kernel-message timing metadata without executing the notebook.
+  spec_profiles:
+  - nbformat_v4.4
+  - nbformat_v4.5
+  authority_fact_ids:
+  - POL-EXD-EXECMETA-01
+  - SAL-IPYNB-00022
+  normative_obligation_ids:
+  - SAL-IPYNB-OBL-8546D71A9E3916E7
+  - SAL-IPYNB-OBL-C3762C24648B1210
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - For profiles 4.4 and later, model the four standard execution timing fields and preserve additional string-valued timing entries.
+  preservation_contract: *id001
+  error_contract: *id002
+  security_contract:
+  - Treat all input as untrusted and enforce configured resource limits before allocation or external access.
+  resource_limits:
+  - Bound input bytes, expanded bytes, nesting, object count, and decoded payload size.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - canonical authority lock and materialized authority bytes
+  - canonical format contract and SAL facts/evidence
+  - FF6 capability and profile policy
+  taskcard_ids:
+  - TC-FF6-IPYNB-PROFILE-SURFACE-001
+  release_state: PLANNED
 - capability_id: IPYNB-EXPORT-001
   format_id: ipynb
   stable_name: Exporter integration
@@ -314,6 +522,11 @@ capabilities:
   developer_use_cases:
   - A publishing pipeline exports notebooks to a target representation and collects ancillary assets programmatically.
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   authority_fact_ids:
   - POL-EXD-EXPORT-01
@@ -352,6 +565,51 @@ capabilities:
   - New export target formats requiring adapter changes
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-IPYNB-PROFILE-SURFACE-001
+  release_state: PLANNED
+- capability_id: IPYNB-HIDDEN-001
+  format_id: ipynb
+  stable_name: Jupyter cell visibility metadata
+  classification: STABLE_REQUIRED
+  developer_use_cases:
+  - A publishing system inspects cell visibility hints while preserving unknown Jupyter metadata.
+  spec_profiles:
+  - nbformat_v4.3
+  - nbformat_v4.4
+  - nbformat_v4.5
+  authority_fact_ids:
+  - POL-EXD-HIDDEN-01
+  - SAL-IPYNB-00021
+  normative_obligation_ids:
+  - SAL-IPYNB-OBL-8998C2CB8626FA68
+  - SAL-IPYNB-OBL-959B89100C121E14
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - For profiles 4.3 and later, model source_hidden for all known cells and outputs_hidden for code cells under the Jupyter metadata namespace.
+  preservation_contract: *id001
+  error_contract: *id002
+  security_contract:
+  - Treat all input as untrusted and enforce configured resource limits before allocation or external access.
+  resource_limits:
+  - Bound input bytes, expanded bytes, nesting, object count, and decoded payload size.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - canonical authority lock and materialized authority bytes
+  - canonical format contract and SAL facts/evidence
+  - FF6 capability and profile policy
+  taskcard_ids:
+  - TC-FF6-IPYNB-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: IPYNB-ID-001
   format_id: ipynb
@@ -363,20 +621,10 @@ capabilities:
   - nbformat_v4.5
   authority_fact_ids:
   - POL-EXD-ID-01
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
   - SAL-IPYNB-00014
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
   normative_obligation_ids:
-  - SAL-IPYNB-OBL-55260C0279763885
   - SAL-IPYNB-OBL-6F4551856EC21F7B
   - SAL-IPYNB-OBL-83A15CABF90C4B84
-  - SAL-IPYNB-OBL-A34640B83CC70822
-  - SAL-IPYNB-OBL-A9D840BD579F5C6F
-  - SAL-IPYNB-OBL-DADE5C18B400176C
-  - SAL-IPYNB-OBL-FB9678CB40F31893
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -417,6 +665,7 @@ capabilities:
   - Versioning rule changes affecting ID requirements per minor version
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-IPYNB-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: IPYNB-LIFECYCLE-001
   format_id: ipynb
@@ -425,6 +674,11 @@ capabilities:
   developer_use_cases:
   - A developer integrates the library with only lifecycle APIs and never needs format-internal knowledge for I/O plumbing.
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   authority_fact_ids:
   - POL-SLC-LIFECYCLE-01
@@ -488,6 +742,7 @@ capabilities:
   - New serialization modes or version detection requirements
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-IPYNB-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: IPYNB-MERGE-001
   format_id: ipynb
@@ -496,6 +751,11 @@ capabilities:
   developer_use_cases:
   - A version-control driver merges divergent notebook branches and receives an explicit conflict report.
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   authority_fact_ids:
   - POL-EXD-MERGE-01
@@ -536,6 +796,7 @@ capabilities:
   - Cell identity model change affecting merge resolution
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-IPYNB-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: IPYNB-META-001
   format_id: ipynb
@@ -544,23 +805,20 @@ capabilities:
   developer_use_cases:
   - A developer reads the kernel spec through a typed adapter while a vendor's custom metadata rides along untouched.
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   authority_fact_ids:
   - POL-EXD-META-01
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00004
   - SAL-IPYNB-00006
   - SAL-IPYNB-00010
-  - SAL-IPYNB-00018
   normative_obligation_ids:
   - SAL-IPYNB-OBL-13F3815D0E5C95E6
   - SAL-IPYNB-OBL-346FB023299D218E
   - SAL-IPYNB-OBL-4471354A239702DB
-  - SAL-IPYNB-OBL-9C6A2746BA63E841
-  - SAL-IPYNB-OBL-C795205AC0A4BD0F
-  - SAL-IPYNB-OBL-DB0F793B92DED8A3
-  - SAL-IPYNB-OBL-ECA691E11183033E
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -597,6 +855,7 @@ capabilities:
   - MIME bundle metadata schema changes
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-IPYNB-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: IPYNB-MODEL-001
   format_id: ipynb
@@ -605,27 +864,22 @@ capabilities:
   developer_use_cases:
   - A developer filters code cells by tag and inspects outputs without dictionary spelunking.
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   authority_fact_ids:
   - POL-EXD-MODEL-01
   - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
   - SAL-IPYNB-00015
   - RF-NB-00001
   normative_obligation_ids:
   - SAL-IPYNB-OBL-3B3B7588125383AB
-  - SAL-IPYNB-OBL-3EF5FF3B64091AB4
   - SAL-IPYNB-OBL-3FA9A87DE3411DC4
-  - SAL-IPYNB-OBL-4651E92D2D018089
-  - SAL-IPYNB-OBL-91F2FEE89658B49D
   - SAL-IPYNB-OBL-A416086282D30BB9
   - SAL-IPYNB-OBL-CA94E60DA1A97571
-  - SAL-IPYNB-OBL-D2D8157D991DBDCA
-  - SAL-IPYNB-OBL-F1F17437C4D0257D
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -665,6 +919,7 @@ capabilities:
   - New output types introduced by spec
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-IPYNB-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: IPYNB-OUTPUT-001
   format_id: ipynb
@@ -673,33 +928,28 @@ capabilities:
   developer_use_cases:
   - A developer extracts image outputs and strips vendor bundles without corrupting remaining outputs.
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   authority_fact_ids:
   - POL-EXD-OUTPUT-01
-  - SAL-IPYNB-00002
   - SAL-IPYNB-00003
   - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00011
   - SAL-IPYNB-00013
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
   - SAL-IPYNB-00018
   - SAL-IPYNB-00019
   - RF-NB-00005
   normative_obligation_ids:
-  - SAL-IPYNB-OBL-010C554B8692D166
   - SAL-IPYNB-OBL-2558D9E311DA3594
-  - SAL-IPYNB-OBL-5CA1914777C61A9D
   - SAL-IPYNB-OBL-679A623D14CBF763
   - SAL-IPYNB-OBL-77C54BA16B30D129
-  - SAL-IPYNB-OBL-8AD14BB7AFB32F2E
   - SAL-IPYNB-OBL-B2FA0BFF8CA07D78
   - SAL-IPYNB-OBL-B3EFD046C72D3E4B
   - SAL-IPYNB-OBL-BBE5B3445AD56F9C
   - SAL-IPYNB-OBL-CDB7DEE07F2275F7
-  - SAL-IPYNB-OBL-E561BFC0FADBA29D
-  - SAL-IPYNB-OBL-EAD1D09BDE25610F
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -743,6 +993,7 @@ capabilities:
   - Error output field changes
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-IPYNB-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: IPYNB-PARSE-001
   format_id: ipynb
@@ -751,51 +1002,26 @@ capabilities:
   developer_use_cases:
   - A developer loads notebooks from any conformant producer and gets identical structure back on save.
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   authority_fact_ids:
   - POL-EXD-PARSE-01
   - POL-EXD-PARSE-02
   - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
   - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
   - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
   - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
   normative_obligation_ids:
-  - SAL-IPYNB-OBL-029B1CD925618F17
   - SAL-IPYNB-OBL-06EFB1D8AC058AC6
   - SAL-IPYNB-OBL-121BE1F7FB462D30
-  - SAL-IPYNB-OBL-14E67D7A8E9A1AFE
-  - SAL-IPYNB-OBL-27E9715B97C8FD8B
   - SAL-IPYNB-OBL-2B44543CA510ED94
-  - SAL-IPYNB-OBL-3AE0DC2692EF0AD9
   - SAL-IPYNB-OBL-6DCE21F7DD6D971B
-  - SAL-IPYNB-OBL-6EA457DD191446C5
-  - SAL-IPYNB-OBL-793EE40165C8DB16
   - SAL-IPYNB-OBL-9A6A2B857F357379
   - SAL-IPYNB-OBL-A87B92BEB23E3B35
-  - SAL-IPYNB-OBL-AA72252FB6D0AA7C
-  - SAL-IPYNB-OBL-AAB3BBF81F346B07
-  - SAL-IPYNB-OBL-AF1F9CEECF5D7E42
-  - SAL-IPYNB-OBL-BCE9E0CCCCC2236B
-  - SAL-IPYNB-OBL-BE024415D521227D
-  - SAL-IPYNB-OBL-CF73A081DA5F99EA
-  - SAL-IPYNB-OBL-D3F0C114980A469D
-  - SAL-IPYNB-OBL-FD198DA5CD4E92A6
-  - SAL-IPYNB-OBL-FDC73ED8FA39A31E
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -843,6 +1069,7 @@ capabilities:
   - New cell or output types introduced by spec
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-IPYNB-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: IPYNB-PRESERVE-001
   format_id: ipynb
@@ -851,6 +1078,11 @@ capabilities:
   developer_use_cases:
   - A developer round-trips files containing constructs the library does not model and loses nothing silently.
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   authority_fact_ids:
   - POL-SLC-PRESERVE-01
@@ -903,6 +1135,7 @@ capabilities:
   - New construct categories requiring preservation policy decisions
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-IPYNB-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: IPYNB-SANITIZE-001
   format_id: ipynb
@@ -911,6 +1144,11 @@ capabilities:
   developer_use_cases:
   - A viewer quarantines active outputs of an untrusted notebook and renders the rest.
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   authority_fact_ids:
   - POL-EXD-SANITIZE-01
@@ -956,6 +1194,7 @@ capabilities:
   - Security contract changes affecting sanitization policy
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-IPYNB-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: IPYNB-SEC-001
   format_id: ipynb
@@ -964,6 +1203,11 @@ capabilities:
   developer_use_cases:
   - A developer processes untrusted input with safe defaults and only opts into external effects explicitly.
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   authority_fact_ids:
   - POL-SLC-SEC-01
@@ -1027,6 +1271,7 @@ capabilities:
   - Changes to safe default thresholds
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-IPYNB-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: IPYNB-TRUST-001
   format_id: ipynb
@@ -1035,6 +1280,11 @@ capabilities:
   developer_use_cases:
   - A platform verifies notebook trust before enabling rich rendering and re-signs only after review.
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   authority_fact_ids:
   - POL-EXD-TRUST-01
@@ -1081,6 +1331,7 @@ capabilities:
   - Security contract changes affecting trust-validity separation
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-IPYNB-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: IPYNB-UPGRADE-001
   format_id: ipynb
@@ -1089,23 +1340,18 @@ capabilities:
   developer_use_cases:
   - A developer batch-upgrades legacy documents and audits every synthesized or dropped construct from the ledger.
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   authority_fact_ids:
   - POL-EXD-UPGRADE-01
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
   - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
   normative_obligation_ids:
-  - SAL-IPYNB-OBL-2011BE4892BBBC37
-  - SAL-IPYNB-OBL-5BB2228FA079F793
-  - SAL-IPYNB-OBL-8B873E4A7F5AB781
   - SAL-IPYNB-OBL-AC36F06FBB685FE8
-  - SAL-IPYNB-OBL-C1DA361949F015E7
   - SAL-IPYNB-OBL-C599FB180ACF8D49
-  - SAL-IPYNB-OBL-C98190C29177A3A6
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -1147,6 +1393,7 @@ capabilities:
   - Forward compatibility rules change
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-IPYNB-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: IPYNB-VALIDATE-001
   format_id: ipynb
@@ -1155,16 +1402,19 @@ capabilities:
   developer_use_cases:
   - A gatekeeper validates untrusted notebooks and distinguishes hard errors from forward-compatible fields.
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   authority_fact_ids:
   - POL-EXD-VALIDATE-01
   - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00017
+  - SAL-IPYNB-00025
   normative_obligation_ids:
+  - SAL-IPYNB-OBL-0CDD583308EC81F1
   - SAL-IPYNB-OBL-1F8C3D9742EBC830
-  - SAL-IPYNB-OBL-7217D5542A605065
-  - SAL-IPYNB-OBL-7B4D9801EC12E4D6
   - SAL-IPYNB-OBL-FE413358B1144149
   public_symbols: PLANNED
   source_symbols: PLANNED
@@ -1209,6 +1459,7 @@ capabilities:
   - Forward compatibility relaxation rules change
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-IPYNB-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: IPYNB-WRITE-001
   format_id: ipynb
@@ -1217,6 +1468,11 @@ capabilities:
   developer_use_cases:
   - A pipeline writes notebooks whose diffs contain only real changes.
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   authority_fact_ids:
   - POL-EXD-WRITE-01
@@ -1260,4 +1516,5 @@ capabilities:
   - Binary payload encoding requirements change
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-IPYNB-PROFILE-SURFACE-001
   release_state: PLANNED

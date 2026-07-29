@@ -26,6 +26,7 @@ import stores
 from canonical_io import canonical_dump, canonical_write
 
 GENERATOR_VERSION = "fcl-compiler/1.0.0"
+EXPLICIT_FACT_OWNERSHIP_GENERATOR_VERSION = "fcl-compiler/1.1.0"
 
 
 # ---------------------------------------------------------------------------
@@ -125,6 +126,81 @@ def _match_facts(facts: list[dict], keywords: list[str]) -> list[dict]:
     return [f for f in facts if any(k in _fact_text(f) for k in kws)]
 
 
+def _facts_by_domain(pack: dict, facts: list[dict]) -> dict[str, list[dict]]:
+    """Resolve the exact SAL facts owned by each family domain.
+
+    Legacy family packs retain keyword routing. A pack that declares
+    ``fact_ownership: explicit_complete`` instead becomes a fail-closed
+    partition of its SAL store: every fact must exist, have exactly one owner,
+    and no fact may be omitted. This prevents a broad keyword such as
+    ``version`` or ``metadata`` from silently duplicating one normative fact
+    into capabilities with different release-profile applicability.
+    """
+
+    ownership_mode = str(pack.get("fact_ownership", "keyword")).strip()
+    if ownership_mode not in {"keyword", "explicit_complete"}:
+        raise stores.StoreError(
+            f"unsupported fact_ownership mode {ownership_mode!r}"
+        )
+
+    fact_by_id: dict[str, dict] = {}
+    for fact in facts:
+        fact_id = str(fact.get("fact_id", "")).strip()
+        if not fact_id:
+            raise stores.StoreError("SAL fact is missing fact_id")
+        if fact_id in fact_by_id:
+            raise stores.StoreError(f"duplicate SAL fact_id {fact_id!r}")
+        fact_by_id[fact_id] = fact
+
+    resolved: dict[str, list[dict]] = {}
+    if ownership_mode == "keyword":
+        for domain in pack.get("domains", []):
+            resolved[str(domain["domain"])] = _match_facts(
+                facts, domain.get("fact_keywords", [])
+            )
+        return resolved
+
+    owner_by_fact: dict[str, str] = {}
+    for domain in pack.get("domains", []):
+        domain_id = str(domain["domain"])
+        requested = domain.get("fact_ids")
+        if not isinstance(requested, list):
+            raise stores.StoreError(
+                f"{domain_id}: explicit_complete ownership requires fact_ids list"
+            )
+        normalized = [str(item).strip() for item in requested]
+        if any(not item for item in normalized):
+            raise stores.StoreError(
+                f"{domain_id}: fact_ids must contain only non-empty IDs"
+            )
+        if len(normalized) != len(set(normalized)):
+            raise stores.StoreError(
+                f"{domain_id}: duplicate fact ID within fact_ids"
+            )
+        missing = sorted(set(normalized) - set(fact_by_id))
+        if missing:
+            raise stores.StoreError(
+                f"{domain_id}: unknown explicitly owned SAL facts {missing}"
+            )
+        for fact_id in normalized:
+            previous_owner = owner_by_fact.get(fact_id)
+            if previous_owner is not None:
+                raise stores.StoreError(
+                    f"{fact_id}: duplicate fact ownership by "
+                    f"{previous_owner} and {domain_id}"
+                )
+            owner_by_fact[fact_id] = domain_id
+        resolved[domain_id] = [fact_by_id[item] for item in sorted(normalized)]
+
+    unassigned = sorted(set(fact_by_id) - set(owner_by_fact))
+    if unassigned:
+        raise stores.StoreError(
+            f"explicit_complete fact ownership leaves SAL facts unassigned: "
+            f"{unassigned}"
+        )
+    return resolved
+
+
 def _findings_for_domain(findings: list[dict], domain: str) -> list[dict]:
     return sorted(
         (f for f in findings if str(f.get("capability_domain", "")).upper() == domain),
@@ -138,11 +214,12 @@ def derive_capabilities(ctx: dict) -> list[dict]:
     facts = ctx["sal"]["facts"]
     findings = ctx["research"].get("findings", [])
     floors = pack.get("depth_floors", {})
+    facts_by_domain = _facts_by_domain(pack, facts)
     caps: list[dict] = []
 
     for dom in pack.get("domains", []):
         domain = dom["domain"]
-        matched = _match_facts(facts, dom.get("fact_keywords", []))
+        matched = facts_by_domain[domain]
         dom_findings = _findings_for_domain(findings, domain)
 
         provenance = [item["id"] for item in dom.get("baseline_behavior", [])]
@@ -281,6 +358,11 @@ def assemble(ctx: dict, capabilities: list[dict]) -> dict:
     shared_store = ctx["shared"]
     identity = pack["identity_defaults"]
     research = ctx["research"]
+    generator_version = (
+        EXPLICIT_FACT_OWNERSHIP_GENERATOR_VERSION
+        if pack.get("fact_ownership") == "explicit_complete"
+        else GENERATOR_VERSION
+    )
 
     display_name = reg.get("display_name") or fmt_id.upper()
     spec_body = reg.get("spec_body") or "unspecified authority"
@@ -428,7 +510,7 @@ def assemble(ctx: dict, capabilities: list[dict]) -> dict:
                 if pinned_authorities or reg.get("spec_url")
                 else "NEEDS_AUTHORITY"
             ),
-            "generator_version": GENERATOR_VERSION,
+            "generator_version": generator_version,
             "lifecycle_status": "DRAFT",
             "confidence": (
                 "medium"
@@ -516,7 +598,8 @@ def main(argv: list[str] | None = None) -> int:
 
     try:
         if args.readiness_only:
-            report, doc = readiness(classify(fmt)), {}  # type: dict, dict
+            report = readiness(classify(fmt))
+            doc = {}
         else:
             report, doc = compile_contract(fmt)
     except stores.StoreError as exc:
@@ -580,7 +663,9 @@ def main(argv: list[str] | None = None) -> int:
         readiness_threshold=report["threshold"],
         missing_categories=[],
         capability_count=len(doc["capabilities"]),
-        generator_version=GENERATOR_VERSION,
+        generator_version=doc["contract_metadata"].get(
+            "generator_version", GENERATOR_VERSION
+        ),
         input_digests=doc["contract_metadata"]["input_digests"],
     )
     print(f"[fcl-compiler] compiled {fmt}: {len(doc['capabilities'])} capabilities -> {target}")

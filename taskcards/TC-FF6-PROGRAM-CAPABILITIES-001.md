@@ -168,3 +168,27 @@ parent remains `NEEDS_REPAIR`: the next deterministic repair is
 applicability gaps for IPYNB, NRRD, XLIFF, and UBL typing remain visible and
 must be scheduled after the higher-severity OpenRaster defect; they are not
 implicitly closed by authority readiness.
+
+## Repair checkpoint - IPYNB profile surface
+
+`TC-FF6-IPYNB-PROFILE-SURFACE-001` is `PASS`:
+
+- the pinned nbformat 4.0-4.5 schemas have a source-located 62-leaf delta
+  matrix;
+- 25 IPYNB SAL facts have exact passing authority receipts;
+- 25 profile-homogeneous capabilities own 68 canonical obligations exactly
+  once;
+- the no-execution capability remains authority-backed and excluded;
+- all six selected notebook profiles are claimed with no missing profile or
+  known IPYNB surface gap;
+- portfolio compilation now contains 104 capabilities and 701 obligations,
+  aggregate
+  `e0747efbf376f081fd6550afed48100c7e1872a055bf6155332ed9358ac05b5f`;
+- three clean compiler runs produce
+  `dc33648ffa8f8b676de98f7b145dc2180630d5c470148ca0f46b13ec1492b554`;
+- all 15 authority artifacts remain live `MATCH`.
+
+The parent remains `NEEDS_REPAIR`. The exact next repair is
+`TC-FF6-NRRD-PROFILE-SURFACE-001` for explicit NRRD0001-NRRD0005
+applicability. XLIFF 2.0 and UBL all-root typing remain queued after NRRD.
+Architecture and product mutation remain locked.

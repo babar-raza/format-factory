@@ -7,9 +7,9 @@ last_reconciled_by: codex
 
 gap_summary:
   critical: 1
-  high: 8
+  high: 7
   medium: 3
-  total: 12
+  total: 11
 
 gaps:
 
@@ -20,17 +20,17 @@ gaps:
     title: OpenRaster has no Python source distribution
     description: >-
       No source package, product tests, sample corpus, oracle package,
-      or install proof exists for OpenRaster. All 10 capabilities and
-      32 currently compiled canonical obligations are entirely unimplemented.
+      or install proof exists for OpenRaster. All 20 capabilities and
+      134 currently compiled canonical obligations are entirely unimplemented.
     source_finding: FF6-TRUTH-001
     blocks:
       - All 10 ORA capabilities (ORA-CODEC-001 through ORA-WRITE-001)
       - All 32 current SAL-ORA-OBL-* obligations
     authority_concern: >-
-      ORA authority_status is NEEDS_AUTHORITY (confidence: low).
-      The OpenRaster specification 0.0.3 is informal with no official
-      validation artifacts. Authority must be repaired before product
-      source can be created.
+      ORA authority artifacts and declarations are hash-ready, but the
+      OpenRaster specifications are early drafts with no official validation
+      artifacts or conformance program. Product certification must therefore
+      make a bounded interoperability claim.
     resolution: >-
       Repair authority/profile contract, complete policy prerequisites,
       then generate product source.
@@ -140,8 +140,8 @@ gaps:
     category: certification
     title: Zero production certifications across all 6 formats
     description: >-
-      No format has any certification milestone. All 89 capabilities
-      have release_state PLANNED. All 636 canonical obligations have
+      No format has any certification milestone. All 104 capabilities
+      have release_state PLANNED. All 701 canonical obligations have
       verification_status UNVERIFIED. No product is promoted.
     blocks:
       - Production release gate for all 6 formats
@@ -154,18 +154,17 @@ gaps:
     severity: medium
     format: ora
     category: authority_confidence
-    title: OpenRaster authority confidence is low
+    title: OpenRaster conformance authority remains informal
     description: >-
-      The OpenRaster specification 0.0.3 is an informal document with
-      no official validation artifacts, test suite, or conformance
-      program. Contract authority_status is NEEDS_AUTHORITY.
+      The selected OpenRaster draft authorities are pinned, acquired, and
+      hash-ready, but no official validation artifact, test suite, or
+      conformance program exists.
     blocks:
-      - Obligation assignment confidence for ORA
-      - 32 current ORA obligations may change when authority is established
+      - Universal-conformance claims for ORA
     resolution: >-
-      Identify and pin authoritative sources. If no formal spec
-      exists, document the informal authority chain and confidence
-      assessment.
+      Certify against named draft profiles and independent application
+      interoperability. Keep the claim bounded unless a formal conformance
+      authority appears.
 
   - gap_id: FF6-GAP-010
     severity: medium
@@ -208,6 +207,30 @@ gaps:
       selection.
 
 resolved_gaps:
+  - gap_id: FF6-IPYNB-PROFILE-001
+    resolved_by: TC-FF6-IPYNB-PROFILE-SURFACE-001
+    source_event: FF6-EVENT-000018
+    evidence:
+      ipynb_capabilities: 25
+      ipynb_obligations: 68
+      sal_facts_verified: 25
+      claimed_profiles:
+        - nbformat_v4.0
+        - nbformat_v4.1
+        - nbformat_v4.2
+        - nbformat_v4.3
+        - nbformat_v4.4
+        - nbformat_v4.5
+      authority_matches: 15
+      capability_manifest_aggregate_sha256: e0747efbf376f081fd6550afed48100c7e1872a055bf6155332ed9358ac05b5f
+      capability_three_run_digest: dc33648ffa8f8b676de98f7b145dc2180630d5c470148ca0f46b13ec1492b554
+    disposition: >-
+      Replaced broad keyword duplication with an explicit complete SAL-fact
+      partition, split version-specific notebook metadata and identity
+      surfaces, assigned exact non-empty profile subsets to every capability
+      and obligation, and preserved the authority-backed no-execution
+      exclusion. This is contract completion only, not implementation proof.
+
   - gap_id: FF6-GAP-013
     resolved_by: TC-FF6-ORA-PROFILE-SURFACE-001
     source_event: FF6-EVENT-000017

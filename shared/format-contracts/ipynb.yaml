@@ -8,7 +8,7 @@ contract_metadata:
   family: executable_document
   target_spec_version: nbformat 5.10.4 commit 60b6151fedcbdc9f137fb2d223eeb10c935a8378
   source_authority_status: AUTHORITATIVE
-  generator_version: fcl-compiler/1.0.0
+  generator_version: fcl-compiler/1.1.0
   lifecycle_status: DRAFT
   confidence: medium
   supersedes: null
@@ -21,16 +21,16 @@ contract_metadata:
     authority_src_nb_002_sha256: 243d0d4544b23a9a968b02aea5b146da02d167d85b78780eb0c15afc3f4e0e64
     authority_src_nb_003_sha256: 903b5e9c4d3f371105d209794221a342ee676f4bd5f36dc15c3ddacb7ceadccd
     canonical_io_impl_sha256: aca19b1319bf7304d5136fd6c9d729cb50b22d8a23a17ca9314fdb0c58cc164d
-    contract_compiler_impl_sha256: a872b9a71d459e57ff6600df0a3513af8c03e9714cfa0207881cd770984b586c
+    contract_compiler_impl_sha256: e98ad15504ab1d338f114e21c9909b2eb5af9699961c0621da964bb59403dc67
     contract_stores_impl_sha256: cd120c7990a37b0f913a2b59e81ab28fdf7b3d50897e38d78cb20fc9e0823f7a
     fact_categories_sha256: aedd4c838073695752c724e8f53fd189f58653ca22e01b88f5932ebe9fe376bc
-    family_pack_sha256: bdc43666de37ffe17cbc827308747c60389ecb7e6e7d52a759e78f071ab32456
+    family_pack_sha256: f37690dc81844402c7ec115deb6a7d750782553327fa153c152c19475e0a28dc
     format_contract_schema_sha256: 4eb5cae2d69d0831291646f3cf21e5d019d6b0de2904a745b712cf5fa6c37da9
     product_requirements_sha256: 903b5e9c4d3f371105d209794221a342ee676f4bd5f36dc15c3ddacb7ceadccd
     qname_registry_sha256: 11b280a73609e21feffb65527712942d55ecd067724f43a03592093cb80836ef
     research_intake_impl_sha256: 4c7d3bfd69e7e5a74a9db2483d25b062e11cfdcb6609637b0343dfa8d3cd0579
     research_sha256: ef4b130cf19a916eaaed86629d80c14eeaaa4dbd2be943400a8b508ff1eb9b7a
-    sal_facts_sha256: e517e9d9ad75b8e1c996ff316e7e54bab92a24feb00b36c870738aa50442be1f
+    sal_facts_sha256: a00f801aa1de05e9b6427c543abfb73a33faa6235d22164035a688f163e1e8c6
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
     source_researcher_impl_sha256: 4367e7591a368bcbc6a01199a7eb6da0f569ccc5c706d6650cdd96db0b7083a3
 format_identity:
@@ -99,6 +99,55 @@ capabilities:
   required_tests:
   - Orphan and missing-target fixtures produce diagnostics.
 - release_gates:
+  - The non-empty name rule has positive and negative evidence for nbformat 4.0 through 4.5.
+  capability_id: IPYNB-CELLNAME-001
+  level: MUST
+  category: validate
+  title: Non-empty cell names
+  production_meaning: Optional cell metadata names are non-empty strings in every supported nbformat 4.x
+    profile.
+  developer_use_case: A developer assigns stable human-readable cell names and receives a precise diagnostic
+    for an empty name.
+  provenance:
+  - POL-EXD-CELLNAME-01
+  - SAL-IPYNB-00023
+  required_behavior:
+  - Validate every present cell metadata name as a non-empty string without synthesizing names during
+    passive reads.
+  normative_rules:
+  - (nbformat 4.0-4.5 schemas - cell metadata name) Across nbformat 4.0 through 4.5, a present cell metadata
+    name is a string matching ^.+$ and therefore cannot be empty
+  depth_required: 5
+  depth_rationale: 'MUST validate capability: family depth floor 5, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Present non-empty names pass and empty names fail in every supported profile.
+- release_gates:
+  - Uniqueness is not falsely claimed as JSON-Schema-enforced and has explicit semantic validation evidence.
+  capability_id: IPYNB-CELLNAMEUNIQUE-001
+  level: MUST
+  category: validate
+  title: Notebook-wide cell-name uniqueness
+  production_meaning: From nbformat 4.2 onward, present cell names are checked for notebook-wide uniqueness
+    outside JSON Schema.
+  developer_use_case: A developer detects duplicate logical cell names before downstream tools resolve
+    the wrong cell.
+  provenance:
+  - POL-EXD-CELLNAMEUNIQUE-01
+  - SAL-IPYNB-00024
+  required_behavior:
+  - For profiles 4.2 and later, perform an additional notebook-wide uniqueness check for present cell
+    metadata names.
+  normative_rules:
+  - (nbformat 4.2-4.5 schemas - cell metadata name uniqueness) Since nbformat 4.2 cell names are expected
+    to be unique within a notebook; from 4.4 the authority explicitly states that JSON Schema cannot enforce
+    uniqueness and an additional check is required
+  depth_required: 5
+  depth_rationale: 'MUST validate capability: family depth floor 5, finding hints applied; depth scale
+    0-8 per L30 schema.'
+  required_tests:
+  - Duplicate-name fixtures fail the semantic check while distinct and absent names pass.
+- release_gates:
   - Cleanup is deterministic and idempotent (second run no-op).
   capability_id: IPYNB-CLEAN-001
   level: MUST
@@ -143,6 +192,32 @@ capabilities:
   required_tests:
   - Move-detection fixtures; ignore-policy matrix; patch precondition failures.
 - release_gates:
+  - Title and author metadata is explicitly absent from 4.0-4.1 claims and proven for 4.2-4.5.
+  capability_id: IPYNB-DOCMETA-001
+  level: MUST
+  category: model
+  title: Notebook title and author metadata
+  production_meaning: Nbformat 4.2 and later notebook metadata exposes the document title and author collection
+    while preserving additional author properties.
+  developer_use_case: A cataloging system reads and writes notebook title and author metadata without
+    flattening vendor extensions.
+  provenance:
+  - POL-EXD-DOCMETA-01
+  - SAL-IPYNB-00020
+  required_behavior:
+  - For profiles 4.2 and later, model notebook title and author metadata and preserve additional author
+    fields.
+  normative_rules:
+  - (nbformat 4.2 schema delta - document metadata) Since nbformat 4.2 notebook metadata may carry a title
+    string and an authors array; the pinned schema uses the author-item keyword 'item' rather than JSON
+    Schema's 'items', so author item shape is not schema-enforced
+  depth_required: 3
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Title and multi-author fixtures round-trip for every applicable profile, including additional author
+    properties.
+- release_gates:
   - Editing preserves schema validity (validated post-edit).
   capability_id: IPYNB-EDIT-001
   level: MUST
@@ -154,21 +229,9 @@ capabilities:
     a change report.
   provenance:
   - POL-EXD-EDIT-01
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00017
   required_behavior:
   - Provide cell CRUD plus search by ID, type, tag, metadata, and source text; bulk operations return
     change reports.
-  normative_rules:
-  - (nbformat 4.5 — cell types) Each cell object has required keys cell_type ('code'|'markdown'|'raw'),
-    metadata (object), and source (string or list of strings); code cells additionally require execution_count
-    and outputs
-  - (nbformat - cell metadata) Cell metadata may carry tags as a unique list of comma-free strings and
-    arbitrary additional JSON properties; custom metadata should use a sufficiently unique namespace
-  - (nbformat - forward compatibility) Backward-compatible minor-version changes may introduce new dictionary
-    fields, cell types, and output types; official validation relaxes additionalProperties and permits
-    unrecognized cell and output types for future minors
   depth_required: 4
   depth_rationale: 'MUST edit capability: family depth floor 4, finding hints applied; depth scale 0-8
     per L30 schema.'
@@ -186,29 +249,39 @@ capabilities:
     structured execution report.
   provenance:
   - POL-EXD-EXEC-01
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00018
   required_behavior:
   - Keep execution in an opt-in adapter with kernel selection, timeouts, error policy, and isolation boundary;
     return a structured execution report; never execute during load/validate/diff/save.
-  normative_rules:
-  - (nbformat 4.5 — cell outputs) Code-cell outputs are typed objects with output_type in {execute_result,
-    display_data, stream, error}; execute_result/display_data carry a data mime-bundle, stream carries
-    name+text, error carries ename/evalue/traceback
-  - (nbformat - notebook metadata) Notebook metadata may carry kernelspec and language_info objects describing
-    the execution kernel and language
-  - (nbformat - output types) Output objects declare output_type stream display_data execute_result or
-    error each with its own required fields
-  - (nbformat - MIME bundles) display_data and execute_result outputs carry data objects mapping MIME
-    types to content and metadata objects with per-MIME rendering hints
   depth_required: 6
   depth_rationale: 'SHOULD advanced capability: family depth floor 6, finding hints applied; depth scale
     0-8 per L30 schema.'
   required_tests:
   - Isolated-environment execution tests covering timeout, kernel failure, and partial output; core-path
     no-execution proof.
+- release_gates:
+  - Execution timing metadata is proven only for 4.4-4.5 and remains passive data.
+  capability_id: IPYNB-EXECMETA-001
+  level: MUST
+  category: model
+  title: Code-cell execution timing metadata
+  production_meaning: Nbformat 4.4 and later code-cell metadata exposes the standard iopub and shell timing
+    fields and preserves additional string timing keys.
+  developer_use_case: A profiling system reads kernel-message timing metadata without executing the notebook.
+  provenance:
+  - POL-EXD-EXECMETA-01
+  - SAL-IPYNB-00022
+  required_behavior:
+  - For profiles 4.4 and later, model the four standard execution timing fields and preserve additional
+    string-valued timing entries.
+  normative_rules:
+  - (nbformat 4.4 schema delta - execution timing metadata) Since nbformat 4.4 code-cell metadata may
+    carry an execution object with iopub.execute_input, iopub.status.busy, shell.execute_reply, and iopub.status.idle
+    timestamp strings plus additional string-valued timing entries
+  depth_required: 3
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Four standard timing keys, additional string keys, and non-string negatives are covered.
 - release_gates:
   - At least one exporter adapter proven or the domain explicitly deferred by scope.
   capability_id: IPYNB-EXPORT-001
@@ -230,6 +303,30 @@ capabilities:
   required_tests:
   - Exporter adapter contract test with ancillary-resource collection.
 - release_gates:
+  - Visibility metadata is proven only for 4.3-4.5 and never interpreted as permission to render or execute.
+  capability_id: IPYNB-HIDDEN-001
+  level: MUST
+  category: model
+  title: Jupyter cell visibility metadata
+  production_meaning: Nbformat 4.3 and later typed Jupyter metadata exposes source-hidden and code-output-hidden
+    flags without changing display state implicitly.
+  developer_use_case: A publishing system inspects cell visibility hints while preserving unknown Jupyter
+    metadata.
+  provenance:
+  - POL-EXD-HIDDEN-01
+  - SAL-IPYNB-00021
+  required_behavior:
+  - For profiles 4.3 and later, model source_hidden for all known cells and outputs_hidden for code cells
+    under the Jupyter metadata namespace.
+  normative_rules:
+  - (nbformat 4.3 schema delta - Jupyter cell metadata) Since nbformat 4.3 cell metadata may carry Jupyter
+    source_hidden booleans for code, markdown, and raw cells and an outputs_hidden boolean for code cells
+  depth_required: 3
+  depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
+    per L30 schema.'
+  required_tests:
+  - Visibility metadata fixtures cover all cell types, boolean validation, and unknown Jupyter fields.
+- release_gates:
   - ID behavior matches the target schema minor exactly.
   capability_id: IPYNB-ID-001
   level: MUST
@@ -240,30 +337,13 @@ capabilities:
   developer_use_case: A developer upgrades an old notebook and receives stable new IDs plus the mapping.
   provenance:
   - POL-EXD-ID-01
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
   - SAL-IPYNB-00014
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
   required_behavior:
   - Validate required cell IDs (uniqueness, syntax, length); generate IDs only via explicit upgrade with
     a rewrite map for references.
   normative_rules:
-  - (nbformat - cell metadata) Cell metadata may carry tags as a unique list of comma-free strings and
-    arbitrary additional JSON properties; custom metadata should use a sufficiently unique namespace
-  - (nbformat - output security considerations) Notebook MIME bundles can carry HTML, SVG, and JavaScript
-    payloads
-  - (nbformat - validation) The official nbformat validator selects a JSON schema using the document's
-    nbformat and nbformat_minor pair and relaxes the current schema for future minor versions
   - (nbformat 4.5 - cell ids) Since schema minor version 4.5 every cell must carry an id field unique
     within the notebook conforming to the permitted character set and length rules
-  - (nbformat - versioning rules) The nbformat version pair identifies format evolution; future minor
-    versions are treated as backward-compatible, with unknown cell and output types allowed and preserved
-    by official tooling
-  - (nbformat - forward compatibility) Backward-compatible minor-version changes may introduce new dictionary
-    fields, cell types, and output types; official validation relaxes additionalProperties and permits
-    unrecognized cell and output types for future minors
   depth_required: 3
   depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
     per L30 schema.'
@@ -339,29 +419,16 @@ capabilities:
     metadata rides along untouched.
   provenance:
   - POL-EXD-META-01
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00004
   - SAL-IPYNB-00006
   - SAL-IPYNB-00010
-  - SAL-IPYNB-00018
   required_behavior:
   - Preserve arbitrary metadata at all levels; provide typed adapters for common namespaces; never delete
     unknown metadata during normalization.
   normative_rules:
-  - (nbformat 4.5 — top-level structure) A Jupyter notebook document is a single JSON object with required
-    top-level keys nbformat (int), nbformat_minor (int), metadata (object), and cells (list of cell objects)
-  - (nbformat 4.5 — cell types) Each cell object has required keys cell_type ('code'|'markdown'|'raw'),
-    metadata (object), and source (string or list of strings); code cells additionally require execution_count
-    and outputs
-  - (nbformat - top-level structure) A notebook document is a single JSON object whose top level carries
-    nbformat and nbformat_minor integers plus metadata and a cells array
   - (nbformat - cell metadata) Cell metadata may carry tags as a unique list of comma-free strings and
     arbitrary additional JSON properties; custom metadata should use a sufficiently unique namespace
   - (nbformat - notebook metadata) Notebook metadata may carry kernelspec and language_info objects describing
     the execution kernel and language
-  - (nbformat - MIME bundles) display_data and execute_result outputs carry data objects mapping MIME
-    types to content and metadata objects with per-MIME rendering hints
   depth_required: 2
   depth_rationale: 'MUST preserve capability: family depth floor 2, finding hints applied; depth scale
     0-8 per L30 schema.'
@@ -379,11 +446,6 @@ capabilities:
   provenance:
   - POL-EXD-MODEL-01
   - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
   - SAL-IPYNB-00015
   - RF-NB-00001
   required_behavior:
@@ -395,17 +457,6 @@ capabilities:
   - (nbformat 4.5 — cell types) Each cell object has required keys cell_type ('code'|'markdown'|'raw'),
     metadata (object), and source (string or list of strings); code cells additionally require execution_count
     and outputs
-  - (nbformat 4.5 — cell outputs) Code-cell outputs are typed objects with output_type in {execute_result,
-    display_data, stream, error}; execute_result/display_data carry a data mime-bundle, stream carries
-    name+text, error carries ename/evalue/traceback
-  - (nbformat - attachment references) Markdown content can reference a cell attachment with an attachment
-    URI whose filename corresponds to a key in that cell's attachments mapping
-  - (nbformat - multiline strings) Cell source content is either a single string or a list of strings
-    that concatenate to the logical source text
-  - (nbformat - code cell) Code cells carry an execution_count field that is an integer or null and an
-    outputs array of output objects
-  - (nbformat - attachments) Markdown and raw cells may carry an attachments object mapping filenames
-    to MIME bundles referenced from cell content
   - (nbformat - cell types) The cells array holds cell objects in document order and each cell declares
     a cell_type of markdown code or raw
   depth_required: 4
@@ -425,14 +476,9 @@ capabilities:
     remaining outputs.
   provenance:
   - POL-EXD-OUTPUT-01
-  - SAL-IPYNB-00002
   - SAL-IPYNB-00003
   - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00011
   - SAL-IPYNB-00013
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
   - SAL-IPYNB-00018
   - SAL-IPYNB-00019
   - RF-NB-00005
@@ -442,26 +488,13 @@ capabilities:
   - Test the full MIME-bundle matrix including vendor MIME types, binary payloads, large base64 attachments,
     and malformed bundles, proving no output entry is lost or reordered.
   normative_rules:
-  - (nbformat 4.5 — cell types) Each cell object has required keys cell_type ('code'|'markdown'|'raw'),
-    metadata (object), and source (string or list of strings); code cells additionally require execution_count
-    and outputs
   - (nbformat 4.5 — cell outputs) Code-cell outputs are typed objects with output_type in {execute_result,
     display_data, stream, error}; execute_result/display_data carry a data mime-bundle, stream carries
     name+text, error carries ename/evalue/traceback
   - (nbformat - code cell) Code cells carry an execution_count field that is an integer or null and an
     outputs array of output objects
-  - (nbformat - attachments) Markdown and raw cells may carry an attachments object mapping filenames
-    to MIME bundles referenced from cell content
-  - (nbformat - output security considerations) Notebook MIME bundles can carry HTML, SVG, and JavaScript
-    payloads
   - (nbformat - output types) Output objects declare output_type stream display_data execute_result or
     error each with its own required fields
-  - (nbformat - versioning rules) The nbformat version pair identifies format evolution; future minor
-    versions are treated as backward-compatible, with unknown cell and output types allowed and preserved
-    by official tooling
-  - (nbformat - forward compatibility) Backward-compatible minor-version changes may introduce new dictionary
-    fields, cell types, and output types; official validation relaxes additionalProperties and permits
-    unrecognized cell and output types for future minors
   - (nbformat - MIME bundles) display_data and execute_result outputs carry data objects mapping MIME
     types to content and metadata objects with per-MIME rendering hints
   - (nbformat - error output) error outputs carry ename evalue and a traceback list of strings
@@ -485,24 +518,9 @@ capabilities:
   - POL-EXD-PARSE-01
   - POL-EXD-PARSE-02
   - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
   - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
   - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
   - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
   required_behavior:
   - Parse version fields and both multiline text representations, normalizing in the object API while
     preserving round-trip fidelity.
@@ -510,45 +528,13 @@ capabilities:
   normative_rules:
   - (nbformat 4.5 — top-level structure) A Jupyter notebook document is a single JSON object with required
     top-level keys nbformat (int), nbformat_minor (int), metadata (object), and cells (list of cell objects)
-  - (nbformat 4.5 — cell types) Each cell object has required keys cell_type ('code'|'markdown'|'raw'),
-    metadata (object), and source (string or list of strings); code cells additionally require execution_count
-    and outputs
-  - (nbformat 4.5 — cell outputs) Code-cell outputs are typed objects with output_type in {execute_result,
-    display_data, stream, error}; execute_result/display_data carry a data mime-bundle, stream carries
-    name+text, error carries ename/evalue/traceback
   - (nbformat - top-level structure) A notebook document is a single JSON object whose top level carries
     nbformat and nbformat_minor integers plus metadata and a cells array
-  - (nbformat - attachment references) Markdown content can reference a cell attachment with an attachment
-    URI whose filename corresponds to a key in that cell's attachments mapping
-  - (nbformat - cell metadata) Cell metadata may carry tags as a unique list of comma-free strings and
-    arbitrary additional JSON properties; custom metadata should use a sufficiently unique namespace
   - (nbformat - multiline strings) Cell source content is either a single string or a list of strings
     that concatenate to the logical source text
-  - (nbformat - code cell) Code cells carry an execution_count field that is an integer or null and an
-    outputs array of output objects
-  - (nbformat - attachments) Markdown and raw cells may carry an attachments object mapping filenames
-    to MIME bundles referenced from cell content
-  - (nbformat - notebook metadata) Notebook metadata may carry kernelspec and language_info objects describing
-    the execution kernel and language
-  - (nbformat - output security considerations) Notebook MIME bundles can carry HTML, SVG, and JavaScript
-    payloads
-  - (nbformat - validation) The official nbformat validator selects a JSON schema using the document's
-    nbformat and nbformat_minor pair and relaxes the current schema for future minor versions
-  - (nbformat - output types) Output objects declare output_type stream display_data execute_result or
-    error each with its own required fields
-  - (nbformat 4.5 - cell ids) Since schema minor version 4.5 every cell must carry an id field unique
-    within the notebook conforming to the permitted character set and length rules
-  - (nbformat - cell types) The cells array holds cell objects in document order and each cell declares
-    a cell_type of markdown code or raw
-  - (nbformat - versioning rules) The nbformat version pair identifies format evolution; future minor
-    versions are treated as backward-compatible, with unknown cell and output types allowed and preserved
-    by official tooling
   - (nbformat - forward compatibility) Backward-compatible minor-version changes may introduce new dictionary
     fields, cell types, and output types; official validation relaxes additionalProperties and permits
     unrecognized cell and output types for future minors
-  - (nbformat - MIME bundles) display_data and execute_result outputs carry data objects mapping MIME
-    types to content and metadata objects with per-MIME rendering hints
-  - (nbformat - error output) error outputs carry ename evalue and a traceback list of strings
   depth_required: 2
   depth_rationale: 'MUST parse capability: family depth floor 2, finding hints applied; depth scale 0-8
     per L30 schema.'
@@ -676,31 +662,15 @@ capabilities:
     construct from the ledger.
   provenance:
   - POL-EXD-UPGRADE-01
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
   - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
   required_behavior:
   - Upgrade older versions through explicit conversion paths producing a conversion ledger; downgrade
     only after reporting unsupported constructs and expected loss; preserve unknown future additions when
     reading higher minors.
   normative_rules:
-  - (nbformat 4.5 — top-level structure) A Jupyter notebook document is a single JSON object with required
-    top-level keys nbformat (int), nbformat_minor (int), metadata (object), and cells (list of cell objects)
-  - (nbformat - top-level structure) A notebook document is a single JSON object whose top level carries
-    nbformat and nbformat_minor integers plus metadata and a cells array
-  - (nbformat - validation) The official nbformat validator selects a JSON schema using the document's
-    nbformat and nbformat_minor pair and relaxes the current schema for future minor versions
-  - (nbformat 4.5 - cell ids) Since schema minor version 4.5 every cell must carry an id field unique
-    within the notebook conforming to the permitted character set and length rules
   - (nbformat - versioning rules) The nbformat version pair identifies format evolution; future minor
     versions are treated as backward-compatible, with unknown cell and output types allowed and preserved
     by official tooling
-  - (nbformat - forward compatibility) Backward-compatible minor-version changes may introduce new dictionary
-    fields, cell types, and output types; official validation relaxes additionalProperties and permits
-    unrecognized cell and output types for future minors
   depth_required: 4
   depth_rationale: 'MUST transform capability: family depth floor 4, finding hints applied; depth scale
     0-8 per L30 schema.'
@@ -720,19 +690,15 @@ capabilities:
   provenance:
   - POL-EXD-VALIDATE-01
   - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00017
+  - SAL-IPYNB-00025
   required_behavior:
   - Validate against the schema matching declared version and optionally current minor; report unknown
     forward-compatible fields separately from errors.
   normative_rules:
   - (nbformat - validation) The official nbformat validator selects a JSON schema using the document's
     nbformat and nbformat_minor pair and relaxes the current schema for future minor versions
-  - (nbformat 4.5 - cell ids) Since schema minor version 4.5 every cell must carry an id field unique
-    within the notebook conforming to the permitted character set and length rules
-  - (nbformat - forward compatibility) Backward-compatible minor-version changes may introduce new dictionary
-    fields, cell types, and output types; official validation relaxes additionalProperties and permits
-    unrecognized cell and output types for future minors
+  - (nbformat 4.0-4.5 schemas - minor-version floors) For each nbformat schema from 4.0 through 4.5, the
+    nbformat_minor field has a minimum equal to that schema's minor number
   depth_required: 5
   depth_rationale: 'MUST validate capability: family depth floor 5, finding hints applied; depth scale
     0-8 per L30 schema.'
@@ -834,12 +800,18 @@ test_contract:
 - Publish a capability manifest stating supported versions, constructs, limitations, and lossless guarantees,
   verified against implementation and tests.
 - Orphan and missing-target fixtures produce diagnostics.
+- Present non-empty names pass and empty names fail in every supported profile.
+- Duplicate-name fixtures fail the semantic check while distinct and absent names pass.
 - Dry-run report matches actual mutation; selective clearing fixtures.
 - Move-detection fixtures; ignore-policy matrix; patch precondition failures.
+- Title and multi-author fixtures round-trip for every applicable profile, including additional author
+  properties.
 - Each mutation class save-reload-verifies with IDs stable.
 - Isolated-environment execution tests covering timeout, kernel failure, and partial output; core-path
   no-execution proof.
+- Four standard timing keys, additional string keys, and non-string negatives are covered.
 - Exporter adapter contract test with ancillary-resource collection.
+- Visibility metadata fixtures cover all cell types, boolean validation, and unknown Jupyter fields.
 - Duplicate/invalid ID negatives; upgrade fixture verifies mapping.
 - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test
   proving refusal with diagnostics.
@@ -860,11 +832,16 @@ test_contract:
 - Determinism byte-compare; binary-payload integrity fixtures.
 release_gates:
 - Attachment integrity part of the validation layer.
+- The non-empty name rule has positive and negative evidence for nbformat 4.0 through 4.5.
+- Uniqueness is not falsely claimed as JSON-Schema-enforced and has explicit semantic validation evidence.
 - Cleanup is deterministic and idempotent (second run no-op).
 - Diff stability under cell moves proven.
+- Title and author metadata is explicitly absent from 4.0-4.1 claims and proven for 4.2-4.5.
 - Editing preserves schema validity (validated post-edit).
 - Execution is physically and logically separated from parsing (dependency audit).
+- Execution timing metadata is proven only for 4.4-4.5 and remains passive data.
 - At least one exporter adapter proven or the domain explicitly deferred by scope.
+- Visibility metadata is proven only for 4.3-4.5 and never interpreted as permission to render or execute.
 - ID behavior matches the target schema minor exactly.
 - All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
 - Merge conflicts always surfaced explicitly (negative-tested).
@@ -886,6 +863,14 @@ coverage_map:
   - POL-EXD-ATTACH-01
   - SAL-IPYNB-00005
   - SAL-IPYNB-00009
+- capability_id: IPYNB-CELLNAME-001
+  provenance:
+  - POL-EXD-CELLNAME-01
+  - SAL-IPYNB-00023
+- capability_id: IPYNB-CELLNAMEUNIQUE-001
+  provenance:
+  - POL-EXD-CELLNAMEUNIQUE-01
+  - SAL-IPYNB-00024
 - capability_id: IPYNB-CLEAN-001
   provenance:
   - POL-EXD-CLEAN-01
@@ -894,31 +879,31 @@ coverage_map:
   provenance:
   - POL-EXD-DIFF-01
   - RF-NB-00003
+- capability_id: IPYNB-DOCMETA-001
+  provenance:
+  - POL-EXD-DOCMETA-01
+  - SAL-IPYNB-00020
 - capability_id: IPYNB-EDIT-001
   provenance:
   - POL-EXD-EDIT-01
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00017
 - capability_id: IPYNB-EXEC-001
   provenance:
   - POL-EXD-EXEC-01
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00018
+- capability_id: IPYNB-EXECMETA-001
+  provenance:
+  - POL-EXD-EXECMETA-01
+  - SAL-IPYNB-00022
 - capability_id: IPYNB-EXPORT-001
   provenance:
   - POL-EXD-EXPORT-01
+- capability_id: IPYNB-HIDDEN-001
+  provenance:
+  - POL-EXD-HIDDEN-01
+  - SAL-IPYNB-00021
 - capability_id: IPYNB-ID-001
   provenance:
   - POL-EXD-ID-01
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
   - SAL-IPYNB-00014
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
 - capability_id: IPYNB-LIFECYCLE-001
   provenance:
   - POL-SLC-LIFECYCLE-01
@@ -933,34 +918,20 @@ coverage_map:
 - capability_id: IPYNB-META-001
   provenance:
   - POL-EXD-META-01
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00004
   - SAL-IPYNB-00006
   - SAL-IPYNB-00010
-  - SAL-IPYNB-00018
 - capability_id: IPYNB-MODEL-001
   provenance:
   - POL-EXD-MODEL-01
   - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
   - SAL-IPYNB-00015
   - RF-NB-00001
 - capability_id: IPYNB-OUTPUT-001
   provenance:
   - POL-EXD-OUTPUT-01
-  - SAL-IPYNB-00002
   - SAL-IPYNB-00003
   - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00011
   - SAL-IPYNB-00013
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
   - SAL-IPYNB-00018
   - SAL-IPYNB-00019
   - RF-NB-00005
@@ -969,24 +940,9 @@ coverage_map:
   - POL-EXD-PARSE-01
   - POL-EXD-PARSE-02
   - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
   - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
   - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
   - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
 - capability_id: IPYNB-PRESERVE-001
   provenance:
   - POL-SLC-PRESERVE-01
@@ -1011,18 +967,12 @@ coverage_map:
 - capability_id: IPYNB-UPGRADE-001
   provenance:
   - POL-EXD-UPGRADE-01
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
   - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
 - capability_id: IPYNB-VALIDATE-001
   provenance:
   - POL-EXD-VALIDATE-01
   - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00017
+  - SAL-IPYNB-00025
 - capability_id: IPYNB-WRITE-001
   provenance:
   - POL-EXD-WRITE-01

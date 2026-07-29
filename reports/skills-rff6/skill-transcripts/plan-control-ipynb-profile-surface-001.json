@@ -1,0 +1,44 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "plan-control-ipynb-profile-surface-001",
+  "skill_id": "plan-control",
+  "mode": "live",
+  "timestamp": "2026-07-29T10:20:00Z",
+  "inputs": {
+    "task_id": "TC-FF6-IPYNB-PROFILE-SURFACE-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "operation": "close verified IPYNB contract repair and materialize exact NRRD successor",
+    "target_paths": [
+      "taskcards/TC-FF6-IPYNB-PROFILE-SURFACE-001.md",
+      "taskcards/TC-FF6-NRRD-PROFILE-SURFACE-001.md",
+      "taskcards/TC-FF6-PROGRAM-CAPABILITIES-001.md",
+      "taskcards/index.yaml",
+      "plans/strategic/ff6/current-gaps.yaml"
+    ],
+    "coordination_scope": "exclusive file leases on current FF6 state and task paths",
+    "acceptance_evidence": "IPYNB PASS; parent NEEDS_REPAIR; NRRD READY; no product or promotion mutation"
+  },
+  "allowed_files": [
+    "taskcards/TC-FF6-IPYNB-PROFILE-SURFACE-001.md",
+    "taskcards/TC-FF6-NRRD-PROFILE-SURFACE-001.md",
+    "taskcards/TC-FF6-PROGRAM-CAPABILITIES-001.md",
+    "taskcards/index.yaml",
+    "plans/strategic/ff6/current-gaps.yaml"
+  ],
+  "actual_files_changed": [
+    "taskcards/TC-FF6-IPYNB-PROFILE-SURFACE-001.md",
+    "taskcards/TC-FF6-NRRD-PROFILE-SURFACE-001.md",
+    "taskcards/TC-FF6-PROGRAM-CAPABILITIES-001.md",
+    "taskcards/index.yaml",
+    "plans/strategic/ff6/current-gaps.yaml"
+  ],
+  "tests_run": [
+    "YAML parse and task-index reconciliation",
+    "git diff --check",
+    "native FF6 event-chain replay after event append"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

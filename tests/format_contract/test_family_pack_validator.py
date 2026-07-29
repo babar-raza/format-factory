@@ -140,3 +140,34 @@ def test_rejects_missing_family_specific_preservation_and_limits() -> None:
         "PRESERVATION_DEFAULTS_MISSING",
         "SECURITY_LIMITS_MISSING",
     }
+
+
+def test_explicit_fact_ownership_requires_valid_unique_fact_ids() -> None:
+    pack, family_map, requirements, shared = valid_inputs()
+    pack["fact_ownership"] = "explicit_complete"
+    pack["domains"][0]["fact_ids"] = ["SAL-SAFETENSORS-00001"]
+    duplicate = deepcopy(pack["domains"][0])
+    duplicate["domain"] = "MODEL"
+    duplicate["baseline_behavior"][0]["id"] = "POL-BT-MODEL-01"
+    duplicate["fact_ids"] = ["SAL-SAFETENSORS-00001", "not-a-sal-id"]
+    pack["domains"].append(duplicate)
+
+    report = validate_family_pack(pack, family_map, requirements, shared)
+
+    assert not report["valid"]
+    assert {issue["code"] for issue in report["issues"]} == {
+        "DUPLICATE_FACT_OWNER",
+        "FACT_ID_INVALID",
+    }
+
+
+def test_explicit_fact_ownership_requires_fact_ids_on_every_domain() -> None:
+    pack, family_map, requirements, shared = valid_inputs()
+    pack["fact_ownership"] = "explicit_complete"
+
+    report = validate_family_pack(pack, family_map, requirements, shared)
+
+    assert not report["valid"]
+    assert [issue["code"] for issue in report["issues"]] == [
+        "FACT_IDS_MISSING"
+    ]

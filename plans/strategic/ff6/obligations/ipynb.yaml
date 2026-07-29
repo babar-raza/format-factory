@@ -3,174 +3,36 @@ goal_id: FF6-PRODUCTION-LIBRARIES-001
 format_id: ipynb
 contract_id: FC-IPYNB-V1
 authority_status: READY
-obligation_count: 105
+obligation_count: 68
 source_input_digests:
   .local/format-contracts/acquired/ipynb/src-nb-002.bin: 4d3750b55006e92d8063a6ac427a84eb1f91c44e376d90de53d03893674991d9
-  plans/strategic/ff6/capability-enrichments/ipynb.yaml: 1a56d12b5db2ecc0ee29344ca15e9dd7bf36d118c723607d91ce6b8300980158
-  plans/strategic/ff6/capability-policy.yaml: 7550817db7772d46b18802df0992ec90f2430facf36447aef381224f55cf2457
+  plans/strategic/ff6/capability-enrichments/ipynb.yaml: a1ee247f0c37123154292cbc60efb2eb1c49024bb50231bdc2edf525322f05c0
+  plans/strategic/ff6/capability-policy.yaml: b8bfad505340b274c7dd82712fe96a4c17c2000f69e05727566a837d45594ef2
   schemas/ff6/capability-universe.schema.json: fea60893c5bfc54e3a6fedebdd6220a572a36f7c72f1fc2f20dec8dfe03d8974
   schemas/format-contracts/authority-lock.schema.json: a8b860f4bef1ceae1b9dd6348c29cc99b35f2bde2dca032217398bddb061f913
   shared/format-contracts/authority-lock.yaml: 8eefb28e3ef24b5b533496b54860daee981853d9c872fddc1ba5de4ff150f249
-  shared/format-contracts/ipynb.yaml: bd45c8409debd0724df5c34698a35e8e1585b3a57c66c28c16e3b84e064af637
-  shared/format-contracts/policy/family-packs/executable_document.yaml: bdc43666de37ffe17cbc827308747c60389ecb7e6e7d52a759e78f071ab32456
+  shared/format-contracts/ipynb.yaml: fa9eb823a26b366d350d25b59e7b6649fec2e9f5f6d6d023be1963edc265588b
+  shared/format-contracts/policy/family-packs/executable_document.yaml: f37690dc81844402c7ec115deb6a7d750782553327fa153c152c19475e0a28dc
   shared/format-contracts/policy/shared-library-contract.yaml: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
   shared/format-contracts/product-requirements/ipynb.yaml: 903b5e9c4d3f371105d209794221a342ee676f4bd5f36dc15c3ddacb7ceadccd
   shared/format-contracts/research/ipynb.yaml: ef4b130cf19a916eaaed86629d80c14eeaaa4dbd2be943400a8b508ff1eb9b7a
-  shared/sal-facts/evidence/ipynb.yaml: 223238c07e531daddb9d8c1b596ddeed9365775c625a77ccc86a0cbb9335887b
-  shared/sal-facts/ipynb.yaml: a51321c18230497ec932b5132657f2b29897696f5ec20dc87a4710df0e89a04b
+  shared/sal-facts/evidence/ipynb.yaml: 8cf9130640deeea4fe0f9701d47b2b473442ea53d1c8e66527b0368027d3d69f
+  shared/sal-facts/ipynb.yaml: a00f801aa1de05e9b6427c543abfb73a33faa6235d22164035a688f163e1e8c6
   tools/format_contract/capability_universe.py: d8dbd5018acd0737786db9d81f9e0ddddafb2a8a27001d9567998125943ad708
-  tools/format_contract/capability_universe_command.py: 60432981f60025a71b334f20bf63935cf26d4c9b21ddc37de38219f86d5c72a5
+  tools/format_contract/capability_universe_command.py: d56f18d163c37b82d5b32b4f59391e24b22368edfa45c3696c99a7ee6eeef2d5
   tools/format_contract/capability_universe_runtime.py: d3df691b1c6e09c3a5746bfdde655bb99f51e878e4eca4b4caf469c2a57f1b4a
   tools/format_contract/capability_universe_validation.py: 8cd57b1fc32754181a0b4e243e09fde56249a5f3769d340778a3b2f436cd44ea
   tools/format_contract/product_contract.py: 3e1e0ca49852751b1ce8bda9a1f996574832460d33844a77618cea591a605205
 obligations:
-- obligation_id: SAL-IPYNB-OBL-010C554B8692D166
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-OUTPUT-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-OUTPUT-01
-  - RF-NB-00005
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
-  authority_fact_ids:
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat - versioning rules) The nbformat version pair identifies format evolution; future minor versions are treated as backward-compatible, with unknown cell and output types allowed and preserved by official tooling
-  required_tests:
-  - MIME-bundle matrix round-trips including vendor types and binary payloads.
-  - MIME matrix fixtures per output type with byte-exact payload verification.
-  release_gates:
-  - No output construct is dropped or reordered on round trip.
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-029B1CD925618F17
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-PARSE-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-PARSE-01
-  - POL-EXD-PARSE-02
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
-  authority_fact_ids:
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat - attachments) Markdown and raw cells may carry an attachments object mapping filenames to MIME bundles referenced from cell content
-  required_tests:
-  - Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip.
-  release_gates:
-  - Parse is proven side-effect-free (no execution/render hooks reachable).
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
 - obligation_id: SAL-IPYNB-OBL-02A00C213D2B0190
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-ATTACH-001
   classification: STABLE_REQUIRED
@@ -216,6 +78,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-MERGE-001
   classification: PREVIEW_ISOLATED
@@ -256,6 +123,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-PARSE-001
   classification: STABLE_REQUIRED
@@ -266,44 +138,14 @@ obligations:
   - POL-EXD-PARSE-01
   - POL-EXD-PARSE-02
   - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
   - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
   - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
   - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
   authority_fact_ids:
   - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
   - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
   - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
   - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
   authority_source_ids:
   - SRC-NB-002
   rule_text: (nbformat - top-level structure) A notebook document is a single JSON object whose top level carries nbformat and nbformat_minor integers plus metadata and a cells array
@@ -332,10 +174,113 @@ obligations:
   - tools/format_contract/capability_universe_runtime.py
   - tools/format_contract/capability_universe_validation.py
   - tools/format_contract/product_contract.py
+- obligation_id: SAL-IPYNB-OBL-0ADDA3341B91C271
+  format_id: ipynb
+  profile_id: production
+  spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
+  - nbformat_v4.5
+  capability_id: IPYNB-CELLNAME-001
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: required_behavior
+  authority_reference_ids:
+  - POL-EXD-CELLNAME-01
+  - SAL-IPYNB-00023
+  authority_fact_ids:
+  - SAL-IPYNB-00023
+  authority_source_ids:
+  - SRC-NB-002
+  rule_text: Validate every present cell metadata name as a non-empty string without synthesizing names during passive reads.
+  required_tests:
+  - Present non-empty names pass and empty names fail in every supported profile.
+  release_gates:
+  - The non-empty name rule has positive and negative evidence for nbformat 4.0 through 4.5.
+  verification_status: UNVERIFIED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/ipynb.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
+- obligation_id: SAL-IPYNB-OBL-0CDD583308EC81F1
+  format_id: ipynb
+  profile_id: production
+  spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
+  - nbformat_v4.5
+  capability_id: IPYNB-VALIDATE-001
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: normative_rules
+  authority_reference_ids:
+  - POL-EXD-VALIDATE-01
+  - SAL-IPYNB-00012
+  - SAL-IPYNB-00025
+  authority_fact_ids:
+  - SAL-IPYNB-00012
+  - SAL-IPYNB-00025
+  authority_source_ids:
+  - SRC-NB-002
+  rule_text: (nbformat 4.0-4.5 schemas - minor-version floors) For each nbformat schema from 4.0 through 4.5, the nbformat_minor field has a minimum equal to that schema's minor number
+  required_tests:
+  - Both validation modes on fixtures per schema construct; unknown-field separation asserted.
+  release_gates:
+  - Target-minor schema compliance proven on the official corpus.
+  verification_status: UNVERIFIED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/ipynb.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
 - obligation_id: SAL-IPYNB-OBL-121BE1F7FB462D30
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-PARSE-001
   classification: STABLE_REQUIRED
@@ -346,44 +291,14 @@ obligations:
   - POL-EXD-PARSE-01
   - POL-EXD-PARSE-02
   - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
   - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
   - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
   - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
   authority_fact_ids:
   - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
   - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
   - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
   - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
   authority_source_ids:
   - SRC-NB-002
   rule_text: Parse version fields and both multiline text representations, normalizing in the object API while preserving round-trip fidelity.
@@ -416,6 +331,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-META-001
   classification: STABLE_REQUIRED
@@ -424,19 +344,11 @@ obligations:
   source_field: normative_rules
   authority_reference_ids:
   - POL-EXD-META-01
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00004
   - SAL-IPYNB-00006
   - SAL-IPYNB-00010
-  - SAL-IPYNB-00018
   authority_fact_ids:
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00004
   - SAL-IPYNB-00006
   - SAL-IPYNB-00010
-  - SAL-IPYNB-00018
   authority_source_ids:
   - SRC-NB-002
   rule_text: (nbformat - notebook metadata) Notebook metadata may carry kernelspec and language_info objects describing the execution kernel and language
@@ -469,6 +381,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-SEC-001
   classification: STABLE_REQUIRED
@@ -513,6 +430,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-SEC-001
   classification: STABLE_REQUIRED
@@ -553,65 +475,31 @@ obligations:
   - tools/format_contract/capability_universe_runtime.py
   - tools/format_contract/capability_universe_validation.py
   - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-14E67D7A8E9A1AFE
+- obligation_id: SAL-IPYNB-OBL-1805FD97C77EDC3D
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
-  capability_id: IPYNB-PARSE-001
+  capability_id: IPYNB-DOCMETA-001
   classification: STABLE_REQUIRED
   level: MUST
   kind: positive
   source_field: normative_rules
   authority_reference_ids:
-  - POL-EXD-PARSE-01
-  - POL-EXD-PARSE-02
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
+  - POL-EXD-DOCMETA-01
+  - SAL-IPYNB-00020
   authority_fact_ids:
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
+  - SAL-IPYNB-00020
   authority_source_ids:
   - SRC-NB-002
-  rule_text: (nbformat - validation) The official nbformat validator selects a JSON schema using the document's nbformat and nbformat_minor pair and relaxes the current schema for future minor versions
+  rule_text: (nbformat 4.2 schema delta - document metadata) Since nbformat 4.2 notebook metadata may carry a title string and an authors array; the pinned schema uses the author-item keyword 'item' rather than JSON Schema's 'items', so author item shape is not schema-enforced
   required_tests:
-  - Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip.
+  - Title and multi-author fixtures round-trip for every applicable profile, including additional author properties.
   release_gates:
-  - Parse is proven side-effect-free (no execution/render hooks reachable).
+  - Title and author metadata is explicitly absent from 4.0-4.1 claims and proven for 4.2-4.5.
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
@@ -637,6 +525,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-LIFECYCLE-001
   classification: STABLE_REQUIRED
@@ -682,6 +575,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-VALIDATE-001
   classification: STABLE_REQUIRED
@@ -691,12 +589,10 @@ obligations:
   authority_reference_ids:
   - POL-EXD-VALIDATE-01
   - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00017
+  - SAL-IPYNB-00025
   authority_fact_ids:
   - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00017
+  - SAL-IPYNB-00025
   authority_source_ids:
   - SRC-NB-002
   rule_text: Validate against the schema matching declared version and optionally current minor; report unknown forward-compatible fields separately from errors.
@@ -725,38 +621,31 @@ obligations:
   - tools/format_contract/capability_universe_runtime.py
   - tools/format_contract/capability_universe_validation.py
   - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-2011BE4892BBBC37
+- obligation_id: SAL-IPYNB-OBL-1FA16EB9033A30BD
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
-  capability_id: IPYNB-UPGRADE-001
+  capability_id: IPYNB-CELLNAMEUNIQUE-001
   classification: STABLE_REQUIRED
   level: MUST
   kind: positive
-  source_field: normative_rules
+  source_field: required_behavior
   authority_reference_ids:
-  - POL-EXD-UPGRADE-01
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
+  - POL-EXD-CELLNAMEUNIQUE-01
+  - SAL-IPYNB-00024
   authority_fact_ids:
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
+  - SAL-IPYNB-00024
   authority_source_ids:
   - SRC-NB-002
-  rule_text: (nbformat 4.5 - cell ids) Since schema minor version 4.5 every cell must carry an id field unique within the notebook conforming to the permitted character set and length rules
+  rule_text: For profiles 4.2 and later, perform an additional notebook-wide uniqueness check for present cell metadata names.
   required_tests:
-  - Fixtures at each supported older version upgrade with ledger assertions; downgrade-loss reporting fixture.
+  - Duplicate-name fixtures fail the semantic check while distinct and absent names pass.
   release_gates:
-  - No silent version relabeling; conversion ledger complete (tested).
+  - Uniqueness is not falsely claimed as JSON-Schema-enforced and has explicit semantic validation evidence.
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
@@ -782,6 +671,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-OUTPUT-001
   classification: STABLE_REQUIRED
@@ -791,25 +685,15 @@ obligations:
   authority_reference_ids:
   - POL-EXD-OUTPUT-01
   - RF-NB-00005
-  - SAL-IPYNB-00002
   - SAL-IPYNB-00003
   - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00011
   - SAL-IPYNB-00013
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
   - SAL-IPYNB-00018
   - SAL-IPYNB-00019
   authority_fact_ids:
-  - SAL-IPYNB-00002
   - SAL-IPYNB-00003
   - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00011
   - SAL-IPYNB-00013
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
   - SAL-IPYNB-00018
   - SAL-IPYNB-00019
   authority_source_ids:
@@ -841,90 +725,15 @@ obligations:
   - tools/format_contract/capability_universe_runtime.py
   - tools/format_contract/capability_universe_validation.py
   - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-27E9715B97C8FD8B
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-PARSE-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-PARSE-01
-  - POL-EXD-PARSE-02
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
-  authority_fact_ids:
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat - cell metadata) Cell metadata may carry tags as a unique list of comma-free strings and arbitrary additional JSON properties; custom metadata should use a sufficiently unique namespace
-  required_tests:
-  - Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip.
-  release_gates:
-  - Parse is proven side-effect-free (no execution/render hooks reachable).
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
 - obligation_id: SAL-IPYNB-OBL-2B44543CA510ED94
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-PARSE-001
   classification: STABLE_REQUIRED
@@ -935,44 +744,14 @@ obligations:
   - POL-EXD-PARSE-01
   - POL-EXD-PARSE-02
   - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
   - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
   - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
   - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
   authority_fact_ids:
   - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
   - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
   - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
   - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
   authority_source_ids:
   - SRC-NB-002
   rule_text: (nbformat - multiline strings) Cell source content is either a single string or a list of strings that concatenate to the logical source text
@@ -1005,6 +784,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-META-001
   classification: STABLE_REQUIRED
@@ -1013,19 +797,11 @@ obligations:
   source_field: required_behavior
   authority_reference_ids:
   - POL-EXD-META-01
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00004
   - SAL-IPYNB-00006
   - SAL-IPYNB-00010
-  - SAL-IPYNB-00018
   authority_fact_ids:
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00004
   - SAL-IPYNB-00006
   - SAL-IPYNB-00010
-  - SAL-IPYNB-00018
   authority_source_ids:
   - SRC-NB-002
   rule_text: Preserve arbitrary metadata at all levels; provide typed adapters for common namespaces; never delete unknown metadata during normalization.
@@ -1058,6 +834,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-ATTACH-001
   classification: STABLE_REQUIRED
@@ -1099,90 +880,15 @@ obligations:
   - tools/format_contract/capability_universe_runtime.py
   - tools/format_contract/capability_universe_validation.py
   - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-3AE0DC2692EF0AD9
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-PARSE-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-PARSE-01
-  - POL-EXD-PARSE-02
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
-  authority_fact_ids:
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat 4.5 — cell outputs) Code-cell outputs are typed objects with output_type in {execute_result, display_data, stream, error}; execute_result/display_data carry a data mime-bundle, stream carries name+text, error carries ename/evalue/traceback
-  required_tests:
-  - Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip.
-  release_gates:
-  - Parse is proven side-effect-free (no execution/render hooks reachable).
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
 - obligation_id: SAL-IPYNB-OBL-3B3B7588125383AB
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-MODEL-001
   classification: STABLE_REQUIRED
@@ -1193,19 +899,9 @@ obligations:
   - POL-EXD-MODEL-01
   - RF-NB-00001
   - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
   - SAL-IPYNB-00015
   authority_fact_ids:
   - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
   - SAL-IPYNB-00015
   authority_source_ids:
   - SRC-NB-002
@@ -1235,66 +931,15 @@ obligations:
   - tools/format_contract/capability_universe_runtime.py
   - tools/format_contract/capability_universe_validation.py
   - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-3EF5FF3B64091AB4
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-MODEL-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-MODEL-01
-  - RF-NB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00015
-  authority_fact_ids:
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00015
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat - attachment references) Markdown content can reference a cell attachment with an attachment URI whose filename corresponds to a key in that cell's attachments mapping
-  required_tests:
-  - Typed access per cell type; unknown-cell-type preservation fixture.
-  release_gates:
-  - Model covers every schema cell construct.
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
 - obligation_id: SAL-IPYNB-OBL-3FA9A87DE3411DC4
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-MODEL-001
   classification: STABLE_REQUIRED
@@ -1305,19 +950,9 @@ obligations:
   - POL-EXD-MODEL-01
   - RF-NB-00001
   - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
   - SAL-IPYNB-00015
   authority_fact_ids:
   - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
   - SAL-IPYNB-00015
   authority_source_ids:
   - SRC-NB-002
@@ -1351,6 +986,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-META-001
   classification: STABLE_REQUIRED
@@ -1359,19 +999,11 @@ obligations:
   source_field: normative_rules
   authority_reference_ids:
   - POL-EXD-META-01
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00004
   - SAL-IPYNB-00006
   - SAL-IPYNB-00010
-  - SAL-IPYNB-00018
   authority_fact_ids:
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00004
   - SAL-IPYNB-00006
   - SAL-IPYNB-00010
-  - SAL-IPYNB-00018
   authority_source_ids:
   - SRC-NB-002
   rule_text: (nbformat - cell metadata) Cell metadata may carry tags as a unique list of comma-free strings and arbitrary additional JSON properties; custom metadata should use a sufficiently unique namespace
@@ -1400,57 +1032,15 @@ obligations:
   - tools/format_contract/capability_universe_runtime.py
   - tools/format_contract/capability_universe_validation.py
   - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-44833AF0A0BFC6C5
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-EDIT-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-EDIT-01
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00017
-  authority_fact_ids:
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00017
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat - forward compatibility) Backward-compatible minor-version changes may introduce new dictionary fields, cell types, and output types; official validation relaxes additionalProperties and permits unrecognized cell and output types for future minors
-  required_tests:
-  - Each mutation class save-reload-verifies with IDs stable.
-  release_gates:
-  - Editing preserves schema validity (validated post-edit).
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
 - obligation_id: SAL-IPYNB-OBL-44E62E9AB8ECC2E3
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-ATTACH-001
   classification: STABLE_REQUIRED
@@ -1492,66 +1082,15 @@ obligations:
   - tools/format_contract/capability_universe_runtime.py
   - tools/format_contract/capability_universe_validation.py
   - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-4651E92D2D018089
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-MODEL-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-MODEL-01
-  - RF-NB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00015
-  authority_fact_ids:
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00015
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat - multiline strings) Cell source content is either a single string or a list of strings that concatenate to the logical source text
-  required_tests:
-  - Typed access per cell type; unknown-cell-type preservation fixture.
-  release_gates:
-  - Model covers every schema cell construct.
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
 - obligation_id: SAL-IPYNB-OBL-499CD4389B386A40
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-SANITIZE-001
   classification: STABLE_REQUIRED
@@ -1591,228 +1130,15 @@ obligations:
   - tools/format_contract/capability_universe_runtime.py
   - tools/format_contract/capability_universe_validation.py
   - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-4D73E1AD5BFDA838
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-EXEC-001
-  classification: EXCLUDED_WITH_AUTHORITY
-  level: SHOULD
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-EXEC-01
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00018
-  authority_fact_ids:
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00018
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat 4.5 — cell outputs) Code-cell outputs are typed objects with output_type in {execute_result, display_data, stream, error}; execute_result/display_data carry a data mime-bundle, stream carries name+text, error carries ename/evalue/traceback
-  required_tests:
-  - Isolated-environment execution tests covering timeout, kernel failure, and partial output; core-path no-execution proof.
-  release_gates:
-  - Execution is physically and logically separated from parsing (dependency audit).
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-55260C0279763885
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-ID-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-ID-01
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  authority_fact_ids:
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat - forward compatibility) Backward-compatible minor-version changes may introduce new dictionary fields, cell types, and output types; official validation relaxes additionalProperties and permits unrecognized cell and output types for future minors
-  required_tests:
-  - Duplicate/invalid ID negatives; upgrade fixture verifies mapping.
-  release_gates:
-  - ID behavior matches the target schema minor exactly.
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-5BB2228FA079F793
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-UPGRADE-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-UPGRADE-01
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  authority_fact_ids:
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat - forward compatibility) Backward-compatible minor-version changes may introduce new dictionary fields, cell types, and output types; official validation relaxes additionalProperties and permits unrecognized cell and output types for future minors
-  required_tests:
-  - Fixtures at each supported older version upgrade with ledger assertions; downgrade-loss reporting fixture.
-  release_gates:
-  - No silent version relabeling; conversion ledger complete (tested).
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-5CA1914777C61A9D
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-OUTPUT-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-OUTPUT-01
-  - RF-NB-00005
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
-  authority_fact_ids:
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat - attachments) Markdown and raw cells may carry an attachments object mapping filenames to MIME bundles referenced from cell content
-  required_tests:
-  - MIME-bundle matrix round-trips including vendor types and binary payloads.
-  - MIME matrix fixtures per output type with byte-exact payload verification.
-  release_gates:
-  - No output construct is dropped or reordered on round trip.
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
 - obligation_id: SAL-IPYNB-OBL-63250AAB7522792F
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-EXEC-001
   classification: EXCLUDED_WITH_AUTHORITY
@@ -1821,17 +1147,8 @@ obligations:
   source_field: required_behavior
   authority_reference_ids:
   - POL-EXD-EXEC-01
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00018
-  authority_fact_ids:
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00018
-  authority_source_ids:
-  - SRC-NB-002
+  authority_fact_ids: []
+  authority_source_ids: []
   rule_text: Keep execution in an opt-in adapter with kernel selection, timeouts, error policy, and isolation boundary; return a structured execution report; never execute during load/validate/diff/save.
   required_tests:
   - Isolated-environment execution tests covering timeout, kernel failure, and partial output; core-path no-execution proof.
@@ -1862,6 +1179,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-PRESERVE-001
   classification: STABLE_REQUIRED
@@ -1905,6 +1227,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-LIFECYCLE-001
   classification: STABLE_REQUIRED
@@ -1950,6 +1277,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-DIFF-001
   classification: STABLE_REQUIRED
@@ -1991,6 +1323,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-OUTPUT-001
   classification: STABLE_REQUIRED
@@ -2000,25 +1337,15 @@ obligations:
   authority_reference_ids:
   - POL-EXD-OUTPUT-01
   - RF-NB-00005
-  - SAL-IPYNB-00002
   - SAL-IPYNB-00003
   - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00011
   - SAL-IPYNB-00013
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
   - SAL-IPYNB-00018
   - SAL-IPYNB-00019
   authority_fact_ids:
-  - SAL-IPYNB-00002
   - SAL-IPYNB-00003
   - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00011
   - SAL-IPYNB-00013
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
   - SAL-IPYNB-00018
   - SAL-IPYNB-00019
   authority_source_ids:
@@ -2050,57 +1377,15 @@ obligations:
   - tools/format_contract/capability_universe_runtime.py
   - tools/format_contract/capability_universe_validation.py
   - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-6998AFE571DA4FA3
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-EDIT-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-EDIT-01
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00017
-  authority_fact_ids:
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00017
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat - cell metadata) Cell metadata may carry tags as a unique list of comma-free strings and arbitrary additional JSON properties; custom metadata should use a sufficiently unique namespace
-  required_tests:
-  - Each mutation class save-reload-verifies with IDs stable.
-  release_gates:
-  - Editing preserves schema validity (validated post-edit).
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
 - obligation_id: SAL-IPYNB-OBL-6D98E9BE6A406DC3
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-PRESERVE-001
   classification: STABLE_REQUIRED
@@ -2144,6 +1429,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-PARSE-001
   classification: STABLE_REQUIRED
@@ -2154,127 +1444,17 @@ obligations:
   - POL-EXD-PARSE-01
   - POL-EXD-PARSE-02
   - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
   - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
   - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
   - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
   authority_fact_ids:
   - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
   - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
   - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
   - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
   authority_source_ids:
   - SRC-NB-002
   rule_text: (nbformat - forward compatibility) Backward-compatible minor-version changes may introduce new dictionary fields, cell types, and output types; official validation relaxes additionalProperties and permits unrecognized cell and output types for future minors
-  required_tests:
-  - Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip.
-  release_gates:
-  - Parse is proven side-effect-free (no execution/render hooks reachable).
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-6EA457DD191446C5
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-PARSE-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-PARSE-01
-  - POL-EXD-PARSE-02
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
-  authority_fact_ids:
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat - output types) Output objects declare output_type stream display_data execute_result or error each with its own required fields
   required_tests:
   - Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip.
   release_gates:
@@ -2312,19 +1492,9 @@ obligations:
   source_field: required_behavior
   authority_reference_ids:
   - POL-EXD-ID-01
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
   - SAL-IPYNB-00014
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
   authority_fact_ids:
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
   - SAL-IPYNB-00014
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
   authority_source_ids:
   - SRC-NB-002
   rule_text: Validate required cell IDs (uniqueness, syntax, length); generate IDs only via explicit upgrade with a rewrite map for references.
@@ -2353,57 +1523,15 @@ obligations:
   - tools/format_contract/capability_universe_runtime.py
   - tools/format_contract/capability_universe_validation.py
   - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-7217D5542A605065
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-VALIDATE-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-VALIDATE-01
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00017
-  authority_fact_ids:
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00017
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat - forward compatibility) Backward-compatible minor-version changes may introduce new dictionary fields, cell types, and output types; official validation relaxes additionalProperties and permits unrecognized cell and output types for future minors
-  required_tests:
-  - Both validation modes on fixtures per schema construct; unknown-field separation asserted.
-  release_gates:
-  - Target-minor schema compliance proven on the official corpus.
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
 - obligation_id: SAL-IPYNB-OBL-733D902E103E53BD
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-PRESERVE-001
   classification: STABLE_REQUIRED
@@ -2447,6 +1575,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-OUTPUT-001
   classification: STABLE_REQUIRED
@@ -2456,25 +1589,15 @@ obligations:
   authority_reference_ids:
   - POL-EXD-OUTPUT-01
   - RF-NB-00005
-  - SAL-IPYNB-00002
   - SAL-IPYNB-00003
   - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00011
   - SAL-IPYNB-00013
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
   - SAL-IPYNB-00018
   - SAL-IPYNB-00019
   authority_fact_ids:
-  - SAL-IPYNB-00002
   - SAL-IPYNB-00003
   - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00011
   - SAL-IPYNB-00013
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
   - SAL-IPYNB-00018
   - SAL-IPYNB-00019
   authority_source_ids:
@@ -2506,139 +1629,15 @@ obligations:
   - tools/format_contract/capability_universe_runtime.py
   - tools/format_contract/capability_universe_validation.py
   - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-793EE40165C8DB16
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-PARSE-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-PARSE-01
-  - POL-EXD-PARSE-02
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
-  authority_fact_ids:
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat - output security considerations) Notebook MIME bundles can carry HTML, SVG, and JavaScript payloads
-  required_tests:
-  - Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip.
-  release_gates:
-  - Parse is proven side-effect-free (no execution/render hooks reachable).
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-7A3434FAAB98570C
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-EXEC-001
-  classification: EXCLUDED_WITH_AUTHORITY
-  level: SHOULD
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-EXEC-01
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00018
-  authority_fact_ids:
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00018
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat - output types) Output objects declare output_type stream display_data execute_result or error each with its own required fields
-  required_tests:
-  - Isolated-environment execution tests covering timeout, kernel failure, and partial output; core-path no-execution proof.
-  release_gates:
-  - Execution is physically and logically separated from parsing (dependency audit).
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
 - obligation_id: SAL-IPYNB-OBL-7B453CA0FD8BCD5D
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-DIFF-001
   classification: STABLE_REQUIRED
@@ -2676,57 +1675,15 @@ obligations:
   - tools/format_contract/capability_universe_runtime.py
   - tools/format_contract/capability_universe_validation.py
   - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-7B4D9801EC12E4D6
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-VALIDATE-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-VALIDATE-01
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00017
-  authority_fact_ids:
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00017
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat 4.5 - cell ids) Since schema minor version 4.5 every cell must carry an id field unique within the notebook conforming to the permitted character set and length rules
-  required_tests:
-  - Both validation modes on fixtures per schema construct; unknown-field separation asserted.
-  release_gates:
-  - Target-minor schema compliance proven on the official corpus.
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
 - obligation_id: SAL-IPYNB-OBL-80272AC687E3FBED
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-TRUST-001
   classification: STABLE_REQUIRED
@@ -2776,19 +1733,9 @@ obligations:
   source_field: normative_rules
   authority_reference_ids:
   - POL-EXD-ID-01
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
   - SAL-IPYNB-00014
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
   authority_fact_ids:
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
   - SAL-IPYNB-00014
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
   authority_source_ids:
   - SRC-NB-002
   rule_text: (nbformat 4.5 - cell ids) Since schema minor version 4.5 every cell must carry an id field unique within the notebook conforming to the permitted character set and length rules
@@ -2817,34 +1764,29 @@ obligations:
   - tools/format_contract/capability_universe_runtime.py
   - tools/format_contract/capability_universe_validation.py
   - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-867F546314F11812
+- obligation_id: SAL-IPYNB-OBL-8546D71A9E3916E7
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.4
   - nbformat_v4.5
-  capability_id: IPYNB-EXEC-001
-  classification: EXCLUDED_WITH_AUTHORITY
-  level: SHOULD
+  capability_id: IPYNB-EXECMETA-001
+  classification: STABLE_REQUIRED
+  level: MUST
   kind: positive
   source_field: normative_rules
   authority_reference_ids:
-  - POL-EXD-EXEC-01
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00018
+  - POL-EXD-EXECMETA-01
+  - SAL-IPYNB-00022
   authority_fact_ids:
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00018
+  - SAL-IPYNB-00022
   authority_source_ids:
   - SRC-NB-002
-  rule_text: (nbformat - MIME bundles) display_data and execute_result outputs carry data objects mapping MIME types to content and metadata objects with per-MIME rendering hints
+  rule_text: (nbformat 4.4 schema delta - execution timing metadata) Since nbformat 4.4 code-cell metadata may carry an execution object with iopub.execute_input, iopub.status.busy, shell.execute_reply, and iopub.status.idle timestamp strings plus additional string-valued timing entries
   required_tests:
-  - Isolated-environment execution tests covering timeout, kernel failure, and partial output; core-path no-execution proof.
+  - Four standard timing keys, additional string keys, and non-string negatives are covered.
   release_gates:
-  - Execution is physically and logically separated from parsing (dependency audit).
+  - Execution timing metadata is proven only for 4.4-4.5 and remains passive data.
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
@@ -2866,204 +1808,30 @@ obligations:
   - tools/format_contract/capability_universe_runtime.py
   - tools/format_contract/capability_universe_validation.py
   - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-8AD14BB7AFB32F2E
+- obligation_id: SAL-IPYNB-OBL-8998C2CB8626FA68
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
-  capability_id: IPYNB-OUTPUT-001
+  capability_id: IPYNB-HIDDEN-001
   classification: STABLE_REQUIRED
   level: MUST
   kind: positive
   source_field: normative_rules
   authority_reference_ids:
-  - POL-EXD-OUTPUT-01
-  - RF-NB-00005
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
+  - POL-EXD-HIDDEN-01
+  - SAL-IPYNB-00021
   authority_fact_ids:
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
+  - SAL-IPYNB-00021
   authority_source_ids:
   - SRC-NB-002
-  rule_text: (nbformat - forward compatibility) Backward-compatible minor-version changes may introduce new dictionary fields, cell types, and output types; official validation relaxes additionalProperties and permits unrecognized cell and output types for future minors
+  rule_text: (nbformat 4.3 schema delta - Jupyter cell metadata) Since nbformat 4.3 cell metadata may carry Jupyter source_hidden booleans for code, markdown, and raw cells and an outputs_hidden boolean for code cells
   required_tests:
-  - MIME-bundle matrix round-trips including vendor types and binary payloads.
-  - MIME matrix fixtures per output type with byte-exact payload verification.
+  - Visibility metadata fixtures cover all cell types, boolean validation, and unknown Jupyter fields.
   release_gates:
-  - No output construct is dropped or reordered on round trip.
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-8B873E4A7F5AB781
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-UPGRADE-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-UPGRADE-01
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  authority_fact_ids:
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat - validation) The official nbformat validator selects a JSON schema using the document's nbformat and nbformat_minor pair and relaxes the current schema for future minor versions
-  required_tests:
-  - Fixtures at each supported older version upgrade with ledger assertions; downgrade-loss reporting fixture.
-  release_gates:
-  - No silent version relabeling; conversion ledger complete (tested).
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-8CB6767A2C5B196C
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-EDIT-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-EDIT-01
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00017
-  authority_fact_ids:
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00017
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat 4.5 — cell types) Each cell object has required keys cell_type ('code'|'markdown'|'raw'), metadata (object), and source (string or list of strings); code cells additionally require execution_count and outputs
-  required_tests:
-  - Each mutation class save-reload-verifies with IDs stable.
-  release_gates:
-  - Editing preserves schema validity (validated post-edit).
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-91F2FEE89658B49D
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-MODEL-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-MODEL-01
-  - RF-NB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00015
-  authority_fact_ids:
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00015
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat - code cell) Code cells carry an execution_count field that is an integer or null and an outputs array of output objects
-  required_tests:
-  - Typed access per cell type; unknown-cell-type preservation fixture.
-  release_gates:
-  - Model covers every schema cell construct.
+  - Visibility metadata is proven only for 4.3-4.5 and never interpreted as permission to render or execute.
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
@@ -3089,6 +1857,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-SEC-001
   classification: STABLE_REQUIRED
@@ -3129,10 +1902,60 @@ obligations:
   - tools/format_contract/capability_universe_runtime.py
   - tools/format_contract/capability_universe_validation.py
   - tools/format_contract/product_contract.py
+- obligation_id: SAL-IPYNB-OBL-959B89100C121E14
+  format_id: ipynb
+  profile_id: production
+  spec_profiles:
+  - nbformat_v4.3
+  - nbformat_v4.4
+  - nbformat_v4.5
+  capability_id: IPYNB-HIDDEN-001
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: required_behavior
+  authority_reference_ids:
+  - POL-EXD-HIDDEN-01
+  - SAL-IPYNB-00021
+  authority_fact_ids:
+  - SAL-IPYNB-00021
+  authority_source_ids:
+  - SRC-NB-002
+  rule_text: For profiles 4.3 and later, model source_hidden for all known cells and outputs_hidden for code cells under the Jupyter metadata namespace.
+  required_tests:
+  - Visibility metadata fixtures cover all cell types, boolean validation, and unknown Jupyter fields.
+  release_gates:
+  - Visibility metadata is proven only for 4.3-4.5 and never interpreted as permission to render or execute.
+  verification_status: UNVERIFIED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/ipynb.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
 - obligation_id: SAL-IPYNB-OBL-99A77B35A2B0E5E8
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-PRESERVE-001
   classification: STABLE_REQUIRED
@@ -3176,6 +1999,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-PARSE-001
   classification: STABLE_REQUIRED
@@ -3186,44 +2014,14 @@ obligations:
   - POL-EXD-PARSE-01
   - POL-EXD-PARSE-02
   - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
   - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
   - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
   - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
   authority_fact_ids:
   - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
   - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
   - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
   - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
   authority_source_ids:
   - SRC-NB-002
   rule_text: Preserve unknown fields and metadata namespaces; never coerce numeric or Unicode JSON values lossily.
@@ -3252,116 +2050,15 @@ obligations:
   - tools/format_contract/capability_universe_runtime.py
   - tools/format_contract/capability_universe_validation.py
   - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-9C6A2746BA63E841
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-META-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-META-01
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00018
-  authority_fact_ids:
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00018
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat - top-level structure) A notebook document is a single JSON object whose top level carries nbformat and nbformat_minor integers plus metadata and a cells array
-  required_tests:
-  - Unknown-metadata round trip; typed adapter reads on real fixtures.
-  release_gates:
-  - Zero unknown-metadata loss proven.
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-A34640B83CC70822
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-ID-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-ID-01
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  authority_fact_ids:
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat - output security considerations) Notebook MIME bundles can carry HTML, SVG, and JavaScript payloads
-  required_tests:
-  - Duplicate/invalid ID negatives; upgrade fixture verifies mapping.
-  release_gates:
-  - ID behavior matches the target schema minor exactly.
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
 - obligation_id: SAL-IPYNB-OBL-A416086282D30BB9
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-MODEL-001
   classification: STABLE_REQUIRED
@@ -3372,19 +2069,9 @@ obligations:
   - POL-EXD-MODEL-01
   - RF-NB-00001
   - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
   - SAL-IPYNB-00015
   authority_fact_ids:
   - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
   - SAL-IPYNB-00015
   authority_source_ids:
   - SRC-NB-002
@@ -3418,6 +2105,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-PARSE-001
   classification: STABLE_REQUIRED
@@ -3428,260 +2120,17 @@ obligations:
   - POL-EXD-PARSE-01
   - POL-EXD-PARSE-02
   - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
   - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
   - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
   - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
   authority_fact_ids:
   - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
   - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
   - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
   - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
   authority_source_ids:
   - SRC-NB-002
   rule_text: (nbformat 4.5 — top-level structure) A Jupyter notebook document is a single JSON object with required top-level keys nbformat (int), nbformat_minor (int), metadata (object), and cells (list of cell objects)
-  required_tests:
-  - Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip.
-  release_gates:
-  - Parse is proven side-effect-free (no execution/render hooks reachable).
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-A9D840BD579F5C6F
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-ID-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-ID-01
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  authority_fact_ids:
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat - cell metadata) Cell metadata may carry tags as a unique list of comma-free strings and arbitrary additional JSON properties; custom metadata should use a sufficiently unique namespace
-  required_tests:
-  - Duplicate/invalid ID negatives; upgrade fixture verifies mapping.
-  release_gates:
-  - ID behavior matches the target schema minor exactly.
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-AA72252FB6D0AA7C
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-PARSE-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-PARSE-01
-  - POL-EXD-PARSE-02
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
-  authority_fact_ids:
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat - error output) error outputs carry ename evalue and a traceback list of strings
-  required_tests:
-  - Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip.
-  release_gates:
-  - Parse is proven side-effect-free (no execution/render hooks reachable).
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-AAB3BBF81F346B07
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-PARSE-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-PARSE-01
-  - POL-EXD-PARSE-02
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
-  authority_fact_ids:
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat 4.5 — cell types) Each cell object has required keys cell_type ('code'|'markdown'|'raw'), metadata (object), and source (string or list of strings); code cells additionally require execution_count and outputs
   required_tests:
   - Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip.
   release_gates:
@@ -3711,6 +2160,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-EXPORT-001
   classification: OPTIONAL_ADAPTER_REQUIRED
@@ -3751,6 +2205,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-UPGRADE-001
   classification: STABLE_REQUIRED
@@ -3759,19 +2218,9 @@ obligations:
   source_field: normative_rules
   authority_reference_ids:
   - POL-EXD-UPGRADE-01
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
   - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
   authority_fact_ids:
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
   - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
   authority_source_ids:
   - SRC-NB-002
   rule_text: (nbformat - versioning rules) The nbformat version pair identifies format evolution; future minor versions are treated as backward-compatible, with unknown cell and output types allowed and preserved by official tooling
@@ -3800,65 +2249,31 @@ obligations:
   - tools/format_contract/capability_universe_runtime.py
   - tools/format_contract/capability_universe_validation.py
   - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-AF1F9CEECF5D7E42
+- obligation_id: SAL-IPYNB-OBL-B227B25AB9838FFD
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
-  capability_id: IPYNB-PARSE-001
+  capability_id: IPYNB-CELLNAMEUNIQUE-001
   classification: STABLE_REQUIRED
   level: MUST
   kind: positive
   source_field: normative_rules
   authority_reference_ids:
-  - POL-EXD-PARSE-01
-  - POL-EXD-PARSE-02
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
+  - POL-EXD-CELLNAMEUNIQUE-01
+  - SAL-IPYNB-00024
   authority_fact_ids:
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
+  - SAL-IPYNB-00024
   authority_source_ids:
   - SRC-NB-002
-  rule_text: (nbformat - MIME bundles) display_data and execute_result outputs carry data objects mapping MIME types to content and metadata objects with per-MIME rendering hints
+  rule_text: (nbformat 4.2-4.5 schemas - cell metadata name uniqueness) Since nbformat 4.2 cell names are expected to be unique within a notebook; from 4.4 the authority explicitly states that JSON Schema cannot enforce uniqueness and an additional check is required
   required_tests:
-  - Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip.
+  - Duplicate-name fixtures fail the semantic check while distinct and absent names pass.
   release_gates:
-  - Parse is proven side-effect-free (no execution/render hooks reachable).
+  - Uniqueness is not falsely claimed as JSON-Schema-enforced and has explicit semantic validation evidence.
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
@@ -3884,6 +2299,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-OUTPUT-001
   classification: STABLE_REQUIRED
@@ -3893,25 +2313,15 @@ obligations:
   authority_reference_ids:
   - POL-EXD-OUTPUT-01
   - RF-NB-00005
-  - SAL-IPYNB-00002
   - SAL-IPYNB-00003
   - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00011
   - SAL-IPYNB-00013
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
   - SAL-IPYNB-00018
   - SAL-IPYNB-00019
   authority_fact_ids:
-  - SAL-IPYNB-00002
   - SAL-IPYNB-00003
   - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00011
   - SAL-IPYNB-00013
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
   - SAL-IPYNB-00018
   - SAL-IPYNB-00019
   authority_source_ids:
@@ -3947,6 +2357,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-OUTPUT-001
   classification: STABLE_REQUIRED
@@ -3956,25 +2371,15 @@ obligations:
   authority_reference_ids:
   - POL-EXD-OUTPUT-01
   - RF-NB-00005
-  - SAL-IPYNB-00002
   - SAL-IPYNB-00003
   - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00011
   - SAL-IPYNB-00013
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
   - SAL-IPYNB-00018
   - SAL-IPYNB-00019
   authority_fact_ids:
-  - SAL-IPYNB-00002
   - SAL-IPYNB-00003
   - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00011
   - SAL-IPYNB-00013
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
   - SAL-IPYNB-00018
   - SAL-IPYNB-00019
   authority_source_ids:
@@ -4010,6 +2415,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-CLEAN-001
   classification: STABLE_REQUIRED
@@ -4051,6 +2461,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-OUTPUT-001
   classification: STABLE_REQUIRED
@@ -4060,25 +2475,15 @@ obligations:
   authority_reference_ids:
   - POL-EXD-OUTPUT-01
   - RF-NB-00005
-  - SAL-IPYNB-00002
   - SAL-IPYNB-00003
   - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00011
   - SAL-IPYNB-00013
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
   - SAL-IPYNB-00018
   - SAL-IPYNB-00019
   authority_fact_ids:
-  - SAL-IPYNB-00002
   - SAL-IPYNB-00003
   - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00011
   - SAL-IPYNB-00013
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
   - SAL-IPYNB-00018
   - SAL-IPYNB-00019
   authority_source_ids:
@@ -4110,90 +2515,15 @@ obligations:
   - tools/format_contract/capability_universe_runtime.py
   - tools/format_contract/capability_universe_validation.py
   - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-BCE9E0CCCCC2236B
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-PARSE-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-PARSE-01
-  - POL-EXD-PARSE-02
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
-  authority_fact_ids:
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat - code cell) Code cells carry an execution_count field that is an integer or null and an outputs array of output objects
-  required_tests:
-  - Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip.
-  release_gates:
-  - Parse is proven side-effect-free (no execution/render hooks reachable).
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
 - obligation_id: SAL-IPYNB-OBL-BD6E7B4AA7C7E06C
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-EDIT-001
   classification: STABLE_REQUIRED
@@ -4202,15 +2532,8 @@ obligations:
   source_field: required_behavior
   authority_reference_ids:
   - POL-EXD-EDIT-01
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00017
-  authority_fact_ids:
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00017
-  authority_source_ids:
-  - SRC-NB-002
+  authority_fact_ids: []
+  authority_source_ids: []
   rule_text: Provide cell CRUD plus search by ID, type, tag, metadata, and source text; bulk operations return change reports.
   required_tests:
   - Each mutation class save-reload-verifies with IDs stable.
@@ -4237,65 +2560,31 @@ obligations:
   - tools/format_contract/capability_universe_runtime.py
   - tools/format_contract/capability_universe_validation.py
   - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-BE024415D521227D
+- obligation_id: SAL-IPYNB-OBL-C2890074D83A8170
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
-  capability_id: IPYNB-PARSE-001
+  capability_id: IPYNB-DOCMETA-001
   classification: STABLE_REQUIRED
   level: MUST
   kind: positive
-  source_field: normative_rules
+  source_field: required_behavior
   authority_reference_ids:
-  - POL-EXD-PARSE-01
-  - POL-EXD-PARSE-02
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
+  - POL-EXD-DOCMETA-01
+  - SAL-IPYNB-00020
   authority_fact_ids:
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
+  - SAL-IPYNB-00020
   authority_source_ids:
   - SRC-NB-002
-  rule_text: (nbformat 4.5 - cell ids) Since schema minor version 4.5 every cell must carry an id field unique within the notebook conforming to the permitted character set and length rules
+  rule_text: For profiles 4.2 and later, model notebook title and author metadata and preserve additional author fields.
   required_tests:
-  - Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip.
+  - Title and multi-author fixtures round-trip for every applicable profile, including additional author properties.
   release_gates:
-  - Parse is proven side-effect-free (no execution/render hooks reachable).
+  - Title and author metadata is explicitly absent from 4.0-4.1 claims and proven for 4.2-4.5.
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
@@ -4317,38 +2606,29 @@ obligations:
   - tools/format_contract/capability_universe_runtime.py
   - tools/format_contract/capability_universe_validation.py
   - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-C1DA361949F015E7
+- obligation_id: SAL-IPYNB-OBL-C3762C24648B1210
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.4
   - nbformat_v4.5
-  capability_id: IPYNB-UPGRADE-001
+  capability_id: IPYNB-EXECMETA-001
   classification: STABLE_REQUIRED
   level: MUST
   kind: positive
-  source_field: normative_rules
+  source_field: required_behavior
   authority_reference_ids:
-  - POL-EXD-UPGRADE-01
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
+  - POL-EXD-EXECMETA-01
+  - SAL-IPYNB-00022
   authority_fact_ids:
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
+  - SAL-IPYNB-00022
   authority_source_ids:
   - SRC-NB-002
-  rule_text: (nbformat 4.5 — top-level structure) A Jupyter notebook document is a single JSON object with required top-level keys nbformat (int), nbformat_minor (int), metadata (object), and cells (list of cell objects)
+  rule_text: For profiles 4.4 and later, model the four standard execution timing fields and preserve additional string-valued timing entries.
   required_tests:
-  - Fixtures at each supported older version upgrade with ledger assertions; downgrade-loss reporting fixture.
+  - Four standard timing keys, additional string keys, and non-string negatives are covered.
   release_gates:
-  - No silent version relabeling; conversion ledger complete (tested).
+  - Execution timing metadata is proven only for 4.4-4.5 and remains passive data.
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
@@ -4374,6 +2654,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-UPGRADE-001
   classification: STABLE_REQUIRED
@@ -4382,19 +2667,9 @@ obligations:
   source_field: required_behavior
   authority_reference_ids:
   - POL-EXD-UPGRADE-01
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
   - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
   authority_fact_ids:
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
   - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
   authority_source_ids:
   - SRC-NB-002
   rule_text: Upgrade older versions through explicit conversion paths producing a conversion ledger; downgrade only after reporting unsupported constructs and expected loss; preserve unknown future additions when reading higher minors.
@@ -4427,6 +2702,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-SEC-001
   classification: STABLE_REQUIRED
@@ -4471,6 +2751,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-LIFECYCLE-001
   classification: STABLE_REQUIRED
@@ -4516,6 +2801,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-CLEAN-001
   classification: STABLE_REQUIRED
@@ -4553,116 +2843,15 @@ obligations:
   - tools/format_contract/capability_universe_runtime.py
   - tools/format_contract/capability_universe_validation.py
   - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-C795205AC0A4BD0F
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-META-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-META-01
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00018
-  authority_fact_ids:
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00018
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat 4.5 — top-level structure) A Jupyter notebook document is a single JSON object with required top-level keys nbformat (int), nbformat_minor (int), metadata (object), and cells (list of cell objects)
-  required_tests:
-  - Unknown-metadata round trip; typed adapter reads on real fixtures.
-  release_gates:
-  - Zero unknown-metadata loss proven.
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-C98190C29177A3A6
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-UPGRADE-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-UPGRADE-01
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  authority_fact_ids:
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat - top-level structure) A notebook document is a single JSON object whose top level carries nbformat and nbformat_minor integers plus metadata and a cells array
-  required_tests:
-  - Fixtures at each supported older version upgrade with ledger assertions; downgrade-loss reporting fixture.
-  release_gates:
-  - No silent version relabeling; conversion ledger complete (tested).
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
 - obligation_id: SAL-IPYNB-OBL-CA94E60DA1A97571
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-MODEL-001
   classification: STABLE_REQUIRED
@@ -4673,19 +2862,9 @@ obligations:
   - POL-EXD-MODEL-01
   - RF-NB-00001
   - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
   - SAL-IPYNB-00015
   authority_fact_ids:
   - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
   - SAL-IPYNB-00015
   authority_source_ids:
   - SRC-NB-002
@@ -4719,6 +2898,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-OUTPUT-001
   classification: STABLE_REQUIRED
@@ -4728,25 +2912,15 @@ obligations:
   authority_reference_ids:
   - POL-EXD-OUTPUT-01
   - RF-NB-00005
-  - SAL-IPYNB-00002
   - SAL-IPYNB-00003
   - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00011
   - SAL-IPYNB-00013
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
   - SAL-IPYNB-00018
   - SAL-IPYNB-00019
   authority_fact_ids:
-  - SAL-IPYNB-00002
   - SAL-IPYNB-00003
   - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00011
   - SAL-IPYNB-00013
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
   - SAL-IPYNB-00018
   - SAL-IPYNB-00019
   authority_source_ids:
@@ -4778,226 +2952,15 @@ obligations:
   - tools/format_contract/capability_universe_runtime.py
   - tools/format_contract/capability_universe_validation.py
   - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-CF73A081DA5F99EA
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-PARSE-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-PARSE-01
-  - POL-EXD-PARSE-02
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
-  authority_fact_ids:
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat - cell types) The cells array holds cell objects in document order and each cell declares a cell_type of markdown code or raw
-  required_tests:
-  - Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip.
-  release_gates:
-  - Parse is proven side-effect-free (no execution/render hooks reachable).
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-D2D8157D991DBDCA
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-MODEL-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-MODEL-01
-  - RF-NB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00015
-  authority_fact_ids:
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00015
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat 4.5 — cell outputs) Code-cell outputs are typed objects with output_type in {execute_result, display_data, stream, error}; execute_result/display_data carry a data mime-bundle, stream carries name+text, error carries ename/evalue/traceback
-  required_tests:
-  - Typed access per cell type; unknown-cell-type preservation fixture.
-  release_gates:
-  - Model covers every schema cell construct.
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-D3F0C114980A469D
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-PARSE-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-PARSE-01
-  - POL-EXD-PARSE-02
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
-  authority_fact_ids:
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat - versioning rules) The nbformat version pair identifies format evolution; future minor versions are treated as backward-compatible, with unknown cell and output types allowed and preserved by official tooling
-  required_tests:
-  - Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip.
-  release_gates:
-  - Parse is proven side-effect-free (no execution/render hooks reachable).
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
 - obligation_id: SAL-IPYNB-OBL-D9ECFCF32654F42A
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-TRUST-001
   classification: STABLE_REQUIRED
@@ -5035,116 +2998,15 @@ obligations:
   - tools/format_contract/capability_universe_runtime.py
   - tools/format_contract/capability_universe_validation.py
   - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-DADE5C18B400176C
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-ID-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-ID-01
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  authority_fact_ids:
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat - versioning rules) The nbformat version pair identifies format evolution; future minor versions are treated as backward-compatible, with unknown cell and output types allowed and preserved by official tooling
-  required_tests:
-  - Duplicate/invalid ID negatives; upgrade fixture verifies mapping.
-  release_gates:
-  - ID behavior matches the target schema minor exactly.
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-DB0F793B92DED8A3
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-META-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-META-01
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00018
-  authority_fact_ids:
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00018
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat - MIME bundles) display_data and execute_result outputs carry data objects mapping MIME types to content and metadata objects with per-MIME rendering hints
-  required_tests:
-  - Unknown-metadata round trip; typed adapter reads on real fixtures.
-  release_gates:
-  - Zero unknown-metadata loss proven.
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
 - obligation_id: SAL-IPYNB-OBL-DB823E1426D979E1
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-SEC-001
   classification: STABLE_REQUIRED
@@ -5189,6 +3051,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-LIFECYCLE-001
   classification: STABLE_REQUIRED
@@ -5230,73 +3097,15 @@ obligations:
   - tools/format_contract/capability_universe_runtime.py
   - tools/format_contract/capability_universe_validation.py
   - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-E561BFC0FADBA29D
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-OUTPUT-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-OUTPUT-01
-  - RF-NB-00005
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
-  authority_fact_ids:
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat - output security considerations) Notebook MIME bundles can carry HTML, SVG, and JavaScript payloads
-  required_tests:
-  - MIME-bundle matrix round-trips including vendor types and binary payloads.
-  - MIME matrix fixtures per output type with byte-exact payload verification.
-  release_gates:
-  - No output construct is dropped or reordered on round trip.
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
 - obligation_id: SAL-IPYNB-OBL-E72B508EFCCD0E0C
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-WRITE-001
   classification: STABLE_REQUIRED
@@ -5333,206 +3142,33 @@ obligations:
   - tools/format_contract/capability_universe_runtime.py
   - tools/format_contract/capability_universe_validation.py
   - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-EAD1D09BDE25610F
+- obligation_id: SAL-IPYNB-OBL-E9E64A65284001E4
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
-  capability_id: IPYNB-OUTPUT-001
+  capability_id: IPYNB-CELLNAME-001
   classification: STABLE_REQUIRED
   level: MUST
   kind: positive
   source_field: normative_rules
   authority_reference_ids:
-  - POL-EXD-OUTPUT-01
-  - RF-NB-00005
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
+  - POL-EXD-CELLNAME-01
+  - SAL-IPYNB-00023
   authority_fact_ids:
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
+  - SAL-IPYNB-00023
   authority_source_ids:
   - SRC-NB-002
-  rule_text: (nbformat 4.5 — cell types) Each cell object has required keys cell_type ('code'|'markdown'|'raw'), metadata (object), and source (string or list of strings); code cells additionally require execution_count and outputs
+  rule_text: (nbformat 4.0-4.5 schemas - cell metadata name) Across nbformat 4.0 through 4.5, a present cell metadata name is a string matching ^.+$ and therefore cannot be empty
   required_tests:
-  - MIME-bundle matrix round-trips including vendor types and binary payloads.
-  - MIME matrix fixtures per output type with byte-exact payload verification.
+  - Present non-empty names pass and empty names fail in every supported profile.
   release_gates:
-  - No output construct is dropped or reordered on round trip.
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-ECA691E11183033E
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-META-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-META-01
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00018
-  authority_fact_ids:
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00018
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat 4.5 — cell types) Each cell object has required keys cell_type ('code'|'markdown'|'raw'), metadata (object), and source (string or list of strings); code cells additionally require execution_count and outputs
-  required_tests:
-  - Unknown-metadata round trip; typed adapter reads on real fixtures.
-  release_gates:
-  - Zero unknown-metadata loss proven.
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-EE733D1EEE459015
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-EXEC-001
-  classification: EXCLUDED_WITH_AUTHORITY
-  level: SHOULD
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-EXEC-01
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00018
-  authority_fact_ids:
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00018
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat - notebook metadata) Notebook metadata may carry kernelspec and language_info objects describing the execution kernel and language
-  required_tests:
-  - Isolated-environment execution tests covering timeout, kernel failure, and partial output; core-path no-execution proof.
-  release_gates:
-  - Execution is physically and logically separated from parsing (dependency audit).
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-F1F17437C4D0257D
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-MODEL-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-MODEL-01
-  - RF-NB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00015
-  authority_fact_ids:
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00015
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat - attachments) Markdown and raw cells may carry an attachments object mapping filenames to MIME bundles referenced from cell content
-  required_tests:
-  - Typed access per cell type; unknown-cell-type preservation fixture.
-  release_gates:
-  - Model covers every schema cell construct.
+  - The non-empty name rule has positive and negative evidence for nbformat 4.0 through 4.5.
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
@@ -5558,6 +3194,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-SANITIZE-001
   classification: STABLE_REQUIRED
@@ -5601,6 +3242,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-LIFECYCLE-001
   classification: STABLE_REQUIRED
@@ -5642,223 +3288,15 @@ obligations:
   - tools/format_contract/capability_universe_runtime.py
   - tools/format_contract/capability_universe_validation.py
   - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-FB9678CB40F31893
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-ID-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-ID-01
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  authority_fact_ids:
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat - validation) The official nbformat validator selects a JSON schema using the document's nbformat and nbformat_minor pair and relaxes the current schema for future minor versions
-  required_tests:
-  - Duplicate/invalid ID negatives; upgrade fixture verifies mapping.
-  release_gates:
-  - ID behavior matches the target schema minor exactly.
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-FD198DA5CD4E92A6
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-PARSE-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-PARSE-01
-  - POL-EXD-PARSE-02
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
-  authority_fact_ids:
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat - attachment references) Markdown content can reference a cell attachment with an attachment URI whose filename corresponds to a key in that cell's attachments mapping
-  required_tests:
-  - Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip.
-  release_gates:
-  - Parse is proven side-effect-free (no execution/render hooks reachable).
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
-- obligation_id: SAL-IPYNB-OBL-FDC73ED8FA39A31E
-  format_id: ipynb
-  profile_id: production
-  spec_profiles:
-  - nbformat_v4.5
-  capability_id: IPYNB-PARSE-001
-  classification: STABLE_REQUIRED
-  level: MUST
-  kind: positive
-  source_field: normative_rules
-  authority_reference_ids:
-  - POL-EXD-PARSE-01
-  - POL-EXD-PARSE-02
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
-  authority_fact_ids:
-  - SAL-IPYNB-00001
-  - SAL-IPYNB-00002
-  - SAL-IPYNB-00003
-  - SAL-IPYNB-00004
-  - SAL-IPYNB-00005
-  - SAL-IPYNB-00006
-  - SAL-IPYNB-00007
-  - SAL-IPYNB-00008
-  - SAL-IPYNB-00009
-  - SAL-IPYNB-00010
-  - SAL-IPYNB-00011
-  - SAL-IPYNB-00012
-  - SAL-IPYNB-00013
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00015
-  - SAL-IPYNB-00016
-  - SAL-IPYNB-00017
-  - SAL-IPYNB-00018
-  - SAL-IPYNB-00019
-  authority_source_ids:
-  - SRC-NB-002
-  rule_text: (nbformat - notebook metadata) Notebook metadata may carry kernelspec and language_info objects describing the execution kernel and language
-  required_tests:
-  - Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip.
-  release_gates:
-  - Parse is proven side-effect-free (no execution/render hooks reachable).
-  verification_status: UNVERIFIED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
-  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
-  - plans/strategic/ff6/capability-policy.yaml
-  - schemas/ff6/capability-universe.schema.json
-  - schemas/format-contracts/authority-lock.schema.json
-  - shared/format-contracts/authority-lock.yaml
-  - shared/format-contracts/ipynb.yaml
-  - shared/format-contracts/policy/family-packs/executable_document.yaml
-  - shared/format-contracts/policy/shared-library-contract.yaml
-  - shared/format-contracts/product-requirements/ipynb.yaml
-  - shared/format-contracts/research/ipynb.yaml
-  - shared/sal-facts/evidence/ipynb.yaml
-  - shared/sal-facts/ipynb.yaml
-  - tools/format_contract/capability_universe.py
-  - tools/format_contract/capability_universe_command.py
-  - tools/format_contract/capability_universe_runtime.py
-  - tools/format_contract/capability_universe_validation.py
-  - tools/format_contract/product_contract.py
 - obligation_id: SAL-IPYNB-OBL-FE413358B1144149
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-VALIDATE-001
   classification: STABLE_REQUIRED
@@ -5868,12 +3306,10 @@ obligations:
   authority_reference_ids:
   - POL-EXD-VALIDATE-01
   - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00017
+  - SAL-IPYNB-00025
   authority_fact_ids:
   - SAL-IPYNB-00012
-  - SAL-IPYNB-00014
-  - SAL-IPYNB-00017
+  - SAL-IPYNB-00025
   authority_source_ids:
   - SRC-NB-002
   rule_text: (nbformat - validation) The official nbformat validator selects a JSON schema using the document's nbformat and nbformat_minor pair and relaxes the current schema for future minor versions
@@ -5906,6 +3342,11 @@ obligations:
   format_id: ipynb
   profile_id: production
   spec_profiles:
+  - nbformat_v4.0
+  - nbformat_v4.1
+  - nbformat_v4.2
+  - nbformat_v4.3
+  - nbformat_v4.4
   - nbformat_v4.5
   capability_id: IPYNB-LIFECYCLE-001
   classification: STABLE_REQUIRED

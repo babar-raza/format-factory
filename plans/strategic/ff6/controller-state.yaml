@@ -4,10 +4,10 @@ goal_status: ACTIVE
 generated_by: codex
 visibility: internal
 controller_state: CONTRACT
-transition_sequence: 17
+transition_sequence: 18
 last_verified_event:
-  event_id: FF6-EVENT-000017
-  event_hash: 44cb90a67aec8fff244de05d84c047f1d31077d694eda1ff1e27ee0aaa0f3015
+  event_id: FF6-EVENT-000018
+  event_hash: 73b0f6074d13cae4c519176bf34908d2906653e831adc7d6dc1934310ec38362
 event_journal: plans/strategic/ff6/events.jsonl
 baseline_commit: e4f8f5f086b5e627c07c2ef2d940eda2601a22a8
 digest_policy:
@@ -26,19 +26,20 @@ handover_checkpoint:
   checkpoint: plans/codex/handover/checkpoint.yaml
   packet_commit: 1f215cc7ba0ce36225ae8bbc49678b3ca0d5d8fd
   packet_remote_verified: true
-  next_taskcard: taskcards/TC-FF6-PROGRAM-CAPABILITIES-001.md
+  next_taskcard: taskcards/TC-FF6-NRRD-PROFILE-SURFACE-001.md
 active_task:
-  task_id: TC-FF6-IPYNB-PROFILE-SURFACE-001
+  task_id: TC-FF6-NRRD-PROFILE-SURFACE-001
   state: READY
   parent_task_id: TC-FF6-PROGRAM-CAPABILITIES-001
-  completed_subtask_id: TC-FF6-ORA-PROFILE-SURFACE-001
+  completed_subtask_id: TC-FF6-IPYNB-PROFILE-SURFACE-001
 next_task:
-  task_id: TC-FF6-IPYNB-PROFILE-SURFACE-001
+  task_id: TC-FF6-NRRD-PROFILE-SURFACE-001
   state: READY
   unlock_condition: >-
-    Resume from event 17. Compile source-located nbformat 4.0-4.5 deltas and
-    exact per-capability/per-obligation applicability without weakening the
-    no-execution boundary. Product source and architecture remain blocked.
+    Resume from event 18. Compile source-located NRRD0001-NRRD0005 deltas and
+    exact per-capability/per-obligation applicability without inventing
+    profile support or weakening detached-resource security. Product source
+    and architecture remain blocked.
 promotion:
   program: UNASSESSED
   ipynb: UNASSESSED
@@ -49,24 +50,24 @@ promotion:
   ubl: UNASSESSED
 capability_compilation:
   assessment_status: NEEDS_PROFILE_OR_SURFACE_REPAIR
-  total_capabilities: 99
-  total_obligations: 738
+  total_capabilities: 104
+  total_obligations: 701
   canonical_obligations:
-    ipynb: 105
+    ipynb: 68
     ora: 134
     nrrd: 94
     xliff: 125
     safetensors: 86
     ubl: 194
-    total: 738
-  canonical_obligation_id_overlap: 738
-  stable: 90
+    total: 701
+  canonical_obligation_id_overlap: 701
+  stable: 95
   optional_adapter: 4
   preview: 4
   excluded: 1
   compiler_subtask: PASS
-  manifest_aggregate_sha256: de6a38a86aa7a82cc50dc7dc6ebfa0066c811d8de782a37684fd26d20a89272a
-  three_run_digest: 2c998635a64f36c2b93c397ab0a5c834379ad5d74fd0544c6017a65337d907fc
+  manifest_aggregate_sha256: e0747efbf376f081fd6550afed48100c7e1872a055bf6155332ed9358ac05b5f
+  three_run_digest: dc33648ffa8f8b676de98f7b145dc2180630d5c470148ca0f46b13ec1492b554
   authority_artifacts:
     match: 15
     missing: 0
@@ -74,7 +75,6 @@ capability_compilation:
     undeclared: 0
     legal_blocked: 0
   remaining_blocks:
-    - FF6-IPYNB-PROFILE-001
     - FF6-NRRD-PROFILE-001
     - FF6-XLIFF-PROFILE-001
     - FF6-UBL-TYPING-001
@@ -107,7 +107,7 @@ current_gap_summary:
   production_certifications: 0
 control_plane_compatibility:
   ff6_event_schema: ff6/controller-event@1
-  native_chain_validation: PASS_THROUGH_EVENT_16
+  native_chain_validation: PASS_THROUGH_EVENT_18
   generic_plan_control_doctor: >-
     INCOMPATIBLE_SCHEMA: tools.plan_control expects previous_hash and its own
     event payload; FF6 uses previous_event_hash. This is the already-tracked

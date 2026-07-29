@@ -1,0 +1,35 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "rollback-and-recovery-ipynb-profile-surface-001",
+  "skill_id": "rollback-and-recovery",
+  "mode": "live",
+  "timestamp": "2026-07-29T10:20:00Z",
+  "inputs": {
+    "rollback_target": "three tracked CSV projection artifacts rewritten by a known stateful legacy test",
+    "backup_path_or_stash_ref": "HEAD blobs at 50c2fd0610a1028ee08e2fdb0ef91494159af559",
+    "before_state_description": "test-generated modifications outside the IPYNB repair output contract",
+    "after_state_expected": "byte-identical to HEAD with no remaining diff"
+  },
+  "allowed_files": [
+    "reports/capability-layer/gap-ledger.json",
+    "reports/format-contract-layer/csv-contract-gaps.json",
+    "reports/format-contract-layer/csv-reconciliation.json"
+  ],
+  "actual_files_changed": [
+    "reports/capability-layer/gap-ledger.json",
+    "reports/format-contract-layer/csv-contract-gaps.json",
+    "reports/format-contract-layer/csv-reconciliation.json"
+  ],
+  "tests_run": [
+    "git diff --exit-code -- reports/capability-layer/gap-ledger.json reports/format-contract-layer/csv-contract-gaps.json reports/format-contract-layer/csv-reconciliation.json"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "mutation_authorization_id": "0227bc6d1bcabdf9",
+    "restoration_source": "immutable HEAD blobs",
+    "remaining_diff": false
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

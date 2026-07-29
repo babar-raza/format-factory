@@ -16,6 +16,7 @@ from tools.format_contract.capability_universe import (
     compile_universe,
     write_outputs,
 )
+from tools.format_contract.capability_universe_command import scaffold_enrichment
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 AUTHORITY_SCHEMA = (
@@ -233,6 +234,56 @@ def _compile(root: Path):
         compiler_paths=(Path("tools/compiler.py"),),
         schema_paths=(Path("schemas/universe.json"),),
     )
+
+
+def test_scaffold_preserves_curated_detail_and_refreshes_contract_fields(
+    tmp_path: Path,
+) -> None:
+    root = _repo(tmp_path)
+    policy_path = root / "policy.yaml"
+    policy = yaml.safe_load(policy_path.read_text(encoding="utf-8"))
+    policy["formats"]["ipynb"]["profile_applicability"] = {
+        "IPYNB-EXEC-001": ["nbformat_4_5"]
+    }
+    policy["formats"]["ipynb"]["exclusions"] = {
+        "IPYNB-EXEC-001": {
+            "authority_basis": "Stored code is data, not an execution protocol.",
+            "user_disposition": "Use an isolated execution service.",
+        }
+    }
+    _write_yaml(policy_path, policy)
+    contract_path = root / "shared/format-contracts/ipynb.yaml"
+    contract = yaml.safe_load(contract_path.read_text(encoding="utf-8"))
+    contract["capabilities"][0]["provenance"].append("SAL-IPYNB-00003")
+    _write_yaml(contract_path, contract)
+
+    scaffold_enrichment(
+        root,
+        "ipynb",
+        policy_path=Path("policy.yaml"),
+        output_path=Path("enrichments/ipynb.yaml"),
+        task_id="TC-REFRESH",
+    )
+
+    result = yaml.safe_load(
+        (root / "enrichments/ipynb.yaml").read_text(encoding="utf-8")
+    )
+    by_id = {item["capability_id"]: item for item in result["capabilities"]}
+    read = by_id["IPYNB-READ-001"]
+    execute = by_id["IPYNB-EXEC-001"]
+    assert read["stable_name"] == "Read"
+    assert read["model_invariants"] == ["JSON structure is retained."]
+    assert read["spec_profiles"] == ["nbformat_4_0", "nbformat_4_5"]
+    assert read["authority_fact_ids"] == [
+        "SAL-IPYNB-00001",
+        "POL-TEST-READ-01",
+        "SAL-IPYNB-00003",
+    ]
+    assert read["taskcard_ids"] == ["TC-TEST", "TC-REFRESH"]
+    assert execute["spec_profiles"] == ["nbformat_4_5"]
+    assert execute["exclusion"] == policy["formats"]["ipynb"]["exclusions"][
+        "IPYNB-EXEC-001"
+    ]
 
 
 def test_compiler_emits_every_canonical_obligation_and_no_parallel_ids(

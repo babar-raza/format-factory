@@ -3,10 +3,10 @@ goal_id: FF6-PRODUCTION-LIBRARIES-001
 assessment_status: NEEDS_PROFILE_OR_SURFACE_REPAIR
 summary:
   formats: 6
-  total_capabilities: 99
-  total_obligations: 738
+  total_capabilities: 104
+  total_obligations: 701
   classifications:
-    STABLE_REQUIRED: 90
+    STABLE_REQUIRED: 95
     OPTIONAL_ADAPTER_REQUIRED: 4
     PREVIEW_ISOLATED: 4
     EXCLUDED_WITH_AUTHORITY: 1
@@ -15,8 +15,8 @@ summary:
   promotions: 0
 per_format:
   ipynb:
-    capability_count: 20
-    obligation_count: 105
+    capability_count: 25
+    obligation_count: 68
     authority_status: READY
     authority_issues: []
     target_profiles:
@@ -27,18 +27,16 @@ per_format:
     - nbformat_v4.4
     - nbformat_v4.5
     claimed_profiles:
-    - nbformat_v4.5
-    missing_profiles:
     - nbformat_v4.0
     - nbformat_v4.1
     - nbformat_v4.2
     - nbformat_v4.3
     - nbformat_v4.4
-    known_surface_gaps:
-    - gap_id: FF6-IPYNB-PROFILE-001
-      description: The authored contract names 4.5 as its target and the submitted enrichments claim only 4.5; explicit 4.0-4.4 per-capability coverage remains to be compiled from pinned official schemas.
+    - nbformat_v4.5
+    missing_profiles: []
+    known_surface_gaps: []
     classifications:
-      STABLE_REQUIRED: 17
+      STABLE_REQUIRED: 22
       OPTIONAL_ADAPTER_REQUIRED: 1
       PREVIEW_ISOLATED: 1
       EXCLUDED_WITH_AUTHORITY: 1

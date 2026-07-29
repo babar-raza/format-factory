@@ -202,6 +202,58 @@ def test_compiled_csv_has_traceable_capabilities():
     assert ids == sorted(ids), "capabilities must be ID-ordered for determinism"
 
 
+def test_explicit_fact_ownership_is_an_exact_partition():
+    pack = {
+        "fact_ownership": "explicit_complete",
+        "domains": [
+            {"domain": "PARSE", "fact_ids": ["SAL-X-00002"]},
+            {"domain": "MODEL", "fact_ids": ["SAL-X-00001"]},
+        ],
+    }
+    facts = [
+        {"fact_id": "SAL-X-00001", "claim": "model"},
+        {"fact_id": "SAL-X-00002", "claim": "parse"},
+    ]
+
+    resolved = cc._facts_by_domain(pack, facts)
+
+    assert [item["fact_id"] for item in resolved["PARSE"]] == ["SAL-X-00002"]
+    assert [item["fact_id"] for item in resolved["MODEL"]] == ["SAL-X-00001"]
+
+
+@pytest.mark.parametrize(
+    ("domains", "match"),
+    [
+        (
+            [{"domain": "PARSE", "fact_ids": ["SAL-X-00001"]}],
+            "unassigned",
+        ),
+        (
+            [
+                {"domain": "PARSE", "fact_ids": ["SAL-X-00001"]},
+                {"domain": "MODEL", "fact_ids": ["SAL-X-00001", "SAL-X-00002"]},
+            ],
+            "duplicate fact ownership",
+        ),
+        (
+            [{"domain": "PARSE", "fact_ids": ["SAL-X-99999"]}],
+            "unknown explicitly owned",
+        ),
+    ],
+)
+def test_explicit_fact_ownership_fails_closed(domains, match):
+    facts = [
+        {"fact_id": "SAL-X-00001", "claim": "model"},
+        {"fact_id": "SAL-X-00002", "claim": "parse"},
+    ]
+
+    with pytest.raises(stores.StoreError, match=match):
+        cc._facts_by_domain(
+            {"fact_ownership": "explicit_complete", "domains": domains},
+            facts,
+        )
+
+
 def test_acquired_research_authority_replaces_synthetic_url_record(
     monkeypatch,
 ):
