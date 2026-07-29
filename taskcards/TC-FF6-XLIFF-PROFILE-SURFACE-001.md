@@ -293,6 +293,70 @@ and authority audit. Then add RED tests for the two remaining categories and a
 separate fail-closed denominator contract. Preserve all 19 existing IDs and
 retain `complete: false` until every expected Core obligation ID resolves.
 
+## Current XLF-04 microstep checkpoint — event 25
+
+Event 25 supersedes the event-24 resume paragraph.
+`XLF-04-BATCH-003` is integration-safe at implementation commit
+`2522752776f64ab800a2a21c8fa46c1f2a4e361c`, which is present on GitLab
+`origin/main`. XLF-04 remains the first unmet task step and the task remains
+`WORK_IN_PROGRESS`.
+
+Batch 003 adds six obligations while preserving the prior 19 IDs:
+
+- two XLIFF-specification obligations for structural roundtrip and unsafe URI
+  risk;
+- four separately classified Format Factory production-policy obligations for
+  semantic roundtrip, deterministic writing, external-resolution policy, and
+  resource limits;
+- explicit `obligation_basis` and `conformance_effect` fields so production
+  hardening cannot be misreported as OASIS conformance;
+- a tracked, direct-input denominator containing 105 expected obligation IDs;
+- fail-closed validation of the denominator's authority input closure;
+- an explicit open-census boundary rather than a percentage or category-count
+  completion claim.
+
+Tracked evidence:
+
+- source SHA-256:
+  `a5c67f56378e586bf46ddb8c39881ab9ea81e42e76539bac942c5220c45f0190`;
+- test SHA-256:
+  `bf7fa725496979e3f5a50125319f9974c6205803c8358adbfb0ba8677c52bc32`;
+- Core inventory SHA-256:
+  `ae4d00af06fffc1eaf7741cd131d8ed7e7fc8a89b2a195acf4f649b5f44b6bbb`;
+- Core denominator SHA-256:
+  `c1a326e42bd1b47ec792088258f81fc4eac0b02543c57beedb48242181d008da`;
+- XLF-03 matrix unchanged at
+  `9f4ea4b8b71378217af26c0fb2b97a759817a0aca6c64255b8cd55170c60a090`;
+- 27 focused tests, 94 format-contract tests with the one baseline-known
+  stateful CSV case deselected, and 69 production-program tests pass;
+- Ruff, strict Mypy, Pyright 1.1.411, and bytecode compilation pass;
+- all three generated artifacts pass check mode, both batch-003 receipts
+  validate without warnings, and XLIFF authority remains 5/5 `MATCH`;
+- three denominator and three inventory runs were recorded byte-identical by
+  the batch receipts.
+
+Truth boundary: 25 of 105 explicit expected IDs are resolved and 80 remain.
+All 12 top-level categories have at least one row, but every category remains
+incomplete and the denominator is `OPEN_AUTHORITY_CENSUS`. The 105-ID set is
+itself not yet proven exhaustive because the complete Core normative prose,
+XSD, Schematron, and 2.0/2.1 delta surfaces have not been dispositioned.
+Every row remains `SOURCE_BOUND_UNVERIFIED`. Canonical SAL reconciliation,
+module obligations, capability repair, product source, certification,
+promotion, release, and gate state remain unchanged. Portfolio certification
+is still 0/6.
+
+Resume at `XLF-04-BATCH-004`. Revalidate event 25, commit `25227527`, the exact
+digests above, 27 tests, affected regressions, static checks, artifact check
+mode, deterministic receipts, and authority audit. Then compile a deterministic
+Core authority-candidate census covering direct/leaf normative prose, Core XSD
+element/type/attribute/cardinality/order constraints, Core Schematron
+assertions, and exact XLIFF 2.0/2.1 deltas. Map each candidate exactly once to
+one or more expected obligation IDs or to an explicit non-obligation
+disposition with reason. Reject unmapped candidates, duplicate mappings, stale
+authority digests, ancestor/leaf double counting, and profile leakage. Retain
+`complete: false` until the authority census is exhaustive and every expected
+ID resolves.
+
 ## Required execution
 
 ### XLF-01 — Revalidate the clean predecessor

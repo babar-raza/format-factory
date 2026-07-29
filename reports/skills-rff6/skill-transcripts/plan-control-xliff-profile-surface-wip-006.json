@@ -1,0 +1,98 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "plan-control-xliff-profile-surface-wip-006",
+  "skill_id": "plan-control",
+  "mode": "live",
+  "timestamp": "2026-07-29T16:58:02.7751890Z",
+  "inputs": {
+    "task_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "operation": "project",
+    "target_paths": [
+      "plans/strategic/ff6/events.jsonl",
+      "plans/strategic/ff6/controller-state.yaml",
+      "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md"
+    ],
+    "coordination_scope": "Exact event, controller, XLIFF taskcard, and receipt paths under agent-codex-20260729T165025-2a0b1d; active provider-neutral handover paths remained owned by agent-codex-20260729T164245-19dc71 and were not touched.",
+    "acceptance_evidence": "Immutable implementation commit 25227527 on GitLab origin/main, native event chain through event 25, 25 of 105 expected Core IDs resolved with an open authority census, 27 focused tests, affected regressions, artifact checks, static analysis, zero-warning batch receipts, five XLIFF authority matches, and zero product promotion.",
+    "source_checkpoint": "2522752776f64ab800a2a21c8fa46c1f2a4e361c",
+    "execution_manifest": ".local/skills-first/manifests/sfx-a55aca0610ea99a8.json"
+  },
+  "allowed_files": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
+    "reports/skills-rff6/skill-transcripts/plan-control-xliff-profile-surface-wip-006.json"
+  ],
+  "actual_files_changed": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
+    "reports/skills-rff6/skill-transcripts/plan-control-xliff-profile-surface-wip-006.json"
+  ],
+  "tests_run": [
+    "native FF6 hash-chain replay through FF6-EVENT-000025: PASS",
+    "controller sequence, event head, active task, completed batches, first unmet step, and exact next action agreement: PASS",
+    "python tools/evidence/check_current_state_consistency.py: PASS",
+    "python -m pytest -q tests/tools/test_extract_sal_facts.py: 27 passed",
+    "python -m pytest -q tests/format_contract with the baseline-known stateful CSV test deselected: 94 passed, 1 deselected",
+    "python -m pytest -q tests/production_program: 69 passed",
+    "Ruff and strict Mypy on the touched extractor and tests: PASS",
+    "Pyright 1.1.411 on the touched extractor and tests: 0 errors, 0 warnings",
+    "bytecode compilation: PASS",
+    "matrix, denominator, and Core-inventory check mode: PASS",
+    "XLIFF authority audit: 5 of 5 MATCH",
+    "both XLF-04 batch-003 skill transcripts: PASS with zero warnings"
+  ],
+  "result": "PASS",
+  "evidence": {
+    "event_id": "FF6-EVENT-000025",
+    "event_hash": "237f7759e2286cfc08c547c53a0b47d44e1c77307329ec0215c5326e3f811e48",
+    "events_lf_sha256": "e5d6633f740094f0f37e4b45b44b72127bde28599972de8f91fe9846738672f7",
+    "controller_lf_sha256": "2b6223bfc31d31e643bcf852ffec82c8227f62db10450ce19a6f3445aa4d4bad",
+    "taskcard_lf_sha256": "1a9ee1a6d57e65a4e1e9d09ac9aaafa82677bc86e320fe2e5950f4706f87c60b",
+    "task_state": "WORK_IN_PROGRESS",
+    "completed_steps": [
+      "XLF-01",
+      "XLF-02",
+      "XLF-03"
+    ],
+    "completed_batches": [
+      "XLF-04-BATCH-001",
+      "XLF-04-BATCH-002",
+      "XLF-04-BATCH-003"
+    ],
+    "first_unmet_step": "XLF-04",
+    "microstate": "RESUMABLE",
+    "xlf_04_complete": false,
+    "obligations": 25,
+    "expected_obligation_ids": 105,
+    "resolved_expected_obligation_ids": 25,
+    "missing_expected_obligation_ids": 80,
+    "obligation_status": "SOURCE_BOUND_UNVERIFIED",
+    "denominator_status": "OPEN_AUTHORITY_CENSUS",
+    "completeness_basis": "EXPLICIT_EXPECTED_OBLIGATION_IDS_OPEN_CENSUS",
+    "exact_next_action": "XLF-04-BATCH-004 deterministic Core authority-candidate census and exact candidate-to-obligation or reasoned non-obligation reconciliation",
+    "product_promotion": "none",
+    "production_certifications": "0/6"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for the event-25 projection boundary",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for batch-003 source binding and batch-004 selection only; NO for XLF-04 completion",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_concurrent_work_preserved": "YES, active handover and completed UBL taskcard work were not overwritten",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, the unjournaled implementation boundary was repaired by event 25",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}
