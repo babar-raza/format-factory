@@ -24,7 +24,9 @@ checkpointed XLIFF steps XLF-01 and XLF-02 after closing the 2.0 authority
 prerequisite and inventorying both pinned packages. Event 22 completed the
 XLF-03 deterministic source-surface matrix. Event 23 binds the first seven
 source-bound Core obligations at commit
-`78660ae1a310ab06cf00d977bbc26fb65914f1c9`; XLF-04 remains first unmet. The
+`78660ae1a310ab06cf00d977bbc26fb65914f1c9`. GitLab later added the complete
+UBL typing taskcard, XLF-04 batch-003 implementation commit `25227527`, and
+event-25 controller checkpoint `220ee7f5`. XLF-04 remains first unmet. The
 parent capability task remains `NEEDS_REPAIR`, so product implementation is
 locked. The active task is `TC-FF6-XLIFF-PROFILE-SURFACE-001`, and the first
 unmet step is XLF-04.
@@ -102,7 +104,7 @@ No product wave may bypass the program dependencies.
 
 ### Inputs
 
-- event 24 and the `PASS` NRRD checkpoint;
+- event 25 and the `PASS` NRRD checkpoint;
 - the locked XLIFF 2.0 and 2.1 OASIS Standard packages, prose members,
   product requirements, and 42-member tracked inventory;
 - `shared/format-contracts/authority-lock.yaml`;
@@ -114,22 +116,26 @@ No product wave may bypass the program dependencies.
 
 ### Steps
 
-1. Revalidate event 24, controller/task/index agreement, the remote source
-   commit, coordination ownership, all 17 global authority matches, all five
+1. Revalidate event 25, controller/task/index agreement, GitLab commits
+   `2522752776f64ab800a2a21c8fa46c1f2a4e361c` and
+   `220ee7f5b9d39c3684cff6af6331b56a03ae9e75`, coordination ownership,
+   all 17 global authority matches, all five
    XLIFF matches, and the 42-member inventory.
-2. Require commit `78660ae1a310ab06cf00d977bbc26fb65914f1c9`
-   as a GitLab-main ancestor; verify exact source, test, matrix, Core inventory,
-   and final transcript SHA-256 values from event 24; replay 24 focused tests, Ruff,
-   strict Mypy, Pyright 1.1.411, bytecode compilation, matrix check mode, and
-   three identical real-authority generations.
+2. Require commit `220ee7f5b9d39c3684cff6af6331b56a03ae9e75`
+   as a GitLab-main ancestor; verify event-25 proof plus the six file hashes
+   and two transcripts for commit `25227527`; replay 27 focused tests,
+   affected regressions, Ruff, strict Mypy, Pyright 1.1.411, bytecode
+   compilation, matrix/check modes, and deterministic generations.
 3. Re-run completed XLF steps only if their recorded input closure changed.
 4. Verify the seven batch-001 stable IDs and exact paragraph digests remain
    unchanged; they are source-bound, not canonical-SAL-verified.
-5. Add `XLF-04-BATCH-003` RED tests for semantic roundtrip/canonical output,
-   XML security/resource limits, and the explicit expected-ID denominator.
-6. Implement only that bounded batch, make it GREEN, run the regression tier,
-   and keep `complete=false` without an explicit expected-obligation ID set.
-7. Compile and independently test the full expected-ID denominator. Continue
+5. Do not restart `XLF-04-BATCH-003`; independently validate its committed,
+   journaled RED/GREEN boundary.
+6. Execute `XLF-04-BATCH-004`: compile a deterministic authority-candidate
+   census over direct/leaf prose, Core XSD, Core Schematron, and 2.0/2.1
+   deltas; reconcile every candidate exactly once.
+7. Keep `complete=false`: the tracked denominator has 105 expected IDs, only
+   25 resolve, 80 remain, and the authority census is open. Continue
    bounded source-located batches until the complete Core delta and
    processing map exists. Separate common Core rules, 2.1 additions/changes,
    processing requirements, ITS mappings, preservation, security, limits, and

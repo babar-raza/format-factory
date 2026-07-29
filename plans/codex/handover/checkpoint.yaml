@@ -22,9 +22,22 @@ source_checkpoint:
   rule: >-
     Use the fetched origin/main descendant containing this packet. A packet
     cannot embed the hash of the commit that contains its own final bytes.
-  required_ancestor_before_this_change: 78660ae1a310ab06cf00d977bbc26fb65914f1c9
+  required_ancestor_before_this_change: d02a00fedf669c6e2b2dd58e480715550fb2afe8
   required_remote_ref: refs/remotes/origin/main
-  required_worktree_state_before_resume_mutation: clean
+  required_worktree_state_before_resume_mutation: clean_or_fully_classified
+
+implementation_recovery_overlay:
+  record: plans/codex/handover/INFLIGHT-RECOVERY.yaml
+  local_commit: 2522752776f64ab800a2a21c8fa46c1f2a4e361c
+  parent_on_gitlab: 210c1383da40cf569abe8c1dbe5f6d161769c1eb
+  checkpoint_commit: 220ee7f5b9d39c3684cff6af6331b56a03ae9e75
+  on_origin_main_at_capture: true
+  event_25_present_at_capture: true
+  controller_reconciled_at_capture: true
+  state: RECONCILED_REMOTE_VERIFIED
+  action: >-
+    Treat this as a closed recovery audit. Verify both commits are on GitLab
+    main and do not repeat or re-journal batch 003.
 
 digest_policy:
   algorithm: sha256
@@ -34,9 +47,9 @@ digest_policy:
 
 controller_checkpoint:
   state: CONTRACT
-  transition_sequence: 24
-  last_event_id: FF6-EVENT-000024
-  last_event_hash: 10d96a6729d250fecb89f5f082682f583b5b8053fd620702dcd837dfaf541434
+  transition_sequence: 25
+  last_event_id: FF6-EVENT-000025
+  last_event_hash: 237f7759e2286cfc08c547c53a0b47d44e1c77307329ec0215c5326e3f811e48
   parent_task: TC-FF6-PROGRAM-CAPABILITIES-001
   parent_task_state: NEEDS_REPAIR
   completed_subtask: TC-FF6-NRRD-PROFILE-SURFACE-001
@@ -189,11 +202,11 @@ resume_decision:
   taskcard: taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md
   active_checkpoint: plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md
   exact_first_step: >-
-    Revalidate event 24, exact source/test/matrix/Core-inventory/transcript
-    digests, 24 focused tests, static checks, matrix check mode, three
-    identical generations of both reports, and 17/17 authority matches.
-    Resume XLF-04 at BATCH-003 with RED tests for the two remaining categories
-    and a separate explicit expected-ID denominator contract.
+    Revalidate event 25 and commit 25227527. Verify its six file hashes, two
+    transcripts, 27 focused tests, affected regressions, static checks,
+    deterministic reports, and authorities. Then execute XLF-04-BATCH-004:
+    compile the deterministic authority-candidate census and reconcile every
+    candidate exactly once. Do not duplicate batch 003.
   product_source_mutation_allowed: false
   gate_or_product_promotion_allowed: false
   human_continuation_prompt_allowed: false
@@ -202,15 +215,16 @@ resume_decision:
 current_xliff_compiler_checkpoint:
   xlf_03_complete: true
   xlf_04_complete: false
-  microstate: RESUMABLE
-  source_commit: 78660ae1a310ab06cf00d977bbc26fb65914f1c9
+  canonical_event_microstate: RESUMABLE
+  recovery_microstate: RESOLVED
+  source_commit: 2522752776f64ab800a2a21c8fa46c1f2a4e361c
   source:
     path: tools/spec/extract_sal_facts.py
-    sha256: ac44f43456f5c1ac02f9c157ae6bb653be6f9eacbdd2eca55e40e8447f74b5ce
+    sha256: a5c67f56378e586bf46ddb8c39881ab9ea81e42e76539bac942c5220c45f0190
   tests:
     path: tests/tools/test_extract_sal_facts.py
-    sha256: 5f0554a03eb3ac9f220e8f4a5b3ee58d4764b488a78db661dc649b8a55ee2070
-    result: 24_passed
+    sha256: bf7fa725496979e3f5a50125319f9974c6205803c8358adbfb0ba8677c52bc32
+    result: 27_passed
   matrix:
     path: reports/ff6/xliff-normative-delta-matrix.yaml
     sha256: 9f4ea4b8b71378217af26c0fb2b97a759817a0aca6c64255b8cd55170c60a090
@@ -265,19 +279,19 @@ current_xliff_compiler_checkpoint:
     - source_target_correspondence_obligations
     - cumulative_nineteen_obligation_real_authority_batch
   first_unmet_step: XLF-04
-  completed_xlf_04_batches: [XLF-04-BATCH-001, XLF-04-BATCH-002]
+  completed_xlf_04_batches: [XLF-04-BATCH-001, XLF-04-BATCH-002, XLF-04-BATCH-003]
   core_obligation_inventory:
     path: reports/ff6/xliff-core-obligation-inventory.yaml
-    sha256: 5930f1e28d21e277325c9a88ad8486ce9076ff1aa680ae21979440fd85d3244b
-    obligations: 19
+    sha256: ae4d00af06fffc1eaf7741cd131d8ed7e7fc8a89b2a195acf4f649b5f44b6bbb
+    obligations: 25
     verification_status: SOURCE_BOUND_UNVERIFIED
     complete: false
-    completeness_basis: EXPECTED_OBLIGATION_DENOMINATOR_ABSENT
+    completeness_basis: EXPLICIT_EXPECTED_OBLIGATION_IDS_OPEN_CENSUS
   exact_next_action: >-
-    Start XLF-04-BATCH-003 with failing tests for source-located semantic
-    roundtrip/canonical output and XML security/resource-limit obligations.
-    Preserve all 19 stable IDs and separately compile an explicit expected-ID
-    denominator before any completeness claim.
+    Start XLF-04-BATCH-004 by compiling a deterministic authority-candidate
+    census over direct/leaf normative prose, Core XSD, Core Schematron, and
+    2.0/2.1 deltas. Map every candidate exactly once to an expected ID or a
+    reasoned non-obligation disposition; keep complete=false.
   prose_section_denominator:
     total_section_elements:
       xliff_2.0: 293

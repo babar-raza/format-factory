@@ -32,31 +32,33 @@ disjoint, separately taskcarded scopes with non-overlapping leases.
 
 ## Current transfer boundary
 
-- Required implementation ancestor before this packet:
-  `78660ae1a310ab06cf00d977bbc26fb65914f1c9`.
+- Required GitLab ancestor before this packet:
+  `d02a00fedf669c6e2b2dd58e480715550fb2afe8`.
+- Journaled implementation commit:
+  `2522752776f64ab800a2a21c8fa46c1f2a4e361c`.
 - Use the fetched `origin/main` descendant containing this packet.
 - Controller state: `CONTRACT`.
-- Event: `FF6-EVENT-000024`.
+- Event: `FF6-EVENT-000025`.
 - Event hash:
   `10d96a6729d250fecb89f5f082682f583b5b8053fd620702dcd837dfaf541434`.
 - Completed task: `TC-FF6-NRRD-PROFILE-SURFACE-001` - `PASS`.
 - Active task: `TC-FF6-XLIFF-PROFILE-SURFACE-001` -
-  `WORK_IN_PROGRESS`; XLF-01/XLF-02/XLF-03 and XLF-04-BATCH-001/BATCH-002
+  `WORK_IN_PROGRESS`; XLF-01/XLF-02/XLF-03 and XLF-04-BATCH-001/BATCH-002/BATCH-003
   complete, XLF-04 still first unmet.
-- Shift microstate: `RESUMABLE`; the XLF-03 matrix and 19 cumulative
-  source-bound Core obligations are validated at their declared boundary,
-  while the complete Core denominator and semantics remain.
-- Exact next action: XLF-04-BATCH-003 RED tests for the final two categories
-  plus an explicit expected-ID denominator.
+- Canonical event microstate: `RESUMABLE` at event 25.
+- Exact next action: execute `XLF-04-BATCH-004`; do not restart batch 003.
+  The current boundary has 25/105 IDs resolved and leaves 80 open under an
+  incomplete authority census.
 - Product promotion: none.
 
 ## Incoming provider procedure
 
 1. Fetch `origin/main`; do not use GitHub or a provider branch.
-2. Verify `78660ae1a310ab06cf00d977bbc26fb65914f1c9` is an ancestor.
-3. Verify the worktree is clean before new mutation.
+2. Verify `d02a00fedf669c6e2b2dd58e480715550fb2afe8` is an ancestor.
+3. Read `INFLIGHT-RECOVERY.yaml` as a closed recovery audit and verify
+   `origin/main` contains both `25227527` and `220ee7f5`.
 4. Read the ordered authority list in `START-HERE.md`.
-5. Validate the journal through event 24 using FF6 native semantics:
+5. Validate the journal through event 25 using FF6 native semantics:
    `previous_event_hash`, canonical JSON, sequential event IDs and hashes.
 6. Verify controller head, parent/child task states, task index, current gaps,
    authority 17/17 global and 5/5 XLIFF match, and capability manifest
@@ -69,11 +71,20 @@ disjoint, separately taskcarded scopes with non-overlapping leases.
 11. Resolve the required registered skills and run the mutation guard.
 12. Capture input baselines before writing.
 13. Validate `reports/ff6/xliff-authority-member-inventory.yaml` against both
-    pinned packages; replay 24 extractor tests, exact file digests, matrix
-    check mode, static checks, and three identical outputs for both generated
-    reports; then start `XLF-04-BATCH-003` as specified in
-    `STATE-MACHINE-AND-TASKCARD-PROTOCOL.md`. Re-run completed steps only if
-    their recorded inputs were invalidated.
+    pinned packages; replay event-25 evidence and independently validate
+    commit `25227527`, its 27 extractor tests, exact six file digests, two
+    receipts, affected regressions, static checks, and deterministic outputs.
+    Verify the controller projection and taskcard agree. Re-run completed
+    behavior only if its recorded inputs were invalidated.
+
+## Implementation-only commit recovery
+
+The current transfer is the explicit crash case in the recovery matrix:
+The former implementation-only recovery condition is closed. GitLab contains
+the immutable implementation commit `25227527` and its event/controller
+checkpoint `220ee7f5`. Incoming providers must verify both ancestors and must
+not append a duplicate event 25. `INFLIGHT-RECOVERY.yaml` retains the exact
+pre-reconciliation hashes and ownership history for audit.
 
 The new provider reconstructs the state; it does not accept a prior provider's
 claim on trust. A mismatch produces a named discrepancy and invalidates only
@@ -173,7 +184,7 @@ exception that can create competing local truths.
 | Observed state | Incoming action |
 |---|---|
 | Remote packet and implementation commits present; outgoing identity complete | Replay and resume the exact next microstep |
-| Implementation commit present, packet commit absent | Validate the implementation commit, append or replay the missing journal/projection checkpoint without duplicating the implementation |
+| Implementation commit present, packet commit absent | Historical batch-003 case, now resolved by `220ee7f5`; preserve and verify both commits |
 | Journal event present, projection/packet stale | Rebuild projections from the journal; do not append a duplicate event |
 | Uncommitted GREEN tree owned by stale provider | Governed takeover, capture hashes, rerun required checks, then commit/journal |
 | Uncommitted RED tree owned by stale provider | Governed takeover, preserve and classify; continue to GREEN or revert only that bounded owned microstep |
@@ -275,7 +286,7 @@ print(f"PASS events={len(events)} head={previous}")
 currently fails at event 1 because it expects `previous_hash`. FF6 uses
 `previous_event_hash` under `ff6/controller-event@1`.
 
-This is `FF6-GAP-011`, not evidence that event 24 is corrupt. Validate the FF6
+This is `FF6-GAP-011`, not evidence that event 25 is corrupt. Validate the FF6
 native chain and do not edit either journal schema ad hoc.
 
 ## XLIFF completed surface and next semantic denominator

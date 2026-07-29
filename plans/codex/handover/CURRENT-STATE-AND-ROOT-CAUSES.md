@@ -231,6 +231,27 @@ both total and directly identified counts. More generally, every coverage
 metric must state what population it counts; reproducibility alone cannot make
 an underspecified denominator correct.
 
+### Agent liveness and lease liveness can disagree
+
+The batch-003 worker reached GREEN and committed, then its recorded PID
+disappeared before the event/projection closeout initially became durable. A
+separate governed worker later completed and pushed event 25 without rewriting
+the implementation. During the gap, the coordination plane
+moved the short agent heartbeat toward `STALE_SUSPECT`, but explicit file
+leases use a much longer TTL and can remain `ACTIVE`. The visible symptom is
+an apparently dead worker whose files still cannot be governably taken over.
+The root cause is two independently expiring liveness models without a
+dead-PID transition that makes explicit leases takeover-eligible while
+preserving audit history.
+
+Do not repair this by editing SQLite, transferring tokens, releasing another
+identity's lease, or weakening preflight. The durable redesign is an audited
+`OWNER_DEAD_LEASE_QUARANTINED` state: prove PID/session death, freeze the
+write-journal and file hashes, require successor recapture, then atomically
+transfer leases through `takeover --reason`. Until that machinery exists,
+continue disjoint work and preserve all bytes. This incident is now closed at
+GitLab checkpoint `220ee7f5`, but the machinery weakness remains.
+
 ## What must be preserved
 
 - All working source and tests, including characterization behavior.
@@ -268,10 +289,12 @@ an underspecified denominator correct.
 
 ## Immediate repair order
 
-1. Continue source-located XLIFF 2.0/2.1 Core obligations at XLF-04-BATCH-003;
-   do not inflate the 36 anchors, 19 obligations, or ten covered
-   categories into semantic completeness. Compile an explicit expected-ID
-   denominator before closure.
+1. Execute XLF-04-BATCH-004: compile the deterministic Core
+   authority-candidate census and reconcile every candidate exactly once to an
+   expected ID or reasoned non-obligation disposition. Retain XLF-04
+   incomplete at 25/105 resolved IDs with 80 open until evidence changes that
+   denominator. Do not inflate 12 covered categories into semantic
+   completeness.
 2. Compile exact per-module applicability with isolated
    2.2 preview semantics.
 3. UBL all-root/common-component typing contract.

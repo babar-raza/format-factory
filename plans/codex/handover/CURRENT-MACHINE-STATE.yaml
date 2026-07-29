@@ -9,7 +9,7 @@ canonical_inputs:
   forge: GitLab
   remote: origin
   branch: main
-  source_commit: 78660ae1a310ab06cf00d977bbc26fb65914f1c9
+  source_commit: d02a00fedf669c6e2b2dd58e480715550fb2afe8
   source_commit_rule: >-
     This commit must be an ancestor of the fetched origin/main commit that
     contains this packet. The packet cannot embed its own final commit hash.
@@ -21,6 +21,25 @@ canonical_inputs:
   capability_coverage: plans/strategic/ff6/capability-coverage.yaml
   capability_manifest: plans/strategic/ff6/capability-manifest.json
   task_index: taskcards/index.yaml
+
+recovery_overlay:
+  path: plans/codex/handover/INFLIGHT-RECOVERY.yaml
+  implementation_commit: 2522752776f64ab800a2a21c8fa46c1f2a4e361c
+  checkpoint_commit: 220ee7f5b9d39c3684cff6af6331b56a03ae9e75
+  local_parent: 210c1383da40cf569abe8c1dbe5f6d161769c1eb
+  on_origin_main_at_capture: true
+  native_event_written: true
+  controller_projection_updated: true
+  state: RECONCILED_REMOTE_VERIFIED
+  clean_shift_checkpoint: true
+  preserve_without_duplication: true
+  batch: XLF-04-BATCH-003
+  cumulative_obligations: 25
+  expected_obligation_ids: 105
+  resolved_expected_ids: 25
+  missing_expected_ids: 80
+  denominator_complete: false
+  xlf_04_complete: false
 
 state_precedence:
   - fetched_origin_main_tracked_bytes
@@ -39,16 +58,17 @@ provider_shift_contract:
   outgoing_identity_must_complete_after_remote_verification: true
   incoming_identity_must_be_new: true
   coordination_token_transfer_allowed: false
-  clean_shift_microstate: RESUMABLE
+  canonical_event_microstate: RESUMABLE
+  live_recovery_microstate: RESOLVED
   red_only_shift_allowed: false
   provider_memory_authoritative: false
   reconstruction_required: true
 
 controller:
   state: CONTRACT
-  sequence: 24
-  event_id: FF6-EVENT-000024
-  event_hash: 10d96a6729d250fecb89f5f082682f583b5b8053fd620702dcd837dfaf541434
+  sequence: 25
+  event_id: FF6-EVENT-000025
+  event_hash: 237f7759e2286cfc08c547c53a0b47d44e1c77307329ec0215c5326e3f811e48
   parent_task: TC-FF6-PROGRAM-CAPABILITIES-001
   parent_state: NEEDS_REPAIR
   completed_task: TC-FF6-NRRD-PROFILE-SURFACE-001
@@ -221,7 +241,7 @@ historical_source_surface_checkpoint:
     safety behavior. The 36 anchors are not the complete fine-grained Core or
     module semantics, SAL closure, capability closure, product implementation,
     certification, or promotion. This is a retained historical proof node;
-    current resume authority is event 24 and the xlf_resume section below.
+    current resume authority is event 25 and the xlf_resume section below.
 
 resume_gate:
   require_clean_or_fully_classified_worktree: true
@@ -255,7 +275,7 @@ next_task_prerequisite:
   task: TC-FF6-XLIFF-PROFILE-SURFACE-001
   task_state: WORK_IN_PROGRESS
   completed_steps:
-    [XLF-01, XLF-02, XLF-03, XLF-04-BATCH-001, XLF-04-BATCH-002]
+    [XLF-01, XLF-02, XLF-03, XLF-04-BATCH-001, XLF-04-BATCH-002, XLF-04-BATCH-003]
   first_unmet_step: XLF-04
   shift_microstate: RESUMABLE
   missing_authority: null
@@ -305,13 +325,13 @@ next_task_prerequisite:
   stable_profiles: [xliff_2.0, xliff_2.1]
   preview_profile: xliff_2.2_preview
   exact_next_action: >-
-    Replay event 24, exact source/test/matrix/Core-inventory/receipt digests,
-    24 focused tests, static checks, matrix check mode, three identical
-    outputs for both generated reports, and 17/17 authority matches. Then
-    start XLF-04-BATCH-003 with failing tests for source-located semantic
-    roundtrip/canonical-output and XML security/resource-limit obligations.
-    Preserve all 19 IDs and keep complete=false until an explicit expected
-    obligation denominator exists and every expected ID resolves.
+    Replay event 25 and independently validate commit 25227527, its six file
+    digests, two transcripts, 27 focused tests, affected regressions, static
+    checks, deterministic outputs, and authorities. Then execute
+    XLF-04-BATCH-004: compile the deterministic Core authority-candidate
+    census and map every candidate exactly once to an expected ID or reasoned
+    non-obligation disposition. Retain 25 of 105 IDs resolved, 80 open,
+    denominator census incomplete, and XLF-04 incomplete.
   xlf_04_cumulative_through_batch_002:
     status: SOURCE_LOCATED_PARTIAL
     report: reports/ff6/xliff-core-obligation-inventory.yaml
@@ -323,3 +343,16 @@ next_task_prerequisite:
     remaining_categories:
       - semantic_roundtrip_canonical_output
       - xml_security_resource_limits
+  xlf_04_batch_003:
+    recovery_record: plans/codex/handover/INFLIGHT-RECOVERY.yaml
+    source_commit: 2522752776f64ab800a2a21c8fa46c1f2a4e361c
+    on_origin_main_at_capture: true
+    native_event: FF6-EVENT-000025
+    status: SOURCE_LOCATED_PARTIAL
+    obligation_count: 25
+    expected_obligation_count: 105
+    resolved_expected_obligation_count: 25
+    missing_expected_obligation_count: 80
+    denominator_status: OPEN_AUTHORITY_CENSUS
+    verification_status: SOURCE_BOUND_UNVERIFIED
+    complete: false

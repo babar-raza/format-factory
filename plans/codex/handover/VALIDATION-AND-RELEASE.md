@@ -43,7 +43,7 @@ Events 16 through 22 prove:
 - IPYNB exact SAL verification `25/25`;
 - NRRD exact SAL verification `25/25`, 18-domain/41-policy explicit-complete
   family ownership, and all five profiles claimed;
-- native FF6 event chain passes through event 24;
+- native FF6 event chain passes through event 25;
 - the official XLIFF 2.0 package and prose are independently pinned, legally
   classified, and reconstructed offline with all five XLIFF authorities
   matching;
@@ -68,6 +68,19 @@ Events 16 through 22 prove:
 - XLF-03 proves 36 coarse source-surface anchors, 293/420 sections, 8/8
   modules, and 8/9 schema vocabularies, but not complete fine-grained Core or
   module semantic obligations.
+- GitLab implementation commit
+  `2522752776f64ab800a2a21c8fa46c1f2a4e361c` adds batch 003 and is bound by
+  event 25 and checkpoint commit `220ee7f5`;
+- the handover refresh independently replayed 27 focused tests and validated
+  both batch-003 transcripts;
+- those transcripts report 94 format-contract tests with one baseline-known
+  deselection, 69 production-program tests, Ruff, strict Mypy, Pyright 1.1.411,
+  bytecode compilation, three identical outputs, and 5/5 XLIFF authority
+  matches; the incoming provider must independently replay those broader
+  claims before starting batch 004;
+- batch 003 produces 25 source-bound obligations against a 105-ID open
+  denominator, leaving 80 IDs unresolved. All 12 categories are represented,
+  but the authority census and XLF-04 remain incomplete.
 
 It does not prove:
 
@@ -140,12 +153,14 @@ named interoperability certification, not universal conformance.
 - event-20 XLF-01/XLF-02 evidence retained: independent acquisition, digest
   verification, legal classification, lock, exact package inventory, and
   clean offline reconstruction of the official XLIFF 2.0 Standard package;
-- event-24 evidence retained and replayed: exact
-  source/test/matrix/Core-inventory/receipt digests, 24 focused tests, Ruff,
+- event-25 evidence retained and replayed: exact
+  source/test/matrix/denominator/Core-inventory/receipt digests, 27 focused
+  tests, Ruff,
   strict Mypy, Pyright 1.1.411, bytecode compilation, check mode, and three
   identical outputs for both reports;
-- XLF-04 resumes at BATCH-003 with RED tests for the final two categories
-  and continues until every Core obligation, not merely every category, has exact stable
+- XLF-04 continues at BATCH-004 from 80 unresolved expected IDs until every
+  Core obligation, not merely
+  every category, has exact stable
   profile, owner, authority/member/location, requirement class, and processing
   semantics;
 - source-located XLIFF 2.0/2.1 Core and module deltas;

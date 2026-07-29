@@ -1,0 +1,260 @@
+schema: ff6/provider-shift-recovery@1
+artifact_id: FF6-XLIFF-BATCH-003-RECOVERY-001
+artifact_type: provider_shift_recovery
+visibility: internal
+publish_allowed: false
+generated_by: codex
+generated_at: "2026-07-29"
+authoritative_state: false
+
+purpose: >-
+  Preserve the exact relationship between the former event-24 checkpoint,
+  implementation commit 25227527, and the event-25 control transaction that
+  was initially staged and later committed as 220ee7f5. This is a closed
+  recovery audit, not certification, promotion, or permission to bypass
+  coordination.
+
+recovery_status:
+  state: RESOLVED_REMOTE_VERIFIED
+  implementation_commit: 2522752776f64ab800a2a21c8fa46c1f2a4e361c
+  checkpoint_commit: 220ee7f5b9d39c3684cff6af6331b56a03ae9e75
+  origin_main_contains_both: true
+  native_event: FF6-EVENT-000025
+  controller_sequence: 25
+  duplicate_event_allowed: false
+  exact_next_microstep: XLF-04-BATCH-004
+
+canonical_remote_checkpoint:
+  forge: GitLab
+  remote: origin
+  branch: main
+  commit: 220ee7f5b9d39c3684cff6af6331b56a03ae9e75
+  remote_verified_at_capture: true
+  controller_state: CONTRACT
+  controller_sequence: 25
+  event_id: FF6-EVENT-000025
+  event_hash: 237f7759e2286cfc08c547c53a0b47d44e1c77307329ec0215c5326e3f811e48
+  active_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
+  active_task_state: WORK_IN_PROGRESS
+  first_unmet_task_step: XLF-04
+  product_certifications: 0
+  product_promotions: UNASSESSED
+
+committed_parallel_preparation:
+  commit: 210c1383da40cf569abe8c1dbe5f6d161769c1eb
+  taskcard: TC-FF6-UBL-TYPING-001
+  taskcard_state: READY
+  controller_selected: false
+  product_or_controller_effect: none
+  note: >-
+    The taskcard defines the complete UBL 2.3 schema-typing denominator and
+    generation contract. It does not authorize product source or supersede
+    the active XLIFF task.
+
+remote_implementation_commit:
+  commit: 2522752776f64ab800a2a21c8fa46c1f2a4e361c
+  parent: 210c1383da40cf569abe8c1dbe5f6d161769c1eb
+  tree: 483cf963c6343a2077d9f7152fadba9d6348c029
+  subject: "feat(xliff): bind core denominator and policy duties"
+  exists_in_local_git: true
+  ancestor_of_local_main_at_capture: true
+  ancestor_of_origin_main_at_capture: true
+  pushed_to_gitlab_at_capture: true
+  native_event_written_in_worktree: true
+  native_event_committed_or_pushed: true
+  controller_projection_updated_in_worktree: true
+  controller_projection_committed_or_pushed: true
+  task_projection_updated_in_worktree: true
+  task_projection_committed_or_pushed: true
+  current_gap_projection_updated: false
+  handover_projection_updated: false
+  recovery_state: RECONCILED_REMOTE_VERIFIED
+  clean_checkpoint: true
+  discard_allowed: false
+  duplicate_implementation_allowed: false
+
+historical_local_control_transaction:
+  state_at_capture: EVENT_CONTROLLER_TASKCARD_RECEIPT_STAGED_NOT_COMMITTED
+  final_state: COMMITTED_AND_PUSHED_AS_220EE7F5
+  owner: agent-codex-20260729T165025-2a0b1d
+  process_id: 55752
+  process_observed_running: false
+  last_heartbeat_utc: "2026-07-29T16:58:08.878124+00:00"
+  owner_state_at_last_capture: ACTIVE_EXPECTED_TO_AGE_TO_STALE_SUSPECT
+  event:
+    path: plans/strategic/ff6/events.jsonl
+    event_id: FF6-EVENT-000025
+    event_hash: 237f7759e2286cfc08c547c53a0b47d44e1c77307329ec0215c5326e3f811e48
+    lf_sha256: e5d6633f740094f0f37e4b45b44b72127bde28599972de8f91fe9846738672f7
+    native_chain_validation: PASS_25
+  controller:
+    path: plans/strategic/ff6/controller-state.yaml
+    lf_sha256: 2b6223bfc31d31e643bcf852ffec82c8227f62db10450ce19a6f3445aa4d4bad
+    sequence: 25
+    event_agreement: PASS
+  taskcard:
+    path: taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md
+    lf_sha256: 1a9ee1a6d57e65a4e1e9d09ac9aaafa82677bc86e320fe2e5950f4706f87c60b
+    state: WORK_IN_PROGRESS
+    next_batch: XLF-04-BATCH-004
+  receipt:
+    path: reports/skills-rff6/skill-transcripts/plan-control-xliff-profile-surface-wip-006.json
+    lf_sha256: ad651c08a491b5b9c44dd4869ebdfa9ec82101008b27fc1324af3d7c77f3e692
+    validation: PASS
+  current_state_consistency: PASS
+  task_index_change_required: false
+  current_gap_change_required: false
+  discard_allowed: false
+  duplicate_event_allowed: false
+
+local_commit_files:
+  - path: tools/spec/extract_sal_facts.py
+    change: modified
+    lf_sha256: a5c67f56378e586bf46ddb8c39881ab9ea81e42e76539bac942c5220c45f0190
+    canonical_bytes: 117104
+  - path: tests/tools/test_extract_sal_facts.py
+    change: modified
+    lf_sha256: bf7fa725496979e3f5a50125319f9974c6205803c8358adbfb0ba8677c52bc32
+    canonical_bytes: 49238
+  - path: reports/ff6/xliff-core-obligation-inventory.yaml
+    change: modified
+    lf_sha256: ae4d00af06fffc1eaf7741cd131d8ed7e7fc8a89b2a195acf4f649b5f44b6bbb
+    canonical_bytes: 54410
+  - path: reports/ff6/xliff-core-obligation-denominator.yaml
+    change: added
+    lf_sha256: c1a326e42bd1b47ec792088258f81fc4eac0b02543c57beedb48242181d008da
+    canonical_bytes: 20652
+  - path: reports/skills-rff6/skill-transcripts/ingest-spec-sal-xliff-xlf04-core-batch-003.json
+    change: added
+    lf_sha256: e1803892af5c86f651e3218f22fa148605133197de56de0e3634418737e856b2
+    canonical_bytes: 5465
+  - path: reports/skills-rff6/skill-transcripts/test-driven-development-xliff-xlf04-core-batch-003.json
+    change: added
+    lf_sha256: e73f9f0a78f4715b818a80cae67a30e960f4aa0cb28bd00b9d717ae56464d7f7
+    canonical_bytes: 6900
+
+implemented_boundary:
+  batch_id: XLF-04-BATCH-003
+  cumulative_source_bound_obligations: 25
+  batch_003_added_obligations: 6
+  specification_obligations: 21
+  production_policy_obligations: 4
+  expected_obligation_ids: 105
+  resolved_expected_obligation_ids: 25
+  missing_expected_obligation_ids: 80
+  covered_top_level_categories: 12
+  uncovered_top_level_categories: 0
+  denominator_status: OPEN_AUTHORITY_CENSUS
+  denominator_complete: false
+  inventory_complete: false
+  verification_status: SOURCE_BOUND_UNVERIFIED
+  completeness_basis: EXPLICIT_EXPECTED_OBLIGATION_IDS_OPEN_CENSUS
+  xlf_04_complete: false
+  exact_truth: >-
+    The commit separates XLIFF specification obligations from Format Factory
+    production-policy duties, binds a tracked denominator as a direct input,
+    rejects denominator authority tampering, and preserves all 19 earlier
+    obligation IDs. It does not prove that the 105-ID census is exhaustive,
+    resolve the remaining 80 IDs, close XLF-04, compile module obligations,
+    change product source, or certify a library.
+
+verification_at_capture:
+  independently_replayed:
+    - command: ".venv/Scripts/python.exe -m pytest -q tests/tools/test_extract_sal_facts.py"
+      result: "27 passed in 2.69s"
+    - command: ".venv/Scripts/python.exe tools/supervisor/validate_skill_transcript.py <each batch-003 transcript>"
+      result: "2 of 2 PASS"
+    - command: native FF6 event-chain and controller agreement check
+      result: "staged local transaction has 25 events and matching controller"
+    - command: Git ancestry checks
+      result: "25227527 is on origin/main"
+    - command: ".venv/Scripts/python.exe -m pytest -q tests/format_contract -k not test_full_slice_second_run_is_idempotent"
+      result: "94 passed, 1 deselected"
+    - command: ".venv/Scripts/python.exe -m pytest -q tests/production_program"
+      result: "69 passed"
+    - command: Ruff and strict Mypy on touched source plus bytecode compilation
+      result: PASS
+    - command: XLIFF authority audit
+      result: "5 of 5 MATCH"
+    - command: plan-control receipt validation and current-state consistency
+      result: PASS
+  transcript_reported_not_independently_replayed_by_handover_refresh:
+    ruff: PASS
+    mypy_strict: PASS
+    pyright_1_1_411: PASS
+    bytecode_compilation: PASS
+    deterministic_denominator_runs: "3 identical"
+    deterministic_inventory_runs: "3 identical"
+    xliff_authorities: "5 of 5 MATCH"
+  promotion_effect: none
+
+coordination_at_capture:
+  implementation_owner: agent-codex-20260729T161622-099842
+  provider: codex
+  task: TC-FF6-XLIFF-PROFILE-SURFACE-001
+  process_id: 50836
+  process_observed_running: false
+  owner_state: COMPLETED_AFTER_REMOTE_VERIFICATION
+  last_heartbeat_utc: "2026-07-29T16:40:49.756763+00:00"
+  owner_credential_transfer_allowed: false
+  another_agent_release_allowed: false
+  control_projection_owner: agent-codex-20260729T165025-2a0b1d
+  control_projection_process_id: 55752
+  control_projection_process_observed_running: false
+  control_projection_last_heartbeat_utc: "2026-07-29T16:58:08.878124+00:00"
+  takeover_required_before_overlapping_control_mutation: true
+  explicit_leases_may_outlive_agent_heartbeat: true
+  structural_gap: >-
+    The coordination plane can classify an agent heartbeat as stale while
+    long-TTL explicit leases remain ACTIVE. This prevents immediate governed
+    takeover even after the recorded PID is gone. Do not edit the SQLite
+    database, reuse credentials, release the leases, or overwrite the files.
+
+incoming_decision_table:
+  - condition: origin/main contains 2522752776f64ab800a2a21c8fa46c1f2a4e361c and the four staged control files match this record
+    action: >-
+      Preserve the implementation and staged transaction. Obtain governed
+      takeover when eligible, rerun validation, commit the four control files
+      exactly once, push them to GitLab, and remote-verify. Do not append a
+      second event 25.
+  - condition: origin/main already contains an event-25 checkpoint descendant
+    action: >-
+      Fetch and compare the remote event/controller/taskcard/receipt with the
+      recorded transaction. This is the current resolved case: use remote
+      checkpoint 220ee7f5 and do not append another event 25.
+  - condition: governed takeover of the staged control files is still denied
+    action: >-
+      Do not touch, unstage, commit, or duplicate the control transaction.
+      Continue only disjoint safe work under a separate task/lease, keep
+      monitoring coordination, and retry after the owner/leases become
+      eligible.
+  - condition: origin/main advanced on any of the six paths
+    action: >-
+      Fetch and classify overlap. Preserve both histories, reconcile without
+      reset/stash/restore/clean, rerun invalidated evidence, and journal the
+      resulting immutable implementation commit exactly once.
+  - condition: any local file or commit hash differs from this recovery record
+    action: >-
+      Stop overlapping mutation, preserve all bytes, register a discrepancy,
+      identify the current owner/write journal, and use the newest valid
+      immutable commit or governed takeover evidence. Never pick the version
+      that merely makes tests pass.
+
+exact_next_checkpoint_work:
+  - verify origin/main contains 25227527 and 220ee7f5 without switching branches
+  - revalidate event 25, controller agreement, commit 25227527, and both skill transcripts
+  - replay focused, affected regression, static, deterministic, authority, and negative-control checks
+  - retain XLF-04-BATCH-003 complete but XLF-04 incomplete
+  - retain 25 of 105 expected IDs resolved and 80 still open
+  - execute XLF-04-BATCH-004 deterministic authority-candidate census
+  - map every candidate exactly once to an expected ID or reasoned non-obligation disposition
+  - reject unmapped candidates, duplicates, count drift, and complete=true
+
+forbidden_shortcuts:
+  - do not restart XLF-04-BATCH-003 from RED
+  - do not discard or amend commit 25227527 merely to simplify history
+  - do not mark XLF-04 complete because all 12 categories have at least one row
+  - do not call the 105-ID denominator exhaustive while authority_census is open
+  - do not count product-policy duties as OASIS standard conformance
+  - do not start product source, certification, promotion, or release work
+  - do not ask the user whether to continue

@@ -181,7 +181,8 @@ The packet was rebuilt from immutable implementation commit
 - The mission remains in `CONTRACT`, the active task remains
   `WORK_IN_PROGRESS`, the parent remains `NEEDS_REPAIR`, product certification
   remains 0/6, and every promotion remains `UNASSESSED`.
-- The exact continuation is `XLF-04-BATCH-003`: RED tests for source-located
+- At the historical event-24 boundary, the exact continuation was
+  `XLF-04-BATCH-003`: RED tests for source-located
   semantic roundtrip/canonical output and XML security/resource limits plus an
   explicit expected-ID denominator after replaying event 24 and its bound evidence.
 
@@ -201,5 +202,33 @@ The provider-neutral packet was re-audited from clean GitLab `origin/main` at
   precondition, not a durable boolean that this tracked packet could continue
   to prove after commit. Provider identities, tokens, and leases are never
   transferred.
-- The exact continuation remains `XLF-04-BATCH-003`; the refresh is navigation
-  and consistency repair only.
+- At that historical refresh, the exact continuation remained
+  `XLF-04-BATCH-003`; event 25 below supersedes that continuation.
+
+## Event-25 clean checkpoint refresh
+
+The batch-003 recovery boundary has been reconciled without loss:
+
+- GitLab `origin/main` contains READY UBL taskcard commit `210c1383`,
+  XLIFF implementation commit `25227527`, and event/controller checkpoint
+  commit `220ee7f5`.
+- Event `FF6-EVENT-000025`, controller sequence 25, active taskcard, and
+  plan-control receipt agree.
+- Batch 003 contains six exact implementation/evidence paths, two valid skill
+  transcripts, 25 cumulative source-bound obligations, and a 105-ID open
+  denominator with 80 unresolved IDs.
+- Independent replay in the handover refresh observed 27 focused tests,
+  94 format-contract tests with the baseline-known CSV test deselected,
+  69 production-program tests, Ruff, strict Mypy, bytecode compilation, and
+  5/5 XLIFF authority matches. Pyright was unavailable in the refresh shell;
+  the batch receipt records Pyright 1.1.411 passing.
+- XLF-04 remains incomplete, 0/6 products are certified, and all promotions
+  remain `UNASSESSED`.
+
+The exact continuation is `XLF-04-BATCH-004`: compile a deterministic Core
+authority-candidate census across direct/leaf normative prose, Core XSD
+constraints, Core Schematron assertions, and exact 2.0/2.1 deltas. Map every
+candidate exactly once to an expected obligation ID or a reasoned
+non-obligation disposition. Reject unmapped and duplicate candidates; retain
+`complete=false`. Exact hashes and the resolved recovery history are retained
+in `plans/codex/handover/INFLIGHT-RECOVERY.yaml`.

@@ -27,19 +27,21 @@ provider-local artifacts as authority.
 3. Validate `CURRENT-MACHINE-STATE.yaml` against live tracked state rather than
    trusting its labels.
 4. Require:
-   - source checkpoint
-     `78660ae1a310ab06cf00d977bbc26fb65914f1c9` is an ancestor of fetched
+   - GitLab handover checkpoint
+     `d02a00fedf669c6e2b2dd58e480715550fb2afe8` is an ancestor of fetched
      `origin/main`;
-   - controller `CONTRACT`, sequence 24;
-   - event `FF6-EVENT-000024`, hash
-     `10d96a6729d250fecb89f5f082682f583b5b8053fd620702dcd837dfaf541434`;
+   - event/controller checkpoint
+     `220ee7f5b9d39c3684cff6af6331b56a03ae9e75` is also an ancestor;
+   - controller `CONTRACT`, sequence 25;
+   - event `FF6-EVENT-000025`, hash
+     `237f7759e2286cfc08c547c53a0b47d44e1c77307329ec0215c5326e3f811e48`;
    - parent `TC-FF6-PROGRAM-CAPABILITIES-001` in `NEEDS_REPAIR`;
    - `TC-FF6-NRRD-PROFILE-SURFACE-001` in `PASS`;
    - `TC-FF6-XLIFF-PROFILE-SURFACE-001` in `WORK_IN_PROGRESS`, with
      `XLF-01`, `XLF-02`, `XLF-03`, `XLF-04-BATCH-001`, and
-     `XLF-04-BATCH-002` complete,
+     `XLF-04-BATCH-002`, and `XLF-04-BATCH-003` complete,
      `XLF-04` still first unmet, and
-     provider-shift microstate `RESUMABLE`;
+     canonical provider-shift microstate `RESUMABLE` at event 25;
    - 110 capabilities, 672 obligations, and aggregate
      `4d17d8c8c0ef3de74d59e1d5b16884c0210fd0836e0593591871f10d0af2efd2`;
    - 17/17 authority artifacts `MATCH`, including 5/5 XLIFF;
@@ -49,6 +51,9 @@ provider-local artifacts as authority.
 6. Query coordination, register this Claude session, inspect conflicts and
    leases, and claim exact task paths before writing. Preserve all unrelated
    state.
+7. Read `plans/codex/handover/INFLIGHT-RECOVERY.yaml` as a closed recovery
+   audit. Confirm implementation commit `25227527` and checkpoint commit
+   `220ee7f5` are on `origin/main`; do not repeat or re-journal batch 003.
 
 Do not reuse a Codex coordination token. If the outgoing Codex identity is
 still `ACTIVE`, do not create a second writer on the same paths. Accept its
@@ -61,8 +66,28 @@ Resume `taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md` at `XLF-04` through its r
 authority-acquisition, SAL, family, research, contract,
 capability-compiler, taskcard, and controller skills.
 
-Do not reacquire XLIFF 2.0, rebuild XLF-03, or rewrite the 19 existing
-obligations unless their recorded inputs changed. First:
+Do not reacquire XLIFF 2.0, rebuild XLF-03, restart XLF-04-BATCH-003, or
+rewrite the 25 obligations unless independent replay exposes a
+defect. First:
+
+1. fetch GitLab, compare `origin/main`, local HEAD, event 25, implementation
+   commit `25227527`, and checkpoint commit `220ee7f5`;
+2. query coordination and use audited takeover only when eligible;
+3. verify the six file hashes and two transcript hashes in
+   `INFLIGHT-RECOVERY.yaml`;
+4. validate both batch-003 transcripts;
+5. run `python -m pytest tests/tools/test_extract_sal_facts.py -q` and require
+   27 passed;
+6. independently replay the affected regression/static/determinism/authority
+   checks reported by the transcripts;
+7. verify event 25 binds the immutable implementation and the controller,
+   taskcard, event chain, and receipt agree;
+8. keep 25 of 105 expected IDs resolved, 80 missing, denominator census open,
+   and XLF-04 incomplete;
+9. execute `XLF-04-BATCH-004` as the next bounded authority-census batch.
+
+The previous event-24 replay remains a predecessor-chain check; event 25 is
+the current replay boundary:
 
 1. verify the event-24 source, test, matrix, Core inventory, and transcript
    SHA-256 values;
@@ -75,11 +100,10 @@ obligations unless their recorded inputs changed. First:
    `9f4ea4b8b71378217af26c0fb2b97a759817a0aca6c64255b8cd55170c60a090`;
 6. verify three byte-identical Core-inventory generations at
    `5930f1e28d21e277325c9a88ad8486ce9076ff1aa680ae21979440fd85d3244b`;
-7. add the `XLF-04-BATCH-003` RED tests for source-located semantic
-   roundtrip/canonical-output and XML security/resource-limit obligations;
-8. make only that bounded batch GREEN while retaining all 19 existing IDs;
-9. keep `complete=false` until an explicit expected-obligation ID denominator
-   is compiled and every ID is present. Category presence is never the
+7. prove the batch-003 commit preserves all 19 predecessor IDs and separates
+   21 specification obligations from four production-policy obligations;
+8. keep `complete=false` while the explicit 105-ID denominator census remains
+   open and 80 IDs are unresolved. Category presence is never the
    completeness denominator.
 
 The matrix acceptance count is 293/420 total DocBook `section` elements. The
@@ -90,8 +114,8 @@ source coverage.
 
 Preserve the existing tested compiler unless replay exposes a defect. Its 36
 rows are source-surface anchors, not a complete semantic obligation inventory.
-The 19 cumulative obligations are source-bound but unverified against
-canonical SAL and are also not a complete inventory. Never satisfy XLF-04 by
+The batch-003 commit's 25 cumulative obligations are source-bound but unverified
+against canonical SAL and are also not a complete inventory. Never satisfy XLF-04 by
 relabeling anchors, counting XSD components, or counting covered categories.
 
 Remaining required result:
