@@ -32,6 +32,18 @@ state_precedence:
   - derived_handover_packet
   - conversation_or_provider_memory
 
+provider_shift_contract:
+  same_goal_across_providers: true
+  same_task_and_acceptance_across_providers: true
+  parallel_writers_on_active_task_allowed: false
+  outgoing_identity_must_complete_after_remote_verification: true
+  incoming_identity_must_be_new: true
+  coordination_token_transfer_allowed: false
+  clean_shift_microstate: RESUMABLE
+  red_only_shift_allowed: false
+  provider_memory_authoritative: false
+  reconstruction_required: true
+
 controller:
   state: CONTRACT
   sequence: 21
@@ -187,6 +199,15 @@ wip_implementation_checkpoint:
     - negative_controls
     - real_authority_matrix_generation_and_three_run_replay
   exact_next_test: test_cli_writes_and_checks_default_xliff_matrix
+  prose_section_inventory:
+    section_elements:
+      xliff_2.0: 293
+      xliff_2.1: 420
+    directly_id_bearing_sections:
+      xliff_2.0: 197
+      xliff_2.1: 312
+    no_id_location_rule: deterministic_title_path
+    complete_denominator: section_elements
   truth_boundary: >-
     This is an integration-safe implementation slice inside an unmet contract
     task step. It is not the XLF-03 matrix result, SAL closure, capability

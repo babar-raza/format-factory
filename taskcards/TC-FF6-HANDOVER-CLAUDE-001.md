@@ -131,3 +131,25 @@ at `a1316b4fae21c20c71ccb6d60e4b9fe634dca573` and bound to
   two-commit checkpoint protocol so a provider switch never depends on chat or
   an unjournaled source commit.
 - No product source, certification, promotion, release, or gate changed.
+
+## Cross-provider shift hardening refresh
+
+The packet was re-audited from clean, fetched GitLab `main` at
+`b6aef60c12368753939e75f88951a6f4d3533e76` without changing the FF6
+controller or product task.
+
+- The provider transfer is now explicitly one-writer-at-a-time for the active
+  task. The outgoing identity completes after remote verification; the
+  incoming provider registers a new identity and never inherits a token or
+  lease.
+- Planned token exhaustion is handled only at a `RESUMABLE` boundary. RED-only,
+  unjournaled, and local-only states are not clean checkpoints.
+- Crash recovery now distinguishes implementation-only commits, journaled but
+  stale projections, owned GREEN/RED worktrees, unattributed dirt, and remote
+  overlap.
+- The XLIFF evidence denominator is disambiguated: the official 2.0/2.1 prose
+  contains 293/420 total DocBook sections, of which 197/312 have direct IDs.
+  ID-less sections remain in the matrix through deterministic title paths.
+- The exact continuation remains the same XLF-03 RED test. No canonical
+  taskcard, source, test, authority, contract, controller, promotion, gate, or
+  release state changed.

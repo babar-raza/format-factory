@@ -100,6 +100,27 @@ inventory, but it was captured at baseline commit `e4f8f5f…`. Its contract
 hashes and pre-profile-repair capability totals are historical where they
 disagree with event 21 and `capability-coverage.yaml`.
 
+## Provider-shift contract
+
+This packet transfers work, not an agent process. The incoming provider must
+create a new coordination identity and must never reuse the outgoing
+provider's token or assume its leases. The outgoing provider completes its
+coordination session only after the packet commit is pushed and remotely
+verified. If that session is still live when the incoming provider starts,
+the incoming provider waits for normal completion or uses governed takeover
+only after the owner is stale and every touched byte is classified.
+
+The provider name does not change the goal, task, state machine, validation
+threshold, or promotion rules. A shift is accepted only when all durable state
+needed for the next action is recoverable from tracked GitLab `main` plus
+content-addressed inputs. Provider memory may help locate evidence but may not
+change the next task or close an acceptance criterion.
+
+There is exactly one active product task after the transfer:
+`TC-FF6-XLIFF-PROFILE-SURFACE-001`. The handover refresh is a derived
+navigation operation; it neither creates a competing mission task nor changes
+the native FF6 event head.
+
 ## Mechanical resume preflight
 
 Run from the repository root:
@@ -160,6 +181,12 @@ The exact next cycle is:
 3. add all archive/XML/matrix negative controls;
 4. run the tool against both real pinned packages and prove three byte-identical
    outputs.
+
+For the real prose packages, `section_count` means every DocBook `section`
+element: 293 in XLIFF 2.0 and 420 in XLIFF 2.1. Of those, 197 and 312
+respectively carry a direct `id`/`xml:id`; the compiler uses a deterministic
+title-path locator for the remaining sections. Do not change the expected
+293/420 totals to 197/312, and do not silently discard unlabelled sections.
 
 Only then may XLF-03 claim its source-located normative delta and module matrix
 from the tracked inventory and pinned authority bytes. The task must compile

@@ -176,6 +176,12 @@ coordination:
     leases with an audited reason; never release another agent's lease.
   historical_open_conflicts_may_exist: true
   preserve_unrelated_state: true
+  provider_shift:
+    simultaneous_writers_for_active_task: false
+    outgoing_identity_completed_after_remote_verification: required
+    incoming_identity: new_registration_required
+    credential_or_token_transfer: prohibited
+    takeover: stale_owner_only_with_audited_reason_and_byte_classification
 
 resume_decision:
   exact_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
@@ -222,12 +228,32 @@ xlf_03_implementation_checkpoint:
     - real_package_matrix_output
     - three_run_real_authority_replay
   exact_next_test: test_cli_writes_and_checks_default_xliff_matrix
+  prose_section_denominator:
+    total_section_elements:
+      xliff_2.0: 293
+      xliff_2.1: 420
+    directly_id_bearing_sections:
+      xliff_2.0: 197
+      xliff_2.1: 312
+    unlabelled_section_location: deterministic_title_path
+    acceptance_uses: total_section_elements
   static_results:
     ruff: PASS
     mypy_strict: PASS
     py_compile: PASS
     pyright: UNAVAILABLE_IN_CURRENT_SHELL_NO_CLAIM
   promotion_effect: none
+
+shift_acceptance:
+  required_microstate: RESUMABLE
+  remote_contains_implementation_commit: true
+  remote_contains_packet_commit: true
+  native_event_and_controller_agree: true
+  first_unmet_criterion_recorded: true
+  validation_boundary_recorded: true
+  outgoing_coordination_identity_complete: true
+  incoming_replays_before_mutation: true
+  chat_only_state_allowed: false
 
 nrrd_contract_checkpoint:
   delta_report: reports/ff6/nrrd-profile-delta-matrix.yaml

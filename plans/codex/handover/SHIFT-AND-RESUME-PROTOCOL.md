@@ -25,6 +25,11 @@ GitLab origin/main commit
 Conversation history, provider memory, model identity, and remaining token
 budget are not operational authority.
 
+Only one provider may own the active task's write scope at a time. Claude and
+Codex may work in successive shifts, but they are not parallel writers for the
+same taskcard or generated output set. Parallel work is allowed only for
+disjoint, separately taskcarded scopes with non-overlapping leases.
+
 ## Current transfer boundary
 
 - Required implementation ancestor before this packet:
@@ -66,6 +71,11 @@ budget are not operational authority.
     `STATE-MACHINE-AND-TASKCARD-PROTOCOL.md`. Re-run XLF-01/XLF-02 only if
     event-20 authority inputs were invalidated.
 
+The new provider reconstructs the state; it does not accept a prior provider's
+claim on trust. A mismatch produces a named discrepancy and invalidates only
+the affected descendants. It does not authorize deleting the prior work,
+resetting main, or rerunning unrelated completed taskcards.
+
 Claude's hooks may auto-claim single files, but broad generated output sets
 still require explicit claims. Codex follows the CLI protocol in
 `docs/governance/codex-adapter.md`.
@@ -103,6 +113,40 @@ valid and the declared regression tier passing. It records
 immutable implementation commit, input/output digests, exact next test, and
 validation outcomes. Broken, RED-only, or self-contradictory source is not a
 checkpoint and must not be pushed to satisfy a token boundary.
+
+## Token-budget and planned-shift protocol
+
+The executor monitors its practical context/token boundary as an operational
+resource, not as a mission exit criterion.
+
+1. Before beginning a RED test, reserve enough capacity to implement GREEN,
+   run its focused and regression tiers, write the receipt, and publish the
+   two-commit checkpoint.
+2. If that capacity is not available, do not mutate; refresh the current clean
+   packet and transfer at the last `RESUMABLE` state.
+3. If capacity becomes constrained after RED, finish or safely revert only the
+   executor's own bounded uncommitted microstep. Never discard another
+   provider's bytes or publish RED as a checkpoint.
+4. A planned shift ends only after remote verification and completion of the
+   outgoing coordination identity.
+5. The incoming provider registers a fresh identity and independently replays
+   the checkpoint before mutation.
+
+This makes provider rotation a normal state transition rather than an
+exception that can create competing local truths.
+
+## Crash and partial-state recovery matrix
+
+| Observed state | Incoming action |
+|---|---|
+| Remote packet and implementation commits present; outgoing identity complete | Replay and resume the exact next microstep |
+| Implementation commit present, packet commit absent | Validate the implementation commit, append or replay the missing journal/projection checkpoint without duplicating the implementation |
+| Journal event present, projection/packet stale | Rebuild projections from the journal; do not append a duplicate event |
+| Uncommitted GREEN tree owned by stale provider | Governed takeover, capture hashes, rerun required checks, then commit/journal |
+| Uncommitted RED tree owned by stale provider | Governed takeover, preserve and classify; continue to GREEN or revert only that bounded owned microstep |
+| Dirty bytes have no attributable owner | Preserve, register a conflict/gap, and continue only disjoint safe work |
+| Remote main advanced on overlapping paths | Fetch, classify, integrate without history loss, and replay invalidated proof |
+| Packet disagrees with valid journal/controller | Treat packet as stale and regenerate it from canonical state |
 
 ## During a shift
 
@@ -200,6 +244,15 @@ currently fails at event 1 because it expects `previous_hash`. FF6 uses
 
 This is `FF6-GAP-011`, not evidence that event 21 is corrupt. Validate the FF6
 native chain and do not edit either journal schema ad hoc.
+
+## XLIFF section-count semantics
+
+The XLF-03 real-package check uses 293 XLIFF 2.0 and 420 XLIFF 2.1 DocBook
+`section` elements. Direct IDs exist on only 197 and 312 of those sections.
+The remaining sections use deterministic title-path locations. Both numbers
+are useful diagnostics, but only 293/420 are the complete section denominator.
+Changing the acceptance count to the ID-bearing subset would silently remove
+source evidence.
 
 ## Transfer acceptance
 

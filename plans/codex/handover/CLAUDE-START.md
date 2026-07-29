@@ -48,6 +48,11 @@ provider-local artifacts as authority.
    leases, and claim exact task paths before writing. Preserve all unrelated
    state.
 
+Do not reuse a Codex coordination token. If the outgoing Codex identity is
+still `ACTIVE`, do not create a second writer on the same paths. Accept its
+normal completion, or perform an audited stale-owner takeover only after
+capturing and classifying the current filesystem state.
+
 ## Execute exactly this task
 
 Resume `taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md` at `XLF-03` through its registered
@@ -67,6 +72,12 @@ Do not reacquire XLIFF 2.0 unless event-20 authority inputs changed. First:
    CLI/check mode to make it GREEN;
 7. add the declared archive/XML/matrix negative controls;
 8. generate the real matrix and prove three byte-identical outputs.
+
+The matrix acceptance count is 293/420 total DocBook `section` elements. The
+197/312 figures are only the subsets with direct `id`/`xml:id` attributes;
+sections without IDs remain evidence and receive deterministic title-path
+locations. Treating 197/312 as the matrix denominator would lose normative
+source coverage.
 
 Preserve the existing tested compiler slice unless replay exposes a defect.
 The CLI, default seed inventory, full negative suite, and real authority output
@@ -111,6 +122,10 @@ Remaining required result:
 - If the shift must end first, reach an integration-safe substep boundary,
   record `WORK_IN_PROGRESS` and the first unmet criterion, refresh the packet,
   commit and push GitLab main, and remote-verify.
+- Before the Claude token budget becomes operationally unsafe, either finish
+  the current RED/GREEN cycle and publish a resumable checkpoint or do not
+  start another mutation cycle. Token pressure never permits a RED-only,
+  unjournaled, or local-only handoff.
 - Never ask for continuation. Continue safe unblocked work until a clean shift
   checkpoint is required.
 

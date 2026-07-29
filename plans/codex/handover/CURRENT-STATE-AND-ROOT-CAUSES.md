@@ -156,6 +156,23 @@ Conversation memory and provider-local changes previously mattered. That made
 handoffs depend on the outgoing agent. The correct resume key is remote commit
 plus controller, journal, taskcard, proof digests, and coordination ownership.
 
+The deeper consistency failure is a missing distinction between four kinds of
+state:
+
+| State kind | Durable authority | Transfer rule |
+|---|---|---|
+| Product/mission truth | GitLab commit, native event journal, controller, proof graph | Recompute; never copy from chat |
+| Task progress | Taskcard, task index, first unmet criterion, immutable evidence | Resume the first unmet criterion |
+| In-flight mutation | Coordination identity, leases, write journal, working-tree bytes | Finish, complete, or governably take over; never inherit credentials |
+| Provider context | Chat history, model memory, token budget | Non-authoritative and disposable |
+
+Prior handoffs sometimes preserved the fourth layer while underspecifying the
+first three. The durable design does the opposite. The outgoing provider
+publishes a remote-verifiable state transition and ends its ownership; the
+incoming provider reconstructs from canonical bytes and obtains new
+ownership. This is what allows Claude and Codex to alternate without merging
+their internal narratives.
+
 ### Task and TDD state used different granularity
 
 `XLF-03` describes a complete normative-matrix outcome, while implementing it
@@ -188,6 +205,17 @@ Event 21 repairs the first implementation slice, but the wider machinery still
 needs a validator that fails any active registered skill whose implementation
 path or executable contract is absent.
 
+### Evidence denominators can be semantically ambiguous
+
+The XLIFF prose exposes a concrete example. It contains 293/420 DocBook
+`section` elements, but only 197/312 have direct IDs. A tool or agent that
+labels the ID-bearing count as the section count can produce deterministic yet
+incomplete output. The durable control is to name the denominator precisely,
+retain ID-less sections through deterministic title-path locations, and test
+both total and directly identified counts. More generally, every coverage
+metric must state what population it counts; reproducibility alone cannot make
+an underspecified denominator correct.
+
 ## What must be preserved
 
 - All working source and tests, including characterization behavior.
@@ -214,10 +242,14 @@ path or executable contract is absent.
 - Compute promotion from live proof and revoke it on dependency change.
 - Use fresh worktrees/containers for certification.
 - Make provider shifts atomic, remote-verifiable checkpoints.
+- Separate durable mission/task state from ephemeral coordination and provider
+  context; never transfer provider credentials or leases.
 - Add TDD microstates below task steps and bind them to immutable commits in
   the native journal.
 - Validate active skill registry entries against implementation paths, command
   contracts, focused tests, and executable smoke checks.
+- Give each inventory count a named semantic denominator and negative controls
+  against silently dropping unlabelled or unknown content.
 
 ## Immediate repair order
 

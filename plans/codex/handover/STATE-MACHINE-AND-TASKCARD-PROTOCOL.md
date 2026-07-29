@@ -167,6 +167,10 @@ PLANNED
 - `RESUMABLE` additionally requires prior coordination ownership to be
   completed or safely taken over.
 
+The outgoing and incoming providers never share a coordination identity.
+`RESUMABLE` transfers the right to reconstruct and claim work, not a lease or
+authentication token.
+
 A crash may leave an uncommitted `RED_OBSERVED` tree. The incoming executor
 must classify and preserve it through coordination takeover, then continue to
 `GREEN_VERIFIED`; it must not call that state a clean checkpoint. Planned
@@ -181,7 +185,7 @@ Task: `TC-FF6-XLIFF-PROFILE-SURFACE-001`.
 |---|---|---|
 | XLF-01 — PASS at event 20 | event 19, task/index/controller, authority and worktree preflight | native chain, exact READY task, clean or classified tree, 15/15 predecessor authority match |
 | XLF-02 — PASS at event 20 | official XLIFF 2.0 authority record, five-source XLIFF closure, and 42-member 2.0/2.1 inventory | independent digest plus published SHA-1 cross-check, legal record, 5/5 clean offline reconstruction, no 2.1-as-2.0 proxy |
-| XLF-03 — FIRST UNMET; event-21 microstate `GREEN_VERIFIED_CHECKPOINTED` | source-located 2.0/2.1 Core and module delta matrix | first compiler slice is committed and tested; next RED test is `test_cli_writes_and_checks_default_xliff_matrix`; XLF-03 passes only when every requirement has source/member/location, profile set, Core/module owner, confidence, and contradiction note |
+| XLF-03 — FIRST UNMET; event-21 microstate `GREEN_VERIFIED_CHECKPOINTED` | source-located 2.0/2.1 Core and module delta matrix | first compiler slice is committed and tested; next RED test is `test_cli_writes_and_checks_default_xliff_matrix`; real prose inventories contain 293/420 total sections, including 197/312 directly ID-bearing sections and deterministic title-path locations for the rest; XLF-03 passes only when every requirement has source/member/location, profile set, Core/module owner, confidence, and contradiction note |
 | XLF-04 | complete Core SAL and processing-requirement map | exact verifier passes; inline, segmentation, state, extension, skeleton, ITS, and agent rules are not reduced to XSD validity |
 | XLF-05 | separately owned Translation Candidates/Matches, Glossary, Format Style, Metadata, Resource Data, Size/Length, Validation, and ITS families | all eight official modules and all nine module schema vocabularies are accounted for; each module has typed-model, read/write, validation, preservation, rejection, and proof obligations |
 | XLF-06 | repaired research/family/enrichment layers | mixed-profile requirements split; explicit-complete ownership; no keyword duplication |
