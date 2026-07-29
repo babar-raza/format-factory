@@ -7,7 +7,7 @@ generated_by: codex
 generated_at: 2026-07-29
 goal_id: FF6-PRODUCTION-LIBRARIES-001
 parent_task_id: TC-FF6-PROGRAM-CAPABILITIES-001
-status: READY
+status: WORK_IN_PROGRESS
 format_id: ubl
 skill_ids:
   - research-format-contract-sources
@@ -29,11 +29,42 @@ capability-policy work. It prepares the exact denominator needed to generate a
 production UBL library. It does not authorize product-source generation,
 product tests, package mutation, certification, promotion, release, or gates.
 
-The task is `READY`, not the controller-selected active task. XLIFF remains the
-canonical active task at native event 24. UBL may start only as a disjoint,
-separately leased lane when XLIFF is technically blocked or when the controller
-explicitly schedules parallel-safe work. It must never mutate XLIFF paths or
-rewrite the native event head without serialized plan-control ownership.
+The task is `WORK_IN_PROGRESS`, but it is not the controller-selected active
+task. Native Event 27 serializes verified completion of UBL-01 and UBL-02 as a
+parallel-safe checkpoint. XLIFF remains the canonical active task at
+XLF-04-BATCH-005. UBL may continue only as a disjoint, separately leased lane
+when coordination permits it. It must never mutate XLIFF paths or rewrite the
+native event head without serialized plan-control ownership.
+
+## Current checkpoint
+
+Detailed substate: `PACKAGE_CENSUS_COMPLETE`.
+
+Completed:
+
+- `UBL-01`: all three pinned UBL authority records are current matches and all
+  34 canonical UBL SAL facts verify.
+- `UBL-02`: the deterministic package census contains 890 members and exactly
+  91 document roots.
+
+First unmet step: `UBL-03`.
+
+Resume evidence:
+
+- native event: `FF6-EVENT-000027`;
+- implementation ancestors: `7b5cce4f`, `7fc49c29`;
+- package/root census:
+  `reports/ff6/ubl-package-root-census.yaml`;
+- census SHA-256:
+  `787c8d9258dc25a8662ee934b9b0b14096de790db87826dab970792b9494976d`;
+- SAL receipt: `reports/sal-verification/ubl.json`;
+- SAL receipt SHA-256:
+  `2cc0f2cac163b7f42ab18bbe5220837d1f49a808904ac964c536085ca6d111a0`.
+
+This checkpoint proves authority closure and the package/root denominator. It
+does not prove the reachable schema graph, deterministic naming contract,
+complete obligation denominator, reconciled ProductContract, product source,
+certification, promotion, release, or any gate.
 
 ## Objective
 

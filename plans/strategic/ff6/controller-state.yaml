@@ -4,10 +4,10 @@ goal_status: ACTIVE
 generated_by: codex
 visibility: internal
 controller_state: CONTRACT
-transition_sequence: 26
+transition_sequence: 27
 last_verified_event:
-  event_id: FF6-EVENT-000026
-  event_hash: 34b36bf5dc4344713ac1c0f026b30e6b15fb6a63b86f4876ee98230952fabcd0
+  event_id: FF6-EVENT-000027
+  event_hash: 9a1783b0705468fec1e9f9fda96f61ab4b1da32a161d128a3120a8bf689686c2
 event_journal: plans/strategic/ff6/events.jsonl
 baseline_commit: e4f8f5f086b5e627c07c2ef2d940eda2601a22a8
 digest_policy:
@@ -81,8 +81,8 @@ capability_compilation:
   preview: 4
   excluded: 1
   compiler_subtask: PASS
-  manifest_aggregate_sha256: 4d17d8c8c0ef3de74d59e1d5b16884c0210fd0836e0593591871f10d0af2efd2
-  three_run_digest: 389be84634941d3f244387bbc488c2303dcdb3add74b7d1edfb5def85710d3fc
+  manifest_aggregate_sha256: e199e84e9f7ee0579959db28283ecb89e014077cdd1605fbf0c82aee553d9960
+  three_run_digest: eafd6f8657ed83b73dbd5975046698d24fda6d8fd58c3d6aea962e6b6a85cf7c
   authority_artifacts:
     match: 17
     missing: 0
@@ -126,7 +126,7 @@ current_gap_summary:
   production_certifications: 0
 control_plane_compatibility:
   ff6_event_schema: ff6/controller-event@1
-  native_chain_validation: PASS_THROUGH_EVENT_26
+  native_chain_validation: PASS_THROUGH_EVENT_27
   generic_plan_control_doctor: >-
     INCOMPATIBLE_SCHEMA: tools.plan_control expects previous_hash and its own
     event payload; FF6 uses previous_event_hash. This is the already-tracked
@@ -137,6 +137,38 @@ invariants:
   - Product promotion is computed from current proof and cannot be edited here.
   - Failure of one format does not stop safe work on the others.
   - Publication authority is external and cannot be bypassed.
+ubl_checkpoint:
+  status: WORK_IN_PROGRESS
+  detailed_substate: PACKAGE_CENSUS_COMPLETE
+  completed_steps: [UBL-01, UBL-02]
+  first_unmet_step: UBL-03
+  checkpoint_source_commits: [7b5cce4f, 7fc49c29]
+  authority_sources: 3
+  authority_matches: 3
+  canonical_sal_facts: 34
+  canonical_sal_facts_verified: 34
+  package_members: 890
+  document_roots: 91
+  package_root_census: reports/ff6/ubl-package-root-census.yaml
+  package_root_census_sha256: 787c8d9258dc25a8662ee934b9b0b14096de790db87826dab970792b9494976d
+  sal_verification_receipt: reports/sal-verification/ubl.json
+  sal_verification_receipt_sha256: 2cc0f2cac163b7f42ab18bbe5220837d1f49a808904ac964c536085ca6d111a0
+  reachable_schema_graph_complete: false
+  exact_next_action: >-
+    Start UBL-03 only in a disjoint, separately leased lane: compile the
+    complete content-addressed graph of every schema declaration reachable
+    from all 91 roots, preserving references, inheritance, occurrence,
+    ordering, facets, wildcards, substitution groups, and namespace rules.
+    Do not infer completeness from current product classes or the 91-root
+    census. XLIFF remains the controller-selected active task.
+  truth_boundary: >-
+    UBL-01 and UBL-02 are complete and evidence-backed. The package census
+    establishes 890 members and exactly 91 document roots, and all 34
+    canonical UBL SAL facts verify against three matching authorities. UBL-03
+    and every later typing step remain open. No product source,
+    certification, promotion, release, or gate state changed.
+  product_source_effect: none
+  product_promotion_effect: none
 xlf_checkpoint:
   status: WORK_IN_PROGRESS
   completed_steps: [XLF-01, XLF-02, XLF-03]

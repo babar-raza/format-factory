@@ -1,0 +1,95 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "plan-control-ubl-state-checkpoint-001",
+  "skill_id": "plan-control",
+  "mode": "live",
+  "timestamp": "2026-07-29T20:45:51.2069068Z",
+  "inputs": {
+    "task_id": "TC-FF6-UBL-TYPING-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "operation": "project",
+    "target_paths": [
+      "plans/strategic/ff6/events.jsonl",
+      "plans/strategic/ff6/controller-state.yaml",
+      "taskcards/TC-FF6-UBL-TYPING-001.md",
+      "taskcards/index.yaml"
+    ],
+    "coordination_scope": "Exact UBL checkpoint, native event, controller, taskcard, index, and receipt paths under agent-codex-20260729T203542-291004. Five dirty XLIFF Batch 005 paths remained foreign-owned and untouched.",
+    "acceptance_evidence": "Immutable UBL implementation ancestors 7b5cce4f and 7fc49c29, three matching authority artifacts, 34 verified SAL facts, a deterministic census of 890 package members and exactly 91 document roots, 25 focused tests, 69 production-program tests, current-state consistency, capability compilation, and three-run idempotency.",
+    "source_checkpoint": "2ae71115dd452be2955ceeef369597164b336343",
+    "execution_manifest": ".local/skills-first/manifests/sfx-f5a902a23d133ac1.json"
+  },
+  "allowed_files": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "taskcards/TC-FF6-UBL-TYPING-001.md",
+    "taskcards/index.yaml",
+    "reports/skills-rff6/skill-transcripts/plan-control-ubl-state-checkpoint-001.json",
+    ".local/transcripts/plan-control-ubl-state-checkpoint-001.json"
+  ],
+  "actual_files_changed": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "taskcards/TC-FF6-UBL-TYPING-001.md",
+    "taskcards/index.yaml",
+    "reports/skills-rff6/skill-transcripts/plan-control-ubl-state-checkpoint-001.json",
+    ".local/transcripts/plan-control-ubl-state-checkpoint-001.json"
+  ],
+  "tests_run": [
+    "native FF6 hash-chain replay through FF6-EVENT-000027: PASS",
+    "controller sequence, event head, canonical XLIFF active task, UBL completed steps, first unmet UBL step, and task index agreement: PASS",
+    "python tools/evidence/check_current_state_consistency.py: PASS",
+    "python -m pytest -q tests/tools/test_verify_sal_facts.py tests/tools/test_compile_ubl_schema_graph.py: 25 passed",
+    "python -m pytest -q tests/production_program: 69 passed",
+    "python -m tools.format_contract.capability_universe compile with --check --verify-idempotency: CHECK_PASS e199e84e9f7ee0579959db28283ecb89e014077cdd1605fbf0c82aee553d9960; THREE_RUN_DIGEST eafd6f8657ed83b73dbd5975046698d24fda6d8fd58c3d6aea962e6b6a85cf7c",
+    "UBL authority materializer audit: 3 of 3 MATCH",
+    "UBL SAL verification: 34 of 34 PASS",
+    "UBL package census check: 890 members and exactly 91 roots",
+    "parallel-lane isolation: PASS; no foreign XLIFF path mutated"
+  ],
+  "result": "PASS",
+  "evidence": {
+    "event_id": "FF6-EVENT-000027",
+    "event_hash": "9a1783b0705468fec1e9f9fda96f61ab4b1da32a161d128a3120a8bf689686c2",
+    "events_sha256": "481b67ab4517fa8dac72b3ca27500a89964565565913d862ff531b791836829b",
+    "controller_sha256": "2f22e9d254697e428b029b074aaae8d08b2b6579f9d34c944ae76987bcbe5763",
+    "taskcard_sha256": "b55dbfd5a6b8f4b5caf3cd70a71d12eb64bb7e58285e05a7d2e22a89c141ca19",
+    "task_index_sha256": "ec630ef0fa11b212b6e2df73dda166e989ab2c70b7adc4abd2ab2f0df670d64f",
+    "task_state": "WORK_IN_PROGRESS",
+    "detailed_substate": "PACKAGE_CENSUS_COMPLETE",
+    "completed_steps": [
+      "UBL-01",
+      "UBL-02"
+    ],
+    "first_unmet_step": "UBL-03",
+    "package_members": 890,
+    "document_roots": 91,
+    "authority_matches": 3,
+    "sal_facts_verified": 34,
+    "reachable_schema_graph_complete": false,
+    "canonical_active_task": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "canonical_active_microstep": "XLF-04-BATCH-005",
+    "product_source_effect": "none",
+    "product_promotion": "none",
+    "production_certifications": "0/6"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for serialization of the UBL-01 and UBL-02 checkpoint",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for PACKAGE_CENSUS_COMPLETE; not for UBL-03 or later completion",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_checkpoint_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES; no new contradiction was found",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}
