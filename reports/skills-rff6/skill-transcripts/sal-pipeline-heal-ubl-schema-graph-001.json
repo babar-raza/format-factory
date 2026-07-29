@@ -1,0 +1,52 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "sal-pipeline-heal-ubl-schema-graph-001",
+  "skill_id": "sal-pipeline-heal",
+  "task_id": "TC-FF6-UBL-TYPING-001",
+  "mode": "live",
+  "timestamp": "2026-07-29T21:33:09Z",
+  "inputs": {
+    "taskcard_id": "TC-FF6-UBL-TYPING-001",
+    "format_id": "ubl",
+    "root_cause_id": "ROOT-08",
+    "spec_cache_path": ".local/format-contracts/acquired/ubl/src-ubl-002.bin",
+    "target_stage": "census",
+    "authority_source_id": "SRC-UBL-002",
+    "authority_version": "OASIS UBL 2.3 Standard distribution",
+    "authority_sha256": "623bef8310db4d979ff28000a96bcc56dbcdda4f6206cf094c0aa79b75817970"
+  },
+  "allowed_files": [
+    "tools/spec/ubl_schema_graph.py",
+    "tools/spec/compile_ubl_schema_graph.py",
+    "tests/tools/test_ubl_schema_graph.py",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-ubl-schema-graph-001.json",
+    ".local/transcripts/ubl-schema-graph-001.json"
+  ],
+  "actual_files_changed": [
+    "tools/spec/ubl_schema_graph.py",
+    "tools/spec/compile_ubl_schema_graph.py",
+    "tests/tools/test_ubl_schema_graph.py",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-ubl-schema-graph-001.json",
+    ".local/transcripts/ubl-schema-graph-001.json"
+  ],
+  "tests_run": [
+    "authority_materializer audit --format ubl --contracts: 3/3 MATCH",
+    "official UBL 2.3 package root/type compilation: 91 roots, 106 schema documents, 91 exact type-reference edges",
+    "three equivalent compilations: stable graph SHA-256 7b754187690ce1bb04db62657cfb552653cb381a1bdd745a56856e58215af029",
+    "focused and existing census tests: 14 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "FAIL",
+  "evidence": {
+    "spec_cache_verified": true,
+    "tool_invoked": true,
+    "output_artifact_produced": false,
+    "fact_ids_in_correct_namespace": true,
+    "failure_class": "INTENTIONAL_PARTIAL_CHECKPOINT",
+    "safe_response": "Commit the independently tested root/type primitive as a resumable checkpoint, but do not emit the canonical graph report or mark UBL-03 complete until every required schema component and edge is reachable and verified.",
+    "no_sal_store_write": true,
+    "truth_boundary": "Authority binding and the first graph primitive pass. The SAL-governed UBL-03 task remains nonterminal because no complete graph artifact or complete obligation census exists."
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

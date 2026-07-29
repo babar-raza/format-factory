@@ -1,0 +1,80 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "test-driven-development-ubl-schema-graph-001",
+  "skill_id": "test-driven-development",
+  "task_id": "TC-FF6-UBL-TYPING-001",
+  "mode": "live",
+  "timestamp": "2026-07-29T21:33:09Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_step": "UBL-03-PARTIAL-ROOT-TYPE-BINDING",
+    "execution_manifest_id": "sfx-2aa5f9fb6a1dca48",
+    "base_git_commit": "6af26ae010ec61702c12b66732249b2301eccb58",
+    "scope": "First resumable TDD increment of the content-addressed UBL 2.3 reachable-schema graph.",
+    "target_behavior_description": "Resolve every maindoc root to exactly one declared global content type without weakening archive or XML security controls."
+  },
+  "allowed_files": [
+    "tests/tools/test_ubl_schema_graph.py",
+    "tools/spec/ubl_schema_graph.py",
+    "tools/spec/compile_ubl_schema_graph.py",
+    "reports/skills-rff6/skill-transcripts/test-driven-development-ubl-schema-graph-001.json",
+    ".local/transcripts/ubl-schema-graph-001.json"
+  ],
+  "actual_files_changed": [
+    "tests/tools/test_ubl_schema_graph.py",
+    "tools/spec/ubl_schema_graph.py",
+    "tools/spec/compile_ubl_schema_graph.py",
+    "reports/skills-rff6/skill-transcripts/test-driven-development-ubl-schema-graph-001.json",
+    ".local/transcripts/ubl-schema-graph-001.json"
+  ],
+  "red_green_cycles": [
+    {
+      "red": "test_graph_resolves_a_document_root_to_exactly_one_declared_type failed with AttributeError because compile_ubl_reachable_schema_graph did not exist.",
+      "green": "Added a digest-bound graph entrypoint and decomposed graph primitive; the focused and existing census suites passed 13/13."
+    },
+    {
+      "red": "test_xml_declaration_guard_ignores_comments_but_rejects_active_doctype failed because a declaration string inside an XML comment was falsely rejected.",
+      "green": "Made the pre-scan ignore XML comments while retaining active DOCTYPE and ENTITY rejection; the affected suites passed 14/14 and the official package compiled deterministically."
+    }
+  ],
+  "tests_run": [
+    "python -m pytest tests/tools/test_ubl_schema_graph.py tests/tools/test_compile_ubl_schema_graph.py -q: 14 passed",
+    "ruff check tools/spec/compile_ubl_schema_graph.py tools/spec/ubl_schema_graph.py tests/tools/test_ubl_schema_graph.py: PASS",
+    "mypy --explicit-package-bases tools/spec/compile_ubl_schema_graph.py tools/spec/ubl_schema_graph.py --ignore-missing-imports: PASS",
+    "npx --yes pyright@1.1.411 tools/spec/compile_ubl_schema_graph.py tools/spec/ubl_schema_graph.py tests/tools/test_ubl_schema_graph.py: 0 errors, 0 warnings",
+    "python -m py_compile tools/spec/compile_ubl_schema_graph.py tools/spec/ubl_schema_graph.py tests/tools/test_ubl_schema_graph.py: PASS",
+    "three in-process official-package compilations: identical graph SHA-256 7b754187690ce1bb04db62657cfb552653cb381a1bdd745a56856e58215af029"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "graph_source_sha256": "aa2e3f240c76a573c8216dcdb794dde8b04530d188d1422da789ebd9626a4326",
+    "entrypoint_source_sha256": "69a62b78b4ff8784a5d9a0679bf2b51fb7ffc7c1ec42baf5a07ac0ff08af2a81",
+    "test_sha256": "c6590b0bb6e5534007e7f1402bb2de44003a8d6642972d13fc70a81e5ad11f3d",
+    "package_sha256": "623bef8310db4d979ff28000a96bcc56dbcdda4f6206cf094c0aa79b75817970",
+    "observed_schema_documents": 106,
+    "observed_roots": 91,
+    "observed_reachable_nodes": 182,
+    "observed_edges": 91,
+    "truth_boundary": "This checkpoint proves only deterministic root-to-declared-type binding. UBL-03 remains incomplete: import/include closure, local particles, anonymous types, references, inheritance, facets, wildcards, annotations, complete reachability, checked-in graph output, and negative controls remain open."
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for the two bounded TDD cycles",
+    "2_required_evidence_present": "YES for the bounded behavior only",
+    "3_evidence_sufficient": "YES for root/type binding only; explicitly insufficient for UBL-03 completion",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO at transcript creation",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO; all remaining UBL-03 items are retained in the taskcard and handover",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, no contradiction requiring a new gap was found",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

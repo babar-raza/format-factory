@@ -36,6 +36,12 @@ from zipfile import (
 
 import yaml
 
+from tools.spec.ubl_schema_graph import (
+    GraphLimits,
+    UblSchemaGraphError,
+    compile_reachable_schema_graph,
+)
+
 
 XSD_NAMESPACE = "http://www.w3.org/2001/XMLSchema"
 XSD = f"{{{XSD_NAMESPACE}}}"
@@ -498,6 +504,52 @@ def compile_ubl_package_census(
         ),
     }
     return result
+
+
+def compile_ubl_reachable_schema_graph(
+    source: str | os.PathLike[str] | bytes | bytearray,
+    *,
+    expected_package_sha256: str,
+    expected_root_count: int = 91,
+    limits: CensusLimits | None = None,
+    graph_limits: GraphLimits | None = None,
+) -> dict[str, Any]:
+    """Compile the content-addressed XSD graph from the pinned UBL package."""
+
+    active_limits = limits or CensusLimits()
+    if _SHA256.fullmatch(expected_package_sha256) is None:
+        raise UblCensusError("expected package digest is not a SHA-256 value")
+    if expected_root_count <= 0:
+        raise UblCensusError("expected root count must be positive")
+    package = _package_bytes(source, limits=active_limits)
+    observed_package_sha256 = hashlib.sha256(package).hexdigest()
+    if observed_package_sha256 != expected_package_sha256:
+        raise UblCensusError(
+            "package digest mismatch: "
+            f"expected {expected_package_sha256}, got {observed_package_sha256}"
+        )
+    try:
+        from io import BytesIO
+
+        with ZipFile(BytesIO(package)) as archive:
+            _, members = _read_members(archive, limits=active_limits)
+    except BadZipFile as exc:
+        raise UblCensusError("authority package is not a valid ZIP archive") from exc
+    root_members = sorted(name for name in members if _MAINDOC.fullmatch(name))
+    if len(root_members) != expected_root_count:
+        raise UblCensusError(
+            f"expected {expected_root_count} maindoc roots, found "
+            f"{len(root_members)}"
+        )
+    try:
+        return compile_reachable_schema_graph(
+            members,
+            root_members=root_members,
+            package_sha256=observed_package_sha256,
+            limits=graph_limits,
+        )
+    except UblSchemaGraphError as exc:
+        raise UblCensusError(f"schema graph invalid: {exc}") from exc
 
 
 def canonical_yaml_bytes(value: Mapping[str, Any]) -> bytes:
