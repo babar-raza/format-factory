@@ -19,7 +19,7 @@ Absolute path:
 C:\Users\prora\OneDrive\Documents\GitHub\format-factory\plans\codex\handover\START-HERE.md
 ```
 
-## Current clean checkpoint
+## Current committed checkpoint
 
 | Field | Verified value |
 |---|---|
@@ -40,6 +40,11 @@ C:\Users\prora\OneDrive\Documents\GitHub\format-factory\plans\codex\handover\STA
 
 The packet commit that contains this file must descend from the source
 checkpoint. It cannot truthfully embed its own final commit hash.
+
+At the final refresh, the committed handover scope was clean and remote
+verified, while a separately leased Batch 005 worker owned two untracked
+implementation paths in the shared worktree. Those classified paths are
+preserved and are not part of this handover commit.
 
 ## Mission
 
