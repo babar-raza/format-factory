@@ -9,7 +9,7 @@ generated_at: 2026-07-30
 
 # Claude/Codex Shift Instructions
 
-Resume the FF6 production mission from the clean Event 26 checkpoint. Do not
+Resume the FF6 production mission from the clean Event 27 checkpoint. Do not
 infer state from chat history, provider-local branches, local tokens, or old
 handover prose.
 
@@ -20,15 +20,15 @@ mission_id: FF6-PRODUCTION-LIBRARIES-001
 canonical_forge: GitLab
 canonical_remote: origin
 canonical_branch: main
-packet_input_checkpoint: d5e8927a85ed0f2e8c68e1e061084c67b85363c9
+packet_input_checkpoint: 59ef8ee2e1b4e37168e4c7094687fac0a6098a79
 controller_handover_source: 18bb295f94e43338611ef88caff073eed17411c9
 latest_bounded_implementation_ancestor: 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c
-controller_event_commit: 15ab7d0455e109bd88289e16d73c0835324a21ab
+controller_event_commit: 59ef8ee2e1b4e37168e4c7094687fac0a6098a79
 controller: plans/strategic/ff6/controller-state.yaml
 journal: plans/strategic/ff6/events.jsonl
 current_taskcard: taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md
-controller_event: FF6-EVENT-000026
-controller_event_hash: 34b36bf5dc4344713ac1c0f026b30e6b15fb6a63b86f4876ee98230952fabcd0
+controller_event: FF6-EVENT-000027
+controller_event_hash: 9a1783b0705468fec1e9f9fda96f61ab4b1da32a161d128a3120a8bf689686c2
 exact_next_microstep: XLF-04-BATCH-005
 ```
 
@@ -70,7 +70,7 @@ work.
 
 ## Transfer-state discriminator
 
-The committed Event 26 checkpoint is `RESUMABLE`, but the shared workspace was
+The committed Event 27 checkpoint is `RESUMABLE`, but the shared workspace was
 `IN_FLIGHT_RED_NOT_TRANSFERABLE` when this packet was refreshed. Do not treat
 those as contradictory or merge them into one optimistic state.
 
@@ -79,12 +79,12 @@ and the two captured Batch 005 paths. Then choose exactly one case:
 
 | Recomputed condition | Required action |
 |---|---|
-| Captured owner is still live and owns Batch 005 | Do not claim or mutate its scope. Do not repeat the UBL SAL repair committed at `7fc49c29`. The first safe disjoint action is the single Event 27 UBL-01/UBL-02 serialization defined below. |
-| `origin/main` contains a Batch 005 implementation commit and event 27 or later | Ignore the captured test counts, validate the newer journal head, rebuild projections, and resume its computed next task. |
-| `origin/main` contains a Batch 005 implementation commit but the journal remains at event 26 | Independently validate the immutable implementation commit, then use `plan-control` to append exactly one event. Do not duplicate implementation. |
+| Captured owner is still live and owns Batch 005 | Do not claim or mutate its scope. Do not repeat the UBL SAL repair, package census, or Event 27. The first safe disjoint action is UBL-03. |
+| `origin/main` contains a Batch 005 implementation commit and event 28 or later | Ignore the captured test counts, validate the newer journal head, rebuild projections, and resume its computed next task. |
+| `origin/main` contains a Batch 005 implementation commit but the journal remains at event 27 | Independently validate the immutable implementation commit, then use `plan-control` to append exactly one event. Do not duplicate implementation. |
 | Owner is stale/dead, no commit exists, and attributable local files remain | Preserve bytes, invoke governed `takeover --reason`, recapture baselines, and continue the same RED/GREEN batch. Never release or reuse the old identity manually. |
 | Prior owner completed and released its leases, no commit exists, and both optional files exactly match their recorded identities | Register a new identity, claim the logical scope and exact files, preflight/rebaseline, and adopt the preserved RED/GREEN work. No takeover is needed because no foreign lease remains. |
-| No owner, no local files, no newer remote commit | Register a new identity and start Batch 005 from the clean Event 26 checkpoint. |
+| No owner, no local files, no newer remote commit | Register a new identity and start Batch 005 from the clean Event 27 checkpoint. |
 | Files or ownership are unexplained | Fail closed for those paths, log/reconcile the conflict, and continue non-overlapping safe work. |
 
 At capture, the active owner was
@@ -114,7 +114,7 @@ Claude to write those paths.
 
 The latest packet observation was taken at `2026-07-29T20:17:53Z`.
 Local `HEAD` and GitLab `origin/main` were both
-`d5e8927a85ed0f2e8c68e1e061084c67b85363c9`. The coordination plane still
+`59ef8ee2e1b4e37168e4c7094687fac0a6098a79`. The coordination plane still
 reported the Batch 005 identity and its eleven leases as `ACTIVE`, while Git
 showed five dirty XLIFF paths: three tracked modifications and two untracked
 files. Coordination status returned exit 1 because 17 wider open conflicts
@@ -124,11 +124,11 @@ or overwrite anything.
 This is the expected immediate branch:
 
 ```text
-newer GitLab event?
+newer GitLab event after Event 27?
   yes -> validate new event, rebuild projections, select its next task
   no  -> XLIFF lease still live?
-           yes -> preserve XLIFF bytes; do not repeat UBL closure;
-                  serialize its completed evidence when safe
+           yes -> preserve XLIFF bytes; do not repeat UBL closure or Event 27;
+                  execute UBL-03 under disjoint leases
            no  -> lease stale with bytes?
                     yes -> governed takeover, rebaseline, resume Batch 005
                     no  -> claim exact XLIFF paths, rerun, resume Batch 005
@@ -149,7 +149,7 @@ SHA-256 fcb25b8f9400fc72a485eea23e8daf7d29e579f45a27353e3bf9a15d4c89dcb3
 The handover validator checks these values when the optional files are
 present and not classified as a newer active foreign working set. It does not
 freeze bytes that a live owner is changing. A clean checkout may legitimately
-lack them and restart Batch 005 from Event 26. A digest or Git-state mismatch
+lack them and restart Batch 005 from Event 27. A digest or Git-state mismatch
 without active ownership is a preserved conflict.
 
 The prior UBL writers are no longer active foreign owners. The package/root
@@ -187,25 +187,25 @@ transcripts. Their existence is evidence input, not self-certification.
 The UBL package/root census and authority replay are bounded evidence only.
 They prove 890 package files, 91 unique document roots, three current
 authority artifacts, and 34 promoted SAL facts with deterministic output.
-They do not prove UBL-03 schema graph completion, a recorded task-state
-transition, or any product behavior.
+They do not prove UBL-03 schema graph completion or any product behavior.
+Event 27 records the task-state transition to
+`PACKAGE_CENSUS_COMPLETE`.
 
 ## Disjoint UBL resume when XLIFF is live-leased
 
 Use this route only when coordination prevents safe XLIFF mutation. It is not
 permission to skip runnable XLIFF work.
 
-Machine action ID:
-`UBL_01_UBL_02_SERIALIZED_STATE_CHECKPOINT`.
+Machine action ID: `UBL-03`.
 
-The stale-SAL repair is complete at immutable commit `7fc49c29`; do not
-repeat it. Claude starts this lane by independently validating that commit,
-then acquiring a safe serialized `plan-control` window to record UBL-01 and
-UBL-02 without changing the canonical XLIFF task. Never take over or stage the
-live XLIFF paths.
+The stale-SAL repair, package census, and Event 27 serialization are complete;
+do not repeat them. Claude starts this lane by independently validating Event
+27 and the immutable UBL evidence, then acquiring disjoint leases for UBL-03.
+Never take over or stage the live XLIFF paths.
 
-1. Register a new identity and claim only the plan-control projection paths
-   after proving no live owner holds them.
+1. Register a new identity and claim only the UBL-03 schema-graph source,
+   report, tests, receipts, and logical scope after proving no live owner
+   holds them.
 2. Independently replay the current verifier:
 
    ```powershell
@@ -219,22 +219,23 @@ live XLIFF paths.
    2cc0f2cac163b7f42ab18bbe5220837d1f49a808904ac964c536085ca6d111a0
    ```
 
-3. Validate the three UBL closure skill receipts and the capability compiler
-   with `--check --verify-idempotency`.
-4. Under serialized `plan-control` ownership, append exactly one event binding
-   commits `7b5cce4f` and `7fc49c29`.
-5. Advance the UBL task projection through `AUTHORITY_REVALIDATED` and
-   `PACKAGE_CENSUS_COMPLETE`, while retaining XLIFF as the canonical active
-   controller task.
-6. Commit and push that projection checkpoint independently.
-7. Start UBL-03 only after event, controller, taskcard, current-state, and
-   handover projections validate.
+3. Validate the UBL closure receipts, capability compiler, Event 27 hash
+   chain, controller projection, and UBL taskcard state.
+4. Implement UBL-03 through registered research/compiler/TDD skills: every
+   declaration reachable from all 91 roots must be represented exactly once.
+5. Reject unresolved/ambiguous references, remote imports, namespace drift,
+   lost occurrence/order rules, and nondeterministic anonymous identities.
+6. Commit and push the bounded UBL-03 implementation and evidence without
+   touching XLIFF.
+7. Under serialized `plan-control` ownership, append one later event only
+   after independent verification; keep XLIFF canonical-active unless the
+   journal's scheduling policy changes it.
 
 Do not rerun `--apply` merely to refresh evidence, weaken member-digest
 checking, edit a status label without an event, or infer UBL-03 completion
 from the package census.
 
-The expected Event 27 projection is:
+The recorded Event 27 projection is:
 
 ```text
 sequence: 27
@@ -250,8 +251,9 @@ exact active action: XLF-04-BATCH-005
 promotion effect: none
 ```
 
-Append the event before updating derived projections. Update the controller
-capability aggregate only if a fresh replay again returns
+Do not append Event 27 again. A later event must follow event-first ordering.
+The controller capability aggregate is current only while a fresh replay
+returns
 `e199e84e9f7ee0579959db28283ecb89e014077cdd1605fbf0c82aee553d9960`
 and the three-run digest
 `eafd6f8657ed83b73dbd5975046698d24fda6d8fd58c3d6aea962e6b6a85cf7c`.

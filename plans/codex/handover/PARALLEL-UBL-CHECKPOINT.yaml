@@ -10,8 +10,8 @@ mission:
   format_id: ubl
   task_id: TC-FF6-UBL-TYPING-001
   canonical_controller_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
-  canonical_controller_event: FF6-EVENT-000026
-  changes_controller_head: false
+  canonical_controller_event: FF6-EVENT-000027
+  changes_controller_head: true
   changes_product_or_promotion_state: false
 
 source_checkpoint:
@@ -24,14 +24,13 @@ source_checkpoint:
 bounded_result:
   status: VERIFIED_PARTIAL_NON_PROMOTING
   completed_artifact: UBL-01_AUTHORITY_AND_UBL-02_PACKAGE_ROOT_CENSUS
-  taskcard_state_machine_transition_recorded: false
-  taskcard_projection_at_checkpoint: READY
+  taskcard_state_machine_transition_recorded: true
+  taskcard_projection_at_checkpoint: WORK_IN_PROGRESS
+  detailed_substate: PACKAGE_CENSUS_COMPLETE
+  first_unmet_step: UBL-03
   reason_projection_not_advanced: >-
-    The UBL work ran as a disjoint lane while the canonical XLIFF task was
-    live-leased. The package census and full UBL-01 SAL authority replay are
-    committed, but no serialized native FF6 event was appended. The taskcard
-    therefore remains READY until a future plan-control checkpoint can record
-    evidence without racing the XLIFF controller.
+    Not applicable. Event 27 serializes the package census and full UBL-01 SAL
+    authority replay while preserving XLIFF as the canonical active task.
 
 authority:
   prose:
@@ -87,21 +86,19 @@ verification:
   broad_format_contract_regression: 94 passed, 1 unrelated CSV idempotency failure
 
 open_failures:
-  - gap_id: FF6-UBL-STATE-SERIALIZATION-001
+  - gap_id: FF6-UBL-SCHEMA-GRAPH-001
     severity: HIGH
     blocking_step: UBL-03
     failure: >-
-      Commits 7b5cce4f and 7fc49c29 contain verified UBL-02 and UBL-01
-      evidence, but the native journal still ends at Event 26 and the UBL
-      taskcard remains READY.
+      The package/root census is complete, but the content-addressed graph of
+      every schema declaration reachable from all 91 roots does not exist.
     required_repair: >-
-      Under serialized plan-control ownership, independently replay the two
-      commits, append exactly one event binding their evidence, and advance
-      the UBL projection through AUTHORITY_REVALIDATED and
-      PACKAGE_CENSUS_COMPLETE without changing the canonical XLIFF task.
+      Compile and independently verify the complete reachable graph with exact
+      reference, inheritance, occurrence, ordering, facet, wildcard,
+      substitution-group, and namespace semantics.
     forbidden_shortcut: >-
-      Do not manually edit the taskcard status, append a duplicate event, or
-      begin UBL-03 while the task-state projections disagree.
+      Do not infer graph completeness from the 91 root names, current product
+      classes, XSD validation alone, or generated class counts.
   - gap_id: FF6-SAL-VERIFIER-STRICT-MYPY-001
     severity: MEDIUM
     blocking_step: NONE_FOR_COMMITTED_UBL_EVIDENCE
@@ -127,14 +124,13 @@ exact_resume:
   canonical_priority: >-
     XLF-04-BATCH-005 remains the controller-selected next work.
   disjoint_fallback_when_xliff_is_live_leased: >-
-    Do not repeat the completed stale-SAL repair. At the next safe serialized
-    window, record UBL-01 and UBL-02. Begin UBL-03 only after that projection
-    checkpoint validates.
+    Do not repeat the completed stale-SAL repair, package census, or Event 27.
+    Begin UBL-03 after revalidating the Event 27 projections.
   next_ubl_state_after_checkpoint: PACKAGE_CENSUS_COMPLETE
   next_ubl_task_step_after_checkpoint: UBL-03
 
 serialized_checkpoint_contract:
-  expected_event:
+  recorded_event:
     sequence: 27
     previous_event_hash: 34b36bf5dc4344713ac1c0f026b30e6b15fb6a63b86f4876ee98230952fabcd0
     state_before: CONTRACT
@@ -153,13 +149,13 @@ serialized_checkpoint_contract:
     - taskcards/TC-FF6-UBL-TYPING-001.md
     - taskcards/index.yaml
   event_first_write_order:
-    - append plans/strategic/ff6/events.jsonl
+    - already appended plans/strategic/ff6/events.jsonl
     - record the journal write in coordination
     - update controller projection
     - update UBL taskcard projection
     - update task index projection
     - validate event hash chain and projection agreement
-    - commit and push the plan-control checkpoint
+    - committed and pushed the plan-control checkpoint as 59ef8ee2
     - refresh the provider-neutral handover separately
   controller_invariants:
     - active task remains TC-FF6-XLIFF-PROFILE-SURFACE-001

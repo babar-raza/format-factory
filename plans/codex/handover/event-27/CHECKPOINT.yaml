@@ -1,0 +1,59 @@
+schema: ff6/versioned-checkpoint@1
+artifact_id: FF6-VERSIONED-CHECKPOINT-EVENT-27
+visibility: internal
+generated_by: codex
+generated_at: "2026-07-30"
+
+source:
+  commit: 59ef8ee2e1b4e37168e4c7094687fac0a6098a79
+  required_remote_ref: origin/main
+  forge: GitLab
+
+controller:
+  state: CONTRACT
+  sequence: 27
+  event_id: FF6-EVENT-000027
+  event_hash: 9a1783b0705468fec1e9f9fda96f61ab4b1da32a161d128a3120a8bf689686c2
+  active_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
+  active_task_state: WORK_IN_PROGRESS
+
+exact_next:
+  microstep: XLF-04-BATCH-005
+  first_unmet_step: XLF-04
+  completed_steps:
+    - XLF-01
+    - XLF-02
+    - XLF-03
+    - XLF-04-BATCH-001
+    - XLF-04-BATCH-002
+    - XLF-04-BATCH-003
+    - XLF-04-BATCH-004
+
+parallel_ubl:
+  task: TC-FF6-UBL-TYPING-001
+  state: WORK_IN_PROGRESS
+  detailed_substate: PACKAGE_CENSUS_COMPLETE
+  completed_steps: [UBL-01, UBL-02]
+  first_unmet_step: UBL-03
+  package_members: 890
+  document_roots: 91
+  authority_matches: 3
+  sal_facts_verified: 34
+  reachable_schema_graph_complete: false
+
+program:
+  products_certified: 0
+  promotions:
+    ipynb: UNASSESSED
+    ora: UNASSESSED
+    nrrd: UNASSESSED
+    xliff: UNASSESSED
+    safetensors: UNASSESSED
+    ubl: UNASSESSED
+
+truth_boundary:
+  xlf_04_complete: false
+  ubl_03_complete: false
+  product_source_effect: none
+  certification_effect: none
+  promotion_effect: none

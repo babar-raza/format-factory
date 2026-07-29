@@ -1,0 +1,52 @@
+{
+  "schema": "ff6/versioned-checkpoint-receipt@1",
+  "artifact_id": "FF6-EVENT-27-RECEIPT",
+  "generated_by": "codex",
+  "visibility": "internal",
+  "source_commit": "59ef8ee2e1b4e37168e4c7094687fac0a6098a79",
+  "event": {
+    "sequence": 27,
+    "event_id": "FF6-EVENT-000027",
+    "event_hash": "9a1783b0705468fec1e9f9fda96f61ab4b1da32a161d128a3120a8bf689686c2",
+    "previous_event_hash": "34b36bf5dc4344713ac1c0f026b30e6b15fb6a63b86f4876ee98230952fabcd0",
+    "transition": "PARALLEL_TASK_CHECKPOINT_VERIFIED"
+  },
+  "xlf": {
+    "active_task": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "next_microstep": "XLF-04-BATCH-005",
+    "expected_ids": 105,
+    "source_bound_ids": 25,
+    "missing_ids": 80,
+    "coarse_dispositions": 78
+  },
+  "ubl": {
+    "task": "TC-FF6-UBL-TYPING-001",
+    "state": "WORK_IN_PROGRESS",
+    "detailed_substate": "PACKAGE_CENSUS_COMPLETE",
+    "completed_steps": [
+      "UBL-01",
+      "UBL-02"
+    ],
+    "first_unmet_step": "UBL-03",
+    "package_members": 890,
+    "document_roots": 91,
+    "authority_matches": 3,
+    "sal_facts_verified": 34,
+    "package_root_census_sha256": "787c8d9258dc25a8662ee934b9b0b14096de790db87826dab970792b9494976d",
+    "sal_receipt_sha256": "2cc0f2cac163b7f42ab18bbe5220837d1f49a808904ac964c536085ca6d111a0",
+    "reachable_schema_graph_complete": false
+  },
+  "verification": {
+    "native_chain": "PASS_THROUGH_EVENT_27",
+    "focused_ubl_tests": "25 passed",
+    "production_program": "69 passed",
+    "capability_aggregate": "e199e84e9f7ee0579959db28283ecb89e014077cdd1605fbf0c82aee553d9960",
+    "capability_three_run_digest": "eafd6f8657ed83b73dbd5975046698d24fda6d8fd58c3d6aea962e6b6a85cf7c"
+  },
+  "effects": {
+    "product_source": "none",
+    "certification": "none",
+    "promotion": "none",
+    "products_certified": "0/6"
+  }
+}

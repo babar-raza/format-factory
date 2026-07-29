@@ -1,5 +1,5 @@
 ---
-artifact_id: FF6-CURRENT-SHIFT-HANDOVER-7FC49C29
+artifact_id: FF6-CURRENT-SHIFT-HANDOVER-EVENT-27
 artifact_type: provider_neutral_shift_checkpoint
 visibility: internal
 publish_allowed: false
@@ -45,24 +45,24 @@ and an independently computed certification. Current result: `0/6`.
 |---|---|
 | Canonical forge | GitLab |
 | Remote and branch | `origin/main` |
-| Packet input checkpoint | `d5e8927a85ed0f2e8c68e1e061084c67b85363c9` |
+| Packet input checkpoint | `59ef8ee2e1b4e37168e4c7094687fac0a6098a79` |
 | Latest bounded implementation checkpoint | `7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c` |
-| Packet input commit | `docs(ff6): checkpoint UBL authority handover` |
+| Packet input commit | `chore(ff6): journal UBL authority checkpoint` |
 | Remote verification | local `HEAD` and `origin/main` equal at capture |
 | Controller state | `CONTRACT` |
-| Native journal head | `FF6-EVENT-000026` |
-| Event hash | `34b36bf5dc4344713ac1c0f026b30e6b15fb6a63b86f4876ee98230952fabcd0` |
+| Native journal head | `FF6-EVENT-000027` |
+| Event hash | `9a1783b0705468fec1e9f9fda96f61ab4b1da32a161d128a3120a8bf689686c2` |
 | Canonical active task | `TC-FF6-XLIFF-PROFILE-SURFACE-001` |
 | Exact canonical microstep | `XLF-04-BATCH-005` |
 | Product certifications | `0/6` |
 | Promotion state | all six `UNASSESSED` |
 
-Commit `7fc49c29` is a valid bounded UBL evidence checkpoint. It is not a
-native FF6 task-state transition. The journal remains at Event 26 and the UBL
-taskcard remains `READY`; a future serialized plan-control event must record
-the UBL-01 and UBL-02 evidence before the task projection can advance.
+Commit `7fc49c29` is a valid bounded UBL evidence checkpoint. Event 27 binds
+that evidence and the package census to the native state machine. The UBL
+taskcard is `WORK_IN_PROGRESS` at `PACKAGE_CENSUS_COMPLETE`; `UBL-03` is
+first unmet. XLIFF remains the canonical active task.
 
-The packet input commit `d5e8927a` contains the previously validated handover.
+The packet input commit `59ef8ee2` contains the verified controller checkpoint.
 It adds no product evidence. The commit containing this refresh must descend
 from it and cannot embed its own final hash.
 
@@ -87,7 +87,7 @@ proof dependency:
 9. Committed exactly 20 owned paths and pushed only to GitLab `main`.
 10. Preserved and excluded the active XLIFF worker's five dirty paths.
 11. Reconciled the handover again from GitLab `main`, current coordination,
-    the Event 26 journal, the UBL replay, and the foreign Batch 005 worktree.
+    the Event 27 journal, the UBL replay, and the foreign Batch 005 worktree.
 12. Added a provider-shift contract that fixes the cross-provider transaction,
     Event 27 serialization, clean-checkpoint definition, and handback record.
 
@@ -215,29 +215,26 @@ The incoming agent must execute this algorithm, not select work from prose:
 1. Fetch GitLab and read the current journal/controller/taskcards.
 2. Run the handover validator.
 3. Query coordination and classify every dirty path.
-4. If Event 27 or later exists, rebuild from that event and ignore this
+4. If Event 28 or later exists, rebuild from that event and ignore this
    document's task selection.
 5. If XLIFF Batch 005 has been committed without a new event, independently
    validate its immutable commit and append one serialized event. Do not
    reimplement it.
 6. If the XLIFF lease is still active, do not touch its files. The UBL
-   authority repair is already complete; do not repeat it. The first safe
-   path-disjoint action is a single Event 27 plan-control checkpoint that
-   binds UBL-01/UBL-02 while preserving XLIFF as the active task.
+   authority repair, census, and Event 27 are already complete; do not repeat
+   them. The first safe path-disjoint action is UBL-03.
 7. If the XLIFF lease is stale and no newer commit exists, use governed
    `takeover --reason`, recapture every current file baseline, rerun the RED
    tests, and continue `XLF-04-BATCH-005`.
 8. If no owner or dirty bytes exist and no newer commit exists, start
-   `XLF-04-BATCH-005` from the Event 26 checkpoint.
+   `XLF-04-BATCH-005` from the Event 27 checkpoint.
 9. After XLIFF reaches a bounded verified implementation commit, append one
    native event, refresh projections, push, then refresh this handover.
-10. Under the next serialized plan-control window, record the already
-    committed UBL-01 authority and UBL-02 census evidence. Only then advance
-    the UBL taskcard through `AUTHORITY_REVALIDATED` and
-    `PACKAGE_CENSUS_COMPLETE`; the first UBL implementation step after that is
-    UBL-03, the complete reachable schema graph.
+10. If XLIFF remains live-owned, execute UBL-03 under disjoint leases. Record
+    a later native event only after the complete reachable schema graph and
+    its negative controls independently verify.
 
-The Event 27 checkpoint writes the hash-chained journal first, then the
+The committed Event 27 checkpoint wrote the hash-chained journal first, then the
 controller, UBL taskcard, task index, and refreshed handover. Its task
 projection is `READY -> WORK_IN_PROGRESS`, completed steps are `UBL-01` and
 `UBL-02`, first unmet step is `UBL-03`, and its promotion effect is `none`.
@@ -257,7 +254,7 @@ git fetch origin main
 git status --short --branch
 git rev-parse HEAD
 git rev-parse origin/main
-git merge-base --is-ancestor d5e8927a85ed0f2e8c68e1e061084c67b85363c9 origin/main
+git merge-base --is-ancestor 59ef8ee2e1b4e37168e4c7094687fac0a6098a79 origin/main
 git merge-base --is-ancestor 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c origin/main
 .venv\Scripts\python.exe plans\codex\handover\validate_handover.py --self-test
 .venv\Scripts\python.exe -m tools.supervisor.coordination status

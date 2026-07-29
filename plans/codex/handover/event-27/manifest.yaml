@@ -1,0 +1,34 @@
+schema: ff6/versioned-handover-manifest@1
+packet_id: FF6-HANDOVER-EVENT-27
+visibility: internal
+generated_by: codex
+generated_at: "2026-07-30"
+source:
+  commit: 59ef8ee2e1b4e37168e4c7094687fac0a6098a79
+  event_sequence: 27
+  event_id: FF6-EVENT-000027
+  event_hash: 9a1783b0705468fec1e9f9fda96f61ab4b1da32a161d128a3120a8bf689686c2
+digest_policy:
+  algorithm: sha256
+  text_canonicalization: CRLF_TO_LF
+  manifest_self_hashed: false
+files:
+  - path: START-HERE.md
+    lf_sha256: 32615c9ef2121a69d5376e35214247d6e8eb26a58ac90e3c7497aa9d68f627a5
+    canonical_bytes: 1035
+  - path: CHECKPOINT.yaml
+    lf_sha256: 9f40a7e7d649cefe53a1214aa7247eb4f84d385f4959238d375536fa4ea6be66
+    canonical_bytes: 1365
+  - path: RUNBOOK.md
+    lf_sha256: f939cafd5a3a2d2173340b5f10d34e211be861114a8e311a2b0f111b6ba4dabe
+    canonical_bytes: 2199
+  - path: receipt.json
+    lf_sha256: 815b329c9a035b258822e050d47716f64e7347eb201a0d23cfc0520de9eed243
+    canonical_bytes: 1809
+validation:
+  event_chain: PASS_THROUGH_EVENT_27
+  controller_projection: PASS
+  ubl_projection: PACKAGE_CENSUS_COMPLETE
+  xlf_active_task_preserved: PASS
+  products_certified: 0
+  promotion_effect: none

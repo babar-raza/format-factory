@@ -72,8 +72,8 @@ Every shift records three independent state axes:
 
 | Axis | Question | Current answer |
 |---|---|---|
-| Mission state | What does the native journal authorize next? | `CONTRACT`, Event 26, XLIFF `XLF-04-BATCH-005` |
-| Immutable evidence state | What committed work can be replayed? | XLIFF Batch 004 is journaled; UBL-01/UBL-02 are committed but not journaled |
+| Mission state | What does the native journal authorize next? | `CONTRACT`, Event 27, XLIFF `XLF-04-BATCH-005` |
+| Immutable evidence state | What committed work can be replayed? | XLIFF Batch 004 and UBL-01/UBL-02 are journaled; UBL-03 is open |
 | Workspace transfer state | Which current local bytes can the incoming executor own? | Five dirty XLIFF paths are foreign and under an `ACTIVE` Batch 005 lease |
 
 An immutable evidence commit without a journal transition is not a task-state
@@ -86,25 +86,24 @@ duplicate work, status inflation, and cross-provider data loss.
 At this packet refresh:
 
 - GitLab `origin/main` and local `HEAD` are
-  `d5e8927a85ed0f2e8c68e1e061084c67b85363c9`.
-- Native journal head is `FF6-EVENT-000026`,
+  `59ef8ee2e1b4e37168e4c7094687fac0a6098a79`.
+- Native journal head is `FF6-EVENT-000027`,
   hash
-  `34b36bf5dc4344713ac1c0f026b30e6b15fb6a63b86f4876ee98230952fabcd0`.
+  `9a1783b0705468fec1e9f9fda96f61ab4b1da32a161d128a3120a8bf689686c2`.
 - Canonical active task is
   `TC-FF6-XLIFF-PROFILE-SURFACE-001`.
 - Canonical exact next microstep is `XLF-04-BATCH-005`.
 - UBL commits `7b5cce4f` and `7fc49c29` prove UBL-02 and UBL-01,
-  respectively, but no native event records their task-state effect.
+  respectively; Event 27 records their task-state effect.
 - The current capability compiler replay is:
   aggregate
   `e199e84e9f7ee0579959db28283ecb89e014077cdd1605fbf0c82aee553d9960`;
   three-run digest
   `eafd6f8657ed83b73dbd5975046698d24fda6d8fd58c3d6aea962e6b6a85cf7c`.
-- The controller still contains the older Event 26 capability digests. That
-  mismatch is expected until the committed UBL evidence is serialized; it
-  must not be hidden or manually edited.
+- The controller contains the fresh capability aggregate and three-run
+  digests recorded by Event 27.
 
-The packet is derived from `d5e8927a`. The commit containing a future refresh
+The packet is derived from `59ef8ee2`. The commit containing a future refresh
 must descend from that commit; the packet cannot embed its own final commit
 hash.
 
@@ -141,11 +140,11 @@ rebuild the state projection, and refresh the packet before product work.
 Use this decision order:
 
 ```text
-new native event after Event 26?
+new native event after Event 27?
   yes -> validate the complete chain and execute the newly computed task
   no  -> XLIFF Batch 005 scope owned by another ACTIVE lease?
-           yes -> preserve all XLIFF bytes; serialize verified UBL-01/UBL-02
-                  as native Event 27 under a disjoint plan-control lease
+           yes -> preserve all XLIFF bytes; execute UBL-03 under disjoint
+                  leases; do not repeat Event 27
            no  -> Batch 005 implementation commit on origin/main?
                     yes -> replay it independently and journal it once
                     no  -> stale owner with attributable bytes?
@@ -156,10 +155,9 @@ new native event after Event 26?
 Canonical priority and operationally safe priority are different:
 
 - The controller-selected product-contract task remains XLIFF Batch 005.
-- While that scope is live-owned, the first safe disjoint action is the UBL
-  Event 27 state serialization. It does not replace XLIFF as active task.
-- The machine action ID is
-  `UBL_01_UBL_02_SERIALIZED_STATE_CHECKPOINT`.
+- While that scope is live-owned, the first safe disjoint action is UBL-03.
+  It does not replace XLIFF as active task.
+- The machine action ID is `UBL-03`.
 - After Event 27, if XLIFF remains live-owned, UBL-03 may start only if the
   serialized projections agree and its exact source/report paths are
   independently leased.
@@ -167,10 +165,10 @@ Canonical priority and operationally safe priority are different:
 Never select work by scanning historical gap ledgers, copying an old prompt,
 or choosing the easiest passing test.
 
-## 7. Exact Event 27 checkpoint contract
+## 7. Recorded Event 27 checkpoint contract
 
-The next safe disjoint checkpoint binds already committed evidence. It does
-not implement new UBL format behavior.
+This completed checkpoint binds already committed evidence. It does not
+implement new UBL format behavior.
 
 Required immutable inputs:
 
@@ -188,7 +186,7 @@ Required immutable inputs:
 
 Required serialized result:
 
-- append exactly one Event 27 after Event 26;
+- Event 27 exists exactly once after Event 26;
 - preserve controller state `CONTRACT`;
 - represent UBL task progress as `WORK_IN_PROGRESS`;
 - record completed UBL steps `UBL-01` and `UBL-02`;
@@ -201,7 +199,7 @@ Required serialized result:
 - keep the broad UBL typing gap open;
 - preserve `0/6` certification and all `UNASSESSED` promotions.
 
-Required write order:
+Recorded write order:
 
 1. independently replay evidence;
 2. claim/take over only stale plan-control leases through the governed verb;

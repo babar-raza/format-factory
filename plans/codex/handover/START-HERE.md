@@ -24,13 +24,13 @@ C:\Users\prora\OneDrive\Documents\GitHub\format-factory\plans\codex\handover\STA
 | Field | Verified value |
 |---|---|
 | Forge / branch | GitLab `origin/main` only |
-| Packet input checkpoint | `d5e8927a85ed0f2e8c68e1e061084c67b85363c9` |
+| Packet input checkpoint | `59ef8ee2e1b4e37168e4c7094687fac0a6098a79` |
 | Latest bounded implementation ancestor | `7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c` |
 | Controller handover source | `18bb295f94e43338611ef88caff073eed17411c9` |
-| Controller Event 26 commit | `15ab7d0455e109bd88289e16d73c0835324a21ab` |
+| Controller Event 27 commit | `59ef8ee2e1b4e37168e4c7094687fac0a6098a79` |
 | Controller state | `CONTRACT` |
-| Native event | `FF6-EVENT-000026` |
-| Event hash | `34b36bf5dc4344713ac1c0f026b30e6b15fb6a63b86f4876ee98230952fabcd0` |
+| Native event | `FF6-EVENT-000027` |
+| Event hash | `9a1783b0705468fec1e9f9fda96f61ab4b1da32a161d128a3120a8bf689686c2` |
 | Active task | `TC-FF6-XLIFF-PROFILE-SURFACE-001` |
 | Task state | `WORK_IN_PROGRESS` |
 | Completed task steps | `XLF-01`, `XLF-02`, `XLF-03` |
@@ -43,10 +43,12 @@ C:\Users\prora\OneDrive\Documents\GitHub\format-factory\plans\codex\handover\STA
 The packet commit that contains this file must descend from the source
 checkpoint. It cannot truthfully embed its own final commit hash.
 
-At the final refresh, the UBL authority-closure checkpoint was committed and
-remote verified. A separately leased Batch 005 worker still owned five dirty
-XLIFF implementation/report paths in the shared worktree. Those classified
-paths are preserved and are not part of the UBL or handover commits.
+At the final refresh, Event 27 serialized the verified UBL-01/UBL-02
+authority and package-census evidence. UBL is `WORK_IN_PROGRESS` at
+`PACKAGE_CENSUS_COMPLETE`; `UBL-03` is first unmet. A separately leased Batch
+005 worker still owned five dirty XLIFF implementation/report paths in the
+shared worktree. Those classified paths are preserved and are not part of the
+controller or handover commits.
 
 Read [the current shift handover](CURRENT-SHIFT-HANDOVER.md) immediately after
 this entrypoint. It is the exact delta from the older Event 26 packet.
@@ -57,7 +59,7 @@ Two different states exist and must never be collapsed into one status:
 
 | Boundary | State | Meaning |
 |---|---|---|
-| Committed Event 26 checkpoint | `RESUMABLE` | A clean checkout of GitLab `origin/main` can reconstruct the last verified state without local-only files |
+| Committed Event 27 checkpoint | `RESUMABLE` | A clean checkout of GitLab `origin/main` can reconstruct the last verified state without local-only files |
 | Shared workspace at 2026-07-29T20:17Z | `ACTIVE_XLIFF_BATCH005_FOREIGN_WORKING_SET` | Another live Codex identity owns five dirty Batch 005 paths; Claude must not claim, overwrite, commit, or present those bytes as a clean checkpoint |
 
 The earlier captured transfer classifier
@@ -90,7 +92,7 @@ They are deliberately not required for a clean-checkout resume. If present,
 the validator requires exact bytes and untracked status unless the path is
 explicitly classified as a newer active foreign XLIFF working set. Active
 foreign bytes are preserved but deliberately not frozen. If absent, resume
-from Event 26. If different without that active classification, preserve them
+from Event 27. If different without that active classification, preserve them
 and reconcile the conflict; never overwrite or silently prefer either copy.
 
 At the 2026-07-29T19:17Z refresh, a newer live XLIFF worker,
@@ -126,7 +128,7 @@ The UBL package census and subsequent authority-closure repair are committed
 and pushed to GitLab main. The latest bounded checkpoint is
 `7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c`.
 
-State: `COMMITTED_PARALLEL_CHECKPOINT_NON_CONTROLLER`.
+State: `SERIALIZED_PARALLEL_CHECKPOINT`.
 
 - `reports/ff6/ubl-package-root-census.yaml`
 - `tests/tools/test_compile_ubl_schema_graph.py`
@@ -139,10 +141,10 @@ report digest is
 `787c8d9258dc25a8662ee934b9b0b14096de790db87826dab970792b9494976d`.
 The SAL receipt digest is
 `2cc0f2cac163b7f42ab18bbe5220837d1f49a808904ac964c536085ca6d111a0`.
-This is real bounded evidence for UBL-01 and UBL-02, but it does not change
-Event 26, advance the UBL taskcard from `READY`, prove the reachable schema
-graph, or prove product readiness. A serialized plan-control checkpoint must
-record those transitions before UBL-03 begins. Read the
+This is real bounded evidence for UBL-01 and UBL-02. Event 27 records it,
+advances the UBL taskcard to `WORK_IN_PROGRESS` at
+`PACKAGE_CENSUS_COMPLETE`, and keeps XLIFF as the canonical active task. It
+does not prove the reachable schema graph or product readiness. Read the
 [parallel UBL checkpoint](PARALLEL-UBL-CHECKPOINT.yaml) before resuming that
 lane.
 
@@ -157,12 +159,12 @@ credentials or timeless authority. Use the decision table in
 
 Claude's first executable decision is deterministic:
 
-1. If Event 27 or later is on GitLab, recompute from the journal and ignore
+1. If Event 28 or later is on GitLab, recompute from the journal and ignore
    this runtime observation.
 2. If the XLIFF lease is still live, leave the five current dirty XLIFF paths
-   untouched. Do not repeat the completed UBL stale-SAL repair. The first safe
-   disjoint action is one native Event 27 checkpoint that records the
-   UBL-01/UBL-02 evidence while retaining XLIFF as the canonical active task.
+   untouched. Do not repeat the completed UBL stale-SAL repair, package
+   census, or Event 27. The first safe disjoint action is `UBL-03`, the
+   complete reachable-schema-graph compiler and proof.
 3. If the XLIFF lease is stale and no newer commit exists, use governed
    `takeover --reason`, recapture every baseline, and continue Batch 005 from
    the preserved bytes.
@@ -209,7 +211,7 @@ obligation rows and 80 remain missing.
 | NRRD | profile surface repaired; 21 / 65 | existing partial package | not certified |
 | XLIFF | profile compilation in progress; 15 / 125 | existing partial package | not certified |
 | SafeTensors | compiled planning surface; 11 / 86 | existing partial package | not certified |
-| UBL | exact package/root census and 34-fact SAL authority replay verified; state serialization and UBL-03 typing graph remain; 18 / 194 | existing partial package | not certified |
+| UBL | `PACKAGE_CENSUS_COMPLETE`; Event 27 records UBL-01/UBL-02; UBL-03 reachable schema graph remains; 18 / 194 | existing partial package | not certified |
 
 All six ProductContracts remain lifecycle `DRAFT`. Five existing oracle
 summaries are shallow `D0` partial evidence, the existing install proofs have
@@ -224,10 +226,9 @@ There are two non-conflicting next-action axes:
 | Axis | Exact action |
 |---|---|
 | Canonical controller action | Resume `TC-FF6-XLIFF-PROFILE-SURFACE-001` at `XLF-04-BATCH-005` |
-| First safe action while XLIFF is live-owned | Serialize committed UBL-01/UBL-02 evidence as Event 27 without changing the XLIFF active task |
+| First safe action while XLIFF is live-owned | Execute `UBL-03` under disjoint leases without changing the XLIFF active task |
 
-Machine action ID:
-`UBL_01_UBL_02_SERIALIZED_STATE_CHECKPOINT`.
+Machine action ID: `UBL-03`.
 
 Resume `TC-FF6-XLIFF-PROFILE-SURFACE-001` at `XLF-04-BATCH-005`.
 
@@ -253,10 +254,9 @@ XLF-04 work is safely executable.
 
 If live coordination shows another agent owns the XLIFF Batch 005 scope, do
 not compete for those paths and do not repeat commit `7fc49c29`. The UBL
-authority replay is already complete. At the next safe serialized
-plan-control window, record the UBL-01 and UBL-02 evidence, advance the UBL
-projection through `AUTHORITY_REVALIDATED` and `PACKAGE_CENSUS_COMPLETE`, and
-only then begin UBL-03 reachable-schema-graph work.
+authority replay, package census, and Event 27 serialization are already
+complete. Begin UBL-03 only under disjoint leases and independently validate
+the complete reachable-schema graph before recording any later event.
 
 Read [Claude/Codex execution instructions](CLAUDE-START.md), the
 [active checkpoint](ACTIVE-WORK-CHECKPOINT.md), and the
@@ -311,7 +311,8 @@ Read these in order:
 8. [Active XLIFF taskcard](../../../taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md)
 9. [Provider-shift contract](PROVIDER-SHIFT-CONTRACT.md)
 10. [Machine state](CURRENT-MACHINE-STATE.yaml)
-11. [Event 26 runbook](event-26/RUNBOOK.md)
+11. [Current Event 27 runbook](event-27/RUNBOOK.md)
+12. [Historical Event 26 runbook](event-26/RUNBOOK.md)
 
 The root [manifest](manifest.yaml) binds the current packet and canonical
 inputs. [Checkpoint](checkpoint.yaml) is the compact machine projection.
@@ -323,7 +324,7 @@ task registration, GitLab ancestry, and negative controls.
 
 The following files retain deeper design background but are historical
 projections. Their embedded Event 24/25 exact-next instructions are superseded
-by this file and Event 26:
+by this file and Event 27:
 
 - [root-cause analysis](CURRENT-STATE-AND-ROOT-CAUSES.md)
 - [older execution runbook](EXECUTION-RUNBOOK.md)
@@ -331,6 +332,7 @@ by this file and Event 26:
 - [state-machine protocol](STATE-MACHINE-AND-TASKCARD-PROTOCOL.md)
 - [validation and release notes](VALIDATION-AND-RELEASE.md)
 - [Event 25 packet](event-25/START-HERE.md)
+- [Event 26 packet](event-26/START-HERE.md)
 
 Use them for rationale only. Never select work from a historical packet.
 

@@ -289,3 +289,29 @@ bound to controller commit `15ab7d0455e109bd88289e16d73c0835324a21ab`.
   require no local identity, lease, branch, or conversation memory.
 - Product source, product proof, certification, promotion, release, and gate
   state are unchanged. Production certification remains 0/6.
+
+## Event-27 cross-provider checkpoint
+
+The current root packet and immutable `event-27/` packet are rebuilt from
+GitLab checkpoint `59ef8ee2e1b4e37168e4c7094687fac0a6098a79`.
+
+- Native Event 27 and the controller agree at hash
+  `9a1783b0705468fec1e9f9fda96f61ab4b1da32a161d128a3120a8bf689686c2`.
+- XLIFF remains canonical-active at `XLF-04-BATCH-005`.
+- UBL-01 and UBL-02 are serialized as `PACKAGE_CENSUS_COMPLETE`;
+  `UBL-03` is first unmet.
+- The UBL evidence binds three matching authorities, 34 verified SAL facts,
+  890 package members, and exactly 91 document roots.
+- The capability aggregate is
+  `e199e84e9f7ee0579959db28283ecb89e014077cdd1605fbf0c82aee553d9960`;
+  the three-run digest is
+  `eafd6f8657ed83b73dbd5975046698d24fda6d8fd58c3d6aea962e6b6a85cf7c`.
+- If the foreign XLIFF working set is still live-owned, the safe disjoint
+  fallback is UBL-03. Event 27 must not be appended again.
+- The handover validator understands parallel-task events, binds 69 current
+  packet files, verifies the complete native chain, and rejects eleven
+  semantic corruptions.
+- Five dirty XLIFF Batch 005 paths remain foreign work and are excluded from
+  every handover/controller commit.
+- Product source, certification, promotion, release, and gate state are
+  unchanged. Production certification remains 0/6.

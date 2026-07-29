@@ -1,19 +1,19 @@
 schema: ff6/inflight-recovery@2
-artifact_id: FF6-INFLIGHT-RECOVERY-EVENT-26
+artifact_id: FF6-INFLIGHT-RECOVERY-EVENT-27
 visibility: internal
 generated_by: codex
 generated_at: "2026-07-30"
 
 clean_checkpoint:
   status: RESUMABLE
-  source_commit: d5e8927a85ed0f2e8c68e1e061084c67b85363c9
+  source_commit: 59ef8ee2e1b4e37168e4c7094687fac0a6098a79
   latest_bounded_implementation_commit: 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c
   controller_handover_source: 18bb295f94e43338611ef88caff073eed17411c9
-  controller_event_commit: 15ab7d0455e109bd88289e16d73c0835324a21ab
+  controller_event_commit: 59ef8ee2e1b4e37168e4c7094687fac0a6098a79
   implementation_commit: 1fef79b9d6c1ee1f6667e0c5c70435562c97544c
-  event_sequence: 26
-  event_id: FF6-EVENT-000026
-  event_hash: 34b36bf5dc4344713ac1c0f026b30e6b15fb6a63b86f4876ee98230952fabcd0
+  event_sequence: 27
+  event_id: FF6-EVENT-000027
+  event_hash: 9a1783b0705468fec1e9f9fda96f61ab4b1da32a161d128a3120a8bf689686c2
   worktree_at_capture: CLASSIFIED_CONCURRENT_BATCH005_WORK_PRESENT
   committed_handover_scope: CLEAN_AND_REMOTE_VERIFIED
   exact_next_microstep: XLF-04-BATCH-005
@@ -50,7 +50,7 @@ captured_workspace:
   asset_adoption_rule: >-
     Adopt a present asset only after its LF-normalized digest, byte count,
     line count, and untracked status match this record. Absence means restart
-    from the clean Event 26 checkpoint. A mismatch is a conflict to preserve
+    from the clean Event 27 checkpoint. A mismatch is a conflict to preserve
     and investigate, not permission to overwrite either copy.
 
 latest_xliff_refresh_observation:
@@ -86,9 +86,9 @@ latest_xliff_refresh_observation:
     coordination plane reports a stale lease.
 
 current_handover_observation:
-  observed_at: "2026-07-29T20:17:53Z"
-  head: d5e8927a85ed0f2e8c68e1e061084c67b85363c9
-  origin_main: d5e8927a85ed0f2e8c68e1e061084c67b85363c9
+  observed_at: "2026-07-29T20:48:00Z"
+  head: 59ef8ee2e1b4e37168e4c7094687fac0a6098a79
+  origin_main: 59ef8ee2e1b4e37168e4c7094687fac0a6098a79
   xliff_owner: agent-codex-20260729T190440-e2dd38
   xliff_coordination_status: ACTIVE
   xliff_process_observed: ABSENT
@@ -103,16 +103,16 @@ current_handover_observation:
   current_bytes_frozen_as_evidence: false
   coordination_status_exit: 1
   coordination_open_conflicts: 17
-  first_safe_disjoint_action: UBL_01_UBL_02_SERIALIZED_STATE_CHECKPOINT
+  first_safe_disjoint_action: UBL-03
   recovery_rule: >-
     Requery all state. If the XLIFF lease remains active, preserve its five
-    dirty paths and append the single Event 27 UBL checkpoint under disjoint
-    plan-control ownership. If the lease becomes stale, use governed takeover
+    dirty paths and execute UBL-03 under disjoint ownership. Event 27 is
+    already committed and must not be repeated. If the lease becomes stale, use governed takeover
     and recapture all baselines before adopting any bytes.
 
 committed_parallel_checkpoint:
   observed_at: "2026-07-29T19:52:00Z"
-  status: COMMITTED_PARALLEL_CHECKPOINT_NON_CONTROLLER
+  status: SERIALIZED_PARALLEL_CHECKPOINT
   task: TC-FF6-UBL-TYPING-001
   implementation_commit: 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c
   paths:
@@ -126,16 +126,18 @@ committed_parallel_checkpoint:
   report_sha256: 787c8d9258dc25a8662ee934b9b0b14096de790db87826dab970792b9494976d
   sal_receipt_sha256: 2cc0f2cac163b7f42ab18bbe5220837d1f49a808904ac964c536085ca6d111a0
   bounded_result: UBL_01_AUTHORITY_AND_UBL_02_CENSUS_VERIFIED
-  taskcard_projection: READY
-  native_event_recorded: false
-  first_unmet_work: UBL_01_UBL_02_SERIALIZED_STATE_CHECKPOINT
+  taskcard_projection: WORK_IN_PROGRESS
+  detailed_substate: PACKAGE_CENSUS_COMPLETE
+  native_event_recorded: true
+  native_event: FF6-EVENT-000027
+  native_event_commit: 59ef8ee2e1b4e37168e4c7094687fac0a6098a79
+  first_unmet_work: UBL-03
   action: >-
     Treat the committed paths as read-only evidence until a new UBL mutation
     task owns them. Do not repeat the authority repair or treat the evidence
-    as a native taskcard transition, reachable schema graph, product
-    implementation, or promotion. At a safe serialized plan-control window,
-    record UBL-01 and UBL-02 as one Event 27, retain XLIFF as the active task,
-    then begin UBL-03 only after event/controller/task projections agree.
+    as a reachable schema graph, product implementation, or promotion. Event
+    27 records UBL-01 and UBL-02 and retains XLIFF as the active task. Begin
+    UBL-03 only after revalidating the event/controller/task projections.
 
 resolved_history:
   batch_003:
@@ -199,8 +201,8 @@ recovery_cases:
       the owner to reach a clean checkpoint.
   live_owner_committed_without_event:
     condition: >-
-      the captured owner pushed a bounded implementation commit but the native
-      journal still ends at event 26
+      the captured owner pushed a bounded implementation commit but no later
+      native event binds it
     action: >-
       Fetch origin/main, inspect the immutable commit and receipts, rerun its
       declared tests independently, and only then append one event through

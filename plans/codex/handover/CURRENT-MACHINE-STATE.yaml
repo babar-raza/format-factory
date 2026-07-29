@@ -1,5 +1,5 @@
 schema: ff6/provider-neutral-machine-state@2
-artifact_id: FF6-CURRENT-MACHINE-STATE-EVENT-26
+artifact_id: FF6-CURRENT-MACHINE-STATE-EVENT-27
 visibility: internal
 publish_allowed: false
 generated_by: codex
@@ -9,10 +9,10 @@ source_checkpoint:
   forge: GitLab
   remote: origin
   branch: main
-  required_ancestor: d5e8927a85ed0f2e8c68e1e061084c67b85363c9
-  packet_input_commit: d5e8927a85ed0f2e8c68e1e061084c67b85363c9
+  required_ancestor: 59ef8ee2e1b4e37168e4c7094687fac0a6098a79
+  packet_input_commit: 59ef8ee2e1b4e37168e4c7094687fac0a6098a79
   latest_bounded_implementation_ancestor: 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c
-  controller_event_ancestor: 15ab7d0455e109bd88289e16d73c0835324a21ab
+  controller_event_ancestor: 59ef8ee2e1b4e37168e4c7094687fac0a6098a79
   implementation_ancestor: 1fef79b9d6c1ee1f6667e0c5c70435562c97544c
   parallel_ubl_ancestor: 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c
   worktree_at_capture: CLASSIFIED_CONCURRENT_BATCH005_WORK_PRESENT
@@ -65,7 +65,7 @@ workspace_transfer:
   resume_authority: REQUERY_GIT_CONTROLLER_JOURNAL_COORDINATION_AND_FILESYSTEM
   asset_adoption_rule: >-
     The assets are optional because a clean checkout can restart from Event
-    26. If either asset exists, its LF-normalized digest, byte count, line
+    27 and Batch 005. If either asset exists, its LF-normalized digest, byte count, line
     count, and untracked status must match before it is adopted. Missing assets
     are not reconstructed from this packet; mismatched assets are preserved
     and treated as a coordination conflict, never overwritten.
@@ -110,9 +110,9 @@ latest_xliff_refresh_observation:
     resume; use governed takeover only after the plane reports the lease stale.
 
 handover_refresh_observation:
-  observed_at: "2026-07-29T20:17:53Z"
-  head: d5e8927a85ed0f2e8c68e1e061084c67b85363c9
-  origin_main: d5e8927a85ed0f2e8c68e1e061084c67b85363c9
+  observed_at: "2026-07-29T20:48:00Z"
+  head: 59ef8ee2e1b4e37168e4c7094687fac0a6098a79
+  origin_main: 59ef8ee2e1b4e37168e4c7094687fac0a6098a79
   active_xliff_owner: agent-codex-20260729T190440-e2dd38
   active_xliff_lease_count: 11
   active_xliff_process_observed: ABSENT
@@ -139,16 +139,16 @@ handover_refresh_observation:
       conflict_id: conf-492a303a5a
       path: .local/transcripts/ubl-prose-closure-001.json
       action: PRESERVE_AND_REBASELINE_IF_OWNED_LATER
-  first_safe_disjoint_action: UBL_01_UBL_02_SERIALIZED_STATE_CHECKPOINT
+  first_safe_disjoint_action: UBL-03
   rule: >-
     This is a time-stamped observation. The incoming executor must fetch and
     requery. While Batch 005 remains active-owned, do not mutate its paths.
-    Serialize the committed UBL evidence as Event 27 under separately owned
-    plan-control paths, retaining XLIFF as the controller-selected active task.
+    Event 27 already serializes the UBL evidence while retaining XLIFF as the
+    controller-selected active task. The next disjoint fallback is UBL-03.
 
 parallel_ubl_checkpoint:
   observed_at: "2026-07-29T19:52:00Z"
-  status: COMMITTED_PARALLEL_CHECKPOINT_NON_CONTROLLER
+  status: SERIALIZED_PARALLEL_CHECKPOINT
   task_id: TC-FF6-UBL-TYPING-001
   implementation_commit: 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c
   paths:
@@ -162,18 +162,21 @@ parallel_ubl_checkpoint:
   report_sha256: 787c8d9258dc25a8662ee934b9b0b14096de790db87826dab970792b9494976d
   sal_receipt_sha256: 2cc0f2cac163b7f42ab18bbe5220837d1f49a808904ac964c536085ca6d111a0
   bounded_result: UBL_01_AUTHORITY_AND_UBL_02_CENSUS_VERIFIED
-  taskcard_projection: READY
-  native_event_recorded: false
-  controller_effect: NONE
+  taskcard_projection: WORK_IN_PROGRESS
+  detailed_substate: PACKAGE_CENSUS_COMPLETE
+  native_event_recorded: true
+  native_event: FF6-EVENT-000027
+  native_event_commit: 59ef8ee2e1b4e37168e4c7094687fac0a6098a79
+  controller_effect: UBL_CHECKPOINT_PROJECTED_XLIFF_RETAINED_ACTIVE
   product_or_promotion_effect: NONE
-  first_unmet_work: UBL_01_UBL_02_SERIALIZED_STATE_CHECKPOINT
+  first_unmet_work: UBL-03
   capability_manifest_aggregate_sha256: e199e84e9f7ee0579959db28283ecb89e014077cdd1605fbf0c82aee553d9960
   capability_three_run_digest: eafd6f8657ed83b73dbd5975046698d24fda6d8fd58c3d6aea962e6b6a85cf7c
-  native_event_expected: FF6-EVENT-000027
+  native_event_expected: FF6-EVENT-000028_OR_LATER_AFTER_NEW_VERIFIED_WORK
   rule: >-
     These paths are committed evidence on GitLab main and are safe to inspect.
     They prove the current authority replay and package/root census. The UBL
-    taskcard has not advanced through its native state machine, the reachable
+    taskcard is now WORK_IN_PROGRESS at PACKAGE_CENSUS_COMPLETE. The reachable
     schema graph is absent, and no product or promotion status changed.
 
 goal:
@@ -185,9 +188,9 @@ goal:
 
 controller:
   state: CONTRACT
-  transition_sequence: 26
-  event_id: FF6-EVENT-000026
-  event_hash: 34b36bf5dc4344713ac1c0f026b30e6b15fb6a63b86f4876ee98230952fabcd0
+  transition_sequence: 27
+  event_id: FF6-EVENT-000027
+  event_hash: 9a1783b0705468fec1e9f9fda96f61ab4b1da32a161d128a3120a8bf689686c2
   next_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
   next_task_state: WORK_IN_PROGRESS
   parent_task: TC-FF6-PROGRAM-CAPABILITIES-001
@@ -197,11 +200,11 @@ resume_route:
   canonical_active_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
   canonical_exact_action: XLF-04-BATCH-005
   safe_action_if_batch005_live_owned: >-
-    Append Event 27 for the committed UBL-01/UBL-02 checkpoint, update
-    controller and UBL task projections, keep XLIFF active, verify, push, and
-    refresh this packet.
+    Execute UBL-03 under disjoint leases: compile the complete reachable
+    schema graph, independently verify it, and only then append the next
+    native event while retaining XLIFF as active.
   safe_action_if_batch005_unowned: >-
-    Claim exact XLIFF paths and continue Batch 005 from Event 26 or from a
+    Claim exact XLIFF paths and continue Batch 005 from Event 27 or from a
     validated newer immutable implementation commit.
 
 program_denominator:
@@ -254,10 +257,10 @@ products:
   ubl:
     capabilities: 18
     obligations: 194
-    profile_surface: AUTHORITY_AND_PACKAGE_CENSUS_VERIFIED_STATE_TRANSITION_OPEN
+    profile_surface: PACKAGE_CENSUS_COMPLETE
     package_census: VERIFIED_890_MEMBERS_91_ROOTS
     authority_sal_replay: VERIFIED_34_OF_34
-    taskcard_projection: READY
+    taskcard_projection: WORK_IN_PROGRESS
     reachable_schema_graph: absent
     source_package: present_partial
     production_certification: absent
@@ -385,6 +388,11 @@ verified_parallel_ubl_checkpoint:
   capability_compiler_check: PASS
   capability_three_run_digest: eafd6f8657ed83b73dbd5975046698d24fda6d8fd58c3d6aea962e6b6a85cf7c
   format_contract_regression: 94 passed, 1 unrelated CSV idempotency failure
+  native_event: FF6-EVENT-000027
+  controller_checkpoint_commit: 59ef8ee2e1b4e37168e4c7094687fac0a6098a79
+  taskcard_state: WORK_IN_PROGRESS
+  detailed_substate: PACKAGE_CENSUS_COMPLETE
+  first_unmet_step: UBL-03
 
 current_gaps:
   critical: 1
@@ -401,6 +409,7 @@ truth_boundary:
   xlf_04_complete: false
   products_certified: 0
   product_or_promotion_change_in_event_26: false
+  product_or_promotion_change_in_event_27: false
   ubl_package_census_is_product_proof: false
   ubl_full_authority_replay_complete: true
   ubl_reachable_schema_graph_complete: false

@@ -1,5 +1,5 @@
 ---
-artifact_id: FF6-ACTIVE-WORK-CHECKPOINT-EVENT-26
+artifact_id: FF6-ACTIVE-WORK-CHECKPOINT-EVENT-27
 artifact_type: active_checkpoint
 visibility: internal
 publish_allowed: false
@@ -15,12 +15,12 @@ Shared-workspace transfer status at capture:
 `IN_FLIGHT_RED_NOT_TRANSFERABLE`
 
 These statuses describe different boundaries. `RESUMABLE` means a clean
-checkout can reconstruct Event 26. It does not authorize a second writer to
+checkout can reconstruct Event 27. It does not authorize a second writer to
 take over the currently leased Batch 005 files in this shared worktree.
 
 Handover source checkpoint: `18bb295f94e43338611ef88caff073eed17411c9`
 
-Controller Event 26 commit: `15ab7d0455e109bd88289e16d73c0835324a21ab`
+Controller Event 27 commit: `59ef8ee2e1b4e37168e4c7094687fac0a6098a79`
 
 Latest bounded implementation ancestor:
 `7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c`
@@ -28,9 +28,9 @@ Latest bounded implementation ancestor:
 Native controller:
 
 - state: `CONTRACT`
-- event: `FF6-EVENT-000026`
+- event: `FF6-EVENT-000027`
 - event hash:
-  `34b36bf5dc4344713ac1c0f026b30e6b15fb6a63b86f4876ee98230952fabcd0`
+  `9a1783b0705468fec1e9f9fda96f61ab4b1da32a161d128a3120a8bf689686c2`
 - task: `TC-FF6-XLIFF-PROFILE-SURFACE-001`
 - task state: `WORK_IN_PROGRESS`
 - first unmet step: `XLF-04`
@@ -74,13 +74,14 @@ Truth limit:
 - All existing obligation rows remain `SOURCE_BOUND_UNVERIFIED`.
 - XLF-04 and XLF-05 through XLF-08 remain.
 - UBL package/root census and full 34-fact SAL authority replay exist, but the
-  native UBL-01/UBL-02 state transition, UBL-03 through UBL-08, product
+  native UBL-01/UBL-02 state transition is recorded by Event 27; UBL-03
+  through UBL-08, product
   implementation, verification, certification, extraction, and release
   preparation remain.
 - Production certification remains `0/6`; promotion remains `UNASSESSED`.
 
-Exact next action: follow [CLAUDE-START.md](CLAUDE-START.md) and the immutable
-[Event 26 runbook](event-26/RUNBOOK.md).
+Exact next action: follow [CLAUDE-START.md](CLAUDE-START.md) and the current
+[Event 27 runbook](event-27/RUNBOOK.md). Event 26 remains immutable history.
 
 ## In-flight Batch 005 observation
 
@@ -114,7 +115,7 @@ Recovery integrity:
   (LF SHA-256, 13,375 bytes, 427 lines).
 
 These assets are optional local recovery inputs. Exact match permits governed
-adoption after ownership is reacquired; absence means restart at Event 26;
+adoption after ownership is reacquired; absence means restart at Event 27;
 mismatch means preserve and reconcile a conflict.
 
 At the later 2026-07-29T19:17Z refresh, coordination showed a new live Batch
@@ -152,10 +153,10 @@ prose-target closure, replayed the canonical receipt deterministically, proved
 all 34 facts promotable, and regenerated all descendant capability/
 obligation invalidation inputs without changing their semantic scope.
 
-This remains `VERIFIED_PARTIAL_NON_PROMOTING`. It does not change the native
-Event 26 head. The UBL taskcard remains `READY` because no serialized
-task-state event was appended. If Batch 005 remains live-leased to another
-worker, do not repeat the repair. The next UBL action is a serialized
-plan-control checkpoint for UBL-01 and UBL-02, followed by UBL-03 only after
-the projection validates. See
+This remains `VERIFIED_PARTIAL_NON_PROMOTING`. Event 27 now binds the evidence,
+the UBL taskcard is `WORK_IN_PROGRESS` at `PACKAGE_CENSUS_COMPLETE`, and XLIFF
+remains the canonical active task. If Batch 005 remains live-leased to another
+worker, do not repeat the repair, census, or serialization. The next UBL
+action is UBL-03, followed by a later event only after the complete reachable
+graph validates. See
 [PARALLEL-UBL-CHECKPOINT.yaml](PARALLEL-UBL-CHECKPOINT.yaml).

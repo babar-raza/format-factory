@@ -30,8 +30,8 @@ CHECKPOINT_PATH = HANDOVER_ROOT / "checkpoint.yaml"
 MACHINE_STATE_PATH = HANDOVER_ROOT / "CURRENT-MACHINE-STATE.yaml"
 RECOVERY_PATH = HANDOVER_ROOT / "INFLIGHT-RECOVERY.yaml"
 PARALLEL_UBL_PATH = HANDOVER_ROOT / "PARALLEL-UBL-CHECKPOINT.yaml"
-VERSIONED_CHECKPOINT_PATH = HANDOVER_ROOT / "event-26/CHECKPOINT.yaml"
-VERSIONED_MANIFEST_PATH = HANDOVER_ROOT / "event-26/manifest.yaml"
+VERSIONED_CHECKPOINT_PATH = HANDOVER_ROOT / "event-27/CHECKPOINT.yaml"
+VERSIONED_MANIFEST_PATH = HANDOVER_ROOT / "event-27/manifest.yaml"
 CONTROLLER_PATH = REPO_ROOT / "plans/strategic/ff6/controller-state.yaml"
 JOURNAL_PATH = REPO_ROOT / "plans/strategic/ff6/events.jsonl"
 TASK_INDEX_PATH = REPO_ROOT / "taskcards/index.yaml"
@@ -51,6 +51,7 @@ ALLOWED_CHANGED_PATHS = {
     "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-ubl-checkpoint-001.json",
     "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-ubl-authority-001.json",
     "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-shift-002.json",
+    "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-event-27.json",
 }
 ALLOWED_CHANGED_PREFIX = "plans/codex/handover/"
 
@@ -152,8 +153,22 @@ def _projection(latest: Mapping[str, Any]) -> dict[str, Any]:
     evidence = latest.get("evidence")
     if not isinstance(evidence, Mapping):
         raise ValidationFailure("latest event evidence is not a mapping")
-    task_steps = evidence.get("completed_task_steps")
-    batches = evidence.get("completed_xlf_04_batches")
+    xlf_evidence = evidence
+    if latest.get("task_id") != "TC-FF6-XLIFF-PROFILE-SURFACE-001":
+        for event in reversed(_load_events()):
+            if event.get("task_id") == "TC-FF6-XLIFF-PROFILE-SURFACE-001":
+                candidate = event.get("evidence")
+                if isinstance(candidate, Mapping):
+                    xlf_evidence = candidate
+                    break
+    task_steps = evidence.get(
+        "active_task_completed_steps",
+        xlf_evidence.get("completed_task_steps"),
+    )
+    batches = evidence.get(
+        "active_task_completed_xlf_04_batches",
+        xlf_evidence.get("completed_xlf_04_batches"),
+    )
     if not isinstance(task_steps, list) or not isinstance(batches, list):
         raise ValidationFailure("latest event completed steps are not lists")
     next_batches = sorted(
@@ -175,16 +190,19 @@ def _projection(latest: Mapping[str, Any]) -> dict[str, Any]:
         "completed_task_steps": task_steps,
         "completed_batches": batches,
         "completed_steps": [*task_steps, *batches],
-        "first_unmet": evidence.get("first_unmet_task_step"),
+        "first_unmet": evidence.get(
+            "active_task_first_unmet_step",
+            xlf_evidence.get("first_unmet_task_step"),
+        ),
         "next_batch": next_batches[0],
         "next_action": latest.get("exact_next_action"),
-        "obligations": evidence.get("batch_obligations"),
-        "expected": evidence.get("expected_obligation_ids"),
-        "resolved": evidence.get("resolved_expected_obligation_ids"),
-        "missing": evidence.get("missing_expected_obligation_ids"),
-        "candidate_count": evidence.get("candidate_count"),
-        "coarse": evidence.get("candidate_coarse_structural_dispositions"),
-        "non_modal_complete": evidence.get(
+        "obligations": xlf_evidence.get("batch_obligations"),
+        "expected": xlf_evidence.get("expected_obligation_ids"),
+        "resolved": xlf_evidence.get("resolved_expected_obligation_ids"),
+        "missing": xlf_evidence.get("missing_expected_obligation_ids"),
+        "candidate_count": xlf_evidence.get("candidate_count"),
+        "coarse": xlf_evidence.get("candidate_coarse_structural_dispositions"),
+        "non_modal_complete": xlf_evidence.get(
             "non_modal_prose_classification_complete"
         ),
     }
@@ -239,6 +257,7 @@ def _manifest_errors(manifest: Mapping[str, Any]) -> list[str]:
         "plans/codex/handover/validate_handover.py",
         "plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml",
         "plans/codex/handover/event-26/manifest.yaml",
+        "plans/codex/handover/event-27/manifest.yaml",
         "plans/strategic/ff6/controller-state.yaml",
         "plans/strategic/ff6/events.jsonl",
         "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
@@ -256,35 +275,35 @@ def _versioned_manifest_errors(manifest: Mapping[str, Any]) -> list[str]:
     errors: list[str] = []
     files = manifest.get("files")
     if not isinstance(files, list):
-        return ["event-26 manifest.files is not a list"]
+        return ["event-27 manifest.files is not a list"]
     seen: set[str] = set()
     for entry in files:
         if not isinstance(entry, Mapping):
-            errors.append("event-26 manifest entry is not a mapping")
+            errors.append("event-27 manifest entry is not a mapping")
             continue
         relative = entry.get("path")
         expected = entry.get("lf_sha256")
         if not isinstance(relative, str) or not isinstance(expected, str):
-            errors.append("event-26 entry lacks path or lf_sha256")
+            errors.append("event-27 entry lacks path or lf_sha256")
             continue
         if relative in seen:
-            errors.append(f"duplicate event-26 manifest path: {relative}")
+            errors.append(f"duplicate event-27 manifest path: {relative}")
         seen.add(relative)
-        repo_relative = f"plans/codex/handover/event-26/{relative}"
+        repo_relative = f"plans/codex/handover/event-27/{relative}"
         path = REPO_ROOT / repo_relative
         if not path.is_file():
-            errors.append(f"event-26 path missing: {relative}")
+            errors.append(f"event-27 path missing: {relative}")
             continue
         actual = _tracked_sha256(repo_relative)
         if actual != expected:
             errors.append(
-                f"event-26 digest mismatch for {relative}: "
+                f"event-27 digest mismatch for {relative}: "
                 f"expected {expected}, got {actual}"
             )
     if "manifest.yaml" in seen:
-        errors.append("event-26 manifest must exclude itself")
+        errors.append("event-27 manifest must exclude itself")
     if seen != {"START-HERE.md", "CHECKPOINT.yaml", "RUNBOOK.md", "receipt.json"}:
-        errors.append(f"unexpected event-26 file set: {sorted(seen)}")
+        errors.append(f"unexpected event-27 file set: {sorted(seen)}")
     return errors
 
 
@@ -670,7 +689,7 @@ def _parallel_ubl_projection_errors(
         parallel.get("bounded_result", {}).get(
             "taskcard_state_machine_transition_recorded"
         ),
-        False,
+        True,
     )
     _expect(
         errors,
@@ -681,17 +700,17 @@ def _parallel_ubl_projection_errors(
     open_failures = parallel.get("open_failures")
     if not isinstance(open_failures, list) or not any(
         isinstance(item, Mapping)
-        and item.get("gap_id") == "FF6-UBL-STATE-SERIALIZATION-001"
+        and item.get("gap_id") == "FF6-UBL-SCHEMA-GRAPH-001"
         for item in open_failures
     ):
-        errors.append("parallel UBL checkpoint lacks state serialization gap")
-    if "COMMITTED_PARALLEL_CHECKPOINT_NON_CONTROLLER" not in texts.get(
+        errors.append("parallel UBL checkpoint lacks reachable schema graph gap")
+    if "SERIALIZED_PARALLEL_CHECKPOINT" not in texts.get(
         "plans/codex/handover/START-HERE.md", ""
     ):
         errors.append("START-HERE lacks explicit parallel UBL checkpoint state")
     serialized = parallel.get("serialized_checkpoint_contract", {})
     expected_event = (
-        serialized.get("expected_event", {})
+        serialized.get("recorded_event", {})
         if isinstance(serialized, Mapping)
         else {}
     )
@@ -1036,7 +1055,7 @@ def _semantic_errors(
         errors,
         "parallel UBL taskcard projection",
         _task_status(task_index, "TC-FF6-UBL-TYPING-001"),
-        "ready",
+        "work_in_progress",
     )
     _expect(
         errors,
@@ -1044,7 +1063,7 @@ def _semantic_errors(
         checkpoint.get("runtime_observation", {}).get(
             "safe_disjoint_microstep"
         ),
-        "UBL_01_UBL_02_SERIALIZED_STATE_CHECKPOINT",
+        "UBL-03",
     )
     _expect(
         errors,
@@ -1052,7 +1071,7 @@ def _semantic_errors(
         machine.get("handover_refresh_observation", {}).get(
             "first_safe_disjoint_action"
         ),
-        "UBL_01_UBL_02_SERIALIZED_STATE_CHECKPOINT",
+        "UBL-03",
     )
     recovery_value = checkpoint.get("runtime_observation", {}).get(
         "safe_disjoint_microstep"
@@ -1064,7 +1083,7 @@ def _semantic_errors(
         "plans/codex/handover/CLAUDE-START.md",
         "plans/codex/handover/PROVIDER-SHIFT-CONTRACT.md",
     ):
-        if "UBL_01_UBL_02_SERIALIZED_STATE_CHECKPOINT" not in texts.get(
+        if "UBL-03" not in texts.get(
             path, ""
         ):
             errors.append(f"{path} lacks exact safe UBL checkpoint action")
@@ -1236,7 +1255,7 @@ def run_self_test(context: dict[str, Any]) -> dict[str, Any]:
 
     event_27_changes_active_task = copy.deepcopy(context)
     event_27_changes_active_task["parallel"]["serialized_checkpoint_contract"][
-        "expected_event"
+        "recorded_event"
     ]["next_task"] = "TC-FF6-UBL-TYPING-001"
     cases.append(("event_27_changes_active_task", event_27_changes_active_task))
 
