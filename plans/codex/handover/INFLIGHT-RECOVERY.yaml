@@ -17,6 +17,23 @@ clean_checkpoint:
   exact_next_microstep: XLF-04-BATCH-005
   local_only_required_for_resume: false
 
+captured_workspace:
+  observed_at: "2026-07-29T18:36:00Z"
+  status: IN_FLIGHT_RED_NOT_TRANSFERABLE
+  live_owner_at_capture: agent-codex-20260729T181022-74dc4a
+  logical_scope: logical:FF6-XLIFF-BATCH005
+  preserved_untracked_paths:
+    - tools/spec/xliff_core_candidate_binding.py
+    - tests/tools/test_extract_sal_facts_candidate_binding.py
+  focused_test_result:
+    passed: 17
+    failed: 10
+    phase: RED
+  authority_at_resume: >-
+    This is a captured observation only. Requery origin/main, the native
+    controller and journal, coordination liveness and leases, filesystem
+    status, and focused tests before choosing a recovery case.
+
 resolved_history:
   batch_003:
     status: RECONCILED_NO_DATA_LOSS
@@ -77,6 +94,22 @@ recovery_cases:
     action: >-
       Do not write or release the lease. Continue other safe work or wait for
       the owner to reach a clean checkpoint.
+  live_owner_committed_without_event:
+    condition: >-
+      the captured owner pushed a bounded implementation commit but the native
+      journal still ends at event 26
+    action: >-
+      Fetch origin/main, inspect the immutable commit and receipts, rerun its
+      declared tests independently, and only then append one event through
+      plan-control. Do not reimplement, cherry-pick, or duplicate the commit.
+  live_owner_ended_with_red_files:
+    condition: >-
+      the captured owner is no longer live, no implementation commit exists,
+      and the two attributable files remain RED or incomplete
+    action: >-
+      Preserve exact bytes and their Git status, use governed takeover with a
+      recorded reason, recapture baselines, and continue the same TDD batch.
+      The files are recovery input, not a checkpoint.
   authority_or_oracle_contradiction:
     condition: primary sources or independent implementations disagree
     action: >-

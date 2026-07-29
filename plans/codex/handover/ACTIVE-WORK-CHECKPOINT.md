@@ -9,7 +9,14 @@ generated_at: 2026-07-29
 
 # Active Work Checkpoint
 
-Status: `RESUMABLE`
+Committed checkpoint status: `RESUMABLE`
+
+Shared-workspace transfer status at capture:
+`IN_FLIGHT_RED_NOT_TRANSFERABLE`
+
+These statuses describe different boundaries. `RESUMABLE` means a clean
+checkout can reconstruct Event 26. It does not authorize a second writer to
+take over the currently leased Batch 005 files in this shared worktree.
 
 Handover source checkpoint: `18bb295f94e43338611ef88caff073eed17411c9`
 
@@ -68,3 +75,25 @@ Truth limit:
 
 Exact next action: follow [CLAUDE-START.md](CLAUDE-START.md) and the immutable
 [Event 26 runbook](event-26/RUNBOOK.md).
+
+## In-flight Batch 005 observation
+
+At 2026-07-29T18:36Z, coordination reported live owner
+`agent-codex-20260729T181022-74dc4a` for the Batch 005 logical scope and these
+untracked paths:
+
+- `tools/spec/xliff_core_candidate_binding.py`
+- `tests/tools/test_extract_sal_facts_candidate_binding.py`
+
+The focused test file was independently replayed read-only:
+
+```text
+17 passed, 10 failed
+```
+
+The passing tests exercise the proposed standalone binding/classification
+module. The failing tests prove that it is not integrated into the committed
+extractor or census and that Batch 005 is still RED. These local bytes are
+preserved recovery input only. The next provider must requery liveness and
+remote history and follow the transfer discriminator; it must never infer
+ownership from this observation.

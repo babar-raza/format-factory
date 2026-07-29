@@ -46,6 +46,34 @@ verified, while a separately leased Batch 005 worker owned two untracked
 implementation paths in the shared worktree. Those classified paths are
 preserved and are not part of this handover commit.
 
+## Current transfer state
+
+Two different states exist and must never be collapsed into one status:
+
+| Boundary | State | Meaning |
+|---|---|---|
+| Committed Event 26 checkpoint | `RESUMABLE` | A clean checkout of GitLab `origin/main` can reconstruct the last verified state without local-only files |
+| Shared workspace at 2026-07-29T18:36Z | `IN_FLIGHT_RED_NOT_TRANSFERABLE` | Another live Codex identity owns Batch 005 RED work; Claude must not claim, overwrite, commit, or present those bytes as a clean checkpoint |
+
+The live owner observed at capture was
+`agent-codex-20260729T181022-74dc4a`. It owned:
+
+- `tools/spec/xliff_core_candidate_binding.py`
+- `tests/tools/test_extract_sal_facts_candidate_binding.py`
+- `logical:FF6-XLIFF-BATCH005`
+
+The focused in-flight test file produced `17 passed, 10 failed`. The ten
+failures are the expected RED integration boundary: the committed census is
+still schema v1, non-modal prose is not classified, and the committed
+standalone validator does not yet reject the eight forged candidate-content
+mutations. This is evidence of unfinished work, not a regression in the clean
+Event 26 checkpoint and not completion evidence.
+
+At resume time, query the coordination plane and GitLab again. The captured
+identity and test counts are forensic observations, not transferable
+credentials or timeless authority. Use the decision table in
+[Claude/Codex execution instructions](CLAUDE-START.md#transfer-state-discriminator).
+
 ## Mission
 
 Produce six independently publishable, production-grade Python libraries:
@@ -138,6 +166,8 @@ Proceed only when:
 - the handover validator returns `valid: true`;
 - the native controller and journal still select the same task/microstep;
 - any local changes are classified and preserved;
+- the workspace transfer state has been recomputed from live coordination,
+  Git, and test evidence;
 - the incoming provider has registered its own coordination identity and
   claimed exact paths;
 - the registered skill route and execution manifest cover every intended

@@ -18,6 +18,42 @@ source_checkpoint:
     The commit containing this packet must descend from required_ancestor.
     This derived file cannot contain its own final commit hash.
 
+workspace_transfer:
+  captured_at: "2026-07-29T18:36:00Z"
+  committed_checkpoint_status: RESUMABLE
+  status: IN_FLIGHT_RED_NOT_TRANSFERABLE
+  current_bytes_are_clean_checkpoint: false
+  incoming_provider_may_claim_batch005_now: false
+  captured_live_owner:
+    agent_id: agent-codex-20260729T181022-74dc4a
+    task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
+    provider: codex
+    transferable: false
+  captured_leases:
+    - logical:FF6-XLIFF-BATCH005
+    - tools/spec/xliff_core_candidate_binding.py
+    - tests/tools/test_extract_sal_facts_candidate_binding.py
+  untracked_paths:
+    - tools/spec/xliff_core_candidate_binding.py
+    - tests/tools/test_extract_sal_facts_candidate_binding.py
+  focused_red_replay:
+    command: >-
+      .venv\Scripts\python.exe -m pytest
+      tests/tools/test_extract_sal_facts_candidate_binding.py -q --tb=short
+    passed: 17
+    failed: 10
+    interpretation: >-
+      Standalone binding primitives have passing unit coverage, while census
+      schema migration, non-modal classification, extractor integration, and
+      eight forged-content rejection controls remain RED.
+  clean_checkout_required_for_unowned_resume: true
+  resume_authority: REQUERY_GIT_CONTROLLER_JOURNAL_COORDINATION_AND_FILESYSTEM
+  transfer_rule: >-
+    If the captured owner remains live, do not write its scope. If it has
+    committed and pushed, recompute from origin/main. If it is stale with
+    preserved local bytes, use governed takeover and recapture baselines. Never
+    copy its token, release its lease, or call these bytes RESUMABLE.
+
 goal:
   goal_id: FF6-PRODUCTION-LIBRARIES-001
   status: ACTIVE

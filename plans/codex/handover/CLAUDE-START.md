@@ -63,6 +63,32 @@ If any canonical input has advanced, recompute state and refresh the handover
 before implementation. Do not ask for continuation; keep doing safe unblocked
 work.
 
+## Transfer-state discriminator
+
+The committed Event 26 checkpoint is `RESUMABLE`, but the shared workspace was
+`IN_FLIGHT_RED_NOT_TRANSFERABLE` when this packet was refreshed. Do not treat
+those as contradictory or merge them into one optimistic state.
+
+First fetch GitLab and query coordination, Git status, the controller journal,
+and the two captured Batch 005 paths. Then choose exactly one case:
+
+| Recomputed condition | Required action |
+|---|---|
+| Captured owner is still live and owns Batch 005 | Do not claim or mutate its scope. Independently inspect or verify read-only evidence and continue only disjoint safe work. |
+| `origin/main` contains a Batch 005 implementation commit and event 27 or later | Ignore the captured test counts, validate the newer journal head, rebuild projections, and resume its computed next task. |
+| `origin/main` contains a Batch 005 implementation commit but the journal remains at event 26 | Independently validate the immutable implementation commit, then use `plan-control` to append exactly one event. Do not duplicate implementation. |
+| Owner is stale/dead, no commit exists, and attributable local files remain | Preserve bytes, invoke governed `takeover --reason`, recapture baselines, and continue the same RED/GREEN batch. Never release or reuse the old identity manually. |
+| No owner, no local files, no newer remote commit | Register a new identity and start Batch 005 from the clean Event 26 checkpoint. |
+| Files or ownership are unexplained | Fail closed for those paths, log/reconcile the conflict, and continue non-overlapping safe work. |
+
+At capture, the active owner was
+`agent-codex-20260729T181022-74dc4a`. Its two untracked paths were
+`tools/spec/xliff_core_candidate_binding.py` and
+`tests/tools/test_extract_sal_facts_candidate_binding.py`. A read-only replay
+returned `17 passed, 10 failed`, so the local batch was RED, not transferable.
+These are observations only; the incoming provider must not inherit the agent
+ID, token, or leases.
+
 ## Current truth boundary
 
 Batch 004 proves a deterministic census only for its declared selector:

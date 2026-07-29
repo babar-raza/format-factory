@@ -531,6 +531,55 @@ def _semantic_errors(
     _expect(errors, "products certified", machine.get("goal", {}).get("products_certified"), 0)
     _expect(errors, "versioned products certified", versioned.get("program", {}).get("products_certified"), 0)
 
+    transfer = machine.get("workspace_transfer", {})
+    if machine.get("source_checkpoint", {}).get("worktree_at_capture") == (
+        "CLASSIFIED_CONCURRENT_BATCH005_WORK_PRESENT"
+    ):
+        _expect(
+            errors,
+            "committed checkpoint transfer status",
+            transfer.get("committed_checkpoint_status"),
+            "RESUMABLE",
+        )
+        _expect(
+            errors,
+            "shared workspace transfer status",
+            transfer.get("status"),
+            "IN_FLIGHT_RED_NOT_TRANSFERABLE",
+        )
+        _expect(
+            errors,
+            "shared workspace clean checkpoint claim",
+            transfer.get("current_bytes_are_clean_checkpoint"),
+            False,
+        )
+        _expect(
+            errors,
+            "incoming Batch 005 claim authorization",
+            transfer.get("incoming_provider_may_claim_batch005_now"),
+            False,
+        )
+        _expect(
+            errors,
+            "unowned resume isolation",
+            transfer.get("clean_checkout_required_for_unowned_resume"),
+            True,
+        )
+        _expect(
+            errors,
+            "captured in-flight paths",
+            sorted(transfer.get("untracked_paths", [])),
+            sorted(
+                [
+                    "tools/spec/xliff_core_candidate_binding.py",
+                    "tests/tools/test_extract_sal_facts_candidate_binding.py",
+                ]
+            ),
+        )
+        red_replay = transfer.get("focused_red_replay", {})
+        _expect(errors, "captured RED passing tests", red_replay.get("passed"), 17)
+        _expect(errors, "captured RED failing tests", red_replay.get("failed"), 10)
+
     if not _task_registered(task_index, str(p["task"])):
         errors.append(f"active task {p['task']} is not registered work_in_progress")
     task_text = ACTIVE_TASK_PATH.read_text(encoding="utf-8")
@@ -552,6 +601,13 @@ def _semantic_errors(
             stale_phrase = f"exact next microstep: `{completed}`"
             if stale_phrase in text:
                 errors.append(f"{path} treats completed {completed} as exact next")
+    for path in (
+        "plans/codex/handover/START-HERE.md",
+        "plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md",
+        "plans/codex/handover/CLAUDE-START.md",
+    ):
+        if "IN_FLIGHT_RED_NOT_TRANSFERABLE" not in texts.get(path, ""):
+            errors.append(f"{path} lacks explicit live-workspace transfer state")
     return errors
 
 
@@ -651,12 +707,16 @@ def run_self_test(context: Mapping[str, Any]) -> dict[str, Any]:
     false_certification["machine"]["goal"]["products_certified"] = 6
     cases.append(("false_product_certification", false_certification))
 
+    false_workspace_transfer = copy.deepcopy(context)
+    false_workspace_transfer["machine"]["workspace_transfer"]["status"] = "RESUMABLE"
+    cases.append(("false_workspace_transferability", false_workspace_transfer))
+
     outcomes = [
         {"case": name, "rejected": bool(_semantic_only(case))}
         for name, case in cases
     ]
     return {
-        "schema": "ff6/handover-validation-self-test@2",
+        "schema": "ff6/handover-validation-self-test@3",
         "valid": all(item["rejected"] for item in outcomes),
         "negative_controls": outcomes,
     }
@@ -667,7 +727,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument(
         "--self-test",
         action="store_true",
-        help="also prove four semantic corruptions are rejected",
+        help="also prove five semantic corruptions are rejected",
     )
     args = parser.parse_args(argv)
     try:
