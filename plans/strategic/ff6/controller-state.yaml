@@ -4,10 +4,10 @@ goal_status: ACTIVE
 generated_by: codex
 visibility: internal
 controller_state: CONTRACT
-transition_sequence: 21
+transition_sequence: 22
 last_verified_event:
-  event_id: FF6-EVENT-000021
-  event_hash: 3e83a764c53da658cb1dd348ed20d041db850f1cef45bec5eaa5637ccafecc11
+  event_id: FF6-EVENT-000022
+  event_hash: 05e95766f573441844bf88efb6d4ee56c27d46ab3db8f0029577804a054732d5
 event_journal: plans/strategic/ff6/events.jsonl
 baseline_commit: e4f8f5f086b5e627c07c2ef2d940eda2601a22a8
 digest_policy:
@@ -37,17 +37,18 @@ active_task:
   completed_steps:
     - XLF-01
     - XLF-02
-  first_unmet_step: XLF-03
+    - XLF-03
+  first_unmet_step: XLF-04
 next_task:
   task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
   state: WORK_IN_PROGRESS
   unlock_condition: >-
-    Resume from event 21 inside XLF-03. Revalidate the committed extractor
-    slice and its three tests, then add the default curated requirement seeds
-    and command-line/check-mode contract through a new RED/GREEN cycle. Follow
-    with negative controls and real-package matrix generation. Do not rerun
-    XLF-01 or XLF-02 unless their recorded inputs changed. Product source and
-    architecture remain blocked.
+    Resume from event 22 at XLF-04. Revalidate the immutable XLF-03 compiler,
+    18 tests, matrix digest, receipts, and three identical real-authority
+    outputs. Then compile complete source-located Core obligations and
+    processing requirements without reducing semantic rules to XSD validity.
+    Do not rerun XLF-01 through XLF-03 unless their recorded inputs changed.
+    Product source and architecture remain blocked.
 promotion:
   program: UNASSESSED
   ipynb: UNASSESSED
@@ -119,7 +120,7 @@ current_gap_summary:
   production_certifications: 0
 control_plane_compatibility:
   ff6_event_schema: ff6/controller-event@1
-  native_chain_validation: PASS_THROUGH_EVENT_21
+  native_chain_validation: PASS_THROUGH_EVENT_22
   generic_plan_control_doctor: >-
     INCOMPATIBLE_SCHEMA: tools.plan_control expects previous_hash and its own
     event payload; FF6 uses previous_event_hash. This is the already-tracked
@@ -132,30 +133,53 @@ invariants:
   - Publication authority is external and cannot be bypassed.
 xlf_checkpoint:
   status: WORK_IN_PROGRESS
-  completed_steps: [XLF-01, XLF-02]
-  first_unmet_step: XLF-03
-  microstate: GREEN_VERIFIED_CHECKPOINTED
-  checkpoint_source_commit: a1316b4fae21c20c71ccb6d60e4b9fe634dca573
+  completed_steps: [XLF-01, XLF-02, XLF-03]
+  first_unmet_step: XLF-04
+  microstate: RESUMABLE
+  checkpoint_source_commit: 6622aa1fef947530128b5b49de67afba3cc10088
   implemented_slice:
     - digest_bound_bounded_zip_authority_reader
     - xliff_2_0_2_1_core_module_structural_inventory
     - docbook_section_delta_inventory
     - source_located_requirement_row_validation
     - canonical_atomic_matrix_write_and_check
-  remaining_xlf_03_slice:
     - default_curated_requirement_seeds
-    - cli_and_check_mode
-    - negative_controls
+    - deterministic_cli_and_check_mode
+    - archive_xml_and_matrix_negative_controls
     - real_authority_matrix_generation_and_three_run_replay
-  exact_next_test: test_cli_writes_and_checks_default_xliff_matrix
+  remaining_steps: [XLF-04, XLF-05, XLF-06, XLF-07, XLF-08]
+  exact_next_action: >-
+    Read the 36 source-surface anchors and pinned prose/schema locations, then
+    create the first failing XLF-04 test for complete Core obligation
+    extraction with exact profile, owner, source, and processing-requirement
+    fields.
   source: tools/spec/extract_sal_facts.py
-  source_sha256: 16466e1e7778259cd284fcf89af61ca902c1b2aac609ccf6b6ebce388590388c
+  source_sha256: f7e59ae41ac3e0a82c8e0b2523711e3f7569c33b0cfa58d32f2ef9ee14096dbb
   tests: tests/tools/test_extract_sal_facts.py
-  tests_sha256: 93a4e5ce49cc8e2dcd2a513d6a6e598fd966849cfe63a58b7e84d2fcd4fc0c84
-  focused_tests: 3 passed
+  tests_sha256: 4a9e5f6aa1cf68a80dcd4c93f135b80c84ff18ff0bbccc5d81e87677ddae2e58
+  focused_tests: 18 passed
   ruff: PASS
   mypy_strict: PASS
-  pyright: UNAVAILABLE_IN_CURRENT_SHELL_NO_CLAIM
+  pyright: PASS_ZERO_DIAGNOSTICS_1_1_411
+  py_compile: PASS
+  matrix: reports/ff6/xliff-normative-delta-matrix.yaml
+  matrix_sha256: 9f4ea4b8b71378217af26c0fb2b97a759817a0aca6c64255b8cd55170c60a090
+  matrix_rows: 36
+  matrix_unique_ids: 36
+  real_authority_replays: 3_identical
+  section_counts:
+    xliff_2.0: 293
+    xliff_2.1: 420
+  module_counts:
+    xliff_2.0: 8
+    xliff_2.1: 8
+  module_schema_vocabulary_counts:
+    xliff_2.0: 8
+    xliff_2.1: 9
+  truth_boundary: >-
+    XLF-03 proves the deterministic source-surface matrix and safety controls.
+    Its 36 rows are coarse anchors, not complete fine-grained Core or module
+    semantic obligations; those remain XLF-04 and XLF-05.
   inventory: reports/ff6/xliff-authority-member-inventory.yaml
   xliff_authority_sources: 5
   xliff_authority_matches: 5

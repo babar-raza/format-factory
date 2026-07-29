@@ -1,0 +1,76 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "plan-control-xliff-profile-surface-wip-003",
+  "skill_id": "plan-control",
+  "mode": "live",
+  "timestamp": "2026-07-29T14:46:54.7185200Z",
+  "inputs": {
+    "task_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "operation": "project",
+    "target_paths": [
+      "plans/strategic/ff6/events.jsonl",
+      "plans/strategic/ff6/controller-state.yaml",
+      "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md"
+    ],
+    "coordination_scope": "Exact event, controller, taskcard, receipt, and provider-neutral handover paths under agent-codex-20260729T140934-0bf772",
+    "acceptance_evidence": "Immutable implementation commit, native event chain through event 22, real-authority matrix digest, 18 focused tests, three deterministic replays, static checks, zero product promotion",
+    "source_checkpoint": "6622aa1fef947530128b5b49de67afba3cc10088",
+    "execution_manifest_id": "sfx-ca4b19ab3c52ffac"
+  },
+  "allowed_files": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
+    "reports/skills-rff6/skill-transcripts/plan-control-xliff-profile-surface-wip-003.json",
+    ".local/transcripts/plan-control-xliff-profile-surface-wip-003.json"
+  ],
+  "actual_files_changed": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
+    "reports/skills-rff6/skill-transcripts/plan-control-xliff-profile-surface-wip-003.json",
+    ".local/transcripts/plan-control-xliff-profile-surface-wip-003.json"
+  ],
+  "tests_run": [
+    "native FF6 hash-chain replay through FF6-EVENT-000022: PASS",
+    "controller transition_sequence, event head, active task, completed steps, and first-unmet-step agreement: PASS",
+    "python tools/evidence/check_current_state_consistency.py: PASS",
+    "YAML parse for controller and handover machine state: PASS"
+  ],
+  "result": "PASS",
+  "evidence": {
+    "event_id": "FF6-EVENT-000022",
+    "event_hash": "05e95766f573441844bf88efb6d4ee56c27d46ab3db8f0029577804a054732d5",
+    "task_state": "WORK_IN_PROGRESS",
+    "completed_steps": [
+      "XLF-01",
+      "XLF-02",
+      "XLF-03"
+    ],
+    "first_unmet_step": "XLF-04",
+    "microstate": "RESUMABLE",
+    "xlf_03_complete": true,
+    "xlf_03_truth_boundary": "Deterministic source-surface matrix only; complete Core and module semantics remain XLF-04 and XLF-05.",
+    "product_promotion": "none"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for the event-22 projection boundary",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for XLF-03 source-surface completion and XLF-04 selection only",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, no new contradiction required a gap",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

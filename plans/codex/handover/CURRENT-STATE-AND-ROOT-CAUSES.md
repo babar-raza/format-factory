@@ -31,13 +31,13 @@ All six promotion states are `UNASSESSED`.
 | IPYNB | Typed notebook/cell/output models, codec, validation, conversion, cleanup, trust inspection and editing; exact 4.0-4.5 contract surface now compiled | Independent oracle depth, installed-wheel and matrix proof, architecture cleanup, complete obligation execution |
 | OpenRaster | Three locked authorities, 20 exact SAL facts, dedicated layered-raster family, 20 capabilities and 134 profile-scoped obligations | Entire product package, corpus, application interoperability, rendering implementation, security implementation, package and certification proof |
 | NRRD | Header/payload codec, attached/detached entry points, encodings, preservation and limits; exact five-profile contract now compiled | Stronger typed spatial model, streaming/mmap proof, Teem and pynrrd differential depth, package/certification proof |
-| XLIFF | Core model, inline editing, segmentation/state helpers and preservation | Separately pinned 2.0 authority, full 2.0/2.1 Core, all eight official 2.1 modules across nine module schema vocabularies, processing requirements, schemas/oracles, package/certification proof |
+| XLIFF | Core model, inline editing, segmentation/state helpers and preservation; independently pinned 2.0/2.1 authorities and deterministic source-surface matrix | Fine-grained 2.0/2.1 Core semantics, all eight official 2.1 modules across nine module schema vocabularies, processing requirements, schemas/oracles, package/certification proof |
 | SafeTensors | Typed descriptors, strict layout checks, mmap/region access, writer and adapters | Full dtype/edge/sharded coverage, upstream differential corpus, co-installation and multi-platform package proof |
 | UBL | 91 root subclasses, ordered generic XML model, extensions and signature handling | Fully schema-typed common components, cardinality/order API, reproducible generator proof, all-root examples, independent XSD engine and package proof |
 
 These statements describe observed code breadth, not certification.
 
-## What events 16 through 19 added
+## What events 16 through 22 added
 
 - Event 16: one canonical 15-source authority lock; legal, locator, digest,
   cache, and materialization policy; content-addressed online/offline replay;
@@ -63,6 +63,15 @@ These statements describe observed code breadth, not certification.
   replay. Teem's permissive later-field parsing under earlier magic is retained
   as an interoperability peculiarity rather than normalized into strict
   conformance.
+- Events 20-21: independent XLIFF 2.0 authority acquisition, exact 42-member
+  2.0/2.1 package inventory, 5/5 XLIFF authority closure, and the first tested
+  digest-bound matrix compiler slice.
+- Event 22: deterministic default source-surface anchors, CLI/check mode,
+  bounded authority XML support, fail-closed archive/XML/matrix controls, 18
+  tests, and a three-run identical real-authority matrix at
+  `9f4ea4b8b71378217af26c0fb2b97a759817a0aca6c64255b8cd55170c60a090`.
+  XLF-03 is complete, while fine-grained Core and module semantics remain
+  XLF-04 and XLF-05.
 
 This removes a major rerun-consistency failure: `ACQUIRED` can no longer
 survive as promoting evidence when the locked bytes are absent or changed.
@@ -253,9 +262,9 @@ an underspecified denominator correct.
 
 ## Immediate repair order
 
-1. Finish XLF-03 from event 21: default curated seeds, CLI/check mode, negative
-   controls, real-package matrix, and three-run replay.
-2. Compile exact XLIFF 2.0/2.1 Core and per-module applicability with isolated
+1. Compile complete source-located XLIFF 2.0/2.1 Core obligations at XLF-04;
+   do not inflate the 36 XLF-03 anchors into semantic coverage.
+2. Compile exact per-module applicability with isolated
    2.2 preview semantics.
 3. UBL all-root/common-component typing contract.
 4. Production package chassis and architecture only after contract readiness.
@@ -304,6 +313,7 @@ Confidence is moderate in the observed implementation footholds because the
 product source trees are unchanged from the baseline snapshot but no current
 production certification binds their complete package/environment closure.
 Confidence is low that the 672-obligation denominator is final until XLIFF and
-UBL repairs pass. XLIFF 2.0 is now separately pinned and matched, but the
-compiled projection still lacks the exact 2.0/2.1 Core/module denominator and
-retains a shallow single module bucket. No stronger claim is justified.
+UBL repairs pass. XLIFF 2.0 is separately pinned and matched and the
+source-surface matrix is deterministic, but the compiled projection still
+lacks the fine-grained 2.0/2.1 Core/module denominator and retains a shallow
+single module bucket. No stronger claim is justified.

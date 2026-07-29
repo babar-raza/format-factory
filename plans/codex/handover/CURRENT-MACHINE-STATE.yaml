@@ -9,7 +9,7 @@ canonical_inputs:
   forge: GitLab
   remote: origin
   branch: main
-  source_commit: a1316b4fae21c20c71ccb6d60e4b9fe634dca573
+  source_commit: 6622aa1fef947530128b5b49de67afba3cc10088
   source_commit_rule: >-
     This commit must be an ancestor of the fetched origin/main commit that
     contains this packet. The packet cannot embed its own final commit hash.
@@ -46,9 +46,9 @@ provider_shift_contract:
 
 controller:
   state: CONTRACT
-  sequence: 21
-  event_id: FF6-EVENT-000021
-  event_hash: 3e83a764c53da658cb1dd348ed20d041db850f1cef45bec5eaa5637ccafecc11
+  sequence: 22
+  event_id: FF6-EVENT-000022
+  event_hash: 05e95766f573441844bf88efb6d4ee56c27d46ab3db8f0029577804a054732d5
   parent_task: TC-FF6-PROGRAM-CAPABILITIES-001
   parent_state: NEEDS_REPAIR
   completed_task: TC-FF6-NRRD-PROFILE-SURFACE-001
@@ -162,43 +162,51 @@ known_non_promoting_evidence:
   product_test_matrix: not_currently_certified
   product_contracts: DRAFT
 
-wip_implementation_checkpoint:
-  checkpoint_commit: a1316b4fae21c20c71ccb6d60e4b9fe634dca573
-  event: FF6-EVENT-000021
-  event_hash: 3e83a764c53da658cb1dd348ed20d041db850f1cef45bec5eaa5637ccafecc11
+completed_source_surface_checkpoint:
+  checkpoint_commit: 6622aa1fef947530128b5b49de67afba3cc10088
+  event: FF6-EVENT-000022
+  event_hash: 05e95766f573441844bf88efb6d4ee56c27d46ab3db8f0029577804a054732d5
   task: TC-FF6-XLIFF-PROFILE-SURFACE-001
   task_step: XLF-03
-  step_complete: false
-  microstate: GREEN_VERIFIED_CHECKPOINTED
+  step_complete: true
+  microstate: RESUMABLE
   source:
     path: tools/spec/extract_sal_facts.py
-    sha256: 16466e1e7778259cd284fcf89af61ca902c1b2aac609ccf6b6ebce388590388c
-    public_entry_point: false
+    sha256: f7e59ae41ac3e0a82c8e0b2523711e3f7569c33b0cfa58d32f2ef9ee14096dbb
+    cli_entry_point: true
   tests:
     path: tests/tools/test_extract_sal_facts.py
-    sha256: 93a4e5ce49cc8e2dcd2a513d6a6e598fd966849cfe63a58b7e84d2fcd4fc0c84
-    result: 3_passed
-  transcript:
-    path: reports/skills-rff6/skill-transcripts/ingest-spec-sal-xliff-xlf03-001.json
-    sha256: d1e283235efc0ee3af5a36a7257e6bf0ed93162ea7bc394c9eab5a4331f819ef
+    sha256: 4a9e5f6aa1cf68a80dcd4c93f135b80c84ff18ff0bbccc5d81e87677ddae2e58
+    result: 18_passed
+  matrix:
+    path: reports/ff6/xliff-normative-delta-matrix.yaml
+    sha256: 9f4ea4b8b71378217af26c0fb2b97a759817a0aca6c64255b8cd55170c60a090
+    rows: 36
+    unique_ids: 36
+    real_authority_replays: 3_identical
+  tdd_transcript:
+    path: reports/skills-rff6/skill-transcripts/test-driven-development-xliff-xlf03-cli-001.json
+    sha256: ff3c01917056f02a85cb552e0f6459b1c4f5531f33e8fd0c8d083645e44079df
+    validation: PASS_ZERO_WARNINGS
+  ingestion_transcript:
+    path: reports/skills-rff6/skill-transcripts/ingest-spec-sal-xliff-xlf03-002.json
+    sha256: 18497bd7b49eb50f20b9476610754b62935aa8cf993a2b85a82aefd2232a7859
     validation: PASS_ZERO_WARNINGS
   static_checks:
     ruff: PASS
     mypy_strict: PASS
     py_compile: PASS
-    pyright: UNAVAILABLE_IN_CURRENT_SHELL_NO_CLAIM
+    pyright: PASS_ZERO_DIAGNOSTICS_1_1_411
   implemented:
     - digest_bound_bounded_zip_authority_reader
     - xliff_2_0_2_1_core_module_structural_inventory
     - docbook_section_delta_inventory
     - source_located_requirement_row_validation
     - canonical_atomic_matrix_write_and_check
-  remaining:
     - default_curated_requirement_seeds
-    - cli_and_check_mode
-    - negative_controls
+    - deterministic_cli_and_check_mode
+    - archive_xml_and_matrix_negative_controls
     - real_authority_matrix_generation_and_three_run_replay
-  exact_next_test: test_cli_writes_and_checks_default_xliff_matrix
   prose_section_inventory:
     section_elements:
       xliff_2.0: 293
@@ -209,9 +217,10 @@ wip_implementation_checkpoint:
     no_id_location_rule: deterministic_title_path
     complete_denominator: section_elements
   truth_boundary: >-
-    This is an integration-safe implementation slice inside an unmet contract
-    task step. It is not the XLF-03 matrix result, SAL closure, capability
-    closure, product implementation, certification, or promotion.
+    XLF-03 proves a deterministic source-located profile/module surface and
+    safety behavior. The 36 anchors are not the complete fine-grained Core or
+    module semantics, SAL closure, capability closure, product implementation,
+    certification, or promotion.
 
 resume_gate:
   require_clean_or_fully_classified_worktree: true
@@ -244,9 +253,9 @@ completed_contract_checkpoint:
 next_task_prerequisite:
   task: TC-FF6-XLIFF-PROFILE-SURFACE-001
   task_state: WORK_IN_PROGRESS
-  completed_steps: [XLF-01, XLF-02]
-  first_unmet_step: XLF-03
-  xlf_03_microstate: GREEN_VERIFIED_CHECKPOINTED
+  completed_steps: [XLF-01, XLF-02, XLF-03]
+  first_unmet_step: XLF-04
+  shift_microstate: RESUMABLE
   missing_authority: null
   authority_inventory: reports/ff6/xliff-authority-member-inventory.yaml
   official_2_0_authority: present_and_matched
@@ -294,9 +303,8 @@ next_task_prerequisite:
   stable_profiles: [xliff_2.0, xliff_2.1]
   preview_profile: xliff_2.2_preview
   exact_next_action: >-
-    Replay the three committed extractor tests and exact file digests, then add
-    test_cli_writes_and_checks_default_xliff_matrix as the next RED test.
-    Implement default curated seeds and CLI/check mode, add the negative
-    controls, generate the matrix from both real pinned packages, and prove
-    three identical outputs. Do not repeat XLF-01/XLF-02 unless their inputs
-    changed.
+    Replay event 22, exact source/test/matrix/receipt digests, 18 focused
+    tests, static checks, matrix check mode, three identical real-authority
+    outputs, and 17/17 authority matches. Then begin XLF-04 with a failing test
+    for a source-located fine-grained Core obligation batch. Do not repeat
+    XLF-01 through XLF-03 unless their recorded inputs changed.

@@ -153,3 +153,28 @@ controller or product task.
 - The exact continuation remains the same XLF-03 RED test. No canonical
   taskcard, source, test, authority, contract, controller, promotion, gate, or
   release state changed.
+
+## Event-22 XLF-03 completion refresh
+
+The packet was rebuilt from immutable implementation commit
+`6622aa1fef947530128b5b49de67afba3cc10088` and native event
+`FF6-EVENT-000022` /
+`05e95766f573441844bf88efb6d4ee56c27d46ab3db8f0029577804a054732d5`.
+
+- `XLF-01`, `XLF-02`, and `XLF-03` are complete; `XLF-04` is first unmet.
+- XLF-03 now includes deterministic default anchors, CLI/check mode, declared
+  archive/XML/matrix negative controls, and a real pinned-authority matrix.
+- The matrix has 36 unique source-surface anchors, 293/420 sections, 8/8
+  modules, and 8/9 schema vocabularies for XLIFF 2.0/2.1.
+- Three real-authority generations are byte-identical at SHA-256
+  `9f4ea4b8b71378217af26c0fb2b97a759817a0aca6c64255b8cd55170c60a090`.
+- Eighteen focused tests, Ruff, strict Mypy, Pyright 1.1.411, bytecode
+  compilation, and zero-warning receipt validation pass.
+- The 36 rows are coarse source-surface anchors, not complete semantic
+  obligations. XLF-04 must compile full Core semantics; XLF-05 must compile
+  every module as a first-class capability family.
+- The mission remains in `CONTRACT`, the active task remains
+  `WORK_IN_PROGRESS`, the parent remains `NEEDS_REPAIR`, product certification
+  remains 0/6, and every promotion remains `UNASSESSED`.
+- The exact continuation is a first RED test for a source-located fine-grained
+  Core obligation batch after replaying event 22 and its bound evidence.

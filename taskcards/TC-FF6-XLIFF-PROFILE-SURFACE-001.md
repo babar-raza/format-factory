@@ -134,6 +134,64 @@ Do not reinterpret the existence of the compiler or its three tests as a
 completed normative matrix, SAL repair, capability repair, product
 implementation, or certification.
 
+## Current execution checkpoint — event 22
+
+Event 22 supersedes the event-21 resume instruction. `XLF-03` is complete at
+the source-surface boundary; `XLF-04` is the first unmet step. The task remains
+`WORK_IN_PROGRESS`, the parent remains `NEEDS_REPAIR`, and product source,
+architecture, certification, promotion, release, and gates remain locked.
+
+Immutable implementation commit:
+`6622aa1fef947530128b5b49de67afba3cc10088`.
+
+Completed and verified in XLF-03:
+
+- the registered extractor now has a deterministic command-line/check-mode
+  contract and 36 unique default source-surface anchors;
+- the real pinned XLIFF 2.0 and 2.1 packages compile to
+  `reports/ff6/xliff-normative-delta-matrix.yaml` at SHA-256
+  `9f4ea4b8b71378217af26c0fb2b97a759817a0aca6c64255b8cd55170c60a090`;
+- the matrix accounts for 293/420 DocBook sections, 8/8 normative modules,
+  and 8/9 module schema vocabularies for XLIFF 2.0/2.1 respectively;
+- XLIFF 2.2 is `AUTHORITY_ABSENT_NOT_COMPILED`; XLIFF 1.2 is
+  `EXCLUDED_SEPARATE_COMPATIBILITY_MODEL`;
+- digest, duplicate/casefold/path, decompression, document-type/entity,
+  missing-member, malformed-row, duplicate-ID, owner, and preview leakage
+  controls fail closed;
+- three clean real-authority generations are byte-identical at the matrix
+  digest above;
+- 18 focused tests, Ruff, strict Mypy, Pyright 1.1.411, and bytecode
+  compilation pass;
+- both final XLF-03 skill transcripts validate with zero warnings.
+
+Exact committed digests:
+
+- source:
+  `f7e59ae41ac3e0a82c8e0b2523711e3f7569c33b0cfa58d32f2ef9ee14096dbb`;
+- tests:
+  `4a9e5f6aa1cf68a80dcd4c93f135b80c84ff18ff0bbccc5d81e87677ddae2e58`;
+- matrix:
+  `9f4ea4b8b71378217af26c0fb2b97a759817a0aca6c64255b8cd55170c60a090`;
+- TDD transcript:
+  `ff3c01917056f02a85cb552e0f6459b1c4f5531f33e8fd0c8d083645e44079df`;
+- ingestion transcript:
+  `18497bd7b49eb50f20b9476610754b62935aa8cf993a2b85a82aefd2232a7859`.
+
+Truth boundary: the 36 rows are intentionally coarse source-surface anchors.
+They establish authority, profile, Core/module, schema, and validation
+ownership for the next extraction steps. They are not the complete
+fine-grained Core or module semantic obligation inventory and cannot satisfy
+XLF-04, XLF-05, SAL closure, capability closure, product implementation, or
+certification.
+
+Resume at `XLF-04`. First revalidate event 22, the implementation commit,
+exact file digests, 18 tests, matrix check mode, three-run replay, and 17/17
+authority audit. Then add the first failing test for complete Core obligation
+extraction. Every emitted Core obligation must identify exact stable profile
+applicability, owner, authority/member/location, requirement class, and
+processing semantics. Do not treat the XSD inventory or the 36 anchors as
+complete semantic coverage.
+
 ## Required execution
 
 ### XLF-01 — Revalidate the clean predecessor

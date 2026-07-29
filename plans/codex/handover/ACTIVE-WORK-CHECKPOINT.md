@@ -6,16 +6,16 @@ publish_allowed: false
 generated_by: codex
 generated_at: 2026-07-29
 authoritative_state: false
-canonical_event: FF6-EVENT-000021
+canonical_event: FF6-EVENT-000022
 ---
 
 # Active Work Checkpoint: XLIFF Stable Profiles and Modules
 
 This is the provider-neutral shift boundary after XLIFF authority acquisition,
-package inventory, and the first tested XLF-03 compiler slice, but before the
-normative delta matrix is complete. Canonical authority remains the controller,
-event journal, current-gap projection, and taskcards; this document explains
-how to resume them.
+package inventory, and completion of the deterministic XLF-03 source-surface
+matrix. Fine-grained Core semantics begin at XLF-04. Canonical authority
+remains the controller, event journal, current-gap projection, and taskcards;
+this document explains how to resume them.
 
 ## Exact checkpoint
 
@@ -24,16 +24,16 @@ how to resume them.
 | Mission | `FF6-PRODUCTION-LIBRARIES-001` |
 | Forge and branch | GitLab `origin/main` only |
 | Controller state | `CONTRACT` |
-| Controller sequence | `21` |
-| Event head | `3e83a764c53da658cb1dd348ed20d041db850f1cef45bec5eaa5637ccafecc11` |
-| Source checkpoint | `a1316b4fae21c20c71ccb6d60e4b9fe634dca573` |
+| Controller sequence | `22` |
+| Event head | `05e95766f573441844bf88efb6d4ee56c27d46ab3db8f0029577804a054732d5` |
+| Source checkpoint | `6622aa1fef947530128b5b49de67afba3cc10088` |
 | Parent task | `TC-FF6-PROGRAM-CAPABILITIES-001` - `NEEDS_REPAIR` |
 | Last completed task | `TC-FF6-NRRD-PROFILE-SURFACE-001` - `PASS` |
 | Active task | `TC-FF6-XLIFF-PROFILE-SURFACE-001` - `WORK_IN_PROGRESS` |
-| Completed steps | `XLF-01`, `XLF-02` |
-| First unmet step | `XLF-03` |
-| XLF-03 microstate | `GREEN_VERIFIED_CHECKPOINTED` |
-| Exact next RED test | `test_cli_writes_and_checks_default_xliff_matrix` |
+| Completed steps | `XLF-01`, `XLF-02`, `XLF-03` |
+| First unmet step | `XLF-04` |
+| Shift microstate | `RESUMABLE` |
+| Exact next action | First RED test for complete Core obligation extraction |
 | Selected finding | `FF6-XLIFF-PROFILE-001` |
 | Product source mutation | Prohibited |
 | Promotion effect | None |
@@ -100,7 +100,7 @@ how to resume them.
   HTTPS, host, redirect, timeout, and size constraints as materialization,
   persists no bytes, and requires the normal locked re-download before
   acceptance.
-- Event 21 binds the first XLF-03 implementation slice to source commit
+- Event 21 bound the first XLF-03 implementation slice to source commit
   `a1316b4fae21c20c71ccb6d60e4b9fe634dca573` without marking XLF-03
   complete.
 - `tools/spec/extract_sal_facts.py` now implements exact package digest checks,
@@ -112,8 +112,19 @@ how to resume them.
   XLIFF 2.1 ITS module.
 - The committed slice passes 3 focused tests, Ruff, strict Mypy, and bytecode
   compilation. Pyright was unavailable in this shell and is not claimed.
-- The CLI, default curated requirement seeds, complete negative controls, real
-  authority output, and three-run real-package replay are not implemented.
+- Event 22 completes XLF-03 at immutable commit
+  `6622aa1fef947530128b5b49de67afba3cc10088`.
+- The extractor now has deterministic default seeds and CLI/check mode, bounded
+  real-authority-safe XML handling, and fail-closed archive/XML/matrix negative
+  controls.
+- The tracked matrix contains 36 unique source-surface anchors, 293/420
+  DocBook sections, 8/8 normative modules, and 8/9 module schema vocabularies
+  across XLIFF 2.0/2.1. Three generations are byte-identical at SHA-256
+  `9f4ea4b8b71378217af26c0fb2b97a759817a0aca6c64255b8cd55170c60a090`.
+- The final XLF-03 suite passes 18 tests, Ruff, strict Mypy, Pyright 1.1.411,
+  bytecode compilation, and zero-warning transcript validation.
+- XLF-03 does not prove fine-grained Core or module semantics. XLF-04 and
+  XLF-05 remain mandatory.
 
 ## Current compiled planning state
 
@@ -156,10 +167,12 @@ The portfolio remains `NEEDS_PROFILE_OR_SURFACE_REPAIR` because exact XLIFF
 - XLIFF authority inventory replay: 42/42 exact member size/digest pairs.
 - Authority audit: 17/17 match; XLIFF offline reconstruction: 5/5 match.
 - Event-20 Ruff, Pyright 1.1.411, and bounded Mypy checks: pass.
-- Event-21 extractor checkpoint: 3 tests passed; Ruff passed; strict Mypy
-  passed; bytecode compilation passed; both tracked skill transcripts validate
-  with zero warnings.
-- Event-21 Pyright: unavailable in the current shell; no result is claimed.
+- Event-22 extractor checkpoint: 18 tests passed; Ruff, strict Mypy, Pyright
+  1.1.411, and bytecode compilation passed; both final XLF-03 skill transcripts
+  validate with zero warnings.
+- Event-22 real matrix: check mode passed and three identical outputs matched
+  SHA-256
+  `9f4ea4b8b71378217af26c0fb2b97a759817a0aca6c64255b8cd55170c60a090`.
 - Global SAL merge remains non-promoting because of pre-existing ODS/ODT alias
   contradictions. The NRRD cache content was verified and all attempted alias
   side effects were removed.
@@ -169,31 +182,30 @@ The portfolio remains `NEEDS_PROFILE_OR_SURFACE_REPAIR` because exact XLIFF
 1. Read `START-HERE.md`, `CURRENT-MACHINE-STATE.yaml`, `AGENTS.md`, and the
    provider adapter in their declared order.
 2. Fetch GitLab `origin/main`; do not use GitHub or create a branch.
-3. Require `a1316b4fae21c20c71ccb6d60e4b9fe634dca573` to be an ancestor of
+3. Require `6622aa1fef947530128b5b49de67afba3cc10088` to be an ancestor of
    fetched `origin/main`.
 4. Require a clean or fully classified shared worktree.
 5. Register a fresh coordination identity and inspect live leases/conflicts.
-6. Validate event 21 natively using `previous_event_hash` and canonical JSON
+6. Validate event 22 natively using `previous_event_hash` and canonical JSON
    with `event_hash` removed.
 7. Verify the controller names
-   `TC-FF6-XLIFF-PROFILE-SURFACE-001` as `WORK_IN_PROGRESS`, with `XLF-03`
+   `TC-FF6-XLIFF-PROFILE-SURFACE-001` as `WORK_IN_PROGRESS`, with `XLF-04`
    first unmet.
 8. Read that taskcard, the product goal, current gaps, capability policy,
    XLIFF contract/SAL/evidence/enrichment, both pinned packages, the tracked
    42-member inventory, the five XLIFF authority records, the committed
-   extractor/test files, and both event-21 skill receipts.
+   extractor/test/matrix files, and both final XLF-03 skill receipts.
 9. Claim exact paths, resolve registered skills, and run the mutation guard
    before every write.
-10. Replay the exact committed file digests and the three focused tests.
-11. Add `test_cli_writes_and_checks_default_xliff_matrix` and prove it RED
-    because the CLI/default seed layer does not exist.
-12. Implement deterministic default Core/module/validation seeds and
-    CLI/check mode, then make that test GREEN.
-13. Add negative controls for digest mismatch, duplicate/casefold paths,
-    unsafe paths, entity declarations, missing schemas, malformed/duplicate
-    matrix rows, and preview contamination.
-14. Run against both real packages and prove three identical matrix outputs.
-15. Resume the remaining XLF-03 through XLF-08 work in
+10. Replay the exact committed digests, 18 tests, static checks, matrix check
+    mode, and three identical authority generations.
+11. Read all XLF-04 Core categories and define the fine-grained obligation
+    schema and exact source-location contract.
+12. Add a failing test for the first representative Core obligation batch.
+13. Implement and verify that bounded batch without treating XSD validity as
+    semantic or processing support.
+14. Continue in source-located batches until every XLF-04 category is owned.
+15. Resume the remaining XLF-04 through XLF-08 work in
     `STATE-MACHINE-AND-TASKCARD-PROTOCOL.md`.
 16. Re-run XLF-01 or XLF-02 only if event-20 authority inputs were invalidated.
 17. Produce source-located 2.0/2.1 Core and module delta matrices.
@@ -221,7 +233,7 @@ Never leave a required result only in conversation or an uncommitted tree.
 
 This checkpoint does not mean:
 
-- XLF-03 is complete merely because a compiler slice and three tests exist;
+- XLF-04 is complete because XLF-03 emitted 36 source-surface anchors;
 - any of the 672 obligations is implemented merely by this contract work;
 - any current source package is production-ready;
 - any format has independent interoperability certification;
@@ -233,15 +245,15 @@ Only digest-bound executed behavior can move those states.
 
 ## Outgoing self-challenge
 
-The event-21 executor recorded the required governance challenge at the shift
+The event-22 executor recorded the required governance challenge at the shift
 boundary:
 
-1. Required XLF-01/XLF-02 steps and the declared XLF-03 compiler microstep
-   performed; XLF-03 through XLF-08 remain explicit and unclaimed: yes.
-2. Required evidence for the event-21 WIP microstep boundary present; none
-   missing for the committed slice: yes.
-3. Evidence sufficient for the tested WIP boundary, without claiming the
-   normative matrix, XLIFF contract, or product completion: yes.
+1. Required XLF-01 through XLF-03 steps performed; XLF-04 through XLF-08
+   remain explicit and unclaimed: yes.
+2. Required evidence for the event-22 XLF-03 boundary present: yes.
+3. Evidence sufficient for the source-surface matrix, without claiming
+   fine-grained semantic obligations, XLIFF contract closure, or product
+   completion: yes.
 4. Secondary source substituted where primary authority was required: no.
 5. Phase-forbidden file created: no.
 6. Product gate self-approved: no.

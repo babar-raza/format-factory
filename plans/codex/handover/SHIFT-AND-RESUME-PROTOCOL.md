@@ -33,27 +33,27 @@ disjoint, separately taskcarded scopes with non-overlapping leases.
 ## Current transfer boundary
 
 - Required implementation ancestor before this packet:
-  `a1316b4fae21c20c71ccb6d60e4b9fe634dca573`.
+  `6622aa1fef947530128b5b49de67afba3cc10088`.
 - Use the fetched `origin/main` descendant containing this packet.
 - Controller state: `CONTRACT`.
-- Event: `FF6-EVENT-000021`.
+- Event: `FF6-EVENT-000022`.
 - Event hash:
-  `3e83a764c53da658cb1dd348ed20d041db850f1cef45bec5eaa5637ccafecc11`.
+  `05e95766f573441844bf88efb6d4ee56c27d46ab3db8f0029577804a054732d5`.
 - Completed task: `TC-FF6-NRRD-PROFILE-SURFACE-001` - `PASS`.
 - Active task: `TC-FF6-XLIFF-PROFILE-SURFACE-001` -
-  `WORK_IN_PROGRESS`; XLF-01/XLF-02 complete, XLF-03 first unmet.
-- XLF-03 microstate: `GREEN_VERIFIED_CHECKPOINTED`; the committed compiler
-  slice is valid but XLF-03 is not complete.
-- Exact next test: `test_cli_writes_and_checks_default_xliff_matrix`.
+  `WORK_IN_PROGRESS`; XLF-01/XLF-02/XLF-03 complete, XLF-04 first unmet.
+- Shift microstate: `RESUMABLE`; the XLF-03 source-surface matrix is complete
+  and validated, while fine-grained Core semantics remain.
+- Exact next action: first RED test for a source-located Core obligation batch.
 - Product promotion: none.
 
 ## Incoming provider procedure
 
 1. Fetch `origin/main`; do not use GitHub or a provider branch.
-2. Verify `a1316b4fae21c20c71ccb6d60e4b9fe634dca573` is an ancestor.
+2. Verify `6622aa1fef947530128b5b49de67afba3cc10088` is an ancestor.
 3. Verify the worktree is clean before new mutation.
 4. Read the ordered authority list in `START-HERE.md`.
-5. Validate the journal through event 21 using FF6 native semantics:
+5. Validate the journal through event 22 using FF6 native semantics:
    `previous_event_hash`, canonical JSON, sequential event IDs and hashes.
 6. Verify controller head, parent/child task states, task index, current gaps,
    authority 17/17 global and 5/5 XLIFF match, and capability manifest
@@ -66,10 +66,11 @@ disjoint, separately taskcarded scopes with non-overlapping leases.
 11. Resolve the required registered skills and run the mutation guard.
 12. Capture input baselines before writing.
 13. Validate `reports/ff6/xliff-authority-member-inventory.yaml` against both
-    pinned packages, replay the three extractor tests and committed file
-    digests, then start the exact next RED test in
-    `STATE-MACHINE-AND-TASKCARD-PROTOCOL.md`. Re-run XLF-01/XLF-02 only if
-    event-20 authority inputs were invalidated.
+    pinned packages; replay 18 extractor tests, exact file digests, matrix
+    check mode, static checks, and three identical real-authority outputs;
+    then start the XLF-04 RED test in
+    `STATE-MACHINE-AND-TASKCARD-PROTOCOL.md`. Re-run XLF-01 through XLF-03
+    only if their recorded inputs were invalidated.
 
 The new provider reconstructs the state; it does not accept a prior provider's
 claim on trust. A mismatch produces a named discrepancy and invalidates only
@@ -242,17 +243,20 @@ print(f"PASS events={len(events)} head={previous}")
 currently fails at event 1 because it expects `previous_hash`. FF6 uses
 `previous_event_hash` under `ff6/controller-event@1`.
 
-This is `FF6-GAP-011`, not evidence that event 21 is corrupt. Validate the FF6
+This is `FF6-GAP-011`, not evidence that event 22 is corrupt. Validate the FF6
 native chain and do not edit either journal schema ad hoc.
 
-## XLIFF section-count semantics
+## XLIFF completed surface and next semantic denominator
 
-The XLF-03 real-package check uses 293 XLIFF 2.0 and 420 XLIFF 2.1 DocBook
+The completed XLF-03 real-package check uses 293 XLIFF 2.0 and 420 XLIFF 2.1 DocBook
 `section` elements. Direct IDs exist on only 197 and 312 of those sections.
 The remaining sections use deterministic title-path locations. Both numbers
 are useful diagnostics, but only 293/420 are the complete section denominator.
 Changing the acceptance count to the ID-bearing subset would silently remove
-source evidence.
+source evidence. Conversely, the 36 matrix rows are not a denominator for
+fine-grained semantic obligations. XLF-04 must enumerate complete Core rules
+with exact authority locations and profile applicability; XLF-05 must do the
+same for each official module.
 
 ## Transfer acceptance
 

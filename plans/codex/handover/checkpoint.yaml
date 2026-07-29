@@ -22,7 +22,7 @@ source_checkpoint:
   rule: >-
     Use the fetched origin/main descendant containing this packet. A packet
     cannot embed the hash of the commit that contains its own final bytes.
-  required_ancestor_before_this_change: a1316b4fae21c20c71ccb6d60e4b9fe634dca573
+  required_ancestor_before_this_change: 6622aa1fef947530128b5b49de67afba3cc10088
   required_remote_ref: refs/remotes/origin/main
   required_worktree_state_before_resume_mutation: clean
 
@@ -34,9 +34,9 @@ digest_policy:
 
 controller_checkpoint:
   state: CONTRACT
-  transition_sequence: 21
-  last_event_id: FF6-EVENT-000021
-  last_event_hash: 3e83a764c53da658cb1dd348ed20d041db850f1cef45bec5eaa5637ccafecc11
+  transition_sequence: 22
+  last_event_id: FF6-EVENT-000022
+  last_event_hash: 05e95766f573441844bf88efb6d4ee56c27d46ab3db8f0029577804a054732d5
   parent_task: TC-FF6-PROGRAM-CAPABILITIES-001
   parent_task_state: NEEDS_REPAIR
   completed_subtask: TC-FF6-NRRD-PROFILE-SURFACE-001
@@ -189,29 +189,40 @@ resume_decision:
   taskcard: taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md
   active_checkpoint: plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md
   exact_first_step: >-
-    Revalidate event 21, the exact source/test/transcript digests, and the
-    three focused tests. Add test_cli_writes_and_checks_default_xliff_matrix
-    as the next RED test, then implement default seeds and CLI/check mode.
-    Re-run XLF-01 or XLF-02 only when their recorded input digests changed.
+    Revalidate event 22, the exact source/test/matrix/transcript digests, 18
+    focused tests, static checks, matrix check mode, three identical
+    real-authority outputs, and 17/17 authority matches. Resume XLF-04 with a
+    RED test for a source-located fine-grained Core obligation batch. Re-run
+    XLF-01 through XLF-03 only when their recorded inputs changed.
   product_source_mutation_allowed: false
   gate_or_product_promotion_allowed: false
   human_continuation_prompt_allowed: false
   blocked_format_stops_other_formats: false
 
 xlf_03_implementation_checkpoint:
-  task_step_complete: false
-  microstate: GREEN_VERIFIED_CHECKPOINTED
-  source_commit: a1316b4fae21c20c71ccb6d60e4b9fe634dca573
+  task_step_complete: true
+  microstate: RESUMABLE
+  source_commit: 6622aa1fef947530128b5b49de67afba3cc10088
   source:
     path: tools/spec/extract_sal_facts.py
-    sha256: 16466e1e7778259cd284fcf89af61ca902c1b2aac609ccf6b6ebce388590388c
+    sha256: f7e59ae41ac3e0a82c8e0b2523711e3f7569c33b0cfa58d32f2ef9ee14096dbb
   tests:
     path: tests/tools/test_extract_sal_facts.py
-    sha256: 93a4e5ce49cc8e2dcd2a513d6a6e598fd966849cfe63a58b7e84d2fcd4fc0c84
-    result: 3_passed
-  receipt:
-    path: reports/skills-rff6/skill-transcripts/ingest-spec-sal-xliff-xlf03-001.json
-    sha256: d1e283235efc0ee3af5a36a7257e6bf0ed93162ea7bc394c9eab5a4331f819ef
+    sha256: 4a9e5f6aa1cf68a80dcd4c93f135b80c84ff18ff0bbccc5d81e87677ddae2e58
+    result: 18_passed
+  matrix:
+    path: reports/ff6/xliff-normative-delta-matrix.yaml
+    sha256: 9f4ea4b8b71378217af26c0fb2b97a759817a0aca6c64255b8cd55170c60a090
+    rows: 36
+    unique_ids: 36
+    replay: PASS_THREE_IDENTICAL
+  tdd_receipt:
+    path: reports/skills-rff6/skill-transcripts/test-driven-development-xliff-xlf03-cli-001.json
+    sha256: ff3c01917056f02a85cb552e0f6459b1c4f5531f33e8fd0c8d083645e44079df
+    validation: PASS_ZERO_WARNINGS
+  ingestion_receipt:
+    path: reports/skills-rff6/skill-transcripts/ingest-spec-sal-xliff-xlf03-002.json
+    sha256: 18497bd7b49eb50f20b9476610754b62935aa8cf993a2b85a82aefd2232a7859
     validation: PASS_ZERO_WARNINGS
   implemented:
     - exact_package_digest_verification
@@ -221,13 +232,15 @@ xlf_03_implementation_checkpoint:
     - section_delta_inventory
     - curated_requirement_row_validation
     - canonical_yaml_atomic_write_and_drift_check
-  not_implemented:
     - cli_entry_point
     - default_curated_requirement_seeds
     - complete_negative_controls
     - real_package_matrix_output
     - three_run_real_authority_replay
-  exact_next_test: test_cli_writes_and_checks_default_xliff_matrix
+  first_unmet_step: XLF-04
+  exact_next_action: >-
+    Add the first failing test for a fine-grained Core obligation batch after
+    replaying event 22 and all bound evidence.
   prose_section_denominator:
     total_section_elements:
       xliff_2.0: 293
@@ -241,7 +254,7 @@ xlf_03_implementation_checkpoint:
     ruff: PASS
     mypy_strict: PASS
     py_compile: PASS
-    pyright: UNAVAILABLE_IN_CURRENT_SHELL_NO_CLAIM
+    pyright: PASS_ZERO_DIAGNOSTICS_1_1_411
   promotion_effect: none
 
 shift_acceptance:
@@ -300,9 +313,9 @@ xliff_starting_defects:
     prose_sha256: fdd293f4344920dfde643c578caca94da80261dc74f75baba7215da6e6d10bc1
   preview: xliff_2.2_preview_isolated_only
   excluded_compatibility_model: xliff_1.2
-  completed_steps: [XLF-01, XLF-02]
-  first_unmet_step: XLF-03
-  xlf_03_microstate: GREEN_VERIFIED_CHECKPOINTED
+  completed_steps: [XLF-01, XLF-02, XLF-03]
+  first_unmet_step: XLF-04
+  shift_microstate: RESUMABLE
   authority_inventory: reports/ff6/xliff-authority-member-inventory.yaml
   package_member_counts:
     xliff_2.0: 15

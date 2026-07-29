@@ -185,8 +185,8 @@ Task: `TC-FF6-XLIFF-PROFILE-SURFACE-001`.
 |---|---|---|
 | XLF-01 — PASS at event 20 | event 19, task/index/controller, authority and worktree preflight | native chain, exact READY task, clean or classified tree, 15/15 predecessor authority match |
 | XLF-02 — PASS at event 20 | official XLIFF 2.0 authority record, five-source XLIFF closure, and 42-member 2.0/2.1 inventory | independent digest plus published SHA-1 cross-check, legal record, 5/5 clean offline reconstruction, no 2.1-as-2.0 proxy |
-| XLF-03 — FIRST UNMET; event-21 microstate `GREEN_VERIFIED_CHECKPOINTED` | source-located 2.0/2.1 Core and module delta matrix | first compiler slice is committed and tested; next RED test is `test_cli_writes_and_checks_default_xliff_matrix`; real prose inventories contain 293/420 total sections, including 197/312 directly ID-bearing sections and deterministic title-path locations for the rest; XLF-03 passes only when every requirement has source/member/location, profile set, Core/module owner, confidence, and contradiction note |
-| XLF-04 | complete Core SAL and processing-requirement map | exact verifier passes; inline, segmentation, state, extension, skeleton, ITS, and agent rules are not reduced to XSD validity |
+| XLF-03 — PASS at event 22 | deterministic source-located 2.0/2.1 Core/module/schema surface matrix | 36 unique coarse anchors; 293/420 sections; 8/8 modules; 8/9 schema vocabularies; full declared archive/XML/matrix negative controls; 18 tests; three identical real-authority outputs; this does not satisfy fine-grained semantics |
+| XLF-04 — FIRST UNMET | complete Core SAL and processing-requirement map | exact verifier passes; every rule has source, profile, owner and requirement class; inline, segmentation, state, extension, skeleton, ITS, and agent rules are not reduced to XSD validity |
 | XLF-05 | separately owned Translation Candidates/Matches, Glossary, Format Style, Metadata, Resource Data, Size/Length, Validation, and ITS families | all eight official modules and all nine module schema vocabularies are accounted for; each module has typed-model, read/write, validation, preservation, rejection, and proof obligations |
 | XLF-06 | repaired research/family/enrichment layers | mixed-profile requirements split; explicit-complete ownership; no keyword duplication |
 | XLF-07 | exact stable and preview projections | both stable profiles claimed; 2.1-only rules excluded from 2.0; 2.2 preview isolated; 1.2 outside model |
@@ -194,7 +194,7 @@ Task: `TC-FF6-XLIFF-PROFILE-SURFACE-001`.
 
 Product source and product tests are forbidden in XLF-01 through XLF-08.
 
-XLF-03 through XLF-07 must explicitly cover files, groups, units, segments,
+XLF-04 through XLF-07 must explicitly cover files, groups, units, segments,
 ignorable content, notes, original data, skeleton references, extension
 points, inline identity/pairing/nesting/order/isolation, language and direction
 inheritance, state/sub-state, segmentation and re-segmentation, Core and module
@@ -247,3 +247,22 @@ agent’s self-verdict without replay.
   integrating.
 - A blocked format does not stop another ready format.
 - Human-only release authority never blocks technical release preparation.
+
+## Event-22 resume invariant
+
+The receiving provider starts at XLF-04 only after replaying:
+
+- implementation commit
+  `6622aa1fef947530128b5b49de67afba3cc10088`;
+- event `FF6-EVENT-000022` and controller sequence 22;
+- exact source, test, matrix, and final receipt digests;
+- 18 focused tests plus Ruff, strict Mypy, Pyright 1.1.411, and bytecode
+  compilation;
+- matrix check mode and three byte-identical real-authority generations;
+- 17/17 global and 5/5 XLIFF authority matches.
+
+The first XLF-04 RED test must target a source-located fine-grained Core
+obligation batch. Its exact test identifier is chosen only after inspecting the
+current test namespace and is then persisted in the skill receipt and next
+checkpoint. A provider must not invent a duplicate identifier or relabel one
+of the 36 source-surface anchors as complete semantic coverage.

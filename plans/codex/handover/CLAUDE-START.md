@@ -28,16 +28,16 @@ provider-local artifacts as authority.
    trusting its labels.
 4. Require:
    - source checkpoint
-     `a1316b4fae21c20c71ccb6d60e4b9fe634dca573` is an ancestor of fetched
+     `6622aa1fef947530128b5b49de67afba3cc10088` is an ancestor of fetched
      `origin/main`;
-   - controller `CONTRACT`, sequence 21;
-   - event `FF6-EVENT-000021`, hash
-     `3e83a764c53da658cb1dd348ed20d041db850f1cef45bec5eaa5637ccafecc11`;
+   - controller `CONTRACT`, sequence 22;
+   - event `FF6-EVENT-000022`, hash
+     `05e95766f573441844bf88efb6d4ee56c27d46ab3db8f0029577804a054732d5`;
    - parent `TC-FF6-PROGRAM-CAPABILITIES-001` in `NEEDS_REPAIR`;
    - `TC-FF6-NRRD-PROFILE-SURFACE-001` in `PASS`;
    - `TC-FF6-XLIFF-PROFILE-SURFACE-001` in `WORK_IN_PROGRESS`, with
-     `XLF-01` and `XLF-02` complete, `XLF-03` first unmet, and XLF-03
-     microstate `GREEN_VERIFIED_CHECKPOINTED`;
+     `XLF-01`, `XLF-02`, and `XLF-03` complete, `XLF-04` first unmet, and
+     provider-shift microstate `RESUMABLE`;
    - 110 capabilities, 672 obligations, and aggregate
      `4d17d8c8c0ef3de74d59e1d5b16884c0210fd0836e0593591871f10d0af2efd2`;
    - 17/17 authority artifacts `MATCH`, including 5/5 XLIFF;
@@ -55,23 +55,28 @@ capturing and classifying the current filesystem state.
 
 ## Execute exactly this task
 
-Resume `taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md` at `XLF-03` through its registered
+Resume `taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md` at `XLF-04` through its registered
 authority-acquisition, SAL, family, research, contract,
 capability-compiler, taskcard, and controller skills.
 
-Do not reacquire XLIFF 2.0 unless event-20 authority inputs changed. First:
+Do not reacquire XLIFF 2.0 or rebuild XLF-03 unless their recorded inputs
+changed. First:
 
-1. verify the event-21 source, test, and transcript SHA-256 values;
+1. verify the event-22 source, test, matrix, and transcript SHA-256 values;
 2. run `python -m pytest tests/tools/test_extract_sal_facts.py -q` and require
-   3 passed;
-3. rerun Ruff, strict Mypy, and bytecode compilation;
+   18 passed;
+3. rerun Ruff, strict Mypy, Pyright 1.1.411, and bytecode compilation;
 4. validate `reports/ff6/xliff-authority-member-inventory.yaml` against both
    pinned ZIPs;
-5. add `test_cli_writes_and_checks_default_xliff_matrix` and prove it RED;
-6. implement default curated Core/module/validation seeds and deterministic
-   CLI/check mode to make it GREEN;
-7. add the declared archive/XML/matrix negative controls;
-8. generate the real matrix and prove three byte-identical outputs.
+5. run matrix `--check` and require three byte-identical generations at
+   `9f4ea4b8b71378217af26c0fb2b97a759817a0aca6c64255b8cd55170c60a090`;
+6. read XLF-04 in the taskcard and define the fine-grained Core-obligation
+   record shape before mutation;
+7. add the first RED test for a source-located Core obligation batch covering
+   representative root/hierarchy, inline-code, segmentation/state, extension,
+   and processing-agent rules;
+8. make only that bounded batch GREEN, record its exact coverage and remaining
+   XLF-04 categories, then continue batchwise.
 
 The matrix acceptance count is 293/420 total DocBook `section` elements. The
 197/312 figures are only the subsets with direct `id`/`xml:id` attributes;
@@ -79,9 +84,9 @@ sections without IDs remain evidence and receive deterministic title-path
 locations. Treating 197/312 as the matrix denominator would lose normative
 source coverage.
 
-Preserve the existing tested compiler slice unless replay exposes a defect.
-The CLI, default seed inventory, full negative suite, and real authority output
-are absent at the checkpoint; XLF-03 is not complete.
+Preserve the existing tested compiler unless replay exposes a defect. Its 36
+rows are source-surface anchors, not a complete semantic obligation inventory.
+Never satisfy XLF-04 by relabeling those anchors or by counting XSD components.
 
 Remaining required result:
 
@@ -128,6 +133,9 @@ Remaining required result:
   unjournaled, or local-only handoff.
 - Never ask for continuation. Continue safe unblocked work until a clean shift
   checkpoint is required.
+- Treat the exact next action as deterministic but select its exact test name
+  after inspecting the existing XLF-04 test namespace; record that name in the
+  first RED receipt and next checkpoint. Do not invent a conflicting test ID.
 
 ## Forbidden
 

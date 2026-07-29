@@ -21,12 +21,12 @@ Current state is `CONTRACT`. Authority closure passed at event 16, OpenRaster
 profile/surface repair at event 17, and IPYNB profile/surface repair at event
 18. NRRD0001-NRRD0005 profile repair passed at event 19. Event 20
 checkpointed XLIFF steps XLF-01 and XLF-02 after closing the 2.0 authority
-prerequisite and inventorying both pinned packages. Event 21 binds the first
-tested XLF-03 compiler slice at commit
-`a1316b4fae21c20c71ccb6d60e4b9fe634dca573`; XLF-03 remains unmet. The
+prerequisite and inventorying both pinned packages. Event 22 completes the
+XLF-03 deterministic source-surface matrix at commit
+`6622aa1fef947530128b5b49de67afba3cc10088`; XLF-04 is first unmet. The
 parent capability task remains `NEEDS_REPAIR`, so product implementation is
 locked. The active task is `TC-FF6-XLIFF-PROFILE-SURFACE-001`, and the first
-unmet step is XLF-03.
+unmet step is XLF-04.
 
 ## Canonical state precedence
 
@@ -71,7 +71,7 @@ TC-FF6-PROGRAM-TRUTH-001 [COMPLETE]
        -> TC-FF6-ORA-PROFILE-SURFACE-001 [PASS]
        -> TC-FF6-IPYNB-PROFILE-SURFACE-001 [PASS]
        -> TC-FF6-NRRD-PROFILE-SURFACE-001 [PASS]
-       -> TC-FF6-XLIFF-PROFILE-SURFACE-001 [WORK_IN_PROGRESS: XLF-03]
+       -> TC-FF6-XLIFF-PROFILE-SURFACE-001 [WORK_IN_PROGRESS: XLF-04]
        -> remaining compiler-derived contract repairs
   -> TC-FF6-PROGRAM-ARCHITECTURE-001
   -> TC-FF6-PROGRAM-TASKCARDS-001
@@ -101,7 +101,7 @@ No product wave may bypass the program dependencies.
 
 ### Inputs
 
-- event 21 and the `PASS` NRRD checkpoint;
+- event 22 and the `PASS` NRRD checkpoint;
 - the locked XLIFF 2.0 and 2.1 OASIS Standard packages, prose members,
   product requirements, and 42-member tracked inventory;
 - `shared/format-contracts/authority-lock.yaml`;
@@ -113,65 +113,64 @@ No product wave may bypass the program dependencies.
 
 ### Steps
 
-1. Revalidate event 21, controller/task/index agreement, the remote source
+1. Revalidate event 22, controller/task/index agreement, the remote source
    commit, coordination ownership, all 17 global authority matches, all five
    XLIFF matches, and the 42-member inventory.
-2. Require commit `a1316b4fae21c20c71ccb6d60e4b9fe634dca573`
-   as a GitLab-main ancestor; verify the exact source, test, and transcript
-   SHA-256 values from event 21; replay 3 focused tests, Ruff, strict Mypy, and
-   bytecode compilation.
-3. Re-run authority acquisition only if event-20 authority inputs changed.
-4. Add `test_cli_writes_and_checks_default_xliff_matrix`; prove RED because
-   the default seed/CLI layer is absent.
-5. Implement deterministic default Core, per-profile module, informative
-   extension, Schematron, NVDL, 2.2-preview-absent, and 1.2-excluded rows plus
-   CLI write/check mode; prove the new test GREEN.
-6. Add digest mismatch, duplicate/casefold member, unsafe path, entity,
-   missing schema, malformed/duplicate row, and preview contamination negative
-   tests.
-7. Generate the real matrix from both pinned packages and prove three
-   byte-identical outputs, 293/420 section inventories, 8/8 normative module
-   owners, and 8/9 module schema-vocabulary counts.
-8. Extract the complete source-located 2.0/2.1 delta matrix. Separate common Core rules,
-   2.1 additions/changes, module rules, processing requirements, ITS mappings,
-   and uncertainty.
-9. Audit every current XLIFF SAL fact against that matrix. Split mixed 2.0/2.1
+2. Require commit `6622aa1fef947530128b5b49de67afba3cc10088`
+   as a GitLab-main ancestor; verify exact source, test, matrix, and final
+   transcript SHA-256 values from event 22; replay 18 focused tests, Ruff,
+   strict Mypy, Pyright 1.1.411, bytecode compilation, matrix check mode, and
+   three identical real-authority generations.
+3. Re-run XLF-01 through XLF-03 only if their recorded input closure changed.
+4. Define the fine-grained Core-obligation schema: stable profiles, canonical
+   owner, authority/source/member/location, normalized rule, requirement
+   class, positive/rejection evidence needs, and interpretation note.
+5. Add the first RED test for a representative source-located Core batch,
+   covering root/hierarchy, inline identity/pairing, segmentation/state,
+   extension, and agent-processing behavior.
+6. Implement the bounded batch, make it GREEN, run the task regression tier,
+   and record exactly which XLF-04 categories remain.
+7. Continue bounded source-located batches until the complete Core delta and
+   processing map exists. Separate common Core rules, 2.1 additions/changes,
+   processing requirements, ITS mappings, preservation, security, limits, and
+   uncertainty. Never count the 36 coarse XLF-03 anchors as complete semantics.
+8. Audit every current XLIFF SAL fact against that map. Split mixed 2.0/2.1
    claims; ingest missing facts and heal false claims only through registered
    SAL skills.
-10. Compile complete Core requirements for hierarchy, languages, identifiers,
+9. Compile complete Core requirements for hierarchy, languages, identifiers,
    inheritance, ordering/cardinality, source/target structure, notes,
    original data, skeletons, extensions, inline identity/pairing/nesting/
    isolation/order, segmentation/re-segmentation, state/sub-state, and agent
    processing.
-11. Replace the generic module bucket with separately owned Translation
+10. Replace the generic module bucket with separately owned Translation
    Candidates/Matches, Glossary, Format Style, Metadata, Resource Data, Size
    and Length Restriction, Validation, and ITS capability families.
-12. Reconcile all nine module schema vocabularies (`matches`, `glossary`, `fs`,
+11. Reconcile all nine module schema vocabularies (`matches`, `glossary`, `fs`,
    `metadata`, `resource_data`, `size_restriction`, `validation`, `its`,
    `itsm`) to the eight owners. Treat `its` and `itsm` as one ITS module.
    Inventory Change Tracking as informative and give it no normative
    conformance credit.
-13. For each module, require typed models, parse/write, schema plus processing
+12. For each module, require typed models, parse/write, schema plus processing
    validation, preservation, rejection, diagnostics, positive/negative/
    property/roundtrip/interoperability/security/resource obligations.
-14. Repair mixed-profile research or product requirements at their governed
+13. Repair mixed-profile research or product requirements at their governed
    source, then regenerate and relock; never patch only the projection.
-15. Apply explicit-complete fact ownership only after every live fact has one
+14. Apply explicit-complete fact ownership only after every live fact has one
     exact Core or module owner.
-16. Give every stable capability and obligation an exact non-empty subset of
+15. Give every stable capability and obligation an exact non-empty subset of
     `xliff_2.0` and `xliff_2.1`; never assign a 2.1-only module to 2.0.
-17. Keep XLIFF 2.2 absent or `PREVIEW_ISOLATED`, with no stable obligation
+16. Keep XLIFF 2.2 absent or `PREVIEW_ISOLATED`, with no stable obligation
     ownership. Keep XLIFF 1.2 outside the 2.x model.
-18. Preserve namespace-aware extensions and deterministic semantic roundtrip,
+17. Preserve namespace-aware extensions and deterministic semantic roundtrip,
     but do not treat preservation-only content or XSD validity as semantic
     module/processing support.
-19. Compile XLIFF and all six format projections; require zero missing stable
+18. Compile XLIFF and all six format projections; require zero missing stable
     profile, module-owner, empty-profile, duplicate, foreign, or dangling edge.
-20. Run negative controls for malformed IDs, missing module ownership,
+19. Run negative controls for malformed IDs, missing module ownership,
     cross-profile contamination, and preview leakage.
-21. Replay at least three clean strict runs plus authority, focused regression,
+20. Replay at least three clean strict runs plus authority, focused regression,
     Ruff, Pyright, and bounded strict Mypy checks.
-22. Reconcile gaps, taskcards, controller and journal atomically; retain UBL
+21. Reconcile gaps, taskcards, controller and journal atomically; retain UBL
     typing as the exact remaining contract repair.
 
 ### Failure routing
