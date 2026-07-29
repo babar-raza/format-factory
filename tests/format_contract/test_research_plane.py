@@ -216,6 +216,7 @@ def test_researcher_allocates_lowest_unused_canonical_source_id(
 ):
     monkeypatch.setattr(sr, "DRAFTS_DIR", tmp_path / "drafts")
     monkeypatch.setattr(sr, "ACQUIRED_DIR", tmp_path / "acquired")
+    monkeypatch.setattr(sr, "DEFAULT_LOCK", Path("unenrolled-authority-lock.yaml"))
     monkeypatch.setattr(
         stores,
         "load_format_registry_entry",

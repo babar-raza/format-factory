@@ -1,0 +1,373 @@
+schema_version: '1.0'
+lock_id: FF-AUTHORITY-LOCK-001
+sources:
+- source_id: SRC-NB-002
+  format_id: ipynb
+  title: Jupyter nbformat specification, schemas, and implementation
+  organization: Jupyter Project
+  version: nbformat 5.10.4 commit 60b6151fedcbdc9f137fb2d223eeb10c935a8378
+  authority_class: AUTHORITATIVE
+  materialized_path: .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  expected_sha256: 4d3750b55006e92d8063a6ac427a84eb1f91c44e376d90de53d03893674991d9
+  media_type: application/gzip
+  legal:
+    license_id: BSD-3-Clause
+    redistribution: ALLOWED_WITH_NOTICE
+    use_status: APPROVED
+    evidence: LICENSE file in the pinned Jupyter nbformat source archive
+    notes: External archive bytes remain in the ignored local CAS; release artifacts must retain the BSD notice.
+  limits:
+    max_bytes: 20971520
+    timeout_seconds: 60
+    max_redirects: 4
+  fetch:
+    kind: URL
+    locators:
+    - url: https://github.com/jupyter/nbformat/archive/60b6151fedcbdc9f137fb2d223eeb10c935a8378.tar.gz
+      immutable: true
+    allowed_hosts:
+    - github.com
+    - codeload.github.com
+- source_id: SRC-NB-003
+  format_id: ipynb
+  title: Notebook-pipeline developer-workflow requirements (CI cleaning, diffing, trust handling practice)
+  organization: Format Factory
+  version: null
+  authority_class: PRODUCT_REQUIREMENT
+  materialized_path: shared/format-contracts/product-requirements/ipynb.yaml
+  expected_sha256: 903b5e9c4d3f371105d209794221a342ee676f4bd5f36dc15c3ddacb7ceadccd
+  media_type: application/yaml
+  legal:
+    license_id: LicenseRef-Format-Factory-Internal
+    redistribution: INTERNAL_ONLY
+    use_status: APPROVED
+    evidence: Deterministic projection of reviewed findings in shared/format-contracts/research/ipynb.yaml
+  limits:
+    max_bytes: 2097152
+    timeout_seconds: 1
+    max_redirects: 0
+  fetch:
+    kind: LOCAL_FILE
+    source_path: shared/format-contracts/product-requirements/ipynb.yaml
+- source_id: SRC-NRRD-001
+  format_id: nrrd
+  title: NRRD0005 live file-format definition
+  organization: Teem Project
+  version: NRRD0005 observed 2026-07-29
+  authority_class: AUTHORITATIVE
+  materialized_path: .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  expected_sha256: 43ca6102cc998e0191e225d7954278547d491e29b74a132b3118571d85a8b0d5
+  media_type: text/html
+  legal:
+    license_id: LicenseRef-Teem-Documentation-No-Redistribution
+    redistribution: LOCAL_CACHE_ONLY
+    use_status: APPROVED_FOR_LOCAL_USE
+    evidence: The HTML source copyright comment states that the documentation may not be modified or redistributed except by the copyright holder.
+    notes: The official endpoint is mutable and the documentation has no immutable official release member. Exact bytes are locked in the ignored CAS; publication and redistribution are prohibited.
+  limits:
+    max_bytes: 1048576
+    timeout_seconds: 60
+    max_redirects: 2
+  fetch:
+    kind: URL
+    locators:
+    - url: https://teem.sourceforge.net/nrrd/format.html
+      immutable: false
+    allowed_hosts:
+    - teem.sourceforge.net
+- source_id: SRC-NRRD-002
+  format_id: nrrd
+  title: Teem 1.9.0 source release and NRRD reference implementation
+  organization: Teem Project
+  version: Teem 1.9.0
+  authority_class: AUTHORITATIVE
+  materialized_path: .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  expected_sha256: e0b34337da424ff63ae31d05656ccaa619d03bc378a6eecf61c153c30d03e47b
+  media_type: application/gzip
+  legal:
+    license_id: LicenseRef-Teem-Simple-Library-Usage
+    redistribution: ALLOWED_WITH_NOTICE
+    use_status: APPROVED
+    evidence: src/LICENSE.txt in the official Teem 1.9.0 source release contains the Simple Library Usage License and LGPL-2.1-or-later terms with the Teem exception.
+    notes: This is independent pinned implementation evidence, not a second copy of the mutable prose specification.
+  limits:
+    max_bytes: 20971520
+    timeout_seconds: 90
+    max_redirects: 6
+  fetch:
+    kind: URL
+    locators:
+    - url: https://master.dl.sourceforge.net/project/teem/teem/1.9.0/teem-1.9.0-src.tar.gz?viasf=1
+      immutable: true
+    allowed_hosts:
+    - master.dl.sourceforge.net
+    - downloads.sourceforge.net
+    - '*.dl.sourceforge.net'
+- source_id: SRC-NRRD-003
+  format_id: nrrd
+  title: Scientific/medical raster developer-workflow requirements (imaging pipeline practice)
+  organization: Format Factory
+  version: null
+  authority_class: PRODUCT_REQUIREMENT
+  materialized_path: shared/format-contracts/product-requirements/nrrd.yaml
+  expected_sha256: 4731be2f44166596980728c57750b9bcfea6c8f0d0e9603b406374112cc202d3
+  media_type: application/yaml
+  legal:
+    license_id: LicenseRef-Format-Factory-Internal
+    redistribution: INTERNAL_ONLY
+    use_status: APPROVED
+    evidence: Deterministic projection of reviewed findings in shared/format-contracts/research/nrrd.yaml
+  limits:
+    max_bytes: 2097152
+    timeout_seconds: 1
+    max_redirects: 0
+  fetch:
+    kind: LOCAL_FILE
+    source_path: shared/format-contracts/product-requirements/nrrd.yaml
+- source_id: SRC-ORA-001
+  format_id: ora
+  title: OpenRaster 0.0.5 editable and viewing baseline
+  organization: OpenRaster community
+  version: OpenRaster 0.0.5 commit f050b99fa8af44cb4cc3c9d842d25097458765f6
+  authority_class: AUTHORITATIVE
+  materialized_path: .local/format-contracts/acquired/ora/src-ora-001.bin
+  expected_sha256: bd584b4b998df16c735bc3ce575e382569a101427fd4c4be14b677d30d210613
+  media_type: text/x-rst
+  legal:
+    license_id: NOASSERTION
+    redistribution: LOCAL_CACHE_ONLY
+    use_status: APPROVED_FOR_LOCAL_USE
+    evidence: Pinned official OpenRaster documentation repository member baseline/baseline.rst; no affirmative documentation redistribution license was found in the repository.
+    notes: Use for local implementation reference only; do not ship the source bytes.
+  limits:
+    max_bytes: 2097152
+    timeout_seconds: 60
+    max_redirects: 3
+  fetch:
+    kind: URL
+    locators:
+    - url: https://invent.kde.org/documentation/openraster-org/-/raw/f050b99fa8af44cb4cc3c9d842d25097458765f6/baseline/baseline.rst
+      immutable: true
+    allowed_hosts:
+    - invent.kde.org
+- source_id: SRC-ORA-002
+  format_id: ora
+  title: OpenRaster 0.0.5 file-layout specification
+  organization: OpenRaster community
+  version: OpenRaster 0.0.5 commit f050b99fa8af44cb4cc3c9d842d25097458765f6
+  authority_class: AUTHORITATIVE
+  materialized_path: .local/format-contracts/acquired/ora/src-ora-002.bin
+  expected_sha256: a9f2cb90009e3cc76883ab9db2f43607a9518e723b9d03f1aa1b150f2c2e546a
+  media_type: text/x-rst
+  legal:
+    license_id: NOASSERTION
+    redistribution: LOCAL_CACHE_ONLY
+    use_status: APPROVED_FOR_LOCAL_USE
+    evidence: Pinned official OpenRaster documentation repository member baseline/file-layout-spec.rst; no affirmative documentation redistribution license was found in the repository.
+    notes: Use for local implementation reference only; do not ship the source bytes.
+  limits:
+    max_bytes: 2097152
+    timeout_seconds: 60
+    max_redirects: 3
+  fetch:
+    kind: URL
+    locators:
+    - url: https://invent.kde.org/documentation/openraster-org/-/raw/f050b99fa8af44cb4cc3c9d842d25097458765f6/baseline/file-layout-spec.rst
+      immutable: true
+    allowed_hosts:
+    - invent.kde.org
+- source_id: SRC-ORA-003
+  format_id: ora
+  title: OpenRaster 0.0.5 layer-stack specification
+  organization: OpenRaster community
+  version: OpenRaster 0.0.5 commit f050b99fa8af44cb4cc3c9d842d25097458765f6
+  authority_class: AUTHORITATIVE
+  materialized_path: .local/format-contracts/acquired/ora/src-ora-003.bin
+  expected_sha256: 29c77a95396c8c245d259b349fa438e3b40019d7fe6f7e06b8520c2fc9f63a49
+  media_type: text/x-rst
+  legal:
+    license_id: NOASSERTION
+    redistribution: LOCAL_CACHE_ONLY
+    use_status: APPROVED_FOR_LOCAL_USE
+    evidence: Pinned official OpenRaster documentation repository member baseline/layer-stack-spec.rst; no affirmative documentation redistribution license was found in the repository.
+    notes: Use for local implementation reference only; do not ship the source bytes.
+  limits:
+    max_bytes: 2097152
+    timeout_seconds: 60
+    max_redirects: 3
+  fetch:
+    kind: URL
+    locators:
+    - url: https://invent.kde.org/documentation/openraster-org/-/raw/f050b99fa8af44cb4cc3c9d842d25097458765f6/baseline/layer-stack-spec.rst
+      immutable: true
+    allowed_hosts:
+    - invent.kde.org
+- source_id: SRC-SAFETENSORS-002
+  format_id: safetensors
+  title: SafeTensors format definition and official implementation
+  organization: Hugging Face
+  version: safetensors v0.8.0 commit a406ca3e7a90598be0cd05a50069cb9bf5ef6ba6
+  authority_class: AUTHORITATIVE
+  materialized_path: .local/format-contracts/acquired/safetensors/src-safetensors-002.bin
+  expected_sha256: 3b4bf28d71a2b1323bab6a98adbb7e92443c8ae97fb96fa4c8612b25fab4d1b3
+  media_type: application/gzip
+  legal:
+    license_id: Apache-2.0
+    redistribution: ALLOWED_WITH_NOTICE
+    use_status: APPROVED
+    evidence: LICENSE file in the pinned official SafeTensors source archive
+    notes: External archive bytes remain in the ignored local CAS; release artifacts must retain required notices.
+  limits:
+    max_bytes: 52428800
+    timeout_seconds: 90
+    max_redirects: 4
+  fetch:
+    kind: URL
+    locators:
+    - url: https://github.com/safetensors/safetensors/archive/a406ca3e7a90598be0cd05a50069cb9bf5ef6ba6.tar.gz
+      immutable: true
+    allowed_hosts:
+    - github.com
+    - codeload.github.com
+- source_id: SRC-UBL-001
+  format_id: ubl
+  title: OASIS UBL 2.3 Standard prose specification
+  organization: OASIS
+  version: UBL 2.3 OASIS Standard
+  authority_class: AUTHORITATIVE
+  materialized_path: .local/format-contracts/acquired/ubl/src-ubl-001.bin
+  expected_sha256: ccda3f1a2b64e6bdebfe33b2c9645423ef2f6206ac676f0937a304098d43358d
+  media_type: text/html
+  legal:
+    license_id: LicenseRef-OASIS-Specification-Notice
+    redistribution: ALLOWED_WITH_NOTICE
+    use_status: APPROVED_FOR_LOCAL_USE
+    evidence: Copyright and permission notice embedded in the OASIS UBL 2.3 release package and prose member.
+    notes: Materialized from the pinned release ZIP; external bytes remain in the ignored local CAS.
+  limits:
+    max_bytes: 10485760
+    timeout_seconds: 1
+    max_redirects: 0
+  fetch:
+    kind: ZIP_MEMBER
+    container_source_id: SRC-UBL-002
+    member_path: UBL-2.3.html
+- source_id: SRC-UBL-002
+  format_id: ubl
+  title: OASIS UBL 2.3 Standard release package
+  organization: OASIS
+  version: UBL 2.3 OASIS Standard
+  authority_class: AUTHORITATIVE
+  materialized_path: .local/format-contracts/acquired/ubl/src-ubl-002.bin
+  expected_sha256: 623bef8310db4d979ff28000a96bcc56dbcdda4f6206cf094c0aa79b75817970
+  media_type: application/zip
+  legal:
+    license_id: LicenseRef-OASIS-Specification-Notice
+    redistribution: ALLOWED_WITH_NOTICE
+    use_status: APPROVED_FOR_LOCAL_USE
+    evidence: Copyright and permission notice distributed with the official OASIS UBL 2.3 Standard package.
+    notes: External package bytes remain in the ignored local CAS.
+  limits:
+    max_bytes: 268435456
+    timeout_seconds: 180
+    max_redirects: 3
+  fetch:
+    kind: URL
+    locators:
+    - url: https://docs.oasis-open.org/ubl/os-UBL-2.3/UBL-2.3.zip
+      immutable: true
+    allowed_hosts:
+    - docs.oasis-open.org
+- source_id: SRC-UBL-003
+  format_id: ubl
+  title: Business-document library developer-workflow requirements (invoicing/procurement integration practice)
+  organization: Format Factory
+  version: null
+  authority_class: PRODUCT_REQUIREMENT
+  materialized_path: shared/format-contracts/product-requirements/ubl.yaml
+  expected_sha256: 07d380f7d0b3bb973f4ca223946a4fff5f1e116f98548d036a2322483dc1fa4c
+  media_type: application/yaml
+  legal:
+    license_id: LicenseRef-Format-Factory-Internal
+    redistribution: INTERNAL_ONLY
+    use_status: APPROVED
+    evidence: Deterministic projection of reviewed findings in shared/format-contracts/research/ubl.yaml
+  limits:
+    max_bytes: 2097152
+    timeout_seconds: 1
+    max_redirects: 0
+  fetch:
+    kind: LOCAL_FILE
+    source_path: shared/format-contracts/product-requirements/ubl.yaml
+- source_id: SRC-XLF-002
+  format_id: xliff
+  title: OASIS XLIFF 2.1 Standard release package
+  organization: OASIS
+  version: XLIFF 2.1 OASIS Standard
+  authority_class: AUTHORITATIVE
+  materialized_path: .local/format-contracts/acquired/xliff/src-xlf-002.bin
+  expected_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+  media_type: application/zip
+  legal:
+    license_id: LicenseRef-OASIS-Specification-Notice
+    redistribution: ALLOWED_WITH_NOTICE
+    use_status: APPROVED_FOR_LOCAL_USE
+    evidence: Copyright and permission notice distributed with the official OASIS XLIFF 2.1 Standard package.
+    notes: External package bytes remain in the ignored local CAS.
+  limits:
+    max_bytes: 104857600
+    timeout_seconds: 120
+    max_redirects: 3
+  fetch:
+    kind: URL
+    locators:
+    - url: https://docs.oasis-open.org/xliff/xliff-core/v2.1/os/xliff-core-v2.1-os.zip
+      immutable: true
+    allowed_hosts:
+    - docs.oasis-open.org
+- source_id: SRC-XLF-003
+  format_id: xliff
+  title: Localization-pipeline developer-workflow requirements (extraction/translation/merge practice)
+  organization: Format Factory
+  version: null
+  authority_class: PRODUCT_REQUIREMENT
+  materialized_path: shared/format-contracts/product-requirements/xliff.yaml
+  expected_sha256: fde62d8a1310e9cac9608e44530d2cd4b23cd67386f0a9fe64a9ff79eb54b893
+  media_type: application/yaml
+  legal:
+    license_id: LicenseRef-Format-Factory-Internal
+    redistribution: INTERNAL_ONLY
+    use_status: APPROVED
+    evidence: Deterministic projection of reviewed findings in shared/format-contracts/research/xliff.yaml
+  limits:
+    max_bytes: 2097152
+    timeout_seconds: 1
+    max_redirects: 0
+  fetch:
+    kind: LOCAL_FILE
+    source_path: shared/format-contracts/product-requirements/xliff.yaml
+- source_id: SRC-XLIFF-001
+  format_id: xliff
+  title: OASIS XLIFF 2.1 Standard prose specification
+  organization: OASIS
+  version: XLIFF 2.1 OASIS Standard
+  authority_class: AUTHORITATIVE
+  materialized_path: .local/format-contracts/acquired/xliff/src-xliff-001.bin
+  expected_sha256: fdd293f4344920dfde643c578caca94da80261dc74f75baba7215da6e6d10bc1
+  media_type: text/html
+  legal:
+    license_id: LicenseRef-OASIS-Specification-Notice
+    redistribution: ALLOWED_WITH_NOTICE
+    use_status: APPROVED_FOR_LOCAL_USE
+    evidence: Copyright and permission notice embedded in the OASIS XLIFF 2.1 release package and prose member.
+    notes: Materialized from the pinned release ZIP; external bytes remain in the ignored local CAS.
+  limits:
+    max_bytes: 10485760
+    timeout_seconds: 1
+    max_redirects: 0
+  fetch:
+    kind: ZIP_MEMBER
+    container_source_id: SRC-XLF-002
+    member_path: xliff-core-v2.1-os.html
+generated_by: codex
+visibility: internal

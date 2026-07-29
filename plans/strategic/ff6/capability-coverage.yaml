@@ -10,25 +10,15 @@ summary:
     OPTIONAL_ADAPTER_REQUIRED: 4
     PREVIEW_ISOLATED: 4
     EXCLUDED_WITH_AUTHORITY: 1
-  authority_blocked_formats:
-  - ipynb
-  - nrrd
-  - ora
-  - safetensors
-  - ubl
-  - xliff
+  authority_blocked_formats: []
   certifications: 0
   promotions: 0
 per_format:
   ipynb:
     capability_count: 20
     obligation_count: 105
-    authority_status: BLOCKED
-    authority_issues:
-    - code: AUTHORITY_ARTIFACT_MISSING
-      severity: CRITICAL
-      message: authoritative source artifact does not exist
-      reference: SRC-NB-002
+    authority_status: READY
+    authority_issues: []
     target_profiles:
     - nbformat_v4.0
     - nbformat_v4.1
@@ -55,20 +45,8 @@ per_format:
   ora:
     capability_count: 10
     obligation_count: 32
-    authority_status: BLOCKED
-    authority_issues:
-    - code: AUTHORITY_ARTIFACT_MISSING
-      severity: CRITICAL
-      message: authoritative source artifact does not exist
-      reference: SRC-ORA-001
-    - code: AUTHORITY_ARTIFACT_MISSING
-      severity: CRITICAL
-      message: authoritative source artifact does not exist
-      reference: SRC-ORA-002
-    - code: AUTHORITY_ARTIFACT_MISSING
-      severity: CRITICAL
-      message: authoritative source artifact does not exist
-      reference: SRC-ORA-003
+    authority_status: READY
+    authority_issues: []
     target_profiles:
     - openraster_0.0.3
     - openraster_0.0.4
@@ -91,16 +69,8 @@ per_format:
   nrrd:
     capability_count: 15
     obligation_count: 94
-    authority_status: BLOCKED
-    authority_issues:
-    - code: AUTHORITY_ARTIFACT_MISSING
-      severity: CRITICAL
-      message: authoritative source artifact does not exist
-      reference: SRC-NRRD-001
-    - code: AUTHORITY_ARTIFACT_MISSING
-      severity: CRITICAL
-      message: authoritative source artifact does not exist
-      reference: SRC-NRRD-002
+    authority_status: READY
+    authority_issues: []
     target_profiles:
     - nrrd0001
     - nrrd0002
@@ -125,16 +95,8 @@ per_format:
   xliff:
     capability_count: 15
     obligation_count: 125
-    authority_status: BLOCKED
-    authority_issues:
-    - code: AUTHORITY_ARTIFACT_MISSING
-      severity: CRITICAL
-      message: authoritative source artifact does not exist
-      reference: SRC-XLF-002
-    - code: AUTHORITY_ARTIFACT_MISSING
-      severity: CRITICAL
-      message: authoritative source artifact does not exist
-      reference: SRC-XLIFF-001
+    authority_status: READY
+    authority_issues: []
     target_profiles:
     - xliff_2.0
     - xliff_2.1
@@ -153,12 +115,8 @@ per_format:
   safetensors:
     capability_count: 11
     obligation_count: 86
-    authority_status: BLOCKED
-    authority_issues:
-    - code: AUTHORITY_ARTIFACT_MISSING
-      severity: CRITICAL
-      message: authoritative source artifact does not exist
-      reference: SRC-SAFETENSORS-002
+    authority_status: READY
+    authority_issues: []
     target_profiles:
     - safetensors_v0.8.0
     claimed_profiles:
@@ -173,16 +131,8 @@ per_format:
   ubl:
     capability_count: 18
     obligation_count: 194
-    authority_status: BLOCKED
-    authority_issues:
-    - code: AUTHORITY_ARTIFACT_MISSING
-      severity: CRITICAL
-      message: authoritative source artifact does not exist
-      reference: SRC-UBL-001
-    - code: AUTHORITY_ARTIFACT_MISSING
-      severity: CRITICAL
-      message: authoritative source artifact does not exist
-      reference: SRC-UBL-002
+    authority_status: READY
+    authority_issues: []
     target_profiles:
     - ubl_2.3
     claimed_profiles:
@@ -201,3 +151,4 @@ invariants:
 - Every emitted obligation uses canonical ProductContract identity.
 - Every obligation has exactly one capability owner.
 - Missing authority, profile, or surface coverage remains blocking.
+- Diagnostic authority overrides are never promotion eligible.

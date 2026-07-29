@@ -11,7 +11,9 @@ import hashlib
 import json
 import os
 from pathlib import Path
+from pathlib import PurePosixPath
 from typing import Any, Iterable
+from urllib.parse import urlsplit
 
 import yaml
 
@@ -121,10 +123,35 @@ def _validate_semantics(repo_root: Path, document: dict[str, Any]) -> None:
         elif kind == "URL":
             if not fetch.get("locators"):
                 raise AuthorityLockError(f"{source_id}: URL source has no locators")
+            allowed_hosts = tuple(str(item).lower() for item in fetch["allowed_hosts"])
+            for locator in fetch["locators"]:
+                url = str(locator["url"])
+                parsed = urlsplit(url)
+                if (
+                    parsed.scheme.lower() != "https"
+                    or parsed.username is not None
+                    or parsed.password is not None
+                    or parsed.fragment
+                    or not _host_matches(parsed.hostname, allowed_hosts)
+                ):
+                    raise AuthorityLockError(
+                        f"{source_id}: locator is outside its HTTPS host policy: {url}"
+                    )
         elif kind == "ZIP_MEMBER":
             container = str(fetch["container_source_id"])
             if container == source_id:
                 raise AuthorityLockError(f"{source_id}: archive cannot contain itself")
+            member = str(fetch["member_path"])
+            member_path = PurePosixPath(member)
+            if (
+                "\\" in member
+                or member_path.is_absolute()
+                or not member_path.parts
+                or ".." in member_path.parts
+            ):
+                raise AuthorityLockError(
+                    f"{source_id}: unsafe ZIP member path: {member}"
+                )
     for source in records:
         fetch = source["fetch"]
         if fetch["kind"] == "ZIP_MEMBER":
@@ -138,6 +165,21 @@ def _validate_semantics(repo_root: Path, document: dict[str, Any]) -> None:
                 raise AuthorityLockError(
                     f"{source['source_id']}: container {container} must be a URL source"
                 )
+
+
+def _host_matches(host: str | None, allowed_hosts: Iterable[str]) -> bool:
+    if not host:
+        return False
+    candidate = host.rstrip(".").lower()
+    for allowed in allowed_hosts:
+        rule = allowed.rstrip(".").lower()
+        if rule.startswith("*."):
+            suffix = rule[1:]
+            if candidate.endswith(suffix) and candidate != suffix[1:]:
+                return True
+        elif candidate == rule:
+            return True
+    return False
 
 
 def records_by_id(document: dict[str, Any]) -> dict[str, dict[str, Any]]:

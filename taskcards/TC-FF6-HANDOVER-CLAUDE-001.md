@@ -60,9 +60,13 @@ promotion state.
 
 ## Refresh checkpoint
 
-The packet was refreshed after the false 128-obligation close was invalidated
-and the canonical 636-obligation compiler passed. Source checkpoint
-`a2a5d6403da9a6bd6d3999fb10166663ca61791c` contains controller event 13 and
-selects `TC-FF6-AUTHORITY-CLOSURE-001` as the exact next task. The refresh
-remains derived and non-promoting; current `origin/main`, the FF6 controller,
-and the journal supersede the initial integration commit above.
+The packet was refreshed after `TC-FF6-AUTHORITY-CLOSURE-001` passed.
+Controller event 16 records 15 of 15 live authority matches, strict
+six-contract compilation, clean online and offline replay, deterministic
+six-format projections, and no product promotion. The exact successor is
+`TC-FF6-ORA-PROFILE-SURFACE-001` in `READY`.
+
+The packet remains a derived navigation and shift artifact. The fetched
+GitLab `origin/main` commit, native FF6 journal, controller, task index,
+current gaps, and taskcard supersede every earlier packet revision and the
+initial integration commit above.

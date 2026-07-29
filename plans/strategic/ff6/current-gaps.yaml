@@ -7,9 +7,9 @@ last_reconciled_by: codex
 
 gap_summary:
   critical: 1
-  high: 9
+  high: 8
   medium: 3
-  total: 13
+  total: 12
 
 gaps:
 
@@ -227,27 +227,6 @@ gaps:
       format-specific capabilities and profile applicability, then recompile
       without changing already-correct identities for the other five formats.
 
-  - gap_id: FF6-GAP-014
-    severity: high
-    format: all
-    category: authority_artifact_closure
-    title: Pinned authority bytes are absent from reproducible repository state
-    description: >-
-      Every authoritative source in the six contracts points to a .local
-      acquired artifact that is absent in this checkout. Production compilation
-      therefore reports critical AUTHORITY_ARTIFACT_MISSING issues for all six
-      formats even though historical labels say ACQUIRED.
-    source_event: FF6-EVENT-000009
-    blocks:
-      - Authority-backed contract readiness
-      - Clean-checkout deterministic replay
-      - Promotion of every affected obligation
-    resolution: >-
-      Acquire the exact licensed official artifacts through the governed
-      authority pipeline, store or reproducibly cache them at a committed
-      manifest-bound location allowed by redistribution policy, and verify all
-      declared SHA-256 values from a clean checkout.
-
 resolved_gaps:
   - gap_id: FF6-GAP-012
     resolved_by: TC-FF6-CAPABILITY-COMPILER-001
@@ -268,3 +247,24 @@ resolved_gaps:
     disposition: >-
       Registered a deterministic compiler, bound its full input closure,
       validated all generated schemas, and proved three byte-identical runs.
+
+  - gap_id: FF6-GAP-014
+    resolved_by: TC-FF6-AUTHORITY-CLOSURE-001
+    source_event: FF6-EVENT-000016
+    evidence:
+      authority_lock_sha256: 8eefb28e3ef24b5b533496b54860daee981853d9c872fddc1ba5de4ff150f249
+      authority_records: 15
+      authority_matches: 15
+      contract_declaration_matches: 15
+      clean_offline_replay: PASS
+      clean_online_replay: PASS
+      strict_product_contracts: 6
+      capability_manifest_aggregate_sha256: 667cd4cb69773e6746ad46173b53de39c18ef44d39ef7db91c6337d8a3761a73
+      capability_three_run_digest: 04114c84221edcdb00dae1097d75e55a7c1a6be75a074c9c0b8b07f0de5533a8
+      regression: 250_passed_1_baseline_known_deselected
+    disposition: >-
+      Added one legal-aware, hash-pinned acquisition owner; reconstructed all
+      sources from both a populated CAS and official endpoints in clean roots;
+      bound lock, bytes, schemas, generators, research tools, contracts, SAL,
+      policies, and enrichments into strict downstream invalidation. No
+      product, certification, promotion, or gate state changed.

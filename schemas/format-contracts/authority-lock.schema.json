@@ -63,11 +63,12 @@
     },
     "limits": {
       "type": "object",
-      "required": ["max_bytes", "timeout_seconds"],
+      "required": ["max_bytes", "timeout_seconds", "max_redirects"],
       "additionalProperties": false,
       "properties": {
         "max_bytes": {"type": "integer", "minimum": 1},
-        "timeout_seconds": {"type": "integer", "minimum": 1, "maximum": 600}
+        "timeout_seconds": {"type": "integer", "minimum": 1, "maximum": 600},
+        "max_redirects": {"type": "integer", "minimum": 0, "maximum": 10}
       }
     },
     "locator": {
@@ -81,14 +82,24 @@
     },
     "urlFetch": {
       "type": "object",
-      "required": ["kind", "locators"],
+      "required": ["kind", "locators", "allowed_hosts"],
       "additionalProperties": false,
       "properties": {
         "kind": {"const": "URL"},
         "locators": {
           "type": "array",
           "minItems": 1,
+          "uniqueItems": true,
           "items": {"$ref": "#/$defs/locator"}
+        },
+        "allowed_hosts": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^(\\*\\.)?[A-Za-z0-9](?:[A-Za-z0-9.-]*[A-Za-z0-9])?$"
+          }
         }
       }
     },

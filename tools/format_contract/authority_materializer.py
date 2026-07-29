@@ -8,20 +8,37 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from .authority_lock import (
-    AuthorityLockError,
-    DEFAULT_LOCK,
-    DEFAULT_SCHEMA,
-    load_lock,
-    sha256_bytes,
-    sync_product_requirements,
-)
-from .authority_runtime import (
-    AuthorityResult,
-    audit_contract_declarations,
-    audit_sources,
-    materialize_sources,
-)
+try:
+    from .authority_lock import (
+        AuthorityLockError,
+        DEFAULT_LOCK,
+        DEFAULT_SCHEMA,
+        load_lock,
+        sha256_bytes,
+        sync_product_requirements,
+    )
+    from .authority_runtime import (
+        AuthorityResult,
+        audit_contract_declarations,
+        audit_sources,
+        materialize_sources,
+    )
+except ImportError:  # direct script execution from tools/format_contract
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+    from tools.format_contract.authority_lock import (  # type: ignore[no-redef]
+        AuthorityLockError,
+        DEFAULT_LOCK,
+        DEFAULT_SCHEMA,
+        load_lock,
+        sha256_bytes,
+        sync_product_requirements,
+    )
+    from tools.format_contract.authority_runtime import (  # type: ignore[no-redef]
+        AuthorityResult,
+        audit_contract_declarations,
+        audit_sources,
+        materialize_sources,
+    )
 
 
 def _report(

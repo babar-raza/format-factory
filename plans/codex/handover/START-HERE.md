@@ -11,78 +11,106 @@ canonical_state_path: plans/strategic/ff6/controller-state.yaml
 
 # Start Here: Six Python Production Libraries
 
-This is the single entry point for Claude, Codex, or another governed executor
-continuing mission `FF6-PRODUCTION-LIBRARIES-001`.
+This is the one provider-neutral entry point for Claude, Codex, or another
+governed executor continuing mission `FF6-PRODUCTION-LIBRARIES-001`.
 
-The handover is a derived, commit-bound navigation packet. It does not replace
-the product goal, controller journal, current-state snapshot, taskcards, Git
-history, coordination database, or executed proof.
+Absolute Windows path:
 
-## Exact checkpoint
+```text
+C:\Users\prora\OneDrive\Documents\GitHub\format-factory\plans\codex\handover\START-HERE.md
+```
 
-- Canonical forge: GitLab.
-- Canonical remote and branch: `origin/main`.
-- Last pre-shift durable source commit:
-  `2129ad278c5d7a8b7f81559388489e6231def550`.
-- Last pre-shift durable tree:
-  `44714dc4d74b784ab7b09d6735eae3ebc1482743`.
-- FF6 controller state: `CONTRACT`.
-- Last verified event: `FF6-EVENT-000014`.
-- Completed repair subtask: `TC-FF6-CAPABILITY-COMPILER-001` (`PASS`).
-- Parent task: `TC-FF6-PROGRAM-CAPABILITIES-001` (`NEEDS_REPAIR`).
-- Active resumable task: `TC-FF6-AUTHORITY-CLOSURE-001`
-  (`WORK_IN_PROGRESS`).
-- Canonical planning inventory: 89 capabilities and 636 obligations.
-- Product certifications: zero.
-- Product promotion states: all six `UNASSESSED`.
+The packet is derived navigation. Canonical truth remains the GitLab commit,
+FF6 goal, journal, controller, current gaps, taskcards, contracts, source,
+tests, and executed proof.
 
-The GitLab commit containing this packet and event 14 is the clean provider
-shift checkpoint. The pre-shift commit above is recorded to make ancestry
-verifiable without embedding a self-referential hash in this packet.
+## Verified checkpoint
 
-Do not resume from a conversation summary, old branch, local transcript, stale
-worktree, test count, package-smoke report, or `tools.plan_control next`.
-Reconstruct the checkpoint from GitLab and the canonical files below.
+| Field | Current truth |
+|---|---|
+| Forge | GitLab only |
+| Remote/branch | `origin/main` |
+| Controller state | `CONTRACT` |
+| Journal head | `FF6-EVENT-000016` |
+| Event hash | `2ea206536ff0ccecaa0a4e93df32ada3e7575018f4cdcafb7525c59d51dd50ba` |
+| Parent | `TC-FF6-PROGRAM-CAPABILITIES-001` — `NEEDS_REPAIR` |
+| Completed repair | `TC-FF6-AUTHORITY-CLOSURE-001` — `PASS` |
+| Exact next task | `TC-FF6-ORA-PROFILE-SURFACE-001` — `READY` |
+| Capability inventory | 89 |
+| Canonical obligations | 636 |
+| Authority results | 15 `MATCH`; zero missing/mismatch/undeclared/legal-blocked |
+| Certifications | 0 |
+| Promotions | all six `UNASSESSED` |
 
-## Read in this order
+The handover cannot embed the hash of the commit that will contain itself.
+After this change set is committed and pushed, the receiving agent must fetch
+`origin/main`, verify event 16 and the packet hashes, and use that remote
+descendant as the source checkpoint.
 
-1. Repository operating contract: [`AGENTS.md`](../../../AGENTS.md).
-2. Immutable mission goal:
-   [`product-goal.yaml`](../../strategic/ff6/product-goal.yaml).
-3. Executable production plan:
-   [`autonomous-six-python-production-execution-plan.md`](../../strategic/autonomous-six-python-production-execution-plan.md).
-4. Canonical controller:
-   [`controller-state.yaml`](../../strategic/ff6/controller-state.yaml).
-5. Append-only FF6 events:
-   [`events.jsonl`](../../strategic/ff6/events.jsonl).
-6. Evidence-backed product snapshot:
-   [`current-state.yaml`](../../strategic/ff6/current-state.yaml).
-7. Parent taskcard:
-   [`TC-FF6-PROGRAM-CAPABILITIES-001.md`](../../../taskcards/TC-FF6-PROGRAM-CAPABILITIES-001.md).
-8. Exact next executable taskcard:
-   [`TC-FF6-AUTHORITY-CLOSURE-001.md`](../../../taskcards/TC-FF6-AUTHORITY-CLOSURE-001.md).
-9. Exact in-progress implementation checkpoint:
-   [`ACTIVE-WORK-CHECKPOINT.md`](ACTIVE-WORK-CHECKPOINT.md).
-10. Canonical capability manifest:
-   [`capability-manifest.json`](../../strategic/ff6/capability-manifest.json).
-11. Machine-readable handover checkpoint:
-   [`checkpoint.yaml`](checkpoint.yaml).
-12. Current findings and causal assessment:
-   [`CURRENT-STATE-AND-ROOT-CAUSES.md`](CURRENT-STATE-AND-ROOT-CAUSES.md).
-13. Provider-neutral execution and checkpoint protocol:
-    [`SHIFT-AND-RESUME-PROTOCOL.md`](SHIFT-AND-RESUME-PROTOCOL.md).
-14. Exact execution sequence and task DAG:
-    [`EXECUTION-RUNBOOK.md`](EXECUTION-RUNBOOK.md).
-15. Quality, evidence, regression, and release rules:
-    [`VALIDATION-AND-RELEASE.md`](VALIDATION-AND-RELEASE.md).
-16. Ready-to-use Claude instruction:
-    [`CLAUDE-START.md`](CLAUDE-START.md).
-17. Packet file hashes:
-    [`manifest.yaml`](manifest.yaml).
+## Read in order
 
-## Mandatory preflight
+1. [`AGENTS.md`](../../../AGENTS.md)
+2. [`product-goal.yaml`](../../strategic/ff6/product-goal.yaml)
+3. [`autonomous-six-python-production-execution-plan.md`](../../strategic/autonomous-six-python-production-execution-plan.md)
+4. [`controller-state.yaml`](../../strategic/ff6/controller-state.yaml)
+5. [`events.jsonl`](../../strategic/ff6/events.jsonl)
+6. [`current-gaps.yaml`](../../strategic/ff6/current-gaps.yaml)
+7. [`current-state.yaml`](../../strategic/ff6/current-state.yaml)
+8. [`TC-FF6-PROGRAM-CAPABILITIES-001.md`](../../../taskcards/TC-FF6-PROGRAM-CAPABILITIES-001.md)
+9. [`TC-FF6-ORA-PROFILE-SURFACE-001.md`](../../../taskcards/TC-FF6-ORA-PROFILE-SURFACE-001.md)
+10. [`ACTIVE-WORK-CHECKPOINT.md`](ACTIVE-WORK-CHECKPOINT.md)
+11. [`checkpoint.yaml`](checkpoint.yaml)
+12. [`CURRENT-STATE-AND-ROOT-CAUSES.md`](CURRENT-STATE-AND-ROOT-CAUSES.md)
+13. [`SHIFT-AND-RESUME-PROTOCOL.md`](SHIFT-AND-RESUME-PROTOCOL.md)
+14. [`EXECUTION-RUNBOOK.md`](EXECUTION-RUNBOOK.md)
+15. [`VALIDATION-AND-RELEASE.md`](VALIDATION-AND-RELEASE.md)
+16. [`CLAUDE-START.md`](CLAUDE-START.md)
+17. [`manifest.yaml`](manifest.yaml)
 
-Run from the repository root in PowerShell:
+## What was actually achieved
+
+The authority closure is production-grade machinery evidence, not a product
+release:
+
+- one canonical 15-source legal-aware lock;
+- HTTPS/host/redirect/timeout/byte/ZIP/path/decompression protections;
+- digest-before-placement and atomic concurrent publication;
+- ignored content-addressed cache for external bytes;
+- deterministic tracked internal product-requirement authorities;
+- source researcher and strict ProductContract integration;
+- complete generator/schema/research/source invalidation closure;
+- clean offline replay: 15/15;
+- clean online reconstruction from an empty CAS: 15/15 and 73,206,772 CAS
+  bytes;
+- six strict ProductContracts;
+- 89 capabilities and 636 obligations;
+- final capability aggregate
+  `667cd4cb69773e6746ad46173b53de39c18ef44d39ef7db91c6337d8a3761a73`;
+- final three-run digest
+  `04114c84221edcdb00dae1097d75e55a7c1a6be75a074c9c0b8b07f0de5533a8`;
+- 250 affected tests passed; one pre-existing CSV idempotency test is
+  separately tracked and deselected because it mutates unrelated reports;
+- Ruff, mypy, and Pyright 1.1.411 pass.
+
+No product source was added in this task. No format was certified or promoted.
+
+## What remains
+
+The parent capability task is not complete. The deterministic compiler reports:
+
+- OpenRaster: missing explicit 0.0.4/0.0.5 applicability and format-specific
+  image/stack/group/layer/mask/compositing/rendering surface;
+- IPYNB: explicit 4.0–4.4 applicability absent;
+- NRRD: explicit NRRD0001–NRRD0004 applicability absent;
+- XLIFF: explicit 2.0 applicability absent;
+- UBL: the contract does not prove typed coverage for all 91 roots.
+
+OpenRaster is selected first because `FF6-GAP-013` is the current
+highest-severity blocking repair and OpenRaster has no product package at all.
+The exact scope and exit criteria are in its taskcard. The later profile gaps
+must remain visible and be scheduled; they are not implicitly deferred away.
+
+## Mandatory resume preflight
 
 ```powershell
 git fetch origin main
@@ -94,100 +122,47 @@ python -m pytest tests/plan_control -q
 python -m tools.supervisor.coordination --json status
 ```
 
-Expected at this checkpoint:
+Then independently validate all 16 FF6 events by:
 
-- `origin/main` contains the event-14 handover checkpoint and descends from
-  `2129ad278c5d7a8b7f81559388489e6231def550`.
-- the chosen execution worktree is clean before mutation;
-- current-state consistency prints `CURRENT_STATE_CONSISTENCY: PASS`;
-- plan-control tests report `40 passed`;
-- the previous provider has completed its coordination session, or the
-  receiving provider performs a governed takeover after digest comparison.
+1. parsing each JSONL record;
+2. recomputing SHA-256 over canonical JSON with `event_hash` removed;
+3. requiring `sequence` 1–16;
+4. requiring each `previous_event_hash` to equal the preceding event hash;
+5. requiring the controller head to equal event 16.
 
-The coordination command currently exits nonzero because 15 historical OPEN
-conflicts exist. That is not permission to resolve or discard them. Four point
-to obsolete FF6 local worktrees. Use a fresh detached worktree and new leases.
+Do not run the generic Plan Control doctor as an FF6 chain validator. It uses
+`previous_hash` and its own event schema. That integration mismatch is already
+tracked in `FF6-GAP-011`.
 
-## Known authority contradiction
+Coordination may still report historical open conflicts unrelated to this
+task. Preserve them. A new agent must register, claim the exact paths, compare
+digests, and use governed takeover only for stale leases. Never release or
+discard another agent’s work.
 
-The global `tools.plan_control` projection is not the current FF6 task
-authority:
+## Exact continuation
 
-- `python -m tools.plan_control reconcile` fails because
-  `plans/.control/config.json` still names deleted branch
-  `codex/ff-six-python-production`.
-- `python -m tools.plan_control next` selects legacy broad task
-  `TC-FF6-NRRD-ORA-001`.
-- the digest-bound FF6 controller and its last verified event select
-  `TC-FF6-AUTHORITY-CLOSURE-001`.
+Execute only
+[`TC-FF6-ORA-PROFILE-SURFACE-001.md`](../../../taskcards/TC-FF6-ORA-PROFILE-SURFACE-001.md).
 
-Until machinery consolidation repairs and tests that split, use
-`plans/strategic/ff6/controller-state.yaml` plus `events.jsonl` for this
-mission. Record the contradiction as a machinery gap. Do not silently edit a
-status to make the two authorities agree.
+Start with the three already locked OpenRaster authorities. Build a
+source-located 0.0.3/0.0.4/0.0.5 delta matrix, repair SAL facts and evidence,
+compile explicit format-specific capabilities and profile applicability, and
+remove the compiler’s OpenRaster findings through evidence—not policy
+suppression. Product source remains prohibited in this task.
 
-## Verified work completed since the original handover
+## Provider shift rule
 
-The prior hand-written checkpoint claimed 128 obligations. Independent audit
-proved the canonical contract runtime generated 636 obligations with zero ID
-overlap. That false close was invalidated without deleting the draft detail.
+At every shift:
 
-The completed compiler repair now provides:
-
-- one registered deterministic compiler and versioned schema;
-- exactly 89 canonical capability identities;
-- 636 canonical obligations: IPYNB 105, ORA 32, NRRD 94, XLIFF 125,
-  SafeTensors 86, and UBL 194;
-- classifications: 80 stable, 4 optional-adapter, 4 preview, 1 excluded;
-- full compiler/schema/contract/SAL/policy/enrichment input closure;
-- explicit expected-versus-observed authority artifacts;
-- manifest aggregate
-  `26cbe9d21cedafe70653bfaa8134ffa4e481080278e954546cf9710c97a5b00a`;
-- three-run digest
-  `018c26be67ea91fe86aeb65374365b5e917eb8c0058235f999d59909bfd08943`;
-- 14 focused, 43 production-program, and 76 unaffected format-contract tests
-  passing.
-
-This is planning/contract machinery, not product implementation or
-certification. `FF6-GAP-012` and `FF6-GAP-015` are resolved. The parent remains
-open for `FF6-GAP-013` (OpenRaster profile/surface depth) and `FF6-GAP-014`
-(authority dependency closure).
-
-## Exact continuation action
-
-Resume only `TC-FF6-AUTHORITY-CLOSURE-001` from
-[`ACTIVE-WORK-CHECKPOINT.md`](ACTIVE-WORK-CHECKPOINT.md). The shared
-lock/runtime, materializer, schema, four internal requirement documents, and
-six focused tests already exist and are valid bounded WIP. Do not recreate
-them.
-
-Finish the immutable source/legal matrix beginning at the unresolved NRRD
-authority decision, create the canonical 15-source lock, harden the known
-materializer gaps, integrate the registered acquisition skill and strict
-compiler closure, and complete the taskcard acceptance suite. The promoting
-baseline remains 11 `MISSING`, 4 `UNDECLARED`, 0 `MATCH` until a real
-lock/materialization/audit run proves otherwise.
-
-Do not hide the baseline with `--allow-blocked-authority`, edit expected
-digests to whatever downloaded, commit specification bytes without
-redistribution evidence, modify product source, or promote a format.
-
-## How to stop safely
-
-At a shift boundary:
-
-1. finish or roll back only your bounded change set;
-2. run the taskcard's focused and regression validations;
-3. append a write-ahead close intent and then a verified close or checkpoint
-   event;
-4. update the controller projection and current taskcard truthfully;
-5. stage only the explicit owned file list;
-6. run the coordination precommit check as the owning agent;
-7. commit and push to GitLab `main` only after verifying `origin/main` has not
-   advanced unexpectedly;
+1. reach a bounded verified checkpoint;
+2. append a close-intent or truthful WIP event;
+3. update task, gaps, controller, and exact next task from evidence;
+4. refresh this packet and its hashes;
+5. stage explicit owned paths only;
+6. run coordination precommit;
+7. commit and push only GitLab `main`;
 8. verify the remote commit;
-9. complete or abandon the coordination session truthfully and release leases;
-10. update this handover packet only when its checkpoint facts changed.
+9. release only the current agent’s leases and complete its session.
 
-Never leave the next agent dependent on uncommitted files, an unpushed commit,
-an ignored transcript, or conversation memory.
+Never leave the next provider dependent on uncommitted changes, ignored proof,
+conversation memory, a provider branch, or a request to continue.

@@ -43,13 +43,28 @@
           "type": "object",
           "required": ["sal_facts_sha256", "research_sha256", "family_pack_sha256", "shared_contract_sha256", "fact_categories_sha256"],
           "additionalProperties": false,
+          "patternProperties": {
+            "^authority_src_[a-z0-9_]+_sha256$": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+          },
           "properties": {
             "sal_facts_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
             "research_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
             "family_pack_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
             "shared_contract_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
             "fact_categories_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
-            "qname_registry_sha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"}
+            "qname_registry_sha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+            "format_contract_schema_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            "contract_compiler_impl_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            "contract_stores_impl_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            "canonical_io_impl_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            "source_researcher_impl_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            "research_intake_impl_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            "authority_lock_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            "authority_lock_schema_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            "authority_lock_impl_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            "authority_runtime_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            "authority_materializer_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            "product_requirements_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
           }
         }
       }

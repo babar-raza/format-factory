@@ -15,6 +15,22 @@ from pathlib import Path
 from typing import Any
 
 from canonical_io import digest_file, load_yaml
+try:
+    from tools.format_contract.authority_lock import (
+        DEFAULT_LOCK,
+        DEFAULT_SCHEMA,
+        load_lock,
+        records_for_format,
+        safe_repo_path,
+    )
+except ModuleNotFoundError:  # direct script execution from tools/format_contract
+    from authority_lock import (  # type: ignore[no-redef]
+        DEFAULT_LOCK,
+        DEFAULT_SCHEMA,
+        load_lock,
+        records_for_format,
+        safe_repo_path,
+    )
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 
@@ -121,9 +137,11 @@ _registry_cache: dict | None = None
 def load_format_registry_entry(format_id: str) -> dict:
     """Entry from registry/format-registry.yaml (case-insensitive format_id)."""
     global _registry_cache
-    if _registry_cache is None:
-        _registry_cache = load_yaml(FORMAT_REGISTRY) or {}
-    formats = _registry_cache.get("formats") or []
+    registry = _registry_cache
+    if registry is None:
+        registry = load_yaml(FORMAT_REGISTRY) or {}
+        _registry_cache = registry
+    formats = registry.get("formats") or []
     for entry in formats:
         if str(entry.get("format_id", "")).lower() == format_id.lower():
             return entry
@@ -142,6 +160,48 @@ def input_digests(format_id: str, family: str) -> dict:
     }
     if qname_path.is_file():
         digests["qname_registry_sha256"] = digest_file(qname_path)
+    lock_path = REPO_ROOT / DEFAULT_LOCK
+    if lock_path.is_file():
+        lock_document, _ = load_lock(REPO_ROOT)
+        locked_sources = records_for_format(lock_document, format_id)
+        if locked_sources:
+            authority_inputs = {
+                "format_contract_schema_sha256": REPO_ROOT
+                / "schemas/format-contracts/format-contract.schema.json",
+                "contract_compiler_impl_sha256": REPO_ROOT
+                / "tools/format_contract/contract_compiler.py",
+                "contract_stores_impl_sha256": REPO_ROOT
+                / "tools/format_contract/stores.py",
+                "canonical_io_impl_sha256": REPO_ROOT
+                / "tools/format_contract/canonical_io.py",
+                "source_researcher_impl_sha256": REPO_ROOT
+                / "tools/format_contract/source_researcher.py",
+                "research_intake_impl_sha256": REPO_ROOT
+                / "tools/format_contract/research_intake.py",
+                "authority_lock_sha256": lock_path,
+                "authority_lock_schema_sha256": REPO_ROOT / DEFAULT_SCHEMA,
+                "authority_lock_impl_sha256": REPO_ROOT
+                / "tools/format_contract/authority_lock.py",
+                "authority_runtime_sha256": REPO_ROOT
+                / "tools/format_contract/authority_runtime.py",
+                "authority_materializer_sha256": REPO_ROOT
+                / "tools/format_contract/authority_materializer.py",
+            }
+            requirement_path = (
+                CONTRACTS_DIR / "product-requirements" / f"{format_id}.yaml"
+            )
+            if requirement_path.is_file():
+                authority_inputs["product_requirements_sha256"] = requirement_path
+            for key, path in authority_inputs.items():
+                digests[key] = digest_file(path)
+            for source in locked_sources:
+                source_id = str(source["source_id"]).lower().replace("-", "_")
+                materialized = safe_repo_path(
+                    REPO_ROOT, str(source["materialized_path"])
+                )
+                digests[f"authority_{source_id}_sha256"] = digest_file(
+                    materialized
+                )
     return digests
 
 

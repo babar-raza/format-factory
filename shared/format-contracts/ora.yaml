@@ -13,11 +13,25 @@ contract_metadata:
   confidence: low
   supersedes: null
   input_digests:
+    authority_lock_impl_sha256: 3295565e37b8a5ff47a6e05aa8b49b70bb8574171bbe2e7ba9362f344e20012c
+    authority_lock_schema_sha256: a8b860f4bef1ceae1b9dd6348c29cc99b35f2bde2dca032217398bddb061f913
+    authority_lock_sha256: 8eefb28e3ef24b5b533496b54860daee981853d9c872fddc1ba5de4ff150f249
+    authority_materializer_sha256: 3c7cb9ba0b4c2fb87c32281a6d6c596aec8fc6c69663a8a873927755332da7c9
+    authority_runtime_sha256: 63e054c159f7e281fa12ef78a7de1af573606f74097ed398e662040e99f21682
+    authority_src_ora_001_sha256: bd584b4b998df16c735bc3ce575e382569a101427fd4c4be14b677d30d210613
+    authority_src_ora_002_sha256: a9f2cb90009e3cc76883ab9db2f43607a9518e723b9d03f1aa1b150f2c2e546a
+    authority_src_ora_003_sha256: 29c77a95396c8c245d259b349fa438e3b40019d7fe6f7e06b8520c2fc9f63a49
+    canonical_io_impl_sha256: aca19b1319bf7304d5136fd6c9d729cb50b22d8a23a17ca9314fdb0c58cc164d
+    contract_compiler_impl_sha256: e8c910d85e3618c4a1e884dab096e557e06e17678b3d878dc9c1faadd55a9eda
+    contract_stores_impl_sha256: cd120c7990a37b0f913a2b59e81ab28fdf7b3d50897e38d78cb20fc9e0823f7a
     fact_categories_sha256: fe2732633cdf17bad0a5e152b1f8c845ab46e1d8e018cb29b67dfb7a66181fce
     family_pack_sha256: 79ffac447b248a76ea0406b1e2347c4ed8b24440e9e9eaeb34adee92e5078416
-    research_sha256: 196a4b2684dfe3be5fc70bd289cb0f5a731b31e844ca5f046ea0c783e9cdf70d
+    format_contract_schema_sha256: 4eb5cae2d69d0831291646f3cf21e5d019d6b0de2904a745b712cf5fa6c37da9
+    research_intake_impl_sha256: 4c7d3bfd69e7e5a74a9db2483d25b062e11cfdcb6609637b0343dfa8d3cd0579
+    research_sha256: bb607e2f45ae5f86ad8c91a5eb751db18128b0167cece7575fd90582851a2165
     sal_facts_sha256: c3236b25fe15c3f90377d7d47dff94bcc250544732b5a58401953a5691856456
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+    source_researcher_impl_sha256: 4367e7591a368bcbc6a01199a7eb6da0f569ccc5c706d6650cdd96db0b7083a3
 format_identity:
   active_content_model:
     has_active_content: false
@@ -31,31 +45,31 @@ format_identity:
   - Inspect container structure and metadata without full extraction
   - Stream large payloads in bounded memory
 authoritative_sources:
-- title: OpenRaster Image pinned authority
+- title: OpenRaster 0.0.5 editable and viewing baseline
   source_id: SRC-ORA-001
-  organization: freedesktop.org (community)
-  version: 0.0.5
+  organization: OpenRaster community
+  version: OpenRaster 0.0.5 commit f050b99fa8af44cb4cc3c9d842d25097458765f6
   local_path: .local/format-contracts/acquired/ora/src-ora-001.bin
-  canonical_url: https://wiki.freedesktop.org/www/Specifications/OpenRaster/Draft/
-  content_hash: b6d041b4880556cb3e0a86612b203e82787078bacbc810ea0735e806a200568a
+  canonical_url: https://invent.kde.org/documentation/openraster-org/-/raw/f050b99fa8af44cb4cc3c9d842d25097458765f6/baseline/baseline.rst
+  content_hash: bd584b4b998df16c735bc3ce575e382569a101427fd4c4be14b677d30d210613
   authority_class: AUTHORITATIVE
   acquisition_status: ACQUIRED
-- title: OpenRaster Image pinned authority
+- title: OpenRaster 0.0.5 file-layout specification
   source_id: SRC-ORA-002
-  organization: freedesktop.org (community)
-  version: 0.0.5
+  organization: OpenRaster community
+  version: OpenRaster 0.0.5 commit f050b99fa8af44cb4cc3c9d842d25097458765f6
   local_path: .local/format-contracts/acquired/ora/src-ora-002.bin
-  canonical_url: https://wiki.freedesktop.org/www/Specifications/OpenRaster/Draft/FileLayout/
-  content_hash: e1dac00ff0d9c27cb40b04cc21ae44fcf0ddb50f23ef49a12dc8057c5a6f20d6
+  canonical_url: https://invent.kde.org/documentation/openraster-org/-/raw/f050b99fa8af44cb4cc3c9d842d25097458765f6/baseline/file-layout-spec.rst
+  content_hash: a9f2cb90009e3cc76883ab9db2f43607a9518e723b9d03f1aa1b150f2c2e546a
   authority_class: AUTHORITATIVE
   acquisition_status: ACQUIRED
-- title: OpenRaster Image pinned authority
+- title: OpenRaster 0.0.5 layer-stack specification
   source_id: SRC-ORA-003
-  organization: freedesktop.org (community)
-  version: 0.0.5
+  organization: OpenRaster community
+  version: OpenRaster 0.0.5 commit f050b99fa8af44cb4cc3c9d842d25097458765f6
   local_path: .local/format-contracts/acquired/ora/src-ora-003.bin
-  canonical_url: https://wiki.freedesktop.org/www/Specifications/OpenRaster/Draft/LayersStack/
-  content_hash: 78c993f79cfd831b6b4afcbdbc38eb8b156397d3b6995da41688fac603f6bba5
+  canonical_url: https://invent.kde.org/documentation/openraster-org/-/raw/f050b99fa8af44cb4cc3c9d842d25097458765f6/baseline/layer-stack-spec.rst
+  content_hash: 29c77a95396c8c245d259b349fa438e3b40019d7fe6f7e06b8520c2fc9f63a49
   authority_class: AUTHORITATIVE
   acquisition_status: ACQUIRED
 scope_policy:

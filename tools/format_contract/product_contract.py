@@ -17,6 +17,7 @@ from typing import Any, Iterable
 
 import yaml
 
+from .authority_lock import AuthorityLockError, load_lock, records_by_id
 from .contract_validator import validate_contract
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -85,12 +86,33 @@ def compile_product_contract(
     profile_id: str = "production",
     run_legacy_validator: bool = True,
     authority_root: Path | None = None,
+    authority_lock_document: dict[str, Any] | None = None,
+    require_authority_lock: bool = False,
 ) -> CompiledProductContract:
     meta = contract.get("contract_metadata", {})
     format_id = str(meta.get("format_id", "")).lower()
     target_spec_version = str(meta.get("target_spec_version", ""))
     source_digest = hashlib.sha256(_canonical(contract)).hexdigest()
     issues: list[ContractIssue] = []
+    locked_by_id = (
+        records_by_id(authority_lock_document)
+        if authority_lock_document is not None
+        else {}
+    )
+    locked_format_ids = {
+        str(source["source_id"])
+        for source in (authority_lock_document or {}).get("sources", [])
+        if str(source.get("format_id", "")).lower() == format_id
+    }
+    if require_authority_lock and authority_lock_document is None:
+        issues.append(
+            ContractIssue(
+                "AUTHORITY_LOCK_MISSING",
+                "CRITICAL",
+                "strict compilation requires the canonical authority lock",
+                format_id,
+            )
+        )
 
     if run_legacy_validator:
         report = validate_contract(contract)
@@ -106,9 +128,12 @@ def compile_product_contract(
                     )
 
     authorities: list[dict[str, Any]] = []
+    declared_source_ids: set[str] = set()
     for source in contract.get("authoritative_sources", []) or []:
         digest = source.get("content_hash")
         authority_class = source.get("authority_class")
+        reference = str(source.get("source_id", ""))
+        declared_source_ids.add(reference)
         acquired_label = (
             source.get("acquisition_status") == "ACQUIRED"
             and isinstance(digest, str)
@@ -117,8 +142,59 @@ def compile_product_contract(
         local_path = source.get("local_path")
         artifact_sha256: str | None = None
         artifact_verified = False
-        if authority_class == "AUTHORITATIVE" and authority_root is not None:
-            reference = str(source.get("source_id", ""))
+        locked = locked_by_id.get(reference)
+        if authority_lock_document is not None:
+            if locked is None:
+                issues.append(
+                    ContractIssue(
+                        "AUTHORITY_LOCK_RECORD_MISSING",
+                        "CRITICAL",
+                        "contract source is absent from the canonical authority lock",
+                        reference,
+                    )
+                )
+            else:
+                expected_fields = {
+                    "format_id": format_id,
+                    "title": source.get("title"),
+                    "organization": source.get("organization"),
+                    "version": source.get("version"),
+                    "authority_class": authority_class,
+                    "materialized_path": local_path,
+                    "expected_sha256": digest,
+                }
+                mismatches = [
+                    field
+                    for field, expected in expected_fields.items()
+                    if str(locked.get(field) or "") != str(expected or "")
+                ]
+                if mismatches:
+                    issues.append(
+                        ContractIssue(
+                            "AUTHORITY_LOCK_DECLARATION_MISMATCH",
+                            "CRITICAL",
+                            "contract and authority lock differ for: "
+                            + ", ".join(mismatches),
+                            reference,
+                        )
+                    )
+                if locked["legal"]["use_status"] == "BLOCKED":
+                    issues.append(
+                        ContractIssue(
+                            "AUTHORITY_LEGAL_BLOCKED",
+                            "CRITICAL",
+                            str(
+                                locked["legal"].get(
+                                    "notes", "source use is legally blocked"
+                                )
+                            ),
+                            reference,
+                        )
+                    )
+        if (
+            authority_class in {"AUTHORITATIVE", "PRODUCT_REQUIREMENT"}
+            and authority_root is not None
+        ):
             if not local_path:
                 issues.append(
                     ContractIssue(
@@ -164,8 +240,15 @@ def compile_product_contract(
                                     reference,
                                 )
                             )
-        elif authority_class != "AUTHORITATIVE":
-            artifact_verified = True
+        elif authority_class not in {"AUTHORITATIVE", "PRODUCT_REQUIREMENT"}:
+            issues.append(
+                ContractIssue(
+                    "AUTHORITY_CLASS_UNSUPPORTED",
+                    "CRITICAL",
+                    f"unsupported contract authority class: {authority_class}",
+                    reference,
+                )
+            )
         authority = {
             "source_id": source.get("source_id"),
             "title": source.get("title"),
@@ -180,13 +263,26 @@ def compile_product_contract(
             and (authority_root is None or artifact_verified),
         }
         authorities.append(authority)
-        if authority_class == "AUTHORITATIVE" and not acquired_label:
+        if (
+            authority_class in {"AUTHORITATIVE", "PRODUCT_REQUIREMENT"}
+            and not acquired_label
+        ):
             issues.append(
                 ContractIssue(
                     "AUTHORITY_NOT_PINNED",
                     "CRITICAL",
                     "authoritative source is not an acquired, SHA-256-pinned artifact",
                     str(source.get("source_id", "")),
+                )
+            )
+    if authority_lock_document is not None:
+        for source_id in sorted(locked_format_ids - declared_source_ids):
+            issues.append(
+                ContractIssue(
+                    "AUTHORITY_LOCK_SOURCE_UNDECLARED",
+                    "CRITICAL",
+                    "locked format source is absent from the compiled contract",
+                    source_id,
                 )
             )
 
@@ -316,8 +412,33 @@ def load_and_compile(path: Path, *, profile_id: str = "production") -> CompiledP
             }
         )
     document = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    try:
+        authority_lock, _ = load_lock(REPO_ROOT)
+    except AuthorityLockError as exc:
+        compiled = compile_product_contract(
+            document,
+            profile_id=profile_id,
+            authority_root=REPO_ROOT,
+            require_authority_lock=True,
+        )
+        return CompiledProductContract(
+            **{
+                **compiled.__dict__,
+                "issues": compiled.issues
+                + (
+                    ContractIssue(
+                        "AUTHORITY_LOCK_INVALID",
+                        "CRITICAL",
+                        str(exc),
+                        path.stem,
+                    ),
+                ),
+            }
+        )
     return compile_product_contract(
         document,
         profile_id=profile_id,
         authority_root=REPO_ROOT,
+        authority_lock_document=authority_lock,
+        require_authority_lock=True,
     )

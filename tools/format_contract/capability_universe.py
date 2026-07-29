@@ -25,6 +25,14 @@ from .capability_universe_validation import (
     iter_ids,
     validate_enrichment,
 )
+from .authority_lock import (
+    AuthorityLockError,
+    DEFAULT_LOCK,
+    DEFAULT_SCHEMA,
+    load_lock,
+    records_for_format,
+)
+from .authority_runtime import audit_contract_declarations
 from .product_contract import CompiledProductContract, compile_product_contract
 
 
@@ -88,6 +96,12 @@ def compile_universe(
 
     inputs: dict[str, str] = {}
     add_input_digest(root, policy_path, inputs)
+    try:
+        authority_lock, _ = load_lock(root)
+    except AuthorityLockError as exc:
+        raise UniverseError(f"canonical authority lock is invalid: {exc}") from exc
+    add_input_digest(root, DEFAULT_LOCK, inputs)
+    add_input_digest(root, DEFAULT_SCHEMA, inputs)
     default_compilers = (
         Path("tools/format_contract/capability_universe.py"),
         Path("tools/format_contract/capability_universe_command.py"),
@@ -117,6 +131,16 @@ def compile_universe(
         facts_path = Path(f"shared/sal-facts/{format_id}.yaml")
         fact_evidence_path = Path(f"shared/sal-facts/evidence/{format_id}.yaml")
         enrichment_path = enrichment_dir / f"{format_id}.yaml"
+        locked_sources = records_for_format(authority_lock, format_id)
+        if not locked_sources:
+            raise UniverseError(
+                f"{format_id}: canonical authority lock has no format sources"
+            )
+        authority_input_paths = [
+            Path(str(source["materialized_path"])) for source in locked_sources
+        ]
+        for relative in authority_input_paths:
+            add_input_digest(root, relative, inputs)
         contract, _ = load_yaml(root, contract_path)
         fact_store, _ = load_yaml(root, facts_path)
         fact_evidence, _ = load_yaml(root, fact_evidence_path)
@@ -137,6 +161,7 @@ def compile_universe(
             facts_path.as_posix(),
             fact_evidence_path.as_posix(),
             enrichment_path.as_posix(),
+            *(path.as_posix() for path in authority_input_paths),
             *(item["path"] for item in policy_inputs),
         }
 
@@ -181,30 +206,24 @@ def compile_universe(
         )
 
         compiled = compile_product_contract(
-            contract, run_legacy_validator=False, authority_root=root
+            contract,
+            run_legacy_validator=False,
+            authority_root=root,
+            authority_lock_document=authority_lock,
+            require_authority_lock=True,
         )
         authority_status, authority_issues = _authority_state(compiled)
-        for source in contract.get("authoritative_sources", []) or []:
-            source_id = str(source.get("source_id", ""))
-            repository_path = str(source.get("local_path", ""))
-            expected = str(source.get("content_hash", "")).lower()
-            observed: str | None = None
-            status = "UNDECLARED"
-            if repository_path and expected:
-                artifact_path = safe_path(root, Path(repository_path))
-                if artifact_path.is_file():
-                    observed = sha256(artifact_path.read_bytes())
-                    status = "MATCH" if observed == expected else "MISMATCH"
-                else:
-                    status = "MISSING"
+        for result in audit_contract_declarations(
+            root, authority_lock, [format_id]
+        ):
             authority_artifacts.append(
                 {
-                    "format_id": format_id,
-                    "source_id": source_id,
-                    "repository_path": repository_path,
-                    "expected_sha256": expected,
-                    "observed_sha256": observed,
-                    "status": status,
+                    "format_id": result.format_id,
+                    "source_id": result.source_id,
+                    "repository_path": result.repository_path,
+                    "expected_sha256": result.expected_sha256,
+                    "observed_sha256": result.observed_sha256,
+                    "status": result.status,
                 }
             )
         if authority_status != "READY":
@@ -373,6 +392,8 @@ def compile_universe(
         for summary in per_format_summary.values()
     ):
         assessment = "NEEDS_PROFILE_OR_SURFACE_REPAIR"
+    if allow_blocked_authority:
+        assessment = "DIAGNOSTIC_ONLY"
     outputs["capability-coverage.yaml"] = yaml_bytes(
         {
             "schema": "ff6/capability-coverage@2",
@@ -393,6 +414,7 @@ def compile_universe(
                 "Every emitted obligation uses canonical ProductContract identity.",
                 "Every obligation has exactly one capability owner.",
                 "Missing authority, profile, or surface coverage remains blocking.",
+                "Diagnostic authority overrides are never promotion eligible.",
             ],
         }
     )
@@ -411,6 +433,9 @@ def compile_universe(
             key=lambda item: (item["format_id"], item["source_id"]),
         ),
         "authority_blocked_formats": sorted(authority_blocked),
+        "diagnostic_authority_override": bool(allow_blocked_authority),
+        "promotion_eligible": not allow_blocked_authority
+        and not authority_blocked,
     }
     aggregate = sha256(canonical_json(manifest_body))
     manifest = {**manifest_body, "aggregate_sha256": aggregate}

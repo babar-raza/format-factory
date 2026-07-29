@@ -17,6 +17,11 @@ from tools.format_contract.capability_universe import (
     write_outputs,
 )
 
+REPO_ROOT = Path(__file__).resolve().parents[2]
+AUTHORITY_SCHEMA = (
+    REPO_ROOT / "schemas/format-contracts/authority-lock.schema.json"
+)
+
 
 def _write_yaml(path: Path, value: object) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -39,6 +44,8 @@ def _repo(tmp_path: Path) -> Path:
             {
                 "source_id": "SRC-NB-001",
                 "title": "Notebook schema",
+                "organization": "Test",
+                "version": "4.5",
                 "authority_class": "AUTHORITATIVE",
                 "acquisition_status": "ACQUIRED",
                 "local_path": "authorities/ipynb.bin",
@@ -126,6 +133,50 @@ def _repo(tmp_path: Path) -> Path:
         },
     }
     _write_yaml(root / "shared/format-contracts/ipynb.yaml", contract)
+    _write_yaml(
+        root / "shared/format-contracts/authority-lock.yaml",
+        {
+            "schema_version": "1.0",
+            "lock_id": "FF-AUTHORITY-LOCK-001",
+            "sources": [
+                {
+                    "source_id": "SRC-NB-001",
+                    "format_id": "ipynb",
+                    "title": "Notebook schema",
+                    "organization": "Test",
+                    "version": "4.5",
+                    "authority_class": "AUTHORITATIVE",
+                    "materialized_path": "authorities/ipynb.bin",
+                    "expected_sha256": hashlib.sha256(
+                        authority.read_bytes()
+                    ).hexdigest(),
+                    "media_type": "application/octet-stream",
+                    "legal": {
+                        "license_id": "TEST",
+                        "redistribution": "LOCAL_CACHE_ONLY",
+                        "use_status": "APPROVED_FOR_LOCAL_USE",
+                        "evidence": "test fixture",
+                    },
+                    "limits": {
+                        "max_bytes": 1024,
+                        "timeout_seconds": 1,
+                        "max_redirects": 0,
+                    },
+                    "fetch": {
+                        "kind": "LOCAL_FILE",
+                        "source_path": "authorities/ipynb.bin",
+                    },
+                }
+            ],
+            "generated_by": "test",
+            "visibility": "internal",
+        },
+    )
+    authority_schema = (
+        root / "schemas/format-contracts/authority-lock.schema.json"
+    )
+    authority_schema.parent.mkdir(parents=True, exist_ok=True)
+    authority_schema.write_bytes(AUTHORITY_SCHEMA.read_bytes())
     _write_yaml(root / "shared/sal-facts/ipynb.yaml", facts)
     _write_yaml(
         root / "shared/sal-facts/evidence/ipynb.yaml",
@@ -165,7 +216,7 @@ def _repo(tmp_path: Path) -> Path:
     compiler.parent.mkdir(parents=True)
     compiler.write_text("# compiler v1\n", encoding="utf-8")
     schema = root / "schemas/universe.json"
-    schema.parent.mkdir(parents=True)
+    schema.parent.mkdir(parents=True, exist_ok=True)
     schema.write_text(
         json.dumps({"$schema": "https://json-schema.org/draft/2020-12/schema"}),
         encoding="utf-8",
@@ -226,6 +277,56 @@ def test_compiler_is_byte_deterministic_and_input_complete(tmp_path: Path) -> No
     second = _compile(root)
     third = _compile(root)
     assert first.outputs == second.outputs == third.outputs
+    assert first.manifest["diagnostic_authority_override"] is False
+    assert first.manifest["promotion_eligible"] is True
+
+
+def test_authority_artifact_mutation_fails_closed(tmp_path: Path) -> None:
+    root = _repo(tmp_path)
+    (root / "authorities/ipynb.bin").write_bytes(b"mutated")
+    with pytest.raises(UniverseError, match="AUTHORITY_ARTIFACT_DIGEST_MISMATCH"):
+        _compile(root)
+
+
+def test_authority_declaration_drift_and_omission_fail_closed(
+    tmp_path: Path,
+) -> None:
+    root = _repo(tmp_path)
+    contract_path = root / "shared/format-contracts/ipynb.yaml"
+    contract = yaml.safe_load(contract_path.read_text(encoding="utf-8"))
+    contract["authoritative_sources"][0]["title"] = "Drifted title"
+    _write_yaml(contract_path, contract)
+    with pytest.raises(UniverseError, match="AUTHORITY_LOCK_DECLARATION_MISMATCH"):
+        _compile(root)
+
+    root = _repo(tmp_path / "omitted")
+    contract_path = root / "shared/format-contracts/ipynb.yaml"
+    contract = yaml.safe_load(contract_path.read_text(encoding="utf-8"))
+    contract["authoritative_sources"] = []
+    _write_yaml(contract_path, contract)
+    with pytest.raises(UniverseError, match="AUTHORITY_LOCK_SOURCE_UNDECLARED"):
+        _compile(root)
+
+
+def test_diagnostic_authority_override_is_explicitly_non_promoting(
+    tmp_path: Path,
+) -> None:
+    root = _repo(tmp_path)
+    (root / "authorities/ipynb.bin").write_bytes(b"mutated")
+    result = compile_universe(
+        root,
+        ("ipynb",),
+        policy_path=Path("policy.yaml"),
+        enrichment_dir=Path("enrichments"),
+        compiler_paths=(Path("tools/compiler.py"),),
+        schema_paths=(Path("schemas/universe.json"),),
+        allow_blocked_authority=True,
+    )
+    coverage = yaml.safe_load(result.outputs["capability-coverage.yaml"])
+    assert coverage["assessment_status"] == "DIAGNOSTIC_ONLY"
+    assert result.manifest["diagnostic_authority_override"] is True
+    assert result.manifest["promotion_eligible"] is False
+    assert result.manifest["authority_blocked_formats"] == ["ipynb"]
 
 
 @pytest.mark.parametrize(
@@ -241,6 +342,8 @@ def test_compiler_is_byte_deterministic_and_input_complete(tmp_path: Path) -> No
         "shared/format-contracts/policy/shared-library-contract.yaml",
         "shared/format-contracts/policy/family-packs/test.yaml",
         "shared/format-contracts/research/ipynb.yaml",
+        "shared/format-contracts/authority-lock.yaml",
+        "schemas/format-contracts/authority-lock.schema.json",
     ],
 )
 def test_each_input_category_invalidates_aggregate(

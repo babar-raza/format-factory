@@ -13,12 +13,27 @@ contract_metadata:
   confidence: medium
   supersedes: null
   input_digests:
+    authority_lock_impl_sha256: 3295565e37b8a5ff47a6e05aa8b49b70bb8574171bbe2e7ba9362f344e20012c
+    authority_lock_schema_sha256: a8b860f4bef1ceae1b9dd6348c29cc99b35f2bde2dca032217398bddb061f913
+    authority_lock_sha256: 8eefb28e3ef24b5b533496b54860daee981853d9c872fddc1ba5de4ff150f249
+    authority_materializer_sha256: 3c7cb9ba0b4c2fb87c32281a6d6c596aec8fc6c69663a8a873927755332da7c9
+    authority_runtime_sha256: 63e054c159f7e281fa12ef78a7de1af573606f74097ed398e662040e99f21682
+    authority_src_ubl_001_sha256: aa89ecb356d2a0c03493c3de5ab22d86819dbb391fde8c23c0c6f9c9ab21db4f
+    authority_src_ubl_002_sha256: 87f7be815ef36b18f1db5dd8d09f8ac0b2b4877b2da0a78a537cdea8082e8fa2
+    authority_src_ubl_003_sha256: 07d380f7d0b3bb973f4ca223946a4fff5f1e116f98548d036a2322483dc1fa4c
+    canonical_io_impl_sha256: aca19b1319bf7304d5136fd6c9d729cb50b22d8a23a17ca9314fdb0c58cc164d
+    contract_compiler_impl_sha256: e8c910d85e3618c4a1e884dab096e557e06e17678b3d878dc9c1faadd55a9eda
+    contract_stores_impl_sha256: cd120c7990a37b0f913a2b59e81ab28fdf7b3d50897e38d78cb20fc9e0823f7a
     fact_categories_sha256: fe2732633cdf17bad0a5e152b1f8c845ab46e1d8e018cb29b67dfb7a66181fce
     family_pack_sha256: 6d0b519714dab6f50c35c67bbd11db29ccdba6e77d9a3ab4d2bcad2929ac4646
+    format_contract_schema_sha256: 4eb5cae2d69d0831291646f3cf21e5d019d6b0de2904a745b712cf5fa6c37da9
+    product_requirements_sha256: 07d380f7d0b3bb973f4ca223946a4fff5f1e116f98548d036a2322483dc1fa4c
     qname_registry_sha256: 9ca85535d450af64bab3f26811be019bdebbd2701041ff291c043d096af87fb6
-    research_sha256: a1eca70e12ce35f789098bb5a8b2a9991d9b11644a5ee7ec1b00a09f1aaee0db
+    research_intake_impl_sha256: 4c7d3bfd69e7e5a74a9db2483d25b062e11cfdcb6609637b0343dfa8d3cd0579
+    research_sha256: 7a076fc9ad6175159081fa0836f028213930879c2f50f906221c8bb3f85b4ebe
     sal_facts_sha256: 1efe0b967ba828dbf9c87255d9e58235fabc39c3807831e9a61ee69244607f4f
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+    source_researcher_impl_sha256: 4367e7591a368bcbc6a01199a7eb6da0f569ccc5c706d6650cdd96db0b7083a3
 format_identity:
   active_content_model:
     has_active_content: false
@@ -33,19 +48,19 @@ format_identity:
   - Programmatic document assembly from business data with schema-valid output
   - Compliance validation against schemas, code lists, and profile rules before transmission
 authoritative_sources:
-- title: OASIS UBL 2.3 OASIS Standard prose specification
+- title: OASIS UBL 2.3 Standard prose specification
   source_id: SRC-UBL-001
   organization: OASIS
-  version: UBL 2.3
+  version: UBL 2.3 OASIS Standard
   local_path: .local/format-contracts/acquired/ubl/src-ubl-001.bin
-  canonical_url: https://docs.oasis-open.org/ubl/UBL-2.3.html
-  content_hash: b2ac12afabc812ccfb49355a391dc1690260bbc2d216d3c9dd5b0931b6c1a2b6
+  canonical_url: null
+  content_hash: ccda3f1a2b64e6bdebfe33b2c9645423ef2f6206ac676f0937a304098d43358d
   authority_class: AUTHORITATIVE
   acquisition_status: ACQUIRED
-- title: OASIS Universal Business Language specification (maindoc and common component schemas)
+- title: OASIS UBL 2.3 Standard release package
   source_id: SRC-UBL-002
   organization: OASIS
-  version: UBL 2.3 OASIS Standard release package
+  version: UBL 2.3 OASIS Standard
   local_path: .local/format-contracts/acquired/ubl/src-ubl-002.bin
   canonical_url: https://docs.oasis-open.org/ubl/os-UBL-2.3/UBL-2.3.zip
   content_hash: 623bef8310db4d979ff28000a96bcc56dbcdda4f6206cf094c0aa79b75817970
@@ -56,7 +71,9 @@ authoritative_sources:
   source_id: SRC-UBL-003
   organization: Format Factory
   version: null
+  local_path: shared/format-contracts/product-requirements/ubl.yaml
   canonical_url: null
+  content_hash: 07d380f7d0b3bb973f4ca223946a4fff5f1e116f98548d036a2322483dc1fa4c
   authority_class: PRODUCT_REQUIREMENT
   acquisition_status: ACQUIRED
 scope_policy:

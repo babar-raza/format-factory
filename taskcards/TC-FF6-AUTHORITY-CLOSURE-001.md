@@ -7,7 +7,7 @@ generated_by: codex
 generated_at: 2026-07-29
 goal_id: FF6-PRODUCTION-LIBRARIES-001
 parent_task_id: TC-FF6-PROGRAM-CAPABILITIES-001
-status: WORK_IN_PROGRESS
+status: PASS
 skill_ids:
   - sal-pipeline-heal
   - ingest-spec-sal
@@ -21,13 +21,43 @@ skill_ids:
 
 ## State
 
-- Status: `WORK_IN_PROGRESS`
+- Status: `PASS`
 - Parent: `TC-FF6-PROGRAM-CAPABILITIES-001` (`NEEDS_REPAIR`)
 - Predecessor: `TC-FF6-CAPABILITY-COMPILER-001` (`PASS`)
 - Source gap: `FF6-GAP-014`
 - Controller predecessor event: `FF6-EVENT-000013`
 - Product source mutation: prohibited
 - Product promotion effect: none
+
+## Verified closure
+
+The authority-artifact dependency closure passed without promoting any
+format. Final evidence is bound by controller events
+`FF6-EVENT-000015` (close intent) and `FF6-EVENT-000016` (verified close).
+
+- Canonical lock: `shared/format-contracts/authority-lock.yaml`;
+  LF SHA-256
+  `8eefb28e3ef24b5b533496b54860daee981853d9c872fddc1ba5de4ff150f249`.
+- All 15 locked sources and all six contract declarations report `MATCH`;
+  no source is `MISSING`, `MISMATCH`, `UNDECLARED`, or `LEGAL_BLOCKED`.
+- Offline clean-root replay reconstructed 15/15 artifacts from the CAS
+  without network access.
+- Online clean-root replay reconstructed 15/15 artifacts from official
+  endpoints into an initially empty CAS containing 73,206,772 bytes.
+- All six ProductContracts compile strictly with the canonical lock and no
+  authority override.
+- The capability universe contains 89 capabilities and 636 canonical
+  obligations. Final aggregate:
+  `667cd4cb69773e6746ad46173b53de39c18ef44d39ef7db91c6337d8a3761a73`;
+  three-run digest:
+  `04114c84221edcdb00dae1097d75e55a7c1a6be75a074c9c0b8b07f0de5533a8`.
+- Diagnostic authority override output is explicitly non-promoting.
+- Final affected regression: 250 passed; the tracked, baseline-known CSV
+  idempotency case was deselected after independently demonstrating that it
+  mutates three unrelated reports. Those side effects were restored exactly.
+- Ruff, mypy, and Pyright 1.1.411 pass for the changed machinery.
+- The parent remains `NEEDS_REPAIR`; `FF6-GAP-013` and other compiler-reported
+  profile/surface gaps remain non-promoting.
 
 ## Durable provider-shift checkpoint
 
@@ -198,25 +228,27 @@ before writing.
 
 ## Acceptance criteria
 
-- [ ] All 15 source records have nonempty path/locator, expected digest,
+- [x] All 15 source records have nonempty path/locator, expected digest,
       authority class, legal status, redistribution policy, and cache policy.
-- [ ] All four internal product-requirement sources resolve to tracked
+- [x] All four internal product-requirement sources resolve to tracked
       canonical artifacts and remain explicitly non-spec authority.
-- [ ] Every legally retrievable external source is `MATCH`.
-- [ ] No source remains falsely labeled `ACQUIRED`.
-- [ ] No source is `MISSING`, `MISMATCH`, or `UNDECLARED` in the promoting run.
-- [ ] Any true legal/access block is `LEGAL_BLOCKED` with primary evidence and
+- [x] Every legally retrievable external source is `MATCH`.
+- [x] No source remains falsely labeled `ACQUIRED`.
+- [x] No source is `MISSING`, `MISMATCH`, or `UNDECLARED` in the strict run.
+- [x] Any true legal/access block is `LEGAL_BLOCKED` with primary evidence and
       does not get hidden by `--allow-blocked-authority`.
-- [ ] The materializer is path-safe, size-bounded, redirect-bounded,
+- [x] The materializer is path-safe, size-bounded, redirect-bounded,
       timeout-bounded, digest-before-placement, and concurrency-safe.
-- [ ] Clean online materialization and offline matching-cache replay pass.
-- [ ] ProductContract compilation passes all six without authority override.
-- [ ] Three capability compiles are byte-identical and all authority artifacts
+- [x] Clean online materialization and offline matching-cache replay pass.
+- [x] ProductContract compilation passes all six without authority override.
+- [x] Three capability compiles are byte-identical and all authority artifacts
       are `MATCH`.
-- [ ] Every changed authority input invalidates the correct manifest
+- [x] Every changed authority input invalidates the correct manifest
       descendants.
-- [ ] Existing working contract/SAL behavior and all compiler regressions pass.
-- [ ] Parent remains `NEEDS_REPAIR` and unpromoted for OpenRaster gap 13.
+- [x] Existing working contract/SAL behavior and all affected compiler
+      regressions pass, with the unrelated tracked CSV baseline defect
+      explicitly separated.
+- [x] Parent remains `NEEDS_REPAIR` and unpromoted for OpenRaster gap 13.
 
 ## Failure policy
 

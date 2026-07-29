@@ -3,6 +3,9 @@ from __future__ import annotations
 import hashlib
 import io
 import json
+import subprocess
+import sys
+from concurrent.futures import ThreadPoolExecutor
 import zipfile
 from pathlib import Path
 
@@ -40,7 +43,7 @@ def _legal() -> dict:
 
 
 def _limits(size: int = 1024 * 1024) -> dict:
-    return {"max_bytes": size, "timeout_seconds": 5}
+    return {"max_bytes": size, "timeout_seconds": 5, "max_redirects": 2}
 
 
 def _lock(sources: list[dict]) -> dict:
@@ -61,6 +64,8 @@ def _source(
     *,
     authority_class: str = "AUTHORITATIVE",
 ) -> dict:
+    if fetch["kind"] == "URL" and "allowed_hosts" not in fetch:
+        fetch = {**fetch, "allowed_hosts": ["example.invalid"]}
     return {
         "source_id": source_id,
         "format_id": "ipynb",
@@ -79,6 +84,14 @@ def _source(
 
 class _Response(io.BytesIO):
     status = 200
+    headers: dict[str, str] = {}
+
+    def __init__(self, value: bytes, url: str = "https://example.invalid/final"):
+        super().__init__(value)
+        self._url = url
+
+    def geturl(self) -> str:
+        return self._url
 
     def __enter__(self):
         return self
@@ -100,11 +113,16 @@ def test_online_then_offline_replay_is_content_addressed_and_atomic(
         "https://example.invalid/archive": archive_bytes,
     }
 
-    def fake_urlopen(request, timeout):  # noqa: ANN001
-        assert timeout == 5
-        return _Response(payloads[request.full_url])
+    class FakeOpener:
+        def open(self, request, timeout):  # noqa: ANN001
+            assert timeout == 5
+            return _Response(payloads[request.full_url], request.full_url)
 
-    monkeypatch.setattr(authority_runtime.urllib.request, "urlopen", fake_urlopen)
+    monkeypatch.setattr(
+        authority_runtime.urllib.request,
+        "build_opener",
+        lambda *handlers: FakeOpener(),
+    )
     document = _lock(
         [
             _source(
@@ -149,7 +167,7 @@ def test_online_then_offline_replay_is_content_addressed_and_atomic(
         raise AssertionError("offline replay attempted network access")
 
     monkeypatch.setattr(
-        authority_runtime.urllib.request, "urlopen", network_must_not_run
+        authority_runtime.urllib.request, "build_opener", network_must_not_run
     )
     direct_path = tmp_path / ".local/format-contracts/acquired/ipynb/direct.bin"
     direct_path.unlink()
@@ -173,10 +191,14 @@ def test_failed_digest_never_replaces_existing_bytes(
             "locators": [{"url": "https://example.invalid/source", "immutable": True}],
         },
     )
+    class WrongOpener:
+        def open(self, request, timeout):  # noqa: ANN001
+            return _Response(b"wrong", request.full_url)
+
     monkeypatch.setattr(
         authority_runtime.urllib.request,
-        "urlopen",
-        lambda *args, **kwargs: _Response(b"wrong"),
+        "build_opener",
+        lambda *handlers: WrongOpener(),
     )
     result = materialize_sources(tmp_path, _lock([source]), online=True)[0]
     assert result.status == "MISMATCH"
@@ -320,3 +342,147 @@ def test_contract_audit_reports_undeclared_and_declaration_mismatch(
     results = audit_contract_declarations(tmp_path, _lock([]), ["ipynb"])
     assert len(results) == 1
     assert results[0].status == "UNDECLARED"
+
+
+def test_atomic_copy_is_safe_for_threads_and_processes(tmp_path: Path) -> None:
+    source = tmp_path / "source.bin"
+    target = tmp_path / "target.bin"
+    payload = b"authority" * 8192
+    source.write_bytes(payload)
+    expected = _digest(payload)
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        thread_results = list(
+            pool.map(
+                lambda _: authority_runtime._atomic_copy(  # noqa: SLF001
+                    source, target, expected
+                ),
+                range(24),
+            )
+        )
+    assert thread_results == [expected] * 24
+    script = (
+        "from pathlib import Path\n"
+        "from tools.format_contract.authority_runtime import _atomic_copy\n"
+        f"print(_atomic_copy(Path({str(source)!r}), Path({str(target)!r}), {expected!r}))\n"
+    )
+    processes = [
+        subprocess.Popen(
+            [sys.executable, "-c", script],
+            cwd=REPO_ROOT,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+        for _ in range(8)
+    ]
+    process_results = []
+    for process in processes:
+        stdout, stderr = process.communicate(timeout=30)
+        assert process.returncode == 0, stderr
+        process_results.append(stdout.strip())
+    assert process_results == [expected] * 8
+    assert target.read_bytes() == payload
+    assert list(tmp_path.glob(".target.bin.*.tmp")) == []
+
+
+def test_redirect_handler_rejects_excess_and_cross_policy_redirects() -> None:
+    request = authority_runtime.urllib.request.Request(
+        "https://example.invalid/source"
+    )
+    handler = authority_runtime._HttpsRedirectHandler(  # noqa: SLF001
+        1, ["example.invalid"]
+    )
+    first = handler.redirect_request(
+        request,
+        None,
+        302,
+        "Found",
+        {},
+        "https://example.invalid/next",
+    )
+    assert first is not None
+    with pytest.raises(authority_runtime.urllib.error.HTTPError):
+        handler.redirect_request(
+            first,
+            None,
+            302,
+            "Found",
+            {},
+            "https://example.invalid/final",
+        )
+    with pytest.raises(AuthorityLockError, match="host policy"):
+        authority_runtime._validate_network_url(  # noqa: SLF001
+            "https://localhost/private", ["example.invalid"]
+        )
+
+
+def test_oversize_stream_and_legal_block_fail_closed(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    class OversizeOpener:
+        def open(self, request, timeout):  # noqa: ANN001
+            return _Response(b"x" * 33, request.full_url)
+
+    monkeypatch.setattr(
+        authority_runtime.urllib.request,
+        "build_opener",
+        lambda *handlers: OversizeOpener(),
+    )
+    source = _source(
+        "SRC-IPYNB-001",
+        _digest(b"x" * 33),
+        ".local/format-contracts/acquired/ipynb/oversize.bin",
+        {
+            "kind": "URL",
+            "locators": [{"url": "https://example.invalid/source", "immutable": True}],
+        },
+    )
+    source["limits"]["max_bytes"] = 32
+    result = materialize_sources(tmp_path, _lock([source]), online=True)[0]
+    assert result.status == "MISSING"
+    assert "exceeds max_bytes" in result.detail
+    source["legal"]["use_status"] = "BLOCKED"
+    result = materialize_sources(tmp_path, _lock([source]), online=False)[0]
+    assert result.status == "LEGAL_BLOCKED"
+
+
+def test_zip_member_limits_and_duplicate_target_rejection(tmp_path: Path) -> None:
+    archive_path = tmp_path / ".local/format-contracts/acquired/ipynb/archive.zip"
+    archive_path.parent.mkdir(parents=True)
+    with zipfile.ZipFile(archive_path, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+        archive.writestr("huge.txt", b"a" * 50_000)
+    archive_bytes = archive_path.read_bytes()
+    container = _source(
+        "SRC-IPYNB-001",
+        _digest(archive_bytes),
+        archive_path.relative_to(tmp_path).as_posix(),
+        {
+            "kind": "URL",
+            "locators": [{"url": "https://example.invalid/archive", "immutable": True}],
+        },
+    )
+    member = _source(
+        "SRC-IPYNB-002",
+        _digest(b"a" * 50_000),
+        ".local/format-contracts/acquired/ipynb/member.txt",
+        {
+            "kind": "ZIP_MEMBER",
+            "container_source_id": "SRC-IPYNB-001",
+            "member_path": "huge.txt",
+        },
+    )
+    result = materialize_sources(tmp_path, _lock([container, member]), online=False)
+    assert result[1].status == "MISMATCH"
+    assert "compression ratio" in result[1].detail
+    duplicate = {**member, "source_id": "SRC-IPYNB-003"}
+    duplicate["fetch"] = {
+        "kind": "ZIP_MEMBER",
+        "container_source_id": "SRC-IPYNB-001",
+        "member_path": "missing.txt",
+    }
+    lock_path = tmp_path / "lock.yaml"
+    schema = tmp_path / "schema.json"
+    schema.write_bytes(SCHEMA.read_bytes())
+    lock_path.write_bytes(canonical_yaml(_lock([container, member, duplicate])))
+    with pytest.raises(AuthorityLockError, match="is shared"):
+        load_lock(tmp_path, Path("lock.yaml"), Path("schema.json"))

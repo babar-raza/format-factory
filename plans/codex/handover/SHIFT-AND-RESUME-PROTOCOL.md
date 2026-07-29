@@ -12,177 +12,137 @@ authoritative_state: false
 
 ## Invariant
 
-Claude and Codex are interchangeable executors, not separate sources of state.
-Neither conversation history nor provider-local memory may unlock work.
-
-The resumable state is:
+Claude and Codex are interchangeable executors. The durable resume key is:
 
 ```text
-GitLab commit
-+ FF6 controller projection
-+ hash-chained FF6 event journal
-+ current taskcard
-+ current evidence/proof digests
+GitLab origin/main commit
++ native FF6 controller and hash-chained journal
++ current taskcard and task index
++ current gaps and proof digests
 + off-repo coordination ownership
 ```
 
-At this transfer, the last pre-shift source commit is
-`2129ad278c5d7a8b7f81559388489e6231def550`. The reconstructable shift
-checkpoint is the GitLab-main descendant containing controller state
-`CONTRACT`, event 14, parent `TC-FF6-PROGRAM-CAPABILITIES-001` in
-`NEEDS_REPAIR`, and active task `TC-FF6-AUTHORITY-CLOSURE-001` in
-`WORK_IN_PROGRESS`. The exact completed and pending substeps are in
-`ACTIVE-WORK-CHECKPOINT.md`.
+Conversation history, provider memory, model identity, and remaining token
+budget are not operational authority.
 
-## Start of every shift
+## Current transfer boundary
 
-1. Fetch `origin/main`.
-2. Verify that the expected checkpoint is an ancestor of `origin/main`.
-3. Create a fresh detached worktree from the exact current `origin/main`.
-4. Read `START-HERE.md` and its ordered authorities.
-5. Validate normalized digests and the FF6 event chain.
-   At this packet version, require event 14 with hash
-   `399a5069b3c843d1b4f668a8f7abeb0deffe40a234a584f6c9f7b5b3a3e70fc8`.
-6. Run current-state consistency and focused plan-control tests.
+- Required ancestor before this packet: `9437dcc47763c17ce090ce538d2ff7ba5350da0d`.
+- Use the fetched `origin/main` descendant containing this packet.
+- Controller state: `CONTRACT`.
+- Event: `FF6-EVENT-000016`.
+- Event hash:
+  `2ea206536ff0ccecaa0a4e93df32ada3e7575018f4cdcafb7525c59d51dd50ba`.
+- Completed task: `TC-FF6-AUTHORITY-CLOSURE-001` - `PASS`.
+- Next task: `TC-FF6-ORA-PROFILE-SURFACE-001` - `READY`.
+- Product promotion: none.
+
+## Incoming provider procedure
+
+1. Fetch `origin/main`; do not use GitHub or a provider branch.
+2. Verify `9437dcc47763c17ce090ce538d2ff7ba5350da0d` is an ancestor.
+3. Verify the worktree is clean before new mutation.
+4. Read the ordered authority list in `START-HERE.md`.
+5. Validate the journal through event 16 using FF6 native semantics:
+   `previous_event_hash`, canonical JSON, sequential event IDs and hashes.
+6. Verify controller head, parent/child task states, task index, current gaps,
+   authority 15/15 match, and capability manifest digests.
 7. Query coordination status.
-8. Register a new provider identity.
-9. Claim the task logical scope, worktree, exact output directories, taskcard,
-   controller projection, event journal, and transcript.
-10. Run provider preflight and the registered skill mutation guard.
-11. Recompute the task's inputs before writing.
-12. Compare each event-14 WIP path against its recorded LF-normalized digest.
-    If any differs, classify it through coordination before executing.
+8. Register a new identity for the incoming provider.
+9. Confirm no live owner remains on the next task paths.
+10. Claim logical task scope, exact tracked paths, generated output
+    directories, transcript, and artifact directory.
+11. Resolve the required registered skills and run the mutation guard.
+12. Capture input baselines before writing.
+13. Begin the first OpenRaster taskcard step.
 
-Claude hooks may register and auto-claim individual files, but broad scopes and
-generated output sets still require explicit claims. Codex must perform every
-CLI step in `docs/governance/codex-adapter.md`.
+Claude's hooks may auto-claim single files, but broad generated output sets
+still require explicit claims. Codex follows the CLI protocol in
+`docs/governance/codex-adapter.md`.
+
+## Outgoing provider procedure
+
+1. Stop only at a truthful task boundary.
+2. Record completed and pending substeps in tracked state.
+3. Run focused and required regression verification.
+4. Journal close intent and verified close, or truthful WIP/repair state.
+5. Refresh taskcard, index, gaps, controller, and this packet.
+6. Validate all packet links, YAML, hashes, and event chain.
+7. Stage only an explicit reviewed file list.
+8. Run precommit coordination checks.
+9. Fetch and classify remote movement.
+10. Commit and push to GitLab main.
+11. Verify remote main equals the commit.
+12. Write/validate local receipt and evidence bundle as required.
+13. Complete only its own coordination session.
+
+Never transfer an uncommitted chat-only state as a clean checkpoint.
 
 ## During a shift
 
-- One taskcard owns one bounded, explicit changed-file set.
-- Resume the first unchecked atomic step in the active taskcard. Do not restart
-  completed steps unless their recorded input digest is invalidated.
-- Before every write, preflight the target.
-- After every write, record the resulting digest.
-- Heartbeat during long work.
-- Do not use `git add .`, `git add -A`, broad formatters, stash, reset, restore,
-  checkout-discard, or clean.
-- Do not resolve another agent's conflict or lease.
-- If `origin/main` advances, stop integration, fetch, classify the delta, and
-  replay affected verification.
-- Use only GitLab `origin/main`; do not create provider branches or push to the
-  configured GitHub remote.
-- Do not edit promotion state directly.
-- Do not let a blocked format stop safe work on another format.
+- One bounded taskcard owns each change set.
+- Resume from the first unmet acceptance criterion, not from prose memory.
+- Recompute a completed substep only if its inputs were invalidated.
+- Preflight before every write and record every write.
+- Heartbeat during long execution.
+- Preserve unrelated dirty state.
+- Never use broad staging, broad formatters, stash, reset, restore, clean, or
+  checkout-discard.
+- Never release another agent's lease.
+- If remote main advances, fetch, classify overlap, and replay affected proof.
+- A blocked format does not stop safe work on another.
+- Promotion is computed from proof, never edited.
 
-## Checkpoint states
+## Safe takeover
 
-| State | Meaning | May next agent continue? |
-|---|---|---|
-| `INTENT_RECORDED` | Write-ahead event exists, mutation not yet verified | Only after inspecting owned worktree and task transcript |
-| `WORK_IN_PROGRESS` | Bounded files changed, verification incomplete | Yes, after governed takeover and baseline recapture |
-| `NEEDS_REPAIR` | Evidence failed and root cause is recorded | Yes, execute deterministic repair task |
-| `TECHNICALLY_BLOCKED` | Three materially different repairs failed | Continue other unblocked work |
-| `PASS` | Task acceptance passed, but task may not imply product completion | Yes, verify close projection |
-| `COMPLETE` | Task closed with committed, pushed, remote-verified proof | Yes, select journaled next task |
+Takeover applies only to a stale or crashed owner. Use the governed
+coordination `takeover --reason` operation. The successor must:
 
-Never label partial work `COMPLETE` merely to create a clean handoff.
+1. capture current hashes;
+2. classify every existing change;
+3. preserve unexplained content;
+4. establish new leases;
+5. rerun affected verification.
 
-## End of every shift
+Lease expiry alone is not permission to discard filesystem content.
 
-### If the task is complete
+## Checkpoint meanings
 
-1. Run focused validation and required regression tier.
-2. Write `TASK_CLOSE_INTENT`.
-3. Compute all output and evidence digests.
-4. Independently validate the output.
-5. Write `TASK_CLOSED`.
-6. Update controller state and task index.
-7. Validate the event chain from event 1.
-8. Stage exact paths.
-9. Run coordination precommit check with the owning identity.
-10. Fetch `origin/main` and verify expected ancestry.
-11. Commit on the detached worktree.
-12. Push `HEAD:main`.
-13. Verify `refs/heads/main` equals the commit.
-14. Write the local receipt and validate it.
-15. Complete the coordination session.
+| State | Resume behavior |
+|---|---|
+| `READY` | Claim and execute exact task |
+| `WORK_IN_PROGRESS` | Take over safely and resume first unchecked step |
+| `NEEDS_REPAIR` | Execute the recorded deterministic repair |
+| `TECHNICALLY_BLOCKED` | Continue another unblocked path |
+| `PASS` | Verify close projection; do not infer product certification |
+| `COMPLETE` | Select the journaled successor |
 
-### If the task is incomplete
+## Digest and line-ending rule
 
-1. Do not push a failing or internally contradictory source change.
-2. A bounded partial implementation may be pushed only when it is internally
-   valid, tested at its declared tier, explicitly non-promoting, and journaled
-   as `WORK_IN_PROGRESS`.
-3. Record exact completed substeps, changed files, failing command, evidence,
-   root cause, and next deterministic action.
-4. Prefer a clean committed checkpoint only when the partial artifact is valid,
-   explicitly non-promoting, and the taskcard state is truthful.
-5. Otherwise retain the isolated worktree, abandon the coordination session
-   with a reason, and require governed takeover.
-6. Never rely on ignored local files as the only checkpoint.
+For tracked text, use Git identity plus LF-normalized SHA-256. Raw Windows bytes
+are not canonical when checkout settings transform line endings.
 
-## Transfer handshake
+Canonical event hashing uses UTF-8 JSON with sorted keys and compact separators,
+excluding `event_hash`.
 
-The outgoing provider:
+## Generic Plan Control contradiction
 
-1. writes and validates the checkpoint event;
-2. commits and remote-verifies the exact tracked paths;
-3. records the final write set and commit in its local receipt;
-4. completes its coordination session, releasing only its own leases.
+`python -m tools.plan_control --control-root plans/strategic/ff6 doctor`
+currently fails at event 1 because it expects `previous_hash`. FF6 uses
+`previous_event_hash` under `ff6/controller-event@1`.
 
-The incoming provider:
+This is `FF6-GAP-011`, not evidence that event 16 is corrupt. Validate the FF6
+native chain and do not edit either journal schema ad hoc.
 
-1. fetches and validates the remote checkpoint before registering;
-2. registers a new provider identity;
-3. confirms no active owner remains;
-4. claims the task and exact output paths;
-5. if the prior owner is stale rather than complete, uses governed takeover
-   with a reason and recaptures every baseline;
-6. continues from the first unchecked taskcard step.
+## Transfer acceptance
 
-There is never a period in which two providers may mutate the same task scope.
-The handoff packet transfers intent; the coordination plane transfers write
-authority.
+A provider switch is safe only when:
 
-## Takeover
-
-Takeover is allowed only for a stale/crashed owner and must use:
-
-```powershell
-python -m tools.supervisor.coordination takeover --help
-```
-
-The successor records a reason, claims the same scope, captures hashes before
-writing, classifies every existing change, and preserves unexplained content.
-Expiry alone is not permission to delete anything.
-
-## Digest rule
-
-For tracked text, compare both Git identity and LF-normalized SHA-256:
-
-```powershell
-git rev-parse HEAD:<path>
-@'
-from pathlib import Path
-import hashlib
-p = Path(r"<path>")
-print(hashlib.sha256(p.read_bytes().replace(b"\r\n", b"\n")).hexdigest())
-'@ | python -
-```
-
-Raw Windows file bytes are diagnostic only when `core.autocrlf` can transform
-line endings.
-
-## Provider switch acceptance
-
-A provider switch is safe only if:
-
-- remote main contains the claimed checkpoint;
-- all task inputs can be reconstructed from tracked files or immutable
-  content-addressed artifacts;
-- no required result exists only in chat or an ignored file;
-- task ownership is released or transferred through coordination;
-- next task and dependencies are journaled;
-- failing and stale evidence remains visible;
-- product promotion is no stronger than current proof.
+- the checkpoint is present on remote main;
+- controller, journal, taskcard, task index, gaps, and packet agree;
+- all continuation inputs are tracked or immutable content-addressed inputs;
+- no required result exists only in chat;
+- prior ownership is completed or governed takeover is recorded;
+- the next step and acceptance criteria are deterministic;
+- known failures and limits remain visible;
+- promotion is no stronger than live proof.

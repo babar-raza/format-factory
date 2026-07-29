@@ -13,12 +13,24 @@ contract_metadata:
   confidence: low
   supersedes: null
   input_digests:
+    authority_lock_impl_sha256: 3295565e37b8a5ff47a6e05aa8b49b70bb8574171bbe2e7ba9362f344e20012c
+    authority_lock_schema_sha256: a8b860f4bef1ceae1b9dd6348c29cc99b35f2bde2dca032217398bddb061f913
+    authority_lock_sha256: 8eefb28e3ef24b5b533496b54860daee981853d9c872fddc1ba5de4ff150f249
+    authority_materializer_sha256: 3c7cb9ba0b4c2fb87c32281a6d6c596aec8fc6c69663a8a873927755332da7c9
+    authority_runtime_sha256: 63e054c159f7e281fa12ef78a7de1af573606f74097ed398e662040e99f21682
+    authority_src_safetensors_002_sha256: 50bc2c823b5b83f2411e03f3f74cd53b93202f3777160471092837cde68cbf12
+    canonical_io_impl_sha256: aca19b1319bf7304d5136fd6c9d729cb50b22d8a23a17ca9314fdb0c58cc164d
+    contract_compiler_impl_sha256: e8c910d85e3618c4a1e884dab096e557e06e17678b3d878dc9c1faadd55a9eda
+    contract_stores_impl_sha256: cd120c7990a37b0f913a2b59e81ab28fdf7b3d50897e38d78cb20fc9e0823f7a
     fact_categories_sha256: fe2732633cdf17bad0a5e152b1f8c845ab46e1d8e018cb29b67dfb7a66181fce
     family_pack_sha256: 229a99aeb5e4d5787049adb59ba7f07f21205977c583fe5268b8a84f19535574
+    format_contract_schema_sha256: 4eb5cae2d69d0831291646f3cf21e5d019d6b0de2904a745b712cf5fa6c37da9
     qname_registry_sha256: 934a0866002b2ad70dc5144fed6d89d11dbf1965806ccb54af968a5a94ae4a51
-    research_sha256: 9bc2de8e29af5aeeff8ce3ac52c3dab2e26602e2fe422330675ebfdb58ac4c32
+    research_intake_impl_sha256: 4c7d3bfd69e7e5a74a9db2483d25b062e11cfdcb6609637b0343dfa8d3cd0579
+    research_sha256: 6154e23f67d8e78554803125043fd991557e7d8238435544f80ad763f2248c53
     sal_facts_sha256: c9ae14874c3cd0f00a767ee3a61b7cce40520ce6d7f9010bf1e95f4885777de6
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+    source_researcher_impl_sha256: 4367e7591a368bcbc6a01199a7eb6da0f569ccc5c706d6650cdd96db0b7083a3
 format_identity:
   active_content_model:
     has_active_content: false
@@ -32,7 +44,7 @@ format_identity:
   - Read and write framework-neutral tensor files deterministically
   - Validate untrusted tensor containers before exposing payload views or allocating framework arrays
 authoritative_sources:
-- title: SafeTensors pinned authority
+- title: SafeTensors format definition and official implementation
   source_id: SRC-SAFETENSORS-002
   organization: Hugging Face
   version: safetensors v0.8.0 commit a406ca3e7a90598be0cd05a50069cb9bf5ef6ba6

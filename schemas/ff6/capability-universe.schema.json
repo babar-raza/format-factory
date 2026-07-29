@@ -343,7 +343,8 @@
           "enum": [
             "COMPILED",
             "COMPILED_AUTHORITY_BLOCKED",
-            "NEEDS_PROFILE_OR_SURFACE_REPAIR"
+            "NEEDS_PROFILE_OR_SURFACE_REPAIR",
+            "DIAGNOSTIC_ONLY"
           ]
         },
         "summary": {
@@ -378,6 +379,8 @@
         "output_digests",
         "authority_artifacts",
         "authority_blocked_formats",
+        "diagnostic_authority_override",
+        "promotion_eligible",
         "aggregate_sha256"
       ],
       "properties": {
@@ -416,6 +419,12 @@
         "authority_blocked_formats": {
           "type": "array",
           "uniqueItems": true
+        },
+        "diagnostic_authority_override": {
+          "type": "boolean"
+        },
+        "promotion_eligible": {
+          "type": "boolean"
         },
         "aggregate_sha256": {
           "$ref": "#/$defs/sha256"

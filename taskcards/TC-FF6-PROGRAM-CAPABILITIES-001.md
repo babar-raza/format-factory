@@ -147,3 +147,24 @@ This closes `FF6-GAP-012` and `FF6-GAP-015`, but not the parent task.
 `FF6-GAP-013` remains open for OpenRaster profile/surface depth and
 `FF6-GAP-014` remains open for authority-artifact closure. Architecture and
 product promotion therefore remain locked.
+
+## Repair checkpoint — authority closure
+
+`TC-FF6-AUTHORITY-CLOSURE-001` is `PASS`:
+
+- all 15 canonical authority records and six contract declaration sets are
+  live `MATCH` results;
+- clean online and offline reconstructions pass;
+- strict ProductContract and three-run capability compilation pass;
+- the complete dependency closure includes lock, schemas, authority runtime,
+  materializer, research tools, contract generator tools, source bytes, SAL,
+  evidence, policy, and enrichment inputs;
+- capability aggregate is
+  `667cd4cb69773e6746ad46173b53de39c18ef44d39ef7db91c6337d8a3761a73`.
+
+This resolves `FF6-GAP-014` without changing product or promotion state. The
+parent remains `NEEDS_REPAIR`: the next deterministic repair is
+`TC-FF6-ORA-PROFILE-SURFACE-001` for `FF6-GAP-013`. Compiler-reported profile
+applicability gaps for IPYNB, NRRD, XLIFF, and UBL typing remain visible and
+must be scheduled after the higher-severity OpenRaster defect; they are not
+implicitly closed by authority readiness.

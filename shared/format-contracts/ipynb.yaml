@@ -13,12 +13,26 @@ contract_metadata:
   confidence: medium
   supersedes: null
   input_digests:
+    authority_lock_impl_sha256: 3295565e37b8a5ff47a6e05aa8b49b70bb8574171bbe2e7ba9362f344e20012c
+    authority_lock_schema_sha256: a8b860f4bef1ceae1b9dd6348c29cc99b35f2bde2dca032217398bddb061f913
+    authority_lock_sha256: 8eefb28e3ef24b5b533496b54860daee981853d9c872fddc1ba5de4ff150f249
+    authority_materializer_sha256: 3c7cb9ba0b4c2fb87c32281a6d6c596aec8fc6c69663a8a873927755332da7c9
+    authority_runtime_sha256: 63e054c159f7e281fa12ef78a7de1af573606f74097ed398e662040e99f21682
+    authority_src_nb_002_sha256: 243d0d4544b23a9a968b02aea5b146da02d167d85b78780eb0c15afc3f4e0e64
+    authority_src_nb_003_sha256: 903b5e9c4d3f371105d209794221a342ee676f4bd5f36dc15c3ddacb7ceadccd
+    canonical_io_impl_sha256: aca19b1319bf7304d5136fd6c9d729cb50b22d8a23a17ca9314fdb0c58cc164d
+    contract_compiler_impl_sha256: e8c910d85e3618c4a1e884dab096e557e06e17678b3d878dc9c1faadd55a9eda
+    contract_stores_impl_sha256: cd120c7990a37b0f913a2b59e81ab28fdf7b3d50897e38d78cb20fc9e0823f7a
     fact_categories_sha256: fe2732633cdf17bad0a5e152b1f8c845ab46e1d8e018cb29b67dfb7a66181fce
     family_pack_sha256: bdc43666de37ffe17cbc827308747c60389ecb7e6e7d52a759e78f071ab32456
-    qname_registry_sha256: 40558eda169cb74b3b27e47ef1bdc0c6893c959efc00e9db7c7b2b2df77bc776
-    research_sha256: 260f6442866661b26e8bf85a4153fda1ec890a4be0100013b0efb31f5ee7a9ac
+    format_contract_schema_sha256: 4eb5cae2d69d0831291646f3cf21e5d019d6b0de2904a745b712cf5fa6c37da9
+    product_requirements_sha256: 903b5e9c4d3f371105d209794221a342ee676f4bd5f36dc15c3ddacb7ceadccd
+    qname_registry_sha256: 11b280a73609e21feffb65527712942d55ecd067724f43a03592093cb80836ef
+    research_intake_impl_sha256: 4c7d3bfd69e7e5a74a9db2483d25b062e11cfdcb6609637b0343dfa8d3cd0579
+    research_sha256: ef4b130cf19a916eaaed86629d80c14eeaaa4dbd2be943400a8b508ff1eb9b7a
     sal_facts_sha256: e517e9d9ad75b8e1c996ff316e7e54bab92a24feb00b36c870738aa50442be1f
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+    source_researcher_impl_sha256: 4367e7591a368bcbc6a01199a7eb6da0f569ccc5c706d6650cdd96db0b7083a3
 format_identity:
   active_content_model:
     has_active_content: true
@@ -34,7 +48,7 @@ format_identity:
   - Structure-aware diff/merge for version control of computational documents
   - Trust, sanitization, and validation of untrusted notebooks before rendering or execution
 authoritative_sources:
-- title: Jupyter nbformat specification and JSON schema (format 4)
+- title: Jupyter nbformat specification, schemas, and implementation
   source_id: SRC-NB-002
   organization: Jupyter Project
   version: nbformat 5.10.4 commit 60b6151fedcbdc9f137fb2d223eeb10c935a8378
@@ -47,7 +61,9 @@ authoritative_sources:
   source_id: SRC-NB-003
   organization: Format Factory
   version: null
+  local_path: shared/format-contracts/product-requirements/ipynb.yaml
   canonical_url: null
+  content_hash: 903b5e9c4d3f371105d209794221a342ee676f4bd5f36dc15c3ddacb7ceadccd
   authority_class: PRODUCT_REQUIREMENT
   acquisition_status: ACQUIRED
 scope_policy:

@@ -1,52 +1,51 @@
-schema: ff6/agent-handover-checkpoint@1
+schema: ff6/agent-handover-checkpoint@2
 handover_id: FF6-HANDOVER-CLAUDE-001
 generated_by: codex
 generated_at: "2026-07-29"
 visibility: internal
 authoritative_state: false
+
 canonical_authorities:
-  goal: plans/strategic/ff6/product-goal.yaml
-  controller: plans/strategic/ff6/controller-state.yaml
-  journal: plans/strategic/ff6/events.jsonl
-  snapshot: plans/strategic/ff6/current-state.yaml
-  execution_plan: plans/strategic/autonomous-six-python-production-execution-plan.md
-  task_index: taskcards/index.yaml
-forge:
-  canonical: GitLab
+  forge: GitLab
   remote: origin
   branch: main
   github_allowed_for_mission: false
+  goal: plans/strategic/ff6/product-goal.yaml
+  plan: plans/strategic/autonomous-six-python-production-execution-plan.md
+  controller: plans/strategic/ff6/controller-state.yaml
+  journal: plans/strategic/ff6/events.jsonl
+  gaps: plans/strategic/ff6/current-gaps.yaml
+  snapshot: plans/strategic/ff6/current-state.yaml
+  task_index: taskcards/index.yaml
+
 source_checkpoint:
-  commit: 2129ad278c5d7a8b7f81559388489e6231def550
-  tree_oid: 44714dc4d74b784ab7b09d6735eae3ebc1482743
-  commit_time: "2026-07-29T10:54:32+05:00"
-  worktree_state: clean
-handover_packet:
-  source_checkpoint_commit: 2129ad278c5d7a8b7f81559388489e6231def550
-  remote_ref: refs/heads/main
-  source_checkpoint_remote_verified: true
-  final_packet_commit_rule: >-
-    Fetch origin/main and use its current descendant containing this packet.
-    The packet does not embed a self-referential hash of its own final commit.
+  rule: >-
+    Use the fetched origin/main descendant containing this packet. A packet
+    cannot embed the hash of the commit that contains its own final bytes.
+  required_ancestor_before_this_change: 9437dcc47763c17ce090ce538d2ff7ba5350da0d
+  required_remote_ref: refs/remotes/origin/main
+  required_worktree_state_before_resume_mutation: clean
+
 digest_policy:
   algorithm: sha256
   text_canonicalization: CRLF_TO_LF
-  note: >-
-    Recorded FF6 sha256 values were computed over LF-normalized bytes. Raw
-    Windows checkout bytes may differ under core.autocrlf and are not a valid
-    invalidation signal until normalized.
+  structured_event_canonicalization: >-
+    UTF-8 JSON, sort_keys=true, separators comma/colon, event_hash removed.
+
 controller_checkpoint:
   state: CONTRACT
-  transition_sequence: 14
-  last_event_id: FF6-EVENT-000014
-  last_event_hash: 399a5069b3c843d1b4f668a8f7abeb0deffe40a234a584f6c9f7b5b3a3e70fc8
+  transition_sequence: 16
+  last_event_id: FF6-EVENT-000016
+  last_event_hash: 2ea206536ff0ccecaa0a4e93df32ada3e7575018f4cdcafb7525c59d51dd50ba
   parent_task: TC-FF6-PROGRAM-CAPABILITIES-001
   parent_task_state: NEEDS_REPAIR
-  completed_subtask: TC-FF6-CAPABILITY-COMPILER-001
+  completed_subtask: TC-FF6-AUTHORITY-CLOSURE-001
   completed_subtask_state: PASS
-  next_task: TC-FF6-AUTHORITY-CLOSURE-001
-  next_task_state: WORK_IN_PROGRESS
+  next_task: TC-FF6-ORA-PROFILE-SURFACE-001
+  next_task_state: READY
   products_certified: 0
+  promotion_effect: none
+
 promotion:
   program: UNASSESSED
   ipynb: UNASSESSED
@@ -55,15 +54,9 @@ promotion:
   xliff: UNASSESSED
   safetensors: UNASSESSED
   ubl: UNASSESSED
-product_baseline:
-  source_packages_present: 5
-  source_packages_absent: 1
-  draft_contracts: 6
-  shallow_d0_oracles: 5
-  stale_install_proof_input_closures: 5
-  architecture_failure_products: 3
-  clean_base_interpreter_collection_errors: 39
+
 capability_checkpoint:
+  assessment_status: NEEDS_PROFILE_OR_SURFACE_REPAIR
   capabilities: 89
   obligations:
     ipynb: 105
@@ -78,91 +71,96 @@ capability_checkpoint:
     optional_adapter_required: 4
     preview_isolated: 4
     excluded_with_authority: 1
-  manifest_aggregate_sha256: 26cbe9d21cedafe70653bfaa8134ffa4e481080278e954546cf9710c97a5b00a
-  three_run_digest: 018c26be67ea91fe86aeb65374365b5e917eb8c0058235f999d59909bfd08943
-  product_implementation_effect: none
-  product_certification_effect: none
-  historical_three_run_mode: non_promoting_authority_override
-  strict_current_replay: BLOCKED_AUTHORITY_ARTIFACT_MISSING
+  manifest_aggregate_sha256: 667cd4cb69773e6746ad46173b53de39c18ef44d39ef7db91c6337d8a3761a73
+  manifest_file_lf_sha256: ef9f7e685f1012b32cfa73238ebe0b035dda660c33fc4316ee09b42fd82ee773
+  three_run_digest: 04114c84221edcdb00dae1097d75e55a7c1a6be75a074c9c0b8b07f0de5533a8
+  diagnostic_override_promotion_eligible: false
+  strict_current_replay: PASS
+
 authority_checkpoint:
+  status: PASS
+  lock_path: shared/format-contracts/authority-lock.yaml
+  lock_lf_sha256: 8eefb28e3ef24b5b533496b54860daee981853d9c872fddc1ba5de4ff150f249
   total_sources: 15
-  match: 0
-  missing: 11
-  undeclared: 4
-  live_promoting_audit_after_wip: NOT_YET_RUN
-  work_checkpoint:
-    state: WORK_IN_PROGRESS
-    event: FF6-EVENT-000014
-    schema_and_runtime_paths: 4
-    product_requirement_documents: 4
-    focused_tests: 6 passed
-    ruff: PASS
-    mypy: PASS
-    pyright: NOT_RUN_TOOL_UNAVAILABLE
-    canonical_lock: NOT_YET_CREATED
-    external_sources_materialized: 0
-    exact_next_substep: >-
-      Finish the immutable source and legal matrix beginning with NRRD, then
-      create shared/format-contracts/authority-lock.yaml.
-  blocked_formats:
-    - ipynb
-    - ora
-    - nrrd
-    - xliff
-    - safetensors
-    - ubl
+  match: 15
+  missing: 0
+  mismatch: 0
+  undeclared: 0
+  legal_blocked: 0
+  product_requirement_documents: 4
+  clean_offline_replay: PASS_15_OF_15
+  clean_online_rebuild: PASS_15_OF_15
+  online_rebuild_cas_bytes: 73206772
+  strict_product_contracts: 6
+  authority_external_bytes_committed: false
+
+verification_checkpoint:
+  affected_pytest: 250_passed_1_baseline_known_deselected
+  known_deselected_test: >-
+    tests/format_contract/test_consumption_chain.py::
+    test_full_slice_second_run_is_idempotent
+  known_test_reason: >-
+    Pre-existing CSV idempotency defect; it mutates three unrelated tracked
+    reports before failing. Those side effects were restored to exact HEAD
+    bytes and are not FF6 closure evidence.
+  ruff: PASS
+  mypy: PASS
+  pyright:
+    version: 1.1.411
+    result: PASS
+  plan_control_tests: 40_passed
+  ff6_native_event_chain: PASS_THROUGH_EVENT_16
+
 current_gaps:
-  active: 13
+  active: 12
   critical: 1
-  high: 9
+  high: 8
   medium: 3
-  parent_closure_gaps:
-    - FF6-GAP-013
-    - FF6-GAP-014
-  resolved_in_compiler_checkpoint:
-    - FF6-GAP-012
-    - FF6-GAP-015
-coordination_snapshot:
-  mode: enforcing
-  fresh_active_agents_during_refresh: 1
-  active_agent_during_capture: agent-codex-20260729T055805-9c31e6
-  transfer_rule: >-
-    The receiving provider must observe this agent as completed or use a
-    governed takeover after comparing tracked digests. Never directly release
-    another agent's leases.
-  stale_suspect_agent_records: 102
-  open_historical_conflicts: 15
-  ff6_obsolete_worktree_conflicts:
-    - conf-83372e1330
-    - conf-c4c08328ba
-    - conf-e2cb246b4b
-    - conf-0caa3d57f4
-  policy: preserve_do_not_auto_resolve
+  selected: FF6-GAP-013
+  resolved_this_checkpoint: FF6-GAP-014
+  compiler_reported_followups:
+    - FF6-IPYNB-PROFILE-001
+    - FF6-ORA-SURFACE-001
+    - FF6-ORA-PROFILE-001
+    - FF6-NRRD-PROFILE-001
+    - FF6-XLIFF-PROFILE-001
+    - FF6-UBL-TYPING-001
+
 control_plane_contradictions:
+  - id: FF6-GAP-011
+    symptom: >-
+      The generic tools.plan_control doctor rejects the FF6 journal at event 1.
+    root_cause: >-
+      Plan Control expects its own previous_hash schema; FF6 correctly uses
+      previous_event_hash under ff6/controller-event@1.
+    safe_rule: >-
+      Validate the FF6 native chain directly and use the FF6 controller for
+      mission task selection until integration is repaired.
   - id: FF6-HO-GAP-001
-    severity: high
-    symptom: tools.plan_control reconcile raises because a deleted Codex branch is configured.
-    root_cause: migration checkpoint identity is branch-bound after consolidation into main.
-    safe_current_rule: use the FF6 controller and journal for mission task selection.
+    symptom: global Plan Control retains branch-bound legacy configuration.
+    safe_rule: use GitLab main plus the FF6 controller and journal.
   - id: FF6-HO-GAP-002
-    severity: high
-    symptom: tools.plan_control next selects legacy TC-FF6-NRRD-ORA-001.
-    root_cause: the global projection does not consume the FF6 controller or program task register.
-    safe_current_rule: execute journal-selected TC-FF6-AUTHORITY-CLOSURE-001.
-  - id: FF6-HO-GAP-003
-    severity: medium
-    symptom: raw Windows SHA-256 differs from recorded controller digests.
-    root_cause: recorded digests canonicalize LF but fields do not declare canonicalization.
-    safe_current_rule: normalize CRLF to LF before digest comparison.
+    symptom: global Plan Control may select a legacy broad FF6 task.
+    safe_rule: execute TC-FF6-ORA-PROFILE-SURFACE-001.
+
+coordination:
+  mode: enforcing
+  rule: >-
+    Register a new provider identity; inspect current status; claim exact
+    paths; preflight every write; record every write; take over only stale
+    leases with an audited reason; never release another agent's lease.
+  historical_open_conflicts_may_exist: true
+  preserve_unrelated_state: true
+
 resume_decision:
-  exact_task: TC-FF6-AUTHORITY-CLOSURE-001
-  exact_task_state: WORK_IN_PROGRESS
-  active_work_path: plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md
-  exact_next_substep: >-
-    Complete NRRD immutable authority research, reverify all source/legal
-    candidates, then create the canonical 15-source authority lock.
-  parent_task: TC-FF6-PROGRAM-CAPABILITIES-001
-  source_mutation_allowed: false
+  exact_task: TC-FF6-ORA-PROFILE-SURFACE-001
+  exact_task_state: READY
+  taskcard: taskcards/TC-FF6-ORA-PROFILE-SURFACE-001.md
+  active_checkpoint: plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md
+  exact_first_step: >-
+    Revalidate event 16 and the three locked OpenRaster authorities, then
+    build the source-located 0.0.3/0.0.4/0.0.5 profile delta matrix.
+  product_source_mutation_allowed: false
   gate_or_product_promotion_allowed: false
   human_continuation_prompt_allowed: false
   blocked_format_stops_other_formats: false

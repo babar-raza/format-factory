@@ -3,8 +3,9 @@
 Builds/refreshes the source-record skeleton for a format's research draft:
 the registry's spec authority (spec_body/spec_version/spec_url) plus any
 already-committed research sources. Network acquisition is OPT-IN
-(--allow-network); the default offline mode records URL_ONLY /
-NEEDS_AUTHORITY statuses honestly instead of fabricating acquisition.
+(--allow-network) and runs only through the tracked authority lock,
+content-addressed materializer, and live digest audit. The default offline
+mode merges lock declarations without fabricating byte availability.
 
 Writes: .local/format-contracts/drafts/{format_id}-sources.yaml
 Exit codes: 0 ok · 1 error.
@@ -17,26 +18,44 @@ import hashlib
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
+MODULE_DIR = Path(__file__).resolve().parent
+REPOSITORY_ROOT = MODULE_DIR.parents[1]
+sys.path.insert(0, str(REPOSITORY_ROOT))
+sys.path.insert(0, str(MODULE_DIR))
 
 import stores
 from canonical_io import canonical_write, load_yaml
+from tools.format_contract.authority_lock import (
+    DEFAULT_LOCK,
+    AuthorityLockError,
+    load_lock,
+    merge_locked_sources,
+    records_for_format,
+)
+from tools.format_contract.authority_runtime import materialize_sources
 
 DRAFTS_DIR = stores.REPO_ROOT / ".local" / "format-contracts" / "drafts"
 ACQUIRED_DIR = stores.REPO_ROOT / ".local" / "format-contracts" / "acquired"
 
 
 def _fetch(url: str, dest: Path) -> str | None:
-    """Fetch a source (opt-in only); returns sha256 or None on failure."""
+    """Legacy opt-in fetch for formats not yet enrolled in the authority lock."""
+
     try:
         import urllib.request
-        with urllib.request.urlopen(url, timeout=30) as resp:  # noqa: S310 (opt-in, governed)
-            payload = resp.read()
+
+        with urllib.request.urlopen(  # noqa: S310 - legacy opt-in compatibility
+            url, timeout=30
+        ) as response:
+            payload = response.read()
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_bytes(payload)
         return hashlib.sha256(payload).hexdigest()
-    except Exception as exc:  # noqa: BLE001 - recorded, not raised
-        print(f"[fcl-sources] fetch failed ({exc}); recording URL_ONLY", file=sys.stderr)
+    except Exception as exc:  # noqa: BLE001 - failure is recorded, not promoted
+        print(
+            f"[fcl-sources] fetch failed ({exc}); recording URL_ONLY",
+            file=sys.stderr,
+        )
         return None
 
 
@@ -90,6 +109,13 @@ def research_sources(
     existing = research.get("source_records", [])
 
     records = _source_records(format_id, existing, reset_draft=reset_draft)
+    lock_document = None
+    if (stores.REPO_ROOT / DEFAULT_LOCK).is_file():
+        try:
+            lock_document, _ = load_lock(stores.REPO_ROOT)
+        except AuthorityLockError as exc:
+            raise stores.StoreError(f"authority lock refused: {exc}") from exc
+        records = merge_locked_sources(records, lock_document, format_id)
     if source_id or source_url:
         if not source_id or not source_url:
             raise stores.StoreError("--source-id and --source-url must be supplied together")
@@ -129,23 +155,51 @@ def research_sources(
             "acquisition_status": "NEEDS_AUTHORITY",
         })
 
+    materialization = []
     if allow_network:
-        for record in records:
-            if (
-                record.get("authority_class") != "AUTHORITATIVE"
-                or not record.get("canonical_url")
-            ):
-                continue
-            dest = ACQUIRED_DIR / format_id / f"{record['source_id'].lower()}.bin"
-            digest = _fetch(str(record["canonical_url"]), dest)
-            if digest:
-                record["content_hash"] = digest
-                try:
-                    local_path = dest.relative_to(stores.REPO_ROOT).as_posix()
-                except ValueError:
-                    local_path = f"<external-acquired>/{dest.name}"
-                record["local_path"] = local_path
-                record["acquisition_status"] = "ACQUIRED"
+        locked = (
+            records_for_format(lock_document, format_id)
+            if lock_document is not None
+            else []
+        )
+        if locked:
+            assert lock_document is not None
+            materialization = materialize_sources(
+                stores.REPO_ROOT,
+                lock_document,
+                online=True,
+                formats=[format_id],
+            )
+            failed = [item for item in materialization if item.status != "MATCH"]
+            if failed:
+                detail = "; ".join(
+                    f"{item.source_id}={item.status}({item.detail})"
+                    for item in failed
+                )
+                raise stores.StoreError(
+                    f"{format_id}: locked authority materialization failed: {detail}"
+                )
+        else:
+            for record in records:
+                if (
+                    record.get("authority_class") != "AUTHORITATIVE"
+                    or not record.get("canonical_url")
+                ):
+                    continue
+                dest = (
+                    ACQUIRED_DIR
+                    / format_id
+                    / f"{record['source_id'].lower()}.bin"
+                )
+                digest = _fetch(str(record["canonical_url"]), dest)
+                if digest:
+                    record["content_hash"] = digest
+                    try:
+                        local_path = dest.relative_to(stores.REPO_ROOT).as_posix()
+                    except ValueError:
+                        local_path = f"<external-acquired>/{dest.name}"
+                    record["local_path"] = local_path
+                    record["acquisition_status"] = "ACQUIRED"
 
     records.sort(key=lambda item: str(item.get("source_id", "")))
     doc = {"format_id": format_id, "source_records": records}
@@ -165,6 +219,7 @@ def research_sources(
         "records": len(records),
         "out": str(out),
         "intake_draft": str(intake_path) if intake_path else None,
+        "materialized": len(materialization),
     }
 
 

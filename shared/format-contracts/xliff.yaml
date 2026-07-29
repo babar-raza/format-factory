@@ -14,12 +14,27 @@ contract_metadata:
   confidence: medium
   supersedes: null
   input_digests:
+    authority_lock_impl_sha256: 3295565e37b8a5ff47a6e05aa8b49b70bb8574171bbe2e7ba9362f344e20012c
+    authority_lock_schema_sha256: a8b860f4bef1ceae1b9dd6348c29cc99b35f2bde2dca032217398bddb061f913
+    authority_lock_sha256: 8eefb28e3ef24b5b533496b54860daee981853d9c872fddc1ba5de4ff150f249
+    authority_materializer_sha256: 3c7cb9ba0b4c2fb87c32281a6d6c596aec8fc6c69663a8a873927755332da7c9
+    authority_runtime_sha256: 63e054c159f7e281fa12ef78a7de1af573606f74097ed398e662040e99f21682
+    authority_src_xlf_002_sha256: ade8447a4b7213e6996ee128b8757c98be248bfb812b0b22e89d0f878f776224
+    authority_src_xlf_003_sha256: fde62d8a1310e9cac9608e44530d2cd4b23cd67386f0a9fe64a9ff79eb54b893
+    authority_src_xliff_001_sha256: fdd293f4344920dfde643c578caca94da80261dc74f75baba7215da6e6d10bc1
+    canonical_io_impl_sha256: aca19b1319bf7304d5136fd6c9d729cb50b22d8a23a17ca9314fdb0c58cc164d
+    contract_compiler_impl_sha256: e8c910d85e3618c4a1e884dab096e557e06e17678b3d878dc9c1faadd55a9eda
+    contract_stores_impl_sha256: cd120c7990a37b0f913a2b59e81ab28fdf7b3d50897e38d78cb20fc9e0823f7a
     fact_categories_sha256: fe2732633cdf17bad0a5e152b1f8c845ab46e1d8e018cb29b67dfb7a66181fce
     family_pack_sha256: 407c11dd45eae83afef02160f90a357d086b4fcbfff4ad408463f374e3361a86
+    format_contract_schema_sha256: 4eb5cae2d69d0831291646f3cf21e5d019d6b0de2904a745b712cf5fa6c37da9
+    product_requirements_sha256: fde62d8a1310e9cac9608e44530d2cd4b23cd67386f0a9fe64a9ff79eb54b893
     qname_registry_sha256: b1d86cceffe18233a731a2216be51a74fe1690f3c6d89fda64c92690598fe8ba
-    research_sha256: 8be15851f44a44ecb019090f0c7f892de6db330d2b667b67bafa69190199f52f
+    research_intake_impl_sha256: 4c7d3bfd69e7e5a74a9db2483d25b062e11cfdcb6609637b0343dfa8d3cd0579
+    research_sha256: c6b7b60a45b87575f94b00a4ef2685ff69ca627ce87ca760fd4dea7d4bcd7371
     sal_facts_sha256: d0856a8c662242b64b094fb73b6e865195e43c138a03b144cb87a9b741d8a941
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+    source_researcher_impl_sha256: 4367e7591a368bcbc6a01199a7eb6da0f569ccc5c706d6650cdd96db0b7083a3
 format_identity:
   active_content_model:
     has_active_content: false
@@ -34,10 +49,10 @@ format_identity:
   - Segment, annotate, and track translation state across tool chains
   - Preserve inline formatting codes and tool-specific extensions through round trips
 authoritative_sources:
-- title: OASIS XLIFF Version 2.x specification (core and modules)
+- title: OASIS XLIFF 2.1 Standard release package
   source_id: SRC-XLF-002
   organization: OASIS
-  version: XLIFF 2.1 OASIS Standard release package
+  version: XLIFF 2.1 OASIS Standard
   local_path: .local/format-contracts/acquired/xliff/src-xlf-002.bin
   canonical_url: https://docs.oasis-open.org/xliff/xliff-core/v2.1/os/xliff-core-v2.1-os.zip
   content_hash: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
@@ -47,16 +62,18 @@ authoritative_sources:
   source_id: SRC-XLF-003
   organization: Format Factory
   version: null
+  local_path: shared/format-contracts/product-requirements/xliff.yaml
   canonical_url: null
+  content_hash: fde62d8a1310e9cac9608e44530d2cd4b23cd67386f0a9fe64a9ff79eb54b893
   authority_class: PRODUCT_REQUIREMENT
   acquisition_status: ACQUIRED
-- title: OASIS XLIFF 2.1 OASIS Standard prose specification
+- title: OASIS XLIFF 2.1 Standard prose specification
   source_id: SRC-XLIFF-001
   organization: OASIS
-  version: XLIFF 2.1
+  version: XLIFF 2.1 OASIS Standard
   local_path: .local/format-contracts/acquired/xliff/src-xliff-001.bin
-  canonical_url: https://docs.oasis-open.org/xliff/xliff-core/v2.1/xliff-core-v2.1.html
-  content_hash: 56e413be887fe88595d5af52d21d5000112898fbd332245417c43a7ecfa8e4e0
+  canonical_url: null
+  content_hash: fdd293f4344920dfde643c578caca94da80261dc74f75baba7215da6e6d10bc1
   authority_class: AUTHORITATIVE
   acquisition_status: ACQUIRED
 scope_policy:

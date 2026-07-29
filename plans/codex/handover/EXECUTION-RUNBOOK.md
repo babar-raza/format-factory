@@ -17,173 +17,183 @@ DISCOVER -> SNAPSHOT -> CONTRACT -> IMPLEMENT -> VERIFY
          -> REPAIR -> CERTIFY -> EXTRACT -> RELEASE_PREP -> COMPLETE
 ```
 
-Current state is `CONTRACT`. The canonical capability compiler subtask passed,
-but the parent contract task remains `NEEDS_REPAIR`. Product implementation is
-still locked. Authority closure is `WORK_IN_PROGRESS` at controller event 14.
+Current state is `CONTRACT`. Authority closure passed at event 16. The parent
+capability task remains `NEEDS_REPAIR`, so product implementation is locked.
+The exact next task is `TC-FF6-ORA-PROFILE-SURFACE-001`.
 
-## Provider-neutral task lifecycle
+## Canonical state precedence
 
-Every bounded taskcard uses the same lifecycle regardless of executor:
+When records disagree, use this order:
+
+1. GitLab `origin/main` commit and tracked bytes.
+2. `plans/strategic/ff6/events.jsonl`, validated as a native hash chain.
+3. `plans/strategic/ff6/controller-state.yaml`.
+4. Current taskcard and `taskcards/index.yaml`.
+5. `plans/strategic/ff6/current-gaps.yaml`.
+6. Digest-bound generated contracts and capability manifest.
+7. This derived packet.
+8. Chat history and provider memory, which never authorize work.
+
+Generic Plan Control is not the FF6 journal validator until `FF6-GAP-011` is
+repaired.
+
+## Task lifecycle
 
 ```text
-UNREGISTERED
-  -> READY
-  -> CLAIMED
-  -> WORK_IN_PROGRESS
-  -> VERIFYING
-  -> PASS | NEEDS_REPAIR | TECHNICALLY_BLOCKED
-  -> CLOSE_INTENT
-  -> COMPLETE
+READY -> CLAIMED -> WORK_IN_PROGRESS -> VERIFYING
+      -> PASS | NEEDS_REPAIR | TECHNICALLY_BLOCKED
+      -> CLOSE_INTENT -> COMPLETE
 ```
 
-Rules:
+- `READY` means dependencies, owner skill, and allowlist are known.
+- `CLAIMED` is off-repo coordination state.
+- `PASS` means task acceptance passed, not product certification.
+- `NEEDS_REPAIR` records a reproducible technical gap and successor.
+- `TECHNICALLY_BLOCKED` requires three materially different failed repair
+  attempts for the same true external root cause.
+- Close intent is write-ahead state; verified close follows independent replay.
+- A provider or token change never alters acceptance criteria.
 
-- `READY` means dependencies and an exact skill/allowlist exist; it does not
-  mean implementation exists.
-- `CLAIMED` is off-repo coordination state and cannot be inferred from Git.
-- `WORK_IN_PROGRESS` must name completed substeps, exact changed files,
-  digests, failing/absent gates, and next substep.
-- `PASS` means the taskcard acceptance criteria pass; it does not imply product
-  certification.
-- `NEEDS_REPAIR` names a reproducible technical failure and schedules repair.
-- `TECHNICALLY_BLOCKED` requires three materially different failed repairs for
-  the same root cause; other unblocked work continues.
-- `CLOSE_INTENT` is write-ahead state. Only independently replayed proof may
-  produce `COMPLETE`.
-- Only the hash-chained journal may change the controller projection.
-- Provider/token/session changes never change lifecycle state or acceptance.
-
-## Program task DAG
+## Current DAG
 
 ```text
 TC-FF6-PROGRAM-TRUTH-001 [COMPLETE]
   -> TC-FF6-PROGRAM-CAPABILITIES-001 [NEEDS_REPAIR]
        -> TC-FF6-CAPABILITY-COMPILER-001 [PASS]
-       -> TC-FF6-AUTHORITY-CLOSURE-001 [WORK_IN_PROGRESS, EVENT 14]
-       -> OpenRaster profile/surface repair [NOT YET REGISTERED]
+       -> TC-FF6-AUTHORITY-CLOSURE-001 [PASS]
+       -> TC-FF6-ORA-PROFILE-SURFACE-001 [READY]
+       -> remaining compiler-derived contract repairs
   -> TC-FF6-PROGRAM-ARCHITECTURE-001
   -> TC-FF6-PROGRAM-TASKCARDS-001
   -> TC-FF6-PROGRAM-QUALITY-GATES-001
   -> TC-FF6-PROGRAM-REPLAY-001
-  -> per-format contract/implement/verify/certify/extract tasks
+  -> per-format implement/verify/certify/extract chains
 ```
 
-No broad product wave may bypass these program tasks.
+No product wave may bypass the program dependencies.
 
-## Exact next task
+## Start-of-task algorithm
 
-Execute
-[`TC-FF6-AUTHORITY-CLOSURE-001.md`](../../../taskcards/TC-FF6-AUTHORITY-CLOSURE-001.md).
+1. Fetch `origin/main`; verify ancestry and clean worktree.
+2. Read `AGENTS.md`, Codex or Claude adapter, master plan, FF6 goal, controller,
+   journal, current gaps, task index, and current taskcard.
+3. Validate the native FF6 chain and controller projection.
+4. Query coordination; register a provider-specific identity.
+5. Claim logical task scope and exact paths.
+6. Resolve every operation through the capability/skill registries.
+7. Run pre-mutation guard and path preflight.
+8. Capture Git, authority, contract, generator, tool, lock, corpus, dependency,
+   and environment digests relevant to the task.
+9. Execute one bounded change set.
+10. Record every write and heartbeat during long work.
+
+## Exact OpenRaster task algorithm
 
 ### Inputs
 
-- `plans/strategic/ff6/capability-manifest.json`;
-- all six format contracts, SAL facts, and SAL evidence stores;
-- all 15 authority source declarations and expected digests;
-- existing acquisition tools, spec cache, receipts, and artifact index;
-- primary official endpoints, immutable versions, and license/terms evidence;
-- controller event 14, `ACTIVE-WORK-CHECKPOINT.md`, and parent gaps 13/14.
+- locked sources `SRC-ORA-001`, `SRC-ORA-002`, `SRC-ORA-003`;
+- `shared/format-contracts/authority-lock.yaml`;
+- OpenRaster research store, SAL facts, SAL evidence, policy, family and
+  enrichment inputs;
+- current `shared/format-contracts/ora.yaml`;
+- capability universe compiler and all six generated projections;
+- taskcard `TC-FF6-ORA-PROFILE-SURFACE-001`.
 
-### Outputs
+### Steps
 
-Produce one shared authority lock/materialization contract, legal and
-redistribution classifications, tracked internal product-requirement
-artifacts, safe acquisition/cache machinery, focused tests, strict six-format
-contract compilation, regenerated FF6 universe/manifest, proof, and atomic
-controller/task/gap updates. Exact paths must be selected through the governed
-authority skills and coordination preflight.
+1. Revalidate event 16 and three OpenRaster authority matches.
+2. Materialize sources only through the canonical authority machinery.
+3. Extract the 0.0.3/0.0.4/0.0.5 delta matrix with exact source fragments.
+4. Classify each item as draft-normative, interoperability, product
+   requirement, optional, preview, unsupported, or uncertain.
+5. Compare every current OpenRaster SAL fact to the matrix.
+6. Ingest missing facts through `ingest-spec-sal`; heal through
+   `sal-pipeline-heal`.
+7. Compile explicit capabilities for:
+   - document identity and canvas geometry;
+   - ZIP/mimetype/container reading and deterministic writing;
+   - stack XML and namespace handling;
+   - stack, nested group, layer, and mask models;
+   - asset paths and PNG validation;
+   - names, offsets, opacity, visibility, isolation and compositing;
+   - editable baseline, merged image and thumbnail;
+   - extension and unknown-data preservation;
+   - rendering adapter and pinned operation semantics;
+   - traversal, duplicates, bombs, resource limits, recursion, XML and entity
+     security;
+   - semantic roundtrip, deterministic output and external application
+     interoperability.
+8. Give every capability and obligation exact profile applicability.
+9. Preserve stable IDs only when semantics are unchanged.
+10. Compile OpenRaster, then all six format projections.
+11. Require removal by evidence of both OpenRaster compiler findings.
+12. Replay three clean strict runs and all affected validation.
+13. Reconcile gaps, taskcards, controller and journal atomically.
+14. Select the next mandatory repair without entering product source.
 
-### Atomic steps
+### Failure routing
 
-1. `[DONE]` Recompute the 15-source authority inventory; do not trust
-   `ACQUIRED`.
-2. `[DONE]` Reuse the existing source-research owner and select one shared
-   lock/materializer design.
-3. `[IN PROGRESS]` Verify official immutable endpoints, versions, expected
-   digests, license, terms, and redistribution source by source. IPYNB,
-   OpenRaster candidates, XLIFF, SafeTensors, and UBL candidates are recorded;
-   finish NRRD and reverify all before lock creation.
-4. `[PARTIAL]` Implement one shared content-addressed lock/cache/materializer,
-   not six one-off download scripts. The schema/runtime/CLI exist and focused
-   tests pass; redirect and concurrency hardening remain.
-5. `[PARTIAL]` Make fetching temporary, size/redirect/timeout bounded,
-   digest-before-place, atomic, and concurrency-safe. Size, timeout, digest,
-   and basic atomicity are implemented; explicit redirect count and
-   same-process concurrency proof remain.
-6. `[DONE]` Convert four internal product-requirement identities into tracked
-   canonical non-spec artifacts with paths and digests.
-7. `[PENDING]` Create the canonical 15-source authority lock and reconcile
-   contract declarations.
-8. `[PENDING]` Never commit external spec bytes without affirmative redistribution
-   evidence; use deterministic external cache materialization otherwise.
-9. `[ONGOING INVARIANT]` Treat digest mismatch as a contradiction; never edit the expected value
-   merely to accept downloaded bytes.
-10. `[PENDING]` Integrate the registered source-research skill, ProductContract
-    verifier, store input closure, and capability compiler.
-11. `[PENDING]` Prove clean online materialization and offline matching-cache replay.
-12. `[PENDING]` Compile all six ProductContracts without authority override.
-13. `[PENDING]` Recompile the universe three times without
-    `--allow-blocked-authority`; require all authority artifacts `MATCH`.
-14. `[PENDING]` Update event/controller/task/gap projections atomically, leaving the parent
-    open for OpenRaster gap 13.
+- Missing authority: repair lock/materialization; do not bypass.
+- Draft contradiction: split named profiles and preserve uncertainty.
+- Application behavior absent from drafts: classify as interoperability or
+  product requirement, not normative fact.
+- Compiler finding remains: task is `NEEDS_REPAIR`, not pass.
+- Nondeterministic output: block closure, isolate input, repair, rerun.
+- Same true external cause after three distinct repairs: record
+  `TECHNICALLY_BLOCKED` and continue other formats.
 
-### Format breadth floors
+## Verification tiers
 
-- IPYNB: nbformat 4.0 through 4.5, typed cells/outputs/attachments/MIME/metadata,
-  IDs, schemas, conversion, deterministic writing, preservation, safe cleanup,
-  trust inspection without execution, limits, official differential behavior.
-- OpenRaster: named 0.0.3, 0.0.4 and 0.0.5 interoperability profiles, secure
-  deterministic ZIP, typed stack/layer/group/mask, rendering, PNG assets,
-  extensions, bomb/path/duplicate defenses, two independent applications.
-- NRRD: NRRD0001 through NRRD0005, all types/endian/encodings, attached and
-  detached forms, spatial metadata, raw preservation, streaming/mmap, NumPy,
-  Teem and pynrrd, overflow/path/decompression/truncation defenses.
-- XLIFF: 2.0/2.1 Core and every official 2.1 module, inline code, segmentation,
-  state, skeleton, original data, modules, ITS, extension preservation, schema
-  and processing validation, canonical XML.
-- SafeTensors: every defined dtype and descriptor edge, strict layout,
-  lazy mmap/random access/slicing, deterministic write, NumPy/PyTorch, sharded
-  indexes, upstream differential and co-installation proof.
-- UBL: all 91 UBL 2.3 roots, all common components/types/attributes/order/
-  cardinality, typed parse/build/edit/write, XSD, extensions, code lists,
-  streaming, signatures, curated core workflows, schema-engine validation.
+### Bounded contract task
 
-## Following program tasks
+- authority and referential integrity;
+- schema validation;
+- SAL positive and negative validation;
+- deterministic generation;
+- affected unit and regression tests;
+- Ruff, mypy, pyright;
+- native event-chain validation;
+- no unexpected source/product/package changes.
 
-### Architecture
+### Implementation task
 
-Characterize working APIs, define split-ready package boundaries and import
-direction, separate generated/handwritten source, produce migration maps, and
-create decomposition cards for oversized or monolithic modules.
+Add behavior, rejection, preservation, roundtrip, resource, property,
+metamorphic, fuzz, differential, architecture, API, typing, documentation, and
+installed-wheel proof.
 
-### Task compilation
+### Certification task
 
-Generate deterministic bounded implementation, verification, certification,
-and extraction taskcards. Each card owns one coherent capability or 5 to 15
-related obligations and an exact file allowlist.
+Add complete official/independent corpora, mutation testing, performance,
+cross-platform Python matrix, minimum/latest dependencies, reproducible builds,
+SBOM, provenance, signatures, vulnerabilities, namespace co-installation, and
+standalone repository replay.
 
-### Quality gates
+## Close algorithm
 
-Make typing, lint, architecture, API, coverage, mutation, fuzz, security,
-performance, documentation, packaging, SBOM, provenance, license, and
-vulnerability gates executable and fail-closed.
+1. Run the task's focused and regression suites.
+2. Record self-challenge answers and unresolved limitations.
+3. Write close-intent event.
+4. Compute LF-normalized output and evidence digests.
+5. Independently replay/validate.
+6. Write verified close event.
+7. Update controller, taskcard, task index, gaps, handover, and receipt.
+8. Validate journal from event 1.
+9. Stage explicit reviewed files only.
+10. Run coordination precommit check.
+11. Fetch and classify any remote movement.
+12. Commit with a precise Conventional Commit message.
+13. Push only to GitLab `origin/main`.
+14. Verify remote main equals the pushed commit.
+15. Complete only the outgoing agent's coordination session.
 
-### Replay
+## Program waves after contract readiness
 
-Prove three-run determinism, dependency invalidation, deleted-test revocation,
-fixture mutation detection, authority staleness, foreign-fact rejection,
-deferral rejection, concurrency isolation, installed-wheel import identity,
-manual-promotion rejection, legacy-evidence quarantine, and extraction digest
-preservation.
+1. Package chassis and common lifecycle.
+2. SafeTensors and IPYNB.
+3. NRRD and OpenRaster.
+4. XLIFF 2.0/2.1 core and all 2.1 modules.
+5. UBL 2.3 generator, all components, and all 91 roots.
+6. Independent repository extraction and release preparation.
 
-## Product execution order
-
-1. SafeTensors and IPYNB.
-2. NRRD and OpenRaster.
-3. XLIFF.
-4. UBL generator and all roots.
-5. Independent repository extraction and release preparation.
-
-Formats promote independently. A blocked format does not pause safe work on
-others. The mission ends only when all six are at least release candidates or
-every remaining path is a true external block after all technical work.
+Formats may certify independently. Mission completion requires all six or only
+true, adjudicated external blocks after all technical work.

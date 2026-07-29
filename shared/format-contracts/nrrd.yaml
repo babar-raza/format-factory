@@ -14,12 +14,27 @@ contract_metadata:
   confidence: medium
   supersedes: null
   input_digests:
+    authority_lock_impl_sha256: 3295565e37b8a5ff47a6e05aa8b49b70bb8574171bbe2e7ba9362f344e20012c
+    authority_lock_schema_sha256: a8b860f4bef1ceae1b9dd6348c29cc99b35f2bde2dca032217398bddb061f913
+    authority_lock_sha256: 8eefb28e3ef24b5b533496b54860daee981853d9c872fddc1ba5de4ff150f249
+    authority_materializer_sha256: 3c7cb9ba0b4c2fb87c32281a6d6c596aec8fc6c69663a8a873927755332da7c9
+    authority_runtime_sha256: 63e054c159f7e281fa12ef78a7de1af573606f74097ed398e662040e99f21682
+    authority_src_nrrd_001_sha256: 43ca6102cc998e0191e225d7954278547d491e29b74a132b3118571d85a8b0d5
+    authority_src_nrrd_002_sha256: 260b84db6d889b13c979789097c442ea48b671c71d28bf5ef5f1e6b812a126b3
+    authority_src_nrrd_003_sha256: 4731be2f44166596980728c57750b9bcfea6c8f0d0e9603b406374112cc202d3
+    canonical_io_impl_sha256: aca19b1319bf7304d5136fd6c9d729cb50b22d8a23a17ca9314fdb0c58cc164d
+    contract_compiler_impl_sha256: e8c910d85e3618c4a1e884dab096e557e06e17678b3d878dc9c1faadd55a9eda
+    contract_stores_impl_sha256: cd120c7990a37b0f913a2b59e81ab28fdf7b3d50897e38d78cb20fc9e0823f7a
     fact_categories_sha256: fe2732633cdf17bad0a5e152b1f8c845ab46e1d8e018cb29b67dfb7a66181fce
     family_pack_sha256: 97b425d6661312e1ab8d8765c680e181f4c23a119512526c0d34c9cedc489a9c
+    format_contract_schema_sha256: 4eb5cae2d69d0831291646f3cf21e5d019d6b0de2904a745b712cf5fa6c37da9
+    product_requirements_sha256: 4731be2f44166596980728c57750b9bcfea6c8f0d0e9603b406374112cc202d3
     qname_registry_sha256: 3523cada8363fbaaabf139d437af79aa392bbf98a9e3f435d8aed3ee453e1f92
-    research_sha256: 8f037d14ed2001ca78a901f0eb029fa3e417bb7a561fc7cd2c8ea5c7b7492ba8
+    research_intake_impl_sha256: 4c7d3bfd69e7e5a74a9db2483d25b062e11cfdcb6609637b0343dfa8d3cd0579
+    research_sha256: 848c8ae12d467c2673d278a78c4dc3f0a2fcc502a56b25dc6d921ad09e8c114d
     sal_facts_sha256: 42c5e3030f73cb7c97ec6de18c64be948af0c1cc61f84024b0a02ae76111d5ff
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+    source_researcher_impl_sha256: 4367e7591a368bcbc6a01199a7eb6da0f569ccc5c706d6650cdd96db0b7083a3
 format_identity:
   active_content_model:
     has_active_content: false
@@ -34,29 +49,31 @@ format_identity:
   - Header-only and lazy access to very large datasets in bounded memory
   - Validate untrusted data files safely before allocation or processing
 authoritative_sources:
-- title: Nearly Raw Raster Data pinned authority
+- title: NRRD0005 live file-format definition
   source_id: SRC-NRRD-001
   organization: Teem Project
-  version: NRRD0005
+  version: NRRD0005 observed 2026-07-29
   local_path: .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
   canonical_url: https://teem.sourceforge.net/nrrd/format.html
   content_hash: 43ca6102cc998e0191e225d7954278547d491e29b74a132b3118571d85a8b0d5
   authority_class: AUTHORITATIVE
   acquisition_status: ACQUIRED
-- title: NRRD file format definition (Teem)
+- title: Teem 1.9.0 source release and NRRD reference implementation
   source_id: SRC-NRRD-002
   organization: Teem Project
-  version: NRRD0005
+  version: Teem 1.9.0
   local_path: .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
-  canonical_url: http://teem.sourceforge.net/nrrd/format.html
-  content_hash: 43ca6102cc998e0191e225d7954278547d491e29b74a132b3118571d85a8b0d5
+  canonical_url: https://master.dl.sourceforge.net/project/teem/teem/1.9.0/teem-1.9.0-src.tar.gz?viasf=1
+  content_hash: e0b34337da424ff63ae31d05656ccaa619d03bc378a6eecf61c153c30d03e47b
   authority_class: AUTHORITATIVE
   acquisition_status: ACQUIRED
 - title: Scientific/medical raster developer-workflow requirements (imaging pipeline practice)
   source_id: SRC-NRRD-003
   organization: Format Factory
   version: null
+  local_path: shared/format-contracts/product-requirements/nrrd.yaml
   canonical_url: null
+  content_hash: 4731be2f44166596980728c57750b9bcfea6c8f0d0e9603b406374112cc202d3
   authority_class: PRODUCT_REQUIREMENT
   acquisition_status: ACQUIRED
 scope_policy:

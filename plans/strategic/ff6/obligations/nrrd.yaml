@@ -2,35 +2,45 @@ schema: ff6/format-obligations@2
 goal_id: FF6-PRODUCTION-LIBRARIES-001
 format_id: nrrd
 contract_id: FC-NRRD-V1
-authority_status: BLOCKED
+authority_status: READY
 obligation_count: 94
 source_input_digests:
+  .local/format-contracts/acquired/ipynb/src-nb-002.bin: 4d3750b55006e92d8063a6ac427a84eb1f91c44e376d90de53d03893674991d9
+  .local/format-contracts/acquired/nrrd/src-nrrd-001.bin: 43ca6102cc998e0191e225d7954278547d491e29b74a132b3118571d85a8b0d5
+  .local/format-contracts/acquired/nrrd/src-nrrd-002.bin: e0b34337da424ff63ae31d05656ccaa619d03bc378a6eecf61c153c30d03e47b
+  .local/format-contracts/acquired/ora/src-ora-001.bin: bd584b4b998df16c735bc3ce575e382569a101427fd4c4be14b677d30d210613
+  .local/format-contracts/acquired/ora/src-ora-002.bin: a9f2cb90009e3cc76883ab9db2f43607a9518e723b9d03f1aa1b150f2c2e546a
+  .local/format-contracts/acquired/ora/src-ora-003.bin: 29c77a95396c8c245d259b349fa438e3b40019d7fe6f7e06b8520c2fc9f63a49
   plans/strategic/ff6/capability-enrichments/ipynb.yaml: 1a56d12b5db2ecc0ee29344ca15e9dd7bf36d118c723607d91ce6b8300980158
   plans/strategic/ff6/capability-enrichments/nrrd.yaml: a23433fddf43fc2fb11468025852ce06729bb2a9977a7d2957e1c769ef431c56
   plans/strategic/ff6/capability-enrichments/ora.yaml: 7cd010dca0798c47828245c45294e48f5acc05370d90b58dcfdbd91b94508a88
   plans/strategic/ff6/capability-policy.yaml: 9da2c2fa4a69aba3e6cbdc80f1d928d066452986e0beb9108eed462c861304fb
-  schemas/ff6/capability-universe.schema.json: c268896134a495653d9a510d69fe3cb852fa91dc203c3d9615e6faea84ce4198
-  shared/format-contracts/ipynb.yaml: 7e2f0851059c24aaf5b1b7741d42ad0f974dde1228e89c91cf253f44f6acab7a
-  shared/format-contracts/nrrd.yaml: 832fef34917313ff8d7d2c1d6bf3f5813f9394b6dfe25ec3dc6adc2f9d318be8
-  shared/format-contracts/ora.yaml: b7578b4d30fc0fecc18b17aa3892d71170061c19c800f459c1bbd021ea72f8d7
+  schemas/ff6/capability-universe.schema.json: deef239675a39daeb3f48e0be2e9926e38aa122eb61bc2486ac22b621148f89b
+  schemas/format-contracts/authority-lock.schema.json: a8b860f4bef1ceae1b9dd6348c29cc99b35f2bde2dca032217398bddb061f913
+  shared/format-contracts/authority-lock.yaml: 8eefb28e3ef24b5b533496b54860daee981853d9c872fddc1ba5de4ff150f249
+  shared/format-contracts/ipynb.yaml: ef4e59cf7bfcf457a79c28ec3241ba9ba2e2994e2044104f23630e214303bb04
+  shared/format-contracts/nrrd.yaml: a4ecf33de5b7a1bf9867206a5f0cee4873da0004eb0417b54f1f8ebd028b1cb0
+  shared/format-contracts/ora.yaml: 2dfbae835c8a18819cb20bce9b3730d9cae0deb45a3d0de330ae7d8227e34a44
   shared/format-contracts/policy/family-packs/archive_container.yaml: 79ffac447b248a76ea0406b1e2347c4ed8b24440e9e9eaeb34adee92e5078416
   shared/format-contracts/policy/family-packs/executable_document.yaml: bdc43666de37ffe17cbc827308747c60389ecb7e6e7d52a759e78f071ab32456
   shared/format-contracts/policy/family-packs/scientific_raster.yaml: 97b425d6661312e1ab8d8765c680e181f4c23a119512526c0d34c9cedc489a9c
   shared/format-contracts/policy/shared-library-contract.yaml: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
-  shared/format-contracts/research/ipynb.yaml: fa69e904e5e5957e2db30916cd730b0d6c966fb5baf54aefe0b499c7f48c9dfb
-  shared/format-contracts/research/nrrd.yaml: 8c54c2b7e90fc34d507227a507f591a161ef2cced5d4a638b4bb0d0ceeca669d
-  shared/format-contracts/research/ora.yaml: 33a241a3afb2eda0892fa2d4cfb8ec6da804b4a56106ecbaa4955500a8814480
+  shared/format-contracts/product-requirements/ipynb.yaml: 903b5e9c4d3f371105d209794221a342ee676f4bd5f36dc15c3ddacb7ceadccd
+  shared/format-contracts/product-requirements/nrrd.yaml: 4731be2f44166596980728c57750b9bcfea6c8f0d0e9603b406374112cc202d3
+  shared/format-contracts/research/ipynb.yaml: ef4b130cf19a916eaaed86629d80c14eeaaa4dbd2be943400a8b508ff1eb9b7a
+  shared/format-contracts/research/nrrd.yaml: 848c8ae12d467c2673d278a78c4dc3f0a2fcc502a56b25dc6d921ad09e8c114d
+  shared/format-contracts/research/ora.yaml: bb607e2f45ae5f86ad8c91a5eb751db18128b0167cece7575fd90582851a2165
   shared/sal-facts/evidence/ipynb.yaml: 223238c07e531daddb9d8c1b596ddeed9365775c625a77ccc86a0cbb9335887b
   shared/sal-facts/evidence/nrrd.yaml: de872480070ab1e2babd9420e03547f63624b30433d6f1950010c01216a0ae76
   shared/sal-facts/evidence/ora.yaml: aeaea82fbda062a5c97d760d82c90d5a56629373dd7c375bbae5e2c90cb2a44e
   shared/sal-facts/ipynb.yaml: a51321c18230497ec932b5132657f2b29897696f5ec20dc87a4710df0e89a04b
   shared/sal-facts/nrrd.yaml: bc462d49a23e4e0f9b10a61bd2d4b188a2a4fbc2b28598c56d4deea61d927789
   shared/sal-facts/ora.yaml: 310ea4f1a3b67b19c91e5e6f76b4e6d2c188328be099f2abe162d4eb894eb2a0
-  tools/format_contract/capability_universe.py: 1be0d7ed0eb9f2dc8aa854eb002f41497e0be3b8b6984aea4c5b7360193dab5a
+  tools/format_contract/capability_universe.py: 30e56f501bcc7d34063b1deb59b6c1d72f476835d368f95773b749518ccc014d
   tools/format_contract/capability_universe_command.py: dca779a6d08c5b34e1a8b7bd184cda8401d8b696c997ac55b9933fda5913c19d
   tools/format_contract/capability_universe_runtime.py: d3df691b1c6e09c3a5746bfdde655bb99f51e878e4eca4b4caf469c2a57f1b4a
   tools/format_contract/capability_universe_validation.py: 8cd57b1fc32754181a0b4e243e09fde56249a5f3769d340778a3b2f436cd44ea
-  tools/format_contract/product_contract.py: fc324b628084def08f560b1539d8d185e49b86e6fd178784a8b4042a33a955a8
+  tools/format_contract/product_contract.py: 3e1e0ca49852751b1ce8bda9a1f996574832460d33844a77618cea591a605205
 obligations:
 - obligation_id: SAL-NRRD-OBL-00DC4239C8859F7A
   format_id: nrrd
@@ -86,11 +96,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -98,6 +116,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -137,11 +157,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -149,6 +177,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -198,11 +228,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -210,6 +248,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -247,11 +287,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -259,6 +307,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -304,11 +354,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -316,6 +374,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -365,11 +425,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -377,6 +445,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -429,11 +499,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -441,6 +519,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -490,11 +570,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -502,6 +590,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -541,11 +631,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -553,6 +651,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -600,11 +700,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -612,6 +720,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -664,11 +774,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -676,6 +794,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -725,11 +845,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -737,6 +865,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -775,11 +905,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -787,6 +925,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -839,11 +979,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -851,6 +999,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -919,11 +1069,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -931,6 +1089,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -999,11 +1159,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -1011,6 +1179,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -1045,11 +1215,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -1057,6 +1235,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -1095,11 +1275,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -1107,6 +1295,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -1145,11 +1335,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -1157,6 +1355,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -1206,11 +1406,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -1218,6 +1426,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -1267,11 +1477,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -1279,6 +1497,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -1331,11 +1551,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -1343,6 +1571,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -1411,11 +1641,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -1423,6 +1661,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -1472,11 +1712,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -1484,6 +1732,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -1533,11 +1783,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -1545,6 +1803,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -1613,11 +1873,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -1625,6 +1893,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -1674,11 +1944,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -1686,6 +1964,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -1725,11 +2005,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -1737,6 +2025,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -1789,11 +2079,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -1801,6 +2099,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -1853,11 +2153,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -1865,6 +2173,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -1917,11 +2227,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -1929,6 +2247,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -1981,11 +2301,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -1993,6 +2321,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -2045,11 +2375,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -2057,6 +2395,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -2125,11 +2465,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -2137,6 +2485,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -2184,11 +2534,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -2196,6 +2554,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -2238,11 +2598,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -2250,6 +2618,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -2285,11 +2655,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -2297,6 +2675,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -2342,11 +2722,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -2354,6 +2742,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -2422,11 +2812,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -2434,6 +2832,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -2502,11 +2902,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -2514,6 +2922,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -2552,11 +2962,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -2564,6 +2982,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -2616,11 +3036,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -2628,6 +3056,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -2680,11 +3110,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -2692,6 +3130,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -2741,11 +3181,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -2753,6 +3201,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -2821,11 +3271,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -2833,6 +3291,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -2878,11 +3338,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -2890,6 +3358,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -2942,11 +3412,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -2954,6 +3432,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -3022,11 +3502,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -3034,6 +3522,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -3073,11 +3563,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -3085,6 +3583,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -3153,11 +3653,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -3165,6 +3673,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -3203,11 +3713,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -3215,6 +3733,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -3267,11 +3787,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -3279,6 +3807,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -3331,11 +3861,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -3343,6 +3881,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -3385,11 +3925,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -3397,6 +3945,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -3444,11 +3994,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -3456,6 +4014,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -3508,11 +4068,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -3520,6 +4088,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -3558,11 +4128,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -3570,6 +4148,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -3608,11 +4188,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -3620,6 +4208,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -3688,11 +4278,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -3700,6 +4298,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -3752,11 +4352,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -3764,6 +4372,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -3809,11 +4419,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -3821,6 +4439,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -3858,11 +4478,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -3870,6 +4498,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -3938,11 +4568,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -3950,6 +4588,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -4002,11 +4642,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -4014,6 +4662,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -4056,11 +4706,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -4068,6 +4726,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -4117,11 +4777,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -4129,6 +4797,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -4178,11 +4848,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -4190,6 +4868,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -4242,11 +4922,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -4254,6 +4942,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -4322,11 +5012,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -4334,6 +5032,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -4383,11 +5083,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -4395,6 +5103,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -4463,11 +5173,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -4475,6 +5193,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -4510,11 +5230,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -4522,6 +5250,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -4571,11 +5301,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -4583,6 +5321,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -4621,11 +5361,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -4633,6 +5381,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -4685,11 +5435,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -4697,6 +5455,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -4765,11 +5525,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -4777,6 +5545,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -4822,11 +5592,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -4834,6 +5612,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -4879,11 +5659,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -4891,6 +5679,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -4940,11 +5730,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -4952,6 +5750,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -5004,11 +5804,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -5016,6 +5824,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -5084,11 +5894,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -5096,6 +5914,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -5143,11 +5963,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -5155,6 +5983,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -5189,11 +6019,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -5201,6 +6039,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -5243,11 +6083,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -5255,6 +6103,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -5292,11 +6142,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -5304,6 +6162,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -5351,11 +6211,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -5363,6 +6231,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -5410,11 +6280,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -5422,6 +6300,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -5461,11 +6341,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -5473,6 +6361,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -5512,11 +6402,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -5524,6 +6422,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -5561,11 +6461,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -5573,6 +6481,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -5641,11 +6551,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -5653,6 +6571,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -5700,11 +6620,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -5712,6 +6640,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -5754,11 +6684,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -5766,6 +6704,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml
@@ -5815,11 +6755,19 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-enrichments/nrrd.yaml
   - plans/strategic/ff6/capability-enrichments/ora.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/nrrd.yaml
   - shared/format-contracts/ora.yaml
@@ -5827,6 +6775,8 @@ obligations:
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/family-packs/scientific_raster.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/format-contracts/research/nrrd.yaml
   - shared/format-contracts/research/ora.yaml

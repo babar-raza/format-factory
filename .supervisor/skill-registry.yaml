@@ -4613,18 +4613,37 @@ skills:
   implementation_paths:
   - tools/format_contract/source_researcher.py
   - tools/format_contract/research_intake.py
+  - tools/format_contract/authority_lock.py
+  - tools/format_contract/authority_runtime.py
+  - tools/format_contract/authority_materializer.py
+  - schemas/format-contracts/authority-lock.schema.json
   mandatory_validations:
   - review_gate_enforced
   - source_closure
   - normative_routing
   - no_sal_store_write
+  - authority_lock_schema_valid
+  - authority_digest_exact
+  - legal_use_approved
+  - secure_bounded_fetch
+  - atomic_concurrent_materialization
+  - offline_cas_replay
+  - contract_declaration_closure
   notes: >-
     L30 research plane (mission FCL-MACHINERY-2026-07-16). Only channel for
     non-normative product-requirement knowledge into contract compilation.
     Normative claims refused and routed to .local/supervisor/sal-candidates/
-    for L01 ingest-spec-sal commit. Network acquisition opt-in only.
+    for L01 ingest-spec-sal commit. Network acquisition opt-in only. Enrolled
+    authority sources are resolved solely through the legal-aware, hash-pinned
+    authority lock; redirects, hosts, size, archive members, and final digests
+    fail closed. External bytes remain in the ignored local CAS/acquired roots.
   output_paths:
   - shared/format-contracts/research/
+  - shared/format-contracts/authority-lock.yaml
+  - shared/format-contracts/product-requirements/
+  - .local/format-contracts/authority-cas/
+  - .local/format-contracts/acquired/
+  - .local/format-contracts/drafts/
   - .local/supervisor/sal-candidates/
   product_track: format_contract
   purpose: Build source records, author reviewed research findings, and commit them
@@ -4636,7 +4655,8 @@ skills:
   status: active
   test_paths:
   - tests/format_contract/test_research_plane.py
-  risk_level: MEDIUM
+  - tests/format_contract/test_authority_materializer.py
+  risk_level: HIGH
 - command: /check-contract-sal-readiness
   command_file: .claude/commands/check-contract-sal-readiness.md
   created_at: '2026-07-16'

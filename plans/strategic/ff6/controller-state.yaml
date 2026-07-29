@@ -4,10 +4,10 @@ goal_status: ACTIVE
 generated_by: codex
 visibility: internal
 controller_state: CONTRACT
-transition_sequence: 14
+transition_sequence: 16
 last_verified_event:
-  event_id: FF6-EVENT-000014
-  event_hash: 399a5069b3c843d1b4f668a8f7abeb0deffe40a234a584f6c9f7b5b3a3e70fc8
+  event_id: FF6-EVENT-000016
+  event_hash: 2ea206536ff0ccecaa0a4e93df32ada3e7575018f4cdcafb7525c59d51dd50ba
 event_journal: plans/strategic/ff6/events.jsonl
 baseline_commit: e4f8f5f086b5e627c07c2ef2d940eda2601a22a8
 digest_policy:
@@ -28,18 +28,19 @@ handover_checkpoint:
   packet_remote_verified: true
   next_taskcard: taskcards/TC-FF6-PROGRAM-CAPABILITIES-001.md
 active_task:
-  task_id: TC-FF6-AUTHORITY-CLOSURE-001
-  state: WORK_IN_PROGRESS
+  task_id: TC-FF6-ORA-PROFILE-SURFACE-001
+  state: READY
   parent_task_id: TC-FF6-PROGRAM-CAPABILITIES-001
-  completed_subtask_id: TC-FF6-CAPABILITY-COMPILER-001
+  completed_subtask_id: TC-FF6-AUTHORITY-CLOSURE-001
 next_task:
-  task_id: TC-FF6-AUTHORITY-CLOSURE-001
-  state: WORK_IN_PROGRESS
+  task_id: TC-FF6-ORA-PROFILE-SURFACE-001
+  state: READY
   unlock_condition: >-
-    Resume from event 14 and the tracked authority-lock runtime checkpoint.
-    Finish the immutable source/legal matrix beginning with NRRD, then create
-    the canonical 15-source lock. Product source and architecture remain
-    blocked until authority closure and OpenRaster profile/surface repair pass.
+    Resume from event 16. Repair the OpenRaster authority/SAL/contract
+    semantics so explicit image, layer-tree, mask, compositing, rendering,
+    editable/viewing baseline, and 0.0.3/0.0.4/0.0.5 profile applicability
+    compile without suppressing known surface gaps. Product source and
+    architecture remain blocked.
 promotion:
   program: UNASSESSED
   ipynb: UNASSESSED
@@ -66,35 +67,50 @@ capability_compilation:
   preview: 4
   excluded: 1
   compiler_subtask: PASS
-  manifest_aggregate_sha256: 26cbe9d21cedafe70653bfaa8134ffa4e481080278e954546cf9710c97a5b00a
-  three_run_digest: 018c26be67ea91fe86aeb65374365b5e917eb8c0058235f999d59909bfd08943
+  manifest_aggregate_sha256: 667cd4cb69773e6746ad46173b53de39c18ef44d39ef7db91c6337d8a3761a73
+  three_run_digest: 04114c84221edcdb00dae1097d75e55a7c1a6be75a074c9c0b8b07f0de5533a8
   authority_artifacts:
-    match: 0
-    missing: 11
-    undeclared: 4
+    match: 15
+    missing: 0
+    mismatch: 0
+    undeclared: 0
+    legal_blocked: 0
   remaining_blocks:
     - FF6-GAP-013
-    - FF6-GAP-014
 authority_closure_checkpoint:
-  status: WORK_IN_PROGRESS
-  materializer_focused_tests: 6 passed
+  status: PASS
+  authority_lock_sha256: 8eefb28e3ef24b5b533496b54860daee981853d9c872fddc1ba5de4ff150f249
+  authority_records: 15
+  live_matches: 15
+  clean_offline_replay: PASS
+  clean_online_replay: PASS
+  online_rebuild_cas_bytes: 73206772
+  strict_product_contract_compiles: 6
+  materializer_focused_tests: 10 passed
+  affected_regression: 250 passed; 1 baseline-known CSV idempotency test deselected
   ruff: PASS
   mypy: PASS
-  pyright: NOT_RUN_TOOL_UNAVAILABLE
+  pyright: PASS (1.1.411)
   tracked_product_requirement_documents: 4
-  canonical_authority_lock: NOT_YET_CREATED
-  materialized_external_sources: 0
-  strict_contract_compiles: 0
+  canonical_authority_lock: VERIFIED
+  materialized_authority_sources: 15
   promotion_effect: none
 current_gap_summary:
   critical: 1
-  high: 9
+  high: 8
   medium: 3
-  total: 13
+  total: 12
   source_packages_present: 5
   source_packages_absent: 1
   product_contracts_draft: 6
   production_certifications: 0
+control_plane_compatibility:
+  ff6_event_schema: ff6/controller-event@1
+  native_chain_validation: PASS_THROUGH_EVENT_16
+  generic_plan_control_doctor: >-
+    INCOMPATIBLE_SCHEMA: tools.plan_control expects previous_hash and its own
+    event payload; FF6 uses previous_event_hash. This is the already-tracked
+    FF6-GAP-011 control-plane integration defect, not an FF6 chain failure.
 invariants:
   - Only journaled verified transitions may update this projection.
   - A changed baseline or input digest invalidates the snapshot and descendants.

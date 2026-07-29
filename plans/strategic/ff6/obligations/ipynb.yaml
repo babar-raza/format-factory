@@ -2,23 +2,27 @@ schema: ff6/format-obligations@2
 goal_id: FF6-PRODUCTION-LIBRARIES-001
 format_id: ipynb
 contract_id: FC-IPYNB-V1
-authority_status: BLOCKED
+authority_status: READY
 obligation_count: 105
 source_input_digests:
+  .local/format-contracts/acquired/ipynb/src-nb-002.bin: 4d3750b55006e92d8063a6ac427a84eb1f91c44e376d90de53d03893674991d9
   plans/strategic/ff6/capability-enrichments/ipynb.yaml: 1a56d12b5db2ecc0ee29344ca15e9dd7bf36d118c723607d91ce6b8300980158
   plans/strategic/ff6/capability-policy.yaml: 9da2c2fa4a69aba3e6cbdc80f1d928d066452986e0beb9108eed462c861304fb
-  schemas/ff6/capability-universe.schema.json: c268896134a495653d9a510d69fe3cb852fa91dc203c3d9615e6faea84ce4198
-  shared/format-contracts/ipynb.yaml: 7e2f0851059c24aaf5b1b7741d42ad0f974dde1228e89c91cf253f44f6acab7a
+  schemas/ff6/capability-universe.schema.json: deef239675a39daeb3f48e0be2e9926e38aa122eb61bc2486ac22b621148f89b
+  schemas/format-contracts/authority-lock.schema.json: a8b860f4bef1ceae1b9dd6348c29cc99b35f2bde2dca032217398bddb061f913
+  shared/format-contracts/authority-lock.yaml: 8eefb28e3ef24b5b533496b54860daee981853d9c872fddc1ba5de4ff150f249
+  shared/format-contracts/ipynb.yaml: ef4e59cf7bfcf457a79c28ec3241ba9ba2e2994e2044104f23630e214303bb04
   shared/format-contracts/policy/family-packs/executable_document.yaml: bdc43666de37ffe17cbc827308747c60389ecb7e6e7d52a759e78f071ab32456
   shared/format-contracts/policy/shared-library-contract.yaml: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
-  shared/format-contracts/research/ipynb.yaml: fa69e904e5e5957e2db30916cd730b0d6c966fb5baf54aefe0b499c7f48c9dfb
+  shared/format-contracts/product-requirements/ipynb.yaml: 903b5e9c4d3f371105d209794221a342ee676f4bd5f36dc15c3ddacb7ceadccd
+  shared/format-contracts/research/ipynb.yaml: ef4b130cf19a916eaaed86629d80c14eeaaa4dbd2be943400a8b508ff1eb9b7a
   shared/sal-facts/evidence/ipynb.yaml: 223238c07e531daddb9d8c1b596ddeed9365775c625a77ccc86a0cbb9335887b
   shared/sal-facts/ipynb.yaml: a51321c18230497ec932b5132657f2b29897696f5ec20dc87a4710df0e89a04b
-  tools/format_contract/capability_universe.py: 1be0d7ed0eb9f2dc8aa854eb002f41497e0be3b8b6984aea4c5b7360193dab5a
+  tools/format_contract/capability_universe.py: 30e56f501bcc7d34063b1deb59b6c1d72f476835d368f95773b749518ccc014d
   tools/format_contract/capability_universe_command.py: dca779a6d08c5b34e1a8b7bd184cda8401d8b696c997ac55b9933fda5913c19d
   tools/format_contract/capability_universe_runtime.py: d3df691b1c6e09c3a5746bfdde655bb99f51e878e4eca4b4caf469c2a57f1b4a
   tools/format_contract/capability_universe_validation.py: 8cd57b1fc32754181a0b4e243e09fde56249a5f3769d340778a3b2f436cd44ea
-  tools/format_contract/product_contract.py: fc324b628084def08f560b1539d8d185e49b86e6fd178784a8b4042a33a955a8
+  tools/format_contract/product_contract.py: 3e1e0ca49852751b1ce8bda9a1f996574832460d33844a77618cea591a605205
 obligations:
 - obligation_id: SAL-IPYNB-OBL-010C554B8692D166
   format_id: ipynb
@@ -63,12 +67,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -137,12 +145,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -176,12 +188,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -210,12 +226,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -284,12 +304,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -358,12 +382,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -405,12 +433,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -443,12 +475,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -481,12 +517,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -555,12 +595,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -594,12 +638,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -635,12 +683,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -682,12 +734,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -739,12 +795,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -813,12 +873,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -887,12 +951,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -934,12 +1002,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -973,12 +1045,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -1047,12 +1123,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -1097,12 +1177,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -1147,12 +1231,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -1197,12 +1285,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -1244,12 +1336,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -1285,12 +1381,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -1324,12 +1424,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -1374,12 +1478,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -1411,12 +1519,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -1454,12 +1566,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -1501,12 +1617,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -1548,12 +1668,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -1605,12 +1729,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -1648,12 +1776,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -1685,12 +1817,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -1724,12 +1860,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -1759,12 +1899,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -1816,12 +1960,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -1857,12 +2005,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -1894,12 +2046,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -1968,12 +2124,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -2042,12 +2202,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -2089,12 +2253,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -2130,12 +2298,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -2167,12 +2339,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -2224,12 +2400,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -2298,12 +2478,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -2341,12 +2525,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -2376,12 +2564,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -2417,12 +2609,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -2452,12 +2648,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -2499,12 +2699,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -2542,12 +2746,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -2599,12 +2807,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -2646,12 +2858,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -2687,12 +2903,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -2737,12 +2957,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -2775,12 +2999,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -2812,12 +3040,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -2886,12 +3118,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -2933,12 +3169,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -2980,12 +3220,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -3030,12 +3274,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -3104,12 +3352,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -3151,12 +3403,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -3225,12 +3481,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -3299,12 +3559,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -3333,12 +3597,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -3380,12 +3648,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -3454,12 +3726,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -3511,12 +3787,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -3568,12 +3848,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -3603,12 +3887,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -3660,12 +3948,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -3734,12 +4026,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -3775,12 +4071,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -3849,12 +4149,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -3896,12 +4200,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -3943,12 +4251,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -3981,12 +4293,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -4020,12 +4336,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -4055,12 +4375,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -4102,12 +4426,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -4149,12 +4477,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -4199,12 +4531,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -4256,12 +4592,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -4330,12 +4670,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -4380,12 +4724,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -4454,12 +4802,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -4489,12 +4841,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -4536,12 +4892,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -4583,12 +4943,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -4621,12 +4985,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -4660,12 +5028,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -4717,12 +5089,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -4751,12 +5127,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -4808,12 +5188,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -4855,12 +5239,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -4898,12 +5286,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -4948,12 +5340,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -4985,12 +5381,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -5024,12 +5424,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -5071,12 +5475,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -5145,12 +5553,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -5219,12 +5631,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -5260,12 +5676,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
@@ -5299,12 +5719,16 @@ obligations:
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - plans/strategic/ff6/capability-enrichments/ipynb.yaml
   - plans/strategic/ff6/capability-policy.yaml
   - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
   - shared/format-contracts/ipynb.yaml
   - shared/format-contracts/policy/family-packs/executable_document.yaml
   - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
   - shared/format-contracts/research/ipynb.yaml
   - shared/sal-facts/evidence/ipynb.yaml
   - shared/sal-facts/ipynb.yaml
