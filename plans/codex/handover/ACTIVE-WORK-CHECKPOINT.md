@@ -97,3 +97,16 @@ extractor or census and that Batch 005 is still RED. These local bytes are
 preserved recovery input only. The next provider must requery liveness and
 remote history and follow the transfer discriminator; it must never infer
 ownership from this observation.
+
+Recovery integrity:
+
+- `tools/spec/xliff_core_candidate_binding.py`:
+  `042c670acefff8d0a6932ea3df7f1582f887f756148dd0bdfc356f69ca56f8b7`
+  (LF SHA-256, 14,443 bytes, 387 lines).
+- `tests/tools/test_extract_sal_facts_candidate_binding.py`:
+  `fcb25b8f9400fc72a485eea23e8daf7d29e579f45a27353e3bf9a15d4c89dcb3`
+  (LF SHA-256, 13,375 bytes, 427 lines).
+
+These assets are optional local recovery inputs. Exact match permits governed
+adoption after ownership is reacquired; absence means restart at Event 26;
+mismatch means preserve and reconcile a conflict.

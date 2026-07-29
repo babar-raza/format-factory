@@ -78,6 +78,7 @@ and the two captured Batch 005 paths. Then choose exactly one case:
 | `origin/main` contains a Batch 005 implementation commit and event 27 or later | Ignore the captured test counts, validate the newer journal head, rebuild projections, and resume its computed next task. |
 | `origin/main` contains a Batch 005 implementation commit but the journal remains at event 26 | Independently validate the immutable implementation commit, then use `plan-control` to append exactly one event. Do not duplicate implementation. |
 | Owner is stale/dead, no commit exists, and attributable local files remain | Preserve bytes, invoke governed `takeover --reason`, recapture baselines, and continue the same RED/GREEN batch. Never release or reuse the old identity manually. |
+| Prior owner completed and released its leases, no commit exists, and both optional files exactly match their recorded identities | Register a new identity, claim the logical scope and exact files, preflight/rebaseline, and adopt the preserved RED/GREEN work. No takeover is needed because no foreign lease remains. |
 | No owner, no local files, no newer remote commit | Register a new identity and start Batch 005 from the clean Event 26 checkpoint. |
 | Files or ownership are unexplained | Fail closed for those paths, log/reconcile the conflict, and continue non-overlapping safe work. |
 
@@ -88,6 +89,22 @@ At capture, the active owner was
 returned `17 passed, 10 failed`, so the local batch was RED, not transferable.
 These are observations only; the incoming provider must not inherit the agent
 ID, token, or leases.
+
+Before adopting the files, verify their LF-normalized identities:
+
+```text
+tools/spec/xliff_core_candidate_binding.py
+SHA-256 042c670acefff8d0a6932ea3df7f1582f887f756148dd0bdfc356f69ca56f8b7
+14,443 bytes; 387 lines
+
+tests/tools/test_extract_sal_facts_candidate_binding.py
+SHA-256 fcb25b8f9400fc72a485eea23e8daf7d29e579f45a27353e3bf9a15d4c89dcb3
+13,375 bytes; 427 lines
+```
+
+The handover validator checks these values when the optional files are
+present. A clean checkout may legitimately lack them and restart Batch 005
+from Event 26. A digest or Git-state mismatch is a preserved conflict.
 
 ## Current truth boundary
 
@@ -184,17 +201,27 @@ At minimum run, using the repository virtual environment:
 
 ```powershell
 .venv\Scripts\python.exe -m pytest -q tests\tools\test_extract_sal_facts.py
-.venv\Scripts\python.exe -m pytest -q tests\format_contract --deselect tests/format_contract/test_compile_contract.py::test_compile_contract_check_is_idempotent_for_all_inventory_formats
+.venv\Scripts\python.exe -m pytest -q tests\tools\test_extract_sal_facts_candidate_binding.py
+.venv\Scripts\python.exe -m pytest -q tests\format_contract --deselect tests/format_contract/test_consumption_chain.py::test_full_slice_second_run_is_idempotent
 .venv\Scripts\python.exe -m pytest -q tests\production_program
-.venv\Scripts\python.exe -m ruff check tools\spec\extract_sal_facts.py tests\tools\test_extract_sal_facts.py
-.venv\Scripts\python.exe -m mypy --strict tools\spec\extract_sal_facts.py
-.venv\Scripts\python.exe -m pyright tools\spec\extract_sal_facts.py tests\tools\test_extract_sal_facts.py
-.venv\Scripts\python.exe -m py_compile tools\spec\extract_sal_facts.py tests\tools\test_extract_sal_facts.py
+.venv\Scripts\python.exe -m ruff check tools\spec\extract_sal_facts.py tools\spec\xliff_core_candidate_binding.py tests\tools\test_extract_sal_facts.py tests\tools\test_extract_sal_facts_candidate_binding.py
+.venv\Scripts\python.exe -m mypy --strict tools\spec\extract_sal_facts.py tools\spec\xliff_core_candidate_binding.py
+.venv\Scripts\python.exe -m pyright tools\spec\extract_sal_facts.py tools\spec\xliff_core_candidate_binding.py tests\tools\test_extract_sal_facts.py tests\tools\test_extract_sal_facts_candidate_binding.py
+.venv\Scripts\python.exe -m py_compile tools\spec\extract_sal_facts.py tools\spec\xliff_core_candidate_binding.py tests\tools\test_extract_sal_facts.py tests\tools\test_extract_sal_facts_candidate_binding.py
 ```
 
-The deselected format-contract test is a documented baseline-known stateful CSV
-test. Recheck whether it is still the same baseline condition; never broaden
-the deselection.
+The exact stateful CSV test observed during the current Batch 005 audit is
+`test_consumption_chain.py::test_full_slice_second_run_is_idempotent`. A full
+run wrote `reports/capability-layer/gap-ledger.json` and two
+`reports/format-contract-layer/csv-*.json` projections before failing. The
+bytes were restored under governed rollback and verified against HEAD. Run
+that test only in an isolated generated-output environment; in the shared
+worktree use only the exact deselection above and never broaden it.
+
+Before integration, the captured optional test file must reproduce exactly
+`17 passed, 10 failed`. After GREEN, both focused files must pass completely.
+Any other pre-integration result indicates input drift and requires
+reclassification rather than editing expectations to fit it.
 
 Run `tools/spec/extract_sal_facts.py --help` and invoke `--check` for:
 

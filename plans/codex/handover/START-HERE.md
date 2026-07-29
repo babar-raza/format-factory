@@ -69,6 +69,33 @@ standalone validator does not yet reject the eight forged candidate-content
 mutations. This is evidence of unfinished work, not a regression in the clean
 Event 26 checkpoint and not completion evidence.
 
+The optional local recovery bytes are content-addressed:
+
+| Path | LF-normalized SHA-256 | Bytes | Lines | Role |
+|---|---|---:|---:|---|
+| `tools/spec/xliff_core_candidate_binding.py` | `042c670acefff8d0a6932ea3df7f1582f887f756148dd0bdfc356f69ca56f8b7` | 14,443 | 387 | green standalone binding primitive |
+| `tests/tools/test_extract_sal_facts_candidate_binding.py` | `fcb25b8f9400fc72a485eea23e8daf7d29e579f45a27353e3bf9a15d4c89dcb3` | 13,375 | 427 | RED integration and tamper controls |
+
+They are deliberately not required for a clean-checkout resume. If present,
+the validator requires exact bytes and untracked status. If absent, resume
+from Event 26. If different, preserve them and reconcile the conflict; never
+overwrite or silently prefer either copy.
+
+The shared worktree also contained three live, separately leased UBL paths at
+2026-07-29T18:53Z:
+
+State: `ACTIVE_FOREIGN_LEASED_WORK_PRESERVE`.
+
+- `reports/ff6/ubl-package-root-census.yaml`
+- `tests/tools/test_compile_ubl_schema_graph.py`
+- `tools/spec/compile_ubl_schema_graph.py`
+
+They belonged to `agent-codex-20260729T184613-6d4edc` working on
+`TC-FF6-UBL-TYPING-001`. They are not part of this XLIFF handover, do not
+change the Event 26 controller, and must not be staged, overwritten, adopted,
+or counted as progress here. Their bytes were intentionally not frozen while
+the live owner was writing. Requery coordination and GitLab at resume.
+
 At resume time, query the coordination plane and GitLab again. The captured
 identity and test counts are forensic observations, not transferable
 credentials or timeless authority. Use the decision table in

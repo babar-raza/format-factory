@@ -28,6 +28,7 @@ REPO_ROOT = HANDOVER_ROOT.parents[2]
 MANIFEST_PATH = HANDOVER_ROOT / "manifest.yaml"
 CHECKPOINT_PATH = HANDOVER_ROOT / "checkpoint.yaml"
 MACHINE_STATE_PATH = HANDOVER_ROOT / "CURRENT-MACHINE-STATE.yaml"
+RECOVERY_PATH = HANDOVER_ROOT / "INFLIGHT-RECOVERY.yaml"
 VERSIONED_CHECKPOINT_PATH = HANDOVER_ROOT / "event-26/CHECKPOINT.yaml"
 VERSIONED_MANIFEST_PATH = HANDOVER_ROOT / "event-26/manifest.yaml"
 CONTROLLER_PATH = REPO_ROOT / "plans/strategic/ff6/controller-state.yaml"
@@ -235,8 +236,8 @@ def _manifest_errors(manifest: Mapping[str, Any]) -> list[str]:
         "plans/strategic/ff6/events.jsonl",
         "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
     }
-    for path in sorted(required - seen):
-        errors.append(f"required manifest binding absent: {path}")
+    for required_path in sorted(required - seen):
+        errors.append(f"required manifest binding absent: {required_path}")
     return errors
 
 
@@ -330,6 +331,213 @@ def _git_errors(manifest: Mapping[str, Any]) -> list[str]:
     remote_url = _run_git("remote", "get-url", "origin")
     if remote_url.returncode != 0 or b"gitlab" not in remote_url.stdout.lower():
         errors.append("origin does not resolve to a GitLab URL")
+    head = _run_git("rev-parse", "HEAD")
+    remote_head = _run_git("rev-parse", remote_ref)
+    if (
+        head.returncode != 0
+        or remote_head.returncode != 0
+        or head.stdout.strip() != remote_head.stdout.strip()
+    ):
+        errors.append(
+            "current HEAD must equal the fetched origin/main before transfer"
+        )
+    return errors
+
+
+def _handover_worktree_errors() -> list[str]:
+    """Reject unstaged or untracked packet bytes.
+
+    Staged packet changes are allowed while constructing a commit because
+    manifest verification reads the staged snapshot first. Any additional
+    unstaged delta after staging is a distinct, unbound state and fails closed.
+    """
+    errors: list[str] = []
+    unstaged = _run_git(
+        "diff", "--name-only", "--", "plans/codex/handover"
+    )
+    if unstaged.returncode != 0:
+        return ["cannot inspect unstaged handover paths"]
+    for path in unstaged.stdout.decode("utf-8").splitlines():
+        if path.strip():
+            errors.append(f"handover path has unstaged bytes: {path.strip()}")
+    untracked = _run_git(
+        "ls-files",
+        "--others",
+        "--exclude-standard",
+        "--",
+        "plans/codex/handover",
+    )
+    if untracked.returncode != 0:
+        errors.append("cannot inspect untracked handover paths")
+    else:
+        for path in untracked.stdout.decode("utf-8").splitlines():
+            if path.strip():
+                errors.append(f"handover path is untracked: {path.strip()}")
+    return errors
+
+
+def _local_recovery_errors(machine: Mapping[str, Any]) -> list[str]:
+    """Content-bind optional local recovery assets when they are present."""
+    errors: list[str] = []
+    transfer = machine.get("workspace_transfer")
+    if not isinstance(transfer, Mapping):
+        return ["workspace_transfer is not a mapping"]
+    assets = transfer.get("recovery_assets")
+    if not isinstance(assets, list):
+        return ["workspace_transfer.recovery_assets is not a list"]
+    expected_paths = {
+        "tools/spec/xliff_core_candidate_binding.py",
+        "tests/tools/test_extract_sal_facts_candidate_binding.py",
+    }
+    seen: set[str] = set()
+    for asset in assets:
+        if not isinstance(asset, Mapping):
+            errors.append("recovery asset is not a mapping")
+            continue
+        relative = asset.get("path")
+        expected_digest = asset.get("lf_sha256")
+        expected_bytes = asset.get("canonical_bytes")
+        expected_lines = asset.get("lines")
+        if not isinstance(relative, str):
+            errors.append("recovery asset lacks path")
+            continue
+        if relative in seen:
+            errors.append(f"duplicate recovery asset: {relative}")
+        seen.add(relative)
+        if asset.get("presence_policy") != "OPTIONAL_LOCAL_RECOVERY":
+            errors.append(f"invalid recovery presence policy for {relative}")
+        if asset.get("git_state_at_capture") != "UNTRACKED":
+            errors.append(f"invalid captured Git state for {relative}")
+        if (
+            not isinstance(expected_digest, str)
+            or not re.fullmatch(r"[0-9a-f]{64}", expected_digest)
+            or not isinstance(expected_bytes, int)
+            or expected_bytes < 1
+            or not isinstance(expected_lines, int)
+            or expected_lines < 1
+        ):
+            errors.append(f"invalid recovery identity metadata for {relative}")
+            continue
+        path = REPO_ROOT / relative
+        if not path.exists():
+            continue
+        if not path.is_file():
+            errors.append(f"recovery asset is not a file: {relative}")
+            continue
+        canonical = _lf_bytes(path)
+        actual_digest = hashlib.sha256(canonical).hexdigest()
+        actual_lines = len(path.read_text(encoding="utf-8").splitlines())
+        if actual_digest != expected_digest:
+            errors.append(
+                f"recovery asset digest mismatch for {relative}: "
+                f"expected {expected_digest}, got {actual_digest}"
+            )
+        if len(canonical) != expected_bytes:
+            errors.append(
+                f"recovery asset byte count mismatch for {relative}: "
+                f"expected {expected_bytes}, got {len(canonical)}"
+            )
+        if actual_lines != expected_lines:
+            errors.append(
+                f"recovery asset line count mismatch for {relative}: "
+                f"expected {expected_lines}, got {actual_lines}"
+            )
+        tracked = _run_git("ls-files", "--error-unmatch", "--", relative)
+        if tracked.returncode == 0:
+            errors.append(
+                f"recovery asset was captured untracked but is now tracked: {relative}"
+            )
+    if seen != expected_paths:
+        errors.append(
+            f"unexpected recovery asset set: expected {sorted(expected_paths)}, "
+            f"got {sorted(seen)}"
+        )
+    return errors
+
+
+def _recovery_projection_errors(
+    machine: Mapping[str, Any], recovery: Mapping[str, Any]
+) -> list[str]:
+    machine_transfer = machine.get("workspace_transfer")
+    recovery_workspace = recovery.get("captured_workspace")
+    if not isinstance(machine_transfer, Mapping):
+        return ["workspace_transfer is not a mapping"]
+    if not isinstance(recovery_workspace, Mapping):
+        return ["captured_workspace is not a mapping"]
+    errors: list[str] = []
+    _expect(
+        errors,
+        "recovery status projection",
+        recovery_workspace.get("status"),
+        machine_transfer.get("status"),
+    )
+    _expect(
+        errors,
+        "recovery owner projection",
+        recovery_workspace.get("live_owner_at_capture"),
+        machine_transfer.get("captured_live_owner", {}).get("agent_id"),
+    )
+    _expect(
+        errors,
+        "recovery asset projection",
+        recovery_workspace.get("recovery_assets"),
+        machine_transfer.get("recovery_assets"),
+    )
+    _expect(
+        errors,
+        "recovery RED pass projection",
+        recovery_workspace.get("focused_test_result", {}).get("passed"),
+        machine_transfer.get("focused_red_replay", {}).get("passed"),
+    )
+    _expect(
+        errors,
+        "recovery RED fail projection",
+        recovery_workspace.get("focused_test_result", {}).get("failed"),
+        machine_transfer.get("focused_red_replay", {}).get("failed"),
+    )
+    return errors
+
+
+def _foreign_work_projection_errors(
+    machine: Mapping[str, Any],
+    recovery: Mapping[str, Any],
+    texts: Mapping[str, str],
+) -> list[str]:
+    machine_foreign = machine.get("foreign_concurrent_work")
+    recovery_foreign = recovery.get("concurrent_foreign_work")
+    if not isinstance(machine_foreign, Mapping):
+        return ["foreign_concurrent_work is not a mapping"]
+    if not isinstance(recovery_foreign, Mapping):
+        return ["concurrent_foreign_work is not a mapping"]
+    errors: list[str] = []
+    _expect(
+        errors,
+        "foreign work status projection",
+        recovery_foreign.get("status"),
+        machine_foreign.get("status"),
+    )
+    _expect(
+        errors,
+        "foreign work owner projection",
+        recovery_foreign.get("owner"),
+        machine_foreign.get("owner", {}).get("agent_id"),
+    )
+    _expect(
+        errors,
+        "foreign work task projection",
+        recovery_foreign.get("task"),
+        machine_foreign.get("owner", {}).get("task_id"),
+    )
+    _expect(
+        errors,
+        "foreign work path projection",
+        recovery_foreign.get("paths"),
+        machine_foreign.get("paths"),
+    )
+    if "ACTIVE_FOREIGN_LEASED_WORK_PRESERVE" not in texts.get(
+        "plans/codex/handover/START-HERE.md", ""
+    ):
+        errors.append("START-HERE lacks explicit foreign-work preservation state")
     return errors
 
 
@@ -568,7 +776,11 @@ def _semantic_errors(
         _expect(
             errors,
             "captured in-flight paths",
-            sorted(transfer.get("untracked_paths", [])),
+            sorted(
+                asset.get("path")
+                for asset in transfer.get("recovery_assets", [])
+                if isinstance(asset, Mapping)
+            ),
             sorted(
                 [
                     "tools/spec/xliff_core_candidate_binding.py",
@@ -626,6 +838,7 @@ def validate_current() -> tuple[dict[str, Any], dict[str, Any]]:
     manifest = _load_yaml(MANIFEST_PATH)
     checkpoint = _load_yaml(CHECKPOINT_PATH)
     machine = _load_yaml(MACHINE_STATE_PATH)
+    recovery = _load_yaml(RECOVERY_PATH)
     versioned = _load_yaml(VERSIONED_CHECKPOINT_PATH)
     versioned_manifest = _load_yaml(VERSIONED_MANIFEST_PATH)
     controller = _load_yaml(CONTROLLER_PATH)
@@ -639,6 +852,10 @@ def validate_current() -> tuple[dict[str, Any], dict[str, Any]]:
         *_versioned_manifest_errors(versioned_manifest),
         *_link_errors(manifest),
         *_git_errors(manifest),
+        *_handover_worktree_errors(),
+        *_local_recovery_errors(machine),
+        *_recovery_projection_errors(machine, recovery),
+        *_foreign_work_projection_errors(machine, recovery, texts),
         *_staged_path_errors(),
         *_semantic_errors(
             manifest=manifest,
@@ -652,7 +869,7 @@ def validate_current() -> tuple[dict[str, Any], dict[str, Any]]:
         ),
     ]
     result = {
-        "schema": "ff6/handover-validation@2",
+        "schema": "ff6/handover-validation@3",
         "valid": not errors,
         "event_id": latest.get("event_id"),
         "event_sequence": latest.get("sequence"),
@@ -665,6 +882,7 @@ def validate_current() -> tuple[dict[str, Any], dict[str, Any]]:
         "manifest": manifest,
         "checkpoint": checkpoint,
         "machine": machine,
+        "recovery": recovery,
         "versioned": versioned,
         "controller": controller,
         "task_index": task_index,
@@ -675,7 +893,13 @@ def validate_current() -> tuple[dict[str, Any], dict[str, Any]]:
 
 
 def _semantic_only(context: Mapping[str, Any]) -> list[str]:
-    return _semantic_errors(
+    return [
+        *_local_recovery_errors(context["machine"]),
+        *_recovery_projection_errors(context["machine"], context["recovery"]),
+        *_foreign_work_projection_errors(
+            context["machine"], context["recovery"], context["texts"]
+        ),
+        *_semantic_errors(
         manifest=context["manifest"],
         checkpoint=context["checkpoint"],
         machine=context["machine"],
@@ -684,10 +908,11 @@ def _semantic_only(context: Mapping[str, Any]) -> list[str]:
         task_index=context["task_index"],
         latest=context["latest"],
         texts=context["texts"],
-    )
+        ),
+    ]
 
 
-def run_self_test(context: Mapping[str, Any]) -> dict[str, Any]:
+def run_self_test(context: dict[str, Any]) -> dict[str, Any]:
     cases: list[tuple[str, dict[str, Any]]] = []
 
     missing_batch = copy.deepcopy(context)
@@ -711,12 +936,18 @@ def run_self_test(context: Mapping[str, Any]) -> dict[str, Any]:
     false_workspace_transfer["machine"]["workspace_transfer"]["status"] = "RESUMABLE"
     cases.append(("false_workspace_transferability", false_workspace_transfer))
 
+    invalid_recovery_identity = copy.deepcopy(context)
+    invalid_recovery_identity["machine"]["workspace_transfer"]["recovery_assets"][0][
+        "lf_sha256"
+    ] = "not-a-sha256"
+    cases.append(("invalid_recovery_asset_identity", invalid_recovery_identity))
+
     outcomes = [
         {"case": name, "rejected": bool(_semantic_only(case))}
         for name, case in cases
     ]
     return {
-        "schema": "ff6/handover-validation-self-test@3",
+        "schema": "ff6/handover-validation-self-test@4",
         "valid": all(item["rejected"] for item in outcomes),
         "negative_controls": outcomes,
     }
@@ -727,7 +958,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument(
         "--self-test",
         action="store_true",
-        help="also prove five semantic corruptions are rejected",
+        help="also prove six semantic corruptions are rejected",
     )
     args = parser.parse_args(argv)
     try:
@@ -744,7 +975,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         yaml.YAMLError,
     ) as exc:
         result = {
-            "schema": "ff6/handover-validation@2",
+            "schema": "ff6/handover-validation@3",
             "valid": False,
             "errors": [f"{type(exc).__name__}: {exc}"],
         }

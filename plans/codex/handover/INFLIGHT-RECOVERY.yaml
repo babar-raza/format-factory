@@ -22,9 +22,21 @@ captured_workspace:
   status: IN_FLIGHT_RED_NOT_TRANSFERABLE
   live_owner_at_capture: agent-codex-20260729T181022-74dc4a
   logical_scope: logical:FF6-XLIFF-BATCH005
-  preserved_untracked_paths:
-    - tools/spec/xliff_core_candidate_binding.py
-    - tests/tools/test_extract_sal_facts_candidate_binding.py
+  recovery_assets:
+    - path: tools/spec/xliff_core_candidate_binding.py
+      presence_policy: OPTIONAL_LOCAL_RECOVERY
+      git_state_at_capture: UNTRACKED
+      lf_sha256: 042c670acefff8d0a6932ea3df7f1582f887f756148dd0bdfc356f69ca56f8b7
+      canonical_bytes: 14443
+      lines: 387
+      role: GREEN_STANDALONE_BINDING_PRIMITIVE
+    - path: tests/tools/test_extract_sal_facts_candidate_binding.py
+      presence_policy: OPTIONAL_LOCAL_RECOVERY
+      git_state_at_capture: UNTRACKED
+      lf_sha256: fcb25b8f9400fc72a485eea23e8daf7d29e579f45a27353e3bf9a15d4c89dcb3
+      canonical_bytes: 13375
+      lines: 427
+      role: RED_INTEGRATION_AND_TAMPER_CONTROLS
   focused_test_result:
     passed: 17
     failed: 10
@@ -33,6 +45,26 @@ captured_workspace:
     This is a captured observation only. Requery origin/main, the native
     controller and journal, coordination liveness and leases, filesystem
     status, and focused tests before choosing a recovery case.
+  asset_adoption_rule: >-
+    Adopt a present asset only after its LF-normalized digest, byte count,
+    line count, and untracked status match this record. Absence means restart
+    from the clean Event 26 checkpoint. A mismatch is a conflict to preserve
+    and investigate, not permission to overwrite either copy.
+
+concurrent_foreign_work:
+  observed_at: "2026-07-29T18:53:00Z"
+  status: ACTIVE_FOREIGN_LEASED_WORK_PRESERVE
+  owner: agent-codex-20260729T184613-6d4edc
+  task: TC-FF6-UBL-TYPING-001
+  paths:
+    - reports/ff6/ubl-package-root-census.yaml
+    - tests/tools/test_compile_ubl_schema_graph.py
+    - tools/spec/compile_ubl_schema_graph.py
+  action: >-
+    Do not stage, mutate, take over, or treat these live foreign bytes as
+    controller progress. Requery coordination and GitLab; only a committed,
+    independently verified and journaled transition can change canonical FF6
+    state.
 
 resolved_history:
   batch_003:
@@ -105,11 +137,22 @@ recovery_cases:
   live_owner_ended_with_red_files:
     condition: >-
       the captured owner is no longer live, no implementation commit exists,
-      and the two attributable files remain RED or incomplete
+      its leases remain stale, and the two attributable files remain RED or
+      incomplete
     action: >-
       Preserve exact bytes and their Git status, use governed takeover with a
       recorded reason, recapture baselines, and continue the same TDD batch.
       The files are recovery input, not a checkpoint.
+  prior_owner_completed_and_released:
+    condition: >-
+      the prior owner completed normally, its leases are released, no
+      implementation commit exists, and both optional assets exactly match
+      their recorded identities
+    action: >-
+      Register a new provider identity, claim the logical Batch 005 scope and
+      both exact files, preflight and recapture baselines, then adopt the
+      preserved RED/GREEN work. No takeover is needed when no foreign lease
+      remains.
   authority_or_oracle_contradiction:
     condition: primary sources or independent implementations disagree
     action: >-

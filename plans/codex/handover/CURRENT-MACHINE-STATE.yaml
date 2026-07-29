@@ -33,9 +33,21 @@ workspace_transfer:
     - logical:FF6-XLIFF-BATCH005
     - tools/spec/xliff_core_candidate_binding.py
     - tests/tools/test_extract_sal_facts_candidate_binding.py
-  untracked_paths:
-    - tools/spec/xliff_core_candidate_binding.py
-    - tests/tools/test_extract_sal_facts_candidate_binding.py
+  recovery_assets:
+    - path: tools/spec/xliff_core_candidate_binding.py
+      presence_policy: OPTIONAL_LOCAL_RECOVERY
+      git_state_at_capture: UNTRACKED
+      lf_sha256: 042c670acefff8d0a6932ea3df7f1582f887f756148dd0bdfc356f69ca56f8b7
+      canonical_bytes: 14443
+      lines: 387
+      role: GREEN_STANDALONE_BINDING_PRIMITIVE
+    - path: tests/tools/test_extract_sal_facts_candidate_binding.py
+      presence_policy: OPTIONAL_LOCAL_RECOVERY
+      git_state_at_capture: UNTRACKED
+      lf_sha256: fcb25b8f9400fc72a485eea23e8daf7d29e579f45a27353e3bf9a15d4c89dcb3
+      canonical_bytes: 13375
+      lines: 427
+      role: RED_INTEGRATION_AND_TAMPER_CONTROLS
   focused_red_replay:
     command: >-
       .venv\Scripts\python.exe -m pytest
@@ -48,11 +60,35 @@ workspace_transfer:
       eight forged-content rejection controls remain RED.
   clean_checkout_required_for_unowned_resume: true
   resume_authority: REQUERY_GIT_CONTROLLER_JOURNAL_COORDINATION_AND_FILESYSTEM
+  asset_adoption_rule: >-
+    The assets are optional because a clean checkout can restart from Event
+    26. If either asset exists, its LF-normalized digest, byte count, line
+    count, and untracked status must match before it is adopted. Missing assets
+    are not reconstructed from this packet; mismatched assets are preserved
+    and treated as a coordination conflict, never overwritten.
   transfer_rule: >-
     If the captured owner remains live, do not write its scope. If it has
     committed and pushed, recompute from origin/main. If it is stale with
     preserved local bytes, use governed takeover and recapture baselines. Never
     copy its token, release its lease, or call these bytes RESUMABLE.
+
+foreign_concurrent_work:
+  observed_at: "2026-07-29T18:53:00Z"
+  status: ACTIVE_FOREIGN_LEASED_WORK_PRESERVE
+  owner:
+    agent_id: agent-codex-20260729T184613-6d4edc
+    task_id: TC-FF6-UBL-TYPING-001
+    provider: codex
+  paths:
+    - reports/ff6/ubl-package-root-census.yaml
+    - tests/tools/test_compile_ubl_schema_graph.py
+    - tools/spec/compile_ubl_schema_graph.py
+  authority_effect: NONE_UNTIL_COMMITTED_JOURNALED_AND_RECOMPUTED
+  rule: >-
+    These bytes are outside this XLIFF handover and remained under another
+    live identity's leases. Their hashes are deliberately not frozen while
+    that writer is active. Preserve them, never stage or adopt them through
+    this handover, and requery coordination plus origin/main at resume.
 
 goal:
   goal_id: FF6-PRODUCTION-LIBRARIES-001
