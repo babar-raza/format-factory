@@ -33,29 +33,30 @@ disjoint, separately taskcarded scopes with non-overlapping leases.
 ## Current transfer boundary
 
 - Required implementation ancestor before this packet:
-  `4f0e8793d7aa694ccb45a57e9d3abc8f8cce92f7`.
+  `78660ae1a310ab06cf00d977bbc26fb65914f1c9`.
 - Use the fetched `origin/main` descendant containing this packet.
 - Controller state: `CONTRACT`.
-- Event: `FF6-EVENT-000023`.
+- Event: `FF6-EVENT-000024`.
 - Event hash:
-  `01c265ecd5284320a82f31316b404e3f3f4edbab3b92cd071be8f9ec27f83641`.
+  `10d96a6729d250fecb89f5f082682f583b5b8053fd620702dcd837dfaf541434`.
 - Completed task: `TC-FF6-NRRD-PROFILE-SURFACE-001` - `PASS`.
 - Active task: `TC-FF6-XLIFF-PROFILE-SURFACE-001` -
-  `WORK_IN_PROGRESS`; XLF-01/XLF-02/XLF-03 and XLF-04-BATCH-001 complete,
-  XLF-04 still first unmet.
-- Shift microstate: `RESUMABLE`; the XLF-03 matrix and first seven
+  `WORK_IN_PROGRESS`; XLF-01/XLF-02/XLF-03 and XLF-04-BATCH-001/BATCH-002
+  complete, XLF-04 still first unmet.
+- Shift microstate: `RESUMABLE`; the XLF-03 matrix and 19 cumulative
   source-bound Core obligations are validated at their declared boundary,
   while the complete Core denominator and semantics remain.
-- Exact next action: XLF-04-BATCH-002 RED tests for the three named categories.
+- Exact next action: XLF-04-BATCH-003 RED tests for the final two categories
+  plus an explicit expected-ID denominator.
 - Product promotion: none.
 
 ## Incoming provider procedure
 
 1. Fetch `origin/main`; do not use GitHub or a provider branch.
-2. Verify `4f0e8793d7aa694ccb45a57e9d3abc8f8cce92f7` is an ancestor.
+2. Verify `78660ae1a310ab06cf00d977bbc26fb65914f1c9` is an ancestor.
 3. Verify the worktree is clean before new mutation.
 4. Read the ordered authority list in `START-HERE.md`.
-5. Validate the journal through event 23 using FF6 native semantics:
+5. Validate the journal through event 24 using FF6 native semantics:
    `previous_event_hash`, canonical JSON, sequential event IDs and hashes.
 6. Verify controller head, parent/child task states, task index, current gaps,
    authority 17/17 global and 5/5 XLIFF match, and capability manifest
@@ -68,9 +69,9 @@ disjoint, separately taskcarded scopes with non-overlapping leases.
 11. Resolve the required registered skills and run the mutation guard.
 12. Capture input baselines before writing.
 13. Validate `reports/ff6/xliff-authority-member-inventory.yaml` against both
-    pinned packages; replay 23 extractor tests, exact file digests, matrix
+    pinned packages; replay 24 extractor tests, exact file digests, matrix
     check mode, static checks, and three identical outputs for both generated
-    reports; then start `XLF-04-BATCH-002` as specified in
+    reports; then start `XLF-04-BATCH-003` as specified in
     `STATE-MACHINE-AND-TASKCARD-PROTOCOL.md`. Re-run completed steps only if
     their recorded inputs were invalidated.
 
@@ -245,7 +246,7 @@ print(f"PASS events={len(events)} head={previous}")
 currently fails at event 1 because it expects `previous_hash`. FF6 uses
 `previous_event_hash` under `ff6/controller-event@1`.
 
-This is `FF6-GAP-011`, not evidence that event 23 is corrupt. Validate the FF6
+This is `FF6-GAP-011`, not evidence that event 24 is corrupt. Validate the FF6
 native chain and do not edit either journal schema ad hoc.
 
 ## XLIFF completed surface and next semantic denominator

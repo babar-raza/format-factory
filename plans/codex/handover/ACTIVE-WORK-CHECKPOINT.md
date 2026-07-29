@@ -6,14 +6,14 @@ publish_allowed: false
 generated_by: codex
 generated_at: 2026-07-29
 authoritative_state: false
-canonical_event: FF6-EVENT-000023
+canonical_event: FF6-EVENT-000024
 ---
 
 # Active Work Checkpoint: XLIFF Stable Profiles and Modules
 
 This is the provider-neutral shift boundary after XLIFF authority acquisition,
 package inventory, completion of the deterministic XLF-03 source-surface
-matrix, and the first seven source-bound XLF-04 obligations. Fine-grained Core
+matrix, and 19 cumulative source-bound XLF-04 obligations. Fine-grained Core
 semantics remain incomplete. Canonical authority
 remains the controller, event journal, current-gap projection, and taskcards;
 this document explains how to resume them.
@@ -25,16 +25,16 @@ this document explains how to resume them.
 | Mission | `FF6-PRODUCTION-LIBRARIES-001` |
 | Forge and branch | GitLab `origin/main` only |
 | Controller state | `CONTRACT` |
-| Controller sequence | `23` |
-| Event head | `01c265ecd5284320a82f31316b404e3f3f4edbab3b92cd071be8f9ec27f83641` |
-| Source checkpoint | `4f0e8793d7aa694ccb45a57e9d3abc8f8cce92f7` |
+| Controller sequence | `24` |
+| Event head | `10d96a6729d250fecb89f5f082682f583b5b8053fd620702dcd837dfaf541434` |
+| Source checkpoint | `78660ae1a310ab06cf00d977bbc26fb65914f1c9` |
 | Parent task | `TC-FF6-PROGRAM-CAPABILITIES-001` - `NEEDS_REPAIR` |
 | Last completed task | `TC-FF6-NRRD-PROFILE-SURFACE-001` - `PASS` |
 | Active task | `TC-FF6-XLIFF-PROFILE-SURFACE-001` - `WORK_IN_PROGRESS` |
-| Completed steps | `XLF-01`, `XLF-02`, `XLF-03`, `XLF-04-BATCH-001` |
+| Completed steps | `XLF-01`, `XLF-02`, `XLF-03`, `XLF-04-BATCH-001`, `XLF-04-BATCH-002` |
 | First unmet step | `XLF-04` |
 | Shift microstate | `RESUMABLE` |
-| Exact next action | `XLF-04-BATCH-002` RED tests for three named Core categories |
+| Exact next action | `XLF-04-BATCH-003` RED tests for the final two Core categories plus an explicit expected-ID denominator |
 | Selected finding | `FF6-XLIFF-PROFILE-001` |
 | Product source mutation | Prohibited |
 | Promotion effect | None |
@@ -113,8 +113,8 @@ this document explains how to resume them.
   XLIFF 2.1 ITS module.
 - The committed slice passes 3 focused tests, Ruff, strict Mypy, and bytecode
   compilation. Pyright was unavailable in this shell and is not claimed.
-- Event 23 binds the current implementation at immutable commit
-  `4f0e8793d7aa694ccb45a57e9d3abc8f8cce92f7`.
+- Event 24 binds the current implementation at immutable commit
+  `78660ae1a310ab06cf00d977bbc26fb65914f1c9`.
 - The extractor now has deterministic default seeds and CLI/check mode, bounded
   real-authority-safe XML handling, and fail-closed archive/XML/matrix negative
   controls.
@@ -122,11 +122,11 @@ this document explains how to resume them.
   DocBook sections, 8/8 normative modules, and 8/9 module schema vocabularies
   across XLIFF 2.0/2.1. Three generations are byte-identical at SHA-256
   `9f4ea4b8b71378217af26c0fb2b97a759817a0aca6c64255b8cd55170c60a090`.
-- The current XLF-04 suite passes 23 tests, Ruff, strict Mypy, Pyright 1.1.411,
+- The current XLF-04 suite passes 24 tests, Ruff, strict Mypy, Pyright 1.1.411,
   bytecode compilation, and zero-warning transcript validation.
-- Batch 001 adds seven source-bound obligations across document structure,
-  hierarchy/cardinality, inline codes, segmentation, state, extension
-  preservation, and agent processing. Their status is
+- Batches 001-002 add 19 cumulative source-bound obligations across ten
+  categories, including identifier/reference/inheritance,
+  language/direction/whitespace, and source-target correspondence. Their status is
   `SOURCE_BOUND_UNVERIFIED`, the expected-obligation denominator is absent,
   and XLF-04 remains incomplete.
 
@@ -186,11 +186,11 @@ The portfolio remains `NEEDS_PROFILE_OR_SURFACE_REPAIR` because exact XLIFF
 1. Read `START-HERE.md`, `CURRENT-MACHINE-STATE.yaml`, `AGENTS.md`, and the
    provider adapter in their declared order.
 2. Fetch GitLab `origin/main`; do not use GitHub or create a branch.
-3. Require `4f0e8793d7aa694ccb45a57e9d3abc8f8cce92f7` to be an ancestor of
+3. Require `78660ae1a310ab06cf00d977bbc26fb65914f1c9` to be an ancestor of
    fetched `origin/main`.
 4. Require a clean or fully classified shared worktree.
 5. Register a fresh coordination identity and inspect live leases/conflicts.
-6. Validate event 23 natively using `previous_event_hash` and canonical JSON
+6. Validate event 24 natively using `previous_event_hash` and canonical JSON
    with `event_hash` removed.
 7. Verify the controller names
    `TC-FF6-XLIFF-PROFILE-SURFACE-001` as `WORK_IN_PROGRESS`, with `XLF-04`
@@ -201,17 +201,16 @@ The portfolio remains `NEEDS_PROFILE_OR_SURFACE_REPAIR` because exact XLIFF
    extractor/test/matrix files, and both final XLF-03 skill receipts.
 9. Claim exact paths, resolve registered skills, and run the mutation guard
    before every write.
-10. Replay the exact committed digests, 23 tests, static checks, matrix check
+10. Replay the exact committed digests, 24 tests, static checks, matrix check
     mode, and three identical generations of both reports.
-11. Add the `XLF-04-BATCH-002` failing tests for
-    identifier/reference/inheritance, language/direction/whitespace, and
-    source-target correspondence.
-12. Implement and verify only that bounded batch without changing the seven
-    batch-001 stable IDs.
+11. Add the `XLF-04-BATCH-003` failing tests for semantic
+    roundtrip/canonical output and XML security/resource limits.
+12. Implement and verify only that bounded batch without changing the 19
+    stable existing IDs.
 13. Keep completeness false until an explicit expected-obligation ID
     denominator is compiled and fully matched.
-14. Continue in source-located batches; semantic roundtrip/canonical output
-    and XML security/resource limits remain explicit after batch 002.
+14. Continue in source-located batches; full expected-ID enumeration and
+    canonical SAL verification remain explicit after category coverage.
 15. Resume the remaining XLF-04 through XLF-08 work in
     `STATE-MACHINE-AND-TASKCARD-PROTOCOL.md`.
 16. Re-run XLF-01 or XLF-02 only if event-20 authority inputs were invalidated.
@@ -258,7 +257,7 @@ boundary:
 
 1. Required XLF-01 through XLF-03 and XLF-04-BATCH-001 steps performed;
    remaining XLF-04 through XLF-08 work explicit and unclaimed: yes.
-2. Required evidence for the event-23 batch boundary present: yes.
+2. Required evidence for the event-24 batch boundary present: yes.
 3. Evidence sufficient for the source-surface matrix, without claiming
    fine-grained semantic obligations, XLIFF contract closure, or product
    completion: yes.

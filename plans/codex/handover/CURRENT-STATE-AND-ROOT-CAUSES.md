@@ -268,8 +268,8 @@ an underspecified denominator correct.
 
 ## Immediate repair order
 
-1. Continue source-located XLIFF 2.0/2.1 Core obligations at XLF-04-BATCH-002;
-   do not inflate the 36 anchors, seven obligations, or seven covered
+1. Continue source-located XLIFF 2.0/2.1 Core obligations at XLF-04-BATCH-003;
+   do not inflate the 36 anchors, 19 obligations, or ten covered
    categories into semantic completeness. Compile an explicit expected-ID
    denominator before closure.
 2. Compile exact per-module applicability with isolated

@@ -4,10 +4,10 @@ goal_status: ACTIVE
 generated_by: codex
 visibility: internal
 controller_state: CONTRACT
-transition_sequence: 23
+transition_sequence: 24
 last_verified_event:
-  event_id: FF6-EVENT-000023
-  event_hash: 01c265ecd5284320a82f31316b404e3f3f4edbab3b92cd071be8f9ec27f83641
+  event_id: FF6-EVENT-000024
+  event_hash: 10d96a6729d250fecb89f5f082682f583b5b8053fd620702dcd837dfaf541434
 event_journal: plans/strategic/ff6/events.jsonl
 baseline_commit: e4f8f5f086b5e627c07c2ef2d940eda2601a22a8
 digest_policy:
@@ -24,7 +24,7 @@ handover_checkpoint:
   start: plans/codex/handover/START-HERE.md
   manifest: plans/codex/handover/manifest.yaml
   checkpoint: plans/codex/handover/checkpoint.yaml
-  packet_base_commit: 4f0e8793d7aa694ccb45a57e9d3abc8f8cce92f7
+  packet_base_commit: 78660ae1a310ab06cf00d977bbc26fb65914f1c9
   packet_commit_rule: >-
     The fetched origin/main checkpoint containing this projection must be a
     descendant of packet_base_commit. A packet cannot embed the hash of the
@@ -43,15 +43,15 @@ next_task:
   task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
   state: WORK_IN_PROGRESS
   unlock_condition: >-
-    Resume from event 23 at XLF-04-BATCH-002. Revalidate the immutable
-    XLF-04-BATCH-001 compiler, 23 tests, both report digests, zero-warning
-    receipts, and three identical real-authority Core outputs. Then add a RED
-    test for source-located identifier/reference/inheritance,
-    language/direction/whitespace, and source-target correspondence rules.
-    Category presence cannot establish completeness; retain complete=false
-    until an explicit expected-obligation denominator is compiled. Do not
-    rerun XLF-01 through XLF-03 or batch 001 unless their inputs changed.
-    Product source and architecture remain blocked.
+    Resume from event 24 at XLF-04-BATCH-003. Revalidate the immutable
+    cumulative 19-obligation compiler, 24 tests, both report digests,
+    zero-warning batch-002 receipts, and three identical real-authority Core
+    outputs. Then add RED tests for semantic roundtrip/canonical output and XML
+    security/resource limits while separately compiling an explicit expected
+    Core obligation ID denominator. Category presence cannot establish
+    completeness; retain complete=false until every expected ID resolves. Do
+    not rerun XLF-01 through XLF-03 or batches 001-002 unless their inputs
+    changed. Product source and architecture remain blocked.
 promotion:
   program: UNASSESSED
   ipynb: UNASSESSED
@@ -123,7 +123,7 @@ current_gap_summary:
   production_certifications: 0
 control_plane_compatibility:
   ff6_event_schema: ff6/controller-event@1
-  native_chain_validation: PASS_THROUGH_EVENT_23
+  native_chain_validation: PASS_THROUGH_EVENT_24
   generic_plan_control_doctor: >-
     INCOMPATIBLE_SCHEMA: tools.plan_control expects previous_hash and its own
     event payload; FF6 uses previous_event_hash. This is the already-tracked
@@ -137,10 +137,10 @@ invariants:
 xlf_checkpoint:
   status: WORK_IN_PROGRESS
   completed_steps: [XLF-01, XLF-02, XLF-03]
-  completed_xlf_04_batches: [XLF-04-BATCH-001]
+  completed_xlf_04_batches: [XLF-04-BATCH-001, XLF-04-BATCH-002]
   first_unmet_step: XLF-04
   microstate: RESUMABLE
-  checkpoint_source_commit: 4f0e8793d7aa694ccb45a57e9d3abc8f8cce92f7
+  checkpoint_source_commit: 78660ae1a310ab06cf00d977bbc26fb65914f1c9
   implemented_slice:
     - digest_bound_bounded_zip_authority_reader
     - xliff_2_0_2_1_core_module_structural_inventory
@@ -157,18 +157,22 @@ xlf_checkpoint:
     - seed_verification_status_rejection
     - explicit_expected_obligation_completeness_denominator
     - seven_obligation_real_authority_batch
+    - per_obligation_batch_provenance_and_future_batch_rejection
+    - identifier_reference_and_inheritance_obligations
+    - language_direction_and_whitespace_obligations
+    - source_target_correspondence_obligations
+    - cumulative_nineteen_obligation_real_authority_batch
   remaining_steps: [XLF-04, XLF-05, XLF-06, XLF-07, XLF-08]
   exact_next_action: >-
-    Start XLF-04-BATCH-002 with a failing test for source-located
-    identifier/reference/inheritance, language/direction/whitespace, and
-    source-target correspondence obligations. Preserve the seven stable batch
-    001 IDs and keep completeness false until the full expected Core
-    obligation denominator is explicit.
+    Start XLF-04-BATCH-003 with failing tests for semantic
+    roundtrip/canonical output and XML security/resource limits. In parallel,
+    compile an explicit expected Core obligation ID denominator. Preserve all
+    19 stable IDs and keep completeness false until every expected ID resolves.
   source: tools/spec/extract_sal_facts.py
-  source_sha256: e44a70d39d0415190854a3dc048da8f7927d3ce6fb22cbe93875121c648df685
+  source_sha256: ac44f43456f5c1ac02f9c157ae6bb653be6f9eacbdd2eca55e40e8447f74b5ce
   tests: tests/tools/test_extract_sal_facts.py
-  tests_sha256: 627949766f2a5acffb8c0c1176cb03438a8c1fd9126cc51524870ed61be8fb43
-  focused_tests: 23 passed
+  tests_sha256: 5f0554a03eb3ac9f220e8f4a5b3ee58d4764b488a78db661dc649b8a55ee2070
+  focused_tests: 24 passed
   ruff: PASS
   mypy_strict: PASS
   pyright: PASS_ZERO_DIAGNOSTICS_1_1_411
@@ -179,8 +183,8 @@ xlf_checkpoint:
   matrix_unique_ids: 36
   real_authority_replays: 3_identical
   core_obligation_inventory: reports/ff6/xliff-core-obligation-inventory.yaml
-  core_obligation_inventory_sha256: d9c3fc4b9dd7002cc86ef0852864fb03acdc3be5fa4aead05efc15d39dfd11ff
-  core_obligation_count: 7
+  core_obligation_inventory_sha256: 5930f1e28d21e277325c9a88ad8486ce9076ff1aa680ae21979440fd85d3244b
+  core_obligation_count: 19
   core_obligation_status: SOURCE_LOCATED_PARTIAL
   core_obligation_verification_status: SOURCE_BOUND_UNVERIFIED
   core_covered_categories:
@@ -188,14 +192,14 @@ xlf_checkpoint:
     - document_structure
     - extension_preservation
     - hierarchy_cardinality
+    - identifiers_references_inheritance
     - inline_code_semantics
+    - language_direction_whitespace
     - segmentation
+    - source_target_correspondence
     - state
   core_remaining_categories:
-    - identifiers_references_inheritance
-    - language_direction_whitespace
     - semantic_roundtrip_canonical_output
-    - source_target_correspondence
     - xml_security_resource_limits
   core_completeness_basis: EXPECTED_OBLIGATION_DENOMINATOR_ABSENT
   core_complete: false
@@ -211,9 +215,10 @@ xlf_checkpoint:
     xliff_2.1: 9
   truth_boundary: >-
     XLF-03 proves the deterministic source-surface matrix and safety controls.
-    XLF-04-BATCH-001 adds seven source-bound Core obligations but does not
-    compile the complete expected Core denominator, reconcile canonical SAL,
-    or prove product behavior. XLF-04 and XLF-05 remain open.
+    XLF-04-BATCH-001 and BATCH-002 add 19 cumulative source-bound Core
+    obligations but do not compile the complete expected Core denominator,
+    reconcile canonical SAL, or prove product behavior. XLF-04 and XLF-05
+    remain open.
   inventory: reports/ff6/xliff-authority-member-inventory.yaml
   xliff_authority_sources: 5
   xliff_authority_matches: 5

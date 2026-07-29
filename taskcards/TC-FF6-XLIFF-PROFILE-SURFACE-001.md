@@ -239,6 +239,60 @@ Then add the next RED test for source-located identifier/reference/inheritance,
 language/direction/whitespace, and source-target correspondence rules. Preserve
 the seven batch-001 IDs and do not treat category coverage as completeness.
 
+## Current XLF-04 microstep checkpoint — event 24
+
+Event 24 supersedes the event-23 resume paragraph. `XLF-04-BATCH-002` is
+integration-safe at implementation commit
+`78660ae1a310ab06cf00d977bbc26fb65914f1c9`, but XLF-04 remains the first
+unmet task step and the task remains `WORK_IN_PROGRESS`.
+
+The cumulative inventory now contains 19 stable, source-bound obligations.
+Batch 002 adds 12 obligations for:
+
+- file-ID uniqueness, same-unit `dataRef` resolution, relative-fragment
+  inheritance, and inherited `translate`;
+- source/target language defaults, source/target direction inheritance, and
+  `xml:space` inheritance;
+- segment source/optional-target cardinality, target-language correspondence,
+  and implicit target order.
+
+Every row records `introduced_in_batch`. The compiler rejects a row introduced
+after the requested batch, preventing a later inventory from being
+misrepresented as an earlier checkpoint. The generated artifact identity is
+also derived from the requested batch.
+
+Tracked evidence:
+
+- implementation commit:
+  `78660ae1a310ab06cf00d977bbc26fb65914f1c9`;
+- Core inventory SHA-256:
+  `5930f1e28d21e277325c9a88ad8486ce9076ff1aa680ae21979440fd85d3244b`;
+- source SHA-256:
+  `ac44f43456f5c1ac02f9c157ae6bb653be6f9eacbdd2eca55e40e8447f74b5ce`;
+- test SHA-256:
+  `5f0554a03eb3ac9f220e8f4a5b3ee58d4764b488a78db661dc649b8a55ee2070`;
+- 24 focused tests, Ruff, strict Mypy, Pyright 1.1.411, and bytecode
+  compilation pass;
+- three real-authority generations are byte-identical at the inventory digest;
+- the XLF-03 matrix remains unchanged at
+  `9f4ea4b8b71378217af26c0fb2b97a759817a0aca6c64255b8cd55170c60a090`;
+- both batch-002 receipts validate with zero warnings; XLIFF authority remains
+  5/5 `MATCH`.
+
+Truth boundary: the inventory remains `SOURCE_LOCATED_PARTIAL`; every row
+remains `SOURCE_BOUND_UNVERIFIED`. The two uncovered top-level categories are
+semantic roundtrip/canonical output and XML security/resource limits. Covering
+them still cannot close XLF-04 without an explicit expected Core obligation-ID
+denominator and resolution of every expected ID. Canonical SAL reconciliation,
+capability repair, product source, certification, promotion, and release remain
+untouched. Portfolio certification is still 0/6.
+
+Resume at `XLF-04-BATCH-003`. Revalidate event 24, the immutable implementation
+commit, 24 tests, both report digests, three-run replay, zero-warning receipts,
+and authority audit. Then add RED tests for the two remaining categories and a
+separate fail-closed denominator contract. Preserve all 19 existing IDs and
+retain `complete: false` until every expected Core obligation ID resolves.
+
 ## Required execution
 
 ### XLF-01 — Revalidate the clean predecessor

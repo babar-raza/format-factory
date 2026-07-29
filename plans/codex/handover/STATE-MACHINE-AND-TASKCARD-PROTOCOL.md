@@ -186,7 +186,7 @@ Task: `TC-FF6-XLIFF-PROFILE-SURFACE-001`.
 | XLF-01 — PASS at event 20 | event 19, task/index/controller, authority and worktree preflight | native chain, exact READY task, clean or classified tree, 15/15 predecessor authority match |
 | XLF-02 — PASS at event 20 | official XLIFF 2.0 authority record, five-source XLIFF closure, and 42-member 2.0/2.1 inventory | independent digest plus published SHA-1 cross-check, legal record, 5/5 clean offline reconstruction, no 2.1-as-2.0 proxy |
 | XLF-03 — PASS at event 22 | deterministic source-located 2.0/2.1 Core/module/schema surface matrix | 36 unique coarse anchors; 293/420 sections; 8/8 modules; 8/9 schema vocabularies; full declared archive/XML/matrix negative controls; 18 tests; three identical real-authority outputs; this does not satisfy fine-grained semantics |
-| XLF-04 — FIRST UNMET; batch 001 PASS at event 23 | complete Core SAL and processing-requirement map | seven source-bound obligations cover seven categories but remain `SOURCE_BOUND_UNVERIFIED`; five categories and the explicit expected-ID denominator remain; exact verifier must pass and category presence must not self-certify completeness |
+| XLF-04 — FIRST UNMET; batches 001-002 PASS at event 24 | complete Core SAL and processing-requirement map | 19 cumulative source-bound obligations cover ten categories but remain `SOURCE_BOUND_UNVERIFIED`; two categories and the explicit expected-ID denominator remain; exact verifier must pass and category presence must not self-certify completeness |
 | XLF-05 | separately owned Translation Candidates/Matches, Glossary, Format Style, Metadata, Resource Data, Size/Length, Validation, and ITS families | all eight official modules and all nine module schema vocabularies are accounted for; each module has typed-model, read/write, validation, preservation, rejection, and proof obligations |
 | XLF-06 | repaired research/family/enrichment layers | mixed-profile requirements split; explicit-complete ownership; no keyword duplication |
 | XLF-07 | exact stable and preview projections | both stable profiles claimed; 2.1-only rules excluded from 2.0; 2.2 preview isolated; 1.2 outside model |
@@ -248,22 +248,22 @@ agent’s self-verdict without replay.
 - A blocked format does not stop another ready format.
 - Human-only release authority never blocks technical release preparation.
 
-## Event-23 resume invariant
+## Event-24 resume invariant
 
 The receiving provider starts at XLF-04 only after replaying:
 
 - implementation commit
-  `4f0e8793d7aa694ccb45a57e9d3abc8f8cce92f7`;
-- event `FF6-EVENT-000023` and controller sequence 23;
+  `78660ae1a310ab06cf00d977bbc26fb65914f1c9`;
+- event `FF6-EVENT-000024` and controller sequence 24;
 - exact source, test, matrix, Core inventory, and final receipt digests;
-- 23 focused tests plus Ruff, strict Mypy, Pyright 1.1.411, and bytecode
+- 24 focused tests plus Ruff, strict Mypy, Pyright 1.1.411, and bytecode
   compilation;
 - matrix check mode and three byte-identical generations of each report;
 - 17/17 global and 5/5 XLIFF authority matches.
 
-The next RED cycle is `XLF-04-BATCH-002`. Its tests target source-located
-identifier/reference/inheritance, language/direction/whitespace, and
-source-target correspondence rules. The provider must preserve all seven
-batch-001 IDs, must keep `complete=false` while
+The next RED cycle is `XLF-04-BATCH-003`. Its tests target source-located
+semantic roundtrip/canonical output and XML security/resource limits plus a
+separate explicit expected-ID denominator. The provider must preserve all 19
+existing IDs, must keep `complete=false` while
 `EXPECTED_OBLIGATION_DENOMINATOR_ABSENT`, and must not relabel coarse anchors
 or covered categories as complete semantic coverage.

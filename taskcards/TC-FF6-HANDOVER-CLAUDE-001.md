@@ -157,9 +157,9 @@ controller or product task.
 ## Event-23 XLF-04 batch-001 checkpoint refresh
 
 The packet was rebuilt from immutable implementation commit
-`4f0e8793d7aa694ccb45a57e9d3abc8f8cce92f7` and native event
-`FF6-EVENT-000023` /
-`01c265ecd5284320a82f31316b404e3f3f4edbab3b92cd071be8f9ec27f83641`.
+`78660ae1a310ab06cf00d977bbc26fb65914f1c9` and native event
+`FF6-EVENT-000024` /
+`10d96a6729d250fecb89f5f082682f583b5b8053fd620702dcd837dfaf541434`.
 
 - `XLF-01`, `XLF-02`, `XLF-03`, and `XLF-04-BATCH-001` are complete;
   `XLF-04` remains first unmet.
@@ -174,13 +174,13 @@ The packet was rebuilt from immutable implementation commit
 - The 36 rows are coarse source-surface anchors, not complete semantic
   obligations. XLF-04 must compile full Core semantics; XLF-05 must compile
   every module as a first-class capability family.
-- Batch 001 adds seven source-bound obligations covering seven categories,
-  but they remain `SOURCE_BOUND_UNVERIFIED`; five categories and the explicit
+- Batches 001-002 add 19 source-bound obligations covering ten categories,
+  but they remain `SOURCE_BOUND_UNVERIFIED`; two categories and the explicit
   expected-obligation ID denominator remain. Category presence cannot close
   XLF-04.
 - The mission remains in `CONTRACT`, the active task remains
   `WORK_IN_PROGRESS`, the parent remains `NEEDS_REPAIR`, product certification
   remains 0/6, and every promotion remains `UNASSESSED`.
-- The exact continuation is `XLF-04-BATCH-002`: RED tests for source-located
-  identifier/reference/inheritance, language/direction/whitespace, and
-  source-target correspondence after replaying event 23 and its bound evidence.
+- The exact continuation is `XLF-04-BATCH-003`: RED tests for source-located
+  semantic roundtrip/canonical output and XML security/resource limits plus an
+  explicit expected-ID denominator after replaying event 24 and its bound evidence.

@@ -24,7 +24,7 @@ checkpointed XLIFF steps XLF-01 and XLF-02 after closing the 2.0 authority
 prerequisite and inventorying both pinned packages. Event 22 completed the
 XLF-03 deterministic source-surface matrix. Event 23 binds the first seven
 source-bound Core obligations at commit
-`4f0e8793d7aa694ccb45a57e9d3abc8f8cce92f7`; XLF-04 remains first unmet. The
+`78660ae1a310ab06cf00d977bbc26fb65914f1c9`; XLF-04 remains first unmet. The
 parent capability task remains `NEEDS_REPAIR`, so product implementation is
 locked. The active task is `TC-FF6-XLIFF-PROFILE-SURFACE-001`, and the first
 unmet step is XLF-04.
@@ -102,7 +102,7 @@ No product wave may bypass the program dependencies.
 
 ### Inputs
 
-- event 23 and the `PASS` NRRD checkpoint;
+- event 24 and the `PASS` NRRD checkpoint;
 - the locked XLIFF 2.0 and 2.1 OASIS Standard packages, prose members,
   product requirements, and 42-member tracked inventory;
 - `shared/format-contracts/authority-lock.yaml`;
@@ -114,19 +114,19 @@ No product wave may bypass the program dependencies.
 
 ### Steps
 
-1. Revalidate event 23, controller/task/index agreement, the remote source
+1. Revalidate event 24, controller/task/index agreement, the remote source
    commit, coordination ownership, all 17 global authority matches, all five
    XLIFF matches, and the 42-member inventory.
-2. Require commit `4f0e8793d7aa694ccb45a57e9d3abc8f8cce92f7`
+2. Require commit `78660ae1a310ab06cf00d977bbc26fb65914f1c9`
    as a GitLab-main ancestor; verify exact source, test, matrix, Core inventory,
-   and final transcript SHA-256 values from event 23; replay 23 focused tests, Ruff,
+   and final transcript SHA-256 values from event 24; replay 24 focused tests, Ruff,
    strict Mypy, Pyright 1.1.411, bytecode compilation, matrix check mode, and
    three identical real-authority generations.
 3. Re-run completed XLF steps only if their recorded input closure changed.
 4. Verify the seven batch-001 stable IDs and exact paragraph digests remain
    unchanged; they are source-bound, not canonical-SAL-verified.
-5. Add `XLF-04-BATCH-002` RED tests for identifier/reference/inheritance,
-   language/direction/whitespace, and source-target correspondence.
+5. Add `XLF-04-BATCH-003` RED tests for semantic roundtrip/canonical output,
+   XML security/resource limits, and the explicit expected-ID denominator.
 6. Implement only that bounded batch, make it GREEN, run the regression tier,
    and keep `complete=false` without an explicit expected-obligation ID set.
 7. Compile and independently test the full expected-ID denominator. Continue

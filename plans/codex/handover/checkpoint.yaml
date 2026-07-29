@@ -22,7 +22,7 @@ source_checkpoint:
   rule: >-
     Use the fetched origin/main descendant containing this packet. A packet
     cannot embed the hash of the commit that contains its own final bytes.
-  required_ancestor_before_this_change: 4f0e8793d7aa694ccb45a57e9d3abc8f8cce92f7
+  required_ancestor_before_this_change: 78660ae1a310ab06cf00d977bbc26fb65914f1c9
   required_remote_ref: refs/remotes/origin/main
   required_worktree_state_before_resume_mutation: clean
 
@@ -34,9 +34,9 @@ digest_policy:
 
 controller_checkpoint:
   state: CONTRACT
-  transition_sequence: 23
-  last_event_id: FF6-EVENT-000023
-  last_event_hash: 01c265ecd5284320a82f31316b404e3f3f4edbab3b92cd071be8f9ec27f83641
+  transition_sequence: 24
+  last_event_id: FF6-EVENT-000024
+  last_event_hash: 10d96a6729d250fecb89f5f082682f583b5b8053fd620702dcd837dfaf541434
   parent_task: TC-FF6-PROGRAM-CAPABILITIES-001
   parent_task_state: NEEDS_REPAIR
   completed_subtask: TC-FF6-NRRD-PROFILE-SURFACE-001
@@ -127,7 +127,7 @@ verification_checkpoint:
     PASS for touched family_pack_validator after installing types-PyYAML
     6.0.12.20260724 in the ignored environment; not repository-wide
   plan_control_tests: 40_passed
-  ff6_native_event_chain: PASS_THROUGH_EVENT_20
+  ff6_native_event_chain: PASS_THROUGH_EVENT_24
   xliff_authority_probe: PUBLISHED_SHA1_MATCH_NO_UNENROLLED_BYTES_PERSISTED
   xliff_authority_inventory: PASS_42_OF_42_MEMBERS
   xliff_authority_audit: PASS_5_OF_5
@@ -189,10 +189,11 @@ resume_decision:
   taskcard: taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md
   active_checkpoint: plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md
   exact_first_step: >-
-    Revalidate event 23, exact source/test/matrix/Core-inventory/transcript
-    digests, 23 focused tests, static checks, matrix check mode, three
+    Revalidate event 24, exact source/test/matrix/Core-inventory/transcript
+    digests, 24 focused tests, static checks, matrix check mode, three
     identical generations of both reports, and 17/17 authority matches.
-    Resume XLF-04 at BATCH-002 with RED tests for the three named categories.
+    Resume XLF-04 at BATCH-003 with RED tests for the two remaining categories
+    and a separate explicit expected-ID denominator contract.
   product_source_mutation_allowed: false
   gate_or_product_promotion_allowed: false
   human_continuation_prompt_allowed: false
@@ -202,14 +203,14 @@ current_xliff_compiler_checkpoint:
   xlf_03_complete: true
   xlf_04_complete: false
   microstate: RESUMABLE
-  source_commit: 4f0e8793d7aa694ccb45a57e9d3abc8f8cce92f7
+  source_commit: 78660ae1a310ab06cf00d977bbc26fb65914f1c9
   source:
     path: tools/spec/extract_sal_facts.py
-    sha256: e44a70d39d0415190854a3dc048da8f7927d3ce6fb22cbe93875121c648df685
+    sha256: ac44f43456f5c1ac02f9c157ae6bb653be6f9eacbdd2eca55e40e8447f74b5ce
   tests:
     path: tests/tools/test_extract_sal_facts.py
-    sha256: 627949766f2a5acffb8c0c1176cb03438a8c1fd9126cc51524870ed61be8fb43
-    result: 23_passed
+    sha256: 5f0554a03eb3ac9f220e8f4a5b3ee58d4764b488a78db661dc649b8a55ee2070
+    result: 24_passed
   matrix:
     path: reports/ff6/xliff-normative-delta-matrix.yaml
     sha256: 9f4ea4b8b71378217af26c0fb2b97a759817a0aca6c64255b8cd55170c60a090
@@ -232,6 +233,14 @@ current_xliff_compiler_checkpoint:
     path: reports/skills-rff6/skill-transcripts/ingest-spec-sal-xliff-xlf04-core-batch-001.json
     sha256: 66629de2736f8ba4f48ba6dd7b585c7d054989da590fc340bb83e7ba01a15951
     validation: PASS_ZERO_WARNINGS
+  batch_002_tdd_receipt:
+    path: reports/skills-rff6/skill-transcripts/test-driven-development-xliff-xlf04-core-batch-002.json
+    sha256: e72251010fe98d52ca71116ca57f6369340dfdc5357c4b1b67ee5be23f554acc
+    validation: PASS_ZERO_WARNINGS
+  batch_002_ingestion_receipt:
+    path: reports/skills-rff6/skill-transcripts/ingest-spec-sal-xliff-xlf04-core-batch-002.json
+    sha256: 501f9d47b5789e9be065c0686696bff51a4bc47fa956b634d345d6e529920993
+    validation: PASS_ZERO_WARNINGS
   implemented:
     - exact_package_digest_verification
     - bounded_secure_archive_inventory
@@ -249,20 +258,26 @@ current_xliff_compiler_checkpoint:
     - exact_paragraph_digest_binding
     - fail_closed_completeness_denominator
     - seven_obligation_real_authority_batch
+    - per_obligation_batch_provenance
+    - future_batch_rejection
+    - identifier_reference_and_inheritance_obligations
+    - language_direction_and_whitespace_obligations
+    - source_target_correspondence_obligations
+    - cumulative_nineteen_obligation_real_authority_batch
   first_unmet_step: XLF-04
-  completed_xlf_04_batches: [XLF-04-BATCH-001]
+  completed_xlf_04_batches: [XLF-04-BATCH-001, XLF-04-BATCH-002]
   core_obligation_inventory:
     path: reports/ff6/xliff-core-obligation-inventory.yaml
-    sha256: d9c3fc4b9dd7002cc86ef0852864fb03acdc3be5fa4aead05efc15d39dfd11ff
-    obligations: 7
+    sha256: 5930f1e28d21e277325c9a88ad8486ce9076ff1aa680ae21979440fd85d3244b
+    obligations: 19
     verification_status: SOURCE_BOUND_UNVERIFIED
     complete: false
     completeness_basis: EXPECTED_OBLIGATION_DENOMINATOR_ABSENT
   exact_next_action: >-
-    Start XLF-04-BATCH-002 with failing tests for source-located
-    identifier/reference/inheritance, language/direction/whitespace, and
-    source-target correspondence obligations. Preserve batch-001 stable IDs
-    and do not claim completeness without an explicit expected-ID denominator.
+    Start XLF-04-BATCH-003 with failing tests for source-located semantic
+    roundtrip/canonical output and XML security/resource-limit obligations.
+    Preserve all 19 stable IDs and separately compile an explicit expected-ID
+    denominator before any completeness claim.
   prose_section_denominator:
     total_section_elements:
       xliff_2.0: 293
