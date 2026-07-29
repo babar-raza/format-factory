@@ -4,7 +4,7 @@ artifact_type: handover_entrypoint
 visibility: internal
 publish_allowed: false
 generated_by: codex
-generated_at: 2026-07-29
+generated_at: 2026-07-30
 ---
 
 # FF6 Provider-Neutral Handover: Start Here
@@ -24,7 +24,7 @@ C:\Users\prora\OneDrive\Documents\GitHub\format-factory\plans\codex\handover\STA
 | Field | Verified value |
 |---|---|
 | Forge / branch | GitLab `origin/main` only |
-| Packet input checkpoint | `7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c` |
+| Packet input checkpoint | `d5e8927a85ed0f2e8c68e1e061084c67b85363c9` |
 | Latest bounded implementation ancestor | `7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c` |
 | Controller handover source | `18bb295f94e43338611ef88caff073eed17411c9` |
 | Controller Event 26 commit | `15ab7d0455e109bd88289e16d73c0835324a21ab` |
@@ -58,7 +58,7 @@ Two different states exist and must never be collapsed into one status:
 | Boundary | State | Meaning |
 |---|---|---|
 | Committed Event 26 checkpoint | `RESUMABLE` | A clean checkout of GitLab `origin/main` can reconstruct the last verified state without local-only files |
-| Shared workspace at 2026-07-29T19:57Z | `ACTIVE_XLIFF_BATCH005_FOREIGN_WORKING_SET` | Another live Codex identity owns five dirty Batch 005 paths; Claude must not claim, overwrite, commit, or present those bytes as a clean checkpoint |
+| Shared workspace at 2026-07-29T20:17Z | `ACTIVE_XLIFF_BATCH005_FOREIGN_WORKING_SET` | Another live Codex identity owns five dirty Batch 005 paths; Claude must not claim, overwrite, commit, or present those bytes as a clean checkpoint |
 
 The earlier captured transfer classifier
 `IN_FLIGHT_RED_NOT_TRANSFERABLE` remains a valid historical description of
@@ -112,6 +112,16 @@ owner completes, Claude must not touch those eleven paths. This distinction
 prevents a provider shift from converting a process-level observation into an
 unsafe filesystem write.
 
+At the latest refresh, `2026-07-29T20:17:53Z`, local `HEAD` and fetched
+GitLab `origin/main` both resolved to
+`d5e8927a85ed0f2e8c68e1e061084c67b85363c9`. Coordination still reported the
+same XLIFF identity and leases as `ACTIVE`; the process remained absent. Git
+showed exactly five foreign dirty paths: three tracked modifications and two
+untracked Batch 005 files. Coordination status returned nonzero because 17
+open conflicts exist across the wider shared system, including a preserved
+local UBL transcript conflict; none authorizes mutation or deletion. The
+incoming executor must requery rather than trusting this time-stamped result.
+
 The UBL package census and subsequent authority-closure repair are committed
 and pushed to GitLab main. The latest bounded checkpoint is
 `7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c`.
@@ -150,10 +160,9 @@ Claude's first executable decision is deterministic:
 1. If Event 27 or later is on GitLab, recompute from the journal and ignore
    this runtime observation.
 2. If the XLIFF lease is still live, leave the five current dirty XLIFF paths
-   untouched. Do not repeat the completed UBL stale-SAL repair. Use a safe
-   serialized window to record the UBL-01/UBL-02 projection, or continue
-   another controller-authorized path-disjoint obligation that does not skip
-   a task state.
+   untouched. Do not repeat the completed UBL stale-SAL repair. The first safe
+   disjoint action is one native Event 27 checkpoint that records the
+   UBL-01/UBL-02 evidence while retaining XLIFF as the canonical active task.
 3. If the XLIFF lease is stale and no newer commit exists, use governed
    `takeover --reason`, recapture every baseline, and continue Batch 005 from
    the preserved bytes.
@@ -182,6 +191,10 @@ Read the canonical [product goal](../../strategic/ff6/product-goal.yaml) and
 [execution plan](../../strategic/autonomous-six-python-production-execution-plan.md)
 before changing mission state.
 
+The provider-independent shift transaction, clean-checkpoint definition, exact
+Event 27 contract, and handback requirements are binding in the
+[provider-shift contract](PROVIDER-SHIFT-CONTRACT.md).
+
 ## True current product state
 
 The program has a deterministic 110-capability / 672-obligation planning
@@ -205,6 +218,16 @@ adequacy is not proven, and OpenRaster source is absent. See
 [current gaps](../../strategic/ff6/current-gaps.yaml).
 
 ## Exact next work
+
+There are two non-conflicting next-action axes:
+
+| Axis | Exact action |
+|---|---|
+| Canonical controller action | Resume `TC-FF6-XLIFF-PROFILE-SURFACE-001` at `XLF-04-BATCH-005` |
+| First safe action while XLIFF is live-owned | Serialize committed UBL-01/UBL-02 evidence as Event 27 without changing the XLIFF active task |
+
+Machine action ID:
+`UBL_01_UBL_02_SERIALIZED_STATE_CHECKPOINT`.
 
 Resume `TC-FF6-XLIFF-PROFILE-SURFACE-001` at `XLF-04-BATCH-005`.
 
@@ -249,6 +272,7 @@ git fetch origin
 git status --short --branch
 git rev-parse HEAD
 git rev-parse origin/main
+git merge-base --is-ancestor d5e8927a85ed0f2e8c68e1e061084c67b85363c9 origin/main
 git merge-base --is-ancestor 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c origin/main
 git merge-base --is-ancestor 7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce origin/main
 git merge-base --is-ancestor 18bb295f94e43338611ef88caff073eed17411c9 origin/main
@@ -285,8 +309,9 @@ Read these in order:
 6. [Complete event journal](../../strategic/ff6/events.jsonl)
 7. [Current gaps](../../strategic/ff6/current-gaps.yaml)
 8. [Active XLIFF taskcard](../../../taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md)
-9. [Machine state](CURRENT-MACHINE-STATE.yaml)
-10. [Event 26 runbook](event-26/RUNBOOK.md)
+9. [Provider-shift contract](PROVIDER-SHIFT-CONTRACT.md)
+10. [Machine state](CURRENT-MACHINE-STATE.yaml)
+11. [Event 26 runbook](event-26/RUNBOOK.md)
 
 The root [manifest](manifest.yaml) binds the current packet and canonical
 inputs. [Checkpoint](checkpoint.yaml) is the compact machine projection.

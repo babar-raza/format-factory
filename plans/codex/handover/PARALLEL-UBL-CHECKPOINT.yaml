@@ -3,7 +3,7 @@ artifact_id: FF6-UBL-AUTHORITY-CENSUS-CHECKPOINT-002
 visibility: internal
 publish_allowed: false
 generated_by: codex
-generated_at: "2026-07-29"
+generated_at: "2026-07-30"
 
 mission:
   goal_id: FF6-PRODUCTION-LIBRARIES-001
@@ -82,6 +82,7 @@ verification:
   sal_replay: PASS_34_OF_34
   sal_receipt_sha256: 2cc0f2cac163b7f42ab18bbe5220837d1f49a808904ac964c536085ca6d111a0
   capability_compiler_check: PASS
+  capability_manifest_aggregate_sha256: e199e84e9f7ee0579959db28283ecb89e014077cdd1605fbf0c82aee553d9960
   capability_three_run_digest: eafd6f8657ed83b73dbd5975046698d24fda6d8fd58c3d6aea962e6b6a85cf7c
   broad_format_contract_regression: 94 passed, 1 unrelated CSV idempotency failure
 
@@ -131,6 +132,56 @@ exact_resume:
     checkpoint validates.
   next_ubl_state_after_checkpoint: PACKAGE_CENSUS_COMPLETE
   next_ubl_task_step_after_checkpoint: UBL-03
+
+serialized_checkpoint_contract:
+  expected_event:
+    sequence: 27
+    previous_event_hash: 34b36bf5dc4344713ac1c0f026b30e6b15fb6a63b86f4876ee98230952fabcd0
+    state_before: CONTRACT
+    state_after: CONTRACT
+    transition: PARALLEL_TASK_CHECKPOINT_VERIFIED
+    task_id: TC-FF6-UBL-TYPING-001
+    task_state_before: READY
+    task_state_after: WORK_IN_PROGRESS
+    next_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
+    next_task_state: WORK_IN_PROGRESS
+    completed_task_steps: [UBL-01, UBL-02]
+    first_unmet_task_step: UBL-03
+    promotion_effect: none
+  required_projection_updates:
+    - plans/strategic/ff6/controller-state.yaml
+    - taskcards/TC-FF6-UBL-TYPING-001.md
+    - taskcards/index.yaml
+  event_first_write_order:
+    - append plans/strategic/ff6/events.jsonl
+    - record the journal write in coordination
+    - update controller projection
+    - update UBL taskcard projection
+    - update task index projection
+    - validate event hash chain and projection agreement
+    - commit and push the plan-control checkpoint
+    - refresh the provider-neutral handover separately
+  controller_invariants:
+    - active task remains TC-FF6-XLIFF-PROFILE-SURFACE-001
+    - exact active microstep remains XLF-04-BATCH-005
+    - parent capability task remains NEEDS_REPAIR
+    - all six promotions remain UNASSESSED
+    - products certified remains 0
+    - UBL-03 remains incomplete
+  fresh_replay_expected:
+    authority_matches: 3
+    sal_facts_verified: 34
+    package_members: 890
+    maindoc_roots: 91
+    focused_tests: 25
+    production_program_tests: 69
+    capability_manifest_aggregate_sha256: e199e84e9f7ee0579959db28283ecb89e014077cdd1605fbf0c82aee553d9960
+    capability_three_run_digest: eafd6f8657ed83b73dbd5975046698d24fda6d8fd58c3d6aea962e6b6a85cf7c
+  lease_recovery: >-
+    Event, controller, and XLIFF taskcard paths still have stale leases from
+    agent-codex-20260729T172400-6f0f00. Use the governed takeover verb with a
+    reason and recapture baselines. Never release the stale agent's leases
+    manually, and never touch the active Batch 005 implementation paths.
 
 truth_boundary:
   package_census_complete: true

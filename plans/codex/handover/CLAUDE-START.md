@@ -4,7 +4,7 @@ artifact_type: execution_handover
 visibility: internal
 publish_allowed: false
 generated_by: codex
-generated_at: 2026-07-29
+generated_at: 2026-07-30
 ---
 
 # Claude/Codex Shift Instructions
@@ -20,7 +20,7 @@ mission_id: FF6-PRODUCTION-LIBRARIES-001
 canonical_forge: GitLab
 canonical_remote: origin
 canonical_branch: main
-packet_input_checkpoint: 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c
+packet_input_checkpoint: d5e8927a85ed0f2e8c68e1e061084c67b85363c9
 controller_handover_source: 18bb295f94e43338611ef88caff073eed17411c9
 latest_bounded_implementation_ancestor: 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c
 controller_event_commit: 15ab7d0455e109bd88289e16d73c0835324a21ab
@@ -48,7 +48,8 @@ exact_next_microstep: XLF-04-BATCH-005
 5. Re-read the product goal, execution plan, full native journal, controller,
    current gaps, active taskcard, Batch 004 artifacts, Batch 004 receipts, and
    `plans/codex/handover/CURRENT-SHIFT-HANDOVER.md` and
-   `plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml`.
+   `plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml`. Read
+   `plans/codex/handover/PROVIDER-SHIFT-CONTRACT.md` before selecting work.
 6. Register a new provider-specific coordination identity. Never reuse the
    outgoing provider's token or release another agent's lease.
 7. Select the registered skills required by the active task. Expected
@@ -78,7 +79,7 @@ and the two captured Batch 005 paths. Then choose exactly one case:
 
 | Recomputed condition | Required action |
 |---|---|
-| Captured owner is still live and owns Batch 005 | Do not claim or mutate its scope. Do not repeat the UBL SAL repair committed at `7fc49c29`. Use a safe serialized window to record UBL-01/UBL-02, or execute another controller-authorized path-disjoint task that does not skip task state. |
+| Captured owner is still live and owns Batch 005 | Do not claim or mutate its scope. Do not repeat the UBL SAL repair committed at `7fc49c29`. The first safe disjoint action is the single Event 27 UBL-01/UBL-02 serialization defined below. |
 | `origin/main` contains a Batch 005 implementation commit and event 27 or later | Ignore the captured test counts, validate the newer journal head, rebuild projections, and resume its computed next task. |
 | `origin/main` contains a Batch 005 implementation commit but the journal remains at event 26 | Independently validate the immutable implementation commit, then use `plan-control` to append exactly one event. Do not duplicate implementation. |
 | Owner is stale/dead, no commit exists, and attributable local files remain | Preserve bytes, invoke governed `takeover --reason`, recapture baselines, and continue the same RED/GREEN batch. Never release or reuse the old identity manually. |
@@ -110,6 +111,15 @@ The last pre-handover observation was taken at
 7,200 seconds. Do not infer ownership expiry from the missing process. Only a
 fresh coordination result of stale/dead plus a governed takeover permits
 Claude to write those paths.
+
+The latest packet observation was taken at `2026-07-29T20:17:53Z`.
+Local `HEAD` and GitLab `origin/main` were both
+`d5e8927a85ed0f2e8c68e1e061084c67b85363c9`. The coordination plane still
+reported the Batch 005 identity and its eleven leases as `ACTIVE`, while Git
+showed five dirty XLIFF paths: three tracked modifications and two untracked
+files. Coordination status returned exit 1 because 17 wider open conflicts
+remain. Preserve them; a nonzero status is not permission to clean, release,
+or overwrite anything.
 
 This is the expected immediate branch:
 
@@ -185,6 +195,9 @@ transition, or any product behavior.
 Use this route only when coordination prevents safe XLIFF mutation. It is not
 permission to skip runnable XLIFF work.
 
+Machine action ID:
+`UBL_01_UBL_02_SERIALIZED_STATE_CHECKPOINT`.
+
 The stale-SAL repair is complete at immutable commit `7fc49c29`; do not
 repeat it. Claude starts this lane by independently validating that commit,
 then acquiring a safe serialized `plan-control` window to record UBL-01 and
@@ -220,6 +233,31 @@ live XLIFF paths.
 Do not rerun `--apply` merely to refresh evidence, weaken member-digest
 checking, edit a status label without an event, or infer UBL-03 completion
 from the package census.
+
+The expected Event 27 projection is:
+
+```text
+sequence: 27
+previous event: FF6-EVENT-000026
+controller state: CONTRACT -> CONTRACT
+transition: PARALLEL_TASK_CHECKPOINT_VERIFIED
+task: TC-FF6-UBL-TYPING-001
+task projection: READY -> WORK_IN_PROGRESS
+completed steps: UBL-01, UBL-02
+first unmet step: UBL-03
+active/next task: TC-FF6-XLIFF-PROFILE-SURFACE-001
+exact active action: XLF-04-BATCH-005
+promotion effect: none
+```
+
+Append the event before updating derived projections. Update the controller
+capability aggregate only if a fresh replay again returns
+`e199e84e9f7ee0579959db28283ecb89e014077cdd1605fbf0c82aee553d9960`
+and the three-run digest
+`eafd6f8657ed83b73dbd5975046698d24fda6d8fd58c3d6aea962e6b6a85cf7c`.
+The stale leases on the event/controller projection paths belong to
+`agent-codex-20260729T172400-6f0f00`; use governed takeover with a reason and
+recapture baselines. Do not release that identity manually.
 
 ## Execute XLF-04-BATCH-005
 

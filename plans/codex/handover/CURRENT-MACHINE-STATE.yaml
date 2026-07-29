@@ -3,13 +3,14 @@ artifact_id: FF6-CURRENT-MACHINE-STATE-EVENT-26
 visibility: internal
 publish_allowed: false
 generated_by: codex
-generated_at: "2026-07-29"
+generated_at: "2026-07-30"
 
 source_checkpoint:
   forge: GitLab
   remote: origin
   branch: main
-  required_ancestor: 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c
+  required_ancestor: d5e8927a85ed0f2e8c68e1e061084c67b85363c9
+  packet_input_commit: d5e8927a85ed0f2e8c68e1e061084c67b85363c9
   latest_bounded_implementation_ancestor: 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c
   controller_event_ancestor: 15ab7d0455e109bd88289e16d73c0835324a21ab
   implementation_ancestor: 1fef79b9d6c1ee1f6667e0c5c70435562c97544c
@@ -108,6 +109,43 @@ latest_xliff_refresh_observation:
     working set while its lease is live. Requery coordination and GitLab at
     resume; use governed takeover only after the plane reports the lease stale.
 
+handover_refresh_observation:
+  observed_at: "2026-07-29T20:17:53Z"
+  head: d5e8927a85ed0f2e8c68e1e061084c67b85363c9
+  origin_main: d5e8927a85ed0f2e8c68e1e061084c67b85363c9
+  active_xliff_owner: agent-codex-20260729T190440-e2dd38
+  active_xliff_lease_count: 11
+  active_xliff_process_observed: ABSENT
+  dirty_paths:
+    - status: MODIFIED_TRACKED
+      path: reports/ff6/xliff-core-authority-candidate-census.yaml
+    - status: MODIFIED_TRACKED
+      path: tests/tools/test_extract_sal_facts.py
+    - status: MODIFIED_TRACKED
+      path: tools/spec/extract_sal_facts.py
+    - status: UNTRACKED
+      path: tests/tools/test_extract_sal_facts_candidate_binding.py
+    - status: UNTRACKED
+      path: tools/spec/xliff_core_candidate_binding.py
+  dirty_paths_frozen_as_evidence: false
+  coordination:
+    mode: enforcing
+    status_exit: 1
+    active_agent_records: 105
+    live_lease_records: 142
+    stale_candidates: 103
+    open_conflicts: 17
+    relevant_preserved_conflict:
+      conflict_id: conf-492a303a5a
+      path: .local/transcripts/ubl-prose-closure-001.json
+      action: PRESERVE_AND_REBASELINE_IF_OWNED_LATER
+  first_safe_disjoint_action: UBL_01_UBL_02_SERIALIZED_STATE_CHECKPOINT
+  rule: >-
+    This is a time-stamped observation. The incoming executor must fetch and
+    requery. While Batch 005 remains active-owned, do not mutate its paths.
+    Serialize the committed UBL evidence as Event 27 under separately owned
+    plan-control paths, retaining XLIFF as the controller-selected active task.
+
 parallel_ubl_checkpoint:
   observed_at: "2026-07-29T19:52:00Z"
   status: COMMITTED_PARALLEL_CHECKPOINT_NON_CONTROLLER
@@ -129,6 +167,9 @@ parallel_ubl_checkpoint:
   controller_effect: NONE
   product_or_promotion_effect: NONE
   first_unmet_work: UBL_01_UBL_02_SERIALIZED_STATE_CHECKPOINT
+  capability_manifest_aggregate_sha256: e199e84e9f7ee0579959db28283ecb89e014077cdd1605fbf0c82aee553d9960
+  capability_three_run_digest: eafd6f8657ed83b73dbd5975046698d24fda6d8fd58c3d6aea962e6b6a85cf7c
+  native_event_expected: FF6-EVENT-000027
   rule: >-
     These paths are committed evidence on GitLab main and are safe to inspect.
     They prove the current authority replay and package/root census. The UBL
@@ -151,6 +192,17 @@ controller:
   next_task_state: WORK_IN_PROGRESS
   parent_task: TC-FF6-PROGRAM-CAPABILITIES-001
   parent_task_state: NEEDS_REPAIR
+
+resume_route:
+  canonical_active_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
+  canonical_exact_action: XLF-04-BATCH-005
+  safe_action_if_batch005_live_owned: >-
+    Append Event 27 for the committed UBL-01/UBL-02 checkpoint, update
+    controller and UBL task projections, keep XLIFF active, verify, push, and
+    refresh this packet.
+  safe_action_if_batch005_unowned: >-
+    Claim exact XLIFF paths and continue Batch 005 from Event 26 or from a
+    validated newer immutable implementation commit.
 
 program_denominator:
   capabilities: 110

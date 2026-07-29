@@ -44,11 +44,13 @@ CURRENT_TEXT_PATHS = (
     "plans/codex/handover/START-HERE.md",
     "plans/codex/handover/CLAUDE-START.md",
     "plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md",
+    "plans/codex/handover/PROVIDER-SHIFT-CONTRACT.md",
 )
 ALLOWED_CHANGED_PATHS = {
     "taskcards/TC-FF6-HANDOVER-CLAUDE-001.md",
     "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-ubl-checkpoint-001.json",
     "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-ubl-authority-001.json",
+    "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-shift-002.json",
 }
 ALLOWED_CHANGED_PREFIX = "plans/codex/handover/"
 
@@ -687,6 +689,41 @@ def _parallel_ubl_projection_errors(
         "plans/codex/handover/START-HERE.md", ""
     ):
         errors.append("START-HERE lacks explicit parallel UBL checkpoint state")
+    serialized = parallel.get("serialized_checkpoint_contract", {})
+    expected_event = (
+        serialized.get("expected_event", {})
+        if isinstance(serialized, Mapping)
+        else {}
+    )
+    expected_event_values = {
+        "sequence": 27,
+        "previous_event_hash": (
+            "34b36bf5dc4344713ac1c0f026b30e6b15fb6a63b86f4876ee98230952fabcd0"
+        ),
+        "state_before": "CONTRACT",
+        "state_after": "CONTRACT",
+        "transition": "PARALLEL_TASK_CHECKPOINT_VERIFIED",
+        "task_id": "TC-FF6-UBL-TYPING-001",
+        "task_state_before": "READY",
+        "task_state_after": "WORK_IN_PROGRESS",
+        "next_task": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+        "next_task_state": "WORK_IN_PROGRESS",
+        "first_unmet_task_step": "UBL-03",
+        "promotion_effect": "none",
+    }
+    for key, expected in expected_event_values.items():
+        _expect(
+            errors,
+            f"serialized Event 27 {key}",
+            expected_event.get(key),
+            expected,
+        )
+    _expect(
+        errors,
+        "serialized Event 27 completed UBL steps",
+        expected_event.get("completed_task_steps"),
+        ["UBL-01", "UBL-02"],
+    )
     return errors
 
 
@@ -757,6 +794,35 @@ def _semantic_errors(
     machine_next = machine.get("next_task_prerequisite", {})
     versioned_controller = versioned.get("controller", {})
     versioned_next = versioned.get("exact_next", {})
+    manifest_source = manifest.get("source_checkpoint", {})
+    checkpoint_source = checkpoint.get("source_checkpoint", {})
+    machine_source = machine.get("source_checkpoint", {})
+
+    required_ancestor = manifest_source.get("required_ancestor")
+    _expect(
+        errors,
+        "checkpoint packet input ancestor",
+        checkpoint_source.get("required_ancestor"),
+        required_ancestor,
+    )
+    _expect(
+        errors,
+        "machine packet input ancestor",
+        machine_source.get("required_ancestor"),
+        required_ancestor,
+    )
+    _expect(
+        errors,
+        "checkpoint packet input commit",
+        checkpoint_source.get("packet_input_commit"),
+        required_ancestor,
+    )
+    _expect(
+        errors,
+        "machine packet input commit",
+        machine_source.get("packet_input_commit"),
+        required_ancestor,
+    )
 
     _expect(errors, "controller sequence", controller.get("transition_sequence"), p["sequence"])
     _expect(errors, "controller event id", controller_event.get("event_id"), p["event_id"])
@@ -972,10 +1038,36 @@ def _semantic_errors(
         _task_status(task_index, "TC-FF6-UBL-TYPING-001"),
         "ready",
     )
-    if "FF6-UBL-SAL-PROSE-TARGET-STALE-001" not in texts.get(
-        "plans/codex/handover/START-HERE.md", ""
+    _expect(
+        errors,
+        "safe disjoint UBL checkpoint selection",
+        checkpoint.get("runtime_observation", {}).get(
+            "safe_disjoint_microstep"
+        ),
+        "UBL_01_UBL_02_SERIALIZED_STATE_CHECKPOINT",
+    )
+    _expect(
+        errors,
+        "machine safe disjoint UBL checkpoint selection",
+        machine.get("handover_refresh_observation", {}).get(
+            "first_safe_disjoint_action"
+        ),
+        "UBL_01_UBL_02_SERIALIZED_STATE_CHECKPOINT",
+    )
+    recovery_value = checkpoint.get("runtime_observation", {}).get(
+        "safe_disjoint_microstep"
+    )
+    if recovery_value == "FF6-UBL-SAL-PROSE-TARGET-STALE-001":
+        errors.append("completed UBL stale-SAL repair was reselected")
+    for path in (
+        "plans/codex/handover/START-HERE.md",
+        "plans/codex/handover/CLAUDE-START.md",
+        "plans/codex/handover/PROVIDER-SHIFT-CONTRACT.md",
     ):
-        errors.append("START-HERE lacks exact UBL stale-SAL resume task")
+        if "UBL_01_UBL_02_SERIALIZED_STATE_CHECKPOINT" not in texts.get(
+            path, ""
+        ):
+            errors.append(f"{path} lacks exact safe UBL checkpoint action")
 
     required_truth = (
         p["next_batch"],
@@ -1142,12 +1234,30 @@ def run_self_test(context: dict[str, Any]) -> dict[str, Any]:
     ] = True
     cases.append(("false_active_xliff_byte_freeze", false_active_freeze))
 
+    event_27_changes_active_task = copy.deepcopy(context)
+    event_27_changes_active_task["parallel"]["serialized_checkpoint_contract"][
+        "expected_event"
+    ]["next_task"] = "TC-FF6-UBL-TYPING-001"
+    cases.append(("event_27_changes_active_task", event_27_changes_active_task))
+
+    stale_ubl_work_reselected = copy.deepcopy(context)
+    stale_ubl_work_reselected["checkpoint"]["runtime_observation"][
+        "safe_disjoint_microstep"
+    ] = "FF6-UBL-SAL-PROSE-TARGET-STALE-001"
+    cases.append(("completed_ubl_repair_reselected", stale_ubl_work_reselected))
+
+    packet_input_mismatch = copy.deepcopy(context)
+    packet_input_mismatch["machine"]["source_checkpoint"][
+        "packet_input_commit"
+    ] = "0" * 40
+    cases.append(("packet_input_commit_mismatch", packet_input_mismatch))
+
     outcomes = [
         {"case": name, "rejected": bool(_semantic_only(case))}
         for name, case in cases
     ]
     return {
-        "schema": "ff6/handover-validation-self-test@6",
+        "schema": "ff6/handover-validation-self-test@7",
         "valid": all(item["rejected"] for item in outcomes),
         "negative_controls": outcomes,
     }
@@ -1158,7 +1268,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument(
         "--self-test",
         action="store_true",
-        help="also prove eight semantic corruptions are rejected",
+        help="also prove eleven semantic corruptions are rejected",
     )
     args = parser.parse_args(argv)
     try:

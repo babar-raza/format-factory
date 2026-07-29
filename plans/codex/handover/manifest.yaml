@@ -2,14 +2,14 @@ schema: ff6/provider-neutral-handover-manifest@2
 packet_id: FF6-HANDOVER-EVENT-26
 visibility: internal
 generated_by: codex
-generated_at: "2026-07-29"
+generated_at: "2026-07-30"
 
 source_checkpoint:
   forge: GitLab
   remote: origin
   branch: main
   required_remote_ref: origin/main
-  required_ancestor: 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c
+  required_ancestor: d5e8927a85ed0f2e8c68e1e061084c67b85363c9
   controller_event_ancestor: 15ab7d0455e109bd88289e16d73c0835324a21ab
   implementation_ancestor: 1fef79b9d6c1ee1f6667e0c5c70435562c97544c
   parallel_ubl_ancestor: 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c
@@ -184,29 +184,32 @@ files:
     sha256: 0e0ed5f28c871c62f240b41ce69f578a1eedbdb35fd8fec245383aced1d88d95
     canonical_bytes: 3427
   - path: plans/codex/handover/START-HERE.md
-    sha256: 15e3b61efe6ed80612a986888b04788ff12b97ccfbebe1557b253d94ca526bce
-    canonical_bytes: 16136
+    sha256: d799dbd51b7295379637e97435716dc5b402cfccbe5358f7fd1d059460fa25cd
+    canonical_bytes: 17493
   - path: plans/codex/handover/CLAUDE-START.md
-    sha256: 9707094cf6a4e0d6c25385ae07b4484e3792eb8a7d264bf74aed2d53edfdac65
-    canonical_bytes: 18682
+    sha256: 8d524628239441f459cac48400410047f8ec96ecf0e204d82f9bf93b9ecfe593
+    canonical_bytes: 20221
   - path: plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md
     sha256: 8c1a851c9af11e39e1fef5ecb91624158c28a084a2fa68225178f8411326a61c
     canonical_bytes: 6611
   - path: plans/codex/handover/CURRENT-MACHINE-STATE.yaml
-    sha256: 871836592da11cadb4628f3f8c49b058b8e5bd049d52945bcb9252d3f7de240e
-    canonical_bytes: 13782
+    sha256: b2c38eed77ee35cb3090a9df1e120751e19efd53b08377b28aa2d170ed2c7225
+    canonical_bytes: 16101
   - path: plans/codex/handover/checkpoint.yaml
-    sha256: 87c560c3c0db4a5954026f24ff4bafd743a45bfb298aa24df16e66d90d751749
-    canonical_bytes: 4702
+    sha256: df3811459d9f0175eff53b79abe36217ce560a48997786ce02422a2c3b469ec0
+    canonical_bytes: 5943
   - path: plans/codex/handover/INFLIGHT-RECOVERY.yaml
-    sha256: 2bf3b0986dc016a2393e8cbf858b8cc016c99f86805070596cd39497f9f05d5d
-    canonical_bytes: 9899
+    sha256: f56fcd8a91424a57c75448df5928d06369b144128b53f9b8dec373c355dc42ec
+    canonical_bytes: 11200
   - path: plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml
-    sha256: 0dd0d18b95a81f8e403f058aaf883923674441dcacb3cba6e5224befe826476f
-    canonical_bytes: 5791
+    sha256: a51405eb6769b9e509932670fd595c4a63a31622e21e5ec6eaeb899b279725d8
+    canonical_bytes: 7992
   - path: plans/codex/handover/CURRENT-SHIFT-HANDOVER.md
-    sha256: e7830659a89cb910cf7db80598b846fd82f87fccced49080ee7b6fac4883c214
-    canonical_bytes: 16941
+    sha256: 80571fa4211dca179c374530a7901f4604a47c524b329715fe13acaa9a0b5666
+    canonical_bytes: 18551
+  - path: plans/codex/handover/PROVIDER-SHIFT-CONTRACT.md
+    sha256: 7dffaa34a299919c7a37efbe345c30ec026646374a4a3ce257b8a2645aa85b82
+    canonical_bytes: 16021
   - path: plans/codex/handover/CURRENT-STATE-AND-ROOT-CAUSES.md
     sha256: b3b5dfb9ff85c8868498c64c61467c11c9ec371cb46f82c390004886deb8994c
     canonical_bytes: 20707
@@ -223,14 +226,17 @@ files:
     sha256: 02212e5ef33f59c7d544440c114aacbcc8faa1e94c4f933d3248ca5f33cf5eb7
     canonical_bytes: 13652
   - path: plans/codex/handover/validate_handover.py
-    sha256: 5bfdf585551bedc35d8e2e8d71806ebe50770175b8ade51460ab2dc58af3ad9f
-    canonical_bytes: 43905
+    sha256: 94ccccffe77e625ab839ac20108aaa99161b5ec9e5fe099932cf307f5fe49e66
+    canonical_bytes: 47838
   - path: reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-ubl-checkpoint-001.json
     sha256: 8bb650bce720b5ee5e2b867037d3da35ee028723cb3ef4eefaf740b7fb03f294
     canonical_bytes: 3639
   - path: reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-ubl-authority-001.json
     sha256: 8872006731413b3f9183e4cc3063e04ea52f2ec3b889926551c2eeeebb5412a3
     canonical_bytes: 3360
+  - path: reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-shift-002.json
+    sha256: 0b3ed13861a7ac73e50f8de8e20035099c090f6b0ea3cfd03e79ac3e95afd7a3
+    canonical_bytes: 3669
   - path: plans/codex/handover/event-26/START-HERE.md
     sha256: ebb85eade29b862213a1cfe147636f1ebe1f4adc8d74b908197e4d656425b2bd
     canonical_bytes: 1508
@@ -248,7 +254,7 @@ files:
     canonical_bytes: 4754
 
 validation:
-  expected_manifest_files: 61
+  expected_manifest_files: 63
   packet_internal_links: PASS
   yaml_json_parse: PASS
   root_manifest_hashes: PASS
@@ -257,5 +263,5 @@ validation:
   controller_task_projection: PASS
   task_registration: PASS
   gitlab_main_ancestry: PASS
-  semantic_negative_controls: PASS_8_OF_8
+  semantic_negative_controls: PASS_11_OF_11
   no_product_or_promotion_mutation: PASS

@@ -2,11 +2,12 @@ schema: ff6/inflight-recovery@2
 artifact_id: FF6-INFLIGHT-RECOVERY-EVENT-26
 visibility: internal
 generated_by: codex
-generated_at: "2026-07-29"
+generated_at: "2026-07-30"
 
 clean_checkpoint:
   status: RESUMABLE
-  source_commit: 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c
+  source_commit: d5e8927a85ed0f2e8c68e1e061084c67b85363c9
+  latest_bounded_implementation_commit: 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c
   controller_handover_source: 18bb295f94e43338611ef88caff073eed17411c9
   controller_event_commit: 15ab7d0455e109bd88289e16d73c0835324a21ab
   implementation_commit: 1fef79b9d6c1ee1f6667e0c5c70435562c97544c
@@ -79,9 +80,35 @@ latest_xliff_refresh_observation:
   action: >-
     Requery coordination. Process absence does not invalidate an ACTIVE lease.
     While the lease is live, preserve the working set and continue only
-    disjoint work such as the UBL stale-SAL closure repair. Do not inherit the
-    identity, freeze mutable bytes as evidence, stage them with the handover,
-    or take over before the coordination plane reports a stale lease.
+    disjoint work. The UBL stale-SAL closure repair is already committed and
+    must not be repeated. Do not inherit the identity, freeze mutable bytes as
+    evidence, stage them with the handover, or take over before the
+    coordination plane reports a stale lease.
+
+current_handover_observation:
+  observed_at: "2026-07-29T20:17:53Z"
+  head: d5e8927a85ed0f2e8c68e1e061084c67b85363c9
+  origin_main: d5e8927a85ed0f2e8c68e1e061084c67b85363c9
+  xliff_owner: agent-codex-20260729T190440-e2dd38
+  xliff_coordination_status: ACTIVE
+  xliff_process_observed: ABSENT
+  dirty_paths:
+    - reports/ff6/xliff-core-authority-candidate-census.yaml
+    - tests/tools/test_extract_sal_facts.py
+    - tools/spec/extract_sal_facts.py
+    - tests/tools/test_extract_sal_facts_candidate_binding.py
+    - tools/spec/xliff_core_candidate_binding.py
+  tracked_dirty_count: 3
+  untracked_dirty_count: 2
+  current_bytes_frozen_as_evidence: false
+  coordination_status_exit: 1
+  coordination_open_conflicts: 17
+  first_safe_disjoint_action: UBL_01_UBL_02_SERIALIZED_STATE_CHECKPOINT
+  recovery_rule: >-
+    Requery all state. If the XLIFF lease remains active, preserve its five
+    dirty paths and append the single Event 27 UBL checkpoint under disjoint
+    plan-control ownership. If the lease becomes stale, use governed takeover
+    and recapture all baselines before adopting any bytes.
 
 committed_parallel_checkpoint:
   observed_at: "2026-07-29T19:52:00Z"
@@ -107,7 +134,8 @@ committed_parallel_checkpoint:
     task owns them. Do not repeat the authority repair or treat the evidence
     as a native taskcard transition, reachable schema graph, product
     implementation, or promotion. At a safe serialized plan-control window,
-    record UBL-01 and UBL-02, then begin UBL-03 only after projections agree.
+    record UBL-01 and UBL-02 as one Event 27, retain XLIFF as the active task,
+    then begin UBL-03 only after event/controller/task projections agree.
 
 resolved_history:
   batch_003:

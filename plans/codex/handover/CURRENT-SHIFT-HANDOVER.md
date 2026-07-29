@@ -4,7 +4,7 @@ artifact_type: provider_neutral_shift_checkpoint
 visibility: internal
 publish_allowed: false
 generated_by: codex
-generated_at: 2026-07-29
+generated_at: 2026-07-30
 ---
 
 # Current Shift Handover
@@ -45,8 +45,9 @@ and an independently computed certification. Current result: `0/6`.
 |---|---|
 | Canonical forge | GitLab |
 | Remote and branch | `origin/main` |
-| Clean source checkpoint | `7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c` |
-| Commit | `fix(ubl): replay current prose authority closure` |
+| Packet input checkpoint | `d5e8927a85ed0f2e8c68e1e061084c67b85363c9` |
+| Latest bounded implementation checkpoint | `7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c` |
+| Packet input commit | `docs(ff6): checkpoint UBL authority handover` |
 | Remote verification | local `HEAD` and `origin/main` equal at capture |
 | Controller state | `CONTRACT` |
 | Native journal head | `FF6-EVENT-000026` |
@@ -60,6 +61,10 @@ Commit `7fc49c29` is a valid bounded UBL evidence checkpoint. It is not a
 native FF6 task-state transition. The journal remains at Event 26 and the UBL
 taskcard remains `READY`; a future serialized plan-control event must record
 the UBL-01 and UBL-02 evidence before the task projection can advance.
+
+The packet input commit `d5e8927a` contains the previously validated handover.
+It adds no product evidence. The commit containing this refresh must descend
+from it and cannot embed its own final hash.
 
 ## 3. What this Codex shift achieved
 
@@ -81,6 +86,10 @@ proof dependency:
    `source_input_digests`, `direct_inputs`, and `invalidation_inputs`.
 9. Committed exactly 20 owned paths and pushed only to GitLab `main`.
 10. Preserved and excluded the active XLIFF worker's five dirty paths.
+11. Reconciled the handover again from GitLab `main`, current coordination,
+    the Event 26 journal, the UBL replay, and the foreign Batch 005 worktree.
+12. Added a provider-shift contract that fixes the cross-provider transaction,
+    Event 27 serialization, clean-checkpoint definition, and handback record.
 
 Key evidence:
 
@@ -128,6 +137,13 @@ absent, but process absence does not invalidate an active lease.
 These bytes are `ACTIVE_XLIFF_BATCH005_FOREIGN_WORKING_SET`, not a clean
 checkpoint and not evidence of completion. Never stage, overwrite, restore,
 delete, stash, or release them under a different provider identity.
+
+At `2026-07-29T20:17:53Z`, the coordination plane still reported that identity
+and its eleven exact leases as `ACTIVE`; Git showed the same five dirty paths.
+The wider coordination status returned exit 1 with 17 open conflicts. One
+relevant preserved conflict is
+`.local/transcripts/ubl-prose-closure-001.json`; it is local transcript state,
+not a reason to invalidate the committed UBL evidence or touch the file.
 
 ## 5. Why reruns were inconsistent
 
@@ -205,9 +221,9 @@ The incoming agent must execute this algorithm, not select work from prose:
    validate its immutable commit and append one serialized event. Do not
    reimplement it.
 6. If the XLIFF lease is still active, do not touch its files. The UBL
-   authority repair is already complete; do not repeat it. Wait for a safe
-   serialization window or execute another controller-authorized,
-   path-disjoint obligation that does not skip a task state.
+   authority repair is already complete; do not repeat it. The first safe
+   path-disjoint action is a single Event 27 plan-control checkpoint that
+   binds UBL-01/UBL-02 while preserving XLIFF as the active task.
 7. If the XLIFF lease is stale and no newer commit exists, use governed
    `takeover --reason`, recapture every current file baseline, rerun the RED
    tests, and continue `XLF-04-BATCH-005`.
@@ -220,6 +236,13 @@ The incoming agent must execute this algorithm, not select work from prose:
     the UBL taskcard through `AUTHORITY_REVALIDATED` and
     `PACKAGE_CENSUS_COMPLETE`; the first UBL implementation step after that is
     UBL-03, the complete reachable schema graph.
+
+The Event 27 checkpoint writes the hash-chained journal first, then the
+controller, UBL taskcard, task index, and refreshed handover. Its task
+projection is `READY -> WORK_IN_PROGRESS`, completed steps are `UBL-01` and
+`UBL-02`, first unmet step is `UBL-03`, and its promotion effect is `none`.
+The controller active task and exact action remain XLIFF Batch 005. See
+`PROVIDER-SHIFT-CONTRACT.md` and `PARALLEL-UBL-CHECKPOINT.yaml`.
 
 ## 8. Exact commands for the incoming shift
 
@@ -234,6 +257,7 @@ git fetch origin main
 git status --short --branch
 git rev-parse HEAD
 git rev-parse origin/main
+git merge-base --is-ancestor d5e8927a85ed0f2e8c68e1e061084c67b85363c9 origin/main
 git merge-base --is-ancestor 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c origin/main
 .venv\Scripts\python.exe plans\codex\handover\validate_handover.py --self-test
 .venv\Scripts\python.exe -m tools.supervisor.coordination status
@@ -243,15 +267,16 @@ Then read, in order:
 
 1. `AGENTS.md`;
 2. `plans/codex/handover/START-HERE.md`;
-3. this file;
-4. `plans/strategic/ff6/product-goal.yaml`;
-5. `plans/strategic/autonomous-six-python-production-execution-plan.md`;
-6. `plans/strategic/ff6/events.jsonl`;
-7. `plans/strategic/ff6/controller-state.yaml`;
-8. `plans/strategic/ff6/current-gaps.yaml`;
-9. `taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md`;
-10. `taskcards/TC-FF6-UBL-TYPING-001.md`;
-11. `plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml`.
+3. `plans/codex/handover/PROVIDER-SHIFT-CONTRACT.md`;
+4. this file;
+5. `plans/strategic/ff6/product-goal.yaml`;
+6. `plans/strategic/autonomous-six-python-production-execution-plan.md`;
+7. `plans/strategic/ff6/events.jsonl`;
+8. `plans/strategic/ff6/controller-state.yaml`;
+9. `plans/strategic/ff6/current-gaps.yaml`;
+10. `taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md`;
+11. `taskcards/TC-FF6-UBL-TYPING-001.md`;
+12. `plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml`.
 
 For Codex, also read `docs/governance/codex-adapter.md`. Claude follows its
 ambient hooks plus the same coordination contract.
