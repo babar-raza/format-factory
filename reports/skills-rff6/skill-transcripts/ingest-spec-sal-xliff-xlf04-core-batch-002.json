@@ -1,0 +1,96 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "ingest-spec-sal-xliff-xlf04-core-batch-002",
+  "skill_id": "ingest-spec-sal",
+  "mode": "live",
+  "timestamp": "2026-07-29T15:55:04.8378817Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "task_step": "XLF-04",
+    "batch_id": "XLF-04-BATCH-002",
+    "spec_body": "OASIS XLIFF Technical Committee",
+    "spec_source_uri": "Pinned local OASIS XLIFF 2.0 and 2.1 Standard authority packages",
+    "spec_version": "XLIFF 2.0 and XLIFF 2.1",
+    "authority_2_0": ".local/format-contracts/acquired/xliff/src-xlf-001.bin",
+    "authority_2_0_sha256": "aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055",
+    "authority_2_1": ".local/format-contracts/acquired/xliff/src-xlf-002.bin",
+    "authority_2_1_sha256": "73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751",
+    "output": "reports/ff6/xliff-core-obligation-inventory.yaml",
+    "target_fact_count_min": 19
+  },
+  "allowed_files": [
+    "tools/spec/extract_sal_facts.py",
+    "reports/ff6/xliff-core-obligation-inventory.yaml",
+    "reports/skills-rff6/skill-transcripts/ingest-spec-sal-xliff-xlf04-core-batch-002.json"
+  ],
+  "actual_files_changed": [
+    "tools/spec/extract_sal_facts.py",
+    "reports/ff6/xliff-core-obligation-inventory.yaml",
+    "reports/skills-rff6/skill-transcripts/ingest-spec-sal-xliff-xlf04-core-batch-002.json"
+  ],
+  "tests_run": [
+    "python tools/spec/extract_sal_facts.py --artifact core-obligations with pinned XLIFF 2.0 and 2.1 inputs: PASS.",
+    "the same command with --check against reports/ff6/xliff-core-obligation-inventory.yaml: PASS.",
+    "three isolated real-authority generations: PASS, byte-identical SHA-256 5930f1e28d21e277325c9a88ad8486ce9076ff1aa680ae21979440fd85d3244b.",
+    "default matrix --check: PASS at unchanged SHA-256 9f4ea4b8b71378217af26c0fb2b97a759817a0aca6c64255b8cd55170c60a090.",
+    "python -m tools.format_contract.authority_materializer audit --format xliff --contracts: 5 MATCH.",
+    "python -m pytest tests/tools/test_extract_sal_facts.py -q: 24 passed.",
+    "Ruff, strict Mypy, Pyright 1.1.411, and bytecode compilation: PASS."
+  ],
+  "result": "PASS",
+  "evidence": {
+    "inventory_schema": "ff6/xliff-core-obligation-inventory@1",
+    "inventory_sha256": "5930f1e28d21e277325c9a88ad8486ce9076ff1aa680ae21979440fd85d3244b",
+    "obligation_count": 19,
+    "covered_categories": [
+      "agent_processing",
+      "document_structure",
+      "extension_preservation",
+      "hierarchy_cardinality",
+      "identifiers_references_inheritance",
+      "inline_code_semantics",
+      "language_direction_whitespace",
+      "segmentation",
+      "source_target_correspondence",
+      "state"
+    ],
+    "remaining_categories": [
+      "semantic_roundtrip_canonical_output",
+      "xml_security_resource_limits"
+    ],
+    "stable_profiles": [
+      "xliff_2.0",
+      "xliff_2.1"
+    ],
+    "all_locations_digest_bound": true,
+    "all_locations_resolved": true,
+    "all_obligations_require_positive_and_rejection_evidence": true,
+    "batch_provenance_computed": true,
+    "later_batch_cannot_compile_as_earlier_batch": true,
+    "category_presence_self_certifies_completeness": false,
+    "completeness_basis": "EXPECTED_OBLIGATION_DENOMINATOR_ABSENT",
+    "verification_status": "SOURCE_BOUND_UNVERIFIED",
+    "xlf_04_complete": false,
+    "truth_boundary": "Nineteen cumulative Core obligations are exactly source-bound. Two top-level categories and an explicit exhaustive Core obligation denominator remain absent; the canonical SAL store, capability universe, product source, certification, promotion, and release state are unchanged."
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for XLF-04-BATCH-002",
+    "2_required_evidence_present": "YES for this bounded batch",
+    "3_evidence_sufficient": "YES for source binding and deterministic generation of 19 cumulative obligations; not for complete XLF-04",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, no new contradiction was found",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

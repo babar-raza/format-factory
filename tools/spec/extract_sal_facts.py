@@ -887,6 +887,8 @@ def _core_obligation_rows(
     seeds: Iterable[Mapping[str, Any]],
     sources: Mapping[str, ProfileSource],
     archives: Mapping[str, Mapping[str, bytes]],
+    *,
+    batch_id: str,
 ) -> list[dict[str, Any]]:
     """Validate and bind curated Core rules to exact authority paragraphs."""
 
@@ -899,6 +901,7 @@ def _core_obligation_rows(
     }
     required = {
         "obligation_id",
+        "introduced_in_batch",
         "stable_profiles",
         "owner",
         "category",
@@ -931,6 +934,19 @@ def _core_obligation_rows(
         if obligation_id in seen:
             raise ExtractionError(f"duplicate Core obligation_id: {obligation_id}")
         seen.add(obligation_id)
+
+        introduced_in_batch = str(raw["introduced_in_batch"])
+        if not re.fullmatch(r"XLF-04-BATCH-[0-9]{3}", introduced_in_batch):
+            raise ExtractionError(
+                f"{obligation_id} has invalid introduced_in_batch"
+            )
+        requested_sequence = int(batch_id.rsplit("-", 1)[-1])
+        introduced_sequence = int(introduced_in_batch.rsplit("-", 1)[-1])
+        if introduced_sequence > requested_sequence:
+            raise ExtractionError(
+                f"{obligation_id} was introduced after requested batch "
+                f"{batch_id}: {introduced_in_batch}"
+            )
 
         stable_profiles = sorted(set(map(str, raw["stable_profiles"])))
         if (
@@ -1088,6 +1104,7 @@ def _core_obligation_rows(
         rows.append(
             {
                 "obligation_id": obligation_id,
+                "introduced_in_batch": introduced_in_batch,
                 "stable_profiles": stable_profiles,
                 "owner": owner,
                 "category": category,
@@ -1140,6 +1157,7 @@ def compile_xliff_core_obligations(
         obligation_seeds,
         sources,
         archives,
+        batch_id=batch_id,
     )
     covered_categories = sorted({str(row["category"]) for row in rows})
     remaining_categories = sorted(
@@ -1173,7 +1191,10 @@ def compile_xliff_core_obligations(
         complete = not remaining_categories and not missing_expected_ids
     return {
         "schema": "ff6/xliff-core-obligation-inventory@1",
-        "artifact_id": "FF6-XLIFF-CORE-OBLIGATIONS-XLF04-BATCH001",
+        "artifact_id": (
+            "FF6-XLIFF-CORE-OBLIGATIONS-"
+            + batch_id.replace("XLF-04-BATCH-", "XLF04-BATCH")
+        ),
         "artifact_type": "normative_obligation_inventory",
         "visibility": "generated",
         "publish_allowed": False,
@@ -1205,7 +1226,7 @@ def compile_xliff_core_obligations(
 
 
 def _default_core_obligation_seeds() -> list[dict[str, Any]]:
-    """Return the first bounded, curated XLF-04 Core obligation batch."""
+    """Return the bounded, curated XLF-04 Core obligation batches."""
 
     def locations(section_id: str, source_anchor: str) -> list[dict[str, Any]]:
         return [
@@ -1235,7 +1256,7 @@ def _default_core_obligation_seeds() -> list[dict[str, Any]]:
         "First source-located XLF-04 batch. This identity remains stable while "
         "later batches add the uncaptured Core categories and finer rules."
     )
-    return [
+    seeds = [
         {
             "obligation_id": "SAL-XLIFF-CORE-DOCUMENT-ROOT-001",
             "stable_profiles": ["xliff_2.0", "xliff_2.1"],
@@ -1358,6 +1379,339 @@ def _default_core_obligation_seeds() -> list[dict[str, Any]]:
             "interpretation_note": note,
         },
     ]
+    for seed in seeds:
+        seed["introduced_in_batch"] = "XLF-04-BATCH-001"
+
+    batch_two_note = (
+        "Second source-located XLF-04 batch covering stable identifier, "
+        "inheritance, language, direction, whitespace, and source-target rules."
+    )
+    seeds.extend(
+        [
+            {
+                "obligation_id": "SAL-XLIFF-CORE-ID-FILE-UNIQUE-001",
+                "introduced_in_batch": "XLF-04-BATCH-002",
+                "stable_profiles": ["xliff_2.0", "xliff_2.1"],
+                "owner": "core:identifiers",
+                "category": "identifiers_references_inheritance",
+                "normalized_rule": (
+                    "Require every file id value to be unique among all file "
+                    "identifiers in the enclosing XLIFF document."
+                ),
+                "requirement_class": "SEMANTIC_CONSTRAINT",
+                "normative_level": "MUST",
+                "authority_locations": locations(
+                    "id",
+                    "The value must be unique among all <file> id attribute "
+                    "values",
+                ),
+                "evidence_requirements": {
+                    "positive": [
+                        "validate a document containing distinct file identifiers"
+                    ],
+                    "rejection": [
+                        "reject duplicate file identifiers in one XLIFF document"
+                    ],
+                },
+                "interpretation_note": batch_two_note,
+            },
+            {
+                "obligation_id": "SAL-XLIFF-CORE-REFERENCE-DATAREF-001",
+                "introduced_in_batch": "XLF-04-BATCH-002",
+                "stable_profiles": ["xliff_2.0", "xliff_2.1"],
+                "owner": "core:references",
+                "category": "identifiers_references_inheritance",
+                "normalized_rule": (
+                    "Resolve every dataRef value to a data element identifier "
+                    "declared in the same enclosing unit."
+                ),
+                "requirement_class": "SEMANTIC_CONSTRAINT",
+                "normative_level": "MUST",
+                "authority_locations": locations(
+                    "dataref",
+                    "must be the value of the id attribute of one of the "
+                    "<data> element listed in the same <unit> element",
+                ),
+                "evidence_requirements": {
+                    "positive": [
+                        "resolve dataRef to a data element in the same unit"
+                    ],
+                    "rejection": [
+                        "reject a dataRef that targets a missing or foreign-unit id"
+                    ],
+                },
+                "interpretation_note": batch_two_note,
+            },
+            {
+                "obligation_id": (
+                    "SAL-XLIFF-CORE-REFERENCE-FRAGMENT-INHERIT-001"
+                ),
+                "introduced_in_batch": "XLF-04-BATCH-002",
+                "stable_profiles": ["xliff_2.0", "xliff_2.1"],
+                "owner": "core:references",
+                "category": "identifiers_references_inheritance",
+                "normalized_rule": (
+                    "Resolve a relative fragment by inheriting omitted file, "
+                    "group, or unit selectors from its immediate enclosure."
+                ),
+                "requirement_class": "PROCESSING_REQUIREMENT",
+                "normative_level": "MUST",
+                "authority_locations": locations(
+                    "fragid",
+                    "Any unit, group or file selector missing to resolve the "
+                    "relative reference is obtained from the immediate enclosing",
+                ),
+                "evidence_requirements": {
+                    "positive": [
+                        "resolve an omitted fragment selector from its enclosure"
+                    ],
+                    "rejection": [
+                        "reject a relative fragment whose inherited path is invalid"
+                    ],
+                },
+                "interpretation_note": batch_two_note,
+            },
+            {
+                "obligation_id": "SAL-XLIFF-CORE-INHERIT-TRANSLATE-001",
+                "introduced_in_batch": "XLF-04-BATCH-002",
+                "stable_profiles": ["xliff_2.0", "xliff_2.1"],
+                "owner": "core:inheritance",
+                "category": "identifiers_references_inheritance",
+                "normalized_rule": (
+                    "When translate is absent, resolve its value from the "
+                    "translate attribute of the immediate parent element."
+                ),
+                "requirement_class": "PROCESSING_REQUIREMENT",
+                "normative_level": "MUST",
+                "authority_locations": locations(
+                    "translate",
+                    "The value of the translate attribute of its parent element",
+                ),
+                "evidence_requirements": {
+                    "positive": [
+                        "resolve an omitted translate value from the parent"
+                    ],
+                    "rejection": [
+                        "reject behavior that ignores the inherited translate value"
+                    ],
+                },
+                "interpretation_note": batch_two_note,
+            },
+            {
+                "obligation_id": "SAL-XLIFF-CORE-LANGUAGE-SOURCE-001",
+                "introduced_in_batch": "XLF-04-BATCH-002",
+                "stable_profiles": ["xliff_2.0", "xliff_2.1"],
+                "owner": "core:language",
+                "category": "language_direction_whitespace",
+                "normalized_rule": (
+                    "Resolve an omitted source xml:lang value from the srcLang "
+                    "attribute of the enclosing XLIFF element."
+                ),
+                "requirement_class": "PROCESSING_REQUIREMENT",
+                "normative_level": "MUST",
+                "authority_locations": locations(
+                    "xml_lang",
+                    "The value set in the srcLang attribute",
+                ),
+                "evidence_requirements": {
+                    "positive": [
+                        "resolve source language from the enclosing srcLang"
+                    ],
+                    "rejection": [
+                        "reject a source language resolution that contradicts srcLang"
+                    ],
+                },
+                "interpretation_note": batch_two_note,
+            },
+            {
+                "obligation_id": "SAL-XLIFF-CORE-LANGUAGE-TARGET-001",
+                "introduced_in_batch": "XLF-04-BATCH-002",
+                "stable_profiles": ["xliff_2.0", "xliff_2.1"],
+                "owner": "core:language",
+                "category": "language_direction_whitespace",
+                "normalized_rule": (
+                    "Resolve an omitted target xml:lang value from the trgLang "
+                    "attribute of the enclosing XLIFF element."
+                ),
+                "requirement_class": "PROCESSING_REQUIREMENT",
+                "normative_level": "MUST",
+                "authority_locations": locations(
+                    "xml_lang",
+                    "The value set in the trgLang attribute",
+                ),
+                "evidence_requirements": {
+                    "positive": [
+                        "resolve target language from the enclosing trgLang"
+                    ],
+                    "rejection": [
+                        "reject a target language resolution that contradicts trgLang"
+                    ],
+                },
+                "interpretation_note": batch_two_note,
+            },
+            {
+                "obligation_id": "SAL-XLIFF-CORE-DIRECTION-SOURCE-001",
+                "introduced_in_batch": "XLF-04-BATCH-002",
+                "stable_profiles": ["xliff_2.0", "xliff_2.1"],
+                "owner": "core:directionality",
+                "category": "language_direction_whitespace",
+                "normalized_rule": (
+                    "When source direction is absent, inherit srcDir from the "
+                    "immediate parent element."
+                ),
+                "requirement_class": "PROCESSING_REQUIREMENT",
+                "normative_level": "MUST",
+                "authority_locations": locations(
+                    "srcdir",
+                    "The value of the srcDir attribute of its parent element",
+                ),
+                "evidence_requirements": {
+                    "positive": [
+                        "resolve source direction from the immediate parent"
+                    ],
+                    "rejection": [
+                        "reject source-direction behavior that ignores inheritance"
+                    ],
+                },
+                "interpretation_note": batch_two_note,
+            },
+            {
+                "obligation_id": "SAL-XLIFF-CORE-DIRECTION-TARGET-001",
+                "introduced_in_batch": "XLF-04-BATCH-002",
+                "stable_profiles": ["xliff_2.0", "xliff_2.1"],
+                "owner": "core:directionality",
+                "category": "language_direction_whitespace",
+                "normalized_rule": (
+                    "When target direction is absent, inherit trgDir from the "
+                    "immediate parent element."
+                ),
+                "requirement_class": "PROCESSING_REQUIREMENT",
+                "normative_level": "MUST",
+                "authority_locations": locations(
+                    "trgdir",
+                    "The value of the trgDir attribute of its parent element",
+                ),
+                "evidence_requirements": {
+                    "positive": [
+                        "resolve target direction from the immediate parent"
+                    ],
+                    "rejection": [
+                        "reject target-direction behavior that ignores inheritance"
+                    ],
+                },
+                "interpretation_note": batch_two_note,
+            },
+            {
+                "obligation_id": "SAL-XLIFF-CORE-WHITESPACE-INHERIT-001",
+                "introduced_in_batch": "XLF-04-BATCH-002",
+                "stable_profiles": ["xliff_2.0", "xliff_2.1"],
+                "owner": "core:whitespace",
+                "category": "language_direction_whitespace",
+                "normalized_rule": (
+                    "When xml:space is absent, inherit its whitespace handling "
+                    "value from the immediate parent element."
+                ),
+                "requirement_class": "PRESERVATION_REQUIREMENT",
+                "normative_level": "MUST",
+                "authority_locations": locations(
+                    "xml_space",
+                    "The value of the xml:space attribute of its parent element",
+                ),
+                "evidence_requirements": {
+                    "positive": [
+                        "preserve whitespace according to inherited xml:space"
+                    ],
+                    "rejection": [
+                        "reject normalization that violates inherited xml:space"
+                    ],
+                },
+                "interpretation_note": batch_two_note,
+            },
+            {
+                "obligation_id": (
+                    "SAL-XLIFF-CORE-SOURCE-TARGET-OPTIONAL-001"
+                ),
+                "introduced_in_batch": "XLF-04-BATCH-002",
+                "stable_profiles": ["xliff_2.0", "xliff_2.1"],
+                "owner": "core:source-target",
+                "category": "source_target_correspondence",
+                "normalized_rule": (
+                    "Require each segment to contain exactly one source and "
+                    "allow at most one optional target element."
+                ),
+                "requirement_class": "CARDINALITY_CONSTRAINT",
+                "normative_level": "MUST",
+                "authority_locations": locations(
+                    "segmentationRepresentation",
+                    "Each <segment> element has one <source> element",
+                ),
+                "evidence_requirements": {
+                    "positive": [
+                        "parse segments with one source and zero or one target"
+                    ],
+                    "rejection": [
+                        "reject a segment with missing source or multiple targets"
+                    ],
+                },
+                "interpretation_note": batch_two_note,
+            },
+            {
+                "obligation_id": "SAL-XLIFF-CORE-TARGET-LANGUAGE-001",
+                "introduced_in_batch": "XLF-04-BATCH-002",
+                "stable_profiles": ["xliff_2.0", "xliff_2.1"],
+                "owner": "core:source-target",
+                "category": "source_target_correspondence",
+                "normalized_rule": (
+                    "Require a target xml:lang value, whether explicit or "
+                    "inherited, to equal the enclosing document trgLang."
+                ),
+                "requirement_class": "SEMANTIC_CONSTRAINT",
+                "normative_level": "MUST",
+                "authority_locations": locations(
+                    "target",
+                    "the explicit or inherited value of the optional xml:lang "
+                    "must be equal to the value of the trgLang attribute",
+                ),
+                "evidence_requirements": {
+                    "positive": [
+                        "validate target language equal to the enclosing trgLang"
+                    ],
+                    "rejection": [
+                        "reject target language different from enclosing trgLang"
+                    ],
+                },
+                "interpretation_note": batch_two_note,
+            },
+            {
+                "obligation_id": "SAL-XLIFF-CORE-TARGET-ORDER-001",
+                "introduced_in_batch": "XLF-04-BATCH-002",
+                "stable_profiles": ["xliff_2.0", "xliff_2.1"],
+                "owner": "core:source-target",
+                "category": "source_target_correspondence",
+                "normalized_rule": (
+                    "When target order is absent, derive its order from the "
+                    "corresponding sibling source element."
+                ),
+                "requirement_class": "PROCESSING_REQUIREMENT",
+                "normative_level": "MUST",
+                "authority_locations": locations(
+                    "order",
+                    "When order is not explicitly set, the <target> order "
+                    "corresponds to its sibling <source>",
+                ),
+                "evidence_requirements": {
+                    "positive": [
+                        "derive implicit target order from its sibling source"
+                    ],
+                    "rejection": [
+                        "reject ordering behavior that loses source correspondence"
+                    ],
+                },
+                "interpretation_note": batch_two_note,
+            },
+        ]
+    )
+    return seeds
 
 
 def _default_requirement_seeds() -> list[dict[str, Any]]:
@@ -1710,7 +2064,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         artifact = compile_xliff_core_obligations(
             profile_sources,
             obligation_seeds=_default_core_obligation_seeds(),
-            batch_id="XLF-04-BATCH-001",
+            batch_id="XLF-04-BATCH-002",
         )
         row_count = artifact["obligation_count"]
     else:

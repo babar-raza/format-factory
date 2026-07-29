@@ -1,29 +1,29 @@
 schema: ff6/xliff-core-obligation-inventory@1
-artifact_id: FF6-XLIFF-CORE-OBLIGATIONS-XLF04-BATCH001
+artifact_id: FF6-XLIFF-CORE-OBLIGATIONS-XLF04-BATCH002
 artifact_type: normative_obligation_inventory
 visibility: generated
 publish_allowed: false
 generated_by: codex
 format_id: xliff
-batch_id: XLF-04-BATCH-001
+batch_id: XLF-04-BATCH-002
 status: SOURCE_LOCATED_PARTIAL
 stable_profiles:
 - xliff_2.0
 - xliff_2.1
-obligation_count: 7
+obligation_count: 19
 covered_categories:
 - agent_processing
 - document_structure
 - extension_preservation
 - hierarchy_cardinality
+- identifiers_references_inheritance
 - inline_code_semantics
+- language_direction_whitespace
 - segmentation
+- source_target_correspondence
 - state
 remaining_categories:
-- identifiers_references_inheritance
-- language_direction_whitespace
 - semantic_roundtrip_canonical_output
-- source_target_correspondence
 - xml_security_resource_limits
 completeness_basis: EXPECTED_OBLIGATION_DENOMINATOR_ABSENT
 expected_obligation_count: null
@@ -31,6 +31,7 @@ missing_expected_obligation_ids: []
 complete: false
 obligations:
 - obligation_id: SAL-XLIFF-CORE-AGENT-INLINE-001
+  introduced_in_batch: XLF-04-BATCH-001
   stable_profiles:
   - xliff_2.0
   - xliff_2.1
@@ -67,7 +68,84 @@ obligations:
     - execute a discriminating non-conforming example and verify diagnostics
   interpretation_note: First source-located XLF-04 batch. This identity remains stable while later batches add the uncaptured Core categories and finer rules.
   verification_status: SOURCE_BOUND_UNVERIFIED
+- obligation_id: SAL-XLIFF-CORE-DIRECTION-SOURCE-001
+  introduced_in_batch: XLF-04-BATCH-002
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  owner: core:directionality
+  category: language_direction_whitespace
+  normalized_rule: When source direction is absent, inherit srcDir from the immediate parent element.
+  requirement_class: PROCESSING_REQUIREMENT
+  normative_level: MUST
+  authority_locations:
+  - profile: xliff_2.0
+    authority_source_id: SRC-XLF-001
+    source_sha256: aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055
+    location_kind: prose_paragraph
+    member: xliff-core-v2.0-os.xml
+    member_sha256: 07059d426de1e839540e5e84e0e061c4a6d5ef1a1b7e71ddf75bf5bd11518b73
+    section_id: srcdir
+    paragraph_index: 6
+    source_anchor: The value of the srcDir attribute of its parent element
+    source_text_sha256: e85db558b7bfc0908fb698388210a09439f6d2bc309997e9d31fed7ef0a5a384
+  - profile: xliff_2.1
+    authority_source_id: SRC-XLF-002
+    source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    location_kind: prose_paragraph
+    member: xliff-core-v2.1-os.xml
+    member_sha256: e8c72ec2314e1025f25886cd0ea2b6c10aa2405bd292026383afca2207c44e5b
+    section_id: srcdir
+    paragraph_index: 6
+    source_anchor: The value of the srcDir attribute of its parent element
+    source_text_sha256: e85db558b7bfc0908fb698388210a09439f6d2bc309997e9d31fed7ef0a5a384
+  evidence_requirements:
+    positive:
+    - resolve source direction from the immediate parent
+    rejection:
+    - reject source-direction behavior that ignores inheritance
+  interpretation_note: Second source-located XLF-04 batch covering stable identifier, inheritance, language, direction, whitespace, and source-target rules.
+  verification_status: SOURCE_BOUND_UNVERIFIED
+- obligation_id: SAL-XLIFF-CORE-DIRECTION-TARGET-001
+  introduced_in_batch: XLF-04-BATCH-002
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  owner: core:directionality
+  category: language_direction_whitespace
+  normalized_rule: When target direction is absent, inherit trgDir from the immediate parent element.
+  requirement_class: PROCESSING_REQUIREMENT
+  normative_level: MUST
+  authority_locations:
+  - profile: xliff_2.0
+    authority_source_id: SRC-XLF-001
+    source_sha256: aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055
+    location_kind: prose_paragraph
+    member: xliff-core-v2.0-os.xml
+    member_sha256: 07059d426de1e839540e5e84e0e061c4a6d5ef1a1b7e71ddf75bf5bd11518b73
+    section_id: trgdir
+    paragraph_index: 6
+    source_anchor: The value of the trgDir attribute of its parent element
+    source_text_sha256: 2b88748e85cc596d32c25057d7eb93777c9eb1d5b11f812549f2d2fc89dfdb3a
+  - profile: xliff_2.1
+    authority_source_id: SRC-XLF-002
+    source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    location_kind: prose_paragraph
+    member: xliff-core-v2.1-os.xml
+    member_sha256: e8c72ec2314e1025f25886cd0ea2b6c10aa2405bd292026383afca2207c44e5b
+    section_id: trgdir
+    paragraph_index: 6
+    source_anchor: The value of the trgDir attribute of its parent element
+    source_text_sha256: 2b88748e85cc596d32c25057d7eb93777c9eb1d5b11f812549f2d2fc89dfdb3a
+  evidence_requirements:
+    positive:
+    - resolve target direction from the immediate parent
+    rejection:
+    - reject target-direction behavior that ignores inheritance
+  interpretation_note: Second source-located XLF-04 batch covering stable identifier, inheritance, language, direction, whitespace, and source-target rules.
+  verification_status: SOURCE_BOUND_UNVERIFIED
 - obligation_id: SAL-XLIFF-CORE-DOCUMENT-ROOT-001
+  introduced_in_batch: XLF-04-BATCH-001
   stable_profiles:
   - xliff_2.0
   - xliff_2.1
@@ -105,6 +183,7 @@ obligations:
   interpretation_note: First source-located XLF-04 batch. This identity remains stable while later batches add the uncaptured Core categories and finer rules.
   verification_status: SOURCE_BOUND_UNVERIFIED
 - obligation_id: SAL-XLIFF-CORE-EXTENSION-PRESERVE-001
+  introduced_in_batch: XLF-04-BATCH-001
   stable_profiles:
   - xliff_2.0
   - xliff_2.1
@@ -142,6 +221,7 @@ obligations:
   interpretation_note: First source-located XLF-04 batch. This identity remains stable while later batches add the uncaptured Core categories and finer rules.
   verification_status: SOURCE_BOUND_UNVERIFIED
 - obligation_id: SAL-XLIFF-CORE-HIERARCHY-UNIT-001
+  introduced_in_batch: XLF-04-BATCH-001
   stable_profiles:
   - xliff_2.0
   - xliff_2.1
@@ -178,7 +258,84 @@ obligations:
     - execute a discriminating non-conforming example and verify diagnostics
   interpretation_note: First source-located XLF-04 batch. This identity remains stable while later batches add the uncaptured Core categories and finer rules.
   verification_status: SOURCE_BOUND_UNVERIFIED
+- obligation_id: SAL-XLIFF-CORE-ID-FILE-UNIQUE-001
+  introduced_in_batch: XLF-04-BATCH-002
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  owner: core:identifiers
+  category: identifiers_references_inheritance
+  normalized_rule: Require every file id value to be unique among all file identifiers in the enclosing XLIFF document.
+  requirement_class: SEMANTIC_CONSTRAINT
+  normative_level: MUST
+  authority_locations:
+  - profile: xliff_2.0
+    authority_source_id: SRC-XLF-001
+    source_sha256: aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055
+    location_kind: prose_paragraph
+    member: xliff-core-v2.0-os.xml
+    member_sha256: 07059d426de1e839540e5e84e0e061c4a6d5ef1a1b7e71ddf75bf5bd11518b73
+    section_id: id
+    paragraph_index: 3
+    source_anchor: The value must be unique among all <file> id attribute values
+    source_text_sha256: af173b2ba0de914da1f8dcc3d4b983be72a56d27df4c75980258a3d58886e6a7
+  - profile: xliff_2.1
+    authority_source_id: SRC-XLF-002
+    source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    location_kind: prose_paragraph
+    member: xliff-core-v2.1-os.xml
+    member_sha256: e8c72ec2314e1025f25886cd0ea2b6c10aa2405bd292026383afca2207c44e5b
+    section_id: id
+    paragraph_index: 3
+    source_anchor: The value must be unique among all <file> id attribute values
+    source_text_sha256: af173b2ba0de914da1f8dcc3d4b983be72a56d27df4c75980258a3d58886e6a7
+  evidence_requirements:
+    positive:
+    - validate a document containing distinct file identifiers
+    rejection:
+    - reject duplicate file identifiers in one XLIFF document
+  interpretation_note: Second source-located XLF-04 batch covering stable identifier, inheritance, language, direction, whitespace, and source-target rules.
+  verification_status: SOURCE_BOUND_UNVERIFIED
+- obligation_id: SAL-XLIFF-CORE-INHERIT-TRANSLATE-001
+  introduced_in_batch: XLF-04-BATCH-002
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  owner: core:inheritance
+  category: identifiers_references_inheritance
+  normalized_rule: When translate is absent, resolve its value from the translate attribute of the immediate parent element.
+  requirement_class: PROCESSING_REQUIREMENT
+  normative_level: MUST
+  authority_locations:
+  - profile: xliff_2.0
+    authority_source_id: SRC-XLF-001
+    source_sha256: aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055
+    location_kind: prose_paragraph
+    member: xliff-core-v2.0-os.xml
+    member_sha256: 07059d426de1e839540e5e84e0e061c4a6d5ef1a1b7e71ddf75bf5bd11518b73
+    section_id: translate
+    paragraph_index: 6
+    source_anchor: The value of the translate attribute of its parent element
+    source_text_sha256: 3275289621a8c98cf9f55d8682a8063e59854ddd2b13ef196cda123620766809
+  - profile: xliff_2.1
+    authority_source_id: SRC-XLF-002
+    source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    location_kind: prose_paragraph
+    member: xliff-core-v2.1-os.xml
+    member_sha256: e8c72ec2314e1025f25886cd0ea2b6c10aa2405bd292026383afca2207c44e5b
+    section_id: translate
+    paragraph_index: 6
+    source_anchor: The value of the translate attribute of its parent element
+    source_text_sha256: 3275289621a8c98cf9f55d8682a8063e59854ddd2b13ef196cda123620766809
+  evidence_requirements:
+    positive:
+    - resolve an omitted translate value from the parent
+    rejection:
+    - reject behavior that ignores the inherited translate value
+  interpretation_note: Second source-located XLF-04 batch covering stable identifier, inheritance, language, direction, whitespace, and source-target rules.
+  verification_status: SOURCE_BOUND_UNVERIFIED
 - obligation_id: SAL-XLIFF-CORE-INLINE-SPANNING-001
+  introduced_in_batch: XLF-04-BATCH-001
   stable_profiles:
   - xliff_2.0
   - xliff_2.1
@@ -215,7 +372,160 @@ obligations:
     - execute a discriminating non-conforming example and verify diagnostics
   interpretation_note: First source-located XLF-04 batch. This identity remains stable while later batches add the uncaptured Core categories and finer rules.
   verification_status: SOURCE_BOUND_UNVERIFIED
+- obligation_id: SAL-XLIFF-CORE-LANGUAGE-SOURCE-001
+  introduced_in_batch: XLF-04-BATCH-002
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  owner: core:language
+  category: language_direction_whitespace
+  normalized_rule: Resolve an omitted source xml:lang value from the srcLang attribute of the enclosing XLIFF element.
+  requirement_class: PROCESSING_REQUIREMENT
+  normative_level: MUST
+  authority_locations:
+  - profile: xliff_2.0
+    authority_source_id: SRC-XLF-001
+    source_sha256: aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055
+    location_kind: prose_paragraph
+    member: xliff-core-v2.0-os.xml
+    member_sha256: 07059d426de1e839540e5e84e0e061c4a6d5ef1a1b7e71ddf75bf5bd11518b73
+    section_id: xml_lang
+    paragraph_index: 4
+    source_anchor: The value set in the srcLang attribute
+    source_text_sha256: 35d46e5098e621cfd4dd87f10aae83d133f80bb4a21f22ddf744e2aa7d46a180
+  - profile: xliff_2.1
+    authority_source_id: SRC-XLF-002
+    source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    location_kind: prose_paragraph
+    member: xliff-core-v2.1-os.xml
+    member_sha256: e8c72ec2314e1025f25886cd0ea2b6c10aa2405bd292026383afca2207c44e5b
+    section_id: xml_lang
+    paragraph_index: 4
+    source_anchor: The value set in the srcLang attribute
+    source_text_sha256: 35d46e5098e621cfd4dd87f10aae83d133f80bb4a21f22ddf744e2aa7d46a180
+  evidence_requirements:
+    positive:
+    - resolve source language from the enclosing srcLang
+    rejection:
+    - reject a source language resolution that contradicts srcLang
+  interpretation_note: Second source-located XLF-04 batch covering stable identifier, inheritance, language, direction, whitespace, and source-target rules.
+  verification_status: SOURCE_BOUND_UNVERIFIED
+- obligation_id: SAL-XLIFF-CORE-LANGUAGE-TARGET-001
+  introduced_in_batch: XLF-04-BATCH-002
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  owner: core:language
+  category: language_direction_whitespace
+  normalized_rule: Resolve an omitted target xml:lang value from the trgLang attribute of the enclosing XLIFF element.
+  requirement_class: PROCESSING_REQUIREMENT
+  normative_level: MUST
+  authority_locations:
+  - profile: xliff_2.0
+    authority_source_id: SRC-XLF-001
+    source_sha256: aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055
+    location_kind: prose_paragraph
+    member: xliff-core-v2.0-os.xml
+    member_sha256: 07059d426de1e839540e5e84e0e061c4a6d5ef1a1b7e71ddf75bf5bd11518b73
+    section_id: xml_lang
+    paragraph_index: 6
+    source_anchor: The value set in the trgLang attribute
+    source_text_sha256: 2b0c4c1da908237b29414608eb38b8252639ee559dcfada6456c441e8918dbe9
+  - profile: xliff_2.1
+    authority_source_id: SRC-XLF-002
+    source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    location_kind: prose_paragraph
+    member: xliff-core-v2.1-os.xml
+    member_sha256: e8c72ec2314e1025f25886cd0ea2b6c10aa2405bd292026383afca2207c44e5b
+    section_id: xml_lang
+    paragraph_index: 6
+    source_anchor: The value set in the trgLang attribute
+    source_text_sha256: 2b0c4c1da908237b29414608eb38b8252639ee559dcfada6456c441e8918dbe9
+  evidence_requirements:
+    positive:
+    - resolve target language from the enclosing trgLang
+    rejection:
+    - reject a target language resolution that contradicts trgLang
+  interpretation_note: Second source-located XLF-04 batch covering stable identifier, inheritance, language, direction, whitespace, and source-target rules.
+  verification_status: SOURCE_BOUND_UNVERIFIED
+- obligation_id: SAL-XLIFF-CORE-REFERENCE-DATAREF-001
+  introduced_in_batch: XLF-04-BATCH-002
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  owner: core:references
+  category: identifiers_references_inheritance
+  normalized_rule: Resolve every dataRef value to a data element identifier declared in the same enclosing unit.
+  requirement_class: SEMANTIC_CONSTRAINT
+  normative_level: MUST
+  authority_locations:
+  - profile: xliff_2.0
+    authority_source_id: SRC-XLF-001
+    source_sha256: aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055
+    location_kind: prose_paragraph
+    member: xliff-core-v2.0-os.xml
+    member_sha256: 07059d426de1e839540e5e84e0e061c4a6d5ef1a1b7e71ddf75bf5bd11518b73
+    section_id: dataref
+    paragraph_index: 1
+    source_anchor: must be the value of the id attribute of one of the <data> element listed in the same <unit> element
+    source_text_sha256: 1f34248938708bd5affe6de678edbae0623aeff6938a115ff76de15c3f8bcfe1
+  - profile: xliff_2.1
+    authority_source_id: SRC-XLF-002
+    source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    location_kind: prose_paragraph
+    member: xliff-core-v2.1-os.xml
+    member_sha256: e8c72ec2314e1025f25886cd0ea2b6c10aa2405bd292026383afca2207c44e5b
+    section_id: dataref
+    paragraph_index: 1
+    source_anchor: must be the value of the id attribute of one of the <data> element listed in the same <unit> element
+    source_text_sha256: 1f34248938708bd5affe6de678edbae0623aeff6938a115ff76de15c3f8bcfe1
+  evidence_requirements:
+    positive:
+    - resolve dataRef to a data element in the same unit
+    rejection:
+    - reject a dataRef that targets a missing or foreign-unit id
+  interpretation_note: Second source-located XLF-04 batch covering stable identifier, inheritance, language, direction, whitespace, and source-target rules.
+  verification_status: SOURCE_BOUND_UNVERIFIED
+- obligation_id: SAL-XLIFF-CORE-REFERENCE-FRAGMENT-INHERIT-001
+  introduced_in_batch: XLF-04-BATCH-002
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  owner: core:references
+  category: identifiers_references_inheritance
+  normalized_rule: Resolve a relative fragment by inheriting omitted file, group, or unit selectors from its immediate enclosure.
+  requirement_class: PROCESSING_REQUIREMENT
+  normative_level: MUST
+  authority_locations:
+  - profile: xliff_2.0
+    authority_source_id: SRC-XLF-001
+    source_sha256: aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055
+    location_kind: prose_paragraph
+    member: xliff-core-v2.0-os.xml
+    member_sha256: 07059d426de1e839540e5e84e0e061c4a6d5ef1a1b7e71ddf75bf5bd11518b73
+    section_id: fragid
+    paragraph_index: 23
+    source_anchor: Any unit, group or file selector missing to resolve the relative reference is obtained from the immediate enclosing
+    source_text_sha256: 226b0882039adf64a4aebc650537c441b2e3a00e74984d74abc31576031d7734
+  - profile: xliff_2.1
+    authority_source_id: SRC-XLF-002
+    source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    location_kind: prose_paragraph
+    member: xliff-core-v2.1-os.xml
+    member_sha256: e8c72ec2314e1025f25886cd0ea2b6c10aa2405bd292026383afca2207c44e5b
+    section_id: fragid
+    paragraph_index: 23
+    source_anchor: Any unit, group or file selector missing to resolve the relative reference is obtained from the immediate enclosing
+    source_text_sha256: 226b0882039adf64a4aebc650537c441b2e3a00e74984d74abc31576031d7734
+  evidence_requirements:
+    positive:
+    - resolve an omitted fragment selector from its enclosure
+    rejection:
+    - reject a relative fragment whose inherited path is invalid
+  interpretation_note: Second source-located XLF-04 batch covering stable identifier, inheritance, language, direction, whitespace, and source-target rules.
+  verification_status: SOURCE_BOUND_UNVERIFIED
 - obligation_id: SAL-XLIFF-CORE-SEGMENT-SPLIT-001
+  introduced_in_batch: XLF-04-BATCH-001
   stable_profiles:
   - xliff_2.0
   - xliff_2.1
@@ -252,7 +562,46 @@ obligations:
     - execute a discriminating non-conforming example and verify diagnostics
   interpretation_note: First source-located XLF-04 batch. This identity remains stable while later batches add the uncaptured Core categories and finer rules.
   verification_status: SOURCE_BOUND_UNVERIFIED
+- obligation_id: SAL-XLIFF-CORE-SOURCE-TARGET-OPTIONAL-001
+  introduced_in_batch: XLF-04-BATCH-002
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  owner: core:source-target
+  category: source_target_correspondence
+  normalized_rule: Require each segment to contain exactly one source and allow at most one optional target element.
+  requirement_class: CARDINALITY_CONSTRAINT
+  normative_level: MUST
+  authority_locations:
+  - profile: xliff_2.0
+    authority_source_id: SRC-XLF-001
+    source_sha256: aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055
+    location_kind: prose_paragraph
+    member: xliff-core-v2.0-os.xml
+    member_sha256: 07059d426de1e839540e5e84e0e061c4a6d5ef1a1b7e71ddf75bf5bd11518b73
+    section_id: segmentationRepresentation
+    paragraph_index: 2
+    source_anchor: Each <segment> element has one <source> element
+    source_text_sha256: 604762b4da5df07016efd468ef989200e4836ddfc2983ed0d7da8ddb171cc410
+  - profile: xliff_2.1
+    authority_source_id: SRC-XLF-002
+    source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    location_kind: prose_paragraph
+    member: xliff-core-v2.1-os.xml
+    member_sha256: e8c72ec2314e1025f25886cd0ea2b6c10aa2405bd292026383afca2207c44e5b
+    section_id: segmentationRepresentation
+    paragraph_index: 2
+    source_anchor: Each <segment> element has one <source> element
+    source_text_sha256: 604762b4da5df07016efd468ef989200e4836ddfc2983ed0d7da8ddb171cc410
+  evidence_requirements:
+    positive:
+    - parse segments with one source and zero or one target
+    rejection:
+    - reject a segment with missing source or multiple targets
+  interpretation_note: Second source-located XLF-04 batch covering stable identifier, inheritance, language, direction, whitespace, and source-target rules.
+  verification_status: SOURCE_BOUND_UNVERIFIED
 - obligation_id: SAL-XLIFF-CORE-STATE-SUBSTATE-001
+  introduced_in_batch: XLF-04-BATCH-001
   stable_profiles:
   - xliff_2.0
   - xliff_2.1
@@ -288,5 +637,119 @@ obligations:
     rejection:
     - execute a discriminating non-conforming example and verify diagnostics
   interpretation_note: First source-located XLF-04 batch. This identity remains stable while later batches add the uncaptured Core categories and finer rules.
+  verification_status: SOURCE_BOUND_UNVERIFIED
+- obligation_id: SAL-XLIFF-CORE-TARGET-LANGUAGE-001
+  introduced_in_batch: XLF-04-BATCH-002
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  owner: core:source-target
+  category: source_target_correspondence
+  normalized_rule: Require a target xml:lang value, whether explicit or inherited, to equal the enclosing document trgLang.
+  requirement_class: SEMANTIC_CONSTRAINT
+  normative_level: MUST
+  authority_locations:
+  - profile: xliff_2.0
+    authority_source_id: SRC-XLF-001
+    source_sha256: aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055
+    location_kind: prose_paragraph
+    member: xliff-core-v2.0-os.xml
+    member_sha256: 07059d426de1e839540e5e84e0e061c4a6d5ef1a1b7e71ddf75bf5bd11518b73
+    section_id: target
+    paragraph_index: 4
+    source_anchor: the explicit or inherited value of the optional xml:lang must be equal to the value of the trgLang attribute
+    source_text_sha256: e7dd434305b7315fd7eecf2acbc066e0f7a149d0a4fe9bb704d1ace3bd5be29e
+  - profile: xliff_2.1
+    authority_source_id: SRC-XLF-002
+    source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    location_kind: prose_paragraph
+    member: xliff-core-v2.1-os.xml
+    member_sha256: e8c72ec2314e1025f25886cd0ea2b6c10aa2405bd292026383afca2207c44e5b
+    section_id: target
+    paragraph_index: 4
+    source_anchor: the explicit or inherited value of the optional xml:lang must be equal to the value of the trgLang attribute
+    source_text_sha256: e7dd434305b7315fd7eecf2acbc066e0f7a149d0a4fe9bb704d1ace3bd5be29e
+  evidence_requirements:
+    positive:
+    - validate target language equal to the enclosing trgLang
+    rejection:
+    - reject target language different from enclosing trgLang
+  interpretation_note: Second source-located XLF-04 batch covering stable identifier, inheritance, language, direction, whitespace, and source-target rules.
+  verification_status: SOURCE_BOUND_UNVERIFIED
+- obligation_id: SAL-XLIFF-CORE-TARGET-ORDER-001
+  introduced_in_batch: XLF-04-BATCH-002
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  owner: core:source-target
+  category: source_target_correspondence
+  normalized_rule: When target order is absent, derive its order from the corresponding sibling source element.
+  requirement_class: PROCESSING_REQUIREMENT
+  normative_level: MUST
+  authority_locations:
+  - profile: xliff_2.0
+    authority_source_id: SRC-XLF-001
+    source_sha256: aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055
+    location_kind: prose_paragraph
+    member: xliff-core-v2.0-os.xml
+    member_sha256: 07059d426de1e839540e5e84e0e061c4a6d5ef1a1b7e71ddf75bf5bd11518b73
+    section_id: order
+    paragraph_index: 3
+    source_anchor: When order is not explicitly set, the <target> order corresponds to its sibling <source>
+    source_text_sha256: b5cd736c00f0b39c46a0163620607c83a573fa93b751ee2ba92bbc75a63f4a12
+  - profile: xliff_2.1
+    authority_source_id: SRC-XLF-002
+    source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    location_kind: prose_paragraph
+    member: xliff-core-v2.1-os.xml
+    member_sha256: e8c72ec2314e1025f25886cd0ea2b6c10aa2405bd292026383afca2207c44e5b
+    section_id: order
+    paragraph_index: 3
+    source_anchor: When order is not explicitly set, the <target> order corresponds to its sibling <source>
+    source_text_sha256: b5cd736c00f0b39c46a0163620607c83a573fa93b751ee2ba92bbc75a63f4a12
+  evidence_requirements:
+    positive:
+    - derive implicit target order from its sibling source
+    rejection:
+    - reject ordering behavior that loses source correspondence
+  interpretation_note: Second source-located XLF-04 batch covering stable identifier, inheritance, language, direction, whitespace, and source-target rules.
+  verification_status: SOURCE_BOUND_UNVERIFIED
+- obligation_id: SAL-XLIFF-CORE-WHITESPACE-INHERIT-001
+  introduced_in_batch: XLF-04-BATCH-002
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  owner: core:whitespace
+  category: language_direction_whitespace
+  normalized_rule: When xml:space is absent, inherit its whitespace handling value from the immediate parent element.
+  requirement_class: PRESERVATION_REQUIREMENT
+  normative_level: MUST
+  authority_locations:
+  - profile: xliff_2.0
+    authority_source_id: SRC-XLF-001
+    source_sha256: aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055
+    location_kind: prose_paragraph
+    member: xliff-core-v2.0-os.xml
+    member_sha256: 07059d426de1e839540e5e84e0e061c4a6d5ef1a1b7e71ddf75bf5bd11518b73
+    section_id: xml_space
+    paragraph_index: 8
+    source_anchor: The value of the xml:space attribute of its parent element
+    source_text_sha256: 7759f8b8746987058837960ab661a9b9d7dff9f2a27af9c1b02579b392df6d04
+  - profile: xliff_2.1
+    authority_source_id: SRC-XLF-002
+    source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    location_kind: prose_paragraph
+    member: xliff-core-v2.1-os.xml
+    member_sha256: e8c72ec2314e1025f25886cd0ea2b6c10aa2405bd292026383afca2207c44e5b
+    section_id: xml_space
+    paragraph_index: 8
+    source_anchor: The value of the xml:space attribute of its parent element
+    source_text_sha256: 7759f8b8746987058837960ab661a9b9d7dff9f2a27af9c1b02579b392df6d04
+  evidence_requirements:
+    positive:
+    - preserve whitespace according to inherited xml:space
+    rejection:
+    - reject normalization that violates inherited xml:space
+  interpretation_note: Second source-located XLF-04 batch covering stable identifier, inheritance, language, direction, whitespace, and source-target rules.
   verification_status: SOURCE_BOUND_UNVERIFIED
 truth_boundary: These source-bound fine-grained Core obligations supersede no unreviewed SAL facts and do not turn the 36 coarse XLF-03 anchors into complete Core semantics, product source, or certification.

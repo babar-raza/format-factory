@@ -8,6 +8,7 @@ import hashlib
 import importlib.util
 from pathlib import Path
 from types import ModuleType
+from xml.sax.saxutils import escape
 import zipfile
 
 import pytest
@@ -603,40 +604,90 @@ def _write_core_obligation_archive(
     profile: str,
 ) -> tuple[str, str]:
     prose_member = f"xliff-core-v{profile.removeprefix('xliff_')}-os.xml"
-    paragraphs = {
-        "xliff": (
+    paragraphs: dict[str, tuple[str, ...]] = {
+        "xliff": ((
             "Root element for XLIFF documents; it requires the version and "
             "srcLang attributes and one or more file children."
-        ),
-        "unit": "A unit must contain at least one segment element.",
-        "spanningcodeusage": (
+        ),),
+        "unit": ("A unit must contain at least one segment element.",),
+        "spanningcodeusage": ((
             "A spanning code must be represented using an sc element and an "
             "ec element when the code is not well-formed or is orphaned. "
             "Agents must be able to handle both paired-container and spanning "
             "inline code representations."
-        ),
-        "segmentationModification": (
+        ),),
+        "segmentationModification": ((
             "Only segment or ignorable elements whose resolved canResegment "
             "value is yes may be split."
-        ),
-        "state": (
+        ),),
+        "state": ((
             "Writers must not advance state beyond initial when the segment "
             "does not contain a target child and must also update or delete "
             "subState when state changes."
-        ),
-        "extensions": (
+        ),),
+        "extensions": ((
             "Writers that do not support a custom namespace extension should "
             "preserve that extension without modification."
-        ),
-        "inlineCodes": (
+        ),),
+        "inlineCodes": ((
             "Agents must be able to handle both paired-container and spanning "
             "inline code representations."
+        ),),
+        "id": (
+            "The value must be unique among all <file> id attribute values "
+            "within the enclosing <xliff> element.",
+        ),
+        "dataref": (
+            "The value must be the value of the id attribute of one of the "
+            "<data> element listed in the same <unit> element.",
+        ),
+        "fragid": (
+            "Any unit, group or file selector missing to resolve the relative "
+            "reference is obtained from the immediate enclosing unit, group "
+            "or file elements.",
+        ),
+        "translate": (
+            "The value of the translate attribute of its parent element.",
+        ),
+        "xml_lang": (
+            "The value set in the srcLang attribute of the enclosing <xliff> "
+            "element.",
+            "The value set in the trgLang attribute of the enclosing <xliff> "
+            "element.",
+        ),
+        "srcdir": (
+            "The value of the srcDir attribute of its parent element.",
+        ),
+        "trgdir": (
+            "The value of the trgDir attribute of its parent element.",
+        ),
+        "xml_space": (
+            "The value of the xml:space attribute of its parent element.",
+        ),
+        "segmentationRepresentation": (
+            "Each <segment> element has one <source> element that contains the "
+            "source content and one optional <target> element that can be empty "
+            "or contain the translation of the source content at a given state.",
+        ),
+        "target": (
+            "When a <target> element is a child of <segment> or <ignorable>, "
+            "the explicit or inherited value of the optional xml:lang must be "
+            "equal to the value of the trgLang attribute of the enclosing "
+            "<xliff> element.",
+        ),
+        "order": (
+            "When order is not explicitly set, the <target> order corresponds "
+            "to its sibling <source>.",
         ),
     }
     body = "".join(
         f'<section id="{section_id}"><title>{section_id}</title>'
-        f"<para>{paragraph}</para></section>"
-        for section_id, paragraph in paragraphs.items()
+        + "".join(
+            f"<para>{escape(paragraph)}</para>"
+            for paragraph in section_paragraphs
+        )
+        + "</section>"
+        for section_id, section_paragraphs in paragraphs.items()
     )
     prose = f'<?xml version="1.0"?><article>{body}</article>'.encode()
     with zipfile.ZipFile(path, "w", compression=zipfile.ZIP_DEFLATED) as archive:
@@ -752,6 +803,7 @@ def test_core_obligation_batch_is_source_bound_and_truthfully_partial(
         seeds.append(
             {
                 "obligation_id": obligation_id,
+                "introduced_in_batch": "XLF-04-BATCH-001",
                 "stable_profiles": ["xliff_2.0", "xliff_2.1"],
                 "owner": owner,
                 "category": category,
@@ -871,15 +923,19 @@ def test_cli_writes_and_checks_default_core_obligation_batch(
     inventory = yaml.safe_load(first_bytes)
     assert inventory["schema"] == "ff6/xliff-core-obligation-inventory@1"
     assert inventory["artifact_id"] == (
-        "FF6-XLIFF-CORE-OBLIGATIONS-XLF04-BATCH001"
+        "FF6-XLIFF-CORE-OBLIGATIONS-XLF04-BATCH002"
     )
     assert inventory["artifact_type"] == "normative_obligation_inventory"
     assert inventory["visibility"] == "generated"
     assert inventory["publish_allowed"] is False
     assert inventory["generated_by"] == "codex"
-    assert inventory["batch_id"] == "XLF-04-BATCH-001"
+    assert inventory["batch_id"] == "XLF-04-BATCH-002"
     assert inventory["status"] == "SOURCE_LOCATED_PARTIAL"
-    assert inventory["obligation_count"] == 7
+    assert inventory["obligation_count"] == 19
+    assert inventory["remaining_categories"] == [
+        "semantic_roundtrip_canonical_output",
+        "xml_security_resource_limits",
+    ]
     assert inventory["complete"] is False
     assert extractor.main([*args, "--check"]) == 0
     assert output.read_bytes() == first_bytes
@@ -971,7 +1027,7 @@ def test_category_presence_cannot_self_certify_core_completeness(
     inventory = extractor.compile_xliff_core_obligations(
         sources,
         obligation_seeds=seeds,
-        batch_id="XLF-04-BATCH-001",
+        batch_id="XLF-04-BATCH-002",
     )
 
     assert inventory["remaining_categories"] == []
@@ -980,3 +1036,106 @@ def test_category_presence_cannot_self_certify_core_completeness(
     assert inventory["completeness_basis"] == (
         "EXPECTED_OBLIGATION_DENOMINATOR_ABSENT"
     )
+
+
+def test_default_core_obligation_batch_two_extends_three_normative_families(
+    tmp_path: Path,
+) -> None:
+    extractor = _load_module()
+    batch_001_ids = {
+        "SAL-XLIFF-CORE-AGENT-INLINE-001",
+        "SAL-XLIFF-CORE-DOCUMENT-ROOT-001",
+        "SAL-XLIFF-CORE-EXTENSION-PRESERVE-001",
+        "SAL-XLIFF-CORE-HIERARCHY-UNIT-001",
+        "SAL-XLIFF-CORE-INLINE-SPANNING-001",
+        "SAL-XLIFF-CORE-SEGMENT-SPLIT-001",
+        "SAL-XLIFF-CORE-STATE-SUBSTATE-001",
+    }
+    batch_002_ids = {
+        "SAL-XLIFF-CORE-DIRECTION-SOURCE-001",
+        "SAL-XLIFF-CORE-DIRECTION-TARGET-001",
+        "SAL-XLIFF-CORE-ID-FILE-UNIQUE-001",
+        "SAL-XLIFF-CORE-INHERIT-TRANSLATE-001",
+        "SAL-XLIFF-CORE-LANGUAGE-SOURCE-001",
+        "SAL-XLIFF-CORE-LANGUAGE-TARGET-001",
+        "SAL-XLIFF-CORE-REFERENCE-DATAREF-001",
+        "SAL-XLIFF-CORE-REFERENCE-FRAGMENT-INHERIT-001",
+        "SAL-XLIFF-CORE-SOURCE-TARGET-OPTIONAL-001",
+        "SAL-XLIFF-CORE-TARGET-LANGUAGE-001",
+        "SAL-XLIFF-CORE-TARGET-ORDER-001",
+        "SAL-XLIFF-CORE-WHITESPACE-INHERIT-001",
+    }
+    seeds = extractor._default_core_obligation_seeds()
+    by_id = {str(seed["obligation_id"]): seed for seed in seeds}
+
+    assert set(by_id) == batch_001_ids | batch_002_ids
+    assert {
+        by_id[obligation_id]["introduced_in_batch"]
+        for obligation_id in batch_001_ids
+    } == {"XLF-04-BATCH-001"}
+    assert {
+        by_id[obligation_id]["introduced_in_batch"]
+        for obligation_id in batch_002_ids
+    } == {"XLF-04-BATCH-002"}
+
+    sources = []
+    for profile in ("xliff_2.0", "xliff_2.1"):
+        path = tmp_path / f"{profile}.zip"
+        member, digest = _write_core_obligation_archive(path, profile=profile)
+        sources.append(
+            extractor.ProfileSource(
+                profile=profile,
+                source_id=f"SRC-{profile.upper()}",
+                package_path=path,
+                expected_sha256=digest,
+                prose_member=member,
+            )
+        )
+
+    inventory = extractor.compile_xliff_core_obligations(
+        sources,
+        obligation_seeds=seeds,
+        batch_id="XLF-04-BATCH-002",
+    )
+
+    assert inventory["artifact_id"] == (
+        "FF6-XLIFF-CORE-OBLIGATIONS-XLF04-BATCH002"
+    )
+    assert inventory["batch_id"] == "XLF-04-BATCH-002"
+    assert inventory["obligation_count"] == 19
+    assert inventory["remaining_categories"] == [
+        "semantic_roundtrip_canonical_output",
+        "xml_security_resource_limits",
+    ]
+    assert inventory["complete"] is False
+    assert inventory["completeness_basis"] == (
+        "EXPECTED_OBLIGATION_DENOMINATOR_ABSENT"
+    )
+
+    rows = {row["obligation_id"]: row for row in inventory["obligations"]}
+    assert {rows[item]["introduced_in_batch"] for item in batch_002_ids} == {
+        "XLF-04-BATCH-002"
+    }
+    assert {
+        rows[item]["category"] for item in batch_002_ids
+    } == {
+        "identifiers_references_inheritance",
+        "language_direction_whitespace",
+        "source_target_correspondence",
+    }
+    for obligation_id in batch_002_ids:
+        assert len(rows[obligation_id]["authority_locations"]) == 2
+        assert all(
+            location["source_text_sha256"]
+            for location in rows[obligation_id]["authority_locations"]
+        )
+
+    with pytest.raises(
+        extractor.ExtractionError,
+        match="introduced after requested batch",
+    ):
+        extractor.compile_xliff_core_obligations(
+            sources,
+            obligation_seeds=seeds,
+            batch_id="XLF-04-BATCH-001",
+        )
