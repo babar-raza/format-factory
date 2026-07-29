@@ -72,8 +72,9 @@ disjoint, separately taskcarded scopes with non-overlapping leases.
 12. Capture input baselines before writing.
 13. Validate `reports/ff6/xliff-authority-member-inventory.yaml` against both
     pinned packages; replay event-25 evidence and independently validate
-    commit `25227527`, its 27 extractor tests, exact six file digests, two
-    receipts, affected regressions, static checks, and deterministic outputs.
+    commit `25227527`, its 27 extractor tests, the
+    six committed-file digests (four implementation/report files and two skill transcripts),
+    affected regressions, static checks, and deterministic outputs.
     Verify the controller projection and taskcard agree. Re-run completed
     behavior only if its recorded inputs were invalidated.
 

@@ -232,3 +232,24 @@ candidate exactly once to an expected obligation ID or a reasoned
 non-obligation disposition. Reject unmapped and duplicate candidates; retain
 `complete=false`. Exact hashes and the resolved recovery history are retained
 in `plans/codex/handover/INFLIGHT-RECOVERY.yaml`.
+
+## Event-25 semantic consistency repair
+
+The event-25 packet's 61 LF-normalized file digests and links were valid, but
+that structural check did not detect four semantic projection defects:
+
+- the active checkpoint and starting-defect projection omitted completed
+  `XLF-04-BATCH-003`;
+- historical event-24/24-test evidence was described as current;
+- the Claude instruction named an immutable batch-002 RED receipt as the
+  destination for new batch-004 evidence;
+- “six files plus two transcripts” ambiguously double-counted a six-file set
+  that already contains the two transcripts.
+
+The repair preserves all historical evidence and adds the read-only
+`plans/codex/handover/validate_handover.py` control. It derives active
+semantics from the latest native event, checks every handover projection,
+validates the event hash chain, manifest digests, local links, and GitLab
+ancestry, and carries negative controls for a missing batch, stale next batch,
+wrong event head, and predecessor-as-current wording. This repair changes no
+product, controller, task, gate, certification, or promotion state.

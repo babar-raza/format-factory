@@ -73,8 +73,8 @@ defect. First:
 1. fetch GitLab, compare `origin/main`, local HEAD, event 25, implementation
    commit `25227527`, and checkpoint commit `220ee7f5`;
 2. query coordination and use audited takeover only when eligible;
-3. verify the six file hashes and two transcript hashes in
-   `INFLIGHT-RECOVERY.yaml`;
+3. verify the six committed-file digests (four implementation/report files and two skill transcripts)
+   in `INFLIGHT-RECOVERY.yaml`;
 4. validate both batch-003 transcripts;
 5. run `python -m pytest tests/tools/test_extract_sal_facts.py -q` and require
    27 passed;
@@ -165,7 +165,7 @@ Remaining required result:
   checkpoint is required.
 - Treat the exact next action as deterministic but select its exact test name
   after inspecting the existing XLF-04 test namespace; record that name in the
-  batch-002 RED receipt and next checkpoint. Do not invent a conflicting test ID.
+  batch-004 RED receipt and next checkpoint. Do not invent a conflicting test ID.
 
 ## Forbidden
 

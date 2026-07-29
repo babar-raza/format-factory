@@ -122,8 +122,9 @@ No product wave may bypass the program dependencies.
    all 17 global authority matches, all five
    XLIFF matches, and the 42-member inventory.
 2. Require commit `220ee7f5b9d39c3684cff6af6331b56a03ae9e75`
-   as a GitLab-main ancestor; verify event-25 proof plus the six file hashes
-   and two transcripts for commit `25227527`; replay 27 focused tests,
+   as a GitLab-main ancestor; verify event-25 proof plus the
+   six committed-file digests (four implementation/report files and two skill transcripts)
+   for commit `25227527`; replay 27 focused tests,
    affected regressions, Ruff, strict Mypy, Pyright 1.1.411, bytecode
    compilation, matrix/check modes, and deterministic generations.
 3. Re-run completed XLF steps only if their recorded input closure changed.

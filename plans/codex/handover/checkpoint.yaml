@@ -202,8 +202,9 @@ resume_decision:
   taskcard: taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md
   active_checkpoint: plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md
   exact_first_step: >-
-    Revalidate event 25 and commit 25227527. Verify its six file hashes, two
-    transcripts, 27 focused tests, affected regressions, static checks,
+    Revalidate event 25 and commit 25227527. Verify the
+    six committed-file digests (four implementation/report files and two skill transcripts),
+    27 focused tests, affected regressions, static checks,
     deterministic reports, and authorities. Then execute XLF-04-BATCH-004:
     compile the deterministic authority-candidate census and reconcile every
     candidate exactly once. Do not duplicate batch 003.
@@ -278,12 +279,22 @@ current_xliff_compiler_checkpoint:
     - language_direction_and_whitespace_obligations
     - source_target_correspondence_obligations
     - cumulative_nineteen_obligation_real_authority_batch
+    - specification_and_production_policy_obligation_separation
+    - semantic_roundtrip_and_canonical_output_policy_obligation
+    - xml_external_resolution_and_resource_limit_policy_obligations
+    - explicit_105_id_open_authority_census_denominator
+    - denominator_authority_input_tamper_rejection
+    - tracked_denominator_direct_input_binding
+    - cumulative_twenty_five_obligation_real_authority_batch
   first_unmet_step: XLF-04
   completed_xlf_04_batches: [XLF-04-BATCH-001, XLF-04-BATCH-002, XLF-04-BATCH-003]
   core_obligation_inventory:
     path: reports/ff6/xliff-core-obligation-inventory.yaml
     sha256: ae4d00af06fffc1eaf7741cd131d8ed7e7fc8a89b2a195acf4f649b5f44b6bbb
     obligations: 25
+    expected_obligation_count: 105
+    resolved_expected_obligation_count: 25
+    missing_expected_obligation_count: 80
     verification_status: SOURCE_BOUND_UNVERIFIED
     complete: false
     completeness_basis: EXPLICIT_EXPECTED_OBLIGATION_IDS_OPEN_CENSUS
@@ -372,7 +383,7 @@ xliff_starting_defects:
   preview: xliff_2.2_preview_isolated_only
   excluded_compatibility_model: xliff_1.2
   completed_steps:
-    [XLF-01, XLF-02, XLF-03, XLF-04-BATCH-001, XLF-04-BATCH-002]
+    [XLF-01, XLF-02, XLF-03, XLF-04-BATCH-001, XLF-04-BATCH-002, XLF-04-BATCH-003]
   first_unmet_step: XLF-04
   shift_microstate: RESUMABLE
   authority_inventory: reports/ff6/xliff-authority-member-inventory.yaml

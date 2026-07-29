@@ -34,7 +34,7 @@ this document explains how to resume them.
 | Parent task | `TC-FF6-PROGRAM-CAPABILITIES-001` - `NEEDS_REPAIR` |
 | Last completed task | `TC-FF6-NRRD-PROFILE-SURFACE-001` - `PASS` |
 | Active task | `TC-FF6-XLIFF-PROFILE-SURFACE-001` - `WORK_IN_PROGRESS` |
-| Completed steps | `XLF-01`, `XLF-02`, `XLF-03`, `XLF-04-BATCH-001`, `XLF-04-BATCH-002` |
+| Completed steps | `XLF-01`, `XLF-02`, `XLF-03`, `XLF-04-BATCH-001`, `XLF-04-BATCH-002`, `XLF-04-BATCH-003` |
 | First unmet step | `XLF-04` |
 | Shift microstate | `RESUMABLE` |
 | Exact next action | Execute `XLF-04-BATCH-004` deterministic authority-candidate census |
@@ -116,7 +116,7 @@ this document explains how to resume them.
   XLIFF 2.1 ITS module.
 - The committed slice passes 3 focused tests, Ruff, strict Mypy, and bytecode
   compilation. Pyright was unavailable in this shell and is not claimed.
-- Event 24 binds the current implementation at immutable commit
+- Historical event 24 binds the batch-002 predecessor implementation at immutable commit
   `78660ae1a310ab06cf00d977bbc26fb65914f1c9`.
 - The extractor now has deterministic default seeds and CLI/check mode, bounded
   real-authority-safe XML handling, and fail-closed archive/XML/matrix negative
@@ -125,8 +125,9 @@ this document explains how to resume them.
   DocBook sections, 8/8 normative modules, and 8/9 module schema vocabularies
   across XLIFF 2.0/2.1. Three generations are byte-identical at SHA-256
   `9f4ea4b8b71378217af26c0fb2b97a759817a0aca6c64255b8cd55170c60a090`.
-- The current XLF-04 suite passes 24 tests, Ruff, strict Mypy, Pyright 1.1.411,
-  bytecode compilation, and zero-warning transcript validation.
+- At the event-24 predecessor boundary, the XLF-04 suite passed 24 tests,
+  Ruff, strict Mypy, Pyright 1.1.411, bytecode compilation, and zero-warning
+  transcript validation.
 - Batches 001-002 add 19 cumulative source-bound obligations across ten
   categories, including identifier/reference/inheritance,
   language/direction/whitespace, and source-target correspondence. Their status is
@@ -270,8 +271,8 @@ Only digest-bound executed behavior can move those states.
 The event-25 executor recorded the required governance challenge at the shift
 boundary:
 
-1. Required XLF-01 through XLF-03 and XLF-04-BATCH-001/BATCH-002 steps
-   performed;
+1. Required XLF-01 through XLF-03 and XLF-04-BATCH-001/BATCH-002/BATCH-003
+   steps performed;
    remaining XLF-04 through XLF-08 work explicit and unclaimed: yes.
 2. Required evidence for the event-25 batch boundary present: yes.
 3. Evidence sufficient for the source-surface matrix, without claiming

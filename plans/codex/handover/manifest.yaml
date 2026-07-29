@@ -10,7 +10,7 @@ self_reference_policy: >-
   origin/main descendant and all listed content digests identify the packet.
 
 source_checkpoint:
-  required_ancestor: d02a00fedf669c6e2b2dd58e480715550fb2afe8
+  required_ancestor: 66e1c196113e9ed5692bc2443935621f4509f7f2
   remote: origin
   forge: GitLab
   branch: main
@@ -26,34 +26,37 @@ digest_policy:
 files:
   - path: plans/codex/handover/START-HERE.md
     role: single absolute entry point and authority precedence
-    sha256: 9d4ec539618a3c9ad88072be271289ceaa595591ae8d31ea837c85693ae27812
+    sha256: b7a624532e1f6829cfe0cd36b3cb0608d1dc89ad792d7550e11d0f6af30629f8
+  - path: plans/codex/handover/validate_handover.py
+    role: fail-closed content, event-chain, projection, link and GitLab ancestry validator
+    sha256: ca4a82ac3eea144d4ea7e400b026924485b74faa3e4d18b9522c6dd677dc2932
   - path: plans/codex/handover/CURRENT-MACHINE-STATE.yaml
     role: machine-readable provider-neutral state
-    sha256: 3a4965f39058ac397fac8840d6d6114f8afdbf8fdbc6a6efc25b2fdb57dc77ad
+    sha256: f3e3ad8a11fe77f976a9222b615cf93124cbe4ff9f5c368cdaa32c6f479cada2
   - path: plans/codex/handover/checkpoint.yaml
     role: detailed machine checkpoint and proof boundary
-    sha256: caf0ff615c86296bfc72555c2ee569f87f39383fc8c06ad682a7f7332370cf08
+    sha256: 6be38b86269e163b0ec7ca254db6a172719fb2024fd6da087cb0b9ecba5d80a8
   - path: plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md
     role: exact event-25 XLF-04 batch-003 boundary and batch-004 continuation
-    sha256: b0a93352001c54068c838352ea1109a56782dabe5cda217e2a04df9685d5352d
+    sha256: a6847366e5784be49dd117fa8b45c08c4032aabf7f24aa2ec9afe3d98494dba6
   - path: plans/codex/handover/STATE-MACHINE-AND-TASKCARD-PROTOCOL.md
     role: provider-neutral program, task and atomic-substep state machines
     sha256: b7ceccd1b3ab9f0a7e1a6a71b6382654f9319604e5340dc355e824c204265b49
   - path: plans/codex/handover/SHIFT-AND-RESUME-PROTOCOL.md
     role: incoming, outgoing, takeover and native chain procedure
-    sha256: c237c72226ec21c70046aec1d05b5c8f46298654937d60251eac718f6f956fa2
+    sha256: a7d3cbdda64b929fc8d363d040a78327552666dc34d754b8c8bac6ff077969ed
   - path: plans/codex/handover/EXECUTION-RUNBOOK.md
     role: current DAG and exact XLIFF execution algorithm
-    sha256: 4ed7d1fb07deb3a2d3368fbaabfb871d34b93c62ab882e15995bb5a3f6b729e3
+    sha256: 190322e99de3e48baad88832447fa7effb5a7302b673aca965ddc6b2fc92ebea
   - path: plans/codex/handover/CURRENT-STATE-AND-ROOT-CAUSES.md
     role: symptoms, causes, structural weaknesses, preservation and redesign
-    sha256: 324bb2eac25b538ea07cff5a9aa84a59f46e96e2ed185d103d009d62edce7371
+    sha256: 2964f20327dae9ac366ba268ea2eb6c40dc1705d88fb63d4e015e97e7289891d
   - path: plans/codex/handover/VALIDATION-AND-RELEASE.md
     role: proof, regression, certification and release contract
-    sha256: bc0ff675a8189c1a4ab3ab287d5a494b8c2ca41e70757393ae63c300945a8211
+    sha256: b3d0dc4ad3f794fdd8db1bf7afdc334d46706a3d30599f7839b8afe0e2c60632
   - path: plans/codex/handover/CLAUDE-START.md
     role: ready-to-run Claude execution instruction
-    sha256: b9cea56069dedb3f5cac9820e2d2b52f14d32292c580f9e52df32e1a587ca13a
+    sha256: 3ce9d056cfc4ca54d2ee5014533cb8e71df8fbb7fd266946a26c4aaca55617ad
   - path: plans/codex/handover/INFLIGHT-RECOVERY.yaml
     role: closed batch-003 implementation and event-25 reconciliation audit
     sha256: 5e6de3d6aa374caf40a3f13c7383dce62d190c794082b16a96323f705c9060f3
@@ -86,7 +89,7 @@ files:
     sha256: f689d705b2b82d7b13d678e03fab0d4c8e802b64bf2b5ac1e64d55058008ee3d
   - path: taskcards/TC-FF6-HANDOVER-CLAUDE-001.md
     role: handover task authority
-    sha256: f31b8c4b268769bf8bffee50618d1434809c728281a7847cda50cdaa7aa3c147
+    sha256: 448316a7fb75d193c0a94514faa6c722ebbf743b140f5d18af20da8b4d22694d
   - path: taskcards/TC-FF6-IPYNB-PROFILE-SURFACE-001.md
     role: completed IPYNB profile/surface repair
     sha256: 08b95ac863c2ad495cf51158fde940eea03d4a2ec263c29cadcc90d03caf4520
@@ -235,7 +238,8 @@ proof_boundary:
 validation:
   packet_internal_links: PASS
   yaml_json_parse: PASS
-  manifest_hashes: PASS_61_FILES
+  manifest_hashes: PASS_62_FILES
+  semantic_projection: PASS_EVENT_25_WITH_FOUR_NEGATIVE_CONTROLS
   ff6_native_event_chain: PASS_EVENT_25
   source_ancestor_on_origin_main: PASS
   exact_next_task_registered: PASS

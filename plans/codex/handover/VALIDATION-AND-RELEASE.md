@@ -52,7 +52,7 @@ Events 16 through 22 prove:
 - authority bootstrap focused tests `12 passed`, format-contract regression
   `94 passed, 1 baseline-known test deselected`, Ruff passed, Pyright 1.1.411
   passed, and bounded Mypy passed on the touched source modules.
-- the current XLF-04 slice is bound to commit
+- the historical event-24 batch-002 slice is bound to commit
   `78660ae1a310ab06cf00d977bbc26fb65914f1c9`, exact
   source/test/matrix/Core-inventory/receipt digests and zero-warning receipts;
 - the extractor passes 24 focused tests, Ruff, strict Mypy, Pyright 1.1.411,
@@ -65,6 +65,9 @@ Events 16 through 22 prove:
 - the 19 Core obligations are source-bound but unverified, two categories
   remain, and completeness is false because the expected-ID denominator is
   absent;
+- the current event-25 batch-003 slice is bound to commit `25227527`, 27
+  focused tests, 25 cumulative source-bound obligations, and a 105-ID open
+  denominator with 80 unresolved IDs;
 - XLF-03 proves 36 coarse source-surface anchors, 293/420 sections, 8/8
   modules, and 8/9 schema vocabularies, but not complete fine-grained Core or
   module semantic obligations.

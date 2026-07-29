@@ -69,33 +69,41 @@ provider token.
    Claude uses the ambient hooks and `AGENTS.md` coordination contract because
    no separate Claude adapter is currently tracked
 3. [`INFLIGHT-RECOVERY.yaml`](INFLIGHT-RECOVERY.yaml)
-4. [`event-25/START-HERE.md`](event-25/START-HERE.md), the immutable compact
+4. [`validate_handover.py`](validate_handover.py), the fail-closed semantic,
+   digest, link, event-chain, and GitLab-ancestry validator
+5. [`event-25/START-HERE.md`](event-25/START-HERE.md), the immutable compact
    event-25 replay bundle committed at `d02a00fe`
-5. [`CURRENT-MACHINE-STATE.yaml`](CURRENT-MACHINE-STATE.yaml)
-6. [`product-goal.yaml`](../../strategic/ff6/product-goal.yaml)
-7. [`autonomous-six-python-production-execution-plan.md`](../../strategic/autonomous-six-python-production-execution-plan.md)
-8. [`controller-state.yaml`](../../strategic/ff6/controller-state.yaml)
-9. all records in [`events.jsonl`](../../strategic/ff6/events.jsonl)
-10. [`current-gaps.yaml`](../../strategic/ff6/current-gaps.yaml)
-11. [`capability-coverage.yaml`](../../strategic/ff6/capability-coverage.yaml)
-12. [`TC-FF6-PROGRAM-CAPABILITIES-001.md`](../../../taskcards/TC-FF6-PROGRAM-CAPABILITIES-001.md)
-13. [`TC-FF6-NRRD-PROFILE-SURFACE-001.md`](../../../taskcards/TC-FF6-NRRD-PROFILE-SURFACE-001.md)
-14. [`TC-FF6-XLIFF-PROFILE-SURFACE-001.md`](../../../taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md)
-15. [`TC-FF6-UBL-TYPING-001.md`](../../../taskcards/TC-FF6-UBL-TYPING-001.md)
-16. [`xliff-authority-member-inventory.yaml`](../../../reports/ff6/xliff-authority-member-inventory.yaml)
-17. [`extract_sal_facts.py`](../../../tools/spec/extract_sal_facts.py)
-18. [`test_extract_sal_facts.py`](../../../tests/tools/test_extract_sal_facts.py)
-19. [`xliff-normative-delta-matrix.yaml`](../../../reports/ff6/xliff-normative-delta-matrix.yaml)
-20. [`xliff-core-obligation-denominator.yaml`](../../../reports/ff6/xliff-core-obligation-denominator.yaml)
-21. [`xliff-core-obligation-inventory.yaml`](../../../reports/ff6/xliff-core-obligation-inventory.yaml)
-22. [`XLF-04 batch-003 TDD receipt`](../../../reports/skills-rff6/skill-transcripts/test-driven-development-xliff-xlf04-core-batch-003.json)
-23. [`XLF-04 batch-003 authority receipt`](../../../reports/skills-rff6/skill-transcripts/ingest-spec-sal-xliff-xlf04-core-batch-003.json)
-24. [`plan-control event-25 receipt`](../../../reports/skills-rff6/skill-transcripts/plan-control-xliff-profile-surface-wip-006.json)
-25. [`ACTIVE-WORK-CHECKPOINT.md`](ACTIVE-WORK-CHECKPOINT.md)
-26. [`STATE-MACHINE-AND-TASKCARD-PROTOCOL.md`](STATE-MACHINE-AND-TASKCARD-PROTOCOL.md)
-27. [`SHIFT-AND-RESUME-PROTOCOL.md`](SHIFT-AND-RESUME-PROTOCOL.md)
-28. [`EXECUTION-RUNBOOK.md`](EXECUTION-RUNBOOK.md)
-29. [`CURRENT-STATE-AND-ROOT-CAUSES.md`](CURRENT-STATE-AND-ROOT-CAUSES.md)
+6. [`CURRENT-MACHINE-STATE.yaml`](CURRENT-MACHINE-STATE.yaml)
+7. [`product-goal.yaml`](../../strategic/ff6/product-goal.yaml)
+8. [`autonomous-six-python-production-execution-plan.md`](../../strategic/autonomous-six-python-production-execution-plan.md)
+9. [`controller-state.yaml`](../../strategic/ff6/controller-state.yaml)
+10. all records in [`events.jsonl`](../../strategic/ff6/events.jsonl)
+11. [`current-gaps.yaml`](../../strategic/ff6/current-gaps.yaml)
+12. [`capability-coverage.yaml`](../../strategic/ff6/capability-coverage.yaml)
+13. [`TC-FF6-PROGRAM-CAPABILITIES-001.md`](../../../taskcards/TC-FF6-PROGRAM-CAPABILITIES-001.md)
+14. [`TC-FF6-NRRD-PROFILE-SURFACE-001.md`](../../../taskcards/TC-FF6-NRRD-PROFILE-SURFACE-001.md)
+15. [`TC-FF6-XLIFF-PROFILE-SURFACE-001.md`](../../../taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md)
+16. [`TC-FF6-UBL-TYPING-001.md`](../../../taskcards/TC-FF6-UBL-TYPING-001.md)
+17. [`xliff-authority-member-inventory.yaml`](../../../reports/ff6/xliff-authority-member-inventory.yaml)
+18. [`extract_sal_facts.py`](../../../tools/spec/extract_sal_facts.py)
+19. [`test_extract_sal_facts.py`](../../../tests/tools/test_extract_sal_facts.py)
+20. [`xliff-normative-delta-matrix.yaml`](../../../reports/ff6/xliff-normative-delta-matrix.yaml)
+21. [`xliff-core-obligation-denominator.yaml`](../../../reports/ff6/xliff-core-obligation-denominator.yaml)
+22. [`xliff-core-obligation-inventory.yaml`](../../../reports/ff6/xliff-core-obligation-inventory.yaml)
+23. [`XLF-04 batch-003 TDD receipt`](../../../reports/skills-rff6/skill-transcripts/test-driven-development-xliff-xlf04-core-batch-003.json)
+24. [`XLF-04 batch-003 authority receipt`](../../../reports/skills-rff6/skill-transcripts/ingest-spec-sal-xliff-xlf04-core-batch-003.json)
+25. [`plan-control event-25 receipt`](../../../reports/skills-rff6/skill-transcripts/plan-control-xliff-profile-surface-wip-006.json)
+26. [`ACTIVE-WORK-CHECKPOINT.md`](ACTIVE-WORK-CHECKPOINT.md)
+27. [`STATE-MACHINE-AND-TASKCARD-PROTOCOL.md`](STATE-MACHINE-AND-TASKCARD-PROTOCOL.md)
+28. [`SHIFT-AND-RESUME-PROTOCOL.md`](SHIFT-AND-RESUME-PROTOCOL.md)
+29. [`EXECUTION-RUNBOOK.md`](EXECUTION-RUNBOOK.md)
+30. [`CURRENT-STATE-AND-ROOT-CAUSES.md`](CURRENT-STATE-AND-ROOT-CAUSES.md)
+
+Before trusting or mutating the packet, run:
+
+```powershell
+.\.venv\Scripts\python.exe plans/codex/handover/validate_handover.py --self-test
+```
 30. [`VALIDATION-AND-RELEASE.md`](VALIDATION-AND-RELEASE.md)
 31. [`CLAUDE-START.md`](CLAUDE-START.md)
 32. [`checkpoint.yaml`](checkpoint.yaml)

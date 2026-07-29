@@ -252,6 +252,25 @@ transfer leases through `takeover --reason`. Until that machinery exists,
 continue disjoint work and preserve all bytes. This incident is now closed at
 GitLab checkpoint `220ee7f5`, but the machinery weakness remains.
 
+### Content integrity does not prove semantic projection integrity
+
+The event-25 handover manifest correctly rehashed every tracked packet file,
+yet several derived sentences still described batch 002 or event 24 as the
+current boundary. The visible symptom was a packet that passed content and
+link checks while giving a successor conflicting instructions. The root cause
+was that the validator proved byte identity, not agreement between the latest
+native event and every active-state projection.
+
+The durable control is `plans/codex/handover/validate_handover.py`. It derives
+the event head, controller sequence, completed steps, next batch, and
+25/105/80 denominator counts from the native journal; compares those semantics
+with the manifest, checkpoint, and machine-state projections; verifies the
+complete event hash chain, local links, LF-normalized manifest digests, and
+GitLab ancestry; and rejects known predecessor-as-current language. Its
+embedded negative controls prove that a missing batch, stale next batch,
+wrong event head, or stale current-state phrase fails closed. Historical
+predecessor evidence remains preserved and is relabelled rather than deleted.
+
 ## What must be preserved
 
 - All working source and tests, including characterization behavior.
@@ -286,6 +305,8 @@ GitLab checkpoint `220ee7f5`, but the machinery weakness remains.
   contracts, focused tests, and executable smoke checks.
 - Give each inventory count a named semantic denominator and negative controls
   against silently dropping unlabelled or unknown content.
+- Validate handover semantics against the latest native event, not only file
+  presence, links, and content hashes; reject stale active-state projections.
 
 ## Immediate repair order
 
