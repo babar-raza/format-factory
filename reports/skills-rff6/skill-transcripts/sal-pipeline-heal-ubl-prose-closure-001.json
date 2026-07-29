@@ -1,0 +1,55 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "sal-pipeline-heal-ubl-prose-closure-001",
+  "skill_id": "sal-pipeline-heal",
+  "task_id": "TC-FF6-UBL-TYPING-001",
+  "mode": "live",
+  "timestamp": "2026-07-29T19:51:17Z",
+  "inputs": {
+    "taskcard_id": "TC-FF6-UBL-TYPING-001",
+    "format_id": "ubl",
+    "execution_manifest_id": "sfx-5776e676791c9d66",
+    "base_git_commit": "4f8563582a128bdcb18b57508fe20e9763bb14ee",
+    "root_cause_id": "ROOT-PROOF-CLOSURE",
+    "spec_cache_path": ".local/format-contracts/acquired/ubl/src-ubl-001.bin",
+    "target_stage": "authority_verification",
+    "authority_source_id": "SRC-UBL-001",
+    "authority_version": "OASIS UBL 2.3 Standard prose",
+    "authority_sha256": "ccda3f1a2b64e6bdebfe33b2c9645423ef2f6206ac676f0937a304098d43358d"
+  },
+  "allowed_files": [
+    "shared/sal-facts/evidence/ubl.yaml",
+    "reports/sal-verification/ubl.json",
+    "shared/sal-facts/ubl.yaml",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-ubl-prose-closure-001.json"
+  ],
+  "actual_files_changed": [
+    "shared/sal-facts/evidence/ubl.yaml",
+    "reports/sal-verification/ubl.json",
+    "shared/sal-facts/ubl.yaml",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-ubl-prose-closure-001.json"
+  ],
+  "tests_run": [
+    "python tools/spec/verify_sal_facts.py --format-id ubl: PASS, 34 facts, 2 evidence sources",
+    "python tools/spec/verify_sal_facts.py --format-id ubl --apply: PASS",
+    "three read-only verification runs produced byte-identical canonical receipts",
+    "tracked receipt equals the deterministic verifier result",
+    "validate_fact_promotion: 34 of 34 facts promotable",
+    "python -m tools.format_contract.authority_materializer audit --format ubl --contracts: 3 MATCH",
+    "python tools/spec/compile_ubl_schema_graph.py --check: 91 roots, 890 members"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "evidence_manifest_sha256": "eb7db8167299ff9f547eb7909b1b67b7bc4ad24eb6dea9b43b4b2d9cfb405238",
+    "receipt_sha256": "2cc0f2cac163b7f42ab18bbe5220837d1f49a808904ac964c536085ca6d111a0",
+    "promoted_store_sha256": "0de10d403fead08373c7a3e137ea3b7a84090b2adf24787bf066dc1dc24a3103",
+    "fact_count": 34,
+    "authority_match_count": 3,
+    "bounded_result": "UBL_AUTHORITY_REVALIDATED",
+    "product_effect": "none",
+    "promotion_effect": "SAL authority facts only; no library certification or release promotion"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

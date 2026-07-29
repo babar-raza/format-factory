@@ -23,6 +23,7 @@ from tools.spec.verify_sal_facts import (
     VerificationError,
     _assertion_result,
     apply_receipt,
+    main as verify_main,
     verify_format,
 )
 
@@ -161,6 +162,51 @@ def test_authority_member_change_fails_closed(tmp_path: Path) -> None:
     manifest_path.write_text(yaml.safe_dump(manifest, sort_keys=False), encoding="utf-8")
     with pytest.raises(VerificationError, match="member digest mismatch"):
         verify_format(repo, "testfmt")
+
+
+def test_stale_shared_target_cannot_overwrite_receipt_or_store(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    repo, _ = _fixture_repo(tmp_path)
+    manifest_path = repo / "shared/sal-facts/evidence/testfmt.yaml"
+    manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
+    first_assertion = manifest["facts"][0]["assertions"][0]
+    manifest["targets"] = {
+        "authority": {
+            "source_id": first_assertion.pop("source_id"),
+            "member": first_assertion.pop("member"),
+            "member_sha256": "0" * 64,
+        }
+    }
+    first_assertion.pop("member_sha256")
+    first_assertion["target"] = "authority"
+    manifest_path.write_text(
+        yaml.safe_dump(manifest, sort_keys=False),
+        encoding="utf-8",
+    )
+
+    receipt_path = repo / "reports/sal-verification/testfmt.json"
+    receipt_path.parent.mkdir(parents=True)
+    sentinel_receipt = b'{"result":"PREVIOUS_PASS"}\n'
+    receipt_path.write_bytes(sentinel_receipt)
+    store_path = repo / "shared/sal-facts/testfmt.yaml"
+    store_before = store_path.read_bytes()
+
+    monkeypatch.setattr(
+        "sys.argv",
+        [
+            "verify_sal_facts.py",
+            "--format-id",
+            "testfmt",
+            "--repo-root",
+            str(repo),
+            "--apply",
+        ],
+    )
+    assert verify_main() == 2
+    assert receipt_path.read_bytes() == sentinel_receipt
+    assert store_path.read_bytes() == store_before
 
 
 def test_incomplete_manifest_cannot_promote(tmp_path: Path) -> None:

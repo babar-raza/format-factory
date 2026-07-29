@@ -1,0 +1,75 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "compile-production-capability-universe-ubl-prose-closure-001",
+  "skill_id": "compile-production-capability-universe",
+  "task_id": "TC-FF6-UBL-TYPING-001",
+  "mode": "live",
+  "timestamp": "2026-07-29T19:51:17Z",
+  "inputs": {
+    "format_ids": [
+      "ipynb",
+      "ora",
+      "nrrd",
+      "xliff",
+      "safetensors",
+      "ubl"
+    ],
+    "execution_manifest_id": "sfx-b7604a4ddc8f4cb4",
+    "base_git_commit": "4f8563582a128bdcb18b57508fe20e9763bb14ee",
+    "policy_path": "plans/strategic/ff6/capability-policy.yaml",
+    "enrichment_dir": "plans/strategic/ff6/capability-enrichments",
+    "output_dir": "plans/strategic/ff6"
+  },
+  "allowed_files": [
+    "plans/strategic/ff6/capabilities/ipynb.yaml",
+    "plans/strategic/ff6/capabilities/ora.yaml",
+    "plans/strategic/ff6/capabilities/nrrd.yaml",
+    "plans/strategic/ff6/capabilities/xliff.yaml",
+    "plans/strategic/ff6/capabilities/safetensors.yaml",
+    "plans/strategic/ff6/capabilities/ubl.yaml",
+    "plans/strategic/ff6/obligations/ipynb.yaml",
+    "plans/strategic/ff6/obligations/ora.yaml",
+    "plans/strategic/ff6/obligations/nrrd.yaml",
+    "plans/strategic/ff6/obligations/xliff.yaml",
+    "plans/strategic/ff6/obligations/safetensors.yaml",
+    "plans/strategic/ff6/obligations/ubl.yaml",
+    "plans/strategic/ff6/capability-manifest.json",
+    "reports/skills-rff6/skill-transcripts/compile-production-capability-universe-ubl-prose-closure-001.json",
+    ".local/transcripts/compile-production-capability-universe-ubl-prose-closure-001.json"
+  ],
+  "actual_files_changed": [
+    "plans/strategic/ff6/capabilities/ipynb.yaml",
+    "plans/strategic/ff6/capabilities/ora.yaml",
+    "plans/strategic/ff6/capabilities/nrrd.yaml",
+    "plans/strategic/ff6/capabilities/xliff.yaml",
+    "plans/strategic/ff6/capabilities/safetensors.yaml",
+    "plans/strategic/ff6/capabilities/ubl.yaml",
+    "plans/strategic/ff6/obligations/ipynb.yaml",
+    "plans/strategic/ff6/obligations/ora.yaml",
+    "plans/strategic/ff6/obligations/nrrd.yaml",
+    "plans/strategic/ff6/obligations/xliff.yaml",
+    "plans/strategic/ff6/obligations/safetensors.yaml",
+    "plans/strategic/ff6/obligations/ubl.yaml",
+    "plans/strategic/ff6/capability-manifest.json",
+    "reports/skills-rff6/skill-transcripts/compile-production-capability-universe-ubl-prose-closure-001.json",
+    ".local/transcripts/compile-production-capability-universe-ubl-prose-closure-001.json"
+  ],
+  "tests_run": [
+    "capability compiler regeneration for all six formats: PASS",
+    "compiler --check --verify-idempotency: PASS",
+    "python -m pytest tests/production_program/test_capability_universe.py -q: 22 passed",
+    "python -m pytest tests/production_program -q: 69 passed",
+    "HEAD-to-worktree semantic comparison after excluding proof-closure fields: all 12 format projections equal"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "aggregate_sha256": "e199e84e9f7ee0579959db28283ecb89e014077cdd1605fbf0c82aee553d9960",
+    "three_run_digest": "eafd6f8657ed83b73dbd5975046698d24fda6d8fd58c3d6aea962e6b6a85cf7c",
+    "semantic_scope_change": false,
+    "projection_change_reason": "Dependency invalidation closure now includes the current authority and SAL inputs.",
+    "controller_effect": "none; Event 26 and XLIFF remain canonical"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}
