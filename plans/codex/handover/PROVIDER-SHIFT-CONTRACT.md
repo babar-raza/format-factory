@@ -322,6 +322,36 @@ If a clean checkpoint cannot be completed, mark the workspace
 `RECOVERY_REQUIRED` and preserve the bytes. Never claim a clean transfer for
 convenience.
 
+### Two-phase provider transfer
+
+Provider transfer is a two-phase transaction; it is not a lease-token handoff.
+
+`OUTBOUND_FREEZE`
+
+1. stop new product mutations;
+2. finish or explicitly classify the current bounded transaction;
+3. push every completed immutable checkpoint and journal transition;
+4. capture Git, controller, journal, proof, dirty-path, and coordination state;
+5. refresh and validate this packet;
+6. release only the outgoing identity's leases and complete that identity.
+
+`INBOUND_ADOPT`
+
+1. fetch GitLab and validate the packet against current higher authorities;
+2. register a new provider identity;
+3. requery the off-repo coordination plane;
+4. classify every dirty path as committed, foreign-live, stale-attributable,
+   or unexplained;
+5. select work from the journal and decision table;
+6. claim only the exact selected scope;
+7. create a new execution manifest and mutation authorization;
+8. rerun the smallest discriminating verification before writing.
+
+There is deliberately no state in which an incoming provider inherits the
+outgoing provider's identity, token, lease, local manifest, uncommitted bytes,
+or self-reported test result. This removes provider memory from the correctness
+boundary.
+
 ## 12. Minimum handback record
 
 Every future handback must contain:

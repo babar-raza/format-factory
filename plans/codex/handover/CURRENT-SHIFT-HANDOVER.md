@@ -19,6 +19,32 @@ The canonical repository, native FF6 event journal, controller, taskcards,
 proof inputs, and coordination database override this derived document when
 they have advanced. Never overwrite newer state to make it match this file.
 
+## 0. Codex-to-Claude transfer result
+
+Codex ended this shift without advancing product work. The latest committed
+native state remains Event 27, controller state `CONTRACT`, XLIFF
+`XLF-04-BATCH-005` as the canonical next microstep, and UBL-03 as the safe
+disjoint fallback while XLIFF remains live-owned. Certification remains
+`0/6`; all promotion states remain `UNASSESSED`.
+
+At `2026-07-29T21:08:29Z`:
+
+- `HEAD == origin/main ==
+  0b69bddb8faab010d9d064d75655564a67ddca4a`;
+- the handover validator returned `valid: true` for 70 bound files;
+- all eleven semantic corruption controls were rejected;
+- the same five XLIFF Batch 005 paths remained dirty;
+- coordination still classified their Codex owner and eleven leases
+  `ACTIVE`;
+- PID 31488 was absent;
+- coordination still reported 17 wider open conflicts.
+
+This is a `RESUMABLE_COMMITTED_BOUNDARY_WITH_FOREIGN_WORKSPACE_RECOVERY`
+handoff. The committed mission can be resumed from GitLab without local-only
+state, but the foreign XLIFF bytes are not transferable. Claude registers a
+new identity, fetches GitLab, reruns the validator, and reclassifies the lease
+before selecting XLIFF takeover or disjoint UBL-03 work.
+
 ## 1. Mission and terminal condition
 
 Mission ID: `FF6-PRODUCTION-LIBRARIES-001`.
@@ -145,6 +171,12 @@ relevant preserved conflict is
 `.local/transcripts/ubl-prose-closure-001.json`; it is local transcript state,
 not a reason to invalidate the committed UBL evidence or touch the file.
 
+At `2026-07-29T21:08:29Z`, fetched GitLab and local `HEAD` were equal at
+`0b69bddb8faab010d9d064d75655564a67ddca4a`; the same owner, leases, dirty
+paths, absent process, and 17 conflicts were observed. The observation is close
+to the lease TTL boundary. Claude must use a fresh coordination result, never a
+timestamp calculation in prose, to decide whether to preserve or take over.
+
 ## 5. Why reruns were inconsistent
 
 ### Symptoms
@@ -254,6 +286,7 @@ git fetch origin main
 git status --short --branch
 git rev-parse HEAD
 git rev-parse origin/main
+git merge-base --is-ancestor 0b69bddb8faab010d9d064d75655564a67ddca4a origin/main
 git merge-base --is-ancestor 59ef8ee2e1b4e37168e4c7094687fac0a6098a79 origin/main
 git merge-base --is-ancestor 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c origin/main
 .venv\Scripts\python.exe plans\codex\handover\validate_handover.py --self-test

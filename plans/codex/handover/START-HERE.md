@@ -53,6 +53,37 @@ controller or handover commits.
 Read [the current shift handover](CURRENT-SHIFT-HANDOVER.md) immediately after
 this entrypoint. It is the exact delta from the older Event 26 packet.
 
+## Immediate Claude handoff
+
+Codex stopped at a documentation-only clean checkpoint. No product,
+controller, taskcard, proof, promotion, gate, or release state advanced after
+Event 27. At `2026-07-29T21:08:29Z`, fetched GitLab `origin/main` and local
+`HEAD` both resolved to
+`0b69bddb8faab010d9d064d75655564a67ddca4a`. The handover validator passed
+all 70 file bindings, the complete Event 27 chain, and eleven semantic negative
+controls.
+
+The shared worktree still contained exactly the five XLIFF Batch 005 paths
+listed below. Coordination still reported their owner as `ACTIVE`, although
+its recorded process was absent and its last heartbeat was
+`2026-07-29T19:17:24.722412Z` with a 7,200-second TTL. This is a time-stamped
+observation, not continuing authority. Claude must fetch and requery it.
+
+Claude must not inherit a Codex identity, token, lease, execution manifest, or
+uncommitted byte. It registers a new identity and follows the deterministic
+decision table:
+
+1. Event 28 or later exists: validate and follow the newer journal projection.
+2. Batch 005 is still live-owned: preserve its five paths and execute `UBL-03`
+   under disjoint exact-path leases.
+3. Batch 005 is stale-owned with preserved bytes: use governed takeover,
+   recapture baselines, and continue the same Batch 005 transaction.
+4. Batch 005 is released or committed: independently replay the current bytes
+   or immutable commit before adopting or journaling it.
+
+This makes the handoff provider-neutral and resumable without treating the
+volatile coordination snapshot as a permanent fact.
+
 ## Current transfer state
 
 Two different states exist and must never be collapsed into one status:
@@ -60,7 +91,7 @@ Two different states exist and must never be collapsed into one status:
 | Boundary | State | Meaning |
 |---|---|---|
 | Committed Event 27 checkpoint | `RESUMABLE` | A clean checkout of GitLab `origin/main` can reconstruct the last verified state without local-only files |
-| Shared workspace at 2026-07-29T20:17Z | `ACTIVE_XLIFF_BATCH005_FOREIGN_WORKING_SET` | Another live Codex identity owns five dirty Batch 005 paths; Claude must not claim, overwrite, commit, or present those bytes as a clean checkpoint |
+| Shared workspace at 2026-07-29T21:08Z | `ACTIVE_XLIFF_BATCH005_FOREIGN_WORKING_SET` | Another Codex identity was still reported live and owned five dirty Batch 005 paths; Claude must requery and must not claim, overwrite, commit, or present those bytes as a clean checkpoint while that lease remains live |
 
 The earlier captured transfer classifier
 `IN_FLIGHT_RED_NOT_TRANSFERABLE` remains a valid historical description of
@@ -123,6 +154,16 @@ untracked Batch 005 files. Coordination status returned nonzero because 17
 open conflicts exist across the wider shared system, including a preserved
 local UBL transcript conflict; none authorizes mutation or deletion. The
 incoming executor must requery rather than trusting this time-stamped result.
+
+At the final Codex-to-Claude handoff observation,
+`2026-07-29T21:08:29Z`, local `HEAD` and fetched GitLab `origin/main` both
+resolved to `0b69bddb8faab010d9d064d75655564a67ddca4a`. The same five XLIFF paths
+were dirty, the same owner and eleven leases were reported `ACTIVE`, PID 31488
+was absent, and the coordination plane still reported 17 open conflicts.
+Because the observation occurred shortly before the lease's calculated TTL
+boundary, Claude must not infer either liveness or staleness from this file.
+Only its fresh coordination query selects live-owner preservation versus
+governed takeover.
 
 The UBL package census and subsequent authority-closure repair are committed
 and pushed to GitLab main. The latest bounded checkpoint is
@@ -272,7 +313,7 @@ git fetch origin
 git status --short --branch
 git rev-parse HEAD
 git rev-parse origin/main
-git merge-base --is-ancestor d5e8927a85ed0f2e8c68e1e061084c67b85363c9 origin/main
+git merge-base --is-ancestor 0b69bddb8faab010d9d064d75655564a67ddca4a origin/main
 git merge-base --is-ancestor 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c origin/main
 git merge-base --is-ancestor 7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce origin/main
 git merge-base --is-ancestor 18bb295f94e43338611ef88caff073eed17411c9 origin/main

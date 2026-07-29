@@ -315,3 +315,17 @@ GitLab checkpoint `59ef8ee2e1b4e37168e4c7094687fac0a6098a79`.
   every handover/controller commit.
 - Product source, certification, promotion, release, and gate state are
   unchanged. Production certification remains 0/6.
+
+## Final Codex-to-Claude shift refresh
+
+At `2026-07-29T21:08:29Z`, GitLab `origin/main` and local `HEAD` matched at
+`0b69bddb8faab010d9d064d75655564a67ddca4a`. The 70-file handover validator,
+complete Event 27 chain, and eleven semantic negative controls passed.
+
+No product or controller work advanced. Five XLIFF Batch 005 paths remained
+foreign dirty state; their owner and eleven leases were still reported
+`ACTIVE`, while the recorded process was absent and the observation was close
+to the lease TTL boundary. Claude must register a new identity and requery
+coordination. It resumes XLIFF only after safe release or governed stale
+takeover; otherwise it executes UBL-03 under disjoint leases. Certification
+remains 0/6 and all promotions remain `UNASSESSED`.

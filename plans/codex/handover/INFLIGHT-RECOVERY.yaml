@@ -86,9 +86,9 @@ latest_xliff_refresh_observation:
     coordination plane reports a stale lease.
 
 current_handover_observation:
-  observed_at: "2026-07-29T20:48:00Z"
-  head: 59ef8ee2e1b4e37168e4c7094687fac0a6098a79
-  origin_main: 59ef8ee2e1b4e37168e4c7094687fac0a6098a79
+  observed_at: "2026-07-29T21:08:29Z"
+  head: 0b69bddb8faab010d9d064d75655564a67ddca4a
+  origin_main: 0b69bddb8faab010d9d064d75655564a67ddca4a
   xliff_owner: agent-codex-20260729T190440-e2dd38
   xliff_coordination_status: ACTIVE
   xliff_process_observed: ABSENT
@@ -104,11 +104,15 @@ current_handover_observation:
   coordination_status_exit: 1
   coordination_open_conflicts: 17
   first_safe_disjoint_action: UBL-03
+  shift_classification: RESUMABLE_COMMITTED_BOUNDARY_WITH_FOREIGN_WORKSPACE_RECOVERY
+  intended_incoming_provider: claude
+  incoming_identity_rule: REGISTER_NEW_IDENTITY_NEVER_REUSE_CODEX_TOKEN
   recovery_rule: >-
-    Requery all state. If the XLIFF lease remains active, preserve its five
-    dirty paths and execute UBL-03 under disjoint ownership. Event 27 is
-    already committed and must not be repeated. If the lease becomes stale, use governed takeover
-    and recapture all baselines before adopting any bytes.
+    Requery all state because this observation was captured close to the lease
+    TTL boundary. If the XLIFF lease remains active, preserve its five dirty
+    paths and execute UBL-03 under disjoint ownership. Event 27 is already
+    committed and must not be repeated. If the lease becomes stale, use
+    governed takeover and recapture all baselines before adopting any bytes.
 
 committed_parallel_checkpoint:
   observed_at: "2026-07-29T19:52:00Z"

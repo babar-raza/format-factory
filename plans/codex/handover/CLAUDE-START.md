@@ -121,6 +121,16 @@ files. Coordination status returned exit 1 because 17 wider open conflicts
 remain. Preserve them; a nonzero status is not permission to clean, release,
 or overwrite anything.
 
+The final Codex-to-Claude observation was taken at
+`2026-07-29T21:08:29Z`. Local `HEAD` and fetched GitLab `origin/main` were
+both `0b69bddb8faab010d9d064d75655564a67ddca4a`. The same owner and eleven
+Batch 005 leases were still reported `ACTIVE`, PID 31488 was absent, Git still
+showed the same three tracked and two untracked XLIFF paths, and coordination
+still returned exit 1 with 17 wider open conflicts. That observation was close
+to the lease TTL boundary, so it is deliberately non-authoritative at resume.
+Claude must requery; it may use governed takeover only if the coordination
+plane now classifies the owner stale.
+
 This is the expected immediate branch:
 
 ```text

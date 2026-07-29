@@ -17,9 +17,9 @@ source_checkpoint:
   committed_handover_scope: CLEAN_AND_REMOTE_VERIFIED
 
 runtime_observation:
-  observed_at: "2026-07-29T20:48:00Z"
-  head: 59ef8ee2e1b4e37168e4c7094687fac0a6098a79
-  origin_main: 59ef8ee2e1b4e37168e4c7094687fac0a6098a79
+  observed_at: "2026-07-29T21:08:29Z"
+  head: 0b69bddb8faab010d9d064d75655564a67ddca4a
+  origin_main: 0b69bddb8faab010d9d064d75655564a67ddca4a
   xliff_owner: agent-codex-20260729T190440-e2dd38
   xliff_lease_status: ACTIVE
   xliff_last_heartbeat: "2026-07-29T19:17:24.722412Z"
@@ -34,11 +34,15 @@ runtime_observation:
   coordination_open_conflicts: 17
   relevant_open_conflict: .local/transcripts/ubl-prose-closure-001.json
   classification: ACTIVE_LEASE_FOREIGN_DIRTY_WORK_DO_NOT_TOUCH
+  shift_classification: RESUMABLE_COMMITTED_BOUNDARY_WITH_FOREIGN_WORKSPACE_RECOVERY
+  incoming_provider: claude
+  incoming_identity_rule: REGISTER_NEW_IDENTITY
   safe_disjoint_task: TC-FF6-UBL-TYPING-001
   safe_disjoint_microstep: UBL-03
   authority: >-
-    This is an observation only. Claude must recompute GitLab, journal,
-    controller, coordination, leases, and filesystem state before mutation.
+    This is an observation only and was captured close to the lease TTL
+    boundary. Claude must recompute GitLab, journal, controller, coordination,
+    leases, and filesystem state before mutation.
     A nonzero coordination status reflects open historical conflicts and must
     not be reported as a clean coordination plane.
 

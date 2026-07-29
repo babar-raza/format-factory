@@ -110,11 +110,14 @@ latest_xliff_refresh_observation:
     resume; use governed takeover only after the plane reports the lease stale.
 
 handover_refresh_observation:
-  observed_at: "2026-07-29T20:48:00Z"
-  head: 59ef8ee2e1b4e37168e4c7094687fac0a6098a79
-  origin_main: 59ef8ee2e1b4e37168e4c7094687fac0a6098a79
+  observed_at: "2026-07-29T21:08:29Z"
+  head: 0b69bddb8faab010d9d064d75655564a67ddca4a
+  origin_main: 0b69bddb8faab010d9d064d75655564a67ddca4a
   active_xliff_owner: agent-codex-20260729T190440-e2dd38
   active_xliff_lease_count: 11
+  active_xliff_lease_status: ACTIVE
+  active_xliff_last_heartbeat: "2026-07-29T19:17:24.722412Z"
+  active_xliff_heartbeat_ttl_seconds: 7200
   active_xliff_process_observed: ABSENT
   dirty_paths:
     - status: MODIFIED_TRACKED
@@ -140,11 +143,17 @@ handover_refresh_observation:
       path: .local/transcripts/ubl-prose-closure-001.json
       action: PRESERVE_AND_REBASELINE_IF_OWNED_LATER
   first_safe_disjoint_action: UBL-03
+  shift_classification: RESUMABLE_COMMITTED_BOUNDARY_WITH_FOREIGN_WORKSPACE_RECOVERY
+  incoming_provider: claude
+  incoming_identity_rule: REGISTER_NEW_IDENTITY_NEVER_INHERIT_OUTGOING_TOKEN
   rule: >-
     This is a time-stamped observation. The incoming executor must fetch and
-    requery. While Batch 005 remains active-owned, do not mutate its paths.
-    Event 27 already serializes the UBL evidence while retaining XLIFF as the
-    controller-selected active task. The next disjoint fallback is UBL-03.
+    requery; it was captured close to the lease TTL boundary and cannot prove
+    later liveness or staleness. While Batch 005 remains active-owned, do not
+    mutate its paths. If it is stale, use governed takeover and recapture every
+    baseline. Event 27 already serializes the UBL evidence while retaining
+    XLIFF as the controller-selected active task. The next disjoint fallback is
+    UBL-03.
 
 parallel_ubl_checkpoint:
   observed_at: "2026-07-29T19:52:00Z"
