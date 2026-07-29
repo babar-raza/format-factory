@@ -40,7 +40,7 @@ SHA256 = re.compile(r"^[0-9a-f]{64}$")
 LINK = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
 ALLOWED_STAGED = {
     "reports/skills-rff6/skill-transcripts/"
-    "refresh-provider-neutral-handover-event-28.json"
+    "refresh-provider-neutral-handover-event-29.json"
 }
 ALLOWED_PREFIX = "plans/codex/handover/"
 
@@ -214,7 +214,7 @@ def _manifest_errors(manifest: Mapping[str, Any]) -> list[str]:
         "plans/codex/handover/INFLIGHT-RECOVERY.yaml",
         "plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml",
         "plans/codex/handover/validate_handover.py",
-        "plans/codex/handover/event-28/manifest.yaml",
+        "plans/codex/handover/event-29/manifest.yaml",
     }
     for missing in sorted(required - seen):
         errors.append(f"required manifest binding absent: {missing}")
@@ -391,83 +391,15 @@ def _recovery_errors(
     machine_assets = transfer.get("recovery_assets")
     recovery_assets = captured.get("recovery_assets")
     _expect(errors, "recovery asset projection", recovery_assets, machine_assets)
-    if not isinstance(machine_assets, list):
-        return [*errors, "recovery asset list is absent"]
-    expected_paths = {
-        "reports/ff6/xliff-core-authority-candidate-census.yaml",
-        "tests/tools/test_extract_sal_facts.py",
-        "tools/spec/extract_sal_facts.py",
-        "tests/tools/test_extract_sal_facts_candidate_binding.py",
-        "tools/spec/xliff_core_candidate_binding.py",
-    }
-    seen: set[str] = set()
-    for asset in machine_assets:
-        if not isinstance(asset, Mapping):
-            errors.append("recovery asset is not a mapping")
-            continue
-        relative = asset.get("path")
-        digest = asset.get("lf_sha256")
-        size = asset.get("canonical_bytes")
-        lines = asset.get("lines")
-        state = asset.get("git_state_at_capture")
-        if not isinstance(relative, str):
-            errors.append("recovery asset lacks path")
-            continue
-        seen.add(relative)
-        if asset.get("presence_policy") != "OPTIONAL_LOCAL_RECOVERY":
-            errors.append(f"invalid presence policy: {relative}")
-        if (
-            not isinstance(digest, str)
-            or SHA256.fullmatch(digest) is None
-            or not isinstance(size, int)
-            or size < 1
-            or not isinstance(lines, int)
-            or lines < 1
-            or state not in {"MODIFIED_TRACKED", "UNTRACKED"}
-        ):
-            errors.append(f"invalid recovery identity: {relative}")
-            continue
-        status = _porcelain(relative)
-        dirty_as_captured = (
-            state == "UNTRACKED"
-            and status == "??"
-            or state == "MODIFIED_TRACKED"
-            and status not in {"", "??"}
-        )
-        if not dirty_as_captured:
-            # A clean checkout does not require provider-local recovery bytes.
-            if status == "":
-                continue
-            if state == "UNTRACKED" and not (REPO_ROOT / relative).exists():
-                continue
-            errors.append(
-                f"recovery Git state mismatch for {relative}: "
-                f"expected {state}, got {status or 'CLEAN'}"
-            )
-            continue
-        path = REPO_ROOT / relative
-        data = _lf_bytes(path)
-        actual_lines = len(data.splitlines())
-        if hashlib.sha256(data).hexdigest() != digest:
-            errors.append(f"recovery digest mismatch: {relative}")
-        if len(data) != size:
-            errors.append(f"recovery byte-count mismatch: {relative}")
-        if actual_lines != lines:
-            errors.append(f"recovery line-count mismatch: {relative}")
-    if seen != expected_paths:
-        errors.append(
-            f"recovery path set: expected {sorted(expected_paths)}, got {sorted(seen)}"
-        )
+    _expect(errors, "recovery assets", machine_assets, [])
     _expect(
         errors,
         "recovery status",
         captured.get("status"),
-        "STALE_SUSPECT_XLIFF_BATCH005_RECOVERY_WORKING_SET",
+        "CLEAN_COMMITTED_GITLAB_MAIN",
     )
-    _expect(errors, "recovery focused passes", captured.get("focused_test_result", {}).get("passed"), 62)
-    _expect(errors, "recovery focused failures", captured.get("focused_test_result", {}).get("failed"), 0)
-    _expect(errors, "recovery takeover", captured.get("takeover_required"), True)
-    _expect(errors, "recovery canonical bytes", captured.get("current_bytes_canonical"), False)
+    _expect(errors, "recovery takeover", captured.get("takeover_required"), False)
+    _expect(errors, "recovery canonical bytes", captured.get("current_bytes_canonical"), True)
     return errors
 
 
@@ -575,10 +507,8 @@ def _semantic_errors(context: Mapping[str, Any]) -> list[str]:
     event_evidence = latest.get("evidence", {})
     controller_ubl = controller.get("ubl_checkpoint", {})
     machine_ubl = machine.get("parallel_ubl_checkpoint", {})
-    checkpoint_ubl = checkpoint.get("verified_ubl_microstep", {})
     parallel_result = parallel.get("bounded_result", {})
     for label, substate in (
-        ("event", event_evidence.get("ubl_substate")),
         ("controller", controller_ubl.get("detailed_substate")),
         ("machine", machine_ubl.get("detailed_substate")),
         ("parallel", parallel_result.get("detailed_substate")),
@@ -590,18 +520,14 @@ def _semantic_errors(context: Mapping[str, Any]) -> list[str]:
             "SCHEMA_GRAPH_ROOT_TYPE_BINDING_PARTIAL",
         )
     for label, complete in (
-        ("event", event_evidence.get("ubl_reachable_schema_graph_complete")),
         ("controller", controller_ubl.get("reachable_schema_graph_complete")),
         ("machine", machine_ubl.get("reachable_schema_graph_complete")),
         ("parallel", parallel.get("truth_boundary", {}).get("reachable_schema_graph_complete")),
-        ("checkpoint", checkpoint_ubl.get("complete")),
     ):
         _expect(errors, f"{label} UBL completion", complete, False)
     for label, digest in (
-        ("event", event_evidence.get("ubl_root_type_graph_sha256")),
         ("controller", controller_ubl.get("root_type_graph_sha256")),
         ("machine", machine_ubl.get("graph_sha256")),
-        ("checkpoint", checkpoint_ubl.get("graph_sha256")),
         ("parallel", parallel.get("graph", {}).get("graph_sha256")),
     ):
         _expect(
@@ -637,22 +563,42 @@ def _semantic_errors(context: Mapping[str, Any]) -> list[str]:
         errors,
         "workspace transfer state",
         workspace.get("status"),
-        "RESUMABLE_COMMITTED_BOUNDARY_WITH_STALE_XLIFF_RECOVERY",
+        "RESUMABLE_CLEAN_COMMITTED_BOUNDARY",
     )
-    _expect(errors, "workspace clean bytes", workspace.get("current_bytes_are_clean_checkpoint"), False)
+    _expect(errors, "workspace clean bytes", workspace.get("current_bytes_are_clean_checkpoint"), True)
     _expect(errors, "workspace frozen bytes", workspace.get("current_bytes_frozen_by_handover"), False)
     _expect(
         errors,
         "XLIFF recovery status",
         machine.get("latest_xliff_observation", {}).get("status"),
-        "STALE_SUSPECT_XLIFF_BATCH005_RECOVERY_WORKING_SET",
+        "COMMITTED_SOURCE_AUTHENTIC_DISPOSITIONS_UNVERIFIED",
     )
     _expect(
         errors,
         "XLIFF current bytes canonical",
         machine.get("latest_xliff_observation", {}).get("current_bytes_canonical"),
-        False,
+        True,
     )
+    _expect(errors, "candidate count", event_evidence.get("candidate_count"), 1130)
+    _expect(
+        errors,
+        "verified candidate dispositions",
+        event_evidence.get("candidate_dispositions_verified"),
+        0,
+    )
+    _expect(
+        errors,
+        "unverified candidate dispositions",
+        event_evidence.get("candidate_dispositions_unverified"),
+        1130,
+    )
+    _expect(
+        errors,
+        "missing source-bound obligations",
+        event_evidence.get("missing_source_bound_obligation_rows"),
+        80,
+    )
+    _expect(errors, "XLF-04 completion", event_evidence.get("xlf_04_complete"), False)
 
     _expect(errors, "certified products", machine.get("goal", {}).get("products_certified"), 0)
     promotions = machine.get("program_truth", {}).get("promotions", {})
@@ -668,17 +614,17 @@ def _semantic_errors(context: Mapping[str, Any]) -> list[str]:
     )
     _expect(
         errors,
-        "Event 28 promotion effect",
+        "Event 29 promotion effect",
         latest.get("promotion_effect"),
         "none",
     )
 
     start = texts["plans/codex/handover/START-HERE.md"]
     for token in (
-        "FF6-EVENT-000028",
-        "XLF-04-BATCH-005",
+        "FF6-EVENT-000029",
+        "XLF-04-BATCH-005-PARTIAL-002",
         "UBL-03-PARTIAL-002",
-        "STALE_SUSPECT",
+        "1,130",
         "0/6",
     ):
         if token not in start:
@@ -744,7 +690,7 @@ def validate_current() -> tuple[dict[str, Any], dict[str, Any]]:
             "event_sequence": latest.get("sequence"),
             "event_hash": latest.get("event_hash"),
             "canonical_next_task": latest.get("next_task"),
-            "canonical_next_microstep": "XLF-04-BATCH-005",
+            "canonical_next_microstep": "XLF-04-BATCH-005-PARTIAL-002_DISPOSITION_VERIFICATION_AND_OBLIGATION_COMPILATION",
             "fallback_microstep": "UBL-03-PARTIAL-002",
             "manifest_files": len(manifest.get("files", [])),
             "errors": errors,
@@ -781,10 +727,10 @@ def run_self_test(context: dict[str, Any]) -> dict[str, Any]:
     cases.append(("wrong_active_task", wrong_task))
 
     bad_recovery = copy.deepcopy(context)
-    bad_recovery["machine"]["workspace_transfer"]["recovery_assets"][0][
-        "lf_sha256"
-    ] = "not-a-digest"
-    cases.append(("invalid_recovery_identity", bad_recovery))
+    bad_recovery["machine"]["workspace_transfer"]["recovery_assets"] = [
+        {"path": "uncommitted-provider-local-byte"}
+    ]
+    cases.append(("unexpected_recovery_asset", bad_recovery))
 
     false_promotion = copy.deepcopy(context)
     false_promotion["machine"]["program_truth"]["promotions"]["ubl"] = "RELEASED"
@@ -803,8 +749,8 @@ def run_self_test(context: dict[str, Any]) -> dict[str, Any]:
     false_xlf_canonical = copy.deepcopy(context)
     false_xlf_canonical["machine"]["latest_xliff_observation"][
         "current_bytes_canonical"
-    ] = True
-    cases.append(("uncommitted_xliff_adopted", false_xlf_canonical))
+    ] = False
+    cases.append(("committed_xliff_rejected", false_xlf_canonical))
 
     wrong_packet = copy.deepcopy(context)
     wrong_packet["checkpoint"]["source_checkpoint"]["packet_input_commit"] = "0" * 40

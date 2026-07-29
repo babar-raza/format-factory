@@ -1,5 +1,5 @@
 ---
-artifact_id: FF6-CURRENT-SHIFT-HANDOVER-EVENT-28
+artifact_id: FF6-CURRENT-SHIFT-HANDOVER-EVENT-29
 artifact_type: provider_shift_handover
 visibility: internal
 publish_allowed: false
@@ -7,174 +7,147 @@ generated_by: codex
 generated_at: 2026-07-30
 ---
 
-# Codex to Claude shift handover — Event 28
+# Codex to Claude shift handover — Event 29
 
-## Mission
+## Mission and invariant
 
 Build six independently publishable, production-grade Python libraries for
-IPYNB, OpenRaster, NRRD, XLIFF 2.0/2.1, SafeTensors, and UBL 2.3. Each library
-must provide complete format-specific developer capabilities, professional
-package architecture, secure parsing/writing, typing, documentation,
-interoperability, installed-wheel proof, reproducible artifacts, SBOM,
-provenance, signatures, repository extraction, and technical certification.
+IPYNB, OpenRaster, NRRD, XLIFF 2.0/2.1, SafeTensors, and UBL 2.3. Provider
+changes never change the goal, state machine, task priority, evidence rules,
+or exit criteria.
 
-The mission is autonomous and continuous. Provider changes do not change the
-goal, task ordering, evidence rules, or completion criteria.
+The current program is still in `CONTRACT`, not product implementation or
+certification. All six promotions are `UNASSESSED`; certified products are
+`0/6`.
 
-## Clean authority boundary
-
-The last two GitLab commits created by this shift are:
-
-1. `f98d220a0a3903b1107de90b2e39bf480ec4b19d`
-   — bounded UBL root/type graph implementation and TDD evidence.
-2. `cde3b417`
-   — Event 28, controller projection, UBL taskcard microstate, and
-   plan-control receipt.
-
-The packet commit containing this document must descend from both.
-
-Native state:
+## Immutable boundary
 
 ```text
-CONTRACT
-Event 28
-canonical task: TC-FF6-XLIFF-PROFILE-SURFACE-001
-canonical microstep: XLF-04-BATCH-005
-parallel task: TC-FF6-UBL-TYPING-001
-parallel microstep complete: UBL-03-PARTIAL-001
-parallel next microstep: UBL-03-PARTIAL-002
-certified products: 0/6
+implementation: 315efa5f5f4420202b5254c86ccd8863a91c385f
+event/projection: c1f4be66b97acb9a23faa02764e3d41ec1e4a3b0
+event: FF6-EVENT-000029
+event hash: de12acdefd04c37a918e3fd27dcb8dd076f53e576ee7049cf1efc732d02028bb
+controller: CONTRACT
+task: TC-FF6-XLIFF-PROFILE-SURFACE-001 / WORK_IN_PROGRESS
+first unmet: XLF-04
+next: XLF-04-BATCH-005-PARTIAL-002_DISPOSITION_VERIFICATION_AND_OBLIGATION_COMPILATION
 ```
 
-## Work completed this shift
+Both commits are on GitLab `origin/main`. The working tree should be clean
+after this packet is committed.
 
-The first UBL-03 graph primitive was built under `test-driven-development` and
-`sal-pipeline-heal`, with independent plan-control serialization:
+## What was achieved
 
-- RED 1: graph entrypoint absent.
-- GREEN 1: deterministic root-to-declared-type graph.
-- RED 2: security pre-scan falsely rejected a DOCTYPE string inside a comment.
-- GREEN 2: comments are excluded from the declaration pre-scan while active
-  DOCTYPE and ENTITY declarations remain rejected.
+The prior stale five-path XLIFF working set was not blindly adopted. Codex:
 
-Observed official-package result:
+1. took over stale leases through the audited coordination verb;
+2. recaptured baselines and confirmed the preserved LF digests;
+3. replayed 62 recovered tests;
+4. identified four structural weaknesses:
+   - precision labels overstated generated mapping certainty;
+   - the validator trusted generated disposition fields;
+   - internally consistent rehashed content was not replayed against authority;
+   - ad hoc `sys.path` import mutation broke professional structure/Mypy;
+5. added RED tests for honest unverified state, forged mapping metadata, and
+   rehashed authority-forged content;
+6. implemented deterministic disposition recomputation and full pinned-source
+   replay;
+7. replaced false exactness with explicit `_UNVERIFIED` precision classes;
+8. moved candidate classification to a typed sibling module with
+   package-first import;
+9. regenerated the canonical census;
+10. ran focused, regression, static, authority, transcript, and deterministic
+    replay checks;
+11. committed/pushed implementation, independently replayed it, then
+    committed/pushed Event 29 and projections.
+
+## Capability depth reached in this slice
+
+The XLIFF contract compiler can now enumerate and authenticate:
+
+- 182 modal normative prose candidates;
+- 588 non-modal prose candidates;
+- 264 Core XSD structural/constraint candidates;
+- 96 Core Schematron assertions/reports;
+- 929 common-identical, 32 common-changed, 26 removed-in-2.1, and 143
+  added-in-2.1 candidate relations;
+- content and occurrence hashes bound to exact authority package/member bytes;
+- deterministic semantic-token/structural-class mapping proposals;
+- fail-closed report validation and authority replay.
+
+This is mature evidence machinery, not a production XLIFF library capability.
+No product source changed in this shift.
+
+## What remains and why it is hard
+
+All 1,130 dispositions are generated proposals. They are deterministic and
+source-authentic but have zero independent semantic verification. The next
+work is intentionally not a bulk relabel:
+
+- independently verify 1,130 dispositions against exact authority occurrences;
+- create discriminating tests for contradictions;
+- expand the expected-ID denominator when authority reveals missing behavior;
+- resolve 60 expected IDs with no candidate mapping;
+- compile 80 missing source-bound obligation rows while preserving the 25
+  existing stable rows;
+- reconcile every resulting obligation through canonical SAL;
+- then continue XLF-05 through XLF-08 for all eight modules, profile ownership,
+  ProductContract compilation, and deterministic verification.
+
+Product implementation follows only after contract/profile closure. Later
+waves still require production-grade source, corpora, interoperability,
+fuzz/property/mutation/security/performance proof, installed wheels on Python
+3.11–3.14 and three OSes, reproducible packages, SBOM/provenance/signatures,
+and independent repository extraction for all six formats.
+
+## Exact next execution
+
+Follow [Event 29 runbook](event-29/RUNBOOK.md). Begin with revalidation from
+the immutable commits. Register a fresh Claude identity. Claim exact paths and
+the logical Batch 005 scope. Use registered TDD, SAL ingestion, and SAL
+healing skills.
+
+Process bounded candidate batches with stable IDs:
 
 ```text
-schemas: 106
-document roots: 91
-reachable root/type nodes: 182
-type-reference edges: 91
-graph SHA-256: 7b754187690ce1bb04db62657cfb552653cb381a1bdd745a56856e58215af029
-three equivalent runs: identical
-focused tests: 14 passed
-Ruff: pass
-Mypy: pass
-Pyright 1.1.411: zero diagnostics
-py_compile: pass
+authority occurrence
+  -> independent semantic reading
+  -> discriminating RED evidence
+  -> mapping/denominator/obligation repair
+  -> SAL verification
+  -> focused and affected regression
+  -> recomputed open counts
 ```
 
-The SAL transcript is intentionally `FAIL` at the whole-task level because no
-complete graph output exists. The TDD transcript is `PASS` for the bounded
-behavior. This distinction is deliberate.
+Do not use the candidate generator as its own oracle. Do not reduce open
+counts by deleting expected IDs or calling preservation semantic support.
 
-## Work not completed
+## UBL fallback
 
-UBL-03 remains open. Do not change the taskcard to `PASS` until every graph
-component and edge listed in the taskcard is present and the checked-in graph
-artifact is reproducible.
-
-XLIFF Batch 005 remains uncommitted. The stale working set now passes the two
-focused files (`62 passed`), but broad verification, artifact check modes,
-three-run replay, authority audit, receipts, exact-path commit scope, and
-native event serialization have not been established by this shift.
-
-No product source, package certification, promotion, release, or gate state
-advanced.
-
-## Preserved dirty paths
-
-| Path | LF SHA-256 | Bytes | Lines |
-|---|---|---:|---:|
-| `reports/ff6/xliff-core-authority-candidate-census.yaml` | `2b2557a09a0a7c95ecbcecf72ac6c8bedb7addcb221787b9eab254f687bf8207` | 2,629,952 | 45,847 |
-| `tests/tools/test_extract_sal_facts.py` | `86dcfd486fe76552e35c0efd24c0c5036d0f11bc22b08507cb8c7e0e94274e62` | 60,349 | 1,664 |
-| `tools/spec/extract_sal_facts.py` | `8f98868393719aa249a73acdc6597536b54d674e56fbfb80539f3490e4fdb82d` | 161,850 | 4,072 |
-| `tests/tools/test_extract_sal_facts_candidate_binding.py` | `34a9cddb5986548c0a3602a90ff914eab4a9940bbebe03141936cc977a8c7db6` | 14,247 | 452 |
-| `tools/spec/xliff_core_candidate_binding.py` | `042c670acefff8d0a6932ea3df7f1582f887f756148dd0bdfc356f69ca56f8b7` | 14,443 | 387 |
-
-The table records the current filesystem observation. The packet does not
-adopt those bytes as canonical proof. If any digest changes before Claude
-takes ownership, preserve the changed version and investigate; do not force it
-back to this table.
-
-## Claude’s first decision
-
-Claude must not start by editing.
-
-1. Fetch GitLab and validate the packet.
-2. Read Event 28, controller, XLIFF taskcard, UBL taskcard, and coordination
-   status.
-3. Register a fresh Claude identity.
-4. If the XLIFF leases remain stale, use governed takeover on the logical
-   scope and all five current paths. Recapture baselines.
-5. If the leases are active, leave XLIFF untouched and claim the UBL graph
-   paths for `UBL-03-PARTIAL-002`.
-6. If a newer commit or event exists, independently verify it and rebuild the
-   projection before selecting work.
-
-## XLIFF takeover path
-
-After a successful governed takeover:
-
-1. Verify all five LF digests and inspect diffs against `HEAD`.
-2. Rerun both focused files. The captured result is `62 passed`; any other
-   result is drift requiring diagnosis.
-3. Inspect whether Batch 005 receipts and local transcripts exist. Do not
-   synthesize a passing receipt from test output.
-4. Run the full validation matrix in `event-28/RUNBOOK.md`.
-5. Run every supported `extract_sal_facts.py --check` mode for changed
-   artifacts.
-6. Generate canonical outputs three times in isolated temporary destinations
-   and compare bytes.
-7. Verify all XLIFF authorities remain `MATCH`.
-8. Determine the honest state:
-   - if Batch 005 acceptance is complete, commit the exact implementation
-     paths;
-   - if only a bounded subset is complete, commit and journal it as partial;
-   - if evidence fails, repair through another RED-GREEN cycle.
-9. Push GitLab main, append one native event, rebuild projections, refresh this
-   handover, and release leases.
-
-## UBL fallback path
-
-Continue from commit `f98d220a`, not from scratch.
-
-Next exact TDD cycle:
+If another live provider owns the exact XLIFF scope, continue only disjoint UBL
+work from `f98d220a`:
 
 ```text
 UBL-03-PARTIAL-002
-behavior: exact offline import/include closure and unique global-reference resolution
-RED: synthetic package proves missing/unresolved/remote/ambiguous closure fails
-GREEN: add minimal closure graph while preserving current node/edge identities
-VERIFY: focused suite + real package + three equivalent runs + static checks
+offline import/include closure
+unique reference resolution
+remote/path-escape/namespace/ambiguity negative controls
 ```
 
-Then add one RED-GREEN cycle for each remaining UBL-03 behavior family. Keep
-`reachable_schema_graph_complete: false` and do not emit a complete canonical
-report until all exit criteria pass.
+Keep `reachable_schema_graph_complete: false` and do not mutate XLIFF files.
 
-## Checkpoint handback requirement
+## Required handback
 
-Claude must end its shift with:
+The next provider ends its shift with:
 
-- bounded implementation commit pushed to GitLab main;
-- exactly one new native event for the verified boundary;
-- matching controller/taskcard/task-index projection;
-- receipts validating with zero warnings;
-- refreshed provider-neutral packet and manifest;
-- packet self-test passing;
-- exact dirty-path classification;
-- its own leases released and session completed.
+- bounded implementation commit on GitLab main;
+- proof replayed from the immutable commit;
+- one new native event appended before projections;
+- controller/taskcard agreement;
+- valid production-skill and plan-control receipts;
+- refreshed provider-neutral packet and negative controls;
+- explicit dirty-path classification;
+- only its own leases released and session completed.
 
-If work ends in RED or a failed broad gate, commit nothing that claims
-completion. Preserve a content-addressed recovery record and leave the last
-clean Event 28 boundary available.
+If no new verified boundary exists, Event 29 remains authoritative. Partial
+work becomes content-addressed recovery input, never completion.

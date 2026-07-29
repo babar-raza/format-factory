@@ -1,0 +1,72 @@
+schema: ff6/versioned-handover-checkpoint@1
+artifact_id: FF6-HANDOVER-EVENT-29-CHECKPOINT
+visibility: internal
+publish_allowed: false
+generated_by: codex
+generated_at: "2026-07-30"
+
+source:
+  forge: GitLab
+  remote: origin
+  branch: main
+  implementation_commit: 315efa5f5f4420202b5254c86ccd8863a91c385f
+  event_projection_commit: c1f4be66b97acb9a23faa02764e3d41ec1e4a3b0
+
+controller:
+  state: CONTRACT
+  sequence: 29
+  event_id: FF6-EVENT-000029
+  event_hash: de12acdefd04c37a918e3fd27dcb8dd076f53e576ee7049cf1efc732d02028bb
+  active_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
+  active_task_state: WORK_IN_PROGRESS
+
+exact_next:
+  first_unmet_step: XLF-04
+  microstep: XLF-04-BATCH-005-PARTIAL-002_DISPOSITION_VERIFICATION_AND_OBLIGATION_COMPILATION
+  selection_rule: >-
+    Fetch and validate GitLab main. A newer valid event supersedes this
+    packet. Otherwise continue the XLIFF task. Use the disjoint UBL-03
+    import/include and reference-resolution microstep only if the exact XLIFF
+    write scope is live-owned.
+
+xliff:
+  status: WORK_IN_PROGRESS
+  completed_steps: [XLF-01, XLF-02, XLF-03]
+  completed_batches:
+    - XLF-04-BATCH-001
+    - XLF-04-BATCH-002
+    - XLF-04-BATCH-003
+    - XLF-04-BATCH-004
+  batch_005_complete: false
+  census_sha256: 24c1902b6387cc9fa3402f78392ba91c6e6656407719ec11cfaab1c4f3d22b9e
+  candidates: 1130
+  candidate_sources:
+    normative_prose: 182
+    non_modal_prose: 588
+    core_xsd: 264
+    core_schematron: 96
+  dispositions_verified: 0
+  dispositions_unverified: 1130
+  expected_obligation_ids: 105
+  expected_ids_without_candidate_mapping: 60
+  source_bound_obligation_rows: 25
+  missing_source_bound_obligation_rows: 80
+  denominator_status: OPEN_AUTHORITY_CENSUS
+  focused_tests: 64 passed
+  authority_matches: 5
+
+ubl_fallback:
+  task: TC-FF6-UBL-TYPING-001
+  status: WORK_IN_PROGRESS
+  substate: SCHEMA_GRAPH_ROOT_TYPE_BINDING_PARTIAL
+  first_unmet_step: UBL-03
+  next_microstep: UBL-03-PARTIAL-002
+  implementation_commit: f98d220a0a3903b1107de90b2e39bf480ec4b19d
+  reachable_schema_graph_complete: false
+
+truth:
+  products_certified: 0
+  promotions: UNASSESSED_ALL_SIX
+  product_source_changed: false
+  release_state_changed: false
+  gate_state_changed: false
