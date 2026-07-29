@@ -30,17 +30,23 @@ CHECKPOINT_PATH = HANDOVER_ROOT / "checkpoint.yaml"
 MACHINE_PATH = HANDOVER_ROOT / "CURRENT-MACHINE-STATE.yaml"
 RECOVERY_PATH = HANDOVER_ROOT / "INFLIGHT-RECOVERY.yaml"
 PARALLEL_UBL_PATH = HANDOVER_ROOT / "PARALLEL-UBL-CHECKPOINT.yaml"
+NEXT_MICROSTEP_PATH = HANDOVER_ROOT / "NEXT-MICROSTEP.yaml"
 CONTROLLER_PATH = REPO_ROOT / "plans/strategic/ff6/controller-state.yaml"
 JOURNAL_PATH = REPO_ROOT / "plans/strategic/ff6/events.jsonl"
 TASK_INDEX_PATH = REPO_ROOT / "taskcards/index.yaml"
 XLIFF_TASK_PATH = REPO_ROOT / "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md"
 UBL_TASK_PATH = REPO_ROOT / "taskcards/TC-FF6-UBL-TYPING-001.md"
+XLIFF_CENSUS_PATH = (
+    REPO_ROOT / "reports/ff6/xliff-core-authority-candidate-census.yaml"
+)
 
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
 LINK = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
 ALLOWED_STAGED = {
     "reports/skills-rff6/skill-transcripts/"
-    "refresh-provider-neutral-handover-event-29.json"
+    "refresh-provider-neutral-handover-event-29.json",
+    "reports/skills-rff6/skill-transcripts/"
+    "refresh-provider-neutral-handover-event-29-hardening.json",
 }
 ALLOWED_PREFIX = "plans/codex/handover/"
 
@@ -213,6 +219,7 @@ def _manifest_errors(manifest: Mapping[str, Any]) -> list[str]:
         "plans/codex/handover/checkpoint.yaml",
         "plans/codex/handover/INFLIGHT-RECOVERY.yaml",
         "plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml",
+        "plans/codex/handover/NEXT-MICROSTEP.yaml",
         "plans/codex/handover/validate_handover.py",
         "plans/codex/handover/event-29/manifest.yaml",
     }
@@ -410,6 +417,8 @@ def _semantic_errors(context: Mapping[str, Any]) -> list[str]:
     machine = context["machine"]
     recovery = context["recovery"]
     parallel = context["parallel"]
+    next_microstep = context["next_microstep"]
+    census = context["census"]
     versioned = context["versioned"]
     controller = context["controller"]
     task_index = context["task_index"]
@@ -503,6 +512,42 @@ def _semantic_errors(context: Mapping[str, Any]) -> list[str]:
     _expect(errors, "latest active task", active_task, "TC-FF6-XLIFF-PROFILE-SURFACE-001")
     if "XLF-04-BATCH-005" not in str(latest.get("exact_next_action", "")):
         errors.append("latest event does not preserve XLF-04-BATCH-005")
+
+    next_checkpoint = next_microstep.get("checkpoint", {})
+    next_task = next_microstep.get("task", {})
+    next_baseline = next_microstep.get("baseline", {})
+    first_batch = next_microstep.get("first_candidate_batch", {})
+    _expect(
+        errors,
+        "next-microstep event",
+        next_checkpoint.get("event_id"),
+        latest.get("event_id"),
+    )
+    _expect(
+        errors,
+        "next-microstep event hash",
+        next_checkpoint.get("event_hash"),
+        latest.get("event_hash"),
+    )
+    _expect(
+        errors,
+        "next-microstep task",
+        next_task.get("task_id"),
+        active_task,
+    )
+    _expect(
+        errors,
+        "next-microstep task state",
+        next_task.get("task_state"),
+        active_state,
+    )
+    _expect(errors, "next-microstep first unmet", next_task.get("first_unmet_step"), "XLF-04")
+    _expect(
+        errors,
+        "next-microstep exact action",
+        next_task.get("microstep"),
+        "XLF-04-BATCH-005-PARTIAL-002_DISPOSITION_VERIFICATION_AND_OBLIGATION_COMPILATION",
+    )
 
     event_evidence = latest.get("evidence", {})
     controller_ubl = controller.get("ubl_checkpoint", {})
@@ -599,6 +644,132 @@ def _semantic_errors(context: Mapping[str, Any]) -> list[str]:
         80,
     )
     _expect(errors, "XLF-04 completion", event_evidence.get("xlf_04_complete"), False)
+    for label, actual, expected in (
+        ("next candidate count", next_baseline.get("candidates"), 1130),
+        ("next verified dispositions", next_baseline.get("dispositions_verified"), 0),
+        ("next unverified dispositions", next_baseline.get("dispositions_unverified"), 1130),
+        ("next expected IDs", next_baseline.get("expected_obligation_ids"), 105),
+        (
+            "next IDs without candidate mapping",
+            next_baseline.get("expected_ids_without_candidate_mapping"),
+            60,
+        ),
+        (
+            "next source-bound rows",
+            next_baseline.get("source_bound_obligation_rows"),
+            25,
+        ),
+        (
+            "next missing source-bound rows",
+            next_baseline.get("missing_source_bound_obligation_rows"),
+            80,
+        ),
+    ):
+        _expect(errors, label, actual, expected)
+    _expect(
+        errors,
+        "next census digest",
+        next_baseline.get("candidate_census_sha256"),
+        _snapshot_sha256(
+            "reports/ff6/xliff-core-authority-candidate-census.yaml"
+        ),
+    )
+
+    selected_ids = first_batch.get("candidate_ids")
+    _expect(
+        errors,
+        "first candidate IDs",
+        selected_ids,
+        ["XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90"],
+    )
+    census_candidates = census.get("candidates", [])
+    selected = [
+        row
+        for row in census_candidates
+        if isinstance(row, Mapping)
+        and row.get("candidate_id")
+        == "XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90"
+    ]
+    if len(selected) != 1:
+        errors.append(
+            "first candidate must resolve exactly once in the canonical census"
+        )
+    else:
+        candidate = selected[0]
+        occurrences = candidate.get("occurrences", [])
+        occurrence = (
+            occurrences[0]
+            if isinstance(occurrences, list) and occurrences
+            else {}
+        )
+        authority = first_batch.get("authority", {})
+        for candidate_label, candidate_actual, candidate_expected in (
+            (
+                "first candidate content digest",
+                authority.get("candidate_content_sha256"),
+                candidate.get("candidate_content_sha256"),
+            ),
+            (
+                "first candidate occurrence digest",
+                authority.get("occurrence_sha256"),
+                occurrence.get("occurrence_sha256"),
+            ),
+            (
+                "first candidate source digest",
+                authority.get("source_sha256"),
+                occurrence.get("source_sha256"),
+            ),
+            (
+                "first candidate member digest",
+                authority.get("member_sha256"),
+                occurrence.get("member_sha256"),
+            ),
+            (
+                "first candidate member",
+                authority.get("member"),
+                occurrence.get("member"),
+            ),
+            (
+                "first candidate location",
+                authority.get("location"),
+                occurrence.get("location"),
+            ),
+            (
+                "first candidate proposal",
+                first_batch.get("current_generated_proposal", {}).get(
+                    "obligation_ids"
+                ),
+                candidate.get("disposition", {}).get("obligation_ids"),
+            ),
+        ):
+            _expect(
+                errors,
+                candidate_label,
+                candidate_actual,
+                candidate_expected,
+            )
+    _expect(
+        errors,
+        "independent review state",
+        first_batch.get("independent_review", {}).get("status"),
+        "NOT_YET_EXECUTED",
+    )
+    red_ids = {
+        row.get("id")
+        for row in next_microstep.get("red_controls", [])
+        if isinstance(row, Mapping)
+    }
+    _expect(
+        errors,
+        "next RED controls",
+        red_ids,
+        {
+            "RED-XLF-DISPOSITION-001",
+            "RED-XLF-DISPOSITION-002",
+            "RED-XLF-DISPOSITION-003",
+            "RED-XLF-DISPOSITION-004",
+        },
+    )
 
     _expect(errors, "certified products", machine.get("goal", {}).get("products_certified"), 0)
     promotions = machine.get("program_truth", {}).get("promotions", {})
@@ -630,6 +801,52 @@ def _semantic_errors(context: Mapping[str, Any]) -> list[str]:
         if token not in start:
             errors.append(f"START-HERE lacks {token}")
 
+    live_projection_requirements = {
+        "plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md": (
+            "FF6-EVENT-000029",
+            "XLF-04-BATCH-005-PARTIAL-002",
+            "CLEAN_COMMITTED_GITLAB_MAIN",
+        ),
+        "plans/codex/handover/PROVIDER-SHIFT-CONTRACT.md": (
+            "Event 29",
+            "XLF-04-BATCH-005-PARTIAL-002",
+            "NEXT-MICROSTEP.yaml",
+        ),
+        "plans/codex/handover/STATE-MACHINE-AND-TASKCARD-PROTOCOL.md": (
+            "Event-29 resume invariant",
+            "XLF-04-BATCH-005-PARTIAL-002",
+            "NEXT-MICROSTEP.yaml",
+        ),
+        "plans/codex/handover/VALIDATION-AND-RELEASE.md": (
+            "Event 29",
+            "NEXT-MICROSTEP.yaml",
+            "zero of 1,130",
+        ),
+    }
+    for relative, required_tokens in live_projection_requirements.items():
+        text = texts[relative]
+        for token in required_tokens:
+            if token not in text:
+                errors.append(f"{relative} lacks current token {token}")
+
+    stale_projection_phrases = {
+        "plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md": (
+            "FF6-EVENT-000027",
+            "IN_FLIGHT_RED_NOT_TRANSFERABLE",
+            "18bb295f94e43338611ef88caff073eed17411c9",
+        ),
+        "plans/codex/handover/PROVIDER-SHIFT-CONTRACT.md": (
+            "Five dirty XLIFF paths are foreign",
+            "Canonical exact next microstep is `XLF-04-BATCH-005`.",
+            "`CONTRACT`, Event 27, XLIFF `XLF-04-BATCH-005`",
+        ),
+    }
+    for relative, stale_phrases in stale_projection_phrases.items():
+        text = texts[relative]
+        for phrase in stale_phrases:
+            if phrase in text:
+                errors.append(f"{relative} retains stale current-state text: {phrase}")
+
     errors.extend(_recovery_errors(machine, recovery))
     return errors
 
@@ -640,6 +857,8 @@ def validate_current() -> tuple[dict[str, Any], dict[str, Any]]:
     machine = _load_yaml(MACHINE_PATH)
     recovery = _load_yaml(RECOVERY_PATH)
     parallel = _load_yaml(PARALLEL_UBL_PATH)
+    next_microstep = _load_yaml(NEXT_MICROSTEP_PATH)
+    census = _load_yaml(XLIFF_CENSUS_PATH)
     controller = _load_yaml(CONTROLLER_PATH)
     task_index = _load_yaml(TASK_INDEX_PATH)
     events = _load_events()
@@ -651,6 +870,10 @@ def validate_current() -> tuple[dict[str, Any], dict[str, Any]]:
         "plans/codex/handover/START-HERE.md",
         "plans/codex/handover/CURRENT-SHIFT-HANDOVER.md",
         "plans/codex/handover/CLAUDE-START.md",
+        "plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md",
+        "plans/codex/handover/PROVIDER-SHIFT-CONTRACT.md",
+        "plans/codex/handover/STATE-MACHINE-AND-TASKCARD-PROTOCOL.md",
+        "plans/codex/handover/VALIDATION-AND-RELEASE.md",
         "taskcards/TC-FF6-UBL-TYPING-001.md",
         "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
     }
@@ -664,6 +887,8 @@ def validate_current() -> tuple[dict[str, Any], dict[str, Any]]:
         "machine": machine,
         "recovery": recovery,
         "parallel": parallel,
+        "next_microstep": next_microstep,
+        "census": census,
         "versioned_manifest": versioned_manifest,
         "versioned": versioned,
         "controller": controller,
@@ -684,7 +909,7 @@ def validate_current() -> tuple[dict[str, Any], dict[str, Any]]:
     ]
     return (
         {
-            "schema": "ff6/handover-validation@4",
+            "schema": "ff6/handover-validation@5",
             "valid": not errors,
             "event_id": latest.get("event_id"),
             "event_sequence": latest.get("sequence"),
@@ -766,12 +991,36 @@ def run_self_test(context: dict[str, Any]) -> dict[str, Any]:
     wrong_event_effect["latest"]["promotion_effect"] = "promoted"
     cases.append(("event_promotion_overclaim", wrong_event_effect))
 
+    stale_provider = copy.deepcopy(context)
+    stale_provider["texts"][
+        "plans/codex/handover/PROVIDER-SHIFT-CONTRACT.md"
+    ] += "\nFive dirty XLIFF paths are foreign\n"
+    cases.append(("stale_provider_projection", stale_provider))
+
+    wrong_candidate_digest = copy.deepcopy(context)
+    wrong_candidate_digest["next_microstep"]["first_candidate_batch"][
+        "authority"
+    ]["candidate_content_sha256"] = "0" * 64
+    cases.append(("next_candidate_digest_drift", wrong_candidate_digest))
+
+    false_independent_review = copy.deepcopy(context)
+    false_independent_review["next_microstep"]["first_candidate_batch"][
+        "independent_review"
+    ]["status"] = "VERIFIED"
+    cases.append(("unexecuted_adjudication_overclaim", false_independent_review))
+
+    missing_red_control = copy.deepcopy(context)
+    missing_red_control["next_microstep"]["red_controls"] = missing_red_control[
+        "next_microstep"
+    ]["red_controls"][:-1]
+    cases.append(("missing_next_red_control", missing_red_control))
+
     outcomes = [
         {"case": name, "rejected": bool(_semantic_only(case))}
         for name, case in cases
     ]
     return {
-        "schema": "ff6/handover-validation-self-test@8",
+        "schema": "ff6/handover-validation-self-test@9",
         "valid": all(item["rejected"] for item in outcomes),
         "negative_controls": outcomes,
     }
@@ -795,7 +1044,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         ValidationFailure,
     ) as exc:
         result = {
-            "schema": "ff6/handover-validation@4",
+            "schema": "ff6/handover-validation@5",
             "valid": False,
             "errors": [f"{type(exc).__name__}: {exc}"],
         }

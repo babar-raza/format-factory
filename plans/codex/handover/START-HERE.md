@@ -121,16 +121,17 @@ dispositions into SAL would be false closure.
 2. [Event 29 immutable packet](event-29/START-HERE.md)
 3. [Current shift handover](CURRENT-SHIFT-HANDOVER.md)
 4. [Claude start instructions](CLAUDE-START.md)
-5. [Provider-shift contract](PROVIDER-SHIFT-CONTRACT.md)
-6. [Current machine state](CURRENT-MACHINE-STATE.yaml)
-7. [Clean recovery boundary](INFLIGHT-RECOVERY.yaml)
-8. [Parallel UBL checkpoint](PARALLEL-UBL-CHECKPOINT.yaml)
-9. [Product goal](../../strategic/ff6/product-goal.yaml)
-10. [Autonomous production plan](../../strategic/autonomous-six-python-production-execution-plan.md)
-11. [Native controller](../../strategic/ff6/controller-state.yaml)
-12. [Complete event journal](../../strategic/ff6/events.jsonl)
-13. [Active XLIFF taskcard](../../../taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md)
-14. [UBL fallback taskcard](../../../taskcards/TC-FF6-UBL-TYPING-001.md)
+5. [Exact next microstep](NEXT-MICROSTEP.yaml)
+6. [Provider-shift contract](PROVIDER-SHIFT-CONTRACT.md)
+7. [Current machine state](CURRENT-MACHINE-STATE.yaml)
+8. [Clean recovery boundary](INFLIGHT-RECOVERY.yaml)
+9. [Parallel UBL checkpoint](PARALLEL-UBL-CHECKPOINT.yaml)
+10. [Product goal](../../strategic/ff6/product-goal.yaml)
+11. [Autonomous production plan](../../strategic/autonomous-six-python-production-execution-plan.md)
+12. [Native controller](../../strategic/ff6/controller-state.yaml)
+13. [Complete event journal](../../strategic/ff6/events.jsonl)
+14. [Active XLIFF taskcard](../../../taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md)
+15. [UBL fallback taskcard](../../../taskcards/TC-FF6-UBL-TYPING-001.md)
 
 Supporting durable design:
 
@@ -159,3 +160,10 @@ python -m tools.supervisor.coordination --json status
 Then follow [Event 29 runbook](event-29/RUNBOOK.md). Work remains autonomous:
 do not ask for continuation, do not edit readiness labels, and do not claim a
 library complete until its complete proof graph and certification gates pass.
+
+The first bounded RED cycle is fixed in
+[NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml). It targets one XLIFF 2.1
+Schematron assertion whose generated mapping currently confuses incidental
+XPath context names with direct semantic obligations. The incoming provider
+must build a separate content-addressed adjudication authority; it must not
+turn the existing proposal generator into its own verifier.

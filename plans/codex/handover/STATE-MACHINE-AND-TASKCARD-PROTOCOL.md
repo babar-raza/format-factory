@@ -4,7 +4,7 @@ artifact_type: provider_neutral_execution_protocol
 visibility: internal
 publish_allowed: false
 generated_by: codex
-generated_at: 2026-07-29
+generated_at: 2026-07-30
 authoritative_state: false
 historical_projection: true
 ---
@@ -203,7 +203,7 @@ The XLIFF batch-003 state traversed this recovery path and reached
 history remains documented because future crashes can recur at the same
 boundary. Incoming providers must replay, not repeat, this transition.
 
-## Current task decomposition
+## Current task decomposition at Event 29
 
 Task: `TC-FF6-XLIFF-PROFILE-SURFACE-001`.
 
@@ -212,7 +212,7 @@ Task: `TC-FF6-XLIFF-PROFILE-SURFACE-001`.
 | XLF-01 — PASS at event 20 | event 19, task/index/controller, authority and worktree preflight | native chain, exact READY task, clean or classified tree, 15/15 predecessor authority match |
 | XLF-02 — PASS at event 20 | official XLIFF 2.0 authority record, five-source XLIFF closure, and 42-member 2.0/2.1 inventory | independent digest plus published SHA-1 cross-check, legal record, 5/5 clean offline reconstruction, no 2.1-as-2.0 proxy |
 | XLF-03 — PASS at event 22 | deterministic source-located 2.0/2.1 Core/module/schema surface matrix | 36 unique coarse anchors; 293/420 sections; 8/8 modules; 8/9 schema vocabularies; full declared archive/XML/matrix negative controls; 18 tests; three identical real-authority outputs; this does not satisfy fine-grained semantics |
-| XLF-04 — FIRST UNMET; batches 001-003 PASS at event 25 | complete Core SAL and processing-requirement map | event 25 proves 25 source-bound obligations against a 105-ID open denominator with 80 unresolved. It remains `SOURCE_BOUND_UNVERIFIED`; category presence must not self-certify completeness. Batch 004 is the authority-candidate census |
+| XLF-04 — FIRST UNMET; batches 001-004 PASS and Batch 005 partial-001 checkpointed at Event 29 | complete independently adjudicated Core SAL and processing-requirement map | Event 29 proves 1,130 source-authentic candidates but zero independently verified dispositions; 25/105 source-bound rows, 80 missing rows, and 60 expected IDs without candidate mappings remain. Partial-002 starts with the fixed RED batch in `NEXT-MICROSTEP.yaml` |
 | XLF-05 | separately owned Translation Candidates/Matches, Glossary, Format Style, Metadata, Resource Data, Size/Length, Validation, and ITS families | all eight official modules and all nine module schema vocabularies are accounted for; each module has typed-model, read/write, validation, preservation, rejection, and proof obligations |
 | XLF-06 | repaired research/family/enrichment layers | mixed-profile requirements split; explicit-complete ownership; no keyword duplication |
 | XLF-07 | exact stable and preview projections | both stable profiles claimed; 2.1-only rules excluded from 2.0; 2.2 preview isolated; 1.2 outside model |
@@ -274,24 +274,26 @@ agent’s self-verdict without replay.
 - A blocked format does not stop another ready format.
 - Human-only release authority never blocks technical release preparation.
 
-## Event-25 resume invariant
+## Event-29 resume invariant
 
 The receiving provider continues XLF-04 only after replaying:
 
-- GitLab checkpoint `220ee7f5b9d39c3684cff6af6331b56a03ae9e75`
-  and implementation commit `2522752776f64ab800a2a21c8fa46c1f2a4e361c`;
-- event `FF6-EVENT-000025` and controller sequence 25;
-- exact source, test, matrix, denominator, Core inventory, and batch-003
-  receipt digests;
-- 27 focused tests plus Ruff, strict Mypy, Pyright 1.1.411, and bytecode
+- GitLab projection checkpoint
+  `c1f4be66b97acb9a23faa02764e3d41ec1e4a3b0` and implementation commit
+  `315efa5f5f4420202b5254c86ccd8863a91c385f`;
+- event `FF6-EVENT-000029` and controller sequence 29;
+- exact source, binding source, tests, matrix, denominator, Core inventory,
+  census, and three Batch 005 receipt digests;
+- 64 focused tests plus Ruff, strict Mypy, Pyright 1.1.411, and bytecode
   compilation;
-- matrix check mode and three byte-identical generations of each report;
+- all artifact check modes and three byte-identical census generations;
 - 17/17 global and 5/5 XLIFF authority matches.
 
-The next cycle recorded by event 25 is `XLF-04-BATCH-004`. Compile a
-deterministic authority-candidate census over direct/leaf normative prose,
-Core XSD constraints, Core Schematron assertions, and exact 2.0/2.1 deltas.
-Map every candidate exactly once to an expected ID or reasoned
-non-obligation disposition. Preserve all 25 current IDs, keep
-`complete=false` while the 105-ID authority census is open and 80 IDs remain,
-and reject unmapped or duplicate candidates.
+The next cycle recorded by Event 29 is
+`XLF-04-BATCH-005-PARTIAL-002_DISPOSITION_VERIFICATION_AND_OBLIGATION_COMPILATION`.
+Execute `NEXT-MICROSTEP.yaml`: begin with the fixed Schematron candidate,
+introduce a separate content-addressed adjudication authority, and prove that
+incidental XPath context names do not create unrelated obligation ownership.
+Preserve all 25 current IDs and all 1,130 candidates. Keep `complete=false`
+while the 105-ID authority census is open, 80 source-bound rows remain
+missing, 60 expected IDs lack candidates, or any disposition is unverified.

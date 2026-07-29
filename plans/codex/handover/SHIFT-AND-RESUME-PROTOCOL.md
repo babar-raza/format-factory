@@ -4,16 +4,17 @@ artifact_type: provider_neutral_checkpoint_protocol
 visibility: internal
 publish_allowed: false
 generated_by: codex
-generated_at: 2026-07-29
+generated_at: 2026-07-30
 authoritative_state: false
 historical_projection: true
 ---
 
 # Provider-Neutral Shift and Resume Protocol
 
-> Historical protocol background. Current shift state and exact next work are
-> defined only by [START-HERE.md](START-HERE.md), the native FF6 journal, and
-> the immutable [Event 26 packet](event-26/START-HERE.md).
+> Durable provider-shift protocol refreshed through Event 29. Current exact
+> work is defined by [START-HERE.md](START-HERE.md),
+> [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml), the native FF6 journal, and the
+> immutable [Event 29 packet](event-29/START-HERE.md).
 
 ## Invariant
 
@@ -37,33 +38,37 @@ disjoint, separately taskcarded scopes with non-overlapping leases.
 
 ## Current transfer boundary
 
-- Required GitLab ancestor before this packet:
-  `d02a00fedf669c6e2b2dd58e480715550fb2afe8`.
-- Journaled implementation commit:
-  `2522752776f64ab800a2a21c8fa46c1f2a4e361c`.
+- Required XLIFF implementation ancestor:
+  `315efa5f5f4420202b5254c86ccd8863a91c385f`.
+- Required Event 29 projection ancestor:
+  `c1f4be66b97acb9a23faa02764e3d41ec1e4a3b0`.
 - Use the fetched `origin/main` descendant containing this packet.
 - Controller state: `CONTRACT`.
-- Event: `FF6-EVENT-000025`.
+- Event: `FF6-EVENT-000029`.
 - Event hash:
-  `10d96a6729d250fecb89f5f082682f583b5b8053fd620702dcd837dfaf541434`.
+  `de12acdefd04c37a918e3fd27dcb8dd076f53e576ee7049cf1efc732d02028bb`.
 - Completed task: `TC-FF6-NRRD-PROFILE-SURFACE-001` - `PASS`.
 - Active task: `TC-FF6-XLIFF-PROFILE-SURFACE-001` -
-  `WORK_IN_PROGRESS`; XLF-01/XLF-02/XLF-03 and XLF-04-BATCH-001/BATCH-002/BATCH-003
+  `WORK_IN_PROGRESS`; XLF-01/XLF-02/XLF-03 and XLF-04 batches 001-004
   complete, XLF-04 still first unmet.
-- Canonical event microstate: `RESUMABLE` at event 25.
-- Exact next action: execute `XLF-04-BATCH-004`; do not restart batch 003.
-  The current boundary has 25/105 IDs resolved and leaves 80 open under an
-  incomplete authority census.
+- Canonical event microstate: `RESUMABLE` at Event 29.
+- Exact next action:
+  `XLF-04-BATCH-005-PARTIAL-002_DISPOSITION_VERIFICATION_AND_OBLIGATION_COMPILATION`.
+- First TDD slice: `XLF-04-BATCH-005-PARTIAL-002-A` in
+  `NEXT-MICROSTEP.yaml`.
+- Current boundary: 1,130 source-authentic candidates, zero verified
+  dispositions, 25/105 source-bound IDs, 80 missing rows, and 60 expected IDs
+  with no candidate mapping.
 - Product promotion: none.
 
 ## Incoming provider procedure
 
 1. Fetch `origin/main`; do not use GitHub or a provider branch.
-2. Verify `d02a00fedf669c6e2b2dd58e480715550fb2afe8` is an ancestor.
-3. Read `INFLIGHT-RECOVERY.yaml` as a closed recovery audit and verify
-   `origin/main` contains both `25227527` and `220ee7f5`.
+2. Verify `315efa5f` and `c1f4be66` are ancestors of fetched GitLab main.
+3. Read `INFLIGHT-RECOVERY.yaml` and verify that no local recovery asset is
+   required.
 4. Read the ordered authority list in `START-HERE.md`.
-5. Validate the journal through event 25 using FF6 native semantics:
+5. Validate the journal through Event 29 using FF6 native semantics:
    `previous_event_hash`, canonical JSON, sequential event IDs and hashes.
 6. Verify controller head, parent/child task states, task index, current gaps,
    authority 17/17 global and 5/5 XLIFF match, and capability manifest
@@ -76,21 +81,21 @@ disjoint, separately taskcarded scopes with non-overlapping leases.
 11. Resolve the required registered skills and run the mutation guard.
 12. Capture input baselines before writing.
 13. Validate `reports/ff6/xliff-authority-member-inventory.yaml` against both
-    pinned packages; replay event-25 evidence and independently validate
-    commit `25227527`, its 27 extractor tests, the
-    six committed-file digests (four implementation/report files and two skill transcripts),
-    affected regressions, static checks, and deterministic outputs.
-    Verify the controller projection and taskcard agree. Re-run completed
-    behavior only if its recorded inputs were invalidated.
+    pinned packages; replay Event 29 evidence and independently validate
+    commit `315efa5f`, its 64 focused tests, affected regressions, static
+    checks, all artifact check modes, authority replay, and three identical
+    census outputs. Verify the controller projection and taskcard agree.
+    Re-run completed behavior only if its recorded inputs were invalidated.
+14. Read `NEXT-MICROSTEP.yaml`; begin with its fixed candidate and RED
+    controls, not a newly selected convenience batch.
 
 ## Implementation-only commit recovery
 
-The current transfer is the explicit crash case in the recovery matrix:
-The former implementation-only recovery condition is closed. GitLab contains
-the immutable implementation commit `25227527` and its event/controller
-checkpoint `220ee7f5`. Incoming providers must verify both ancestors and must
-not append a duplicate event 25. `INFLIGHT-RECOVERY.yaml` retains the exact
-pre-reconciliation hashes and ownership history for audit.
+The former implementation-only recovery conditions are closed. GitLab
+contains immutable implementation commit `315efa5f` and Event 29 checkpoint
+`c1f4be66`. Incoming providers must verify both ancestors and must not append a
+duplicate Event 29. `INFLIGHT-RECOVERY.yaml` records that no provider-local
+byte is required.
 
 The new provider reconstructs the state; it does not accept a prior provider's
 claim on trust. A mismatch produces a named discrepancy and invalidates only
@@ -292,7 +297,7 @@ print(f"PASS events={len(events)} head={previous}")
 currently fails at event 1 because it expects `previous_hash`. FF6 uses
 `previous_event_hash` under `ff6/controller-event@1`.
 
-This is `FF6-GAP-011`, not evidence that event 25 is corrupt. Validate the FF6
+This is `FF6-GAP-011`, not evidence that Event 29 is corrupt. Validate the FF6
 native chain and do not edit either journal schema ad hoc.
 
 ## XLIFF completed surface and next semantic denominator
@@ -302,13 +307,15 @@ The completed XLF-03 real-package check uses 293 XLIFF 2.0 and 420 XLIFF 2.1 Doc
 The remaining sections use deterministic title-path locations. Both numbers
 are useful diagnostics, but only 293/420 are the complete section denominator.
 Changing the acceptance count to the ID-bearing subset would silently remove
-source evidence. Conversely, the 36 matrix rows are not a denominator for
-fine-grained semantic obligations. The seven batch-001 obligations also are
-not the denominator: their status is `SOURCE_BOUND_UNVERIFIED`, and the report
-must remain incomplete until an explicit expected-obligation ID set is
-compiled and fully matched. XLF-04 must enumerate complete Core rules with
-exact authority locations and profile applicability; XLF-05 must do the same
-for each official module.
+source evidence. Conversely, the 36 matrix rows and the 1,130 candidate rows
+are not themselves a denominator for verified semantic obligations. The 25
+source-bound obligation rows are also not the denominator: their status is
+`SOURCE_BOUND_UNVERIFIED`, and the report must remain incomplete until all
+candidate dispositions are independently adjudicated and the 105-ID expected
+set is fully matched. XLF-04 must enumerate complete Core rules with exact
+authority locations and profile applicability; XLF-05 must do the same for
+each official module. The first adjudication batch and its negative controls
+are fixed in `NEXT-MICROSTEP.yaml`.
 
 ## Transfer acceptance
 

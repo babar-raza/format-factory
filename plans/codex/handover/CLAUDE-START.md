@@ -47,6 +47,15 @@ occurrence, add discriminating evidence, repair contradictions, then update
 canonical SAL/obligation ownership. Do not let the current generator act as
 its own oracle.
 
+The first candidate and RED controls are not discretionary. Read
+[NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml) and begin with
+`XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90`. Its assertion directly concerns
+root `trgLang` when target content exists, while the current token router also
+maps incidental `segment`, `ignorable`, and `target` context names to
+hierarchy/cardinality obligations. Preserve the generated proposal, introduce
+a separate content-addressed adjudication record, and prove that only an
+independent adjudication can increment the verified count.
+
 Preserve:
 
 - 1,130 source-authentic candidate identities;

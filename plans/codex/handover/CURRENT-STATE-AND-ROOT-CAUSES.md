@@ -4,30 +4,32 @@ artifact_type: agent_handover_analysis
 visibility: internal
 publish_allowed: false
 generated_by: codex
-generated_at: 2026-07-29
+generated_at: 2026-07-30
 authoritative_state: false
-historical_projection: true
+historical_projection: false
 ---
 
 # Current State, Root Causes, and Structural Weaknesses
 
-> Historical design background. Do not execute an embedded exact-next action
-> from this file. The current authority is [START-HERE.md](START-HERE.md) and
-> the immutable [Event 26 packet](event-26/START-HERE.md).
+> Design analysis refreshed through Event 29. This file explains causes and
+> redesign direction; executable state remains derived from
+> [START-HERE.md](START-HERE.md), [CURRENT-MACHINE-STATE.yaml](CURRENT-MACHINE-STATE.yaml),
+> the native journal, and the immutable [Event 29 packet](event-29/START-HERE.md).
 
 ## Executive truth
 
 The FF6 mission has a durable goal, deterministic contract compiler, locked
 authority dependency plane, hash-chained controller, current gap projection,
-and a provider-neutral resume protocol. Authority closure passed at event 16,
-the OpenRaster profile/surface contract repair passed at event 17, and the
-IPYNB nbformat 4.0-4.5 profile repair passed at event 18. Exact
-NRRD0001-NRRD0005 applicability passed at event 19.
+and a provider-neutral resume protocol. Events 16-19 closed authority,
+OpenRaster, IPYNB, and NRRD contract prerequisites. Events 20-29 advanced
+XLIFF authority/profile work through a complete 1,130-candidate Core census
+and advanced UBL through its first root/type graph primitive.
 
 It does not yet have a production-ready library. Five formats have existing
 implementation footholds of uneven depth. OpenRaster has no product package.
 All 672 compiled obligations are planning requirements, not verified behavior.
-All six promotion states are `UNASSESSED`.
+The XLIFF census has zero independently verified semantic dispositions. All
+six promotion states are `UNASSESSED`.
 
 ## Product depth actually present
 
@@ -276,6 +278,41 @@ embedded negative controls prove that a missing batch, stale next batch,
 wrong event head, or stale current-state phrase fails closed. Historical
 predecessor evidence remains preserved and is relabelled rather than deleted.
 
+Event 29 exposed a second instance of the same weakness: the handover
+validator passed while two live-root documents still described Event 27 and a
+foreign dirty XLIFF workspace as current. Their bytes matched the manifest;
+their meaning did not match the journal. The validator must therefore bind
+every live-root projection to the machine state and reject known stale-state
+sentences, not merely validate the small set of primary projections.
+
+### Deterministic mapping is not independent semantic verification
+
+The XLIFF candidate census is now source-authentic and reproducible, but its
+disposition algorithm scans the complete semantic location and normalized
+requirement with keyword rules. For Schematron candidate
+`XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90`, the actual assertion is that
+root `trgLang` is required when target content exists. The generated proposal
+also assigns hierarchy/cardinality obligations because `segment`,
+`ignorable`, and `target` appear in the XPath context.
+
+The visible symptom is over-broad obligation ownership. The root cause is
+that proposal generation and validation share the same algorithm and there is
+no separate, content-addressed adjudication authority. Replaying the proposal
+three times cannot make it independent evidence.
+
+The durable design is:
+
+- retain generated dispositions as proposals;
+- store independent adjudications separately, keyed by candidate, content,
+  occurrence, authority, denominator, decision, and tool digests;
+- record accepted and rejected obligation IDs with source-located reasons;
+- derive verified counts only from valid adjudications;
+- invalidate downstream obligation rows when any adjudication input changes;
+- require discriminating tests for every contradiction class.
+
+The first bounded implementation cycle is fixed in
+`NEXT-MICROSTEP.yaml`. Mechanical copying into canonical SAL is prohibited.
+
 ## What must be preserved
 
 - All working source and tests, including characterization behavior.
@@ -312,15 +349,17 @@ predecessor evidence remains preserved and is relabelled rather than deleted.
   against silently dropping unlabelled or unknown content.
 - Validate handover semantics against the latest native event, not only file
   presence, links, and content hashes; reject stale active-state projections.
+- Separate generated semantic proposals from independently verified
+  adjudications and make that separation part of the proof graph.
 
 ## Immediate repair order
 
-1. Execute XLF-04-BATCH-004: compile the deterministic Core
-   authority-candidate census and reconcile every candidate exactly once to an
-   expected ID or reasoned non-obligation disposition. Retain XLF-04
-   incomplete at 25/105 resolved IDs with 80 open until evidence changes that
-   denominator. Do not inflate 12 covered categories into semantic
-   completeness.
+1. Execute
+   `XLF-04-BATCH-005-PARTIAL-002_DISPOSITION_VERIFICATION_AND_OBLIGATION_COMPILATION`
+   from the exact first candidate and RED controls in
+   `NEXT-MICROSTEP.yaml`. Build the independent adjudication layer, repair
+   overmapping, and retain XLF-04 incomplete until all 1,130 dispositions,
+   105 expected IDs, and source-bound obligations close through canonical SAL.
 2. Compile exact per-module applicability with isolated
    2.2 preview semantics.
 3. UBL all-root/common-component typing contract.
@@ -370,7 +409,7 @@ Confidence is moderate in the observed implementation footholds because the
 product source trees are unchanged from the baseline snapshot but no current
 production certification binds their complete package/environment closure.
 Confidence is low that the 672-obligation denominator is final until XLIFF and
-UBL repairs pass. XLIFF 2.0 is separately pinned and matched and the
-source-surface matrix is deterministic, but the compiled projection still
-lacks the fine-grained 2.0/2.1 Core/module denominator and retains a shallow
-single module bucket. No stronger claim is justified.
+UBL repairs pass. XLIFF 2.0/2.1 candidate coverage is now much deeper and
+source-authentic, but all 1,130 candidate dispositions remain independently
+unverified, 80 expected IDs lack source-bound rows, and module ownership is
+still open. No stronger claim is justified.

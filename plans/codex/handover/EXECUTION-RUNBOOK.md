@@ -4,16 +4,17 @@ artifact_type: autonomous_execution_runbook
 visibility: internal
 publish_allowed: false
 generated_by: codex
-generated_at: 2026-07-29
+generated_at: 2026-07-30
 authoritative_state: false
 historical_projection: true
 ---
 
 # FF6 Execution Runbook
 
-> Historical runbook background. Do not execute an embedded exact-next action
-> from this file. The current authority is [START-HERE.md](START-HERE.md) and
-> the immutable [Event 26 runbook](event-26/RUNBOOK.md).
+> Durable program procedure refreshed through Event 29. Exact current inputs
+> and the first RED cycle are in [START-HERE.md](START-HERE.md),
+> [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml), and the immutable
+> [Event 29 runbook](event-29/RUNBOOK.md).
 
 ## Mission state machine
 
@@ -22,17 +23,13 @@ DISCOVER -> SNAPSHOT -> CONTRACT -> IMPLEMENT -> VERIFY
          -> REPAIR -> CERTIFY -> EXTRACT -> RELEASE_PREP -> COMPLETE
 ```
 
-Current state is `CONTRACT`. Authority closure passed at event 16, OpenRaster
-profile/surface repair at event 17, and IPYNB profile/surface repair at event
-18. NRRD0001-NRRD0005 profile repair passed at event 19. Event 20
-checkpointed XLIFF steps XLF-01 and XLF-02 after closing the 2.0 authority
-prerequisite and inventorying both pinned packages. Event 22 completed the
-XLF-03 deterministic source-surface matrix. Event 23 binds the first seven
-source-bound Core obligations at commit
-`78660ae1a310ab06cf00d977bbc26fb65914f1c9`. GitLab later added the complete
-UBL typing taskcard, XLF-04 batch-003 implementation commit `25227527`, and
-event-25 controller checkpoint `220ee7f5`. XLF-04 remains first unmet. The
-parent capability task remains `NEEDS_REPAIR`, so product implementation is
+Current state is `CONTRACT`. Events 16-19 passed the authority and first four
+format-profile prerequisites. Events 20-29 advanced XLIFF to 1,130
+source-authentic Core candidates and UBL to a deterministic 91-root
+root/type primitive. XLF-04 remains first unmet because zero XLIFF candidate
+dispositions are independently verified, 80 expected obligation rows are
+missing, and 60 expected IDs have no candidate mapping. The parent capability
+task remains `NEEDS_REPAIR`, so product implementation is
 locked. The active task is `TC-FF6-XLIFF-PROFILE-SURFACE-001`, and the first
 unmet step is XLF-04.
 
@@ -109,7 +106,8 @@ No product wave may bypass the program dependencies.
 
 ### Inputs
 
-- event 25 and the `PASS` NRRD checkpoint;
+- Event 29, implementation commit `315efa5f`, and projection commit
+  `c1f4be66`;
 - the locked XLIFF 2.0 and 2.1 OASIS Standard packages, prose members,
   product requirements, and 42-member tracked inventory;
 - `shared/format-contracts/authority-lock.yaml`;
@@ -117,73 +115,74 @@ No product wave may bypass the program dependencies.
   enrichment inputs;
 - current `shared/format-contracts/xliff.yaml`;
 - capability universe compiler and all six generated projections;
-- taskcard `TC-FF6-XLIFF-PROFILE-SURFACE-001`.
+- taskcard `TC-FF6-XLIFF-PROFILE-SURFACE-001`;
+- `NEXT-MICROSTEP.yaml`, which fixes the first adjudication candidate and RED
+  controls.
 
 ### Steps
 
-1. Revalidate event 25, controller/task/index agreement, GitLab commits
-   `2522752776f64ab800a2a21c8fa46c1f2a4e361c` and
-   `220ee7f5b9d39c3684cff6af6331b56a03ae9e75`, coordination ownership,
-   all 17 global authority matches, all five
-   XLIFF matches, and the 42-member inventory.
-2. Require commit `220ee7f5b9d39c3684cff6af6331b56a03ae9e75`
-   as a GitLab-main ancestor; verify event-25 proof plus the
-   six committed-file digests (four implementation/report files and two skill transcripts)
-   for commit `25227527`; replay 27 focused tests,
-   affected regressions, Ruff, strict Mypy, Pyright 1.1.411, bytecode
-   compilation, matrix/check modes, and deterministic generations.
-3. Re-run completed XLF steps only if their recorded input closure changed.
-4. Verify the seven batch-001 stable IDs and exact paragraph digests remain
-   unchanged; they are source-bound, not canonical-SAL-verified.
-5. Do not restart `XLF-04-BATCH-003`; independently validate its committed,
-   journaled RED/GREEN boundary.
-6. Execute `XLF-04-BATCH-004`: compile a deterministic authority-candidate
-   census over direct/leaf prose, Core XSD, Core Schematron, and 2.0/2.1
-   deltas; reconcile every candidate exactly once.
-7. Keep `complete=false`: the tracked denominator has 105 expected IDs, only
-   25 resolve, 80 remain, and the authority census is open. Continue
-   bounded source-located batches until the complete Core delta and
-   processing map exists. Separate common Core rules, 2.1 additions/changes,
-   processing requirements, ITS mappings, preservation, security, limits, and
-   uncertainty. Never count coarse anchors, obligation counts, or covered
-   categories as complete semantics.
-8. Audit every current XLIFF SAL fact against that map. Split mixed 2.0/2.1
+1. Revalidate Event 29, the complete journal, controller/task/index
+   agreement, both immutable commits, all five XLIFF authority matches, all
+   artifact check modes, 64 focused tests, affected regressions, static
+   checks, and three identical census generations.
+2. Re-run completed XLF steps only if their recorded input closure changed.
+   Preserve the 1,130 candidate IDs, 105 expected IDs, and 25 existing
+   obligation rows.
+3. Read the TDD, SAL ingestion, and SAL healing command contracts. Register a
+   fresh provider identity, claim exact paths, create an execution manifest,
+   run the mutation guard, and preflight every write.
+4. Execute the fixed first batch in `NEXT-MICROSTEP.yaml`. Start with RED
+   controls proving that incidental XPath context names cannot create direct
+   hierarchy/cardinality ownership and that generated proposals cannot
+   increment verified counts.
+5. Implement a separate content-addressed adjudication record and validator.
+   Preserve the proposal; overlay only independently justified decisions.
+6. Bind adjudication invalidation to candidate content, occurrence, authority,
+   denominator, decision, tool, and dependency digests.
+7. Compile or repair a source-bound obligation only after its adjudication
+   passes. Record accepted and rejected obligation IDs with exact authority
+   reasons.
+8. Keep `complete=false`: the tracked denominator has 105 expected IDs, only
+   25 source-bound rows, 80 missing rows, and 60 IDs without candidate
+   mappings. Continue bounded adjudication batches until the complete Core
+   delta and processing map exists.
+9. Audit every current XLIFF SAL fact against that map. Split mixed 2.0/2.1
    claims; ingest missing facts and heal false claims only through registered
    SAL skills.
-9. Compile complete Core requirements for hierarchy, languages, identifiers,
+10. Compile complete Core requirements for hierarchy, languages, identifiers,
    inheritance, ordering/cardinality, source/target structure, notes,
    original data, skeletons, extensions, inline identity/pairing/nesting/
    isolation/order, segmentation/re-segmentation, state/sub-state, and agent
    processing.
-10. Replace the generic module bucket with separately owned Translation
+11. Replace the generic module bucket with separately owned Translation
    Candidates/Matches, Glossary, Format Style, Metadata, Resource Data, Size
    and Length Restriction, Validation, and ITS capability families.
-11. Reconcile all nine module schema vocabularies (`matches`, `glossary`, `fs`,
+12. Reconcile all nine module schema vocabularies (`matches`, `glossary`, `fs`,
    `metadata`, `resource_data`, `size_restriction`, `validation`, `its`,
    `itsm`) to the eight owners. Treat `its` and `itsm` as one ITS module.
    Inventory Change Tracking as informative and give it no normative
    conformance credit.
-12. For each module, require typed models, parse/write, schema plus processing
+13. For each module, require typed models, parse/write, schema plus processing
    validation, preservation, rejection, diagnostics, positive/negative/
    property/roundtrip/interoperability/security/resource obligations.
-13. Repair mixed-profile research or product requirements at their governed
+14. Repair mixed-profile research or product requirements at their governed
    source, then regenerate and relock; never patch only the projection.
-14. Apply explicit-complete fact ownership only after every live fact has one
+15. Apply explicit-complete fact ownership only after every live fact has one
     exact Core or module owner.
-15. Give every stable capability and obligation an exact non-empty subset of
+16. Give every stable capability and obligation an exact non-empty subset of
     `xliff_2.0` and `xliff_2.1`; never assign a 2.1-only module to 2.0.
-16. Keep XLIFF 2.2 absent or `PREVIEW_ISOLATED`, with no stable obligation
+17. Keep XLIFF 2.2 absent or `PREVIEW_ISOLATED`, with no stable obligation
     ownership. Keep XLIFF 1.2 outside the 2.x model.
-17. Preserve namespace-aware extensions and deterministic semantic roundtrip,
+18. Preserve namespace-aware extensions and deterministic semantic roundtrip,
     but do not treat preservation-only content or XSD validity as semantic
     module/processing support.
-18. Compile XLIFF and all six format projections; require zero missing stable
+19. Compile XLIFF and all six format projections; require zero missing stable
     profile, module-owner, empty-profile, duplicate, foreign, or dangling edge.
-19. Run negative controls for malformed IDs, missing module ownership,
+20. Run negative controls for malformed IDs, missing module ownership,
     cross-profile contamination, and preview leakage.
-20. Replay at least three clean strict runs plus authority, focused regression,
+21. Replay at least three clean strict runs plus authority, focused regression,
     Ruff, Pyright, and bounded strict Mypy checks.
-21. Reconcile gaps, taskcards, controller and journal atomically; retain UBL
+22. Reconcile gaps, taskcards, controller and journal atomically; retain UBL
     typing as the exact remaining contract repair.
 
 ### Failure routing

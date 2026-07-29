@@ -4,16 +4,17 @@ artifact_type: verification_and_release_contract
 visibility: internal
 publish_allowed: false
 generated_by: codex
-generated_at: 2026-07-29
+generated_at: 2026-07-30
 authoritative_state: false
 historical_projection: true
 ---
 
 # Validation, Regression, and Release Contract
 
-> Historical validation background. Current checkpoint facts and commands are
-> in [START-HERE.md](START-HERE.md) and the immutable
-> [Event 26 runbook](event-26/RUNBOOK.md). No release state is implied here.
+> Durable validation contract refreshed through Event 29. Current checkpoint
+> facts and commands are in [START-HERE.md](START-HERE.md),
+> [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml), and the immutable
+> [Event 29 runbook](event-29/RUNBOOK.md). No release state is implied here.
 
 ## Completion semantics
 
@@ -48,7 +49,7 @@ Events 16 through 22 prove:
 - IPYNB exact SAL verification `25/25`;
 - NRRD exact SAL verification `25/25`, 18-domain/41-policy explicit-complete
   family ownership, and all five profiles claimed;
-- native FF6 event chain passes through event 25;
+- native FF6 event chain passes through Event 29;
 - the official XLIFF 2.0 package and prose are independently pinned, legally
   classified, and reconstructed offline with all five XLIFF authorities
   matching;
@@ -70,7 +71,7 @@ Events 16 through 22 prove:
 - the 19 Core obligations are source-bound but unverified, two categories
   remain, and completeness is false because the expected-ID denominator is
   absent;
-- the current event-25 batch-003 slice is bound to commit `25227527`, 27
+- the historical event-25 batch-003 slice is bound to commit `25227527`, 27
   focused tests, 25 cumulative source-bound obligations, and a 105-ID open
   denominator with 80 unresolved IDs;
 - XLF-03 proves 36 coarse source-surface anchors, 293/420 sections, 8/8
@@ -89,6 +90,19 @@ Events 16 through 22 prove:
 - batch 003 produces 25 source-bound obligations against a 105-ID open
   denominator, leaving 80 IDs unresolved. All 12 categories are represented,
   but the authority census and XLF-04 remain incomplete.
+- Event 29 binds implementation commit `315efa5f` and projection commit
+  `c1f4be66`, with 1,130 source-authentic candidates: 182 normative prose, 588
+  non-modal prose, 264 Core XSD, and 96 Core Schematron;
+- all candidate content, occurrences, members, profiles, and authority inputs
+  replay against pinned XLIFF 2.0/2.1 bytes;
+- 64 focused tests, 94 affected format-contract tests with one named
+  baseline-known deselection, 69 production-program tests, Ruff, strict
+  Mypy, Pyright 1.1.411, bytecode compilation, 5/5 XLIFF authority matches,
+  and three identical census generations pass;
+- zero of 1,130 semantic dispositions are independently verified; 60 expected
+  IDs lack a candidate mapping and 80 expected IDs lack source-bound rows;
+- the current token router can over-map incidental XPath context names, so
+  proposal replay is not accepted as independent semantic verification.
 
 It does not prove:
 
@@ -166,11 +180,19 @@ named interoperability certification, not universal conformance.
   tests, Ruff,
   strict Mypy, Pyright 1.1.411, bytecode compilation, check mode, and three
   identical outputs for both reports;
-- XLF-04 continues at BATCH-004 from 80 unresolved expected IDs until every
+- Event-29 evidence is also required: exact implementation/census/tool/test/
+  receipt digests, 64 focused tests, affected regressions, static checks,
+  five authority matches, and three identical authority-bound generations;
+- XLF-04 continues at
+  `BATCH-005-PARTIAL-002_DISPOSITION_VERIFICATION_AND_OBLIGATION_COMPILATION`
+  until every
   Core obligation, not merely
   every category, has exact stable
   profile, owner, authority/member/location, requirement class, and processing
   semantics;
+- the first bounded cycle is exactly the candidate and four RED controls in
+  `NEXT-MICROSTEP.yaml`; generated proposals and independent adjudications
+  must remain separate;
 - source-located XLIFF 2.0/2.1 Core and module deltas;
 - complete semantic obligations for hierarchy, inline pairing/order,
   segmentation, state, original data, skeletons, extensions, ITS mappings,

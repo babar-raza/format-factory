@@ -119,6 +119,15 @@ authority occurrence
   -> recomputed open counts
 ```
 
+The exact first batch is
+`XLF-04-BATCH-005-PARTIAL-002-A`, defined in
+[NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml). It starts with candidate
+`XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90` and four RED controls separating
+source-authentic generated proposals from independently verified semantic
+adjudications. This selection records the investigation already completed
+before the shift; it prevents the next provider from restarting discovery or
+choosing an easier but less discriminating row.
+
 Do not use the candidate generator as its own oracle. Do not reduce open
 counts by deleting expected IDs or calling preservation semantic support.
 
