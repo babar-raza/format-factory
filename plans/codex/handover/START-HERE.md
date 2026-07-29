@@ -24,8 +24,9 @@ C:\Users\prora\OneDrive\Documents\GitHub\format-factory\plans\codex\handover\STA
 | Field | Verified value |
 |---|---|
 | Forge / branch | GitLab `origin/main` only |
+| Packet input checkpoint | `9ff40eb0900efe417b36a2d10486630b1c4b635a` |
 | Latest bounded implementation ancestor | `7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce` |
-| Handover source checkpoint | `18bb295f94e43338611ef88caff073eed17411c9` |
+| Controller handover source | `18bb295f94e43338611ef88caff073eed17411c9` |
 | Controller Event 26 commit | `15ab7d0455e109bd88289e16d73c0835324a21ab` |
 | Controller state | `CONTRACT` |
 | Native event | `FF6-EVENT-000026` |
@@ -93,6 +94,16 @@ does not freeze or stage those changing bytes. This identity is an observation
 only, not a credential or permanent owner. Requery coordination before acting;
 while it remains live, preserve its paths and use the disjoint UBL resume.
 
+At 2026-07-29T19:27:45Z, GitLab `origin/main` and local `HEAD` both resolved
+to `9ff40eb0900efe417b36a2d10486630b1c4b635a`. The XLIFF owner's recorded
+process (`PID 31488`) was absent, but its coordination record was still
+`ACTIVE`: the last heartbeat was `2026-07-29T19:17:24.722412Z` and its
+configured TTL was 7,200 seconds. Process absence is a warning, not takeover
+authority. Until the coordination plane changes the lease to stale or the
+owner completes, Claude must not touch those eleven paths. This distinction
+prevents a provider shift from converting a process-level observation into an
+unsafe filesystem write.
+
 The three UBL paths that were live during the prior packet are no longer
 foreign untracked work. They were independently verified, committed, and
 pushed to GitLab main at
@@ -118,6 +129,19 @@ At resume time, query the coordination plane and GitLab again. The captured
 identity and test counts are forensic observations, not transferable
 credentials or timeless authority. Use the decision table in
 [Claude/Codex execution instructions](CLAUDE-START.md#transfer-state-discriminator).
+
+Claude's first executable decision is deterministic:
+
+1. If Event 27 or later is on GitLab, recompute from the journal and ignore
+   this runtime observation.
+2. If the XLIFF lease is still live, leave the five current dirty XLIFF paths
+   untouched and execute the disjoint UBL stale-SAL closure repair.
+3. If the XLIFF lease is stale and no newer commit exists, use governed
+   `takeover --reason`, recapture every baseline, and continue Batch 005 from
+   the preserved bytes.
+4. If the XLIFF owner completed and released cleanly, claim the exact paths
+   under Claude's new identity and independently rerun the focused tests
+   before accepting any result.
 
 ## Mission
 
@@ -207,6 +231,7 @@ git fetch origin
 git status --short --branch
 git rev-parse HEAD
 git rev-parse origin/main
+git merge-base --is-ancestor 9ff40eb0900efe417b36a2d10486630b1c4b635a origin/main
 git merge-base --is-ancestor 7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce origin/main
 git merge-base --is-ancestor 18bb295f94e43338611ef88caff073eed17411c9 origin/main
 .venv\Scripts\python.exe plans\codex\handover\validate_handover.py --self-test

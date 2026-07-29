@@ -123,6 +123,14 @@ primary test, and candidate census had uncommitted tracked changes. Those
 mutable bytes are `ACTIVE_XLIFF_BATCH005_FOREIGN_WORKING_SET`: they are
 preserved, excluded from this handover commit, and not completion evidence.
 
+The 2026-07-29T19:27:45Z provider-shift audit found the recorded process
+absent but the 7,200-second coordination lease still `ACTIVE`, with last
+heartbeat `2026-07-29T19:17:24.722412Z`. This is intentionally classified
+`ACTIVE_LEASE_PROCESS_ABSENT_DO_NOT_TAKEOVER_YET`. A missing PID is not a
+clean checkpoint, proof that writes stopped, or permission to seize the
+paths. The incoming agent must requery the coordination plane and follow the
+takeover state machine in `CLAUDE-START.md`.
+
 ## Parallel UBL checkpoint
 
 Commit `7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce` added a secure,

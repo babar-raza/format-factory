@@ -5,13 +5,32 @@ generated_by: codex
 generated_at: "2026-07-29"
 
 source_checkpoint:
-  required_ancestor: 18bb295f94e43338611ef88caff073eed17411c9
+  required_ancestor: 9ff40eb0900efe417b36a2d10486630b1c4b635a
+  controller_handover_source: 18bb295f94e43338611ef88caff073eed17411c9
+  latest_bounded_implementation_ancestor: 7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce
   controller_event_ancestor: 15ab7d0455e109bd88289e16d73c0835324a21ab
   implementation_ancestor: 1fef79b9d6c1ee1f6667e0c5c70435562c97544c
   required_remote_ref: origin/main
   forge: GitLab
   worktree_at_capture: CLASSIFIED_CONCURRENT_BATCH005_WORK_PRESENT
   committed_handover_scope: CLEAN_AND_REMOTE_VERIFIED
+
+runtime_observation:
+  observed_at: "2026-07-29T19:27:45Z"
+  head: 9ff40eb0900efe417b36a2d10486630b1c4b635a
+  origin_main: 9ff40eb0900efe417b36a2d10486630b1c4b635a
+  xliff_owner: agent-codex-20260729T190440-e2dd38
+  xliff_lease_status: ACTIVE
+  xliff_last_heartbeat: "2026-07-29T19:17:24.722412Z"
+  xliff_heartbeat_ttl_seconds: 7200
+  xliff_recorded_pid: 31488
+  xliff_recorded_pid_observed: ABSENT
+  classification: ACTIVE_LEASE_PROCESS_ABSENT_DO_NOT_TAKEOVER_YET
+  safe_disjoint_task: TC-FF6-UBL-TYPING-001
+  safe_disjoint_microstep: FF6-UBL-SAL-PROSE-TARGET-STALE-001
+  authority: >-
+    This is an observation only. Claude must recompute GitLab, journal,
+    controller, coordination, leases, and filesystem state before mutation.
 
 controller_checkpoint:
   controller_state: CONTRACT

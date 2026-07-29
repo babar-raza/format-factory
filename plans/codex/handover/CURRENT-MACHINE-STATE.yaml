@@ -9,7 +9,8 @@ source_checkpoint:
   forge: GitLab
   remote: origin
   branch: main
-  required_ancestor: 7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce
+  required_ancestor: 9ff40eb0900efe417b36a2d10486630b1c4b635a
+  latest_bounded_implementation_ancestor: 7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce
   controller_event_ancestor: 15ab7d0455e109bd88289e16d73c0835324a21ab
   implementation_ancestor: 1fef79b9d6c1ee1f6667e0c5c70435562c97544c
   parallel_ubl_ancestor: 7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce
@@ -74,12 +75,18 @@ workspace_transfer:
     copy its token, release its lease, or call these bytes RESUMABLE.
 
 latest_xliff_refresh_observation:
-  observed_at: "2026-07-29T19:17:00Z"
+  observed_at: "2026-07-29T19:27:45Z"
   status: ACTIVE_XLIFF_BATCH005_FOREIGN_WORKING_SET
   owner:
     agent_id: agent-codex-20260729T190440-e2dd38
     task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
     provider: codex
+    coordination_status: ACTIVE
+    last_heartbeat: "2026-07-29T19:17:24.722412Z"
+    heartbeat_ttl_seconds: 7200
+    recorded_pid: 31488
+    recorded_pid_observed: ABSENT
+    takeover_disposition: DO_NOT_TAKEOVER_WHILE_LEASE_ACTIVE
   logical_scope: logical:ff6-xliff-xlf04-batch005
   paths:
     - tools/spec/extract_sal_facts.py
@@ -96,9 +103,10 @@ latest_xliff_refresh_observation:
   current_bytes_frozen_by_handover: false
   rule: >-
     The owner and paths are a time-stamped coordination observation, not
-    transferable credentials. Do not stage, mutate, hash as completed
-    evidence, release, or take over this working set while its lease is live.
-    Requery coordination and GitLab at resume.
+    transferable credentials. Process absence is not lease expiry. Do not
+    stage, mutate, hash as completed evidence, release, or take over this
+    working set while its lease is live. Requery coordination and GitLab at
+    resume; use governed takeover only after the plane reports the lease stale.
 
 parallel_ubl_checkpoint:
   observed_at: "2026-07-29T19:08:00Z"

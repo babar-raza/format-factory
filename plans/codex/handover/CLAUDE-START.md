@@ -20,7 +20,8 @@ mission_id: FF6-PRODUCTION-LIBRARIES-001
 canonical_forge: GitLab
 canonical_remote: origin
 canonical_branch: main
-source_checkpoint: 18bb295f94e43338611ef88caff073eed17411c9
+packet_input_checkpoint: 9ff40eb0900efe417b36a2d10486630b1c4b635a
+controller_handover_source: 18bb295f94e43338611ef88caff073eed17411c9
 latest_bounded_implementation_ancestor: 7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce
 controller_event_commit: 15ab7d0455e109bd88289e16d73c0835324a21ab
 controller: plans/strategic/ff6/controller-state.yaml
@@ -100,6 +101,27 @@ Treat this as `ACTIVE_XLIFF_BATCH005_FOREIGN_WORKING_SET`; the packet does not
 freeze those mutable bytes. Requery rather than assuming that this later
 identity is still live.
 
+The last pre-handover observation was taken at
+`2026-07-29T19:27:45Z`. Local `HEAD` and `origin/main` were both
+`9ff40eb0900efe417b36a2d10486630b1c4b635a`. The recorded XLIFF process
+(`PID 31488`) no longer existed, but the coordination lease remained
+`ACTIVE` because its last heartbeat was only ten minutes old and its TTL was
+7,200 seconds. Do not infer ownership expiry from the missing process. Only a
+fresh coordination result of stale/dead plus a governed takeover permits
+Claude to write those paths.
+
+This is the expected immediate branch:
+
+```text
+newer GitLab event?
+  yes -> validate new event, rebuild projections, select its next task
+  no  -> XLIFF lease still live?
+           yes -> preserve XLIFF bytes; execute UBL stale-SAL closure
+           no  -> lease stale with bytes?
+                    yes -> governed takeover, rebaseline, resume Batch 005
+                    no  -> claim exact XLIFF paths, rerun, resume Batch 005
+```
+
 Before adopting the files, verify their LF-normalized identities:
 
 ```text
@@ -161,6 +183,12 @@ graph completion or any product behavior.
 Use this route only when coordination prevents safe XLIFF mutation. It is not
 permission to skip runnable XLIFF work.
 
+Claude starts this lane at `FF6-UBL-SAL-PROSE-TARGET-STALE-001`, not at UBL
+product source generation. Resolve `fact_authorization` to
+`sal-pipeline-heal`, compose `test-driven-development`, register a new Claude
+coordination identity for `TC-FF6-UBL-TYPING-001`, and take over only the
+three stale UBL SAL leases. Never take over or stage the live XLIFF paths.
+
 1. Register and claim only the UBL evidence/receipt paths required by
    `TC-FF6-UBL-TYPING-001` and the `sal-pipeline-heal` skill.
 2. Reproduce the current RED:
@@ -192,6 +220,13 @@ permission to skip runnable XLIFF work.
    ownership, record UBL-01 as `AUTHORITY_REVALIDATED` without changing the
    canonical XLIFF task. Start UBL-03 only after that event/projection is
    valid.
+
+The implementation checkpoint must include focused verifier tests, UBL census
+check mode, the UBL authority audit, production-program regression,
+format-contract regression with only the documented unrelated CSV
+idempotency deselection, Ruff, strict Mypy, Pyright, and bytecode compilation.
+The commit must stage an explicit UBL-only file list and push to GitLab
+`origin/main`; the five foreign XLIFF paths must remain untouched.
 
 Do not weaken member-digest checking, edit a status label, reuse the old PASS
 receipt, or infer UBL-01 completion from the package census.
