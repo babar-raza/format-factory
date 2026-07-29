@@ -17,14 +17,18 @@ DISCOVER -> SNAPSHOT -> CONTRACT -> IMPLEMENT -> VERIFY
          -> REPAIR -> CERTIFY -> EXTRACT -> RELEASE_PREP -> COMPLETE
 ```
 
-Current state is `SNAPSHOT`. The next transition is not product implementation.
-It is `SNAPSHOT -> CONTRACT` through capability and obligation compilation.
+Current state is `CONTRACT`. The canonical capability compiler subtask passed,
+but the parent contract task remains `NEEDS_REPAIR`. Product implementation is
+still locked.
 
 ## Program task DAG
 
 ```text
 TC-FF6-PROGRAM-TRUTH-001 [COMPLETE]
-  -> TC-FF6-PROGRAM-CAPABILITIES-001 [READY]
+  -> TC-FF6-PROGRAM-CAPABILITIES-001 [NEEDS_REPAIR]
+       -> TC-FF6-CAPABILITY-COMPILER-001 [PASS]
+       -> TC-FF6-AUTHORITY-CLOSURE-001 [READY]
+       -> OpenRaster profile/surface repair [NOT YET REGISTERED]
   -> TC-FF6-PROGRAM-ARCHITECTURE-001
   -> TC-FF6-PROGRAM-TASKCARDS-001
   -> TC-FF6-PROGRAM-QUALITY-GATES-001
@@ -37,64 +41,48 @@ No broad product wave may bypass these program tasks.
 ## Exact next task
 
 Execute
-[`TC-FF6-PROGRAM-CAPABILITIES-001.md`](../../../taskcards/TC-FF6-PROGRAM-CAPABILITIES-001.md).
+[`TC-FF6-AUTHORITY-CLOSURE-001.md`](../../../taskcards/TC-FF6-AUTHORITY-CLOSURE-001.md).
 
 ### Inputs
 
-- all six format contracts and SAL facts;
-- pinned primary authority artifacts;
-- target stable profiles from the execution plan;
-- existing source/public API and test inventory;
-- current corpus, oracle, packaging, and proof state;
-- current product snapshot and goal.
+- `plans/strategic/ff6/capability-manifest.json`;
+- all six format contracts, SAL facts, and SAL evidence stores;
+- all 15 authority source declarations and expected digests;
+- existing acquisition tools, spec cache, receipts, and artifact index;
+- primary official endpoints, immutable versions, and license/terms evidence;
+- controller event 13 and parent gaps 13/14.
 
 ### Outputs
 
-Use the already-adopted canonical root:
-
-```text
-plans/strategic/ff6/capability-taxonomy.yaml
-plans/strategic/ff6/capabilities/ipynb.yaml
-plans/strategic/ff6/capabilities/ora.yaml
-plans/strategic/ff6/capabilities/nrrd.yaml
-plans/strategic/ff6/capabilities/xliff.yaml
-plans/strategic/ff6/capabilities/safetensors.yaml
-plans/strategic/ff6/capabilities/ubl.yaml
-plans/strategic/ff6/obligations/ipynb.yaml
-plans/strategic/ff6/obligations/ora.yaml
-plans/strategic/ff6/obligations/nrrd.yaml
-plans/strategic/ff6/obligations/xliff.yaml
-plans/strategic/ff6/obligations/safetensors.yaml
-plans/strategic/ff6/obligations/ubl.yaml
-plans/strategic/ff6/capability-coverage.yaml
-plans/strategic/ff6/current-gaps.yaml
-```
-
-Do not create a competing `plans/programs/ff6` root.
+Produce one shared authority lock/materialization contract, legal and
+redistribution classifications, tracked internal product-requirement
+artifacts, safe acquisition/cache machinery, focused tests, strict six-format
+contract compilation, regenerated FF6 universe/manifest, proof, and atomic
+controller/task/gap updates. Exact paths must be selected through the governed
+authority skills and coordination preflight.
 
 ### Atomic steps
 
-1. Pin and hash every authority used by each stable profile.
-2. Compile every normative MUST, MUST NOT, REQUIRED, conditional requirement,
-   optional stable module, and rejection rule into a stable obligation ID.
-3. Compile developer-use capabilities across read, write, validate, edit,
-   inspect, transform, preserve, security, resource, streaming, lazy/random
-   access, deterministic output, adapters, and format-native workflows.
-4. Classify every capability exactly once as `STABLE_REQUIRED`,
-   `OPTIONAL_ADAPTER_REQUIRED`, `PREVIEW_ISOLATED`, or
-   `EXCLUDED_WITH_AUTHORITY`.
-5. Map each capability to authority facts and normative obligations.
-6. Map observed public/source symbols as current candidates, never as proof.
-7. Define model invariants, preservation and error contracts, security limits,
-   performance budgets, optional dependencies, tests, fixtures, oracles,
-   documentation, proof nodes, invalidation inputs, and task ownership.
-8. Mark unsupported and preview behavior explicitly.
-9. Reject duplicates, missing fields, foreign-format facts, unresolved aliases,
-   dangling edges, and mandatory obligations with no future task owner.
-10. Reconcile counts from authority to obligations to capabilities with zero
-    omitted and zero unclassified.
-11. Run compilation three times from clean inputs and compare canonical bytes.
-12. Append verified controller events and select the architecture task.
+1. Recompute the 15-source authority inventory; do not trust `ACQUIRED`.
+2. Reuse existing valid artifacts and tools before creating new ones.
+3. Verify official immutable endpoints, versions, expected digests, license,
+   terms, and redistribution status source by source.
+4. Implement one shared content-addressed lock/cache/materializer, not six
+   one-off download scripts.
+5. Make fetching temporary, size/redirect/timeout bounded, digest-before-place,
+   atomic, and concurrency-safe.
+6. Convert four internal product-requirement identities into tracked canonical
+   non-spec artifacts with paths and digests.
+7. Never commit external spec bytes without affirmative redistribution
+   evidence; use deterministic external cache materialization otherwise.
+8. Treat digest mismatch as a contradiction; never edit the expected value
+   merely to accept downloaded bytes.
+9. Prove clean online materialization and offline matching-cache replay.
+10. Compile all six ProductContracts without authority override.
+11. Recompile the universe three times without
+    `--allow-blocked-authority`; require all authority artifacts `MATCH`.
+12. Update event/controller/task/gap projections atomically, leaving the parent
+    open for OpenRaster gap 13.
 
 ### Format breadth floors
 

@@ -13,8 +13,8 @@ authoritative_state: false
 ## What has actually been achieved
 
 The mission has a hardened production plan, an immutable six-product goal, a
-clean GitLab-main baseline, a digest-bound product snapshot, a four-event
-controller journal, and one completed program taskcard.
+clean GitLab-main checkpoint, a digest-bound product snapshot, a 13-event
+controller journal, and a deterministic capability/obligation compiler.
 
 Five Python packages contain meaningful source and tests:
 
@@ -29,10 +29,18 @@ Five Python packages contain meaningful source and tests:
 
 These are implementation footholds, not production-ready libraries.
 
+The planning contract now contains 89 canonical capability identities and 636
+canonical normative obligations: IPYNB 105, OpenRaster 32, NRRD 94, XLIFF 125,
+SafeTensors 86, and UBL 194. All are still `UNVERIFIED`. The compiler binds its
+schema, code, contracts, SAL stores/evidence, policies, research, and
+enrichments; three clean runs are byte-identical. This repaired a false
+128-obligation close but did not implement or certify product behavior.
+
 ## What has not been achieved
 
-- No complete per-format capability universe exists.
-- No complete normative obligation inventory exists for any selected format.
+- The current canonical inventory is mechanically complete relative to the
+  current contracts, but authority closure and OpenRaster surface/profile depth
+  remain incomplete; it is not yet a final production obligation claim.
 - No mandatory obligation has current end-to-end proof coverage.
 - No selected package has production certification.
 - No OpenRaster product package exists.
@@ -53,6 +61,8 @@ These are implementation footholds, not production-ready libraries.
 7. Raw digest comparisons change across Windows checkouts.
 8. Historical coordination conflicts remain open after branches and worktrees
    were consolidated.
+9. Every format is authority-blocked: 11 declared artifacts are missing and 4
+   internal requirement sources lack reproducible paths/digests.
 
 ## Root causes
 
@@ -76,9 +86,17 @@ artifacts without proving correctness, preservation, or rejection.
 
 ### Task generation is disconnected from obligations
 
-The current global queue can select a broad NRRD/OpenRaster implementation task
-before the mandated six-format capability compilation. The FF6 program task is
-not consumed by that queue. This is why reruns choose different work.
+The FF6 journal now selects an exact authority-closure repair, but the global
+queue can still select a legacy broad NRRD/OpenRaster task. The global
+projection does not consume the FF6 program task dependencies. This remains a
+rerun-consistency risk outside the journaled FF6 path.
+
+### Authority acquisition is status-shaped, not replay-shaped
+
+Contracts say `ACQUIRED`, while the required bytes live only under ignored
+local paths or have no path/digest at all. There is no unified legal,
+redistribution, lock, cache, fetch, and offline verification contract. Historic
+labels therefore survive after their inputs disappear.
 
 ### Mutable execution context
 
@@ -131,10 +149,12 @@ complete capability contract first.
 
 ## Limits and uncertainty
 
-The current inventory is strong enough to disprove production readiness, but it
-is not yet a complete spec audit. Capability totals must not be guessed from
-the present contract record counts. OpenRaster authority is especially weak
-because the specification is an evolving draft. UBL and XLIFF breadth will be
-large and generator-heavy; reproducibility and schema cross-validation will
-cost more than handwritten subsets. Full cross-platform, fuzz, mutation, and
-performance certification will require substantial compute and external tools.
+The current inventory is strong enough to disprove production readiness and to
+drive bounded repair, but it is not yet a complete primary-spec audit. The
+636-obligation count is exact for the current contracts, not proof that those
+contracts capture every stable requirement. OpenRaster authority is especially
+weak because the specification is an evolving draft. UBL and XLIFF breadth
+will be large and generator-heavy; reproducibility and schema
+cross-validation will cost more than handwritten subsets. Full cross-platform,
+fuzz, mutation, and performance certification will require substantial compute
+and external tools.

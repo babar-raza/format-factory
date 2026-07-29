@@ -26,6 +26,12 @@ GitLab commit
 + off-repo coordination ownership
 ```
 
+At this transfer, the reconstructable checkpoint is source commit
+`a2a5d6403da9a6bd6d3999fb10166663ca61791c`, controller state `CONTRACT`,
+event 13, parent `TC-FF6-PROGRAM-CAPABILITIES-001` in `NEEDS_REPAIR`, and exact
+next task `TC-FF6-AUTHORITY-CLOSURE-001` in `READY`. Current `origin/main` must
+be a descendant containing the refreshed packet.
+
 ## Start of every shift
 
 1. Fetch `origin/main`.
@@ -33,6 +39,8 @@ GitLab commit
 3. Create a fresh detached worktree from the exact current `origin/main`.
 4. Read `START-HERE.md` and its ordered authorities.
 5. Validate normalized digests and the FF6 event chain.
+   At this packet version, require event 13 with hash
+   `f6cd635eaa0a4ba6b6e785f9cdbb965fa300107b64ba4ea0f74b1b839f7dafc6`.
 6. Run current-state consistency and focused plan-control tests.
 7. Query coordination status.
 8. Register a new provider identity.

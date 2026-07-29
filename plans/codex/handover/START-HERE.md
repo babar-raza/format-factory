@@ -22,11 +22,14 @@ history, coordination database, or executed proof.
 
 - Canonical forge: GitLab.
 - Canonical remote and branch: `origin/main`.
-- Source checkpoint commit: `a585a9e67c6f5ee55922c6cf356f600de3b4c751`.
-- Source checkpoint tree: `aaa4e437607d1078cad01b13d37be681142565f8`.
-- FF6 controller state: `SNAPSHOT`.
-- Last completed program task: `TC-FF6-PROGRAM-TRUTH-001`.
-- Exact next task: `TC-FF6-PROGRAM-CAPABILITIES-001`.
+- Source checkpoint commit: `a2a5d6403da9a6bd6d3999fb10166663ca61791c`.
+- Source checkpoint tree: `66d312c4cf2005c0ea24ecee7814d77931b1d101`.
+- FF6 controller state: `CONTRACT`.
+- Last verified event: `FF6-EVENT-000013`.
+- Completed repair subtask: `TC-FF6-CAPABILITY-COMPILER-001` (`PASS`).
+- Parent task: `TC-FF6-PROGRAM-CAPABILITIES-001` (`NEEDS_REPAIR`).
+- Exact next task: `TC-FF6-AUTHORITY-CLOSURE-001` (`READY`).
+- Canonical planning inventory: 89 capabilities and 636 obligations.
 - Product certifications: zero.
 - Product promotion states: all six `UNASSESSED`.
 
@@ -47,21 +50,25 @@ Reconstruct the checkpoint from GitLab and the canonical files below.
    [`events.jsonl`](../../strategic/ff6/events.jsonl).
 6. Evidence-backed product snapshot:
    [`current-state.yaml`](../../strategic/ff6/current-state.yaml).
-7. Next executable taskcard:
+7. Parent taskcard:
    [`TC-FF6-PROGRAM-CAPABILITIES-001.md`](../../../taskcards/TC-FF6-PROGRAM-CAPABILITIES-001.md).
-8. Machine-readable handover checkpoint:
+8. Exact next executable taskcard:
+   [`TC-FF6-AUTHORITY-CLOSURE-001.md`](../../../taskcards/TC-FF6-AUTHORITY-CLOSURE-001.md).
+9. Canonical capability manifest:
+   [`capability-manifest.json`](../../strategic/ff6/capability-manifest.json).
+10. Machine-readable handover checkpoint:
    [`checkpoint.yaml`](checkpoint.yaml).
-9. Current findings and causal assessment:
+11. Current findings and causal assessment:
    [`CURRENT-STATE-AND-ROOT-CAUSES.md`](CURRENT-STATE-AND-ROOT-CAUSES.md).
-10. Provider-neutral execution and checkpoint protocol:
+12. Provider-neutral execution and checkpoint protocol:
     [`SHIFT-AND-RESUME-PROTOCOL.md`](SHIFT-AND-RESUME-PROTOCOL.md).
-11. Exact execution sequence and task DAG:
+13. Exact execution sequence and task DAG:
     [`EXECUTION-RUNBOOK.md`](EXECUTION-RUNBOOK.md).
-12. Quality, evidence, regression, and release rules:
+14. Quality, evidence, regression, and release rules:
     [`VALIDATION-AND-RELEASE.md`](VALIDATION-AND-RELEASE.md).
-13. Ready-to-use Claude instruction:
+15. Ready-to-use Claude instruction:
     [`CLAUDE-START.md`](CLAUDE-START.md).
-14. Packet file hashes:
+16. Packet file hashes:
     [`manifest.yaml`](manifest.yaml).
 
 ## Mandatory preflight
@@ -80,12 +87,12 @@ python -m tools.supervisor.coordination --json status
 
 Expected at this checkpoint:
 
-- `origin/main` contains the handover integration commit and descends from
-  `a585a9e67c6f5ee55922c6cf356f600de3b4c751`.
+- `origin/main` contains the handover refresh and descends from
+  `a2a5d6403da9a6bd6d3999fb10166663ca61791c`.
 - the chosen execution worktree is clean before mutation;
 - current-state consistency prints `CURRENT_STATE_CONSISTENCY: PASS`;
 - plan-control tests report `40 passed`;
-- no fresh agent owns the FF6 capability scope.
+- no fresh agent owns `TC-FF6-AUTHORITY-CLOSURE-001` or its output paths.
 
 The coordination command currently exits nonzero because 15 historical OPEN
 conflicts exist. That is not permission to resolve or discard them. Four point
@@ -102,22 +109,50 @@ authority:
 - `python -m tools.plan_control next` selects legacy broad task
   `TC-FF6-NRRD-ORA-001`.
 - the digest-bound FF6 controller and its last verified event select
-  `TC-FF6-PROGRAM-CAPABILITIES-001`.
+  `TC-FF6-AUTHORITY-CLOSURE-001`.
 
 Until machinery consolidation repairs and tests that split, use
 `plans/strategic/ff6/controller-state.yaml` plus `events.jsonl` for this
 mission. Record the contradiction as a machinery gap. Do not silently edit a
 status to make the two authorities agree.
 
+## Verified work completed since the original handover
+
+The prior hand-written checkpoint claimed 128 obligations. Independent audit
+proved the canonical contract runtime generated 636 obligations with zero ID
+overlap. That false close was invalidated without deleting the draft detail.
+
+The completed compiler repair now provides:
+
+- one registered deterministic compiler and versioned schema;
+- exactly 89 canonical capability identities;
+- 636 canonical obligations: IPYNB 105, ORA 32, NRRD 94, XLIFF 125,
+  SafeTensors 86, and UBL 194;
+- classifications: 80 stable, 4 optional-adapter, 4 preview, 1 excluded;
+- full compiler/schema/contract/SAL/policy/enrichment input closure;
+- explicit expected-versus-observed authority artifacts;
+- manifest aggregate
+  `26cbe9d21cedafe70653bfaa8134ffa4e481080278e954546cf9710c97a5b00a`;
+- three-run digest
+  `018c26be67ea91fe86aeb65374365b5e917eb8c0058235f999d59909bfd08943`;
+- 14 focused, 43 production-program, and 76 unaffected format-contract tests
+  passing.
+
+This is planning/contract machinery, not product implementation or
+certification. `FF6-GAP-012` and `FF6-GAP-015` are resolved. The parent remains
+open for `FF6-GAP-013` (OpenRaster profile/surface depth) and `FF6-GAP-014`
+(authority dependency closure).
+
 ## First allowed action
 
-Execute only `TC-FF6-PROGRAM-CAPABILITIES-001`. It is a contract and obligation
-compilation task. It must not modify product source.
+Execute only `TC-FF6-AUTHORITY-CLOSURE-001`. It repairs the shared authority
+lock/materialization dependency closure for all six formats. It must not modify
+product source, certify a format, or promote a product.
 
-The task closes only when all six stable-profile capability universes and
-normative obligation inventories exist, reconcile without omissions, carry
-authority references, classify every item, and generate deterministic next
-tasks. A capability inventory is planning evidence, not implementation proof.
+Start from the 15 authority records in `capability-manifest.json`: 11 are
+`MISSING`, 4 are `UNDECLARED`, and none is `MATCH`. Do not hide this with
+`--allow-blocked-authority`, edit expected digests to downloaded bytes, or
+commit specification content without redistribution evidence.
 
 ## How to stop safely
 

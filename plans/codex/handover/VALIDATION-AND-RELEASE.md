@@ -20,6 +20,24 @@ proof-input closure pass.
 Planning records, files, methods, generated classes, test names, and synthetic
 fixtures cannot satisfy this rule.
 
+## Current checkpoint boundary
+
+The capability compiler checkpoint proves deterministic planning structure,
+not format behavior:
+
+- 89 capabilities and 636 obligations reconcile with exact ownership;
+- 14 compiler, 43 production-program, and 76 unaffected format-contract tests
+  pass;
+- one CSV gap-ledger idempotency test fails identically at the pre-change
+  commit and remains a separate baseline defect;
+- all 636 obligations remain `UNVERIFIED`;
+- all six product promotions remain `UNASSESSED`;
+- 15 authority sources remain unresolved: 11 missing and 4 undeclared.
+
+The next task must make strict authority compilation pass without an override.
+Even that result would establish `CONTRACT_READY` prerequisites only; it would
+not make product implementation or certification claims.
+
 ## Required evidence per mandatory obligation
 
 - Positive behavior proof.

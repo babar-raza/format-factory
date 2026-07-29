@@ -17,15 +17,17 @@ forge:
   branch: main
   github_allowed_for_mission: false
 source_checkpoint:
-  commit: a585a9e67c6f5ee55922c6cf356f600de3b4c751
-  tree_oid: aaa4e437607d1078cad01b13d37be681142565f8
-  commit_time: "2026-07-28T20:30:10+05:00"
+  commit: a2a5d6403da9a6bd6d3999fb10166663ca61791c
+  tree_oid: 66d312c4cf2005c0ea24ecee7814d77931b1d101
+  commit_time: "2026-07-29T10:49:12+05:00"
   worktree_state: clean
 handover_packet:
-  integration_commit: 1f215cc7ba0ce36225ae8bbc49678b3ca0d5d8fd
-  integration_tree_oid: 168ba13c68f49887253e81eda3cb5e2618c76218
+  source_checkpoint_commit: a2a5d6403da9a6bd6d3999fb10166663ca61791c
   remote_ref: refs/heads/main
-  remote_verified: true
+  source_checkpoint_remote_verified: true
+  final_packet_commit_rule: >-
+    Fetch origin/main and use its current descendant containing this packet.
+    The packet does not embed a self-referential hash of its own final commit.
 digest_policy:
   algorithm: sha256
   text_canonicalization: CRLF_TO_LF
@@ -34,12 +36,15 @@ digest_policy:
     Windows checkout bytes may differ under core.autocrlf and are not a valid
     invalidation signal until normalized.
 controller_checkpoint:
-  state: SNAPSHOT
-  transition_sequence_before_handover_close: 5
-  last_event_id_before_handover_close: FF6-EVENT-000005
-  last_event_hash_before_handover_close: cbe5b6b959fa7a18e8a57b1c5cd3ad653206afca992bfa40361233746425d411
-  completed_task: TC-FF6-PROGRAM-TRUTH-001
-  next_task: TC-FF6-PROGRAM-CAPABILITIES-001
+  state: CONTRACT
+  transition_sequence: 13
+  last_event_id: FF6-EVENT-000013
+  last_event_hash: f6cd635eaa0a4ba6b6e785f9cdbb965fa300107b64ba4ea0f74b1b839f7dafc6
+  parent_task: TC-FF6-PROGRAM-CAPABILITIES-001
+  parent_task_state: NEEDS_REPAIR
+  completed_subtask: TC-FF6-CAPABILITY-COMPILER-001
+  completed_subtask_state: PASS
+  next_task: TC-FF6-AUTHORITY-CLOSURE-001
   next_task_state: READY
   products_certified: 0
 promotion:
@@ -58,11 +63,53 @@ product_baseline:
   stale_install_proof_input_closures: 5
   architecture_failure_products: 3
   clean_base_interpreter_collection_errors: 39
+capability_checkpoint:
+  capabilities: 89
+  obligations:
+    ipynb: 105
+    ora: 32
+    nrrd: 94
+    xliff: 125
+    safetensors: 86
+    ubl: 194
+    total: 636
+  classifications:
+    stable_required: 80
+    optional_adapter_required: 4
+    preview_isolated: 4
+    excluded_with_authority: 1
+  manifest_aggregate_sha256: 26cbe9d21cedafe70653bfaa8134ffa4e481080278e954546cf9710c97a5b00a
+  three_run_digest: 018c26be67ea91fe86aeb65374365b5e917eb8c0058235f999d59909bfd08943
+  product_implementation_effect: none
+  product_certification_effect: none
+authority_checkpoint:
+  total_sources: 15
+  match: 0
+  missing: 11
+  undeclared: 4
+  blocked_formats:
+    - ipynb
+    - ora
+    - nrrd
+    - xliff
+    - safetensors
+    - ubl
+current_gaps:
+  active: 13
+  critical: 1
+  high: 9
+  medium: 3
+  parent_closure_gaps:
+    - FF6-GAP-013
+    - FF6-GAP-014
+  resolved_in_compiler_checkpoint:
+    - FF6-GAP-012
+    - FF6-GAP-015
 coordination_snapshot:
   mode: enforcing
-  fresh_active_agents: 0
-  stale_suspect_agent_records: 100
-  active_leases_before_handover_task: 0
+  fresh_active_agents_during_refresh: 1
+  active_agent: agent-codex-20260729T044756-45db00
+  stale_suspect_agent_records: 102
   open_historical_conflicts: 15
   ff6_obsolete_worktree_conflicts:
     - conf-83372e1330
@@ -80,14 +127,15 @@ control_plane_contradictions:
     severity: high
     symptom: tools.plan_control next selects legacy TC-FF6-NRRD-ORA-001.
     root_cause: the global projection does not consume the FF6 controller or program task register.
-    safe_current_rule: execute TC-FF6-PROGRAM-CAPABILITIES-001 first.
+    safe_current_rule: execute journal-selected TC-FF6-AUTHORITY-CLOSURE-001.
   - id: FF6-HO-GAP-003
     severity: medium
     symptom: raw Windows SHA-256 differs from recorded controller digests.
     root_cause: recorded digests canonicalize LF but fields do not declare canonicalization.
     safe_current_rule: normalize CRLF to LF before digest comparison.
 resume_decision:
-  exact_task: TC-FF6-PROGRAM-CAPABILITIES-001
+  exact_task: TC-FF6-AUTHORITY-CLOSURE-001
+  parent_task: TC-FF6-PROGRAM-CAPABILITIES-001
   source_mutation_allowed: false
   gate_or_product_promotion_allowed: false
   human_continuation_prompt_allowed: false

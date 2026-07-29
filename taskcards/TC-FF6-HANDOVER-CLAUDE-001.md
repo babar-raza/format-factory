@@ -8,7 +8,7 @@ generated_at: 2026-07-29
 goal_id: FF6-PRODUCTION-LIBRARIES-001
 status: COMPLETE
 skill_ids:
-  - execution-handoff
+  - refresh-provider-neutral-handover
   - create-taskcard
   - plan-control
 ---
@@ -30,6 +30,7 @@ promotion.
 - `plans/strategic/ff6/controller-state.yaml`
 - `plans/strategic/ff6/events.jsonl`
 - `taskcards/TC-FF6-PROGRAM-CAPABILITIES-001.md`
+- `taskcards/TC-FF6-AUTHORITY-CLOSURE-001.md`
 - this taskcard
 - `taskcards/index.yaml`
 - local task transcript and evidence metadata
@@ -50,9 +51,18 @@ promotion.
 - Files are committed and pushed to GitLab main with remote verification.
 - No product implementation or promotion occurs.
 
-## Closure
+## Initial closure
 
 The packet was integrated and remote-verified at
 `1f215cc7ba0ce36225ae8bbc49678b3ca0d5d8fd`. The closing controller event
 records the final packet and task-index digests. This task changes no product
 promotion state.
+
+## Refresh checkpoint
+
+The packet was refreshed after the false 128-obligation close was invalidated
+and the canonical 636-obligation compiler passed. Source checkpoint
+`a2a5d6403da9a6bd6d3999fb10166663ca61791c` contains controller event 13 and
+selects `TC-FF6-AUTHORITY-CLOSURE-001` as the exact next task. The refresh
+remains derived and non-promoting; current `origin/main`, the FF6 controller,
+and the journal supersede the initial integration commit above.
