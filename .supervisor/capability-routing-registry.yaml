@@ -674,9 +674,33 @@ routes:
       - archive_dir
     evidence_path_pattern: ".local/transcripts/reconcile-stashed-work-*.json"
 
+  - route_id: production_capability_universe
+    description: >-
+      Compile complete production capability and normative-obligation
+      projections from canonical contracts, SAL facts, release policy, and
+      enrichment records with deterministic replay and full input-digest
+      closure.
+    preferred_skill_ids:
+      - compile-production-capability-universe
+    fallback_skill_ids:
+      - product-contract-runtime-repair
+      - compile-format-contract
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - format_ids
+      - policy_path
+      - enrichment_dir
+      - output_dir
+    evidence_path_pattern: ".local/transcripts/compile-production-capability-universe-*.json"
+    note: >-
+      Added by TC-FF6-CAPABILITY-COMPILER-001 after a manually assembled
+      checkpoint omitted 508 canonical obligations while still claiming
+      complete integrity.
+
 gap_count:
-  total_routes: 39
-  active_routes: 37
+  total_routes: 40
+  active_routes: 38
   missing_skill_routes: 1
   missing_skill_gap_ids:
     - GAP-ESP-SKILL-001

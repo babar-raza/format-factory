@@ -1,49 +1,8 @@
-schema: ff6/format-capabilities@2
+schema: ff6/capability-enrichment@1
 goal_id: FF6-PRODUCTION-LIBRARIES-001
 format_id: xliff
-contract_id: FC-XLIFF-V1
-target_spec_version: XLIFF 2.1
-target_profiles:
-- xliff_2.0
-- xliff_2.1
-authority_status: BLOCKED
-capability_count: 15
-source_input_digests:
-  plans/strategic/ff6/capability-enrichments/ipynb.yaml: 1a56d12b5db2ecc0ee29344ca15e9dd7bf36d118c723607d91ce6b8300980158
-  plans/strategic/ff6/capability-enrichments/nrrd.yaml: a23433fddf43fc2fb11468025852ce06729bb2a9977a7d2957e1c769ef431c56
-  plans/strategic/ff6/capability-enrichments/ora.yaml: 7cd010dca0798c47828245c45294e48f5acc05370d90b58dcfdbd91b94508a88
-  plans/strategic/ff6/capability-enrichments/xliff.yaml: e9d56bc8b16b4e837840d4a9f0f894623b00575de019bef61470d4d48d1afeb8
-  plans/strategic/ff6/capability-policy.yaml: 9da2c2fa4a69aba3e6cbdc80f1d928d066452986e0beb9108eed462c861304fb
-  schemas/ff6/capability-universe.schema.json: c268896134a495653d9a510d69fe3cb852fa91dc203c3d9615e6faea84ce4198
-  shared/format-contracts/ipynb.yaml: 7e2f0851059c24aaf5b1b7741d42ad0f974dde1228e89c91cf253f44f6acab7a
-  shared/format-contracts/nrrd.yaml: 832fef34917313ff8d7d2c1d6bf3f5813f9394b6dfe25ec3dc6adc2f9d318be8
-  shared/format-contracts/ora.yaml: b7578b4d30fc0fecc18b17aa3892d71170061c19c800f459c1bbd021ea72f8d7
-  shared/format-contracts/policy/family-packs/archive_container.yaml: 79ffac447b248a76ea0406b1e2347c4ed8b24440e9e9eaeb34adee92e5078416
-  shared/format-contracts/policy/family-packs/executable_document.yaml: bdc43666de37ffe17cbc827308747c60389ecb7e6e7d52a759e78f071ab32456
-  shared/format-contracts/policy/family-packs/scientific_raster.yaml: 97b425d6661312e1ab8d8765c680e181f4c23a119512526c0d34c9cedc489a9c
-  shared/format-contracts/policy/family-packs/xml_localization.yaml: 407c11dd45eae83afef02160f90a357d086b4fcbfff4ad408463f374e3361a86
-  shared/format-contracts/policy/shared-library-contract.yaml: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
-  shared/format-contracts/research/ipynb.yaml: fa69e904e5e5957e2db30916cd730b0d6c966fb5baf54aefe0b499c7f48c9dfb
-  shared/format-contracts/research/nrrd.yaml: 8c54c2b7e90fc34d507227a507f591a161ef2cced5d4a638b4bb0d0ceeca669d
-  shared/format-contracts/research/ora.yaml: 33a241a3afb2eda0892fa2d4cfb8ec6da804b4a56106ecbaa4955500a8814480
-  shared/format-contracts/research/xliff.yaml: 1badb32e7898b6685c4156ca6580d0b08891d2a05f4ad83e9819ef188fcaccce
-  shared/format-contracts/xliff.yaml: 84e4d0bbf7d549b5b9fd888e26fd4c8af16db1f960a42f59a7763bc581f73ff9
-  shared/sal-facts/evidence/ipynb.yaml: 223238c07e531daddb9d8c1b596ddeed9365775c625a77ccc86a0cbb9335887b
-  shared/sal-facts/evidence/nrrd.yaml: de872480070ab1e2babd9420e03547f63624b30433d6f1950010c01216a0ae76
-  shared/sal-facts/evidence/ora.yaml: aeaea82fbda062a5c97d760d82c90d5a56629373dd7c375bbae5e2c90cb2a44e
-  shared/sal-facts/evidence/xliff.yaml: 7d168c3383e96e47427ec57a4e65f8c090a90ad304dd2be2b1d227befc21ca47
-  shared/sal-facts/ipynb.yaml: a51321c18230497ec932b5132657f2b29897696f5ec20dc87a4710df0e89a04b
-  shared/sal-facts/nrrd.yaml: bc462d49a23e4e0f9b10a61bd2d4b188a2a4fbc2b28598c56d4deea61d927789
-  shared/sal-facts/ora.yaml: 310ea4f1a3b67b19c91e5e6f76b4e6d2c188328be099f2abe162d4eb894eb2a0
-  shared/sal-facts/xliff.yaml: 1b8ff411cc5901ed40dde7c1d20c371ccb91c1b93f0d104b176888dd8bff12f5
-  tools/format_contract/capability_universe.py: 1be0d7ed0eb9f2dc8aa854eb002f41497e0be3b8b6984aea4c5b7360193dab5a
-  tools/format_contract/capability_universe_command.py: dca779a6d08c5b34e1a8b7bd184cda8401d8b696c997ac55b9933fda5913c19d
-  tools/format_contract/capability_universe_runtime.py: d3df691b1c6e09c3a5746bfdde655bb99f51e878e4eca4b4caf469c2a57f1b4a
-  tools/format_contract/capability_universe_validation.py: 8cd57b1fc32754181a0b4e243e09fde56249a5f3769d340778a3b2f436cd44ea
-  tools/format_contract/product_contract.py: fc324b628084def08f560b1539d8d185e49b86e6fd178784a8b4042a33a955a8
 capabilities:
 - capability_id: XLIFF-INLINE-001
-  format_id: xliff
   stable_name: Inline-code model
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -59,15 +18,6 @@ capabilities:
   - SAL-XLIFF-00014
   - SAL-XLIFF-00016
   - RF-XLF-00002
-  normative_obligation_ids:
-  - SAL-XLIFF-OBL-1097A25E15901A47
-  - SAL-XLIFF-OBL-112C4F88A16C0E1E
-  - SAL-XLIFF-OBL-378A1E5A93B9F0E1
-  - SAL-XLIFF-OBL-59F6650110AB14C0
-  - SAL-XLIFF-OBL-AE50FBBF3AFEC48A
-  - SAL-XLIFF-OBL-C632C43201760C05
-  - SAL-XLIFF-OBL-C788B2558FFB2D9C
-  - SAL-XLIFF-OBL-F20C2CA429BA381B
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -101,7 +51,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: XLIFF-LIFECYCLE-001
-  format_id: xliff
   stable_name: Baseline lifecycle I/O
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -115,13 +64,6 @@ capabilities:
   - POL-SLC-LIFECYCLE-04
   - POL-SLC-LIFECYCLE-05
   - POL-SLC-LIFECYCLE-06
-  normative_obligation_ids:
-  - SAL-XLIFF-OBL-0C477B7B6441FE75
-  - SAL-XLIFF-OBL-0CC8F5642F766D78
-  - SAL-XLIFF-OBL-3901EF20FB3A778F
-  - SAL-XLIFF-OBL-4847555DF5FC018E
-  - SAL-XLIFF-OBL-7CC73B48A2DDD6E2
-  - SAL-XLIFF-OBL-A8BDC1BEFD51DF8A
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -159,7 +101,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: XLIFF-MERGE-001
-  format_id: xliff
   stable_name: Extraction and merge framework
   classification: OPTIONAL_ADAPTER_REQUIRED
   developer_use_cases:
@@ -169,9 +110,6 @@ capabilities:
   authority_fact_ids:
   - POL-XLC-MERGE-01
   - SAL-XLIFF-00017
-  normative_obligation_ids:
-  - SAL-XLIFF-OBL-4F9A3D539840CB12
-  - SAL-XLIFF-OBL-6C1F7F44A337674B
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -203,7 +141,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: XLIFF-MODEL-001
-  format_id: xliff
   stable_name: Complete core structural model
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -225,21 +162,6 @@ capabilities:
   - SAL-XLIFF-00023
   - SAL-XLIFF-00024
   - RF-XLF-00001
-  normative_obligation_ids:
-  - SAL-XLIFF-OBL-05547046CBCB57F7
-  - SAL-XLIFF-OBL-39B22C28CEE813EC
-  - SAL-XLIFF-OBL-441E7C6F7C341B12
-  - SAL-XLIFF-OBL-44634C4175D505D0
-  - SAL-XLIFF-OBL-6B5E0355D5E6E57A
-  - SAL-XLIFF-OBL-72732CB4C19EDD8B
-  - SAL-XLIFF-OBL-72895F34A373C243
-  - SAL-XLIFF-OBL-7DA078717EA60881
-  - SAL-XLIFF-OBL-867500AA0AC3D2C1
-  - SAL-XLIFF-OBL-89C4966EE4D2E9A9
-  - SAL-XLIFF-OBL-98F31DD5B2444B6F
-  - SAL-XLIFF-OBL-AD191413B05A60ED
-  - SAL-XLIFF-OBL-C5906B426F26A9CC
-  - SAL-XLIFF-OBL-F441AFCBA027FDAB
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -274,7 +196,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: XLIFF-MODULE-001
-  format_id: xliff
   stable_name: Optional-module support with explicit coverage
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -299,24 +220,6 @@ capabilities:
   - SAL-XLIFF-00029
   - SAL-XLIFF-00030
   - RF-XLF-00003
-  normative_obligation_ids:
-  - SAL-XLIFF-OBL-05C85D6ED1E486EF
-  - SAL-XLIFF-OBL-078DE5F17834C232
-  - SAL-XLIFF-OBL-0F4BED4809335F28
-  - SAL-XLIFF-OBL-1405C2E94EEF25E6
-  - SAL-XLIFF-OBL-2104606D91AD8051
-  - SAL-XLIFF-OBL-251C3608521B6A97
-  - SAL-XLIFF-OBL-4CBBC3E46D3F6FD5
-  - SAL-XLIFF-OBL-5450B2DB4BF7B672
-  - SAL-XLIFF-OBL-56B240550D37E1BA
-  - SAL-XLIFF-OBL-725053FB0A47E78D
-  - SAL-XLIFF-OBL-733068E3157678E7
-  - SAL-XLIFF-OBL-9795E0B80A36DEBB
-  - SAL-XLIFF-OBL-BF29D4CDCFB61497
-  - SAL-XLIFF-OBL-CF05EFE9DC2D7502
-  - SAL-XLIFF-OBL-D1E0B4FE10EAE4E3
-  - SAL-XLIFF-OBL-D8645A5568961940
-  - SAL-XLIFF-OBL-EEA9C58A385F7C96
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -350,7 +253,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: XLIFF-NOTE-001
-  format_id: xliff
   stable_name: Notes and annotations
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -362,11 +264,6 @@ capabilities:
   - SAL-XLIFF-00014
   - SAL-XLIFF-00015
   - SAL-XLIFF-00027
-  normative_obligation_ids:
-  - SAL-XLIFF-OBL-44186566A8BE9B26
-  - SAL-XLIFF-OBL-B3D1B1A5CBD86240
-  - SAL-XLIFF-OBL-CF6EB3C804324A1C
-  - SAL-XLIFF-OBL-DA68F5DEF1A61582
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -398,7 +295,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: XLIFF-PARSE-001
-  format_id: xliff
   stable_name: Version-aware namespace parsing
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -439,40 +335,6 @@ capabilities:
   - SAL-XLIFF-00029
   - SAL-XLIFF-00030
   - SAL-XLIFF-10A6F1FB1C146A18
-  normative_obligation_ids:
-  - SAL-XLIFF-OBL-06483C363273E614
-  - SAL-XLIFF-OBL-087892B36F8591FF
-  - SAL-XLIFF-OBL-191B67AD2A05CA4E
-  - SAL-XLIFF-OBL-194616F7A49381E8
-  - SAL-XLIFF-OBL-194AC86AD7F54920
-  - SAL-XLIFF-OBL-21B94445F4216B94
-  - SAL-XLIFF-OBL-234A057EBC798099
-  - SAL-XLIFF-OBL-2F91536E68D9FA7E
-  - SAL-XLIFF-OBL-30C00B0420087A37
-  - SAL-XLIFF-OBL-3542C2C04BA1B521
-  - SAL-XLIFF-OBL-3A70AA27631A594D
-  - SAL-XLIFF-OBL-3C4EB05F176E240D
-  - SAL-XLIFF-OBL-51C619B4441B8CC8
-  - SAL-XLIFF-OBL-57668EDF714BE172
-  - SAL-XLIFF-OBL-6216215A0A7D5A20
-  - SAL-XLIFF-OBL-67ED3618EE6C709A
-  - SAL-XLIFF-OBL-6F58FAA98D63DCE0
-  - SAL-XLIFF-OBL-856D00DE735B6951
-  - SAL-XLIFF-OBL-8CD918D3D6C70981
-  - SAL-XLIFF-OBL-91FEB76442382843
-  - SAL-XLIFF-OBL-B2E26CC031AF32ED
-  - SAL-XLIFF-OBL-B8C7FD041A1F7450
-  - SAL-XLIFF-OBL-B90CB93CF07C9917
-  - SAL-XLIFF-OBL-C1BB9934B09B3B70
-  - SAL-XLIFF-OBL-C6C67E6C253C9EAB
-  - SAL-XLIFF-OBL-C96F6CB613A6F95D
-  - SAL-XLIFF-OBL-CC8F94A8623CA191
-  - SAL-XLIFF-OBL-D2BB0F0D8018D601
-  - SAL-XLIFF-OBL-D8C6CC9733716C74
-  - SAL-XLIFF-OBL-E3F1C46FFD77CD5B
-  - SAL-XLIFF-OBL-EC188D4F6DD138A0
-  - SAL-XLIFF-OBL-F32E0F48ABC2675D
-  - SAL-XLIFF-OBL-F5619E33106888AC
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -512,7 +374,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: XLIFF-PRESERVE-001
-  format_id: xliff
   stable_name: Baseline preservation duties
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -524,11 +385,6 @@ capabilities:
   - POL-SLC-PRESERVE-02
   - POL-SLC-PRESERVE-03
   - POL-SLC-PRESERVE-04
-  normative_obligation_ids:
-  - SAL-XLIFF-OBL-5028A9F2822CA945
-  - SAL-XLIFF-OBL-612349C06EB3E809
-  - SAL-XLIFF-OBL-A9AF9198E92EA6F9
-  - SAL-XLIFF-OBL-F920057AE26D1B4F
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -565,7 +421,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: XLIFF-QA-001
-  format_id: xliff
   stable_name: Localization quality checks
   classification: OPTIONAL_ADAPTER_REQUIRED
   developer_use_cases:
@@ -574,8 +429,6 @@ capabilities:
   - xliff_2.1
   authority_fact_ids:
   - POL-XLC-QA-01
-  normative_obligation_ids:
-  - SAL-XLIFF-OBL-7764F24576A4DC32
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -607,7 +460,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: XLIFF-SEC-001
-  format_id: xliff
   stable_name: Baseline security posture
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -620,12 +472,6 @@ capabilities:
   - POL-SLC-SEC-03
   - POL-SLC-SEC-04
   - POL-SLC-SEC-05
-  normative_obligation_ids:
-  - SAL-XLIFF-OBL-009F2EB91831B248
-  - SAL-XLIFF-OBL-130340BC212989D5
-  - SAL-XLIFF-OBL-22D7FF9A90E032F8
-  - SAL-XLIFF-OBL-3647C8CF8DA89EA9
-  - SAL-XLIFF-OBL-FE51662AAD65CDB3
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -672,7 +518,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: XLIFF-SEG-001
-  format_id: xliff
   stable_name: Segmentation operations
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -685,12 +530,6 @@ capabilities:
   - SAL-XLIFF-00018
   - SAL-XLIFF-00019
   - RF-XLF-00004
-  normative_obligation_ids:
-  - SAL-XLIFF-OBL-3B805BEF996C1B70
-  - SAL-XLIFF-OBL-420141532D90D385
-  - SAL-XLIFF-OBL-49484112588B088B
-  - SAL-XLIFF-OBL-5BB18B34B798FCC4
-  - SAL-XLIFF-OBL-D16EDB479826DAB5
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -723,7 +562,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: XLIFF-STATE-001
-  format_id: xliff
   stable_name: Translation-state workflow
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -733,9 +571,6 @@ capabilities:
   authority_fact_ids:
   - POL-XLC-STATE-01
   - SAL-XLIFF-00018
-  normative_obligation_ids:
-  - SAL-XLIFF-OBL-95E74FFC0501843B
-  - SAL-XLIFF-OBL-AF86B77156C7C1E2
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -766,7 +601,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: XLIFF-TEXT-001
-  format_id: xliff
   stable_name: Source/target text editing
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -785,18 +619,6 @@ capabilities:
   - SAL-XLIFF-00021
   - SAL-XLIFF-00025
   - SAL-XLIFF-00028
-  normative_obligation_ids:
-  - SAL-XLIFF-OBL-2602F9167F95464B
-  - SAL-XLIFF-OBL-65BD1FDA110AD94A
-  - SAL-XLIFF-OBL-73868B0E3F5A4C22
-  - SAL-XLIFF-OBL-7CED833579FE91A4
-  - SAL-XLIFF-OBL-7E36DEBEB4162BA3
-  - SAL-XLIFF-OBL-8FC79A65912785AF
-  - SAL-XLIFF-OBL-9B0DC026A5B8E587
-  - SAL-XLIFF-OBL-9F2D0EECD6AFC125
-  - SAL-XLIFF-OBL-E1BDD2E8A5F0F84B
-  - SAL-XLIFF-OBL-E428FA846AA270C8
-  - SAL-XLIFF-OBL-ECC84F12FA1BCBCC
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -830,7 +652,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: XLIFF-VALIDATE-001
-  format_id: xliff
   stable_name: Core and module validation
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -849,18 +670,6 @@ capabilities:
   - SAL-XLIFF-00029
   - SAL-XLIFF-00030
   - RF-XLF-00005
-  normative_obligation_ids:
-  - SAL-XLIFF-OBL-07A1F5F6A9B3A95F
-  - SAL-XLIFF-OBL-0ACBD19A4F183811
-  - SAL-XLIFF-OBL-0E27D8074CB0A72C
-  - SAL-XLIFF-OBL-3059D36881034046
-  - SAL-XLIFF-OBL-43570A6F4917147B
-  - SAL-XLIFF-OBL-7ECA9CEDFF1B2B42
-  - SAL-XLIFF-OBL-9A24FE03004035AC
-  - SAL-XLIFF-OBL-BF7C86F8AFED34D6
-  - SAL-XLIFF-OBL-CBB9181BAE7226EA
-  - SAL-XLIFF-OBL-DA738080DC614E67
-  - SAL-XLIFF-OBL-E196265BC02520A3
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -899,7 +708,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: XLIFF-WRITE-001
-  format_id: xliff
   stable_name: Lossless and normalized serialization
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -909,9 +717,6 @@ capabilities:
   authority_fact_ids:
   - POL-XLC-WRITE-01
   - RF-XLF-00006
-  normative_obligation_ids:
-  - SAL-XLIFF-OBL-1FE4640A3CD2FDAD
-  - SAL-XLIFF-OBL-489B7755DF76C218
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:

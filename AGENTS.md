@@ -42,7 +42,7 @@ Prohibited (must never be created):
 5. DEC-014 status: **activated** (2026-06-25). See `docs/governance/codex-adapter.md` for pilot results.
 
 
-<!-- BEGIN:CAPABILITY-DISCOVERY generated=2026-07-14T11:48:48+00:00 source=.governance/capabilities/registry.yaml -->
+<!-- BEGIN:CAPABILITY-DISCOVERY generated=2026-07-29T05:28:14+00:00 source=.governance/capabilities/registry.yaml -->
 
 ## A2b. Capability Discovery Index (generated — do not edit manually)
 
@@ -53,7 +53,7 @@ Run `/sync-capabilities` or `python tools/capability_sync/run_sync.py --mode ful
 **Skill contracts:** `.supervisor/skill-registry.yaml`
 **Capability routing:** `.supervisor/capability-routing-registry.yaml`
 
-Total active capabilities: 148
+Total active capabilities: 194
 
 | capability_id | product_track | parity_status | claude_code | codex | ci | routing_routes |
 |---|---|---|---|---|---|---|
@@ -72,6 +72,22 @@ Total active capabilities: 148
 | `add-dogfood-export` | cross_product_export | FULL_PARITY | Y | N | Y | consumer_verification |
 | `verify-dogfood-path` | cross_product_export | FULL_PARITY | Y | N | Y | consumer_verification, focused_verification |
 | `add-installed-package-example` | developer_experience | FULL_PARITY | Y | N | Y | e2e_proof |
+| `audit-contract-portfolio` | format_contract | FULL_PARITY | Y | N | N | — |
+| `backfill-format-contracts` | format_contract | FULL_PARITY | Y | N | N | — |
+| `check-contract-sal-readiness` | format_contract | FULL_PARITY | Y | N | N | — |
+| `compile-contract-gaps` | format_contract | FULL_PARITY | Y | N | N | — |
+| `compile-format-contract` | format_contract | FULL_PARITY | Y | N | N | — |
+| `compile-production-capability-universe` | format_contract | FULL_PARITY | Y | N | Y | production_capability_universe |
+| `create-format-family-pack` | format_contract | FULL_PARITY | Y | N | Y | format_family_policy_authoring |
+| `format-contract-onboard` | format_contract | FULL_PARITY | Y | N | N | — |
+| `investigate-format-contract` | format_contract | FULL_PARITY | Y | N | N | — |
+| `product-contract-runtime-repair` | format_contract | FULL_PARITY | Y | N | N | — |
+| `prove-format-contract` | format_contract | FULL_PARITY | Y | N | N | — |
+| `reconcile-contract-capabilities` | format_contract | FULL_PARITY | Y | N | N | — |
+| `refresh-format-contract` | format_contract | FULL_PARITY | Y | N | N | — |
+| `research-format-contract-sources` | format_contract | FULL_PARITY | Y | N | N | — |
+| `review-format-contract` | format_contract | FULL_PARITY | Y | N | N | — |
+| `validate-format-contract` | format_contract | FULL_PARITY | Y | N | N | — |
 | `add-python-api` | foss_python | FULL_PARITY | Y | N | Y | product_backfill |
 | `add-python-object-model-feature` | foss_python | FULL_PARITY | Y | N | Y | product_deepening |
 | `add-spec-analytics-function` | foss_python | FULL_PARITY | Y | N | Y | spec_grounded_analytics |
@@ -80,12 +96,15 @@ Total active capabilities: 148
 | `product-source-task` | foss_python | FULL_PARITY | Y | N | N | — |
 | `python-reduced-spec-parity-model` | foss_python | FULL_PARITY | Y | N | N | — |
 | `create-consumer-roundtrip` | foss_python_consumer | FULL_PARITY | Y | N | N | — |
+| `agent-owasp-compliance` | governance | FULL_PARITY | Y | N | N | — |
+| `agent-supply-chain` | governance | FULL_PARITY | Y | N | N | — |
+| `audit-context-building` | governance | FULL_PARITY | Y | N | N | — |
 | `backfill-task-skill-ownership` | governance | FULL_PARITY | Y | N | N | — |
 | `build-capability-routes` | governance | FULL_PARITY | Y | N | N | — |
 | `build-supervisor-packet` | governance | FULL_PARITY | Y | N | N | — |
 | `certification-assertion-scorer` | governance | FULL_PARITY | Y | N | N | — |
-| `certification-ci-gate` | governance | PARTIAL | Y | N | N | — |
-| `certification-cross-language-parity` | governance | PARTIAL | Y | N | N | — |
+| `certification-ci-gate` | governance | FULL_PARITY | Y | N | N | — |
+| `certification-cross-language-parity` | governance | FULL_PARITY | Y | N | N | — |
 | `certification-dashboard` | governance | FULL_PARITY | Y | N | N | — |
 | `certification-dotnet-assertion-scorer` | governance | FULL_PARITY | Y | N | N | — |
 | `certification-exception-checker` | governance | FULL_PARITY | Y | N | N | — |
@@ -93,31 +112,47 @@ Total active capabilities: 148
 | `certification-generate-exception-tests` | governance | FULL_PARITY | Y | N | N | — |
 | `certification-generate-security-tests` | governance | FULL_PARITY | Y | N | N | — |
 | `certification-inventory-extractor` | governance | FULL_PARITY | Y | N | N | — |
-| `certification-mutation-tester` | governance | PARTIAL | Y | N | N | — |
-| `certification-performance-benchmark` | governance | PARTIAL | Y | N | N | — |
+| `certification-mutation-tester` | governance | FULL_PARITY | Y | N | N | — |
+| `certification-performance-benchmark` | governance | FULL_PARITY | Y | N | N | — |
 | `certification-stub-detector` | governance | FULL_PARITY | Y | N | N | — |
 | `check-dom-contract` | governance | FULL_PARITY | Y | N | N | — |
 | `check-skill-coverage` | governance | FULL_PARITY | Y | N | Y | capability_audit |
 | `collect-skill-execution-receipts` | governance | FULL_PARITY | Y | N | N | — |
+| `comment-analyzer` | governance | FULL_PARITY | Y | N | N | — |
+| `create-ff-skill` | governance | FULL_PARITY | Y | N | N | — |
+| `dependabot-config` | governance | FULL_PARITY | Y | N | N | — |
 | `detect-ad-hoc-execution` | governance | FULL_PARITY | Y | N | N | — |
 | `detect-duplicate-skills` | governance | FULL_PARITY | Y | N | N | — |
 | `enforce-skill-first-execution` | governance | FULL_PARITY | Y | N | N | — |
+| `gha-security-review` | governance | FULL_PARITY | Y | N | N | — |
 | `inventory-commands` | governance | FULL_PARITY | Y | N | N | — |
 | `inventory-format-dom` | governance | FULL_PARITY | Y | N | N | — |
 | `inventory-skills` | governance | FULL_PARITY | Y | N | N | — |
+| `materialize-production-proof` | governance | FULL_PARITY | Y | N | N | — |
 | `normalize-skill-registry` | governance | FULL_PARITY | Y | N | N | — |
 | `post-sprint-audit` | governance | FULL_PARITY | Y | N | Y | forensic_audit, integration_verification, sprint_audit |
 | `post-sprint-loop` | governance | FULL_PARITY | Y | N | Y | sprint_audit |
-| `pre-sprint-governance-hook` | governance | PARTIAL | Y | N | N | — |
+| `pr-test-analyzer` | governance | FULL_PARITY | Y | N | N | — |
+| `pre-sprint-governance-hook` | governance | FULL_PARITY | Y | N | N | — |
 | `preflight-skill-entry` | governance | FULL_PARITY | Y | N | N | — |
 | `qname-backfill` | governance | FULL_PARITY | Y | N | Y | qname_generation |
+| `receiving-code-review` | governance | FULL_PARITY | Y | N | N | — |
 | `reset-track-signal` | governance | FULL_PARITY | Y | N | N | — |
 | `run-governance-validators` | governance | FULL_PARITY | Y | N | N | — |
 | `run-lifecycle-audit` | governance | FULL_PARITY | Y | N | N | — |
 | `run-skill-idempotency` | governance | FULL_PARITY | Y | N | N | — |
 | `scan-residual-bypasses` | governance | FULL_PARITY | Y | N | N | — |
 | `select-deepening-lane` | governance | FULL_PARITY | Y | N | N | — |
+| `sharp-edges` | governance | FULL_PARITY | Y | N | N | — |
+| `silent-failure-hunter` | governance | FULL_PARITY | Y | N | N | — |
+| `skill-improver` | governance | FULL_PARITY | Y | N | N | — |
+| `skill-scanner` | governance | FULL_PARITY | Y | N | N | — |
+| `skills-first-audit` | governance | FULL_PARITY | Y | N | Y | skills_first_control |
 | `sync-skill-command-registry` | governance | FULL_PARITY | Y | N | N | — |
+| `systematic-debugging` | governance | FULL_PARITY | Y | N | N | — |
+| `test-driven-development` | governance | FULL_PARITY | Y | N | N | — |
+| `trailmark` | governance | FULL_PARITY | Y | N | N | — |
+| `type-design-analyzer` | governance | FULL_PARITY | Y | N | N | — |
 | `validate-evidence-declaration` | governance | FULL_PARITY | Y | N | N | — |
 | `validate-missing-skill-workflow` | governance | FULL_PARITY | Y | N | Y | skill_governance_discovery |
 | `validate-mutation-guard` | governance | FULL_PARITY | Y | N | N | — |
@@ -128,9 +163,13 @@ Total active capabilities: 148
 | `build-product-context` | infrastructure | FULL_PARITY | Y | N | N | — |
 | `build-resume-context` | infrastructure | FULL_PARITY | Y | N | N | — |
 | `build-task-context` | infrastructure | FULL_PARITY | Y | N | N | — |
-| `capability-compiler` | infrastructure | PARTIAL | Y | N | Y | capability_compiler |
+| `capability-compiler` | infrastructure | FULL_PARITY | Y | N | Y | capability_compiler |
 | `discover-existing-control-layers` | infrastructure | FULL_PARITY | Y | N | N | — |
+| `gh-address-comments` | infrastructure | FULL_PARITY | Y | N | N | — |
+| `gh-fix-ci` | infrastructure | FULL_PARITY | Y | N | N | — |
+| `github-release` | infrastructure | FULL_PARITY | Y | N | N | — |
 | `inventory-existing-control-features` | infrastructure | FULL_PARITY | Y | N | N | — |
+| `plan-control` | infrastructure | FULL_PARITY | Y | N | N | — |
 | `quarantine-invalid-artifact` | infrastructure | FULL_PARITY | Y | N | N | — |
 | `query-control-index` | infrastructure | FULL_PARITY | Y | N | N | — |
 | `rebuild-operational-index` | infrastructure | FULL_PARITY | Y | N | N | — |
@@ -163,6 +202,10 @@ Total active capabilities: 148
 | `validate-permanent-layer-plans` | layer_governance | FULL_PARITY | Y | N | N | — |
 | `audit-root-tools` | machinery_governance | FULL_PARITY | Y | N | N | — |
 | `found-issue-ownership` | machinery_governance | FULL_PARITY | Y | N | N | — |
+| `mcp-builder` | machinery_governance | FULL_PARITY | Y | N | N | — |
+| `worktree-skill-guard-repair` | machinery_governance | FULL_PARITY | Y | N | N | — |
+| `production-program-controller-repair` | machinery_repair | FULL_PARITY | Y | N | N | — |
+| `reconcile-stashed-work` | machinery_repair | FULL_PARITY | Y | Y | Y | stash_reconciliation |
 | `rollback-and-recovery` | machinery_repair | FULL_PARITY | Y | N | Y | rollback_and_recovery |
 | `sync-memory` | maintenance | FULL_PARITY | Y | N | N | — |
 | `calculate-oracle-coverage` | oracle_execution | FULL_PARITY | Y | N | N | — |
@@ -204,7 +247,10 @@ Total active capabilities: 148
 | `spec-parity-verification` | spec_parity | FULL_PARITY | Y | N | N | — |
 | `spec-shaped-product-architecture-blueprint` | spec_parity | FULL_PARITY | Y | N | Y | hierarchy_generation |
 | `extract-analytics-from-monolith` | src_healing | FULL_PARITY | Y | N | Y | analytics_migration |
+| `fix-exception-hierarchy` | src_healing | FULL_PARITY | Y | N | N | — |
+| `wire-analytics-module` | src_healing | FULL_PARITY | Y | N | N | — |
 | `add-roundtrip-test` | testing | FULL_PARITY | Y | N | Y | test_migration |
+| `property-based-testing` | testing | FULL_PARITY | Y | N | N | — |
 
 <!-- END:CAPABILITY-DISCOVERY -->
 **A3.** An agent must not assume a role beyond what is assigned. Claude is an executor, not an approver. Claude never approves its own output as production-ready.

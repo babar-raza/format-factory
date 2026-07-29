@@ -1,0 +1,426 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://format-factory.example/schemas/ff6/capability-universe.schema.json",
+  "title": "FF6 Production Capability Universe",
+  "description": "Schema identities and structural invariants used by the deterministic FF6 compiler. Semantic and referential constraints are enforced by the compiler.",
+  "type": "object",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/capabilityDocument"
+    },
+    {
+      "$ref": "#/$defs/obligationDocument"
+    },
+    {
+      "$ref": "#/$defs/taxonomyDocument"
+    },
+    {
+      "$ref": "#/$defs/coverageDocument"
+    },
+    {
+      "$ref": "#/$defs/manifest"
+    }
+  ],
+  "$defs": {
+    "classification": {
+      "enum": [
+        "STABLE_REQUIRED",
+        "OPTIONAL_ADAPTER_REQUIRED",
+        "PREVIEW_ISOLATED",
+        "EXCLUDED_WITH_AUTHORITY"
+      ]
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "plannedOrNonEmpty": {
+      "oneOf": [
+        {
+          "const": "PLANNED"
+        },
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "array",
+          "minItems": 1
+        },
+        {
+          "type": "object",
+          "minProperties": 1
+        }
+      ]
+    },
+    "capability": {
+      "type": "object",
+      "required": [
+        "capability_id",
+        "format_id",
+        "stable_name",
+        "classification",
+        "authority_fact_ids",
+        "normative_obligation_ids",
+        "release_state"
+      ],
+      "properties": {
+        "capability_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "format_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "stable_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "classification": {
+          "$ref": "#/$defs/classification"
+        },
+        "authority_fact_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "normative_obligation_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^SAL-[A-Z0-9]+-OBL-[A-Z0-9-]+$"
+          },
+          "uniqueItems": true
+        },
+        "release_state": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "obligation": {
+      "type": "object",
+      "required": [
+        "obligation_id",
+        "format_id",
+        "profile_id",
+        "capability_id",
+        "classification",
+        "authority_reference_ids",
+        "rule_text",
+        "required_tests",
+        "verification_status",
+        "invalidation_inputs"
+      ],
+      "properties": {
+        "obligation_id": {
+          "type": "string",
+          "pattern": "^SAL-[A-Z0-9]+-OBL-[A-Z0-9-]+$"
+        },
+        "format_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "profile_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "capability_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "classification": {
+          "$ref": "#/$defs/classification"
+        },
+        "authority_reference_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "rule_text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "required_tests": {
+          "type": "array",
+          "minItems": 1
+        },
+        "verification_status": {
+          "type": "string",
+          "minLength": 1
+        },
+        "invalidation_inputs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    },
+    "authorityArtifact": {
+      "type": "object",
+      "required": [
+        "format_id",
+        "source_id",
+        "repository_path",
+        "expected_sha256",
+        "observed_sha256",
+        "status"
+      ],
+      "properties": {
+        "format_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "repository_path": {
+          "type": "string"
+        },
+        "expected_sha256": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "const": ""
+            }
+          ]
+        },
+        "observed_sha256": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "enum": [
+            "MATCH",
+            "MISSING",
+            "MISMATCH",
+            "UNDECLARED"
+          ]
+        }
+      }
+    },
+    "capabilityDocument": {
+      "type": "object",
+      "required": [
+        "schema",
+        "goal_id",
+        "format_id",
+        "contract_id",
+        "target_profiles",
+        "authority_status",
+        "capability_count",
+        "source_input_digests",
+        "capabilities"
+      ],
+      "properties": {
+        "schema": {
+          "const": "ff6/format-capabilities@2"
+        },
+        "capability_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "source_input_digests": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "$ref": "#/$defs/sha256"
+          }
+        },
+        "capabilities": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/capability"
+          }
+        }
+      }
+    },
+    "obligationDocument": {
+      "type": "object",
+      "required": [
+        "schema",
+        "goal_id",
+        "format_id",
+        "contract_id",
+        "authority_status",
+        "obligation_count",
+        "source_input_digests",
+        "obligations"
+      ],
+      "properties": {
+        "schema": {
+          "const": "ff6/format-obligations@2"
+        },
+        "obligation_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "source_input_digests": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "$ref": "#/$defs/sha256"
+          }
+        },
+        "obligations": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/obligation"
+          }
+        }
+      }
+    },
+    "taxonomyDocument": {
+      "type": "object",
+      "required": [
+        "schema",
+        "goal_id",
+        "classifications"
+      ],
+      "properties": {
+        "schema": {
+          "const": "ff6/capability-taxonomy@2"
+        },
+        "classifications": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "description"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/classification"
+              },
+              "description": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "coverageDocument": {
+      "type": "object",
+      "required": [
+        "schema",
+        "goal_id",
+        "assessment_status",
+        "summary",
+        "per_format",
+        "invariants"
+      ],
+      "properties": {
+        "schema": {
+          "const": "ff6/capability-coverage@2"
+        },
+        "assessment_status": {
+          "enum": [
+            "COMPILED",
+            "COMPILED_AUTHORITY_BLOCKED",
+            "NEEDS_PROFILE_OR_SURFACE_REPAIR"
+          ]
+        },
+        "summary": {
+          "type": "object",
+          "required": [
+            "formats",
+            "total_capabilities",
+            "total_obligations",
+            "classifications",
+            "authority_blocked_formats",
+            "certifications",
+            "promotions"
+          ]
+        },
+        "per_format": {
+          "type": "object",
+          "minProperties": 1
+        },
+        "invariants": {
+          "type": "array",
+          "minItems": 1
+        }
+      }
+    },
+    "manifest": {
+      "type": "object",
+      "required": [
+        "schema",
+        "goal_id",
+        "formats",
+        "input_digests",
+        "output_digests",
+        "authority_artifacts",
+        "authority_blocked_formats",
+        "aggregate_sha256"
+      ],
+      "properties": {
+        "schema": {
+          "const": "ff6/capability-manifest@2"
+        },
+        "goal_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "formats": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "input_digests": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "$ref": "#/$defs/sha256"
+          }
+        },
+        "output_digests": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "$ref": "#/$defs/sha256"
+          }
+        },
+        "authority_artifacts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/authorityArtifact"
+          }
+        },
+        "authority_blocked_formats": {
+          "type": "array",
+          "uniqueItems": true
+        },
+        "aggregate_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    }
+  }
+}

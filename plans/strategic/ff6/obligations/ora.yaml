@@ -1,146 +1,1468 @@
-schema: ff6/format-obligations@1
+schema: ff6/format-obligations@2
 goal_id: FF6-PRODUCTION-LIBRARIES-001
-task_id: TC-FF6-PROGRAM-CAPABILITIES-001
 format_id: ora
-format_canonical_name: OpenRaster Image
 contract_id: FC-ORA-V1
-target_spec_version: OpenRaster 0.0.3 (informal)
-generated_at: "2026-07-29"
-generated_by: claude
-obligation_count: 7
-
+authority_status: BLOCKED
+obligation_count: 32
+source_input_digests:
+  plans/strategic/ff6/capability-enrichments/ipynb.yaml: 1a56d12b5db2ecc0ee29344ca15e9dd7bf36d118c723607d91ce6b8300980158
+  plans/strategic/ff6/capability-enrichments/ora.yaml: 7cd010dca0798c47828245c45294e48f5acc05370d90b58dcfdbd91b94508a88
+  plans/strategic/ff6/capability-policy.yaml: 9da2c2fa4a69aba3e6cbdc80f1d928d066452986e0beb9108eed462c861304fb
+  schemas/ff6/capability-universe.schema.json: c268896134a495653d9a510d69fe3cb852fa91dc203c3d9615e6faea84ce4198
+  shared/format-contracts/ipynb.yaml: 7e2f0851059c24aaf5b1b7741d42ad0f974dde1228e89c91cf253f44f6acab7a
+  shared/format-contracts/ora.yaml: b7578b4d30fc0fecc18b17aa3892d71170061c19c800f459c1bbd021ea72f8d7
+  shared/format-contracts/policy/family-packs/archive_container.yaml: 79ffac447b248a76ea0406b1e2347c4ed8b24440e9e9eaeb34adee92e5078416
+  shared/format-contracts/policy/family-packs/executable_document.yaml: bdc43666de37ffe17cbc827308747c60389ecb7e6e7d52a759e78f071ab32456
+  shared/format-contracts/policy/shared-library-contract.yaml: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+  shared/format-contracts/research/ipynb.yaml: fa69e904e5e5957e2db30916cd730b0d6c966fb5baf54aefe0b499c7f48c9dfb
+  shared/format-contracts/research/ora.yaml: 33a241a3afb2eda0892fa2d4cfb8ec6da804b4a56106ecbaa4955500a8814480
+  shared/sal-facts/evidence/ipynb.yaml: 223238c07e531daddb9d8c1b596ddeed9365775c625a77ccc86a0cbb9335887b
+  shared/sal-facts/evidence/ora.yaml: aeaea82fbda062a5c97d760d82c90d5a56629373dd7c375bbae5e2c90cb2a44e
+  shared/sal-facts/ipynb.yaml: a51321c18230497ec932b5132657f2b29897696f5ec20dc87a4710df0e89a04b
+  shared/sal-facts/ora.yaml: 310ea4f1a3b67b19c91e5e6f76b4e6d2c188328be099f2abe162d4eb894eb2a0
+  tools/format_contract/capability_universe.py: 1be0d7ed0eb9f2dc8aa854eb002f41497e0be3b8b6984aea4c5b7360193dab5a
+  tools/format_contract/capability_universe_command.py: dca779a6d08c5b34e1a8b7bd184cda8401d8b696c997ac55b9933fda5913c19d
+  tools/format_contract/capability_universe_runtime.py: d3df691b1c6e09c3a5746bfdde655bb99f51e878e4eca4b4caf469c2a57f1b4a
+  tools/format_contract/capability_universe_validation.py: 8cd57b1fc32754181a0b4e243e09fde56249a5f3769d340778a3b2f436cd44ea
+  tools/format_contract/product_contract.py: fc324b628084def08f560b1539d8d185e49b86e6fd178784a8b4042a33a955a8
 obligations:
-- obligation_id: OBL-ORA-001
+- obligation_id: SAL-ORA-OBL-00E2A26B6AB7CC85
   format_id: ora
-  capability_id: ORA-CODEC-001
-  also_referenced_by: []
-  authority_source: freedesktop.org OpenRaster File Layout 0.0.5
-  authority_reference: SRC-ORA-002
-  rule_text: >-
-    (File Layout — Storage) OpenRaster ZIP members may use only the DEFLATED
-    and STORED compression methods.
-  rule_category: structural
+  profile_id: production
+  capability_id: ORA-STREAM-001
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: required_behavior
+  authority_reference_ids:
+  - POL-ARC-STREAM-01
+  authority_fact_ids: []
+  authority_source_ids: []
+  rule_text: Stream encode/decode in bounded memory; support random access (seek tables/entry indexes) where the specification defines it.
+  required_tests:
+  - Bounded-memory large-payload tests; random-access fixtures where applicable.
+  release_gates:
+  - Streaming paths pass large-data tests.
   verification_status: UNVERIFIED
-  verification_evidence: []
-  related_fact_ids:
-    - SAL-ORA-00007
-  invalidation_conditions:
-    - specification version change
-    - authority status upgrade (currently NEEDS_AUTHORITY)
-
-- obligation_id: OBL-ORA-002
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-enrichments/ora.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/ora.yaml
+  - shared/format-contracts/policy/family-packs/archive_container.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/format-contracts/research/ora.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/evidence/ora.yaml
+  - shared/sal-facts/ipynb.yaml
+  - shared/sal-facts/ora.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
+- obligation_id: SAL-ORA-OBL-06E9A262D3C41AC2
   format_id: ora
-  capability_id: ORA-CODEC-001
-  also_referenced_by:
-    - ORA-VALIDATE-001
-  authority_source: freedesktop.org OpenRaster File Layout 0.0.5
-  authority_reference: SRC-ORA-002
-  rule_text: >-
-    (File Layout — Required Files — mimetype) The first archive member must be
-    named mimetype, must be STORED without compression, and must contain exactly
-    image/openraster without whitespace or a trailing newline.
-  rule_category: structural
-  verification_status: UNVERIFIED
-  verification_evidence: []
-  related_fact_ids:
-    - SAL-ORA-00016
-  invalidation_conditions:
-    - specification version change
-    - authority status upgrade (currently NEEDS_AUTHORITY)
-
-- obligation_id: OBL-ORA-003
-  format_id: ora
-  capability_id: ORA-MODEL-001
-  also_referenced_by:
-    - ORA-VALIDATE-001
-    - ORA-WRITE-001
-  authority_source: freedesktop.org OpenRaster File Layout 0.0.5
-  authority_reference: SRC-ORA-002
-  rule_text: >-
-    (File Layout — Storage) Member names in an OpenRaster ZIP archive are
-    case-sensitive and must be UTF-8 encoded with the ZIP UTF-8 flag used for
-    non-ASCII names.
-  rule_category: structural
-  verification_status: UNVERIFIED
-  verification_evidence: []
-  related_fact_ids:
-    - SAL-ORA-00004
-  invalidation_conditions:
-    - specification version change
-    - authority status upgrade (currently NEEDS_AUTHORITY)
-
-- obligation_id: OBL-ORA-004
-  format_id: ora
-  capability_id: ORA-MODEL-001
-  also_referenced_by: []
-  authority_source: freedesktop.org OpenRaster Layer Stack 0.0.5
-  authority_reference: SRC-ORA-003
-  rule_text: >-
-    (Layer Stack — Draft status) The OpenRaster Layer Stack authority labels
-    version 0.0.5 an early draft and warns that its contents remain open for
-    discussion.
-  rule_category: compatibility
-  verification_status: UNVERIFIED
-  verification_evidence: []
-  related_fact_ids:
-    - SAL-ORA-00014
-  invalidation_conditions:
-    - specification version change
-    - authority status upgrade (currently NEEDS_AUTHORITY)
-
-- obligation_id: OBL-ORA-005
-  format_id: ora
+  profile_id: production
   capability_id: ORA-VALIDATE-001
-  also_referenced_by: []
-  authority_source: freedesktop.org OpenRaster Layer Stack 0.0.5
-  authority_reference: SRC-ORA-003
-  rule_text: >-
-    (Layer Stack — image element) Since profile 0.0.3, xres and yres are
-    optional positive integer pixels-per-inch values that must be specified
-    together and default to 72.
-  rule_category: semantic
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: required_behavior
+  authority_reference_ids:
+  - POL-ARC-VALIDATE-01
+  - SAL-ORA-00004
+  - SAL-ORA-00010
+  - SAL-ORA-00016
+  - SAL-ORA-00019
+  authority_fact_ids:
+  - SAL-ORA-00004
+  - SAL-ORA-00010
+  - SAL-ORA-00016
+  - SAL-ORA-00019
+  authority_source_ids:
+  - SRC-ORA-002
+  - SRC-ORA-003
+  rule_text: Validate structure, checksums, and declared-vs-actual sizes with positions; run security checks (limits, ratios, paths) as a distinct layer.
+  required_tests:
+  - Corruption matrix negatives; bomb/traversal security fixtures.
+  release_gates:
+  - Every integrity rule has negative coverage.
   verification_status: UNVERIFIED
-  verification_evidence: []
-  related_fact_ids:
-    - SAL-ORA-00010
-  invalidation_conditions:
-    - specification version change
-    - authority status upgrade (currently NEEDS_AUTHORITY)
-
-- obligation_id: OBL-ORA-006
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-enrichments/ora.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/ora.yaml
+  - shared/format-contracts/policy/family-packs/archive_container.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/format-contracts/research/ora.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/evidence/ora.yaml
+  - shared/sal-facts/ipynb.yaml
+  - shared/sal-facts/ora.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
+- obligation_id: SAL-ORA-OBL-07B4638C09251BE1
   format_id: ora
-  capability_id: ORA-VALIDATE-001
-  also_referenced_by: []
-  authority_source: freedesktop.org OpenRaster File Layout 0.0.5
-  authority_reference: SRC-ORA-002
-  rule_text: >-
-    (File Layout — Thumbnails/thumbnail.png) Thumbnails/thumbnail.png is
-    required, must be a non-interlaced PNG with 8 bits per channel, and must
-    not exceed 256 by 256 pixels.
-  rule_category: structural
+  profile_id: production
+  capability_id: ORA-PRESERVE-001
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: required_behavior
+  authority_reference_ids:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+  authority_fact_ids: []
+  authority_source_ids: []
+  rule_text: Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller choice.
+  required_tests:
+  - Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.
+  release_gates:
+  - All preservation baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
   verification_status: UNVERIFIED
-  verification_evidence: []
-  related_fact_ids:
-    - SAL-ORA-00019
-  invalidation_conditions:
-    - specification version change
-    - authority status upgrade (currently NEEDS_AUTHORITY)
-
-- obligation_id: OBL-ORA-007
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-enrichments/ora.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/ora.yaml
+  - shared/format-contracts/policy/family-packs/archive_container.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/format-contracts/research/ora.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/evidence/ora.yaml
+  - shared/sal-facts/ipynb.yaml
+  - shared/sal-facts/ora.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
+- obligation_id: SAL-ORA-OBL-10D5EA62EEE3CC1A
   format_id: ora
+  profile_id: production
+  capability_id: ORA-LIFECYCLE-001
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: required_behavior
+  authority_reference_ids:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+  authority_fact_ids: []
+  authority_source_ids: []
+  rule_text: Support a strict read mode that rejects malformed input with diagnostics and a tolerant read mode that recovers where the format permits, with recovery actions reported.
+  required_tests:
+  - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.
+  release_gates:
+  - All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  verification_status: UNVERIFIED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-enrichments/ora.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/ora.yaml
+  - shared/format-contracts/policy/family-packs/archive_container.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/format-contracts/research/ora.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/evidence/ora.yaml
+  - shared/sal-facts/ipynb.yaml
+  - shared/sal-facts/ora.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
+- obligation_id: SAL-ORA-OBL-11A840CCAC773C4F
+  format_id: ora
+  profile_id: production
   capability_id: ORA-WRITE-001
-  also_referenced_by: []
-  authority_source: freedesktop.org OpenRaster File Layout 0.0.5
-  authority_reference: SRC-ORA-002
-  rule_text: >-
-    (File Layout — Required Files — stack.xml) The required stack.xml archive
-    member is a UTF-8 encoded XML document conforming to the OpenRaster Layer
-    Stack format.
-  rule_category: structural
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: normative_rules
+  authority_reference_ids:
+  - POL-ARC-WRITE-01
+  - SAL-ORA-00004
+  - SAL-ORA-00017
+  authority_fact_ids:
+  - SAL-ORA-00004
+  - SAL-ORA-00017
+  authority_source_ids:
+  - SRC-ORA-002
+  rule_text: (File Layout — Required Files — stack.xml) The required stack.xml archive member is a UTF-8 encoded XML document conforming to the OpenRaster Layer Stack format.
+  required_tests:
+  - Determinism byte-compare; independent-decoder acceptance fixture.
+  release_gates:
+  - Writer output accepted by reference decoder.
   verification_status: UNVERIFIED
-  verification_evidence: []
-  related_fact_ids:
-    - SAL-ORA-00017
-  invalidation_conditions:
-    - specification version change
-    - authority status upgrade (currently NEEDS_AUTHORITY)
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-enrichments/ora.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/ora.yaml
+  - shared/format-contracts/policy/family-packs/archive_container.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/format-contracts/research/ora.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/evidence/ora.yaml
+  - shared/sal-facts/ipynb.yaml
+  - shared/sal-facts/ora.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
+- obligation_id: SAL-ORA-OBL-1527BE3306AC38F2
+  format_id: ora
+  profile_id: production
+  capability_id: ORA-PRESERVE-001
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: required_behavior
+  authority_reference_ids:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+  authority_fact_ids: []
+  authority_source_ids: []
+  rule_text: Report every construct that cannot be preserved before saving, through a loss report API, rather than failing silently.
+  required_tests:
+  - Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.
+  release_gates:
+  - All preservation baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  verification_status: UNVERIFIED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-enrichments/ora.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/ora.yaml
+  - shared/format-contracts/policy/family-packs/archive_container.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/format-contracts/research/ora.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/evidence/ora.yaml
+  - shared/sal-facts/ipynb.yaml
+  - shared/sal-facts/ora.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
+- obligation_id: SAL-ORA-OBL-1C91BEA24163FEE8
+  format_id: ora
+  profile_id: production
+  capability_id: ORA-SEC-001
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: required_behavior
+  authority_reference_ids:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+  authority_fact_ids: []
+  authority_source_ids: []
+  rule_text: Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations and bound recursion depth.
+  required_tests:
+  - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.
+  release_gates:
+  - All security_limits baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  verification_status: UNVERIFIED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-enrichments/ora.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/ora.yaml
+  - shared/format-contracts/policy/family-packs/archive_container.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/format-contracts/research/ora.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/evidence/ora.yaml
+  - shared/sal-facts/ipynb.yaml
+  - shared/sal-facts/ora.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
+- obligation_id: SAL-ORA-OBL-1DB48CF281871859
+  format_id: ora
+  profile_id: production
+  capability_id: ORA-MODEL-001
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: normative_rules
+  authority_reference_ids:
+  - POL-ARC-MODEL-01
+  - SAL-ORA-00004
+  - SAL-ORA-00014
+  authority_fact_ids:
+  - SAL-ORA-00004
+  - SAL-ORA-00014
+  authority_source_ids:
+  - SRC-ORA-002
+  - SRC-ORA-003
+  rule_text: (Layer Stack — Draft status) The OpenRaster Layer Stack authority labels version 0.0.5 an early draft and warns that its contents remain open for discussion.
+  required_tests:
+  - Metadata enumeration matches fixture truth without payload reads.
+  release_gates:
+  - Metadata model covers all specified header fields.
+  verification_status: UNVERIFIED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-enrichments/ora.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/ora.yaml
+  - shared/format-contracts/policy/family-packs/archive_container.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/format-contracts/research/ora.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/evidence/ora.yaml
+  - shared/sal-facts/ipynb.yaml
+  - shared/sal-facts/ora.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
+- obligation_id: SAL-ORA-OBL-236BB3DAE380A960
+  format_id: ora
+  profile_id: production
+  capability_id: ORA-SEC-001
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: required_behavior
+  authority_reference_ids:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+  authority_fact_ids: []
+  authority_source_ids: []
+  rule_text: Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced resource.
+  required_tests:
+  - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.
+  release_gates:
+  - All security_limits baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  verification_status: UNVERIFIED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-enrichments/ora.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/ora.yaml
+  - shared/format-contracts/policy/family-packs/archive_container.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/format-contracts/research/ora.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/evidence/ora.yaml
+  - shared/sal-facts/ipynb.yaml
+  - shared/sal-facts/ora.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
+- obligation_id: SAL-ORA-OBL-24BEC87CE09AB2DD
+  format_id: ora
+  profile_id: production
+  capability_id: ORA-PRESERVE-001
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: required_behavior
+  authority_reference_ids:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+  authority_fact_ids: []
+  authority_source_ids: []
+  rule_text: Preserve unknown or future-version constructs that can be carried safely; never silently drop unrecognized content in lossless mode.
+  required_tests:
+  - Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.
+  release_gates:
+  - All preservation baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  verification_status: UNVERIFIED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-enrichments/ora.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/ora.yaml
+  - shared/format-contracts/policy/family-packs/archive_container.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/format-contracts/research/ora.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/evidence/ora.yaml
+  - shared/sal-facts/ipynb.yaml
+  - shared/sal-facts/ora.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
+- obligation_id: SAL-ORA-OBL-2755B9376EC8CEF6
+  format_id: ora
+  profile_id: production
+  capability_id: ORA-LIFECYCLE-001
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: required_behavior
+  authority_reference_ids:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+  authority_fact_ids: []
+  authority_source_ids: []
+  rule_text: Provide save to filesystem path and writable stream, plus serialization to bytes, producing output the library's own loader accepts.
+  required_tests:
+  - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.
+  release_gates:
+  - All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  verification_status: UNVERIFIED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-enrichments/ora.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/ora.yaml
+  - shared/format-contracts/policy/family-packs/archive_container.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/format-contracts/research/ora.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/evidence/ora.yaml
+  - shared/sal-facts/ipynb.yaml
+  - shared/sal-facts/ora.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
+- obligation_id: SAL-ORA-OBL-326BF47F7EE42769
+  format_id: ora
+  profile_id: production
+  capability_id: ORA-LIFECYCLE-001
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: required_behavior
+  authority_reference_ids:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+  authority_fact_ids: []
+  authority_source_ids: []
+  rule_text: Expose validation as a first-class callable operation returning structured diagnostics, not only as exceptions raised during parsing.
+  required_tests:
+  - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.
+  release_gates:
+  - All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  verification_status: UNVERIFIED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-enrichments/ora.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/ora.yaml
+  - shared/format-contracts/policy/family-packs/archive_container.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/format-contracts/research/ora.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/evidence/ora.yaml
+  - shared/sal-facts/ipynb.yaml
+  - shared/sal-facts/ora.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
+- obligation_id: SAL-ORA-OBL-465E4F464D271631
+  format_id: ora
+  profile_id: production
+  capability_id: ORA-EDIT-001
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: required_behavior
+  authority_reference_ids:
+  - POL-ARC-EDIT-01
+  authority_fact_ids: []
+  authority_source_ids: []
+  rule_text: Add, replace, and remove payloads/entries per the format's update semantics with checksums and indexes recomputed.
+  required_tests:
+  - Update round trips verified by independent decode.
+  release_gates:
+  - Update operations proven consumer-compatible.
+  verification_status: UNVERIFIED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-enrichments/ora.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/ora.yaml
+  - shared/format-contracts/policy/family-packs/archive_container.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/format-contracts/research/ora.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/evidence/ora.yaml
+  - shared/sal-facts/ipynb.yaml
+  - shared/sal-facts/ora.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
+- obligation_id: SAL-ORA-OBL-478DE18CD1B84DD4
+  format_id: ora
+  profile_id: production
+  capability_id: ORA-LIFECYCLE-001
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: required_behavior
+  authority_reference_ids:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+  authority_fact_ids: []
+  authority_source_ids: []
+  rule_text: Offer deterministic serialization such that an unchanged loaded document serializes to identical bytes across repeated calls in the same mode.
+  required_tests:
+  - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.
+  release_gates:
+  - All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  verification_status: UNVERIFIED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-enrichments/ora.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/ora.yaml
+  - shared/format-contracts/policy/family-packs/archive_container.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/format-contracts/research/ora.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/evidence/ora.yaml
+  - shared/sal-facts/ipynb.yaml
+  - shared/sal-facts/ora.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
+- obligation_id: SAL-ORA-OBL-4DDAA1D370E3106E
+  format_id: ora
+  profile_id: production
+  capability_id: ORA-VALIDATE-001
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: normative_rules
+  authority_reference_ids:
+  - POL-ARC-VALIDATE-01
+  - SAL-ORA-00004
+  - SAL-ORA-00010
+  - SAL-ORA-00016
+  - SAL-ORA-00019
+  authority_fact_ids:
+  - SAL-ORA-00004
+  - SAL-ORA-00010
+  - SAL-ORA-00016
+  - SAL-ORA-00019
+  authority_source_ids:
+  - SRC-ORA-002
+  - SRC-ORA-003
+  rule_text: (File Layout — Storage) Member names in an OpenRaster ZIP archive are case-sensitive and must be UTF-8 encoded with the ZIP UTF-8 flag used for non-ASCII names.
+  required_tests:
+  - Corruption matrix negatives; bomb/traversal security fixtures.
+  release_gates:
+  - Every integrity rule has negative coverage.
+  verification_status: UNVERIFIED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-enrichments/ora.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/ora.yaml
+  - shared/format-contracts/policy/family-packs/archive_container.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/format-contracts/research/ora.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/evidence/ora.yaml
+  - shared/sal-facts/ipynb.yaml
+  - shared/sal-facts/ora.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
+- obligation_id: SAL-ORA-OBL-51047D9CBD1191DF
+  format_id: ora
+  profile_id: production
+  capability_id: ORA-WRITE-001
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: normative_rules
+  authority_reference_ids:
+  - POL-ARC-WRITE-01
+  - SAL-ORA-00004
+  - SAL-ORA-00017
+  authority_fact_ids:
+  - SAL-ORA-00004
+  - SAL-ORA-00017
+  authority_source_ids:
+  - SRC-ORA-002
+  rule_text: (File Layout — Storage) Member names in an OpenRaster ZIP archive are case-sensitive and must be UTF-8 encoded with the ZIP UTF-8 flag used for non-ASCII names.
+  required_tests:
+  - Determinism byte-compare; independent-decoder acceptance fixture.
+  release_gates:
+  - Writer output accepted by reference decoder.
+  verification_status: UNVERIFIED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-enrichments/ora.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/ora.yaml
+  - shared/format-contracts/policy/family-packs/archive_container.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/format-contracts/research/ora.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/evidence/ora.yaml
+  - shared/sal-facts/ipynb.yaml
+  - shared/sal-facts/ora.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
+- obligation_id: SAL-ORA-OBL-5495E8C27E9DFFCE
+  format_id: ora
+  profile_id: production
+  capability_id: ORA-LIFECYCLE-001
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: required_behavior
+  authority_reference_ids:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+  authority_fact_ids: []
+  authority_source_ids: []
+  rule_text: Provide load from filesystem path, readable stream, and in-memory bytes, returning the format's root document/model object.
+  required_tests:
+  - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.
+  release_gates:
+  - All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  verification_status: UNVERIFIED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-enrichments/ora.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/ora.yaml
+  - shared/format-contracts/policy/family-packs/archive_container.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/format-contracts/research/ora.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/evidence/ora.yaml
+  - shared/sal-facts/ipynb.yaml
+  - shared/sal-facts/ora.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
+- obligation_id: SAL-ORA-OBL-5AA5643ACB6D1C27
+  format_id: ora
+  profile_id: production
+  capability_id: ORA-CODEC-001
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: required_behavior
+  authority_reference_ids:
+  - POL-ARC-CODEC-01
+  - SAL-ORA-00007
+  - SAL-ORA-00016
+  authority_fact_ids:
+  - SAL-ORA-00007
+  - SAL-ORA-00016
+  authority_source_ids:
+  - SRC-ORA-002
+  rule_text: Match reference implementation outputs on the specification's test vectors; honor declared parameters, dictionaries, and window constraints.
+  required_tests:
+  - Reference-vector round trips; parameter matrix.
+  release_gates:
+  - Codec verified against reference vectors.
+  verification_status: UNVERIFIED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-enrichments/ora.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/ora.yaml
+  - shared/format-contracts/policy/family-packs/archive_container.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/format-contracts/research/ora.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/evidence/ora.yaml
+  - shared/sal-facts/ipynb.yaml
+  - shared/sal-facts/ora.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
+- obligation_id: SAL-ORA-OBL-602DA38F95B14817
+  format_id: ora
+  profile_id: production
+  capability_id: ORA-SEC-001
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: required_behavior
+  authority_reference_ids:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+  authority_fact_ids: []
+  authority_source_ids: []
+  rule_text: Never resolve network resources, execute embedded code, load plugins, or follow external references during load, validate, or save unless explicitly enabled by the caller.
+  required_tests:
+  - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.
+  release_gates:
+  - All security_limits baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  verification_status: UNVERIFIED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-enrichments/ora.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/ora.yaml
+  - shared/format-contracts/policy/family-packs/archive_container.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/format-contracts/research/ora.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/evidence/ora.yaml
+  - shared/sal-facts/ipynb.yaml
+  - shared/sal-facts/ora.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
+- obligation_id: SAL-ORA-OBL-66EEC7878C683B22
+  format_id: ora
+  profile_id: production
+  capability_id: ORA-CODEC-001
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: normative_rules
+  authority_reference_ids:
+  - POL-ARC-CODEC-01
+  - SAL-ORA-00007
+  - SAL-ORA-00016
+  authority_fact_ids:
+  - SAL-ORA-00007
+  - SAL-ORA-00016
+  authority_source_ids:
+  - SRC-ORA-002
+  rule_text: (File Layout — Storage) OpenRaster ZIP members may use only the DEFLATED and STORED compression methods.
+  required_tests:
+  - Reference-vector round trips; parameter matrix.
+  release_gates:
+  - Codec verified against reference vectors.
+  verification_status: UNVERIFIED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-enrichments/ora.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/ora.yaml
+  - shared/format-contracts/policy/family-packs/archive_container.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/format-contracts/research/ora.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/evidence/ora.yaml
+  - shared/sal-facts/ipynb.yaml
+  - shared/sal-facts/ora.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
+- obligation_id: SAL-ORA-OBL-6BF75B83618CE444
+  format_id: ora
+  profile_id: production
+  capability_id: ORA-SEC-001
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: required_behavior
+  authority_reference_ids:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+  authority_fact_ids: []
+  authority_source_ids: []
+  rule_text: Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing must not evaluate them.
+  required_tests:
+  - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.
+  release_gates:
+  - All security_limits baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  verification_status: UNVERIFIED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-enrichments/ora.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/ora.yaml
+  - shared/format-contracts/policy/family-packs/archive_container.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/format-contracts/research/ora.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/evidence/ora.yaml
+  - shared/sal-facts/ipynb.yaml
+  - shared/sal-facts/ora.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
+- obligation_id: SAL-ORA-OBL-81BFE855525867BB
+  format_id: ora
+  profile_id: production
+  capability_id: ORA-CODEC-001
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: normative_rules
+  authority_reference_ids:
+  - POL-ARC-CODEC-01
+  - SAL-ORA-00007
+  - SAL-ORA-00016
+  authority_fact_ids:
+  - SAL-ORA-00007
+  - SAL-ORA-00016
+  authority_source_ids:
+  - SRC-ORA-002
+  rule_text: (File Layout — Required Files — mimetype) The first archive member must be named mimetype, must be STORED without compression, and must contain exactly image/openraster without whitespace or a trailing newline.
+  required_tests:
+  - Reference-vector round trips; parameter matrix.
+  release_gates:
+  - Codec verified against reference vectors.
+  verification_status: UNVERIFIED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-enrichments/ora.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/ora.yaml
+  - shared/format-contracts/policy/family-packs/archive_container.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/format-contracts/research/ora.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/evidence/ora.yaml
+  - shared/sal-facts/ipynb.yaml
+  - shared/sal-facts/ora.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
+- obligation_id: SAL-ORA-OBL-9019DBE75AD77BFF
+  format_id: ora
+  profile_id: production
+  capability_id: ORA-WRITE-001
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: required_behavior
+  authority_reference_ids:
+  - POL-ARC-WRITE-01
+  - SAL-ORA-00004
+  - SAL-ORA-00017
+  authority_fact_ids:
+  - SAL-ORA-00004
+  - SAL-ORA-00017
+  authority_source_ids:
+  - SRC-ORA-002
+  rule_text: Emit conformant containers with deterministic framing/ordering; verify output by self-decode round trip.
+  required_tests:
+  - Determinism byte-compare; independent-decoder acceptance fixture.
+  release_gates:
+  - Writer output accepted by reference decoder.
+  verification_status: UNVERIFIED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-enrichments/ora.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/ora.yaml
+  - shared/format-contracts/policy/family-packs/archive_container.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/format-contracts/research/ora.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/evidence/ora.yaml
+  - shared/sal-facts/ipynb.yaml
+  - shared/sal-facts/ora.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
+- obligation_id: SAL-ORA-OBL-99E022E1F9490AE2
+  format_id: ora
+  profile_id: production
+  capability_id: ORA-VALIDATE-001
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: normative_rules
+  authority_reference_ids:
+  - POL-ARC-VALIDATE-01
+  - SAL-ORA-00004
+  - SAL-ORA-00010
+  - SAL-ORA-00016
+  - SAL-ORA-00019
+  authority_fact_ids:
+  - SAL-ORA-00004
+  - SAL-ORA-00010
+  - SAL-ORA-00016
+  - SAL-ORA-00019
+  authority_source_ids:
+  - SRC-ORA-002
+  - SRC-ORA-003
+  rule_text: (File Layout — Required Files — mimetype) The first archive member must be named mimetype, must be STORED without compression, and must contain exactly image/openraster without whitespace or a trailing newline.
+  required_tests:
+  - Corruption matrix negatives; bomb/traversal security fixtures.
+  release_gates:
+  - Every integrity rule has negative coverage.
+  verification_status: UNVERIFIED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-enrichments/ora.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/ora.yaml
+  - shared/format-contracts/policy/family-packs/archive_container.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/format-contracts/research/ora.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/evidence/ora.yaml
+  - shared/sal-facts/ipynb.yaml
+  - shared/sal-facts/ora.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
+- obligation_id: SAL-ORA-OBL-9C467C6DD59DFEE7
+  format_id: ora
+  profile_id: production
+  capability_id: ORA-PRESERVE-001
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: required_behavior
+  authority_reference_ids:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+  authority_fact_ids: []
+  authority_source_ids: []
+  rule_text: Preserve the distinction between an absent optional value and an explicitly written default or empty value.
+  required_tests:
+  - Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.
+  release_gates:
+  - All preservation baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  verification_status: UNVERIFIED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-enrichments/ora.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/ora.yaml
+  - shared/format-contracts/policy/family-packs/archive_container.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/format-contracts/research/ora.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/evidence/ora.yaml
+  - shared/sal-facts/ipynb.yaml
+  - shared/sal-facts/ora.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
+- obligation_id: SAL-ORA-OBL-AA64E8813A858CB5
+  format_id: ora
+  profile_id: production
+  capability_id: ORA-MODEL-001
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: normative_rules
+  authority_reference_ids:
+  - POL-ARC-MODEL-01
+  - SAL-ORA-00004
+  - SAL-ORA-00014
+  authority_fact_ids:
+  - SAL-ORA-00004
+  - SAL-ORA-00014
+  authority_source_ids:
+  - SRC-ORA-002
+  - SRC-ORA-003
+  rule_text: (File Layout — Storage) Member names in an OpenRaster ZIP archive are case-sensitive and must be UTF-8 encoded with the ZIP UTF-8 flag used for non-ASCII names.
+  required_tests:
+  - Metadata enumeration matches fixture truth without payload reads.
+  release_gates:
+  - Metadata model covers all specified header fields.
+  verification_status: UNVERIFIED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-enrichments/ora.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/ora.yaml
+  - shared/format-contracts/policy/family-packs/archive_container.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/format-contracts/research/ora.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/evidence/ora.yaml
+  - shared/sal-facts/ipynb.yaml
+  - shared/sal-facts/ora.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
+- obligation_id: SAL-ORA-OBL-AD8A2C03327A9DF2
+  format_id: ora
+  profile_id: production
+  capability_id: ORA-VALIDATE-001
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: normative_rules
+  authority_reference_ids:
+  - POL-ARC-VALIDATE-01
+  - SAL-ORA-00004
+  - SAL-ORA-00010
+  - SAL-ORA-00016
+  - SAL-ORA-00019
+  authority_fact_ids:
+  - SAL-ORA-00004
+  - SAL-ORA-00010
+  - SAL-ORA-00016
+  - SAL-ORA-00019
+  authority_source_ids:
+  - SRC-ORA-002
+  - SRC-ORA-003
+  rule_text: (Layer Stack — image element) Since profile 0.0.3, xres and yres are optional positive integer pixels-per-inch values that must be specified together and default to 72.
+  required_tests:
+  - Corruption matrix negatives; bomb/traversal security fixtures.
+  release_gates:
+  - Every integrity rule has negative coverage.
+  verification_status: UNVERIFIED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-enrichments/ora.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/ora.yaml
+  - shared/format-contracts/policy/family-packs/archive_container.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/format-contracts/research/ora.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/evidence/ora.yaml
+  - shared/sal-facts/ipynb.yaml
+  - shared/sal-facts/ora.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
+- obligation_id: SAL-ORA-OBL-D4206A2B877512D1
+  format_id: ora
+  profile_id: production
+  capability_id: ORA-CONTAINER-001
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: required_behavior
+  authority_reference_ids:
+  - POL-ARC-CONTAINER-01
+  authority_fact_ids: []
+  authority_source_ids: []
+  rule_text: Decode magic numbers, frame/entry headers, size fields, and checksums per specification; verify integrity and report exact corruption positions.
+  required_tests:
+  - Structure fixtures per frame/entry kind; corrupted-checksum and truncation negatives.
+  release_gates:
+  - Container structure decoding covered against the specification's structure inventory.
+  verification_status: UNVERIFIED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-enrichments/ora.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/ora.yaml
+  - shared/format-contracts/policy/family-packs/archive_container.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/format-contracts/research/ora.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/evidence/ora.yaml
+  - shared/sal-facts/ipynb.yaml
+  - shared/sal-facts/ora.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
+- obligation_id: SAL-ORA-OBL-E783242B1006F422
+  format_id: ora
+  profile_id: production
+  capability_id: ORA-SEC-001
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: required_behavior
+  authority_reference_ids:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+  authority_fact_ids: []
+  authority_source_ids: []
+  rule_text: Provide configurable limits for input size, nesting depth, element/record count, and total decoded payload bytes, with safe defaults enabled.
+  required_tests:
+  - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.
+  release_gates:
+  - All security_limits baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  verification_status: UNVERIFIED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-enrichments/ora.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/ora.yaml
+  - shared/format-contracts/policy/family-packs/archive_container.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/format-contracts/research/ora.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/evidence/ora.yaml
+  - shared/sal-facts/ipynb.yaml
+  - shared/sal-facts/ora.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
+- obligation_id: SAL-ORA-OBL-ED7755CB3433CE7B
+  format_id: ora
+  profile_id: production
+  capability_id: ORA-VALIDATE-001
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: normative_rules
+  authority_reference_ids:
+  - POL-ARC-VALIDATE-01
+  - SAL-ORA-00004
+  - SAL-ORA-00010
+  - SAL-ORA-00016
+  - SAL-ORA-00019
+  authority_fact_ids:
+  - SAL-ORA-00004
+  - SAL-ORA-00010
+  - SAL-ORA-00016
+  - SAL-ORA-00019
+  authority_source_ids:
+  - SRC-ORA-002
+  - SRC-ORA-003
+  rule_text: (File Layout — Thumbnails/thumbnail.png) Thumbnails/thumbnail.png is required, must be a non-interlaced PNG with 8 bits per channel, and must not exceed 256 by 256 pixels.
+  required_tests:
+  - Corruption matrix negatives; bomb/traversal security fixtures.
+  release_gates:
+  - Every integrity rule has negative coverage.
+  verification_status: UNVERIFIED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-enrichments/ora.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/ora.yaml
+  - shared/format-contracts/policy/family-packs/archive_container.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/format-contracts/research/ora.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/evidence/ora.yaml
+  - shared/sal-facts/ipynb.yaml
+  - shared/sal-facts/ora.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
+- obligation_id: SAL-ORA-OBL-F0C3787F4EC69F75
+  format_id: ora
+  profile_id: production
+  capability_id: ORA-MODEL-001
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: required_behavior
+  authority_reference_ids:
+  - POL-ARC-MODEL-01
+  - SAL-ORA-00004
+  - SAL-ORA-00014
+  authority_fact_ids:
+  - SAL-ORA-00004
+  - SAL-ORA-00014
+  authority_source_ids:
+  - SRC-ORA-002
+  - SRC-ORA-003
+  rule_text: Expose typed container metadata (frames/entries, sizes, checksums, format flags) enumerable without full payload decode.
+  required_tests:
+  - Metadata enumeration matches fixture truth without payload reads.
+  release_gates:
+  - Metadata model covers all specified header fields.
+  verification_status: UNVERIFIED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-enrichments/ora.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/ora.yaml
+  - shared/format-contracts/policy/family-packs/archive_container.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/format-contracts/research/ora.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/evidence/ora.yaml
+  - shared/sal-facts/ipynb.yaml
+  - shared/sal-facts/ora.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
+- obligation_id: SAL-ORA-OBL-F969AF770A7D350A
+  format_id: ora
+  profile_id: production
+  capability_id: ORA-LIFECYCLE-001
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: required_behavior
+  authority_reference_ids:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+  authority_fact_ids: []
+  authority_source_ids: []
+  rule_text: Expose the detected format version and any declared version separately; never silently rewrite a declared version.
+  required_tests:
+  - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.
+  release_gates:
+  - All lifecycle_io baseline behaviors demonstrably enforced or explicitly waived with recorded rationale.
+  verification_status: UNVERIFIED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-enrichments/ora.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/ora.yaml
+  - shared/format-contracts/policy/family-packs/archive_container.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/format-contracts/research/ora.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/evidence/ora.yaml
+  - shared/sal-facts/ipynb.yaml
+  - shared/sal-facts/ora.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py

@@ -1,60 +1,8 @@
-schema: ff6/format-capabilities@2
+schema: ff6/capability-enrichment@1
 goal_id: FF6-PRODUCTION-LIBRARIES-001
 format_id: ubl
-contract_id: FC-UBL-V1
-target_spec_version: UBL 2.3
-target_profiles:
-- ubl_2.3
-authority_status: BLOCKED
-capability_count: 18
-source_input_digests:
-  plans/strategic/ff6/capability-enrichments/ipynb.yaml: 1a56d12b5db2ecc0ee29344ca15e9dd7bf36d118c723607d91ce6b8300980158
-  plans/strategic/ff6/capability-enrichments/nrrd.yaml: a23433fddf43fc2fb11468025852ce06729bb2a9977a7d2957e1c769ef431c56
-  plans/strategic/ff6/capability-enrichments/ora.yaml: 7cd010dca0798c47828245c45294e48f5acc05370d90b58dcfdbd91b94508a88
-  plans/strategic/ff6/capability-enrichments/safetensors.yaml: bf73b2da139830d01ea48c07ab127dd295d2353b04e731f68ab3e4251883838f
-  plans/strategic/ff6/capability-enrichments/ubl.yaml: 5381284706840df769bfa81f794672c44015833b087f53396474461c43527bd7
-  plans/strategic/ff6/capability-enrichments/xliff.yaml: e9d56bc8b16b4e837840d4a9f0f894623b00575de019bef61470d4d48d1afeb8
-  plans/strategic/ff6/capability-policy.yaml: 9da2c2fa4a69aba3e6cbdc80f1d928d066452986e0beb9108eed462c861304fb
-  schemas/ff6/capability-universe.schema.json: c268896134a495653d9a510d69fe3cb852fa91dc203c3d9615e6faea84ce4198
-  shared/format-contracts/ipynb.yaml: 7e2f0851059c24aaf5b1b7741d42ad0f974dde1228e89c91cf253f44f6acab7a
-  shared/format-contracts/nrrd.yaml: 832fef34917313ff8d7d2c1d6bf3f5813f9394b6dfe25ec3dc6adc2f9d318be8
-  shared/format-contracts/ora.yaml: b7578b4d30fc0fecc18b17aa3892d71170061c19c800f459c1bbd021ea72f8d7
-  shared/format-contracts/policy/family-packs/archive_container.yaml: 79ffac447b248a76ea0406b1e2347c4ed8b24440e9e9eaeb34adee92e5078416
-  shared/format-contracts/policy/family-packs/binary_tensor.yaml: 5866d8c904850340387ca25399eb6ce8a880548f596be815666ae0b1fe910647
-  shared/format-contracts/policy/family-packs/executable_document.yaml: bdc43666de37ffe17cbc827308747c60389ecb7e6e7d52a759e78f071ab32456
-  shared/format-contracts/policy/family-packs/scientific_raster.yaml: 97b425d6661312e1ab8d8765c680e181f4c23a119512526c0d34c9cedc489a9c
-  shared/format-contracts/policy/family-packs/xml_business.yaml: 6d0b519714dab6f50c35c67bbd11db29ccdba6e77d9a3ab4d2bcad2929ac4646
-  shared/format-contracts/policy/family-packs/xml_localization.yaml: 407c11dd45eae83afef02160f90a357d086b4fcbfff4ad408463f374e3361a86
-  shared/format-contracts/policy/shared-library-contract.yaml: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
-  shared/format-contracts/research/ipynb.yaml: fa69e904e5e5957e2db30916cd730b0d6c966fb5baf54aefe0b499c7f48c9dfb
-  shared/format-contracts/research/nrrd.yaml: 8c54c2b7e90fc34d507227a507f591a161ef2cced5d4a638b4bb0d0ceeca669d
-  shared/format-contracts/research/ora.yaml: 33a241a3afb2eda0892fa2d4cfb8ec6da804b4a56106ecbaa4955500a8814480
-  shared/format-contracts/research/safetensors.yaml: f28350556568e22238e950c7cc1c6819e9ac9824943aeb0f6f59690fb3a53e3f
-  shared/format-contracts/research/ubl.yaml: 816ed088f9c07c913098cf02b9a14ef0eb3fd55b966e1f8560f632814d218cf2
-  shared/format-contracts/research/xliff.yaml: 1badb32e7898b6685c4156ca6580d0b08891d2a05f4ad83e9819ef188fcaccce
-  shared/format-contracts/safetensors.yaml: b09281bfe726fe369107e82a6e8929e66bf4bf36c2bef26b4c535345aa7255b1
-  shared/format-contracts/ubl.yaml: c3400f1a86ab2fd9aa598f248dbd1d45a5592d84655e691272bff5f171c90d96
-  shared/format-contracts/xliff.yaml: 84e4d0bbf7d549b5b9fd888e26fd4c8af16db1f960a42f59a7763bc581f73ff9
-  shared/sal-facts/evidence/ipynb.yaml: 223238c07e531daddb9d8c1b596ddeed9365775c625a77ccc86a0cbb9335887b
-  shared/sal-facts/evidence/nrrd.yaml: de872480070ab1e2babd9420e03547f63624b30433d6f1950010c01216a0ae76
-  shared/sal-facts/evidence/ora.yaml: aeaea82fbda062a5c97d760d82c90d5a56629373dd7c375bbae5e2c90cb2a44e
-  shared/sal-facts/evidence/safetensors.yaml: 2542119417abc63b00b1ddcce5a15c94cddee94a5612d69535956ab7776db61b
-  shared/sal-facts/evidence/ubl.yaml: c1271a380abd24605219033ed294bd59f16705d33999749dd170c90ceaa97aea
-  shared/sal-facts/evidence/xliff.yaml: 7d168c3383e96e47427ec57a4e65f8c090a90ad304dd2be2b1d227befc21ca47
-  shared/sal-facts/ipynb.yaml: a51321c18230497ec932b5132657f2b29897696f5ec20dc87a4710df0e89a04b
-  shared/sal-facts/nrrd.yaml: bc462d49a23e4e0f9b10a61bd2d4b188a2a4fbc2b28598c56d4deea61d927789
-  shared/sal-facts/ora.yaml: 310ea4f1a3b67b19c91e5e6f76b4e6d2c188328be099f2abe162d4eb894eb2a0
-  shared/sal-facts/safetensors.yaml: b8c33558232408bcdd6a4baca20adeea347fef156753f1c035d50849378440a8
-  shared/sal-facts/ubl.yaml: 78e329c698b7a660cf93bc3a4f142bfe240fb6d55973ca2c7def3334d31094d3
-  shared/sal-facts/xliff.yaml: 1b8ff411cc5901ed40dde7c1d20c371ccb91c1b93f0d104b176888dd8bff12f5
-  tools/format_contract/capability_universe.py: 1be0d7ed0eb9f2dc8aa854eb002f41497e0be3b8b6984aea4c5b7360193dab5a
-  tools/format_contract/capability_universe_command.py: dca779a6d08c5b34e1a8b7bd184cda8401d8b696c997ac55b9933fda5913c19d
-  tools/format_contract/capability_universe_runtime.py: d3df691b1c6e09c3a5746bfdde655bb99f51e878e4eca4b4caf469c2a57f1b4a
-  tools/format_contract/capability_universe_validation.py: 8cd57b1fc32754181a0b4e243e09fde56249a5f3769d340778a3b2f436cd44ea
-  tools/format_contract/product_contract.py: fc324b628084def08f560b1539d8d185e49b86e6fd178784a8b4042a33a955a8
 capabilities:
 - capability_id: UBL-CALC-001
-  format_id: ubl
   stable_name: Business-total calculation and reconciliation
   classification: PREVIEW_ISOLATED
   developer_use_cases:
@@ -69,14 +17,6 @@ capabilities:
   - SAL-UBL-00127
   - SAL-UBL-50613DF5EFE944E0
   - RF-UBL-00005
-  normative_obligation_ids:
-  - SAL-UBL-OBL-23C1161DF420B67B
-  - SAL-UBL-OBL-2586C695D1A1C5FD
-  - SAL-UBL-OBL-36E4EB0088A2F830
-  - SAL-UBL-OBL-59A76283F9AA421A
-  - SAL-UBL-OBL-AE02391EE2696F99
-  - SAL-UBL-OBL-C1E21D0863BBF0D5
-  - SAL-UBL-OBL-DA3DF6489222CB2A
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -109,7 +49,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: UBL-CODELIST-001
-  format_id: ubl
   stable_name: Code-list infrastructure
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -127,17 +66,6 @@ capabilities:
   - SAL-UBL-00124
   - SAL-UBL-00129
   - RF-UBL-00003
-  normative_obligation_ids:
-  - SAL-UBL-OBL-0CB3818FF9DAA16C
-  - SAL-UBL-OBL-368AAF6A5FDB598F
-  - SAL-UBL-OBL-42BE8E0788B1267B
-  - SAL-UBL-OBL-4AC3C1FBF4218EB2
-  - SAL-UBL-OBL-720A660EC43410DA
-  - SAL-UBL-OBL-88EBC13520652DAE
-  - SAL-UBL-OBL-933F687594F7AFA1
-  - SAL-UBL-OBL-C717DEB32BC6F815
-  - SAL-UBL-OBL-D21BA46DEC8DFA2B
-  - SAL-UBL-OBL-DE7D98EAE4344EDA
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -171,7 +99,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: UBL-DOCTYPES-001
-  format_id: ubl
   stable_name: Document-type registry and factory
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -201,29 +128,6 @@ capabilities:
   - SAL-UBL-00133
   - SAL-UBL-50613DF5EFE944E0
   - RF-UBL-00001
-  normative_obligation_ids:
-  - SAL-UBL-OBL-10201DA6E92E0E8F
-  - SAL-UBL-OBL-1549D8ECF079779C
-  - SAL-UBL-OBL-15BB2F9A612618B4
-  - SAL-UBL-OBL-1ACFBE52C6642031
-  - SAL-UBL-OBL-1E151491FFE87878
-  - SAL-UBL-OBL-26C3825EE19AA383
-  - SAL-UBL-OBL-3C2E2EA8D3B697C9
-  - SAL-UBL-OBL-4936871F9800219B
-  - SAL-UBL-OBL-4AEF6E978EC11AA1
-  - SAL-UBL-OBL-5034658550F95ED6
-  - SAL-UBL-OBL-5DE0B14D6D273578
-  - SAL-UBL-OBL-78F83C6CBF92C11F
-  - SAL-UBL-OBL-80D484D6F8F255B4
-  - SAL-UBL-OBL-8DA615FF51A38A5A
-  - SAL-UBL-OBL-91E7CB3AF843790E
-  - SAL-UBL-OBL-9A23EF69DE53160B
-  - SAL-UBL-OBL-B1459A3D33EDA8BD
-  - SAL-UBL-OBL-B500CCDFA3228EDB
-  - SAL-UBL-OBL-C2A6F6ABBACE3C26
-  - SAL-UBL-OBL-C9255992CC53F982
-  - SAL-UBL-OBL-DDE72D7F54246254
-  - SAL-UBL-OBL-F79C106EE20386B9
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -259,7 +163,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: UBL-EDIT-001
-  format_id: ubl
   stable_name: Business component editing
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -272,12 +175,6 @@ capabilities:
   - SAL-UBL-00105
   - SAL-UBL-00123
   - SAL-UBL-00125
-  normative_obligation_ids:
-  - SAL-UBL-OBL-237188D47391391E
-  - SAL-UBL-OBL-63B4E9D295EF12C0
-  - SAL-UBL-OBL-A453593B8331BB0F
-  - SAL-UBL-OBL-AF5263F0FC7036B9
-  - SAL-UBL-OBL-C73836B17D8ECDBC
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -312,7 +209,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: UBL-EXT-001
-  format_id: ubl
   stable_name: Extension preservation and authoring
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -327,15 +223,6 @@ capabilities:
   - SAL-UBL-00122
   - SAL-UBL-00132
   - RF-UBL-00007
-  normative_obligation_ids:
-  - SAL-UBL-OBL-04ADBA28EFEAC74C
-  - SAL-UBL-OBL-0B23187F233A25E2
-  - SAL-UBL-OBL-1F07682B2B64520E
-  - SAL-UBL-OBL-6F4C6D18C62B59D4
-  - SAL-UBL-OBL-A78221E2626C086D
-  - SAL-UBL-OBL-B36305DA0BCEE0F6
-  - SAL-UBL-OBL-D086EFE9688F6F14
-  - SAL-UBL-OBL-E98EB489DAC77A1A
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -372,7 +259,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: UBL-LIFECYCLE-001
-  format_id: ubl
   stable_name: Baseline lifecycle I/O
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -386,13 +272,6 @@ capabilities:
   - POL-SLC-LIFECYCLE-04
   - POL-SLC-LIFECYCLE-05
   - POL-SLC-LIFECYCLE-06
-  normative_obligation_ids:
-  - SAL-UBL-OBL-020F06E51DE6AB65
-  - SAL-UBL-OBL-6A1C725166031BD0
-  - SAL-UBL-OBL-6B8BC440C33EE3B5
-  - SAL-UBL-OBL-6C91BBF7F11E4402
-  - SAL-UBL-OBL-8940ED685664E7CE
-  - SAL-UBL-OBL-F3EF323A48F1EB8A
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -434,7 +313,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: UBL-MODEL-001
-  format_id: ubl
   stable_name: Typed shared-component model
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -477,42 +355,6 @@ capabilities:
   - SAL-UBL-50613DF5EFE944E0
   - SAL-UBL-6D5AF510AAF4874B
   - SAL-UBL-87F7B313CE24D408
-  normative_obligation_ids:
-  - SAL-UBL-OBL-03AF3A7D3A76F362
-  - SAL-UBL-OBL-0AFE5C0F7BA8AC02
-  - SAL-UBL-OBL-0E8FA39856DF47F2
-  - SAL-UBL-OBL-16C93B2852CE2EAC
-  - SAL-UBL-OBL-1948F05A4C147BA1
-  - SAL-UBL-OBL-1D41106A5EF340AB
-  - SAL-UBL-OBL-21CA9DE1B597B083
-  - SAL-UBL-OBL-2972A8BB421227B8
-  - SAL-UBL-OBL-30FEA2365B54D2D5
-  - SAL-UBL-OBL-314B2CBE504470CC
-  - SAL-UBL-OBL-3B43504E9C74003C
-  - SAL-UBL-OBL-433310901DD96A1A
-  - SAL-UBL-OBL-4A8AFD0D68F5B2B8
-  - SAL-UBL-OBL-4F8B81527163B9F9
-  - SAL-UBL-OBL-603915CF28301B40
-  - SAL-UBL-OBL-6B2C75D678FE010A
-  - SAL-UBL-OBL-75FA432A5A176927
-  - SAL-UBL-OBL-77AE58DED2CCE475
-  - SAL-UBL-OBL-8AACB36579F7436B
-  - SAL-UBL-OBL-8AB9CEA1A6909770
-  - SAL-UBL-OBL-957563FFE4EF0A64
-  - SAL-UBL-OBL-B2AEC196C0FA7268
-  - SAL-UBL-OBL-B68F5F29F11197D6
-  - SAL-UBL-OBL-BCF0A0E445F55DD6
-  - SAL-UBL-OBL-BE7766CC0C6398BE
-  - SAL-UBL-OBL-C59FF5C86F4044C0
-  - SAL-UBL-OBL-C65ED6A2D9100174
-  - SAL-UBL-OBL-CADCC40DD4CD3689
-  - SAL-UBL-OBL-D569DF7E63EF3A7E
-  - SAL-UBL-OBL-DF289613C3ABBC56
-  - SAL-UBL-OBL-E349D547D508AD8C
-  - SAL-UBL-OBL-ED0E6E84CB8D90B7
-  - SAL-UBL-OBL-EDA03586C360349D
-  - SAL-UBL-OBL-F44F5E57128BCA15
-  - SAL-UBL-OBL-F8659253DDA9D0E4
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -548,7 +390,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: UBL-PARSE-001
-  format_id: ubl
   stable_name: Namespace-aware QName-based document parsing
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -585,36 +426,6 @@ capabilities:
   - SAL-UBL-50613DF5EFE944E0
   - SAL-UBL-6D5AF510AAF4874B
   - SAL-UBL-87F7B313CE24D408
-  normative_obligation_ids:
-  - SAL-UBL-OBL-0996E6D7B91D544F
-  - SAL-UBL-OBL-1EEEC2DD4CA2C80E
-  - SAL-UBL-OBL-2131251CF1650A4C
-  - SAL-UBL-OBL-2366A1602688CC13
-  - SAL-UBL-OBL-2E913739AA1D3A6C
-  - SAL-UBL-OBL-47361D7221816349
-  - SAL-UBL-OBL-4900522060768D4E
-  - SAL-UBL-OBL-4A02F547DCB50BCD
-  - SAL-UBL-OBL-4C5B833BA1A52FF5
-  - SAL-UBL-OBL-4E0F145D653528E0
-  - SAL-UBL-OBL-518CC9B6B5EFEC04
-  - SAL-UBL-OBL-5523FE5DCEFDA8C8
-  - SAL-UBL-OBL-55B90386831BAA06
-  - SAL-UBL-OBL-569CA01EDACE6EDD
-  - SAL-UBL-OBL-5D2ED9EBC9246EDA
-  - SAL-UBL-OBL-71FF376D05E7219A
-  - SAL-UBL-OBL-783649FDF531B0F9
-  - SAL-UBL-OBL-7B14DCF48B17C706
-  - SAL-UBL-OBL-7ED610619EF8F149
-  - SAL-UBL-OBL-A33577D6A0F0430E
-  - SAL-UBL-OBL-A4C0DA6A1DA93666
-  - SAL-UBL-OBL-A7A7F3A905D33782
-  - SAL-UBL-OBL-B68AB21224AFB222
-  - SAL-UBL-OBL-C4BD36751BD0B3AB
-  - SAL-UBL-OBL-CC931175029D1D9C
-  - SAL-UBL-OBL-DE96E8B4E9ADF196
-  - SAL-UBL-OBL-E485C1257EDE82FD
-  - SAL-UBL-OBL-EFCDD49AB32B85E2
-  - SAL-UBL-OBL-FBD6CE2F9C471A5A
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -652,7 +463,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: UBL-PRESERVE-001
-  format_id: ubl
   stable_name: Baseline preservation duties
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -664,11 +474,6 @@ capabilities:
   - POL-SLC-PRESERVE-02
   - POL-SLC-PRESERVE-03
   - POL-SLC-PRESERVE-04
-  normative_obligation_ids:
-  - SAL-UBL-OBL-1D0409875800C50B
-  - SAL-UBL-OBL-5A831127B0AA359F
-  - SAL-UBL-OBL-79F230CE7F5852E9
-  - SAL-UBL-OBL-E872079BFB45EC57
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -707,7 +512,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: UBL-PROFILE-001
-  format_id: ubl
   stable_name: Customization and profile handling
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -718,10 +522,6 @@ capabilities:
   - POL-XBZ-PROFILE-01
   - SAL-UBL-00128
   - SAL-UBL-00131
-  normative_obligation_ids:
-  - SAL-UBL-OBL-7D0855CD163E1EFD
-  - SAL-UBL-OBL-965E8CAEA15E1281
-  - SAL-UBL-OBL-FC5C33152AFDB187
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -756,7 +556,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: UBL-QUERY-001
-  format_id: ubl
   stable_name: Domain and QName query
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -766,9 +565,6 @@ capabilities:
   authority_fact_ids:
   - POL-XBZ-QUERY-01
   - RF-UBL-00006
-  normative_obligation_ids:
-  - SAL-UBL-OBL-31F4F60BFB40D4DE
-  - SAL-UBL-OBL-A11BEEAF8604759A
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -801,7 +597,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: UBL-REF-001
-  format_id: ubl
   stable_name: Reference and identifier integrity
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -826,24 +621,6 @@ capabilities:
   - SAL-UBL-00130
   - SAL-UBL-00131
   - SAL-UBL-00132
-  normative_obligation_ids:
-  - SAL-UBL-OBL-0DE187D3095ADFC9
-  - SAL-UBL-OBL-21513DE5D9694015
-  - SAL-UBL-OBL-2B874025EE323381
-  - SAL-UBL-OBL-2CDD018E59A4BA54
-  - SAL-UBL-OBL-31DE92275AF5F6EF
-  - SAL-UBL-OBL-3F57C68621331DF7
-  - SAL-UBL-OBL-44B9393A83611C0E
-  - SAL-UBL-OBL-49E8A72A55F540E1
-  - SAL-UBL-OBL-6C8834CFF87AAD86
-  - SAL-UBL-OBL-7F53755AAD2DFEB4
-  - SAL-UBL-OBL-87B1BB6A1F876A98
-  - SAL-UBL-OBL-93A7C1CA85ABE754
-  - SAL-UBL-OBL-9C170E327B30FBD3
-  - SAL-UBL-OBL-C5FB97CFB1D415A7
-  - SAL-UBL-OBL-E016695D69C2BC7D
-  - SAL-UBL-OBL-E318A1DE9A0F1F24
-  - SAL-UBL-OBL-F13D8EC34F2D93BC
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -878,7 +655,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: UBL-SEC-001
-  format_id: ubl
   stable_name: Baseline security posture
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -891,12 +667,6 @@ capabilities:
   - POL-SLC-SEC-03
   - POL-SLC-SEC-04
   - POL-SLC-SEC-05
-  normative_obligation_ids:
-  - SAL-UBL-OBL-4CA52BA5DDD8840F
-  - SAL-UBL-OBL-5026C29977F347B7
-  - SAL-UBL-OBL-8396E06EA0EA75FC
-  - SAL-UBL-OBL-9817A4DE4754E298
-  - SAL-UBL-OBL-F506A4219783DD7D
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -946,7 +716,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: UBL-SIGN-001
-  format_id: ubl
   stable_name: Signature-safe preservation
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -958,11 +727,6 @@ capabilities:
   - SAL-UBL-00111
   - SAL-UBL-00115
   - RF-UBL-00004
-  normative_obligation_ids:
-  - SAL-UBL-OBL-175ADB055BC12E8F
-  - SAL-UBL-OBL-26CD31E7F8CF91E1
-  - SAL-UBL-OBL-452B9C973F40966B
-  - SAL-UBL-OBL-8A3551BBBAC3FFD9
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -998,7 +762,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: UBL-UPGRADE-001
-  format_id: ubl
   stable_name: Version inspection and migration framework
   classification: PREVIEW_ISOLATED
   developer_use_cases:
@@ -1008,9 +771,6 @@ capabilities:
   authority_fact_ids:
   - POL-XBZ-UPGRADE-01
   - SAL-UBL-00131
-  normative_obligation_ids:
-  - SAL-UBL-OBL-12FE2060729C9B75
-  - SAL-UBL-OBL-7B16479ACBBC8EFC
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -1045,7 +805,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: UBL-VALIDATE-001
-  format_id: ubl
   stable_name: Layered validation orchestration
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -1067,21 +826,6 @@ capabilities:
   - SAL-UBL-00133
   - SAL-UBL-6D5AF510AAF4874B
   - SAL-UBL-87F7B313CE24D408
-  normative_obligation_ids:
-  - SAL-UBL-OBL-111E7D9625D62ECE
-  - SAL-UBL-OBL-2DC5FD2DA3562AD8
-  - SAL-UBL-OBL-2FCD900E00C1654E
-  - SAL-UBL-OBL-5E4A8D245A84A12F
-  - SAL-UBL-OBL-6D30B851A52B5863
-  - SAL-UBL-OBL-76D91F1FFF63CFB4
-  - SAL-UBL-OBL-788B2748204338B8
-  - SAL-UBL-OBL-83CEA9EE98A528C3
-  - SAL-UBL-OBL-86ED6C7E674781EC
-  - SAL-UBL-OBL-9736787B52CB148C
-  - SAL-UBL-OBL-CB4B2809D1A7DD8F
-  - SAL-UBL-OBL-CDADC5CFB25A9B9E
-  - SAL-UBL-OBL-D27B76A8A49AC0AF
-  - SAL-UBL-OBL-E77A92D09663F2D4
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -1116,7 +860,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: UBL-VALUES-001
-  format_id: ubl
   stable_name: Business value types with supplementary attributes
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -1143,26 +886,6 @@ capabilities:
   - SAL-UBL-00129
   - SAL-UBL-00130
   - RF-UBL-00002
-  normative_obligation_ids:
-  - SAL-UBL-OBL-023B8C902D0BB83F
-  - SAL-UBL-OBL-10FAFE831BDBFA43
-  - SAL-UBL-OBL-21AF03B6B4BD5875
-  - SAL-UBL-OBL-32A419E39BDD8B9F
-  - SAL-UBL-OBL-32D59836B480F6B8
-  - SAL-UBL-OBL-43BDF391D6546975
-  - SAL-UBL-OBL-441B495EB6A1CA64
-  - SAL-UBL-OBL-573973D976582D1C
-  - SAL-UBL-OBL-5CE5A2FA37D34103
-  - SAL-UBL-OBL-911D4E2AA74AE5C9
-  - SAL-UBL-OBL-93D4DBF066206515
-  - SAL-UBL-OBL-94D3CE5786D8BDE9
-  - SAL-UBL-OBL-A32204A79EEAA840
-  - SAL-UBL-OBL-B47D8E797924BBD4
-  - SAL-UBL-OBL-C287EBE21F059E6C
-  - SAL-UBL-OBL-CA05321D7D7B950C
-  - SAL-UBL-OBL-D25D2CB8429753F9
-  - SAL-UBL-OBL-ED9826054E4BA037
-  - SAL-UBL-OBL-F6C576C55BACDF83
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -1201,7 +924,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: UBL-WRITE-001
-  format_id: ubl
   stable_name: Schema-order-aware serialization
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -1211,9 +933,6 @@ capabilities:
   authority_fact_ids:
   - POL-XBZ-WRITE-01
   - RF-UBL-00008
-  normative_obligation_ids:
-  - SAL-UBL-OBL-4BD9BBC9F974C175
-  - SAL-UBL-OBL-F9D5251F2302AE3A
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:

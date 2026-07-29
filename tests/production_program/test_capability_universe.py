@@ -1,0 +1,300 @@
+"""Regression tests for the deterministic production capability compiler."""
+
+from __future__ import annotations
+
+import copy
+import hashlib
+import json
+from pathlib import Path
+
+import pytest
+import yaml
+
+from tools.format_contract.capability_universe import (
+    UniverseError,
+    check_outputs,
+    compile_universe,
+    write_outputs,
+)
+
+
+def _write_yaml(path: Path, value: object) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(yaml.safe_dump(value, sort_keys=False), encoding="utf-8")
+
+
+def _repo(tmp_path: Path) -> Path:
+    root = tmp_path / "repo"
+    authority = root / "authorities" / "ipynb.bin"
+    authority.parent.mkdir(parents=True)
+    authority.write_bytes(b"authority")
+    contract = {
+        "contract_metadata": {
+            "format_id": "ipynb",
+            "contract_id": "FC-IPYNB-V1",
+            "family": "test",
+            "target_spec_version": "4.5",
+        },
+        "authoritative_sources": [
+            {
+                "source_id": "SRC-NB-001",
+                "title": "Notebook schema",
+                "authority_class": "AUTHORITATIVE",
+                "acquisition_status": "ACQUIRED",
+                "local_path": "authorities/ipynb.bin",
+                "content_hash": hashlib.sha256(authority.read_bytes()).hexdigest(),
+            }
+        ],
+        "capabilities": [
+            {
+                "capability_id": "IPYNB-READ-001",
+                "level": "MUST",
+                "provenance": ["SAL-IPYNB-00001", "POL-TEST-READ-01"],
+                "required_behavior": ["Read notebook JSON."],
+                "security_requirements": ["Reject oversized input."],
+                "required_tests": ["positive", "negative"],
+            },
+            {
+                "capability_id": "IPYNB-EXEC-001",
+                "level": "SHOULD",
+                "provenance": ["SAL-IPYNB-00002"],
+                "required_behavior": ["Describe execution metadata."],
+            },
+        ],
+    }
+    facts = {
+        "facts": [
+            {"fact_id": "SAL-IPYNB-00001", "claim": "Notebook is JSON."},
+            {"fact_id": "SAL-IPYNB-00002", "claim": "Code cells hold execution metadata."},
+        ]
+    }
+    policy = {
+        "schema": "ff6/capability-policy@1",
+        "goal_id": "FF6-PRODUCTION-LIBRARIES-001",
+        "classifications": [
+            "STABLE_REQUIRED",
+            "OPTIONAL_ADAPTER_REQUIRED",
+            "PREVIEW_ISOLATED",
+            "EXCLUDED_WITH_AUTHORITY",
+        ],
+        "formats": {
+            "ipynb": {
+                "target_profiles": ["nbformat_4_0", "nbformat_4_5"],
+                "classification_locks": {
+                    "IPYNB-EXEC-001": "EXCLUDED_WITH_AUTHORITY"
+                },
+            }
+        },
+    }
+    common = {
+        "stable_name": "Read",
+        "developer_use_cases": ["Load a notebook."],
+        "spec_profiles": ["nbformat_4_5"],
+        "authority_fact_ids": ["SAL-IPYNB-00001", "POL-TEST-READ-01"],
+        "public_symbols": "PLANNED",
+        "source_symbols": "PLANNED",
+        "model_invariants": ["JSON structure is retained."],
+        "preservation_contract": ["Unknown metadata is retained."],
+        "error_contract": ["Structured error."],
+        "security_contract": ["No execution."],
+        "resource_limits": ["Input bytes are bounded."],
+        "performance_budget": "PLANNED",
+        "dependency_policy": "PLANNED",
+        "positive_tests": "PLANNED",
+        "negative_tests": "PLANNED",
+        "property_tests": "PLANNED",
+        "roundtrip_tests": "PLANNED",
+        "fixtures": "PLANNED",
+        "independent_oracles": "PLANNED",
+        "documentation_examples": "PLANNED",
+        "compatibility_status": "PLANNED",
+        "proof_node_ids": "PLANNED",
+        "invalidation_inputs": ["contract", "SAL", "policy"],
+        "taskcard_ids": ["TC-TEST"],
+        "release_state": "PLANNED",
+    }
+    read = {"capability_id": "IPYNB-READ-001", "classification": "STABLE_REQUIRED", **common}
+    execute = {
+        "capability_id": "IPYNB-EXEC-001",
+        "classification": "EXCLUDED_WITH_AUTHORITY",
+        **copy.deepcopy(common),
+        "stable_name": "Notebook execution",
+        "authority_fact_ids": ["SAL-IPYNB-00002"],
+        "exclusion": {
+            "authority_basis": "The file format describes code and metadata but does not require execution.",
+            "user_disposition": "Use a separately audited execution service; this library never executes code.",
+        },
+    }
+    _write_yaml(root / "shared/format-contracts/ipynb.yaml", contract)
+    _write_yaml(root / "shared/sal-facts/ipynb.yaml", facts)
+    _write_yaml(
+        root / "shared/sal-facts/evidence/ipynb.yaml",
+        {
+            "targets": {"schema": {"source_id": "SRC-NB-001"}},
+            "facts": [
+                {
+                    "fact_id": "SAL-IPYNB-00001",
+                    "assertions": [{"target": "schema"}],
+                },
+                {
+                    "fact_id": "SAL-IPYNB-00002",
+                    "assertions": [{"target": "schema"}],
+                },
+            ],
+        },
+    )
+    _write_yaml(
+        root / "shared/format-contracts/policy/shared-library-contract.yaml",
+        {"capabilities": []},
+    )
+    _write_yaml(
+        root / "shared/format-contracts/policy/family-packs/test.yaml",
+        {"capabilities": [{"id": "POL-TEST-READ-01"}]},
+    )
+    _write_yaml(root / "shared/format-contracts/research/ipynb.yaml", {"findings": []})
+    _write_yaml(root / "policy.yaml", policy)
+    _write_yaml(
+        root / "enrichments/ipynb.yaml",
+        {
+            "schema": "ff6/capability-enrichment@1",
+            "format_id": "ipynb",
+            "capabilities": [read, execute],
+        },
+    )
+    compiler = root / "tools/compiler.py"
+    compiler.parent.mkdir(parents=True)
+    compiler.write_text("# compiler v1\n", encoding="utf-8")
+    schema = root / "schemas/universe.json"
+    schema.parent.mkdir(parents=True)
+    schema.write_text(
+        json.dumps({"$schema": "https://json-schema.org/draft/2020-12/schema"}),
+        encoding="utf-8",
+    )
+    return root
+
+
+def _compile(root: Path):
+    return compile_universe(
+        root,
+        ("ipynb",),
+        policy_path=Path("policy.yaml"),
+        enrichment_dir=Path("enrichments"),
+        compiler_paths=(Path("tools/compiler.py"),),
+        schema_paths=(Path("schemas/universe.json"),),
+    )
+
+
+def test_compiler_emits_every_canonical_obligation_and_no_parallel_ids(
+    tmp_path: Path,
+) -> None:
+    result = _compile(_repo(tmp_path))
+    obligations = yaml.safe_load(result.outputs["obligations/ipynb.yaml"])[
+        "obligations"
+    ]
+    assert len(obligations) == 3
+    assert all(item["obligation_id"].startswith("SAL-IPYNB-OBL-") for item in obligations)
+    assert {item["capability_id"] for item in obligations} == {
+        "IPYNB-READ-001",
+        "IPYNB-EXEC-001",
+    }
+    capabilities = yaml.safe_load(result.outputs["capabilities/ipynb.yaml"])[
+        "capabilities"
+    ]
+    linked = {
+        obligation_id
+        for capability in capabilities
+        for obligation_id in capability["normative_obligation_ids"]
+    }
+    assert linked == {item["obligation_id"] for item in obligations}
+    assert all(item["authority_source_ids"] == ["SRC-NB-001"] for item in obligations)
+    assert result.manifest["authority_artifacts"] == [
+        {
+            "format_id": "ipynb",
+            "source_id": "SRC-NB-001",
+            "repository_path": "authorities/ipynb.bin",
+            "expected_sha256": hashlib.sha256(b"authority").hexdigest(),
+            "observed_sha256": hashlib.sha256(b"authority").hexdigest(),
+            "status": "MATCH",
+        }
+    ]
+    assert "schemas/universe.json" in result.manifest["input_digests"]
+
+
+def test_compiler_is_byte_deterministic_and_input_complete(tmp_path: Path) -> None:
+    root = _repo(tmp_path)
+    first = _compile(root)
+    second = _compile(root)
+    third = _compile(root)
+    assert first.outputs == second.outputs == third.outputs
+
+
+@pytest.mark.parametrize(
+    "relative",
+    [
+        "policy.yaml",
+        "tools/compiler.py",
+        "schemas/universe.json",
+        "shared/format-contracts/ipynb.yaml",
+        "shared/sal-facts/ipynb.yaml",
+        "shared/sal-facts/evidence/ipynb.yaml",
+        "enrichments/ipynb.yaml",
+        "shared/format-contracts/policy/shared-library-contract.yaml",
+        "shared/format-contracts/policy/family-packs/test.yaml",
+        "shared/format-contracts/research/ipynb.yaml",
+    ],
+)
+def test_each_input_category_invalidates_aggregate(
+    tmp_path: Path, relative: str
+) -> None:
+    root = _repo(tmp_path)
+    baseline = _compile(root).manifest["aggregate_sha256"]
+    path = root / relative
+    path.write_bytes(path.read_bytes() + b"\n \n")
+    assert _compile(root).manifest["aggregate_sha256"] != baseline
+
+
+def test_compiler_rejects_missing_foreign_and_unlocked_classification(
+    tmp_path: Path,
+) -> None:
+    root = _repo(tmp_path)
+    enrichment_path = root / "enrichments/ipynb.yaml"
+    enrichment = yaml.safe_load(enrichment_path.read_text(encoding="utf-8"))
+    enrichment["capabilities"].pop()
+    _write_yaml(enrichment_path, enrichment)
+    with pytest.raises(UniverseError, match="capability identity mismatch"):
+        _compile(root)
+
+    root = _repo(tmp_path / "foreign")
+    enrichment_path = root / "enrichments/ipynb.yaml"
+    enrichment = yaml.safe_load(enrichment_path.read_text(encoding="utf-8"))
+    enrichment["capabilities"][0]["authority_fact_ids"][0] = "SAL-NRRD-00001"
+    _write_yaml(enrichment_path, enrichment)
+    with pytest.raises(UniverseError, match="foreign fact"):
+        _compile(root)
+
+    root = _repo(tmp_path / "lock")
+    enrichment_path = root / "enrichments/ipynb.yaml"
+    enrichment = yaml.safe_load(enrichment_path.read_text(encoding="utf-8"))
+    enrichment["capabilities"][1]["classification"] = "OPTIONAL_ADAPTER_REQUIRED"
+    _write_yaml(enrichment_path, enrichment)
+    with pytest.raises(UniverseError, match="classification lock"):
+        _compile(root)
+
+
+def test_check_mode_detects_drift_without_writing(tmp_path: Path) -> None:
+    root = _repo(tmp_path)
+    result = _compile(root)
+    output = root / "out"
+    write_outputs(output, result.outputs)
+    before = {p.relative_to(output): p.read_bytes() for p in output.rglob("*") if p.is_file()}
+    check_outputs(output, result.outputs)
+    target = output / "capabilities/ipynb.yaml"
+    target.write_text("drift\n", encoding="utf-8")
+    with pytest.raises(UniverseError, match="output drift"):
+        check_outputs(output, result.outputs)
+    after = {
+        p.relative_to(output): p.read_bytes()
+        for p in output.rglob("*")
+        if p.is_file() and p != target
+    }
+    assert after == {path: data for path, data in before.items() if path != Path("capabilities/ipynb.yaml")}

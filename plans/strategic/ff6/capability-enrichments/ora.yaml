@@ -1,38 +1,8 @@
-schema: ff6/format-capabilities@2
+schema: ff6/capability-enrichment@1
 goal_id: FF6-PRODUCTION-LIBRARIES-001
 format_id: ora
-contract_id: FC-ORA-V1
-target_spec_version: OpenRaster 0.0.3 (informal)
-target_profiles:
-- openraster_0.0.3
-- openraster_0.0.4
-- openraster_0.0.5
-authority_status: BLOCKED
-capability_count: 10
-source_input_digests:
-  plans/strategic/ff6/capability-enrichments/ipynb.yaml: 1a56d12b5db2ecc0ee29344ca15e9dd7bf36d118c723607d91ce6b8300980158
-  plans/strategic/ff6/capability-enrichments/ora.yaml: 7cd010dca0798c47828245c45294e48f5acc05370d90b58dcfdbd91b94508a88
-  plans/strategic/ff6/capability-policy.yaml: 9da2c2fa4a69aba3e6cbdc80f1d928d066452986e0beb9108eed462c861304fb
-  schemas/ff6/capability-universe.schema.json: c268896134a495653d9a510d69fe3cb852fa91dc203c3d9615e6faea84ce4198
-  shared/format-contracts/ipynb.yaml: 7e2f0851059c24aaf5b1b7741d42ad0f974dde1228e89c91cf253f44f6acab7a
-  shared/format-contracts/ora.yaml: b7578b4d30fc0fecc18b17aa3892d71170061c19c800f459c1bbd021ea72f8d7
-  shared/format-contracts/policy/family-packs/archive_container.yaml: 79ffac447b248a76ea0406b1e2347c4ed8b24440e9e9eaeb34adee92e5078416
-  shared/format-contracts/policy/family-packs/executable_document.yaml: bdc43666de37ffe17cbc827308747c60389ecb7e6e7d52a759e78f071ab32456
-  shared/format-contracts/policy/shared-library-contract.yaml: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
-  shared/format-contracts/research/ipynb.yaml: fa69e904e5e5957e2db30916cd730b0d6c966fb5baf54aefe0b499c7f48c9dfb
-  shared/format-contracts/research/ora.yaml: 33a241a3afb2eda0892fa2d4cfb8ec6da804b4a56106ecbaa4955500a8814480
-  shared/sal-facts/evidence/ipynb.yaml: 223238c07e531daddb9d8c1b596ddeed9365775c625a77ccc86a0cbb9335887b
-  shared/sal-facts/evidence/ora.yaml: aeaea82fbda062a5c97d760d82c90d5a56629373dd7c375bbae5e2c90cb2a44e
-  shared/sal-facts/ipynb.yaml: a51321c18230497ec932b5132657f2b29897696f5ec20dc87a4710df0e89a04b
-  shared/sal-facts/ora.yaml: 310ea4f1a3b67b19c91e5e6f76b4e6d2c188328be099f2abe162d4eb894eb2a0
-  tools/format_contract/capability_universe.py: 1be0d7ed0eb9f2dc8aa854eb002f41497e0be3b8b6984aea4c5b7360193dab5a
-  tools/format_contract/capability_universe_command.py: dca779a6d08c5b34e1a8b7bd184cda8401d8b696c997ac55b9933fda5913c19d
-  tools/format_contract/capability_universe_runtime.py: d3df691b1c6e09c3a5746bfdde655bb99f51e878e4eca4b4caf469c2a57f1b4a
-  tools/format_contract/capability_universe_validation.py: 8cd57b1fc32754181a0b4e243e09fde56249a5f3769d340778a3b2f436cd44ea
-  tools/format_contract/product_contract.py: fc324b628084def08f560b1539d8d185e49b86e6fd178784a8b4042a33a955a8
 capabilities:
 - capability_id: ORA-CODEC-001
-  format_id: ora
   stable_name: Compression codec correctness
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -43,10 +13,6 @@ capabilities:
   - POL-ARC-CODEC-01
   - SAL-ORA-00007
   - SAL-ORA-00016
-  normative_obligation_ids:
-  - SAL-ORA-OBL-5AA5643ACB6D1C27
-  - SAL-ORA-OBL-66EEC7878C683B22
-  - SAL-ORA-OBL-81BFE855525867BB
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -86,7 +52,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: ORA-CONTAINER-001
-  format_id: ora
   stable_name: Frame/entry structure decoding
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -95,8 +60,6 @@ capabilities:
   - openraster_0.0.3
   authority_fact_ids:
   - POL-ARC-CONTAINER-01
-  normative_obligation_ids:
-  - SAL-ORA-OBL-D4206A2B877512D1
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -135,7 +98,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: ORA-EDIT-001
-  format_id: ora
   stable_name: Container update semantics
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -144,8 +106,6 @@ capabilities:
   - openraster_0.0.3
   authority_fact_ids:
   - POL-ARC-EDIT-01
-  normative_obligation_ids:
-  - SAL-ORA-OBL-465E4F464D271631
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -184,7 +144,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: ORA-LIFECYCLE-001
-  format_id: ora
   stable_name: Baseline lifecycle I/O
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -198,13 +157,6 @@ capabilities:
   - POL-SLC-LIFECYCLE-04
   - POL-SLC-LIFECYCLE-05
   - POL-SLC-LIFECYCLE-06
-  normative_obligation_ids:
-  - SAL-ORA-OBL-10D5EA62EEE3CC1A
-  - SAL-ORA-OBL-2755B9376EC8CEF6
-  - SAL-ORA-OBL-326BF47F7EE42769
-  - SAL-ORA-OBL-478DE18CD1B84DD4
-  - SAL-ORA-OBL-5495E8C27E9DFFCE
-  - SAL-ORA-OBL-F969AF770A7D350A
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -247,7 +199,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: ORA-MODEL-001
-  format_id: ora
   stable_name: Container metadata model
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -258,10 +209,6 @@ capabilities:
   - POL-ARC-MODEL-01
   - SAL-ORA-00004
   - SAL-ORA-00014
-  normative_obligation_ids:
-  - SAL-ORA-OBL-1DB48CF281871859
-  - SAL-ORA-OBL-AA64E8813A858CB5
-  - SAL-ORA-OBL-F0C3787F4EC69F75
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -299,7 +246,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: ORA-PRESERVE-001
-  format_id: ora
   stable_name: Baseline preservation duties
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -311,11 +257,6 @@ capabilities:
   - POL-SLC-PRESERVE-02
   - POL-SLC-PRESERVE-03
   - POL-SLC-PRESERVE-04
-  normative_obligation_ids:
-  - SAL-ORA-OBL-07B4638C09251BE1
-  - SAL-ORA-OBL-1527BE3306AC38F2
-  - SAL-ORA-OBL-24BEC87CE09AB2DD
-  - SAL-ORA-OBL-9C467C6DD59DFEE7
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -359,7 +300,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: ORA-SEC-001
-  format_id: ora
   stable_name: Baseline security posture
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -372,12 +312,6 @@ capabilities:
   - POL-SLC-SEC-03
   - POL-SLC-SEC-04
   - POL-SLC-SEC-05
-  normative_obligation_ids:
-  - SAL-ORA-OBL-1C91BEA24163FEE8
-  - SAL-ORA-OBL-236BB3DAE380A960
-  - SAL-ORA-OBL-602DA38F95B14817
-  - SAL-ORA-OBL-6BF75B83618CE444
-  - SAL-ORA-OBL-E783242B1006F422
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -429,7 +363,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: ORA-STREAM-001
-  format_id: ora
   stable_name: Bounded-memory streaming
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -438,8 +371,6 @@ capabilities:
   - openraster_0.0.3
   authority_fact_ids:
   - POL-ARC-STREAM-01
-  normative_obligation_ids:
-  - SAL-ORA-OBL-00E2A26B6AB7CC85
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -479,7 +410,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: ORA-VALIDATE-001
-  format_id: ora
   stable_name: Integrity and structure validation
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -492,12 +422,6 @@ capabilities:
   - SAL-ORA-00010
   - SAL-ORA-00016
   - SAL-ORA-00019
-  normative_obligation_ids:
-  - SAL-ORA-OBL-06E9A262D3C41AC2
-  - SAL-ORA-OBL-4DDAA1D370E3106E
-  - SAL-ORA-OBL-99E022E1F9490AE2
-  - SAL-ORA-OBL-AD8A2C03327A9DF2
-  - SAL-ORA-OBL-ED7755CB3433CE7B
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -540,7 +464,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: ORA-WRITE-001
-  format_id: ora
   stable_name: Deterministic container writing
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -551,10 +474,6 @@ capabilities:
   - POL-ARC-WRITE-01
   - SAL-ORA-00004
   - SAL-ORA-00017
-  normative_obligation_ids:
-  - SAL-ORA-OBL-11A840CCAC773C4F
-  - SAL-ORA-OBL-51047D9CBD1191DF
-  - SAL-ORA-OBL-9019DBE75AD77BFF
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:

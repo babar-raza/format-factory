@@ -1,46 +1,8 @@
-schema: ff6/format-capabilities@2
+schema: ff6/capability-enrichment@1
 goal_id: FF6-PRODUCTION-LIBRARIES-001
 format_id: nrrd
-contract_id: FC-NRRD-V1
-target_spec_version: NRRD0005
-target_profiles:
-- nrrd0001
-- nrrd0002
-- nrrd0003
-- nrrd0004
-- nrrd0005
-authority_status: BLOCKED
-capability_count: 15
-source_input_digests:
-  plans/strategic/ff6/capability-enrichments/ipynb.yaml: 1a56d12b5db2ecc0ee29344ca15e9dd7bf36d118c723607d91ce6b8300980158
-  plans/strategic/ff6/capability-enrichments/nrrd.yaml: a23433fddf43fc2fb11468025852ce06729bb2a9977a7d2957e1c769ef431c56
-  plans/strategic/ff6/capability-enrichments/ora.yaml: 7cd010dca0798c47828245c45294e48f5acc05370d90b58dcfdbd91b94508a88
-  plans/strategic/ff6/capability-policy.yaml: 9da2c2fa4a69aba3e6cbdc80f1d928d066452986e0beb9108eed462c861304fb
-  schemas/ff6/capability-universe.schema.json: c268896134a495653d9a510d69fe3cb852fa91dc203c3d9615e6faea84ce4198
-  shared/format-contracts/ipynb.yaml: 7e2f0851059c24aaf5b1b7741d42ad0f974dde1228e89c91cf253f44f6acab7a
-  shared/format-contracts/nrrd.yaml: 832fef34917313ff8d7d2c1d6bf3f5813f9394b6dfe25ec3dc6adc2f9d318be8
-  shared/format-contracts/ora.yaml: b7578b4d30fc0fecc18b17aa3892d71170061c19c800f459c1bbd021ea72f8d7
-  shared/format-contracts/policy/family-packs/archive_container.yaml: 79ffac447b248a76ea0406b1e2347c4ed8b24440e9e9eaeb34adee92e5078416
-  shared/format-contracts/policy/family-packs/executable_document.yaml: bdc43666de37ffe17cbc827308747c60389ecb7e6e7d52a759e78f071ab32456
-  shared/format-contracts/policy/family-packs/scientific_raster.yaml: 97b425d6661312e1ab8d8765c680e181f4c23a119512526c0d34c9cedc489a9c
-  shared/format-contracts/policy/shared-library-contract.yaml: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
-  shared/format-contracts/research/ipynb.yaml: fa69e904e5e5957e2db30916cd730b0d6c966fb5baf54aefe0b499c7f48c9dfb
-  shared/format-contracts/research/nrrd.yaml: 8c54c2b7e90fc34d507227a507f591a161ef2cced5d4a638b4bb0d0ceeca669d
-  shared/format-contracts/research/ora.yaml: 33a241a3afb2eda0892fa2d4cfb8ec6da804b4a56106ecbaa4955500a8814480
-  shared/sal-facts/evidence/ipynb.yaml: 223238c07e531daddb9d8c1b596ddeed9365775c625a77ccc86a0cbb9335887b
-  shared/sal-facts/evidence/nrrd.yaml: de872480070ab1e2babd9420e03547f63624b30433d6f1950010c01216a0ae76
-  shared/sal-facts/evidence/ora.yaml: aeaea82fbda062a5c97d760d82c90d5a56629373dd7c375bbae5e2c90cb2a44e
-  shared/sal-facts/ipynb.yaml: a51321c18230497ec932b5132657f2b29897696f5ec20dc87a4710df0e89a04b
-  shared/sal-facts/nrrd.yaml: bc462d49a23e4e0f9b10a61bd2d4b188a2a4fbc2b28598c56d4deea61d927789
-  shared/sal-facts/ora.yaml: 310ea4f1a3b67b19c91e5e6f76b4e6d2c188328be099f2abe162d4eb894eb2a0
-  tools/format_contract/capability_universe.py: 1be0d7ed0eb9f2dc8aa854eb002f41497e0be3b8b6984aea4c5b7360193dab5a
-  tools/format_contract/capability_universe_command.py: dca779a6d08c5b34e1a8b7bd184cda8401d8b696c997ac55b9933fda5913c19d
-  tools/format_contract/capability_universe_runtime.py: d3df691b1c6e09c3a5746bfdde655bb99f51e878e4eca4b4caf469c2a57f1b4a
-  tools/format_contract/capability_universe_validation.py: 8cd57b1fc32754181a0b4e243e09fde56249a5f3769d340778a3b2f436cd44ea
-  tools/format_contract/product_contract.py: fc324b628084def08f560b1539d8d185e49b86e6fd178784a8b4042a33a955a8
 capabilities:
 - capability_id: NRRD-ARRAY-001
-  format_id: nrrd
   stable_name: Typed N-dimensional array access
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -53,12 +15,6 @@ capabilities:
   - SAL-NRRD-00012
   - SAL-NRRD-00014
   - RF-NRRD-00001
-  normative_obligation_ids:
-  - SAL-NRRD-OBL-657FCD9C65FDA5D0
-  - SAL-NRRD-OBL-9F3FD13C0B0415D3
-  - SAL-NRRD-OBL-B2E9ABD1E685C48B
-  - SAL-NRRD-OBL-E4B3D1A206784660
-  - SAL-NRRD-OBL-FEF73EC95DF631C3
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -93,7 +49,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: NRRD-CONVERT-001
-  format_id: nrrd
   stable_name: Data conversion
   classification: PREVIEW_ISOLATED
   developer_use_cases:
@@ -102,8 +57,6 @@ capabilities:
   - nrrd0005
   authority_fact_ids:
   - POL-SCR-CONVERT-01
-  normative_obligation_ids:
-  - SAL-NRRD-OBL-E2B0331E7D4F6AD8
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -137,7 +90,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: NRRD-ENC-001
-  format_id: nrrd
   stable_name: All defined encodings
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -153,15 +105,6 @@ capabilities:
   - SAL-NRRD-00014
   - SAL-NRRD-00017
   - RF-NRRD-00005
-  normative_obligation_ids:
-  - SAL-NRRD-OBL-09FD9B976DEEA254
-  - SAL-NRRD-OBL-1A1000BC6C486057
-  - SAL-NRRD-OBL-21B0B8A6345C3E73
-  - SAL-NRRD-OBL-3CBF1ABD0C753D2A
-  - SAL-NRRD-OBL-5A7992A6D1561C1D
-  - SAL-NRRD-OBL-BBDA18EE67CE1F9C
-  - SAL-NRRD-OBL-CDAD8AB79F3F3626
-  - SAL-NRRD-OBL-FFE6056E09C227B0
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -199,7 +142,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: NRRD-HEADER-001
-  format_id: nrrd
   stable_name: Complete header parsing
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -225,25 +167,6 @@ capabilities:
   - SAL-NRRD-00017
   - SAL-NRRD-00018
   - SAL-NRRD-00019
-  normative_obligation_ids:
-  - SAL-NRRD-OBL-00DC4239C8859F7A
-  - SAL-NRRD-OBL-26497BAC3942F926
-  - SAL-NRRD-OBL-26D9EF238F1FCFB4
-  - SAL-NRRD-OBL-47314D9082BD472D
-  - SAL-NRRD-OBL-56B0CF28D0C71C8D
-  - SAL-NRRD-OBL-653B0BAE5AF9352F
-  - SAL-NRRD-OBL-6F62F1E19950584D
-  - SAL-NRRD-OBL-6F9641D043F9DAAA
-  - SAL-NRRD-OBL-8932424BBF2359AF
-  - SAL-NRRD-OBL-97407FE105FD84F0
-  - SAL-NRRD-OBL-98550E4E66B262DC
-  - SAL-NRRD-OBL-AC287AED0DD842A5
-  - SAL-NRRD-OBL-AE7CBD0695792C18
-  - SAL-NRRD-OBL-CC26DFF014171E6E
-  - SAL-NRRD-OBL-CE2F148A06347565
-  - SAL-NRRD-OBL-D88C5BF8D738886F
-  - SAL-NRRD-OBL-DF07FE77EF153948
-  - SAL-NRRD-OBL-EF49F20A00830CCF
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -283,7 +206,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: NRRD-LAZY-001
-  format_id: nrrd
   stable_name: Large-data and lazy I/O
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -293,9 +215,6 @@ capabilities:
   authority_fact_ids:
   - POL-SCR-LAZY-01
   - RF-NRRD-00002
-  normative_obligation_ids:
-  - SAL-NRRD-OBL-6A4391DE91AF6940
-  - SAL-NRRD-OBL-D137EAE6ED40E8B8
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -332,7 +251,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: NRRD-LIFECYCLE-001
-  format_id: nrrd
   stable_name: Baseline lifecycle I/O
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -346,13 +264,6 @@ capabilities:
   - POL-SLC-LIFECYCLE-04
   - POL-SLC-LIFECYCLE-05
   - POL-SLC-LIFECYCLE-06
-  normative_obligation_ids:
-  - SAL-NRRD-OBL-028C0109E783B8F3
-  - SAL-NRRD-OBL-1F6231D4F759D037
-  - SAL-NRRD-OBL-5D42CA3E8390D37E
-  - SAL-NRRD-OBL-97BE0A55DD474AA5
-  - SAL-NRRD-OBL-E8BD337EE4D0C28F
-  - SAL-NRRD-OBL-EDFA0571B89A85E0
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -393,7 +304,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: NRRD-META-001
-  format_id: nrrd
   stable_name: Metadata fidelity
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -407,13 +317,6 @@ capabilities:
   - SAL-NRRD-00009
   - SAL-NRRD-00010
   - SAL-NRRD-00011
-  normative_obligation_ids:
-  - SAL-NRRD-OBL-11C804021E000822
-  - SAL-NRRD-OBL-6EF8F38181F1BA19
-  - SAL-NRRD-OBL-9275B7D1C9D9DE9A
-  - SAL-NRRD-OBL-AD14D4C764DAFC4B
-  - SAL-NRRD-OBL-D8AFDA0097117585
-  - SAL-NRRD-OBL-DBCC7E9568DC6252
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -448,7 +351,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: NRRD-PAYLOAD-001
-  format_id: nrrd
   stable_name: Attached and detached payload handling
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -464,15 +366,6 @@ capabilities:
   - SAL-NRRD-00011
   - SAL-NRRD-00013
   - SAL-NRRD-00018
-  normative_obligation_ids:
-  - SAL-NRRD-OBL-1F55DF8F30D42721
-  - SAL-NRRD-OBL-3B0146247ABE9D32
-  - SAL-NRRD-OBL-4A7E7092B5EA114F
-  - SAL-NRRD-OBL-5138F1F68C67EBE6
-  - SAL-NRRD-OBL-7F671EA7063E9A45
-  - SAL-NRRD-OBL-B7145CFF9A9A05F0
-  - SAL-NRRD-OBL-D4B943B940C4217F
-  - SAL-NRRD-OBL-DD537F7E8C81FDE6
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -511,7 +404,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: NRRD-PRESERVE-001
-  format_id: nrrd
   stable_name: Baseline preservation duties
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -523,11 +415,6 @@ capabilities:
   - POL-SLC-PRESERVE-02
   - POL-SLC-PRESERVE-03
   - POL-SLC-PRESERVE-04
-  normative_obligation_ids:
-  - SAL-NRRD-OBL-0D0DBFB306769459
-  - SAL-NRRD-OBL-ADAC45BDF110C59C
-  - SAL-NRRD-OBL-E4FE4CA1575751FB
-  - SAL-NRRD-OBL-EF1B94687F231663
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -565,7 +452,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: NRRD-SEC-001
-  format_id: nrrd
   stable_name: Baseline security posture
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -578,12 +464,6 @@ capabilities:
   - POL-SLC-SEC-03
   - POL-SLC-SEC-04
   - POL-SLC-SEC-05
-  normative_obligation_ids:
-  - SAL-NRRD-OBL-24B57E6A78478DB0
-  - SAL-NRRD-OBL-2A95CBAA35F7BB05
-  - SAL-NRRD-OBL-38C2DECC64DF5145
-  - SAL-NRRD-OBL-9AB0A32906D88688
-  - SAL-NRRD-OBL-A1F37BAEE4586823
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -632,7 +512,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: NRRD-SHAPE-001
-  format_id: nrrd
   stable_name: Dimensions, axis order, and endian correctness
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -650,17 +529,6 @@ capabilities:
   - SAL-NRRD-00014
   - SAL-NRRD-00015
   - SAL-NRRD-00019
-  normative_obligation_ids:
-  - SAL-NRRD-OBL-1D0F3C99804FD12B
-  - SAL-NRRD-OBL-428BE326FCBC9A6E
-  - SAL-NRRD-OBL-5FAF36D205C887AD
-  - SAL-NRRD-OBL-5FF7E047FCC05240
-  - SAL-NRRD-OBL-644276A28216DFC0
-  - SAL-NRRD-OBL-76E9FAF2387F0F51
-  - SAL-NRRD-OBL-94D8938DE18A6562
-  - SAL-NRRD-OBL-9B9D212BE21AEBD6
-  - SAL-NRRD-OBL-A1082F4AA3DE20E5
-  - SAL-NRRD-OBL-BDAC60A3A8BFBB64
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -699,7 +567,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: NRRD-SPACE-001
-  format_id: nrrd
   stable_name: Orientation and space metadata
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -710,10 +577,6 @@ capabilities:
   - POL-SCR-SPACE-01
   - SAL-NRRD-00019
   - RF-NRRD-00004
-  normative_obligation_ids:
-  - SAL-NRRD-OBL-70F3FAD5226F81D4
-  - SAL-NRRD-OBL-A17868B983C86DE7
-  - SAL-NRRD-OBL-D4E1C8879DEEFAD5
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -749,7 +612,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: NRRD-TYPES-001
-  format_id: nrrd
   stable_name: Complete scalar and block types
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -764,14 +626,6 @@ capabilities:
   - SAL-NRRD-00011
   - SAL-NRRD-00016
   - SAL-NRRD-00017
-  normative_obligation_ids:
-  - SAL-NRRD-OBL-1F6D4A8035175E6A
-  - SAL-NRRD-OBL-65474CFD91C22D42
-  - SAL-NRRD-OBL-A0DB36B54D9ACE24
-  - SAL-NRRD-OBL-E11BD129EC46861D
-  - SAL-NRRD-OBL-E662E631C3653034
-  - SAL-NRRD-OBL-E84DAC0F7EE0F451
-  - SAL-NRRD-OBL-F93C48C61E39D638
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -807,7 +661,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: NRRD-VALIDATE-001
-  format_id: nrrd
   stable_name: Header and payload validation
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -825,17 +678,6 @@ capabilities:
   - SAL-NRRD-00016
   - SAL-NRRD-00017
   - RF-NRRD-00003
-  normative_obligation_ids:
-  - SAL-NRRD-OBL-2085AD256AFE6E96
-  - SAL-NRRD-OBL-263C20AF28E52E28
-  - SAL-NRRD-OBL-5ED3FC3D5ACDFC36
-  - SAL-NRRD-OBL-647E52026F748115
-  - SAL-NRRD-OBL-7BCB0ED206078E67
-  - SAL-NRRD-OBL-9C262130232DCD09
-  - SAL-NRRD-OBL-ACD725CC0A58A2AC
-  - SAL-NRRD-OBL-AF2976F52A41F28A
-  - SAL-NRRD-OBL-D6AF39D25BBAAB0F
-  - SAL-NRRD-OBL-DDF0A485D0ED0F53
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -878,7 +720,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: NRRD-WRITE-001
-  format_id: nrrd
   stable_name: Canonical and lossless writing
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -887,8 +728,6 @@ capabilities:
   - nrrd0005
   authority_fact_ids:
   - POL-SCR-WRITE-01
-  normative_obligation_ids:
-  - SAL-NRRD-OBL-284E2438B08DA529
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:

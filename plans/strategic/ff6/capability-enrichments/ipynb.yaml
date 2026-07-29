@@ -1,35 +1,8 @@
-schema: ff6/format-capabilities@2
+schema: ff6/capability-enrichment@1
 goal_id: FF6-PRODUCTION-LIBRARIES-001
 format_id: ipynb
-contract_id: FC-IPYNB-V1
-target_spec_version: nbformat v4.5
-target_profiles:
-- nbformat_v4.0
-- nbformat_v4.1
-- nbformat_v4.2
-- nbformat_v4.3
-- nbformat_v4.4
-- nbformat_v4.5
-authority_status: BLOCKED
-capability_count: 20
-source_input_digests:
-  plans/strategic/ff6/capability-enrichments/ipynb.yaml: 1a56d12b5db2ecc0ee29344ca15e9dd7bf36d118c723607d91ce6b8300980158
-  plans/strategic/ff6/capability-policy.yaml: 9da2c2fa4a69aba3e6cbdc80f1d928d066452986e0beb9108eed462c861304fb
-  schemas/ff6/capability-universe.schema.json: c268896134a495653d9a510d69fe3cb852fa91dc203c3d9615e6faea84ce4198
-  shared/format-contracts/ipynb.yaml: 7e2f0851059c24aaf5b1b7741d42ad0f974dde1228e89c91cf253f44f6acab7a
-  shared/format-contracts/policy/family-packs/executable_document.yaml: bdc43666de37ffe17cbc827308747c60389ecb7e6e7d52a759e78f071ab32456
-  shared/format-contracts/policy/shared-library-contract.yaml: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
-  shared/format-contracts/research/ipynb.yaml: fa69e904e5e5957e2db30916cd730b0d6c966fb5baf54aefe0b499c7f48c9dfb
-  shared/sal-facts/evidence/ipynb.yaml: 223238c07e531daddb9d8c1b596ddeed9365775c625a77ccc86a0cbb9335887b
-  shared/sal-facts/ipynb.yaml: a51321c18230497ec932b5132657f2b29897696f5ec20dc87a4710df0e89a04b
-  tools/format_contract/capability_universe.py: 1be0d7ed0eb9f2dc8aa854eb002f41497e0be3b8b6984aea4c5b7360193dab5a
-  tools/format_contract/capability_universe_command.py: dca779a6d08c5b34e1a8b7bd184cda8401d8b696c997ac55b9933fda5913c19d
-  tools/format_contract/capability_universe_runtime.py: d3df691b1c6e09c3a5746bfdde655bb99f51e878e4eca4b4caf469c2a57f1b4a
-  tools/format_contract/capability_universe_validation.py: 8cd57b1fc32754181a0b4e243e09fde56249a5f3769d340778a3b2f436cd44ea
-  tools/format_contract/product_contract.py: fc324b628084def08f560b1539d8d185e49b86e6fd178784a8b4042a33a955a8
 capabilities:
 - capability_id: IPYNB-ATTACH-001
-  format_id: ipynb
   stable_name: Cell attachments
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -40,10 +13,6 @@ capabilities:
   - POL-EXD-ATTACH-01
   - SAL-IPYNB-00005
   - SAL-IPYNB-00009
-  normative_obligation_ids:
-  - SAL-IPYNB-OBL-02A00C213D2B0190
-  - SAL-IPYNB-OBL-356297A15A50C85B
-  - SAL-IPYNB-OBL-44E62E9AB8ECC2E3
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -81,7 +50,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: IPYNB-CLEAN-001
-  format_id: ipynb
   stable_name: Output and execution-state cleanup
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -91,9 +59,6 @@ capabilities:
   authority_fact_ids:
   - POL-EXD-CLEAN-01
   - RF-NB-00002
-  normative_obligation_ids:
-  - SAL-IPYNB-OBL-BB3A2A8AA8E143B3
-  - SAL-IPYNB-OBL-C7460C113E33FAE7
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -131,7 +96,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: IPYNB-DIFF-001
-  format_id: ipynb
   stable_name: Structure-aware diff
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -141,9 +105,6 @@ capabilities:
   authority_fact_ids:
   - POL-EXD-DIFF-01
   - RF-NB-00003
-  normative_obligation_ids:
-  - SAL-IPYNB-OBL-6790961797EE55CD
-  - SAL-IPYNB-OBL-7B453CA0FD8BCD5D
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -182,7 +143,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: IPYNB-EDIT-001
-  format_id: ipynb
   stable_name: Cell collection editing
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -194,11 +154,6 @@ capabilities:
   - SAL-IPYNB-00002
   - SAL-IPYNB-00006
   - SAL-IPYNB-00017
-  normative_obligation_ids:
-  - SAL-IPYNB-OBL-44833AF0A0BFC6C5
-  - SAL-IPYNB-OBL-6998AFE571DA4FA3
-  - SAL-IPYNB-OBL-8CB6767A2C5B196C
-  - SAL-IPYNB-OBL-BD6E7B4AA7C7E06C
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -238,7 +193,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: IPYNB-EXEC-001
-  format_id: ipynb
   stable_name: Optional isolated execution adapter
   classification: EXCLUDED_WITH_AUTHORITY
   developer_use_cases:
@@ -251,12 +205,6 @@ capabilities:
   - SAL-IPYNB-00010
   - SAL-IPYNB-00013
   - SAL-IPYNB-00018
-  normative_obligation_ids:
-  - SAL-IPYNB-OBL-4D73E1AD5BFDA838
-  - SAL-IPYNB-OBL-63250AAB7522792F
-  - SAL-IPYNB-OBL-7A3434FAAB98570C
-  - SAL-IPYNB-OBL-867F546314F11812
-  - SAL-IPYNB-OBL-EE733D1EEE459015
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -304,7 +252,6 @@ capabilities:
     - SAL-IPYNB-00010
     user_disposition: Use a separately isolated and audited notebook execution service. The format-factory-ipynb distribution never executes code.
 - capability_id: IPYNB-EXPORT-001
-  format_id: ipynb
   stable_name: Exporter integration
   classification: OPTIONAL_ADAPTER_REQUIRED
   developer_use_cases:
@@ -313,8 +260,6 @@ capabilities:
   - nbformat_v4.5
   authority_fact_ids:
   - POL-EXD-EXPORT-01
-  normative_obligation_ids:
-  - SAL-IPYNB-OBL-AABAEFD635A6381D
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -350,7 +295,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: IPYNB-ID-001
-  format_id: ipynb
   stable_name: Cell identity management
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -365,14 +309,6 @@ capabilities:
   - SAL-IPYNB-00014
   - SAL-IPYNB-00016
   - SAL-IPYNB-00017
-  normative_obligation_ids:
-  - SAL-IPYNB-OBL-55260C0279763885
-  - SAL-IPYNB-OBL-6F4551856EC21F7B
-  - SAL-IPYNB-OBL-83A15CABF90C4B84
-  - SAL-IPYNB-OBL-A34640B83CC70822
-  - SAL-IPYNB-OBL-A9D840BD579F5C6F
-  - SAL-IPYNB-OBL-DADE5C18B400176C
-  - SAL-IPYNB-OBL-FB9678CB40F31893
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -415,7 +351,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: IPYNB-LIFECYCLE-001
-  format_id: ipynb
   stable_name: Baseline lifecycle I/O
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -429,13 +364,6 @@ capabilities:
   - POL-SLC-LIFECYCLE-04
   - POL-SLC-LIFECYCLE-05
   - POL-SLC-LIFECYCLE-06
-  normative_obligation_ids:
-  - SAL-IPYNB-OBL-1CEEABB4EB56C405
-  - SAL-IPYNB-OBL-650D957D94A33790
-  - SAL-IPYNB-OBL-C62F62D99CDA6EAF
-  - SAL-IPYNB-OBL-DD20FA864FE34971
-  - SAL-IPYNB-OBL-F6811E708E96AF83
-  - SAL-IPYNB-OBL-FFF232183E2BB71E
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -486,7 +414,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: IPYNB-MERGE-001
-  format_id: ipynb
   stable_name: Structure-aware three-way merge
   classification: PREVIEW_ISOLATED
   developer_use_cases:
@@ -495,8 +422,6 @@ capabilities:
   - nbformat_v4.5
   authority_fact_ids:
   - POL-EXD-MERGE-01
-  normative_obligation_ids:
-  - SAL-IPYNB-OBL-03A1429F7B7AF3E1
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -534,7 +459,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: IPYNB-META-001
-  format_id: ipynb
   stable_name: Metadata preservation with typed adapters
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -549,14 +473,6 @@ capabilities:
   - SAL-IPYNB-00006
   - SAL-IPYNB-00010
   - SAL-IPYNB-00018
-  normative_obligation_ids:
-  - SAL-IPYNB-OBL-13F3815D0E5C95E6
-  - SAL-IPYNB-OBL-346FB023299D218E
-  - SAL-IPYNB-OBL-4471354A239702DB
-  - SAL-IPYNB-OBL-9C6A2746BA63E841
-  - SAL-IPYNB-OBL-C795205AC0A4BD0F
-  - SAL-IPYNB-OBL-DB0F793B92DED8A3
-  - SAL-IPYNB-OBL-ECA691E11183033E
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -595,7 +511,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: IPYNB-MODEL-001
-  format_id: ipynb
   stable_name: Typed cell and document model
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -612,16 +527,6 @@ capabilities:
   - SAL-IPYNB-00009
   - SAL-IPYNB-00015
   - RF-NB-00001
-  normative_obligation_ids:
-  - SAL-IPYNB-OBL-3B3B7588125383AB
-  - SAL-IPYNB-OBL-3EF5FF3B64091AB4
-  - SAL-IPYNB-OBL-3FA9A87DE3411DC4
-  - SAL-IPYNB-OBL-4651E92D2D018089
-  - SAL-IPYNB-OBL-91F2FEE89658B49D
-  - SAL-IPYNB-OBL-A416086282D30BB9
-  - SAL-IPYNB-OBL-CA94E60DA1A97571
-  - SAL-IPYNB-OBL-D2D8157D991DBDCA
-  - SAL-IPYNB-OBL-F1F17437C4D0257D
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -663,7 +568,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: IPYNB-OUTPUT-001
-  format_id: ipynb
   stable_name: Complete rich-output support
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -683,19 +587,6 @@ capabilities:
   - SAL-IPYNB-00018
   - SAL-IPYNB-00019
   - RF-NB-00005
-  normative_obligation_ids:
-  - SAL-IPYNB-OBL-010C554B8692D166
-  - SAL-IPYNB-OBL-2558D9E311DA3594
-  - SAL-IPYNB-OBL-5CA1914777C61A9D
-  - SAL-IPYNB-OBL-679A623D14CBF763
-  - SAL-IPYNB-OBL-77C54BA16B30D129
-  - SAL-IPYNB-OBL-8AD14BB7AFB32F2E
-  - SAL-IPYNB-OBL-B2FA0BFF8CA07D78
-  - SAL-IPYNB-OBL-B3EFD046C72D3E4B
-  - SAL-IPYNB-OBL-BBE5B3445AD56F9C
-  - SAL-IPYNB-OBL-CDB7DEE07F2275F7
-  - SAL-IPYNB-OBL-E561BFC0FADBA29D
-  - SAL-IPYNB-OBL-EAD1D09BDE25610F
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -741,7 +632,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: IPYNB-PARSE-001
-  format_id: ipynb
   stable_name: Lossless JSON document parsing
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -770,28 +660,6 @@ capabilities:
   - SAL-IPYNB-00017
   - SAL-IPYNB-00018
   - SAL-IPYNB-00019
-  normative_obligation_ids:
-  - SAL-IPYNB-OBL-029B1CD925618F17
-  - SAL-IPYNB-OBL-06EFB1D8AC058AC6
-  - SAL-IPYNB-OBL-121BE1F7FB462D30
-  - SAL-IPYNB-OBL-14E67D7A8E9A1AFE
-  - SAL-IPYNB-OBL-27E9715B97C8FD8B
-  - SAL-IPYNB-OBL-2B44543CA510ED94
-  - SAL-IPYNB-OBL-3AE0DC2692EF0AD9
-  - SAL-IPYNB-OBL-6DCE21F7DD6D971B
-  - SAL-IPYNB-OBL-6EA457DD191446C5
-  - SAL-IPYNB-OBL-793EE40165C8DB16
-  - SAL-IPYNB-OBL-9A6A2B857F357379
-  - SAL-IPYNB-OBL-A87B92BEB23E3B35
-  - SAL-IPYNB-OBL-AA72252FB6D0AA7C
-  - SAL-IPYNB-OBL-AAB3BBF81F346B07
-  - SAL-IPYNB-OBL-AF1F9CEECF5D7E42
-  - SAL-IPYNB-OBL-BCE9E0CCCCC2236B
-  - SAL-IPYNB-OBL-BE024415D521227D
-  - SAL-IPYNB-OBL-CF73A081DA5F99EA
-  - SAL-IPYNB-OBL-D3F0C114980A469D
-  - SAL-IPYNB-OBL-FD198DA5CD4E92A6
-  - SAL-IPYNB-OBL-FDC73ED8FA39A31E
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -841,7 +709,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: IPYNB-PRESERVE-001
-  format_id: ipynb
   stable_name: Baseline preservation duties
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -853,11 +720,6 @@ capabilities:
   - POL-SLC-PRESERVE-02
   - POL-SLC-PRESERVE-03
   - POL-SLC-PRESERVE-04
-  normative_obligation_ids:
-  - SAL-IPYNB-OBL-6401915AE1FC1ECF
-  - SAL-IPYNB-OBL-6D98E9BE6A406DC3
-  - SAL-IPYNB-OBL-733D902E103E53BD
-  - SAL-IPYNB-OBL-99A77B35A2B0E5E8
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -901,7 +763,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: IPYNB-SANITIZE-001
-  format_id: ipynb
   stable_name: Active-content sanitization
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -911,9 +772,6 @@ capabilities:
   authority_fact_ids:
   - POL-EXD-SANITIZE-01
   - SAL-IPYNB-00011
-  normative_obligation_ids:
-  - SAL-IPYNB-OBL-499CD4389B386A40
-  - SAL-IPYNB-OBL-F581800E69395375
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -954,7 +812,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: IPYNB-SEC-001
-  format_id: ipynb
   stable_name: Baseline security posture
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -967,12 +824,6 @@ capabilities:
   - POL-SLC-SEC-03
   - POL-SLC-SEC-04
   - POL-SLC-SEC-05
-  normative_obligation_ids:
-  - SAL-IPYNB-OBL-14DF9ED57CF9FC2E
-  - SAL-IPYNB-OBL-14E091F2690EE701
-  - SAL-IPYNB-OBL-9544ABFA3D62EC79
-  - SAL-IPYNB-OBL-C5EFBC1F7327CCE7
-  - SAL-IPYNB-OBL-DB823E1426D979E1
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -1025,7 +876,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: IPYNB-TRUST-001
-  format_id: ipynb
   stable_name: Trust and signature integration
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -1035,9 +885,6 @@ capabilities:
   authority_fact_ids:
   - POL-EXD-TRUST-01
   - RF-NB-00004
-  normative_obligation_ids:
-  - SAL-IPYNB-OBL-80272AC687E3FBED
-  - SAL-IPYNB-OBL-D9ECFCF32654F42A
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -1079,7 +926,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: IPYNB-UPGRADE-001
-  format_id: ipynb
   stable_name: Version conversion framework
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -1094,14 +940,6 @@ capabilities:
   - SAL-IPYNB-00014
   - SAL-IPYNB-00016
   - SAL-IPYNB-00017
-  normative_obligation_ids:
-  - SAL-IPYNB-OBL-2011BE4892BBBC37
-  - SAL-IPYNB-OBL-5BB2228FA079F793
-  - SAL-IPYNB-OBL-8B873E4A7F5AB781
-  - SAL-IPYNB-OBL-AC36F06FBB685FE8
-  - SAL-IPYNB-OBL-C1DA361949F015E7
-  - SAL-IPYNB-OBL-C599FB180ACF8D49
-  - SAL-IPYNB-OBL-C98190C29177A3A6
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -1145,7 +983,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: IPYNB-VALIDATE-001
-  format_id: ipynb
   stable_name: Schema and semantic validation
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -1157,11 +994,6 @@ capabilities:
   - SAL-IPYNB-00012
   - SAL-IPYNB-00014
   - SAL-IPYNB-00017
-  normative_obligation_ids:
-  - SAL-IPYNB-OBL-1F8C3D9742EBC830
-  - SAL-IPYNB-OBL-7217D5542A605065
-  - SAL-IPYNB-OBL-7B4D9801EC12E4D6
-  - SAL-IPYNB-OBL-FE413358B1144149
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -1207,7 +1039,6 @@ capabilities:
   - TC-FF6-PROGRAM-CAPABILITIES-001
   release_state: PLANNED
 - capability_id: IPYNB-WRITE-001
-  format_id: ipynb
   stable_name: Deterministic JSON serialization
   classification: STABLE_REQUIRED
   developer_use_cases:
@@ -1216,8 +1047,6 @@ capabilities:
   - nbformat_v4.5
   authority_fact_ids:
   - POL-EXD-WRITE-01
-  normative_obligation_ids:
-  - SAL-IPYNB-OBL-E72B508EFCCD0E0C
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:

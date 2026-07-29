@@ -3,11 +3,11 @@ goal_id: FF6-PRODUCTION-LIBRARIES-001
 goal_status: ACTIVE
 generated_by: codex
 visibility: internal
-controller_state: SNAPSHOT
-transition_sequence: 10
+controller_state: CONTRACT
+transition_sequence: 12
 last_verified_event:
-  event_id: FF6-EVENT-000010
-  event_hash: 3201203fcaefd9473893eae0effce57f15ff3357e884ea45f1e514dd0a19a9f8
+  event_id: FF6-EVENT-000012
+  event_hash: ed5a7fc4be94f8010243ec668fef46901309251d58c582513aeaff62c8adba1f
 event_journal: plans/strategic/ff6/events.jsonl
 baseline_commit: e4f8f5f086b5e627c07c2ef2d940eda2601a22a8
 digest_policy:
@@ -30,6 +30,7 @@ handover_checkpoint:
 active_task:
   task_id: TC-FF6-PROGRAM-CAPABILITIES-001
   state: NEEDS_REPAIR
+  completed_subtask_id: TC-FF6-CAPABILITY-COMPILER-001
 next_task:
   task_id: TC-FF6-PROGRAM-CAPABILITIES-001
   state: NEEDS_REPAIR
@@ -46,10 +47,10 @@ promotion:
   safetensors: UNASSESSED
   ubl: UNASSESSED
 capability_compilation:
-  assessment_status: NEEDS_REPAIR
+  assessment_status: NEEDS_PROFILE_OR_SURFACE_REPAIR
   total_capabilities: 89
-  total_obligations: 128
-  canonical_compiler_minimum_obligations:
+  total_obligations: 636
+  canonical_obligations:
     ipynb: 105
     ora: 32
     nrrd: 94
@@ -57,19 +58,26 @@ capability_compilation:
     safetensors: 86
     ubl: 194
     total: 636
-  canonical_obligation_id_overlap: 0
-  stable: 81
+  canonical_obligation_id_overlap: 636
+  stable: 80
   optional_adapter: 4
   preview: 4
-  excluded: 0
-  submitted_integrity_claim: ALL_PASSED
-  independent_audit: FAILED_INCOMPLETE_UNIVERSE
-  submitted_aggregate_output_sha256: 6650a594736486224438f660d5bea06ec104d288e767b245b6aa103250929ba2
+  excluded: 1
+  compiler_subtask: PASS
+  manifest_aggregate_sha256: 26cbe9d21cedafe70653bfaa8134ffa4e481080278e954546cf9710c97a5b00a
+  three_run_digest: 018c26be67ea91fe86aeb65374365b5e917eb8c0058235f999d59909bfd08943
+  authority_artifacts:
+    match: 0
+    missing: 11
+    undeclared: 4
+  remaining_blocks:
+    - FF6-GAP-013
+    - FF6-GAP-014
 current_gap_summary:
-  critical: 2
-  high: 10
+  critical: 1
+  high: 9
   medium: 3
-  total: 15
+  total: 13
   source_packages_present: 5
   source_packages_absent: 1
   product_contracts_draft: 6

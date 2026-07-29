@@ -5134,6 +5134,47 @@ skills:
   test_paths:
   - tests/tools/test_stash_reconciler.py
   advisory_only: false
+- command: /compile-production-capability-universe
+  command_file: .claude/commands/compile-production-capability-universe.md
+  created_at: '2026-07-29'
+  created_by: TC-FF6-CAPABILITY-COMPILER-001
+  idempotency: idempotent
+  implementation_paths:
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - schemas/ff6/capability-universe.schema.json
+  mandatory_validations:
+  - canonical_obligation_identity
+  - complete_obligation_ownership
+  - exact_release_classification
+  - complete_input_digest_closure
+  - three_run_byte_determinism
+  - check_mode_no_writes
+  - no_product_source_mutation
+  output_paths:
+  - plans/strategic/ff6/capabilities/
+  - plans/strategic/ff6/obligations/
+  - plans/strategic/ff6/capability-coverage.yaml
+  - plans/strategic/ff6/capability-manifest.json
+  product_track: format_contract
+  purpose: >-
+    Deterministically compile authority-backed production capability and
+    normative-obligation inventories from canonical format contracts, SAL
+    facts, release policy, and enrichment records.
+  required_handoff_fields:
+  - format_ids
+  - policy_path
+  - enrichment_dir
+  - output_dir
+  skill_id: compile-production-capability-universe
+  spec_qname_required: false
+  status: active
+  test_paths:
+  - tests/production_program/test_capability_universe.py
+  risk_level: HIGH
+  advisory_only: false
 sprint: FORMAT-FACTORY-R98-AUTONOMOUS-LOOP-TRUST-LAYER-ITERATION-SCALING-ACCELERATION-POC-MEGA-TRAIN-001
 version: '2.0'
 visibility: generated

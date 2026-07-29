@@ -6,10 +6,10 @@ generated_by: claude
 last_reconciled_by: codex
 
 gap_summary:
-  critical: 2
-  high: 10
+  critical: 1
+  high: 9
   medium: 3
-  total: 15
+  total: 13
 
 gaps:
 
@@ -21,11 +21,11 @@ gaps:
     description: >-
       No source package, product tests, sample corpus, oracle package,
       or install proof exists for OpenRaster. All 10 capabilities and
-      7 obligations are entirely unimplemented.
+      32 currently compiled canonical obligations are entirely unimplemented.
     source_finding: FF6-TRUTH-001
     blocks:
       - All 10 ORA capabilities (ORA-CODEC-001 through ORA-WRITE-001)
-      - All 7 ORA obligations (OBL-ORA-001 through OBL-ORA-007)
+      - All 32 current SAL-ORA-OBL-* obligations
     authority_concern: >-
       ORA authority_status is NEEDS_AUTHORITY (confidence: low).
       The OpenRaster specification 0.0.3 is informal with no official
@@ -141,7 +141,7 @@ gaps:
     title: Zero production certifications across all 6 formats
     description: >-
       No format has any certification milestone. All 89 capabilities
-      have release_state PLANNED. All 128 obligations have
+      have release_state PLANNED. All 636 canonical obligations have
       verification_status UNVERIFIED. No product is promoted.
     blocks:
       - Production release gate for all 6 formats
@@ -161,7 +161,7 @@ gaps:
       program. Contract authority_status is NEEDS_AUTHORITY.
     blocks:
       - Obligation assignment confidence for ORA
-      - 7 ORA obligations may change when authority is established
+      - 32 current ORA obligations may change when authority is established
     resolution: >-
       Identify and pin authoritative sources. If no formal spec
       exists, document the informal authority chain and confidence
@@ -207,51 +207,25 @@ gaps:
       state, eliminating branch-bound identity and wrong-task
       selection.
 
-  - gap_id: FF6-GAP-012
-    severity: critical
-    format: all
-    category: obligation_universe_incomplete
-    title: Submitted obligation inventory omits the canonical obligation universe
-    description: >-
-      The submitted inventory contains 128 one-fact-oriented OBL-* records.
-      The repository's canonical product-contract compiler deterministically
-      produces 636 obligations from the same six contracts: IPYNB 105,
-      OpenRaster 32, NRRD 94, XLIFF 125, SafeTensors 86, and UBL 194.
-      None of the submitted IDs overlap the canonical stable IDs.
-    source_event: FF6-EVENT-000009
-    blocks:
-      - Closure of TC-FF6-PROGRAM-CAPABILITIES-001
-      - TC-FF6-PROGRAM-ARCHITECTURE-001
-      - All implementation taskcard generation
-    resolution: >-
-      Generate the inventory from tools.format_contract.product_contract,
-      retain every canonical obligation and provenance edge, reconcile all
-      capabilities, and reject any missing or parallel identity family.
-
   - gap_id: FF6-GAP-013
     severity: high
-    format:
-      - ipynb
-      - ora
-      - safetensors
-    category: scope_and_classification_contradiction
-    title: Capability classifications and surfaces contradict locked mission scope
+    format: ora
+    category: profile_and_surface_incompleteness
+    title: OpenRaster capability surface and profile contract remain incomplete
     description: >-
-      Submitted classification names differ from the locked release
-      classifications. IPYNB includes notebook execution despite the explicit
-      no-execution boundary; SafeTensors framework adapters are not isolated as
-      optional adapters; OpenRaster is represented as a generic archive/codec
-      and omits required image, layer-tree, mask, compositing, rendering, and
-      0.0.3/0.0.4/0.0.5 profile behavior.
+      The deterministic compiler now enforces the locked release vocabulary,
+      excludes IPYNB execution, and isolates SafeTensors framework adapters.
+      OpenRaster remains represented primarily through generic archive/codec
+      capabilities and does not yet account completely for image, layer-tree,
+      mask, compositing, rendering, and distinct 0.0.3/0.0.4/0.0.5 behavior.
     source_event: FF6-EVENT-000009
     blocks:
-      - Capability classification acceptance
-      - Public API and package architecture task generation
+      - OpenRaster capability acceptance
+      - OpenRaster public API and package architecture task generation
     resolution: >-
-      Reconcile every capability with the locked plan, primary authority, and
-      user-visible disposition; use only STABLE_REQUIRED,
-      OPTIONAL_ADAPTER_REQUIRED, PREVIEW_ISOLATED, or
-      EXCLUDED_WITH_AUTHORITY.
+      Repair the OpenRaster authority/SAL/contract chain, add explicit
+      format-specific capabilities and profile applicability, then recompile
+      without changing already-correct identities for the other five formats.
 
   - gap_id: FF6-GAP-014
     severity: high
@@ -274,22 +248,23 @@ gaps:
       manifest-bound location allowed by redistribution policy, and verify all
       declared SHA-256 values from a clean checkout.
 
+resolved_gaps:
+  - gap_id: FF6-GAP-012
+    resolved_by: TC-FF6-CAPABILITY-COMPILER-001
+    evidence:
+      canonical_capabilities: 89
+      canonical_obligations: 636
+      manifest_aggregate_sha256: 26cbe9d21cedafe70653bfaa8134ffa4e481080278e954546cf9710c97a5b00a
+    disposition: >-
+      Replaced the parallel 128-record OBL-* projection with the complete
+      canonical SAL-<FORMAT>-OBL-* universe and exact single ownership.
+
   - gap_id: FF6-GAP-015
-    severity: high
-    format: all
-    category: deterministic_compilation_proof
-    title: Three-run compilation and aggregate digest proof is absent
-    description: >-
-      The submitted close provides an aggregate hash without a documented input
-      order or reproducible command. It has no execution receipt and no three
-      clean byte-identical compilations. The taskcard and task index also
-      remained READY while the controller claimed COMPLETE.
-    source_event: FF6-EVENT-000009
-    blocks:
-      - Determinism acceptance criterion
-      - Controller successor selection
-    resolution: >-
-      Bind an approved deterministic compiler command to exact inputs, run it
-      three times in clean isolated directories, compare every output byte and
-      aggregate digest, validate the event chain, then reconcile the taskcard,
-      index, controller, and successor atomically.
+    resolved_by: TC-FF6-CAPABILITY-COMPILER-001
+    evidence:
+      three_run_digest: 018c26be67ea91fe86aeb65374365b5e917eb8c0058235f999d59909bfd08943
+      check_mode: PASS
+      input_category_invalidation_tests: 10
+    disposition: >-
+      Registered a deterministic compiler, bound its full input closure,
+      validated all generated schemas, and proved three byte-identical runs.

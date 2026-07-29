@@ -1,0 +1,114 @@
+schema: ff6/capability-policy@1
+goal_id: FF6-PRODUCTION-LIBRARIES-001
+generated_by: codex
+visibility: internal
+canonical_plan: plans/strategic/autonomous-six-python-production-execution-plan.md
+classifications:
+  - STABLE_REQUIRED
+  - OPTIONAL_ADAPTER_REQUIRED
+  - PREVIEW_ISOLATED
+  - EXCLUDED_WITH_AUTHORITY
+classification_descriptions:
+  STABLE_REQUIRED: Implemented and certified before the stable 1.0 release.
+  OPTIONAL_ADAPTER_REQUIRED: Implemented and certified behind an isolated install extra.
+  PREVIEW_ISOLATED: Explicit preview API excluded from stable compatibility promises.
+  EXCLUDED_WITH_AUTHORITY: Outside the selected product profile with authority and user disposition.
+formats:
+  ipynb:
+    target_profiles:
+      - nbformat_v4.0
+      - nbformat_v4.1
+      - nbformat_v4.2
+      - nbformat_v4.3
+      - nbformat_v4.4
+      - nbformat_v4.5
+    classification_locks:
+      IPYNB-EXEC-001: EXCLUDED_WITH_AUTHORITY
+      IPYNB-EXPORT-001: OPTIONAL_ADAPTER_REQUIRED
+      IPYNB-MERGE-001: PREVIEW_ISOLATED
+    exclusions:
+      IPYNB-EXEC-001:
+        authority_basis: >-
+          The nbformat authority defines stored code, outputs, execution counts,
+          kernelspec, and language metadata but no execution protocol. The
+          mission's security boundary explicitly prohibits notebook execution.
+        authority_reference_ids:
+          - SRC-NB-002
+          - SAL-IPYNB-00008
+          - SAL-IPYNB-00010
+        user_disposition: >-
+          Use a separately isolated and audited notebook execution service. The
+          format-factory-ipynb distribution never executes code.
+    known_surface_gaps:
+      - gap_id: FF6-IPYNB-PROFILE-001
+        description: >-
+          The authored contract names 4.5 as its target and the submitted
+          enrichments claim only 4.5; explicit 4.0-4.4 per-capability coverage
+          remains to be compiled from pinned official schemas.
+  ora:
+    target_profiles:
+      - openraster_0.0.3
+      - openraster_0.0.4
+      - openraster_0.0.5
+    classification_locks: {}
+    exclusions: {}
+    known_surface_gaps:
+      - gap_id: FF6-ORA-SURFACE-001
+        description: >-
+          The current archive-family contract is generic and omits explicit
+          image, stack, group, layer, mask, thumbnail, merged-image,
+          compositing, rendering, and editing/viewing-baseline capabilities.
+      - gap_id: FF6-ORA-PROFILE-001
+        description: >-
+          The current contract metadata names only the informal 0.0.3 profile;
+          0.0.4 and 0.0.5 capability deltas are not yet compiled.
+  nrrd:
+    target_profiles:
+      - nrrd0001
+      - nrrd0002
+      - nrrd0003
+      - nrrd0004
+      - nrrd0005
+    classification_locks:
+      NRRD-CONVERT-001: PREVIEW_ISOLATED
+    exclusions: {}
+    known_surface_gaps:
+      - gap_id: FF6-NRRD-PROFILE-001
+        description: >-
+          The contract is compiled around NRRD0005; explicit obligation-to-
+          version applicability for NRRD0001-NRRD0004 remains to be projected.
+  xliff:
+    target_profiles:
+      - xliff_2.0
+      - xliff_2.1
+    preview_profiles:
+      - xliff_2.2_preview
+    classification_locks:
+      XLIFF-MERGE-001: OPTIONAL_ADAPTER_REQUIRED
+      XLIFF-QA-001: OPTIONAL_ADAPTER_REQUIRED
+    exclusions: {}
+    known_surface_gaps:
+      - gap_id: FF6-XLIFF-PROFILE-001
+        description: >-
+          Submitted enrichments claim only XLIFF 2.1. Per-capability 2.0
+          applicability and isolated 2.2 preview behavior remain uncompiled.
+  safetensors:
+    target_profiles:
+      - safetensors_v0.8.0
+    classification_locks:
+      SAFETENSORS-ADAPTER-001: OPTIONAL_ADAPTER_REQUIRED
+    exclusions: {}
+    known_surface_gaps: []
+  ubl:
+    target_profiles:
+      - ubl_2.3
+    classification_locks:
+      UBL-CALC-001: PREVIEW_ISOLATED
+      UBL-UPGRADE-001: PREVIEW_ISOLATED
+    exclusions: {}
+    known_surface_gaps:
+      - gap_id: FF6-UBL-TYPING-001
+        description: >-
+          The capability contract does not by itself prove distinct generated
+          typed content models, attributes, namespaces, and cardinalities for
+          every one of the 91 document roots.

@@ -120,3 +120,30 @@ classification/scope contradictions, missing repository-local authority bytes,
 and absent three-run deterministic proof. Architecture remains locked. Repair
 must preserve useful descriptions, replace the incomplete identity/projection,
 and satisfy every original acceptance criterion before a new close event.
+
+## Repair checkpoint — deterministic compiler
+
+`TC-FF6-CAPABILITY-COMPILER-001` replaces the incomplete hand-written
+projection with a registered, schema-validated compiler:
+
+- 89 canonical capability identities are retained.
+- 636 canonical `SAL-<FORMAT>-OBL-*` obligations are emitted and owned once:
+  IPYNB 105, OpenRaster 32, NRRD 94, XLIFF 125, SafeTensors 86, UBL 194.
+- Locked classification results are 80 stable, 4 optional-adapter, 4 preview,
+  and 1 authority-backed exclusion.
+- IPYNB execution is excluded; SafeTensors framework adapters are optional.
+- Every contract, SAL store, SAL evidence store, policy, family pack, research
+  record, enrichment, compiler module, product-contract runtime, and schema is
+  bound into `capability-manifest.json`.
+- Expected and observed authority-artifact digests are explicit. All six
+  formats remain authority-blocked because 11 expected artifacts are missing
+  and 4 source declarations lack reproducible local paths/digests.
+- Three clean compiles are byte-identical. Manifest aggregate:
+  `26cbe9d21cedafe70653bfaa8134ffa4e481080278e954546cf9710c97a5b00a`;
+  three-run digest:
+  `018c26be67ea91fe86aeb65374365b5e917eb8c0058235f999d59909bfd08943`.
+
+This closes `FF6-GAP-012` and `FF6-GAP-015`, but not the parent task.
+`FF6-GAP-013` remains open for OpenRaster profile/surface depth and
+`FF6-GAP-014` remains open for authority-artifact closure. Architecture and
+product promotion therefore remain locked.

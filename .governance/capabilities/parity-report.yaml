@@ -10,29 +10,22 @@ checks:
   priority: P1
   verdict: PASS
 - check_id: command_in_registry
-  failure_count: 6
-  failures:
-  - 'capability-compiler: has command_file but missing from command-registry.yaml'
-  - 'certification-ci-gate: has command_file but missing from command-registry.yaml'
-  - 'certification-cross-language-parity: has command_file but missing from command-registry.yaml'
-  - 'certification-mutation-tester: has command_file but missing from command-registry.yaml'
-  - 'certification-performance-benchmark: has command_file but missing from command-registry.yaml'
-  - 'pre-sprint-governance-hook: has command_file but missing from command-registry.yaml'
+  failure_count: 0
+  failures: []
   priority: P2
-  verdict: WARN
+  verdict: PASS
 - check_id: routing_coverage
   failure_count: 0
   failures: []
   priority: P2
   verdict: PASS
-generated_at: '2026-07-14T11:48:48+00:00'
+generated_at: '2026-07-29T05:28:37+00:00'
 generated_by: validate_parity.py
-overall_verdict: WARN
+overall_verdict: PASS
 parity_counts:
-  FULL_PARITY: 145
-  PARTIAL: 6
+  FULL_PARITY: 197
 source_versions:
   command_registry: .claude\commands\command-registry.yaml
   routing_registry: .supervisor\capability-routing-registry.yaml
   skill_registry: r98-governed-skills-expanded
-total_capabilities: 151
+total_capabilities: 197
