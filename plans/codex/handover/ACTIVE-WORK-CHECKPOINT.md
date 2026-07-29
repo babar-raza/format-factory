@@ -252,10 +252,11 @@ Only digest-bound executed behavior can move those states.
 
 ## Outgoing self-challenge
 
-The event-22 executor recorded the required governance challenge at the shift
+The event-24 executor recorded the required governance challenge at the shift
 boundary:
 
-1. Required XLF-01 through XLF-03 and XLF-04-BATCH-001 steps performed;
+1. Required XLF-01 through XLF-03 and XLF-04-BATCH-001/BATCH-002 steps
+   performed;
    remaining XLF-04 through XLF-08 work explicit and unclaimed: yes.
 2. Required evidence for the event-24 batch boundary present: yes.
 3. Evidence sufficient for the source-surface matrix, without claiming

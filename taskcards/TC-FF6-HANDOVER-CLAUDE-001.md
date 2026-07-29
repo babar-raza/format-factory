@@ -154,15 +154,15 @@ controller or product task.
   taskcard, source, test, authority, contract, controller, promotion, gate, or
   release state changed.
 
-## Event-23 XLF-04 batch-001 checkpoint refresh
+## Event-24 XLF-04 batch-002 checkpoint refresh
 
 The packet was rebuilt from immutable implementation commit
 `78660ae1a310ab06cf00d977bbc26fb65914f1c9` and native event
 `FF6-EVENT-000024` /
 `10d96a6729d250fecb89f5f082682f583b5b8053fd620702dcd837dfaf541434`.
 
-- `XLF-01`, `XLF-02`, `XLF-03`, and `XLF-04-BATCH-001` are complete;
-  `XLF-04` remains first unmet.
+- `XLF-01`, `XLF-02`, `XLF-03`, `XLF-04-BATCH-001`, and
+  `XLF-04-BATCH-002` are complete; `XLF-04` remains first unmet.
 - XLF-03 now includes deterministic default anchors, CLI/check mode, declared
   archive/XML/matrix negative controls, and a real pinned-authority matrix.
 - The matrix has 36 unique source-surface anchors, 293/420 sections, 8/8
@@ -184,3 +184,22 @@ The packet was rebuilt from immutable implementation commit
 - The exact continuation is `XLF-04-BATCH-003`: RED tests for source-located
   semantic roundtrip/canonical output and XML security/resource limits plus an
   explicit expected-ID denominator after replaying event 24 and its bound evidence.
+
+## Event-24 provider-shift truth refresh
+
+The provider-neutral packet was re-audited from clean GitLab `origin/main` at
+`df727a916ffac7ff028cd087adea7f1055652b8d`.
+
+- All 50 LF-normalized manifest hashes, 24 native FF6 event links/hashes, and
+  packet-internal links were recomputed successfully before this refresh.
+- Two derived machine records and this taskcard still carried isolated
+  batch-001-only wording even though the controller, journal, active
+  checkpoint, and manifest correctly recorded batch 002. Those stale
+  statements are corrected without changing the native event head, task
+  state, product source, proof, certification, gate, or promotion.
+- Coordination completion is now modeled as a resume-time off-repo
+  precondition, not a durable boolean that this tracked packet could continue
+  to prove after commit. Provider identities, tokens, and leases are never
+  transferred.
+- The exact continuation remains `XLF-04-BATCH-003`; the refresh is navigation
+  and consistency repair only.

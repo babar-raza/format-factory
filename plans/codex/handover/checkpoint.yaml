@@ -301,8 +301,15 @@ shift_acceptance:
   native_event_and_controller_agree: true
   first_unmet_criterion_recorded: true
   validation_boundary_recorded: true
-  outgoing_coordination_identity_complete: true
-  incoming_replays_before_mutation: true
+  outgoing_coordination_identity_completion: >-
+    REQUIRED_AFTER_REMOTE_VERIFICATION_AND_NOT_DURABLE_PACKET_STATE
+  incoming_replay_before_mutation: REQUIRED
+  incoming_new_coordination_registration: REQUIRED
+  provider_token_or_lease_transfer: PROHIBITED
+  simultaneous_writers_for_active_task: PROHIBITED
+  live_coordination_authority: >-
+    Query the off-repo coordination CLI at resume time. This tracked packet
+    cannot prove that a provider identity remains complete after its commit.
   chat_only_state_allowed: false
 
 nrrd_contract_checkpoint:
@@ -350,7 +357,8 @@ xliff_starting_defects:
     prose_sha256: fdd293f4344920dfde643c578caca94da80261dc74f75baba7215da6e6d10bc1
   preview: xliff_2.2_preview_isolated_only
   excluded_compatibility_model: xliff_1.2
-  completed_steps: [XLF-01, XLF-02, XLF-03, XLF-04-BATCH-001]
+  completed_steps:
+    [XLF-01, XLF-02, XLF-03, XLF-04-BATCH-001, XLF-04-BATCH-002]
   first_unmet_step: XLF-04
   shift_microstate: RESUMABLE
   authority_inventory: reports/ff6/xliff-authority-member-inventory.yaml

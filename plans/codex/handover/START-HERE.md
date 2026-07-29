@@ -50,6 +50,13 @@ executor must fetch `origin/main`, require the source commit to be an ancestor
 of the fetched packet commit, and validate packet hashes. Never require the
 packet to contain its own final commit hash.
 
+Coordination ownership is intentionally not frozen into this packet. It lives
+in the off-repo coordination database and can change after these tracked bytes
+are committed. The incoming executor must query it live, register a new
+identity, and acquire its own leases. A tracked `RESUMABLE` label proves the
+Git/journal/task/proof boundary; it never transfers or vouches for a live
+provider token.
+
 ## Read in this order
 
 1. [`AGENTS.md`](../../../AGENTS.md)

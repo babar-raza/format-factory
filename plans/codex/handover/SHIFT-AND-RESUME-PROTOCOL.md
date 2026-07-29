@@ -118,6 +118,35 @@ immutable implementation commit, input/output digests, exact next test, and
 validation outcomes. Broken, RED-only, or self-contradictory source is not a
 checkpoint and must not be pushed to satisfy a token boundary.
 
+### Handover transaction boundary
+
+The transfer is a two-plane transaction:
+
+| Plane | Durable commit content | Resume-time action |
+|---|---|---|
+| Product/control | implementation commit, native event, controller/task projections, proof digests, packet manifest | fetch and independently replay from GitLab `origin/main` |
+| Coordination | provider identity, lease ownership, write journal, conflict state | query live; outgoing provider completes its own identity; incoming provider registers and claims anew |
+
+The tracked packet must never claim that a coordination identity will remain
+complete indefinitely. It records the requirement and the last verified
+product/control boundary. The coordination CLI decides current ownership at
+resume time. This prevents a packet commit from becoming stale merely because
+a later provider registered, while still preventing simultaneous writers.
+
+A shift is accepted only when all of the following are true:
+
+1. GitLab `origin/main` contains the coherent implementation commit and its
+   descendant checkpoint commit.
+2. The native event identifies that implementation commit, exact output
+   digests, validation boundary, first unmet criterion, and next action.
+3. The derived packet hashes and links pass from the fetched bytes.
+4. No required state exists only in chat, provider memory, an ignored
+   worktree, or an unpushed commit.
+5. The outgoing provider has completed its own coordination identity after
+   remote verification.
+6. The incoming provider independently replays the checkpoint and obtains new
+   ownership before its first write.
+
 ## Token-budget and planned-shift protocol
 
 The executor monitors its practical context/token boundary as an operational
