@@ -1,0 +1,82 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "ingest-spec-sal-xliff-xlf03-001",
+  "skill_id": "ingest-spec-sal",
+  "mode": "live",
+  "timestamp": "2026-07-29T13:35:00Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "task_step": "XLF-03",
+    "spec_source_uri": "Pinned local OASIS XLIFF 2.0 and 2.1 Standard ZIP authority packages",
+    "spec_version": "XLIFF 2.0 and XLIFF 2.1",
+    "spec_body": "OASIS XLIFF Technical Committee",
+    "target_fact_count_min": 1,
+    "authority_2_0": ".local/format-contracts/acquired/xliff/src-xlf-001.bin",
+    "authority_2_0_sha256": "aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055",
+    "authority_2_1": ".local/format-contracts/acquired/xliff/src-xlf-002.bin",
+    "authority_2_1_sha256": "73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751",
+    "execution_manifest_id": "sfx-8a3178064dd33ee2",
+    "checkpoint_scope": "Tested implementation slice only; XLF-03 remains incomplete."
+  },
+  "allowed_files": [
+    "tools/spec/extract_sal_facts.py",
+    "tests/tools/test_extract_sal_facts.py",
+    "reports/ff6/xliff-normative-delta-matrix.yaml",
+    ".local/sal-output/xliff-normative-delta-matrix.yaml",
+    ".local/transcripts/ingest-spec-sal-xliff-xlf03-001.json",
+    "reports/skills-rff6/skill-transcripts/ingest-spec-sal-xliff-xlf03-001.json"
+  ],
+  "actual_files_changed": [
+    "tools/spec/extract_sal_facts.py",
+    "tests/tools/test_extract_sal_facts.py"
+  ],
+  "tests_run": [
+    "RED test_registered_extractor_implementation_exists: failed because the registered tools/spec/extract_sal_facts.py implementation did not exist",
+    "GREEN test_registered_extractor_implementation_exists: passed after creating the registered implementation path",
+    "RED test_xliff_matrix_distinguishes_profile_modules_and_section_delta: failed because compile_xliff_matrix was absent",
+    "GREEN test_xliff_matrix_distinguishes_profile_modules_and_section_delta: passed after implementing digest-bound archive, profile, module, section-delta, and normative-row compilation",
+    "RED test_matrix_write_and_check_are_byte_deterministic: failed because write_matrix was absent",
+    "GREEN test_matrix_write_and_check_are_byte_deterministic: passed after implementing canonical bytes, atomic write, and fail-closed check mode",
+    "python -m pytest tests/tools/test_extract_sal_facts.py -q",
+    "python -m ruff check tools/spec/extract_sal_facts.py tests/tools/test_extract_sal_facts.py",
+    "python -m mypy --strict --explicit-package-bases --ignore-missing-imports tools/spec/extract_sal_facts.py tests/tools/test_extract_sal_facts.py",
+    "python -m py_compile tools/spec/extract_sal_facts.py tests/tools/test_extract_sal_facts.py"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "checkpoint_result": "WIP_SLICE_PASS",
+    "xlf_03_complete": false,
+    "xlf_03_first_unmet_work": "Add the default curated requirement seeds and CLI/check-mode contract under TDD, then run against both real pinned OASIS packages.",
+    "runtime_tests": "3 passed",
+    "ruff": "PASS",
+    "mypy_strict": "PASS",
+    "py_compile": "PASS",
+    "pyright": "UNAVAILABLE_IN_CURRENT_SHELL_NO_CLAIM",
+    "source_sha256": "16466e1e7778259cd284fcf89af61ca902c1b2aac609ccf6b6ebce388590388c",
+    "test_sha256": "93a4e5ce49cc8e2dcd2a513d6a6e598fd966849cfe63a58b7e84d2fcd4fc0c84",
+    "implemented_surface": [
+      "exact authority package SHA-256 verification",
+      "bounded ZIP member, size, compression-ratio, duplicate-name, and path validation",
+      "XML entity-declaration rejection and fail-closed parsing",
+      "XLIFF 2.0 and 2.1 Core and module structural inventories",
+      "XLIFF 2.0 normative Change Tracking versus XLIFF 2.1 informative Change Tracking classification",
+      "XLIFF 2.1 ITS ownership of the its and itsm schema vocabularies",
+      "DocBook section-level 2.0-to-2.1 delta inventory",
+      "source-located curated normative-row validation",
+      "canonical LF-only YAML bytes, atomic output replacement, and drift check mode"
+    ],
+    "not_implemented_at_checkpoint": [
+      "command-line entry point",
+      "default curated requirement seed inventory",
+      "real authority matrix output",
+      "negative-control test matrix",
+      "XLIFF SAL and capability projection repair",
+      "XLF-03 completion or any later task step"
+    ],
+    "promotion_effect": "none"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}
