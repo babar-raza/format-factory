@@ -64,6 +64,13 @@ class ProfileSource(NamedTuple):
     prose_member: str
 
 
+class PolicySource(NamedTuple):
+    """One Git-tracked production-policy authority."""
+
+    source_id: str
+    path: Path
+
+
 _PROFILE_MODULES: dict[str, dict[str, dict[str, Any]]] = {
     "xliff_2.0": {
         "translation_candidates": {
@@ -235,6 +242,9 @@ _CORE_REQUIREMENT_CLASSES = frozenset(
     }
 )
 _CORE_NORMATIVE_LEVELS = frozenset({"MUST", "SHOULD", "MAY"})
+_CORE_OBLIGATION_BASES = frozenset(
+    {"XLIFF_SPECIFICATION", "PRODUCTION_POLICY"}
+)
 _CORE_OBLIGATION_ID = re.compile(
     r"^SAL-XLIFF-CORE-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$"
 )
@@ -883,12 +893,86 @@ def _prose_paragraph_index(
     return by_section
 
 
+def _default_core_policy_sources() -> list[PolicySource]:
+    """Return the Git-tracked policies that define production-only duties."""
+
+    repository_root = Path(__file__).resolve().parents[2]
+    return [
+        PolicySource(
+            source_id="POLICY-SHARED-LIBRARY-CONTRACT",
+            path=repository_root
+            / "shared"
+            / "format-contracts"
+            / "policy"
+            / "shared-library-contract.yaml",
+        ),
+        PolicySource(
+            source_id="POLICY-XML-LOCALIZATION-FAMILY",
+            path=repository_root
+            / "shared"
+            / "format-contracts"
+            / "policy"
+            / "family-packs"
+            / "xml_localization.yaml",
+        ),
+    ]
+
+
+def _policy_rule_index(source: PolicySource) -> tuple[str, dict[str, str]]:
+    """Load one policy and return its digest plus unique ``id``/``text`` rules."""
+
+    try:
+        data = source.path.read_bytes()
+    except OSError as exc:
+        raise ExtractionError(
+            f"{source.source_id} policy source is unreadable: {source.path}"
+        ) from exc
+    try:
+        document = yaml.safe_load(data)
+    except yaml.YAMLError as exc:
+        raise ExtractionError(
+            f"{source.source_id} policy source is invalid YAML"
+        ) from exc
+    rules: dict[str, str] = {}
+
+    def visit(value: Any) -> None:
+        if isinstance(value, Mapping):
+            rule_id = value.get("id")
+            rule_text = value.get("text")
+            if rule_id is not None and rule_text is not None:
+                normalized_id = str(rule_id)
+                normalized_text = _normalized_text(str(rule_text))
+                if normalized_id in rules:
+                    raise ExtractionError(
+                        f"{source.source_id} has duplicate policy rule "
+                        f"{normalized_id}"
+                    )
+                if not normalized_text:
+                    raise ExtractionError(
+                        f"{source.source_id}:{normalized_id} has empty text"
+                    )
+                rules[normalized_id] = normalized_text
+            for child in value.values():
+                visit(child)
+        elif isinstance(value, Sequence) and not isinstance(
+            value, (str, bytes)
+        ):
+            for child in value:
+                visit(child)
+
+    visit(document)
+    if not rules:
+        raise ExtractionError(f"{source.source_id} contains no policy rules")
+    return _sha256(data), rules
+
+
 def _core_obligation_rows(
     seeds: Iterable[Mapping[str, Any]],
     sources: Mapping[str, ProfileSource],
     archives: Mapping[str, Mapping[str, bytes]],
     *,
     batch_id: str,
+    policy_sources: Sequence[PolicySource] = (),
 ) -> list[dict[str, Any]]:
     """Validate and bind curated Core rules to exact authority paragraphs."""
 
@@ -899,8 +983,17 @@ def _core_obligation_rows(
         )
         for profile, source in sources.items()
     }
+    policy_indexes: dict[str, tuple[PolicySource, str, dict[str, str]]] = {}
+    for source in policy_sources:
+        if source.source_id in policy_indexes:
+            raise ExtractionError(
+                f"duplicate Core policy source_id: {source.source_id}"
+            )
+        digest, rules = _policy_rule_index(source)
+        policy_indexes[source.source_id] = (source, digest, rules)
     required = {
         "obligation_id",
+        "obligation_basis",
         "introduced_in_batch",
         "stable_profiles",
         "owner",
@@ -972,6 +1065,9 @@ def _core_obligation_rows(
         normative_level = str(raw["normative_level"])
         if normative_level not in _CORE_NORMATIVE_LEVELS:
             raise ExtractionError(f"{obligation_id} has invalid normative_level")
+        obligation_basis = str(raw["obligation_basis"])
+        if obligation_basis not in _CORE_OBLIGATION_BASES:
+            raise ExtractionError(f"{obligation_id} has invalid obligation_basis")
 
         normalized_rule = _normalized_text(str(raw["normalized_rule"]))
         if len(normalized_rule) < 25:
@@ -1013,23 +1109,62 @@ def _core_obligation_rows(
             )
         bound_locations: list[dict[str, Any]] = []
         location_profiles: list[str] = []
+        policy_location_count = 0
         for raw_location in locations:
             if not isinstance(raw_location, Mapping):
                 raise ExtractionError(
                     f"{obligation_id} authority location must be a mapping"
+                )
+            location_kind = str(raw_location.get("location_kind", ""))
+            if location_kind == "policy_rule":
+                authority_source_id = str(
+                    raw_location.get("authority_source_id", "")
+                )
+                policy = policy_indexes.get(authority_source_id)
+                if policy is None:
+                    raise ExtractionError(
+                        f"{obligation_id} has unknown policy source "
+                        f"{authority_source_id}"
+                    )
+                policy_source, source_sha256, rules = policy
+                rule_id = str(raw_location.get("rule_id", ""))
+                source_text = rules.get(rule_id)
+                if source_text is None:
+                    raise ExtractionError(
+                        f"{obligation_id} has missing policy rule "
+                        f"{authority_source_id}:{rule_id}"
+                    )
+                bound_locations.append(
+                    {
+                        "authority_source_id": authority_source_id,
+                        "source_sha256": source_sha256,
+                        "location_kind": "policy_rule",
+                        "path": policy_source.path.resolve().relative_to(
+                            Path(__file__).resolve().parents[2]
+                        ).as_posix(),
+                        "rule_id": rule_id,
+                        "source_text_sha256": _sha256(
+                            source_text.encode("utf-8")
+                        ),
+                    }
+                )
+                policy_location_count += 1
+                continue
+            if location_kind != "prose_paragraph":
+                raise ExtractionError(
+                    f"{obligation_id} has unsupported authority location kind"
                 )
             profile = str(raw_location.get("profile", ""))
             if profile not in sources:
                 raise ExtractionError(
                     f"{obligation_id} has unknown authority profile {profile}"
                 )
-            if raw_location.get("location_kind") != "prose_paragraph":
-                raise ExtractionError(
-                    f"{obligation_id} has unsupported authority location kind"
-                )
-            source = sources[profile]
+            profile_source = sources[profile]
             member = str(raw_location.get("member", ""))
-            if member != source.prose_member or member not in archives[profile]:
+            if (
+                member != profile_source.prose_member
+                or member not in archives[profile]
+            ):
                 raise ExtractionError(
                     f"{obligation_id} has invalid prose member for {profile}"
                 )
@@ -1080,8 +1215,8 @@ def _core_obligation_rows(
             bound_locations.append(
                 {
                     "profile": profile,
-                    "authority_source_id": source.source_id,
-                    "source_sha256": source.expected_sha256,
+                    "authority_source_id": profile_source.source_id,
+                    "source_sha256": profile_source.expected_sha256,
                     "location_kind": "prose_paragraph",
                     "member": member,
                     "member_sha256": _sha256(member_bytes),
@@ -1092,18 +1227,35 @@ def _core_obligation_rows(
                 }
             )
             location_profiles.append(profile)
-        if (
-            len(set(location_profiles)) != len(location_profiles)
-            or sorted(location_profiles) != stable_profiles
-        ):
+        if obligation_basis == "XLIFF_SPECIFICATION":
+            if policy_location_count:
+                raise ExtractionError(
+                    f"{obligation_id} specification obligation cannot use "
+                    "production-policy authority"
+                )
+            if (
+                len(set(location_profiles)) != len(location_profiles)
+                or sorted(location_profiles) != stable_profiles
+            ):
+                raise ExtractionError(
+                    f"{obligation_id} authority profiles must exactly match "
+                    "stable_profiles"
+                )
+        elif location_profiles or not policy_location_count:
             raise ExtractionError(
-                f"{obligation_id} authority profiles must exactly match "
-                "stable_profiles"
+                f"{obligation_id} production-policy obligation must use only "
+                "policy-rule authority"
             )
 
         rows.append(
             {
                 "obligation_id": obligation_id,
+                "obligation_basis": obligation_basis,
+                "conformance_effect": (
+                    "STANDARD_CONFORMANCE"
+                    if obligation_basis == "XLIFF_SPECIFICATION"
+                    else "PRODUCTION_PROFILE_ONLY"
+                ),
                 "introduced_in_batch": introduced_in_batch,
                 "stable_profiles": stable_profiles,
                 "owner": owner,
@@ -1112,7 +1264,12 @@ def _core_obligation_rows(
                 "requirement_class": requirement_class,
                 "normative_level": normative_level,
                 "authority_locations": sorted(
-                    bound_locations, key=lambda item: item["profile"]
+                    bound_locations,
+                    key=lambda item: (
+                        str(item.get("profile", "")),
+                        str(item["authority_source_id"]),
+                        str(item.get("rule_id", "")),
+                    ),
                 ),
                 "evidence_requirements": {
                     "positive": positive,
@@ -1125,12 +1282,342 @@ def _core_obligation_rows(
     return sorted(rows, key=lambda item: item["obligation_id"])
 
 
+_EXPECTED_CORE_IDS_BY_CATEGORY: dict[str, tuple[str, ...]] = {
+    "document_structure": (
+        "SAL-XLIFF-CORE-DOCUMENT-ROOT-001",
+        "SAL-XLIFF-CORE-DOCUMENT-VERSION-001",
+        "SAL-XLIFF-CORE-DOCUMENT-NAMESPACE-001",
+        "SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001",
+        "SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001",
+        "SAL-XLIFF-CORE-DOCUMENT-FILE-MINIMUM-001",
+        "SAL-XLIFF-CORE-DOCUMENT-FILE-ORDER-001",
+    ),
+    "hierarchy_cardinality": (
+        "SAL-XLIFF-CORE-HIERARCHY-UNIT-001",
+        "SAL-XLIFF-CORE-HIERARCHY-FILE-CHILDREN-001",
+        "SAL-XLIFF-CORE-HIERARCHY-GROUP-CHILDREN-001",
+        "SAL-XLIFF-CORE-HIERARCHY-UNIT-CHILDREN-001",
+        "SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001",
+        "SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001",
+        "SAL-XLIFF-CORE-HIERARCHY-NOTES-001",
+        "SAL-XLIFF-CORE-HIERARCHY-ORIGINAL-DATA-001",
+        "SAL-XLIFF-CORE-HIERARCHY-SKELETON-001",
+        "SAL-XLIFF-CORE-HIERARCHY-EXTENSION-POINTS-001",
+        "SAL-XLIFF-CORE-HIERARCHY-ORDER-001",
+    ),
+    "identifiers_references_inheritance": (
+        "SAL-XLIFF-CORE-ID-FILE-UNIQUE-001",
+        "SAL-XLIFF-CORE-ID-GROUP-UNIQUE-001",
+        "SAL-XLIFF-CORE-ID-UNIT-UNIQUE-001",
+        "SAL-XLIFF-CORE-ID-SEGMENT-UNIQUE-001",
+        "SAL-XLIFF-CORE-ID-DATA-UNIQUE-001",
+        "SAL-XLIFF-CORE-ID-NOTE-UNIQUE-001",
+        "SAL-XLIFF-CORE-REFERENCE-DATAREF-001",
+        "SAL-XLIFF-CORE-REFERENCE-FRAGMENT-INHERIT-001",
+        "SAL-XLIFF-CORE-REFERENCE-COPYOF-001",
+        "SAL-XLIFF-CORE-REFERENCE-STARTREF-001",
+        "SAL-XLIFF-CORE-REFERENCE-SKELETON-HREF-001",
+        "SAL-XLIFF-CORE-INHERIT-TRANSLATE-001",
+    ),
+    "language_direction_whitespace": (
+        "SAL-XLIFF-CORE-LANGUAGE-SOURCE-001",
+        "SAL-XLIFF-CORE-LANGUAGE-TARGET-001",
+        "SAL-XLIFF-CORE-LANGUAGE-ROOT-SOURCE-001",
+        "SAL-XLIFF-CORE-LANGUAGE-ROOT-TARGET-001",
+        "SAL-XLIFF-CORE-DIRECTION-SOURCE-001",
+        "SAL-XLIFF-CORE-DIRECTION-TARGET-001",
+        "SAL-XLIFF-CORE-WHITESPACE-INHERIT-001",
+        "SAL-XLIFF-CORE-WHITESPACE-PRESERVE-001",
+    ),
+    "inline_code_semantics": (
+        "SAL-XLIFF-CORE-INLINE-SPANNING-001",
+        "SAL-XLIFF-CORE-INLINE-PH-001",
+        "SAL-XLIFF-CORE-INLINE-PC-001",
+        "SAL-XLIFF-CORE-INLINE-SC-001",
+        "SAL-XLIFF-CORE-INLINE-EC-001",
+        "SAL-XLIFF-CORE-INLINE-MRK-001",
+        "SAL-XLIFF-CORE-INLINE-SM-001",
+        "SAL-XLIFF-CORE-INLINE-EM-001",
+        "SAL-XLIFF-CORE-INLINE-PAIRING-001",
+        "SAL-XLIFF-CORE-INLINE-NESTING-001",
+        "SAL-XLIFF-CORE-INLINE-ISOLATION-001",
+        "SAL-XLIFF-CORE-INLINE-ORDER-001",
+        "SAL-XLIFF-CORE-INLINE-DATAREF-001",
+        "SAL-XLIFF-CORE-INLINE-COPYOF-001",
+        "SAL-XLIFF-CORE-INLINE-STARTREF-001",
+        "SAL-XLIFF-CORE-INLINE-CANCOPY-001",
+        "SAL-XLIFF-CORE-INLINE-CANDELETE-001",
+        "SAL-XLIFF-CORE-INLINE-CANREORDER-001",
+        "SAL-XLIFF-CORE-INLINE-OVERLAP-001",
+        "SAL-XLIFF-CORE-INLINE-ORIGINAL-DATA-001",
+    ),
+    "segmentation": (
+        "SAL-XLIFF-CORE-SEGMENT-SPLIT-001",
+        "SAL-XLIFF-CORE-SEGMENT-CANRESEGMENT-INHERIT-001",
+        "SAL-XLIFF-CORE-SEGMENT-JOIN-001",
+        "SAL-XLIFF-CORE-SEGMENT-SPLIT-MAPPING-001",
+        "SAL-XLIFF-CORE-SEGMENT-TARGET-ORDER-001",
+        "SAL-XLIFF-CORE-SEGMENT-INLINE-INTEGRITY-001",
+        "SAL-XLIFF-CORE-SEGMENT-WHITESPACE-001",
+    ),
+    "state": (
+        "SAL-XLIFF-CORE-STATE-SUBSTATE-001",
+        "SAL-XLIFF-CORE-STATE-VALUE-001",
+        "SAL-XLIFF-CORE-STATE-SUBSTATE-VALUE-001",
+        "SAL-XLIFF-CORE-STATE-TARGET-PRESENCE-001",
+        "SAL-XLIFF-CORE-STATE-TRANSITION-001",
+    ),
+    "source_target_correspondence": (
+        "SAL-XLIFF-CORE-SOURCE-TARGET-OPTIONAL-001",
+        "SAL-XLIFF-CORE-TARGET-LANGUAGE-001",
+        "SAL-XLIFF-CORE-TARGET-ORDER-001",
+        "SAL-XLIFF-CORE-SOURCE-TARGET-STRUCTURE-001",
+        "SAL-XLIFF-CORE-SOURCE-TARGET-INLINE-001",
+        "SAL-XLIFF-CORE-SOURCE-REQUIRED-001",
+        "SAL-XLIFF-CORE-TARGET-PRESENCE-001",
+        "SAL-XLIFF-CORE-TARGET-ORDER-CONFLICT-001",
+    ),
+    "agent_processing": (
+        "SAL-XLIFF-CORE-AGENT-INLINE-001",
+        "SAL-XLIFF-CORE-AGENT-EXTRACTOR-001",
+        "SAL-XLIFF-CORE-AGENT-WRITER-001",
+        "SAL-XLIFF-CORE-AGENT-MODIFIER-001",
+        "SAL-XLIFF-CORE-AGENT-MERGER-001",
+        "SAL-XLIFF-CORE-AGENT-VALIDATOR-001",
+        "SAL-XLIFF-CORE-AGENT-LOSS-REPORT-001",
+    ),
+    "extension_preservation": (
+        "SAL-XLIFF-CORE-EXTENSION-PRESERVE-001",
+        "SAL-XLIFF-CORE-EXTENSION-NAMESPACE-001",
+        "SAL-XLIFF-CORE-EXTENSION-CORE-CONFLICT-001",
+        "SAL-XLIFF-CORE-EXTENSION-MERGER-RELIANCE-001",
+        "SAL-XLIFF-CORE-EXTENSION-UNKNOWN-PRESERVE-001",
+        "SAL-XLIFF-CORE-EXTENSION-DOWNGRADE-LOSS-001",
+    ),
+    "xml_security_resource_limits": (
+        "SAL-XLIFF-CORE-SECURITY-URI-RISK-001",
+        "SAL-XLIFF-CORE-SECURITY-EXTERNAL-RESOLUTION-001",
+        "SAL-XLIFF-CORE-SECURITY-RESOURCE-LIMITS-001",
+        "SAL-XLIFF-CORE-SECURITY-XML-ENTITY-001",
+        "SAL-XLIFF-CORE-SECURITY-NESTING-LIMIT-001",
+        "SAL-XLIFF-CORE-SECURITY-ELEMENT-LIMIT-001",
+        "SAL-XLIFF-CORE-SECURITY-TEXT-LIMIT-001",
+        "SAL-XLIFF-CORE-SECURITY-PATH-TRAVERSAL-001",
+    ),
+    "semantic_roundtrip_canonical_output": (
+        "SAL-XLIFF-CORE-ROUNDTRIP-STRUCTURE-001",
+        "SAL-XLIFF-CORE-ROUNDTRIP-SEMANTIC-001",
+        "SAL-XLIFF-CORE-WRITE-DETERMINISTIC-001",
+        "SAL-XLIFF-CORE-WRITE-LOSSLESS-NORMALIZED-001",
+        "SAL-XLIFF-CORE-WRITE-SCHEMA-ORDER-001",
+        "SAL-XLIFF-CORE-WRITE-NAMESPACE-PREFIX-001",
+    ),
+}
+
+_PRODUCTION_POLICY_EXPECTED_IDS = frozenset(
+    {
+        "SAL-XLIFF-CORE-AGENT-LOSS-REPORT-001",
+        "SAL-XLIFF-CORE-EXTENSION-DOWNGRADE-LOSS-001",
+        "SAL-XLIFF-CORE-ROUNDTRIP-SEMANTIC-001",
+        "SAL-XLIFF-CORE-SECURITY-ELEMENT-LIMIT-001",
+        "SAL-XLIFF-CORE-SECURITY-EXTERNAL-RESOLUTION-001",
+        "SAL-XLIFF-CORE-SECURITY-NESTING-LIMIT-001",
+        "SAL-XLIFF-CORE-SECURITY-PATH-TRAVERSAL-001",
+        "SAL-XLIFF-CORE-SECURITY-RESOURCE-LIMITS-001",
+        "SAL-XLIFF-CORE-SECURITY-TEXT-LIMIT-001",
+        "SAL-XLIFF-CORE-SECURITY-XML-ENTITY-001",
+        "SAL-XLIFF-CORE-WRITE-DETERMINISTIC-001",
+        "SAL-XLIFF-CORE-WRITE-LOSSLESS-NORMALIZED-001",
+        "SAL-XLIFF-CORE-WRITE-NAMESPACE-PREFIX-001",
+    }
+)
+
+
+def _default_core_obligation_expectations() -> list[dict[str, Any]]:
+    """Return the explicit, still-open XLIFF Core work denominator."""
+
+    rows: list[dict[str, Any]] = []
+    for category, obligation_ids in _EXPECTED_CORE_IDS_BY_CATEGORY.items():
+        for obligation_id in obligation_ids:
+            rows.append(
+                {
+                    "obligation_id": obligation_id,
+                    "category": category,
+                    "stable_profiles": (
+                        ["xliff_2.1"]
+                        if obligation_id
+                        == "SAL-XLIFF-CORE-SECURITY-URI-RISK-001"
+                        else ["xliff_2.0", "xliff_2.1"]
+                    ),
+                    "obligation_basis": (
+                        "PRODUCTION_POLICY"
+                        if obligation_id in _PRODUCTION_POLICY_EXPECTED_IDS
+                        else "XLIFF_SPECIFICATION"
+                    ),
+                }
+            )
+    return sorted(rows, key=lambda item: item["obligation_id"])
+
+
+def compile_xliff_core_denominator(
+    profile_sources: Sequence[ProfileSource],
+    *,
+    policy_sources: Sequence[PolicySource],
+) -> dict[str, Any]:
+    """Compile the explicit but not-yet-exhaustive Core obligation denominator."""
+
+    sources = {source.profile: source for source in profile_sources}
+    if (
+        set(sources) != {"xliff_2.0", "xliff_2.1"}
+        or len(sources) != len(profile_sources)
+    ):
+        raise ExtractionError(
+            "XLIFF Core denominator requires one authority for each stable profile"
+        )
+    authority_inputs: list[dict[str, str]] = []
+    for profile, profile_source in sorted(sources.items()):
+        _read_authority_archive(profile_source)
+        authority_inputs.append(
+            {
+                "authority_class": "XLIFF_STANDARD_PACKAGE",
+                "profile": profile,
+                "source_id": profile_source.source_id,
+                "source_sha256": profile_source.expected_sha256,
+            }
+        )
+    seen_policy_ids: set[str] = set()
+    for policy_source in sorted(
+        policy_sources, key=lambda item: item.source_id
+    ):
+        if policy_source.source_id in seen_policy_ids:
+            raise ExtractionError(
+                f"duplicate Core policy source_id: {policy_source.source_id}"
+            )
+        seen_policy_ids.add(policy_source.source_id)
+        digest, _rules = _policy_rule_index(policy_source)
+        authority_inputs.append(
+            {
+                "authority_class": "PRODUCTION_POLICY",
+                "source_id": policy_source.source_id,
+                "source_sha256": digest,
+            }
+        )
+    expectations = _default_core_obligation_expectations()
+    expected_ids = [str(row["obligation_id"]) for row in expectations]
+    if len(expected_ids) != len(set(expected_ids)):
+        raise ExtractionError("duplicate default Core expectation ID")
+    return {
+        "schema": "ff6/xliff-core-obligation-denominator@1",
+        "artifact_id": "FF6-XLIFF-CORE-OBLIGATION-DENOMINATOR",
+        "artifact_type": "expected_obligation_denominator",
+        "visibility": "generated",
+        "publish_allowed": False,
+        "generated_by": "codex",
+        "format_id": "xliff",
+        "status": "OPEN_AUTHORITY_CENSUS",
+        "inventory_complete": False,
+        "stable_profiles": ["xliff_2.0", "xliff_2.1"],
+        "expected_obligation_count": len(expectations),
+        "covered_categories": sorted(_XLIFF_CORE_CATEGORIES),
+        "authority_inputs": authority_inputs,
+        "open_census_reasons": [
+            (
+                "Every normative Core prose statement has not yet been "
+                "dispositioned to an obligation or explicit non-obligation."
+            ),
+            (
+                "Every Core XSD cardinality, ordering, type, attribute, and "
+                "Schematron constraint has not yet been mapped exactly once."
+            ),
+            (
+                "XLIFF 2.1 additions and changed processing requirements have "
+                "not yet been proven complete against the 2.0 delta."
+            ),
+        ],
+        "expectations": expectations,
+        "truth_boundary": (
+            "This independent expected-ID inventory creates durable missing-work "
+            "edges, but remains OPEN_AUTHORITY_CENSUS. It cannot certify XLF-04 "
+            "until every normative prose, XSD, Schematron, and production-policy "
+            "candidate has an exact disposition and inventory_complete is true."
+        ),
+    }
+
+
+def _validate_core_denominator(
+    inventory: Mapping[str, Any],
+) -> tuple[dict[str, Mapping[str, Any]], bool, str]:
+    if inventory.get("schema") != "ff6/xliff-core-obligation-denominator@1":
+        raise ExtractionError("invalid XLIFF Core denominator schema")
+    status = str(inventory.get("status", ""))
+    inventory_complete = inventory.get("inventory_complete")
+    if status not in {"OPEN_AUTHORITY_CENSUS", "COMPLETE_AUTHORITY_CENSUS"}:
+        raise ExtractionError("invalid XLIFF Core denominator status")
+    if not isinstance(inventory_complete, bool):
+        raise ExtractionError("Core denominator inventory_complete must be boolean")
+    if (status == "COMPLETE_AUTHORITY_CENSUS") != inventory_complete:
+        raise ExtractionError(
+            "Core denominator status contradicts inventory_complete"
+        )
+    raw_rows = inventory.get("expectations")
+    if not isinstance(raw_rows, Sequence) or isinstance(raw_rows, (str, bytes)):
+        raise ExtractionError("Core denominator expectations must be a sequence")
+    expected: dict[str, Mapping[str, Any]] = {}
+    for raw in raw_rows:
+        if not isinstance(raw, Mapping):
+            raise ExtractionError("Core denominator expectation must be a mapping")
+        if set(raw) != {
+            "obligation_id",
+            "category",
+            "stable_profiles",
+            "obligation_basis",
+        }:
+            raise ExtractionError("invalid Core denominator expectation fields")
+        obligation_id = str(raw["obligation_id"])
+        if not _CORE_OBLIGATION_ID.fullmatch(obligation_id):
+            raise ExtractionError(
+                f"invalid Core denominator obligation_id: {obligation_id}"
+            )
+        if obligation_id in expected:
+            raise ExtractionError(
+                f"duplicate Core denominator obligation_id: {obligation_id}"
+            )
+        category = str(raw["category"])
+        if category not in _XLIFF_CORE_CATEGORIES:
+            raise ExtractionError(
+                f"{obligation_id} has unknown denominator category"
+            )
+        profiles = list(map(str, raw["stable_profiles"]))
+        if (
+            not profiles
+            or len(profiles) != len(set(profiles))
+            or not set(profiles) <= {"xliff_2.0", "xliff_2.1"}
+        ):
+            raise ExtractionError(
+                f"{obligation_id} has invalid denominator stable_profiles"
+            )
+        basis = str(raw["obligation_basis"])
+        if basis not in _CORE_OBLIGATION_BASES:
+            raise ExtractionError(
+                f"{obligation_id} has invalid denominator obligation_basis"
+            )
+        expected[obligation_id] = raw
+    if not expected:
+        raise ExtractionError("Core denominator cannot be empty")
+    declared_count = inventory.get("expected_obligation_count")
+    if declared_count != len(expected):
+        raise ExtractionError("Core denominator expected_obligation_count drift")
+    return expected, inventory_complete, status
+
+
 def compile_xliff_core_obligations(
     profile_sources: Sequence[ProfileSource],
     *,
     obligation_seeds: Iterable[Mapping[str, Any]],
     batch_id: str,
     expected_obligation_ids: Iterable[str] | None = None,
+    policy_sources: Sequence[PolicySource] = (),
+    expected_obligation_inventory: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Compile a source-bound, explicitly partial XLIFF Core obligation batch."""
 
@@ -1158,16 +1645,76 @@ def compile_xliff_core_obligations(
         sources,
         archives,
         batch_id=batch_id,
+        policy_sources=policy_sources,
     )
     covered_categories = sorted({str(row["category"]) for row in rows})
-    remaining_categories = sorted(
+    uncovered_categories = sorted(
         _XLIFF_CORE_CATEGORIES - set(covered_categories)
     )
     actual_ids = {str(row["obligation_id"]) for row in rows}
-    if expected_obligation_ids is None:
+    denominator_status: str | None = None
+    denominator_complete: bool | None = None
+    missing_expected_by_category: dict[str, list[str]] = {}
+    expected_ids: set[str] = set()
+    missing_expected_ids: list[str] = []
+    if (
+        expected_obligation_ids is not None
+        and expected_obligation_inventory is not None
+    ):
+        raise ExtractionError(
+            "provide either expected_obligation_ids or "
+            "expected_obligation_inventory, not both"
+        )
+    if expected_obligation_inventory is not None:
+        expected_rows, denominator_complete, denominator_status = (
+            _validate_core_denominator(expected_obligation_inventory)
+        )
+        current_denominator = compile_xliff_core_denominator(
+            profile_sources,
+            policy_sources=policy_sources,
+        )
+        if (
+            expected_obligation_inventory.get("authority_inputs")
+            != current_denominator["authority_inputs"]
+        ):
+            raise ExtractionError(
+                "XLIFF Core denominator authority input closure does not "
+                "match the current compiler inputs"
+            )
+        expected_ids = set(expected_rows)
+        unexpected_ids = sorted(actual_ids - expected_ids)
+        if unexpected_ids:
+            raise ExtractionError(
+                f"Core obligations outside expected denominator: {unexpected_ids}"
+            )
+        for row in rows:
+            obligation_id = str(row["obligation_id"])
+            expected = expected_rows[obligation_id]
+            for field in ("category", "stable_profiles", "obligation_basis"):
+                if row[field] != expected[field]:
+                    raise ExtractionError(
+                        f"{obligation_id} contradicts denominator {field}"
+                    )
+        missing_expected_ids = sorted(expected_ids - actual_ids)
+        for obligation_id in missing_expected_ids:
+            category = str(expected_rows[obligation_id]["category"])
+            missing_expected_by_category.setdefault(category, []).append(
+                obligation_id
+            )
+        remaining_categories = sorted(missing_expected_by_category)
+        completeness_basis = (
+            "EXPLICIT_EXPECTED_OBLIGATION_IDS"
+            if denominator_complete
+            else "EXPLICIT_EXPECTED_OBLIGATION_IDS_OPEN_CENSUS"
+        )
+        complete = (
+            denominator_complete
+            and not uncovered_categories
+            and not missing_expected_ids
+        )
+    elif expected_obligation_ids is None:
         completeness_basis = "EXPECTED_OBLIGATION_DENOMINATOR_ABSENT"
-        expected_ids: set[str] = set()
-        missing_expected_ids: list[str] = []
+        remaining_categories = uncovered_categories
         complete = False
     else:
         expected_values = list(map(str, expected_obligation_ids))
@@ -1188,14 +1735,17 @@ def compile_xliff_core_obligations(
             )
         missing_expected_ids = sorted(expected_ids - actual_ids)
         completeness_basis = "EXPLICIT_EXPECTED_OBLIGATION_IDS"
-        complete = not remaining_categories and not missing_expected_ids
+        remaining_categories = uncovered_categories
+        denominator_status = "LEGACY_EXPLICIT_ID_SET"
+        denominator_complete = True
+        complete = not uncovered_categories and not missing_expected_ids
     return {
-        "schema": "ff6/xliff-core-obligation-inventory@1",
+        "schema": "ff6/xliff-core-obligation-inventory@2",
         "artifact_id": (
             "FF6-XLIFF-CORE-OBLIGATIONS-"
             + batch_id.replace("XLF-04-BATCH-", "XLF04-BATCH")
         ),
-        "artifact_type": "normative_obligation_inventory",
+        "artifact_type": "core_and_production_obligation_inventory",
         "visibility": "generated",
         "publish_allowed": False,
         "generated_by": "codex",
@@ -1209,23 +1759,59 @@ def compile_xliff_core_obligations(
         "stable_profiles": ["xliff_2.0", "xliff_2.1"],
         "obligation_count": len(rows),
         "covered_categories": covered_categories,
+        "uncovered_categories": uncovered_categories,
         "remaining_categories": remaining_categories,
         "completeness_basis": completeness_basis,
         "expected_obligation_count": (
-            len(expected_ids) if expected_obligation_ids is not None else None
+            len(expected_ids)
+            if (
+                expected_obligation_ids is not None
+                or expected_obligation_inventory is not None
+            )
+            else None
+        ),
+        "resolved_expected_obligation_count": (
+            len(actual_ids & expected_ids)
+            if (
+                expected_obligation_ids is not None
+                or expected_obligation_inventory is not None
+            )
+            else None
         ),
         "missing_expected_obligation_ids": missing_expected_ids,
+        "missing_expected_obligations_by_category": (
+            {
+                category: sorted(obligation_ids)
+                for category, obligation_ids in sorted(
+                    missing_expected_by_category.items()
+                )
+            }
+            if expected_obligation_inventory is not None
+            else {}
+        ),
+        "denominator_status": denominator_status,
+        "denominator_complete": denominator_complete,
+        "obligation_basis_counts": {
+            basis: sum(
+                1 for row in rows if row["obligation_basis"] == basis
+            )
+            for basis in sorted(_CORE_OBLIGATION_BASES)
+        },
         "complete": complete,
         "obligations": rows,
         "truth_boundary": (
-            "These source-bound fine-grained Core obligations supersede no "
-            "unreviewed SAL facts and do not turn the 36 coarse XLF-03 anchors "
-            "into complete Core semantics, product source, or certification."
+            "XLIFF specification obligations and production-policy duties are "
+            "separate authority classes. Neither source binding nor category "
+            "presence turns the 36 coarse XLF-03 anchors into complete Core "
+            "semantics, product source, or certification."
         ),
     }
 
 
-def _default_core_obligation_seeds() -> list[dict[str, Any]]:
+def _default_core_obligation_seeds(
+    *,
+    through_batch: str = "XLF-04-BATCH-003",
+) -> list[dict[str, Any]]:
     """Return the bounded, curated XLF-04 Core obligation batches."""
 
     def locations(section_id: str, source_anchor: str) -> list[dict[str, Any]]:
@@ -1381,6 +1967,7 @@ def _default_core_obligation_seeds() -> list[dict[str, Any]]:
     ]
     for seed in seeds:
         seed["introduced_in_batch"] = "XLF-04-BATCH-001"
+        seed["obligation_basis"] = "XLIFF_SPECIFICATION"
 
     batch_two_note = (
         "Second source-located XLF-04 batch covering stable identifier, "
@@ -1711,7 +2298,208 @@ def _default_core_obligation_seeds() -> list[dict[str, Any]]:
             },
         ]
     )
-    return seeds
+    for seed in seeds:
+        seed.setdefault("obligation_basis", "XLIFF_SPECIFICATION")
+
+    batch_three_note = (
+        "Third source-located XLF-04 batch. XLIFF conformance statements and "
+        "Format Factory production-policy requirements retain distinct "
+        "authority classes and conformance effects."
+    )
+
+    def policy_locations(*rule_ids: str) -> list[dict[str, str]]:
+        return [
+            {
+                "location_kind": "policy_rule",
+                "authority_source_id": "POLICY-SHARED-LIBRARY-CONTRACT",
+                "rule_id": rule_id,
+            }
+            for rule_id in rule_ids
+        ]
+
+    seeds.extend(
+        [
+            {
+                "obligation_id": "SAL-XLIFF-CORE-ROUNDTRIP-STRUCTURE-001",
+                "obligation_basis": "XLIFF_SPECIFICATION",
+                "introduced_in_batch": "XLF-04-BATCH-003",
+                "stable_profiles": ["xliff_2.0", "xliff_2.1"],
+                "owner": "core:roundtrip",
+                "category": "semantic_roundtrip_canonical_output",
+                "normalized_rule": (
+                    "Preserve the static file, group, and unit order established "
+                    "by extraction throughout an XLIFF processing roundtrip."
+                ),
+                "requirement_class": "PRESERVATION_REQUIREMENT",
+                "normative_level": "SHOULD",
+                "authority_locations": locations(
+                    "subflowsdesc",
+                    "static structure encoded by <file>, <group>, and <unit> "
+                    "elements is principally immutable",
+                ),
+                "evidence_requirements": {
+                    "positive": [
+                        "roundtrip nested file, group, and unit order semantically"
+                    ],
+                    "rejection": [
+                        "detect or reject a write that silently changes static order"
+                    ],
+                },
+                "interpretation_note": batch_three_note,
+            },
+            {
+                "obligation_id": "SAL-XLIFF-CORE-SECURITY-URI-RISK-001",
+                "obligation_basis": "XLIFF_SPECIFICATION",
+                "introduced_in_batch": "XLF-04-BATCH-003",
+                "stable_profiles": ["xliff_2.1"],
+                "owner": "core:security",
+                "category": "xml_security_resource_limits",
+                "normalized_rule": (
+                    "Expose the security risk of dereferencing URI and IRI "
+                    "attributes, including file URI access, in the 2.1 profile."
+                ),
+                "requirement_class": "PROCESSING_REQUIREMENT",
+                "normative_level": "SHOULD",
+                "authority_locations": [
+                    {
+                        "profile": "xliff_2.1",
+                        "location_kind": "prose_paragraph",
+                        "member": "xliff-core-v2.1-os.xml",
+                        "section_id": "mediaType",
+                        "source_anchor": (
+                            "Direct external reference mechanisms: An XLIFF "
+                            "document has a number of attributes"
+                        ),
+                    }
+                ],
+                "evidence_requirements": {
+                    "positive": [
+                        "report URI-bearing constructs without dereferencing them"
+                    ],
+                    "rejection": [
+                        "prove default processing performs no implicit file or network access"
+                    ],
+                },
+                "interpretation_note": batch_three_note,
+            },
+            {
+                "obligation_id": "SAL-XLIFF-CORE-ROUNDTRIP-SEMANTIC-001",
+                "obligation_basis": "PRODUCTION_POLICY",
+                "introduced_in_batch": "XLF-04-BATCH-003",
+                "stable_profiles": ["xliff_2.0", "xliff_2.1"],
+                "owner": "core:roundtrip",
+                "category": "semantic_roundtrip_canonical_output",
+                "normalized_rule": (
+                    "Prove parse-save-parse semantic equivalence for every "
+                    "supported stable Core construct."
+                ),
+                "requirement_class": "PRESERVATION_REQUIREMENT",
+                "normative_level": "MUST",
+                "authority_locations": policy_locations("POL-SLC-QUALITY-02"),
+                "evidence_requirements": {
+                    "positive": [
+                        "execute semantic roundtrips for every supported Core construct"
+                    ],
+                    "rejection": [
+                        "detect semantic loss or mutation during parse-save-parse"
+                    ],
+                },
+                "interpretation_note": batch_three_note,
+            },
+            {
+                "obligation_id": "SAL-XLIFF-CORE-WRITE-DETERMINISTIC-001",
+                "obligation_basis": "PRODUCTION_POLICY",
+                "introduced_in_batch": "XLF-04-BATCH-003",
+                "stable_profiles": ["xliff_2.0", "xliff_2.1"],
+                "owner": "core:writer",
+                "category": "semantic_roundtrip_canonical_output",
+                "normalized_rule": (
+                    "Serialize an unchanged document to byte-identical output "
+                    "across repeated writes in the same explicit output mode."
+                ),
+                "requirement_class": "PROCESSING_REQUIREMENT",
+                "normative_level": "MUST",
+                "authority_locations": policy_locations(
+                    "POL-SLC-LIFECYCLE-06",
+                    "POL-SLC-QUALITY-03",
+                ),
+                "evidence_requirements": {
+                    "positive": [
+                        "serialize the same document repeatedly and compare exact bytes"
+                    ],
+                    "rejection": [
+                        "detect prefix, ordering, or formatting nondeterminism"
+                    ],
+                },
+                "interpretation_note": batch_three_note,
+            },
+            {
+                "obligation_id": (
+                    "SAL-XLIFF-CORE-SECURITY-EXTERNAL-RESOLUTION-001"
+                ),
+                "obligation_basis": "PRODUCTION_POLICY",
+                "introduced_in_batch": "XLF-04-BATCH-003",
+                "stable_profiles": ["xliff_2.0", "xliff_2.1"],
+                "owner": "core:security",
+                "category": "xml_security_resource_limits",
+                "normalized_rule": (
+                    "Disable XML external-entity expansion and implicit file or "
+                    "network reference resolution unless the caller explicitly "
+                    "enables a bounded resolver."
+                ),
+                "requirement_class": "PROCESSING_REQUIREMENT",
+                "normative_level": "MUST",
+                "authority_locations": policy_locations("POL-SLC-SEC-02"),
+                "evidence_requirements": {
+                    "positive": [
+                        "parse safe documents with external resolution disabled"
+                    ],
+                    "rejection": [
+                        "reject entity expansion and prove no implicit external I/O"
+                    ],
+                },
+                "interpretation_note": batch_three_note,
+            },
+            {
+                "obligation_id": "SAL-XLIFF-CORE-SECURITY-RESOURCE-LIMITS-001",
+                "obligation_basis": "PRODUCTION_POLICY",
+                "introduced_in_batch": "XLF-04-BATCH-003",
+                "stable_profiles": ["xliff_2.0", "xliff_2.1"],
+                "owner": "core:security",
+                "category": "xml_security_resource_limits",
+                "normalized_rule": (
+                    "Enforce configurable safe defaults for input bytes, XML "
+                    "nesting, element count, text size, and decoded payload size."
+                ),
+                "requirement_class": "PROCESSING_REQUIREMENT",
+                "normative_level": "MUST",
+                "authority_locations": policy_locations(
+                    "POL-SLC-SEC-01",
+                    "POL-SLC-SEC-05",
+                ),
+                "evidence_requirements": {
+                    "positive": [
+                        "accept inputs exactly at every configured resource boundary"
+                    ],
+                    "rejection": [
+                        "reject inputs beyond every boundary without partial success"
+                    ],
+                },
+                "interpretation_note": batch_three_note,
+            },
+        ]
+    )
+    if not re.fullmatch(r"XLF-04-BATCH-[0-9]{3}", through_batch):
+        raise ExtractionError(
+            f"invalid default Core through_batch: {through_batch}"
+        )
+    maximum_sequence = int(through_batch.rsplit("-", 1)[-1])
+    return [
+        seed
+        for seed in seeds
+        if int(str(seed["introduced_in_batch"]).rsplit("-", 1)[-1])
+        <= maximum_sequence
+    ]
 
 
 def _default_requirement_seeds() -> list[dict[str, Any]]:
@@ -2016,7 +2804,7 @@ def _argument_parser() -> argparse.ArgumentParser:
     parser.add_argument("--format-id", choices=("xliff",), required=True)
     parser.add_argument(
         "--artifact",
-        choices=("matrix", "core-obligations"),
+        choices=("matrix", "core-denominator", "core-obligations"),
         default="matrix",
     )
     parser.add_argument("--source-20", type=Path, required=True)
@@ -2030,6 +2818,14 @@ def _argument_parser() -> argparse.ArgumentParser:
     parser.add_argument("--source-21-sha256", required=True)
     parser.add_argument(
         "--prose-member-21", default="xliff-core-v2.1-os.xml"
+    )
+    parser.add_argument(
+        "--denominator",
+        type=Path,
+        help=(
+            "tracked XLIFF Core expected-obligation denominator; required "
+            "for the core-obligations artifact"
+        ),
     )
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument(
@@ -2060,13 +2856,37 @@ def main(argv: Sequence[str] | None = None) -> int:
             prose_member=args.prose_member_21,
         ),
     ]
+    policy_sources = _default_core_policy_sources()
+    denominator = compile_xliff_core_denominator(
+        profile_sources,
+        policy_sources=policy_sources,
+    )
     if args.artifact == "core-obligations":
+        if args.denominator is None:
+            raise ExtractionError(
+                "--denominator is required for core-obligations"
+            )
+        try:
+            denominator_bytes = args.denominator.read_bytes()
+            denominator_input = yaml.safe_load(denominator_bytes)
+        except (OSError, yaml.YAMLError) as exc:
+            raise ExtractionError(
+                f"Core denominator is unreadable: {args.denominator}"
+            ) from exc
+        if not isinstance(denominator_input, Mapping):
+            raise ExtractionError("Core denominator must be a YAML mapping")
         artifact = compile_xliff_core_obligations(
             profile_sources,
             obligation_seeds=_default_core_obligation_seeds(),
-            batch_id="XLF-04-BATCH-002",
+            batch_id="XLF-04-BATCH-003",
+            policy_sources=policy_sources,
+            expected_obligation_inventory=denominator_input,
         )
+        artifact["denominator_input_sha256"] = _sha256(denominator_bytes)
         row_count = artifact["obligation_count"]
+    elif args.artifact == "core-denominator":
+        artifact = denominator
+        row_count = artifact["expected_obligation_count"]
     else:
         artifact = compile_xliff_matrix(
             profile_sources,
@@ -2092,11 +2912,19 @@ def main(argv: Sequence[str] | None = None) -> int:
                 "profiles": sorted(artifact["profiles"]),
             }
         )
-    else:
+    elif args.artifact == "core-obligations":
         result.update(
             {
                 "obligation_count": row_count,
                 "stable_profiles": artifact["stable_profiles"],
+            }
+        )
+    else:
+        result.update(
+            {
+                "expected_obligation_count": row_count,
+                "inventory_complete": artifact["inventory_complete"],
+                "status": artifact["status"],
             }
         )
     print(

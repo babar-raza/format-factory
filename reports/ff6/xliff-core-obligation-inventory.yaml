@@ -1,16 +1,16 @@
-schema: ff6/xliff-core-obligation-inventory@1
-artifact_id: FF6-XLIFF-CORE-OBLIGATIONS-XLF04-BATCH002
-artifact_type: normative_obligation_inventory
+schema: ff6/xliff-core-obligation-inventory@2
+artifact_id: FF6-XLIFF-CORE-OBLIGATIONS-XLF04-BATCH003
+artifact_type: core_and_production_obligation_inventory
 visibility: generated
 publish_allowed: false
 generated_by: codex
 format_id: xliff
-batch_id: XLF-04-BATCH-002
+batch_id: XLF-04-BATCH-003
 status: SOURCE_LOCATED_PARTIAL
 stable_profiles:
 - xliff_2.0
 - xliff_2.1
-obligation_count: 19
+obligation_count: 25
 covered_categories:
 - agent_processing
 - document_structure
@@ -20,17 +20,211 @@ covered_categories:
 - inline_code_semantics
 - language_direction_whitespace
 - segmentation
+- semantic_roundtrip_canonical_output
 - source_target_correspondence
 - state
-remaining_categories:
-- semantic_roundtrip_canonical_output
 - xml_security_resource_limits
-completeness_basis: EXPECTED_OBLIGATION_DENOMINATOR_ABSENT
-expected_obligation_count: null
-missing_expected_obligation_ids: []
+uncovered_categories: []
+remaining_categories:
+- agent_processing
+- document_structure
+- extension_preservation
+- hierarchy_cardinality
+- identifiers_references_inheritance
+- inline_code_semantics
+- language_direction_whitespace
+- segmentation
+- semantic_roundtrip_canonical_output
+- source_target_correspondence
+- state
+- xml_security_resource_limits
+completeness_basis: EXPLICIT_EXPECTED_OBLIGATION_IDS_OPEN_CENSUS
+expected_obligation_count: 105
+resolved_expected_obligation_count: 25
+missing_expected_obligation_ids:
+- SAL-XLIFF-CORE-AGENT-EXTRACTOR-001
+- SAL-XLIFF-CORE-AGENT-LOSS-REPORT-001
+- SAL-XLIFF-CORE-AGENT-MERGER-001
+- SAL-XLIFF-CORE-AGENT-MODIFIER-001
+- SAL-XLIFF-CORE-AGENT-VALIDATOR-001
+- SAL-XLIFF-CORE-AGENT-WRITER-001
+- SAL-XLIFF-CORE-DOCUMENT-FILE-MINIMUM-001
+- SAL-XLIFF-CORE-DOCUMENT-FILE-ORDER-001
+- SAL-XLIFF-CORE-DOCUMENT-NAMESPACE-001
+- SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001
+- SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001
+- SAL-XLIFF-CORE-DOCUMENT-VERSION-001
+- SAL-XLIFF-CORE-EXTENSION-CORE-CONFLICT-001
+- SAL-XLIFF-CORE-EXTENSION-DOWNGRADE-LOSS-001
+- SAL-XLIFF-CORE-EXTENSION-MERGER-RELIANCE-001
+- SAL-XLIFF-CORE-EXTENSION-NAMESPACE-001
+- SAL-XLIFF-CORE-EXTENSION-UNKNOWN-PRESERVE-001
+- SAL-XLIFF-CORE-HIERARCHY-EXTENSION-POINTS-001
+- SAL-XLIFF-CORE-HIERARCHY-FILE-CHILDREN-001
+- SAL-XLIFF-CORE-HIERARCHY-GROUP-CHILDREN-001
+- SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001
+- SAL-XLIFF-CORE-HIERARCHY-NOTES-001
+- SAL-XLIFF-CORE-HIERARCHY-ORDER-001
+- SAL-XLIFF-CORE-HIERARCHY-ORIGINAL-DATA-001
+- SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001
+- SAL-XLIFF-CORE-HIERARCHY-SKELETON-001
+- SAL-XLIFF-CORE-HIERARCHY-UNIT-CHILDREN-001
+- SAL-XLIFF-CORE-ID-DATA-UNIQUE-001
+- SAL-XLIFF-CORE-ID-GROUP-UNIQUE-001
+- SAL-XLIFF-CORE-ID-NOTE-UNIQUE-001
+- SAL-XLIFF-CORE-ID-SEGMENT-UNIQUE-001
+- SAL-XLIFF-CORE-ID-UNIT-UNIQUE-001
+- SAL-XLIFF-CORE-INLINE-CANCOPY-001
+- SAL-XLIFF-CORE-INLINE-CANDELETE-001
+- SAL-XLIFF-CORE-INLINE-CANREORDER-001
+- SAL-XLIFF-CORE-INLINE-COPYOF-001
+- SAL-XLIFF-CORE-INLINE-DATAREF-001
+- SAL-XLIFF-CORE-INLINE-EC-001
+- SAL-XLIFF-CORE-INLINE-EM-001
+- SAL-XLIFF-CORE-INLINE-ISOLATION-001
+- SAL-XLIFF-CORE-INLINE-MRK-001
+- SAL-XLIFF-CORE-INLINE-NESTING-001
+- SAL-XLIFF-CORE-INLINE-ORDER-001
+- SAL-XLIFF-CORE-INLINE-ORIGINAL-DATA-001
+- SAL-XLIFF-CORE-INLINE-OVERLAP-001
+- SAL-XLIFF-CORE-INLINE-PAIRING-001
+- SAL-XLIFF-CORE-INLINE-PC-001
+- SAL-XLIFF-CORE-INLINE-PH-001
+- SAL-XLIFF-CORE-INLINE-SC-001
+- SAL-XLIFF-CORE-INLINE-SM-001
+- SAL-XLIFF-CORE-INLINE-STARTREF-001
+- SAL-XLIFF-CORE-LANGUAGE-ROOT-SOURCE-001
+- SAL-XLIFF-CORE-LANGUAGE-ROOT-TARGET-001
+- SAL-XLIFF-CORE-REFERENCE-COPYOF-001
+- SAL-XLIFF-CORE-REFERENCE-SKELETON-HREF-001
+- SAL-XLIFF-CORE-REFERENCE-STARTREF-001
+- SAL-XLIFF-CORE-SECURITY-ELEMENT-LIMIT-001
+- SAL-XLIFF-CORE-SECURITY-NESTING-LIMIT-001
+- SAL-XLIFF-CORE-SECURITY-PATH-TRAVERSAL-001
+- SAL-XLIFF-CORE-SECURITY-TEXT-LIMIT-001
+- SAL-XLIFF-CORE-SECURITY-XML-ENTITY-001
+- SAL-XLIFF-CORE-SEGMENT-CANRESEGMENT-INHERIT-001
+- SAL-XLIFF-CORE-SEGMENT-INLINE-INTEGRITY-001
+- SAL-XLIFF-CORE-SEGMENT-JOIN-001
+- SAL-XLIFF-CORE-SEGMENT-SPLIT-MAPPING-001
+- SAL-XLIFF-CORE-SEGMENT-TARGET-ORDER-001
+- SAL-XLIFF-CORE-SEGMENT-WHITESPACE-001
+- SAL-XLIFF-CORE-SOURCE-REQUIRED-001
+- SAL-XLIFF-CORE-SOURCE-TARGET-INLINE-001
+- SAL-XLIFF-CORE-SOURCE-TARGET-STRUCTURE-001
+- SAL-XLIFF-CORE-STATE-SUBSTATE-VALUE-001
+- SAL-XLIFF-CORE-STATE-TARGET-PRESENCE-001
+- SAL-XLIFF-CORE-STATE-TRANSITION-001
+- SAL-XLIFF-CORE-STATE-VALUE-001
+- SAL-XLIFF-CORE-TARGET-ORDER-CONFLICT-001
+- SAL-XLIFF-CORE-TARGET-PRESENCE-001
+- SAL-XLIFF-CORE-WHITESPACE-PRESERVE-001
+- SAL-XLIFF-CORE-WRITE-LOSSLESS-NORMALIZED-001
+- SAL-XLIFF-CORE-WRITE-NAMESPACE-PREFIX-001
+- SAL-XLIFF-CORE-WRITE-SCHEMA-ORDER-001
+missing_expected_obligations_by_category:
+  agent_processing:
+  - SAL-XLIFF-CORE-AGENT-EXTRACTOR-001
+  - SAL-XLIFF-CORE-AGENT-LOSS-REPORT-001
+  - SAL-XLIFF-CORE-AGENT-MERGER-001
+  - SAL-XLIFF-CORE-AGENT-MODIFIER-001
+  - SAL-XLIFF-CORE-AGENT-VALIDATOR-001
+  - SAL-XLIFF-CORE-AGENT-WRITER-001
+  document_structure:
+  - SAL-XLIFF-CORE-DOCUMENT-FILE-MINIMUM-001
+  - SAL-XLIFF-CORE-DOCUMENT-FILE-ORDER-001
+  - SAL-XLIFF-CORE-DOCUMENT-NAMESPACE-001
+  - SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001
+  - SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001
+  - SAL-XLIFF-CORE-DOCUMENT-VERSION-001
+  extension_preservation:
+  - SAL-XLIFF-CORE-EXTENSION-CORE-CONFLICT-001
+  - SAL-XLIFF-CORE-EXTENSION-DOWNGRADE-LOSS-001
+  - SAL-XLIFF-CORE-EXTENSION-MERGER-RELIANCE-001
+  - SAL-XLIFF-CORE-EXTENSION-NAMESPACE-001
+  - SAL-XLIFF-CORE-EXTENSION-UNKNOWN-PRESERVE-001
+  hierarchy_cardinality:
+  - SAL-XLIFF-CORE-HIERARCHY-EXTENSION-POINTS-001
+  - SAL-XLIFF-CORE-HIERARCHY-FILE-CHILDREN-001
+  - SAL-XLIFF-CORE-HIERARCHY-GROUP-CHILDREN-001
+  - SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001
+  - SAL-XLIFF-CORE-HIERARCHY-NOTES-001
+  - SAL-XLIFF-CORE-HIERARCHY-ORDER-001
+  - SAL-XLIFF-CORE-HIERARCHY-ORIGINAL-DATA-001
+  - SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001
+  - SAL-XLIFF-CORE-HIERARCHY-SKELETON-001
+  - SAL-XLIFF-CORE-HIERARCHY-UNIT-CHILDREN-001
+  identifiers_references_inheritance:
+  - SAL-XLIFF-CORE-ID-DATA-UNIQUE-001
+  - SAL-XLIFF-CORE-ID-GROUP-UNIQUE-001
+  - SAL-XLIFF-CORE-ID-NOTE-UNIQUE-001
+  - SAL-XLIFF-CORE-ID-SEGMENT-UNIQUE-001
+  - SAL-XLIFF-CORE-ID-UNIT-UNIQUE-001
+  - SAL-XLIFF-CORE-REFERENCE-COPYOF-001
+  - SAL-XLIFF-CORE-REFERENCE-SKELETON-HREF-001
+  - SAL-XLIFF-CORE-REFERENCE-STARTREF-001
+  inline_code_semantics:
+  - SAL-XLIFF-CORE-INLINE-CANCOPY-001
+  - SAL-XLIFF-CORE-INLINE-CANDELETE-001
+  - SAL-XLIFF-CORE-INLINE-CANREORDER-001
+  - SAL-XLIFF-CORE-INLINE-COPYOF-001
+  - SAL-XLIFF-CORE-INLINE-DATAREF-001
+  - SAL-XLIFF-CORE-INLINE-EC-001
+  - SAL-XLIFF-CORE-INLINE-EM-001
+  - SAL-XLIFF-CORE-INLINE-ISOLATION-001
+  - SAL-XLIFF-CORE-INLINE-MRK-001
+  - SAL-XLIFF-CORE-INLINE-NESTING-001
+  - SAL-XLIFF-CORE-INLINE-ORDER-001
+  - SAL-XLIFF-CORE-INLINE-ORIGINAL-DATA-001
+  - SAL-XLIFF-CORE-INLINE-OVERLAP-001
+  - SAL-XLIFF-CORE-INLINE-PAIRING-001
+  - SAL-XLIFF-CORE-INLINE-PC-001
+  - SAL-XLIFF-CORE-INLINE-PH-001
+  - SAL-XLIFF-CORE-INLINE-SC-001
+  - SAL-XLIFF-CORE-INLINE-SM-001
+  - SAL-XLIFF-CORE-INLINE-STARTREF-001
+  language_direction_whitespace:
+  - SAL-XLIFF-CORE-LANGUAGE-ROOT-SOURCE-001
+  - SAL-XLIFF-CORE-LANGUAGE-ROOT-TARGET-001
+  - SAL-XLIFF-CORE-WHITESPACE-PRESERVE-001
+  segmentation:
+  - SAL-XLIFF-CORE-SEGMENT-CANRESEGMENT-INHERIT-001
+  - SAL-XLIFF-CORE-SEGMENT-INLINE-INTEGRITY-001
+  - SAL-XLIFF-CORE-SEGMENT-JOIN-001
+  - SAL-XLIFF-CORE-SEGMENT-SPLIT-MAPPING-001
+  - SAL-XLIFF-CORE-SEGMENT-TARGET-ORDER-001
+  - SAL-XLIFF-CORE-SEGMENT-WHITESPACE-001
+  semantic_roundtrip_canonical_output:
+  - SAL-XLIFF-CORE-WRITE-LOSSLESS-NORMALIZED-001
+  - SAL-XLIFF-CORE-WRITE-NAMESPACE-PREFIX-001
+  - SAL-XLIFF-CORE-WRITE-SCHEMA-ORDER-001
+  source_target_correspondence:
+  - SAL-XLIFF-CORE-SOURCE-REQUIRED-001
+  - SAL-XLIFF-CORE-SOURCE-TARGET-INLINE-001
+  - SAL-XLIFF-CORE-SOURCE-TARGET-STRUCTURE-001
+  - SAL-XLIFF-CORE-TARGET-ORDER-CONFLICT-001
+  - SAL-XLIFF-CORE-TARGET-PRESENCE-001
+  state:
+  - SAL-XLIFF-CORE-STATE-SUBSTATE-VALUE-001
+  - SAL-XLIFF-CORE-STATE-TARGET-PRESENCE-001
+  - SAL-XLIFF-CORE-STATE-TRANSITION-001
+  - SAL-XLIFF-CORE-STATE-VALUE-001
+  xml_security_resource_limits:
+  - SAL-XLIFF-CORE-SECURITY-ELEMENT-LIMIT-001
+  - SAL-XLIFF-CORE-SECURITY-NESTING-LIMIT-001
+  - SAL-XLIFF-CORE-SECURITY-PATH-TRAVERSAL-001
+  - SAL-XLIFF-CORE-SECURITY-TEXT-LIMIT-001
+  - SAL-XLIFF-CORE-SECURITY-XML-ENTITY-001
+denominator_status: OPEN_AUTHORITY_CENSUS
+denominator_complete: false
+obligation_basis_counts:
+  PRODUCTION_POLICY: 4
+  XLIFF_SPECIFICATION: 21
 complete: false
 obligations:
 - obligation_id: SAL-XLIFF-CORE-AGENT-INLINE-001
+  obligation_basis: XLIFF_SPECIFICATION
+  conformance_effect: STANDARD_CONFORMANCE
   introduced_in_batch: XLF-04-BATCH-001
   stable_profiles:
   - xliff_2.0
@@ -69,6 +263,8 @@ obligations:
   interpretation_note: First source-located XLF-04 batch. This identity remains stable while later batches add the uncaptured Core categories and finer rules.
   verification_status: SOURCE_BOUND_UNVERIFIED
 - obligation_id: SAL-XLIFF-CORE-DIRECTION-SOURCE-001
+  obligation_basis: XLIFF_SPECIFICATION
+  conformance_effect: STANDARD_CONFORMANCE
   introduced_in_batch: XLF-04-BATCH-002
   stable_profiles:
   - xliff_2.0
@@ -107,6 +303,8 @@ obligations:
   interpretation_note: Second source-located XLF-04 batch covering stable identifier, inheritance, language, direction, whitespace, and source-target rules.
   verification_status: SOURCE_BOUND_UNVERIFIED
 - obligation_id: SAL-XLIFF-CORE-DIRECTION-TARGET-001
+  obligation_basis: XLIFF_SPECIFICATION
+  conformance_effect: STANDARD_CONFORMANCE
   introduced_in_batch: XLF-04-BATCH-002
   stable_profiles:
   - xliff_2.0
@@ -145,6 +343,8 @@ obligations:
   interpretation_note: Second source-located XLF-04 batch covering stable identifier, inheritance, language, direction, whitespace, and source-target rules.
   verification_status: SOURCE_BOUND_UNVERIFIED
 - obligation_id: SAL-XLIFF-CORE-DOCUMENT-ROOT-001
+  obligation_basis: XLIFF_SPECIFICATION
+  conformance_effect: STANDARD_CONFORMANCE
   introduced_in_batch: XLF-04-BATCH-001
   stable_profiles:
   - xliff_2.0
@@ -183,6 +383,8 @@ obligations:
   interpretation_note: First source-located XLF-04 batch. This identity remains stable while later batches add the uncaptured Core categories and finer rules.
   verification_status: SOURCE_BOUND_UNVERIFIED
 - obligation_id: SAL-XLIFF-CORE-EXTENSION-PRESERVE-001
+  obligation_basis: XLIFF_SPECIFICATION
+  conformance_effect: STANDARD_CONFORMANCE
   introduced_in_batch: XLF-04-BATCH-001
   stable_profiles:
   - xliff_2.0
@@ -221,6 +423,8 @@ obligations:
   interpretation_note: First source-located XLF-04 batch. This identity remains stable while later batches add the uncaptured Core categories and finer rules.
   verification_status: SOURCE_BOUND_UNVERIFIED
 - obligation_id: SAL-XLIFF-CORE-HIERARCHY-UNIT-001
+  obligation_basis: XLIFF_SPECIFICATION
+  conformance_effect: STANDARD_CONFORMANCE
   introduced_in_batch: XLF-04-BATCH-001
   stable_profiles:
   - xliff_2.0
@@ -259,6 +463,8 @@ obligations:
   interpretation_note: First source-located XLF-04 batch. This identity remains stable while later batches add the uncaptured Core categories and finer rules.
   verification_status: SOURCE_BOUND_UNVERIFIED
 - obligation_id: SAL-XLIFF-CORE-ID-FILE-UNIQUE-001
+  obligation_basis: XLIFF_SPECIFICATION
+  conformance_effect: STANDARD_CONFORMANCE
   introduced_in_batch: XLF-04-BATCH-002
   stable_profiles:
   - xliff_2.0
@@ -297,6 +503,8 @@ obligations:
   interpretation_note: Second source-located XLF-04 batch covering stable identifier, inheritance, language, direction, whitespace, and source-target rules.
   verification_status: SOURCE_BOUND_UNVERIFIED
 - obligation_id: SAL-XLIFF-CORE-INHERIT-TRANSLATE-001
+  obligation_basis: XLIFF_SPECIFICATION
+  conformance_effect: STANDARD_CONFORMANCE
   introduced_in_batch: XLF-04-BATCH-002
   stable_profiles:
   - xliff_2.0
@@ -335,6 +543,8 @@ obligations:
   interpretation_note: Second source-located XLF-04 batch covering stable identifier, inheritance, language, direction, whitespace, and source-target rules.
   verification_status: SOURCE_BOUND_UNVERIFIED
 - obligation_id: SAL-XLIFF-CORE-INLINE-SPANNING-001
+  obligation_basis: XLIFF_SPECIFICATION
+  conformance_effect: STANDARD_CONFORMANCE
   introduced_in_batch: XLF-04-BATCH-001
   stable_profiles:
   - xliff_2.0
@@ -373,6 +583,8 @@ obligations:
   interpretation_note: First source-located XLF-04 batch. This identity remains stable while later batches add the uncaptured Core categories and finer rules.
   verification_status: SOURCE_BOUND_UNVERIFIED
 - obligation_id: SAL-XLIFF-CORE-LANGUAGE-SOURCE-001
+  obligation_basis: XLIFF_SPECIFICATION
+  conformance_effect: STANDARD_CONFORMANCE
   introduced_in_batch: XLF-04-BATCH-002
   stable_profiles:
   - xliff_2.0
@@ -411,6 +623,8 @@ obligations:
   interpretation_note: Second source-located XLF-04 batch covering stable identifier, inheritance, language, direction, whitespace, and source-target rules.
   verification_status: SOURCE_BOUND_UNVERIFIED
 - obligation_id: SAL-XLIFF-CORE-LANGUAGE-TARGET-001
+  obligation_basis: XLIFF_SPECIFICATION
+  conformance_effect: STANDARD_CONFORMANCE
   introduced_in_batch: XLF-04-BATCH-002
   stable_profiles:
   - xliff_2.0
@@ -449,6 +663,8 @@ obligations:
   interpretation_note: Second source-located XLF-04 batch covering stable identifier, inheritance, language, direction, whitespace, and source-target rules.
   verification_status: SOURCE_BOUND_UNVERIFIED
 - obligation_id: SAL-XLIFF-CORE-REFERENCE-DATAREF-001
+  obligation_basis: XLIFF_SPECIFICATION
+  conformance_effect: STANDARD_CONFORMANCE
   introduced_in_batch: XLF-04-BATCH-002
   stable_profiles:
   - xliff_2.0
@@ -487,6 +703,8 @@ obligations:
   interpretation_note: Second source-located XLF-04 batch covering stable identifier, inheritance, language, direction, whitespace, and source-target rules.
   verification_status: SOURCE_BOUND_UNVERIFIED
 - obligation_id: SAL-XLIFF-CORE-REFERENCE-FRAGMENT-INHERIT-001
+  obligation_basis: XLIFF_SPECIFICATION
+  conformance_effect: STANDARD_CONFORMANCE
   introduced_in_batch: XLF-04-BATCH-002
   stable_profiles:
   - xliff_2.0
@@ -524,7 +742,162 @@ obligations:
     - reject a relative fragment whose inherited path is invalid
   interpretation_note: Second source-located XLF-04 batch covering stable identifier, inheritance, language, direction, whitespace, and source-target rules.
   verification_status: SOURCE_BOUND_UNVERIFIED
+- obligation_id: SAL-XLIFF-CORE-ROUNDTRIP-SEMANTIC-001
+  obligation_basis: PRODUCTION_POLICY
+  conformance_effect: PRODUCTION_PROFILE_ONLY
+  introduced_in_batch: XLF-04-BATCH-003
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  owner: core:roundtrip
+  category: semantic_roundtrip_canonical_output
+  normalized_rule: Prove parse-save-parse semantic equivalence for every supported stable Core construct.
+  requirement_class: PRESERVATION_REQUIREMENT
+  normative_level: MUST
+  authority_locations:
+  - authority_source_id: POLICY-SHARED-LIBRARY-CONTRACT
+    source_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+    location_kind: policy_rule
+    path: shared/format-contracts/policy/shared-library-contract.yaml
+    rule_id: POL-SLC-QUALITY-02
+    source_text_sha256: f51dc3895a64568a02404a54c8a69ed230a74926e6e629c2164afe00a73523c5
+  evidence_requirements:
+    positive:
+    - execute semantic roundtrips for every supported Core construct
+    rejection:
+    - detect semantic loss or mutation during parse-save-parse
+  interpretation_note: Third source-located XLF-04 batch. XLIFF conformance statements and Format Factory production-policy requirements retain distinct authority classes and conformance effects.
+  verification_status: SOURCE_BOUND_UNVERIFIED
+- obligation_id: SAL-XLIFF-CORE-ROUNDTRIP-STRUCTURE-001
+  obligation_basis: XLIFF_SPECIFICATION
+  conformance_effect: STANDARD_CONFORMANCE
+  introduced_in_batch: XLF-04-BATCH-003
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  owner: core:roundtrip
+  category: semantic_roundtrip_canonical_output
+  normalized_rule: Preserve the static file, group, and unit order established by extraction throughout an XLIFF processing roundtrip.
+  requirement_class: PRESERVATION_REQUIREMENT
+  normative_level: SHOULD
+  authority_locations:
+  - profile: xliff_2.0
+    authority_source_id: SRC-XLF-001
+    source_sha256: aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055
+    location_kind: prose_paragraph
+    member: xliff-core-v2.0-os.xml
+    member_sha256: 07059d426de1e839540e5e84e0e061c4a6d5ef1a1b7e71ddf75bf5bd11518b73
+    section_id: subflowsdesc
+    paragraph_index: 9
+    source_anchor: static structure encoded by <file>, <group>, and <unit> elements is principally immutable
+    source_text_sha256: 82eda541e64d9e505a5092d1252832a3c536ea21fb5bb76ec0b941da2d96ac5b
+  - profile: xliff_2.1
+    authority_source_id: SRC-XLF-002
+    source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    location_kind: prose_paragraph
+    member: xliff-core-v2.1-os.xml
+    member_sha256: e8c72ec2314e1025f25886cd0ea2b6c10aa2405bd292026383afca2207c44e5b
+    section_id: subflowsdesc
+    paragraph_index: 9
+    source_anchor: static structure encoded by <file>, <group>, and <unit> elements is principally immutable
+    source_text_sha256: 82eda541e64d9e505a5092d1252832a3c536ea21fb5bb76ec0b941da2d96ac5b
+  evidence_requirements:
+    positive:
+    - roundtrip nested file, group, and unit order semantically
+    rejection:
+    - detect or reject a write that silently changes static order
+  interpretation_note: Third source-located XLF-04 batch. XLIFF conformance statements and Format Factory production-policy requirements retain distinct authority classes and conformance effects.
+  verification_status: SOURCE_BOUND_UNVERIFIED
+- obligation_id: SAL-XLIFF-CORE-SECURITY-EXTERNAL-RESOLUTION-001
+  obligation_basis: PRODUCTION_POLICY
+  conformance_effect: PRODUCTION_PROFILE_ONLY
+  introduced_in_batch: XLF-04-BATCH-003
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  owner: core:security
+  category: xml_security_resource_limits
+  normalized_rule: Disable XML external-entity expansion and implicit file or network reference resolution unless the caller explicitly enables a bounded resolver.
+  requirement_class: PROCESSING_REQUIREMENT
+  normative_level: MUST
+  authority_locations:
+  - authority_source_id: POLICY-SHARED-LIBRARY-CONTRACT
+    source_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+    location_kind: policy_rule
+    path: shared/format-contracts/policy/shared-library-contract.yaml
+    rule_id: POL-SLC-SEC-02
+    source_text_sha256: 1086cf9abd0f9250263f193aae1e07c7dcb508826ebd7d49957a3d37e1391990
+  evidence_requirements:
+    positive:
+    - parse safe documents with external resolution disabled
+    rejection:
+    - reject entity expansion and prove no implicit external I/O
+  interpretation_note: Third source-located XLF-04 batch. XLIFF conformance statements and Format Factory production-policy requirements retain distinct authority classes and conformance effects.
+  verification_status: SOURCE_BOUND_UNVERIFIED
+- obligation_id: SAL-XLIFF-CORE-SECURITY-RESOURCE-LIMITS-001
+  obligation_basis: PRODUCTION_POLICY
+  conformance_effect: PRODUCTION_PROFILE_ONLY
+  introduced_in_batch: XLF-04-BATCH-003
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  owner: core:security
+  category: xml_security_resource_limits
+  normalized_rule: Enforce configurable safe defaults for input bytes, XML nesting, element count, text size, and decoded payload size.
+  requirement_class: PROCESSING_REQUIREMENT
+  normative_level: MUST
+  authority_locations:
+  - authority_source_id: POLICY-SHARED-LIBRARY-CONTRACT
+    source_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+    location_kind: policy_rule
+    path: shared/format-contracts/policy/shared-library-contract.yaml
+    rule_id: POL-SLC-SEC-01
+    source_text_sha256: d492d1f33f6b5c87386aa872dcab5a831ec9e42a1d7cf777a0b9233ec4c84afb
+  - authority_source_id: POLICY-SHARED-LIBRARY-CONTRACT
+    source_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+    location_kind: policy_rule
+    path: shared/format-contracts/policy/shared-library-contract.yaml
+    rule_id: POL-SLC-SEC-05
+    source_text_sha256: 73da4f91b8058207f1afbbe20e8b92e660262bd83cc84a0ab218267cdb305d1b
+  evidence_requirements:
+    positive:
+    - accept inputs exactly at every configured resource boundary
+    rejection:
+    - reject inputs beyond every boundary without partial success
+  interpretation_note: Third source-located XLF-04 batch. XLIFF conformance statements and Format Factory production-policy requirements retain distinct authority classes and conformance effects.
+  verification_status: SOURCE_BOUND_UNVERIFIED
+- obligation_id: SAL-XLIFF-CORE-SECURITY-URI-RISK-001
+  obligation_basis: XLIFF_SPECIFICATION
+  conformance_effect: STANDARD_CONFORMANCE
+  introduced_in_batch: XLF-04-BATCH-003
+  stable_profiles:
+  - xliff_2.1
+  owner: core:security
+  category: xml_security_resource_limits
+  normalized_rule: Expose the security risk of dereferencing URI and IRI attributes, including file URI access, in the 2.1 profile.
+  requirement_class: PROCESSING_REQUIREMENT
+  normative_level: SHOULD
+  authority_locations:
+  - profile: xliff_2.1
+    authority_source_id: SRC-XLF-002
+    source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    location_kind: prose_paragraph
+    member: xliff-core-v2.1-os.xml
+    member_sha256: e8c72ec2314e1025f25886cd0ea2b6c10aa2405bd292026383afca2207c44e5b
+    section_id: mediaType
+    paragraph_index: 11
+    source_anchor: 'Direct external reference mechanisms: An XLIFF document has a number of attributes'
+    source_text_sha256: b5364056d41365808809350b67dabd5eda5eb005217c762c2f2b2bd6a6a46860
+  evidence_requirements:
+    positive:
+    - report URI-bearing constructs without dereferencing them
+    rejection:
+    - prove default processing performs no implicit file or network access
+  interpretation_note: Third source-located XLF-04 batch. XLIFF conformance statements and Format Factory production-policy requirements retain distinct authority classes and conformance effects.
+  verification_status: SOURCE_BOUND_UNVERIFIED
 - obligation_id: SAL-XLIFF-CORE-SEGMENT-SPLIT-001
+  obligation_basis: XLIFF_SPECIFICATION
+  conformance_effect: STANDARD_CONFORMANCE
   introduced_in_batch: XLF-04-BATCH-001
   stable_profiles:
   - xliff_2.0
@@ -563,6 +936,8 @@ obligations:
   interpretation_note: First source-located XLF-04 batch. This identity remains stable while later batches add the uncaptured Core categories and finer rules.
   verification_status: SOURCE_BOUND_UNVERIFIED
 - obligation_id: SAL-XLIFF-CORE-SOURCE-TARGET-OPTIONAL-001
+  obligation_basis: XLIFF_SPECIFICATION
+  conformance_effect: STANDARD_CONFORMANCE
   introduced_in_batch: XLF-04-BATCH-002
   stable_profiles:
   - xliff_2.0
@@ -601,6 +976,8 @@ obligations:
   interpretation_note: Second source-located XLF-04 batch covering stable identifier, inheritance, language, direction, whitespace, and source-target rules.
   verification_status: SOURCE_BOUND_UNVERIFIED
 - obligation_id: SAL-XLIFF-CORE-STATE-SUBSTATE-001
+  obligation_basis: XLIFF_SPECIFICATION
+  conformance_effect: STANDARD_CONFORMANCE
   introduced_in_batch: XLF-04-BATCH-001
   stable_profiles:
   - xliff_2.0
@@ -639,6 +1016,8 @@ obligations:
   interpretation_note: First source-located XLF-04 batch. This identity remains stable while later batches add the uncaptured Core categories and finer rules.
   verification_status: SOURCE_BOUND_UNVERIFIED
 - obligation_id: SAL-XLIFF-CORE-TARGET-LANGUAGE-001
+  obligation_basis: XLIFF_SPECIFICATION
+  conformance_effect: STANDARD_CONFORMANCE
   introduced_in_batch: XLF-04-BATCH-002
   stable_profiles:
   - xliff_2.0
@@ -677,6 +1056,8 @@ obligations:
   interpretation_note: Second source-located XLF-04 batch covering stable identifier, inheritance, language, direction, whitespace, and source-target rules.
   verification_status: SOURCE_BOUND_UNVERIFIED
 - obligation_id: SAL-XLIFF-CORE-TARGET-ORDER-001
+  obligation_basis: XLIFF_SPECIFICATION
+  conformance_effect: STANDARD_CONFORMANCE
   introduced_in_batch: XLF-04-BATCH-002
   stable_profiles:
   - xliff_2.0
@@ -715,6 +1096,8 @@ obligations:
   interpretation_note: Second source-located XLF-04 batch covering stable identifier, inheritance, language, direction, whitespace, and source-target rules.
   verification_status: SOURCE_BOUND_UNVERIFIED
 - obligation_id: SAL-XLIFF-CORE-WHITESPACE-INHERIT-001
+  obligation_basis: XLIFF_SPECIFICATION
+  conformance_effect: STANDARD_CONFORMANCE
   introduced_in_batch: XLF-04-BATCH-002
   stable_profiles:
   - xliff_2.0
@@ -752,4 +1135,37 @@ obligations:
     - reject normalization that violates inherited xml:space
   interpretation_note: Second source-located XLF-04 batch covering stable identifier, inheritance, language, direction, whitespace, and source-target rules.
   verification_status: SOURCE_BOUND_UNVERIFIED
-truth_boundary: These source-bound fine-grained Core obligations supersede no unreviewed SAL facts and do not turn the 36 coarse XLF-03 anchors into complete Core semantics, product source, or certification.
+- obligation_id: SAL-XLIFF-CORE-WRITE-DETERMINISTIC-001
+  obligation_basis: PRODUCTION_POLICY
+  conformance_effect: PRODUCTION_PROFILE_ONLY
+  introduced_in_batch: XLF-04-BATCH-003
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  owner: core:writer
+  category: semantic_roundtrip_canonical_output
+  normalized_rule: Serialize an unchanged document to byte-identical output across repeated writes in the same explicit output mode.
+  requirement_class: PROCESSING_REQUIREMENT
+  normative_level: MUST
+  authority_locations:
+  - authority_source_id: POLICY-SHARED-LIBRARY-CONTRACT
+    source_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+    location_kind: policy_rule
+    path: shared/format-contracts/policy/shared-library-contract.yaml
+    rule_id: POL-SLC-LIFECYCLE-06
+    source_text_sha256: 196c6781b05956164f126fa65af198fc285842b98e4b09a9f4bd30487df87211
+  - authority_source_id: POLICY-SHARED-LIBRARY-CONTRACT
+    source_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+    location_kind: policy_rule
+    path: shared/format-contracts/policy/shared-library-contract.yaml
+    rule_id: POL-SLC-QUALITY-03
+    source_text_sha256: d7b5b4d7ad14e3bdf7257c32df03fa93d0edd503028d43dfd6e13c27312e2ca1
+  evidence_requirements:
+    positive:
+    - serialize the same document repeatedly and compare exact bytes
+    rejection:
+    - detect prefix, ordering, or formatting nondeterminism
+  interpretation_note: Third source-located XLF-04 batch. XLIFF conformance statements and Format Factory production-policy requirements retain distinct authority classes and conformance effects.
+  verification_status: SOURCE_BOUND_UNVERIFIED
+truth_boundary: XLIFF specification obligations and production-policy duties are separate authority classes. Neither source binding nor category presence turns the 36 coarse XLF-03 anchors into complete Core semantics, product source, or certification.
+denominator_input_sha256: c1a326e42bd1b47ec792088258f81fc4eac0b02543c57beedb48242181d008da

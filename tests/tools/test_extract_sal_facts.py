@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import hashlib
 import importlib.util
+from copy import deepcopy
 from pathlib import Path
 from types import ModuleType
 from xml.sax.saxutils import escape
@@ -679,6 +680,21 @@ def _write_core_obligation_archive(
             "When order is not explicitly set, the <target> order corresponds "
             "to its sibling <source>.",
         ),
+        "subflowsdesc": (
+            "Please note that the static structure encoded by <file>, <group>, "
+            "and <unit> elements is principally immutable in XLIFF Documents "
+            "and hence the unit order initially set by the Extractor will be "
+            "preserved throughout the roundtrip even in the special case of "
+            "sub-flows.",
+        ),
+        "mediaType": (
+            (
+                "Direct external reference mechanisms: An XLIFF document has "
+                "a number of attributes of the type URI or IRI, all of which "
+                "may be dereferenced. Therefore, their security implications "
+                "should be considered."
+            ),
+        ) if profile == "xliff_2.1" else (),
     }
     body = "".join(
         f'<section id="{section_id}"><title>{section_id}</title>'
@@ -803,6 +819,7 @@ def test_core_obligation_batch_is_source_bound_and_truthfully_partial(
         seeds.append(
             {
                 "obligation_id": obligation_id,
+                "obligation_basis": "XLIFF_SPECIFICATION",
                 "introduced_in_batch": "XLF-04-BATCH-001",
                 "stable_profiles": ["xliff_2.0", "xliff_2.1"],
                 "owner": owner,
@@ -840,7 +857,7 @@ def test_core_obligation_batch_is_source_bound_and_truthfully_partial(
         batch_id="XLF-04-BATCH-001",
     )
 
-    assert inventory["schema"] == "ff6/xliff-core-obligation-inventory@1"
+    assert inventory["schema"] == "ff6/xliff-core-obligation-inventory@2"
     assert inventory["status"] == "SOURCE_LOCATED_PARTIAL"
     assert inventory["batch_id"] == "XLF-04-BATCH-001"
     assert inventory["obligation_count"] == 7
@@ -896,12 +913,11 @@ def test_cli_writes_and_checks_default_core_obligation_batch(
         path = tmp_path / f"{profile}.zip"
         _member, digest = _write_core_obligation_archive(path, profile=profile)
         sources[profile] = (path, digest)
+    denominator_output = tmp_path / "xliff-core-obligation-denominator.yaml"
     output = tmp_path / "xliff-core-obligation-inventory.yaml"
-    args = [
+    common_args = [
         "--format-id",
         "xliff",
-        "--artifact",
-        "core-obligations",
         "--source-20",
         str(sources["xliff_2.0"][0]),
         "--source-20-id",
@@ -914,6 +930,22 @@ def test_cli_writes_and_checks_default_core_obligation_batch(
         "SRC-XLF-002",
         "--source-21-sha256",
         sources["xliff_2.1"][1],
+    ]
+    assert extractor.main(
+        [
+            *common_args,
+            "--artifact",
+            "core-denominator",
+            "--output",
+            str(denominator_output),
+        ]
+    ) == 0
+    args = [
+        *common_args,
+        "--artifact",
+        "core-obligations",
+        "--denominator",
+        str(denominator_output),
         "--output",
         str(output),
     ]
@@ -921,21 +953,25 @@ def test_cli_writes_and_checks_default_core_obligation_batch(
     assert extractor.main(args) == 0
     first_bytes = output.read_bytes()
     inventory = yaml.safe_load(first_bytes)
-    assert inventory["schema"] == "ff6/xliff-core-obligation-inventory@1"
+    assert inventory["schema"] == "ff6/xliff-core-obligation-inventory@2"
     assert inventory["artifact_id"] == (
-        "FF6-XLIFF-CORE-OBLIGATIONS-XLF04-BATCH002"
+        "FF6-XLIFF-CORE-OBLIGATIONS-XLF04-BATCH003"
     )
-    assert inventory["artifact_type"] == "normative_obligation_inventory"
+    assert inventory["artifact_type"] == (
+        "core_and_production_obligation_inventory"
+    )
     assert inventory["visibility"] == "generated"
     assert inventory["publish_allowed"] is False
     assert inventory["generated_by"] == "codex"
-    assert inventory["batch_id"] == "XLF-04-BATCH-002"
+    assert inventory["batch_id"] == "XLF-04-BATCH-003"
     assert inventory["status"] == "SOURCE_LOCATED_PARTIAL"
-    assert inventory["obligation_count"] == 19
-    assert inventory["remaining_categories"] == [
-        "semantic_roundtrip_canonical_output",
-        "xml_security_resource_limits",
-    ]
+    assert inventory["obligation_count"] == 25
+    assert inventory["uncovered_categories"] == []
+    assert inventory["expected_obligation_count"] > 25
+    assert inventory["denominator_status"] == "OPEN_AUTHORITY_CENSUS"
+    assert inventory["denominator_input_sha256"] == hashlib.sha256(
+        denominator_output.read_bytes()
+    ).hexdigest()
     assert inventory["complete"] is False
     assert extractor.main([*args, "--check"]) == 0
     assert output.read_bytes() == first_bytes
@@ -1007,7 +1043,9 @@ def test_category_presence_cannot_self_certify_core_completeness(
                 prose_member=member,
             )
         )
-    seeds = extractor._default_core_obligation_seeds()
+    seeds = extractor._default_core_obligation_seeds(
+        through_batch="XLF-04-BATCH-002"
+    )
     base = seeds[0]
     missing_categories = sorted(
         extractor._XLIFF_CORE_CATEGORIES
@@ -1065,7 +1103,9 @@ def test_default_core_obligation_batch_two_extends_three_normative_families(
         "SAL-XLIFF-CORE-TARGET-ORDER-001",
         "SAL-XLIFF-CORE-WHITESPACE-INHERIT-001",
     }
-    seeds = extractor._default_core_obligation_seeds()
+    seeds = extractor._default_core_obligation_seeds(
+        through_batch="XLF-04-BATCH-002"
+    )
     by_id = {str(seed["obligation_id"]): seed for seed in seeds}
 
     assert set(by_id) == batch_001_ids | batch_002_ids
@@ -1138,4 +1178,184 @@ def test_default_core_obligation_batch_two_extends_three_normative_families(
             sources,
             obligation_seeds=seeds,
             batch_id="XLF-04-BATCH-001",
+        )
+
+
+def test_default_core_obligation_batch_three_separates_spec_and_policy_authority(
+    tmp_path: Path,
+) -> None:
+    extractor = _load_module()
+    sources = []
+    for profile in ("xliff_2.0", "xliff_2.1"):
+        path = tmp_path / f"{profile}.zip"
+        member, digest = _write_core_obligation_archive(path, profile=profile)
+        sources.append(
+            extractor.ProfileSource(
+                profile=profile,
+                source_id=f"SRC-{profile.upper()}",
+                package_path=path,
+                expected_sha256=digest,
+                prose_member=member,
+            )
+        )
+
+    seeds = extractor._default_core_obligation_seeds(
+        through_batch="XLF-04-BATCH-003"
+    )
+    batch_three_ids = {
+        str(seed["obligation_id"])
+        for seed in seeds
+        if seed["introduced_in_batch"] == "XLF-04-BATCH-003"
+    }
+    assert batch_three_ids == {
+        "SAL-XLIFF-CORE-ROUNDTRIP-SEMANTIC-001",
+        "SAL-XLIFF-CORE-ROUNDTRIP-STRUCTURE-001",
+        "SAL-XLIFF-CORE-SECURITY-EXTERNAL-RESOLUTION-001",
+        "SAL-XLIFF-CORE-SECURITY-RESOURCE-LIMITS-001",
+        "SAL-XLIFF-CORE-SECURITY-URI-RISK-001",
+        "SAL-XLIFF-CORE-WRITE-DETERMINISTIC-001",
+    }
+
+    policy_sources = extractor._default_core_policy_sources()
+    denominator = extractor.compile_xliff_core_denominator(
+        sources,
+        policy_sources=policy_sources,
+    )
+    inventory = extractor.compile_xliff_core_obligations(
+        sources,
+        obligation_seeds=seeds,
+        batch_id="XLF-04-BATCH-003",
+        policy_sources=policy_sources,
+        expected_obligation_inventory=denominator,
+    )
+
+    assert inventory["obligation_count"] == 25
+    assert inventory["uncovered_categories"] == []
+    assert inventory["expected_obligation_count"] > inventory["obligation_count"]
+    assert inventory["missing_expected_obligation_ids"]
+    assert inventory["denominator_status"] == "OPEN_AUTHORITY_CENSUS"
+    assert inventory["denominator_complete"] is False
+    assert inventory["complete"] is False
+
+    rows = {row["obligation_id"]: row for row in inventory["obligations"]}
+    structure = rows["SAL-XLIFF-CORE-ROUNDTRIP-STRUCTURE-001"]
+    assert structure["obligation_basis"] == "XLIFF_SPECIFICATION"
+    assert structure["conformance_effect"] == "STANDARD_CONFORMANCE"
+    assert {item["profile"] for item in structure["authority_locations"]} == {
+        "xliff_2.0",
+        "xliff_2.1",
+    }
+
+    uri_risk = rows["SAL-XLIFF-CORE-SECURITY-URI-RISK-001"]
+    assert uri_risk["stable_profiles"] == ["xliff_2.1"]
+    assert uri_risk["obligation_basis"] == "XLIFF_SPECIFICATION"
+
+    for obligation_id in (
+        "SAL-XLIFF-CORE-ROUNDTRIP-SEMANTIC-001",
+        "SAL-XLIFF-CORE-SECURITY-EXTERNAL-RESOLUTION-001",
+        "SAL-XLIFF-CORE-SECURITY-RESOURCE-LIMITS-001",
+        "SAL-XLIFF-CORE-WRITE-DETERMINISTIC-001",
+    ):
+        row = rows[obligation_id]
+        assert row["obligation_basis"] == "PRODUCTION_POLICY"
+        assert row["conformance_effect"] == "PRODUCTION_PROFILE_ONLY"
+        assert all(
+            location["location_kind"] == "policy_rule"
+            and location["authority_source_id"].startswith("POLICY-")
+            and len(location["source_sha256"]) == 64
+            and len(location["source_text_sha256"]) == 64
+            for location in row["authority_locations"]
+        )
+
+
+def test_open_core_denominator_is_independent_and_cannot_certify_completion(
+    tmp_path: Path,
+) -> None:
+    extractor = _load_module()
+    sources = []
+    for profile in ("xliff_2.0", "xliff_2.1"):
+        path = tmp_path / f"{profile}.zip"
+        member, digest = _write_core_obligation_archive(path, profile=profile)
+        sources.append(
+            extractor.ProfileSource(
+                profile=profile,
+                source_id=f"SRC-{profile.upper()}",
+                package_path=path,
+                expected_sha256=digest,
+                prose_member=member,
+            )
+        )
+    policy_sources = extractor._default_core_policy_sources()
+    denominator = extractor.compile_xliff_core_denominator(
+        sources,
+        policy_sources=policy_sources,
+    )
+
+    assert denominator["schema"] == "ff6/xliff-core-obligation-denominator@1"
+    assert denominator["status"] == "OPEN_AUTHORITY_CENSUS"
+    assert denominator["inventory_complete"] is False
+    assert denominator["expected_obligation_count"] >= 60
+    assert set(denominator["covered_categories"]) == set(
+        extractor._XLIFF_CORE_CATEGORIES
+    )
+    assert "SAL-XLIFF-CORE-DOCUMENT-VERSION-001" in {
+        row["obligation_id"] for row in denominator["expectations"]
+    }
+
+    seeds = extractor._default_core_obligation_seeds(
+        through_batch="XLF-04-BATCH-003"
+    )
+    omitted_id = "SAL-XLIFF-CORE-DOCUMENT-ROOT-001"
+    incomplete = extractor.compile_xliff_core_obligations(
+        sources,
+        obligation_seeds=[
+            seed for seed in seeds if seed["obligation_id"] != omitted_id
+        ],
+        batch_id="XLF-04-BATCH-003",
+        policy_sources=policy_sources,
+        expected_obligation_inventory=denominator,
+    )
+
+    assert omitted_id in incomplete["missing_expected_obligation_ids"]
+    assert incomplete["completeness_basis"] == (
+        "EXPLICIT_EXPECTED_OBLIGATION_IDS_OPEN_CENSUS"
+    )
+    assert incomplete["complete"] is False
+
+
+def test_core_denominator_authority_input_tampering_fails_closed(
+    tmp_path: Path,
+) -> None:
+    extractor = _load_module()
+    sources = []
+    for profile in ("xliff_2.0", "xliff_2.1"):
+        path = tmp_path / f"{profile}.zip"
+        member, digest = _write_core_obligation_archive(path, profile=profile)
+        sources.append(
+            extractor.ProfileSource(
+                profile=profile,
+                source_id=f"SRC-{profile.upper()}",
+                package_path=path,
+                expected_sha256=digest,
+                prose_member=member,
+            )
+        )
+    policy_sources = extractor._default_core_policy_sources()
+    denominator = extractor.compile_xliff_core_denominator(
+        sources,
+        policy_sources=policy_sources,
+    )
+    tampered = deepcopy(denominator)
+    tampered["authority_inputs"][0]["source_sha256"] = "0" * 64
+
+    with pytest.raises(
+        extractor.ExtractionError,
+        match="denominator authority input closure",
+    ):
+        extractor.compile_xliff_core_obligations(
+            sources,
+            obligation_seeds=extractor._default_core_obligation_seeds(),
+            batch_id="XLF-04-BATCH-003",
+            policy_sources=policy_sources,
+            expected_obligation_inventory=tampered,
         )

@@ -1,0 +1,676 @@
+schema: ff6/xliff-core-obligation-denominator@1
+artifact_id: FF6-XLIFF-CORE-OBLIGATION-DENOMINATOR
+artifact_type: expected_obligation_denominator
+visibility: generated
+publish_allowed: false
+generated_by: codex
+format_id: xliff
+status: OPEN_AUTHORITY_CENSUS
+inventory_complete: false
+stable_profiles:
+- xliff_2.0
+- xliff_2.1
+expected_obligation_count: 105
+covered_categories:
+- agent_processing
+- document_structure
+- extension_preservation
+- hierarchy_cardinality
+- identifiers_references_inheritance
+- inline_code_semantics
+- language_direction_whitespace
+- segmentation
+- semantic_roundtrip_canonical_output
+- source_target_correspondence
+- state
+- xml_security_resource_limits
+authority_inputs:
+- authority_class: XLIFF_STANDARD_PACKAGE
+  profile: xliff_2.0
+  source_id: SRC-XLF-001
+  source_sha256: aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055
+- authority_class: XLIFF_STANDARD_PACKAGE
+  profile: xliff_2.1
+  source_id: SRC-XLF-002
+  source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+- authority_class: PRODUCTION_POLICY
+  source_id: POLICY-SHARED-LIBRARY-CONTRACT
+  source_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+- authority_class: PRODUCTION_POLICY
+  source_id: POLICY-XML-LOCALIZATION-FAMILY
+  source_sha256: 407c11dd45eae83afef02160f90a357d086b4fcbfff4ad408463f374e3361a86
+open_census_reasons:
+- Every normative Core prose statement has not yet been dispositioned to an obligation or explicit non-obligation.
+- Every Core XSD cardinality, ordering, type, attribute, and Schematron constraint has not yet been mapped exactly once.
+- XLIFF 2.1 additions and changed processing requirements have not yet been proven complete against the 2.0 delta.
+expectations:
+- obligation_id: SAL-XLIFF-CORE-AGENT-EXTRACTOR-001
+  category: agent_processing
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-AGENT-INLINE-001
+  category: agent_processing
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-AGENT-LOSS-REPORT-001
+  category: agent_processing
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: PRODUCTION_POLICY
+- obligation_id: SAL-XLIFF-CORE-AGENT-MERGER-001
+  category: agent_processing
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-AGENT-MODIFIER-001
+  category: agent_processing
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-AGENT-VALIDATOR-001
+  category: agent_processing
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-AGENT-WRITER-001
+  category: agent_processing
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-DIRECTION-SOURCE-001
+  category: language_direction_whitespace
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-DIRECTION-TARGET-001
+  category: language_direction_whitespace
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-DOCUMENT-FILE-MINIMUM-001
+  category: document_structure
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-DOCUMENT-FILE-ORDER-001
+  category: document_structure
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-DOCUMENT-NAMESPACE-001
+  category: document_structure
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-DOCUMENT-ROOT-001
+  category: document_structure
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001
+  category: document_structure
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001
+  category: document_structure
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-DOCUMENT-VERSION-001
+  category: document_structure
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-EXTENSION-CORE-CONFLICT-001
+  category: extension_preservation
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-EXTENSION-DOWNGRADE-LOSS-001
+  category: extension_preservation
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: PRODUCTION_POLICY
+- obligation_id: SAL-XLIFF-CORE-EXTENSION-MERGER-RELIANCE-001
+  category: extension_preservation
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-EXTENSION-NAMESPACE-001
+  category: extension_preservation
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-EXTENSION-PRESERVE-001
+  category: extension_preservation
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-EXTENSION-UNKNOWN-PRESERVE-001
+  category: extension_preservation
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-HIERARCHY-EXTENSION-POINTS-001
+  category: hierarchy_cardinality
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-HIERARCHY-FILE-CHILDREN-001
+  category: hierarchy_cardinality
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-HIERARCHY-GROUP-CHILDREN-001
+  category: hierarchy_cardinality
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001
+  category: hierarchy_cardinality
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-HIERARCHY-NOTES-001
+  category: hierarchy_cardinality
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-HIERARCHY-ORDER-001
+  category: hierarchy_cardinality
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-HIERARCHY-ORIGINAL-DATA-001
+  category: hierarchy_cardinality
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001
+  category: hierarchy_cardinality
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-HIERARCHY-SKELETON-001
+  category: hierarchy_cardinality
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-HIERARCHY-UNIT-001
+  category: hierarchy_cardinality
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-HIERARCHY-UNIT-CHILDREN-001
+  category: hierarchy_cardinality
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-ID-DATA-UNIQUE-001
+  category: identifiers_references_inheritance
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-ID-FILE-UNIQUE-001
+  category: identifiers_references_inheritance
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-ID-GROUP-UNIQUE-001
+  category: identifiers_references_inheritance
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-ID-NOTE-UNIQUE-001
+  category: identifiers_references_inheritance
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-ID-SEGMENT-UNIQUE-001
+  category: identifiers_references_inheritance
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-ID-UNIT-UNIQUE-001
+  category: identifiers_references_inheritance
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-INHERIT-TRANSLATE-001
+  category: identifiers_references_inheritance
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-INLINE-CANCOPY-001
+  category: inline_code_semantics
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-INLINE-CANDELETE-001
+  category: inline_code_semantics
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-INLINE-CANREORDER-001
+  category: inline_code_semantics
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-INLINE-COPYOF-001
+  category: inline_code_semantics
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-INLINE-DATAREF-001
+  category: inline_code_semantics
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-INLINE-EC-001
+  category: inline_code_semantics
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-INLINE-EM-001
+  category: inline_code_semantics
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-INLINE-ISOLATION-001
+  category: inline_code_semantics
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-INLINE-MRK-001
+  category: inline_code_semantics
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-INLINE-NESTING-001
+  category: inline_code_semantics
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-INLINE-ORDER-001
+  category: inline_code_semantics
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-INLINE-ORIGINAL-DATA-001
+  category: inline_code_semantics
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-INLINE-OVERLAP-001
+  category: inline_code_semantics
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-INLINE-PAIRING-001
+  category: inline_code_semantics
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-INLINE-PC-001
+  category: inline_code_semantics
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-INLINE-PH-001
+  category: inline_code_semantics
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-INLINE-SC-001
+  category: inline_code_semantics
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-INLINE-SM-001
+  category: inline_code_semantics
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-INLINE-SPANNING-001
+  category: inline_code_semantics
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-INLINE-STARTREF-001
+  category: inline_code_semantics
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-LANGUAGE-ROOT-SOURCE-001
+  category: language_direction_whitespace
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-LANGUAGE-ROOT-TARGET-001
+  category: language_direction_whitespace
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-LANGUAGE-SOURCE-001
+  category: language_direction_whitespace
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-LANGUAGE-TARGET-001
+  category: language_direction_whitespace
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-REFERENCE-COPYOF-001
+  category: identifiers_references_inheritance
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-REFERENCE-DATAREF-001
+  category: identifiers_references_inheritance
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-REFERENCE-FRAGMENT-INHERIT-001
+  category: identifiers_references_inheritance
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-REFERENCE-SKELETON-HREF-001
+  category: identifiers_references_inheritance
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-REFERENCE-STARTREF-001
+  category: identifiers_references_inheritance
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-ROUNDTRIP-SEMANTIC-001
+  category: semantic_roundtrip_canonical_output
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: PRODUCTION_POLICY
+- obligation_id: SAL-XLIFF-CORE-ROUNDTRIP-STRUCTURE-001
+  category: semantic_roundtrip_canonical_output
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-SECURITY-ELEMENT-LIMIT-001
+  category: xml_security_resource_limits
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: PRODUCTION_POLICY
+- obligation_id: SAL-XLIFF-CORE-SECURITY-EXTERNAL-RESOLUTION-001
+  category: xml_security_resource_limits
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: PRODUCTION_POLICY
+- obligation_id: SAL-XLIFF-CORE-SECURITY-NESTING-LIMIT-001
+  category: xml_security_resource_limits
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: PRODUCTION_POLICY
+- obligation_id: SAL-XLIFF-CORE-SECURITY-PATH-TRAVERSAL-001
+  category: xml_security_resource_limits
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: PRODUCTION_POLICY
+- obligation_id: SAL-XLIFF-CORE-SECURITY-RESOURCE-LIMITS-001
+  category: xml_security_resource_limits
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: PRODUCTION_POLICY
+- obligation_id: SAL-XLIFF-CORE-SECURITY-TEXT-LIMIT-001
+  category: xml_security_resource_limits
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: PRODUCTION_POLICY
+- obligation_id: SAL-XLIFF-CORE-SECURITY-URI-RISK-001
+  category: xml_security_resource_limits
+  stable_profiles:
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-SECURITY-XML-ENTITY-001
+  category: xml_security_resource_limits
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: PRODUCTION_POLICY
+- obligation_id: SAL-XLIFF-CORE-SEGMENT-CANRESEGMENT-INHERIT-001
+  category: segmentation
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-SEGMENT-INLINE-INTEGRITY-001
+  category: segmentation
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-SEGMENT-JOIN-001
+  category: segmentation
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-SEGMENT-SPLIT-001
+  category: segmentation
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-SEGMENT-SPLIT-MAPPING-001
+  category: segmentation
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-SEGMENT-TARGET-ORDER-001
+  category: segmentation
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-SEGMENT-WHITESPACE-001
+  category: segmentation
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-SOURCE-REQUIRED-001
+  category: source_target_correspondence
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-SOURCE-TARGET-INLINE-001
+  category: source_target_correspondence
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-SOURCE-TARGET-OPTIONAL-001
+  category: source_target_correspondence
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-SOURCE-TARGET-STRUCTURE-001
+  category: source_target_correspondence
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-STATE-SUBSTATE-001
+  category: state
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-STATE-SUBSTATE-VALUE-001
+  category: state
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-STATE-TARGET-PRESENCE-001
+  category: state
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-STATE-TRANSITION-001
+  category: state
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-STATE-VALUE-001
+  category: state
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-TARGET-LANGUAGE-001
+  category: source_target_correspondence
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-TARGET-ORDER-001
+  category: source_target_correspondence
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-TARGET-ORDER-CONFLICT-001
+  category: source_target_correspondence
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-TARGET-PRESENCE-001
+  category: source_target_correspondence
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-WHITESPACE-INHERIT-001
+  category: language_direction_whitespace
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-WHITESPACE-PRESERVE-001
+  category: language_direction_whitespace
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+- obligation_id: SAL-XLIFF-CORE-WRITE-DETERMINISTIC-001
+  category: semantic_roundtrip_canonical_output
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: PRODUCTION_POLICY
+- obligation_id: SAL-XLIFF-CORE-WRITE-LOSSLESS-NORMALIZED-001
+  category: semantic_roundtrip_canonical_output
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: PRODUCTION_POLICY
+- obligation_id: SAL-XLIFF-CORE-WRITE-NAMESPACE-PREFIX-001
+  category: semantic_roundtrip_canonical_output
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: PRODUCTION_POLICY
+- obligation_id: SAL-XLIFF-CORE-WRITE-SCHEMA-ORDER-001
+  category: semantic_roundtrip_canonical_output
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  obligation_basis: XLIFF_SPECIFICATION
+truth_boundary: This independent expected-ID inventory creates durable missing-work edges, but remains OPEN_AUTHORITY_CENSUS. It cannot certify XLF-04 until every normative prose, XSD, Schematron, and production-policy candidate has an exact disposition and inventory_complete is true.
