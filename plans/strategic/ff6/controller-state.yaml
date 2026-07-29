@@ -4,10 +4,10 @@ goal_status: ACTIVE
 generated_by: codex
 visibility: internal
 controller_state: CONTRACT
-transition_sequence: 27
+transition_sequence: 28
 last_verified_event:
-  event_id: FF6-EVENT-000027
-  event_hash: 9a1783b0705468fec1e9f9fda96f61ab4b1da32a161d128a3120a8bf689686c2
+  event_id: FF6-EVENT-000028
+  event_hash: 131631d21906c86ade3775d12504f97d8b55defb8987040a97d3f29af621713e
 event_journal: plans/strategic/ff6/events.jsonl
 baseline_commit: e4f8f5f086b5e627c07c2ef2d940eda2601a22a8
 digest_policy:
@@ -126,7 +126,7 @@ current_gap_summary:
   production_certifications: 0
 control_plane_compatibility:
   ff6_event_schema: ff6/controller-event@1
-  native_chain_validation: PASS_THROUGH_EVENT_27
+  native_chain_validation: PASS_THROUGH_EVENT_28
   generic_plan_control_doctor: >-
     INCOMPATIBLE_SCHEMA: tools.plan_control expects previous_hash and its own
     event payload; FF6 uses previous_event_hash. This is the already-tracked
@@ -139,10 +139,10 @@ invariants:
   - Publication authority is external and cannot be bypassed.
 ubl_checkpoint:
   status: WORK_IN_PROGRESS
-  detailed_substate: PACKAGE_CENSUS_COMPLETE
+  detailed_substate: SCHEMA_GRAPH_ROOT_TYPE_BINDING_PARTIAL
   completed_steps: [UBL-01, UBL-02]
   first_unmet_step: UBL-03
-  checkpoint_source_commits: [7b5cce4f, 7fc49c29]
+  checkpoint_source_commits: [7b5cce4f, 7fc49c29, f98d220a]
   authority_sources: 3
   authority_matches: 3
   canonical_sal_facts: 34
@@ -153,20 +153,29 @@ ubl_checkpoint:
   package_root_census_sha256: 787c8d9258dc25a8662ee934b9b0b14096de790db87826dab970792b9494976d
   sal_verification_receipt: reports/sal-verification/ubl.json
   sal_verification_receipt_sha256: 2cc0f2cac163b7f42ab18bbe5220837d1f49a808904ac964c536085ca6d111a0
+  schema_documents_parsed: 106
+  root_type_nodes: 182
+  root_type_edges: 91
+  root_type_graph_sha256: 7b754187690ce1bb04db62657cfb552653cb381a1bdd745a56856e58215af029
   reachable_schema_graph_complete: false
   exact_next_action: >-
-    Start UBL-03 only in a disjoint, separately leased lane: compile the
-    complete content-addressed graph of every schema declaration reachable
-    from all 91 roots, preserving references, inheritance, occurrence,
-    ordering, facets, wildcards, substitution groups, and namespace rules.
-    Do not infer completeness from current product classes or the 91-root
-    census. XLIFF remains the controller-selected active task.
+    Continue UBL-03 from the committed root/type primitive with one RED-GREEN
+    cycle at a time. The next UBL increment is exact import/include closure
+    and reference resolution. Then retain local particles, anonymous types,
+    inheritance, occurrence, ordering, facets, wildcards, substitution
+    groups, namespace rules, and documentation before emitting the canonical
+    complete graph artifact. XLIFF remains the controller-selected active
+    task at XLF-04-BATCH-005 and takes priority when its preserved stale
+    working set can be governed through takeover.
   truth_boundary: >-
     UBL-01 and UBL-02 are complete and evidence-backed. The package census
     establishes 890 members and exactly 91 document roots, and all 34
-    canonical UBL SAL facts verify against three matching authorities. UBL-03
-    and every later typing step remain open. No product source,
-    certification, promotion, release, or gate state changed.
+    canonical UBL SAL facts verify against three matching authorities. The
+    first UBL-03 primitive binds all 91 roots to declared types across 106
+    schemas with a deterministic graph identity, but the complete reachable
+    graph and checked-in graph artifact do not yet exist. UBL-03 and every
+    later typing step remain open. No product source, certification,
+    promotion, release, or gate state changed.
   product_source_effect: none
   product_promotion_effect: none
 xlf_checkpoint:

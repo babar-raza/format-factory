@@ -1,0 +1,88 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "plan-control-ubl-state-checkpoint-002",
+  "skill_id": "plan-control",
+  "mode": "live",
+  "timestamp": "2026-07-29T21:39:43Z",
+  "inputs": {
+    "task_id": "TC-FF6-UBL-TYPING-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "operation": "project",
+    "target_paths": [
+      "plans/strategic/ff6/events.jsonl",
+      "plans/strategic/ff6/controller-state.yaml",
+      "taskcards/TC-FF6-UBL-TYPING-001.md",
+      "taskcards/index.yaml"
+    ],
+    "coordination_scope": "Exact Event 28, controller, UBL taskcard, index, and receipt paths under the current Codex identity. Five stale-owned XLIFF Batch 005 paths remained preserved and untouched.",
+    "acceptance_evidence": "GitLab commit f98d220a, 14 focused tests, Ruff, Mypy, Pyright, py_compile, exact 91-root official-package replay, and three identical root/type graph identities.",
+    "source_checkpoint": "f98d220a0a3903b1107de90b2e39bf480ec4b19d",
+    "execution_manifest": ".local/skills-first/manifests/sfx-d64360d4850bd514.json"
+  },
+  "allowed_files": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "taskcards/TC-FF6-UBL-TYPING-001.md",
+    "taskcards/index.yaml",
+    "reports/skills-rff6/skill-transcripts/plan-control-ubl-state-checkpoint-002.json",
+    ".local/transcripts/plan-control-ubl-state-checkpoint-002.json"
+  ],
+  "actual_files_changed": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "taskcards/TC-FF6-UBL-TYPING-001.md",
+    "reports/skills-rff6/skill-transcripts/plan-control-ubl-state-checkpoint-002.json",
+    ".local/transcripts/plan-control-ubl-state-checkpoint-002.json"
+  ],
+  "tests_run": [
+    "native FF6 hash-chain replay through FF6-EVENT-000028: PASS",
+    "controller sequence, event head, canonical XLIFF active task, UBL partial substate, first unmet UBL step, and taskcard microstep agreement: PASS",
+    "focused graph and census tests: 14 passed",
+    "official UBL package replay: 91 roots across 106 schemas",
+    "three equivalent graph runs: stable graph SHA-256 7b754187690ce1bb04db62657cfb552653cb381a1bdd745a56856e58215af029",
+    "parallel-lane isolation: PASS; no preserved XLIFF path mutated"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "event_id": "FF6-EVENT-000028",
+    "event_hash": "131631d21906c86ade3775d12504f97d8b55defb8987040a97d3f29af621713e",
+    "events_sha256": "954e4b53ed48a1d2c83bb0de83c328144de9fbe2b1955985ba5d410e665be2a7",
+    "controller_sha256": "d790f25ef67acb5e94d31ee0c741b76aa9779dc9352a919f28a8441ce325eac1",
+    "taskcard_sha256": "6ba2ed47e7e37bd4d8166ec640c1cca4bd931c442e23b0c5fa68a2c338b27251",
+    "task_index_sha256": "32592803ba9dbaa02c39ecd52ad0faa2eb0c9e1ecdd12d3a8c2cf564a0469890",
+    "task_state": "WORK_IN_PROGRESS",
+    "detailed_substate": "SCHEMA_GRAPH_ROOT_TYPE_BINDING_PARTIAL",
+    "completed_steps": [
+      "UBL-01",
+      "UBL-02"
+    ],
+    "first_unmet_step": "UBL-03",
+    "root_type_microstep_complete": true,
+    "reachable_schema_graph_complete": false,
+    "canonical_active_task": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "canonical_active_microstep": "XLF-04-BATCH-005",
+    "product_source_effect": "none",
+    "product_promotion": "none",
+    "production_certifications": "0/6"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for serialization of the bounded UBL-03 microstep",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for the root/type microstep; explicitly insufficient for UBL-03 completion",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO at transcript creation",
+    "9_bundle_or_checkpoint_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES; no new contradiction was found",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

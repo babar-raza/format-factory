@@ -38,7 +38,7 @@ native event head without serialized plan-control ownership.
 
 ## Current checkpoint
 
-Detailed substate: `PACKAGE_CENSUS_COMPLETE`.
+Detailed substate: `SCHEMA_GRAPH_ROOT_TYPE_BINDING_PARTIAL`.
 
 Completed:
 
@@ -46,6 +46,10 @@ Completed:
   34 canonical UBL SAL facts verify.
 - `UBL-02`: the deterministic package census contains 890 members and exactly
   91 document roots.
+- `UBL-03` bounded increment 001: the committed graph primitive parses all 106
+  official XSD documents and deterministically binds all 91 document roots to
+  their declared content types as 182 content-addressed nodes and 91 edges.
+  This is not completion of UBL-03.
 
 First unmet step: `UBL-03`.
 
@@ -60,11 +64,21 @@ Resume evidence:
 - SAL receipt: `reports/sal-verification/ubl.json`;
 - SAL receipt SHA-256:
   `2cc0f2cac163b7f42ab18bbe5220837d1f49a808904ac964c536085ca6d111a0`.
+- bounded graph implementation commit:
+  `f98d220a0a3903b1107de90b2e39bf480ec4b19d`;
+- bounded graph identity:
+  `7b754187690ce1bb04db62657cfb552653cb381a1bdd745a56856e58215af029`;
+- focused bounded verification: 14 tests passed, Ruff passed, Mypy passed,
+  Pyright 1.1.411 reported zero diagnostics, and three official-package runs
+  produced the same graph identity.
 
 This checkpoint proves authority closure and the package/root denominator. It
-does not prove the reachable schema graph, deterministic naming contract,
-complete obligation denominator, reconciled ProductContract, product source,
-certification, promotion, release, or any gate.
+also proves only the root-to-declared-type slice of the reachable schema graph.
+It does not prove import/include closure, local particles, anonymous types,
+complete references, inheritance, facets, wildcards, annotations, the
+canonical graph artifact, deterministic naming contract, complete obligation
+denominator, reconciled ProductContract, product source, certification,
+promotion, release, or any gate.
 
 ## Objective
 
@@ -189,6 +203,21 @@ The 91-root total is an authority denominator, not a completion claim for the
 schema type graph.
 
 ## UBL-03 — Compile the complete reachable schema graph
+
+Current resumable microstep:
+
+```text
+UBL-03-PARTIAL-001 ROOT_TYPE_BINDING_COMPLETE
+-> UBL-03-PARTIAL-002 IMPORT_INCLUDE_AND_REFERENCE_CLOSURE
+```
+
+The next executor must begin with one RED test for exact offline
+import/include closure and unique global-reference resolution. It must build
+on `f98d220a`, preserve the existing graph identities, and keep
+`reachable_schema_graph_complete: false`. Subsequent RED-GREEN cycles must
+cover each remaining bullet below. Do not emit
+`reports/ff6/ubl-reachable-schema-graph.json` as canonical-complete evidence
+until the entire section's exit evidence passes.
 
 Build a content-addressed graph containing every reachable:
 
