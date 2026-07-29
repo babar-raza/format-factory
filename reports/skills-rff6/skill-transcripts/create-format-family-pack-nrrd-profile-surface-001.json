@@ -1,0 +1,51 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "create-format-family-pack-nrrd-profile-surface-001",
+  "skill_id": "create-format-family-pack",
+  "mode": "live",
+  "timestamp": "2026-07-29T11:34:00Z",
+  "inputs": {
+    "family_id": "scientific_raster",
+    "representative_formats": [
+      "nrrd"
+    ],
+    "semantic_scope": "NRRD header-plus-payload scientific raster arrays with typed axis, encoding, detached-resource, version, spatial, and metadata semantics",
+    "excluded_concepts": [
+      "SafeTensors binary tensor containers",
+      "generic image-layer archives",
+      "measurement frame before NRRD0005"
+    ],
+    "required_fact_categories": [
+      "structure_roots",
+      "data_model",
+      "syntax_encoding",
+      "constraints_validation"
+    ],
+    "policy_pack_path": "shared/format-contracts/policy/family-packs/scientific_raster.yaml"
+  },
+  "allowed_files": [
+    "shared/format-contracts/policy/family-packs/scientific_raster.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/policy/family-packs/scientific_raster.yaml"
+  ],
+  "tests_run": [
+    "python -m tools.format_contract.family_pack_validator --pack shared/format-contracts/policy/family-packs/scientific_raster.yaml --verify-idempotency",
+    "python tools/format_contract/contract_validator.py --format-id nrrd",
+    "python -m pytest tests/format_contract -q --deselect tests/format_contract/test_consumption_chain.py::test_full_slice_second_run_is_idempotent"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "domain_count": 18,
+    "policy_id_count": 41,
+    "fact_ownership_mode": "explicit_complete",
+    "sal_fact_count": 25,
+    "duplicate_fact_owners": 0,
+    "unassigned_facts": 0,
+    "naming_negative_control": "NRRD-V4META-001 was rejected by the contract validator and replaced at the canonical source with NRRD-PHYSICALMETA-001.",
+    "family_pack_sha256": "5785fc9dae5e9fbe46f71e64392752b302c6a1c90d37eaffb5be4530f9964a07"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

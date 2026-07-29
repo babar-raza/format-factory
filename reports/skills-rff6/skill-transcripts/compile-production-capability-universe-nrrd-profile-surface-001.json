@@ -1,0 +1,84 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "compile-production-capability-universe-nrrd-profile-surface-001",
+  "skill_id": "compile-production-capability-universe",
+  "mode": "live",
+  "timestamp": "2026-07-29T11:34:00Z",
+  "inputs": {
+    "format_ids": [
+      "ipynb",
+      "ora",
+      "nrrd",
+      "xliff",
+      "safetensors",
+      "ubl"
+    ],
+    "policy_path": "plans/strategic/ff6/capability-policy.yaml",
+    "enrichment_dir": "plans/strategic/ff6/capability-enrichments",
+    "output_dir": "plans/strategic/ff6"
+  },
+  "allowed_files": [
+    "plans/strategic/ff6/capability-policy.yaml",
+    "plans/strategic/ff6/capability-enrichments/nrrd.yaml",
+    "plans/strategic/ff6/capabilities/ipynb.yaml",
+    "plans/strategic/ff6/capabilities/ora.yaml",
+    "plans/strategic/ff6/capabilities/nrrd.yaml",
+    "plans/strategic/ff6/capabilities/xliff.yaml",
+    "plans/strategic/ff6/capabilities/safetensors.yaml",
+    "plans/strategic/ff6/capabilities/ubl.yaml",
+    "plans/strategic/ff6/obligations/ipynb.yaml",
+    "plans/strategic/ff6/obligations/ora.yaml",
+    "plans/strategic/ff6/obligations/nrrd.yaml",
+    "plans/strategic/ff6/obligations/xliff.yaml",
+    "plans/strategic/ff6/obligations/safetensors.yaml",
+    "plans/strategic/ff6/obligations/ubl.yaml",
+    "plans/strategic/ff6/capability-taxonomy.yaml",
+    "plans/strategic/ff6/capability-coverage.yaml",
+    "plans/strategic/ff6/capability-manifest.json"
+  ],
+  "actual_files_changed": [
+    "plans/strategic/ff6/capability-policy.yaml",
+    "plans/strategic/ff6/capability-enrichments/nrrd.yaml",
+    "plans/strategic/ff6/capabilities/ipynb.yaml",
+    "plans/strategic/ff6/capabilities/ora.yaml",
+    "plans/strategic/ff6/capabilities/nrrd.yaml",
+    "plans/strategic/ff6/capabilities/xliff.yaml",
+    "plans/strategic/ff6/capabilities/safetensors.yaml",
+    "plans/strategic/ff6/capabilities/ubl.yaml",
+    "plans/strategic/ff6/obligations/ipynb.yaml",
+    "plans/strategic/ff6/obligations/ora.yaml",
+    "plans/strategic/ff6/obligations/nrrd.yaml",
+    "plans/strategic/ff6/obligations/xliff.yaml",
+    "plans/strategic/ff6/obligations/safetensors.yaml",
+    "plans/strategic/ff6/obligations/ubl.yaml",
+    "plans/strategic/ff6/capability-coverage.yaml",
+    "plans/strategic/ff6/capability-manifest.json"
+  ],
+  "tests_run": [
+    "python -m tools.format_contract.capability_universe compile --repo-root . --policy plans/strategic/ff6/capability-policy.yaml --enrichment-dir plans/strategic/ff6/capability-enrichments --output-dir plans/strategic/ff6 --format ipynb --format ora --format nrrd --format xliff --format safetensors --format ubl --check --verify-idempotency",
+    "python -m pytest tests/production_program/test_capability_universe.py tests/production_program/test_production_program.py -q",
+    "exact capability/fact ownership and obligation/profile audit"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "compiled_formats": 6,
+    "nrrd_capabilities": 21,
+    "nrrd_obligations": 65,
+    "nrrd_claimed_profiles": [
+      "nrrd0001",
+      "nrrd0002",
+      "nrrd0003",
+      "nrrd0004",
+      "nrrd0005"
+    ],
+    "nrrd_missing_profiles": [],
+    "nrrd_known_surface_gaps": [],
+    "nrrd_empty_profile_obligations": 0,
+    "aggregate_sha256": "4d17d8c8c0ef3de74d59e1d5b16884c0210fd0836e0593591871f10d0af2efd2",
+    "three_run_digest": "389be84634941d3f244387bbc488c2303dcdb3add74b7d1edfb5def85710d3fc",
+    "authority_audit": "15 MATCH, 0 MISMATCH, 0 MISSING, 0 LEGAL_BLOCKED"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

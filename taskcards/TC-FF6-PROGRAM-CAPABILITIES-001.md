@@ -192,3 +192,37 @@ The parent remains `NEEDS_REPAIR`. The exact next repair is
 `TC-FF6-NRRD-PROFILE-SURFACE-001` for explicit NRRD0001-NRRD0005
 applicability. XLIFF 2.0 and UBL all-root typing remain queued after NRRD.
 Architecture and product mutation remain locked.
+
+## Repair checkpoint - NRRD profile surface
+
+`TC-FF6-NRRD-PROFILE-SURFACE-001` is `PASS` at
+`FF6-EVENT-000019`:
+
+- two pinned Teem authorities and their exact source members support a
+  source-located NRRD0001-NRRD0005 delta matrix;
+- 25 NRRD SAL facts have exact passing evidence and one explicit-complete
+  capability owner each;
+- the scientific-raster family has 18 domains and 41 policy IDs;
+- one mixed NRRD0004/NRRD0005 research requirement was repaired at the
+  governed research source, then deterministically reprojected and relocked;
+- 21 NRRD capabilities own 65 canonical obligations exactly once;
+- all five selected profiles are claimed, with zero missing profiles, known
+  surface gaps, empty-profile obligations, or duplicate obligation IDs;
+- the six-format projection now contains 110 capabilities and 672
+  obligations, classified as 101 stable required, 4 optional-adapter
+  required, 4 preview isolated, and 1 authority-backed exclusion;
+- capability aggregate:
+  `4d17d8c8c0ef3de74d59e1d5b16884c0210fd0836e0593591871f10d0af2efd2`;
+- three clean compiler runs:
+  `389be84634941d3f244387bbc488c2303dcdb3add74b7d1edfb5def85710d3fc`;
+- all 15 predecessor authority records remain `MATCH`.
+
+This is normative contract completion only. It does not prove the existing
+NRRD product source, package, corpus, interoperability, or certification.
+Product and promotion state remain unchanged.
+
+The parent remains `NEEDS_REPAIR`. The exact next repair is
+`TC-FF6-XLIFF-PROFILE-SURFACE-001`, which must pin an independent XLIFF 2.0
+authority, compile exact 2.0/2.1 Core and official-module applicability, and
+isolate 2.2 preview behavior. `FF6-UBL-TYPING-001` remains queued after XLIFF.
+Architecture and product mutation remain locked.

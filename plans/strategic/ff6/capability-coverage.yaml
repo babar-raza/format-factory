@@ -3,10 +3,10 @@ goal_id: FF6-PRODUCTION-LIBRARIES-001
 assessment_status: NEEDS_PROFILE_OR_SURFACE_REPAIR
 summary:
   formats: 6
-  total_capabilities: 104
-  total_obligations: 701
+  total_capabilities: 110
+  total_obligations: 672
   classifications:
-    STABLE_REQUIRED: 95
+    STABLE_REQUIRED: 101
     OPTIONAL_ADAPTER_REQUIRED: 4
     PREVIEW_ISOLATED: 4
     EXCLUDED_WITH_AUTHORITY: 1
@@ -61,8 +61,8 @@ per_format:
       PREVIEW_ISOLATED: 0
       EXCLUDED_WITH_AUTHORITY: 0
   nrrd:
-    capability_count: 15
-    obligation_count: 94
+    capability_count: 21
+    obligation_count: 65
     authority_status: READY
     authority_issues: []
     target_profiles:
@@ -72,17 +72,15 @@ per_format:
     - nrrd0004
     - nrrd0005
     claimed_profiles:
-    - nrrd0005
-    missing_profiles:
     - nrrd0001
     - nrrd0002
     - nrrd0003
     - nrrd0004
-    known_surface_gaps:
-    - gap_id: FF6-NRRD-PROFILE-001
-      description: The contract is compiled around NRRD0005; explicit obligation-to- version applicability for NRRD0001-NRRD0004 remains to be projected.
+    - nrrd0005
+    missing_profiles: []
+    known_surface_gaps: []
     classifications:
-      STABLE_REQUIRED: 14
+      STABLE_REQUIRED: 20
       OPTIONAL_ADAPTER_REQUIRED: 0
       PREVIEW_ISOLATED: 1
       EXCLUDED_WITH_AUTHORITY: 0

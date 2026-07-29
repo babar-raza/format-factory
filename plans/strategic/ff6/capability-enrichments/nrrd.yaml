@@ -8,12 +8,13 @@ capabilities:
   developer_use_cases:
   - A developer crops a volume and every axis-aligned metadata field follows the crop.
   spec_profiles:
+  - nrrd0001
+  - nrrd0002
+  - nrrd0003
+  - nrrd0004
   - nrrd0005
   authority_fact_ids:
   - POL-SCR-ARRAY-01
-  - SAL-NRRD-00011
-  - SAL-NRRD-00012
-  - SAL-NRRD-00014
   - RF-NRRD-00001
   public_symbols: PLANNED
   source_symbols: PLANNED
@@ -47,6 +48,7 @@ capabilities:
   - Crop region exceeding axis size.
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-NRRD-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: NRRD-CONVERT-001
   stable_name: Data conversion
@@ -54,6 +56,10 @@ capabilities:
   developer_use_cases:
   - A developer converts float data to a narrower type under an explicit clipping policy with a report of affected values.
   spec_profiles:
+  - nrrd0001
+  - nrrd0002
+  - nrrd0003
+  - nrrd0004
   - nrrd0005
   authority_fact_ids:
   - POL-SCR-CONVERT-01
@@ -88,6 +94,7 @@ capabilities:
   - Target encoding unavailable at runtime.
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-NRRD-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: NRRD-ENC-001
   stable_name: All defined encodings
@@ -95,15 +102,14 @@ capabilities:
   developer_use_cases:
   - A developer queries supported encodings at runtime and receives explicit errors rather than silent fallbacks.
   spec_profiles:
+  - nrrd0001
+  - nrrd0002
+  - nrrd0003
+  - nrrd0004
   - nrrd0005
   authority_fact_ids:
   - POL-SCR-ENC-01
-  - SAL-NRRD-00002
-  - SAL-NRRD-00003
-  - SAL-NRRD-00011
   - SAL-NRRD-00013
-  - SAL-NRRD-00014
-  - SAL-NRRD-00017
   - RF-NRRD-00005
   public_symbols: PLANNED
   source_symbols: PLANNED
@@ -140,6 +146,51 @@ capabilities:
   - Block type combined with ascii encoding (specification violation).
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-NRRD-PROFILE-SURFACE-001
+  release_state: PLANNED
+- capability_id: NRRD-FRAME-001
+  stable_name: NRRD0005 measurement frame
+  classification: STABLE_REQUIRED
+  developer_use_cases:
+  - A diffusion-imaging developer transforms tensor coefficients through the declared measurement frame without confusing it with voxel orientation.
+  spec_profiles:
+  - nrrd0005
+  authority_fact_ids:
+  - POL-SCR-FRAME-01
+  - SAL-NRRD-00024
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Model measurement frames only for NRRD0005; require exactly space-dimension vectors and expose an explicit measurement-to-world transform separate from index-to-world.
+  preservation_contract:
+  - Preserve the declared vector order, numeric values, lexical values, and absent-versus-present state in lossless mode.
+  - Keep the measurement frame distinct from space directions and space origin in both typed and raw-header views.
+  error_contract:
+  - A measurement frame under NRRD0001 through NRRD0004 produces a version-feature diagnostic with the required minimum profile.
+  - Frame vector count or vector length mismatch reports the declared space dimension, observed cardinality, source location, and originating rule.
+  - A frame without a resolvable surrounding space dimension is rejected in strict mode without guessing a dimension.
+  security_contract:
+  - Parse frame coefficients as bounded passive numeric data; never invoke coordinate-system or plugin resolution.
+  resource_limits:
+  - Bound vector count and vector length by the validated space dimension before allocating a matrix.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - Measurement frame declared under an NRRD0001 through NRRD0004 magic.
+  - Too few or too many frame vectors for the declared space dimension.
+  - A frame vector with a component count different from the declared space dimension.
+  - Measurement-frame coefficients conflated with index-to-world space directions.
+  taskcard_ids:
+  - TC-FF6-NRRD-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: NRRD-HEADER-001
   stable_name: Complete header parsing
@@ -147,33 +198,26 @@ capabilities:
   developer_use_cases:
   - A developer inspects any conformant file's full metadata without touching the payload.
   spec_profiles:
+  - nrrd0001
+  - nrrd0002
+  - nrrd0003
+  - nrrd0004
   - nrrd0005
   authority_fact_ids:
   - POL-SCR-HEADER-01
   - POL-SCR-HEADER-02
   - SAL-NRRD-00002
-  - SAL-NRRD-00003
   - SAL-NRRD-00004
   - SAL-NRRD-00005
-  - SAL-NRRD-00006
   - SAL-NRRD-00007
   - SAL-NRRD-00008
-  - SAL-NRRD-00010
-  - SAL-NRRD-00012
-  - SAL-NRRD-00013
-  - SAL-NRRD-00014
-  - SAL-NRRD-00015
-  - SAL-NRRD-00016
-  - SAL-NRRD-00017
-  - SAL-NRRD-00018
-  - SAL-NRRD-00019
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
-  - Recognize every specified magic/version; parse fields, comments, and key/value metadata; enforce field uniqueness/ordering; preserve unknown metadata and optional-field absence.
+  - Recognize every specified magic/version; parse ordinary field specifications and comments; enforce field uniqueness and ordering without treating NRRD0002 key/value syntax as an NRRD0001 baseline feature.
   - Accept the specification's permitted line endings and lexical variants while preserving original lexical form in lossless mode.
   preservation_contract:
-  - Unknown key/value pairs preserved in lossless mode.
+  - Unknown ordinary header fields and comments that can be carried safely are preserved in lossless mode.
   - Optional-field absence preserved (not filled with defaults).
   - Original lexical form of values preserved in lossless mode.
   error_contract:
@@ -185,7 +229,7 @@ capabilities:
   - No execution of embedded content during header parsing.
   resource_limits:
   - Maximum header line count enforced.
-  - Maximum key/value pair count enforced.
+  - Maximum header-line length and total header byte count enforced before payload access.
   performance_budget: PLANNED
   dependency_policy: PLANNED
   positive_tests: PLANNED
@@ -204,6 +248,100 @@ capabilities:
   - Per-axis field with entry count not matching dimension.
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-NRRD-PROFILE-SURFACE-001
+  release_state: PLANNED
+- capability_id: NRRD-KEYVALUE-001
+  stable_name: NRRD0002 key/value metadata
+  classification: STABLE_REQUIRED
+  developer_use_cases:
+  - A developer round-trips custom acquisition metadata without losing empty values, newlines, backslashes, or duplicate-key resolution semantics.
+  spec_profiles:
+  - nrrd0002
+  - nrrd0003
+  - nrrd0004
+  - nrrd0005
+  authority_fact_ids:
+  - POL-SCR-KEYVALUE-01
+  - SAL-NRRD-00021
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Parse, validate, preserve, edit, and write key/value pairs only for NRRD0002 and newer, implementing newline/backslash escaping, forbidden key delimiters, and last-value-wins duplicate behavior.
+  preservation_contract:
+  - Preserve insertion order, exact key and value text, escape sequences, empty values, and repeated-key source occurrences in the raw view.
+  - Expose the specification's last-value-wins semantic view without deleting shadowed source occurrences during lossless round trips.
+  error_contract:
+  - Key/value syntax under NRRD0001 produces a version-feature diagnostic with NRRD0002 as the minimum profile.
+  - A key containing the forbidden delimiter or an invalid escape reports the exact line, column, and originating rule.
+  - Resource-limit failures report the observed pair count and total decoded metadata bytes.
+  security_contract:
+  - Treat keys and values as passive text; never interpolate, evaluate, or use them as paths without a separate caller operation.
+  resource_limits:
+  - Bound pair count, key length, value length, and total decoded key/value bytes.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - A key/value line under NRRD0001.
+  - A key containing the := delimiter.
+  - Escaped newline and backslash sequences, empty values, and repeated keys.
+  - Key/value metadata whose decoded size exceeds configured limits.
+  taskcard_ids:
+  - TC-FF6-NRRD-PROFILE-SURFACE-001
+  release_state: PLANNED
+- capability_id: NRRD-KINDS-001
+  stable_name: NRRD0003 axis kinds
+  classification: STABLE_REQUIRED
+  developer_use_cases:
+  - A developer distinguishes a three-vector component axis from three independent spatial samples before transforming data.
+  spec_profiles:
+  - nrrd0003
+  - nrrd0004
+  - nrrd0005
+  authority_fact_ids:
+  - POL-SCR-KINDS-01
+  - SAL-NRRD-00022
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Model every specified axis kind and its aliases only for NRRD0003 and newer; preserve unknown future kinds safely while strict validation reports them.
+  preservation_contract:
+  - Preserve each declared kind token and alias lexically in lossless mode while exposing a normalized typed enumeration separately.
+  - Preserve unknown future kind tokens in the raw view without assigning invented semantics.
+  error_contract:
+  - Kinds under NRRD0001 or NRRD0002 produce a version-feature diagnostic with NRRD0003 as the minimum profile.
+  - The kinds entry count must equal dimension; diagnostics include the expected and observed counts.
+  - An unknown kind is rejected in strict semantic validation but remains available for safe lossless preservation.
+  security_contract:
+  - Kind tokens are bounded passive identifiers and never select dynamically loaded code.
+  resource_limits:
+  - Bound token length and require exactly one kind token per validated axis.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - A kinds field under NRRD0001 or NRRD0002.
+  - Fewer or more kind tokens than the declared dimension.
+  - Every defined kind spelling and alias plus an unknown future token.
+  - Code that infers storage order or orientation solely from an axis kind.
+  taskcard_ids:
+  - TC-FF6-NRRD-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: NRRD-LAZY-001
   stable_name: Large-data and lazy I/O
@@ -211,6 +349,10 @@ capabilities:
   developer_use_cases:
   - A developer streams a slice from a huge compressed dataset and is told when a request forces full decode.
   spec_profiles:
+  - nrrd0001
+  - nrrd0002
+  - nrrd0003
+  - nrrd0004
   - nrrd0005
   authority_fact_ids:
   - POL-SCR-LAZY-01
@@ -249,6 +391,7 @@ capabilities:
   - Payload encoding incompatible with memory mapping (compressed or text).
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-NRRD-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: NRRD-LIFECYCLE-001
   stable_name: Baseline lifecycle I/O
@@ -256,6 +399,10 @@ capabilities:
   developer_use_cases:
   - A developer integrates the library with only lifecycle APIs and never needs format-internal knowledge for I/O plumbing.
   spec_profiles:
+  - nrrd0001
+  - nrrd0002
+  - nrrd0003
+  - nrrd0004
   - nrrd0005
   authority_fact_ids:
   - POL-SLC-LIFECYCLE-01
@@ -302,6 +449,7 @@ capabilities:
   - Stream providing fewer bytes than declared payload size.
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-NRRD-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: NRRD-META-001
   stable_name: Metadata fidelity
@@ -309,14 +457,16 @@ capabilities:
   developer_use_cases:
   - A developer round-trips files with unusual labels/units and nothing is normalized away.
   spec_profiles:
+  - nrrd0001
+  - nrrd0002
+  - nrrd0003
+  - nrrd0004
   - nrrd0005
   authority_fact_ids:
   - POL-SCR-META-01
-  - SAL-NRRD-00002
-  - SAL-NRRD-00004
   - SAL-NRRD-00009
   - SAL-NRRD-00010
-  - SAL-NRRD-00011
+  - SAL-NRRD-00026
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -349,6 +499,53 @@ capabilities:
   - NaN vs absent vs empty-string ambiguity in optional fields.
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-NRRD-PROFILE-SURFACE-001
+  release_state: PLANNED
+- capability_id: NRRD-MULTIFILE-001
+  stable_name: NRRD0004 multi-file detached payloads
+  classification: STABLE_REQUIRED
+  developer_use_cases:
+  - A developer streams a slice stack stored across many files and receives a precise error before reading when the sequence or LIST is incomplete.
+  spec_profiles:
+  - nrrd0004
+  - nrrd0005
+  authority_fact_ids:
+  - POL-SCR-MULTIFILE-01
+  - SAL-NRRD-00006
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Read and write numbered sequences and LIST payloads only for NRRD0004 and newer; validate min/max/step/subdimension, filename expansion, file count, and bytes per file before allocation.
+  preservation_contract:
+  - Preserve whether the source used a numbered pattern or LIST, its lexical pattern, subdimension, ordering, and each listed path in lossless mode.
+  - Changing a partition strategy is an explicit conversion and is included in the loss/conversion report.
+  error_contract:
+  - Numbered patterns or LIST forms under NRRD0001 through NRRD0003 produce a version-feature diagnostic with NRRD0004 as the minimum profile.
+  - Invalid min/max/step, pattern expansion, list length, subdimension, or per-file payload size reports expected and observed values before data reads.
+  - Missing, duplicate, inaccessible, or traversal-escaping members identify the exact logical member and resolved path policy.
+  security_contract:
+  - Resolve every expanded or listed member through the same configured-root, traversal, symlink, and absolute-path policy.
+  - Validate the complete member plan and checked aggregate payload size before opening payload files.
+  resource_limits:
+  - Bound generated filename count, LIST entry count, per-member bytes, aggregate bytes, and simultaneously open files.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - Numbered or LIST multi-file syntax under NRRD0001 through NRRD0003.
+  - Zero step, inverted range, malformed conversion pattern, or expansion overflow.
+  - LIST or generated member count inconsistent with dimension and subdimension.
+  - A generated or listed path escaping the configured resource root.
+  taskcard_ids:
+  - TC-FF6-NRRD-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: NRRD-PAYLOAD-001
   stable_name: Attached and detached payload handling
@@ -356,25 +553,26 @@ capabilities:
   developer_use_cases:
   - A developer loads a detached-header dataset and file-count or path violations surface before any read.
   spec_profiles:
+  - nrrd0001
+  - nrrd0002
+  - nrrd0003
+  - nrrd0004
   - nrrd0005
   authority_fact_ids:
   - POL-SCR-PAYLOAD-01
-  - SAL-NRRD-00002
   - SAL-NRRD-00003
-  - SAL-NRRD-00004
-  - SAL-NRRD-00006
-  - SAL-NRRD-00011
-  - SAL-NRRD-00013
   - SAL-NRRD-00018
+  - SAL-NRRD-00025
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
-  - Support attached and all specified detached payload forms with file counts validated against declared dimensions and resolution relative to the header location under a secure path policy.
+  - Support attached payloads and the single-file detached form in every profile; route numbered and LIST multi-file forms exclusively through NRRD-MULTIFILE-001 for NRRD0004 and newer.
+  - Apply the profile-specific detached-path rule: before NRRD0004 only a leading ./ selects header-relative resolution, while NRRD0004 and newer resolve every non-absolute path relative to the detached header.
   preservation_contract:
   - Attached/detached form preserved in lossless mode; form changes are explicit conversion operations.
   - Line-skip and byte-skip values preserved when re-serializing in lossless mode.
   error_contract:
-  - Detached file count mismatch reported with code, severity, message, and object_path.
+  - Missing or inaccessible single detached payload reports the declared reference and resolved location.
   - Path traversal violation reported with code, severity, and source_location.
   - Payload size mismatch reported with originating_rule and expected vs actual counts.
   security_contract:
@@ -382,7 +580,7 @@ capabilities:
   - Path traversal prevention for all detached data-file references.
   - Header-first validation; no payload allocation before size verification.
   resource_limits:
-  - Detached file count bounded by declared dimensions.
+  - At most one detached payload file is opened by this baseline capability.
   - Total payload byte count bounded by configurable limit.
   performance_budget: PLANNED
   dependency_policy: PLANNED
@@ -402,6 +600,7 @@ capabilities:
   - Data-file field referencing absolute path outside configured roots.
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-NRRD-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: NRRD-PRESERVE-001
   stable_name: Baseline preservation duties
@@ -409,6 +608,10 @@ capabilities:
   developer_use_cases:
   - A developer round-trips files containing constructs the library does not model and loses nothing silently.
   spec_profiles:
+  - nrrd0001
+  - nrrd0002
+  - nrrd0003
+  - nrrd0004
   - nrrd0005
   authority_fact_ids:
   - POL-SLC-PRESERVE-01
@@ -450,6 +653,7 @@ capabilities:
   - Save in canonical mode applied to a document expecting lossless fidelity.
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-NRRD-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: NRRD-SEC-001
   stable_name: Baseline security posture
@@ -457,6 +661,10 @@ capabilities:
   developer_use_cases:
   - A developer processes untrusted input with safe defaults and only opts into external effects explicitly.
   spec_profiles:
+  - nrrd0001
+  - nrrd0002
+  - nrrd0003
+  - nrrd0004
   - nrrd0005
   authority_fact_ids:
   - POL-SLC-SEC-01
@@ -510,6 +718,7 @@ capabilities:
   - Input file exceeding configured input size limit.
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-NRRD-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: NRRD-SHAPE-001
   stable_name: Dimensions, axis order, and endian correctness
@@ -517,18 +726,18 @@ capabilities:
   developer_use_cases:
   - A developer converts between format axis order and host array order through an explicit documented operation.
   spec_profiles:
+  - nrrd0001
+  - nrrd0002
+  - nrrd0003
+  - nrrd0004
   - nrrd0005
   authority_fact_ids:
   - POL-SCR-SHAPE-01
   - POL-SCR-SHAPE-02
-  - SAL-NRRD-00003
-  - SAL-NRRD-00009
-  - SAL-NRRD-00010
   - SAL-NRRD-00011
   - SAL-NRRD-00012
   - SAL-NRRD-00014
   - SAL-NRRD-00015
-  - SAL-NRRD-00019
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
@@ -565,6 +774,7 @@ capabilities:
   - Per-axis field count not matching declared dimension.
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-NRRD-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: NRRD-SPACE-001
   stable_name: Orientation and space metadata
@@ -572,6 +782,7 @@ capabilities:
   developer_use_cases:
   - A medical-imaging developer obtains the index-to-world transform and non-spatial axes are handled correctly.
   spec_profiles:
+  - nrrd0004
   - nrrd0005
   authority_fact_ids:
   - POL-SCR-SPACE-01
@@ -580,14 +791,14 @@ capabilities:
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
-  - Support space/orientation metadata with vector-length validation against space dimension, non-spatial axes, and index-to-world transforms; never infer axis order from a named space.
-  - Expose index-to-world and measurement-frame transforms from space metadata without ever inferring axis order from a named space - medical-imaging orientation correctness.
+  - Support NRRD0004 and newer space/orientation metadata with vector-length validation against space dimension, non-spatial axes, and index-to-world transforms; never infer axis order from a named space.
+  - Expose index-to-world transforms from space metadata while keeping NRRD0005 measurement-frame data and transforms exclusively in NRRD-FRAME-001.
   preservation_contract:
-  - Space name, origin, direction vectors, and measurement frame preserved in lossless mode.
+  - Space name or explicit space dimension, space units, origin, and direction vectors preserved in lossless mode.
   - Non-spatial axis markers preserved.
   error_contract:
   - Space direction vector length not matching space dimension reported with code, severity, object_path, and originating_rule.
-  - Measurement frame dimension mismatch reported with code and originating_rule.
+  - Space metadata under NRRD0001 through NRRD0003 reports NRRD0004 as the required minimum profile.
   security_contract:
   - Space metadata treated as passive data; no coordinate-system resolution triggers external effects.
   resource_limits:
@@ -604,12 +815,13 @@ capabilities:
   compatibility_status: PLANNED
   proof_node_ids: PLANNED
   invalidation_inputs:
+  - Any space or orientation field under NRRD0001 through NRRD0003.
   - Space direction vector count not matching array dimension.
   - Space direction vector length not matching declared space dimension.
-  - Measurement frame matrix with inconsistent dimensions.
   - Named space with inferred axis ordering (specification violation).
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-NRRD-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: NRRD-TYPES-001
   stable_name: Complete scalar and block types
@@ -617,13 +829,13 @@ capabilities:
   developer_use_cases:
   - A developer reads a dataset's exact declared type and receives documented host-type mappings.
   spec_profiles:
+  - nrrd0001
+  - nrrd0002
+  - nrrd0003
+  - nrrd0004
   - nrrd0005
   authority_fact_ids:
   - POL-SCR-TYPES-01
-  - SAL-NRRD-00003
-  - SAL-NRRD-00006
-  - SAL-NRRD-00009
-  - SAL-NRRD-00011
   - SAL-NRRD-00016
   - SAL-NRRD-00017
   public_symbols: PLANNED
@@ -659,6 +871,52 @@ capabilities:
   - Type alias resolving to different widths across versions.
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-NRRD-PROFILE-SURFACE-001
+  release_state: PLANNED
+- capability_id: NRRD-PHYSICALMETA-001
+  stable_name: NRRD0004 thickness and sample-unit metadata
+  classification: STABLE_REQUIRED
+  developer_use_cases:
+  - A medical-imaging developer preserves slice thickness independently from axis spacing and records the unit of stored scalar measurements.
+  spec_profiles:
+  - nrrd0004
+  - nrrd0005
+  authority_fact_ids:
+  - POL-SCR-PHYSICALMETA-01
+  - SAL-NRRD-00023
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Model thicknesses and sample units only for NRRD0004 and newer; keep thickness distinct from spacing and sample units distinct from axis and space units.
+  preservation_contract:
+  - Preserve absent, unknown, and numeric thickness entries per axis without converting thickness to spacing.
+  - Preserve the exact quoted sample-unit text separately from per-axis units and space units.
+  error_contract:
+  - Thicknesses or sample units under NRRD0001 through NRRD0003 produce a version-feature diagnostic with NRRD0004 as the minimum profile.
+  - Thickness entry count mismatch reports the declared dimension and observed count.
+  - Malformed quoted sample units report the exact source location and lexical rule.
+  security_contract:
+  - Parse unit strings as bounded passive metadata without unit-registry or network resolution.
+  resource_limits:
+  - Require exactly one thickness token per axis and bound quoted sample-unit length.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - Thicknesses or sample units under NRRD0001 through NRRD0003.
+  - Thickness count different from the declared dimension.
+  - Unknown thickness values, absent field state, and a quoted sample-unit value.
+  - Code that aliases thickness to spacing or sample units to axis/space units.
+  taskcard_ids:
+  - TC-FF6-NRRD-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: NRRD-VALIDATE-001
   stable_name: Header and payload validation
@@ -666,17 +924,13 @@ capabilities:
   developer_use_cases:
   - A service validates uploads cheaply (header-first) and rejects shape/payload mismatches with exact reasons.
   spec_profiles:
+  - nrrd0001
+  - nrrd0002
+  - nrrd0003
+  - nrrd0004
   - nrrd0005
   authority_fact_ids:
   - POL-SCR-VALIDATE-01
-  - SAL-NRRD-00007
-  - SAL-NRRD-00011
-  - SAL-NRRD-00012
-  - SAL-NRRD-00013
-  - SAL-NRRD-00014
-  - SAL-NRRD-00015
-  - SAL-NRRD-00016
-  - SAL-NRRD-00017
   - RF-NRRD-00003
   public_symbols: PLANNED
   source_symbols: PLANNED
@@ -718,6 +972,55 @@ capabilities:
   - Conditional field absent when condition is met (endian for multi-byte types).
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-NRRD-PROFILE-SURFACE-001
+  release_state: PLANNED
+- capability_id: NRRD-VERSION-001
+  stable_name: Magic and feature-version compatibility
+  classification: STABLE_REQUIRED
+  developer_use_cases:
+  - A developer targets an older reader and gets an exact incompatibility report instead of a falsely labeled file.
+  spec_profiles:
+  - nrrd0001
+  - nrrd0002
+  - nrrd0003
+  - nrrd0004
+  - nrrd0005
+  authority_fact_ids:
+  - POL-SCR-VERSION-01
+  - SAL-NRRD-00020
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Model NRRD0001 through NRRD0005 explicitly; validate every feature against its introduction version; choose the oldest sufficient magic deterministically when no target profile is requested.
+  preservation_contract:
+  - Preserve the declared magic exactly in lossless mode when every carried feature is legal for that profile.
+  - Never silently raise or lower a declared profile; normalized output reports and deterministically applies any required version change.
+  error_contract:
+  - Every later feature under an older magic reports its feature, declared profile, and minimum legal profile.
+  - An explicit writer target below the minimum required version fails before writing bytes.
+  - Unknown future magic values are rejected in strict mode and may be retained only as opaque input under preservation policy.
+  security_contract:
+  - Perform feature-version checks from bounded declarative inventories, before payload allocation or external resource access.
+  resource_limits:
+  - Bound the number of reported incompatibilities and retain a deterministic complete-count summary when diagnostics are truncated.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - Every profile magic from NRRD0001 through NRRD0005 with baseline-only content.
+  - Each feature-introduction boundary exercised under every earlier illegal profile.
+  - A document requiring multiple later features where the highest minimum version wins.
+  - An explicit target below, equal to, and above the oldest sufficient version.
+  taskcard_ids:
+  - TC-FF6-NRRD-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: NRRD-WRITE-001
   stable_name: Canonical and lossless writing
@@ -725,6 +1028,10 @@ capabilities:
   developer_use_cases:
   - A developer writes a dataset and any conformant reader loads it; rewriting an unchanged file is byte-stable.
   spec_profiles:
+  - nrrd0001
+  - nrrd0002
+  - nrrd0003
+  - nrrd0004
   - nrrd0005
   authority_fact_ids:
   - POL-SCR-WRITE-01
@@ -760,4 +1067,5 @@ capabilities:
   - Detached-partition policy conflicting with attached-only output request.
   taskcard_ids:
   - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-NRRD-PROFILE-SURFACE-001
   release_state: PLANNED

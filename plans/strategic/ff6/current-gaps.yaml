@@ -24,8 +24,8 @@ gaps:
       134 currently compiled canonical obligations are entirely unimplemented.
     source_finding: FF6-TRUTH-001
     blocks:
-      - All 10 ORA capabilities (ORA-CODEC-001 through ORA-WRITE-001)
-      - All 32 current SAL-ORA-OBL-* obligations
+      - All 20 compiled ORA capabilities
+      - All 134 current SAL-ORA-OBL-* obligations
     authority_concern: >-
       ORA authority artifacts and declarations are hash-ready, but the
       OpenRaster specifications are early drafts with no official validation
@@ -140,8 +140,8 @@ gaps:
     category: certification
     title: Zero production certifications across all 6 formats
     description: >-
-      No format has any certification milestone. All 104 capabilities
-      have release_state PLANNED. All 701 canonical obligations have
+      No format has any certification milestone. All 110 capabilities
+      have release_state PLANNED. All 672 canonical obligations have
       verification_status UNVERIFIED. No product is promoted.
     blocks:
       - Production release gate for all 6 formats
@@ -207,6 +207,37 @@ gaps:
       selection.
 
 resolved_gaps:
+  - gap_id: FF6-NRRD-PROFILE-001
+    resolved_by: TC-FF6-NRRD-PROFILE-SURFACE-001
+    source_event: FF6-EVENT-000019
+    evidence:
+      nrrd_capabilities: 21
+      nrrd_obligations: 65
+      sal_facts_verified: 25
+      family_domains: 18
+      family_policy_ids: 41
+      claimed_profiles:
+        - nrrd0001
+        - nrrd0002
+        - nrrd0003
+        - nrrd0004
+        - nrrd0005
+      authority_matches: 15
+      capability_manifest_aggregate_sha256: 4d17d8c8c0ef3de74d59e1d5b16884c0210fd0836e0593591871f10d0af2efd2
+      capability_three_run_digest: 389be84634941d3f244387bbc488c2303dcdb3add74b7d1edfb5def85710d3fc
+      nrrd_contract_sha256: a5de17bfd0d6f978b07d0e00b109b6fc4e16257c6299444081e356fc9b1b693b
+      nrrd_capability_sha256: 36fd53d95ae006c5709f4e44285c8c1edd554be992f1dc99ef6db1453a92116a
+      nrrd_obligation_sha256: 12dfc9adffc69c0762756972f6de2552c1a721cccad51d020d1e08c130d4cef9
+    disposition: >-
+      Compiled a source-located NRRD0001-NRRD0005 delta matrix; replaced
+      mixed-version and broad ownership with 21 profile-homogeneous
+      capabilities and explicit-complete ownership of all 25 verified facts;
+      repaired the NRRD0004/NRRD0005 requirement at the governed research
+      source; and assigned an exact non-empty profile subset to all 65
+      obligations. Teem's permissive later-field parsing under earlier magic
+      identifiers remains an explicit interoperability peculiarity. This is
+      contract completion only, not implementation proof.
+
   - gap_id: FF6-IPYNB-PROFILE-001
     resolved_by: TC-FF6-IPYNB-PROFILE-SURFACE-001
     source_event: FF6-EVENT-000018

@@ -1,0 +1,41 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "research-format-contract-sources-nrrd-profile-surface-001",
+  "skill_id": "research-format-contract-sources",
+  "mode": "live",
+  "timestamp": "2026-07-29T11:34:00Z",
+  "inputs": {
+    "format_id": "nrrd"
+  },
+  "allowed_files": [
+    ".local/format-contracts/drafts/nrrd-draft.yaml",
+    "shared/format-contracts/research/nrrd.yaml",
+    "shared/format-contracts/product-requirements/nrrd.yaml",
+    "shared/format-contracts/authority-lock.yaml"
+  ],
+  "actual_files_changed": [
+    ".local/format-contracts/drafts/nrrd-draft.yaml",
+    "shared/format-contracts/research/nrrd.yaml",
+    "shared/format-contracts/product-requirements/nrrd.yaml",
+    "shared/format-contracts/authority-lock.yaml"
+  ],
+  "tests_run": [
+    "python tools/format_contract/research_intake.py --format-id nrrd --draft .local/format-contracts/drafts/nrrd-draft.yaml",
+    "python -m tools.format_contract.authority_materializer sync-product-requirements --format nrrd --check",
+    "python -m tools.format_contract.authority_materializer audit --format nrrd --contracts",
+    "python -m tools.format_contract.authority_materializer audit --contracts",
+    "python -m pytest tests/format_contract -q --deselect tests/format_contract/test_consumption_chain.py::test_full_slice_second_run_is_idempotent"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "root_cause": "RF-NRRD-00004 incorrectly combined NRRD0004 index-to-world behavior with NRRD0005 measurement-frame behavior in the SPACE domain.",
+    "repair": "RF-NRRD-00004 now requires index-to-world from NRRD0004+ space metadata while explicitly keeping the NRRD0005 measurement-frame model and API separate.",
+    "research_store_sha256": "c8884f867e4071b79bea39d9eb1b6ddbfa6fb569170207aeaa1a5f0c70f99a4b",
+    "product_requirement_sha256": "65cd7b76626b8c8eb91607c275db6e434d3afc73838025b4c0182efdc5f12770",
+    "authority_lock_sha256": "78e74d8708a1811aae8cc88eb32f001f275653004b699fca4e6210831a760233",
+    "authority_audit": "15 MATCH, 0 MISMATCH, 0 MISSING, 0 LEGAL_BLOCKED"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

@@ -1,15 +1,20 @@
 schema_version: '1.0'
 format_id: nrrd
 coverage: complete
-authority_policy: Every assertion is an exact visible-text predicate over the SHA-256 pinned Teem NRRD0005
-  format definition. HTML markup is discarded without loading resources or executing content.
+authority_policy: Every assertion is an exact visible-text or source-text predicate over the SHA-256
+  pinned Teem NRRD0005 format definition and Teem 1.9.0 reference source. HTML markup is discarded
+  without loading resources or executing content, and archive members are read without extraction.
 targets:
   teem_spec:
     source_id: SRC-NRRD-001
     member_sha256: 43ca6102cc998e0191e225d7954278547d491e29b74a132b3118571d85a8b0d5
+  teem_reference_codec:
+    source_id: SRC-NRRD-002
+    member: teem-1.9.0-src/src/nrrd/formatNRRD.c
+    member_sha256: c75ebbf2ad19cacc5e54d028cc1b3c740cfd2576ce6a78ecbb1de92e9f65aae1
 facts:
 - fact_id: SAL-NRRD-00002
-  claim_sha256: 3517b4f3dbde328b3d80a47ebd32a9a2b4eda1f0972a6271057baae43a978f04
+  claim_sha256: 6bf5e7618326e27bbd7fa3201d73aba149e0b48a3b12211f749200391872d90f
   assertions:
   - assertion_id: attached-header-shape
     target: teem_spec
@@ -25,26 +30,27 @@ facts:
     kind: html_text_contains
     expected: After the header, there is a single blank line containing zero characters. This separates the
       header from the data, which follows.
+  - assertion_id: portable-line-endings
+    target: teem_spec
+    kind: html_text_contains
+    expected: NRRD readers must be able to handle both types of line terminations; NRRD writers can use
+      one or the other or both.
 - fact_id: SAL-NRRD-00003
-  claim_sha256: c96bc2b92fa260cc051df744d4fdff346940232946c79ff16dcf6755ac2b351f
+  claim_sha256: bf26b5716260acc1f1454ce5aa0f067aa003822822c12261784649c7bab65c15
   assertions:
   - assertion_id: attached-data-follows-header
     target: teem_spec
     kind: html_text_contains
     expected: The header, the blank line, and the data comprise the NRRD file.
-  - assertion_id: detached-data-field-forms
+  - assertion_id: single-detached-data-field
     target: teem_spec
     kind: html_text_contains
-    expected: 'data file: < filename > data file: < format > < min > < max > < step > [< subdim >]
-      data file: LIST [< subdim >]'
-  - assertion_id: encoding-values
+    expected: 'data file: < filename > datafile: < filename >'
+  - assertion_id: attached-versus-detached
     target: teem_spec
     kind: html_text_contains
-    expected: '" txt ", " text ", " ascii " Integral values are written/read as with printf() / sscanf()'
-  - assertion_id: raw-hex-gzip-bzip2
-    target: teem_spec
-    kind: html_text_contains
-    expected: '" hex " The data is raw, but written with two (case-insensitive) hexadecimal characters per byte.'
+    expected: The addition of this field is the only difference between attached headers and detached
+      headers.
 - fact_id: SAL-NRRD-00004
   claim_sha256: e73ed7f60b96ca03a2bd5922dfca8b194c607b6beee684a254113e17c2ecd368
   assertions:
@@ -79,8 +85,17 @@ facts:
     expected: Gracious NRRD readers should store all the comments seen in the header, but this is not a
       requirement.
 - fact_id: SAL-NRRD-00006
-  claim_sha256: e3d0d91bd7933103882a1a0c894119dc85584bfb45584bdb62f46422870b14ca
+  claim_sha256: 79dcb94ebe92ef102f81527fa17c6083bdd71a65468de455a41c4a2254739240
   assertions:
+  - assertion_id: nrrd0004-multiple-data-files
+    target: teem_spec
+    kind: html_text_contains
+    expected: >-
+      NRRD0004 : added " thicknesses: " and " sample units " fields, general
+      space and orientation information (" space: ", " space dimension: ",
+      " space directions: ", " space origin: ", and " space units: " fields) ,
+      and the ability for the " data file: " field to identify multiple data
+      files.
   - assertion_id: detached-three-forms
     target: teem_spec
     kind: html_text_contains
@@ -94,11 +109,10 @@ facts:
     target: teem_spec
     kind: html_text_contains
     expected: 'data file: LIST [< subdim >]'
-  - assertion_id: relative-detached-path
-    target: teem_spec
-    kind: html_text_contains
-    expected: it is taken to be the filename of the data file, relative to the location of the detached
-      header file
+  - assertion_id: reference-multiple-data-trigger
+    target: teem_reference_codec
+    kind: text_contains
+    expected: '|| airStrlen(nio->dataFNFormat) || nio->dataFNArr->len > 1) { ret = 4;'
 - fact_id: SAL-NRRD-00007
   claim_sha256: 33f9451c4dc2efdb1bcc095e8e5cc969bb438ab637b3eb07f47fe81c32d7464a
   assertions:
@@ -111,7 +125,7 @@ facts:
     kind: html_text_contains
     expected: All field identifiers are case insensitive.
 - fact_id: SAL-NRRD-00008
-  claim_sha256: e98c918d0af18c562d266cb90c3c83cd3ae9a3ee0d906f78c999efad0fc6d6e5
+  claim_sha256: 175633cbd5b570dc484f1d3e1020524f20093d7f160ac04af82fc4848a6309fa
   assertions:
   - assertion_id: field-specification-syntax
     target: teem_spec
@@ -119,10 +133,11 @@ facts:
     expected: 'All the field specifications have the same structure: a string "< field >" identifying the
       field (called the field identifier), then a colon followed by a single space " : ", and then the
       information describing the field'
-  - assertion_id: key-value-syntax
+  - assertion_id: no-leading-whitespace
     target: teem_spec
     kind: html_text_contains
-    expected: Each of the "< key >:=< value >" lines specifies a key/value pair in the nrrd.
+    expected: Whitespace (that is not part of the previous line's termination) is not allowed before
+      a field identifier.
 - fact_id: SAL-NRRD-00009
   claim_sha256: 170916342e39b11de498b2810f64bed7cff6991fdf62fd51bfea719fbaf68703
   assertions:
@@ -140,7 +155,7 @@ facts:
     kind: html_text_contains
     expected: the field gives a quote-delimited string for each axis
 - fact_id: SAL-NRRD-00010
-  claim_sha256: 9f8c07b69207d37bccc927c5506e707a629c803168422feb9b79d5454a1b0f9f
+  claim_sha256: 1b440b3a795f5400516b40dfbb1bb7d43fdbf00d5d24aac0d8a3681282ed11a7
   assertions:
   - assertion_id: per-axis-field-inventory
     target: teem_spec
@@ -176,7 +191,7 @@ facts:
     kind: html_text_contains
     expected: Per-axis specifications must have as many components as there are dimensions in the array
 - fact_id: SAL-NRRD-00013
-  claim_sha256: 227ff0d87dd0ab05273a702a51d5467c8ba545182c90478d4aa8016ee9fa1822
+  claim_sha256: a19133a32d812ffc75ebc2ee3b28634e2dbef181da470e868b4575af97503fbc
   assertions:
   - assertion_id: encoding-required
     target: teem_spec
@@ -226,7 +241,7 @@ facts:
     kind: html_text_contains
     expected: the axis ordering is always (reading left to right) fastest to slowest
 - fact_id: SAL-NRRD-00016
-  claim_sha256: e77482d9b036518a9bd794f72237ecf4556972117aaf846a672521d33a2d4332
+  claim_sha256: 1ebe0e479ed07c5a795c5fe932fdda2e21d39d6f75948c6b1adea97f9638c16f
   assertions:
   - assertion_id: type-required
     target: teem_spec
@@ -273,8 +288,13 @@ facts:
     kind: html_text_contains
     expected: When used in combination with line skip , the byte skipping is done after the line skipping.
 - fact_id: SAL-NRRD-00019
-  claim_sha256: 0ca63315b0e0c32a15ef1049afe09a4497d956811fa5eb14628b7b2eaf177642
+  claim_sha256: f08c2ff72dcb1a27a79547ede01eb60d80bd802b78022589fe7abbc12abe1e0a
   assertions:
+  - assertion_id: nrrd0004-space-introduction
+    target: teem_spec
+    kind: html_text_contains
+    expected: Staring with NRRD0004 files, NRRD headers can describe the orientation of the raster grid
+      relative to some surrounding "space".
   - assertion_id: space-or-dimension-first
     target: teem_spec
     kind: html_text_contains
@@ -288,7 +308,153 @@ facts:
     target: teem_spec
     kind: html_text_contains
     expected: 'space directions: < vector[0] > < vector[1] > ... < vector[dim-1] >'
+  - assertion_id: space-units
+    target: teem_spec
+    kind: html_text_contains
+    expected: 'space units: "< unit[0] >" "< unit[1] >" ... "< unit[dim-1] >"'
+- fact_id: SAL-NRRD-00020
+  claim_sha256: 12e0d0e5f05d72e069fc0905513a56d6d5b31f1d03e3dc58762a34554536c43d
+  assertions:
+  - assertion_id: version-history
+    target: teem_spec
+    kind: html_text_contains
+    expected: 'NRRD0001 : (and NRRD00.01 for circa 1998 files) original and most basic version NRRD0002
+      : added key/value pairs NRRD0003 : added " kinds: " field, NRRD0004 : added " thicknesses: "
+      and " sample units " fields, general space and orientation information (" space: ", " space dimension:
+      ", " space directions: ", " space origin: ", and " space units: " fields) , and the ability for
+      the " data file: " field to identify multiple data files. NRRD0005 : added " measurement frame:
+      " field'
+  - assertion_id: reference-magic-inventory
+    target: teem_reference_codec
+    kind: text_contains
+    expected: '#define MAGIC1 "NRRD0001" #define MAGIC2 "NRRD0002" #define MAGIC3 "NRRD0003" #define
+      MAGIC4 "NRRD0004" #define MAGIC5 "NRRD0005"'
+  - assertion_id: oldest-representable-version
+    target: teem_reference_codec
+    kind: text_contains
+    expected: we try to use the oldest format that will hold the nrrd
+  - assertion_id: reference-version-tail
+    target: teem_reference_codec
+    kind: text_contains
+    expected: '} else if (_nrrdFieldInteresting(nrrd, nio, nrrdField_kinds)) { ret = 3; } else if
+      (nrrdKeyValueSize(nrrd)) { ret = 2; } else { ret = 1; }'
+- fact_id: SAL-NRRD-00021
+  claim_sha256: 26f5f86aa53042b168b6e91e9963dbece7d6ea7e70f7eeb2b4f43da02d2fcaab
+  assertions:
+  - assertion_id: key-value-version-boundary
+    target: teem_spec
+    kind: html_text_contains
+    expected: Each of the "< key >:=< value >" lines specifies a key/value pair in the nrrd. These
+      can appear in NRRD0002 (and higher version) files, but not NRRD0001 files.
+  - assertion_id: key-value-escaping
+    target: teem_spec
+    kind: html_text_contains
+    expected: 'Because both the key and value must appear on exactly one line, a minimal escaping scheme
+      is required, which readers must interpret and writers must generate: " \n " signifies a new line'
+  - assertion_id: duplicate-and-delimiter-rule
+    target: teem_spec
+    kind: html_text_contains
+    expected: If a key is repeated more than once, the value in the last key/value pair is the only one
+      stored. The substring " := " is not allowed in the key string.
+  - assertion_id: reference-key-value-trigger
+    target: teem_reference_codec
+    kind: text_contains
+    expected: '} else if (nrrdKeyValueSize(nrrd)) { ret = 2; } else { ret = 1; }'
+- fact_id: SAL-NRRD-00022
+  claim_sha256: 0dc322e0e9b818a3ded86886d370707f82c3ce795e6ddf5b10d1407a0b3bb73a
+  assertions:
+  - assertion_id: kinds-version-boundary
+    target: teem_spec
+    kind: html_text_contains
+    expected: 'NRRD0003 : added " kinds: " field'
+  - assertion_id: kinds-cardinality
+    target: teem_spec
+    kind: html_text_contains
+    expected: 'kinds: < kind[0] > < kind[1] > ... < kind[dim-1] > Always optional'
+  - assertion_id: reference-kinds-trigger
+    target: teem_reference_codec
+    kind: text_contains
+    expected: 'else if (_nrrdFieldInteresting(nrrd, nio, nrrdField_kinds)) { ret = 3;'
+- fact_id: SAL-NRRD-00023
+  claim_sha256: 467e44be8e15fc0b01eca68ce94e9135035cf0fe356f7110e7a65c323de29a6a
+  assertions:
+  - assertion_id: nrrd0004-metadata-boundary
+    target: teem_spec
+    kind: html_text_contains
+    expected: 'NRRD0004 : added " thicknesses: " and " sample units " fields'
+  - assertion_id: thicknesses-field
+    target: teem_spec
+    kind: html_text_contains
+    expected: 'thicknesses: < thickness[0] > < thickness[1] > ... < thickness[dim-1] > Always optional
+      Type: double'
+  - assertion_id: sample-units-field
+    target: teem_spec
+    kind: html_text_contains
+    expected: 'sample units: < string > sampleunits: < string > Always optional This provides a way of
+      storing the units of measurement associated with the scalar values stored in the array itself.'
+  - assertion_id: reference-nrrd0004-metadata-trigger
+    target: teem_reference_codec
+    kind: text_contains
+    expected: 'else if (_nrrdFieldInteresting(nrrd, nio, nrrdField_thicknesses) || _nrrdFieldInteresting(nrrd,
+      nio, nrrdField_space) || _nrrdFieldInteresting(nrrd, nio, nrrdField_space_dimension) ||
+      _nrrdFieldInteresting(nrrd, nio, nrrdField_sample_units)'
+- fact_id: SAL-NRRD-00024
+  claim_sha256: ae1df6c3bc0e0a9dfd8afa6145c53a7aab24d36be6f332179c1ad6b6316c2b33
+  assertions:
+  - assertion_id: measurement-frame-version-boundary
+    target: teem_spec
+    kind: html_text_contains
+    expected: 'NRRD0005 : added " measurement frame: " field'
   - assertion_id: measurement-frame-cardinality
     target: teem_spec
     kind: html_text_contains
     expected: 'measurement frame: < vector[0] > < vector[1] > ... < vector[spaceDim-1] >'
+  - assertion_id: measurement-frame-transform
+    target: teem_spec
+    kind: html_text_contains
+    expected: This field defines the relationship between the frame associated with the coordinates of
+      some non-scalar quantities, and the world space in which the image orientation is defined.
+  - assertion_id: reference-measurement-frame-trigger
+    target: teem_reference_codec
+    kind: text_contains
+    expected: 'if (_nrrdFieldInteresting(nrrd, nio, nrrdField_measurement_frame)) { ret = 5;'
+- fact_id: SAL-NRRD-00025
+  claim_sha256: badbe4f5cf2a61247b3df65673adef686aefdb2b711e0499c591eed96b5db927
+  assertions:
+  - assertion_id: relative-path-version-change
+    target: teem_spec
+    kind: html_text_contains
+    expected: as of NRRD0004 , the signifier of a header-relative file changed from the presence (at the
+      beginning of the filename) of " ./ ", to the absence of " / ".
+  - assertion_id: current-relative-resolution
+    target: teem_spec
+    kind: html_text_contains
+    expected: it is taken to be the filename of the data file, relative to the location of the detached
+      header file
+- fact_id: SAL-NRRD-00026
+  claim_sha256: 8b2621f8351b651a9b8c618998a0f221585306d422acf9c07dc7d1e3a8ee88d5
+  assertions:
+  - assertion_id: basic-field-inventory
+    target: teem_spec
+    kind: html_text_contains
+    expected: content , min , max , old min , old max , data file , line skip , byte skip , number ,
+      sample units
+  - assertion_id: content-field
+    target: teem_spec
+    kind: html_text_contains
+    expected: 'content: < string > Always optional'
+  - assertion_id: min-max-fields
+    target: teem_spec
+    kind: html_text_contains
+    expected: 'min: < min > Always optional Type: double This can be used to record the minimum value
+      in the array'
+  - assertion_id: legacy-old-min-field
+    target: teem_spec
+    kind: html_text_contains
+    expected: 'old min: < min > oldmin: < min > Always optional Meaningless for floating-point and block
+      nrrds Type: double'
+  - assertion_id: legacy-number-field
+    target: teem_spec
+    kind: html_text_contains
+    expected: the number field should never be written, and always ignored on reading, without even an
+      attempt to parse the field as an integer.

@@ -1,10 +1,18 @@
-# Family pack: scientific_raster (NRRD, SAFETENSORS) - L30 policy store
+# Family pack: scientific_raster (NRRD) - L30 policy store
 # Family review dimensions (mission): dimensions, types, encodings, endian,
 # attached/detached payloads, axis order, orientation, lazy access, streaming,
 # large-data security.
 # STYLE RULE: quoted block-style scalars only.
 schema_version: '1.0'
 family: scientific_raster
+applicability:
+  representative_formats: [nrrd]
+  semantic_scope: "Versioned ASCII headers describing attached or detached typed N-dimensional raster payloads, including per-axis metadata, encodings, byte order, and optional spatial orientation."
+  excluded_concepts:
+  - "JSON tensor descriptor tables"
+  - "machine-learning checkpoint sharding"
+  - "tensor-framework device placement"
+fact_ownership: explicit_complete
 identity_defaults:
   data_model_type: scientific_array
   description_template: "{display_name}: N-dimensional array/raster data format ({spec_body} {spec_version}). Header metadata describing typed, dimensioned payloads used for scientific, medical, and machine-learning data."
@@ -49,33 +57,80 @@ domains:
 - domain: HEADER
   category: parse
   level: MUST
-  title: Complete header parsing
-  production_meaning: "All magic/version forms, field identifiers, comments, and key/value metadata parse with uniqueness/ordering constraints enforced and unknown metadata preserved."
+  title: Baseline header parsing
+  production_meaning: "Magic/version forms, ordinary field specifications, comments, line endings, uniqueness, and ordering parse without assigning later-version constructs to earlier profiles."
   developer_use_case: "A developer inspects any conformant file's full metadata without touching the payload."
   baseline_behavior:
   - id: POL-SCR-HEADER-01
-    text: "Recognize every specified magic/version; parse fields, comments, and key/value metadata; enforce field uniqueness/ordering; preserve unknown metadata and optional-field absence."
+    text: "Recognize every specified magic/version; parse ordinary fields and comments; enforce field uniqueness/ordering; preserve unknown metadata and optional-field absence."
   - id: POL-SCR-HEADER-02
     text: "Accept the specification's permitted line endings and lexical variants while preserving original lexical form in lossless mode."
   fact_keywords: [header, magic, field, version, key, comment]
+  fact_ids: [SAL-NRRD-00002, SAL-NRRD-00004, SAL-NRRD-00005, SAL-NRRD-00007, SAL-NRRD-00008]
   required_tests:
-  - "Every magic/version fixture; duplicate-field and ordering negatives; unknown key/value round trip."
+  - "Every magic/version fixture; LF/CRLF fixtures; duplicate-field, leading-whitespace, and ordering negatives."
   release_gates:
-  - "All specified header fields implemented with tests."
+  - "Baseline header grammar is proven independently from later-version feature parsing."
+- domain: VERSION
+  category: validate
+  level: MUST
+  title: Magic and feature-version compatibility
+  production_meaning: "NRRD0001 through NRRD0005 are cumulative profiles with exact feature-introduction boundaries; strict validation rejects a later feature under an older magic and writers select the oldest sufficient magic unless the caller supplies a valid target."
+  developer_use_case: "A developer targets an older reader and gets an exact incompatibility report instead of a falsely labeled file."
+  baseline_behavior:
+  - id: POL-SCR-VERSION-01
+    text: "Model NRRD0001 through NRRD0005 explicitly; validate every feature against its introduction version; choose the oldest sufficient magic deterministically when no target profile is requested."
+  fact_keywords: [version, magic, profile, compatibility]
+  fact_ids: [SAL-NRRD-00020]
+  required_tests:
+  - "Positive fixtures for every magic, cross-product negatives for every later feature under every earlier magic, and deterministic oldest-sufficient writer selection."
+  release_gates:
+  - "No obligation inherits a profile earlier than the feature it describes."
+- domain: KEYVALUE
+  category: model
+  level: MUST
+  title: NRRD0002 key/value metadata
+  production_meaning: "From NRRD0002 onward, arbitrary key/value metadata preserves the exact delimiter, escaping, duplicate-key, ordering, and empty-value semantics defined by the format."
+  developer_use_case: "A developer round-trips custom acquisition metadata without losing empty values, newlines, backslashes, or duplicate-key resolution semantics."
+  baseline_behavior:
+  - id: POL-SCR-KEYVALUE-01
+    text: "Parse, validate, preserve, edit, and write key/value pairs only for NRRD0002 and newer, implementing newline/backslash escaping, forbidden key delimiters, and last-value-wins duplicate behavior."
+  fact_keywords: [key, value, metadata, escape]
+  fact_ids: [SAL-NRRD-00021]
+  required_tests:
+  - "NRRD0001 rejection plus NRRD0002-NRRD0005 escape, empty-value, duplicate-key, and ordering fixtures."
+  release_gates:
+  - "Key/value metadata has exact profile and lexical round-trip proof."
 - domain: PAYLOAD
   category: parse
   level: MUST
-  title: Attached and detached payload handling
-  production_meaning: "Attached and every detached payload form (single file, sequences, lists) read/write with counts validated against dimensions and a secure resolver policy for paths."
+  title: Attached and single-file detached payload handling
+  production_meaning: "Every profile reads and writes attached payloads and its single-file detached form; path interpretation follows the pre-NRRD0004 versus NRRD0004+ rule under a secure resolver policy."
   developer_use_case: "A developer loads a detached-header dataset and file-count or path violations surface before any read."
   baseline_behavior:
   - id: POL-SCR-PAYLOAD-01
-    text: "Support attached and all specified detached payload forms with file counts validated against declared dimensions and resolution relative to the header location under a secure path policy."
+    text: "Support attached and single-file detached payloads in every profile; apply profile-correct header-relative path semantics, skip fields, payload bounds, and a secure resolver policy."
   fact_keywords: [data, file, detached, attached, payload]
+  fact_ids: [SAL-NRRD-00003, SAL-NRRD-00018, SAL-NRRD-00025]
   required_tests:
-  - "Each payload form incl. count-mismatch and traversal negatives."
+  - "Attached and single-detached fixtures for every profile, pre/post-NRRD0004 relative-path cases, skip fields, and traversal negatives."
   release_gates:
-  - "Attached and detached forms pass the full fixture matrix."
+  - "Baseline payload forms pass the complete profile/path/security matrix."
+- domain: MULTIFILE
+  category: parse
+  level: MUST
+  title: NRRD0004 multi-file detached payloads
+  production_meaning: "From NRRD0004 onward, printf-style filename sequences and LIST declarations partition payloads by subdimension with exact file-count and per-file-size validation."
+  developer_use_case: "A developer streams a slice stack stored across many files and receives a precise error before reading when the sequence or LIST is incomplete."
+  baseline_behavior:
+  - id: POL-SCR-MULTIFILE-01
+    text: "Read and write numbered sequences and LIST payloads only for NRRD0004 and newer; validate min/max/step/subdimension, filename expansion, file count, and bytes per file before allocation."
+  fact_keywords: [data, file, list, sequence, subdimension]
+  fact_ids: [SAL-NRRD-00006]
+  required_tests:
+  - "Sequence and LIST fixtures across NRRD0004-NRRD0005 plus earlier-profile, format-string, range, count, truncation, and traversal negatives."
+  release_gates:
+  - "Every multi-file form is independently interoperable and fails closed outside its profiles."
 - domain: ENC
   category: parse
   level: MUST
@@ -86,6 +141,7 @@ domains:
   - id: POL-SCR-ENC-01
     text: "Read and write every specified encoding using the correct container framing; expose codec availability; fail explicitly when an optional codec is unavailable."
   fact_keywords: [encoding, raw, gzip, ascii, hex, compress]
+  fact_ids: [SAL-NRRD-00013]
   required_tests:
   - "Encoding matrix round trips; missing-codec explicit-failure fixture."
   release_gates:
@@ -100,10 +156,26 @@ domains:
   - id: POL-SCR-TYPES-01
     text: "Support every specified scalar type and alias plus block types with their validity rules; represent declared types independently from host-language type names."
   fact_keywords: [type, int, float, unsigned, block, double]
+  fact_ids: [SAL-NRRD-00016, SAL-NRRD-00017]
   required_tests:
   - "Type/alias matrix round trips; invalid type/encoding combination negatives."
   release_gates:
   - "All specified types and aliases round-trip."
+- domain: KINDS
+  category: model
+  level: MUST
+  title: NRRD0003 axis kinds
+  production_meaning: "From NRRD0003 onward, every axis may carry one defined kind value that distinguishes spatial, temporal, vector, tensor, color, domain, and other sample semantics without changing storage order."
+  developer_use_case: "A developer distinguishes a three-vector component axis from three independent spatial samples before transforming data."
+  baseline_behavior:
+  - id: POL-SCR-KINDS-01
+    text: "Model every specified axis kind and its aliases only for NRRD0003 and newer; preserve unknown future kinds safely while strict validation reports them."
+  fact_keywords: [kind, axis, vector, tensor, color]
+  fact_ids: [SAL-NRRD-00022]
+  required_tests:
+  - "Defined-kind and alias matrix, one-value-per-axis cardinality, unknown preservation, and NRRD0001-NRRD0002 rejection."
+  release_gates:
+  - "Kind semantics and exact profile boundaries are proven without inferring orientation."
 - domain: SHAPE
   category: model
   level: MUST
@@ -116,6 +188,7 @@ domains:
   - id: POL-SCR-SHAPE-02
     text: "Enforce endian declaration rules where element size exceeds one byte; byte-swap transparently on read/write; never endian-transform opaque blocks."
   fact_keywords: [dimension, sizes, axis, endian, order, shape]
+  fact_ids: [SAL-NRRD-00011, SAL-NRRD-00012, SAL-NRRD-00014, SAL-NRRD-00015]
   required_tests:
   - "Axis-order semantics fixtures; endian matrix; overflow-shape negatives."
   release_gates:
@@ -123,17 +196,33 @@ domains:
 - domain: SPACE
   category: model
   level: MUST
-  title: Orientation and space metadata
-  production_meaning: "Space names, origins, direction vectors, and measurement frames validate for consistency and expose index-to-world transforms; axis order is never assumed from a space name."
+  title: NRRD0004 orientation and space metadata
+  production_meaning: "From NRRD0004 onward, space names or explicit dimensions, space units, origins, and per-axis direction vectors validate for consistency and expose index-to-world transforms; measurement frames remain a separate NRRD0005 capability."
   developer_use_case: "A medical-imaging developer obtains the index-to-world transform and non-spatial axes are handled correctly."
   baseline_behavior:
   - id: POL-SCR-SPACE-01
-    text: "Support space/orientation metadata with vector-length validation against space dimension, non-spatial axes, and index-to-world transforms; never infer axis order from a named space."
+    text: "Support NRRD0004+ space/orientation metadata with vector-length validation against space dimension, non-spatial axes, and index-to-world transforms; never infer axis order from a named space."
   fact_keywords: [space, orientation, origin, direction, frame]
+  fact_ids: [SAL-NRRD-00019]
   required_tests:
-  - "Orientation matrices, non-spatial axes, and mismatch negatives."
+  - "NRRD0004-NRRD0005 orientation matrices, named and explicit spaces, units, non-spatial axes, and dimension-mismatch negatives."
   release_gates:
-  - "Transforms verified against reference calculations."
+  - "Index-to-world transforms and NRRD0004 profile boundary are verified against reference calculations."
+- domain: FRAME
+  category: model
+  level: MUST
+  title: NRRD0005 measurement frame
+  production_meaning: "NRRD0005 measurement-frame vectors transform coefficients of non-scalar measurements into the surrounding space basis and validate independently from index-to-world orientation."
+  developer_use_case: "A diffusion-imaging developer transforms tensor coefficients through the declared measurement frame without confusing it with voxel orientation."
+  baseline_behavior:
+  - id: POL-SCR-FRAME-01
+    text: "Model measurement frames only for NRRD0005; require exactly space-dimension vectors and expose an explicit measurement-to-world transform separate from index-to-world."
+  fact_keywords: [measurement, frame, vector, transform]
+  fact_ids: [SAL-NRRD-00024]
+  required_tests:
+  - "Identity, rotated, and non-orthogonal frame fixtures; cardinality and NRRD0001-NRRD0004 rejection negatives."
+  release_gates:
+  - "Measurement-frame math and NRRD0005-only applicability are independently proven."
 - domain: ARRAY
   category: model
   level: MUST
@@ -144,6 +233,7 @@ domains:
   - id: POL-SCR-ARRAY-01
     text: "Expose shape, strides, dtype, and axis metadata with element access, slicing, permutation, flip, and crop that update orientation and per-axis metadata; zero-copy views where safe, explicit copies otherwise."
   fact_keywords: [array, slice, index, element]
+  fact_ids: []
   required_tests:
   - "Metadata-follows-operation fixtures for each axis operation."
   release_gates:
@@ -158,6 +248,7 @@ domains:
   - id: POL-SCR-LAZY-01
     text: "Provide header-only and lazy payload loading, memory mapping for eligible uncompressed data, streaming decode, and region reads where layout permits, reporting when full decompression is required."
   fact_keywords: [lazy, stream, memory, large, map]
+  fact_ids: []
   required_tests:
   - "Bounded-memory large-file tests; slice-requires-full-decode reporting fixture."
   release_gates:
@@ -165,17 +256,33 @@ domains:
 - domain: META
   category: preserve
   level: MUST
-  title: Metadata fidelity
-  production_meaning: "Optional metadata (content, ranges, units, labels) preserves absence-vs-explicit distinctions and quoting/escaping rules; legacy fields ride along in lossless mode."
+  title: Baseline metadata fidelity
+  production_meaning: "Baseline optional basic and per-axis metadata preserves absence-vs-explicit distinctions, quoting/escaping rules, and legacy fields without absorbing kinds, thicknesses, sample units, or spatial metadata introduced by later profiles."
   developer_use_case: "A developer round-trips files with unusual labels/units and nothing is normalized away."
   baseline_behavior:
   - id: POL-SCR-META-01
-    text: "Preserve optional metadata with absence-vs-explicit-value distinctions and the format's quoting/escaping rules; carry legacy fields in lossless mode."
+    text: "Preserve baseline optional basic and per-axis metadata with absence-vs-explicit-value distinctions and the format's quoting/escaping rules; carry obsolete number and range fields in lossless mode."
   fact_keywords: [label, unit, min, max, content]
+  fact_ids: [SAL-NRRD-00009, SAL-NRRD-00010, SAL-NRRD-00026]
   required_tests:
-  - "Quoted/escaped label fixtures; absence-vs-NaN/empty distinctions."
+  - "Quoted/escaped label and unit fixtures; baseline field inventory; absence-vs-NaN/empty distinctions; obsolete-field lossless round trip."
   release_gates:
-  - "Metadata fidelity proven by round trip."
+  - "Baseline metadata fidelity is proven independently from later profile fields."
+- domain: PHYSICALMETA
+  category: preserve
+  level: MUST
+  title: NRRD0004 thickness and sample-unit metadata
+  production_meaning: "From NRRD0004 onward, per-axis thicknesses and the array's scalar sample unit preserve optional absence, unknown values, and exact lexical form."
+  developer_use_case: "A medical-imaging developer preserves slice thickness independently from axis spacing and records the unit of stored scalar measurements."
+  baseline_behavior:
+  - id: POL-SCR-PHYSICALMETA-01
+    text: "Model thicknesses and sample units only for NRRD0004 and newer; keep thickness distinct from spacing and sample units distinct from axis and space units."
+  fact_keywords: [thickness, sample, unit, metadata]
+  fact_ids: [SAL-NRRD-00023]
+  required_tests:
+  - "NRRD0004-NRRD0005 thickness/sample-unit fixtures, optional unknown values, semantic-separation checks, and earlier-profile rejection."
+  release_gates:
+  - "All three unit concepts and thickness versus spacing remain distinct in model and round trip."
 - domain: VALIDATE
   category: validate
   level: MUST
@@ -186,6 +293,7 @@ domains:
   - id: POL-SCR-VALIDATE-01
     text: "Check required and conditional fields, arity, version-feature compatibility, and expected sample/byte counts after decoding; treat trailing payload per policy with reporting."
   fact_keywords: [valid, required, must, check]
+  fact_ids: []
   required_tests:
   - "Truncated/oversized payloads, conditional-field negatives, version-feature mismatches."
   release_gates:
@@ -200,6 +308,7 @@ domains:
   - id: POL-SCR-CONVERT-01
     text: "Convert dtype, encoding, attached/detached form, and endian with explicit overflow/clipping/scaling/rounding policies and a conversion report."
   fact_keywords: [convert, cast]
+  fact_ids: []
   required_tests:
   - "Policy matrix fixtures with boundary values."
   release_gates:
@@ -214,6 +323,7 @@ domains:
   - id: POL-SCR-WRITE-01
     text: "Write required/conditional fields correctly with version selection honoring used features; preserve optional absence in lossless mode; deterministic field ordering and detached-partition policies."
   fact_keywords: [write, save, emit]
+  fact_ids: []
   required_tests:
   - "Version-selection fixtures; determinism byte-compare; detached-partition round trips."
   release_gates:

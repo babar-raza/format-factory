@@ -7,11 +7,13 @@ generated_by: codex
 generated_at: 2026-07-29
 goal_id: FF6-PRODUCTION-LIBRARIES-001
 parent_task_id: TC-FF6-PROGRAM-CAPABILITIES-001
-status: READY
+status: PASS
 format_id: nrrd
 skill_ids:
   - ingest-spec-sal
   - sal-pipeline-heal
+  - create-format-family-pack
+  - research-format-contract-sources
   - compile-format-contract
   - compile-production-capability-universe
   - plan-control
@@ -78,3 +80,115 @@ separating features introduced by later magic/version identifiers.
   affected tests, Ruff, and Pyright pass. Mypy results retain their precise
   checked boundary.
 - No product or promotion state changes.
+
+## Verified completion checkpoint
+
+Status: `PASS` at native FF6 event `FF6-EVENT-000019`.
+
+### Authority and profile evidence
+
+- The pinned Teem HTML specification and Teem 1.9.0 `formatNRRD.c` member were
+  independently checked at SHA-256
+  `43ca6102...`, `e0b34337...`, and `c75ebbf2...` respectively; full values
+  remain in the authority lock, SAL receipts, and delta report.
+- `reports/ff6/nrrd-profile-delta-matrix.yaml` separates the five magic
+  profiles without treating the newest prose as proof of older behavior:
+  - NRRD0001: baseline header, attached/single detached payload, scalar/block
+    types, encodings, endian, shape, and baseline metadata;
+  - NRRD0002: key/value metadata;
+  - NRRD0003: axis kinds;
+  - NRRD0004: thickness/sample units, space/orientation metadata, multi-file
+    resources, and changed path semantics;
+  - NRRD0005: measurement frame.
+- The report records an interoperability peculiarity rather than hiding it:
+  Teem's reader accepts later fields under older magic identifiers. Strict
+  conformance remains version-aware; tolerant interoperability behavior is a
+  future explicit product policy.
+- All 25 NRRD SAL facts have exact passing declarative receipts.
+
+### Contract depth and ownership
+
+- The scientific-raster family pack contains 18 domains and 41 policy IDs.
+- `fact_ownership: explicit_complete` assigns every one of the 25 live NRRD
+  facts exactly once, with no duplicate, foreign, missing, or dangling owner.
+- A validator negative control rejected the malformed
+  `NRRD-V4META-001` identifier; the canonical source was corrected to
+  `NRRD-PHYSICALMETA-001` and the policy to
+  `POL-SCR-PHYSICALMETA-01`.
+- The governed research source was repaired where one requirement mixed
+  NRRD0004 coordinate transforms with NRRD0005 measurement-frame semantics.
+  The research store, deterministic product requirement, authority lock, and
+  compiled contract were resynchronized rather than patching the projection.
+- The compiled NRRD contract has 21 professional capability records. The
+  deterministic six-format projection owns 65 NRRD obligations, with 20
+  stable required capabilities and one isolated preview capability.
+- All five selected profiles are claimed; missing profiles and known NRRD
+  surface gaps are empty; every obligation has a non-empty profile subset;
+  duplicate canonical obligation IDs are zero.
+
+### Deterministic proof
+
+- NRRD contract SHA-256:
+  `a5de17bfd0d6f978b07d0e00b109b6fc4e16257c6299444081e356fc9b1b693b`.
+- NRRD capability projection SHA-256:
+  `36fd53d95ae006c5709f4e44285c8c1edd554be992f1dc99ef6db1453a92116a`.
+- NRRD obligation projection SHA-256:
+  `12dfc9adffc69c0762756972f6de2552c1a721cccad51d020d1e08c130d4cef9`.
+- Six-format manifest aggregate:
+  `4d17d8c8c0ef3de74d59e1d5b16884c0210fd0836e0593591871f10d0af2efd2`.
+- Three-run digest:
+  `389be84634941d3f244387bbc488c2303dcdb3add74b7d1edfb5def85710d3fc`.
+- All 15 locked authority artifacts remain live `MATCH`.
+
+### Verification boundary
+
+- SAL exact verification: 25/25 `PASS`.
+- Family-pack validation and idempotency: `PASS`.
+- ProductContract schema, provenance, depth, shallow-language, duplicate-ID,
+  test-gate, freshness, and family-adequacy checks: 8/8 `PASS`.
+- Six-format check mode and three-run idempotency: `PASS`.
+- Format-contract tests: 92 passed, 1 baseline-known stateful CSV
+  idempotency test deselected.
+- Affected verification/compiler/controller tests: 96 passed.
+- Authority dependency-closure tests: 119 passed.
+- Ruff on affected machinery and tests: `PASS`.
+- Pyright 1.1.411: zero errors, warnings, or information diagnostics.
+- Strict Mypy passed for the touched family-pack validator after installing
+  `types-PyYAML 6.0.12.20260724` in the ignored local virtual environment.
+  This is not a repository-wide Mypy claim.
+- The global SAL merge command still exits non-zero on pre-existing ODS/ODT
+  alias contradictions. Its derived cache contains all 25 valid NRRD facts,
+  and all attempted global alias side effects were removed. This NRRD task
+  did not conceal or broaden into those unrelated defects.
+
+### Self-challenge
+
+1. All required NRRD task steps were performed: yes.
+2. Required evidence is present: yes.
+3. Evidence is sufficient for contract/profile completion: yes; it is not
+   presented as product implementation evidence.
+4. A secondary source was used where primary authority was required: no.
+5. A phase-forbidden file was created or modified: no.
+6. A gate was self-approved: no.
+7. Phase N+1 work was performed: no.
+8. An unauthorized commit or push occurred: no.
+9. The next executor has an inspectable checkpoint: yes.
+10. A discovered gap was left unlogged: no.
+11. Relevant memory/context was read: yes.
+12. Memory was treated only as context, not authority: yes.
+13. Memory was checked against canonical Git/controller evidence: yes; no
+    unlogged contradiction remains.
+14. Memory-update trigger: not applicable; no memory update was requested.
+15. Human review is being requested: not applicable; no human review is
+    requested.
+
+### Truth boundary and successor
+
+This checkpoint proves the NRRD normative work denominator and deterministic
+contract projection. It does not prove that the existing NRRD source is
+production-ready, does not certify a package, and changes no promotion or
+gate.
+
+The parent task remains `NEEDS_REPAIR`. The exact successor is
+`TC-FF6-XLIFF-PROFILE-SURFACE-001`; UBL all-root typing remains queued after
+XLIFF.

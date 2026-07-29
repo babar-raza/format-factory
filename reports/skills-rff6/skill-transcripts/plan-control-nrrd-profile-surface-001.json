@@ -1,0 +1,68 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "plan-control-nrrd-profile-surface-001",
+  "skill_id": "plan-control",
+  "mode": "live",
+  "timestamp": "2026-07-29T11:48:19Z",
+  "inputs": {
+    "task_id": "TC-FF6-NRRD-PROFILE-SURFACE-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "operation": "close verified NRRD contract repair and materialize the exact XLIFF successor",
+    "target_paths": [
+      "taskcards/TC-FF6-NRRD-PROFILE-SURFACE-001.md",
+      "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
+      "taskcards/TC-FF6-PROGRAM-CAPABILITIES-001.md",
+      "taskcards/index.yaml",
+      "plans/strategic/ff6/current-gaps.yaml",
+      "plans/strategic/ff6/events.jsonl",
+      "plans/strategic/ff6/controller-state.yaml"
+    ],
+    "coordination_scope": "exclusive file leases on the bounded NRRD checkpoint, native FF6 control projections, and exact XLIFF successor",
+    "acceptance_evidence": "NRRD PASS; parent NEEDS_REPAIR; XLIFF READY; event 19 valid; no product, gate, certification, or promotion mutation"
+  },
+  "allowed_files": [
+    "taskcards/TC-FF6-NRRD-PROFILE-SURFACE-001.md",
+    "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
+    "taskcards/TC-FF6-PROGRAM-CAPABILITIES-001.md",
+    "taskcards/index.yaml",
+    "plans/strategic/ff6/current-gaps.yaml",
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "reports/skills-rff6/skill-transcripts/plan-control-nrrd-profile-surface-001.json"
+  ],
+  "actual_files_changed": [
+    "taskcards/TC-FF6-NRRD-PROFILE-SURFACE-001.md",
+    "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
+    "taskcards/TC-FF6-PROGRAM-CAPABILITIES-001.md",
+    "taskcards/index.yaml",
+    "plans/strategic/ff6/current-gaps.yaml",
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "reports/skills-rff6/skill-transcripts/plan-control-nrrd-profile-surface-001.json"
+  ],
+  "tests_run": [
+    "native FF6 event-chain replay through event 19",
+    "event-19 output-digest verification for 24 bound files",
+    "YAML parse, controller-head, task-index, task-state, and duplicate-task reconciliation",
+    "python tools/evidence/check_current_state_consistency.py",
+    "python -m pytest tests/plan_control -q",
+    "git diff --check"
+  ],
+  "ledger_entry_id": "FF6-EVENT-000019",
+  "result": "PASS",
+  "evidence": {
+    "event_id": "FF6-EVENT-000019",
+    "event_hash": "76b580d72f865428e92bc5b6089a89487356c69163aadf6b615b70c6867221f8",
+    "parent_task_state": "NEEDS_REPAIR",
+    "completed_task": "TC-FF6-NRRD-PROFILE-SURFACE-001",
+    "completed_task_state": "PASS",
+    "exact_next_task": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "exact_next_task_state": "READY",
+    "event_output_digests_verified": 24,
+    "plan_control_tests": "40 passed",
+    "current_state_consistency": "PASS",
+    "product_promotion": "none"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

@@ -1,0 +1,43 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "compile-format-contract-nrrd-profile-surface-001",
+  "skill_id": "compile-format-contract",
+  "mode": "live",
+  "timestamp": "2026-07-29T11:34:00Z",
+  "inputs": {
+    "format_id": "nrrd"
+  },
+  "allowed_files": [
+    "shared/format-contracts/nrrd.yaml",
+    "registry/format-contract-registry.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/nrrd.yaml",
+    "registry/format-contract-registry.yaml"
+  ],
+  "tests_run": [
+    "python tools/format_contract/contract_compiler.py --format-id nrrd --readiness-only",
+    "python tools/format_contract/contract_compiler.py --format-id nrrd --check --verify-idempotency",
+    "python tools/format_contract/contract_validator.py --format-id nrrd",
+    "python -m pytest tests/format_contract -q --deselect tests/format_contract/test_consumption_chain.py::test_full_slice_second_run_is_idempotent"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "family": "scientific_raster",
+    "readiness_score": 1.0,
+    "capability_count": 21,
+    "validator_checks_passed": 8,
+    "format_contract_sha256": "a5de17bfd0d6f978b07d0e00b109b6fc4e16257c6299444081e356fc9b1b693b",
+    "profile_specific_capabilities": {
+      "NRRD-KEYVALUE-001": "nrrd0002-nrrd0005",
+      "NRRD-KINDS-001": "nrrd0003-nrrd0005",
+      "NRRD-MULTIFILE-001": "nrrd0004-nrrd0005",
+      "NRRD-PHYSICALMETA-001": "nrrd0004-nrrd0005",
+      "NRRD-SPACE-001": "nrrd0004-nrrd0005",
+      "NRRD-FRAME-001": "nrrd0005"
+    }
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

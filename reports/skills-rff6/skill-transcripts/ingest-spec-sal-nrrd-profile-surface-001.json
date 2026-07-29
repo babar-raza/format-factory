@@ -1,0 +1,47 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "ingest-spec-sal-nrrd-profile-surface-001",
+  "skill_id": "ingest-spec-sal",
+  "mode": "live",
+  "timestamp": "2026-07-29T11:34:00Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "spec_source_uri": ".local/format-contracts/acquired/nrrd/src-nrrd-001.bin and src-nrrd-002.bin",
+    "spec_version": "NRRD0001-NRRD0005; Teem 1.9.0 reference source",
+    "spec_body": "Teem Project",
+    "target_fact_count_min": 25
+  },
+  "allowed_files": [
+    "shared/sal-facts/nrrd.yaml",
+    "shared/sal-facts/evidence/nrrd.yaml",
+    "reports/sal-verification/nrrd.json",
+    ".local/spec-cache/sal-facts-latest.json"
+  ],
+  "actual_files_changed": [
+    "shared/sal-facts/nrrd.yaml",
+    "shared/sal-facts/evidence/nrrd.yaml",
+    "reports/sal-verification/nrrd.json",
+    ".local/spec-cache/sal-facts-latest.json"
+  ],
+  "tests_run": [
+    "python tools/spec/verify_sal_facts.py --format-id nrrd --apply",
+    "python tools/spec/verify_sal_facts.py --format-id nrrd",
+    "jsonschema Draft 2020-12 validation of .local/spec-cache/sal-facts-latest.json",
+    "python -m pytest tests/tools/test_verify_sal_facts.py tests/tools/test_merge_sal_facts.py -q"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "verified_fact_count": 25,
+    "failed_fact_count": 0,
+    "combined_cache_schema": "PASS",
+    "nrrd_combined_cache_fact_count": 25,
+    "portfolio_merge_exit_code": 1,
+    "portfolio_merge_boundary": "The materialized cache is schema-valid and NRRD-complete, but merge_sal_facts exits 1 on pre-existing ODS/ODT alias contradictions. Its attempted unrelated alias-registry side effects were removed; no ODS/ODT canonical source was changed.",
+    "sal_store_sha256": "220dfbefabf44d8c2950cade60fe6ec26766e274985ccb32246e8ce6e532b14f",
+    "evidence_sha256": "dddbea7d5304bf67109941a7fbd917c6911630f268418f13b9c403f15c2eefc6",
+    "receipt_sha256": "21949a0cceaa2b53cd3eb1463112fccf82d51ff2bfe7e4d8b226f952444add88"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

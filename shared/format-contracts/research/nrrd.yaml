@@ -60,8 +60,9 @@ findings:
   depth_hint: 5
   finding_id: RF-NRRD-00004
   kind: product_requirement
-  requirement: Expose index-to-world and measurement-frame transforms from space metadata without ever
-    inferring axis order from a named space - medical-imaging orientation correctness.
+  requirement: Expose index-to-world transforms from NRRD0004 and newer space metadata without ever inferring
+    axis order from a named space; keep NRRD0005 measurement-frame transforms in a separate model and
+    API - medical-imaging orientation correctness.
   review:
     reviewed_at: '2026-07-16'
     reviewer: FCL-MACHINERY-2026-07-16 pilot review
@@ -111,6 +112,6 @@ source_records:
   version: null
   local_path: shared/format-contracts/product-requirements/nrrd.yaml
   canonical_url: null
-  content_hash: 4731be2f44166596980728c57750b9bcfea6c8f0d0e9603b406374112cc202d3
+  content_hash: 65cd7b76626b8c8eb91607c275db6e434d3afc73838025b4c0182efdc5f12770
   authority_class: PRODUCT_REQUIREMENT
   acquisition_status: ACQUIRED

@@ -1,0 +1,45 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "sal-pipeline-heal-nrrd-profile-surface-001",
+  "skill_id": "sal-pipeline-heal",
+  "mode": "live",
+  "timestamp": "2026-07-29T11:34:00Z",
+  "inputs": {
+    "taskcard_id": "TC-FF6-NRRD-PROFILE-SURFACE-001",
+    "format_id": "nrrd",
+    "root_cause_id": "FF6-NRRD-PROFILE-001",
+    "spec_cache_path": ".local/format-contracts/acquired/nrrd",
+    "target_stage": "verified SAL facts and exact NRRD0001-NRRD0005 profile delta"
+  },
+  "allowed_files": [
+    "shared/sal-facts/nrrd.yaml",
+    "shared/sal-facts/evidence/nrrd.yaml",
+    "reports/sal-verification/nrrd.json",
+    "reports/ff6/nrrd-profile-delta-matrix.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/sal-facts/nrrd.yaml",
+    "shared/sal-facts/evidence/nrrd.yaml",
+    "reports/sal-verification/nrrd.json",
+    "reports/ff6/nrrd-profile-delta-matrix.yaml"
+  ],
+  "tests_run": [
+    "python tools/spec/verify_sal_facts.py --format-id nrrd --apply",
+    "python tools/spec/verify_sal_facts.py --format-id nrrd",
+    "python -m pytest tests/tools/test_verify_sal_facts.py -q",
+    "exact 25-fact ownership and profile-subset audit"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "source_nrrd_001_sha256": "43ca6102cc998e0191e225d7954278547d491e29b74a132b3118571d85a8b0d5",
+    "source_nrrd_002_sha256": "e0b34337da424ff63ae31d05656ccaa619d03bc378a6eecf61c153c30d03e47b",
+    "format_nrrd_c_member_sha256": "c75ebbf2ad19cacc5e54d028cc1b3c740cfd2576ce6a78ecbb1de92e9f65aae1",
+    "verified_fact_count": 25,
+    "failed_fact_count": 0,
+    "profile_delta_groups": 13,
+    "strict_reader_boundary": "Teem permissive acceptance of later fields under older magics is retained as an interoperability peculiarity, not treated as conformance."
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}
