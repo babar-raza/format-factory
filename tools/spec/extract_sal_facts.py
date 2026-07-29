@@ -1459,6 +1459,850 @@ def _default_core_obligation_expectations() -> list[dict[str, Any]]:
     return sorted(rows, key=lambda item: item["obligation_id"])
 
 
+_NORMATIVE_MODAL = re.compile(
+    r"\b(?:must(?:\s+not)?|shall(?:\s+not)?|should(?:\s+not)?|"
+    r"required|recommended|may|optional)\b",
+    re.IGNORECASE,
+)
+_XSD_CANDIDATE_KINDS = frozenset(
+    {
+        "all",
+        "any",
+        "anyAttribute",
+        "attribute",
+        "choice",
+        "complexType",
+        "element",
+        "enumeration",
+        "extension",
+        "field",
+        "fractionDigits",
+        "group",
+        "import",
+        "key",
+        "keyref",
+        "length",
+        "list",
+        "maxExclusive",
+        "maxInclusive",
+        "maxLength",
+        "minExclusive",
+        "minInclusive",
+        "minLength",
+        "pattern",
+        "restriction",
+        "selector",
+        "sequence",
+        "simpleType",
+        "totalDigits",
+        "union",
+        "unique",
+        "whiteSpace",
+    }
+)
+
+
+def _element_local_name(tag: str) -> str:
+    return tag.rsplit("}", 1)[-1]
+
+
+def _section_token(section: ET.Element) -> str:
+    section_id = section.attrib.get("id") or section.attrib.get(_XML_ID)
+    if section_id:
+        return section_id
+    title = next(
+        (
+            _normalized_text("".join(child.itertext()))
+            for child in section
+            if child.tag == "title"
+        ),
+        "",
+    )
+    if not title:
+        raise ExtractionError("Core prose contains an unnamed section")
+    return "title-" + re.sub(r"[^a-z0-9]+", "-", title.casefold()).strip("-")
+
+
+def _candidate_occurrence(
+    *,
+    profile: str,
+    source: ProfileSource,
+    member: str,
+    member_bytes: bytes,
+    locator: str,
+    normalized_requirement: str,
+) -> dict[str, str]:
+    return {
+        "profile": profile,
+        "source_id": source.source_id,
+        "source_sha256": source.expected_sha256,
+        "member": member,
+        "member_sha256": _sha256(member_bytes),
+        "location": locator,
+        "normalized_requirement": normalized_requirement,
+        "requirement_sha256": _sha256(
+            normalized_requirement.encode("utf-8")
+        ),
+    }
+
+
+def _core_prose_candidate_occurrences(
+    source: ProfileSource,
+    members: Mapping[str, bytes],
+) -> list[dict[str, str]]:
+    member = source.prose_member
+    if member not in members:
+        raise ExtractionError(f"{source.source_id} lacks {member}")
+    member_bytes = members[member]
+    root = _parse_xml(
+        member_bytes,
+        location=f"{source.source_id}:{member}",
+        allow_doctype=True,
+    )
+    core_sections = [
+        node
+        for node in root.iter("section")
+        if (node.attrib.get("id") or node.attrib.get(_XML_ID)) == "core"
+    ]
+    if len(core_sections) != 1:
+        raise ExtractionError(
+            f"{source.source_id}:{member} requires exactly one Core section"
+        )
+    rows: list[dict[str, str]] = []
+    candidate_ordinals: dict[tuple[tuple[str, ...], str], int] = {}
+
+    def walk(node: ET.Element, section_path: tuple[str, ...]) -> None:
+        current_path = section_path
+        if node.tag == "section":
+            current_path = (*section_path, _section_token(node))
+        for child in node:
+            normalized = _normalized_text("".join(child.itertext()))
+            candidate = child.tag == "para" and bool(
+                _NORMATIVE_MODAL.search(normalized)
+            )
+            if child.tag == "listitem" and _NORMATIVE_MODAL.search(normalized):
+                candidate = not any(
+                    descendant is not child
+                    and descendant.tag in {"para", "listitem"}
+                    and _NORMATIVE_MODAL.search(
+                        _normalized_text("".join(descendant.itertext()))
+                    )
+                    for descendant in child.iter()
+                )
+            if candidate:
+                ordinal_key = (current_path, child.tag)
+                ordinal = candidate_ordinals.get(ordinal_key, 0) + 1
+                candidate_ordinals[ordinal_key] = ordinal
+                locator = (
+                    "prose/"
+                    + "/".join(current_path)
+                    + f"/{child.tag}[{ordinal}]"
+                )
+                rows.append(
+                    _candidate_occurrence(
+                        profile=source.profile,
+                        source=source,
+                        member=member,
+                        member_bytes=member_bytes,
+                        locator=locator,
+                        normalized_requirement=normalized,
+                    )
+                )
+            walk(child, current_path)
+
+    walk(core_sections[0], ())
+    if not rows:
+        raise ExtractionError(
+            f"{source.source_id}:{member} has no Core normative prose candidates"
+        )
+    return rows
+
+
+def _core_xsd_candidate_occurrences(
+    source: ProfileSource,
+    members: Mapping[str, bytes],
+) -> list[dict[str, str]]:
+    member = "schemas/xliff_core_2.0.xsd"
+    if member not in members:
+        raise ExtractionError(f"{source.source_id} lacks {member}")
+    member_bytes = members[member]
+    root = _parse_xml(member_bytes, location=f"{source.source_id}:{member}")
+    if root.tag != f"{{{_XSD_NS}}}schema":
+        raise ExtractionError(f"{source.source_id}:{member} is not XSD")
+    if root.attrib.get("targetNamespace") != _CORE_NAMESPACE:
+        raise ExtractionError(
+            f"{source.source_id}:{member} has the wrong Core namespace"
+        )
+    rows: list[dict[str, str]] = []
+
+    def walk(node: ET.Element, path: tuple[str, ...]) -> None:
+        ordinals: dict[str, int] = {}
+        for child in node:
+            kind = _element_local_name(child.tag)
+            ordinals[kind] = ordinals.get(kind, 0) + 1
+            identity = (
+                child.attrib.get("name")
+                or child.attrib.get("ref")
+                or child.attrib.get("value")
+                or str(ordinals[kind])
+            )
+            token = f"{kind}:{identity}"
+            child_path = (*path, token)
+            if kind in _XSD_CANDIDATE_KINDS:
+                normalized = json.dumps(
+                    {
+                        "ancestors": list(path),
+                        "attributes": dict(sorted(child.attrib.items())),
+                        "kind": kind,
+                    },
+                    ensure_ascii=False,
+                    sort_keys=True,
+                    separators=(",", ":"),
+                )
+                rows.append(
+                    _candidate_occurrence(
+                        profile=source.profile,
+                        source=source,
+                        member=member,
+                        member_bytes=member_bytes,
+                        locator="xsd/" + "/".join(child_path),
+                        normalized_requirement=normalized,
+                    )
+                )
+            walk(child, child_path)
+
+    walk(root, ())
+    if not rows:
+        raise ExtractionError(f"{source.source_id}:{member} has no XSD candidates")
+    return rows
+
+
+def _core_schematron_candidate_occurrences(
+    source: ProfileSource,
+    members: Mapping[str, bytes],
+) -> list[dict[str, str]]:
+    member = "schemas/xliff_core_2.1.sch"
+    if member not in members:
+        if source.profile == "xliff_2.0":
+            return []
+        raise ExtractionError(f"{source.source_id} lacks {member}")
+    member_bytes = members[member]
+    root = _parse_xml(
+        member_bytes,
+        location=f"{source.source_id}:{member}",
+        allow_doctype=True,
+        allow_internal_entities=True,
+    )
+    rows: list[dict[str, str]] = []
+    rule_ordinal = 0
+    for rule in root.iter(f"{{{_SCH_NS}}}rule"):
+        rule_ordinal += 1
+        context = rule.attrib.get("context", "")
+        assertion_ordinal = 0
+        for child in rule:
+            kind = _element_local_name(child.tag)
+            if kind not in {"assert", "report"}:
+                continue
+            assertion_ordinal += 1
+            normalized = json.dumps(
+                {
+                    "context": context,
+                    "kind": kind,
+                    "message": _normalized_text("".join(child.itertext())),
+                    "test": child.attrib.get("test", ""),
+                },
+                ensure_ascii=False,
+                sort_keys=True,
+                separators=(",", ":"),
+            )
+            locator = (
+                f"schematron/rule[{rule_ordinal}]"
+                f"/{kind}[{assertion_ordinal}]"
+            )
+            rows.append(
+                _candidate_occurrence(
+                    profile=source.profile,
+                    source=source,
+                    member=member,
+                    member_bytes=member_bytes,
+                    locator=locator,
+                    normalized_requirement=normalized,
+                )
+            )
+    if source.profile == "xliff_2.1" and not rows:
+        raise ExtractionError(
+            f"{source.source_id}:{member} has no Schematron assertions"
+        )
+    return rows
+
+
+def _candidate_relation(occurrences: Sequence[Mapping[str, str]]) -> str:
+    profiles = {str(row["profile"]) for row in occurrences}
+    if profiles == {"xliff_2.0"}:
+        return "REMOVED_IN_XLIFF_2_1"
+    if profiles == {"xliff_2.1"}:
+        return "ADDED_IN_XLIFF_2_1"
+    if profiles != {"xliff_2.0", "xliff_2.1"}:
+        raise ExtractionError(f"invalid candidate profile set: {sorted(profiles)}")
+    requirements = {
+        str(row["requirement_sha256"]) for row in occurrences
+    }
+    return "COMMON_IDENTICAL" if len(requirements) == 1 else "COMMON_CHANGED"
+
+
+def _candidate_disposition(
+    candidate: Mapping[str, Any],
+    expected_ids: set[str],
+) -> dict[str, Any]:
+    text = " ".join(
+        [
+            str(candidate["semantic_location"]),
+            *[
+                str(row["normalized_requirement"])
+                for row in candidate["occurrences"]
+            ],
+        ]
+    ).casefold()
+    source_kind = str(candidate["source_kind"])
+    obligation_ids: set[str] = set()
+    mapping_rule_ids: set[str] = set()
+
+    keyword_rules: tuple[tuple[tuple[str, ...], tuple[str, ...]], ...] = (
+        (("skeleton", "href"), ("SAL-XLIFF-CORE-REFERENCE-SKELETON-HREF-001",)),
+        (("substate",), ("SAL-XLIFF-CORE-STATE-SUBSTATE-001",)),
+        (("state",), ("SAL-XLIFF-CORE-STATE-VALUE-001",)),
+        (("canresegment",), ("SAL-XLIFF-CORE-SEGMENT-CANRESEGMENT-INHERIT-001",)),
+        (("segmentation",), ("SAL-XLIFF-CORE-SEGMENT-SPLIT-001",)),
+        (("datarefstart",), ("SAL-XLIFF-CORE-INLINE-DATAREF-001",)),
+        (("datarefend",), ("SAL-XLIFF-CORE-INLINE-DATAREF-001",)),
+        (("dataref",), ("SAL-XLIFF-CORE-REFERENCE-DATAREF-001",)),
+        (("startref",), ("SAL-XLIFF-CORE-REFERENCE-STARTREF-001",)),
+        (("copyof",), ("SAL-XLIFF-CORE-REFERENCE-COPYOF-001",)),
+        (("cancopy",), ("SAL-XLIFF-CORE-INLINE-CANCOPY-001",)),
+        (("candelete",), ("SAL-XLIFF-CORE-INLINE-CANDELETE-001",)),
+        (("canreorder",), ("SAL-XLIFF-CORE-INLINE-CANREORDER-001",)),
+        (("xml:space",), ("SAL-XLIFF-CORE-WHITESPACE-INHERIT-001",)),
+        (("srcdir",), ("SAL-XLIFF-CORE-DIRECTION-SOURCE-001",)),
+        (("trgdir",), ("SAL-XLIFF-CORE-DIRECTION-TARGET-001",)),
+        (("srclang",), ("SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001",)),
+        (("trglang",), ("SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001",)),
+        (("translate",), ("SAL-XLIFF-CORE-INHERIT-TRANSLATE-001",)),
+        (("version",), ("SAL-XLIFF-CORE-DOCUMENT-VERSION-001",)),
+        (("anyattribute",), ("SAL-XLIFF-CORE-EXTENSION-NAMESPACE-001",)),
+        (("\"kind\":\"any\"",), ("SAL-XLIFF-CORE-HIERARCHY-EXTENSION-POINTS-001",)),
+        (("extension",), ("SAL-XLIFF-CORE-EXTENSION-PRESERVE-001",)),
+        (("originaldata",), ("SAL-XLIFF-CORE-HIERARCHY-ORIGINAL-DATA-001",)),
+        (("ignorable",), ("SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001",)),
+        (("segment",), ("SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001",)),
+        (("unit",), ("SAL-XLIFF-CORE-HIERARCHY-UNIT-CHILDREN-001",)),
+        (("group",), ("SAL-XLIFF-CORE-HIERARCHY-GROUP-CHILDREN-001",)),
+        (("file",), ("SAL-XLIFF-CORE-HIERARCHY-FILE-CHILDREN-001",)),
+        (("target",), ("SAL-XLIFF-CORE-SOURCE-TARGET-OPTIONAL-001",)),
+        (("source",), ("SAL-XLIFF-CORE-SOURCE-REQUIRED-001",)),
+        (("notes",), ("SAL-XLIFF-CORE-HIERARCHY-NOTES-001",)),
+        (("inline",), ("SAL-XLIFF-CORE-AGENT-INLINE-001",)),
+        (("pc",), ("SAL-XLIFF-CORE-INLINE-PC-001",)),
+        (("ph",), ("SAL-XLIFF-CORE-INLINE-PH-001",)),
+        (("sc",), ("SAL-XLIFF-CORE-INLINE-SC-001",)),
+        (("ec",), ("SAL-XLIFF-CORE-INLINE-EC-001",)),
+        (("mrk",), ("SAL-XLIFF-CORE-INLINE-MRK-001",)),
+        (("sm",), ("SAL-XLIFF-CORE-INLINE-SM-001",)),
+        (("em",), ("SAL-XLIFF-CORE-INLINE-EM-001",)),
+        (("order",), ("SAL-XLIFF-CORE-HIERARCHY-ORDER-001",)),
+    )
+    for needles, ids in keyword_rules:
+        if any(
+            (
+                bool(
+                    re.search(
+                        rf"(?<![a-z0-9]){re.escape(needle)}(?![a-z0-9])",
+                        text,
+                    )
+                )
+                if re.fullmatch(r"[a-z0-9]+", needle)
+                else needle in text
+            )
+            for needle in needles
+        ):
+            obligation_ids.update(ids)
+            mapping_rule_ids.add(
+                "SEMANTIC_TOKEN:"
+                + ",".join(
+                    obligation_id.removeprefix("SAL-XLIFF-CORE-")
+                    for obligation_id in ids
+                )
+            )
+
+    if source_kind == "CORE_SCHEMATRON":
+        obligation_ids.add("SAL-XLIFF-CORE-AGENT-VALIDATOR-001")
+        mapping_rule_ids.add("STRUCTURAL_FALLBACK:SCHEMATRON_VALIDATION")
+    elif source_kind == "CORE_XSD":
+        obligation_ids.add("SAL-XLIFF-CORE-ROUNDTRIP-STRUCTURE-001")
+        mapping_rule_ids.add("STRUCTURAL_FALLBACK:XSD_STRUCTURE")
+        if any(token in text for token in ("sequence", "choice", "all")):
+            obligation_ids.add("SAL-XLIFF-CORE-WRITE-SCHEMA-ORDER-001")
+            mapping_rule_ids.add("STRUCTURAL_CONTEXT:XSD_COMPOSITOR_ORDER")
+    else:
+        if "preserv" in text or "foreign" in text or "custom" in text:
+            obligation_ids.add("SAL-XLIFF-CORE-EXTENSION-UNKNOWN-PRESERVE-001")
+            mapping_rule_ids.add("SEMANTIC_CONTEXT:PROSE_PRESERVATION")
+        obligation_ids.add("SAL-XLIFF-CORE-AGENT-MODIFIER-001")
+        mapping_rule_ids.add("STRUCTURAL_FALLBACK:CORE_PROSE_PROCESSING")
+
+    unknown = sorted(obligation_ids - expected_ids)
+    if unknown:
+        raise ExtractionError(
+            f"candidate disposition references unknown obligation IDs: {unknown}"
+        )
+    if not obligation_ids:
+        raise ExtractionError(
+            f"candidate {candidate['candidate_id']} has no disposition"
+        )
+    return {
+        "kind": "MAP_EXPECTED_OBLIGATION",
+        "obligation_ids": sorted(obligation_ids),
+        "mapping_rule_ids": sorted(mapping_rule_ids),
+        "mapping_precision": (
+            "SPECIFIC_SEMANTIC_TOKEN_WITH_STRUCTURAL_FALLBACK"
+            if any(
+                rule.startswith(("SEMANTIC_TOKEN:", "SEMANTIC_CONTEXT:"))
+                for rule in mapping_rule_ids
+            )
+            else "COARSE_STRUCTURAL_FALLBACK"
+        ),
+        "rationale": (
+            "Deterministic semantic routing binds this authority candidate to "
+            "the named expected behavior surfaces. The mapping remains "
+            "source-located and requires canonical SAL verification."
+        ),
+        "validation_status": "SOURCE_LOCATED_RULE_DISPOSITION_UNVERIFIED",
+    }
+
+
+def validate_xliff_core_authority_census(
+    census: Mapping[str, Any],
+    *,
+    expected_obligation_inventory: Mapping[str, Any],
+) -> None:
+    """Fail closed when a Core authority census is malformed or ambiguous."""
+
+    if census.get("schema") != "ff6/xliff-core-authority-census@1":
+        raise ExtractionError("invalid XLIFF Core authority census schema")
+    expected_rows, denominator_complete, _status = _validate_core_denominator(
+        expected_obligation_inventory
+    )
+    expected_ids = set(expected_rows)
+    raw_candidates = census.get("candidates")
+    if not isinstance(raw_candidates, Sequence) or isinstance(
+        raw_candidates, (str, bytes)
+    ):
+        raise ExtractionError("Core census candidates must be a sequence")
+    seen_candidate_ids: set[str] = set()
+    mapped_ids: set[str] = set()
+    kind_counts: dict[str, int] = {}
+    relation_counts: dict[str, int] = {}
+    for raw_candidate in raw_candidates:
+        if not isinstance(raw_candidate, Mapping):
+            raise ExtractionError("Core census candidate must be a mapping")
+        candidate_id = str(raw_candidate.get("candidate_id", ""))
+        source_kind = str(raw_candidate.get("source_kind", ""))
+        semantic_location = str(raw_candidate.get("semantic_location", ""))
+        if source_kind not in {
+            "NORMATIVE_PROSE",
+            "CORE_XSD",
+            "CORE_SCHEMATRON",
+        }:
+            raise ExtractionError(
+                f"{candidate_id or '<unknown>'} has invalid source kind"
+            )
+        expected_candidate_id = (
+            "XLF-CAND-"
+            + source_kind.replace("_", "-")
+            + "-"
+            + _sha256(
+                json.dumps(
+                    [source_kind, semantic_location],
+                    ensure_ascii=False,
+                    separators=(",", ":"),
+                ).encode("utf-8")
+            )[:16].upper()
+        )
+        if candidate_id != expected_candidate_id:
+            raise ExtractionError("Core census candidate ID is not deterministic")
+        if candidate_id in seen_candidate_ids:
+            raise ExtractionError(f"duplicate candidate ID: {candidate_id}")
+        seen_candidate_ids.add(candidate_id)
+        raw_occurrences = raw_candidate.get("occurrences")
+        if not isinstance(raw_occurrences, Sequence) or isinstance(
+            raw_occurrences, (str, bytes)
+        ) or not raw_occurrences:
+            raise ExtractionError(f"{candidate_id} has invalid occurrences")
+        occurrence_profiles = [
+            str(occurrence.get("profile", ""))
+            for occurrence in raw_occurrences
+            if isinstance(occurrence, Mapping)
+        ]
+        if len(occurrence_profiles) != len(raw_occurrences):
+            raise ExtractionError(f"{candidate_id} occurrence must be a mapping")
+        if (
+            len(occurrence_profiles) != len(set(occurrence_profiles))
+            or not set(occurrence_profiles)
+            <= {"xliff_2.0", "xliff_2.1"}
+        ):
+            raise ExtractionError(f"{candidate_id} has invalid candidate profile")
+        stable_profiles = raw_candidate.get("stable_profiles")
+        if (
+            not isinstance(stable_profiles, Sequence)
+            or isinstance(stable_profiles, (str, bytes))
+            or list(stable_profiles) != sorted(occurrence_profiles)
+        ):
+            raise ExtractionError(f"{candidate_id} has invalid candidate profile")
+        relation = str(raw_candidate.get("profile_relation", ""))
+        if relation != _candidate_relation(
+            [
+                {
+                    "profile": str(occurrence["profile"]),
+                    "requirement_sha256": str(
+                        occurrence["requirement_sha256"]
+                    ),
+                }
+                for occurrence in raw_occurrences
+            ]
+        ):
+            raise ExtractionError(f"{candidate_id} has invalid profile relation")
+        if "disposition" not in raw_candidate:
+            raise ExtractionError(f"{candidate_id} is missing disposition")
+        disposition = raw_candidate["disposition"]
+        if not isinstance(disposition, Mapping):
+            raise ExtractionError(f"{candidate_id} disposition must be a mapping")
+        kind = str(disposition.get("kind", ""))
+        rationale = str(disposition.get("rationale", "")).strip()
+        if not rationale:
+            raise ExtractionError(f"{candidate_id} disposition lacks rationale")
+        if kind == "MAP_EXPECTED_OBLIGATION":
+            raw_ids = disposition.get("obligation_ids")
+            if not isinstance(raw_ids, Sequence) or isinstance(
+                raw_ids, (str, bytes)
+            ) or not raw_ids:
+                raise ExtractionError(
+                    f"{candidate_id} has invalid obligation mapping"
+                )
+            obligation_ids = list(map(str, raw_ids))
+            if len(obligation_ids) != len(set(obligation_ids)):
+                raise ExtractionError(
+                    f"{candidate_id} has duplicate obligation mapping"
+                )
+            unknown = sorted(set(obligation_ids) - expected_ids)
+            if unknown:
+                raise ExtractionError(
+                    f"{candidate_id} maps unknown obligations: {unknown}"
+                )
+            raw_rule_ids = disposition.get("mapping_rule_ids")
+            if not isinstance(raw_rule_ids, Sequence) or isinstance(
+                raw_rule_ids, (str, bytes)
+            ) or not raw_rule_ids:
+                raise ExtractionError(
+                    f"{candidate_id} lacks mapping rule identities"
+                )
+            precision = str(disposition.get("mapping_precision", ""))
+            if precision not in {
+                "SPECIFIC_SEMANTIC_TOKEN_WITH_STRUCTURAL_FALLBACK",
+                "COARSE_STRUCTURAL_FALLBACK",
+            }:
+                raise ExtractionError(
+                    f"{candidate_id} has invalid mapping precision"
+                )
+            mapped_ids.update(obligation_ids)
+        elif kind == "NON_OBLIGATION":
+            if not str(disposition.get("reason_code", "")).strip():
+                raise ExtractionError(
+                    f"{candidate_id} non-obligation lacks reason code"
+                )
+        else:
+            raise ExtractionError(f"{candidate_id} has invalid disposition kind")
+        kind_counts[source_kind] = kind_counts.get(source_kind, 0) + 1
+        relation_counts[relation] = relation_counts.get(relation, 0) + 1
+
+    if census.get("candidate_count") != len(raw_candidates):
+        raise ExtractionError("Core census candidate_count drift")
+    occurrence_counts = {
+        profile: {
+            source_kind: sum(
+                1
+                for candidate in raw_candidates
+                if isinstance(candidate, Mapping)
+                and candidate.get("source_kind") == source_kind
+                for occurrence in candidate.get("occurrences", [])
+                if isinstance(occurrence, Mapping)
+                and occurrence.get("profile") == profile
+            )
+            for source_kind in (
+                "NORMATIVE_PROSE",
+                "CORE_XSD",
+                "CORE_SCHEMATRON",
+            )
+        }
+        for profile in ("xliff_2.0", "xliff_2.1")
+    }
+    if census.get("source_surface_occurrence_counts") != occurrence_counts:
+        raise ExtractionError("Core census source occurrence counts drift")
+    precision_counts = {
+        precision: sum(
+            isinstance(candidate, Mapping)
+            and isinstance(candidate.get("disposition"), Mapping)
+            and candidate["disposition"].get("mapping_precision") == precision
+            for candidate in raw_candidates
+        )
+        for precision in (
+            "SPECIFIC_SEMANTIC_TOKEN_WITH_STRUCTURAL_FALLBACK",
+            "COARSE_STRUCTURAL_FALLBACK",
+        )
+    }
+    if census.get("disposition_precision_counts") != precision_counts:
+        raise ExtractionError("Core census disposition precision counts drift")
+    declared_kind_counts = census.get("candidate_count_by_source_kind")
+    if declared_kind_counts != {
+        kind: kind_counts.get(kind, 0)
+        for kind in ("NORMATIVE_PROSE", "CORE_XSD", "CORE_SCHEMATRON")
+    }:
+        raise ExtractionError("Core census source-kind counts drift")
+    declared_relation_counts = census.get("candidate_count_by_profile_relation")
+    if declared_relation_counts != {
+        relation: relation_counts.get(relation, 0)
+        for relation in (
+            "COMMON_IDENTICAL",
+            "COMMON_CHANGED",
+            "REMOVED_IN_XLIFF_2_1",
+            "ADDED_IN_XLIFF_2_1",
+        )
+    }:
+        raise ExtractionError("Core census profile-relation counts drift")
+    if census.get("unmapped_candidate_count") != 0:
+        raise ExtractionError("Core census declares unmapped candidates")
+    if census.get("multiply_dispositioned_candidate_count") != 0:
+        raise ExtractionError("Core census declares multiply dispositioned candidates")
+    if census.get("mapped_expected_obligation_ids") != sorted(mapped_ids):
+        raise ExtractionError("Core census mapped obligation projection drift")
+    unresolved = sorted(expected_ids - mapped_ids)
+    if census.get("unresolved_expected_obligation_ids") != unresolved:
+        raise ExtractionError("Core census unresolved obligation projection drift")
+    expected_complete = denominator_complete and not unresolved
+    if (
+        census.get("normative_obligation_inventory_complete")
+        is not expected_complete
+    ):
+        raise ExtractionError("Core census completeness contradicts denominator")
+
+
+def compile_xliff_core_authority_census(
+    profile_sources: Sequence[ProfileSource],
+    *,
+    expected_obligation_inventory: Mapping[str, Any],
+    policy_sources: Sequence[PolicySource] = (),
+) -> dict[str, Any]:
+    """Compile source candidates that must be dispositioned for XLIFF Core."""
+
+    sources = {source.profile: source for source in profile_sources}
+    if (
+        set(sources) != {"xliff_2.0", "xliff_2.1"}
+        or len(sources) != len(profile_sources)
+    ):
+        raise ExtractionError(
+            "XLIFF Core census requires one authority for each stable profile"
+        )
+    expected_rows, denominator_complete, denominator_status = (
+        _validate_core_denominator(expected_obligation_inventory)
+    )
+    current_denominator = compile_xliff_core_denominator(
+        profile_sources,
+        policy_sources=policy_sources,
+    )
+    if (
+        expected_obligation_inventory.get("authority_inputs")
+        != current_denominator["authority_inputs"]
+    ):
+        raise ExtractionError(
+            "XLIFF Core census authority input closure does not match the "
+            "current compiler inputs"
+        )
+    archives = {
+        profile: _read_authority_archive(source)
+        for profile, source in sorted(sources.items())
+    }
+    grouped: dict[tuple[str, str], list[dict[str, str]]] = {}
+    extractors = (
+        ("NORMATIVE_PROSE", _core_prose_candidate_occurrences),
+        ("CORE_XSD", _core_xsd_candidate_occurrences),
+        ("CORE_SCHEMATRON", _core_schematron_candidate_occurrences),
+    )
+    for profile, source in sorted(sources.items()):
+        for source_kind, extractor in extractors:
+            for occurrence in extractor(source, archives[profile]):
+                key = (source_kind, occurrence["location"])
+                grouped.setdefault(key, []).append(occurrence)
+
+    candidates: list[dict[str, Any]] = []
+    expected_ids = set(expected_rows)
+    for (source_kind, semantic_location), occurrences in sorted(grouped.items()):
+        profiles = [row["profile"] for row in occurrences]
+        if len(profiles) != len(set(profiles)):
+            raise ExtractionError(
+                f"duplicate candidate occurrence at {semantic_location}"
+            )
+        identity = json.dumps(
+            [source_kind, semantic_location],
+            ensure_ascii=False,
+            separators=(",", ":"),
+        )
+        candidate_id = (
+            "XLF-CAND-"
+            + source_kind.replace("_", "-")
+            + "-"
+            + _sha256(identity.encode("utf-8"))[:16].upper()
+        )
+        candidate: dict[str, Any] = {
+            "candidate_id": candidate_id,
+            "source_kind": source_kind,
+            "semantic_location": semantic_location,
+            "profile_relation": _candidate_relation(occurrences),
+            "stable_profiles": sorted(profiles),
+            "occurrences": sorted(
+                occurrences, key=lambda row: (row["profile"], row["source_id"])
+            ),
+        }
+        candidate["disposition"] = _candidate_disposition(
+            candidate, expected_ids
+        )
+        candidates.append(candidate)
+
+    candidate_ids = [str(row["candidate_id"]) for row in candidates]
+    if len(candidate_ids) != len(set(candidate_ids)):
+        raise ExtractionError("duplicate XLIFF Core census candidate ID")
+    mapped_ids = sorted(
+        {
+            str(obligation_id)
+            for candidate in candidates
+            for obligation_id in candidate["disposition"].get(
+                "obligation_ids", []
+            )
+        }
+    )
+    unresolved_ids = sorted(expected_ids - set(mapped_ids))
+    kind_counts = {
+        source_kind: sum(
+            row["source_kind"] == source_kind for row in candidates
+        )
+        for source_kind, _extractor in extractors
+    }
+    relation_counts = {
+        relation: sum(
+            row["profile_relation"] == relation for row in candidates
+        )
+        for relation in (
+            "COMMON_IDENTICAL",
+            "COMMON_CHANGED",
+            "REMOVED_IN_XLIFF_2_1",
+            "ADDED_IN_XLIFF_2_1",
+        )
+    }
+    precision_counts = {
+        precision: sum(
+            row["disposition"]["mapping_precision"] == precision
+            for row in candidates
+        )
+        for precision in (
+            "SPECIFIC_SEMANTIC_TOKEN_WITH_STRUCTURAL_FALLBACK",
+            "COARSE_STRUCTURAL_FALLBACK",
+        )
+    }
+    occurrence_counts = {
+        profile: {
+            source_kind: sum(
+                1
+                for candidate in candidates
+                if candidate["source_kind"] == source_kind
+                for occurrence in candidate["occurrences"]
+                if occurrence["profile"] == profile
+            )
+            for source_kind, _extractor in extractors
+        }
+        for profile in ("xliff_2.0", "xliff_2.1")
+    }
+    artifact = {
+        "schema": "ff6/xliff-core-authority-census@1",
+        "artifact_id": "FF6-XLIFF-CORE-AUTHORITY-CANDIDATE-CENSUS",
+        "artifact_type": "authority_candidate_census",
+        "visibility": "generated",
+        "publish_allowed": False,
+        "generated_by": "codex",
+        "format_id": "xliff",
+        "stable_profiles": ["xliff_2.0", "xliff_2.1"],
+        "status": "CANDIDATE_SCOPE_RECONCILED_OBLIGATION_INVENTORY_OPEN",
+        "candidate_scope_complete": True,
+        "candidate_scope_definition": {
+            "prose_selector": (
+                "Every para with an RFC-style normative modal plus every "
+                "modal listitem that has no modal para/listitem descendant, "
+                "within the unique DocBook section id=core."
+            ),
+            "xsd_node_kinds": sorted(_XSD_CANDIDATE_KINDS),
+            "schematron_node_kinds": ["assert", "report"],
+            "ancestor_descendant_rule": (
+                "A modal descendant para/listitem owns its prose candidate; "
+                "the aggregate ancestor listitem is excluded."
+            ),
+            "profile_delta_rule": (
+                "Equal source-kind and structural-location candidates are "
+                "COMMON_IDENTICAL or COMMON_CHANGED by normalized digest; "
+                "single-profile candidates are added or removed."
+            ),
+        },
+        "candidate_scope_limitations": [
+            (
+                "Non-modal declarative prose is not promoted by this batch; "
+                "it remains an open classification surface before the Core "
+                "obligation inventory can be exhaustive."
+            ),
+            (
+                "Lexical and structural dispositions are source-located but "
+                "not canonical SAL verification."
+            ),
+            (
+                "Production-policy obligations are denominator inputs, not "
+                "OASIS authority candidates in this census."
+            ),
+        ],
+        "normative_obligation_inventory_complete": (
+            denominator_complete and not unresolved_ids
+        ),
+        "denominator_status": denominator_status,
+        "authority_inputs": current_denominator["authority_inputs"],
+        "candidate_count": len(candidates),
+        "candidate_count_by_source_kind": kind_counts,
+        "candidate_count_by_profile_relation": relation_counts,
+        "disposition_precision_counts": precision_counts,
+        "source_surface_occurrence_counts": occurrence_counts,
+        "unmapped_candidate_count": 0,
+        "multiply_dispositioned_candidate_count": 0,
+        "mapped_expected_obligation_ids": mapped_ids,
+        "unresolved_expected_obligation_ids": unresolved_ids,
+        "candidates": candidates,
+        "truth_boundary": (
+            "The defined direct/leaf modal prose, Core XSD component and "
+            "constraint, and Core Schematron assertion surfaces are "
+            "deterministically enumerated and dispositioned. Dispositions "
+            "remain SOURCE_LOCATED_RULE_DISPOSITION_UNVERIFIED; this artifact "
+            "does not prove the expected-ID denominator exhaustive, resolve "
+            "canonical SAL verification, or close XLF-04."
+        ),
+    }
+    validate_xliff_core_authority_census(
+        artifact,
+        expected_obligation_inventory=expected_obligation_inventory,
+    )
+    return artifact
+
+
 def compile_xliff_core_denominator(
     profile_sources: Sequence[ProfileSource],
     *,
@@ -2804,7 +3648,12 @@ def _argument_parser() -> argparse.ArgumentParser:
     parser.add_argument("--format-id", choices=("xliff",), required=True)
     parser.add_argument(
         "--artifact",
-        choices=("matrix", "core-denominator", "core-obligations"),
+        choices=(
+            "matrix",
+            "core-denominator",
+            "core-obligations",
+            "core-census",
+        ),
         default="matrix",
     )
     parser.add_argument("--source-20", type=Path, required=True)
@@ -2824,7 +3673,7 @@ def _argument_parser() -> argparse.ArgumentParser:
         type=Path,
         help=(
             "tracked XLIFF Core expected-obligation denominator; required "
-            "for the core-obligations artifact"
+            "for the core-obligations and core-census artifacts"
         ),
     )
     parser.add_argument("--output", type=Path, required=True)
@@ -2861,10 +3710,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         profile_sources,
         policy_sources=policy_sources,
     )
-    if args.artifact == "core-obligations":
+    if args.artifact in {"core-obligations", "core-census"}:
         if args.denominator is None:
             raise ExtractionError(
-                "--denominator is required for core-obligations"
+                f"--denominator is required for {args.artifact}"
             )
         try:
             denominator_bytes = args.denominator.read_bytes()
@@ -2875,15 +3724,23 @@ def main(argv: Sequence[str] | None = None) -> int:
             ) from exc
         if not isinstance(denominator_input, Mapping):
             raise ExtractionError("Core denominator must be a YAML mapping")
-        artifact = compile_xliff_core_obligations(
-            profile_sources,
-            obligation_seeds=_default_core_obligation_seeds(),
-            batch_id="XLF-04-BATCH-003",
-            policy_sources=policy_sources,
-            expected_obligation_inventory=denominator_input,
-        )
+        if args.artifact == "core-obligations":
+            artifact = compile_xliff_core_obligations(
+                profile_sources,
+                obligation_seeds=_default_core_obligation_seeds(),
+                batch_id="XLF-04-BATCH-003",
+                policy_sources=policy_sources,
+                expected_obligation_inventory=denominator_input,
+            )
+            row_count = artifact["obligation_count"]
+        else:
+            artifact = compile_xliff_core_authority_census(
+                profile_sources,
+                expected_obligation_inventory=denominator_input,
+                policy_sources=policy_sources,
+            )
+            row_count = artifact["candidate_count"]
         artifact["denominator_input_sha256"] = _sha256(denominator_bytes)
-        row_count = artifact["obligation_count"]
     elif args.artifact == "core-denominator":
         artifact = denominator
         row_count = artifact["expected_obligation_count"]
@@ -2917,6 +3774,18 @@ def main(argv: Sequence[str] | None = None) -> int:
             {
                 "obligation_count": row_count,
                 "stable_profiles": artifact["stable_profiles"],
+            }
+        )
+    elif args.artifact == "core-census":
+        result.update(
+            {
+                "candidate_count": row_count,
+                "candidate_scope_complete": artifact[
+                    "candidate_scope_complete"
+                ],
+                "unresolved_expected_obligation_count": len(
+                    artifact["unresolved_expected_obligation_ids"]
+                ),
             }
         )
     else:

@@ -1,0 +1,59 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "sal-pipeline-heal-xliff-xlf04-core-batch-004",
+  "skill_id": "sal-pipeline-heal",
+  "mode": "live",
+  "timestamp": "2026-07-29T17:49:22.8786460Z",
+  "inputs": {
+    "taskcard_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "format_id": "xliff",
+    "root_cause_id": "ROOT-08",
+    "spec_cache_path": ".local/format-contracts/acquired/xliff",
+    "target_stage": "census",
+    "batch_id": "XLF-04-BATCH-004",
+    "execution_manifest": ".local/skills-first/manifests/sfx-b7da468fa25fee4d.json"
+  },
+  "allowed_files": [
+    "tools/spec/extract_sal_facts.py",
+    "tests/tools/test_extract_sal_facts.py",
+    "reports/ff6/xliff-core-authority-candidate-census.yaml",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-xliff-xlf04-core-batch-004.json"
+  ],
+  "actual_files_changed": [
+    "tools/spec/extract_sal_facts.py",
+    "tests/tools/test_extract_sal_facts.py",
+    "reports/ff6/xliff-core-authority-candidate-census.yaml",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-xliff-xlf04-core-batch-004.json"
+  ],
+  "tests_run": [
+    "Pinned package SHA-256 verification through authority compiler: PASS.",
+    "Candidate census tool invocation against both real stable-profile packages: PASS.",
+    "Census artifact produced and independently checked against canonical bytes: PASS.",
+    "Candidate IDs and source bindings validated: PASS.",
+    "Malformed disposition, duplicate mapping, preview-profile leakage, and short-token false-positive controls: PASS.",
+    "Three-run determinism: PASS.",
+    "Focused and affected regression suites plus static checks: PASS."
+  ],
+  "result": "PASS",
+  "fact_count_produced": 0,
+  "candidate_count_produced": 542,
+  "fact_id_namespace_valid": true,
+  "verdict": "PROCEED",
+  "output_artifacts": [
+    "reports/ff6/xliff-core-authority-candidate-census.yaml"
+  ],
+  "evidence": {
+    "authority_packages_verified": true,
+    "tool_invoked": "tools/spec/extract_sal_facts.py --artifact core-census",
+    "output_artifact_produced": true,
+    "census_sha256": "7227f43bb8d5ad93d0770df60f061d24cdd0ac5f521bd2ae5af2a6712407c69a",
+    "candidate_count": 542,
+    "candidate_scope_complete": true,
+    "normative_obligation_inventory_complete": false,
+    "canonical_sal_promotion_performed": false,
+    "xlf_04_complete": false,
+    "truth_boundary": "This is a candidate-census repair under ROOT-08, not canonical fact promotion. It creates no VERIFIED fact, changes no SAL store, and does not close XLF-04."
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

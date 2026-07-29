@@ -1359,3 +1359,296 @@ def test_core_denominator_authority_input_tampering_fails_closed(
             policy_sources=policy_sources,
             expected_obligation_inventory=tampered,
         )
+
+
+def test_core_authority_candidate_census_compiler_exists() -> None:
+    extractor = _load_module()
+
+    assert hasattr(extractor, "compile_xliff_core_authority_census"), (
+        "XLF-04-BATCH-004 requires a fail-closed authority-candidate census; "
+        "the open expected-ID denominator alone cannot prove source coverage"
+    )
+
+
+def _write_core_census_archive(
+    path: Path,
+    *,
+    profile: str,
+) -> tuple[str, str]:
+    version = profile.removeprefix("xliff_")
+    prose_member = f"xliff-core-v{version}-os.xml"
+    changed_requirement = (
+        "Agents must preserve foreign namespace content."
+        if profile == "xliff_2.1"
+        else "Agents should preserve foreign namespace content."
+    )
+    profile_only = (
+        '<section id="legacySkeleton"><title>Legacy skeleton</title>'
+        "<para>Writers must preserve an existing skeleton reference.</para>"
+        "</section>"
+        if profile == "xliff_2.0"
+        else '<section id="state"><title>State</title>'
+        "<para>Writers must keep subState consistent with state.</para>"
+        "</section>"
+    )
+    prose = (
+        '<?xml version="1.0"?><article><section id="core">'
+        "<title>Core</title>"
+        "<para>Agents must preserve unknown Core elements.</para>"
+        '<section id="extensions"><title>Extensions</title>'
+        f"<para>{changed_requirement}</para>"
+        "<itemizedlist><listitem><para>Agents must preserve custom "
+        "attributes.</para></listitem></itemizedlist>"
+        "</section>"
+        f"{profile_only}"
+        "</section></article>"
+    ).encode()
+    xsd = (
+        '<?xml version="1.0"?>'
+        '<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" '
+        'targetNamespace="urn:oasis:names:tc:xliff:document:2.0">'
+        '<xs:import namespace="urn:example" schemaLocation="example.xsd"/>'
+        '<xs:simpleType name="stateType"><xs:restriction base="xs:string">'
+        '<xs:enumeration value="initial"/></xs:restriction></xs:simpleType>'
+        '<xs:element name="xliff"><xs:complexType><xs:sequence>'
+        '<xs:element name="file" minOccurs="1" maxOccurs="unbounded"/>'
+        '</xs:sequence><xs:attribute name="version" type="xs:string" '
+        'use="required"/><xs:anyAttribute processContents="lax"/>'
+        "</xs:complexType></xs:element></xs:schema>"
+    ).encode()
+    schematron = (
+        b'<schema xmlns="http://purl.oclc.org/dsdl/schematron">'
+        b'<pattern><rule context="xlf:segment">'
+        b'<assert test="not(@subState) or @state">subState requires state</assert>'
+        b"</rule></pattern></schema>"
+    )
+    with zipfile.ZipFile(path, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+        archive.writestr(prose_member, prose)
+        archive.writestr("schemas/xliff_core_2.0.xsd", xsd)
+        if profile == "xliff_2.1":
+            archive.writestr("schemas/xliff_core_2.1.sch", schematron)
+    return prose_member, hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def test_core_authority_census_extracts_reconciled_profile_delta(
+    tmp_path: Path,
+) -> None:
+    extractor = _load_module()
+    sources = []
+    for profile in ("xliff_2.0", "xliff_2.1"):
+        path = tmp_path / f"{profile}.zip"
+        member, digest = _write_core_census_archive(path, profile=profile)
+        sources.append(
+            extractor.ProfileSource(
+                profile=profile,
+                source_id=f"SRC-{profile.upper()}",
+                package_path=path,
+                expected_sha256=digest,
+                prose_member=member,
+            )
+        )
+    policy_sources = extractor._default_core_policy_sources()
+    denominator = extractor.compile_xliff_core_denominator(
+        sources,
+        policy_sources=policy_sources,
+    )
+
+    census = extractor.compile_xliff_core_authority_census(
+        sources,
+        expected_obligation_inventory=denominator,
+        policy_sources=policy_sources,
+    )
+
+    assert census["schema"] == "ff6/xliff-core-authority-census@1"
+    assert census["candidate_scope_complete"] is True
+    assert census["normative_obligation_inventory_complete"] is False
+    assert census["candidate_scope_definition"]["prose_selector"]
+    assert census["candidate_scope_definition"]["xsd_node_kinds"]
+    assert census["candidate_scope_definition"]["schematron_node_kinds"] == [
+        "assert",
+        "report",
+    ]
+    assert census["candidate_scope_limitations"]
+    assert census["unmapped_candidate_count"] == 0
+    assert census["multiply_dispositioned_candidate_count"] == 0
+    candidates = census["candidates"]
+    assert sum(census["disposition_precision_counts"].values()) == len(candidates)
+    assert sum(
+        sum(profile_counts.values())
+        for profile_counts in census[
+            "source_surface_occurrence_counts"
+        ].values()
+    ) == sum(len(row["occurrences"]) for row in candidates)
+    assert len({row["candidate_id"] for row in candidates}) == len(candidates)
+    assert {row["source_kind"] for row in candidates} == {
+        "NORMATIVE_PROSE",
+        "CORE_XSD",
+        "CORE_SCHEMATRON",
+    }
+    relations = {row["profile_relation"] for row in candidates}
+    assert {
+        "COMMON_IDENTICAL",
+        "COMMON_CHANGED",
+        "REMOVED_IN_XLIFF_2_1",
+        "ADDED_IN_XLIFF_2_1",
+    } <= relations
+    custom_attribute_occurrences = [
+        occurrence
+        for row in candidates
+        for occurrence in row["occurrences"]
+        if "preserve custom attributes"
+        in occurrence["normalized_requirement"].casefold()
+    ]
+    assert len(custom_attribute_occurrences) == 2, (
+        "the enclosing listitem and its normative para must not both become "
+        "candidates"
+    )
+    expected_ids = {
+        row["obligation_id"] for row in denominator["expectations"]
+    }
+    for row in candidates:
+        assert len(row["occurrences"]) in {1, 2}
+        disposition = row["disposition"]
+        assert disposition["kind"] in {
+            "MAP_EXPECTED_OBLIGATION",
+            "NON_OBLIGATION",
+        }
+        assert disposition["rationale"]
+        assert disposition["mapping_rule_ids"]
+        assert disposition["mapping_precision"] in {
+            "SPECIFIC_SEMANTIC_TOKEN_WITH_STRUCTURAL_FALLBACK",
+            "COARSE_STRUCTURAL_FALLBACK",
+        }
+        if disposition["kind"] == "MAP_EXPECTED_OBLIGATION":
+            assert set(disposition["obligation_ids"]) <= expected_ids
+            assert disposition["obligation_ids"]
+        else:
+            assert disposition["reason_code"]
+    generic_xsd = next(
+        row
+        for row in candidates
+        if row["semantic_location"] == "xsd/import:1"
+    )
+    assert not {
+        "SAL-XLIFF-CORE-INLINE-SC-001",
+        "SAL-XLIFF-CORE-INLINE-EC-001",
+        "SAL-XLIFF-CORE-INLINE-EM-001",
+    } & set(generic_xsd["disposition"]["obligation_ids"]), (
+        "short inline element names must be routed as semantic tokens, not "
+        "as substrings of schema vocabulary"
+    )
+
+
+def test_cli_writes_and_checks_core_authority_census(tmp_path: Path) -> None:
+    extractor = _load_module()
+    sources: dict[str, tuple[Path, str]] = {}
+    for profile in ("xliff_2.0", "xliff_2.1"):
+        path = tmp_path / f"{profile}.zip"
+        _member, digest = _write_core_census_archive(path, profile=profile)
+        sources[profile] = (path, digest)
+    denominator = tmp_path / "denominator.yaml"
+    output = tmp_path / "census.yaml"
+    common_args = [
+        "--format-id",
+        "xliff",
+        "--source-20",
+        str(sources["xliff_2.0"][0]),
+        "--source-20-id",
+        "SRC-XLF-001",
+        "--source-20-sha256",
+        sources["xliff_2.0"][1],
+        "--source-21",
+        str(sources["xliff_2.1"][0]),
+        "--source-21-id",
+        "SRC-XLF-002",
+        "--source-21-sha256",
+        sources["xliff_2.1"][1],
+    ]
+    assert extractor.main(
+        [
+            *common_args,
+            "--artifact",
+            "core-denominator",
+            "--output",
+            str(denominator),
+        ]
+    ) == 0
+    args = [
+        *common_args,
+        "--artifact",
+        "core-census",
+        "--denominator",
+        str(denominator),
+        "--output",
+        str(output),
+    ]
+
+    assert extractor.main(args) == 0
+    first_bytes = output.read_bytes()
+    artifact = yaml.safe_load(first_bytes)
+    assert artifact["candidate_count"] > 0
+    assert artifact["denominator_input_sha256"] == hashlib.sha256(
+        denominator.read_bytes()
+    ).hexdigest()
+    assert extractor.main([*args, "--check"]) == 0
+    assert output.read_bytes() == first_bytes
+
+
+@pytest.mark.parametrize(
+    ("mutation", "message"),
+    [
+        ("unmapped", "missing disposition"),
+        ("duplicate_obligation", "duplicate obligation"),
+        ("preview_profile", "invalid candidate profile"),
+        ("multiply_dispositioned", "disposition must be a mapping"),
+    ],
+)
+def test_core_authority_census_validation_fails_closed(
+    tmp_path: Path,
+    mutation: str,
+    message: str,
+) -> None:
+    extractor = _load_module()
+    sources = []
+    for profile in ("xliff_2.0", "xliff_2.1"):
+        path = tmp_path / f"{profile}.zip"
+        member, digest = _write_core_census_archive(path, profile=profile)
+        sources.append(
+            extractor.ProfileSource(
+                profile=profile,
+                source_id=f"SRC-{profile.upper()}",
+                package_path=path,
+                expected_sha256=digest,
+                prose_member=member,
+            )
+        )
+    policy_sources = extractor._default_core_policy_sources()
+    denominator = extractor.compile_xliff_core_denominator(
+        sources,
+        policy_sources=policy_sources,
+    )
+    census = extractor.compile_xliff_core_authority_census(
+        sources,
+        expected_obligation_inventory=denominator,
+        policy_sources=policy_sources,
+    )
+    tampered = deepcopy(census)
+    candidate = tampered["candidates"][0]
+    if mutation == "unmapped":
+        candidate.pop("disposition")
+    elif mutation == "duplicate_obligation":
+        obligation_id = candidate["disposition"]["obligation_ids"][0]
+        candidate["disposition"]["obligation_ids"].append(obligation_id)
+    elif mutation == "preview_profile":
+        candidate["stable_profiles"] = ["xliff_2.2_preview"]
+    else:
+        candidate["disposition"] = [
+            candidate["disposition"],
+            deepcopy(candidate["disposition"]),
+        ]
+
+    with pytest.raises(extractor.ExtractionError, match=message):
+        extractor.validate_xliff_core_authority_census(
+            tampered,
+            expected_obligation_inventory=denominator,
+        )

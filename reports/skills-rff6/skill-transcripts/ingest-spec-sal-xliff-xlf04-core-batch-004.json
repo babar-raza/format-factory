@@ -1,0 +1,79 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "ingest-spec-sal-xliff-xlf04-core-batch-004",
+  "skill_id": "ingest-spec-sal",
+  "mode": "live",
+  "timestamp": "2026-07-29T17:49:22.8786460Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "batch_id": "XLF-04-BATCH-004",
+    "spec_source_uri": "Pinned local OASIS XLIFF 2.0 and XLIFF 2.1 Standard packages",
+    "spec_version": "XLIFF 2.0 and XLIFF 2.1",
+    "spec_body": "OASIS XLIFF Technical Committee Core prose, Core XSD, and Core Schematron authority members",
+    "target_fact_count_min": 1,
+    "authority_2_0": ".local/format-contracts/acquired/xliff/src-xlf-001.bin",
+    "authority_2_0_sha256": "aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055",
+    "authority_2_1": ".local/format-contracts/acquired/xliff/src-xlf-002.bin",
+    "authority_2_1_sha256": "73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751",
+    "denominator": "reports/ff6/xliff-core-obligation-denominator.yaml",
+    "output": "reports/ff6/xliff-core-authority-candidate-census.yaml",
+    "execution_manifest": ".local/skills-first/manifests/sfx-b7da468fa25fee4d.json"
+  },
+  "allowed_files": [
+    "tools/spec/extract_sal_facts.py",
+    "tests/tools/test_extract_sal_facts.py",
+    "reports/ff6/xliff-core-authority-candidate-census.yaml",
+    "reports/skills-rff6/skill-transcripts/ingest-spec-sal-xliff-xlf04-core-batch-004.json"
+  ],
+  "actual_files_changed": [
+    "tools/spec/extract_sal_facts.py",
+    "tests/tools/test_extract_sal_facts.py",
+    "reports/ff6/xliff-core-authority-candidate-census.yaml",
+    "reports/skills-rff6/skill-transcripts/ingest-spec-sal-xliff-xlf04-core-batch-004.json"
+  ],
+  "tests_run": [
+    "Real pinned authority core-census generation: PASS.",
+    "Core-census check mode: PASS.",
+    "Three clean process generations: byte-identical at SHA-256 7227f43bb8d5ad93d0770df60f061d24cdd0ac5f521bd2ae5af2a6712407c69a.",
+    "XLF-03 matrix, Core denominator, and batch-003 Core inventory check mode: PASS unchanged.",
+    "XLIFF authority materializer audit: 5 of 5 MATCH.",
+    "Full extractor, affected format-contract, and production-program suites: PASS.",
+    "Ruff, strict Mypy, Pyright 1.1.411, and bytecode compilation: PASS."
+  ],
+  "result": "PASS",
+  "evidence": {
+    "census_schema": "ff6/xliff-core-authority-census@1",
+    "census_sha256": "7227f43bb8d5ad93d0770df60f061d24cdd0ac5f521bd2ae5af2a6712407c69a",
+    "candidate_count": 542,
+    "source_occurrences": {
+      "xliff_2_0": {
+        "normative_prose": 170,
+        "core_xsd": 264,
+        "core_schematron": 0
+      },
+      "xliff_2_1": {
+        "normative_prose": 178,
+        "core_xsd": 264,
+        "core_schematron": 96
+      }
+    },
+    "profile_relations": {
+      "common_identical": 411,
+      "common_changed": 19,
+      "removed_in_xliff_2_1": 4,
+      "added_in_xliff_2_1": 108
+    },
+    "unmapped_candidate_count": 0,
+    "multiply_dispositioned_candidate_count": 0,
+    "lexical_or_context_disposition_count": 464,
+    "coarse_structural_disposition_count": 78,
+    "mapped_expected_obligation_count": 45,
+    "unresolved_expected_obligation_count": 60,
+    "verification_status": "SOURCE_LOCATED_RULE_DISPOSITION_UNVERIFIED",
+    "xlf_04_complete": false,
+    "truth_boundary": "The declared candidate selector is fully enumerated and every selected candidate has one validated disposition. Non-modal prose classification, denominator exhaustiveness, canonical SAL verification, 60 unresolved expected IDs, module obligations, capability repair, product source, certification, promotion, and release remain open."
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

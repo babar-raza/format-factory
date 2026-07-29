@@ -1,0 +1,100 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "test-driven-development-xliff-xlf04-core-batch-004",
+  "skill_id": "test-driven-development",
+  "mode": "live",
+  "timestamp": "2026-07-29T17:49:22.8786460Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "task_step": "XLF-04",
+    "batch_id": "XLF-04-BATCH-004",
+    "target_behavior_description": "Compile and validate a deterministic XLIFF Core authority-candidate census across direct or leaf modal prose, Core XSD semantics, Core Schematron assertions, and stable-profile deltas while preserving an explicit incomplete truth boundary.",
+    "delegated_green_skills": [
+      "ingest-spec-sal",
+      "sal-pipeline-heal"
+    ],
+    "execution_manifest": ".local/skills-first/manifests/sfx-b7da468fa25fee4d.json"
+  },
+  "allowed_files": [
+    "tests/tools/test_extract_sal_facts.py",
+    "tools/spec/extract_sal_facts.py",
+    "reports/ff6/xliff-core-authority-candidate-census.yaml",
+    "reports/skills-rff6/skill-transcripts/test-driven-development-xliff-xlf04-core-batch-004.json"
+  ],
+  "actual_files_changed": [
+    "tests/tools/test_extract_sal_facts.py",
+    "tools/spec/extract_sal_facts.py",
+    "reports/ff6/xliff-core-authority-candidate-census.yaml",
+    "reports/skills-rff6/skill-transcripts/test-driven-development-xliff-xlf04-core-batch-004.json"
+  ],
+  "tests_run": [
+    "RED 1: the compiler-existence test failed because compile_xliff_core_authority_census did not exist.",
+    "GREEN 1: a guarded compiler boundary was added and the existence test passed.",
+    "RED 2: the profile-delta test failed because the compiler did not accept policy-bound denominator inputs or extract candidates.",
+    "GREEN 2: prose, XSD, Schematron, profile-delta, and deterministic disposition compilation passed.",
+    "RED 3: the CLI test failed because core-census was not a supported artifact.",
+    "GREEN 3: core-census generation and check mode passed with the denominator bytes as a direct digest-bound input.",
+    "RED 4: four tamper tests failed because no independent census validator existed.",
+    "GREEN 4: missing, multiply dispositioned, duplicate-obligation, and preview-profile tampering now fail closed.",
+    "RED 5: a schemaLocation candidate incorrectly mapped to sc and em because short inline names were substring matched.",
+    "GREEN 5: semantic-token boundary matching removed the false mappings.",
+    "RED 6: scope-definition and source-occurrence accounting were absent.",
+    "GREEN 6: the artifact now publishes its exact selector, limitations, per-profile occurrence counts, and coarse versus lexical disposition counts.",
+    ".venv/Scripts/python.exe -m pytest -q tests/tools/test_extract_sal_facts.py: 34 passed.",
+    ".venv/Scripts/python.exe -m pytest -q tests/format_contract with the baseline-known idempotency deselection: 94 passed, 1 deselected.",
+    ".venv/Scripts/python.exe -m pytest -q tests/production_program: 69 passed.",
+    "Ruff, strict Mypy, Pyright 1.1.411, and bytecode compilation: PASS."
+  ],
+  "result": "PASS",
+  "evidence": {
+    "red_cycles_observed": 6,
+    "green_cycles_verified": 6,
+    "focused_suite": "34 passed",
+    "format_contract_regression": "94 passed, 1 baseline-known test deselected",
+    "production_program_regression": "69 passed",
+    "source_sha256": "138385387e78e567782df467829a468707b4edaeb32e458d7092c11f0f0270fa",
+    "test_sha256": "f0dc5db56d19f9669d9875e7f11303c87d2a4ee49a2d0619710ccb45b21eef72",
+    "census_sha256": "7227f43bb8d5ad93d0770df60f061d24cdd0ac5f521bd2ae5af2a6712407c69a",
+    "candidate_count": 542,
+    "candidate_source_counts": {
+      "normative_prose": 182,
+      "core_xsd": 264,
+      "core_schematron": 96
+    },
+    "mapped_expected_obligation_count": 45,
+    "unresolved_expected_obligation_count": 60,
+    "candidate_scope_complete": true,
+    "normative_obligation_inventory_complete": false,
+    "truth_boundary": "The tests prove deterministic enumeration and fail-closed disposition of the explicitly defined modal-prose, XSD, and Schematron candidate scope. They do not prove non-modal prose classified, the 105-ID denominator exhaustive, the 60 remaining expected IDs resolved, canonical SAL verification complete, XLF-04 closed, or product behavior certified."
+  },
+  "final_verification_checklist": {
+    "1_every_new_function_has_a_test": "YES",
+    "2_each_behavior_test_observed_red_first": "YES",
+    "3_each_red_failed_for_the_intended_reason": "YES",
+    "4_minimal_green_then_refactor": "YES",
+    "5_new_and_surrounding_tests_pass": "YES",
+    "6_output_pristine": "YES",
+    "7_real_authority_not_mock_only": "YES",
+    "8_edge_and_invalid_cases_covered": "YES for the bounded candidate-census contract"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for XLF-04-BATCH-004 only",
+    "2_required_evidence_present": "YES for this bounded batch",
+    "3_evidence_sufficient": "YES for the bounded compiler, validation, authority binding, and replay claims; not for complete XLF-04",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_checkpoint_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO; the non-modal prose and unresolved-ID limits are explicit artifact gaps",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES; no new contradiction was found",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}
