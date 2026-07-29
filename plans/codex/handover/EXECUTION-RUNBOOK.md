@@ -17,10 +17,11 @@ DISCOVER -> SNAPSHOT -> CONTRACT -> IMPLEMENT -> VERIFY
          -> REPAIR -> CERTIFY -> EXTRACT -> RELEASE_PREP -> COMPLETE
 ```
 
-Current state is `CONTRACT`. Authority closure passed at event 16 and the
-OpenRaster profile/surface repair passed at event 17. The parent capability
-task remains `NEEDS_REPAIR`, so product implementation is locked. The exact
-next task is `TC-FF6-IPYNB-PROFILE-SURFACE-001`.
+Current state is `CONTRACT`. Authority closure passed at event 16, OpenRaster
+profile/surface repair at event 17, and IPYNB profile/surface repair at event
+18. The parent capability task remains `NEEDS_REPAIR`, so product
+implementation is locked. The exact next task is
+`TC-FF6-NRRD-PROFILE-SURFACE-001`.
 
 ## Canonical state precedence
 
@@ -63,7 +64,8 @@ TC-FF6-PROGRAM-TRUTH-001 [COMPLETE]
        -> TC-FF6-CAPABILITY-COMPILER-001 [PASS]
        -> TC-FF6-AUTHORITY-CLOSURE-001 [PASS]
        -> TC-FF6-ORA-PROFILE-SURFACE-001 [PASS]
-       -> TC-FF6-IPYNB-PROFILE-SURFACE-001 [READY]
+       -> TC-FF6-IPYNB-PROFILE-SURFACE-001 [PASS]
+       -> TC-FF6-NRRD-PROFILE-SURFACE-001 [READY]
        -> remaining compiler-derived contract repairs
   -> TC-FF6-PROGRAM-ARCHITECTURE-001
   -> TC-FF6-PROGRAM-TASKCARDS-001
@@ -89,45 +91,48 @@ No product wave may bypass the program dependencies.
 9. Execute one bounded change set.
 10. Record every write and heartbeat during long work.
 
-## Exact IPYNB task algorithm
+## Exact NRRD task algorithm
 
 ### Inputs
 
-- locked IPYNB authorities, including `SRC-NB-002` and `SRC-NB-003`;
+- locked NRRD authorities `SRC-NRRD-001`, `SRC-NRRD-002`, and the
+  product-requirement authority `SRC-NRRD-003`;
 - `shared/format-contracts/authority-lock.yaml`;
-- IPYNB research store, SAL facts, SAL evidence, policy, family and
+- NRRD research store, SAL facts, SAL evidence, policy, family and
   enrichment inputs;
-- current `shared/format-contracts/ipynb.yaml`;
+- current `shared/format-contracts/nrrd.yaml`;
 - capability universe compiler and all six generated projections;
-- taskcard `TC-FF6-IPYNB-PROFILE-SURFACE-001`.
+- taskcard `TC-FF6-NRRD-PROFILE-SURFACE-001`.
 
 ### Steps
 
-1. Revalidate event 17 and all IPYNB authority matches.
+1. Revalidate event 18 and all NRRD authority matches.
 2. Materialize sources only through the canonical authority machinery.
-3. Extract the nbformat 4.0-4.5 delta matrix with exact source fragments.
+3. Extract the NRRD0001-NRRD0005 delta matrix with exact source fragments.
 4. Classify each change as normative schema, normative prose, product
    requirement, conversion requirement, optional, unsupported, or uncertain.
-5. Compare every current IPYNB SAL fact to the matrix.
+5. Compare every current NRRD SAL fact to the matrix.
 6. Ingest missing facts through `ingest-spec-sal`; heal through
    `sal-pipeline-heal`.
 7. Split any capability that contains obligations introduced, changed, or
    retired in different minor versions.
-8. Give every capability and obligation a non-empty subset of the six target
+8. Give every capability and obligation a non-empty subset of the five target
    profiles.
-9. Preserve typed notebook/cell/output/attachment/MIME/metadata, schema
-   validation, conversion, deterministic serialization, safe output clearing,
-   metadata filtering, cell ID validation/normalization, unknown metadata
-   preservation, and structural inspection.
-10. Keep notebook execution `EXCLUDED_WITH_AUTHORITY`; stored code and outputs
-    do not authorize execution.
+9. Preserve attached and detached data, all scalar/block types and endian
+   rules, dimensional/spatial/orientation/measurement-frame/axis metadata,
+   comments, key/value pairs, raw/ASCII/hex/gzip/bzip2 encodings, single
+   detached files, lists and filename patterns.
+10. Preserve streaming and memory mapping only where encoding permits,
+    high-fidelity raw headers plus normalized typed access, deterministic
+    writing, and allocation/overflow/decompression/traversal/truncation/
+    payload-size protections.
 11. Preserve stable IDs only when semantics and profile scope are unchanged.
-12. Compile IPYNB, then all six format projections.
-13. Require `FF6-IPYNB-PROFILE-001` to disappear through evidence and require
-    all six profiles to be claimed.
+12. Compile NRRD, then all six format projections.
+13. Require `FF6-NRRD-PROFILE-001` to disappear through evidence and require
+    all five profiles to be claimed.
 14. Replay three clean strict runs and all affected validation.
 15. Reconcile gaps, taskcards, controller and journal atomically.
-16. Retain NRRD, XLIFF, and UBL gaps and select the next mandatory repair
+16. Retain XLIFF and UBL gaps and select the next mandatory repair
     without entering product source.
 
 ### Failure routing
@@ -136,9 +141,9 @@ No product wave may bypass the program dependencies.
 - Schema/prose contradiction: retain both source locations, add a
   discriminating test requirement, and create separate named semantics where
   the authority supports them.
-- Conversion behavior absent from authority: classify it as a product
-  requirement or external `nbformat` interoperability expectation, not as a
-  normative schema fact.
+- Teem or pynrrd behavior absent from the pinned specification: classify it as
+  a product requirement or future interoperability expectation, not as a
+  normative format fact.
 - Compiler finding remains: task is `NEEDS_REPAIR`, not pass.
 - Nondeterministic output: block closure, isolate input, repair, rerun.
 - Same true external cause after three distinct repairs: record

@@ -28,23 +28,23 @@ budget are not operational authority.
 ## Current transfer boundary
 
 - Required source ancestor before this packet:
-  `17aece4e5301af958b21e4ffc9db878494f3b89c`.
+  `02574f2d66bf5b69e0712ce312bd2c41047659fb`.
 - Use the fetched `origin/main` descendant containing this packet.
 - Controller state: `CONTRACT`.
-- Event: `FF6-EVENT-000017`.
+- Event: `FF6-EVENT-000018`.
 - Event hash:
-  `44cb90a67aec8fff244de05d84c047f1d31077d694eda1ff1e27ee0aaa0f3015`.
+  `73b0f6074d13cae4c519176bf34908d2906653e831adc7d6dc1934310ec38362`.
 - Completed task: `TC-FF6-ORA-PROFILE-SURFACE-001` - `PASS`.
-- Next task: `TC-FF6-IPYNB-PROFILE-SURFACE-001` - `READY`.
+- Next task: `TC-FF6-NRRD-PROFILE-SURFACE-001` - `READY`.
 - Product promotion: none.
 
 ## Incoming provider procedure
 
 1. Fetch `origin/main`; do not use GitHub or a provider branch.
-2. Verify `17aece4e5301af958b21e4ffc9db878494f3b89c` is an ancestor.
+2. Verify `02574f2d66bf5b69e0712ce312bd2c41047659fb` is an ancestor.
 3. Verify the worktree is clean before new mutation.
 4. Read the ordered authority list in `START-HERE.md`.
-5. Validate the journal through event 17 using FF6 native semantics:
+5. Validate the journal through event 18 using FF6 native semantics:
    `previous_event_hash`, canonical JSON, sequential event IDs and hashes.
 6. Verify controller head, parent/child task states, task index, current gaps,
    authority 15/15 match, and capability manifest digests.
@@ -55,7 +55,7 @@ budget are not operational authority.
     directories, transcript, and artifact directory.
 11. Resolve the required registered skills and run the mutation guard.
 12. Capture input baselines before writing.
-13. Begin IPY-01 in `STATE-MACHINE-AND-TASKCARD-PROTOCOL.md`.
+13. Begin NRD-01 in `STATE-MACHINE-AND-TASKCARD-PROTOCOL.md`.
 
 Claude's hooks may auto-claim single files, but broad generated output sets
 still require explicit claims. Codex follows the CLI protocol in
@@ -180,7 +180,7 @@ print(f"PASS events={len(events)} head={previous}")
 currently fails at event 1 because it expects `previous_hash`. FF6 uses
 `previous_event_hash` under `ff6/controller-event@1`.
 
-This is `FF6-GAP-011`, not evidence that event 17 is corrupt. Validate the FF6
+This is `FF6-GAP-011`, not evidence that event 18 is corrupt. Validate the FF6
 native chain and do not edit either journal schema ad hoc.
 
 ## Transfer acceptance

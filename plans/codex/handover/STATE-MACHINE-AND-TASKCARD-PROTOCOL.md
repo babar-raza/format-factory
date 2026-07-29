@@ -138,20 +138,29 @@ claim evidence not yet executed.
 
 ## Current task decomposition
 
-Task: `TC-FF6-IPYNB-PROFILE-SURFACE-001`.
+Task: `TC-FF6-NRRD-PROFILE-SURFACE-001`.
 
 | Step | Required output | Exit test |
 |---|---|---|
-| IPY-01 | event 17, task, authority and worktree preflight | native chain, controller/task agreement, 15/15 authority match |
-| IPY-02 | source-located schema/document delta matrix for 4.0–4.5 | every delta has source ID, location, confidence and profile set |
-| IPY-03 | audited SAL fact/evidence map | exact verifier passes; no dangling, duplicate or foreign edge |
-| IPY-04 | profile-homogeneous capability model | mixed-version capabilities split; all six target profiles covered |
-| IPY-05 | regenerated IPYNB contract and obligation projection | every capability/obligation has non-empty profile subset |
-| IPY-06 | strict six-format replay | three byte-identical runs; aggregate recomputed; 15/15 authorities match |
-| IPY-07 | close projection | IPYNB gap removed by evidence; remaining NRRD/XLIFF/UBL gaps retained |
-| IPY-08 | remote checkpoint | explicit files committed and pushed to GitLab main; remote hash verified |
+| NRD-01 | event 18, task, NRRD authorities and worktree preflight | native chain, controller/task agreement, 15/15 authority match |
+| NRD-02 | source-located NRRD0001-NRRD0005 delta matrix | every introduction/change has source ID, location, confidence and profile set |
+| NRD-03 | audited NRRD SAL fact/evidence map | exact verifier passes; no dangling, duplicate, foreign, or unassigned edge |
+| NRD-04 | explicit-complete, profile-homogeneous capability model | mixed-version capabilities split; all five target profiles covered |
+| NRD-05 | regenerated NRRD contract and obligation projection | every capability/obligation has non-empty exact profile subset |
+| NRD-06 | strict six-format replay | three byte-identical runs; aggregate recomputed; 15/15 authorities match |
+| NRD-07 | close projection | NRRD gap removed by evidence; XLIFF/UBL gaps retained; no product promotion |
+| NRD-08 | remote checkpoint | explicit files committed and pushed to GitLab main; remote hash verified; packet refreshed |
 
-Product source and product tests are forbidden in IPY-01 through IPY-08.
+Product source and product tests are forbidden in NRD-01 through NRD-08.
+
+NRD-02 through NRD-05 must explicitly cover attached and detached payloads,
+scalar and block types, endian/dimension rules, spatial/orientation/
+measurement-frame/axis metadata, comments, key/value pairs, raw/ASCII/hex/
+gzip/bzip2 encodings, single files, lists and filename patterns. Streaming and
+memory mapping apply only where representation permits. Traversal, allocation,
+overflow, decompression, truncation and payload-size controls remain mandatory
+product requirements; contract work may classify them but cannot count them as
+implemented.
 
 ## Shift checkpoint state
 

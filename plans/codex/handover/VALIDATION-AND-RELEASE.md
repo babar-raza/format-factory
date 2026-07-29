@@ -22,24 +22,27 @@ fixtures are never sufficient evidence.
 
 ## Current evidence boundary
 
-Events 16 and 17 prove:
+Events 16 through 18 prove:
 
 - 15 of 15 locked authorities live-match;
 - strict six-format ProductContract compilation;
-- deterministic 99-capability/738-obligation planning projections;
+- deterministic 104-capability/701-obligation planning projections;
 - clean offline and clean online authority replay;
 - three identical strict generation runs;
 - authority-closure affected pytest `250 passed, 1 known baseline test
   deselected`;
 - OpenRaster affected pytest `166 passed, 1 known baseline test deselected`;
-- Ruff and mypy passed for both checkpoints; Pyright 1.1.411 passed for event
-  16 and was unavailable in the event-17 shell, so event 17 does not claim it;
+- Event-18 affected pytest `126 passed, 1 known baseline test deselected`;
+- Ruff passed; strict mypy passed on the new family-pack validator; the legacy
+  compiler graph is not claimed strict-clean; Pyright 1.1.411 passed on all
+  three affected compiler modules;
 - OpenRaster exact SAL verification `20/20`;
-- native FF6 event chain passes through event 17.
+- IPYNB exact SAL verification `25/25`;
+- native FF6 event chain passes through event 18.
 
 It does not prove:
 
-- implementation of any of the 738 obligations;
+- implementation of any of the 701 obligations merely from contract proof;
 - production readiness of any library;
 - independent application interoperability;
 - installed-wheel platform/dependency matrices;
@@ -66,9 +69,9 @@ All obligations remain unverified and all promotion states remain
 Because the specification is an early draft, later product certification is a
 named interoperability certification, not universal conformance.
 
-## Current IPYNB contract-task gate
+## Completed IPYNB contract-task gate
 
-`TC-FF6-IPYNB-PROFILE-SURFACE-001` requires:
+`TC-FF6-IPYNB-PROFILE-SURFACE-001` passed at event 18 with:
 
 - source-located nbformat 4.0–4.5 deltas;
 - exact fact/evidence edges and explicit uncertainty;
@@ -79,6 +82,22 @@ named interoperability certification, not universal conformance.
 - retained no-execution exclusion;
 - three identical strict runs with 15/15 authorities still matching;
 - affected contract, SAL, capability, event and static gates;
+- no product source, product test, certification, gate, or promotion change.
+
+## Current NRRD contract-task gate
+
+`TC-FF6-NRRD-PROFILE-SURFACE-001` requires:
+
+- source-located NRRD0001-NRRD0005 deltas from both pinned Teem authorities;
+- exact fact/evidence edges, explicit uncertainty, and complete ownership;
+- profile-homogeneous capabilities, splitting mixed-version rules;
+- coverage of attached/detached payloads, types/endian/dimensions, spatial and
+  axis metadata, all required encodings, data-file lists and patterns,
+  streaming/mmap conditions, preservation, deterministic output and resource
+  protections;
+- every capability and obligation assigned a non-empty exact profile subset;
+- all five target profiles claimed and no `FF6-NRRD-PROFILE-001` finding;
+- three identical strict runs with 15/15 authorities still matching;
 - no product source, product test, certification, gate, or promotion change.
 
 ## Required proof for each mandatory obligation

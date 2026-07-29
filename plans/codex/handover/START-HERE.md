@@ -29,14 +29,14 @@ C:\Users\prora\OneDrive\Documents\GitHub\format-factory\plans\codex\handover\STA
 |---|---|
 | Forge | GitLab only |
 | Remote and branch | `origin/main` |
-| Source commit | `17aece4e5301af958b21e4ffc9db878494f3b89c` |
+| Source commit | `02574f2d66bf5b69e0712ce312bd2c41047659fb` |
 | Controller state | `CONTRACT` |
-| Journal head | `FF6-EVENT-000017` |
-| Event hash | `44cb90a67aec8fff244de05d84c047f1d31077d694eda1ff1e27ee0aaa0f3015` |
+| Journal head | `FF6-EVENT-000018` |
+| Event hash | `73b0f6074d13cae4c519176bf34908d2906653e831adc7d6dc1934310ec38362` |
 | Parent task | `TC-FF6-PROGRAM-CAPABILITIES-001` — `NEEDS_REPAIR` |
-| Last completed child | `TC-FF6-ORA-PROFILE-SURFACE-001` — `PASS` |
-| Exact next task | `TC-FF6-IPYNB-PROFILE-SURFACE-001` — `READY` |
-| Current compiled denominator | 99 capabilities / 738 obligations |
+| Last completed child | `TC-FF6-IPYNB-PROFILE-SURFACE-001` — `PASS` |
+| Exact next task | `TC-FF6-NRRD-PROFILE-SURFACE-001` — `READY` |
+| Current compiled denominator | 104 capabilities / 701 obligations |
 | Authority closure | 15/15 `MATCH` |
 | Certified products | 0/6 |
 | Promotion | all six `UNASSESSED` |
@@ -61,7 +61,7 @@ packet to contain its own final commit hash.
 8. [`current-gaps.yaml`](../../strategic/ff6/current-gaps.yaml)
 9. [`capability-coverage.yaml`](../../strategic/ff6/capability-coverage.yaml)
 10. [`TC-FF6-PROGRAM-CAPABILITIES-001.md`](../../../taskcards/TC-FF6-PROGRAM-CAPABILITIES-001.md)
-11. [`TC-FF6-IPYNB-PROFILE-SURFACE-001.md`](../../../taskcards/TC-FF6-IPYNB-PROFILE-SURFACE-001.md)
+11. [`TC-FF6-NRRD-PROFILE-SURFACE-001.md`](../../../taskcards/TC-FF6-NRRD-PROFILE-SURFACE-001.md)
 12. [`ACTIVE-WORK-CHECKPOINT.md`](ACTIVE-WORK-CHECKPOINT.md)
 13. [`STATE-MACHINE-AND-TASKCARD-PROTOCOL.md`](STATE-MACHINE-AND-TASKCARD-PROTOCOL.md)
 14. [`SHIFT-AND-RESUME-PROTOCOL.md`](SHIFT-AND-RESUME-PROTOCOL.md)
@@ -87,8 +87,8 @@ If two records disagree, stop trusting the lower record and use this order:
 
 The assessment snapshot `current-state.yaml` remains valuable for product-tree
 inventory, but it was captured at baseline commit `e4f8f5f…`. Its contract
-hashes and pre-OpenRaster capability totals are historical where they disagree
-with event 17 and `capability-coverage.yaml`.
+hashes and pre-IPYNB capability totals are historical where they disagree
+with event 18 and `capability-coverage.yaml`.
 
 ## Mechanical resume preflight
 
@@ -99,7 +99,7 @@ git fetch origin main --prune
 git status --short --branch
 git rev-parse HEAD
 git rev-parse origin/main
-git merge-base --is-ancestor 17aece4e5301af958b21e4ffc9db878494f3b89c origin/main
+git merge-base --is-ancestor 02574f2d66bf5b69e0712ce312bd2c41047659fb origin/main
 python tools/evidence/check_current_state_consistency.py
 python -m tools.supervisor.coordination --json status
 ```
@@ -112,29 +112,32 @@ event schema. That integration defect is tracked as `FF6-GAP-011`.
 Resume only if:
 
 - the worktree is clean or every dirty path is classified and outside scope;
-- event 17 and controller state agree;
+- event 18 and controller state agree;
 - the exact READY task exists in `taskcards/index.yaml`;
 - the capability aggregate equals
-  `de6a38a86aa7a82cc50dc7dc6ebfa0066c811d8de782a37684fd26d20a89272a`;
+  `e0747efbf376f081fd6550afed48100c7e1872a055bf6155332ed9358ac05b5f`;
 - all 15 authority artifacts still match;
 - no live lease owns the intended files.
 
 ## Exact continuation
 
-Execute only `TC-FF6-IPYNB-PROFILE-SURFACE-001`.
+Execute only `TC-FF6-NRRD-PROFILE-SURFACE-001`.
 
-The first technical action is to revalidate the pinned IPYNB authorities and
-produce a source-located nbformat 4.0–4.5 delta matrix. This task is contract
-and obligation work only. Product source, product tests, packaging,
+The first technical action is NRRD step `NRD-01`: revalidate event 18, the
+two pinned NRRD authority artifacts, current SAL evidence, and task ownership.
+Then build a source-located NRRD0001-NRRD0005 delta matrix. This task is
+contract and obligation work only. Product source, product tests, packaging,
 certification, gate movement, and promotion are prohibited.
 
 The executor must not:
 
-- repeat the completed OpenRaster repair;
-- assign every notebook rule to 4.5;
-- weaken the notebook no-execution boundary;
-- hide `FF6-IPYNB-PROFILE-001` by editing policy;
-- close the parent while NRRD, XLIFF, or UBL mandatory gaps remain;
+- repeat the completed OpenRaster or IPYNB repairs;
+- assign every NRRD rule to NRRD0005 merely because the newest specification
+  documents inherited behavior;
+- weaken detached-resource traversal, allocation, overflow, decompression,
+  truncation, or payload-size requirements;
+- hide `FF6-NRRD-PROFILE-001` by editing policy;
+- close the parent while XLIFF or UBL mandatory gaps remain;
 - create a branch, use GitHub, or ask whether to continue.
 
 ## Shift invariant

@@ -27,14 +27,14 @@ provider-local artifacts as authority.
 3. Validate `CURRENT-MACHINE-STATE.yaml` against live tracked state rather than
    trusting its labels.
 4. Require:
-   - controller `CONTRACT`, sequence 17;
-   - event `FF6-EVENT-000017`, hash
-     `44cb90a67aec8fff244de05d84c047f1d31077d694eda1ff1e27ee0aaa0f3015`;
+   - controller `CONTRACT`, sequence 18;
+   - event `FF6-EVENT-000018`, hash
+     `73b0f6074d13cae4c519176bf34908d2906653e831adc7d6dc1934310ec38362`;
    - parent `TC-FF6-PROGRAM-CAPABILITIES-001` in `NEEDS_REPAIR`;
-   - `TC-FF6-ORA-PROFILE-SURFACE-001` in `PASS`;
-   - `TC-FF6-IPYNB-PROFILE-SURFACE-001` in `READY`;
-   - 99 capabilities, 738 obligations, and aggregate
-     `de6a38a86aa7a82cc50dc7dc6ebfa0066c811d8de782a37684fd26d20a89272a`;
+   - `TC-FF6-IPYNB-PROFILE-SURFACE-001` in `PASS`;
+   - `TC-FF6-NRRD-PROFILE-SURFACE-001` in `READY`;
+   - 104 capabilities, 701 obligations, and aggregate
+     `e0747efbf376f081fd6550afed48100c7e1872a055bf6155332ed9358ac05b5f`;
    - 15/15 authority artifacts `MATCH`;
    - zero product certifications and no promotion.
 5. Validate the native FF6 chain with `previous_event_hash`. The generic Plan
@@ -45,20 +45,21 @@ provider-local artifacts as authority.
 
 ## Execute exactly this task
 
-Execute `taskcards/TC-FF6-IPYNB-PROFILE-SURFACE-001.md` through its registered
+Execute `taskcards/TC-FF6-NRRD-PROFILE-SURFACE-001.md` through its registered
 SAL, contract, capability-compiler, taskcard, and controller skills.
 
 Required result:
 
-- source-located nbformat 4.0, 4.1, 4.2, 4.3, 4.4, and 4.5 delta matrix;
-- exact profile applicability on every IPYNB capability and obligation;
+- source-located NRRD0001, NRRD0002, NRRD0003, NRRD0004, and NRRD0005 delta matrix;
+- exact profile applicability on every NRRD capability and obligation;
 - capability splits wherever one current capability mixes version scopes;
-- stable ownership of every `SAL-IPYNB-OBL-*` rule;
-- preserved typed notebook/cell/output/attachment/MIME/metadata, validation,
-  conversion, deterministic serialization, safe cleanup/filtering/ID handling,
-  unknown metadata preservation, and structural inspection requirements;
-- explicit absolute no-execution boundary;
-- `FF6-IPYNB-PROFILE-001` removed only by compiled evidence;
+- stable ownership of every `SAL-NRRD-OBL-*` rule;
+- preserved attached/detached payloads, scalar/block types, endian and
+  dimension rules, spatial/orientation/measurement-frame/axis metadata,
+  comments and key/value pairs, raw/ASCII/hex/gzip/bzip2 encodings,
+  data-file lists/patterns, streaming/memory mapping, raw-header fidelity,
+  normalized typed access, deterministic writing, and resource protections;
+- `FF6-NRRD-PROFILE-001` removed only by compiled evidence;
 - all six projections regenerated three byte-identical times;
 - 15/15 authorities still match;
 - task, gap, controller, event, and handover projections reconciled;
@@ -84,7 +85,7 @@ Required result:
 - product source or product tests during the current task;
 - authority-lock recreation;
 - status/policy edits that suppress failed evidence;
-- execution of notebook code;
+- weakening detached-resource or resource-exhaustion safety;
 - self-certification or gate approval;
 - stash, reset, restore, clean, checkout-discard, broad add, or another
   provider's lease release;

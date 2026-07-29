@@ -9,7 +9,7 @@ canonical_inputs:
   forge: GitLab
   remote: origin
   branch: main
-  source_commit: 17aece4e5301af958b21e4ffc9db878494f3b89c
+  source_commit: 02574f2d66bf5b69e0712ce312bd2c41047659fb
   source_commit_rule: >-
     This commit must be an ancestor of the fetched origin/main commit that
     contains this packet. The packet cannot embed its own final commit hash.
@@ -34,37 +34,37 @@ state_precedence:
 
 controller:
   state: CONTRACT
-  sequence: 17
-  event_id: FF6-EVENT-000017
-  event_hash: 44cb90a67aec8fff244de05d84c047f1d31077d694eda1ff1e27ee0aaa0f3015
+  sequence: 18
+  event_id: FF6-EVENT-000018
+  event_hash: 73b0f6074d13cae4c519176bf34908d2906653e831adc7d6dc1934310ec38362
   parent_task: TC-FF6-PROGRAM-CAPABILITIES-001
   parent_state: NEEDS_REPAIR
-  completed_task: TC-FF6-ORA-PROFILE-SURFACE-001
+  completed_task: TC-FF6-IPYNB-PROFILE-SURFACE-001
   completed_task_state: PASS
-  next_task: TC-FF6-IPYNB-PROFILE-SURFACE-001
+  next_task: TC-FF6-NRRD-PROFILE-SURFACE-001
   next_task_state: READY
-  next_taskcard: taskcards/TC-FF6-IPYNB-PROFILE-SURFACE-001.md
+  next_taskcard: taskcards/TC-FF6-NRRD-PROFILE-SURFACE-001.md
   promotion_effect: none
 
 capability_projection:
   assessment_status: NEEDS_PROFILE_OR_SURFACE_REPAIR
-  aggregate_sha256: de6a38a86aa7a82cc50dc7dc6ebfa0066c811d8de782a37684fd26d20a89272a
-  three_run_digest: 2c998635a64f36c2b93c397ab0a5c834379ad5d74fd0544c6017a65337d907fc
-  total_capabilities: 99
-  total_obligations: 738
+  aggregate_sha256: e0747efbf376f081fd6550afed48100c7e1872a055bf6155332ed9358ac05b5f
+  three_run_digest: dc33648ffa8f8b676de98f7b145dc2180630d5c470148ca0f46b13ec1492b554
+  total_capabilities: 104
+  total_obligations: 701
   classifications:
-    stable_required: 90
+    stable_required: 95
     optional_adapter_required: 4
     preview_isolated: 4
     excluded_with_authority: 1
   formats:
     ipynb:
-      capabilities: 20
-      obligations: 105
-      claimed_profiles: [nbformat_v4.5]
-      missing_profiles:
-        [nbformat_v4.0, nbformat_v4.1, nbformat_v4.2, nbformat_v4.3, nbformat_v4.4]
-      active_gap: FF6-IPYNB-PROFILE-001
+      capabilities: 25
+      obligations: 68
+      claimed_profiles:
+        [nbformat_v4.0, nbformat_v4.1, nbformat_v4.2, nbformat_v4.3, nbformat_v4.4, nbformat_v4.5]
+      missing_profiles: []
+      active_gap: null
     ora:
       capabilities: 20
       obligations: 134
@@ -137,7 +137,6 @@ active_gaps:
   high: 7
   medium: 3
   current_contract_repairs:
-    - FF6-IPYNB-PROFILE-001
     - FF6-NRRD-PROFILE-001
     - FF6-XLIFF-PROFILE-001
     - FF6-UBL-TYPING-001
