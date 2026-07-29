@@ -1,0 +1,45 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "sal-pipeline-heal-ubl-package-census-001",
+  "skill_id": "sal-pipeline-heal",
+  "task_id": "TC-FF6-UBL-TYPING-001",
+  "mode": "live",
+  "timestamp": "2026-07-29T19:03:05Z",
+  "inputs": {
+    "taskcard_id": "TC-FF6-UBL-TYPING-001",
+    "format_id": "ubl",
+    "root_cause_id": "ROOT-PROOF-CLOSURE",
+    "spec_cache_path": ".local/format-contracts/acquired/ubl/src-ubl-002.bin",
+    "target_stage": "authority_verification",
+    "authority_source_id": "SRC-UBL-002",
+    "authority_version": "OASIS UBL 2.3 Standard distribution",
+    "authority_sha256": "623bef8310db4d979ff28000a96bcc56dbcdda4f6206cf094c0aa79b75817970"
+  },
+  "allowed_files": [
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-ubl-package-census-001.json",
+    ".local/transcripts/ubl-package-census-001.json"
+  ],
+  "actual_files_changed": [
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-ubl-package-census-001.json",
+    ".local/transcripts/ubl-package-census-001.json"
+  ],
+  "tests_run": [
+    "python tools/spec/verify_sal_facts.py --format-id ubl: ERROR authority member digest mismatch SRC-UBL-001:None",
+    "authority_materializer audit --format ubl: all three declared sources MATCH",
+    "new package census root_member_names_sha256 equals the existing exact-91 SAL assertion digest"
+  ],
+  "ledger_entry_id": null,
+  "result": "FAIL",
+  "evidence": {
+    "observed_prose_authority_sha256": "ccda3f1a2b64e6bdebfe33b2c9645423ef2f6206ac676f0937a304098d43358d",
+    "stale_evidence_target_sha256": "b2ac12afabc812ccfb49355a391dc1690260bbc2d216d3c9dd5b0931b6c1a2b6",
+    "evidence_manifest_sha256": "c1271a380abd24605219033ed294bd59f16705d33999749dd170c90ceaa97aea",
+    "existing_receipt_sha256": "772fd33a1306d085674a354bcb47cb94d16661cc7c315af02caa50fa74f59f54",
+    "failure_class": "STALE_EVIDENCE_INPUT_CLOSURE",
+    "safe_response": "Do not promote the existing UBL SAL receipt. Repair and replay the prose target under a separate SAL mutation checkpoint before claiming UBL-01 complete.",
+    "no_sal_store_write": true,
+    "truth_boundary": "The exact package/root digest cross-check passed, but the full UBL SAL chain is invalidated by stale prose-target metadata and remains non-promoting."
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

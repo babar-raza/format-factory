@@ -1,0 +1,49 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "research-format-contract-sources-ubl-package-census-001",
+  "skill_id": "research-format-contract-sources",
+  "task_id": "TC-FF6-UBL-TYPING-001",
+  "mode": "live",
+  "timestamp": "2026-07-29T19:03:05Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_step": "UBL-01 and UBL-02 bounded package census",
+    "execution_manifest_id": "sfx-013da992d334dcc3",
+    "base_git_commit": "ec3214934ae794edae3026e8f2c532d08e444822",
+    "authority_source_ids": [
+      "SRC-UBL-001",
+      "SRC-UBL-002",
+      "SRC-UBL-003"
+    ],
+    "authority_package_path": ".local/format-contracts/acquired/ubl/src-ubl-002.bin",
+    "authority_package_sha256": "623bef8310db4d979ff28000a96bcc56dbcdda4f6206cf094c0aa79b75817970"
+  },
+  "allowed_files": [
+    "reports/ff6/ubl-package-root-census.yaml",
+    "reports/skills-rff6/skill-transcripts/research-format-contract-sources-ubl-package-census-001.json",
+    ".local/transcripts/ubl-package-census-001.json"
+  ],
+  "actual_files_changed": [
+    "reports/ff6/ubl-package-root-census.yaml",
+    "reports/skills-rff6/skill-transcripts/research-format-contract-sources-ubl-package-census-001.json",
+    ".local/transcripts/ubl-package-census-001.json"
+  ],
+  "tests_run": [
+    "python -m tools.format_contract.authority_materializer audit --format ubl: 3 MATCH, 0 mismatch, 0 missing",
+    "python -m tools.format_contract.authority_materializer audit --contracts: 17 MATCH, 0 mismatch, 0 missing",
+    "secure offline release-package census: 890 file members, 91 maindoc schemas, 15 common schemas, 76 official examples, 14 code-list resources",
+    "three fresh same-input census runs: identical SHA-256 787c8d9258dc25a8662ee934b9b0b14096de790db87826dab970792b9494976d"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "authority_prose_sha256": "ccda3f1a2b64e6bdebfe33b2c9645423ef2f6206ac676f0937a304098d43358d",
+    "authority_package_sha256": "623bef8310db4d979ff28000a96bcc56dbcdda4f6206cf094c0aa79b75817970",
+    "product_requirements_sha256": "07d380f7d0b3bb973f4ca223946a4fff5f1e116f98548d036a2322483dc1fa4c",
+    "root_member_names_sha256": "f9ab3f16a0ac89dbcd42f4e93d1eb5e59a4709bc7d151aedd8b2577c3fc114a2",
+    "census_sha256": "787c8d9258dc25a8662ee934b9b0b14096de790db87826dab970792b9494976d",
+    "truth_boundary": "This proves the digest-bound authority package inventory and exact 91-root denominator. It does not prove the complete reachable schema graph, generated product source, interoperability, packaging, or certification."
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

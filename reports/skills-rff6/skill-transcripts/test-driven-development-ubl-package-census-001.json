@@ -1,0 +1,98 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "test-driven-development-ubl-package-census-001",
+  "skill_id": "test-driven-development",
+  "task_id": "TC-FF6-UBL-TYPING-001",
+  "mode": "live",
+  "timestamp": "2026-07-29T19:03:05Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_step": "UBL-02",
+    "execution_manifest_id": "sfx-013da992d334dcc3",
+    "base_git_commit": "ec3214934ae794edae3026e8f2c532d08e444822",
+    "scope": "Secure deterministic UBL 2.3 authority-package and 91-document-root census.",
+    "target_behavior_description": "Compile a content-addressed package/root census from the pinned official UBL 2.3 ZIP, reject unsafe or contradictory input, and expose explicit incomplete downstream boundaries."
+  },
+  "allowed_files": [
+    "tools/spec/compile_ubl_schema_graph.py",
+    "tests/tools/test_compile_ubl_schema_graph.py",
+    "reports/ff6/ubl-package-root-census.yaml",
+    "reports/skills-rff6/skill-transcripts/test-driven-development-ubl-package-census-001.json",
+    ".local/transcripts/ubl-package-census-001.json"
+  ],
+  "actual_files_changed": [
+    "tools/spec/compile_ubl_schema_graph.py",
+    "tests/tools/test_compile_ubl_schema_graph.py",
+    "reports/ff6/ubl-package-root-census.yaml",
+    "reports/skills-rff6/skill-transcripts/test-driven-development-ubl-package-census-001.json",
+    ".local/transcripts/ubl-package-census-001.json"
+  ],
+  "red_green_cycles": [
+    {
+      "red": "All 12 focused tests failed because the UBL census compiler did not exist.",
+      "green": "Implemented the secure compiler, exact package/root denominator, canonical output, CLI check mode, and bounded truth state; 12 tests passed."
+    },
+    {
+      "red": "The real-package assertion for root_member_names_sha256 raised KeyError.",
+      "green": "Added the SAL-compatible canonical root-name digest with the repository proof canonicalization newline; the exact authority digest matched."
+    },
+    {
+      "red": "Strict Mypy reported six typing errors in the production helper and test fixture utilities.",
+      "green": "Separated string/byte canonicalization variables and made fixture inputs covariant with an explicit typed dynamic-module cast; strict Mypy passed."
+    }
+  ],
+  "tests_run": [
+    "python -m pytest tests/tools/test_compile_ubl_schema_graph.py -q: 12 passed",
+    "ruff check tools/spec/compile_ubl_schema_graph.py tests/tools/test_compile_ubl_schema_graph.py: PASS",
+    "mypy --strict tools/spec/compile_ubl_schema_graph.py tests/tools/test_compile_ubl_schema_graph.py: PASS",
+    "npx --yes pyright@1.1.411 tools/spec/compile_ubl_schema_graph.py tests/tools/test_compile_ubl_schema_graph.py: 0 errors, 0 warnings",
+    "python -m py_compile tools/spec/compile_ubl_schema_graph.py tests/tools/test_compile_ubl_schema_graph.py: PASS",
+    "python -m pytest tests/production_program -q: 69 passed",
+    "python -m pytest tests/format_contract -q: 94 passed, 1 unrelated CSV idempotency failure; exact test-generated tracked deltas restored to HEAD",
+    "three fresh output generations: byte-identical SHA-256 787c8d9258dc25a8662ee934b9b0b14096de790db87826dab970792b9494976d"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "source_sha256": "118a51b58c5809bc819a18535b1283d3fb1e37834a8f667e2aaa264c25110b50",
+    "test_sha256": "0853b17f3d651d2c63afda2a40cf962f397ebf6613feafb686b2dadf829911f8",
+    "census_sha256": "787c8d9258dc25a8662ee934b9b0b14096de790db87826dab970792b9494976d",
+    "package_sha256": "623bef8310db4d979ff28000a96bcc56dbcdda4f6206cf094c0aa79b75817970",
+    "root_member_names_sha256": "f9ab3f16a0ac89dbcd42f4e93d1eb5e59a4709bc7d151aedd8b2577c3fc114a2",
+    "security_controls": [
+      "archive and member byte limits",
+      "member-count and total-uncompressed limits",
+      "compression-ratio limit",
+      "traversal, absolute path, backslash, NUL, symlink, duplicate, encrypted, and unsupported-compression rejection",
+      "DOCTYPE and entity rejection",
+      "XML depth and element-count limits",
+      "remote and unresolved import rejection",
+      "root-count, root-name, declared-type, and duplicate-QName rejection",
+      "authority package digest verified before parsing"
+    ],
+    "truth_boundary": "The bounded UBL-02 package/root compiler is verified. UBL-03 reachable graph work and all product implementation and certification work remain open.",
+    "known_external_regressions": [
+      "The full UBL SAL replay currently fails on stale SRC-UBL-001 member_sha256 metadata; no SAL store was mutated in this checkpoint.",
+      "The broad format-contract suite has a pre-existing CSV gap-compilation idempotency failure outside this UBL change."
+    ]
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for the bounded UBL-02 implementation",
+    "2_required_evidence_present": "YES for the bounded implementation; disclosed broader failures remain open",
+    "3_evidence_sufficient": "YES for package/root census only; no schema-graph or product claim",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, no contradiction requiring a repository change was found",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}
