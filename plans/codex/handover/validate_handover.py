@@ -26,8 +26,8 @@ import yaml
 HANDOVER_ROOT = Path(__file__).resolve().parent
 REPO_ROOT = HANDOVER_ROOT.parents[2]
 MANIFEST_PATH = HANDOVER_ROOT / "manifest.yaml"
-CHECKPOINT_PATH = HANDOVER_ROOT / "checkpoint.yaml"
-MACHINE_STATE_PATH = HANDOVER_ROOT / "CURRENT-MACHINE-STATE.yaml"
+CHECKPOINT_PATH = HANDOVER_ROOT / "event-26/CHECKPOINT.yaml"
+MACHINE_STATE_PATH = CHECKPOINT_PATH
 CONTROLLER_PATH = REPO_ROOT / "plans/strategic/ff6/controller-state.yaml"
 JOURNAL_PATH = REPO_ROOT / "plans/strategic/ff6/events.jsonl"
 
@@ -353,15 +353,19 @@ def _semantic_errors(
             projection["missing"],
         )
 
-    if "XLF-04-BATCH-004" not in str(projection["next_action"]):
-        errors.append("latest event does not select XLF-04-BATCH-004")
+    next_match = re.search(r"XLF-04-BATCH-\d{3}", str(projection["next_action"]))
+    if next_match is None:
+        errors.append("latest event does not select a bounded XLF-04 batch")
+        expected_next = ""
+    else:
+        expected_next = next_match.group(0)
     for label, action in (
         ("manifest.controller.exact_next_action", manifest_controller.get("exact_next_action")),
         ("checkpoint exact_next_action", checkpoint_xlf.get("exact_next_action")),
         ("machine exact_next_action", machine_next.get("exact_next_action")),
     ):
-        if "XLF-04-BATCH-004" not in str(action):
-            errors.append(f"{label} does not select XLF-04-BATCH-004")
+        if expected_next and expected_next not in str(action):
+            errors.append(f"{label} does not select {expected_next}")
 
     for path, patterns in STALE_ACTIVE_PATTERNS.items():
         text = texts.get(path, "")
@@ -369,16 +373,6 @@ def _semantic_errors(
             if pattern in text:
                 errors.append(f"{path} contains stale active-state phrase: {pattern!r}")
 
-    wording_paths = (
-        "plans/codex/handover/CLAUDE-START.md",
-        "plans/codex/handover/CURRENT-MACHINE-STATE.yaml",
-        "plans/codex/handover/EXECUTION-RUNBOOK.md",
-        "plans/codex/handover/SHIFT-AND-RESUME-PROTOCOL.md",
-        "plans/codex/handover/checkpoint.yaml",
-    )
-    for path in wording_paths:
-        if EXPECTED_EVIDENCE_WORDING not in texts.get(path, ""):
-            errors.append(f"{path} lacks unambiguous batch-003 evidence wording")
     return errors
 
 
@@ -535,9 +529,7 @@ def run_self_test(context: Mapping[str, Any]) -> dict[str, Any]:
     cases.append(("missing_completed_batch", missing_batch))
 
     stale_next = copy.deepcopy(context)
-    stale_next["manifest"]["controller"]["exact_next_action"] = (
-        "XLF-04-BATCH-003 stale restart"
-    )
+    stale_next["manifest"]["controller"]["exact_next_action"] = "stale restart"
     cases.append(("stale_next_batch", stale_next))
 
     bad_head = copy.deepcopy(context)

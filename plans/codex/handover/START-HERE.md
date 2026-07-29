@@ -11,6 +11,10 @@ canonical_state_path: plans/strategic/ff6/controller-state.yaml
 
 # Start Here: Six Python Production Libraries
 
+> Current versioned resume packet:
+> [`event-26/START-HERE.md`](event-26/START-HERE.md). Event-25 material below
+> is retained as historical proof and must not override event 26.
+
 This is the single provider-neutral entry point for mission
 `FF6-PRODUCTION-LIBRARIES-001`. Claude, Codex, or another governed executor
 must reconstruct state from GitLab and the tracked machine records. Chat

@@ -233,6 +233,21 @@ non-obligation disposition. Reject unmapped and duplicate candidates; retain
 `complete=false`. Exact hashes and the resolved recovery history are retained
 in `plans/codex/handover/INFLIGHT-RECOVERY.yaml`.
 
+## Event-26 provider shift
+
+The current compact resume packet is
+`plans/codex/handover/event-26/START-HERE.md`, bound to GitLab checkpoint
+`15ab7d04`, event 26, and implementation `1fef79b9`. Historical event-25
+packets remain immutable. The semantic validator now loads the versioned
+event-26 checkpoint and derives the expected batch from the native event.
+
+Independent negative controls found that the standalone census validator
+accepts forged normalized requirement text, member/source digests, and
+occurrence location. The packet makes those bindings plus explicit candidate
+class and content-sensitive candidate digest the first RED controls of batch
+005. XLF-04 remains open, certification remains 0/6, and all promotions remain
+`UNASSESSED`.
+
 ## Event-25 semantic consistency repair
 
 The event-25 packet's 61 LF-normalized file digests and links were valid, but
