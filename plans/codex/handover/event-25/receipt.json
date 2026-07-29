@@ -1,0 +1,75 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "refresh-provider-neutral-handover-event25-tracked",
+  "skill_id": "refresh-provider-neutral-handover",
+  "mode": "live",
+  "timestamp": "2026-07-29T17:07:58.4699082Z",
+  "inputs": {
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "source_checkpoint": "220ee7f5b9d39c3684cff6af6331b56a03ae9e75",
+    "canonical_remote": "origin",
+    "canonical_branch": "main",
+    "controller_path": "plans/strategic/ff6/controller-state.yaml",
+    "journal_path": "plans/strategic/ff6/events.jsonl",
+    "current_taskcard": "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
+    "exact_next_task": "TC-FF6-XLIFF-PROFILE-SURFACE-001:XLF-04-BATCH-004",
+    "packet_root": "plans/codex/handover/event-25",
+    "execution_manifest": ".local/skills-first/manifests/sfx-dff5195ba8ecdbf0.json"
+  },
+  "allowed_files": [
+    "plans/codex/handover/event-25/START-HERE.md",
+    "plans/codex/handover/event-25/CHECKPOINT.yaml",
+    "plans/codex/handover/event-25/RUNBOOK.md",
+    "plans/codex/handover/event-25/manifest.yaml",
+    "plans/codex/handover/event-25/receipt.json"
+  ],
+  "actual_files_changed": [
+    "plans/codex/handover/event-25/START-HERE.md",
+    "plans/codex/handover/event-25/CHECKPOINT.yaml",
+    "plans/codex/handover/event-25/RUNBOOK.md",
+    "plans/codex/handover/event-25/manifest.yaml",
+    "plans/codex/handover/event-25/receipt.json"
+  ],
+  "tests_run": [
+    "GitLab origin/main ancestry for 220ee7f5 and 25227527: PASS",
+    "native FF6 event chain and controller agreement through event 25: PASS",
+    "packet relative links: PASS",
+    "packet YAML and JSON parse: PASS",
+    "LF-normalized packet manifest hashes and byte counts: PASS",
+    "exact next task and microstep agree with controller and XLIFF taskcard: PASS",
+    "product and promotion mutation scan: PASS",
+    "coordination preservation: prior dead-process root packet leases were not bypassed"
+  ],
+  "result": "PASS",
+  "evidence": {
+    "packet_entrypoint": "plans/codex/handover/event-25/START-HERE.md",
+    "controller_sequence": 25,
+    "event_id": "FF6-EVENT-000025",
+    "event_hash": "237f7759e2286cfc08c547c53a0b47d44e1c77307329ec0215c5326e3f811e48",
+    "active_task": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "active_task_state": "WORK_IN_PROGRESS",
+    "exact_next_microstep": "XLF-04-BATCH-004",
+    "certified_products": "0/6",
+    "promotion_effect": "none",
+    "truth_boundary": "The packet transfers a clean contract-stage event-25 checkpoint. It does not certify XLIFF or any of the six products."
+  },
+  "self_challenge": {
+    "1_single_current_entrypoint": "YES, the event-25 versioned packet is the declared current entrypoint",
+    "2_canonical_precedence": "YES",
+    "3_gitlab_main_only": "YES",
+    "4_exact_checkpoint_bound": "YES",
+    "5_event_controller_task_agree": "YES",
+    "6_completed_and_remaining_work_separated": "YES",
+    "7_symptoms_root_causes_structural_weaknesses_separated": "YES",
+    "8_preserve_and_redesign_boundaries_explicit": "YES",
+    "9_validation_and_regression_controls_explicit": "YES",
+    "10_tradeoffs_risks_limits_explicit": "YES",
+    "11_prior_writer_bytes_preserved": "YES",
+    "12_provider_credentials_or_leases_transferred": "NO",
+    "13_product_certification_overclaimed": "NO",
+    "14_unverified_counts_presented_as_current_proof": "NO",
+    "15_human_continuation_requested": "NO"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

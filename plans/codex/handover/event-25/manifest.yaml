@@ -1,0 +1,70 @@
+schema: ff6/provider-neutral-packet-manifest@1
+packet_id: FF6-EVENT-25-HANDOVER
+generated_by: codex
+generated_at: "2026-07-29"
+visibility: internal
+
+source_checkpoint:
+  forge: GitLab
+  remote: origin
+  branch: main
+  required_ancestor: 220ee7f5b9d39c3684cff6af6331b56a03ae9e75
+  implementation_ancestor: 2522752776f64ab800a2a21c8fa46c1f2a4e361c
+  packet_commit_rule: >-
+    The fetched origin/main commit containing this manifest must descend from
+    required_ancestor. The packet cannot embed the hash of the commit that
+    contains its own final bytes.
+
+digest_policy:
+  algorithm: sha256
+  text_canonicalization: CRLF_TO_LF
+  manifest_self_hashed: false
+
+files:
+  - path: START-HERE.md
+    role: single current provider-neutral entrypoint for event 25
+    lf_sha256: 08f0cd4ab4d4dc7176ee3f053dcfee43dd0d45be722cff5bcc7f7a1371f64a7c
+    canonical_bytes: 13895
+  - path: CHECKPOINT.yaml
+    role: machine-readable controller, proof, and exact-next-task checkpoint
+    lf_sha256: 9348e70a8730557f2b376e323faa63b66c3bb8d30873dd46945d96ff18b31974
+    canonical_bytes: 4639
+  - path: RUNBOOK.md
+    role: exact preflight, validation, execution, regression, and shift procedure
+    lf_sha256: cfb85b3b082ec3739166c5ca131c4d7b3586c3fd0c11aa418bb56c77d4c642e0
+    canonical_bytes: 9469
+  - path: receipt.json
+    role: tracked zero-warning skill execution and truth-boundary receipt
+    lf_sha256: 73ca711e131050f424456e9598dce92b1a7d8f3de7a1bb2eda84e8cd3b6f55ac
+    canonical_bytes: 3455
+
+canonical_bindings:
+  controller_state: CONTRACT
+  event_sequence: 25
+  event_id: FF6-EVENT-000025
+  event_hash: 237f7759e2286cfc08c547c53a0b47d44e1c77307329ec0215c5326e3f811e48
+  active_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
+  active_task_state: WORK_IN_PROGRESS
+  exact_next_microstep: XLF-04-BATCH-004
+  products_certified: 0
+  promotion_effect: none
+
+validation:
+  packet_internal_links: PASS
+  yaml_parse: PASS
+  packet_hashes: PASS
+  ff6_native_event_chain: PASS_EVENT_25
+  controller_agreement: PASS
+  gitlab_ancestry: PASS
+  exact_next_task_registered: PASS
+  source_checkpoint_remote_verified: PASS
+  no_product_or_promotion_mutation: PASS
+
+known_transfer_condition:
+  root_packet_state: PARTIAL_REFRESH_PRESERVED_UNDER_ACTIVE_DEAD_PROCESS_LEASES
+  root_packet_authoritative: false
+  event_25_packet_current: true
+  safe_resolution: >-
+    Use this versioned packet until governed takeover eligibility permits the
+    root packet to be refreshed. Never discard the preserved root-packet bytes
+    solely because the prior process is absent.

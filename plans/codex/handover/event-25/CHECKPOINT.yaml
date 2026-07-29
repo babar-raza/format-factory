@@ -1,0 +1,131 @@
+schema: ff6/provider-neutral-checkpoint@1
+checkpoint_id: FF6-EVENT-25-HANDOVER
+generated_by: codex
+generated_at: "2026-07-29"
+visibility: internal
+authoritative_state: false
+
+canonical:
+  forge: GitLab
+  remote: origin
+  branch: main
+  github_allowed: false
+  checkpoint_commit: 220ee7f5b9d39c3684cff6af6331b56a03ae9e75
+  implementation_commit: 2522752776f64ab800a2a21c8fa46c1f2a4e361c
+  controller: plans/strategic/ff6/controller-state.yaml
+  journal: plans/strategic/ff6/events.jsonl
+  task_index: taskcards/index.yaml
+  current_taskcard: taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md
+  current_gaps: plans/strategic/ff6/current-gaps.yaml
+
+controller:
+  state: CONTRACT
+  sequence: 25
+  event_id: FF6-EVENT-000025
+  event_hash: 237f7759e2286cfc08c547c53a0b47d44e1c77307329ec0215c5326e3f811e48
+  parent_task: TC-FF6-PROGRAM-CAPABILITIES-001
+  parent_state: NEEDS_REPAIR
+  active_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
+  active_task_state: WORK_IN_PROGRESS
+  completed_steps: [XLF-01, XLF-02, XLF-03]
+  completed_xlf_04_batches:
+    - XLF-04-BATCH-001
+    - XLF-04-BATCH-002
+    - XLF-04-BATCH-003
+  first_unmet_step: XLF-04
+  exact_next_microstep: XLF-04-BATCH-004
+  microstate: RESUMABLE
+
+portfolio:
+  capabilities: 110
+  obligations: 672
+  manifest_aggregate_sha256: 4d17d8c8c0ef3de74d59e1d5b16884c0210fd0836e0593591871f10d0af2efd2
+  authority_matches: 17
+  certified_products: 0
+  promotion:
+    program: UNASSESSED
+    ipynb: UNASSESSED
+    ora: UNASSESSED
+    nrrd: UNASSESSED
+    xliff: UNASSESSED
+    safetensors: UNASSESSED
+    ubl: UNASSESSED
+
+xliff:
+  stable_profiles: [xliff_2.0, xliff_2.1]
+  authority_matches: 5
+  matrix:
+    path: reports/ff6/xliff-normative-delta-matrix.yaml
+    rows: 36
+    sha256: 9f4ea4b8b71378217af26c0fb2b97a759817a0aca6c64255b8cd55170c60a090
+  denominator:
+    path: reports/ff6/xliff-core-obligation-denominator.yaml
+    status: OPEN_AUTHORITY_CENSUS
+    expected_ids: 105
+    resolved_ids: 25
+    missing_ids: 80
+    complete: false
+    sha256: c1a326e42bd1b47ec792088258f81fc4eac0b02543c57beedb48242181d008da
+  inventory:
+    path: reports/ff6/xliff-core-obligation-inventory.yaml
+    obligations: 25
+    specification_obligations: 21
+    production_policy_obligations: 4
+    covered_categories: 12
+    incomplete_categories: 12
+    verification_status: SOURCE_BOUND_UNVERIFIED
+    complete: false
+    sha256: ae4d00af06fffc1eaf7741cd131d8ed7e7fc8a89b2a195acf4f649b5f44b6bbb
+  source:
+    path: tools/spec/extract_sal_facts.py
+    lf_sha256: a5c67f56378e586bf46ddb8c39881ab9ea81e42e76539bac942c5220c45f0190
+  tests:
+    path: tests/tools/test_extract_sal_facts.py
+    lf_sha256: bf7fa725496979e3f5a50125319f9974c6205803c8358adbfb0ba8677c52bc32
+    focused: 27 passed
+  validation:
+    format_contract_regression: 94 passed, 1 baseline-known deselected
+    production_program_regression: 69 passed
+    ruff: PASS
+    mypy_strict: PASS
+    pyright_1_1_411: PASS_ZERO_DIAGNOSTICS
+    py_compile: PASS
+    artifact_check_mode: PASS_MATRIX_DENOMINATOR_INVENTORY
+    skill_transcripts: PASS_ZERO_WARNINGS
+    deterministic_receipts: PASS_THREE_RUNS
+    authority_audit: PASS_5_OF_5
+
+exact_next_task:
+  task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
+  microstep: XLF-04-BATCH-004
+  operation: >-
+    Compile a deterministic authority-candidate census from direct/leaf Core
+    normative prose, Core XSD constraints, Core Schematron assertions, and
+    exact XLIFF 2.0/2.1 deltas.
+  completion_rule: >-
+    Every authority candidate maps exactly once to expected obligation IDs or
+    a reasoned non-obligation disposition. Zero unmapped or duplicate
+    candidates and zero unresolved expected IDs are required before XLF-04 may
+    become complete.
+  forbidden_claims:
+    - category presence proves completeness
+    - the 105-ID open census is exhaustive
+    - source binding proves canonical SAL verification
+    - contract work proves product behavior
+    - any product is certified or publication-ready
+
+coordination:
+  mode: enforcing
+  incoming_provider_registers_new_identity: true
+  transfer_tokens_or_leases: false
+  preserve_unrelated_dirty_state: true
+  takeover_only_after_governed_stale_classification: true
+  known_structural_gap: >-
+    A dead local process can retain ACTIVE long-TTL leases until heartbeat
+    expiry. Process death alone must never authorize deletion, but takeover
+    eligibility should eventually incorporate audited liveness evidence.
+
+truth_boundary: >-
+  This checkpoint is contract-stage evidence only. XLF-04, all module work,
+  canonical SAL reconciliation, product source, installed-package proof,
+  certification, promotion, release, and publication remain open.
