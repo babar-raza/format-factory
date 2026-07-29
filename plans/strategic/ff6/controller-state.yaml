@@ -4,10 +4,10 @@ goal_status: ACTIVE
 generated_by: codex
 visibility: internal
 controller_state: CONTRACT
-transition_sequence: 25
+transition_sequence: 26
 last_verified_event:
-  event_id: FF6-EVENT-000025
-  event_hash: 237f7759e2286cfc08c547c53a0b47d44e1c77307329ec0215c5326e3f811e48
+  event_id: FF6-EVENT-000026
+  event_hash: 34b36bf5dc4344713ac1c0f026b30e6b15fb6a63b86f4876ee98230952fabcd0
 event_journal: plans/strategic/ff6/events.jsonl
 baseline_commit: e4f8f5f086b5e627c07c2ef2d940eda2601a22a8
 digest_policy:
@@ -24,7 +24,7 @@ handover_checkpoint:
   start: plans/codex/handover/START-HERE.md
   manifest: plans/codex/handover/manifest.yaml
   checkpoint: plans/codex/handover/checkpoint.yaml
-  packet_base_commit: 2522752776f64ab800a2a21c8fa46c1f2a4e361c
+  packet_base_commit: 1fef79b9d6c1ee1f6667e0c5c70435562c97544c
   packet_commit_rule: >-
     The fetched origin/main checkpoint containing this projection must be a
     descendant of packet_base_commit. A packet cannot embed the hash of the
@@ -43,17 +43,18 @@ next_task:
   task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
   state: WORK_IN_PROGRESS
   unlock_condition: >-
-    Resume from event 25 at XLF-04-BATCH-004. Revalidate the immutable
-    cumulative 25-obligation compiler, 27 tests, matrix, denominator and
-    inventory digests, zero-warning batch-003 receipts, and deterministic
-    real-authority outputs. Then compile a Core authority-candidate census
-    across direct/leaf normative prose, Core XSD constraints, Core Schematron
-    assertions, and exact 2.0/2.1 deltas. Map every candidate exactly once to
-    expected IDs or a reasoned non-obligation disposition. The 105-ID
-    denominator remains OPEN_AUTHORITY_CENSUS with 25 resolved and 80 missing;
-    category presence cannot establish completeness. Do not rerun XLF-01
-    through XLF-03 or batches 001-003 unless their inputs changed. Product
-    source and architecture remain blocked.
+    Resume from event 26 at XLF-04-BATCH-005. Revalidate implementation commit
+    1fef79b9, the 542-candidate report, 34 focused tests, unchanged matrix,
+    denominator and obligation-inventory digests, three zero-warning batch-004
+    receipts, five XLIFF authority matches, and three identical census
+    generations. Then classify the non-modal Core prose excluded by batch 004,
+    replace 78 coarse structural dispositions with exact semantic mappings or
+    reasoned non-obligations, expand the denominator for newly exposed
+    normative semantics, and compile source-bound obligations for remaining
+    expected IDs. The denominator remains OPEN_AUTHORITY_CENSUS: only 25 IDs
+    have source-bound obligations and 80 remain missing; candidate routing of
+    45 IDs is not obligation resolution. Do not rerun completed batches unless
+    their inputs changed. Product source and architecture remain blocked.
 promotion:
   program: UNASSESSED
   ipynb: UNASSESSED
@@ -125,7 +126,7 @@ current_gap_summary:
   production_certifications: 0
 control_plane_compatibility:
   ff6_event_schema: ff6/controller-event@1
-  native_chain_validation: PASS_THROUGH_EVENT_25
+  native_chain_validation: PASS_THROUGH_EVENT_26
   generic_plan_control_doctor: >-
     INCOMPATIBLE_SCHEMA: tools.plan_control expects previous_hash and its own
     event payload; FF6 uses previous_event_hash. This is the already-tracked
@@ -139,10 +140,10 @@ invariants:
 xlf_checkpoint:
   status: WORK_IN_PROGRESS
   completed_steps: [XLF-01, XLF-02, XLF-03]
-  completed_xlf_04_batches: [XLF-04-BATCH-001, XLF-04-BATCH-002, XLF-04-BATCH-003]
+  completed_xlf_04_batches: [XLF-04-BATCH-001, XLF-04-BATCH-002, XLF-04-BATCH-003, XLF-04-BATCH-004]
   first_unmet_step: XLF-04
   microstate: RESUMABLE
-  checkpoint_source_commit: 2522752776f64ab800a2a21c8fa46c1f2a4e361c
+  checkpoint_source_commit: 1fef79b9d6c1ee1f6667e0c5c70435562c97544c
   implemented_slice:
     - digest_bound_bounded_zip_authority_reader
     - xliff_2_0_2_1_core_module_structural_inventory
@@ -171,20 +172,29 @@ xlf_checkpoint:
     - denominator_authority_input_tamper_rejection
     - tracked_denominator_direct_input_binding
     - cumulative_twenty_five_obligation_real_authority_batch
+    - deterministic_core_authority_candidate_census
+    - direct_leaf_modal_prose_candidate_extraction
+    - complete_core_xsd_constraint_candidate_extraction
+    - complete_core_schematron_assertion_candidate_extraction
+    - exact_stable_profile_candidate_delta
+    - fail_closed_candidate_disposition_validation
+    - short_inline_token_boundary_regression_control
+    - candidate_scope_and_limit_accounting
   remaining_steps: [XLF-04, XLF-05, XLF-06, XLF-07, XLF-08]
   exact_next_action: >-
-    Start XLF-04-BATCH-004 by compiling a deterministic Core
-    authority-candidate census across direct/leaf normative prose, Core XSD
-    constraints, Core Schematron assertions, and exact XLIFF 2.0/2.1 deltas.
-    Map every candidate exactly once to expected obligation IDs or a reasoned
-    non-obligation disposition. Preserve all 25 stable IDs and keep
-    completeness false until the authority census has zero unmapped or
-    duplicate candidates and every expected ID resolves.
+    Start XLF-04-BATCH-005 by classifying all non-modal Core prose excluded by
+    batch 004, replacing 78 coarse structural dispositions with exact semantic
+    mappings or reasoned non-obligations, expanding the expected-ID
+    denominator for newly exposed normative semantics, and compiling
+    source-bound obligations for remaining expected IDs. Preserve all 25
+    existing obligation rows. Keep completeness false until the entire
+    authority surface is classified, every expected ID has a source-bound
+    obligation, and canonical SAL verification succeeds.
   source: tools/spec/extract_sal_facts.py
-  source_sha256: a5c67f56378e586bf46ddb8c39881ab9ea81e42e76539bac942c5220c45f0190
+  source_sha256: 138385387e78e567782df467829a468707b4edaeb32e458d7092c11f0f0270fa
   tests: tests/tools/test_extract_sal_facts.py
-  tests_sha256: bf7fa725496979e3f5a50125319f9974c6205803c8358adbfb0ba8677c52bc32
-  focused_tests: 27 passed
+  tests_sha256: f0dc5db56d19f9669d9875e7f11303c87d2a4ee49a2d0619710ccb45b21eef72
+  focused_tests: 34 passed
   ruff: PASS
   mypy_strict: PASS
   pyright: PASS_ZERO_DIAGNOSTICS_1_1_411
@@ -225,6 +235,28 @@ xlf_checkpoint:
   core_completeness_basis: EXPLICIT_EXPECTED_OBLIGATION_IDS_OPEN_CENSUS
   core_complete: false
   core_real_authority_replays: 3_identical
+  core_authority_candidate_census: reports/ff6/xliff-core-authority-candidate-census.yaml
+  core_authority_candidate_census_sha256: 7227f43bb8d5ad93d0770df60f061d24cdd0ac5f521bd2ae5af2a6712407c69a
+  core_authority_candidate_count: 542
+  core_authority_candidate_counts:
+    normative_prose: 182
+    core_xsd: 264
+    core_schematron: 96
+  core_authority_candidate_profile_relations:
+    common_identical: 411
+    common_changed: 19
+    removed_in_xliff_2_1: 4
+    added_in_xliff_2_1: 108
+  core_authority_candidate_unmapped: 0
+  core_authority_candidate_multiply_dispositioned: 0
+  core_authority_candidate_mapped_expected_ids: 45
+  core_authority_candidate_unresolved_expected_ids: 60
+  core_authority_candidate_lexical_or_context_dispositions: 464
+  core_authority_candidate_coarse_structural_dispositions: 78
+  core_authority_candidate_scope_complete: true
+  core_non_modal_prose_classification_complete: false
+  core_normative_obligation_inventory_complete: false
+  core_candidate_real_authority_replays: 3_identical
   section_counts:
     xliff_2.0: 293
     xliff_2.1: 420
@@ -239,9 +271,13 @@ xlf_checkpoint:
     XLF-04-BATCH-001 through BATCH-003 add 25 cumulative source-bound Core and
     separately classified production-policy obligations. The explicit 105-ID
     denominator resolves 25 IDs and leaves 80 missing, but it remains an open
-    authority census and cannot prove completeness. Canonical SAL
-    reconciliation, complete Core prose/XSD/Schematron disposition, module
-    obligations, product behavior, certification, and promotion remain open.
+    authority census and cannot prove completeness. BATCH-004 deterministically
+    reconciles 542 candidates in its declared modal-prose, XSD, and
+    Schematron scope, but excludes non-modal prose and leaves 78 coarse
+    structural dispositions. Candidate routing to 45 expected IDs is not a
+    source-bound obligation. Canonical SAL reconciliation, complete prose
+    classification, module obligations, product behavior, certification, and
+    promotion remain open.
   inventory: reports/ff6/xliff-authority-member-inventory.yaml
   xliff_authority_sources: 5
   xliff_authority_matches: 5

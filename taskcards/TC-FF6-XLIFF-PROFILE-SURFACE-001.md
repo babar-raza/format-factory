@@ -357,6 +357,79 @@ authority digests, ancestor/leaf double counting, and profile leakage. Retain
 `complete: false` until the authority census is exhaustive and every expected
 ID resolves.
 
+## Current XLF-04 microstep checkpoint — event 26
+
+Event 26 supersedes the event-25 resume paragraph.
+`XLF-04-BATCH-004` is integration-safe at implementation commit
+`1fef79b9d6c1ee1f6667e0c5c70435562c97544c`, which is present on GitLab
+`origin/main`. XLF-04 remains the first unmet task step and the task remains
+`WORK_IN_PROGRESS`.
+
+Batch 004 adds a separate, deterministic authority-candidate census and
+fail-closed validator:
+
+- 542 grouped candidates: 182 selected Core prose candidates, 264 Core XSD
+  component/constraint candidates, and 96 Core Schematron assertions/reports;
+- exact stable-profile relations: 411 common-identical, 19 common-changed,
+  four removed in 2.1, and 108 added in 2.1;
+- exact authority source, package, member, semantic location, normalized
+  requirement, and digest bindings for every occurrence;
+- zero unmapped and zero multiply dispositioned selected candidates;
+- independent rejection of missing disposition, duplicate obligation mapping,
+  multiply dispositioned input, and preview-profile leakage;
+- a regression control preventing short inline names such as `sc` and `em`
+  from matching substrings such as `schema`;
+- explicit disposition precision: 464 lexical/context plus structural
+  mappings and 78 coarse structural fallbacks;
+- an exact candidate-selector definition and explicit scope limitations;
+- deterministic CLI/check mode and three byte-identical real-authority
+  generations.
+
+Tracked evidence:
+
+- source SHA-256:
+  `138385387e78e567782df467829a468707b4edaeb32e458d7092c11f0f0270fa`;
+- test SHA-256:
+  `f0dc5db56d19f9669d9875e7f11303c87d2a4ee49a2d0619710ccb45b21eef72`;
+- census SHA-256:
+  `7227f43bb8d5ad93d0770df60f061d24cdd0ac5f521bd2ae5af2a6712407c69a`;
+- 34 focused tests, 94 format-contract tests with the one baseline-known
+  stateful CSV case deselected, and 69 production-program tests pass;
+- Ruff, strict Mypy, Pyright 1.1.411, and bytecode compilation pass;
+- matrix, denominator, Core inventory, and candidate census check modes pass;
+- all three batch-004 skill transcripts validate with zero warnings;
+- XLIFF authority remains 5/5 `MATCH`.
+
+Truth boundary: `candidate_scope_complete: true` applies only to the declared
+selector: direct/leaf prose carrying an RFC-style modal, every configured Core
+XSD semantic node, and every Core Schematron assert/report. Non-modal
+declarative prose is explicitly not classified yet. Seventy-eight dispositions
+remain coarse and every disposition remains
+`SOURCE_LOCATED_RULE_DISPOSITION_UNVERIFIED`. Candidate routing touches 45 of
+the 105 expected IDs and leaves 60 without a selected authority candidate, but
+this is not obligation resolution: the cumulative obligation inventory still
+contains 25 source-bound rows, leaving 80 expected obligation IDs missing.
+The denominator remains `OPEN_AUTHORITY_CENSUS`; XLF-04 is not complete.
+Canonical SAL reconciliation, module obligations, capability repair, product
+source, certification, promotion, release, and gate state remain unchanged.
+Portfolio certification is still 0/6.
+
+Resume at `XLF-04-BATCH-005`. Revalidate event 26, implementation commit
+`1fef79b9`, the exact digests and counts above, the three real-authority
+replays, zero-warning receipts, and authority audit. Then:
+
+1. census and classify every non-modal Core prose paragraph excluded by batch
+   004;
+2. replace each of the 78 coarse structural fallbacks with an exact semantic
+   mapping or an explicit, reasoned non-obligation disposition;
+3. expand the expected-ID denominator where the newly classified authority
+   surface exposes a real missing normative behavior;
+4. compile source-bound obligation rows for remaining expected IDs without
+   altering the 25 existing stable IDs;
+5. retain `complete: false` until the authority surface is exhaustive, every
+   expected ID has a source-bound obligation, and canonical SAL verification
+   succeeds.
+
 ## Required execution
 
 ### XLF-01 — Revalidate the clean predecessor
