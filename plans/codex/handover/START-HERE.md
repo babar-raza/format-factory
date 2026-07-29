@@ -24,6 +24,7 @@ C:\Users\prora\OneDrive\Documents\GitHub\format-factory\plans\codex\handover\STA
 | Field | Verified value |
 |---|---|
 | Forge / branch | GitLab `origin/main` only |
+| Latest bounded implementation ancestor | `7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce` |
 | Handover source checkpoint | `18bb295f94e43338611ef88caff073eed17411c9` |
 | Controller Event 26 commit | `15ab7d0455e109bd88289e16d73c0835324a21ab` |
 | Controller state | `CONTRACT` |
@@ -77,24 +78,41 @@ The optional local recovery bytes are content-addressed:
 | `tests/tools/test_extract_sal_facts_candidate_binding.py` | `fcb25b8f9400fc72a485eea23e8daf7d29e579f45a27353e3bf9a15d4c89dcb3` | 13,375 | 427 | RED integration and tamper controls |
 
 They are deliberately not required for a clean-checkout resume. If present,
-the validator requires exact bytes and untracked status. If absent, resume
-from Event 26. If different, preserve them and reconcile the conflict; never
-overwrite or silently prefer either copy.
+the validator requires exact bytes and untracked status unless the path is
+explicitly classified as a newer active foreign XLIFF working set. Active
+foreign bytes are preserved but deliberately not frozen. If absent, resume
+from Event 26. If different without that active classification, preserve them
+and reconcile the conflict; never overwrite or silently prefer either copy.
 
-The shared worktree also contained three live, separately leased UBL paths at
-2026-07-29T18:53Z:
+At the 2026-07-29T19:17Z refresh, a newer live XLIFF worker,
+`agent-codex-20260729T190440-e2dd38`, owned the Batch 005 logical scope and
+eleven exact implementation/report/receipt paths. State:
+`ACTIVE_XLIFF_BATCH005_FOREIGN_WORKING_SET`. Its tracked extractor, primary
+test, and candidate-census paths already differed from HEAD, so the handover
+does not freeze or stage those changing bytes. This identity is an observation
+only, not a credential or permanent owner. Requery coordination before acting;
+while it remains live, preserve its paths and use the disjoint UBL resume.
 
-State: `ACTIVE_FOREIGN_LEASED_WORK_PRESERVE`.
+The three UBL paths that were live during the prior packet are no longer
+foreign untracked work. They were independently verified, committed, and
+pushed to GitLab main at
+`7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce`.
+
+State: `COMMITTED_PARALLEL_CHECKPOINT_NON_CONTROLLER`.
 
 - `reports/ff6/ubl-package-root-census.yaml`
 - `tests/tools/test_compile_ubl_schema_graph.py`
 - `tools/spec/compile_ubl_schema_graph.py`
 
-They belonged to `agent-codex-20260729T184613-6d4edc` working on
-`TC-FF6-UBL-TYPING-001`. They are not part of this XLIFF handover, do not
-change the Event 26 controller, and must not be staged, overwritten, adopted,
-or counted as progress here. Their bytes were intentionally not frozen while
-the live owner was writing. Requery coordination and GitLab at resume.
+They establish a secure, deterministic census of 890 UBL 2.3 package members
+and exactly 91 document roots. The report digest is
+`787c8d9258dc25a8662ee934b9b0b14096de790db87826dab970792b9494976d`.
+This is real bounded progress, but it does not change Event 26, complete
+UBL-01, advance the UBL taskcard from `READY`, prove the reachable schema
+graph, or prove product readiness. The full UBL SAL replay fails closed on a
+stale `SRC-UBL-001` prose-target digest. Read the
+[parallel UBL checkpoint](PARALLEL-UBL-CHECKPOINT.yaml) before resuming that
+lane.
 
 At resume time, query the coordination plane and GitLab again. The captured
 identity and test counts are forensic observations, not transferable
@@ -136,7 +154,7 @@ obligation rows and 80 remain missing.
 | NRRD | profile surface repaired; 21 / 65 | existing partial package | not certified |
 | XLIFF | profile compilation in progress; 15 / 125 | existing partial package | not certified |
 | SafeTensors | compiled planning surface; 11 / 86 | existing partial package | not certified |
-| UBL | typing/profile repair still required; 18 / 194 | existing partial package | not certified |
+| UBL | exact package/root census verified; full SAL replay and typing repair remain; 18 / 194 | existing partial package | not certified |
 
 All six ProductContracts remain lifecycle `DRAFT`. Five existing oracle
 summaries are shallow `D0` partial evidence, the existing install proofs have
@@ -165,8 +183,15 @@ Resume `TC-FF6-XLIFF-PROFILE-SURFACE-001` at `XLF-04-BATCH-005`.
    verification succeeds.
 
 Do not start product source, architecture, packaging, certification,
-promotion, release, or gate work. Do not skip to XLF-05 or UBL while this
-mandatory XLF-04 work is safely executable.
+promotion, release, or gate work. Do not skip to XLF-05 while this mandatory
+XLF-04 work is safely executable.
+
+If live coordination shows another agent owns the XLIFF Batch 005 scope, do
+not wait and do not compete for those paths. Resume the disjoint
+`TC-FF6-UBL-TYPING-001` lane at
+`FF6-UBL-SAL-PROSE-TARGET-STALE-001`: repair and replay the stale prose-target
+proof closure. Only after that full replay passes may the UBL state advance to
+`AUTHORITY_REVALIDATED` and UBL-03 reachable-schema-graph work begin.
 
 Read [Claude/Codex execution instructions](CLAUDE-START.md), the
 [active checkpoint](ACTIVE-WORK-CHECKPOINT.md), and the
@@ -182,6 +207,7 @@ git fetch origin
 git status --short --branch
 git rev-parse HEAD
 git rev-parse origin/main
+git merge-base --is-ancestor 7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce origin/main
 git merge-base --is-ancestor 18bb295f94e43338611ef88caff073eed17411c9 origin/main
 .venv\Scripts\python.exe plans\codex\handover\validate_handover.py --self-test
 python -m tools.supervisor.coordination status

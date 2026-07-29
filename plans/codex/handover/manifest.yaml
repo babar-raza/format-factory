@@ -9,9 +9,10 @@ source_checkpoint:
   remote: origin
   branch: main
   required_remote_ref: origin/main
-  required_ancestor: 18bb295f94e43338611ef88caff073eed17411c9
+  required_ancestor: 7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce
   controller_event_ancestor: 15ab7d0455e109bd88289e16d73c0835324a21ab
   implementation_ancestor: 1fef79b9d6c1ee1f6667e0c5c70435562c97544c
+  parallel_ubl_ancestor: 7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce
   packet_commit_rule: >-
     The fetched origin/main commit containing this packet must descend from
     required_ancestor. The packet cannot hash the commit containing its own
@@ -54,6 +55,10 @@ truth_boundary:
   xlf_candidate_count: 542
   xlf_coarse_dispositions: 78
   xlf_04_complete: false
+  ubl_package_census_complete: true
+  ubl_root_denominator_complete: true
+  ubl_full_authority_sal_replay_complete: false
+  ubl_reachable_schema_graph_complete: false
   products_certified: 0
   promotion_effect: none
 
@@ -103,6 +108,9 @@ files:
   - path: taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md
     sha256: bd52ced771a26ef636b8547e4f301ae201fb58672b3d4a9d9c28c9769a3a2d39
     canonical_bytes: 30897
+  - path: taskcards/TC-FF6-UBL-TYPING-001.md
+    sha256: 5c54f6a381ee021017945723e7bb70ce38d6dc00369b8b0a66aee2effb48294e
+    canonical_bytes: 14057
   - path: taskcards/TC-FF6-HANDOVER-CLAUDE-001.md
     sha256: 20fb665e3921cc04c9600d4fc15e05fd12eeec1a390fe77c9055bff105aecba0
     canonical_bytes: 14321
@@ -136,24 +144,45 @@ files:
   - path: reports/skills-rff6/skill-transcripts/plan-control-xliff-profile-surface-wip-007.json
     sha256: 0b8adadd08af81a2f920f7dbc1b7a7da49bb6445794cef78f52d7150ba8ff13f
     canonical_bytes: 5084
+  - path: tools/spec/compile_ubl_schema_graph.py
+    sha256: 118a51b58c5809bc819a18535b1283d3fb1e37834a8f667e2aaa264c25110b50
+    canonical_bytes: 21751
+  - path: tests/tools/test_compile_ubl_schema_graph.py
+    sha256: 0853b17f3d651d2c63afda2a40cf962f397ebf6613feafb686b2dadf829911f8
+    canonical_bytes: 11288
+  - path: reports/ff6/ubl-package-root-census.yaml
+    sha256: 787c8d9258dc25a8662ee934b9b0b14096de790db87826dab970792b9494976d
+    canonical_bytes: 348612
+  - path: reports/skills-rff6/skill-transcripts/research-format-contract-sources-ubl-package-census-001.json
+    sha256: 86149d40784dc824a1dc5173a59ea8e9eb4df4add989d5320d05c695cf07f3ab
+    canonical_bytes: 2623
+  - path: reports/skills-rff6/skill-transcripts/test-driven-development-ubl-package-census-001.json
+    sha256: 7bd213dc0e2b768b217f976b6c5aada852160dd6890222cfd3ee183fe55be4a0
+    canonical_bytes: 5654
+  - path: reports/skills-rff6/skill-transcripts/sal-pipeline-heal-ubl-package-census-001.json
+    sha256: e4b6a43aab1395a92e65b7060b0718f605fa4ca4c6cbcee29a857766cb461a79
+    canonical_bytes: 2330
   - path: plans/codex/handover/START-HERE.md
-    sha256: 5f7536d3ee0a627a5a52d12921f559ecda637b7eb51c5569261517d6cebb5ab2
-    canonical_bytes: 11976
+    sha256: 7d3aed25b50074f4c3b88f7c32674d2a3c6dd95f0e491ed01484dcf9bb2913bf
+    canonical_bytes: 13662
   - path: plans/codex/handover/CLAUDE-START.md
-    sha256: 19dc9c2e28d1328dd4a7687fec6def76f75c937ab424eeffe87f452c5fc8eb32
-    canonical_bytes: 14414
+    sha256: 04b687d1a1397b04b05b00760990d3c4264bfa37b503c212dcacb25a3bc2494e
+    canonical_bytes: 17544
   - path: plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md
-    sha256: 9cacb65914e2c2e26e5bc8ebb8727d57362547b18e2b0b7f5cb8417557aa312d
-    canonical_bytes: 4150
+    sha256: 9341aa55b8f2f75ab809120b3f7105c91360b1b40dcaf2b10f8cd9c97f107e68
+    canonical_bytes: 5917
   - path: plans/codex/handover/CURRENT-MACHINE-STATE.yaml
-    sha256: e986ccd1f793994c31ff495cebd22cea4a515e832ae464a96dda880df9dc6186
-    canonical_bytes: 9796
+    sha256: 60350bcdef49c28db4c5c0662c5d908158c9f4009955c08b2083ee61324f0dc1
+    canonical_bytes: 12869
   - path: plans/codex/handover/checkpoint.yaml
     sha256: 00aa5ef35c73ccf439364dd64c8c849f50f5918a423f1f7a75674b8cb8295180
     canonical_bytes: 3347
   - path: plans/codex/handover/INFLIGHT-RECOVERY.yaml
-    sha256: 2b9d0a3db72dd35c0ae877149a26499dd33608e4c01f9f76783047608bc5fc3f
-    canonical_bytes: 7554
+    sha256: a6a801f60ed6c3a93fb8ec1ed88524fc32d67147ca42a245332bc6639f4e4c8b
+    canonical_bytes: 9250
+  - path: plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml
+    sha256: e744bc3cf2e5af1f158fa528ae88b9f837be737ce4dbbdc37bd9176a2c4cd5a7
+    canonical_bytes: 5339
   - path: plans/codex/handover/CURRENT-STATE-AND-ROOT-CAUSES.md
     sha256: b3b5dfb9ff85c8868498c64c61467c11c9ec371cb46f82c390004886deb8994c
     canonical_bytes: 20707
@@ -170,8 +199,11 @@ files:
     sha256: 02212e5ef33f59c7d544440c114aacbcc8faa1e94c4f933d3248ca5f33cf5eb7
     canonical_bytes: 13652
   - path: plans/codex/handover/validate_handover.py
-    sha256: 2255b5e238803d6218282e1505d5224e0d6febd71255c584de4dbecdc19dbcca
-    canonical_bytes: 36766
+    sha256: d355fbbb5fd9aaf1d447e09869e7290cee4d6151bad5b1f357a809d80959d07c
+    canonical_bytes: 43790
+  - path: reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-ubl-checkpoint-001.json
+    sha256: 8bb650bce720b5ee5e2b867037d3da35ee028723cb3ef4eefaf740b7fb03f294
+    canonical_bytes: 3639
   - path: plans/codex/handover/event-26/START-HERE.md
     sha256: ebb85eade29b862213a1cfe147636f1ebe1f4adc8d74b908197e4d656425b2bd
     canonical_bytes: 1508
@@ -189,7 +221,7 @@ files:
     canonical_bytes: 4754
 
 validation:
-  expected_manifest_files: 43
+  expected_manifest_files: 52
   packet_internal_links: PASS
   yaml_json_parse: PASS
   root_manifest_hashes: PASS
@@ -198,5 +230,5 @@ validation:
   controller_task_projection: PASS
   task_registration: PASS
   gitlab_main_ancestry: PASS
-  semantic_negative_controls: PASS_6_OF_6
+  semantic_negative_controls: PASS_8_OF_8
   no_product_or_promotion_mutation: PASS

@@ -9,9 +9,10 @@ source_checkpoint:
   forge: GitLab
   remote: origin
   branch: main
-  required_ancestor: 18bb295f94e43338611ef88caff073eed17411c9
+  required_ancestor: 7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce
   controller_event_ancestor: 15ab7d0455e109bd88289e16d73c0835324a21ab
   implementation_ancestor: 1fef79b9d6c1ee1f6667e0c5c70435562c97544c
+  parallel_ubl_ancestor: 7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce
   worktree_at_capture: CLASSIFIED_CONCURRENT_BATCH005_WORK_PRESENT
   committed_handover_scope: CLEAN_AND_REMOTE_VERIFIED
   packet_commit_rule: >-
@@ -72,23 +73,54 @@ workspace_transfer:
     preserved local bytes, use governed takeover and recapture baselines. Never
     copy its token, release its lease, or call these bytes RESUMABLE.
 
-foreign_concurrent_work:
-  observed_at: "2026-07-29T18:53:00Z"
-  status: ACTIVE_FOREIGN_LEASED_WORK_PRESERVE
+latest_xliff_refresh_observation:
+  observed_at: "2026-07-29T19:17:00Z"
+  status: ACTIVE_XLIFF_BATCH005_FOREIGN_WORKING_SET
   owner:
-    agent_id: agent-codex-20260729T184613-6d4edc
-    task_id: TC-FF6-UBL-TYPING-001
+    agent_id: agent-codex-20260729T190440-e2dd38
+    task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
     provider: codex
+  logical_scope: logical:ff6-xliff-xlf04-batch005
+  paths:
+    - tools/spec/extract_sal_facts.py
+    - tools/spec/xliff_core_candidate_binding.py
+    - tests/tools/test_extract_sal_facts.py
+    - tests/tools/test_extract_sal_facts_candidate_binding.py
+    - reports/ff6/xliff-core-authority-candidate-census.yaml
+    - reports/ff6/xliff-core-obligation-denominator.yaml
+    - reports/ff6/xliff-core-obligation-inventory.yaml
+    - reports/skills-rff6/skill-transcripts/test-driven-development-xliff-xlf04-core-batch-005.json
+    - reports/skills-rff6/skill-transcripts/ingest-spec-sal-xliff-xlf04-core-batch-005.json
+    - reports/skills-rff6/skill-transcripts/sal-pipeline-heal-xliff-xlf04-core-batch-005.json
+    - .local/transcripts/xliff-xlf04-core-batch005.json
+  current_bytes_frozen_by_handover: false
+  rule: >-
+    The owner and paths are a time-stamped coordination observation, not
+    transferable credentials. Do not stage, mutate, hash as completed
+    evidence, release, or take over this working set while its lease is live.
+    Requery coordination and GitLab at resume.
+
+parallel_ubl_checkpoint:
+  observed_at: "2026-07-29T19:08:00Z"
+  status: COMMITTED_PARALLEL_CHECKPOINT_NON_CONTROLLER
+  task_id: TC-FF6-UBL-TYPING-001
+  implementation_commit: 7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce
   paths:
     - reports/ff6/ubl-package-root-census.yaml
     - tests/tools/test_compile_ubl_schema_graph.py
     - tools/spec/compile_ubl_schema_graph.py
-  authority_effect: NONE_UNTIL_COMMITTED_JOURNALED_AND_RECOMPUTED
+  report_sha256: 787c8d9258dc25a8662ee934b9b0b14096de790db87826dab970792b9494976d
+  bounded_result: UBL_02_PACKAGE_AND_ROOT_CENSUS_VERIFIED
+  taskcard_projection: READY
+  native_event_recorded: false
+  controller_effect: NONE
+  product_or_promotion_effect: NONE
+  first_unmet_work: FF6-UBL-SAL-PROSE-TARGET-STALE-001
   rule: >-
-    These bytes are outside this XLIFF handover and remained under another
-    live identity's leases. Their hashes are deliberately not frozen while
-    that writer is active. Preserve them, never stage or adopt them through
-    this handover, and requery coordination plus origin/main at resume.
+    These paths are now committed evidence on GitLab main and are safe to
+    inspect. They prove only the package/root census. The full UBL SAL replay
+    remains invalidated, the UBL taskcard has not advanced through its native
+    state machine, and no product or promotion status changed.
 
 goal:
   goal_id: FF6-PRODUCTION-LIBRARIES-001
@@ -157,7 +189,11 @@ products:
   ubl:
     capabilities: 18
     obligations: 194
-    profile_surface: NEEDS_TYPING_REPAIR
+    profile_surface: PACKAGE_ROOT_CENSUS_VERIFIED_TYPING_REPAIR_OPEN
+    package_census: VERIFIED_890_MEMBERS_91_ROOTS
+    authority_sal_replay: INVALIDATED_STALE_PROSE_TARGET
+    taskcard_projection: READY
+    reachable_schema_graph: absent
     source_package: present_partial
     production_certification: absent
 
@@ -245,6 +281,15 @@ artifacts:
   candidate_census:
     path: reports/ff6/xliff-core-authority-candidate-census.yaml
     sha256: 7227f43bb8d5ad93d0770df60f061d24cdd0ac5f521bd2ae5af2a6712407c69a
+  ubl_package_root_census:
+    path: reports/ff6/ubl-package-root-census.yaml
+    sha256: 787c8d9258dc25a8662ee934b9b0b14096de790db87826dab970792b9494976d
+  ubl_census_compiler:
+    path: tools/spec/compile_ubl_schema_graph.py
+    sha256: 118a51b58c5809bc819a18535b1283d3fb1e37834a8f667e2aaa264c25110b50
+  ubl_census_tests:
+    path: tests/tools/test_compile_ubl_schema_graph.py
+    sha256: 0853b17f3d651d2c63afda2a40cf962f397ebf6613feafb686b2dadf829911f8
 
 verified_at_event_26:
   focused_tests: 34 passed
@@ -257,6 +302,21 @@ verified_at_event_26:
   xliff_authority_audit: 5/5 MATCH
   artifact_check_modes: PASS
   census_replay: 3 byte-identical
+
+verified_parallel_ubl_checkpoint:
+  implementation_commit: 7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce
+  focused_tests: 12 passed
+  production_program_regression: 69 passed
+  ruff: PASS
+  mypy_strict: PASS
+  pyright: PASS_ZERO_DIAGNOSTICS_1_1_411
+  py_compile: PASS
+  ubl_authority_materializer: 3/3 MATCH
+  census_check_mode: PASS
+  census_replay: 3 byte-identical
+  census_sha256: 787c8d9258dc25a8662ee934b9b0b14096de790db87826dab970792b9494976d
+  sal_replay: FAIL_STALE_SRC_UBL_001_MEMBER_DIGEST
+  format_contract_regression: 94 passed, 1 unrelated CSV idempotency failure
 
 current_gaps:
   critical: 1
@@ -273,3 +333,7 @@ truth_boundary:
   xlf_04_complete: false
   products_certified: 0
   product_or_promotion_change_in_event_26: false
+  ubl_package_census_is_product_proof: false
+  ubl_full_authority_replay_complete: false
+  ubl_reachable_schema_graph_complete: false
+  product_or_promotion_change_in_parallel_ubl_checkpoint: false

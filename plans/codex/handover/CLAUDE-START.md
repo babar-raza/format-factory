@@ -21,6 +21,7 @@ canonical_forge: GitLab
 canonical_remote: origin
 canonical_branch: main
 source_checkpoint: 18bb295f94e43338611ef88caff073eed17411c9
+latest_bounded_implementation_ancestor: 7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce
 controller_event_commit: 15ab7d0455e109bd88289e16d73c0835324a21ab
 controller: plans/strategic/ff6/controller-state.yaml
 journal: plans/strategic/ff6/events.jsonl
@@ -44,7 +45,8 @@ exact_next_microstep: XLF-04-BATCH-005
    ```
 
 5. Re-read the product goal, execution plan, full native journal, controller,
-   current gaps, active taskcard, Batch 004 artifacts, and Batch 004 receipts.
+   current gaps, active taskcard, Batch 004 artifacts, Batch 004 receipts, and
+   `plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml`.
 6. Register a new provider-specific coordination identity. Never reuse the
    outgoing provider's token or release another agent's lease.
 7. Select the registered skills required by the active task. Expected
@@ -74,7 +76,7 @@ and the two captured Batch 005 paths. Then choose exactly one case:
 
 | Recomputed condition | Required action |
 |---|---|
-| Captured owner is still live and owns Batch 005 | Do not claim or mutate its scope. Independently inspect or verify read-only evidence and continue only disjoint safe work. |
+| Captured owner is still live and owns Batch 005 | Do not claim or mutate its scope. Resume the disjoint UBL SAL closure repair defined below, or another controller-authorized path-disjoint task. |
 | `origin/main` contains a Batch 005 implementation commit and event 27 or later | Ignore the captured test counts, validate the newer journal head, rebuild projections, and resume its computed next task. |
 | `origin/main` contains a Batch 005 implementation commit but the journal remains at event 26 | Independently validate the immutable implementation commit, then use `plan-control` to append exactly one event. Do not duplicate implementation. |
 | Owner is stale/dead, no commit exists, and attributable local files remain | Preserve bytes, invoke governed `takeover --reason`, recapture baselines, and continue the same RED/GREEN batch. Never release or reuse the old identity manually. |
@@ -90,6 +92,14 @@ returned `17 passed, 10 failed`, so the local batch was RED, not transferable.
 These are observations only; the incoming provider must not inherit the agent
 ID, token, or leases.
 
+At the later packet refresh, coordination showed
+`agent-codex-20260729T190440-e2dd38` actively owning the broader Batch 005
+working set, including the primary extractor, primary tests, three XLIFF
+reports, and Batch 005 receipts. Several tracked paths differed from HEAD.
+Treat this as `ACTIVE_XLIFF_BATCH005_FOREIGN_WORKING_SET`; the packet does not
+freeze those mutable bytes. Requery rather than assuming that this later
+identity is still live.
+
 Before adopting the files, verify their LF-normalized identities:
 
 ```text
@@ -103,8 +113,16 @@ SHA-256 fcb25b8f9400fc72a485eea23e8daf7d29e579f45a27353e3bf9a15d4c89dcb3
 ```
 
 The handover validator checks these values when the optional files are
-present. A clean checkout may legitimately lack them and restart Batch 005
-from Event 26. A digest or Git-state mismatch is a preserved conflict.
+present and not classified as a newer active foreign working set. It does not
+freeze bytes that a live owner is changing. A clean checkout may legitimately
+lack them and restart Batch 005 from Event 26. A digest or Git-state mismatch
+without active ownership is a preserved conflict.
+
+The prior UBL writer is no longer an active foreign owner. Its package/root
+census is committed at
+`7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce`; use that immutable commit
+and [PARALLEL-UBL-CHECKPOINT.yaml](PARALLEL-UBL-CHECKPOINT.yaml), not its old
+coordination identity.
 
 ## Current truth boundary
 
@@ -131,6 +149,52 @@ row is `SOURCE_BOUND_UNVERIFIED`. XLF-04 is open; product certification is
 
 The six committed Batch 004 files are source, tests, census, and three skill
 transcripts. Their existence is evidence input, not self-certification.
+
+The UBL package/root census is also bounded evidence only. It proves 890
+package files and 91 unique document roots with deterministic output. It does
+not prove the full UBL authority closure because live SAL verification fails
+on stale `SRC-UBL-001` prose-target metadata. It does not prove UBL-03 schema
+graph completion or any product behavior.
+
+## Disjoint UBL resume when XLIFF is live-leased
+
+Use this route only when coordination prevents safe XLIFF mutation. It is not
+permission to skip runnable XLIFF work.
+
+1. Register and claim only the UBL evidence/receipt paths required by
+   `TC-FF6-UBL-TYPING-001` and the `sal-pipeline-heal` skill.
+2. Reproduce the current RED:
+
+   ```powershell
+   .venv\Scripts\python.exe tools\spec\verify_sal_facts.py --format-id ubl
+   ```
+
+   Expected failure before repair:
+
+   ```text
+   authority member digest mismatch: SRC-UBL-001:None
+   ```
+
+3. Confirm the current authority artifact and lock digest are
+   `ccda3f1a2b64e6bdebfe33b2c9645423ef2f6206ac676f0937a304098d43358d`,
+   while the evidence target still carries the stale
+   `b2ac12afabc812ccfb49355a391dc1690260bbc2d216d3c9dd5b0931b6c1a2b6`.
+4. Add or retain a discriminating stale-closure test. Revalidate every prose
+   assertion against the pinned current authority before changing the target
+   digest. Never change claims merely to recover PASS.
+5. Update only the stale evidence target if the assertions still hold, replay
+   the UBL receipt with `--apply`, and recompute every dependent proof whose
+   input closure includes the old evidence manifest or receipt.
+6. Run the UBL census tests/check mode, SAL verifier tests, authority audits,
+   production-program regressions, static gates, and three deterministic
+   replays.
+7. Commit the repair independently. Then, under serialized `plan-control`
+   ownership, record UBL-01 as `AUTHORITY_REVALIDATED` without changing the
+   canonical XLIFF task. Start UBL-03 only after that event/projection is
+   valid.
+
+Do not weaken member-digest checking, edit a status label, reuse the old PASS
+receipt, or infer UBL-01 completion from the package census.
 
 ## Execute XLF-04-BATCH-005
 

@@ -1,0 +1,72 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "refresh-provider-neutral-handover-ubl-checkpoint-001",
+  "skill_id": "refresh-provider-neutral-handover",
+  "task_id": "TC-FF6-HANDOVER-CLAUDE-002",
+  "mode": "live",
+  "timestamp": "2026-07-29T19:10:18Z",
+  "inputs": {
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "source_checkpoint": "7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce",
+    "canonical_remote": "origin",
+    "canonical_branch": "main",
+    "controller_path": "plans/strategic/ff6/controller-state.yaml",
+    "journal_path": "plans/strategic/ff6/events.jsonl",
+    "current_taskcard": "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
+    "exact_next_task": "TC-FF6-XLIFF-PROFILE-SURFACE-001/XLF-04-BATCH-005",
+    "packet_root": "plans/codex/handover",
+    "execution_manifest_id": "sfx-5ded29403c777026"
+  },
+  "allowed_files": [
+    "plans/codex/handover/START-HERE.md",
+    "plans/codex/handover/CLAUDE-START.md",
+    "plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md",
+    "plans/codex/handover/CURRENT-MACHINE-STATE.yaml",
+    "plans/codex/handover/INFLIGHT-RECOVERY.yaml",
+    "plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml",
+    "plans/codex/handover/manifest.yaml",
+    "plans/codex/handover/validate_handover.py",
+    "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-ubl-checkpoint-001.json",
+    ".local/transcripts/refresh-provider-neutral-handover-ubl-checkpoint-001.json"
+  ],
+  "actual_files_changed": [
+    "plans/codex/handover/START-HERE.md",
+    "plans/codex/handover/CLAUDE-START.md",
+    "plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md",
+    "plans/codex/handover/CURRENT-MACHINE-STATE.yaml",
+    "plans/codex/handover/INFLIGHT-RECOVERY.yaml",
+    "plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml",
+    "plans/codex/handover/manifest.yaml",
+    "plans/codex/handover/validate_handover.py",
+    "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-ubl-checkpoint-001.json",
+    ".local/transcripts/refresh-provider-neutral-handover-ubl-checkpoint-001.json"
+  ],
+  "tests_run": [
+    "provider-neutral handover validator: PASS",
+    "eight semantic negative controls: PASS_8_OF_8",
+    "manifest LF-normalized hashes: PASS",
+    "internal links and YAML/JSON parse: PASS",
+    "native FF6 event chain through Event 26: PASS",
+    "GitLab main ancestry through 7b5cce4f: PASS",
+    "optional XLIFF recovery assets: exact digest/size/line/Git-state binding PASS",
+    "active XLIFF working-set non-transferability and false-freeze rejection: PASS",
+    "parallel UBL checkpoint projection and false-completion rejection: PASS",
+    "Ruff and Pyright for handover validator: PASS"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "controller_event": "FF6-EVENT-000026",
+    "controller_event_hash": "34b36bf5dc4344713ac1c0f026b30e6b15fb6a63b86f4876ee98230952fabcd0",
+    "canonical_next": "XLF-04-BATCH-005",
+    "parallel_ubl_commit": "7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce",
+    "parallel_ubl_result": "UBL_02_PACKAGE_AND_ROOT_CENSUS_VERIFIED",
+    "parallel_ubl_report_sha256": "787c8d9258dc25a8662ee934b9b0b14096de790db87826dab970792b9494976d",
+    "parallel_ubl_first_unmet": "FF6-UBL-SAL-PROSE-TARGET-STALE-001",
+    "production_certifications": "0/6",
+    "product_or_promotion_effect": "none",
+    "truth_boundary": "The packet records a committed non-controller UBL census while preserving Event 26 as the canonical controller head. It does not claim UBL authority closure, schema graph completion, product readiness, certification, or promotion."
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

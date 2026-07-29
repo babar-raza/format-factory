@@ -29,12 +29,14 @@ MANIFEST_PATH = HANDOVER_ROOT / "manifest.yaml"
 CHECKPOINT_PATH = HANDOVER_ROOT / "checkpoint.yaml"
 MACHINE_STATE_PATH = HANDOVER_ROOT / "CURRENT-MACHINE-STATE.yaml"
 RECOVERY_PATH = HANDOVER_ROOT / "INFLIGHT-RECOVERY.yaml"
+PARALLEL_UBL_PATH = HANDOVER_ROOT / "PARALLEL-UBL-CHECKPOINT.yaml"
 VERSIONED_CHECKPOINT_PATH = HANDOVER_ROOT / "event-26/CHECKPOINT.yaml"
 VERSIONED_MANIFEST_PATH = HANDOVER_ROOT / "event-26/manifest.yaml"
 CONTROLLER_PATH = REPO_ROOT / "plans/strategic/ff6/controller-state.yaml"
 JOURNAL_PATH = REPO_ROOT / "plans/strategic/ff6/events.jsonl"
 TASK_INDEX_PATH = REPO_ROOT / "taskcards/index.yaml"
 ACTIVE_TASK_PATH = REPO_ROOT / "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md"
+UBL_TASK_PATH = REPO_ROOT / "taskcards/TC-FF6-UBL-TYPING-001.md"
 
 BATCH_PATTERN = re.compile(r"\bXLF-04-BATCH-\d{3}\b")
 LINK_PATTERN = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
@@ -45,6 +47,7 @@ CURRENT_TEXT_PATHS = (
 )
 ALLOWED_CHANGED_PATHS = {
     "taskcards/TC-FF6-HANDOVER-CLAUDE-001.md",
+    "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-ubl-checkpoint-001.json",
 }
 ALLOWED_CHANGED_PREFIX = "plans/codex/handover/"
 
@@ -231,10 +234,15 @@ def _manifest_errors(manifest: Mapping[str, Any]) -> list[str]:
     required = {
         "plans/codex/handover/START-HERE.md",
         "plans/codex/handover/validate_handover.py",
+        "plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml",
         "plans/codex/handover/event-26/manifest.yaml",
         "plans/strategic/ff6/controller-state.yaml",
         "plans/strategic/ff6/events.jsonl",
         "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
+        "taskcards/TC-FF6-UBL-TYPING-001.md",
+        "reports/ff6/ubl-package-root-census.yaml",
+        "tools/spec/compile_ubl_schema_graph.py",
+        "tests/tools/test_compile_ubl_schema_graph.py",
     }
     for required_path in sorted(required - seen):
         errors.append(f"required manifest binding absent: {required_path}")
@@ -385,6 +393,19 @@ def _local_recovery_errors(machine: Mapping[str, Any]) -> list[str]:
     assets = transfer.get("recovery_assets")
     if not isinstance(assets, list):
         return ["workspace_transfer.recovery_assets is not a list"]
+    active = machine.get("latest_xliff_refresh_observation")
+    active_paths = {
+        str(value)
+        for value in (
+            active.get("paths", [])
+            if isinstance(active, Mapping)
+            and active.get("status")
+            == "ACTIVE_XLIFF_BATCH005_FOREIGN_WORKING_SET"
+            and active.get("current_bytes_frozen_by_handover") is False
+            else []
+        )
+        if isinstance(value, str)
+    }
     expected_paths = {
         "tools/spec/xliff_core_candidate_binding.py",
         "tests/tools/test_extract_sal_facts_candidate_binding.py",
@@ -424,6 +445,16 @@ def _local_recovery_errors(machine: Mapping[str, Any]) -> list[str]:
         if not path.is_file():
             errors.append(f"recovery asset is not a file: {relative}")
             continue
+        tracked = _run_git("ls-files", "--error-unmatch", "--", relative)
+        if tracked.returncode == 0:
+            errors.append(
+                f"recovery asset was captured untracked but is now tracked: {relative}"
+            )
+        if relative in active_paths:
+            # A separately leased writer is allowed to advance these bytes.
+            # The packet binds the old recovery identity but must not freeze,
+            # adopt, or race the current foreign working set.
+            continue
         canonical = _lf_bytes(path)
         actual_digest = hashlib.sha256(canonical).hexdigest()
         actual_lines = len(path.read_text(encoding="utf-8").splitlines())
@@ -441,11 +472,6 @@ def _local_recovery_errors(machine: Mapping[str, Any]) -> list[str]:
             errors.append(
                 f"recovery asset line count mismatch for {relative}: "
                 f"expected {expected_lines}, got {actual_lines}"
-            )
-        tracked = _run_git("ls-files", "--error-unmatch", "--", relative)
-        if tracked.returncode == 0:
-            errors.append(
-                f"recovery asset was captured untracked but is now tracked: {relative}"
             )
     if seen != expected_paths:
         errors.append(
@@ -498,46 +524,168 @@ def _recovery_projection_errors(
     return errors
 
 
-def _foreign_work_projection_errors(
+def _active_xliff_projection_errors(
     machine: Mapping[str, Any],
     recovery: Mapping[str, Any],
     texts: Mapping[str, str],
 ) -> list[str]:
-    machine_foreign = machine.get("foreign_concurrent_work")
-    recovery_foreign = recovery.get("concurrent_foreign_work")
-    if not isinstance(machine_foreign, Mapping):
-        return ["foreign_concurrent_work is not a mapping"]
-    if not isinstance(recovery_foreign, Mapping):
-        return ["concurrent_foreign_work is not a mapping"]
+    machine_live = machine.get("latest_xliff_refresh_observation")
+    recovery_live = recovery.get("latest_xliff_refresh_observation")
+    if not isinstance(machine_live, Mapping):
+        return ["latest_xliff_refresh_observation is not a mapping"]
+    if not isinstance(recovery_live, Mapping):
+        return ["recovery latest_xliff_refresh_observation is not a mapping"]
     errors: list[str] = []
     _expect(
         errors,
-        "foreign work status projection",
-        recovery_foreign.get("status"),
-        machine_foreign.get("status"),
+        "active XLIFF status projection",
+        recovery_live.get("status"),
+        machine_live.get("status"),
     )
     _expect(
         errors,
-        "foreign work owner projection",
-        recovery_foreign.get("owner"),
-        machine_foreign.get("owner", {}).get("agent_id"),
+        "active XLIFF owner projection",
+        recovery_live.get("owner"),
+        machine_live.get("owner", {}).get("agent_id"),
     )
     _expect(
         errors,
-        "foreign work task projection",
-        recovery_foreign.get("task"),
-        machine_foreign.get("owner", {}).get("task_id"),
+        "active XLIFF task projection",
+        recovery_live.get("task"),
+        machine_live.get("owner", {}).get("task_id"),
     )
     _expect(
         errors,
-        "foreign work path projection",
-        recovery_foreign.get("paths"),
-        machine_foreign.get("paths"),
+        "active XLIFF logical scope projection",
+        recovery_live.get("logical_scope"),
+        machine_live.get("logical_scope"),
     )
-    if "ACTIVE_FOREIGN_LEASED_WORK_PRESERVE" not in texts.get(
+    _expect(
+        errors,
+        "active XLIFF path projection",
+        recovery_live.get("paths"),
+        machine_live.get("paths"),
+    )
+    _expect(
+        errors,
+        "active XLIFF mutable-byte boundary",
+        machine_live.get("current_bytes_frozen_by_handover"),
+        False,
+    )
+    for path in (
+        "plans/codex/handover/START-HERE.md",
+        "plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md",
+        "plans/codex/handover/CLAUDE-START.md",
+    ):
+        if "ACTIVE_XLIFF_BATCH005_FOREIGN_WORKING_SET" not in texts.get(
+            path, ""
+        ):
+            errors.append(f"{path} lacks active XLIFF working-set boundary")
+    return errors
+
+
+def _parallel_ubl_projection_errors(
+    machine: Mapping[str, Any],
+    recovery: Mapping[str, Any],
+    parallel: Mapping[str, Any],
+    texts: Mapping[str, str],
+) -> list[str]:
+    machine_checkpoint = machine.get("parallel_ubl_checkpoint")
+    recovery_checkpoint = recovery.get("committed_parallel_checkpoint")
+    if not isinstance(machine_checkpoint, Mapping):
+        return ["parallel_ubl_checkpoint is not a mapping"]
+    if not isinstance(recovery_checkpoint, Mapping):
+        return ["committed_parallel_checkpoint is not a mapping"]
+    errors: list[str] = []
+    _expect(
+        errors,
+        "parallel UBL status projection",
+        recovery_checkpoint.get("status"),
+        machine_checkpoint.get("status"),
+    )
+    _expect(
+        errors,
+        "parallel UBL task projection",
+        recovery_checkpoint.get("task"),
+        machine_checkpoint.get("task_id"),
+    )
+    _expect(
+        errors,
+        "parallel UBL commit projection",
+        recovery_checkpoint.get("implementation_commit"),
+        machine_checkpoint.get("implementation_commit"),
+    )
+    _expect(
+        errors,
+        "parallel UBL path projection",
+        recovery_checkpoint.get("paths"),
+        machine_checkpoint.get("paths"),
+    )
+    _expect(
+        errors,
+        "parallel UBL report digest projection",
+        recovery_checkpoint.get("report_sha256"),
+        machine_checkpoint.get("report_sha256"),
+    )
+    _expect(
+        errors,
+        "parallel UBL implementation commit",
+        parallel.get("source_checkpoint", {}).get("implementation_commit"),
+        machine_checkpoint.get("implementation_commit"),
+    )
+    _expect(
+        errors,
+        "parallel UBL bounded result",
+        parallel.get("bounded_result", {}).get("completed_artifact"),
+        "UBL-02_PACKAGE_AND_ROOT_CENSUS",
+    )
+    _expect(
+        errors,
+        "parallel UBL package census completion",
+        parallel.get("truth_boundary", {}).get("package_census_complete"),
+        True,
+    )
+    _expect(
+        errors,
+        "parallel UBL full SAL completion",
+        parallel.get("truth_boundary", {}).get(
+            "full_authority_sal_replay_complete"
+        ),
+        False,
+    )
+    _expect(
+        errors,
+        "parallel UBL reachable graph completion",
+        parallel.get("truth_boundary", {}).get(
+            "reachable_schema_graph_complete"
+        ),
+        False,
+    )
+    _expect(
+        errors,
+        "parallel UBL taskcard transition",
+        parallel.get("bounded_result", {}).get(
+            "taskcard_state_machine_transition_recorded"
+        ),
+        False,
+    )
+    _expect(
+        errors,
+        "parallel UBL certified products",
+        parallel.get("truth_boundary", {}).get("products_certified"),
+        0,
+    )
+    open_failures = parallel.get("open_failures")
+    if not isinstance(open_failures, list) or not any(
+        isinstance(item, Mapping)
+        and item.get("gap_id") == "FF6-UBL-SAL-PROSE-TARGET-STALE-001"
+        for item in open_failures
+    ):
+        errors.append("parallel UBL checkpoint lacks stale SAL closure gap")
+    if "COMMITTED_PARALLEL_CHECKPOINT_NON_CONTROLLER" not in texts.get(
         "plans/codex/handover/START-HERE.md", ""
     ):
-        errors.append("START-HERE lacks explicit foreign-work preservation state")
+        errors.append("START-HERE lacks explicit parallel UBL checkpoint state")
     return errors
 
 
@@ -567,6 +715,22 @@ def _task_registered(value: Any, task_id: str) -> bool:
     if isinstance(value, list):
         return any(_task_registered(item, task_id) for item in value)
     return False
+
+
+def _task_status(value: Any, task_id: str) -> str | None:
+    if isinstance(value, Mapping):
+        if value.get("id") == task_id:
+            return str(value.get("status", "")).lower()
+        for item in value.values():
+            status = _task_status(item, task_id)
+            if status is not None:
+                return status
+    elif isinstance(value, list):
+        for item in value:
+            status = _task_status(item, task_id)
+            if status is not None:
+                return status
+    return None
 
 
 def _semantic_errors(
@@ -777,9 +941,10 @@ def _semantic_errors(
             errors,
             "captured in-flight paths",
             sorted(
-                asset.get("path")
+                str(asset["path"])
                 for asset in transfer.get("recovery_assets", [])
                 if isinstance(asset, Mapping)
+                and isinstance(asset.get("path"), str)
             ),
             sorted(
                 [
@@ -797,6 +962,19 @@ def _semantic_errors(
     task_text = ACTIVE_TASK_PATH.read_text(encoding="utf-8")
     if p["next_batch"] not in task_text:
         errors.append(f"active taskcard does not name {p['next_batch']}")
+    ubl_task_text = UBL_TASK_PATH.read_text(encoding="utf-8")
+    if "UBL-01" not in ubl_task_text or "UBL-03" not in ubl_task_text:
+        errors.append("UBL taskcard lacks required authority/schema-graph steps")
+    _expect(
+        errors,
+        "parallel UBL taskcard projection",
+        _task_status(task_index, "TC-FF6-UBL-TYPING-001"),
+        "ready",
+    )
+    if "FF6-UBL-SAL-PROSE-TARGET-STALE-001" not in texts.get(
+        "plans/codex/handover/START-HERE.md", ""
+    ):
+        errors.append("START-HERE lacks exact UBL stale-SAL resume task")
 
     required_truth = (
         p["next_batch"],
@@ -839,6 +1017,7 @@ def validate_current() -> tuple[dict[str, Any], dict[str, Any]]:
     checkpoint = _load_yaml(CHECKPOINT_PATH)
     machine = _load_yaml(MACHINE_STATE_PATH)
     recovery = _load_yaml(RECOVERY_PATH)
+    parallel = _load_yaml(PARALLEL_UBL_PATH)
     versioned = _load_yaml(VERSIONED_CHECKPOINT_PATH)
     versioned_manifest = _load_yaml(VERSIONED_MANIFEST_PATH)
     controller = _load_yaml(CONTROLLER_PATH)
@@ -855,7 +1034,8 @@ def validate_current() -> tuple[dict[str, Any], dict[str, Any]]:
         *_handover_worktree_errors(),
         *_local_recovery_errors(machine),
         *_recovery_projection_errors(machine, recovery),
-        *_foreign_work_projection_errors(machine, recovery, texts),
+        *_active_xliff_projection_errors(machine, recovery, texts),
+        *_parallel_ubl_projection_errors(machine, recovery, parallel, texts),
         *_staged_path_errors(),
         *_semantic_errors(
             manifest=manifest,
@@ -883,6 +1063,7 @@ def validate_current() -> tuple[dict[str, Any], dict[str, Any]]:
         "checkpoint": checkpoint,
         "machine": machine,
         "recovery": recovery,
+        "parallel": parallel,
         "versioned": versioned,
         "controller": controller,
         "task_index": task_index,
@@ -896,8 +1077,14 @@ def _semantic_only(context: Mapping[str, Any]) -> list[str]:
     return [
         *_local_recovery_errors(context["machine"]),
         *_recovery_projection_errors(context["machine"], context["recovery"]),
-        *_foreign_work_projection_errors(
+        *_active_xliff_projection_errors(
             context["machine"], context["recovery"], context["texts"]
+        ),
+        *_parallel_ubl_projection_errors(
+            context["machine"],
+            context["recovery"],
+            context["parallel"],
+            context["texts"],
         ),
         *_semantic_errors(
         manifest=context["manifest"],
@@ -942,12 +1129,24 @@ def run_self_test(context: dict[str, Any]) -> dict[str, Any]:
     ] = "not-a-sha256"
     cases.append(("invalid_recovery_asset_identity", invalid_recovery_identity))
 
+    false_ubl_completion = copy.deepcopy(context)
+    false_ubl_completion["parallel"]["truth_boundary"][
+        "full_authority_sal_replay_complete"
+    ] = True
+    cases.append(("false_ubl_authority_completion", false_ubl_completion))
+
+    false_active_freeze = copy.deepcopy(context)
+    false_active_freeze["machine"]["latest_xliff_refresh_observation"][
+        "current_bytes_frozen_by_handover"
+    ] = True
+    cases.append(("false_active_xliff_byte_freeze", false_active_freeze))
+
     outcomes = [
         {"case": name, "rejected": bool(_semantic_only(case))}
         for name, case in cases
     ]
     return {
-        "schema": "ff6/handover-validation-self-test@4",
+        "schema": "ff6/handover-validation-self-test@6",
         "valid": all(item["rejected"] for item in outcomes),
         "negative_controls": outcomes,
     }
@@ -958,7 +1157,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument(
         "--self-test",
         action="store_true",
-        help="also prove six semantic corruptions are rejected",
+        help="also prove eight semantic corruptions are rejected",
     )
     args = parser.parse_args(argv)
     try:

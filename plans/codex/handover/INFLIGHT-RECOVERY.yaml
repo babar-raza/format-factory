@@ -51,20 +51,51 @@ captured_workspace:
     from the clean Event 26 checkpoint. A mismatch is a conflict to preserve
     and investigate, not permission to overwrite either copy.
 
-concurrent_foreign_work:
-  observed_at: "2026-07-29T18:53:00Z"
-  status: ACTIVE_FOREIGN_LEASED_WORK_PRESERVE
-  owner: agent-codex-20260729T184613-6d4edc
+latest_xliff_refresh_observation:
+  observed_at: "2026-07-29T19:17:00Z"
+  status: ACTIVE_XLIFF_BATCH005_FOREIGN_WORKING_SET
+  owner: agent-codex-20260729T190440-e2dd38
+  task: TC-FF6-XLIFF-PROFILE-SURFACE-001
+  logical_scope: logical:ff6-xliff-xlf04-batch005
+  paths:
+    - tools/spec/extract_sal_facts.py
+    - tools/spec/xliff_core_candidate_binding.py
+    - tests/tools/test_extract_sal_facts.py
+    - tests/tools/test_extract_sal_facts_candidate_binding.py
+    - reports/ff6/xliff-core-authority-candidate-census.yaml
+    - reports/ff6/xliff-core-obligation-denominator.yaml
+    - reports/ff6/xliff-core-obligation-inventory.yaml
+    - reports/skills-rff6/skill-transcripts/test-driven-development-xliff-xlf04-core-batch-005.json
+    - reports/skills-rff6/skill-transcripts/ingest-spec-sal-xliff-xlf04-core-batch-005.json
+    - reports/skills-rff6/skill-transcripts/sal-pipeline-heal-xliff-xlf04-core-batch-005.json
+    - .local/transcripts/xliff-xlf04-core-batch005.json
+  action: >-
+    Requery coordination. While the lease is live, preserve the working set and
+    continue only disjoint work such as the UBL stale-SAL closure repair. Do
+    not inherit the identity, freeze mutable bytes as evidence, or stage them
+    with the handover.
+
+committed_parallel_checkpoint:
+  observed_at: "2026-07-29T19:08:00Z"
+  status: COMMITTED_PARALLEL_CHECKPOINT_NON_CONTROLLER
   task: TC-FF6-UBL-TYPING-001
+  implementation_commit: 7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce
   paths:
     - reports/ff6/ubl-package-root-census.yaml
     - tests/tools/test_compile_ubl_schema_graph.py
     - tools/spec/compile_ubl_schema_graph.py
+  report_sha256: 787c8d9258dc25a8662ee934b9b0b14096de790db87826dab970792b9494976d
+  bounded_result: UBL_02_PACKAGE_AND_ROOT_CENSUS_VERIFIED
+  taskcard_projection: READY
+  native_event_recorded: false
+  first_unmet_work: FF6-UBL-SAL-PROSE-TARGET-STALE-001
   action: >-
-    Do not stage, mutate, take over, or treat these live foreign bytes as
-    controller progress. Requery coordination and GitLab; only a committed,
-    independently verified and journaled transition can change canonical FF6
-    state.
+    Treat the committed paths as read-only evidence until a new UBL mutation
+    task owns them. Do not treat UBL-02 as UBL-01 completion, a native taskcard
+    transition, product implementation, or promotion. If XLIFF remains
+    live-leased, the safe disjoint resume is the stale UBL prose-target SAL
+    repair, followed by a full proof replay and serialized plan-control state
+    update.
 
 resolved_history:
   batch_003:
