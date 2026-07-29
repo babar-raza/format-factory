@@ -22,20 +22,24 @@ fixtures are never sufficient evidence.
 
 ## Current evidence boundary
 
-Event 16 proves:
+Events 16 and 17 prove:
 
 - 15 of 15 locked authorities live-match;
 - strict six-format ProductContract compilation;
-- deterministic 89-capability/636-obligation planning projections;
+- deterministic 99-capability/738-obligation planning projections;
 - clean offline and clean online authority replay;
 - three identical strict generation runs;
-- affected pytest `250 passed, 1 known baseline test deselected`;
-- Ruff, mypy, and Pyright pass;
-- native FF6 event chain passes through event 16.
+- authority-closure affected pytest `250 passed, 1 known baseline test
+  deselected`;
+- OpenRaster affected pytest `166 passed, 1 known baseline test deselected`;
+- Ruff and mypy passed for both checkpoints; Pyright 1.1.411 passed for event
+  16 and was unavailable in the event-17 shell, so event 17 does not claim it;
+- OpenRaster exact SAL verification `20/20`;
+- native FF6 event chain passes through event 17.
 
 It does not prove:
 
-- implementation of any of the 636 obligations;
+- implementation of any of the 738 obligations;
 - production readiness of any library;
 - independent application interoperability;
 - installed-wheel platform/dependency matrices;
@@ -44,9 +48,9 @@ It does not prove:
 All obligations remain unverified and all promotion states remain
 `UNASSESSED`.
 
-## OpenRaster contract-task gate
+## Completed OpenRaster contract-task gate
 
-`TC-FF6-ORA-PROFILE-SURFACE-001` requires:
+`TC-FF6-ORA-PROFILE-SURFACE-001` passed at event 17 with:
 
 - source-located 0.0.3/0.0.4/0.0.5 profile deltas;
 - valid SAL authority edges;
@@ -61,6 +65,21 @@ All obligations remain unverified and all promotion states remain
 
 Because the specification is an early draft, later product certification is a
 named interoperability certification, not universal conformance.
+
+## Current IPYNB contract-task gate
+
+`TC-FF6-IPYNB-PROFILE-SURFACE-001` requires:
+
+- source-located nbformat 4.0–4.5 deltas;
+- exact fact/evidence edges and explicit uncertainty;
+- profile-homogeneous capabilities, splitting mixed-version rules;
+- every capability and obligation assigned a non-empty profile subset;
+- all six target profiles claimed;
+- no `FF6-IPYNB-PROFILE-001` finding;
+- retained no-execution exclusion;
+- three identical strict runs with 15/15 authorities still matching;
+- affected contract, SAL, capability, event and static gates;
+- no product source, product test, certification, gate, or promotion change.
 
 ## Required proof for each mandatory obligation
 

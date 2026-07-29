@@ -1,0 +1,163 @@
+schema: ff6/provider-neutral-machine-state@1
+mission_id: FF6-PRODUCTION-LIBRARIES-001
+generated_by: codex
+generated_at: "2026-07-29"
+visibility: internal
+authoritative_state: false
+
+canonical_inputs:
+  forge: GitLab
+  remote: origin
+  branch: main
+  source_commit: 17aece4e5301af958b21e4ffc9db878494f3b89c
+  source_commit_rule: >-
+    This commit must be an ancestor of the fetched origin/main commit that
+    contains this packet. The packet cannot embed its own final commit hash.
+  goal: plans/strategic/ff6/product-goal.yaml
+  plan: plans/strategic/autonomous-six-python-production-execution-plan.md
+  journal: plans/strategic/ff6/events.jsonl
+  controller: plans/strategic/ff6/controller-state.yaml
+  gaps: plans/strategic/ff6/current-gaps.yaml
+  capability_coverage: plans/strategic/ff6/capability-coverage.yaml
+  capability_manifest: plans/strategic/ff6/capability-manifest.json
+  task_index: taskcards/index.yaml
+
+state_precedence:
+  - fetched_origin_main_tracked_bytes
+  - valid_native_ff6_journal
+  - controller_projection
+  - current_taskcard_and_task_index
+  - current_gap_and_capability_projections
+  - digest_bound_contracts_and_proof
+  - derived_handover_packet
+  - conversation_or_provider_memory
+
+controller:
+  state: CONTRACT
+  sequence: 17
+  event_id: FF6-EVENT-000017
+  event_hash: 44cb90a67aec8fff244de05d84c047f1d31077d694eda1ff1e27ee0aaa0f3015
+  parent_task: TC-FF6-PROGRAM-CAPABILITIES-001
+  parent_state: NEEDS_REPAIR
+  completed_task: TC-FF6-ORA-PROFILE-SURFACE-001
+  completed_task_state: PASS
+  next_task: TC-FF6-IPYNB-PROFILE-SURFACE-001
+  next_task_state: READY
+  next_taskcard: taskcards/TC-FF6-IPYNB-PROFILE-SURFACE-001.md
+  promotion_effect: none
+
+capability_projection:
+  assessment_status: NEEDS_PROFILE_OR_SURFACE_REPAIR
+  aggregate_sha256: de6a38a86aa7a82cc50dc7dc6ebfa0066c811d8de782a37684fd26d20a89272a
+  three_run_digest: 2c998635a64f36c2b93c397ab0a5c834379ad5d74fd0544c6017a65337d907fc
+  total_capabilities: 99
+  total_obligations: 738
+  classifications:
+    stable_required: 90
+    optional_adapter_required: 4
+    preview_isolated: 4
+    excluded_with_authority: 1
+  formats:
+    ipynb:
+      capabilities: 20
+      obligations: 105
+      claimed_profiles: [nbformat_v4.5]
+      missing_profiles:
+        [nbformat_v4.0, nbformat_v4.1, nbformat_v4.2, nbformat_v4.3, nbformat_v4.4]
+      active_gap: FF6-IPYNB-PROFILE-001
+    ora:
+      capabilities: 20
+      obligations: 134
+      claimed_profiles:
+        [openraster_0.0.3, openraster_0.0.4, openraster_0.0.5]
+      missing_profiles: []
+      active_gap: null
+    nrrd:
+      capabilities: 15
+      obligations: 94
+      claimed_profiles: [nrrd0005]
+      missing_profiles: [nrrd0001, nrrd0002, nrrd0003, nrrd0004]
+      active_gap: FF6-NRRD-PROFILE-001
+    xliff:
+      capabilities: 15
+      obligations: 125
+      claimed_profiles: [xliff_2.1]
+      missing_profiles: [xliff_2.0]
+      active_gap: FF6-XLIFF-PROFILE-001
+    safetensors:
+      capabilities: 11
+      obligations: 86
+      claimed_profiles: [safetensors_v0.8.0]
+      missing_profiles: []
+      active_gap: null
+    ubl:
+      capabilities: 18
+      obligations: 194
+      claimed_profiles: [ubl_2.3]
+      missing_profiles: []
+      active_gap: FF6-UBL-TYPING-001
+
+authority_projection:
+  lock_sha256: 8eefb28e3ef24b5b533496b54860daee981853d9c872fddc1ba5de4ff150f249
+  records: 15
+  match: 15
+  missing: 0
+  mismatch: 0
+  undeclared: 0
+  legal_blocked: 0
+  clean_offline_replay: PASS
+  clean_online_replay: PASS
+
+product_projection:
+  certified: 0
+  promotion:
+    program: UNASSESSED
+    ipynb: UNASSESSED
+    ora: UNASSESSED
+    nrrd: UNASSESSED
+    xliff: UNASSESSED
+    safetensors: UNASSESSED
+    ubl: UNASSESSED
+  source_packages:
+    ipynb: present_uncertified
+    ora: absent
+    nrrd: present_uncertified
+    xliff: present_uncertified
+    safetensors: present_uncertified
+    ubl: present_uncertified
+  evidence_boundary: >-
+    Source and test inventory comes from the clean baseline assessment. Product
+    tree objects are unchanged at the source checkpoint, but contracts and
+    capability projections have advanced. No inventory count is conformance
+    evidence.
+
+active_gaps:
+  total: 11
+  critical: 1
+  high: 7
+  medium: 3
+  current_contract_repairs:
+    - FF6-IPYNB-PROFILE-001
+    - FF6-NRRD-PROFILE-001
+    - FF6-XLIFF-PROFILE-001
+    - FF6-UBL-TYPING-001
+  control_plane_gap: FF6-GAP-011
+
+known_non_promoting_evidence:
+  product_oracles: shallow_D0_partial_for_five_existing_formats
+  package_proofs: stale_complete_input_closure_for_five_existing_formats
+  corpora: adequacy_unproven
+  product_test_matrix: not_currently_certified
+  product_contracts: DRAFT
+
+resume_gate:
+  require_clean_or_fully_classified_worktree: true
+  require_source_commit_ancestor_of_origin_main: true
+  require_native_event_chain: true
+  require_controller_task_agreement: true
+  require_capability_aggregate_match: true
+  require_authority_matches: 15
+  require_coordination_claim: true
+  product_source_allowed_for_next_task: false
+  gate_or_promotion_change_allowed: false
+  ask_for_continuation: false

@@ -89,30 +89,40 @@ NRRD0001-0004, XLIFF 2.0, and UBL full-typing gaps remain.
 
 ## Exact resume procedure
 
-1. Read `AGENTS.md` and the provider adapter.
+1. Read `START-HERE.md`, `CURRENT-MACHINE-STATE.yaml`, `AGENTS.md`, and the
+   provider adapter in their declared order.
 2. Fetch GitLab `origin/main`; do not use GitHub or create a branch.
-3. Require a clean or fully classified shared worktree.
-4. Register a fresh coordination identity and inspect live leases/conflicts.
-5. Validate event 17 natively using `previous_event_hash` and canonical JSON
+3. Require `17aece4e5301af958b21e4ffc9db878494f3b89c` to be an ancestor of
+   fetched `origin/main`.
+4. Require a clean or fully classified shared worktree.
+5. Register a fresh coordination identity and inspect live leases/conflicts.
+6. Validate event 17 natively using `previous_event_hash` and canonical JSON
    with `event_hash` removed.
-6. Verify the controller names
+7. Verify the controller names
    `TC-FF6-IPYNB-PROFILE-SURFACE-001` as `READY`.
-7. Read that taskcard, the product goal, current gaps, capability policy, IPYNB
+8. Read that taskcard, the product goal, current gaps, capability policy, IPYNB
    contract/SAL/evidence/enrichment, and pinned authorities.
-8. Claim exact paths, resolve registered skills, and run the mutation guard
+9. Claim exact paths, resolve registered skills, and run the mutation guard
    before every write.
-9. Produce a source-located nbformat 4.0-4.5 delta matrix.
-10. Split capabilities where rules have different minor-version
+10. Execute the atomic steps IPY-01 through IPY-08 in
+    `STATE-MACHINE-AND-TASKCARD-PROTOCOL.md`.
+11. Produce a source-located nbformat 4.0-4.5 delta matrix.
+12. Split capabilities where rules have different minor-version
     applicability; never assign all rules to 4.5 merely because the newest
     schema contains them.
-11. Preserve typed notebook/cell/output/attachment/MIME/metadata behavior,
+13. Preserve typed notebook/cell/output/attachment/MIME/metadata behavior,
     schema validation/conversion, deterministic serialization, unknown
     metadata preservation, safe clearing/filtering/ID handling, and the
     absolute no-execution boundary.
-12. Recompile all six projections and require three identical runs plus 15/15
+14. Recompile all six projections and require three identical runs plus 15/15
     authority matches.
-13. Reconcile gaps/task/controller/event/handover, commit explicit owned paths,
+15. Reconcile gaps/task/controller/event/handover, commit explicit owned paths,
     and push only GitLab `origin/main`.
+
+If the provider shift ends before IPY-08, only stop after the current atomic
+step is integration-safe. Journal the completed steps and first unmet step as
+`WORK_IN_PROGRESS`, refresh this packet, commit, push, and verify the remote.
+Never leave a required result only in conversation or an uncommitted tree.
 
 ## Do not infer
 

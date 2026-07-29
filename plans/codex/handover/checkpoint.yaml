@@ -22,7 +22,7 @@ source_checkpoint:
   rule: >-
     Use the fetched origin/main descendant containing this packet. A packet
     cannot embed the hash of the commit that contains its own final bytes.
-  required_ancestor_before_this_change: 9437dcc47763c17ce090ce538d2ff7ba5350da0d
+  required_ancestor_before_this_change: 17aece4e5301af958b21e4ffc9db878494f3b89c
   required_remote_ref: refs/remotes/origin/main
   required_worktree_state_before_resume_mutation: clean
 
@@ -95,7 +95,8 @@ authority_checkpoint:
   authority_external_bytes_committed: false
 
 verification_checkpoint:
-  affected_pytest: 250_passed_1_baseline_known_deselected
+  authority_closure_pytest: 250_passed_1_baseline_known_deselected
+  openraster_profile_pytest: 166_passed_1_baseline_known_deselected
   known_deselected_test: >-
     tests/format_contract/test_consumption_chain.py::
     test_full_slice_second_run_is_idempotent
@@ -105,9 +106,11 @@ verification_checkpoint:
     bytes and are not FF6 closure evidence.
   ruff: PASS
   mypy: PASS
-  pyright:
+  authority_closure_pyright:
     version: 1.1.411
     result: PASS
+  openraster_profile_pyright:
+    result: UNAVAILABLE_CURRENT_SHELL
   plan_control_tests: 40_passed
   ff6_native_event_chain: PASS_THROUGH_EVENT_17
 
@@ -156,8 +159,9 @@ resume_decision:
   taskcard: taskcards/TC-FF6-IPYNB-PROFILE-SURFACE-001.md
   active_checkpoint: plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md
   exact_first_step: >-
-    Revalidate event 17 and the locked IPYNB authorities, then build the
-    source-located nbformat 4.0-4.5 profile delta matrix.
+    Execute IPY-01: revalidate event 17, task/controller agreement, the locked
+    IPYNB authorities, and coordination ownership; then build the source-
+    located nbformat 4.0-4.5 profile delta matrix in IPY-02.
   product_source_mutation_allowed: false
   gate_or_product_promotion_allowed: false
   human_continuation_prompt_allowed: false

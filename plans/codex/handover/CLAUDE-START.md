@@ -10,65 +10,86 @@ authoritative_state: false
 
 # Claude Resume Instruction
 
-Continue mission `FF6-PRODUCTION-LIBRARIES-001` autonomously from the
-repository’s verified GitLab `main` checkpoint. Do not use chat memory, an old
-branch, a stale worktree, or a local transcript as authority.
+MODE: EXECUTION MODE
 
-## Read before action
-
-1. `AGENTS.md`
-2. `docs/governance/claude-adapter.md` if present, otherwise the applicable
-   provider governance adapter
-3. `plans/codex/handover/START-HERE.md`
-4. `plans/strategic/ff6/product-goal.yaml`
-5. `plans/strategic/autonomous-six-python-production-execution-plan.md`
-6. `plans/strategic/ff6/controller-state.yaml`
-7. all 17 records in `plans/strategic/ff6/events.jsonl`
-8. `plans/strategic/ff6/current-gaps.yaml`
-9. `taskcards/TC-FF6-PROGRAM-CAPABILITIES-001.md`
-10. `taskcards/TC-FF6-IPYNB-PROFILE-SURFACE-001.md`
-11. `plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md`
-12. `.supervisor/knowledge/registry.yaml` and every verified-current contract
-    applicable before any later product-source mutation
+Continue `FF6-PRODUCTION-LIBRARIES-001` autonomously from the verified GitLab
+`main` checkpoint. Do not use chat memory, an old branch, a stale worktree, or
+provider-local artifacts as authority.
 
 ## Required reconstruction
 
-Fetch `origin/main` and require that the checkout contains:
-
-- controller state `CONTRACT`;
-- event `FF6-EVENT-000017` with hash
-  `44cb90a67aec8fff244de05d84c047f1d31077d694eda1ff1e27ee0aaa0f3015`;
-- parent `TC-FF6-PROGRAM-CAPABILITIES-001` in `NEEDS_REPAIR`;
-- completed `TC-FF6-ORA-PROFILE-SURFACE-001` in `PASS`;
-- exact next task `TC-FF6-IPYNB-PROFILE-SURFACE-001` in `READY`;
-- 15/15 authority artifacts `MATCH`;
-- capability aggregate
-  `de6a38a86aa7a82cc50dc7dc6ebfa0066c811d8de782a37684fd26d20a89272a`.
-
-Validate the FF6 journal using its native
-`previous_event_hash`/`ff6/controller-event@1` contract. The generic
-`tools.plan_control doctor` uses a different `previous_hash` schema and is
-already tracked as incompatible under `FF6-GAP-011`; its failure is not
-permission to alter either journal.
+1. Read `AGENTS.md`, `docs/governance/skill-only-policy.yaml`,
+   `plans/codex/handover/START-HERE.md`, and every file in its ordered reading
+   list. No separate Claude adapter is tracked; Claude must use its ambient
+   hooks plus the shared `AGENTS.md` contract.
+2. Fetch GitLab `origin/main`. Do not create or use another branch and do not
+   use GitHub for this mission.
+3. Validate `CURRENT-MACHINE-STATE.yaml` against live tracked state rather than
+   trusting its labels.
+4. Require:
+   - controller `CONTRACT`, sequence 17;
+   - event `FF6-EVENT-000017`, hash
+     `44cb90a67aec8fff244de05d84c047f1d31077d694eda1ff1e27ee0aaa0f3015`;
+   - parent `TC-FF6-PROGRAM-CAPABILITIES-001` in `NEEDS_REPAIR`;
+   - `TC-FF6-ORA-PROFILE-SURFACE-001` in `PASS`;
+   - `TC-FF6-IPYNB-PROFILE-SURFACE-001` in `READY`;
+   - 99 capabilities, 738 obligations, and aggregate
+     `de6a38a86aa7a82cc50dc7dc6ebfa0066c811d8de782a37684fd26d20a89272a`;
+   - 15/15 authority artifacts `MATCH`;
+   - zero product certifications and no promotion.
+5. Validate the native FF6 chain with `previous_event_hash`. The generic Plan
+   Control journal schema is different and must not be used to rewrite FF6.
+6. Query coordination, register this Claude session, inspect conflicts and
+   leases, and claim exact task paths before writing. Preserve all unrelated
+   state.
 
 ## Execute exactly this task
 
-Execute `TC-FF6-IPYNB-PROFILE-SURFACE-001`. Compile exact nbformat 4.0-4.5
-capability and obligation applicability from the pinned official schemas and
-documentation through the registered SAL, contract, capability-compiler,
-taskcard, and controller skills.
+Execute `taskcards/TC-FF6-IPYNB-PROFILE-SURFACE-001.md` through its registered
+SAL, contract, capability-compiler, taskcard, and controller skills.
 
-Do not:
+Required result:
 
-- recreate the authority lock or materializer;
-- modify product source or product tests during this task;
-- suppress `FF6-IPYNB-PROFILE-001` in policy;
-- weaken the notebook no-execution boundary;
-- close the parent while another mandatory profile/surface gap remains;
-- create a branch or use GitHub;
-- ask for continuation.
+- source-located nbformat 4.0, 4.1, 4.2, 4.3, 4.4, and 4.5 delta matrix;
+- exact profile applicability on every IPYNB capability and obligation;
+- capability splits wherever one current capability mixes version scopes;
+- stable ownership of every `SAL-IPYNB-OBL-*` rule;
+- preserved typed notebook/cell/output/attachment/MIME/metadata, validation,
+  conversion, deterministic serialization, safe cleanup/filtering/ID handling,
+  unknown metadata preservation, and structural inspection requirements;
+- explicit absolute no-execution boundary;
+- `FF6-IPYNB-PROFILE-001` removed only by compiled evidence;
+- all six projections regenerated three byte-identical times;
+- 15/15 authorities still match;
+- task, gap, controller, event, and handover projections reconciled;
+- no product, package, gate, certification, or promotion mutation.
 
-Use the coordination protocol on the shared `main` worktree, preserve all
-unexplained changes, preflight every write, append close intent before final
-projections, independently verify the close event, refresh this packet, commit
-only explicit owned paths, and push only to GitLab `origin/main`.
+## Execution discipline
+
+- Work one atomic, independently verifiable substep at a time.
+- Before each write: resolve skill, ensure execution manifest, own the lease,
+  run preflight and mutation guard.
+- After each write: record it in coordination.
+- Never stage broadly; use an explicit reviewed path list.
+- If the task completes, append close intent, independently verify, append the
+  verified event, and select the next mandatory gap.
+- If the shift must end first, reach an integration-safe substep boundary,
+  record `WORK_IN_PROGRESS` and the first unmet criterion, refresh the packet,
+  commit and push GitLab main, and remote-verify.
+- Never ask for continuation. Continue safe unblocked work until a clean shift
+  checkpoint is required.
+
+## Forbidden
+
+- product source or product tests during the current task;
+- authority-lock recreation;
+- status/policy edits that suppress failed evidence;
+- execution of notebook code;
+- self-certification or gate approval;
+- stash, reset, restore, clean, checkout-discard, broad add, or another
+  provider's lease release;
+- publication authority bypass.
+
+The final response must state the pushed GitLab commit, journal head, exact
+task state, verification results, remaining gaps, and the absolute
+`START-HERE.md` path. Repository state, not the response, is the handover.

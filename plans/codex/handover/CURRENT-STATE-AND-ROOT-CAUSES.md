@@ -14,11 +14,12 @@ authoritative_state: false
 
 The FF6 mission has a durable goal, deterministic contract compiler, locked
 authority dependency plane, hash-chained controller, current gap projection,
-and a provider-neutral resume protocol. Authority closure passed at event 16.
+and a provider-neutral resume protocol. Authority closure passed at event 16
+and the OpenRaster profile/surface contract repair passed at event 17.
 
 It does not yet have a production-ready library. Five formats have existing
 implementation footholds of uneven depth. OpenRaster has no product package.
-All 636 compiled obligations are planning requirements, not verified behavior.
+All 738 compiled obligations are planning requirements, not verified behavior.
 All six promotion states are `UNASSESSED`.
 
 ## Product depth actually present
@@ -26,7 +27,7 @@ All six promotion states are `UNASSESSED`.
 | Format | Existing foothold | Material depth still missing |
 |---|---|---|
 | IPYNB | Typed notebook/cell/output models, codec, validation, conversion, cleanup, trust inspection and editing | Full profile applicability repair, independent oracle depth, installed-wheel and matrix proof, architecture cleanup, complete obligation execution |
-| OpenRaster | Locked authorities, SAL/contract planning inputs only | Entire product package, full format-specific contract surface, corpus, application interoperability, rendering, security, package and certification proof |
+| OpenRaster | Three locked authorities, 20 exact SAL facts, dedicated layered-raster family, 20 capabilities and 134 profile-scoped obligations | Entire product package, corpus, application interoperability, rendering implementation, security implementation, package and certification proof |
 | NRRD | Header/payload codec, attached/detached entry points, encodings, preservation and limits | Complete profile applicability, stronger typed spatial model, streaming/mmap proof, Teem and pynrrd differential depth, package/certification proof |
 | XLIFF | Core model, inline editing, segmentation/state helpers and preservation | Full 2.0/2.1 core and every 2.1 module, processing requirements, schemas/oracles, package/certification proof |
 | SafeTensors | Typed descriptors, strict layout checks, mmap/region access, writer and adapters | Full dtype/edge/sharded coverage, upstream differential corpus, co-installation and multi-platform package proof |
@@ -34,35 +35,44 @@ All six promotion states are `UNASSESSED`.
 
 These statements describe observed code breadth, not certification.
 
-## What event 16 added
+## What events 16 and 17 added
 
-- One canonical 15-source authority lock.
-- Legal, locator, digest, cache, and materialization policy in one dependency.
-- Content-addressed online acquisition and offline replay.
-- Strict ProductContract authority verification.
-- Full authority input closure in the capability manifest.
-- Explicit nonpromotion for diagnostic overrides.
-- Six regenerated contracts and projections.
-- Independent clean online and offline replay evidence.
-- Static and affected regression evidence.
+- Event 16: one canonical 15-source authority lock; legal, locator, digest,
+  cache, and materialization policy; content-addressed online/offline replay;
+  strict ProductContract authority verification; complete authority
+  invalidation closure; six regenerated contracts; and nonpromotion for
+  diagnostic overrides.
+- Event 17: current OpenRaster RST authority assertions, explicit draft
+  uncertainty, the `layered_raster_archive` capability family, 20
+  format-specific capabilities, 134 obligations, and exact 0.0.3/0.0.4/0.0.5
+  applicability. Isolation is correctly limited to 0.0.4/0.0.5 and masks are
+  treated as a product extension rather than a draft baseline claim.
 
 This removes a major rerun-consistency failure: `ACQUIRED` can no longer
 survive as promoting evidence when the locked bytes are absent or changed.
+It also removes the earlier generic-archive blind spot for OpenRaster. Neither
+event implements product behavior.
 
 ## Current compiled denominator
 
-The planning inventory contains 89 capabilities and 636 obligations:
+The planning inventory contains 99 capabilities and 738 obligations:
 
 - IPYNB: 105
-- OpenRaster: 32
+- OpenRaster: 134
 - NRRD: 94
 - XLIFF: 125
 - SafeTensors: 86
 - UBL: 194
 
 Assessment remains `NEEDS_PROFILE_OR_SURFACE_REPAIR`. The compiler currently
-reports profile/surface follow-ups for IPYNB, OpenRaster, NRRD, XLIFF, and UBL.
+reports profile/surface follow-ups for IPYNB, NRRD, XLIFF, and UBL.
 Counts cannot hide a mandatory missing profile or format surface.
+
+The assessment file `current-state.yaml` predates event 17. Its product source
+tree inventory is still useful because the five tracked product trees have not
+changed at the source checkpoint, but its old contract hashes and 89/636
+planning denominator are historical. This distinction is now machine-recorded
+in `CURRENT-MACHINE-STATE.yaml`.
 
 ## Symptoms
 
@@ -151,14 +161,16 @@ plus controller, journal, taskcard, proof digests, and coordination ownership.
 
 ## Immediate repair order
 
-1. OpenRaster profile and format-specific surface (`FF6-GAP-013`).
-2. Remaining format profile/surface compiler findings by severity.
-3. Production package chassis and architecture only after contract readiness.
-4. SafeTensors and IPYNB implementation/certification waves.
-5. NRRD and OpenRaster implementation/certification waves.
-6. XLIFF full vocabulary and processing semantics.
-7. UBL generator and all-root typed certification.
-8. Repository extraction, reproducible packaging, SBOM, provenance, and
+1. IPYNB 4.0–4.5 exact profile applicability.
+2. NRRD0001–NRRD0005 exact profile applicability.
+3. XLIFF 2.0/2.1 applicability and isolated 2.2 preview semantics.
+4. UBL all-root/common-component typing contract.
+5. Production package chassis and architecture only after contract readiness.
+6. SafeTensors and IPYNB implementation/certification waves.
+7. NRRD and OpenRaster implementation/certification waves.
+8. XLIFF full vocabulary and processing semantics.
+9. UBL generator and all-root typed certification.
+10. Repository extraction, reproducible packaging, SBOM, provenance, and
    release preparation.
 
 The controller, not this prose ordering alone, selects each exact task.
@@ -184,9 +196,10 @@ The controller, not this prose ordering alone, selects each exact task.
 
 ## Confidence boundary
 
-Confidence is high in the authority closure and deterministic contract
-artifacts because clean replay and digest-bound tests exist. Confidence is
-moderate in the observed implementation footholds because no current
-production certification binds the full package and environment closure.
-Confidence is low that the current obligation inventory is final until all
-reported profile/surface repairs pass. No stronger claim is justified.
+Confidence is high in the authority closure, OpenRaster contract repair, and
+deterministic projections because clean replay and digest-bound tests exist.
+Confidence is moderate in the observed implementation footholds because the
+product source trees are unchanged from the baseline snapshot but no current
+production certification binds their complete package/environment closure.
+Confidence is low that the 738-obligation denominator is final until IPYNB,
+NRRD, XLIFF, and UBL repairs pass. No stronger claim is justified.

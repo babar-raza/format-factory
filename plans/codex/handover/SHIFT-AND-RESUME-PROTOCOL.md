@@ -27,20 +27,21 @@ budget are not operational authority.
 
 ## Current transfer boundary
 
-- Required ancestor before this packet: `9437dcc47763c17ce090ce538d2ff7ba5350da0d`.
+- Required source ancestor before this packet:
+  `17aece4e5301af958b21e4ffc9db878494f3b89c`.
 - Use the fetched `origin/main` descendant containing this packet.
 - Controller state: `CONTRACT`.
 - Event: `FF6-EVENT-000017`.
 - Event hash:
   `44cb90a67aec8fff244de05d84c047f1d31077d694eda1ff1e27ee0aaa0f3015`.
-- Completed task: `TC-FF6-AUTHORITY-CLOSURE-001` - `PASS`.
+- Completed task: `TC-FF6-ORA-PROFILE-SURFACE-001` - `PASS`.
 - Next task: `TC-FF6-IPYNB-PROFILE-SURFACE-001` - `READY`.
 - Product promotion: none.
 
 ## Incoming provider procedure
 
 1. Fetch `origin/main`; do not use GitHub or a provider branch.
-2. Verify `9437dcc47763c17ce090ce538d2ff7ba5350da0d` is an ancestor.
+2. Verify `17aece4e5301af958b21e4ffc9db878494f3b89c` is an ancestor.
 3. Verify the worktree is clean before new mutation.
 4. Read the ordered authority list in `START-HERE.md`.
 5. Validate the journal through event 17 using FF6 native semantics:
@@ -54,7 +55,7 @@ budget are not operational authority.
     directories, transcript, and artifact directory.
 11. Resolve the required registered skills and run the mutation guard.
 12. Capture input baselines before writing.
-13. Begin the first OpenRaster taskcard step.
+13. Begin IPY-01 in `STATE-MACHINE-AND-TASKCARD-PROTOCOL.md`.
 
 Claude's hooks may auto-claim single files, but broad generated output sets
 still require explicit claims. Codex follows the CLI protocol in
@@ -77,6 +78,13 @@ still require explicit claims. Codex follows the CLI protocol in
 13. Complete only its own coordination session.
 
 Never transfer an uncommitted chat-only state as a clean checkpoint.
+
+If the whole taskcard cannot finish in the current shift, the outgoing
+provider must stop after an atomic substep that leaves all touched artifacts
+valid and the declared regression tier passing. It then records
+`WORK_IN_PROGRESS`, completed step IDs, the first unmet step, input/output
+digests, and exact validation outcomes. Broken or self-contradictory source is
+not a checkpoint and must not be pushed to satisfy a token boundary.
 
 ## During a shift
 
@@ -124,6 +132,47 @@ are not canonical when checkout settings transform line endings.
 
 Canonical event hashing uses UTF-8 JSON with sorted keys and compact separators,
 excluding `event_hash`.
+
+## Native FF6 journal check
+
+Use this check from the repository root. It validates the complete chain and
+requires controller agreement; it does not modify files.
+
+```powershell
+@'
+import hashlib
+import json
+import pathlib
+import yaml
+
+events_path = pathlib.Path("plans/strategic/ff6/events.jsonl")
+controller_path = pathlib.Path("plans/strategic/ff6/controller-state.yaml")
+events = [
+    json.loads(line)
+    for line in events_path.read_text(encoding="utf-8").splitlines()
+    if line.strip()
+]
+previous = None
+for sequence, event in enumerate(events, 1):
+    assert event["schema"] == "ff6/controller-event@1"
+    assert event["sequence"] == sequence
+    assert event["event_id"] == f"FF6-EVENT-{sequence:06d}"
+    assert event.get("previous_event_hash") == previous
+    claimed = event["event_hash"]
+    body = dict(event)
+    del body["event_hash"]
+    observed = hashlib.sha256(
+        json.dumps(body, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    ).hexdigest()
+    assert observed == claimed, event["event_id"]
+    previous = claimed
+
+controller = yaml.safe_load(controller_path.read_text(encoding="utf-8"))
+assert controller["transition_sequence"] == len(events)
+assert controller["last_verified_event"]["event_hash"] == previous
+print(f"PASS events={len(events)} head={previous}")
+'@ | python -
+```
 
 ## Generic Plan Control contradiction
 
