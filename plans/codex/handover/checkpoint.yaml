@@ -1,0 +1,89 @@
+schema: ff6/agent-handover-checkpoint@1
+handover_id: FF6-HANDOVER-CLAUDE-001
+generated_by: codex
+generated_at: "2026-07-29"
+visibility: internal
+authoritative_state: false
+canonical_authorities:
+  goal: plans/strategic/ff6/product-goal.yaml
+  controller: plans/strategic/ff6/controller-state.yaml
+  journal: plans/strategic/ff6/events.jsonl
+  snapshot: plans/strategic/ff6/current-state.yaml
+  execution_plan: plans/strategic/autonomous-six-python-production-execution-plan.md
+  task_index: taskcards/index.yaml
+forge:
+  canonical: GitLab
+  remote: origin
+  branch: main
+  github_allowed_for_mission: false
+source_checkpoint:
+  commit: a585a9e67c6f5ee55922c6cf356f600de3b4c751
+  tree_oid: aaa4e437607d1078cad01b13d37be681142565f8
+  commit_time: "2026-07-28T20:30:10+05:00"
+  worktree_state: clean
+digest_policy:
+  algorithm: sha256
+  text_canonicalization: CRLF_TO_LF
+  note: >-
+    Recorded FF6 sha256 values were computed over LF-normalized bytes. Raw
+    Windows checkout bytes may differ under core.autocrlf and are not a valid
+    invalidation signal until normalized.
+controller_checkpoint:
+  state: SNAPSHOT
+  transition_sequence: 4
+  last_event_id: FF6-EVENT-000004
+  last_event_hash: 90c4687d41a95842a65913c4a57765a008108325642322e3ec7942d213b6d22c
+  completed_task: TC-FF6-PROGRAM-TRUTH-001
+  next_task: TC-FF6-PROGRAM-CAPABILITIES-001
+  next_task_state: READY
+  products_certified: 0
+promotion:
+  program: UNASSESSED
+  ipynb: UNASSESSED
+  ora: UNASSESSED
+  nrrd: UNASSESSED
+  xliff: UNASSESSED
+  safetensors: UNASSESSED
+  ubl: UNASSESSED
+product_baseline:
+  source_packages_present: 5
+  source_packages_absent: 1
+  draft_contracts: 6
+  shallow_d0_oracles: 5
+  stale_install_proof_input_closures: 5
+  architecture_failure_products: 3
+  clean_base_interpreter_collection_errors: 39
+coordination_snapshot:
+  mode: enforcing
+  fresh_active_agents: 0
+  stale_suspect_agent_records: 100
+  active_leases_before_handover_task: 0
+  open_historical_conflicts: 15
+  ff6_obsolete_worktree_conflicts:
+    - conf-83372e1330
+    - conf-c4c08328ba
+    - conf-e2cb246b4b
+    - conf-0caa3d57f4
+  policy: preserve_do_not_auto_resolve
+control_plane_contradictions:
+  - id: FF6-HO-GAP-001
+    severity: high
+    symptom: tools.plan_control reconcile raises because a deleted Codex branch is configured.
+    root_cause: migration checkpoint identity is branch-bound after consolidation into main.
+    safe_current_rule: use the FF6 controller and journal for mission task selection.
+  - id: FF6-HO-GAP-002
+    severity: high
+    symptom: tools.plan_control next selects legacy TC-FF6-NRRD-ORA-001.
+    root_cause: the global projection does not consume the FF6 controller or program task register.
+    safe_current_rule: execute TC-FF6-PROGRAM-CAPABILITIES-001 first.
+  - id: FF6-HO-GAP-003
+    severity: medium
+    symptom: raw Windows SHA-256 differs from recorded controller digests.
+    root_cause: recorded digests canonicalize LF but fields do not declare canonicalization.
+    safe_current_rule: normalize CRLF to LF before digest comparison.
+resume_decision:
+  exact_task: TC-FF6-PROGRAM-CAPABILITIES-001
+  source_mutation_allowed: false
+  gate_or_product_promotion_allowed: false
+  human_continuation_prompt_allowed: false
+  blocked_format_stops_other_formats: false

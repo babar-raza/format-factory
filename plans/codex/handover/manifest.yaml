@@ -1,0 +1,57 @@
+schema: ff6/agent-handover-manifest@1
+handover_id: FF6-HANDOVER-CLAUDE-001
+generated_by: codex
+generated_at: "2026-07-29"
+visibility: internal
+authoritative_state: false
+source_checkpoint:
+  commit: a585a9e67c6f5ee55922c6cf356f600de3b4c751
+  tree_oid: aaa4e437607d1078cad01b13d37be681142565f8
+digest_policy:
+  algorithm: sha256
+  canonicalization: CRLF_TO_LF
+  scope: handover packet and taskcard files listed below
+files:
+  - path: plans/codex/handover/START-HERE.md
+    role: single entry point
+    sha256: 32d530f29c73b09dcfa4a6c9f1628b0662bcc471e42d4cb273d647c69181d02a
+  - path: plans/codex/handover/checkpoint.yaml
+    role: machine-readable checkpoint
+    sha256: 764a4670b8217e13ef066938da1d6f04f784e37a25369454fbc8b6bb45884ab1
+  - path: plans/codex/handover/CURRENT-STATE-AND-ROOT-CAUSES.md
+    role: truthful product and machinery assessment
+    sha256: aa663a9d1b3867ad04fd532dc1bf724948150f5f516c6df0d3b700cec1852eb7
+  - path: plans/codex/handover/SHIFT-AND-RESUME-PROTOCOL.md
+    role: provider-neutral checkpoint protocol
+    sha256: c50573da7a883ce98d29fe0a2055c3463401c7cb29059a002000526c9fb8b3ad
+  - path: plans/codex/handover/EXECUTION-RUNBOOK.md
+    role: state machine and exact task DAG
+    sha256: e84554f1512e2e4c34c29a7717e7a01c171c943ea6a47da8e31d95cf21e22e6a
+  - path: plans/codex/handover/VALIDATION-AND-RELEASE.md
+    role: proof, regression, and release contract
+    sha256: 7bb90e618a53bf980301611a22d39205792073f9d8363c8e2f7fffa3d352e8a4
+  - path: plans/codex/handover/CLAUDE-START.md
+    role: ready-to-run Claude instruction
+    sha256: aca9b495062a149230c1a4fd5f2944404c1bfce8439fb9a6344198dd9aa57d44
+  - path: taskcards/TC-FF6-PROGRAM-CAPABILITIES-001.md
+    role: exact next executable task
+    sha256: c59d09a7649189434ecc3ab476159df9b9cc82c35b7a8cd7ad874ff756091555
+  - path: taskcards/TC-FF6-HANDOVER-CLAUDE-001.md
+    role: handover construction task
+    sha256: 2d00efc822cdbe3530baab7477c5837f8a7e9cf853323ebdf23a43bba1b399e9
+canonical_reference_digests:
+  product_goal_lf_sha256: a7683f75ef62c72e88e3c0e4ff14df240fa0f9b80be9b0cf4cdacc96c62811c8
+  current_state_lf_sha256: 09fe7783d0fd40cdb1803f3ead2582e3ed9cf8782f23d740904ce7dd39e0ebbf
+  pre_handover_controller_lf_sha256: 57d06c74f5e812a50b86dbdf4620484d768c2053a4ac91db9e5fe3933572cae0
+  pre_handover_events_lf_sha256: a0c19a08a05ffcb56b0942a22373440de204190c688aecd0d0f8652d5dcc2e34
+validation:
+  internal_links: PASS
+  yaml_parse: PASS
+  manifest_hashes: PASS
+  ff6_event_chain: PASS_INTENT_EVENT_5
+  task_index: PASS
+  skill_routes: PASS
+  plan_control_tests: "PASS_40"
+  current_state_consistency: PASS
+  methodology_links: PASS
+  gitlab_main_integration: PENDING_FIRST_COMMIT
