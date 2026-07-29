@@ -209,6 +209,36 @@ _COMMON_CORE_REQUIREMENTS = (
     ),
 )
 
+_XLIFF_CORE_CATEGORIES = frozenset(
+    {
+        "document_structure",
+        "hierarchy_cardinality",
+        "identifiers_references_inheritance",
+        "language_direction_whitespace",
+        "inline_code_semantics",
+        "segmentation",
+        "state",
+        "source_target_correspondence",
+        "agent_processing",
+        "extension_preservation",
+        "xml_security_resource_limits",
+        "semantic_roundtrip_canonical_output",
+    }
+)
+_CORE_REQUIREMENT_CLASSES = frozenset(
+    {
+        "CARDINALITY_CONSTRAINT",
+        "PRESERVATION_REQUIREMENT",
+        "PROCESSING_REQUIREMENT",
+        "SEMANTIC_CONSTRAINT",
+        "STRUCTURAL_CONSTRAINT",
+    }
+)
+_CORE_NORMATIVE_LEVELS = frozenset({"MUST", "SHOULD", "MAY"})
+_CORE_OBLIGATION_ID = re.compile(
+    r"^SAL-XLIFF-CORE-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$"
+)
+
 
 def _sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
@@ -822,6 +852,514 @@ def _requirement_matrix(
     return sorted(rows, key=lambda item: item["matrix_id"])
 
 
+def _prose_paragraph_index(
+    data: bytes,
+    *,
+    location: str,
+) -> dict[str, list[str]]:
+    """Index normalized paragraph text under each source section identifier."""
+
+    root = _parse_xml(
+        data,
+        location=location,
+        allow_doctype=True,
+        allow_internal_entities=True,
+    )
+    by_section: dict[str, list[str]] = {}
+    for element in root.iter():
+        if element.tag.rsplit("}", 1)[-1] not in {"section", "appendix"}:
+            continue
+        section_id = element.attrib.get("id") or element.attrib.get(_XML_ID)
+        if not section_id:
+            continue
+        if section_id in by_section:
+            raise ExtractionError(f"{location} has duplicate section id {section_id}")
+        paragraphs = [
+            _normalized_text("".join(descendant.itertext()))
+            for descendant in element.iter()
+            if descendant.tag.rsplit("}", 1)[-1] in {"para", "simpara"}
+        ]
+        by_section[section_id] = [text for text in paragraphs if text]
+    return by_section
+
+
+def _core_obligation_rows(
+    seeds: Iterable[Mapping[str, Any]],
+    sources: Mapping[str, ProfileSource],
+    archives: Mapping[str, Mapping[str, bytes]],
+) -> list[dict[str, Any]]:
+    """Validate and bind curated Core rules to exact authority paragraphs."""
+
+    paragraph_indexes = {
+        profile: _prose_paragraph_index(
+            archives[profile][source.prose_member],
+            location=f"{source.source_id}:{source.prose_member}",
+        )
+        for profile, source in sources.items()
+    }
+    required = {
+        "obligation_id",
+        "stable_profiles",
+        "owner",
+        "category",
+        "normalized_rule",
+        "requirement_class",
+        "normative_level",
+        "authority_locations",
+        "evidence_requirements",
+        "interpretation_note",
+    }
+    rows: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    stable_profile_set = set(sources)
+    for raw in seeds:
+        missing = sorted(required - set(raw))
+        if missing:
+            raise ExtractionError(f"Core obligation seed missing fields: {missing}")
+        unsupported = sorted(set(raw) - required)
+        if unsupported:
+            raise ExtractionError(
+                "unsupported Core obligation seed fields: "
+                f"{unsupported}"
+            )
+
+        obligation_id = str(raw["obligation_id"])
+        if not _CORE_OBLIGATION_ID.fullmatch(obligation_id):
+            raise ExtractionError(
+                f"invalid Core obligation_id: {obligation_id}"
+            )
+        if obligation_id in seen:
+            raise ExtractionError(f"duplicate Core obligation_id: {obligation_id}")
+        seen.add(obligation_id)
+
+        stable_profiles = sorted(set(map(str, raw["stable_profiles"])))
+        if (
+            not stable_profiles
+            or len(stable_profiles) != len(raw["stable_profiles"])
+            or not set(stable_profiles) <= stable_profile_set
+        ):
+            raise ExtractionError(
+                f"{obligation_id} has invalid stable_profiles"
+            )
+
+        owner = str(raw["owner"])
+        if not owner.startswith("core:") or len(owner) <= len("core:"):
+            raise ExtractionError(f"{obligation_id} has invalid Core owner")
+        category = str(raw["category"])
+        if category not in _XLIFF_CORE_CATEGORIES:
+            raise ExtractionError(f"{obligation_id} has unknown Core category")
+        requirement_class = str(raw["requirement_class"])
+        if requirement_class not in _CORE_REQUIREMENT_CLASSES:
+            raise ExtractionError(
+                f"{obligation_id} has unknown requirement_class"
+            )
+        normative_level = str(raw["normative_level"])
+        if normative_level not in _CORE_NORMATIVE_LEVELS:
+            raise ExtractionError(f"{obligation_id} has invalid normative_level")
+
+        normalized_rule = _normalized_text(str(raw["normalized_rule"]))
+        if len(normalized_rule) < 25:
+            raise ExtractionError(f"{obligation_id} rule is too short")
+        interpretation_note = _normalized_text(
+            str(raw["interpretation_note"])
+        )
+        if len(interpretation_note) < 15:
+            raise ExtractionError(
+                f"{obligation_id} interpretation_note is too short"
+            )
+
+        evidence = raw["evidence_requirements"]
+        if not isinstance(evidence, Mapping):
+            raise ExtractionError(
+                f"{obligation_id} evidence_requirements must be a mapping"
+            )
+        positive = [
+            _normalized_text(str(value))
+            for value in evidence.get("positive", [])
+            if _normalized_text(str(value))
+        ]
+        rejection = [
+            _normalized_text(str(value))
+            for value in evidence.get("rejection", [])
+            if _normalized_text(str(value))
+        ]
+        if not positive or not rejection:
+            raise ExtractionError(
+                f"{obligation_id} requires positive and rejection evidence"
+            )
+
+        locations = raw["authority_locations"]
+        if not isinstance(locations, Sequence) or isinstance(
+            locations, (str, bytes)
+        ):
+            raise ExtractionError(
+                f"{obligation_id} authority_locations must be a sequence"
+            )
+        bound_locations: list[dict[str, Any]] = []
+        location_profiles: list[str] = []
+        for raw_location in locations:
+            if not isinstance(raw_location, Mapping):
+                raise ExtractionError(
+                    f"{obligation_id} authority location must be a mapping"
+                )
+            profile = str(raw_location.get("profile", ""))
+            if profile not in sources:
+                raise ExtractionError(
+                    f"{obligation_id} has unknown authority profile {profile}"
+                )
+            if raw_location.get("location_kind") != "prose_paragraph":
+                raise ExtractionError(
+                    f"{obligation_id} has unsupported authority location kind"
+                )
+            source = sources[profile]
+            member = str(raw_location.get("member", ""))
+            if member != source.prose_member or member not in archives[profile]:
+                raise ExtractionError(
+                    f"{obligation_id} has invalid prose member for {profile}"
+                )
+            section_id = str(raw_location.get("section_id", ""))
+            paragraphs = paragraph_indexes[profile].get(section_id)
+            if paragraphs is None:
+                raise ExtractionError(
+                    f"{obligation_id} has missing section {section_id} "
+                    f"in {profile}"
+                )
+            source_anchor = _normalized_text(
+                str(raw_location.get("source_anchor", ""))
+            )
+            if len(source_anchor) < 10:
+                raise ExtractionError(
+                    f"{obligation_id} source anchor is too short"
+                )
+            paragraph_index = raw_location.get("paragraph_index")
+            if paragraph_index is None:
+                matches = [
+                    index
+                    for index, paragraph in enumerate(paragraphs)
+                    if source_anchor in paragraph
+                ]
+                if len(matches) != 1:
+                    raise ExtractionError(
+                        f"{obligation_id} source anchor must resolve exactly "
+                        f"once in {profile}:{section_id}; matches={len(matches)}"
+                    )
+                paragraph_index = matches[0]
+            if (
+                not isinstance(paragraph_index, int)
+                or isinstance(paragraph_index, bool)
+                or paragraph_index < 0
+                or paragraph_index >= len(paragraphs)
+            ):
+                raise ExtractionError(
+                    f"{obligation_id} has invalid paragraph_index "
+                    f"for {profile}:{section_id}"
+                )
+            source_text = paragraphs[paragraph_index]
+            if source_anchor not in source_text:
+                raise ExtractionError(
+                    f"{obligation_id} source anchor is absent from "
+                    f"{profile}:{section_id}:{paragraph_index}"
+                )
+            member_bytes = archives[profile][member]
+            bound_locations.append(
+                {
+                    "profile": profile,
+                    "authority_source_id": source.source_id,
+                    "source_sha256": source.expected_sha256,
+                    "location_kind": "prose_paragraph",
+                    "member": member,
+                    "member_sha256": _sha256(member_bytes),
+                    "section_id": section_id,
+                    "paragraph_index": paragraph_index,
+                    "source_anchor": source_anchor,
+                    "source_text_sha256": _sha256(source_text.encode("utf-8")),
+                }
+            )
+            location_profiles.append(profile)
+        if (
+            len(set(location_profiles)) != len(location_profiles)
+            or sorted(location_profiles) != stable_profiles
+        ):
+            raise ExtractionError(
+                f"{obligation_id} authority profiles must exactly match "
+                "stable_profiles"
+            )
+
+        rows.append(
+            {
+                "obligation_id": obligation_id,
+                "stable_profiles": stable_profiles,
+                "owner": owner,
+                "category": category,
+                "normalized_rule": normalized_rule,
+                "requirement_class": requirement_class,
+                "normative_level": normative_level,
+                "authority_locations": sorted(
+                    bound_locations, key=lambda item: item["profile"]
+                ),
+                "evidence_requirements": {
+                    "positive": positive,
+                    "rejection": rejection,
+                },
+                "interpretation_note": interpretation_note,
+                "verification_status": "SOURCE_BOUND_UNVERIFIED",
+            }
+        )
+    return sorted(rows, key=lambda item: item["obligation_id"])
+
+
+def compile_xliff_core_obligations(
+    profile_sources: Sequence[ProfileSource],
+    *,
+    obligation_seeds: Iterable[Mapping[str, Any]],
+    batch_id: str,
+    expected_obligation_ids: Iterable[str] | None = None,
+) -> dict[str, Any]:
+    """Compile a source-bound, explicitly partial XLIFF Core obligation batch."""
+
+    sources = {source.profile: source for source in profile_sources}
+    if (
+        set(sources) != {"xliff_2.0", "xliff_2.1"}
+        or len(sources) != len(profile_sources)
+    ):
+        raise ExtractionError(
+            "XLIFF Core obligations require one authority for each stable profile"
+        )
+    if not re.fullmatch(r"XLF-04-BATCH-[0-9]{3}", batch_id):
+        raise ExtractionError(f"invalid XLF-04 batch_id: {batch_id}")
+    archives = {
+        profile: _read_authority_archive(source)
+        for profile, source in sorted(sources.items())
+    }
+    for profile, source in sources.items():
+        if source.prose_member not in archives[profile]:
+            raise ExtractionError(
+                f"{source.source_id} lacks {source.prose_member}"
+            )
+    rows = _core_obligation_rows(
+        obligation_seeds,
+        sources,
+        archives,
+    )
+    covered_categories = sorted({str(row["category"]) for row in rows})
+    remaining_categories = sorted(
+        _XLIFF_CORE_CATEGORIES - set(covered_categories)
+    )
+    actual_ids = {str(row["obligation_id"]) for row in rows}
+    if expected_obligation_ids is None:
+        completeness_basis = "EXPECTED_OBLIGATION_DENOMINATOR_ABSENT"
+        expected_ids: set[str] = set()
+        missing_expected_ids: list[str] = []
+        complete = False
+    else:
+        expected_values = list(map(str, expected_obligation_ids))
+        expected_ids = set(expected_values)
+        if (
+            not expected_ids
+            or len(expected_ids) != len(expected_values)
+            or any(
+                not _CORE_OBLIGATION_ID.fullmatch(obligation_id)
+                for obligation_id in expected_ids
+            )
+        ):
+            raise ExtractionError("invalid expected Core obligation denominator")
+        unexpected_ids = sorted(actual_ids - expected_ids)
+        if unexpected_ids:
+            raise ExtractionError(
+                f"Core obligations outside expected denominator: {unexpected_ids}"
+            )
+        missing_expected_ids = sorted(expected_ids - actual_ids)
+        completeness_basis = "EXPLICIT_EXPECTED_OBLIGATION_IDS"
+        complete = not remaining_categories and not missing_expected_ids
+    return {
+        "schema": "ff6/xliff-core-obligation-inventory@1",
+        "artifact_id": "FF6-XLIFF-CORE-OBLIGATIONS-XLF04-BATCH001",
+        "artifact_type": "normative_obligation_inventory",
+        "visibility": "generated",
+        "publish_allowed": False,
+        "generated_by": "codex",
+        "format_id": "xliff",
+        "batch_id": batch_id,
+        "status": (
+            "SOURCE_LOCATED_COMPLETE"
+            if complete
+            else "SOURCE_LOCATED_PARTIAL"
+        ),
+        "stable_profiles": ["xliff_2.0", "xliff_2.1"],
+        "obligation_count": len(rows),
+        "covered_categories": covered_categories,
+        "remaining_categories": remaining_categories,
+        "completeness_basis": completeness_basis,
+        "expected_obligation_count": (
+            len(expected_ids) if expected_obligation_ids is not None else None
+        ),
+        "missing_expected_obligation_ids": missing_expected_ids,
+        "complete": complete,
+        "obligations": rows,
+        "truth_boundary": (
+            "These source-bound fine-grained Core obligations supersede no "
+            "unreviewed SAL facts and do not turn the 36 coarse XLF-03 anchors "
+            "into complete Core semantics, product source, or certification."
+        ),
+    }
+
+
+def _default_core_obligation_seeds() -> list[dict[str, Any]]:
+    """Return the first bounded, curated XLF-04 Core obligation batch."""
+
+    def locations(section_id: str, source_anchor: str) -> list[dict[str, Any]]:
+        return [
+            {
+                "profile": profile,
+                "location_kind": "prose_paragraph",
+                "member": (
+                    "xliff-core-v2.0-os.xml"
+                    if profile == "xliff_2.0"
+                    else "xliff-core-v2.1-os.xml"
+                ),
+                "section_id": section_id,
+                "source_anchor": source_anchor,
+            }
+            for profile in ("xliff_2.0", "xliff_2.1")
+        ]
+
+    common_evidence = {
+        "positive": [
+            "execute a conforming example against the eventual public behavior"
+        ],
+        "rejection": [
+            "execute a discriminating non-conforming example and verify diagnostics"
+        ],
+    }
+    note = (
+        "First source-located XLF-04 batch. This identity remains stable while "
+        "later batches add the uncaptured Core categories and finer rules."
+    )
+    return [
+        {
+            "obligation_id": "SAL-XLIFF-CORE-DOCUMENT-ROOT-001",
+            "stable_profiles": ["xliff_2.0", "xliff_2.1"],
+            "owner": "core:document",
+            "category": "document_structure",
+            "normalized_rule": (
+                "Recognize the namespace-qualified xliff element as the root "
+                "of every supported stable XLIFF document."
+            ),
+            "requirement_class": "STRUCTURAL_CONSTRAINT",
+            "normative_level": "MUST",
+            "authority_locations": locations(
+                "xliff", "Root element for XLIFF documents"
+            ),
+            "evidence_requirements": common_evidence,
+            "interpretation_note": note,
+        },
+        {
+            "obligation_id": "SAL-XLIFF-CORE-HIERARCHY-UNIT-001",
+            "stable_profiles": ["xliff_2.0", "xliff_2.1"],
+            "owner": "core:hierarchy",
+            "category": "hierarchy_cardinality",
+            "normalized_rule": (
+                "Require each unit to contain at least one segment and reject "
+                "a unit that violates that minimum Core cardinality."
+            ),
+            "requirement_class": "CARDINALITY_CONSTRAINT",
+            "normative_level": "MUST",
+            "authority_locations": locations(
+                "unit", "must contain at least one"
+            ),
+            "evidence_requirements": common_evidence,
+            "interpretation_note": note,
+        },
+        {
+            "obligation_id": "SAL-XLIFF-CORE-INLINE-SPANNING-001",
+            "stable_profiles": ["xliff_2.0", "xliff_2.1"],
+            "owner": "core:inline-code",
+            "category": "inline_code_semantics",
+            "normalized_rule": (
+                "Represent a non-well-formed or orphan spanning inline code "
+                "with source-located sc and ec boundary semantics."
+            ),
+            "requirement_class": "SEMANTIC_CONSTRAINT",
+            "normative_level": "MUST",
+            "authority_locations": locations(
+                "spanningcodeusage",
+                "A spanning code must be represented using",
+            ),
+            "evidence_requirements": common_evidence,
+            "interpretation_note": note,
+        },
+        {
+            "obligation_id": "SAL-XLIFF-CORE-SEGMENT-SPLIT-001",
+            "stable_profiles": ["xliff_2.0", "xliff_2.1"],
+            "owner": "core:segmentation",
+            "category": "segmentation",
+            "normalized_rule": (
+                "Permit splitting a segment or ignorable only when its resolved "
+                "canResegment value authorizes the operation."
+            ),
+            "requirement_class": "PROCESSING_REQUIREMENT",
+            "normative_level": "MUST",
+            "authority_locations": locations(
+                "segmentationModification",
+                "may be split",
+            ),
+            "evidence_requirements": common_evidence,
+            "interpretation_note": note,
+        },
+        {
+            "obligation_id": "SAL-XLIFF-CORE-STATE-SUBSTATE-001",
+            "stable_profiles": ["xliff_2.0", "xliff_2.1"],
+            "owner": "core:state",
+            "category": "state",
+            "normalized_rule": (
+                "When a writer updates segment state, require it to update or "
+                "remove the associated subState value consistently."
+            ),
+            "requirement_class": "PROCESSING_REQUIREMENT",
+            "normative_level": "MUST",
+            "authority_locations": locations(
+                "state", "must also update or delete subState"
+            ),
+            "evidence_requirements": common_evidence,
+            "interpretation_note": note,
+        },
+        {
+            "obligation_id": "SAL-XLIFF-CORE-EXTENSION-PRESERVE-001",
+            "stable_profiles": ["xliff_2.0", "xliff_2.1"],
+            "owner": "core:extensions",
+            "category": "extension_preservation",
+            "normalized_rule": (
+                "Preserve unsupported custom-namespace extension content "
+                "without modification or false semantic-support claims."
+            ),
+            "requirement_class": "PRESERVATION_REQUIREMENT",
+            "normative_level": "SHOULD",
+            "authority_locations": locations(
+                "extensions", "should preserve that extension without"
+            ),
+            "evidence_requirements": common_evidence,
+            "interpretation_note": note,
+        },
+        {
+            "obligation_id": "SAL-XLIFF-CORE-AGENT-INLINE-001",
+            "stable_profiles": ["xliff_2.0", "xliff_2.1"],
+            "owner": "core:agents",
+            "category": "agent_processing",
+            "normalized_rule": (
+                "Require processing agents to handle both paired-container and "
+                "spanning inline-code representations without information loss."
+            ),
+            "requirement_class": "PROCESSING_REQUIREMENT",
+            "normative_level": "MUST",
+            "authority_locations": locations(
+                "spanningcodeusage", "Agents must be able to handle"
+            ),
+            "evidence_requirements": common_evidence,
+            "interpretation_note": note,
+        },
+    ]
+
+
 def _default_requirement_seeds() -> list[dict[str, Any]]:
     """Return the deterministic first-pass XLIFF 2.0/2.1 source matrix."""
 
@@ -1122,6 +1660,11 @@ def _argument_parser() -> argparse.ArgumentParser:
         )
     )
     parser.add_argument("--format-id", choices=("xliff",), required=True)
+    parser.add_argument(
+        "--artifact",
+        choices=("matrix", "core-obligations"),
+        default="matrix",
+    )
     parser.add_argument("--source-20", type=Path, required=True)
     parser.add_argument("--source-20-id", required=True)
     parser.add_argument("--source-20-sha256", required=True)
@@ -1147,39 +1690,64 @@ def main(argv: Sequence[str] | None = None) -> int:
     """Run the XLIFF authority compiler CLI."""
 
     args = _argument_parser().parse_args(argv)
-    matrix = compile_xliff_matrix(
-        [
-            ProfileSource(
-                profile="xliff_2.0",
-                source_id=args.source_20_id,
-                package_path=args.source_20,
-                expected_sha256=args.source_20_sha256,
-                prose_member=args.prose_member_20,
-            ),
-            ProfileSource(
-                profile="xliff_2.1",
-                source_id=args.source_21_id,
-                package_path=args.source_21,
-                expected_sha256=args.source_21_sha256,
-                prose_member=args.prose_member_21,
-            ),
-        ],
-        requirement_seeds=_default_requirement_seeds(),
-    )
+    profile_sources = [
+        ProfileSource(
+            profile="xliff_2.0",
+            source_id=args.source_20_id,
+            package_path=args.source_20,
+            expected_sha256=args.source_20_sha256,
+            prose_member=args.prose_member_20,
+        ),
+        ProfileSource(
+            profile="xliff_2.1",
+            source_id=args.source_21_id,
+            package_path=args.source_21,
+            expected_sha256=args.source_21_sha256,
+            prose_member=args.prose_member_21,
+        ),
+    ]
+    if args.artifact == "core-obligations":
+        artifact = compile_xliff_core_obligations(
+            profile_sources,
+            obligation_seeds=_default_core_obligation_seeds(),
+            batch_id="XLF-04-BATCH-001",
+        )
+        row_count = artifact["obligation_count"]
+    else:
+        artifact = compile_xliff_matrix(
+            profile_sources,
+            requirement_seeds=_default_requirement_seeds(),
+        )
+        row_count = len(artifact["normative_matrix"])
     digest = (
-        check_matrix(matrix, args.output)
+        check_matrix(artifact, args.output)
         if args.check
-        else write_matrix(matrix, args.output)
+        else write_matrix(artifact, args.output)
     )
+    result = {
+        "artifact": args.artifact,
+        "check": args.check,
+        "digest": digest,
+        "rows": row_count,
+        "schema": artifact["schema"],
+    }
+    if args.artifact == "matrix":
+        result.update(
+            {
+                "normative_matrix_rows": row_count,
+                "profiles": sorted(artifact["profiles"]),
+            }
+        )
+    else:
+        result.update(
+            {
+                "obligation_count": row_count,
+                "stable_profiles": artifact["stable_profiles"],
+            }
+        )
     print(
         json.dumps(
-            {
-                "check": args.check,
-                "digest": digest,
-                "normative_matrix_rows": len(matrix["normative_matrix"]),
-                "profiles": sorted(matrix["profiles"]),
-                "schema": matrix["schema"],
-            },
+            result,
             sort_keys=True,
             separators=(",", ":"),
         )

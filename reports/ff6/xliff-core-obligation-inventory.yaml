@@ -1,0 +1,292 @@
+schema: ff6/xliff-core-obligation-inventory@1
+artifact_id: FF6-XLIFF-CORE-OBLIGATIONS-XLF04-BATCH001
+artifact_type: normative_obligation_inventory
+visibility: generated
+publish_allowed: false
+generated_by: codex
+format_id: xliff
+batch_id: XLF-04-BATCH-001
+status: SOURCE_LOCATED_PARTIAL
+stable_profiles:
+- xliff_2.0
+- xliff_2.1
+obligation_count: 7
+covered_categories:
+- agent_processing
+- document_structure
+- extension_preservation
+- hierarchy_cardinality
+- inline_code_semantics
+- segmentation
+- state
+remaining_categories:
+- identifiers_references_inheritance
+- language_direction_whitespace
+- semantic_roundtrip_canonical_output
+- source_target_correspondence
+- xml_security_resource_limits
+completeness_basis: EXPECTED_OBLIGATION_DENOMINATOR_ABSENT
+expected_obligation_count: null
+missing_expected_obligation_ids: []
+complete: false
+obligations:
+- obligation_id: SAL-XLIFF-CORE-AGENT-INLINE-001
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  owner: core:agents
+  category: agent_processing
+  normalized_rule: Require processing agents to handle both paired-container and spanning inline-code representations without information loss.
+  requirement_class: PROCESSING_REQUIREMENT
+  normative_level: MUST
+  authority_locations:
+  - profile: xliff_2.0
+    authority_source_id: SRC-XLF-001
+    source_sha256: aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055
+    location_kind: prose_paragraph
+    member: xliff-core-v2.0-os.xml
+    member_sha256: 07059d426de1e839540e5e84e0e061c4a6d5ef1a1b7e71ddf75bf5bd11518b73
+    section_id: spanningcodeusage
+    paragraph_index: 8
+    source_anchor: Agents must be able to handle
+    source_text_sha256: ea311223cf09f5b15eaa6b12a147c648a0a4d34953d683e86e6848534d80dced
+  - profile: xliff_2.1
+    authority_source_id: SRC-XLF-002
+    source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    location_kind: prose_paragraph
+    member: xliff-core-v2.1-os.xml
+    member_sha256: e8c72ec2314e1025f25886cd0ea2b6c10aa2405bd292026383afca2207c44e5b
+    section_id: spanningcodeusage
+    paragraph_index: 8
+    source_anchor: Agents must be able to handle
+    source_text_sha256: ea311223cf09f5b15eaa6b12a147c648a0a4d34953d683e86e6848534d80dced
+  evidence_requirements:
+    positive:
+    - execute a conforming example against the eventual public behavior
+    rejection:
+    - execute a discriminating non-conforming example and verify diagnostics
+  interpretation_note: First source-located XLF-04 batch. This identity remains stable while later batches add the uncaptured Core categories and finer rules.
+  verification_status: SOURCE_BOUND_UNVERIFIED
+- obligation_id: SAL-XLIFF-CORE-DOCUMENT-ROOT-001
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  owner: core:document
+  category: document_structure
+  normalized_rule: Recognize the namespace-qualified xliff element as the root of every supported stable XLIFF document.
+  requirement_class: STRUCTURAL_CONSTRAINT
+  normative_level: MUST
+  authority_locations:
+  - profile: xliff_2.0
+    authority_source_id: SRC-XLF-001
+    source_sha256: aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055
+    location_kind: prose_paragraph
+    member: xliff-core-v2.0-os.xml
+    member_sha256: 07059d426de1e839540e5e84e0e061c4a6d5ef1a1b7e71ddf75bf5bd11518b73
+    section_id: xliff
+    paragraph_index: 0
+    source_anchor: Root element for XLIFF documents
+    source_text_sha256: 1cd5f48b1c8248cde48a8e3d46c224132b8b22d66803b9b695b92962b4185603
+  - profile: xliff_2.1
+    authority_source_id: SRC-XLF-002
+    source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    location_kind: prose_paragraph
+    member: xliff-core-v2.1-os.xml
+    member_sha256: e8c72ec2314e1025f25886cd0ea2b6c10aa2405bd292026383afca2207c44e5b
+    section_id: xliff
+    paragraph_index: 0
+    source_anchor: Root element for XLIFF documents
+    source_text_sha256: 1cd5f48b1c8248cde48a8e3d46c224132b8b22d66803b9b695b92962b4185603
+  evidence_requirements:
+    positive:
+    - execute a conforming example against the eventual public behavior
+    rejection:
+    - execute a discriminating non-conforming example and verify diagnostics
+  interpretation_note: First source-located XLF-04 batch. This identity remains stable while later batches add the uncaptured Core categories and finer rules.
+  verification_status: SOURCE_BOUND_UNVERIFIED
+- obligation_id: SAL-XLIFF-CORE-EXTENSION-PRESERVE-001
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  owner: core:extensions
+  category: extension_preservation
+  normalized_rule: Preserve unsupported custom-namespace extension content without modification or false semantic-support claims.
+  requirement_class: PRESERVATION_REQUIREMENT
+  normative_level: SHOULD
+  authority_locations:
+  - profile: xliff_2.0
+    authority_source_id: SRC-XLF-001
+    source_sha256: aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055
+    location_kind: prose_paragraph
+    member: xliff-core-v2.0-os.xml
+    member_sha256: 07059d426de1e839540e5e84e0e061c4a6d5ef1a1b7e71ddf75bf5bd11518b73
+    section_id: extensions
+    paragraph_index: 13
+    source_anchor: should preserve that extension without
+    source_text_sha256: e55c005f0e681a430fa1c22c162ffe8e76254ab96e24d02201bae204abe2396d
+  - profile: xliff_2.1
+    authority_source_id: SRC-XLF-002
+    source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    location_kind: prose_paragraph
+    member: xliff-core-v2.1-os.xml
+    member_sha256: e8c72ec2314e1025f25886cd0ea2b6c10aa2405bd292026383afca2207c44e5b
+    section_id: extensions
+    paragraph_index: 13
+    source_anchor: should preserve that extension without
+    source_text_sha256: e55c005f0e681a430fa1c22c162ffe8e76254ab96e24d02201bae204abe2396d
+  evidence_requirements:
+    positive:
+    - execute a conforming example against the eventual public behavior
+    rejection:
+    - execute a discriminating non-conforming example and verify diagnostics
+  interpretation_note: First source-located XLF-04 batch. This identity remains stable while later batches add the uncaptured Core categories and finer rules.
+  verification_status: SOURCE_BOUND_UNVERIFIED
+- obligation_id: SAL-XLIFF-CORE-HIERARCHY-UNIT-001
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  owner: core:hierarchy
+  category: hierarchy_cardinality
+  normalized_rule: Require each unit to contain at least one segment and reject a unit that violates that minimum Core cardinality.
+  requirement_class: CARDINALITY_CONSTRAINT
+  normative_level: MUST
+  authority_locations:
+  - profile: xliff_2.0
+    authority_source_id: SRC-XLF-001
+    source_sha256: aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055
+    location_kind: prose_paragraph
+    member: xliff-core-v2.0-os.xml
+    member_sha256: 07059d426de1e839540e5e84e0e061c4a6d5ef1a1b7e71ddf75bf5bd11518b73
+    section_id: unit
+    paragraph_index: 3
+    source_anchor: must contain at least one
+    source_text_sha256: d08c6f9e58d6d32625dfaa4c05682aa229c58a8b561ce1eefcc5c34b733c3203
+  - profile: xliff_2.1
+    authority_source_id: SRC-XLF-002
+    source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    location_kind: prose_paragraph
+    member: xliff-core-v2.1-os.xml
+    member_sha256: e8c72ec2314e1025f25886cd0ea2b6c10aa2405bd292026383afca2207c44e5b
+    section_id: unit
+    paragraph_index: 3
+    source_anchor: must contain at least one
+    source_text_sha256: d08c6f9e58d6d32625dfaa4c05682aa229c58a8b561ce1eefcc5c34b733c3203
+  evidence_requirements:
+    positive:
+    - execute a conforming example against the eventual public behavior
+    rejection:
+    - execute a discriminating non-conforming example and verify diagnostics
+  interpretation_note: First source-located XLF-04 batch. This identity remains stable while later batches add the uncaptured Core categories and finer rules.
+  verification_status: SOURCE_BOUND_UNVERIFIED
+- obligation_id: SAL-XLIFF-CORE-INLINE-SPANNING-001
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  owner: core:inline-code
+  category: inline_code_semantics
+  normalized_rule: Represent a non-well-formed or orphan spanning inline code with source-located sc and ec boundary semantics.
+  requirement_class: SEMANTIC_CONSTRAINT
+  normative_level: MUST
+  authority_locations:
+  - profile: xliff_2.0
+    authority_source_id: SRC-XLF-001
+    source_sha256: aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055
+    location_kind: prose_paragraph
+    member: xliff-core-v2.0-os.xml
+    member_sha256: 07059d426de1e839540e5e84e0e061c4a6d5ef1a1b7e71ddf75bf5bd11518b73
+    section_id: spanningcodeusage
+    paragraph_index: 0
+    source_anchor: A spanning code must be represented using
+    source_text_sha256: 1c5c78d526673571130a71b4c45826cb33ef251a1ad444ef648f7fba538918be
+  - profile: xliff_2.1
+    authority_source_id: SRC-XLF-002
+    source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    location_kind: prose_paragraph
+    member: xliff-core-v2.1-os.xml
+    member_sha256: e8c72ec2314e1025f25886cd0ea2b6c10aa2405bd292026383afca2207c44e5b
+    section_id: spanningcodeusage
+    paragraph_index: 0
+    source_anchor: A spanning code must be represented using
+    source_text_sha256: 1c5c78d526673571130a71b4c45826cb33ef251a1ad444ef648f7fba538918be
+  evidence_requirements:
+    positive:
+    - execute a conforming example against the eventual public behavior
+    rejection:
+    - execute a discriminating non-conforming example and verify diagnostics
+  interpretation_note: First source-located XLF-04 batch. This identity remains stable while later batches add the uncaptured Core categories and finer rules.
+  verification_status: SOURCE_BOUND_UNVERIFIED
+- obligation_id: SAL-XLIFF-CORE-SEGMENT-SPLIT-001
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  owner: core:segmentation
+  category: segmentation
+  normalized_rule: Permit splitting a segment or ignorable only when its resolved canResegment value authorizes the operation.
+  requirement_class: PROCESSING_REQUIREMENT
+  normative_level: MUST
+  authority_locations:
+  - profile: xliff_2.0
+    authority_source_id: SRC-XLF-001
+    source_sha256: aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055
+    location_kind: prose_paragraph
+    member: xliff-core-v2.0-os.xml
+    member_sha256: 07059d426de1e839540e5e84e0e061c4a6d5ef1a1b7e71ddf75bf5bd11518b73
+    section_id: segmentationModification
+    paragraph_index: 5
+    source_anchor: may be split
+    source_text_sha256: b16f792d472c4c61725337acad8ee49764f9bd83fae66618e1d62b1e79f92d4d
+  - profile: xliff_2.1
+    authority_source_id: SRC-XLF-002
+    source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    location_kind: prose_paragraph
+    member: xliff-core-v2.1-os.xml
+    member_sha256: e8c72ec2314e1025f25886cd0ea2b6c10aa2405bd292026383afca2207c44e5b
+    section_id: segmentationModification
+    paragraph_index: 5
+    source_anchor: may be split
+    source_text_sha256: b16f792d472c4c61725337acad8ee49764f9bd83fae66618e1d62b1e79f92d4d
+  evidence_requirements:
+    positive:
+    - execute a conforming example against the eventual public behavior
+    rejection:
+    - execute a discriminating non-conforming example and verify diagnostics
+  interpretation_note: First source-located XLF-04 batch. This identity remains stable while later batches add the uncaptured Core categories and finer rules.
+  verification_status: SOURCE_BOUND_UNVERIFIED
+- obligation_id: SAL-XLIFF-CORE-STATE-SUBSTATE-001
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  owner: core:state
+  category: state
+  normalized_rule: When a writer updates segment state, require it to update or remove the associated subState value consistently.
+  requirement_class: PROCESSING_REQUIREMENT
+  normative_level: MUST
+  authority_locations:
+  - profile: xliff_2.0
+    authority_source_id: SRC-XLF-001
+    source_sha256: aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055
+    location_kind: prose_paragraph
+    member: xliff-core-v2.0-os.xml
+    member_sha256: 07059d426de1e839540e5e84e0e061c4a6d5ef1a1b7e71ddf75bf5bd11518b73
+    section_id: state
+    paragraph_index: 5
+    source_anchor: must also update or delete subState
+    source_text_sha256: 372a68cf4a46f83e9a03c1bf37beb8b5916c80e0badc852bf62af79a4d1e51c2
+  - profile: xliff_2.1
+    authority_source_id: SRC-XLF-002
+    source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    location_kind: prose_paragraph
+    member: xliff-core-v2.1-os.xml
+    member_sha256: e8c72ec2314e1025f25886cd0ea2b6c10aa2405bd292026383afca2207c44e5b
+    section_id: state
+    paragraph_index: 6
+    source_anchor: must also update or delete subState
+    source_text_sha256: 372a68cf4a46f83e9a03c1bf37beb8b5916c80e0badc852bf62af79a4d1e51c2
+  evidence_requirements:
+    positive:
+    - execute a conforming example against the eventual public behavior
+    rejection:
+    - execute a discriminating non-conforming example and verify diagnostics
+  interpretation_note: First source-located XLF-04 batch. This identity remains stable while later batches add the uncaptured Core categories and finer rules.
+  verification_status: SOURCE_BOUND_UNVERIFIED
+truth_boundary: These source-bound fine-grained Core obligations supersede no unreviewed SAL facts and do not turn the 36 coarse XLF-03 anchors into complete Core semantics, product source, or certification.

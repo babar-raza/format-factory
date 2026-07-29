@@ -595,3 +595,388 @@ def test_requirement_rows_reject_malformed_duplicate_and_preview_profiles() -> N
             members,
             sections,
         )
+
+
+def _write_core_obligation_archive(
+    path: Path,
+    *,
+    profile: str,
+) -> tuple[str, str]:
+    prose_member = f"xliff-core-v{profile.removeprefix('xliff_')}-os.xml"
+    paragraphs = {
+        "xliff": (
+            "Root element for XLIFF documents; it requires the version and "
+            "srcLang attributes and one or more file children."
+        ),
+        "unit": "A unit must contain at least one segment element.",
+        "spanningcodeusage": (
+            "A spanning code must be represented using an sc element and an "
+            "ec element when the code is not well-formed or is orphaned. "
+            "Agents must be able to handle both paired-container and spanning "
+            "inline code representations."
+        ),
+        "segmentationModification": (
+            "Only segment or ignorable elements whose resolved canResegment "
+            "value is yes may be split."
+        ),
+        "state": (
+            "Writers must not advance state beyond initial when the segment "
+            "does not contain a target child and must also update or delete "
+            "subState when state changes."
+        ),
+        "extensions": (
+            "Writers that do not support a custom namespace extension should "
+            "preserve that extension without modification."
+        ),
+        "inlineCodes": (
+            "Agents must be able to handle both paired-container and spanning "
+            "inline code representations."
+        ),
+    }
+    body = "".join(
+        f'<section id="{section_id}"><title>{section_id}</title>'
+        f"<para>{paragraph}</para></section>"
+        for section_id, paragraph in paragraphs.items()
+    )
+    prose = f'<?xml version="1.0"?><article>{body}</article>'.encode()
+    with zipfile.ZipFile(path, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+        archive.writestr(prose_member, prose)
+    return prose_member, hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def test_core_obligation_batch_is_source_bound_and_truthfully_partial(
+    tmp_path: Path,
+) -> None:
+    extractor = _load_module()
+    assert hasattr(extractor, "compile_xliff_core_obligations"), (
+        "XLF-04 requires a separate fine-grained Core obligation compiler; "
+        "the 36 coarse XLF-03 matrix anchors cannot satisfy this test"
+    )
+
+    sources = []
+    for profile in ("xliff_2.0", "xliff_2.1"):
+        path = tmp_path / f"{profile}.zip"
+        member, digest = _write_core_obligation_archive(path, profile=profile)
+        sources.append(
+            extractor.ProfileSource(
+                profile=profile,
+                source_id=f"SRC-{profile.upper()}",
+                package_path=path,
+                expected_sha256=digest,
+                prose_member=member,
+            )
+        )
+
+    seed_definitions = [
+        (
+            "SAL-XLIFF-CORE-DOCUMENT-ROOT-001",
+            "document_structure",
+            "xliff",
+            "requires the version and srcLang attributes",
+            "Model the XLIFF root, stable version, source language, and "
+            "non-empty file collection as explicit document invariants.",
+            "STRUCTURAL_CONSTRAINT",
+            "core:document",
+        ),
+        (
+            "SAL-XLIFF-CORE-HIERARCHY-UNIT-001",
+            "hierarchy_cardinality",
+            "unit",
+            "must contain at least one segment",
+            "Reject a unit that does not contain the minimum required segment "
+            "content defined by the stable Core hierarchy.",
+            "CARDINALITY_CONSTRAINT",
+            "core:hierarchy",
+        ),
+        (
+            "SAL-XLIFF-CORE-INLINE-SPANNING-001",
+            "inline_code_semantics",
+            "spanningcodeusage",
+            "must be represented using an sc element and an ec element",
+            "Preserve spanning inline-code identity and pair an sc start with "
+            "its corresponding ec end representation.",
+            "SEMANTIC_CONSTRAINT",
+            "core:inline-code",
+        ),
+        (
+            "SAL-XLIFF-CORE-SEGMENT-SPLIT-001",
+            "segmentation",
+            "segmentationModification",
+            "resolved canResegment value is yes may be split",
+            "Permit a segmentation split only when the resolved canResegment "
+            "value authorizes that modification.",
+            "PROCESSING_REQUIREMENT",
+            "core:segmentation",
+        ),
+        (
+            "SAL-XLIFF-CORE-STATE-TARGET-001",
+            "state",
+            "state",
+            "must not advance state beyond initial",
+            "Reject a non-initial segment state when no target translation is "
+            "present, and keep sub-state synchronized with state changes.",
+            "PROCESSING_REQUIREMENT",
+            "core:state",
+        ),
+        (
+            "SAL-XLIFF-CORE-EXTENSION-PRESERVE-001",
+            "extension_preservation",
+            "extensions",
+            "should preserve that extension without modification",
+            "Preserve unsupported custom-namespace extension content without "
+            "silently claiming semantic support for the extension.",
+            "PRESERVATION_REQUIREMENT",
+            "core:extensions",
+        ),
+        (
+            "SAL-XLIFF-CORE-AGENT-INLINE-001",
+            "agent_processing",
+            "inlineCodes",
+            "Agents must be able to handle both",
+            "Require processing agents to handle both paired-container and "
+            "spanning inline-code representations without information loss.",
+            "PROCESSING_REQUIREMENT",
+            "core:agents",
+        ),
+    ]
+    seeds = []
+    for (
+        obligation_id,
+        category,
+        section_id,
+        source_anchor,
+        normalized_rule,
+        requirement_class,
+        owner,
+    ) in seed_definitions:
+        seeds.append(
+            {
+                "obligation_id": obligation_id,
+                "stable_profiles": ["xliff_2.0", "xliff_2.1"],
+                "owner": owner,
+                "category": category,
+                "normalized_rule": normalized_rule,
+                "requirement_class": requirement_class,
+                "normative_level": "MUST",
+                "authority_locations": [
+                    {
+                        "profile": profile,
+                        "location_kind": "prose_paragraph",
+                        "member": (
+                            f"xliff-core-v{profile.removeprefix('xliff_')}-os.xml"
+                        ),
+                        "section_id": section_id,
+                        "paragraph_index": 0,
+                        "source_anchor": source_anchor,
+                    }
+                    for profile in ("xliff_2.0", "xliff_2.1")
+                ],
+                "evidence_requirements": {
+                    "positive": ["execute the conforming behavior"],
+                    "rejection": ["execute the discriminating invalid case"],
+                },
+                "interpretation_note": (
+                    "Representative XLF-04 batch; later batches retain this "
+                    "stable identity and add the remaining Core categories."
+                ),
+            }
+        )
+
+    inventory = extractor.compile_xliff_core_obligations(
+        sources,
+        obligation_seeds=seeds,
+        batch_id="XLF-04-BATCH-001",
+    )
+
+    assert inventory["schema"] == "ff6/xliff-core-obligation-inventory@1"
+    assert inventory["status"] == "SOURCE_LOCATED_PARTIAL"
+    assert inventory["batch_id"] == "XLF-04-BATCH-001"
+    assert inventory["obligation_count"] == 7
+    assert inventory["complete"] is False
+    assert inventory["covered_categories"] == sorted(
+        definition[1] for definition in seed_definitions
+    )
+    assert "xml_security_resource_limits" in inventory["remaining_categories"]
+    assert "semantic_roundtrip_canonical_output" in (
+        inventory["remaining_categories"]
+    )
+
+    obligations = inventory["obligations"]
+    assert len({row["obligation_id"] for row in obligations}) == len(obligations)
+    for row in obligations:
+        assert row["obligation_id"].startswith("SAL-XLIFF-CORE-")
+        assert row["stable_profiles"] == ["xliff_2.0", "xliff_2.1"]
+        assert [location["profile"] for location in row["authority_locations"]] == [
+            "xliff_2.0",
+            "xliff_2.1",
+        ]
+        assert all(
+            len(location["source_text_sha256"]) == 64
+            and len(location["source_sha256"]) == 64
+            and len(location["member_sha256"]) == 64
+            for location in row["authority_locations"]
+        )
+        assert row["evidence_requirements"]["positive"]
+        assert row["evidence_requirements"]["rejection"]
+
+    inline = next(
+        row
+        for row in obligations
+        if row["obligation_id"] == "SAL-XLIFF-CORE-INLINE-SPANNING-001"
+    )
+    assert inline["owner"] == "core:inline-code"
+    assert inline["requirement_class"] == "SEMANTIC_CONSTRAINT"
+    assert inline["authority_locations"][0]["section_id"] == "spanningcodeusage"
+    assert "36 coarse XLF-03 anchors" in inventory["truth_boundary"]
+
+
+def test_cli_writes_and_checks_default_core_obligation_batch(
+    tmp_path: Path,
+) -> None:
+    extractor = _load_module()
+    assert hasattr(extractor, "_default_core_obligation_seeds"), (
+        "XLF-04 requires curated, source-located Core seeds before its "
+        "deterministic command can generate the first real obligation batch"
+    )
+
+    sources: dict[str, tuple[Path, str]] = {}
+    for profile in ("xliff_2.0", "xliff_2.1"):
+        path = tmp_path / f"{profile}.zip"
+        _member, digest = _write_core_obligation_archive(path, profile=profile)
+        sources[profile] = (path, digest)
+    output = tmp_path / "xliff-core-obligation-inventory.yaml"
+    args = [
+        "--format-id",
+        "xliff",
+        "--artifact",
+        "core-obligations",
+        "--source-20",
+        str(sources["xliff_2.0"][0]),
+        "--source-20-id",
+        "SRC-XLF-001",
+        "--source-20-sha256",
+        sources["xliff_2.0"][1],
+        "--source-21",
+        str(sources["xliff_2.1"][0]),
+        "--source-21-id",
+        "SRC-XLF-002",
+        "--source-21-sha256",
+        sources["xliff_2.1"][1],
+        "--output",
+        str(output),
+    ]
+
+    assert extractor.main(args) == 0
+    first_bytes = output.read_bytes()
+    inventory = yaml.safe_load(first_bytes)
+    assert inventory["schema"] == "ff6/xliff-core-obligation-inventory@1"
+    assert inventory["artifact_id"] == (
+        "FF6-XLIFF-CORE-OBLIGATIONS-XLF04-BATCH001"
+    )
+    assert inventory["artifact_type"] == "normative_obligation_inventory"
+    assert inventory["visibility"] == "generated"
+    assert inventory["publish_allowed"] is False
+    assert inventory["generated_by"] == "codex"
+    assert inventory["batch_id"] == "XLF-04-BATCH-001"
+    assert inventory["status"] == "SOURCE_LOCATED_PARTIAL"
+    assert inventory["obligation_count"] == 7
+    assert inventory["complete"] is False
+    assert extractor.main([*args, "--check"]) == 0
+    assert output.read_bytes() == first_bytes
+
+
+def test_core_obligation_seed_cannot_self_declare_verification(
+    tmp_path: Path,
+) -> None:
+    extractor = _load_module()
+    sources = []
+    for profile in ("xliff_2.0", "xliff_2.1"):
+        path = tmp_path / f"{profile}.zip"
+        member, digest = _write_core_obligation_archive(path, profile=profile)
+        sources.append(
+            extractor.ProfileSource(
+                profile=profile,
+                source_id=f"SRC-{profile.upper()}",
+                package_path=path,
+                expected_sha256=digest,
+                prose_member=member,
+            )
+        )
+    seed = dict(extractor._default_core_obligation_seeds()[0])
+    seed["verification_status"] = "VERIFIED"
+
+    with pytest.raises(
+        extractor.ExtractionError,
+        match="unsupported Core obligation seed fields",
+    ):
+        extractor.compile_xliff_core_obligations(
+            sources,
+            obligation_seeds=[seed],
+            batch_id="XLF-04-BATCH-001",
+        )
+
+
+def test_core_paragraph_index_accepts_bounded_docbook_internal_entities() -> None:
+    extractor = _load_module()
+    xml = (
+        b'<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" '
+        b'"docbook/docbookx.dtd" [<!ENTITY product "XLIFF">]>'
+        b'<article><section id="core"><title>Core</title>'
+        b"<para>&product; processing requirement.</para>"
+        b"</section></article>"
+    )
+
+    paragraphs = extractor._prose_paragraph_index(
+        xml,
+        location="SRC-XLF-PINNED:xliff-core.xml",
+    )
+
+    assert paragraphs == {"core": ["XLIFF processing requirement."]}
+
+
+def test_category_presence_cannot_self_certify_core_completeness(
+    tmp_path: Path,
+) -> None:
+    extractor = _load_module()
+    sources = []
+    for profile in ("xliff_2.0", "xliff_2.1"):
+        path = tmp_path / f"{profile}.zip"
+        member, digest = _write_core_obligation_archive(path, profile=profile)
+        sources.append(
+            extractor.ProfileSource(
+                profile=profile,
+                source_id=f"SRC-{profile.upper()}",
+                package_path=path,
+                expected_sha256=digest,
+                prose_member=member,
+            )
+        )
+    seeds = extractor._default_core_obligation_seeds()
+    base = seeds[0]
+    missing_categories = sorted(
+        extractor._XLIFF_CORE_CATEGORIES
+        - {str(seed["category"]) for seed in seeds}
+    )
+    for index, category in enumerate(missing_categories, 1):
+        seed = dict(base)
+        seed["obligation_id"] = f"SAL-XLIFF-CORE-COVERAGE-{index:03d}"
+        seed["category"] = category
+        seed["owner"] = "core:coverage-control"
+        seed["normalized_rule"] = (
+            f"Coverage-control placeholder for {category}; its presence must "
+            "not establish completeness without an obligation denominator."
+        )
+        seeds.append(seed)
+
+    inventory = extractor.compile_xliff_core_obligations(
+        sources,
+        obligation_seeds=seeds,
+        batch_id="XLF-04-BATCH-001",
+    )
+
+    assert inventory["remaining_categories"] == []
+    assert inventory["complete"] is False
+    assert inventory["status"] == "SOURCE_LOCATED_PARTIAL"
+    assert inventory["completeness_basis"] == (
+        "EXPECTED_OBLIGATION_DENOMINATOR_ABSENT"
+    )
