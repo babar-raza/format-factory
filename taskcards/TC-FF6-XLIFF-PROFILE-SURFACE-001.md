@@ -430,6 +430,76 @@ replays, zero-warning receipts, and authority audit. Then:
    expected ID has a source-bound obligation, and canonical SAL verification
    succeeds.
 
+## Current XLF-04 microstep checkpoint — event 29
+
+Event 29 supersedes the event-26 resume paragraph. The first bounded part of
+`XLF-04-BATCH-005` is integration-safe at GitLab implementation commit
+`315efa5f5f4420202b5254c86ccd8863a91c385f`, but it is not a completed batch.
+The task remains `WORK_IN_PROGRESS`; `XLF-04` remains the first unmet task
+step; portfolio certification remains 0/6.
+
+What this checkpoint proves:
+
+- the deterministic Core census now covers 1,130 candidates:
+  182 modal normative-prose candidates, 588 non-modal prose candidates,
+  264 Core XSD candidates, and 96 Core Schematron candidates;
+- every candidate carries content-bound occurrence and member digests;
+- a full validator replay against the pinned XLIFF 2.0 and 2.1 authority
+  packages rejects internally rehashed but authority-forged content;
+- generated dispositions are recomputed from candidate content and cannot be
+  forged by editing mapping IDs, labels, precision, or rationale;
+- all generated precision labels honestly end in `_UNVERIFIED`; no
+  implementation-derived mapping is called exact or independently proven;
+- three clean processes generated the identical LF-canonical census SHA-256
+  `24c1902b6387cc9fa3402f78392ba91c6e6656407719ec11cfaab1c4f3d22b9e`;
+- 64 focused tests pass, including negative controls for forged dispositions
+  and rehashed forged authority content;
+- Ruff, strict Mypy, Pyright 1.1.411, bytecode compilation, 94 affected
+  format-contract tests with one baseline-known stateful CSV test deselected,
+  69 production-program tests, all three batch-005 skill transcripts, and the
+  five-record XLIFF authority audit pass.
+
+What this checkpoint does not prove:
+
+- zero of the 1,130 generated dispositions has independent SAL verification;
+- 60 of the 105 expected obligation IDs still have no candidate mapping;
+- only 25 expected IDs have source-bound obligation inventory rows, so 80
+  source-bound rows remain missing;
+- the expected-ID denominator is still `OPEN_AUTHORITY_CENSUS`;
+- the 588 non-modal candidates have a deterministic disposition, not a
+  verified semantic classification;
+- no XLIFF module obligation family, ProductContract, product source,
+  certification, promotion, release, or gate changed.
+
+Resume at
+`XLF-04-BATCH-005-PARTIAL-002_DISPOSITION_VERIFICATION_AND_OBLIGATION_COMPILATION`:
+
+1. Revalidate event 29, GitLab commit `315efa5f`, the report digest and counts,
+   64 focused tests, all four existing artifact check modes, three batch-005
+   receipts, three clean census generations, and all five XLIFF authority
+   matches.
+2. Independently verify candidate dispositions through canonical SAL in
+   deterministic, source-located batches. A generated mapping cannot verify
+   itself.
+3. When an independent reading contradicts a generated disposition, add a
+   discriminating negative test and repair the mapping rule; never choose the
+   result that merely reduces the open count.
+4. Expand the 105-ID denominator when the authority exposes a normative
+   behavior that it does not contain.
+5. Compile source-bound obligation rows for the 80 missing expected IDs while
+   preserving the 25 existing stable IDs and provenance.
+6. Investigate the 60 expected IDs with no candidate mapping. Bind them to
+   exact authority occurrences, identify them as production policy where
+   appropriate, or repair the denominator. Do not silently delete them.
+7. Keep `complete: false` until all 1,130 candidate dispositions are
+   independently verified, every expected ID resolves to a verified
+   source-bound obligation, and canonical SAL reconciliation succeeds.
+
+If the XLIFF exact paths are live-owned when a future provider starts, the
+only allowed fallback is the already-journaled UBL lane at
+`UBL-03`: exact import/include closure and reference resolution from commit
+`f98d220a`. That fallback must not mutate XLIFF paths or claim UBL-03 complete.
+
 ## Required execution
 
 ### XLF-01 — Revalidate the clean predecessor

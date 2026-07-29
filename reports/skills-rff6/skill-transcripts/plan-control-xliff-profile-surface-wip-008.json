@@ -1,0 +1,100 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "plan-control-xliff-profile-surface-wip-008",
+  "skill_id": "plan-control",
+  "mode": "live",
+  "timestamp": "2026-07-29T22:36:02.9444324Z",
+  "inputs": {
+    "task_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "operation": "project",
+    "target_paths": [
+      "plans/strategic/ff6/events.jsonl",
+      "plans/strategic/ff6/controller-state.yaml",
+      "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md"
+    ],
+    "coordination_scope": "Exact Event 29, controller, XLIFF taskcard, and receipt paths under agent-codex-20260729T220803-d7ef7e. A stale taskcard lease was taken over with an audited reason; its current bytes were preserved and rebaselined before mutation.",
+    "acceptance_evidence": "Immutable implementation commit 315efa5f on GitLab origin/main; 1,130 source-authentic candidates; deterministic but explicitly unverified dispositions; 64 focused tests; four artifact check modes; three identical authority-bound census generations; affected regressions; static analysis; three zero-warning skill receipts; and five XLIFF authority matches.",
+    "source_checkpoint": "315efa5f5f4420202b5254c86ccd8863a91c385f",
+    "execution_manifest": ".local/skills-first/manifests/sfx-5c8523b6fb245d77.json"
+  },
+  "allowed_files": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
+    "reports/skills-rff6/skill-transcripts/plan-control-xliff-profile-surface-wip-008.json",
+    ".local/transcripts/plan-control-xliff-profile-surface-wip-008.json"
+  ],
+  "actual_files_changed": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
+    "reports/skills-rff6/skill-transcripts/plan-control-xliff-profile-surface-wip-008.json",
+    ".local/transcripts/plan-control-xliff-profile-surface-wip-008.json"
+  ],
+  "tests_run": [
+    "native FF6 hash-chain replay through FF6-EVENT-000029: PASS",
+    "controller sequence, event head, active task, first unmet step, exact partial microstep, and next action agreement: PASS",
+    "focused XLIFF authority compiler and candidate-binding tests: 64 passed",
+    "real pinned authority check mode: PASS at 24c1902b6387cc9fa3402f78392ba91c6e6656407719ec11cfaab1c4f3d22b9e",
+    "three clean real-authority generations: byte-identical",
+    "format-contract regression: 94 passed, 1 baseline-known stateful CSV test deselected",
+    "production-program regression: 69 passed",
+    "Ruff, strict Mypy, Pyright 1.1.411, and py_compile: PASS",
+    "XLIFF authority audit: 5 of 5 MATCH",
+    "batch-005 TDD, ingest, and SAL transcripts: PASS with zero warnings"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "event_id": "FF6-EVENT-000029",
+    "event_hash": "de12acdefd04c37a918e3fd27dcb8dd076f53e576ee7049cf1efc732d02028bb",
+    "events_sha256": "db83a57b7e7098c1c82348039cca6bd6babea40fcbfacba5d1b7676b5fc6c9b3",
+    "controller_sha256": "bed30c6bffe57b4ad1e18cfc354b7fec534b0d7685169872ef836ee38a4f713a",
+    "taskcard_sha256": "b74eae5b3ea44d809e63f06a2ba2c281bc52b9c8f18edee332285bacbce1820d",
+    "task_state": "WORK_IN_PROGRESS",
+    "completed_steps": [
+      "XLF-01",
+      "XLF-02",
+      "XLF-03"
+    ],
+    "completed_batches": [
+      "XLF-04-BATCH-001",
+      "XLF-04-BATCH-002",
+      "XLF-04-BATCH-003",
+      "XLF-04-BATCH-004"
+    ],
+    "first_unmet_step": "XLF-04",
+    "active_microstep": "XLF-04-BATCH-005-PARTIAL-002_DISPOSITION_VERIFICATION_AND_OBLIGATION_COMPILATION",
+    "xlf_04_complete": false,
+    "candidate_count": 1130,
+    "candidate_dispositions_verified": 0,
+    "candidate_dispositions_unverified": 1130,
+    "candidate_unresolved_expected_ids": 60,
+    "source_bound_obligations": 25,
+    "expected_obligation_ids": 105,
+    "missing_source_bound_obligation_ids": 80,
+    "denominator_status": "OPEN_AUTHORITY_CENSUS",
+    "product_promotion": "none",
+    "production_certifications": "0/6"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for serialization of the bounded Event 29 partial checkpoint",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for source-authentic census and deterministic disposition generation; explicitly insufficient for independent classification, XLF-04 completion, product work, or certification",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_checkpoint_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES; no new memory contradiction was found",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}
