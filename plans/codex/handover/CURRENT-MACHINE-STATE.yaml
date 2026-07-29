@@ -9,7 +9,7 @@ canonical_inputs:
   forge: GitLab
   remote: origin
   branch: main
-  source_commit: 02574f2d66bf5b69e0712ce312bd2c41047659fb
+  source_commit: 865558bb88243acda08c2a8d58a0d5ec887dedeb
   source_commit_rule: >-
     This commit must be an ancestor of the fetched origin/main commit that
     contains this packet. The packet cannot embed its own final commit hash.
@@ -34,26 +34,26 @@ state_precedence:
 
 controller:
   state: CONTRACT
-  sequence: 18
-  event_id: FF6-EVENT-000018
-  event_hash: 73b0f6074d13cae4c519176bf34908d2906653e831adc7d6dc1934310ec38362
+  sequence: 19
+  event_id: FF6-EVENT-000019
+  event_hash: 76b580d72f865428e92bc5b6089a89487356c69163aadf6b615b70c6867221f8
   parent_task: TC-FF6-PROGRAM-CAPABILITIES-001
   parent_state: NEEDS_REPAIR
-  completed_task: TC-FF6-IPYNB-PROFILE-SURFACE-001
+  completed_task: TC-FF6-NRRD-PROFILE-SURFACE-001
   completed_task_state: PASS
-  next_task: TC-FF6-NRRD-PROFILE-SURFACE-001
+  next_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
   next_task_state: READY
-  next_taskcard: taskcards/TC-FF6-NRRD-PROFILE-SURFACE-001.md
+  next_taskcard: taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md
   promotion_effect: none
 
 capability_projection:
   assessment_status: NEEDS_PROFILE_OR_SURFACE_REPAIR
-  aggregate_sha256: e0747efbf376f081fd6550afed48100c7e1872a055bf6155332ed9358ac05b5f
-  three_run_digest: dc33648ffa8f8b676de98f7b145dc2180630d5c470148ca0f46b13ec1492b554
-  total_capabilities: 104
-  total_obligations: 701
+  aggregate_sha256: 4d17d8c8c0ef3de74d59e1d5b16884c0210fd0836e0593591871f10d0af2efd2
+  three_run_digest: 389be84634941d3f244387bbc488c2303dcdb3add74b7d1edfb5def85710d3fc
+  total_capabilities: 110
+  total_obligations: 672
   classifications:
-    stable_required: 95
+    stable_required: 101
     optional_adapter_required: 4
     preview_isolated: 4
     excluded_with_authority: 1
@@ -73,11 +73,11 @@ capability_projection:
       missing_profiles: []
       active_gap: null
     nrrd:
-      capabilities: 15
-      obligations: 94
-      claimed_profiles: [nrrd0005]
-      missing_profiles: [nrrd0001, nrrd0002, nrrd0003, nrrd0004]
-      active_gap: FF6-NRRD-PROFILE-001
+      capabilities: 21
+      obligations: 65
+      claimed_profiles: [nrrd0001, nrrd0002, nrrd0003, nrrd0004, nrrd0005]
+      missing_profiles: []
+      active_gap: null
     xliff:
       capabilities: 15
       obligations: 125
@@ -98,7 +98,7 @@ capability_projection:
       active_gap: FF6-UBL-TYPING-001
 
 authority_projection:
-  lock_sha256: 8eefb28e3ef24b5b533496b54860daee981853d9c872fddc1ba5de4ff150f249
+  lock_sha256: 78e74d8708a1811aae8cc88eb32f001f275653004b699fca4e6210831a760233
   records: 15
   match: 15
   missing: 0
@@ -137,7 +137,6 @@ active_gaps:
   high: 7
   medium: 3
   current_contract_repairs:
-    - FF6-NRRD-PROFILE-001
     - FF6-XLIFF-PROFILE-001
     - FF6-UBL-TYPING-001
   control_plane_gap: FF6-GAP-011
@@ -160,3 +159,33 @@ resume_gate:
   product_source_allowed_for_next_task: false
   gate_or_promotion_change_allowed: false
   ask_for_continuation: false
+
+completed_contract_checkpoint:
+  nrrd:
+    task: TC-FF6-NRRD-PROFILE-SURFACE-001
+    event: FF6-EVENT-000019
+    sal_facts_verified: 25
+    family_domains: 18
+    family_policy_ids: 41
+    capabilities: 21
+    obligations: 65
+    profiles: [nrrd0001, nrrd0002, nrrd0003, nrrd0004, nrrd0005]
+    profile_gap: resolved
+    truth_boundary: >-
+      Exact normative denominator and deterministic projection only; no NRRD
+      product implementation, package, interoperability, certification, or
+      promotion was proved.
+
+next_task_prerequisite:
+  task: TC-FF6-XLIFF-PROFILE-SURFACE-001
+  missing_authority: official XLIFF 2.0 OASIS Standard release package
+  current_2_1_authority: present_and_matched
+  required_module_families:
+    - matches
+    - glossary
+    - metadata
+    - resource_data
+    - size_and_length_restriction
+    - validation
+  stable_profiles: [xliff_2.0, xliff_2.1]
+  preview_profile: xliff_2.2_preview

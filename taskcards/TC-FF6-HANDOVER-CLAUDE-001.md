@@ -70,3 +70,27 @@ The packet remains a derived navigation and shift artifact. The fetched
 GitLab `origin/main` commit, native FF6 journal, controller, task index,
 current gaps, and taskcard supersede every earlier packet revision and the
 initial integration commit above.
+
+## Event-19 refresh checkpoint
+
+The packet was rebuilt from the remote-verified NRRD source checkpoint
+`865558bb88243acda08c2a8d58a0d5ec887dedeb`.
+
+- Native journal head:
+  `FF6-EVENT-000019` /
+  `76b580d72f865428e92bc5b6089a89487356c69163aadf6b615b70c6867221f8`.
+- `TC-FF6-NRRD-PROFILE-SURFACE-001` is `PASS`.
+- The current planning denominator is 110 capabilities and 672 obligations;
+  NRRD owns 21 capabilities and 65 exact-profile obligations.
+- All 15 predecessor authority records match.
+- No product, package, certification, promotion, release, or gate changed.
+- The exact successor is `TC-FF6-XLIFF-PROFILE-SURFACE-001` in `READY`.
+- The successor must first acquire a separately pinned official XLIFF 2.0
+  Standard package; the existing XLIFF 2.1 authority cannot stand in for it.
+- Core and all six XLIFF 2.1 modules must receive separate, exact normative
+  capability ownership. XLIFF 2.2 is preview-only and XLIFF 1.2 is outside the
+  2.x model.
+
+This refresh replaces every event-18/NRRD-as-next statement in the packet,
+recomputes normalized hashes, and preserves the same provider-neutral,
+GitLab-main-only, atomic-shift contract.

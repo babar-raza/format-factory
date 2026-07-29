@@ -28,23 +28,23 @@ budget are not operational authority.
 ## Current transfer boundary
 
 - Required source ancestor before this packet:
-  `02574f2d66bf5b69e0712ce312bd2c41047659fb`.
+  `865558bb88243acda08c2a8d58a0d5ec887dedeb`.
 - Use the fetched `origin/main` descendant containing this packet.
 - Controller state: `CONTRACT`.
-- Event: `FF6-EVENT-000018`.
+- Event: `FF6-EVENT-000019`.
 - Event hash:
-  `73b0f6074d13cae4c519176bf34908d2906653e831adc7d6dc1934310ec38362`.
-- Completed task: `TC-FF6-ORA-PROFILE-SURFACE-001` - `PASS`.
-- Next task: `TC-FF6-NRRD-PROFILE-SURFACE-001` - `READY`.
+  `76b580d72f865428e92bc5b6089a89487356c69163aadf6b615b70c6867221f8`.
+- Completed task: `TC-FF6-NRRD-PROFILE-SURFACE-001` - `PASS`.
+- Next task: `TC-FF6-XLIFF-PROFILE-SURFACE-001` - `READY`.
 - Product promotion: none.
 
 ## Incoming provider procedure
 
 1. Fetch `origin/main`; do not use GitHub or a provider branch.
-2. Verify `02574f2d66bf5b69e0712ce312bd2c41047659fb` is an ancestor.
+2. Verify `865558bb88243acda08c2a8d58a0d5ec887dedeb` is an ancestor.
 3. Verify the worktree is clean before new mutation.
 4. Read the ordered authority list in `START-HERE.md`.
-5. Validate the journal through event 18 using FF6 native semantics:
+5. Validate the journal through event 19 using FF6 native semantics:
    `previous_event_hash`, canonical JSON, sequential event IDs and hashes.
 6. Verify controller head, parent/child task states, task index, current gaps,
    authority 15/15 match, and capability manifest digests.
@@ -55,7 +55,9 @@ budget are not operational authority.
     directories, transcript, and artifact directory.
 11. Resolve the required registered skills and run the mutation guard.
 12. Capture input baselines before writing.
-13. Begin NRD-01 in `STATE-MACHINE-AND-TASKCARD-PROTOCOL.md`.
+13. Begin XLF-01 in `STATE-MACHINE-AND-TASKCARD-PROTOCOL.md`, then close the
+    missing official XLIFF 2.0 authority prerequisite in XLF-02 before making
+    any 2.0 claim.
 
 Claude's hooks may auto-claim single files, but broad generated output sets
 still require explicit claims. Codex follows the CLI protocol in
@@ -180,7 +182,7 @@ print(f"PASS events={len(events)} head={previous}")
 currently fails at event 1 because it expects `previous_hash`. FF6 uses
 `previous_event_hash` under `ff6/controller-event@1`.
 
-This is `FF6-GAP-011`, not evidence that event 18 is corrupt. Validate the FF6
+This is `FF6-GAP-011`, not evidence that event 19 is corrupt. Validate the FF6
 native chain and do not edit either journal schema ad hoc.
 
 ## Transfer acceptance

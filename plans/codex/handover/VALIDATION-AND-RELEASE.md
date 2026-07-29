@@ -22,27 +22,32 @@ fixtures are never sufficient evidence.
 
 ## Current evidence boundary
 
-Events 16 through 18 prove:
+Events 16 through 19 prove:
 
 - 15 of 15 locked authorities live-match;
 - strict six-format ProductContract compilation;
-- deterministic 104-capability/701-obligation planning projections;
+- deterministic 110-capability/672-obligation planning projections;
 - clean offline and clean online authority replay;
 - three identical strict generation runs;
 - authority-closure affected pytest `250 passed, 1 known baseline test
   deselected`;
 - OpenRaster affected pytest `166 passed, 1 known baseline test deselected`;
 - Event-18 affected pytest `126 passed, 1 known baseline test deselected`;
+- Event-19 NRRD verification: 92 format-contract tests passed with 1
+  baseline-known stateful CSV idempotency test deselected, 96 affected tests
+  passed, and 119 authority dependency-closure tests passed;
 - Ruff passed; strict mypy passed on the new family-pack validator; the legacy
   compiler graph is not claimed strict-clean; Pyright 1.1.411 passed on all
   three affected compiler modules;
 - OpenRaster exact SAL verification `20/20`;
 - IPYNB exact SAL verification `25/25`;
-- native FF6 event chain passes through event 18.
+- NRRD exact SAL verification `25/25`, 18-domain/41-policy explicit-complete
+  family ownership, and all five profiles claimed;
+- native FF6 event chain passes through event 19.
 
 It does not prove:
 
-- implementation of any of the 701 obligations merely from contract proof;
+- implementation of any of the 672 obligations merely from contract proof;
 - production readiness of any library;
 - independent application interoperability;
 - installed-wheel platform/dependency matrices;
@@ -84,9 +89,9 @@ named interoperability certification, not universal conformance.
 - affected contract, SAL, capability, event and static gates;
 - no product source, product test, certification, gate, or promotion change.
 
-## Current NRRD contract-task gate
+## Completed NRRD contract-task gate
 
-`TC-FF6-NRRD-PROFILE-SURFACE-001` requires:
+`TC-FF6-NRRD-PROFILE-SURFACE-001` passed at event 19 with:
 
 - source-located NRRD0001-NRRD0005 deltas from both pinned Teem authorities;
 - exact fact/evidence edges, explicit uncertainty, and complete ownership;
@@ -98,6 +103,32 @@ named interoperability certification, not universal conformance.
 - every capability and obligation assigned a non-empty exact profile subset;
 - all five target profiles claimed and no `FF6-NRRD-PROFILE-001` finding;
 - three identical strict runs with 15/15 authorities still matching;
+- a governed source repair separating NRRD0004 coordinate transforms from
+  NRRD0005 measurement-frame semantics;
+- an explicit record that Teem's permissive later-field parsing under earlier
+  magic is interoperability behavior, not strict conformance;
+- no product source, product test, certification, gate, or promotion change.
+
+## Current XLIFF contract-task gate
+
+`TC-FF6-XLIFF-PROFILE-SURFACE-001` requires:
+
+- independent acquisition, digest verification, legal classification, lock,
+  and clean offline reconstruction of the official XLIFF 2.0 Standard package;
+- source-located XLIFF 2.0/2.1 Core and module deltas;
+- complete semantic obligations for hierarchy, inline pairing/order,
+  segmentation, state, original data, skeletons, extensions, ITS mappings,
+  validation, canonical XML, security, and normative agent processing;
+- separate production capability ownership for Matches, Glossary, Metadata,
+  Resource Data, Size and Length Restriction, and Validation modules;
+- exact profile subsets on every capability and obligation, with 2.1-only
+  rules excluded from 2.0;
+- XLIFF 2.2 absent or isolated preview-only, and XLIFF 1.2 outside the 2.x
+  model;
+- negative controls for missing module ownership, cross-profile
+  contamination, malformed identity, and preview leakage;
+- three identical strict runs and complete authority matches after the 2.0
+  authority record is added;
 - no product source, product test, certification, gate, or promotion change.
 
 ## Required proof for each mandatory obligation

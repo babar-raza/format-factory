@@ -27,14 +27,17 @@ provider-local artifacts as authority.
 3. Validate `CURRENT-MACHINE-STATE.yaml` against live tracked state rather than
    trusting its labels.
 4. Require:
-   - controller `CONTRACT`, sequence 18;
-   - event `FF6-EVENT-000018`, hash
-     `73b0f6074d13cae4c519176bf34908d2906653e831adc7d6dc1934310ec38362`;
+   - source checkpoint
+     `865558bb88243acda08c2a8d58a0d5ec887dedeb` is an ancestor of fetched
+     `origin/main`;
+   - controller `CONTRACT`, sequence 19;
+   - event `FF6-EVENT-000019`, hash
+     `76b580d72f865428e92bc5b6089a89487356c69163aadf6b615b70c6867221f8`;
    - parent `TC-FF6-PROGRAM-CAPABILITIES-001` in `NEEDS_REPAIR`;
-   - `TC-FF6-IPYNB-PROFILE-SURFACE-001` in `PASS`;
-   - `TC-FF6-NRRD-PROFILE-SURFACE-001` in `READY`;
-   - 104 capabilities, 701 obligations, and aggregate
-     `e0747efbf376f081fd6550afed48100c7e1872a055bf6155332ed9358ac05b5f`;
+   - `TC-FF6-NRRD-PROFILE-SURFACE-001` in `PASS`;
+   - `TC-FF6-XLIFF-PROFILE-SURFACE-001` in `READY`;
+   - 110 capabilities, 672 obligations, and aggregate
+     `4d17d8c8c0ef3de74d59e1d5b16884c0210fd0836e0593591871f10d0af2efd2`;
    - 15/15 authority artifacts `MATCH`;
    - zero product certifications and no promotion.
 5. Validate the native FF6 chain with `previous_event_hash`. The generic Plan
@@ -45,23 +48,28 @@ provider-local artifacts as authority.
 
 ## Execute exactly this task
 
-Execute `taskcards/TC-FF6-NRRD-PROFILE-SURFACE-001.md` through its registered
-SAL, contract, capability-compiler, taskcard, and controller skills.
+Execute `taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md` through its registered
+authority-acquisition, SAL, family, research, contract,
+capability-compiler, taskcard, and controller skills.
 
 Required result:
 
-- source-located NRRD0001, NRRD0002, NRRD0003, NRRD0004, and NRRD0005 delta matrix;
-- exact profile applicability on every NRRD capability and obligation;
-- capability splits wherever one current capability mixes version scopes;
-- stable ownership of every `SAL-NRRD-OBL-*` rule;
-- preserved attached/detached payloads, scalar/block types, endian and
-  dimension rules, spatial/orientation/measurement-frame/axis metadata,
-  comments and key/value pairs, raw/ASCII/hex/gzip/bzip2 encodings,
-  data-file lists/patterns, streaming/memory mapping, raw-header fidelity,
-  normalized typed access, deterministic writing, and resource protections;
-- `FF6-NRRD-PROFILE-001` removed only by compiled evidence;
+- official XLIFF 2.0 OASIS Standard package independently digest-checked,
+  legally classified, locked, and clean-offline reconstructible;
+- source-located XLIFF 2.0/2.1 Core and official-module delta matrices;
+- exact profile applicability on every XLIFF capability and obligation;
+- separate first-class capability ownership for Matches, Glossary, Metadata,
+  Resource Data, Size and Length Restriction, and Validation;
+- semantic obligations for inline pairing/order/nesting/isolation,
+  segmentation/re-segmentation, state/sub-state, original data, skeletons,
+  extensions, ITS mappings, deterministic canonical XML, security, resource
+  limits, downgrade-loss reporting, and normative agent processing;
+- stable ownership of every `SAL-XLIFF-OBL-*` rule;
+- XLIFF 2.2 absent or isolated preview-only and XLIFF 1.2 kept outside the 2.x
+  model;
+- `FF6-XLIFF-PROFILE-001` removed only by compiled evidence;
 - all six projections regenerated three byte-identical times;
-- 15/15 authorities still match;
+- every authority record, including the new XLIFF 2.0 record, matches;
 - task, gap, controller, event, and handover projections reconciled;
 - no product, package, gate, certification, or promotion mutation.
 
@@ -83,9 +91,11 @@ Required result:
 ## Forbidden
 
 - product source or product tests during the current task;
-- authority-lock recreation;
+- ad hoc authority-lock recreation or a 2.0 claim derived from 2.1 bytes;
 - status/policy edits that suppress failed evidence;
-- weakening detached-resource or resource-exhaustion safety;
+- collapsing modules into a generic support claim or treating XSD validity as
+  semantic/processing support;
+- weakening XML external-resource or resource-exhaustion safety;
 - self-certification or gate approval;
 - stash, reset, restore, clean, checkout-discard, broad add, or another
   provider's lease release;

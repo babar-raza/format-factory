@@ -6,12 +6,12 @@ publish_allowed: false
 generated_by: codex
 generated_at: 2026-07-29
 authoritative_state: false
-canonical_event: FF6-EVENT-000018
+canonical_event: FF6-EVENT-000019
 ---
 
-# Active Work Checkpoint: NRRD Profile Applicability
+# Active Work Checkpoint: XLIFF Stable Profiles and Modules
 
-This is the provider-neutral shift boundary after the IPYNB contract
+This is the provider-neutral shift boundary after the NRRD contract
 repair. Canonical authority remains the controller, event journal, current-gap
 projection, and taskcards; this document explains how to resume them.
 
@@ -22,12 +22,12 @@ projection, and taskcards; this document explains how to resume them.
 | Mission | `FF6-PRODUCTION-LIBRARIES-001` |
 | Forge and branch | GitLab `origin/main` only |
 | Controller state | `CONTRACT` |
-| Controller sequence | `18` |
-| Event head | `73b0f6074d13cae4c519176bf34908d2906653e831adc7d6dc1934310ec38362` |
+| Controller sequence | `19` |
+| Event head | `76b580d72f865428e92bc5b6089a89487356c69163aadf6b615b70c6867221f8` |
 | Parent task | `TC-FF6-PROGRAM-CAPABILITIES-001` - `NEEDS_REPAIR` |
-| Completed task | `TC-FF6-IPYNB-PROFILE-SURFACE-001` - `PASS` |
-| Exact next task | `TC-FF6-NRRD-PROFILE-SURFACE-001` - `READY` |
-| Selected finding | `FF6-NRRD-PROFILE-001` |
+| Completed task | `TC-FF6-NRRD-PROFILE-SURFACE-001` - `PASS` |
+| Exact next task | `TC-FF6-XLIFF-PROFILE-SURFACE-001` - `READY` |
+| Selected finding | `FF6-XLIFF-PROFILE-001` |
 | Product source mutation | Prohibited |
 | Promotion effect | None |
 | Certified libraries | 0 of 6 |
@@ -61,78 +61,97 @@ projection, and taskcards; this document explains how to resume them.
   IPYNB facts. Cell names cover 4.0-4.5; notebook title/authors and name
   uniqueness begin in 4.2; hidden metadata begins in 4.3; execution timing in
   4.4; cell IDs in 4.5.
-- Notebook execution remains `EXCLUDED_WITH_AUTHORITY`. Event 18 closes only
+- Notebook execution remains `EXCLUDED_WITH_AUTHORITY`. Event 18 closed only
   the IPYNB contract/profile defect; it does not certify the existing product.
+- Event 19 compiles the exact NRRD0001-NRRD0005 delta: key/value metadata
+  begins in 0002, kinds in 0003, space/orientation and multi-file behavior in
+  0004, and measurement frame in 0005.
+- All 25 NRRD SAL facts pass exact evidence. Eighteen scientific-raster
+  domains and 41 policy IDs assign every fact exactly once.
+- The governed research source was repaired where one requirement mixed
+  NRRD0004 coordinate transforms with NRRD0005 measurement-frame semantics.
+- NRRD now has 21 capabilities and 65 obligations with exact non-empty
+  profile subsets. All five profiles are claimed and the live profile gap is
+  resolved.
+- Teem's permissive acceptance of later fields under earlier magic remains an
+  explicit interoperability peculiarity, not a weakened strict contract.
+- Event 19 proves only the NRRD normative denominator and deterministic
+  projection. It does not certify the existing product.
 
 ## Current compiled planning state
 
 | Measure | Value |
 |---|---:|
-| Capabilities | 104 |
+| Capabilities | 110 |
 | IPYNB obligations | 68 |
 | OpenRaster obligations | 134 |
-| NRRD obligations | 94 |
+| NRRD obligations | 65 |
 | XLIFF obligations | 125 |
 | SafeTensors obligations | 86 |
 | UBL obligations | 194 |
-| Total obligations | 701 |
-| Aggregate SHA-256 | `e0747efbf376f081fd6550afed48100c7e1872a055bf6155332ed9358ac05b5f` |
-| Three-run digest | `dc33648ffa8f8b676de98f7b145dc2180630d5c470148ca0f46b13ec1492b554` |
+| Total obligations | 672 |
+| Aggregate SHA-256 | `4d17d8c8c0ef3de74d59e1d5b16884c0210fd0836e0593591871f10d0af2efd2` |
+| Three-run digest | `389be84634941d3f244387bbc488c2303dcdb3add74b7d1edfb5def85710d3fc` |
 | Authority matches | 15/15 |
 | Product certifications | 0 |
 
-The portfolio remains `NEEDS_PROFILE_OR_SURFACE_REPAIR` because
-NRRD0001-NRRD0004, XLIFF 2.0, and UBL full-typing gaps remain.
+The portfolio remains `NEEDS_PROFILE_OR_SURFACE_REPAIR` because exact XLIFF
+2.0/2.1 module applicability and UBL all-root typing remain.
 
 ## Verification boundary
 
-- `tests/format_contract`, the capability compiler tests, and the SAL verifier:
-  126 passed; the baseline-known CSV idempotency test was deselected because it
-  mutates three unrelated tracked reports before exposing its pre-existing
-  gap-ledger mismatch.
+- NRRD format-contract tests: 92 passed; one baseline-known stateful CSV
+  idempotency test was deselected.
+- Affected verifier/compiler/controller tests: 96 passed.
+- Authority dependency-closure tests: 119 passed.
 - Ruff: pass.
-- Strict mypy for the new family-pack validator: pass. The legacy contract
-  compiler import graph is not strict-mypy-clean and is not claimed as passed.
-- Pyright 1.1.411 on all three affected compiler modules: zero errors.
-- Family-pack validation: 22 domains, explicit-complete fact ownership,
-  valid, idempotent.
-- IPYNB SAL exact verification: 25/25 pass.
+- Strict Mypy for the touched family-pack validator: pass after adding
+  `types-PyYAML 6.0.12.20260724` to the ignored environment. No
+  repository-wide Mypy result is claimed.
+- Pyright 1.1.411: zero diagnostics.
+- NRRD family-pack validation: 18 domains, 41 policy IDs,
+  explicit-complete fact ownership, valid, idempotent.
+- NRRD SAL exact verification: 25/25 pass.
 - Three strict six-format compilations: byte-identical.
 - Authority audit: 15/15 match.
+- Global SAL merge remains non-promoting because of pre-existing ODS/ODT alias
+  contradictions. The NRRD cache content was verified and all attempted alias
+  side effects were removed.
 
 ## Exact resume procedure
 
 1. Read `START-HERE.md`, `CURRENT-MACHINE-STATE.yaml`, `AGENTS.md`, and the
    provider adapter in their declared order.
 2. Fetch GitLab `origin/main`; do not use GitHub or create a branch.
-3. Require `50c2fd0610a1028ee08e2fdb0ef91494159af559` to be an ancestor of
+3. Require `865558bb88243acda08c2a8d58a0d5ec887dedeb` to be an ancestor of
    fetched `origin/main`.
 4. Require a clean or fully classified shared worktree.
 5. Register a fresh coordination identity and inspect live leases/conflicts.
-6. Validate event 18 natively using `previous_event_hash` and canonical JSON
+6. Validate event 19 natively using `previous_event_hash` and canonical JSON
    with `event_hash` removed.
 7. Verify the controller names
-   `TC-FF6-NRRD-PROFILE-SURFACE-001` as `READY`.
-8. Read that taskcard, the product goal, current gaps, capability policy, NRRD
-   contract/SAL/evidence/enrichment, and both pinned NRRD authorities.
+   `TC-FF6-XLIFF-PROFILE-SURFACE-001` as `READY`.
+8. Read that taskcard, the product goal, current gaps, capability policy,
+   XLIFF contract/SAL/evidence/enrichment, the pinned 2.1 package, and the
+   authority lock showing that a separate 2.0 package is absent.
 9. Claim exact paths, resolve registered skills, and run the mutation guard
    before every write.
-10. Execute the atomic steps NRD-01 through NRD-08 in
+10. Execute the atomic steps XLF-01 through XLF-08 in
     `STATE-MACHINE-AND-TASKCARD-PROTOCOL.md`.
-11. Produce a source-located NRRD0001-NRRD0005 delta matrix.
-12. Split capabilities where rules have different minor-version
-    applicability; never assign all rules to 4.5 merely because the newest
-    schema contains them.
-13. Preserve attached/detached payloads, data types/endian/dimensions,
-    spatial and axis metadata, all required encodings, data-file lists and
-    patterns, streaming/memory mapping conditions, high-fidelity headers,
-    deterministic writing, and resource/path protections.
-14. Recompile all six projections and require three identical runs plus 15/15
-    authority matches.
-15. Reconcile gaps/task/controller/event/handover, commit explicit owned paths,
+11. Acquire, independently digest-check, legally classify, lock, and prove
+    offline reconstruction of the official XLIFF 2.0 OASIS Standard package.
+12. Produce source-located 2.0/2.1 Core and module delta matrices.
+13. Split Matches, Glossary, Metadata, Resource Data, Size and Length
+    Restriction, and Validation into separately owned capability families.
+14. Preserve semantic inline pairing/order, segmentation, state, original
+    data, skeleton, extension, ITS, agent-processing, canonical XML, security,
+    and downgrade-loss obligations.
+15. Recompile all six projections and require three identical runs plus a
+    complete authority match after adding the 2.0 record.
+16. Reconcile gaps/task/controller/event/handover, commit explicit owned paths,
     and push only GitLab `origin/main`.
 
-If the provider shift ends before NRD-08, only stop after the current atomic
+If the provider shift ends before XLF-08, only stop after the current atomic
 step is integration-safe. Journal the completed steps and first unmet step as
 `WORK_IN_PROGRESS`, refresh this packet, commit, push, and verify the remote.
 Never leave a required result only in conversation or an uncommitted tree.
@@ -141,7 +160,7 @@ Never leave a required result only in conversation or an uncommitted tree.
 
 This checkpoint does not mean:
 
-- any of the 701 obligations is implemented merely by this contract work;
+- any of the 672 obligations is implemented merely by this contract work;
 - any current source package is production-ready;
 - any format has independent interoperability certification;
 - the broad cross-platform installed-wheel matrix is current;
@@ -152,7 +171,7 @@ Only digest-bound executed behavior can move those states.
 
 ## Outgoing self-challenge
 
-The event-18 executor recorded the required governance challenge at the shift
+The event-19 executor recorded the required governance challenge at the shift
 boundary:
 
 1. Required contract-task steps performed: yes.

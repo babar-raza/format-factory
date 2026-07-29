@@ -138,29 +138,30 @@ claim evidence not yet executed.
 
 ## Current task decomposition
 
-Task: `TC-FF6-NRRD-PROFILE-SURFACE-001`.
+Task: `TC-FF6-XLIFF-PROFILE-SURFACE-001`.
 
 | Step | Required output | Exit test |
 |---|---|---|
-| NRD-01 | event 18, task, NRRD authorities and worktree preflight | native chain, controller/task agreement, 15/15 authority match |
-| NRD-02 | source-located NRRD0001-NRRD0005 delta matrix | every introduction/change has source ID, location, confidence and profile set |
-| NRD-03 | audited NRRD SAL fact/evidence map | exact verifier passes; no dangling, duplicate, foreign, or unassigned edge |
-| NRD-04 | explicit-complete, profile-homogeneous capability model | mixed-version capabilities split; all five target profiles covered |
-| NRD-05 | regenerated NRRD contract and obligation projection | every capability/obligation has non-empty exact profile subset |
-| NRD-06 | strict six-format replay | three byte-identical runs; aggregate recomputed; 15/15 authorities match |
-| NRD-07 | close projection | NRRD gap removed by evidence; XLIFF/UBL gaps retained; no product promotion |
-| NRD-08 | remote checkpoint | explicit files committed and pushed to GitLab main; remote hash verified; packet refreshed |
+| XLF-01 | event 19, task/index/controller, authority and worktree preflight | native chain, exact READY task, clean or classified tree, 15/15 predecessor authority match |
+| XLF-02 | official XLIFF 2.0 authority record and local CAS materialization | independent digest, legal record, clean offline reconstruction, no 2.1-as-2.0 proxy |
+| XLF-03 | source-located 2.0/2.1 Core and module delta matrix | every requirement has source/member/location, profile set, Core/module owner, confidence, and contradiction note |
+| XLF-04 | complete Core SAL and processing-requirement map | exact verifier passes; inline, segmentation, state, extension, skeleton, ITS, and agent rules are not reduced to XSD validity |
+| XLF-05 | separately owned Matches, Glossary, Metadata, Resource Data, Size/Length, and Validation families | each module has typed-model, read/write, validation, preservation, rejection, and proof obligations |
+| XLF-06 | repaired research/family/enrichment layers | mixed-profile requirements split; explicit-complete ownership; no keyword duplication |
+| XLF-07 | exact stable and preview projections | both stable profiles claimed; 2.1-only rules excluded from 2.0; 2.2 preview isolated; 1.2 outside model |
+| XLF-08 | replay, close, and remote checkpoint | negative controls, three identical runs, all authorities match, event/controller/task/handover committed and remote-verified |
 
-Product source and product tests are forbidden in NRD-01 through NRD-08.
+Product source and product tests are forbidden in XLF-01 through XLF-08.
 
-NRD-02 through NRD-05 must explicitly cover attached and detached payloads,
-scalar and block types, endian/dimension rules, spatial/orientation/
-measurement-frame/axis metadata, comments, key/value pairs, raw/ASCII/hex/
-gzip/bzip2 encodings, single files, lists and filename patterns. Streaming and
-memory mapping apply only where representation permits. Traversal, allocation,
-overflow, decompression, truncation and payload-size controls remain mandatory
-product requirements; contract work may classify them but cannot count them as
-implemented.
+XLF-03 through XLF-07 must explicitly cover files, groups, units, segments,
+ignorable content, notes, original data, skeleton references, extension
+points, inline identity/pairing/nesting/order/isolation, language and direction
+inheritance, state/sub-state, segmentation and re-segmentation, Core and module
+processing requirements, namespace-aware preservation, deterministic
+canonical XML, downgrade-loss reporting, XML security, resource limits, and
+all six official 2.1 modules. Preservation-only content is not modeled module
+support. Schema validity is necessary but cannot satisfy semantic or agent
+processing obligations.
 
 ## Shift checkpoint state
 

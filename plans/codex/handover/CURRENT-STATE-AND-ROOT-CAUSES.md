@@ -14,13 +14,14 @@ authoritative_state: false
 
 The FF6 mission has a durable goal, deterministic contract compiler, locked
 authority dependency plane, hash-chained controller, current gap projection,
-and a provider-neutral resume protocol. Authority closure passed at event 16
+and a provider-neutral resume protocol. Authority closure passed at event 16,
 the OpenRaster profile/surface contract repair passed at event 17, and the
-IPYNB nbformat 4.0-4.5 profile repair passed at event 18.
+IPYNB nbformat 4.0-4.5 profile repair passed at event 18. Exact
+NRRD0001-NRRD0005 applicability passed at event 19.
 
 It does not yet have a production-ready library. Five formats have existing
 implementation footholds of uneven depth. OpenRaster has no product package.
-All 701 compiled obligations are planning requirements, not verified behavior.
+All 672 compiled obligations are planning requirements, not verified behavior.
 All six promotion states are `UNASSESSED`.
 
 ## Product depth actually present
@@ -29,14 +30,14 @@ All six promotion states are `UNASSESSED`.
 |---|---|---|
 | IPYNB | Typed notebook/cell/output models, codec, validation, conversion, cleanup, trust inspection and editing; exact 4.0-4.5 contract surface now compiled | Independent oracle depth, installed-wheel and matrix proof, architecture cleanup, complete obligation execution |
 | OpenRaster | Three locked authorities, 20 exact SAL facts, dedicated layered-raster family, 20 capabilities and 134 profile-scoped obligations | Entire product package, corpus, application interoperability, rendering implementation, security implementation, package and certification proof |
-| NRRD | Header/payload codec, attached/detached entry points, encodings, preservation and limits | Complete profile applicability, stronger typed spatial model, streaming/mmap proof, Teem and pynrrd differential depth, package/certification proof |
-| XLIFF | Core model, inline editing, segmentation/state helpers and preservation | Full 2.0/2.1 core and every 2.1 module, processing requirements, schemas/oracles, package/certification proof |
+| NRRD | Header/payload codec, attached/detached entry points, encodings, preservation and limits; exact five-profile contract now compiled | Stronger typed spatial model, streaming/mmap proof, Teem and pynrrd differential depth, package/certification proof |
+| XLIFF | Core model, inline editing, segmentation/state helpers and preservation | Separately pinned 2.0 authority, full 2.0/2.1 Core, six separately modeled 2.1 modules, processing requirements, schemas/oracles, package/certification proof |
 | SafeTensors | Typed descriptors, strict layout checks, mmap/region access, writer and adapters | Full dtype/edge/sharded coverage, upstream differential corpus, co-installation and multi-platform package proof |
 | UBL | 91 root subclasses, ordered generic XML model, extensions and signature handling | Fully schema-typed common components, cardinality/order API, reproducible generator proof, all-root examples, independent XSD engine and package proof |
 
 These statements describe observed code breadth, not certification.
 
-## What events 16 through 18 added
+## What events 16 through 19 added
 
 - Event 16: one canonical 15-source authority lock; legal, locator, digest,
   cache, and materialization policy; content-addressed online/offline replay;
@@ -54,6 +55,14 @@ These statements describe observed code breadth, not certification.
   profiles for names, document metadata, hidden metadata, execution timing
   and cell IDs; retained no-execution exclusion; and deterministic
   six-format replay.
+- Event 19: a source-located NRRD0001-NRRD0005 delta; 25/25 exact SAL facts;
+  18 scientific-raster domains and 41 policy IDs with explicit-complete
+  ownership; a governed repair to a requirement that mixed NRRD0004 transforms
+  and NRRD0005 measurement frame; 21 profile-homogeneous capabilities; 65
+  obligations; all five profiles claimed; and deterministic six-format
+  replay. Teem's permissive later-field parsing under earlier magic is retained
+  as an interoperability peculiarity rather than normalized into strict
+  conformance.
 
 This removes a major rerun-consistency failure: `ACQUIRED` can no longer
 survive as promoting evidence when the locked bytes are absent or changed.
@@ -62,20 +71,20 @@ event implements product behavior.
 
 ## Current compiled denominator
 
-The planning inventory contains 104 capabilities and 701 obligations:
+The planning inventory contains 110 capabilities and 672 obligations:
 
 - IPYNB: 68
 - OpenRaster: 134
-- NRRD: 94
+- NRRD: 65
 - XLIFF: 125
 - SafeTensors: 86
 - UBL: 194
 
 Assessment remains `NEEDS_PROFILE_OR_SURFACE_REPAIR`. The compiler currently
-reports profile/surface follow-ups for NRRD, XLIFF, and UBL.
+reports profile/surface follow-ups for XLIFF and UBL.
 Counts cannot hide a mandatory missing profile or format surface.
 
-The assessment file `current-state.yaml` predates event 18. Its product source
+The assessment file `current-state.yaml` predates event 19. Its product source
 tree inventory is still useful because the five tracked product trees have not
 changed at the source checkpoint, but its old contract hashes and 89/636
 planning denominator are historical. This distinction is now machine-recorded
@@ -94,6 +103,9 @@ in `CURRENT-MACHINE-STATE.yaml`.
    committed, journaled, and remote-verified.
 9. Generic Plan Control rejects the FF6 event schema.
 10. Shared worktrees and mutable ignored inputs can alter reruns.
+11. XLIFF 2.0 claims exist in prose/SAL wording without a separately pinned
+    2.0 Standard package, and six normative 2.1 modules are collapsed into one
+    broad capability.
 
 ## Root causes
 
@@ -168,15 +180,15 @@ plus controller, journal, taskcard, proof digests, and coordination ownership.
 
 ## Immediate repair order
 
-1. NRRD0001-NRRD0005 exact profile applicability.
-2. XLIFF 2.0/2.1 applicability and isolated 2.2 preview semantics.
-3. UBL all-root/common-component typing contract.
-4. Production package chassis and architecture only after contract readiness.
-5. SafeTensors and IPYNB implementation/certification waves.
-6. NRRD and OpenRaster implementation/certification waves.
-7. XLIFF full vocabulary and processing semantics.
-8. UBL generator and all-root typed certification.
-9. Repository extraction, reproducible packaging, SBOM, provenance, and
+1. XLIFF 2.0 authority closure; exact 2.0/2.1 Core and per-module
+   applicability; isolated 2.2 preview semantics.
+2. UBL all-root/common-component typing contract.
+3. Production package chassis and architecture only after contract readiness.
+4. SafeTensors and IPYNB implementation/certification waves.
+5. NRRD and OpenRaster implementation/certification waves.
+6. XLIFF full vocabulary and processing semantics.
+7. UBL generator and all-root typed certification.
+8. Repository extraction, reproducible packaging, SBOM, provenance, and
    release preparation.
 
 The controller, not this prose ordering alone, selects each exact task.
@@ -202,11 +214,12 @@ The controller, not this prose ordering alone, selects each exact task.
 
 ## Confidence boundary
 
-Confidence is high in the authority closure, OpenRaster and IPYNB contract
-repairs, and deterministic projections because clean replay and digest-bound
-tests exist.
+Confidence is high in the predecessor authority closure, OpenRaster, IPYNB,
+and NRRD contract repairs, and deterministic projections because clean replay
+and digest-bound tests exist.
 Confidence is moderate in the observed implementation footholds because the
 product source trees are unchanged from the baseline snapshot but no current
 production certification binds their complete package/environment closure.
-Confidence is low that the 701-obligation denominator is final until NRRD,
-XLIFF, and UBL repairs pass. No stronger claim is justified.
+Confidence is low that the 672-obligation denominator is final until XLIFF and
+UBL repairs pass. In particular, XLIFF currently lacks a separate 2.0 authority
+lock and has a shallow single module bucket. No stronger claim is justified.
