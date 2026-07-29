@@ -65,6 +65,12 @@ def _write_archive(
     if profile == "xliff_2.0":
         prose = _docbook(
             ("core", "The Core Specification"),
+            ("xliff", "XLIFF Document Structure"),
+            ("skeleton", "Skeleton"),
+            ("inlineCodes", "Inline Codes"),
+            ("segmentation", "Segmentation"),
+            ("state", "State"),
+            ("extensions", "Extension Mechanisms"),
             ("candidates", "Translation Candidates Module"),
             ("glossary-module", "Glossary Module"),
             ("fs-mod", "Format Style Module"),
@@ -90,6 +96,12 @@ def _write_archive(
     else:
         prose = _docbook(
             ("core", "The Core Specification"),
+            ("xliff", "XLIFF Document Structure"),
+            ("skeleton", "Skeleton"),
+            ("inlineCodes", "Inline Codes"),
+            ("segmentation", "Segmentation"),
+            ("state", "State"),
+            ("extensions", "Extension Mechanisms"),
             ("candidates", "Translation Candidates Module"),
             ("glossary-module", "Glossary Module"),
             ("fs-mod", "Format Style Module"),
@@ -238,3 +250,348 @@ def test_matrix_write_and_check_are_byte_deterministic(tmp_path: Path) -> None:
     output.write_text("schema: stale\n", encoding="utf-8")
     with pytest.raises(extractor.MatrixDriftError, match="matrix output drift"):
         extractor.check_matrix(matrix, output)
+
+
+def test_cli_writes_and_checks_default_xliff_matrix(tmp_path: Path) -> None:
+    extractor = _load_module()
+    path20 = tmp_path / "xliff-20.zip"
+    path21 = tmp_path / "xliff-21.zip"
+    output = tmp_path / "xliff-normative-delta-matrix.yaml"
+    sha20 = _write_archive(
+        path20, profile="xliff_2.0", prose_member="xliff-core-v2.0-os.xml"
+    )
+    sha21 = _write_archive(
+        path21, profile="xliff_2.1", prose_member="xliff-core-v2.1-os.xml"
+    )
+    args = [
+        "--format-id",
+        "xliff",
+        "--source-20",
+        str(path20),
+        "--source-20-id",
+        "SRC-XLF-001",
+        "--source-20-sha256",
+        sha20,
+        "--source-21",
+        str(path21),
+        "--source-21-id",
+        "SRC-XLF-002",
+        "--source-21-sha256",
+        sha21,
+        "--output",
+        str(output),
+    ]
+
+    assert extractor.main(args) == 0
+    matrix = yaml.safe_load(output.read_text(encoding="utf-8"))
+    assert matrix["profiles"]["xliff_2.0"]["module_count"] == 8
+    assert matrix["profiles"]["xliff_2.1"]["module_count"] == 8
+    assert matrix["profile_boundaries"]["xliff_2.2_preview"]["status"] == (
+        "AUTHORITY_ABSENT_NOT_COMPILED"
+    )
+    assert matrix["profile_boundaries"]["xliff_1.2"]["status"] == (
+        "EXCLUDED_SEPARATE_COMPATIBILITY_MODEL"
+    )
+    rows = matrix["normative_matrix"]
+    assert len(rows) >= 36
+    assert len({row["matrix_id"] for row in rows}) == len(rows)
+    owners = {row["owner"] for row in rows}
+    assert "core" in owners
+    assert {
+        "module:translation_candidates",
+        "module:glossary",
+        "module:format_style",
+        "module:metadata",
+        "module:resource_data",
+        "module:size_restriction",
+        "module:validation",
+        "module:its",
+    } <= owners
+    assert {
+        "COMMON_STABLE",
+        "NORMATIVE_MODULE",
+        "INFORMATIVE_EXTENSION",
+        "VALIDATION_LAYER",
+    } <= {row["requirement_class"] for row in rows}
+    assert extractor.main([*args, "--check"]) == 0
+
+
+def test_archive_dot_member_fails_closed_as_unsafe_path(tmp_path: Path) -> None:
+    extractor = _load_module()
+    archive_path = tmp_path / "unsafe-dot-member.zip"
+    with zipfile.ZipFile(archive_path, "w") as archive:
+        archive.writestr(".", b"not a safe authority member")
+    source = extractor.ProfileSource(
+        profile="xliff_2.0",
+        source_id="SRC-XLF-UNSAFE",
+        package_path=archive_path,
+        expected_sha256=hashlib.sha256(archive_path.read_bytes()).hexdigest(),
+        prose_member="xliff-core-v2.0-os.xml",
+    )
+
+    with pytest.raises(extractor.ExtractionError, match="unsafe member path"):
+        extractor._read_authority_archive(source)
+
+
+def test_external_doctype_is_rejected_before_xml_parsing() -> None:
+    extractor = _load_module()
+    xml = (
+        b'<!DOCTYPE article SYSTEM "file:///authority-escape.dtd">'
+        b"<article><section id=\"core\"><title>Core</title></section></article>"
+    )
+
+    with pytest.raises(extractor.ExtractionError, match="DOCTYPE"):
+        extractor._parse_xml(xml, location="SRC-XLF-UNSAFE:prose.xml")
+
+
+def test_digest_bound_docbook_prose_accepts_nonresolving_public_doctype() -> None:
+    extractor = _load_module()
+    xml = (
+        b'<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" '
+        b'"docbook/docbookx.dtd">'
+        b'<article><section id="core"><title>Core</title>'
+        b"<para>Normative Core surface.</para></section></article>"
+    )
+
+    rows = extractor._section_inventory(
+        xml,
+        source_id="SRC-XLF-PINNED",
+        source_sha256="1" * 64,
+        member="xliff-core.xml",
+    )
+
+    assert len(rows) == 1
+    assert rows[0]["section_id"] == "core"
+
+
+def test_docbook_inventory_ignores_entity_references_inside_comments() -> None:
+    extractor = _load_module()
+    xml = (
+        b'<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" '
+        b'"docbook/docbookx.dtd">'
+        b'<article><section id="core"><title>Core</title>'
+        b"<!-- disabled &undeclared; publishing text -->"
+        b"<para>Normative Core surface.</para></section></article>"
+    )
+
+    rows = extractor._section_inventory(
+        xml,
+        source_id="SRC-XLF-PINNED",
+        source_sha256="1" * 64,
+        member="xliff-core.xml",
+    )
+
+    assert len(rows) == 1
+    assert rows[0]["section_id"] == "core"
+
+
+def test_digest_bound_schematron_accepts_bounded_internal_entities() -> None:
+    extractor = _load_module()
+    schematron = (
+        b"<!DOCTYPE schematron ["
+        b'<!ENTITY version "2.1">'
+        b"]>"
+        b'<sch:schema xmlns:sch="http://purl.oclc.org/dsdl/schematron">'
+        b"<sch:pattern><sch:rule context=\"/\">"
+        b'<sch:assert test="true()">XLIFF &version;</sch:assert>'
+        b"</sch:rule></sch:pattern></sch:schema>"
+    )
+
+    inventory = extractor._schematron_inventory(
+        schematron,
+        location="SRC-XLF-PINNED:schemas/core.sch",
+    )
+
+    assert inventory["assert_count"] == 1
+    assert inventory["report_count"] == 0
+
+
+@pytest.mark.parametrize(
+    ("subset", "message"),
+    [
+        (
+            b'<!ENTITY leak SYSTEM "file:///authority-escape.txt">',
+            "unsupported DTD declaration",
+        ),
+        (
+            b'<!ENTITY first "&second;"><!ENTITY second "&first;">',
+            "recursive entity expansion",
+        ),
+        (
+            b'<!ENTITY oversized "' + b"x" * 4097 + b'">',
+            "exceeds the limit",
+        ),
+    ],
+)
+def test_schematron_rejects_external_recursive_and_oversized_entities(
+    subset: bytes,
+    message: str,
+) -> None:
+    extractor = _load_module()
+    schematron = (
+        b"<!DOCTYPE schematron ["
+        + subset
+        + b"]>"
+        + b'<sch:schema xmlns:sch="http://purl.oclc.org/dsdl/schematron"/>'
+    )
+
+    with pytest.raises(extractor.ExtractionError, match=message):
+        extractor._schematron_inventory(
+            schematron,
+            location="SRC-XLF-UNSAFE:schemas/core.sch",
+        )
+
+
+def test_authority_archive_digest_mismatch_is_rejected(tmp_path: Path) -> None:
+    extractor = _load_module()
+    archive_path = tmp_path / "xliff-20.zip"
+    _write_archive(
+        archive_path,
+        profile="xliff_2.0",
+        prose_member="xliff-core-v2.0-os.xml",
+    )
+    source = extractor.ProfileSource(
+        profile="xliff_2.0",
+        source_id="SRC-XLF-MISMATCH",
+        package_path=archive_path,
+        expected_sha256="0" * 64,
+        prose_member="xliff-core-v2.0-os.xml",
+    )
+
+    with pytest.raises(extractor.ExtractionError, match="digest mismatch"):
+        extractor._read_authority_archive(source)
+
+
+@pytest.mark.parametrize(
+    "member_names",
+    [
+        ("Schemas/Core.xsd", "schemas/core.xsd"),
+        ("../authority-escape.xml",),
+    ],
+)
+def test_duplicate_casefold_and_traversal_members_are_rejected(
+    tmp_path: Path,
+    member_names: tuple[str, ...],
+) -> None:
+    extractor = _load_module()
+    archive_path = tmp_path / "unsafe-members.zip"
+    with zipfile.ZipFile(archive_path, "w") as archive:
+        for member_name in member_names:
+            archive.writestr(member_name, b"unsafe")
+    source = extractor.ProfileSource(
+        profile="xliff_2.0",
+        source_id="SRC-XLF-UNSAFE",
+        package_path=archive_path,
+        expected_sha256=hashlib.sha256(archive_path.read_bytes()).hexdigest(),
+        prose_member="xliff-core-v2.0-os.xml",
+    )
+
+    with pytest.raises(
+        extractor.ExtractionError,
+        match="duplicate member names|unsafe member path",
+    ):
+        extractor._read_authority_archive(source)
+
+
+def test_entity_declaration_is_rejected_before_xml_parsing() -> None:
+    extractor = _load_module()
+    xml = (
+        b'<!DOCTYPE article [<!ENTITY escape SYSTEM "file:///authority.txt">]>'
+        b"<article>&escape;</article>"
+    )
+
+    with pytest.raises(extractor.ExtractionError, match="DOCTYPE"):
+        extractor._parse_xml(xml, location="SRC-XLF-UNSAFE:prose.xml")
+
+
+def test_missing_normative_module_schema_is_rejected(tmp_path: Path) -> None:
+    extractor = _load_module()
+    complete_path = tmp_path / "xliff-21-complete.zip"
+    incomplete_path = tmp_path / "xliff-21-missing-fs.zip"
+    _write_archive(
+        complete_path,
+        profile="xliff_2.1",
+        prose_member="xliff-core-v2.1-os.xml",
+    )
+    with (
+        zipfile.ZipFile(complete_path) as source_archive,
+        zipfile.ZipFile(
+            incomplete_path,
+            "w",
+            compression=zipfile.ZIP_DEFLATED,
+        ) as target_archive,
+    ):
+        for info in source_archive.infolist():
+            if info.filename != "schemas/fs.xsd":
+                target_archive.writestr(info.filename, source_archive.read(info))
+    source = extractor.ProfileSource(
+        profile="xliff_2.1",
+        source_id="SRC-XLF-MISSING",
+        package_path=incomplete_path,
+        expected_sha256=hashlib.sha256(incomplete_path.read_bytes()).hexdigest(),
+        prose_member="xliff-core-v2.1-os.xml",
+    )
+    members = extractor._read_authority_archive(source)
+
+    with pytest.raises(extractor.ExtractionError, match="lacks schemas/fs.xsd"):
+        extractor._profile_inventory(source, members)
+
+
+def test_requirement_rows_reject_malformed_duplicate_and_preview_profiles() -> None:
+    extractor = _load_module()
+    sources = {
+        profile: extractor.ProfileSource(
+            profile=profile,
+            source_id=f"SRC-{profile}",
+            package_path=Path("unused.zip"),
+            expected_sha256="1" * 64,
+            prose_member="prose.xml",
+        )
+        for profile in ("xliff_2.0", "xliff_2.1")
+    }
+    members = {
+        profile: {"prose.xml": b"<article/>"}
+        for profile in ("xliff_2.0", "xliff_2.1")
+    }
+    sections = {
+        profile: [{"section_id": "core"}]
+        for profile in ("xliff_2.0", "xliff_2.1")
+    }
+    valid = {
+        "matrix_id": "XLF-DELTA-NEGATIVE-001",
+        "primary_profile": "xliff_2.0",
+        "member": "prose.xml",
+        "section_id": "core",
+        "normalized_requirement": (
+            "A complete negative-control requirement with an exact stable profile."
+        ),
+        "affected_profiles": ["xliff_2.0"],
+        "owner": "core",
+        "requirement_class": "COMMON_STABLE",
+        "confidence": "high",
+        "interpretation_note": "Negative-control seed.",
+    }
+    malformed = dict(valid)
+    del malformed["owner"]
+    with pytest.raises(extractor.ExtractionError, match="missing fields"):
+        extractor._requirement_matrix(
+            [malformed],
+            sources,
+            members,
+            sections,
+        )
+    with pytest.raises(extractor.ExtractionError, match="duplicate matrix_id"):
+        extractor._requirement_matrix(
+            [valid, valid],
+            sources,
+            members,
+            sections,
+        )
+    preview = {**valid, "affected_profiles": ["xliff_2.2_preview"]}
+    with pytest.raises(extractor.ExtractionError, match="invalid affected_profiles"):
+        extractor._requirement_matrix(
+            [preview],
+            sources,
+            members,
+            sections,
+        )

@@ -9,10 +9,12 @@ format extractors must preserve the same fail-closed digest and output rules.
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
 import os
 from pathlib import Path, PurePosixPath
+import re
 import tempfile
 from typing import Any, Iterable, Mapping, NamedTuple, Sequence
 import xml.etree.ElementTree as ET
@@ -29,7 +31,19 @@ _MAX_ARCHIVE_MEMBERS = 256
 _MAX_MEMBER_BYTES = 16 * 1024 * 1024
 _MAX_ARCHIVE_UNCOMPRESSED_BYTES = 64 * 1024 * 1024
 _MAX_COMPRESSION_RATIO = 250
+_MAX_INTERNAL_ENTITIES = 64
+_MAX_ENTITY_VALUE_BYTES = 4096
 _XML_ID = "{http://www.w3.org/XML/1998/namespace}id"
+_ENTITY_DECLARATION = re.compile(
+    br"""<!ENTITY\s+([A-Za-z_:][A-Za-z0-9_.:-]*)\s+
+    (?:"([^"]*)"|'([^']*)')\s*>""",
+    re.IGNORECASE | re.VERBOSE,
+)
+_ENTITY_REFERENCE = re.compile(br"&([A-Za-z_:][A-Za-z0-9_.:-]*);")
+_XML_COMMENT = re.compile(br"<!--.*?-->", re.DOTALL)
+_PREDEFINED_ENTITIES = frozenset(
+    {b"amp", b"apos", b"gt", b"lt", b"quot"}
+)
 
 
 class ExtractionError(RuntimeError):
@@ -145,6 +159,56 @@ _PROFILE_MODULES: dict[str, dict[str, dict[str, Any]]] = {
     },
 }
 
+_MODULE_LABELS = {
+    "translation_candidates": "Translation Candidates / Matches",
+    "glossary": "Glossary",
+    "format_style": "Format Style",
+    "metadata": "Metadata",
+    "resource_data": "Resource Data",
+    "change_tracking": "Change Tracking",
+    "size_restriction": "Size and Length Restriction",
+    "validation": "Validation",
+    "its": "ITS",
+}
+
+_COMMON_CORE_REQUIREMENTS = (
+    (
+        "XLF-DELTA-CORE-001",
+        "core",
+        "Treat XLIFF Core as the stable document vocabulary shared by the supported 2.x profiles.",
+    ),
+    (
+        "XLF-DELTA-CORE-002",
+        "xliff",
+        "Model the XLIFF document root, files, and language declarations as typed Core structures.",
+    ),
+    (
+        "XLF-DELTA-CORE-003",
+        "skeleton",
+        "Represent internal and external skeleton references without losing their source relationships.",
+    ),
+    (
+        "XLF-DELTA-CORE-004",
+        "inlineCodes",
+        "Preserve inline code identity, references, pairing, ordering, nesting, and original-data links.",
+    ),
+    (
+        "XLF-DELTA-CORE-005",
+        "segmentation",
+        "Represent segmentation and re-segmentation controls as semantic Core behavior.",
+    ),
+    (
+        "XLF-DELTA-CORE-006",
+        "state",
+        "Represent translation state and sub-state values without collapsing their processing meaning.",
+    ),
+    (
+        "XLF-DELTA-CORE-007",
+        "extensions",
+        "Preserve permitted foreign namespaces while keeping extension support distinct from Core support.",
+    ),
+)
+
 
 def _sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
@@ -156,12 +220,14 @@ def _normalized_text(value: str) -> str:
 
 def _safe_member_name(name: str) -> bool:
     pure = PurePosixPath(name)
+    parts = pure.parts
     return (
         bool(name)
+        and bool(parts)
         and "\\" not in name
         and not pure.is_absolute()
-        and ".." not in pure.parts
-        and ":" not in pure.parts[0]
+        and ".." not in parts
+        and ":" not in parts[0]
     )
 
 
@@ -223,11 +289,151 @@ def _read_authority_archive(source: ProfileSource) -> dict[str, bytes]:
     return members
 
 
-def _parse_xml(data: bytes, *, location: str) -> ET.Element:
-    if b"<!ENTITY" in data.upper():
-        raise ExtractionError(f"{location} contains a prohibited entity declaration")
+def _doctype_span(data: bytes, *, location: str) -> tuple[int, int] | None:
+    start = data.upper().find(b"<!DOCTYPE")
+    if start < 0:
+        return None
+    quote: int | None = None
+    subset_depth = 0
+    for index in range(start, len(data)):
+        byte = data[index]
+        if quote is not None:
+            if byte == quote:
+                quote = None
+            continue
+        if byte in (ord('"'), ord("'")):
+            quote = byte
+        elif byte == ord("["):
+            subset_depth += 1
+        elif byte == ord("]") and subset_depth:
+            subset_depth -= 1
+        elif byte == ord(">") and subset_depth == 0:
+            return start, index + 1
+    raise ExtractionError(f"{location} contains an unterminated DOCTYPE")
+
+
+def _safe_internal_entities(subset: bytes, *, location: str) -> dict[bytes, bytes]:
+    clean = _XML_COMMENT.sub(b"", subset)
+    declarations: dict[bytes, bytes] = {}
+    cursor = 0
+    for match in _ENTITY_DECLARATION.finditer(clean):
+        if clean[cursor : match.start()].strip():
+            raise ExtractionError(
+                f"{location} contains an unsupported DTD declaration"
+            )
+        name = match.group(1)
+        if name in declarations:
+            raise ExtractionError(f"{location} contains duplicate entity {name!r}")
+        value = match.group(2) if match.group(2) is not None else match.group(3)
+        assert value is not None
+        if len(value) > _MAX_ENTITY_VALUE_BYTES:
+            raise ExtractionError(f"{location} entity {name!r} exceeds the limit")
+        declarations[name] = value
+        cursor = match.end()
+    if clean[cursor:].strip():
+        raise ExtractionError(f"{location} contains an unsupported DTD declaration")
+    if len(declarations) > _MAX_INTERNAL_ENTITIES:
+        raise ExtractionError(f"{location} has too many internal entities")
+
+    resolved: dict[bytes, bytes] = {}
+
+    def resolve(name: bytes, stack: tuple[bytes, ...]) -> bytes:
+        if name in resolved:
+            return resolved[name]
+        if name in stack or len(stack) >= 8:
+            raise ExtractionError(f"{location} contains recursive entity expansion")
+        value = declarations[name]
+
+        def replace(reference: re.Match[bytes]) -> bytes:
+            referenced_name = reference.group(1)
+            if referenced_name in _PREDEFINED_ENTITIES:
+                return reference.group(0)
+            if referenced_name not in declarations:
+                raise ExtractionError(
+                    f"{location} references undeclared entity {referenced_name!r}"
+                )
+            return resolve(referenced_name, (*stack, name))
+
+        expanded = _ENTITY_REFERENCE.sub(replace, value)
+        if len(expanded) > _MAX_ENTITY_VALUE_BYTES:
+            raise ExtractionError(f"{location} entity {name!r} exceeds the limit")
+        if b"<" in expanded or b">" in expanded:
+            raise ExtractionError(
+                f"{location} entity {name!r} contains prohibited markup"
+            )
+        resolved[name] = expanded
+        return expanded
+
+    for name in declarations:
+        resolve(name, ())
+    return resolved
+
+
+def _prepare_xml(
+    data: bytes,
+    *,
+    location: str,
+    allow_doctype: bool,
+    allow_internal_entities: bool,
+) -> bytes:
+    span = _doctype_span(data, location=location)
+    if span is None:
+        if b"<!ENTITY" in data.upper():
+            raise ExtractionError(
+                f"{location} contains a prohibited entity declaration"
+            )
+        return data
+    if not allow_doctype:
+        raise ExtractionError(f"{location} contains a prohibited DOCTYPE declaration")
+
+    start, end = span
+    declaration = data[start:end]
+    entities: dict[bytes, bytes] = {}
+    subset_start = declaration.find(b"[")
+    if subset_start >= 0:
+        subset_end = declaration.rfind(b"]")
+        if subset_end < subset_start:
+            raise ExtractionError(f"{location} contains an invalid DTD subset")
+        if not allow_internal_entities:
+            raise ExtractionError(
+                f"{location} contains a prohibited internal DTD subset"
+            )
+        entities = _safe_internal_entities(
+            declaration[subset_start + 1 : subset_end],
+            location=location,
+        )
+
+    without_doctype = _XML_COMMENT.sub(b"", data[:start] + data[end:])
+
+    def replace(reference: re.Match[bytes]) -> bytes:
+        name = reference.group(1)
+        if name in _PREDEFINED_ENTITIES:
+            return reference.group(0)
+        if name not in entities:
+            raise ExtractionError(f"{location} references undeclared entity {name!r}")
+        return entities[name]
+
+    prepared = _ENTITY_REFERENCE.sub(replace, without_doctype)
+    if len(prepared) > _MAX_MEMBER_BYTES:
+        raise ExtractionError(f"{location} exceeds the post-expansion XML limit")
+    return prepared
+
+
+def _parse_xml(
+    data: bytes,
+    *,
+    location: str,
+    allow_doctype: bool = False,
+    allow_internal_entities: bool = False,
+) -> ET.Element:
+    prepared = _prepare_xml(
+        data,
+        location=location,
+        allow_doctype=allow_doctype,
+        allow_internal_entities=allow_internal_entities,
+    )
     try:
-        return ET.fromstring(data)
+        return ET.fromstring(prepared)
     except ET.ParseError as exc:
         raise ExtractionError(f"invalid XML in {location}: {exc}") from exc
 
@@ -239,7 +445,11 @@ def _section_inventory(
     source_sha256: str,
     member: str,
 ) -> list[dict[str, Any]]:
-    root = _parse_xml(data, location=f"{source_id}:{member}")
+    root = _parse_xml(
+        data,
+        location=f"{source_id}:{member}",
+        allow_doctype=True,
+    )
     rows: list[dict[str, Any]] = []
 
     def walk(node: ET.Element, parents: list[str]) -> None:
@@ -305,7 +515,12 @@ def _schema_inventory(data: bytes, *, location: str) -> dict[str, Any]:
 
 
 def _schematron_inventory(data: bytes, *, location: str) -> dict[str, Any]:
-    root = _parse_xml(data, location=location)
+    root = _parse_xml(
+        data,
+        location=location,
+        allow_doctype=True,
+        allow_internal_entities=True,
+    )
     asserts = list(root.iter(f"{{{_SCH_NS}}}assert"))
     reports = list(root.iter(f"{{{_SCH_NS}}}report"))
     tests = sorted(
@@ -607,6 +822,175 @@ def _requirement_matrix(
     return sorted(rows, key=lambda item: item["matrix_id"])
 
 
+def _default_requirement_seeds() -> list[dict[str, Any]]:
+    """Return the deterministic first-pass XLIFF 2.0/2.1 source matrix."""
+
+    rows: list[dict[str, Any]] = []
+    for matrix_id, section_id, requirement in _COMMON_CORE_REQUIREMENTS:
+        rows.append(
+            {
+                "matrix_id": matrix_id,
+                "primary_profile": "xliff_2.0",
+                "member": "xliff-core-v2.0-os.xml",
+                "section_id": section_id,
+                "normalized_requirement": requirement,
+                "affected_profiles": ["xliff_2.0", "xliff_2.1"],
+                "owner": "core",
+                "requirement_class": "COMMON_STABLE",
+                "confidence": "high",
+                "interpretation_note": (
+                    "The same named Core section is present in both pinned "
+                    "stable authorities; later semantic extraction may split "
+                    "changed subordinate rules."
+                ),
+                "corroborating_profiles": ["xliff_2.1"],
+            }
+        )
+
+    for profile, modules in sorted(_PROFILE_MODULES.items()):
+        profile_token = profile.removeprefix("xliff_").replace(".", "")
+        prose_member = (
+            "xliff-core-v2.0-os.xml"
+            if profile == "xliff_2.0"
+            else "xliff-core-v2.1-os.xml"
+        )
+        for module_name, declaration in sorted(modules.items()):
+            module_token = module_name.replace("_", "-").upper()
+            module_label = _MODULE_LABELS[module_name]
+            rows.append(
+                {
+                    "matrix_id": f"XLF-DELTA-{profile_token}-MOD-{module_token}",
+                    "primary_profile": profile,
+                    "member": prose_member,
+                    "section_id": declaration["section_id"],
+                    "schema_location": declaration["schema_members"][0],
+                    "normalized_requirement": (
+                        f"Treat the {module_label} module as a separately "
+                        f"owned normative capability surface for {profile}."
+                    ),
+                    "affected_profiles": [profile],
+                    "owner": f"module:{module_name}",
+                    "requirement_class": "NORMATIVE_MODULE",
+                    "confidence": "high",
+                    "interpretation_note": (
+                        "Applicability is deliberately profile-specific until "
+                        "the detailed rule delta proves a broader stable set."
+                    ),
+                }
+            )
+
+    for profile in ("xliff_2.0", "xliff_2.1"):
+        profile_token = profile.removeprefix("xliff_").replace(".", "")
+        rows.append(
+            {
+                "matrix_id": f"XLF-DELTA-{profile_token}-VALIDATION-CORE-XSD",
+                "primary_profile": profile,
+                "member": "schemas/xliff_core_2.0.xsd",
+                "schema_location": "schemas/xliff_core_2.0.xsd",
+                "normalized_requirement": (
+                    f"Validate the {profile} Core vocabulary against the "
+                    "digest-bound official XML Schema surface."
+                ),
+                "affected_profiles": [profile],
+                "owner": "core:validation",
+                "requirement_class": "VALIDATION_LAYER",
+                "confidence": "high",
+                "interpretation_note": (
+                    "Schema validity is necessary structural evidence but "
+                    "does not satisfy semantic processing requirements."
+                ),
+            }
+        )
+
+    for module_name, declaration in sorted(_PROFILE_MODULES["xliff_2.1"].items()):
+        for member in declaration.get("validation_members", []):
+            module_token = module_name.replace("_", "-").upper()
+            rows.append(
+                {
+                    "matrix_id": f"XLF-DELTA-21-VALIDATION-{module_token}-SCH",
+                    "primary_profile": "xliff_2.1",
+                    "member": member,
+                    "schema_location": member,
+                    "normalized_requirement": (
+                        f"Apply the official {_MODULE_LABELS[module_name]} "
+                        "Schematron layer in addition to XML Schema validation."
+                    ),
+                    "affected_profiles": ["xliff_2.1"],
+                    "owner": f"module:{module_name}",
+                    "requirement_class": "VALIDATION_LAYER",
+                    "confidence": "high",
+                    "interpretation_note": (
+                        "This row inventories the shipped validation layer; "
+                        "individual assertions remain separate obligations."
+                    ),
+                }
+            )
+
+    rows.extend(
+        [
+            {
+                "matrix_id": "XLF-DELTA-21-VALIDATION-CORE-SCH",
+                "primary_profile": "xliff_2.1",
+                "member": "schemas/xliff_core_2.1.sch",
+                "schema_location": "schemas/xliff_core_2.1.sch",
+                "normalized_requirement": (
+                    "Apply the official XLIFF 2.1 Core Schematron rules in "
+                    "addition to XML Schema validation."
+                ),
+                "affected_profiles": ["xliff_2.1"],
+                "owner": "core:validation",
+                "requirement_class": "VALIDATION_LAYER",
+                "confidence": "high",
+                "interpretation_note": (
+                    "Individual assertions and processing implications remain "
+                    "separate detailed obligations."
+                ),
+            },
+            {
+                "matrix_id": "XLF-DELTA-21-VALIDATION-NVDL",
+                "primary_profile": "xliff_2.1",
+                "member": "schemas/xliff_2_advanced_validation.nvdl",
+                "schema_location": "schemas/xliff_2_advanced_validation.nvdl",
+                "normalized_requirement": (
+                    "Route XLIFF 2.1 Core and module namespaces through the "
+                    "official advanced NVDL validation layer."
+                ),
+                "affected_profiles": ["xliff_2.1"],
+                "owner": "core:validation",
+                "requirement_class": "VALIDATION_LAYER",
+                "confidence": "high",
+                "interpretation_note": (
+                    "NVDL routing is an additional validation concern and not "
+                    "evidence of semantic module support."
+                ),
+            },
+            {
+                "matrix_id": "XLF-DELTA-21-INFORMATIVE-CHANGE-TRACKING",
+                "primary_profile": "xliff_2.1",
+                "member": "xliff-core-v2.1-os.xml",
+                "section_id": "changeTracking_module",
+                "schema_location": (
+                    "schemas/informativeCopiesOf3rdPartySchemas/extensions/"
+                    "change_tracking.xsd"
+                ),
+                "normalized_requirement": (
+                    "Inventory XLIFF 2.1 Change Tracking as an informative "
+                    "extension without normative module conformance credit."
+                ),
+                "affected_profiles": ["xliff_2.1"],
+                "owner": "none",
+                "requirement_class": "INFORMATIVE_EXTENSION",
+                "confidence": "high",
+                "interpretation_note": (
+                    "The schema is shipped under informative third-party "
+                    "copies and cannot inflate the official module count."
+                ),
+            },
+        ]
+    )
+    return rows
+
+
 def compile_xliff_matrix(
     profile_sources: Sequence[ProfileSource],
     *,
@@ -645,6 +1029,23 @@ def compile_xliff_matrix(
             "prose_text": "whitespace_normalized_for_section_delta_only",
         },
         "profiles": profiles,
+        "profile_boundaries": {
+            "xliff_2.2_preview": {
+                "status": "AUTHORITY_ABSENT_NOT_COMPILED",
+                "stable_obligation_eligible": False,
+                "interpretation_note": (
+                    "No exact XLIFF 2.2 authority is pinned for this stable "
+                    "contract compilation."
+                ),
+            },
+            "xliff_1.2": {
+                "status": "EXCLUDED_SEPARATE_COMPATIBILITY_MODEL",
+                "stable_obligation_eligible": False,
+                "interpretation_note": (
+                    "XLIFF 1.2 is not an alias or tolerant mode of the 2.x model."
+                ),
+            },
+        },
         "section_delta": _section_delta(sections),
         "normative_matrix": _requirement_matrix(
             requirement_seeds,
@@ -711,3 +1112,80 @@ def check_matrix(matrix: Mapping[str, Any], output: Path) -> str:
             f"expected {_sha256(expected)}, observed {observed_digest}"
         )
     return _sha256(expected)
+
+
+def _argument_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        description=(
+            "Compile a deterministic, digest-bound XLIFF 2.0/2.1 "
+            "normative-surface matrix."
+        )
+    )
+    parser.add_argument("--format-id", choices=("xliff",), required=True)
+    parser.add_argument("--source-20", type=Path, required=True)
+    parser.add_argument("--source-20-id", required=True)
+    parser.add_argument("--source-20-sha256", required=True)
+    parser.add_argument(
+        "--prose-member-20", default="xliff-core-v2.0-os.xml"
+    )
+    parser.add_argument("--source-21", type=Path, required=True)
+    parser.add_argument("--source-21-id", required=True)
+    parser.add_argument("--source-21-sha256", required=True)
+    parser.add_argument(
+        "--prose-member-21", default="xliff-core-v2.1-os.xml"
+    )
+    parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="fail if the output does not already equal canonical bytes",
+    )
+    return parser
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    """Run the XLIFF authority compiler CLI."""
+
+    args = _argument_parser().parse_args(argv)
+    matrix = compile_xliff_matrix(
+        [
+            ProfileSource(
+                profile="xliff_2.0",
+                source_id=args.source_20_id,
+                package_path=args.source_20,
+                expected_sha256=args.source_20_sha256,
+                prose_member=args.prose_member_20,
+            ),
+            ProfileSource(
+                profile="xliff_2.1",
+                source_id=args.source_21_id,
+                package_path=args.source_21,
+                expected_sha256=args.source_21_sha256,
+                prose_member=args.prose_member_21,
+            ),
+        ],
+        requirement_seeds=_default_requirement_seeds(),
+    )
+    digest = (
+        check_matrix(matrix, args.output)
+        if args.check
+        else write_matrix(matrix, args.output)
+    )
+    print(
+        json.dumps(
+            {
+                "check": args.check,
+                "digest": digest,
+                "normative_matrix_rows": len(matrix["normative_matrix"]),
+                "profiles": sorted(matrix["profiles"]),
+                "schema": matrix["schema"],
+            },
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+    )
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

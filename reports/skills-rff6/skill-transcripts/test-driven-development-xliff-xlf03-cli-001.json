@@ -1,0 +1,108 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "test-driven-development-xliff-xlf03-cli-001",
+  "skill_id": "test-driven-development",
+  "mode": "live",
+  "timestamp": "2026-07-29T14:28:17.0651838Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "task_step": "XLF-03",
+    "execution_manifest_id": "sfx-db02d78d59b34f8c",
+    "base_git_commit": "096dc5b460e257f4583b81468dbfb8ebb1488aa8",
+    "scope": "Default source-surface seeds, command-line contract, XML and ZIP negative controls, and deterministic compilation against pinned XLIFF 2.0 and 2.1 authority packages.",
+    "target_behavior_description": "The registered extractor compiles a deterministic, digest-bound XLIFF 2.0/2.1 source-surface matrix from real OASIS packages, fails closed on unsafe archive or XML structures, and detects output drift."
+  },
+  "allowed_files": [
+    "tools/spec/extract_sal_facts.py",
+    "tests/tools/test_extract_sal_facts.py",
+    "reports/ff6/xliff-normative-delta-matrix.yaml",
+    ".local/sal-output/xliff-normative-delta-matrix.yaml",
+    "reports/skills-rff6/skill-transcripts/test-driven-development-xliff-xlf03-cli-001.json",
+    ".local/transcripts/test-driven-development-xliff-xlf03-cli-001.json"
+  ],
+  "actual_files_changed": [
+    "tools/spec/extract_sal_facts.py",
+    "tests/tools/test_extract_sal_facts.py",
+    "reports/ff6/xliff-normative-delta-matrix.yaml",
+    ".local/sal-output/xliff-normative-delta-matrix.yaml",
+    "reports/skills-rff6/skill-transcripts/test-driven-development-xliff-xlf03-cli-001.json",
+    ".local/transcripts/test-driven-development-xliff-xlf03-cli-001.json"
+  ],
+  "red_green_cycles": [
+    {
+      "test": "test_cli_compiles_default_source_surface_and_check_mode",
+      "red": "AttributeError because the registered extractor exposed no main entry point.",
+      "green": "Added an argparse entry point, deterministic 36-row defaults, explicit stable and excluded profile boundaries, and byte-check mode."
+    },
+    {
+      "test": "test_rejects_dot_archive_member",
+      "red": "A dot member raised IndexError instead of the extractor's fail-closed error.",
+      "green": "Hardened member normalization to reject empty normalized path parts."
+    },
+    {
+      "test": "test_xml_parser_rejects_external_doctype",
+      "red": "A generic external document type was accepted.",
+      "green": "Rejected document types by default and permitted only explicitly bounded authority-specific paths."
+    },
+    {
+      "test": "test_docbook_inventory_accepts_digest_bound_public_doctype",
+      "red": "The real OASIS DocBook authority could not be inventoried because its declared public document type was rejected.",
+      "green": "Allowed the declared document type only inside the digest-bound DocBook section inventory path while retaining external-entity refusal."
+    },
+    {
+      "test": "test_schematron_inventory_accepts_bounded_internal_entities",
+      "red": "The real XLIFF 2.1 Schematron vocabulary used safe internal entities that the blanket policy rejected.",
+      "green": "Added bounded internal-entity parsing with count, byte-size, expansion-depth, duplicate, recursion, markup, undeclared-reference, and external-declaration controls."
+    },
+    {
+      "test": "test_docbook_inventory_ignores_entity_references_inside_comments",
+      "red": "References appearing only inside authority XML comments were treated as live undeclared entities.",
+      "green": "Removed XML comments before controlled entity substitution; comments are not part of the ElementTree section text inventory."
+    }
+  ],
+  "tests_run": [
+    "python -m pytest tests/tools/test_extract_sal_facts.py::test_docbook_inventory_ignores_entity_references_inside_comments -q: 1 passed",
+    "python -m pytest tests/tools/test_extract_sal_facts.py -q: 18 passed",
+    "python -m ruff check tools/spec/extract_sal_facts.py tests/tools/test_extract_sal_facts.py: PASS",
+    "python -m mypy --strict tools/spec/extract_sal_facts.py: PASS",
+    "npx.cmd --yes pyright@1.1.411 tools/spec/extract_sal_facts.py tests/tools/test_extract_sal_facts.py: 0 errors, 0 warnings",
+    "python -m py_compile tools/spec/extract_sal_facts.py tests/tools/test_extract_sal_facts.py: PASS"
+  ],
+  "result": "PASS",
+  "evidence": {
+    "scope_result": "XLF_03_IMPLEMENTATION_AND_NEGATIVE_CONTROLS_PASS",
+    "source_sha256": "f7e59ae41ac3e0a82c8e0b2523711e3f7569c33b0cfa58d32f2ef9ee14096dbb",
+    "test_sha256": "4a9e5f6aa1cf68a80dcd4c93f135b80c84ff18ff0bbccc5d81e87677ddae2e58",
+    "matrix_sha256": "9f4ea4b8b71378217af26c0fb2b97a759817a0aca6c64255b8cd55170c60a090",
+    "security_controls": [
+      "authority package digest mismatch rejection",
+      "duplicate, case-fold duplicate, traversal, dot-member, member-count, uncompressed-size, and compression-ratio ZIP rejection",
+      "generic external document type and external entity rejection",
+      "bounded safe internal entity expansion for authority Schematron",
+      "recursive, oversized, duplicate, undeclared, markup-bearing, and unsupported entity rejection",
+      "missing required module schema rejection",
+      "malformed, duplicate-ID, unknown-owner, and preview-contaminated normative row rejection"
+    ],
+    "truth_boundary": "This proves the extractor and XLF-03 source-surface compilation behavior. It does not prove complete semantic XLIFF obligations, product source, interoperability, or certification."
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for this bounded XLF-03 TDD scope",
+    "2_required_evidence_present": "YES for this bounded scope",
+    "3_evidence_sufficient": "YES for the extractor implementation and negative controls; no broader production claim is made",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, no contradiction requiring a new entry was found",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}
