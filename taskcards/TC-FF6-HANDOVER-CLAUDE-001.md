@@ -6,7 +6,7 @@ publish_allowed: false
 generated_by: codex
 generated_at: 2026-07-29
 goal_id: FF6-PRODUCTION-LIBRARIES-001
-status: IN_PROGRESS
+status: COMPLETE
 skill_ids:
   - execution-handoff
   - create-taskcard
@@ -14,6 +14,8 @@ skill_ids:
 ---
 
 # Publish a Provider-Neutral Claude/Codex Shift Handover
+
+Status: `COMPLETE`
 
 ## Objective
 
@@ -47,3 +49,10 @@ promotion.
   focused regression checks pass.
 - Files are committed and pushed to GitLab main with remote verification.
 - No product implementation or promotion occurs.
+
+## Closure
+
+The packet was integrated and remote-verified at
+`1f215cc7ba0ce36225ae8bbc49678b3ca0d5d8fd`. The closing controller event
+records the final packet and task-index digests. This task changes no product
+promotion state.

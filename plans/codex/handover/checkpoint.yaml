@@ -21,6 +21,11 @@ source_checkpoint:
   tree_oid: aaa4e437607d1078cad01b13d37be681142565f8
   commit_time: "2026-07-28T20:30:10+05:00"
   worktree_state: clean
+handover_packet:
+  integration_commit: 1f215cc7ba0ce36225ae8bbc49678b3ca0d5d8fd
+  integration_tree_oid: 168ba13c68f49887253e81eda3cb5e2618c76218
+  remote_ref: refs/heads/main
+  remote_verified: true
 digest_policy:
   algorithm: sha256
   text_canonicalization: CRLF_TO_LF
@@ -30,9 +35,9 @@ digest_policy:
     invalidation signal until normalized.
 controller_checkpoint:
   state: SNAPSHOT
-  transition_sequence: 4
-  last_event_id: FF6-EVENT-000004
-  last_event_hash: 90c4687d41a95842a65913c4a57765a008108325642322e3ec7942d213b6d22c
+  transition_sequence_before_handover_close: 5
+  last_event_id_before_handover_close: FF6-EVENT-000005
+  last_event_hash_before_handover_close: cbe5b6b959fa7a18e8a57b1c5cd3ad653206afca992bfa40361233746425d411
   completed_task: TC-FF6-PROGRAM-TRUTH-001
   next_task: TC-FF6-PROGRAM-CAPABILITIES-001
   next_task_state: READY

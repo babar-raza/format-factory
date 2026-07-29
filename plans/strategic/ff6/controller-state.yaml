@@ -4,18 +4,29 @@ goal_status: ACTIVE
 generated_by: codex
 visibility: internal
 controller_state: SNAPSHOT
-transition_sequence: 4
+transition_sequence: 6
 last_verified_event:
-  event_id: FF6-EVENT-000004
-  event_hash: 90c4687d41a95842a65913c4a57765a008108325642322e3ec7942d213b6d22c
+  event_id: FF6-EVENT-000006
+  event_hash: 01fe399172c424c2395a9038f1cfce2cc0c6cfd01c5e99aee64d20e80f7f44c0
 event_journal: plans/strategic/ff6/events.jsonl
 baseline_commit: e4f8f5f086b5e627c07c2ef2d940eda2601a22a8
+digest_policy:
+  algorithm: sha256
+  tracked_text_canonicalization: CRLF_TO_LF
+  tracked_tree_authority: git_object_database
 snapshot:
   path: plans/strategic/ff6/current-state.yaml
   sha256: 09fe7783d0fd40cdb1803f3ead2582e3ed9cf8782f23d740904ce7dd39e0ebbf
 product_goal:
   path: plans/strategic/ff6/product-goal.yaml
   sha256: a7683f75ef62c72e88e3c0e4ff14df240fa0f9b80be9b0cf4cdacc96c62811c8
+handover_checkpoint:
+  start: plans/codex/handover/START-HERE.md
+  manifest: plans/codex/handover/manifest.yaml
+  checkpoint: plans/codex/handover/checkpoint.yaml
+  packet_commit: 1f215cc7ba0ce36225ae8bbc49678b3ca0d5d8fd
+  packet_remote_verified: true
+  next_taskcard: taskcards/TC-FF6-PROGRAM-CAPABILITIES-001.md
 active_task:
   task_id: TC-FF6-PROGRAM-TRUTH-001
   state: COMPLETE

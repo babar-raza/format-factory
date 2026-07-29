@@ -7,6 +7,10 @@ authoritative_state: false
 source_checkpoint:
   commit: a585a9e67c6f5ee55922c6cf356f600de3b4c751
   tree_oid: aaa4e437607d1078cad01b13d37be681142565f8
+handover_packet:
+  integration_commit: 1f215cc7ba0ce36225ae8bbc49678b3ca0d5d8fd
+  integration_tree_oid: 168ba13c68f49887253e81eda3cb5e2618c76218
+  remote_verified: true
 digest_policy:
   algorithm: sha256
   canonicalization: CRLF_TO_LF
@@ -17,7 +21,7 @@ files:
     sha256: 32d530f29c73b09dcfa4a6c9f1628b0662bcc471e42d4cb273d647c69181d02a
   - path: plans/codex/handover/checkpoint.yaml
     role: machine-readable checkpoint
-    sha256: 764a4670b8217e13ef066938da1d6f04f784e37a25369454fbc8b6bb45884ab1
+    sha256: 858c58daa3a92941352b07f891f6b155dd26af896832e73e7e0d9f84a2aa0d8c
   - path: plans/codex/handover/CURRENT-STATE-AND-ROOT-CAUSES.md
     role: truthful product and machinery assessment
     sha256: aa663a9d1b3867ad04fd532dc1bf724948150f5f516c6df0d3b700cec1852eb7
@@ -38,7 +42,7 @@ files:
     sha256: c59d09a7649189434ecc3ab476159df9b9cc82c35b7a8cd7ad874ff756091555
   - path: taskcards/TC-FF6-HANDOVER-CLAUDE-001.md
     role: handover construction task
-    sha256: 2d00efc822cdbe3530baab7477c5837f8a7e9cf853323ebdf23a43bba1b399e9
+    sha256: 24be223e8ce088bac9ce37a646c3c2ad1e7c0739a6d32a30cc09a377168c476a
 canonical_reference_digests:
   product_goal_lf_sha256: a7683f75ef62c72e88e3c0e4ff14df240fa0f9b80be9b0cf4cdacc96c62811c8
   current_state_lf_sha256: 09fe7783d0fd40cdb1803f3ead2582e3ed9cf8782f23d740904ce7dd39e0ebbf
@@ -54,4 +58,4 @@ validation:
   plan_control_tests: "PASS_40"
   current_state_consistency: PASS
   methodology_links: PASS
-  gitlab_main_integration: PENDING_FIRST_COMMIT
+  gitlab_main_integration: PASS_PACKET_COMMIT
