@@ -146,7 +146,7 @@ Task: `TC-FF6-XLIFF-PROFILE-SURFACE-001`.
 | XLF-02 | official XLIFF 2.0 authority record and local CAS materialization | independent digest, legal record, clean offline reconstruction, no 2.1-as-2.0 proxy |
 | XLF-03 | source-located 2.0/2.1 Core and module delta matrix | every requirement has source/member/location, profile set, Core/module owner, confidence, and contradiction note |
 | XLF-04 | complete Core SAL and processing-requirement map | exact verifier passes; inline, segmentation, state, extension, skeleton, ITS, and agent rules are not reduced to XSD validity |
-| XLF-05 | separately owned Matches, Glossary, Metadata, Resource Data, Size/Length, and Validation families | each module has typed-model, read/write, validation, preservation, rejection, and proof obligations |
+| XLF-05 | separately owned Translation Candidates/Matches, Glossary, Format Style, Metadata, Resource Data, Size/Length, Validation, and ITS families | all eight official modules and all nine module schema vocabularies are accounted for; each module has typed-model, read/write, validation, preservation, rejection, and proof obligations |
 | XLF-06 | repaired research/family/enrichment layers | mixed-profile requirements split; explicit-complete ownership; no keyword duplication |
 | XLF-07 | exact stable and preview projections | both stable profiles claimed; 2.1-only rules excluded from 2.0; 2.2 preview isolated; 1.2 outside model |
 | XLF-08 | replay, close, and remote checkpoint | negative controls, three identical runs, all authorities match, event/controller/task/handover committed and remote-verified |
@@ -159,9 +159,13 @@ points, inline identity/pairing/nesting/order/isolation, language and direction
 inheritance, state/sub-state, segmentation and re-segmentation, Core and module
 processing requirements, namespace-aware preservation, deterministic
 canonical XML, downgrade-loss reporting, XML security, resource limits, and
-all six official 2.1 modules. Preservation-only content is not modeled module
-support. Schema validity is necessary but cannot satisfy semantic or agent
-processing obligations.
+all eight official 2.1 modules. The nine module schema vocabularies
+(`matches`, `glossary`, `fs`, `metadata`, `resource_data`,
+`size_restriction`, `validation`, `its`, `itsm`) must map to those eight
+owners because `its` and `itsm` are one ITS module. The informative Change
+Tracking extension is inventoried without normative conformance credit.
+Preservation-only content is not modeled module support. Schema validity is
+necessary but cannot satisfy semantic or agent processing obligations.
 
 ## Shift checkpoint state
 

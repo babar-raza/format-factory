@@ -180,12 +180,39 @@ next_task_prerequisite:
   task: TC-FF6-XLIFF-PROFILE-SURFACE-001
   missing_authority: official XLIFF 2.0 OASIS Standard release package
   current_2_1_authority: present_and_matched
+  official_2_1_module_count: 8
+  official_2_1_module_schema_vocabulary_count: 9
   required_module_families:
     - matches
     - glossary
+    - format_style
     - metadata
     - resource_data
     - size_and_length_restriction
     - validation
+    - its
+  required_module_schema_vocabularies:
+    - matches
+    - glossary
+    - fs
+    - metadata
+    - resource_data
+    - size_restriction
+    - validation
+    - its
+    - itsm
+  module_count_rule: >-
+    ITS is one official module represented by the two `its` and `itsm`
+    schema vocabularies. Schema-vocabulary count is not module count.
+  informative_extension:
+    id: change_tracking
+    classification: INFORMATIVE_EXTENSION
+    normative_module_coverage_allowed: false
+  correction_evidence:
+    package_source_id: SRC-XLF-002
+    prose_source_id: SRC-XLIFF-001
+    authority_status: MATCH
+    package_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    prose_sha256: fdd293f4344920dfde643c578caca94da80261dc74f75baba7215da6e6d10bc1
   stable_profiles: [xliff_2.0, xliff_2.1]
   preview_profile: xliff_2.2_preview

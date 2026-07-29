@@ -201,7 +201,25 @@ xliff_starting_defects:
     missing_profiles: [xliff_2.0]
     module_model: BROAD_SINGLE_BUCKET_REQUIRES_SPLIT
   required_stable_profiles: [xliff_2.0, xliff_2.1]
+  official_2_1_module_count: 8
   required_2_1_modules:
-    [matches, glossary, metadata, resource_data, size_and_length_restriction, validation]
+    [matches, glossary, format_style, metadata, resource_data, size_and_length_restriction, validation, its]
+  official_2_1_module_schema_vocabulary_count: 9
+  required_2_1_module_schema_vocabularies:
+    [matches, glossary, fs, metadata, resource_data, size_restriction, validation, its, itsm]
+  counting_rule: >-
+    ITS is one official module backed by the `its` and `itsm` schema
+    vocabularies; these are not two modules.
+  informative_extension:
+    id: change_tracking
+    normative_module: false
+    required_treatment: inventory_and_classify_without_conformance_credit
+  correction_authority:
+    package_source_id: SRC-XLF-002
+    package_status: MATCH
+    package_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    prose_source_id: SRC-XLIFF-001
+    prose_status: MATCH
+    prose_sha256: fdd293f4344920dfde643c578caca94da80261dc74f75baba7215da6e6d10bc1
   preview: xliff_2.2_preview_isolated_only
   excluded_compatibility_model: xliff_1.2

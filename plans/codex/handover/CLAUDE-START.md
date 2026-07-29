@@ -58,8 +58,12 @@ Required result:
   legally classified, locked, and clean-offline reconstructible;
 - source-located XLIFF 2.0/2.1 Core and official-module delta matrices;
 - exact profile applicability on every XLIFF capability and obligation;
-- separate first-class capability ownership for Matches, Glossary, Metadata,
-  Resource Data, Size and Length Restriction, and Validation;
+- separate first-class capability ownership for all eight official modules:
+  Translation Candidates/Matches, Glossary, Format Style, Metadata, Resource
+  Data, Size and Length Restriction, Validation, and ITS;
+- exact accounting for all nine module schema vocabularies, with `its` and
+  `itsm` assigned to the single ITS module and informative Change Tracking
+  excluded from normative module coverage;
 - semantic obligations for inline pairing/order/nesting/isolation,
   segmentation/re-segmentation, state/sub-state, original data, skeletons,
   extensions, ITS mappings, deterministic canonical XML, security, resource

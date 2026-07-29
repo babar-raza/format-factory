@@ -10,11 +10,10 @@ parent_task_id: TC-FF6-PROGRAM-CAPABILITIES-001
 status: READY
 format_id: xliff
 skill_ids:
-  - acquire-format-authority
+  - research-format-contract-sources
   - ingest-spec-sal
   - sal-pipeline-heal
   - create-format-family-pack
-  - research-format-contract-sources
   - compile-format-contract
   - compile-production-capability-universe
   - create-taskcard
@@ -75,8 +74,10 @@ owners and exact profile applicability.
 ### XLF-02 — Close the authority prerequisite
 
 1. Acquire and hash-pin the official XLIFF 2.0 OASIS Standard release package
-   through `acquire-format-authority`; do not use the current 2.1 prose as a
-   proxy for 2.0.
+   through `research-format-contract-sources` and its canonical authority
+   materializer; do not use the current 2.1 prose as a proxy for 2.0. There is
+   no registered `acquire-format-authority` skill, so an executor must not
+   invent or bypass the registered acquisition path.
 2. Inventory every relevant member of the pinned 2.0 and 2.1 packages:
    normative prose, Core XSD, module XSDs, Schematron or other normative
    validation artifacts, catalog/import files, examples, and notices.
@@ -96,13 +97,23 @@ Produce a source-located matrix that distinguishes:
 3. Every official 2.1 module:
    - Translation Candidates / Matches;
    - Glossary;
+   - Format Style;
    - Metadata;
    - Resource Data;
    - Size and Length Restriction;
-   - Validation.
-4. ITS mappings and any normative constraints defined outside a module XSD.
-5. XLIFF 2.2 preview-only behavior, if an exact authority can be pinned.
-6. Rules common to both stable versions versus rules introduced, tightened,
+   - Validation;
+   - ITS.
+4. The nine module schema vocabularies shipped by the pinned 2.1 bundle:
+   `matches`, `glossary`, `fs`, `metadata`, `resource_data`,
+   `size_restriction`, `validation`, `its`, and `itsm`. ITS is one official
+   module with two schema vocabularies; vocabulary count must not be reported
+   as module count.
+5. ITS mappings and any normative constraints defined outside a module XSD.
+6. The informative Change Tracking extension as explicitly
+   `INFORMATIVE_EXTENSION`, never as a ninth official module or stable
+   conformance owner.
+7. XLIFF 2.2 preview-only behavior, if an exact authority can be pinned.
+8. Rules common to both stable versions versus rules introduced, tightened,
    relaxed, or removed in 2.1.
 
 Every matrix row must contain an authority source ID, source digest, exact
@@ -210,8 +221,12 @@ applicability differ. For every module:
 - The delta matrix locates every claimed requirement in exact authority bytes.
 - XLIFF 2.0 and 2.1 stable profiles are both fully claimed without assigning
   2.1-only rules or modules to 2.0.
-- Core and all six official XLIFF 2.1 modules have explicit, non-overlapping
-  production capability owners and complete normative obligation inventories.
+- Core and all eight official XLIFF 2.1 modules have explicit,
+  non-overlapping production capability owners and complete normative
+  obligation inventories. The bundle's nine module schema vocabularies are
+  all accounted for, with `its` and `itsm` assigned to the single ITS module.
+- The informative Change Tracking extension is inventoried and classified but
+  does not satisfy, own, or inflate normative module coverage.
 - Inline pairing, ordering, segmentation, state, original-data, extension,
   skeleton, ITS, and processing requirements are modeled semantically rather
   than reduced to XSD validation.

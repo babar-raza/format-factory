@@ -119,8 +119,12 @@ named interoperability certification, not universal conformance.
 - complete semantic obligations for hierarchy, inline pairing/order,
   segmentation, state, original data, skeletons, extensions, ITS mappings,
   validation, canonical XML, security, and normative agent processing;
-- separate production capability ownership for Matches, Glossary, Metadata,
-  Resource Data, Size and Length Restriction, and Validation modules;
+- separate production capability ownership for all eight official modules:
+  Translation Candidates/Matches, Glossary, Format Style, Metadata, Resource
+  Data, Size and Length Restriction, Validation, and ITS;
+- complete accounting for nine module schema vocabularies, with `its` and
+  `itsm` mapped to the one ITS module and the informative Change Tracking
+  extension receiving no normative conformance credit;
 - exact profile subsets on every capability and obligation, with 2.1-only
   rules excluded from 2.0;
 - XLIFF 2.2 absent or isolated preview-only, and XLIFF 1.2 outside the 2.x

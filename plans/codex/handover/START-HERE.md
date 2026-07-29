@@ -129,9 +129,13 @@ task/controller/index agreement, the current 15-source authority closure, and
 coordination ownership. Step `XLF-02` then acquires and independently
 hash-pins the official XLIFF 2.0 OASIS Standard package, which is genuinely
 absent from the current authority lock. The task must compile exact XLIFF 2.0
-and 2.1 Core plus separate coverage for Matches, Glossary, Metadata, Resource
-Data, Size and Length Restriction, and Validation modules. XLIFF 2.2 remains
-isolated preview-only and XLIFF 1.2 remains a separate future model.
+and 2.1 Core plus separate coverage for all eight official 2.1 modules:
+Translation Candidates/Matches, Glossary, Format Style, Metadata, Resource
+Data, Size and Length Restriction, Validation, and ITS. The pinned bundle has
+nine module schema vocabularies because the ITS module uses both `its` and
+`itsm`. The Change Tracking extension is informative and must not inflate
+normative coverage. XLIFF 2.2 remains isolated preview-only and XLIFF 1.2
+remains a separate future model.
 
 This is contract and obligation work only. Product source, product tests,
 packaging, certification, gate movement, and promotion are prohibited.
@@ -140,7 +144,9 @@ The executor must not:
 
 - repeat the completed OpenRaster, IPYNB, or NRRD repairs;
 - infer XLIFF 2.0 from the pinned XLIFF 2.1 prose or schema bundle;
-- collapse six normative modules into one generic module-support claim;
+- collapse eight normative modules into one generic module-support claim,
+  omit either `fs` or ITS, count the `its`/`itsm` vocabularies as two modules,
+  or count the informative Change Tracking extension as a normative module;
 - treat XSD validity as proof of inline pairing, segmentation, state,
   extension-preservation, ITS, or agent processing requirements;
 - mix XLIFF 2.2 preview obligations into either stable profile;

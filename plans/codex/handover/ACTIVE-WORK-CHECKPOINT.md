@@ -141,14 +141,19 @@ The portfolio remains `NEEDS_PROFILE_OR_SURFACE_REPAIR` because exact XLIFF
 11. Acquire, independently digest-check, legally classify, lock, and prove
     offline reconstruction of the official XLIFF 2.0 OASIS Standard package.
 12. Produce source-located 2.0/2.1 Core and module delta matrices.
-13. Split Matches, Glossary, Metadata, Resource Data, Size and Length
-    Restriction, and Validation into separately owned capability families.
-14. Preserve semantic inline pairing/order, segmentation, state, original
+13. Split all eight official 2.1 modules—Translation Candidates/Matches,
+    Glossary, Format Style, Metadata, Resource Data, Size and Length
+    Restriction, Validation, and ITS—into separately owned capability
+    families. Account for all nine module schema vocabularies; `its` and
+    `itsm` belong to the single ITS module.
+14. Inventory Change Tracking as an informative extension and prohibit it
+    from satisfying or inflating normative module coverage.
+15. Preserve semantic inline pairing/order, segmentation, state, original
     data, skeleton, extension, ITS, agent-processing, canonical XML, security,
     and downgrade-loss obligations.
-15. Recompile all six projections and require three identical runs plus a
+16. Recompile all six projections and require three identical runs plus a
     complete authority match after adding the 2.0 record.
-16. Reconcile gaps/task/controller/event/handover, commit explicit owned paths,
+17. Reconcile gaps/task/controller/event/handover, commit explicit owned paths,
     and push only GitLab `origin/main`.
 
 If the provider shift ends before XLF-08, only stop after the current atomic

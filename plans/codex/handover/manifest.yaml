@@ -26,34 +26,34 @@ digest_policy:
 files:
   - path: plans/codex/handover/START-HERE.md
     role: single absolute entry point and authority precedence
-    sha256: d7028f3b5758b8c16cfec889d5a14aee389e8babfec88f914f1519d8a781edb8
+    sha256: 11129d5a0c2f05cf514b0d5a66a4ada4dca47a7a4e3412364f8d53f38a534b25
   - path: plans/codex/handover/CURRENT-MACHINE-STATE.yaml
     role: machine-readable provider-neutral state
-    sha256: 7658e49cb7f76d14591fa7febbe736eeff9cb2c4565ea2b6fe44953022d8f42e
+    sha256: 32d7d427604da26c6c012e53bfc452f049c505d0918bf2187849d948c8eda5a9
   - path: plans/codex/handover/checkpoint.yaml
     role: detailed machine checkpoint and proof boundary
-    sha256: 5b011fc9bdc40aa9635dba6290594ea4948a5f64f433657e47053008ab66fc9c
+    sha256: a42030f77a3256a8f594c7749a71ccc6626b5f2e808d51676a6918dddb2cc86a
   - path: plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md
     role: exact event-19 task boundary and next execution
-    sha256: 8336afcc5f3cde55f259db79733cd2b8d1fa187543fca3a099417c63451ea8ec
+    sha256: 553078750d4d434646b98901bb84ab953ea1e3bec3b1fdaad092bc71ebffe879
   - path: plans/codex/handover/STATE-MACHINE-AND-TASKCARD-PROTOCOL.md
     role: provider-neutral program, task and atomic-substep state machines
-    sha256: e42e21f6c2bdcb16fd47c3e351d56bcbf234a1c742bb39739a5709c702177aa0
+    sha256: 9644f96de0cb3fb8c19806c4e97e4d2a672bdfe547ed198a8342ca928252a3f6
   - path: plans/codex/handover/SHIFT-AND-RESUME-PROTOCOL.md
     role: incoming, outgoing, takeover and native chain procedure
     sha256: 0e54e2229747a3b17b35a945dd1ba59f376897282930c3b7a63b766478b79c4a
   - path: plans/codex/handover/EXECUTION-RUNBOOK.md
     role: current DAG and exact XLIFF execution algorithm
-    sha256: aea26387827616eb2b4551405f50101ddb9efef921596bf5c651d395e5597f82
+    sha256: 42001a4fb068e1ca1f07fa0ebd13401b1aa484f3f407e43bec7f47a4430dab68
   - path: plans/codex/handover/CURRENT-STATE-AND-ROOT-CAUSES.md
     role: symptoms, causes, structural weaknesses, preservation and redesign
-    sha256: 5109b132072dc6f4af1b600924bb3b463f1924a76c616b5c2570ff4fc80b7eda
+    sha256: aec13bb161c420f4d15c06742feabeb434d9d3fbc9b3548badcf8af4caa017bd
   - path: plans/codex/handover/VALIDATION-AND-RELEASE.md
     role: proof, regression, certification and release contract
-    sha256: 5a44b81c421c69e23073852bf0b113a3ea6b5e7dfb1da35d591f587e7984681a
+    sha256: 6c5f207ae5022f9b3f8841b754220e21a7a68c13f39c4ad993df8b9d91a7f73d
   - path: plans/codex/handover/CLAUDE-START.md
     role: ready-to-run Claude execution instruction
-    sha256: 4a6477e358e133c1bedf66af3148e55eac89f731ad65720acff2e46466fccd6d
+    sha256: fca8c1ce2966f4c18a113b715a0e4486831d69c4b5cd2f8779d665189d233d57
   - path: taskcards/TC-FF6-PROGRAM-CAPABILITIES-001.md
     role: parent capability task in repair
     sha256: c596168b2ac497bc17bf11c0dd4d2687f1392b554fd87620d4f0225a221fe3aa
@@ -68,7 +68,7 @@ files:
     sha256: f689d705b2b82d7b13d678e03fab0d4c8e802b64bf2b5ac1e64d55058008ee3d
   - path: taskcards/TC-FF6-HANDOVER-CLAUDE-001.md
     role: handover task authority
-    sha256: 9805da5f7cc9759ba5bc9311d284faa38479cb2cc7fcf96179eb1e444bc67423
+    sha256: 77967c79ac35d3bdcfced7ef580ac0cfe7f4d01c4e82c88592f8a55d5867cd6c
   - path: taskcards/TC-FF6-IPYNB-PROFILE-SURFACE-001.md
     role: completed IPYNB profile/surface repair
     sha256: 08b95ac863c2ad495cf51158fde940eea03d4a2ec263c29cadcc90d03caf4520
@@ -77,7 +77,7 @@ files:
     sha256: 2668478ec750290dff62a88bb050843ef45dbe264c77d07b3257a741988fea2e
   - path: taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md
     role: exact next task
-    sha256: 29938cb6a4ce6ea15af02842685f3e99a58f87b0b876bdcc9c12a248581c343f
+    sha256: 39ac57fb6b4113fae29a3618c0f050be1b666632cdfe3337104bb1e0b9ced3b6
   - path: plans/strategic/ff6/controller-state.yaml
     role: canonical controller projection
     sha256: d7befce2fba1d769240012a969f39dc28030da125bf1458ac71bea98ca8ca41c
@@ -129,4 +129,6 @@ validation:
   plan_control_regression: PASS_40
   current_state_consistency: PASS
   stale_checkpoint_claim_scan: PASS
+  xliff_module_inventory_correction: >-
+    PASS_8_OFFICIAL_MODULES_9_MODULE_SCHEMA_VOCABULARIES_CHANGE_TRACKING_INFORMATIVE
   no_product_or_promotion_mutation: PASS_HANDOVER_ONLY_DIFF

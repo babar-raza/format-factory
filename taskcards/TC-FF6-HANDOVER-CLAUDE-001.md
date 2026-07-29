@@ -87,9 +87,21 @@ The packet was rebuilt from the remote-verified NRRD source checkpoint
 - The exact successor is `TC-FF6-XLIFF-PROFILE-SURFACE-001` in `READY`.
 - The successor must first acquire a separately pinned official XLIFF 2.0
   Standard package; the existing XLIFF 2.1 authority cannot stand in for it.
-- Core and all six XLIFF 2.1 modules must receive separate, exact normative
-  capability ownership. XLIFF 2.2 is preview-only and XLIFF 1.2 is outside the
-  2.x model.
+- Core and all eight official XLIFF 2.1 modules must receive separate, exact
+  normative capability ownership. The pinned bundle has nine module schema
+  vocabularies because ITS uses both `its` and `itsm`; Format Style and ITS
+  were missing from the earlier six-module wording. The Change Tracking
+  extension is informative and cannot count as a normative module. XLIFF 2.2
+  is preview-only and XLIFF 1.2 is outside the 2.x model.
+
+## Event-19 standards correction
+
+The prior event-19 packet was structurally valid but contained an incomplete
+XLIFF module enumeration. This refresh corrects the task and every handover
+projection without changing event 19, the controller, the capability
+denominator, product source, certification, promotion, release, or gates.
+The correction is proven from the hash-matched `SRC-XLF-002`/`SRC-XLIFF-001`
+XLIFF 2.1 authority bytes, not from current product code.
 
 This refresh replaces every event-18/NRRD-as-next statement in the packet,
 recomputes normalized hashes, and preserves the same provider-neutral,

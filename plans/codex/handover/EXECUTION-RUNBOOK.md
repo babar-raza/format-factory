@@ -129,30 +129,35 @@ No product wave may bypass the program dependencies.
    original data, skeletons, extensions, inline identity/pairing/nesting/
    isolation/order, segmentation/re-segmentation, state/sub-state, and agent
    processing.
-7. Replace the generic module bucket with separately owned Matches, Glossary,
-   Metadata, Resource Data, Size and Length Restriction, and Validation
-   capability families.
-8. For each module, require typed models, parse/write, schema plus processing
+7. Replace the generic module bucket with separately owned Translation
+   Candidates/Matches, Glossary, Format Style, Metadata, Resource Data, Size
+   and Length Restriction, Validation, and ITS capability families.
+8. Reconcile all nine module schema vocabularies (`matches`, `glossary`, `fs`,
+   `metadata`, `resource_data`, `size_restriction`, `validation`, `its`,
+   `itsm`) to the eight owners. Treat `its` and `itsm` as one ITS module.
+   Inventory Change Tracking as informative and give it no normative
+   conformance credit.
+9. For each module, require typed models, parse/write, schema plus processing
    validation, preservation, rejection, diagnostics, positive/negative/
    property/roundtrip/interoperability/security/resource obligations.
-9. Repair mixed-profile research or product requirements at their governed
+10. Repair mixed-profile research or product requirements at their governed
    source, then regenerate and relock; never patch only the projection.
-10. Apply explicit-complete fact ownership only after every live fact has one
+11. Apply explicit-complete fact ownership only after every live fact has one
     exact Core or module owner.
-11. Give every stable capability and obligation an exact non-empty subset of
+12. Give every stable capability and obligation an exact non-empty subset of
     `xliff_2.0` and `xliff_2.1`; never assign a 2.1-only module to 2.0.
-12. Keep XLIFF 2.2 absent or `PREVIEW_ISOLATED`, with no stable obligation
+13. Keep XLIFF 2.2 absent or `PREVIEW_ISOLATED`, with no stable obligation
     ownership. Keep XLIFF 1.2 outside the 2.x model.
-13. Preserve namespace-aware extensions and deterministic semantic roundtrip,
+14. Preserve namespace-aware extensions and deterministic semantic roundtrip,
     but do not treat preservation-only content or XSD validity as semantic
     module/processing support.
-14. Compile XLIFF and all six format projections; require zero missing stable
+15. Compile XLIFF and all six format projections; require zero missing stable
     profile, module-owner, empty-profile, duplicate, foreign, or dangling edge.
-15. Run negative controls for malformed IDs, missing module ownership,
+16. Run negative controls for malformed IDs, missing module ownership,
     cross-profile contamination, and preview leakage.
-16. Replay at least three clean strict runs plus authority, focused regression,
+17. Replay at least three clean strict runs plus authority, focused regression,
     Ruff, Pyright, and bounded strict Mypy checks.
-17. Reconcile gaps, taskcards, controller and journal atomically; retain UBL
+18. Reconcile gaps, taskcards, controller and journal atomically; retain UBL
     typing as the exact remaining contract repair.
 
 ### Failure routing
