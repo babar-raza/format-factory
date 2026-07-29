@@ -1,0 +1,146 @@
+schema: ff6/format-obligations@1
+goal_id: FF6-PRODUCTION-LIBRARIES-001
+task_id: TC-FF6-PROGRAM-CAPABILITIES-001
+format_id: ora
+format_canonical_name: OpenRaster Image
+contract_id: FC-ORA-V1
+target_spec_version: OpenRaster 0.0.3 (informal)
+generated_at: "2026-07-29"
+generated_by: claude
+obligation_count: 7
+
+obligations:
+- obligation_id: OBL-ORA-001
+  format_id: ora
+  capability_id: ORA-CODEC-001
+  also_referenced_by: []
+  authority_source: freedesktop.org OpenRaster File Layout 0.0.5
+  authority_reference: SRC-ORA-002
+  rule_text: >-
+    (File Layout — Storage) OpenRaster ZIP members may use only the DEFLATED
+    and STORED compression methods.
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-ORA-00007
+  invalidation_conditions:
+    - specification version change
+    - authority status upgrade (currently NEEDS_AUTHORITY)
+
+- obligation_id: OBL-ORA-002
+  format_id: ora
+  capability_id: ORA-CODEC-001
+  also_referenced_by:
+    - ORA-VALIDATE-001
+  authority_source: freedesktop.org OpenRaster File Layout 0.0.5
+  authority_reference: SRC-ORA-002
+  rule_text: >-
+    (File Layout — Required Files — mimetype) The first archive member must be
+    named mimetype, must be STORED without compression, and must contain exactly
+    image/openraster without whitespace or a trailing newline.
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-ORA-00016
+  invalidation_conditions:
+    - specification version change
+    - authority status upgrade (currently NEEDS_AUTHORITY)
+
+- obligation_id: OBL-ORA-003
+  format_id: ora
+  capability_id: ORA-MODEL-001
+  also_referenced_by:
+    - ORA-VALIDATE-001
+    - ORA-WRITE-001
+  authority_source: freedesktop.org OpenRaster File Layout 0.0.5
+  authority_reference: SRC-ORA-002
+  rule_text: >-
+    (File Layout — Storage) Member names in an OpenRaster ZIP archive are
+    case-sensitive and must be UTF-8 encoded with the ZIP UTF-8 flag used for
+    non-ASCII names.
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-ORA-00004
+  invalidation_conditions:
+    - specification version change
+    - authority status upgrade (currently NEEDS_AUTHORITY)
+
+- obligation_id: OBL-ORA-004
+  format_id: ora
+  capability_id: ORA-MODEL-001
+  also_referenced_by: []
+  authority_source: freedesktop.org OpenRaster Layer Stack 0.0.5
+  authority_reference: SRC-ORA-003
+  rule_text: >-
+    (Layer Stack — Draft status) The OpenRaster Layer Stack authority labels
+    version 0.0.5 an early draft and warns that its contents remain open for
+    discussion.
+  rule_category: compatibility
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-ORA-00014
+  invalidation_conditions:
+    - specification version change
+    - authority status upgrade (currently NEEDS_AUTHORITY)
+
+- obligation_id: OBL-ORA-005
+  format_id: ora
+  capability_id: ORA-VALIDATE-001
+  also_referenced_by: []
+  authority_source: freedesktop.org OpenRaster Layer Stack 0.0.5
+  authority_reference: SRC-ORA-003
+  rule_text: >-
+    (Layer Stack — image element) Since profile 0.0.3, xres and yres are
+    optional positive integer pixels-per-inch values that must be specified
+    together and default to 72.
+  rule_category: semantic
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-ORA-00010
+  invalidation_conditions:
+    - specification version change
+    - authority status upgrade (currently NEEDS_AUTHORITY)
+
+- obligation_id: OBL-ORA-006
+  format_id: ora
+  capability_id: ORA-VALIDATE-001
+  also_referenced_by: []
+  authority_source: freedesktop.org OpenRaster File Layout 0.0.5
+  authority_reference: SRC-ORA-002
+  rule_text: >-
+    (File Layout — Thumbnails/thumbnail.png) Thumbnails/thumbnail.png is
+    required, must be a non-interlaced PNG with 8 bits per channel, and must
+    not exceed 256 by 256 pixels.
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-ORA-00019
+  invalidation_conditions:
+    - specification version change
+    - authority status upgrade (currently NEEDS_AUTHORITY)
+
+- obligation_id: OBL-ORA-007
+  format_id: ora
+  capability_id: ORA-WRITE-001
+  also_referenced_by: []
+  authority_source: freedesktop.org OpenRaster File Layout 0.0.5
+  authority_reference: SRC-ORA-002
+  rule_text: >-
+    (File Layout — Required Files — stack.xml) The required stack.xml archive
+    member is a UTF-8 encoded XML document conforming to the OpenRaster Layer
+    Stack format.
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-ORA-00017
+  invalidation_conditions:
+    - specification version change
+    - authority status upgrade (currently NEEDS_AUTHORITY)

@@ -1,0 +1,1200 @@
+schema: ff6/format-capabilities@1
+goal_id: FF6-PRODUCTION-LIBRARIES-001
+task_id: TC-FF6-PROGRAM-CAPABILITIES-001
+format_id: ubl
+format_canonical_name: OASIS Universal Business Language
+contract_id: FC-UBL-V1
+target_spec_version: UBL 2.3
+generated_at: '2026-07-29'
+generated_by: claude
+capability_count: 18
+capabilities:
+- capability_id: UBL-CALC-001
+  format_id: ubl
+  stable_name: Business-total calculation and reconciliation
+  classification: preview
+  developer_use_cases:
+  - A developer validates that declared totals match calculated totals under the profile's rounding rules and receives per-total
+    deltas.
+  spec_profiles:
+  - ubl_2.3
+  authority_fact_ids:
+  - POL-XBZ-CALC-01
+  - SAL-UBL-00110
+  - SAL-UBL-00122
+  - SAL-UBL-00123
+  - SAL-UBL-00127
+  - SAL-UBL-50613DF5EFE944E0
+  - RF-UBL-00005
+  normative_obligation_ids:
+  - OBL-UBL-001
+  - OBL-UBL-002
+  - OBL-UBL-003
+  - OBL-UBL-004
+  - OBL-UBL-005
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Calculate document totals under explicit rounding/tolerance policies and compare to declared totals without mutating them
+    unless repair mode is explicitly requested.
+  - Calculate line extensions, allowance/charge totals, tax totals, and payable amounts under explicit rounding/tolerance
+    policies and reconcile them against declared totals with per-total deltas, never mutating declared values outside explicit
+    repair mode.
+  preservation_contract:
+  - Declared totals are never silently mutated; repair mode is an explicit opt-in.
+  error_contract:
+  - Per-total deltas reported when declared totals disagree with calculated totals.
+  security_contract:
+  - Checked arithmetic for size and count calculations; bound recursion depth.
+  resource_limits:
+  - Configurable tolerance thresholds for reconciliation.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Missing currencyID on amount elements.
+  - Mixed currencies within a single total group.
+  - Declared totals that disagree with calculated totals beyond tolerance.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: UBL-CODELIST-001
+  format_id: ubl
+  stable_name: Code-list infrastructure
+  classification: stable
+  developer_use_cases:
+  - A developer validates coded fields against the official lists and plugs in profile-supplied lists without code changes.
+  spec_profiles:
+  - ubl_2.3
+  authority_fact_ids:
+  - POL-XBZ-CODELIST-01
+  - SAL-UBL-00110
+  - SAL-UBL-00112
+  - SAL-UBL-00116
+  - SAL-UBL-00118
+  - SAL-UBL-00119
+  - SAL-UBL-00121
+  - SAL-UBL-00124
+  - SAL-UBL-00129
+  - RF-UBL-00003
+  normative_obligation_ids:
+  - OBL-UBL-001
+  - OBL-UBL-006
+  - OBL-UBL-007
+  - OBL-UBL-008
+  - OBL-UBL-009
+  - OBL-UBL-010
+  - OBL-UBL-011
+  - OBL-UBL-012
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Load official code-list resources, map them to coded properties, validate identifiers/agencies/versions/values, and support
+    user-supplied lists.
+  - Load official code lists from their distribution artifacts, cache them immutably, and validate coded values deterministically
+    offline, with user- or profile-supplied lists pluggable at runtime.
+  preservation_contract:
+  - Code-list identity attributes (listID, listAgencyID, listVersionID) preserved through round trips.
+  error_contract:
+  - Machine-readable validation results for coded values separated from schema validation results.
+  - Diagnostics include code, severity, message, source_location, object_path, originating_rule.
+  security_contract:
+  - Code-list resources loaded from local distribution only; no network fetch during validation.
+  resource_limits:
+  - Code-list caches are immutable once loaded; bounded by distribution artifact size.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Coded value not present in the declared list.
+  - Missing or mismatched listAgencyID or listVersionID.
+  - Unknown code-list identifier with no registered fallback.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: UBL-DOCTYPES-001
+  format_id: ubl
+  stable_name: Document-type registry and factory
+  classification: stable
+  developer_use_cases:
+  - A developer creates a new empty document of a chosen type and enumerates the types the library supports with their coverage
+    state.
+  spec_profiles:
+  - ubl_2.3
+  authority_fact_ids:
+  - POL-XBZ-DOC-01
+  - POL-XBZ-DOC-02
+  - SAL-UBL-00001
+  - SAL-UBL-00002
+  - SAL-UBL-00105
+  - SAL-UBL-00106
+  - SAL-UBL-00107
+  - SAL-UBL-00108
+  - SAL-UBL-00110
+  - SAL-UBL-00111
+  - SAL-UBL-00115
+  - SAL-UBL-00117
+  - SAL-UBL-00118
+  - SAL-UBL-00119
+  - SAL-UBL-00120
+  - SAL-UBL-00128
+  - SAL-UBL-00129
+  - SAL-UBL-00131
+  - SAL-UBL-00132
+  - SAL-UBL-00133
+  - SAL-UBL-50613DF5EFE944E0
+  - RF-UBL-00001
+  normative_obligation_ids:
+  - OBL-UBL-001
+  - OBL-UBL-005
+  - OBL-UBL-008
+  - OBL-UBL-009
+  - OBL-UBL-010
+  - OBL-UBL-012
+  - OBL-UBL-013
+  - OBL-UBL-014
+  - OBL-UBL-015
+  - OBL-UBL-016
+  - OBL-UBL-017
+  - OBL-UBL-018
+  - OBL-UBL-019
+  - OBL-UBL-020
+  - OBL-UBL-021
+  - OBL-UBL-022
+  - OBL-UBL-023
+  - OBL-UBL-024
+  - OBL-UBL-025
+  - OBL-UBL-026
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Expose a distinct typed root per supported document type plus create_empty, detect_document_type, and supported_document_types
+    operations.
+  - Document-type coverage is declared per type (supported/preservation-only/unsupported) - never claimed globally.
+  - Expose a distinct typed root document class per supported maindoc type together with create_empty(document_type), detect_document_type(),
+    and supported_document_types() so integrations enumerate coverage programmatically.
+  preservation_contract:
+  - Document-type namespace identity preserved through round trips.
+  - Per-type coverage state accurately reflects implementation status.
+  error_contract:
+  - Unsupported document type produces a diagnostic with the unrecognized QName.
+  - Diagnostics include code, severity, message, source_location, object_path, originating_rule.
+  security_contract:
+  - Namespace spoofing rejected; document type determined by QName, not local name alone.
+  resource_limits:
+  - 91 maindoc types in the UBL 2.3 schema package; factory bounded by registry size.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Unrecognized root QName not in the maindoc registry.
+  - Root element in wrong namespace.
+  - Document claiming a type whose coverage state is unsupported.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: UBL-EDIT-001
+  format_id: ubl
+  stable_name: Business component editing
+  classification: stable
+  developer_use_cases:
+  - A developer inserts a line, renumbers, and every cross-reference still resolves after save.
+  spec_profiles:
+  - ubl_2.3
+  authority_fact_ids:
+  - POL-XBZ-EDIT-01
+  - POL-XBZ-EDIT-02
+  - SAL-UBL-00105
+  - SAL-UBL-00123
+  - SAL-UBL-00125
+  normative_obligation_ids:
+  - OBL-UBL-003
+  - OBL-UBL-015
+  - OBL-UBL-027
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - CRUD for core business components with schema-order preservation; edits cannot produce elements the schema forbids at
+    that position.
+  - Line insertion, removal, movement, and renumbering maintain referential integrity via an explicit reference-rewrite map.
+  preservation_contract:
+  - Schema element order preserved after mutations.
+  - Cross-references rewritten consistently after line renumbering.
+  error_contract:
+  - Edit that would produce schema-invalid structure diagnosed before application.
+  - Diagnostics include code, severity, message, source_location, object_path, originating_rule.
+  security_contract:
+  - Edits cannot introduce elements outside the schema's content model.
+  resource_limits:
+  - Renumbering reference-rewrite bounded by document line count.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Attempt to insert an element at a schema-forbidden position.
+  - Line renumbering that creates duplicate IDs.
+  - Removal of a component referenced by other components.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: UBL-EXT-001
+  format_id: ubl
+  stable_name: Extension preservation and authoring
+  classification: stable
+  developer_use_cases:
+  - A developer round-trips documents carrying national extensions untouched and reads a registered extension through a typed
+    adapter.
+  spec_profiles:
+  - ubl_2.3
+  authority_fact_ids:
+  - POL-XBZ-EXT-01
+  - SAL-UBL-00002
+  - SAL-UBL-00110
+  - SAL-UBL-00120
+  - SAL-UBL-00122
+  - SAL-UBL-00132
+  - RF-UBL-00007
+  normative_obligation_ids:
+  - OBL-UBL-001
+  - OBL-UBL-002
+  - OBL-UBL-014
+  - OBL-UBL-022
+  - OBL-UBL-025
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Read and write extension containers with arbitrary namespaces and payloads without loss; expose registered typed adapters
+    as opt-in.
+  - Treat extension payloads and embedded binary attachments as untrusted data; expose their media types and checksums without
+    decoding side effects, and gate any external attachment retrieval behind allowlists, byte limits, and timeouts.
+  preservation_contract:
+  - Unknown-namespace extension payloads survive load-save byte-semantically in lossless mode.
+  - Extension content position (first child of document sequence) preserved.
+  error_contract:
+  - Extension payload decoding failures reported as diagnostics, not silent drops.
+  - Diagnostics include code, severity, message, source_location, object_path, originating_rule.
+  security_contract:
+  - Extension payload decoding never executes or resolves content implicitly.
+  - External attachment retrieval gated by allowlists, byte limits, and timeouts.
+  resource_limits:
+  - Configurable byte limits on extension payload size.
+  - Configurable timeouts on external attachment retrieval.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Extension payload exceeding configured byte limits.
+  - External attachment URI pointing outside allowed paths.
+  - Malformed extension content that cannot be round-tripped.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: UBL-LIFECYCLE-001
+  format_id: ubl
+  stable_name: Baseline lifecycle I/O
+  classification: stable
+  developer_use_cases:
+  - A developer integrates the library with only lifecycle APIs and never needs format-internal knowledge for I/O plumbing.
+  spec_profiles:
+  - ubl_2.3
+  authority_fact_ids:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+  normative_obligation_ids: []
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Provide load from filesystem path, readable stream, and in-memory bytes, returning the format's root document/model object.
+  - Provide save to filesystem path and writable stream, plus serialization to bytes, producing output the library's own loader
+    accepts.
+  - Expose the detected format version and any declared version separately; never silently rewrite a declared version.
+  - Support a strict read mode that rejects malformed input with diagnostics and a tolerant read mode that recovers where
+    the format permits, with recovery actions reported.
+  - Expose validation as a first-class callable operation returning structured diagnostics, not only as exceptions raised
+    during parsing.
+  - Offer deterministic serialization such that an unchanged loaded document serializes to identical bytes across repeated
+    calls in the same mode.
+  preservation_contract:
+  - Declared version identity preserved through round trips.
+  - Absent-vs-default distinction preserved.
+  - Lossless and normalized output modes distinguished by explicit caller choice.
+  error_contract:
+  - Strict mode rejects malformed input with full diagnostics.
+  - Tolerant mode reports recovery actions taken.
+  - Validation returns structured diagnostics as a first-class operation.
+  - Diagnostics include code, severity, message, source_location, object_path, originating_rule, repair_suggestion, auto_repair_eligible.
+  security_contract:
+  - No implicit side effects during load, validate, or save.
+  resource_limits:
+  - Configurable input size limits applied during load.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Malformed XML that fails well-formedness checks.
+  - Input exceeding configured size limits.
+  - Document with silently rewritten declared version.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: UBL-MODEL-001
+  format_id: ubl
+  stable_name: Typed shared-component model
+  classification: stable
+  developer_use_cases:
+  - A developer reads a line item's quantity and monetary amount as typed values with their supplementary attributes intact.
+  spec_profiles:
+  - ubl_2.3
+  authority_fact_ids:
+  - POL-XBZ-MODEL-01
+  - POL-XBZ-MODEL-02
+  - SAL-UBL-00001
+  - SAL-UBL-00002
+  - SAL-UBL-00105
+  - SAL-UBL-00106
+  - SAL-UBL-00107
+  - SAL-UBL-00108
+  - SAL-UBL-00109
+  - SAL-UBL-00110
+  - SAL-UBL-00111
+  - SAL-UBL-00112
+  - SAL-UBL-00113
+  - SAL-UBL-00114
+  - SAL-UBL-00115
+  - SAL-UBL-00116
+  - SAL-UBL-00117
+  - SAL-UBL-00118
+  - SAL-UBL-00119
+  - SAL-UBL-00120
+  - SAL-UBL-00121
+  - SAL-UBL-00122
+  - SAL-UBL-00123
+  - SAL-UBL-00124
+  - SAL-UBL-00125
+  - SAL-UBL-00126
+  - SAL-UBL-00127
+  - SAL-UBL-00128
+  - SAL-UBL-00129
+  - SAL-UBL-00130
+  - SAL-UBL-00131
+  - SAL-UBL-00132
+  - SAL-UBL-50613DF5EFE944E0
+  - SAL-UBL-6D5AF510AAF4874B
+  - SAL-UBL-87F7B313CE24D408
+  normative_obligation_ids:
+  - OBL-UBL-001
+  - OBL-UBL-002
+  - OBL-UBL-003
+  - OBL-UBL-004
+  - OBL-UBL-005
+  - OBL-UBL-006
+  - OBL-UBL-007
+  - OBL-UBL-008
+  - OBL-UBL-009
+  - OBL-UBL-010
+  - OBL-UBL-011
+  - OBL-UBL-012
+  - OBL-UBL-013
+  - OBL-UBL-014
+  - OBL-UBL-015
+  - OBL-UBL-016
+  - OBL-UBL-017
+  - OBL-UBL-018
+  - OBL-UBL-019
+  - OBL-UBL-020
+  - OBL-UBL-021
+  - OBL-UBL-022
+  - OBL-UBL-023
+  - OBL-UBL-024
+  - OBL-UBL-025
+  - OBL-UBL-027
+  - OBL-UBL-028
+  - OBL-UBL-029
+  - OBL-UBL-030
+  - OBL-UBL-031
+  - OBL-UBL-032
+  - OBL-UBL-033
+  - OBL-UBL-034
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Represent shared aggregate components as typed composites and basic components as typed values retaining lexical form
+    where round-trip fidelity requires it.
+  - Reflect schema element order, cardinality, and optionality in the model so invalid structures are diagnosable at edit
+    time.
+  preservation_contract:
+  - Lexical form of typed values preserved where round-trip fidelity requires it.
+  - Schema element order and cardinality reflected in model structure.
+  error_contract:
+  - Cardinality violations diagnosed on mutation.
+  - Invalid structures diagnosable at edit time.
+  - Diagnostics include code, severity, message, source_location, object_path, originating_rule.
+  security_contract:
+  - Namespace identity enforced for all component resolution.
+  resource_limits:
+  - Model bounded by schema-defined cardinality and nesting depth.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Cardinality violation (too many or too few child elements).
+  - Element placed at a schema-forbidden position.
+  - Basic component with missing required supplementary attribute (e.g., currencyID on Amount).
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: UBL-PARSE-001
+  format_id: ubl
+  stable_name: Namespace-aware QName-based document parsing
+  classification: stable
+  developer_use_cases:
+  - A developer loads any conformant document and the library identifies its exact document type and version regardless of
+    prefix choices.
+  spec_profiles:
+  - ubl_2.3
+  authority_fact_ids:
+  - POL-XBZ-PARSE-01
+  - POL-XBZ-PARSE-02
+  - SAL-UBL-00001
+  - SAL-UBL-00002
+  - SAL-UBL-00105
+  - SAL-UBL-00106
+  - SAL-UBL-00107
+  - SAL-UBL-00108
+  - SAL-UBL-00111
+  - SAL-UBL-00113
+  - SAL-UBL-00114
+  - SAL-UBL-00115
+  - SAL-UBL-00117
+  - SAL-UBL-00118
+  - SAL-UBL-00119
+  - SAL-UBL-00120
+  - SAL-UBL-00121
+  - SAL-UBL-00122
+  - SAL-UBL-00123
+  - SAL-UBL-00124
+  - SAL-UBL-00125
+  - SAL-UBL-00126
+  - SAL-UBL-00127
+  - SAL-UBL-00130
+  - SAL-UBL-00132
+  - SAL-UBL-00133
+  - SAL-UBL-50613DF5EFE944E0
+  - SAL-UBL-6D5AF510AAF4874B
+  - SAL-UBL-87F7B313CE24D408
+  normative_obligation_ids:
+  - OBL-UBL-002
+  - OBL-UBL-003
+  - OBL-UBL-004
+  - OBL-UBL-005
+  - OBL-UBL-008
+  - OBL-UBL-009
+  - OBL-UBL-010
+  - OBL-UBL-011
+  - OBL-UBL-013
+  - OBL-UBL-014
+  - OBL-UBL-015
+  - OBL-UBL-016
+  - OBL-UBL-017
+  - OBL-UBL-018
+  - OBL-UBL-019
+  - OBL-UBL-020
+  - OBL-UBL-021
+  - OBL-UBL-022
+  - OBL-UBL-025
+  - OBL-UBL-026
+  - OBL-UBL-027
+  - OBL-UBL-029
+  - OBL-UBL-030
+  - OBL-UBL-031
+  - OBL-UBL-032
+  - OBL-UBL-033
+  - OBL-UBL-034
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Resolve every element and attribute by QName; default and prefixed namespace forms with identical expanded names behave
+    identically.
+  - Reject namespace spoofing and ambiguous QName resolution with diagnostics rather than best-effort guessing.
+  preservation_contract:
+  - Namespace prefix choices preserved in lossless mode.
+  - Expanded QName identity is the semantic key, not prefix or local name alone.
+  error_contract:
+  - Namespace spoofing rejected with diagnostic identifying the spoofed QName.
+  - Ambiguous QName resolution produces diagnostics rather than silent guessing.
+  - Diagnostics include code, severity, message, source_location, object_path, originating_rule.
+  security_contract:
+  - Namespace spoofing and ambiguous QName resolution rejected.
+  - External entities and DTD processing disabled by default.
+  resource_limits:
+  - Configurable limits for input size, nesting depth, and element count.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Document with spoofed namespace targeting a different document type.
+  - Ambiguous QName due to conflicting namespace declarations.
+  - Root element with unrecognized namespace URI.
+  - Malformed XML (not well-formed).
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: UBL-PRESERVE-001
+  format_id: ubl
+  stable_name: Baseline preservation duties
+  classification: stable
+  developer_use_cases:
+  - A developer round-trips files containing constructs the library does not model and loses nothing silently.
+  spec_profiles:
+  - ubl_2.3
+  authority_fact_ids:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+  normative_obligation_ids: []
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Preserve unknown or future-version constructs that can be carried safely; never silently drop unrecognized content in
+    lossless mode.
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty value.
+  - Report every construct that cannot be preserved before saving, through a loss report API, rather than failing silently.
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller choice.
+  preservation_contract:
+  - Unknown constructs preserved in lossless mode.
+  - Absent-vs-default distinction maintained.
+  - Loss report API enumerates every non-preservable construct before save.
+  - Lossless and canonical output modes are explicit caller choices.
+  error_contract:
+  - Loss report lists every construct that cannot be preserved, issued before saving.
+  - Diagnostics include code, severity, message, source_location, object_path, originating_rule.
+  security_contract:
+  - Preserved unknown constructs treated as untrusted data.
+  resource_limits:
+  - Preservation bounded by document size limits.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Unrecognized content silently dropped during save.
+  - Absent optional value collapsed to explicit default.
+  - Save without loss report when non-preservable constructs exist.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: UBL-PROFILE-001
+  format_id: ubl
+  stable_name: Customization and profile handling
+  classification: stable
+  developer_use_cases:
+  - A developer runs a profile's validation pack explicitly and gets a profile-scoped verdict, never an implicit claim.
+  spec_profiles:
+  - ubl_2.3
+  authority_fact_ids:
+  - POL-XBZ-PROFILE-01
+  - SAL-UBL-00128
+  - SAL-UBL-00131
+  normative_obligation_ids:
+  - OBL-UBL-023
+  - OBL-UBL-024
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Expose version, customization, and profile identifiers; allow profile-specific validators to be registered; never claim
+    profile conformance without the installed ruleset passing.
+  preservation_contract:
+  - CustomizationID and ProfileID values preserved through round trips.
+  - UBLVersionID preserved through round trips.
+  error_contract:
+  - Profile validation verdicts scoped to the registered profile.
+  - No implicit profile-conformance claims.
+  - Diagnostics include code, severity, message, source_location, object_path, originating_rule.
+  security_contract:
+  - Profile rulesets loaded from registered sources only.
+  resource_limits:
+  - Validation bounded by registered ruleset complexity.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Profile conformance claimed without installed ruleset.
+  - Profile ruleset not registered but validation attempted.
+  - CustomizationID or ProfileID silently rewritten.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: UBL-QUERY-001
+  format_id: ubl
+  stable_name: Domain and QName query
+  classification: stable
+  developer_use_cases:
+  - A developer finds every line referencing an item identifier and gets paths plus typed nodes back.
+  spec_profiles:
+  - ubl_2.3
+  authority_fact_ids:
+  - POL-XBZ-QUERY-01
+  - RF-UBL-00006
+  normative_obligation_ids: []
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Find components by QName, type, ID, and business identifiers with path-aware results; offer read-only indexed views for
+    large documents.
+  - Find components by QName, business identifier (party, item, line, document reference), and typed role with path-aware
+    results, including read-only indexed views for large documents.
+  preservation_contract:
+  - Query results are read-only views; no mutation side effects.
+  error_contract:
+  - Query on unrecognized QName or identifier returns empty result, not error.
+  - Diagnostics include code, severity, message, source_location, object_path.
+  security_contract:
+  - Indexed views are read-only; no mutation through query interface.
+  resource_limits:
+  - Indexed views bounded by document element count.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Query with malformed QName selector.
+  - Query on document exceeding element count limits.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: UBL-REF-001
+  format_id: ubl
+  stable_name: Reference and identifier integrity
+  classification: stable
+  developer_use_cases:
+  - A developer merges documents and immediately sees every broken or duplicated reference with paths.
+  spec_profiles:
+  - ubl_2.3
+  authority_fact_ids:
+  - POL-XBZ-REF-01
+  - SAL-UBL-00001
+  - SAL-UBL-00002
+  - SAL-UBL-00109
+  - SAL-UBL-00110
+  - SAL-UBL-00111
+  - SAL-UBL-00112
+  - SAL-UBL-00116
+  - SAL-UBL-00117
+  - SAL-UBL-00119
+  - SAL-UBL-00120
+  - SAL-UBL-00121
+  - SAL-UBL-00123
+  - SAL-UBL-00128
+  - SAL-UBL-00130
+  - SAL-UBL-00131
+  - SAL-UBL-00132
+  normative_obligation_ids:
+  - OBL-UBL-001
+  - OBL-UBL-003
+  - OBL-UBL-006
+  - OBL-UBL-007
+  - OBL-UBL-009
+  - OBL-UBL-010
+  - OBL-UBL-013
+  - OBL-UBL-014
+  - OBL-UBL-019
+  - OBL-UBL-021
+  - OBL-UBL-022
+  - OBL-UBL-023
+  - OBL-UBL-024
+  - OBL-UBL-025
+  - OBL-UBL-028
+  - OBL-UBL-032
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Index identifiers and references; detect duplicate IDs, broken references, and inconsistent line references with locations.
+  preservation_contract:
+  - Identifier values and their scheme attributes preserved through round trips.
+  error_contract:
+  - Duplicate IDs reported with all occurrence locations.
+  - Broken references reported with the unresolvable target and source location.
+  - Inconsistent line references reported with paths.
+  - Diagnostics include code, severity, message, source_location, object_path, originating_rule.
+  security_contract:
+  - External reference resolution gated by explicit allowlists.
+  resource_limits:
+  - Identifier index bounded by document element count.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Duplicate cbc:ID values within the same scope.
+  - Cross-reference to a non-existent line or document ID.
+  - Inconsistent line numbering after merge.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: UBL-SEC-001
+  format_id: ubl
+  stable_name: Baseline security posture
+  classification: stable
+  developer_use_cases:
+  - A developer processes untrusted input with safe defaults and only opts into external effects explicitly.
+  spec_profiles:
+  - ubl_2.3
+  authority_fact_ids:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+  normative_obligation_ids: []
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded payload bytes, with
+    safe defaults enabled.
+  - Never resolve network resources, execute embedded code, load plugins, or follow external references during load, validate,
+    or save unless explicitly enabled by the caller.
+  - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced resource.
+  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing must not evaluate them.
+  - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations and bound recursion
+    depth.
+  preservation_contract:
+  - Security limits do not silently truncate or alter preserved content; violations produce diagnostics.
+  error_contract:
+  - Input exceeding configured limits rejected with diagnostic identifying the exceeded limit.
+  - Path traversal attempts rejected with diagnostic.
+  - Diagnostics include code, severity, message, source_location, object_path, originating_rule.
+  security_contract:
+  - External entities and DTD processing disabled by default; no network fetch during parse or validate.
+  - Attachment and external-reference retrieval gated by explicit allowlists, byte limits, and timeouts.
+  - Bounded document size, element count, and nesting depth with configurable limits.
+  - XML external entity and DTD expansion attacks mitigated.
+  - Signature wrapping and namespace spoofing attacks mitigated.
+  - Oversized or deeply nested document resource exhaustion mitigated.
+  - External attachment URI unintended network retrieval mitigated.
+  resource_limits:
+  - Configurable input size limit with safe default.
+  - Configurable nesting depth limit with safe default.
+  - Configurable element count limit with safe default.
+  - Configurable total decoded payload bytes limit with safe default.
+  - Bounded recursion depth.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Input exceeding configured size limits.
+  - Deeply nested document exceeding nesting depth limit.
+  - Document with external entity declarations.
+  - Path traversal in attachment or reference URIs.
+  - Algorithmic complexity attack payload (e.g., billion laughs).
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: UBL-SIGN-001
+  format_id: ubl
+  stable_name: Signature-safe preservation
+  classification: stable
+  developer_use_cases:
+  - A developer edits an unsigned section of a signed document and is warned exactly which signature the edit affects.
+  spec_profiles:
+  - ubl_2.3
+  authority_fact_ids:
+  - POL-XBZ-SIGN-01
+  - SAL-UBL-00111
+  - SAL-UBL-00115
+  - RF-UBL-00004
+  normative_obligation_ids:
+  - OBL-UBL-019
+  - OBL-UBL-020
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Preserve signature structures without rewriting signed subtrees in lossless mode; report edits that invalidate existing
+    signatures before saving.
+  - Report before saving whenever an edit invalidates an existing enveloped or detached signature, and never rewrite signed
+    subtrees in lossless mode; verification and signing remain a separate pluggable opt-in.
+  preservation_contract:
+  - Signed subtrees byte-preserved in lossless mode.
+  - Signature structure position and content preserved.
+  error_contract:
+  - Edit-invalidation warnings issued before save, identifying the affected signature.
+  - Diagnostics include code, severity, message, source_location, object_path, originating_rule.
+  security_contract:
+  - Signature verification and creation are separate pluggable opt-in operations.
+  - Signature wrapping attacks mitigated by QName-based resolution.
+  resource_limits:
+  - Signature preservation bounded by document size limits.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Edit to a signed subtree without explicit acknowledgement.
+  - Rewriting namespace prefixes in signed content.
+  - Removing or reordering elements within a signed scope.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: UBL-UPGRADE-001
+  format_id: ubl
+  stable_name: Version inspection and migration framework
+  classification: preview
+  developer_use_cases:
+  - A developer feeds an older-version document and receives either a migrated, validated document plus report, or an explicit
+    unsupported-version verdict.
+  spec_profiles:
+  - ubl_2.3
+  authority_fact_ids:
+  - POL-XBZ-UPGRADE-01
+  - SAL-UBL-00131
+  normative_obligation_ids:
+  - OBL-UBL-024
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Detect older specification versions where practical; migrate via explicit transforms producing a migration report; never
+    label a document as the target version without structural migration and validation.
+  preservation_contract:
+  - Original version identity preserved until structural migration completes.
+  - Migration report enumerates mapped, dropped, synthesized, and unresolved constructs.
+  error_contract:
+  - Unsupported version produces explicit unsupported-version verdict.
+  - Migration report lists all construct dispositions (mapped, dropped, synthesized, unresolved).
+  - Diagnostics include code, severity, message, source_location, object_path, originating_rule.
+  security_contract:
+  - Version migration does not introduce constructs absent from the source.
+  resource_limits:
+  - Migration bounded by source document size limits.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Document with UBLVersionID from an unsupported specification version.
+  - Silent version relabeling without structural migration.
+  - Migration that drops constructs without reporting them.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: UBL-VALIDATE-001
+  format_id: ubl
+  stable_name: Layered validation orchestration
+  classification: stable
+  developer_use_cases:
+  - A developer validates a document once and receives per-layer verdicts (schema vs code list vs profile) with complete diagnostics
+    instead of a single opaque failure.
+  spec_profiles:
+  - ubl_2.3
+  authority_fact_ids:
+  - POL-XBZ-VALIDATE-01
+  - SAL-UBL-00001
+  - SAL-UBL-00002
+  - SAL-UBL-00105
+  - SAL-UBL-00106
+  - SAL-UBL-00107
+  - SAL-UBL-00108
+  - SAL-UBL-00111
+  - SAL-UBL-00115
+  - SAL-UBL-00117
+  - SAL-UBL-00132
+  - SAL-UBL-00133
+  - SAL-UBL-6D5AF510AAF4874B
+  - SAL-UBL-87F7B313CE24D408
+  normative_obligation_ids:
+  - OBL-UBL-013
+  - OBL-UBL-014
+  - OBL-UBL-015
+  - OBL-UBL-016
+  - OBL-UBL-017
+  - OBL-UBL-018
+  - OBL-UBL-019
+  - OBL-UBL-020
+  - OBL-UBL-021
+  - OBL-UBL-025
+  - OBL-UBL-026
+  - OBL-UBL-033
+  - OBL-UBL-034
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Run syntax, schema, referential, code-list, and pluggable business-rule validation as separately reportable layers, returning
+    all diagnostics with paths rather than stopping at the first error.
+  preservation_contract:
+  - Validation is non-mutating; document state unchanged after validation.
+  error_contract:
+  - Per-layer validation results returned as machine-readable structured diagnostics.
+  - All diagnostics collected rather than stopping at first error.
+  - Validation layers include syntax, schema, referential, codelist, business_rule, security.
+  - Diagnostics include code, severity, message, source_location, object_path, originating_rule, repair_suggestion, auto_repair_eligible.
+  security_contract:
+  - Entity/DTD hardening, size and nesting limits, external-reference policy enforced during validation.
+  resource_limits:
+  - Validation bounded by document size, element count, and nesting depth limits.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Document failing schema validation at multiple points.
+  - Document with code-list violations and referential integrity issues simultaneously.
+  - Document exceeding security limits during validation.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: UBL-VALUES-001
+  format_id: ubl
+  stable_name: Business value types with supplementary attributes
+  classification: stable
+  developer_use_cases:
+  - A developer sums line amounts with explicit rounding policy and keeps every currencyID and unitCode intact.
+  spec_profiles:
+  - ubl_2.3
+  authority_fact_ids:
+  - POL-XBZ-VALUES-01
+  - POL-XBZ-VALUES-02
+  - SAL-UBL-00001
+  - SAL-UBL-00002
+  - SAL-UBL-00109
+  - SAL-UBL-00110
+  - SAL-UBL-00112
+  - SAL-UBL-00116
+  - SAL-UBL-00118
+  - SAL-UBL-00119
+  - SAL-UBL-00120
+  - SAL-UBL-00121
+  - SAL-UBL-00122
+  - SAL-UBL-00124
+  - SAL-UBL-00126
+  - SAL-UBL-00127
+  - SAL-UBL-00129
+  - SAL-UBL-00130
+  - RF-UBL-00002
+  normative_obligation_ids:
+  - OBL-UBL-001
+  - OBL-UBL-002
+  - OBL-UBL-004
+  - OBL-UBL-006
+  - OBL-UBL-007
+  - OBL-UBL-008
+  - OBL-UBL-009
+  - OBL-UBL-010
+  - OBL-UBL-011
+  - OBL-UBL-012
+  - OBL-UBL-013
+  - OBL-UBL-014
+  - OBL-UBL-022
+  - OBL-UBL-028
+  - OBL-UBL-031
+  - OBL-UBL-032
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Use decimal arithmetic for amounts and quantities; preserve currencyID, unitCode, listID, schemeID, and related supplementary
+    attributes.
+  - Preserve timezone and lexical precision of date/time values; expose explicit rounding policies for calculations.
+  - Represent monetary amounts and quantities with decimal arithmetic and retain currencyID, unitCode, and scheme attributes
+    through edits, with explicit rounding policies for any calculation - binary floating point is never acceptable for money.
+  preservation_contract:
+  - Supplementary attributes (currencyID, unitCode, listID, schemeID, schemeAgencyID) preserved through round trips.
+  - Lexical precision of decimal values preserved.
+  - Timezone and lexical precision of date/time values preserved.
+  error_contract:
+  - Missing required supplementary attribute (e.g., currencyID on Amount) diagnosed.
+  - Binary floating-point use in monetary paths rejected at compile/lint time.
+  - Diagnostics include code, severity, message, source_location, object_path, originating_rule.
+  security_contract:
+  - Checked arithmetic for size and count calculations.
+  resource_limits:
+  - Decimal precision bounded by platform decimal type limits.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Amount element without currencyID attribute.
+  - Binary floating-point used for monetary calculation.
+  - Decimal value with precision loss after round trip.
+  - Date/time value with timezone silently stripped.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: UBL-WRITE-001
+  format_id: ubl
+  stable_name: Schema-order-aware serialization
+  classification: stable
+  developer_use_cases:
+  - A developer sets properties in any order and the output always validates against the schema.
+  spec_profiles:
+  - ubl_2.3
+  authority_fact_ids:
+  - POL-XBZ-WRITE-01
+  - RF-UBL-00008
+  normative_obligation_ids: []
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Write elements in schema-valid order independent of mutation order; offer canonical prefix/formatting policies and lossless
+    mode preserving significant lexical values.
+  - Round-trip every official sample of each supported maindoc type comparing canonicalized XML plus typed semantics, and
+    prove schema-valid element order for documents assembled property-by-property in arbitrary order.
+  preservation_contract:
+  - Significant lexical values preserved in lossless mode.
+  - Namespace prefix policies configurable; canonical mode available.
+  error_contract:
+  - Serialization of invalid structure diagnosed before or during write.
+  - Diagnostics include code, severity, message, source_location, object_path, originating_rule.
+  security_contract:
+  - No implicit external effects during serialization.
+  resource_limits:
+  - Output size bounded by document model size.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Properties set in non-schema order producing invalid output.
+  - Determinism violation (different bytes from same unchanged document).
+  - Lossless mode silently normalizing significant lexical values.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED

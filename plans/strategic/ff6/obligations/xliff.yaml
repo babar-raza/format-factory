@@ -1,0 +1,673 @@
+schema: ff6/format-obligations@1
+goal_id: FF6-PRODUCTION-LIBRARIES-001
+task_id: TC-FF6-PROGRAM-CAPABILITIES-001
+format_id: xliff
+format_canonical_name: XLIFF (XML Localisation Interchange File Format)
+contract_id: FC-XLIFF-V1
+target_spec_version: XLIFF 2.1
+generated_at: "2026-07-29"
+generated_by: claude
+obligation_count: 31
+
+obligations:
+- obligation_id: OBL-XLIFF-001
+  format_id: xliff
+  capability_id: XLIFF-INLINE-001
+  also_referenced_by:
+    - XLIFF-MODEL-001
+    - XLIFF-PARSE-001
+    - XLIFF-VALIDATE-001
+  authority_source: XLIFF 2.1 core
+  authority_reference: SRC-XLIFF-001
+  rule_text: >-
+    (XLIFF core - inline constraints) Inline original-data references must
+    resolve to data elements in the same unit. Paired container codes use pc,
+    while spanning start and end codes use sc id and ec startRef with the
+    pairing constraints defined by the core Schematron.
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-XLIFF-00005
+    - SAL-XLIFF-00006
+    - SAL-XLIFF-00013
+    - SAL-XLIFF-00016
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-XLIFF-002
+  format_id: xliff
+  capability_id: XLIFF-INLINE-001
+  also_referenced_by:
+    - XLIFF-PARSE-001
+  authority_source: XLIFF 2.1 core
+  authority_reference: SRC-XLIFF-001
+  rule_text: >-
+    (XLIFF core - inline elements) Standalone placeholders use ph with a
+    required id; paired containers use pc with a required id; spanning pairs
+    use sc with a required id and non-isolated ec with a startRef to that id.
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-XLIFF-00005
+    - SAL-XLIFF-00006
+    - SAL-XLIFF-00016
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-XLIFF-003
+  format_id: xliff
+  capability_id: XLIFF-INLINE-001
+  also_referenced_by:
+    - XLIFF-MODEL-001
+    - XLIFF-PARSE-001
+    - XLIFF-VALIDATE-001
+  authority_source: XLIFF 2.1 core
+  authority_reference: SRC-XLIFF-001
+  rule_text: >-
+    (XLIFF core - identifier constraints) id attributes on file group unit and
+    inline elements must be unique within their specification-defined scope and
+    references must resolve
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-XLIFF-00013
+    - SAL-XLIFF-00014
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-XLIFF-004
+  format_id: xliff
+  capability_id: XLIFF-INLINE-001
+  also_referenced_by:
+    - XLIFF-NOTE-001
+    - XLIFF-PARSE-001
+  authority_source: XLIFF 2.1 core
+  authority_reference: SRC-XLIFF-001
+  rule_text: >-
+    (XLIFF core - annotations) mrk elements annotate inline spans and sm/em
+    elements mark span boundaries where spans overlap element structure
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-XLIFF-00014
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-XLIFF-005
+  format_id: xliff
+  capability_id: XLIFF-INLINE-001
+  also_referenced_by:
+    - XLIFF-PARSE-001
+  authority_source: XLIFF 2.1 core
+  authority_reference: SRC-XLIFF-001
+  rule_text: >-
+    (XLIFF core - original data) originalData elements carry native code data
+    referenced from inline codes via dataRef attributes
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-XLIFF-00005
+    - SAL-XLIFF-00016
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-XLIFF-006
+  format_id: xliff
+  capability_id: XLIFF-MERGE-001
+  also_referenced_by:
+    - XLIFF-MODEL-001
+    - XLIFF-PARSE-001
+  authority_source: XLIFF 2.1 core
+  authority_reference: SRC-XLIFF-001
+  rule_text: >-
+    (XLIFF core - skeleton) skeleton elements carry or reference the
+    non-translatable document skeleton needed to reconstruct the original file
+    on merge
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-XLIFF-00017
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-XLIFF-007
+  format_id: xliff
+  capability_id: XLIFF-MODEL-001
+  also_referenced_by:
+    - XLIFF-MODULE-001
+    - XLIFF-PARSE-001
+  authority_source: OASIS XLIFF 2.0
+  authority_reference: SRC-XLF-002
+  rule_text: >-
+    (OASIS XLIFF 2.0 — document and file elements) An XLIFF 2.0 document is
+    rooted at <xliff> (namespace urn:oasis:names:tc:xliff:document:2.0) with
+    required version and srcLang attributes; it contains one or more <file>
+    elements each holding translation units
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-XLIFF-00001
+    - SAL-XLIFF-00010
+    - SAL-XLIFF-00012
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-XLIFF-008
+  format_id: xliff
+  capability_id: XLIFF-MODEL-001
+  also_referenced_by:
+    - XLIFF-PARSE-001
+    - XLIFF-SEG-001
+    - XLIFF-TEXT-001
+  authority_source: OASIS XLIFF 2.0
+  authority_reference: SRC-XLF-002
+  rule_text: >-
+    (OASIS XLIFF 2.0 — unit and segment elements) A unit contains at least one
+    segment or ignorable child; each segment and ignorable contains exactly one
+    source followed by at most one target.
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-XLIFF-00002
+    - SAL-XLIFF-00018
+    - SAL-XLIFF-00019
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-XLIFF-009
+  format_id: xliff
+  capability_id: XLIFF-MODEL-001
+  also_referenced_by:
+    - XLIFF-PARSE-001
+  authority_source: XLIFF 2.1 core
+  authority_reference: SRC-XLIFF-001
+  rule_text: >-
+    (XLIFF core - file element) The xliff root element contains one or more
+    file elements each carrying an id attribute unique within the document
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-XLIFF-00001
+    - SAL-XLIFF-00010
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-XLIFF-010
+  format_id: xliff
+  capability_id: XLIFF-MODEL-001
+  also_referenced_by:
+    - XLIFF-PARSE-001
+  authority_source: XLIFF 2.1 core
+  authority_reference: SRC-XLIFF-001
+  rule_text: >-
+    (XLIFF core - structural elements) file elements contain unit elements
+    optionally nested in group elements forming the structural tree of
+    translatable content
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-XLIFF-00001
+    - SAL-XLIFF-00012
+    - SAL-XLIFF-00015
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-XLIFF-011
+  format_id: xliff
+  capability_id: XLIFF-MODEL-001
+  also_referenced_by:
+    - XLIFF-MODULE-001
+    - XLIFF-NOTE-001
+    - XLIFF-PARSE-001
+  authority_source: XLIFF 2.1 core
+  authority_reference: SRC-XLIFF-001
+  rule_text: >-
+    (XLIFF core - notes) notes elements carry note children with optional
+    priority and category attributes attached to files groups or units
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-XLIFF-00015
+    - SAL-XLIFF-00027
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-XLIFF-012
+  format_id: xliff
+  capability_id: XLIFF-MODEL-001
+  also_referenced_by:
+    - XLIFF-PARSE-001
+    - XLIFF-SEG-001
+    - XLIFF-STATE-001
+    - XLIFF-TEXT-001
+  authority_source: XLIFF 2.1 core
+  authority_reference: SRC-XLIFF-001
+  rule_text: >-
+    (XLIFF core - translation state) Segment elements carry an optional state
+    attribute defaulting to initial with values initial, translated, reviewed,
+    and final; translated, reviewed, or final requires a target child.
+  rule_category: semantic
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-XLIFF-00018
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-XLIFF-013
+  format_id: xliff
+  capability_id: XLIFF-MODEL-001
+  also_referenced_by:
+    - XLIFF-PARSE-001
+    - XLIFF-SEG-001
+    - XLIFF-TEXT-001
+  authority_source: XLIFF 2.1 core
+  authority_reference: SRC-XLIFF-001
+  rule_text: >-
+    (XLIFF core - segment and ignorable) unit elements contain segment and
+    ignorable elements whose source children carry translatable text and whose
+    target children carry translations
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-XLIFF-00002
+    - SAL-XLIFF-00018
+    - SAL-XLIFF-00019
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-XLIFF-014
+  format_id: xliff
+  capability_id: XLIFF-MODEL-001
+  also_referenced_by:
+    - XLIFF-MODULE-001
+    - XLIFF-PARSE-001
+  authority_source: XLIFF 2.1 Metadata module
+  authority_reference: SRC-XLF-002
+  rule_text: >-
+    (XLIFF 2.1 Metadata module) The Metadata module uses namespace
+    urn:oasis:names:tc:xliff:metadata:2.0; metadata contains one or more
+    metaGroup elements, and meta elements require a type attribute.
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-XLIFF-00023
+    - SAL-XLIFF-00024
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-XLIFF-015
+  format_id: xliff
+  capability_id: XLIFF-MODEL-001
+  also_referenced_by:
+    - XLIFF-MODULE-001
+    - XLIFF-PARSE-001
+  authority_source: XLIFF 2.1 Size and Length Restriction module
+  authority_reference: SRC-XLF-002
+  rule_text: >-
+    (XLIFF 2.1 Size and Length Restriction module) The Size and Length
+    Restriction module uses namespace
+    urn:oasis:names:tc:xliff:sizerestriction:2.0 and defines profiles,
+    normalization, data, and restriction attributes including sizeRestriction
+    and storageRestriction.
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-XLIFF-00025
+    - SAL-XLIFF-00026
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-XLIFF-016
+  format_id: xliff
+  capability_id: XLIFF-MODULE-001
+  also_referenced_by:
+    - XLIFF-PARSE-001
+    - XLIFF-TEXT-001
+    - XLIFF-VALIDATE-001
+  authority_source: XLIFF 2.1 modules
+  authority_reference: SRC-XLF-002
+  rule_text: >-
+    (XLIFF modules overview) The XLIFF 2.1 standard package defines the
+    Translation Candidates, Glossary, Format Style, Metadata, Resource Data,
+    Size and Length Restriction, Validation, and ITS modules in their own
+    namespaces.
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-XLIFF-00007
+    - SAL-XLIFF-00008
+    - SAL-XLIFF-00011
+    - SAL-XLIFF-00021
+    - SAL-XLIFF-00022
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-XLIFF-017
+  format_id: xliff
+  capability_id: XLIFF-MODULE-001
+  also_referenced_by:
+    - XLIFF-PARSE-001
+    - XLIFF-TEXT-001
+  authority_source: XLIFF 2.1 Resource Data module
+  authority_reference: SRC-XLF-002
+  rule_text: >-
+    (XLIFF modules - resource data with external references) The Resource Data
+    module models resource items and references; source and target resource
+    payloads may use optional href attributes, while a reference element
+    requires href.
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-XLIFF-00022
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-XLIFF-018
+  format_id: xliff
+  capability_id: XLIFF-MODULE-001
+  also_referenced_by:
+    - XLIFF-PARSE-001
+    - XLIFF-VALIDATE-001
+  authority_source: XLIFF 2.1 core
+  authority_reference: SRC-XLIFF-001
+  rule_text: >-
+    (XLIFF conformance) XLIFF documents must be well-formed XML and valid
+    against the core schema with module content valid against its module schema
+  rule_category: behavioral
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-XLIFF-00004
+    - SAL-XLIFF-00011
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-XLIFF-019
+  format_id: xliff
+  capability_id: XLIFF-MODULE-001
+  also_referenced_by:
+    - XLIFF-PARSE-001
+    - XLIFF-TEXT-001
+  authority_source: XLIFF 2.1 Translation Candidates module
+  authority_reference: SRC-XLF-002
+  rule_text: >-
+    (XLIFF 2.1 Translation Candidates module) The Translation Candidates
+    module uses namespace urn:oasis:names:tc:xliff:matches:2.0; matches
+    contains one or more match elements, and each match requires ref plus one
+    source and one target.
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-XLIFF-00021
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-XLIFF-020
+  format_id: xliff
+  capability_id: XLIFF-MODULE-001
+  also_referenced_by:
+    - XLIFF-PARSE-001
+  authority_source: XLIFF 2.1 Glossary module
+  authority_reference: SRC-XLF-002
+  rule_text: >-
+    (XLIFF 2.1 Glossary module) The Glossary module uses namespace
+    urn:oasis:names:tc:xliff:glossary:2.0; a glossary contains one or more
+    glossEntry elements, each with one term, zero or more translations, and at
+    most one definition.
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-XLIFF-00021
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-XLIFF-021
+  format_id: xliff
+  capability_id: XLIFF-MODULE-001
+  also_referenced_by:
+    - XLIFF-PARSE-001
+    - XLIFF-TEXT-001
+    - XLIFF-VALIDATE-001
+  authority_source: XLIFF 2.1 Validation module
+  authority_reference: SRC-XLF-002
+  rule_text: >-
+    (XLIFF 2.1 Validation module) The Validation module uses namespace
+    urn:oasis:names:tc:xliff:validation:2.0; validation contains one or more
+    rule elements whose constraints include presence, occurrence, boundary,
+    source-existence, case, normalization, and disabled controls.
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-XLIFF-00025
+    - SAL-XLIFF-00029
+    - SAL-XLIFF-00030
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-XLIFF-022
+  format_id: xliff
+  capability_id: XLIFF-MODULE-001
+  also_referenced_by:
+    - XLIFF-PARSE-001
+  authority_source: XLIFF 2.1 Format Style module
+  authority_reference: SRC-XLF-002
+  rule_text: >-
+    (XLIFF 2.1 Format Style module) The Format Style module uses namespace
+    urn:oasis:names:tc:xliff:fs:2.0 and defines fs and subFs attributes; fs
+    values are constrained by the module schema.
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-XLIFF-00026
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-XLIFF-023
+  format_id: xliff
+  capability_id: XLIFF-MODULE-001
+  also_referenced_by:
+    - XLIFF-NOTE-001
+    - XLIFF-PARSE-001
+  authority_source: XLIFF 2.1 ITS module
+  authority_reference: SRC-XLF-002
+  rule_text: >-
+    (XLIFF 2.1 ITS module) The ITS module uses the W3C ITS namespace
+    http://www.w3.org/2005/11/its and the XLIFF 2.1 mapping adds
+    urn:oasis:names:tc:xliff:itsm:2.1 attributes for domains and language.
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-XLIFF-00027
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-XLIFF-024
+  format_id: xliff
+  capability_id: XLIFF-MODULE-001
+  also_referenced_by:
+    - XLIFF-PARSE-001
+    - XLIFF-TEXT-001
+    - XLIFF-VALIDATE-001
+  authority_source: XLIFF 2.1 schema bundle
+  authority_reference: SRC-XLF-002
+  rule_text: >-
+    (XLIFF 2.1 normative schema inventory) The official XLIFF 2.1 schema
+    bundle contains exactly nine first-party module XSDs covering Format
+    Style, Glossary, ITS, ITS mapping, Translation Candidates, Metadata,
+    Resource Data, Size and Length Restriction, and Validation.
+  rule_category: behavioral
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-XLIFF-00028
+    - SAL-XLIFF-00029
+    - SAL-XLIFF-00030
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-XLIFF-025
+  format_id: xliff
+  capability_id: XLIFF-MODULE-001
+  also_referenced_by:
+    - XLIFF-PARSE-001
+    - XLIFF-VALIDATE-001
+  authority_source: XLIFF 2.1 schema bundle
+  authority_reference: SRC-XLF-002
+  rule_text: >-
+    (XLIFF 2.1 processing-requirement schema inventory) The official XLIFF 2.1
+    schema bundle contains exactly nine Schematron rule sets covering core
+    processing constraints and the modules that define Schematron constraints.
+  rule_category: behavioral
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-XLIFF-00028
+    - SAL-XLIFF-00029
+    - SAL-XLIFF-00030
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-XLIFF-026
+  format_id: xliff
+  capability_id: XLIFF-MODULE-001
+  also_referenced_by:
+    - XLIFF-PARSE-001
+    - XLIFF-VALIDATE-001
+  authority_source: XLIFF 2.1 validation artifacts
+  authority_reference: SRC-XLF-002
+  rule_text: >-
+    (XLIFF 2.1 advanced validation artifacts) XLIFF 2.1 validation is layered:
+    the release package supplies the core XSD, a core Schematron, module XSDs
+    and Schematrons, and an NVDL advanced-validation dispatch artifact.
+  rule_category: behavioral
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-XLIFF-00028
+    - SAL-XLIFF-00029
+    - SAL-XLIFF-00030
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-XLIFF-027
+  format_id: xliff
+  capability_id: XLIFF-PARSE-001
+  also_referenced_by: []
+  authority_source: XLIFF 2.1 core
+  authority_reference: SRC-XLIFF-001
+  rule_text: >-
+    (XLIFF core - document root) XLIFF 2.0 and 2.1 use the core namespace
+    urn:oasis:names:tc:xliff:document:2.0; the XLIFF 2.1 standard identifies
+    version 2.1 through the required version attribute.
+  rule_category: compatibility
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-XLIFF-00001
+    - SAL-XLIFF-00003
+    - SAL-XLIFF-00004
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-XLIFF-028
+  format_id: xliff
+  capability_id: XLIFF-PARSE-001
+  also_referenced_by:
+    - XLIFF-VALIDATE-001
+  authority_source: XLIFF 2.1 core
+  authority_reference: SRC-XLIFF-001
+  rule_text: >-
+    (XLIFF core - extensibility and agent obligations) Foreign-namespace
+    elements and attributes are permitted at defined wildcard extension points.
+    Conformant applications should preserve existing custom extensions unless
+    their containing elements are removed under applicable processing
+    requirements.
+  rule_category: compatibility
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-XLIFF-00009
+    - SAL-XLIFF-00011
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-XLIFF-029
+  format_id: xliff
+  capability_id: XLIFF-PARSE-001
+  also_referenced_by:
+    - XLIFF-TEXT-001
+  authority_source: XLIFF 2.1 core
+  authority_reference: SRC-XLIFF-001
+  rule_text: >-
+    (XLIFF core - version attribute) The version and srcLang attributes are
+    required on the xliff root. The trgLang attribute is optional in the XSD
+    but required by the core Schematron when target elements are present.
+  rule_category: compatibility
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-XLIFF-00001
+    - SAL-XLIFF-00003
+    - SAL-XLIFF-00010
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-XLIFF-030
+  format_id: xliff
+  capability_id: XLIFF-PARSE-001
+  also_referenced_by:
+    - XLIFF-TEXT-001
+  authority_source: XLIFF 2.1 core
+  authority_reference: SRC-XLIFF-001
+  rule_text: >-
+    (XLIFF core - whitespace and language) The xliff root declares xml:space
+    with default value default, and source and target permit optional xml:lang
+    and xml:space attributes.
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-XLIFF-00020
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-XLIFF-031
+  format_id: xliff
+  capability_id: XLIFF-PARSE-001
+  also_referenced_by: []
+  authority_source: XLIFF 2.1 core XSD
+  authority_reference: SRC-XLF-002
+  rule_text: >-
+    (schemas/xliff_core_2.1.xsd) The XLIFF 2.1 core XSD defines
+    namespace-qualified XML element syntax for the core document vocabulary in
+    urn:oasis:names:tc:xliff:document:2.0.
+  rule_category: behavioral
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-XLIFF-00004
+    - SAL-XLIFF-10A6F1FB1C146A18
+  invalidation_conditions:
+    - specification version change

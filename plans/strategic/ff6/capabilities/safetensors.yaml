@@ -1,0 +1,703 @@
+schema: ff6/format-capabilities@1
+goal_id: FF6-PRODUCTION-LIBRARIES-001
+task_id: TC-FF6-PROGRAM-CAPABILITIES-001
+format_id: safetensors
+format_canonical_name: SafeTensors
+contract_id: FC-SAFETENSORS-V1
+target_spec_version: v0.8.0 commit a406ca3e7a90598be0cd05a50069cb9bf5ef6ba6
+generated_at: '2026-07-29'
+generated_by: claude
+capability_count: 11
+capabilities:
+- capability_id: SAFETENSORS-ADAPTER-001
+  format_id: safetensors
+  stable_name: Optional framework adapters
+  classification: stable
+  developer_use_cases:
+  - A developer opts into a framework adapter without forcing that dependency on other users.
+  spec_profiles:
+  - safetensors_v0.8.0
+  authority_fact_ids:
+  - POL-BT-ADAPTER-01
+  - SAL-SAFETENSORS-00001
+  - SAL-SAFETENSORS-00002
+  - SAL-SAFETENSORS-00006
+  - SAL-SAFETENSORS-00007
+  - SAL-SAFETENSORS-00008
+  - SAL-SAFETENSORS-00011
+  - SAL-SAFETENSORS-00012
+  - SAL-SAFETENSORS-00018
+  - SAL-SAFETENSORS-00019
+  normative_obligation_ids:
+  - OBL-SAFETENSORS-001
+  - OBL-SAFETENSORS-002
+  - OBL-SAFETENSORS-003
+  - OBL-SAFETENSORS-004
+  - OBL-SAFETENSORS-005
+  - OBL-SAFETENSORS-006
+  - OBL-SAFETENSORS-007
+  - OBL-SAFETENSORS-008
+  - OBL-SAFETENSORS-009
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Provide separately importable optional NumPy and PyTorch adapters with explicit dtype/device/copy behavior and no framework
+    import in the base package.
+  preservation_contract:
+  - Tensor descriptor fields and payload bytes survive adapter round trips without loss.
+  - Adapter dtype mapping is exact and reversible for all target-version dtypes.
+  error_contract:
+  - Adapter import without the framework dependency raises a clear ImportError with install instructions.
+  - Unsupported dtype or device combinations produce structured diagnostics with code and severity.
+  security_contract:
+  - No framework import occurs in the base package namespace.
+  - Adapters do not allocate framework arrays during validation-only paths.
+  resource_limits:
+  - Adapter conversion respects the same tensor-count and dimension limits as the core library.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Framework dependency becomes unavailable or breaks backward compatibility.
+  - Target-version dtype inventory changes requiring new adapter mappings.
+  - Base package accidentally imports a framework module at load time.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: SAFETENSORS-HEADER-001
+  format_id: safetensors
+  stable_name: Exact bounded metadata parsing
+  classification: stable
+  developer_use_cases:
+  - A developer inspects all tensor descriptors and file metadata without reading payload bytes.
+  spec_profiles:
+  - safetensors_v0.8.0
+  authority_fact_ids:
+  - POL-BT-HEADER-01
+  - POL-BT-HEADER-02
+  - SAL-SAFETENSORS-00001
+  - SAL-SAFETENSORS-00002
+  - SAL-SAFETENSORS-00003
+  - SAL-SAFETENSORS-00004
+  - SAL-SAFETENSORS-00005
+  - SAL-SAFETENSORS-00009
+  - SAL-SAFETENSORS-00011
+  - SAL-SAFETENSORS-00012
+  - SAL-SAFETENSORS-00013
+  - SAL-SAFETENSORS-00014
+  - SAL-SAFETENSORS-00015
+  - SAL-SAFETENSORS-00016
+  - SAL-SAFETENSORS-00017
+  - SAL-SAFETENSORS-00018
+  normative_obligation_ids:
+  - OBL-SAFETENSORS-001
+  - OBL-SAFETENSORS-002
+  - OBL-SAFETENSORS-006
+  - OBL-SAFETENSORS-007
+  - OBL-SAFETENSORS-008
+  - OBL-SAFETENSORS-010
+  - OBL-SAFETENSORS-011
+  - OBL-SAFETENSORS-012
+  - OBL-SAFETENSORS-013
+  - OBL-SAFETENSORS-014
+  - OBL-SAFETENSORS-015
+  - OBL-SAFETENSORS-016
+  - OBL-SAFETENSORS-017
+  - OBL-SAFETENSORS-018
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Parse the exact fixed-width little-endian metadata-length prefix and only the declared UTF-8 JSON metadata bytes.
+  - Reject duplicate keys, malformed UTF-8 or JSON, invalid metadata values, truncated metadata, and configured header-limit
+    violations.
+  preservation_contract:
+  - Parsed metadata faithfully represents the original header content at the semantic level.
+  - Exact JSON spelling, whitespace, and object order are not preserved; normalized deterministic metadata serialization is
+    the explicit guarantee.
+  error_contract:
+  - code: stable diagnostic code identifying the specific header violation.
+  - severity: error for mandatory rejections, warning for advisory conditions.
+  - message: human-readable description of the header parsing failure.
+  - source_location: byte offset or range within the header where the violation occurs.
+  - object_path: JSON key path to the offending entry when applicable.
+  - originating_rule: reference to the normative rule that requires rejection.
+  - repair_suggestion: actionable fix description when deterministic repair is possible.
+  - auto_repair_eligible: boolean indicating whether the violation can be auto-repaired.
+  security_contract:
+  - Hostile header lengths causing excessive allocation are rejected before reading header bytes.
+  - Duplicate JSON keys changing descriptor meaning across parsers are rejected.
+  - Malformed UTF-8 and JSON are rejected before any model construction.
+  resource_limits:
+  - Header byte length is bounded to 100,000,000 bytes per the official implementation limit.
+  - Input byte count is bounded before header allocation.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Declared header length exceeds available file bytes.
+  - Malformed UTF-8 encoding in header bytes.
+  - Malformed JSON syntax in header content.
+  - Duplicate tensor name keys in the header object.
+  - Non-string values in __metadata__ map entries.
+  - Declared header length exceeds the 100,000,000-byte resource limit.
+  - Truncated input that cannot provide the 8-byte prefix.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: SAFETENSORS-INTEROP-001
+  format_id: safetensors
+  stable_name: Pinned official implementation interoperability
+  classification: stable
+  developer_use_cases:
+  - A developer exchanges tensor files with the dominant implementation without replacing either package.
+  spec_profiles:
+  - safetensors_v0.8.0
+  authority_fact_ids:
+  - POL-BT-INTEROP-01
+  normative_obligation_ids: []
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Run bidirectional differential vectors against the pinned official release and prove collision-free co-installation.
+  preservation_contract:
+  - Files written by this library are accepted by the pinned official implementation without data loss.
+  - Files written by the pinned official implementation are accepted by this library without data loss.
+  error_contract:
+  - Interoperability contradiction cases produce structured diagnostics identifying the divergence between implementations.
+  security_contract:
+  - Co-installation does not introduce namespace collisions that could redirect imports.
+  - No shared mutable state between co-installed packages.
+  resource_limits:
+  - Interoperability tests respect the same resource limits as the core library.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Pinned official implementation version changes breaking backward compatibility.
+  - Namespace collision detected between co-installed packages.
+  - Unexplained official-oracle contradiction remains open.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: SAFETENSORS-LAZY-001
+  format_id: safetensors
+  stable_name: Header-only and memory-mapped access
+  classification: stable
+  developer_use_cases:
+  - A developer inspects or slices a multi-gigabyte tensor file with flat Python heap usage.
+  spec_profiles:
+  - safetensors_v0.8.0
+  authority_fact_ids:
+  - POL-BT-LAZY-01
+  normative_obligation_ids: []
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Provide header-only validation, read-only path mapping, tensor-relative region views, configurable size limits, and machine-readable
+    access-strategy disclosure.
+  preservation_contract:
+  - Memory-mapped access provides identical tensor data as full-load access.
+  - Header-only inspection yields the same descriptor truth as full-load inspection.
+  error_contract:
+  - Access strategy (mapped, copied, streamed) is disclosed in machine-readable form.
+  - Configurable size limits produce structured diagnostics when exceeded.
+  security_contract:
+  - Borrowed payload views do not outlive their mapped document owner.
+  - Read-only memory mapping prevents accidental payload mutation.
+  resource_limits:
+  - Configurable size limits bound total mapped regions and borrowed views.
+  - Header-only path reads only metadata bytes without touching payload.
+  - Python heap allocation remains bounded regardless of tensor file size.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Payload view outlives its mapped document owner causing use-after-close.
+  - Memory-mapped region exceeds configurable size limit.
+  - Header-only path inadvertently reads payload bytes.
+  - Platform does not support memory-mapped file access.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: SAFETENSORS-LIFECYCLE-001
+  format_id: safetensors
+  stable_name: Strict lifecycle API
+  classification: stable
+  developer_use_cases:
+  - A developer uses probe/load/loads/dump/dumps/validate consistently without importing framework adapters.
+  spec_profiles:
+  - safetensors_v0.8.0
+  authority_fact_ids:
+  - POL-BT-LIFECYCLE-01
+  - POL-BT-LIFECYCLE-02
+  normative_obligation_ids: []
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Provide probe, path/stream/bytes load, path/stream dump, bytes serialization, and structured validation through the production
+    namespace.
+  - Strict mode rejects invalid input; preservation mode retains safe unknown descriptor fields; no recovery mode exists without
+    separately specified deterministic rules.
+  preservation_contract:
+  - Preservation mode retains safe unknown tensor descriptor fields without treating them as understood.
+  - Strict mode rejects values that cannot be represented safely.
+  error_contract:
+  - Each lifecycle entry point produces structured validation diagnostics on invalid input.
+  - Strict mode rejection diagnostics include originating rule and repair suggestion.
+  security_contract:
+  - Validate the fixed prefix and bounded metadata before creating any payload view.
+  - No lifecycle entry point executes payload bytes, imports plugins, or allocates framework arrays.
+  resource_limits:
+  - All lifecycle entry points enforce the same resource limits (header size, tensor count, dimension bounds).
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Lifecycle entry point unavailable from the installed wheel.
+  - Strict mode silently accepts invalid input instead of rejecting.
+  - Preservation mode drops safe unknown descriptor fields.
+  - Framework adapter import required for base lifecycle operations.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: SAFETENSORS-MODEL-001
+  format_id: safetensors
+  stable_name: Complete framework-neutral tensor model
+  classification: stable
+  developer_use_cases:
+  - A developer reasons about tensor structure without NumPy, PyTorch, or device allocation.
+  spec_profiles:
+  - safetensors_v0.8.0
+  authority_fact_ids:
+  - POL-BT-MODEL-01
+  - SAL-SAFETENSORS-00001
+  - SAL-SAFETENSORS-00002
+  - SAL-SAFETENSORS-00003
+  - SAL-SAFETENSORS-00004
+  - SAL-SAFETENSORS-00005
+  - SAL-SAFETENSORS-00006
+  - SAL-SAFETENSORS-00007
+  - SAL-SAFETENSORS-00008
+  - SAL-SAFETENSORS-00009
+  - SAL-SAFETENSORS-00010
+  - SAL-SAFETENSORS-00011
+  - SAL-SAFETENSORS-00012
+  - SAL-SAFETENSORS-00013
+  - SAL-SAFETENSORS-00014
+  - SAL-SAFETENSORS-00015
+  - SAL-SAFETENSORS-00016
+  - SAL-SAFETENSORS-00017
+  - SAL-SAFETENSORS-00018
+  - SAL-SAFETENSORS-00019
+  normative_obligation_ids:
+  - OBL-SAFETENSORS-001
+  - OBL-SAFETENSORS-002
+  - OBL-SAFETENSORS-003
+  - OBL-SAFETENSORS-004
+  - OBL-SAFETENSORS-005
+  - OBL-SAFETENSORS-006
+  - OBL-SAFETENSORS-007
+  - OBL-SAFETENSORS-008
+  - OBL-SAFETENSORS-009
+  - OBL-SAFETENSORS-010
+  - OBL-SAFETENSORS-011
+  - OBL-SAFETENSORS-012
+  - OBL-SAFETENSORS-013
+  - OBL-SAFETENSORS-014
+  - OBL-SAFETENSORS-015
+  - OBL-SAFETENSORS-016
+  - OBL-SAFETENSORS-017
+  - OBL-SAFETENSORS-018
+  - OBL-SAFETENSORS-019
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Represent every target-version dtype, tensor descriptor, file metadata entry, scalar, empty tensor, and aligned sub-byte
+    tensor independently of framework types.
+  preservation_contract:
+  - Every target-version descriptor construct has a typed representation that survives round trips.
+  - Unknown descriptor fields are retained in preservation mode without semantic interpretation.
+  error_contract:
+  - Unknown dtype values produce structured diagnostics with the unrecognized value.
+  - Invalid shape dimensions (negative values) produce structured rejection diagnostics.
+  security_contract:
+  - Model construction does not allocate framework arrays or import framework modules.
+  - Shape dimension products use checked arithmetic to prevent overflow.
+  resource_limits:
+  - Tensor count, rank, and individual dimension values are bounded by configurable limits.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Target-version dtype inventory changes adding new types not yet modeled.
+  - Shape dimension overflow not caught by checked arithmetic.
+  - Framework type leaks into the base model representation.
+  - Sub-byte dtype with misaligned total bit count accepted instead of rejected.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: SAFETENSORS-PAYLOAD-001
+  format_id: safetensors
+  stable_name: Exact raw payload coverage
+  classification: stable
+  developer_use_cases:
+  - A developer obtains an exact read-only region and malformed coverage is rejected before access.
+  spec_profiles:
+  - safetensors_v0.8.0
+  authority_fact_ids:
+  - POL-BT-PAYLOAD-01
+  - POL-BT-PAYLOAD-02
+  - SAL-SAFETENSORS-00001
+  - SAL-SAFETENSORS-00002
+  - SAL-SAFETENSORS-00003
+  - SAL-SAFETENSORS-00004
+  - SAL-SAFETENSORS-00008
+  - SAL-SAFETENSORS-00010
+  - SAL-SAFETENSORS-00013
+  - SAL-SAFETENSORS-00016
+  - SAL-SAFETENSORS-00018
+  normative_obligation_ids:
+  - OBL-SAFETENSORS-001
+  - OBL-SAFETENSORS-002
+  - OBL-SAFETENSORS-005
+  - OBL-SAFETENSORS-008
+  - OBL-SAFETENSORS-010
+  - OBL-SAFETENSORS-011
+  - OBL-SAFETENSORS-014
+  - OBL-SAFETENSORS-017
+  - OBL-SAFETENSORS-019
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Validate tensor byte lengths from shape and dtype, enforce required region order and complete coverage, and reject overlap,
+    holes, truncation, or unindexed trailing bytes.
+  - Expose bounds-checked tensor-relative read-only byte regions without silently copying path-backed payloads.
+  preservation_contract:
+  - Exact tensor payload bytes are preserved across semantic round trips.
+  - Payload byte order (little-endian) and element order (C row-major) are invariant.
+  error_contract:
+  - Overlapping tensor byte ranges produce structured diagnostics identifying both tensors.
+  - Holes between tensor regions produce structured diagnostics with gap offset and size.
+  - Truncated payload produces structured diagnostics with expected versus available byte count.
+  - Unindexed trailing bytes produce structured diagnostics with trailing byte offset and count.
+  security_contract:
+  - Overlapping, out-of-order, truncated, or unindexed tensor byte ranges are rejected before exposing any payload view.
+  - Bounds-checked regions prevent out-of-bounds reads.
+  - Path-backed payloads are not silently copied into heap memory.
+  resource_limits:
+  - Total payload size is bounded by the input byte limit.
+  - Individual tensor byte spans are validated against checked shape-dtype products.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Tensor byte span does not equal the checked product of shape dimensions and dtype bit width divided by eight.
+  - Tensor byte regions overlap.
+  - Tensor byte regions have gaps (holes).
+  - Payload is truncated before the last declared tensor end offset.
+  - Unindexed trailing bytes exist after the final tensor region.
+  - Tensor offsets are not contiguous or not in required order.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: SAFETENSORS-PRESERVE-001
+  format_id: safetensors
+  stable_name: Safe metadata preservation
+  classification: stable
+  developer_use_cases:
+  - A developer updates known tensor data while retaining forward-compatible descriptor extensions.
+  spec_profiles:
+  - safetensors_v0.8.0
+  authority_fact_ids:
+  - POL-BT-PRESERVE-01
+  - SAL-SAFETENSORS-00001
+  - SAL-SAFETENSORS-00004
+  - SAL-SAFETENSORS-00005
+  - SAL-SAFETENSORS-00011
+  - SAL-SAFETENSORS-00012
+  - SAL-SAFETENSORS-00014
+  - SAL-SAFETENSORS-00015
+  - SAL-SAFETENSORS-00016
+  - SAL-SAFETENSORS-00017
+  - SAL-SAFETENSORS-00018
+  normative_obligation_ids:
+  - OBL-SAFETENSORS-001
+  - OBL-SAFETENSORS-006
+  - OBL-SAFETENSORS-007
+  - OBL-SAFETENSORS-008
+  - OBL-SAFETENSORS-011
+  - OBL-SAFETENSORS-012
+  - OBL-SAFETENSORS-015
+  - OBL-SAFETENSORS-016
+  - OBL-SAFETENSORS-017
+  - OBL-SAFETENSORS-018
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Preserve string file metadata, optional metadata absence, and safe unknown tensor descriptor fields in preservation mode;
+    reject values that cannot be represented safely.
+  preservation_contract:
+  - Structural round trip preserves file metadata, tensor descriptors, safe unknown descriptor fields, and exact tensor payload
+    bytes.
+  - Exact JSON spelling, whitespace, and object order are not preserved; normalized deterministic metadata serialization is
+    the explicit guarantee.
+  - Validation reports any unknown value that cannot be retained safely before writing; writers never drop it silently.
+  - Preservation mode retains safe unknown tensor descriptor fields without treating them as understood; strict mode rejects
+    unsafe or structurally conflicting fields.
+  error_contract:
+  - Values that cannot be represented safely produce structured diagnostics before writing.
+  - Silent data loss is never permitted; every dropped or transformed value produces a diagnostic.
+  security_contract:
+  - Unknown descriptor fields are retained only when structurally safe; conflicting fields are rejected.
+  - Preserved metadata values are re-validated before writing to prevent injection of invalid content.
+  resource_limits:
+  - Preserved metadata is subject to the same header size limit (100,000,000 bytes).
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Unknown descriptor field conflicts with a known structural field.
+  - Metadata value cannot be represented as a string-to-string map entry.
+  - Preserved content causes header to exceed the 100,000,000-byte limit.
+  - Silent data loss occurs during round trip without diagnostic.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: SAFETENSORS-SHARD-001
+  format_id: safetensors
+  stable_name: Separately scoped sharded index
+  classification: stable
+  developer_use_cases:
+  - A developer resolves a named tensor to one shard under explicit root and resource policies.
+  spec_profiles:
+  - safetensors_v0.8.0
+  authority_fact_ids:
+  - POL-BT-SHARD-01
+  normative_obligation_ids: []
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Provide separately documented sharded-index parsing, deterministic writing, tensor-to-shard resolution, duplicate detection,
+    and root-confined path policy.
+  preservation_contract:
+  - Sharded-index metadata survives deterministic write round trips.
+  - Tensor-to-shard resolution is stable across parse-write cycles.
+  error_contract:
+  - Duplicate tensor names across shards produce structured diagnostics identifying conflicting shards.
+  - Missing shard files produce structured diagnostics with the unresolvable shard path.
+  - Path traversal attempts outside the root directory produce structured rejection diagnostics.
+  security_contract:
+  - Shard file paths are confined to the declared root directory; path traversal is rejected.
+  - Sharded-index support is scoped separately from core file grammar to prevent confusion.
+  resource_limits:
+  - Total shard count and aggregate tensor count are bounded by configurable limits.
+  - Individual shard files are subject to the same per-file resource limits as single-file containers.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Shard file path escapes the declared root directory via traversal.
+  - Duplicate tensor name detected across multiple shards.
+  - Referenced shard file does not exist or is unreadable.
+  - Sharded index is misrepresented as part of the core file grammar.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: SAFETENSORS-VALIDATE-001
+  format_id: safetensors
+  stable_name: Layered structural and security validation
+  classification: stable
+  developer_use_cases:
+  - A service validates hostile tensor uploads without creating framework arrays.
+  spec_profiles:
+  - safetensors_v0.8.0
+  authority_fact_ids:
+  - POL-BT-VALIDATE-01
+  - SAL-SAFETENSORS-00002
+  - SAL-SAFETENSORS-00004
+  - SAL-SAFETENSORS-00005
+  - SAL-SAFETENSORS-00011
+  - SAL-SAFETENSORS-00012
+  - SAL-SAFETENSORS-00016
+  - SAL-SAFETENSORS-00017
+  - SAL-SAFETENSORS-00018
+  normative_obligation_ids:
+  - OBL-SAFETENSORS-002
+  - OBL-SAFETENSORS-006
+  - OBL-SAFETENSORS-007
+  - OBL-SAFETENSORS-008
+  - OBL-SAFETENSORS-011
+  - OBL-SAFETENSORS-012
+  - OBL-SAFETENSORS-017
+  - OBL-SAFETENSORS-018
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Validate metadata, dtype, shape, checked size arithmetic, offsets, complete coverage, limits, and borrowed-view ownership
+    with stable diagnostic codes.
+  preservation_contract:
+  - Validation is non-destructive; input is never modified by the validation process.
+  error_contract:
+  - code: stable diagnostic code identifying the specific validation rule violation.
+  - severity: error for mandatory rejections, warning for advisory conditions.
+  - message: human-readable description of the validation failure.
+  - source_location: byte offset or range where the violation occurs.
+  - object_path: JSON key path or tensor name identifying the offending entry.
+  - originating_rule: reference to the normative rule that requires rejection.
+  - repair_suggestion: actionable fix description when deterministic repair is possible.
+  - auto_repair_eligible: boolean indicating whether the violation can be auto-repaired.
+  - Validation layers are distinct and ordered as lexical, type, payload, and security.
+  security_contract:
+  - Hostile header lengths, tensor counts, dimensions, and bit widths causing excessive allocation or arithmetic overflow
+    are rejected.
+  - Overlapping, out-of-order, truncated, or unindexed tensor byte ranges are rejected before exposing payload.
+  - Duplicate JSON keys are rejected to prevent descriptor meaning divergence across parsers.
+  - Borrowed payload views are tracked to prevent use-after-close.
+  - Never resolve network resources, execute payload bytes, import plugins, or allocate framework arrays during validation.
+  resource_limits:
+  - Bound input bytes, header bytes, tensor count, rank, dimensions, mapped regions, and borrowed views with configurable
+    safe defaults.
+  - Use checked arithmetic for shape products, dtype bit widths, byte counts, and absolute payload offsets.
+  - Header byte length is bounded to 100,000,000 bytes.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Shape multiplication or element-bit multiplication overflows without rejection.
+  - Sub-byte dtype total bit count does not end on a byte boundary.
+  - Tensor byte span does not equal the checked product of shape dimensions and dtype bit width divided by eight.
+  - Data buffer is not entirely indexed by tensor entries (holes or unindexed trailing bytes).
+  - Declared header length exceeds the 100,000,000-byte resource limit.
+  - Borrowed payload view outlives its mapped document owner.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: SAFETENSORS-WRITE-001
+  format_id: safetensors
+  stable_name: Deterministic conformant writing
+  classification: stable
+  developer_use_cases:
+  - A developer builds reproducible tensor artifacts accepted by the official implementation.
+  spec_profiles:
+  - safetensors_v0.8.0
+  authority_fact_ids:
+  - POL-BT-WRITE-01
+  normative_obligation_ids: []
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Write deterministic metadata and exact payload bytes, recomputing all offsets and rejecting inconsistent models before
+    output.
+  preservation_contract:
+  - Two serializations of the same model produce byte-identical output.
+  - Canonical metadata ordering is deterministic and stable across invocations.
+  - Exact tensor payload bytes are written without transformation.
+  error_contract:
+  - Inconsistent model state (mismatched shape/dtype/offset) is rejected before any output bytes are written.
+  - Structured diagnostics identify which model invariant is violated.
+  security_contract:
+  - Writers validate the complete model before emitting any bytes to prevent partial corrupt output.
+  - Offsets are recomputed from validated shape and dtype to prevent offset injection.
+  - No network resources are resolved and no payload bytes are executed during writing.
+  resource_limits:
+  - Written header size is bounded to 100,000,000 bytes.
+  - Shape dimension products use checked arithmetic during offset recomputation.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Model contains inconsistent shape/dtype/offset that would produce a non-conformant file.
+  - Two serializations of the same model produce different bytes (non-determinism).
+  - Written output is rejected by the pinned official implementation.
+  - Offset recomputation overflows due to unchecked arithmetic.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED

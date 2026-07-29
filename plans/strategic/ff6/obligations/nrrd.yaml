@@ -1,0 +1,417 @@
+schema: ff6/format-obligations@1
+goal_id: FF6-PRODUCTION-LIBRARIES-001
+task_id: TC-FF6-PROGRAM-CAPABILITIES-001
+format_id: nrrd
+format_canonical_name: Nearly Raw Raster Data
+contract_id: FC-NRRD-V1
+target_spec_version: NRRD0005
+generated_at: "2026-07-29"
+generated_by: claude
+obligation_count: 18
+
+obligations:
+- obligation_id: OBL-NRRD-001
+  format_id: nrrd
+  capability_id: NRRD-ARRAY-001
+  also_referenced_by:
+    - NRRD-ENC-001
+    - NRRD-META-001
+    - NRRD-PAYLOAD-001
+    - NRRD-SHAPE-001
+    - NRRD-TYPES-001
+    - NRRD-VALIDATE-001
+  authority_source: Teem NRRD0005 format specification
+  authority_reference: SRC-NRRD-001
+  rule_text: >-
+    (NRRD format - payload consistency) The expected uncompressed payload byte
+    count is the product of the declared sizes multiplied by the byte length of
+    one element as determined by type and, for block samples, block size
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-NRRD-00011
+    - SAL-NRRD-00012
+    - SAL-NRRD-00014
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-NRRD-002
+  format_id: nrrd
+  capability_id: NRRD-ARRAY-001
+  also_referenced_by:
+    - NRRD-HEADER-001
+    - NRRD-SHAPE-001
+    - NRRD-VALIDATE-001
+  authority_source: Teem NRRD0005 format specification
+  authority_reference: SRC-NRRD-001
+  rule_text: >-
+    (NRRD format - dimension field) The dimension field is required and declares
+    the array dimension with every per-axis field carrying exactly dimension
+    entries
+  rule_category: semantic
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-NRRD-00011
+    - SAL-NRRD-00012
+    - SAL-NRRD-00014
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-NRRD-003
+  format_id: nrrd
+  capability_id: NRRD-ARRAY-001
+  also_referenced_by:
+    - NRRD-ENC-001
+    - NRRD-HEADER-001
+    - NRRD-SHAPE-001
+    - NRRD-VALIDATE-001
+  authority_source: Teem NRRD0005 format specification
+  authority_reference: SRC-NRRD-001
+  rule_text: >-
+    (NRRD format - endian field) The endian field is required whenever the
+    encoding exposes byte order and the element size exceeds one byte declaring
+    little or big byte order
+  rule_category: semantic
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-NRRD-00011
+    - SAL-NRRD-00012
+    - SAL-NRRD-00014
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-NRRD-004
+  format_id: nrrd
+  capability_id: NRRD-ENC-001
+  also_referenced_by:
+    - NRRD-HEADER-001
+    - NRRD-META-001
+    - NRRD-PAYLOAD-001
+  authority_source: Teem NRRD Format Specification — Section 2
+  authority_reference: SRC-NRRD-001
+  rule_text: >-
+    (Teem NRRD Format Specification — Section 2 (Header)) An NRRD file begins
+    with an ASCII header: a magic line 'NRRD000X' (X = format version digit),
+    followed by field specifications 'field: value' and key/value pairs
+    'key:=value', terminated by a single blank line
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-NRRD-00002
+    - SAL-NRRD-00003
+    - SAL-NRRD-00013
+    - SAL-NRRD-00014
+    - SAL-NRRD-00017
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-NRRD-005
+  format_id: nrrd
+  capability_id: NRRD-ENC-001
+  also_referenced_by:
+    - NRRD-HEADER-001
+    - NRRD-PAYLOAD-001
+    - NRRD-SHAPE-001
+    - NRRD-TYPES-001
+  authority_source: Teem NRRD Format Specification — Section 3
+  authority_reference: SRC-NRRD-001
+  rule_text: >-
+    (Teem NRRD Format Specification — Section 3 (Data)) The data segment follows
+    the header's blank line (or lives in a detached file named by the 'data
+    file' field) and is decoded per the 'encoding' field (raw, txt/ascii, hex,
+    gz, bz2) with layout governed by the sizes/type/endian fields
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-NRRD-00002
+    - SAL-NRRD-00003
+    - SAL-NRRD-00013
+    - SAL-NRRD-00014
+    - SAL-NRRD-00017
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-NRRD-006
+  format_id: nrrd
+  capability_id: NRRD-ENC-001
+  also_referenced_by:
+    - NRRD-HEADER-001
+    - NRRD-PAYLOAD-001
+    - NRRD-VALIDATE-001
+  authority_source: Teem NRRD0005 format specification
+  authority_reference: SRC-NRRD-001
+  rule_text: >-
+    (NRRD format - encoding field) The encoding field is required and declares
+    the payload encoding as raw text hex or a compressed encoding such as gzip
+    or bzip2
+  rule_category: semantic
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-NRRD-00002
+    - SAL-NRRD-00003
+    - SAL-NRRD-00013
+    - SAL-NRRD-00017
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-NRRD-007
+  format_id: nrrd
+  capability_id: NRRD-ENC-001
+  also_referenced_by:
+    - NRRD-HEADER-001
+    - NRRD-TYPES-001
+    - NRRD-VALIDATE-001
+  authority_source: Teem NRRD0005 format specification
+  authority_reference: SRC-NRRD-001
+  rule_text: >-
+    (NRRD format - block type constraints) block type samples require a positive
+    block size field and must not use ascii encoding
+  rule_category: semantic
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-NRRD-00003
+    - SAL-NRRD-00011
+    - SAL-NRRD-00016
+    - SAL-NRRD-00017
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-NRRD-008
+  format_id: nrrd
+  capability_id: NRRD-HEADER-001
+  also_referenced_by:
+    - NRRD-META-001
+    - NRRD-PAYLOAD-001
+  authority_source: Teem NRRD0005 format specification
+  authority_reference: SRC-NRRD-001
+  rule_text: >-
+    (NRRD format - magic and header structure) A NRRD file begins with a magic
+    line of the form NRRD000X identifying the format version followed by header
+    lines terminated by a blank line
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-NRRD-00002
+    - SAL-NRRD-00003
+    - SAL-NRRD-00004
+    - SAL-NRRD-00005
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-NRRD-009
+  format_id: nrrd
+  capability_id: NRRD-HEADER-001
+  also_referenced_by: []
+  authority_source: Teem NRRD0005 format specification
+  authority_reference: SRC-NRRD-001
+  rule_text: >-
+    (NRRD format - comments) Comment lines begin with a hash character inside
+    the header and carry no field semantics but may be preserved
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-NRRD-00005
+    - SAL-NRRD-00008
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-NRRD-010
+  format_id: nrrd
+  capability_id: NRRD-HEADER-001
+  also_referenced_by:
+    - NRRD-PAYLOAD-001
+    - NRRD-TYPES-001
+  authority_source: Teem NRRD0005 format specification
+  authority_reference: SRC-NRRD-001
+  rule_text: >-
+    (NRRD format - detached data files with external references) Detached
+    headers reference payloads via the data file field supporting a single file
+    printf-style numbered sequences and LIST declarations resolved relative to
+    the header
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-NRRD-00004
+    - SAL-NRRD-00006
+    - SAL-NRRD-00018
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-NRRD-011
+  format_id: nrrd
+  capability_id: NRRD-HEADER-001
+  also_referenced_by:
+    - NRRD-VALIDATE-001
+  authority_source: Teem NRRD0005 format specification
+  authority_reference: SRC-NRRD-001
+  rule_text: >-
+    (NRRD format - field identifier rules) Field identifiers are
+    case-insensitive and each field may appear at most once for the header to be
+    valid
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-NRRD-00007
+    - SAL-NRRD-00008
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-NRRD-012
+  format_id: nrrd
+  capability_id: NRRD-HEADER-001
+  also_referenced_by: []
+  authority_source: Teem NRRD0005 format specification
+  authority_reference: SRC-NRRD-001
+  rule_text: >-
+    (NRRD format - header line syntax) Header lines are either field
+    specifications of the form field colon value or key-value pairs of the form
+    key colon-equals value
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-NRRD-00002
+    - SAL-NRRD-00005
+    - SAL-NRRD-00010
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-NRRD-013
+  format_id: nrrd
+  capability_id: NRRD-HEADER-001
+  also_referenced_by:
+    - NRRD-META-001
+    - NRRD-SHAPE-001
+  authority_source: Teem NRRD0005 format specification
+  authority_reference: SRC-NRRD-001
+  rule_text: >-
+    (NRRD format - per-axis fields) Per-axis fields include spacings
+    thicknesses mins maxs centers labels units and kinds each constrained to
+    dimension entries with defined value rules
+  rule_category: semantic
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-NRRD-00010
+    - SAL-NRRD-00012
+    - SAL-NRRD-00015
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-NRRD-014
+  format_id: nrrd
+  capability_id: NRRD-HEADER-001
+  also_referenced_by:
+    - NRRD-SHAPE-001
+    - NRRD-VALIDATE-001
+  authority_source: Teem NRRD0005 format specification
+  authority_reference: SRC-NRRD-001
+  rule_text: >-
+    (NRRD format - sizes field and axis ordering) The sizes field is required
+    and declares positive per-axis sample counts in fastest-to-slowest axis
+    order
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-NRRD-00003
+    - SAL-NRRD-00012
+    - SAL-NRRD-00014
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-NRRD-015
+  format_id: nrrd
+  capability_id: NRRD-HEADER-001
+  also_referenced_by:
+    - NRRD-TYPES-001
+    - NRRD-VALIDATE-001
+  authority_source: Teem NRRD0005 format specification
+  authority_reference: SRC-NRRD-001
+  rule_text: >-
+    (NRRD format - type field) The type field is required and declares the
+    sample scalar type from the defined integer float and block type set with
+    documented aliases
+  rule_category: semantic
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-NRRD-00006
+    - SAL-NRRD-00009
+    - SAL-NRRD-00016
+    - SAL-NRRD-00017
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-NRRD-016
+  format_id: nrrd
+  capability_id: NRRD-HEADER-001
+  also_referenced_by:
+    - NRRD-PAYLOAD-001
+  authority_source: Teem NRRD0005 format specification
+  authority_reference: SRC-NRRD-001
+  rule_text: >-
+    (NRRD format - skip fields) line skip and byte skip fields declare how much
+    of a data file to skip before payload with line skip applied before byte
+    skip
+  rule_category: behavioral
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-NRRD-00013
+    - SAL-NRRD-00018
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-NRRD-017
+  format_id: nrrd
+  capability_id: NRRD-HEADER-001
+  also_referenced_by:
+    - NRRD-SHAPE-001
+    - NRRD-SPACE-001
+  authority_source: Teem NRRD0005 format specification
+  authority_reference: SRC-NRRD-001
+  rule_text: >-
+    (NRRD format - space and orientation) space fields declare named spaces or
+    explicit space dimension with space directions space origin and measurement
+    frame vectors matching the space dimension
+  rule_category: semantic
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-NRRD-00019
+  invalidation_conditions:
+    - specification version change
+
+- obligation_id: OBL-NRRD-018
+  format_id: nrrd
+  capability_id: NRRD-META-001
+  also_referenced_by:
+    - NRRD-SHAPE-001
+    - NRRD-TYPES-001
+  authority_source: Teem NRRD0005 format specification
+  authority_reference: SRC-NRRD-001
+  rule_text: >-
+    (NRRD format - quoted values) Labels and units are per-axis quote-delimited
+    strings; labels escape embedded double quotes with backslash-quote and
+    support no other escaping
+  rule_category: structural
+  verification_status: UNVERIFIED
+  verification_evidence: []
+  related_fact_ids:
+    - SAL-NRRD-00004
+    - SAL-NRRD-00009
+    - SAL-NRRD-00010
+  invalidation_conditions:
+    - specification version change

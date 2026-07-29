@@ -1,0 +1,295 @@
+schema: ff6/current-gaps@1
+goal_id: FF6-PRODUCTION-LIBRARIES-001
+task_id: TC-FF6-PROGRAM-CAPABILITIES-001
+generated_at: "2026-07-29"
+generated_by: claude
+last_reconciled_by: codex
+
+gap_summary:
+  critical: 2
+  high: 10
+  medium: 3
+  total: 15
+
+gaps:
+
+  - gap_id: FF6-GAP-001
+    severity: critical
+    format: ora
+    category: source_absent
+    title: OpenRaster has no Python source distribution
+    description: >-
+      No source package, product tests, sample corpus, oracle package,
+      or install proof exists for OpenRaster. All 10 capabilities and
+      7 obligations are entirely unimplemented.
+    source_finding: FF6-TRUTH-001
+    blocks:
+      - All 10 ORA capabilities (ORA-CODEC-001 through ORA-WRITE-001)
+      - All 7 ORA obligations (OBL-ORA-001 through OBL-ORA-007)
+    authority_concern: >-
+      ORA authority_status is NEEDS_AUTHORITY (confidence: low).
+      The OpenRaster specification 0.0.3 is informal with no official
+      validation artifacts. Authority must be repaired before product
+      source can be created.
+    resolution: >-
+      Repair authority/profile contract, complete policy prerequisites,
+      then generate product source.
+
+  - gap_id: FF6-GAP-002
+    severity: high
+    format: all
+    category: contract_lifecycle
+    title: All 6 format contracts are lifecycle DRAFT
+    description: >-
+      Every selected format contract is lifecycle DRAFT. Registry
+      COMPILED/readiness 1.0 describes contract compilation status
+      only, not implementation or release readiness.
+    source_finding: FF6-TRUTH-002
+    blocks:
+      - Contract promotion gate for all 6 formats
+    resolution: >-
+      Each contract must advance from DRAFT through reviewed to
+      approved lifecycle before production release.
+
+  - gap_id: FF6-GAP-003
+    severity: high
+    format: [ipynb, nrrd, xliff, safetensors, ubl]
+    category: oracle_depth
+    title: Oracle verdicts are PARTIAL_PASS at shallow depth D0
+    description: >-
+      The five existing oracle summaries show PARTIAL_PASS at depth
+      D0 with one passing case and all remaining cases NOT_APPLICABLE.
+      This is non-promoting shallow harness evidence only.
+    source_finding: FF6-TRUTH-003
+    blocks:
+      - Oracle-backed capability verification for all 5 existing formats
+    resolution: >-
+      Deepen oracle coverage to D1+ with real test vectors covering
+      all capability categories.
+
+  - gap_id: FF6-GAP-004
+    severity: high
+    format: [ipynb, nrrd, xliff, safetensors, ubl]
+    category: install_proof_stale
+    title: Install proof input closures are stale
+    description: >-
+      The five install-proof entries match current product source but
+      their complete proof-input digests differ from current digests,
+      making the proofs non-promoting.
+    source_finding: FF6-TRUTH-004
+    blocks:
+      - Package publication readiness for all 5 existing formats
+    resolution: >-
+      Regenerate install proofs with current input closures to obtain
+      promoting verdicts.
+
+  - gap_id: FF6-GAP-005
+    severity: high
+    format: [ipynb, nrrd, xliff, safetensors, ubl]
+    category: test_collection
+    title: Test suites cannot be collected from clean checkout
+    description: >-
+      A clean checkout cannot collect the five product test suites
+      without built packages and required dependencies. The attempted
+      source-tree run stopped with 39 collection errors.
+    source_finding: FF6-TRUTH-005
+    blocks:
+      - CI-clean test execution for all 5 existing formats
+    resolution: >-
+      Establish a reproducible test environment with installed wheels
+      and required dependencies before claiming test coverage.
+
+  - gap_id: FF6-GAP-006
+    severity: high
+    format: [ipynb, nrrd, xliff]
+    category: architecture_violation
+    title: Source architecture validator failures
+    description: >-
+      IPYNB, NRRD, and XLIFF fail the source-architecture validator
+      because public package __init__.py files exceed the 100-line cap.
+    source_finding: FF6-TRUTH-006
+    affected_files:
+      - src/python/ipynb/src/format_factory/ipynb/__init__.py (231 > 100)
+      - src/python/ipynb/src/format_factory/ipynb/model/__init__.py (148 > 100)
+      - src/python/nrrd/src/format_factory/nrrd/__init__.py (129 > 100)
+      - src/python/xliff/src/format_factory/xliff/__init__.py (127 > 100)
+    blocks:
+      - Architecture gate passage for IPYNB, NRRD, XLIFF
+    resolution: >-
+      Refactor oversized __init__.py files to move implementation
+      to submodules, keeping only re-exports in the initializer.
+
+  - gap_id: FF6-GAP-007
+    severity: high
+    format: all
+    category: corpus_adequacy
+    title: Sample corpus adequacy is unproven
+    description: >-
+      Existing per-format sample directories contain only 6-10 files
+      with no current obligation-by-corpus adequacy proof.
+    source_finding: FF6-TRUTH-007
+    blocks:
+      - Obligation coverage proof via corpus-backed testing
+    resolution: >-
+      Expand sample corpora and produce obligation-by-corpus coverage
+      matrices proving each normative rule is exercised.
+
+  - gap_id: FF6-GAP-008
+    severity: high
+    format: all
+    category: certification
+    title: Zero production certifications across all 6 formats
+    description: >-
+      No format has any certification milestone. All 89 capabilities
+      have release_state PLANNED. All 128 obligations have
+      verification_status UNVERIFIED. No product is promoted.
+    blocks:
+      - Production release gate for all 6 formats
+    resolution: >-
+      Complete the capability-to-obligation-to-test chain for each
+      format, moving capabilities from PLANNED through IMPLEMENTED
+      to PROVEN.
+
+  - gap_id: FF6-GAP-009
+    severity: medium
+    format: ora
+    category: authority_confidence
+    title: OpenRaster authority confidence is low
+    description: >-
+      The OpenRaster specification 0.0.3 is an informal document with
+      no official validation artifacts, test suite, or conformance
+      program. Contract authority_status is NEEDS_AUTHORITY.
+    blocks:
+      - Obligation assignment confidence for ORA
+      - 7 ORA obligations may change when authority is established
+    resolution: >-
+      Identify and pin authoritative sources. If no formal spec
+      exists, document the informal authority chain and confidence
+      assessment.
+
+  - gap_id: FF6-GAP-010
+    severity: medium
+    format: safetensors
+    category: authority_confidence
+    title: SafeTensors authority confidence is low
+    description: >-
+      The SafeTensors specification is pinned to a specific Git commit
+      (v0.8.0 a406ca3e) with no formal versioned specification document.
+      Authority confidence is rated low.
+    blocks:
+      - Long-term obligation stability for SafeTensors
+    resolution: >-
+      Monitor upstream for specification changes and document the
+      commit-pinning strategy for obligation stability.
+
+  - gap_id: FF6-GAP-011
+    severity: medium
+    format: all
+    category: control_plane
+    title: Known control-plane contradictions
+    description: >-
+      Two high-severity contradictions exist in the control plane:
+      (1) tools.plan_control references a deleted Codex branch
+      (FF6-HO-GAP-001), and (2) tools.plan_control selects the wrong
+      next task (FF6-HO-GAP-002). A medium-severity digest
+      canonicalization issue also exists (FF6-HO-GAP-003).
+    source_findings:
+      - FF6-HO-GAP-001
+      - FF6-HO-GAP-002
+      - FF6-HO-GAP-003
+    blocks:
+      - Automated task selection via tools.plan_control
+    workaround: >-
+      Use the FF6 controller and event journal for task selection
+      until the control plane contradictions are resolved.
+    resolution: >-
+      Redesign tools.plan_control to consume the FF6 controller
+      state, eliminating branch-bound identity and wrong-task
+      selection.
+
+  - gap_id: FF6-GAP-012
+    severity: critical
+    format: all
+    category: obligation_universe_incomplete
+    title: Submitted obligation inventory omits the canonical obligation universe
+    description: >-
+      The submitted inventory contains 128 one-fact-oriented OBL-* records.
+      The repository's canonical product-contract compiler deterministically
+      produces 636 obligations from the same six contracts: IPYNB 105,
+      OpenRaster 32, NRRD 94, XLIFF 125, SafeTensors 86, and UBL 194.
+      None of the submitted IDs overlap the canonical stable IDs.
+    source_event: FF6-EVENT-000009
+    blocks:
+      - Closure of TC-FF6-PROGRAM-CAPABILITIES-001
+      - TC-FF6-PROGRAM-ARCHITECTURE-001
+      - All implementation taskcard generation
+    resolution: >-
+      Generate the inventory from tools.format_contract.product_contract,
+      retain every canonical obligation and provenance edge, reconcile all
+      capabilities, and reject any missing or parallel identity family.
+
+  - gap_id: FF6-GAP-013
+    severity: high
+    format:
+      - ipynb
+      - ora
+      - safetensors
+    category: scope_and_classification_contradiction
+    title: Capability classifications and surfaces contradict locked mission scope
+    description: >-
+      Submitted classification names differ from the locked release
+      classifications. IPYNB includes notebook execution despite the explicit
+      no-execution boundary; SafeTensors framework adapters are not isolated as
+      optional adapters; OpenRaster is represented as a generic archive/codec
+      and omits required image, layer-tree, mask, compositing, rendering, and
+      0.0.3/0.0.4/0.0.5 profile behavior.
+    source_event: FF6-EVENT-000009
+    blocks:
+      - Capability classification acceptance
+      - Public API and package architecture task generation
+    resolution: >-
+      Reconcile every capability with the locked plan, primary authority, and
+      user-visible disposition; use only STABLE_REQUIRED,
+      OPTIONAL_ADAPTER_REQUIRED, PREVIEW_ISOLATED, or
+      EXCLUDED_WITH_AUTHORITY.
+
+  - gap_id: FF6-GAP-014
+    severity: high
+    format: all
+    category: authority_artifact_closure
+    title: Pinned authority bytes are absent from reproducible repository state
+    description: >-
+      Every authoritative source in the six contracts points to a .local
+      acquired artifact that is absent in this checkout. Production compilation
+      therefore reports critical AUTHORITY_ARTIFACT_MISSING issues for all six
+      formats even though historical labels say ACQUIRED.
+    source_event: FF6-EVENT-000009
+    blocks:
+      - Authority-backed contract readiness
+      - Clean-checkout deterministic replay
+      - Promotion of every affected obligation
+    resolution: >-
+      Acquire the exact licensed official artifacts through the governed
+      authority pipeline, store or reproducibly cache them at a committed
+      manifest-bound location allowed by redistribution policy, and verify all
+      declared SHA-256 values from a clean checkout.
+
+  - gap_id: FF6-GAP-015
+    severity: high
+    format: all
+    category: deterministic_compilation_proof
+    title: Three-run compilation and aggregate digest proof is absent
+    description: >-
+      The submitted close provides an aggregate hash without a documented input
+      order or reproducible command. It has no execution receipt and no three
+      clean byte-identical compilations. The taskcard and task index also
+      remained READY while the controller claimed COMPLETE.
+    source_event: FF6-EVENT-000009
+    blocks:
+      - Determinism acceptance criterion
+      - Controller successor selection
+    resolution: >-
+      Bind an approved deterministic compiler command to exact inputs, run it
+      three times in clean isolated directories, compare every output byte and
+      aggregate digest, validate the event chain, then reconcile the taskcard,
+      index, controller, and successor atomically.

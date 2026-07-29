@@ -1,0 +1,467 @@
+schema: ff6/format-obligations@1
+goal_id: FF6-PRODUCTION-LIBRARIES-001
+task_id: TC-FF6-PROGRAM-CAPABILITIES-001
+format_id: safetensors
+format_canonical_name: SafeTensors
+contract_id: FC-SAFETENSORS-V1
+target_spec_version: v0.8.0 commit a406ca3e7a90598be0cd05a50069cb9bf5ef6ba6
+generated_at: "2026-07-29"
+generated_by: claude
+obligation_count: 19
+
+obligations:
+
+  - obligation_id: OBL-SAFETENSORS-001
+    format_id: safetensors
+    capability_id: SAFETENSORS-ADAPTER-001
+    also_referenced_by:
+      - SAFETENSORS-HEADER-001
+      - SAFETENSORS-MODEL-001
+      - SAFETENSORS-PAYLOAD-001
+      - SAFETENSORS-PRESERVE-001
+    authority_source: SafeTensors v0.4 — file format
+    authority_reference: SRC-SAFETENSORS-002
+    rule_text: >-
+      (SafeTensors v0.4 — file format) A safetensors file starts with an unsigned
+      little-endian 64-bit integer N, followed by exactly N bytes of UTF-8 JSON
+      header mapping tensor names to {dtype, shape, data_offsets}, plus an optional
+      __metadata__ string map
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-SAFETENSORS-00001
+      - SAL-SAFETENSORS-00002
+      - SAL-SAFETENSORS-00003
+      - SAL-SAFETENSORS-00004
+      - SAL-SAFETENSORS-00005
+    invalidation_conditions:
+      - specification version change
+      - pinned commit update
+
+  - obligation_id: OBL-SAFETENSORS-002
+    format_id: safetensors
+    capability_id: SAFETENSORS-ADAPTER-001
+    also_referenced_by:
+      - SAFETENSORS-HEADER-001
+      - SAFETENSORS-MODEL-001
+      - SAFETENSORS-PAYLOAD-001
+      - SAFETENSORS-VALIDATE-001
+    authority_source: SafeTensors v0.4 — tensor entries
+    authority_reference: SRC-SAFETENSORS-002
+    rule_text: >-
+      (SafeTensors v0.4 — tensor entries) Each tensor entry declares dtype (e.g.
+      F16, F32, I64, BF16), shape (list of non-negative ints), and data_offsets
+      [begin, end) into the byte buffer immediately following the header; offsets
+      are contiguous and non-overlapping
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-SAFETENSORS-00001
+      - SAL-SAFETENSORS-00002
+      - SAL-SAFETENSORS-00008
+      - SAL-SAFETENSORS-00010
+    invalidation_conditions:
+      - specification version change
+      - pinned commit update
+
+  - obligation_id: OBL-SAFETENSORS-003
+    format_id: safetensors
+    capability_id: SAFETENSORS-ADAPTER-001
+    also_referenced_by:
+      - SAFETENSORS-MODEL-001
+    authority_source: tensor.rs test_zero_sized_tensor
+    authority_reference: SRC-SAFETENSORS-002
+    rule_text: >-
+      (tensor.rs test_zero_sized_tensor) A tensor shape containing a zero dimension
+      is valid and has an empty data span whose begin and end offsets are equal.
+    rule_category: semantic
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-SAFETENSORS-00006
+      - SAL-SAFETENSORS-00007
+      - SAL-SAFETENSORS-00008
+    invalidation_conditions:
+      - specification version change
+      - pinned commit update
+
+  - obligation_id: OBL-SAFETENSORS-004
+    format_id: safetensors
+    capability_id: SAFETENSORS-ADAPTER-001
+    also_referenced_by:
+      - SAFETENSORS-MODEL-001
+    authority_source: README Notes line 98 and tensor.rs test_empty_shapes_allowed
+    authority_reference: SRC-SAFETENSORS-002
+    rule_text: >-
+      (README Notes line 98 and tensor.rs test_empty_shapes_allowed) A zero-rank
+      tensor with an empty shape list is a valid scalar whose data span contains
+      exactly one element of its declared dtype.
+    rule_category: semantic
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-SAFETENSORS-00006
+      - SAL-SAFETENSORS-00007
+      - SAL-SAFETENSORS-00009
+    invalidation_conditions:
+      - specification version change
+      - pinned commit update
+
+  - obligation_id: OBL-SAFETENSORS-005
+    format_id: safetensors
+    capability_id: SAFETENSORS-ADAPTER-001
+    also_referenced_by:
+      - SAFETENSORS-MODEL-001
+      - SAFETENSORS-PAYLOAD-001
+    authority_source: README Format lines 80-82
+    authority_reference: SRC-SAFETENSORS-002
+    rule_text: >-
+      (README Format lines 80-82) Each tensor entry has a dtype field, a shape
+      field containing dimensions, and a data_offsets field containing a begin and
+      end byte offset.
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-SAFETENSORS-00001
+      - SAL-SAFETENSORS-00002
+      - SAL-SAFETENSORS-00008
+    invalidation_conditions:
+      - specification version change
+      - pinned commit update
+
+  - obligation_id: OBL-SAFETENSORS-006
+    format_id: safetensors
+    capability_id: SAFETENSORS-ADAPTER-001
+    also_referenced_by:
+      - SAFETENSORS-HEADER-001
+      - SAFETENSORS-MODEL-001
+      - SAFETENSORS-PRESERVE-001
+      - SAFETENSORS-VALIDATE-001
+    authority_source: tensor.rs Metadata.validate and test_validation_overflow
+    authority_reference: SRC-SAFETENSORS-002
+    rule_text: >-
+      (tensor.rs Metadata.validate and test_validation_overflow) Shape
+      multiplication and element-bit multiplication overflow are invalid and must
+      be rejected instead of wrapping during validation.
+    rule_category: security
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-SAFETENSORS-00002
+      - SAL-SAFETENSORS-00011
+      - SAL-SAFETENSORS-00012
+    invalidation_conditions:
+      - specification version change
+      - pinned commit update
+
+  - obligation_id: OBL-SAFETENSORS-007
+    format_id: safetensors
+    capability_id: SAFETENSORS-ADAPTER-001
+    also_referenced_by:
+      - SAFETENSORS-HEADER-001
+      - SAFETENSORS-MODEL-001
+      - SAFETENSORS-PRESERVE-001
+      - SAFETENSORS-VALIDATE-001
+    authority_source: tensor.rs Dtype.bitsize and Metadata.validate
+    authority_reference: SRC-SAFETENSORS-002
+    rule_text: >-
+      (tensor.rs Dtype.bitsize and Metadata.validate) Sub-byte F4 and six-bit
+      tensor types are valid only when the complete tensor bit count ends on a byte
+      boundary; a misaligned slice is invalid.
+    rule_category: behavioral
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-SAFETENSORS-00006
+      - SAL-SAFETENSORS-00007
+      - SAL-SAFETENSORS-00008
+      - SAL-SAFETENSORS-00011
+    invalidation_conditions:
+      - specification version change
+      - pinned commit update
+
+  - obligation_id: OBL-SAFETENSORS-008
+    format_id: safetensors
+    capability_id: SAFETENSORS-ADAPTER-001
+    also_referenced_by:
+      - SAFETENSORS-HEADER-001
+      - SAFETENSORS-MODEL-001
+      - SAFETENSORS-PAYLOAD-001
+      - SAFETENSORS-PRESERVE-001
+      - SAFETENSORS-VALIDATE-001
+    authority_source: tensor.rs Metadata.validate lines 627-659
+    authority_reference: SRC-SAFETENSORS-002
+    rule_text: >-
+      (tensor.rs Metadata.validate lines 627-659) The tensor byte span must equal
+      the checked product of all shape dimensions and the dtype bit width divided
+      by eight.
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-SAFETENSORS-00002
+      - SAL-SAFETENSORS-00008
+      - SAL-SAFETENSORS-00011
+      - SAL-SAFETENSORS-00012
+    invalidation_conditions:
+      - specification version change
+      - pinned commit update
+
+  - obligation_id: OBL-SAFETENSORS-009
+    format_id: safetensors
+    capability_id: SAFETENSORS-ADAPTER-001
+    also_referenced_by:
+      - SAFETENSORS-MODEL-001
+    authority_source: tensor.rs Dtype enum lines 811-865
+    authority_reference: SRC-SAFETENSORS-002
+    rule_text: >-
+      (tensor.rs Dtype enum lines 811-865) The v0.8.0 dtype inventory includes
+      BOOL, F4, F6_E2M3, F6_E3M2, U8, I8, F8_E5M2, F8_E4M3, F8_E8M0,
+      F8_E4M3FNUZ, F8_E5M2FNUZ, I16, U16, F16, BF16, I32, U32, F32, C64, F64,
+      I64, and U64.
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-SAFETENSORS-00006
+      - SAL-SAFETENSORS-00007
+      - SAL-SAFETENSORS-00019
+    invalidation_conditions:
+      - specification version change
+      - pinned commit update
+
+  - obligation_id: OBL-SAFETENSORS-010
+    format_id: safetensors
+    capability_id: SAFETENSORS-HEADER-001
+    also_referenced_by:
+      - SAFETENSORS-MODEL-001
+      - SAFETENSORS-PAYLOAD-001
+    authority_source: README Format lines 74-79
+    authority_reference: SRC-SAFETENSORS-002
+    rule_text: >-
+      (README Format lines 74-79) A SafeTensors file header prefix is exactly
+      eight bytes interpreted as an unsigned little-endian 64-bit integer
+      containing the UTF-8 JSON header byte length.
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-SAFETENSORS-00001
+      - SAL-SAFETENSORS-00003
+      - SAL-SAFETENSORS-00004
+    invalidation_conditions:
+      - specification version change
+      - pinned commit update
+
+  - obligation_id: OBL-SAFETENSORS-011
+    format_id: safetensors
+    capability_id: SAFETENSORS-HEADER-001
+    also_referenced_by:
+      - SAFETENSORS-MODEL-001
+      - SAFETENSORS-PAYLOAD-001
+      - SAFETENSORS-PRESERVE-001
+      - SAFETENSORS-VALIDATE-001
+    authority_source: tensor.rs MetadataIncompleteBuffer and test_metadata_incomplete_buffer
+    authority_reference: SRC-SAFETENSORS-002
+    rule_text: >-
+      (tensor.rs MetadataIncompleteBuffer and test_metadata_incomplete_buffer) A
+      complete SafeTensors file may not contain unindexed trailing payload bytes
+      after the final tensor because incomplete metadata coverage is invalid.
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-SAFETENSORS-00004
+      - SAL-SAFETENSORS-00013
+      - SAL-SAFETENSORS-00016
+    invalidation_conditions:
+      - specification version change
+      - pinned commit update
+
+  - obligation_id: OBL-SAFETENSORS-012
+    format_id: safetensors
+    capability_id: SAFETENSORS-HEADER-001
+    also_referenced_by:
+      - SAFETENSORS-MODEL-001
+      - SAFETENSORS-PRESERVE-001
+      - SAFETENSORS-VALIDATE-001
+    authority_source: tensor.rs read_metadata and invalid-header tests
+    authority_reference: SRC-SAFETENSORS-002
+    rule_text: >-
+      (tensor.rs read_metadata and invalid-header tests) A declared header length
+      that exceeds the available file bytes, malformed UTF-8, or malformed JSON is
+      invalid and must be rejected.
+    rule_category: behavioral
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-SAFETENSORS-00003
+      - SAL-SAFETENSORS-00004
+      - SAL-SAFETENSORS-00005
+    invalidation_conditions:
+      - specification version change
+      - pinned commit update
+
+  - obligation_id: OBL-SAFETENSORS-013
+    format_id: safetensors
+    capability_id: SAFETENSORS-HEADER-001
+    also_referenced_by:
+      - SAFETENSORS-MODEL-001
+    authority_source: tensor.rs test_whitespace_padded_header
+    authority_reference: SRC-SAFETENSORS-002
+    rule_text: >-
+      (tensor.rs test_whitespace_padded_header) JSON whitespace may pad the
+      beginning or end of the header, allowing writers to align the following data
+      section while preserving valid syntax.
+    rule_category: compatibility
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-SAFETENSORS-00003
+      - SAL-SAFETENSORS-00009
+    invalidation_conditions:
+      - specification version change
+      - pinned commit update
+
+  - obligation_id: OBL-SAFETENSORS-014
+    format_id: safetensors
+    capability_id: SAFETENSORS-HEADER-001
+    also_referenced_by:
+      - SAFETENSORS-MODEL-001
+      - SAFETENSORS-PAYLOAD-001
+    authority_source: README Format line 81
+    authority_reference: SRC-SAFETENSORS-002
+    rule_text: >-
+      (README Format line 81) Tensor data offsets are relative to the beginning of
+      the data buffer that immediately follows the variable-length JSON header.
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-SAFETENSORS-00001
+      - SAL-SAFETENSORS-00010
+      - SAL-SAFETENSORS-00013
+    invalidation_conditions:
+      - specification version change
+      - pinned commit update
+
+  - obligation_id: OBL-SAFETENSORS-015
+    format_id: safetensors
+    capability_id: SAFETENSORS-HEADER-001
+    also_referenced_by:
+      - SAFETENSORS-MODEL-001
+      - SAFETENSORS-PRESERVE-001
+    authority_source: README Format lines 76-83
+    authority_reference: SRC-SAFETENSORS-002
+    rule_text: >-
+      (README Format lines 76-83) The SafeTensors header is UTF-8 JSON and its
+      top-level object maps tensor-name keys to tensor entries, with __metadata__
+      reserved for file metadata.
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-SAFETENSORS-00001
+      - SAL-SAFETENSORS-00003
+      - SAL-SAFETENSORS-00005
+      - SAL-SAFETENSORS-00014
+      - SAL-SAFETENSORS-00015
+    invalidation_conditions:
+      - specification version change
+      - pinned commit update
+
+  - obligation_id: OBL-SAFETENSORS-016
+    format_id: safetensors
+    capability_id: SAFETENSORS-HEADER-001
+    also_referenced_by:
+      - SAFETENSORS-MODEL-001
+      - SAFETENSORS-PRESERVE-001
+    authority_source: README Format line 83
+    authority_reference: SRC-SAFETENSORS-002
+    rule_text: >-
+      (README Format line 83) The __metadata__ entry may contain only a free-form
+      string-to-string map; arbitrary nested JSON metadata values are not valid.
+    rule_category: semantic
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-SAFETENSORS-00005
+      - SAL-SAFETENSORS-00014
+      - SAL-SAFETENSORS-00015
+    invalidation_conditions:
+      - specification version change
+      - pinned commit update
+
+  - obligation_id: OBL-SAFETENSORS-017
+    format_id: safetensors
+    capability_id: SAFETENSORS-HEADER-001
+    also_referenced_by:
+      - SAFETENSORS-MODEL-001
+      - SAFETENSORS-PAYLOAD-001
+      - SAFETENSORS-PRESERVE-001
+      - SAFETENSORS-VALIDATE-001
+    authority_source: README Notes line 99 and tensor.rs Metadata.validate
+    authority_reference: SRC-SAFETENSORS-002
+    rule_text: >-
+      (README Notes line 99 and tensor.rs Metadata.validate) The data buffer must
+      be entirely indexed by tensor entries without holes, and ordered tensor
+      offsets must be contiguous and non-overlapping.
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-SAFETENSORS-00004
+      - SAL-SAFETENSORS-00013
+      - SAL-SAFETENSORS-00016
+      - SAL-SAFETENSORS-00018
+    invalidation_conditions:
+      - specification version change
+      - pinned commit update
+
+  - obligation_id: OBL-SAFETENSORS-018
+    format_id: safetensors
+    capability_id: SAFETENSORS-HEADER-001
+    also_referenced_by:
+      - SAFETENSORS-MODEL-001
+      - SAFETENSORS-PRESERVE-001
+      - SAFETENSORS-VALIDATE-001
+    authority_source: tensor.rs MAX_HEADER_SIZE and read_metadata
+    authority_reference: SRC-SAFETENSORS-002
+    rule_text: >-
+      (tensor.rs MAX_HEADER_SIZE and read_metadata) The official implementation
+      limits a JSON header to 100,000,000 bytes and rejects a declared header
+      length above that resource limit.
+    rule_category: security
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-SAFETENSORS-00011
+      - SAL-SAFETENSORS-00012
+      - SAL-SAFETENSORS-00017
+    invalidation_conditions:
+      - specification version change
+      - pinned commit update
+
+  - obligation_id: OBL-SAFETENSORS-019
+    format_id: safetensors
+    capability_id: SAFETENSORS-MODEL-001
+    also_referenced_by:
+      - SAFETENSORS-PAYLOAD-001
+    authority_source: README Notes lines 102-104
+    authority_reference: SRC-SAFETENSORS-002
+    rule_text: >-
+      (README Notes lines 102-104) SafeTensors tensor payload values use
+      little-endian byte order and C row-major element order.
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-SAFETENSORS-00008
+      - SAL-SAFETENSORS-00010
+      - SAL-SAFETENSORS-00018
+    invalidation_conditions:
+      - specification version change
+      - pinned commit update

@@ -6,7 +6,7 @@ publish_allowed: false
 generated_by: codex
 generated_at: 2026-07-29
 goal_id: FF6-PRODUCTION-LIBRARIES-001
-status: READY
+status: NEEDS_REPAIR
 skill_ids:
   - build-obligation-register
   - compile-format-contract
@@ -19,7 +19,7 @@ skill_ids:
 
 ## State
 
-- Status: `READY`
+- Status: `NEEDS_REPAIR`
 - Controller predecessor: `TC-FF6-PROGRAM-TRUTH-001`
 - Controller successor: `TC-FF6-PROGRAM-ARCHITECTURE-001`
 - Product source mutation: prohibited
@@ -98,3 +98,25 @@ Unknown future implementation references are explicit `PLANNED`, never omitted.
 Missing or contradictory authority creates a named current gap and blocks only
 the affected obligation/profile. It does not permit invention, omission, or
 synthetic authority and does not stop safe compilation for other formats.
+
+## Independent checkpoint audit
+
+Event `FF6-EVENT-000009` invalidates the submitted close without discarding its
+draft work. The submitted artifacts contain 89 useful capability descriptions
+but only 128 parallel `OBL-*` records. The canonical product-contract compiler
+produces 636 obligations from the same contracts, with zero ID overlap:
+
+| Format | Submitted | Canonical compiler |
+|---|---:|---:|
+| IPYNB | 19 | 105 |
+| OpenRaster | 7 | 32 |
+| NRRD | 18 | 94 |
+| XLIFF | 31 | 125 |
+| SafeTensors | 19 | 86 |
+| UBL | 34 | 194 |
+
+Additional failures are recorded as `FF6-GAP-013` through `FF6-GAP-015`:
+classification/scope contradictions, missing repository-local authority bytes,
+and absent three-run deterministic proof. Architecture remains locked. Repair
+must preserve useful descriptions, replace the incomplete identity/projection,
+and satisfy every original acceptance criterion before a new close event.

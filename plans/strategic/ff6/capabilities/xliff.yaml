@@ -1,0 +1,908 @@
+schema: ff6/format-capabilities@1
+goal_id: FF6-PRODUCTION-LIBRARIES-001
+task_id: TC-FF6-PROGRAM-CAPABILITIES-001
+format_id: xliff
+format_canonical_name: XLIFF (XML Localisation Interchange File Format)
+contract_id: FC-XLIFF-V1
+target_spec_version: XLIFF 2.1
+generated_at: '2026-07-29'
+generated_by: claude
+capability_count: 15
+capabilities:
+- capability_id: XLIFF-INLINE-001
+  format_id: xliff
+  stable_name: Inline-code model
+  classification: stable
+  developer_use_cases:
+  - A developer reorders translated text around inline codes and cannot silently orphan or cross paired codes.
+  spec_profiles:
+  - xliff_2.1
+  authority_fact_ids:
+  - POL-XLC-INLINE-01
+  - POL-XLC-INLINE-02
+  - SAL-XLIFF-00005
+  - SAL-XLIFF-00006
+  - SAL-XLIFF-00013
+  - SAL-XLIFF-00014
+  - SAL-XLIFF-00016
+  - RF-XLF-00002
+  normative_obligation_ids:
+  - OBL-XLIFF-001
+  - OBL-XLIFF-002
+  - OBL-XLIFF-003
+  - OBL-XLIFF-004
+  - OBL-XLIFF-005
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Expose inline content as a token tree/sequence preserving paired-code relationships, identity, nesting, and original-data
+    references.
+  - Prevent or diagnose edits that orphan, duplicate, cross, or illegally reorder paired codes before save.
+  - Represent inline content as a token sequence preserving paired-code identity and nesting, and refuse edits that orphan,
+    cross, duplicate, or illegally reorder paired codes - the mergeability guarantee translation tools depend on.
+  preservation_contract:
+  - Token round trip preserves original data references.
+  - Inline-code integrity proven not to corrupt mergeability.
+  error_contract:
+  - Paired-code corruption attempts (orphan, cross, duplicate) refused/diagnosed with structured diagnostics including code,
+    severity, message, source_location, object_path, originating_rule, repair_suggestion, and auto_repair_eligible.
+  security_contract:
+  - Inline-code parsing does not evaluate embedded payloads.
+  resource_limits:
+  - Bounded inline nesting depth with configurable limit.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Orphaned, crossed, or duplicated paired-code edits.
+  - Inline original-data references that do not resolve to data elements in the same unit.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: XLIFF-LIFECYCLE-001
+  format_id: xliff
+  stable_name: Baseline lifecycle I/O
+  classification: stable
+  developer_use_cases:
+  - A developer integrates the library with only lifecycle APIs and never needs format-internal knowledge for I/O plumbing.
+  spec_profiles:
+  - xliff_2.1
+  authority_fact_ids:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+  normative_obligation_ids: []
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Provide load from filesystem path, readable stream, and in-memory bytes, returning the format's root document/model object.
+  - Provide save to filesystem path and writable stream, plus serialization to bytes, producing output the library's own loader
+    accepts.
+  - Expose the detected format version and any declared version separately; never silently rewrite a declared version.
+  - Support a strict read mode that rejects malformed input with diagnostics and a tolerant read mode that recovers where
+    the format permits, with recovery actions reported.
+  - Expose validation as a first-class callable operation returning structured diagnostics, not only as exceptions raised
+    during parsing.
+  - Offer deterministic serialization such that an unchanged loaded document serializes to identical bytes across repeated
+    calls in the same mode.
+  preservation_contract:
+  - Unchanged loaded document serializes to identical bytes across repeated calls in the same mode.
+  error_contract:
+  - Strict read mode rejects malformed input with structured diagnostics.
+  - Tolerant read mode reports recovery actions through diagnostics.
+  - Validation returns structured diagnostics as first-class callable operation.
+  security_contract:
+  - Safe defaults for all I/O operations; no implicit external effects during load/save.
+  resource_limits:
+  - Configurable input size limits on load.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Malformed XML input.
+  - Unsupported or undeclared format version.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: XLIFF-MERGE-001
+  format_id: xliff
+  stable_name: Extraction and merge framework
+  classification: optional_adapter
+  developer_use_cases:
+  - A developer merges translations back and drifted sources are refused with a drift report instead of corrupting output.
+  spec_profiles:
+  - xliff_2.1
+  authority_fact_ids:
+  - POL-XLC-MERGE-01
+  - SAL-XLIFF-00017
+  normative_obligation_ids:
+  - OBL-XLIFF-006
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Provide extraction/merge adapter interfaces with reversible skeleton mappings; detect source drift and stale skeletons
+    before merge; never claim generic extraction without format-specific adapters.
+  preservation_contract:
+  - Skeleton mappings are reversible; merge does not corrupt original format.
+  error_contract:
+  - Source drift detected and refused with a drift report before merge proceeds.
+  - Stale skeletons diagnosed with structured error including code, severity, message, source_location, object_path, originating_rule.
+  security_contract:
+  - Path traversal prevented when resolving skeleton references.
+  resource_limits:
+  - Configurable limits on skeleton file size and count.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Source document drift since extraction.
+  - Stale or missing skeleton references.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: XLIFF-MODEL-001
+  format_id: xliff
+  stable_name: Complete core structural model
+  classification: stable
+  developer_use_cases:
+  - A developer walks files-groups-units-segments with inherited attributes resolved and originals preserved.
+  spec_profiles:
+  - xliff_2.1
+  authority_fact_ids:
+  - POL-XLC-MODEL-01
+  - SAL-XLIFF-00001
+  - SAL-XLIFF-00002
+  - SAL-XLIFF-00005
+  - SAL-XLIFF-00010
+  - SAL-XLIFF-00012
+  - SAL-XLIFF-00013
+  - SAL-XLIFF-00015
+  - SAL-XLIFF-00017
+  - SAL-XLIFF-00018
+  - SAL-XLIFF-00019
+  - SAL-XLIFF-00023
+  - SAL-XLIFF-00024
+  - RF-XLF-00001
+  normative_obligation_ids:
+  - OBL-XLIFF-001
+  - OBL-XLIFF-003
+  - OBL-XLIFF-006
+  - OBL-XLIFF-007
+  - OBL-XLIFF-008
+  - OBL-XLIFF-009
+  - OBL-XLIFF-010
+  - OBL-XLIFF-011
+  - OBL-XLIFF-012
+  - OBL-XLIFF-013
+  - OBL-XLIFF-014
+  - OBL-XLIFF-015
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Model the full core hierarchy with tree order, IDs, references, inheritance, and scope preserved through edits.
+  - Expose the document hierarchy as typed XliffDocument/XliffFile/XliffGroup/XliffUnit/XliffSegment objects with tree order
+    and inherited attributes resolved, so tools navigate structure without XML spelunking.
+  preservation_contract:
+  - Tree order, IDs, inheritance, and scope preserved through edits.
+  - Nested-structure order and ID preservation after round trip.
+  error_contract:
+  - ID uniqueness violations diagnosed with structured diagnostics including object_path and originating_rule.
+  - Unresolved references diagnosed at load or validation time.
+  security_contract:
+  - Bounded nesting depth for group/unit tree to prevent stack exhaustion.
+  resource_limits:
+  - Configurable element count limit for files, groups, units, and segments.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Duplicate IDs within specification-defined scope.
+  - Unresolvable references across structural elements.
+  - Malformed hierarchy (e.g., segment without unit parent).
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: XLIFF-MODULE-001
+  format_id: xliff
+  stable_name: Optional-module support with explicit coverage
+  classification: stable
+  developer_use_cases:
+  - A developer inspects module coverage programmatically before relying on module data.
+  spec_profiles:
+  - xliff_2.1
+  authority_fact_ids:
+  - POL-XLC-MODULE-01
+  - SAL-XLIFF-00001
+  - SAL-XLIFF-00007
+  - SAL-XLIFF-00008
+  - SAL-XLIFF-00011
+  - SAL-XLIFF-00015
+  - SAL-XLIFF-00021
+  - SAL-XLIFF-00022
+  - SAL-XLIFF-00023
+  - SAL-XLIFF-00024
+  - SAL-XLIFF-00025
+  - SAL-XLIFF-00026
+  - SAL-XLIFF-00027
+  - SAL-XLIFF-00028
+  - SAL-XLIFF-00029
+  - SAL-XLIFF-00030
+  - RF-XLF-00003
+  normative_obligation_ids:
+  - OBL-XLIFF-007
+  - OBL-XLIFF-011
+  - OBL-XLIFF-014
+  - OBL-XLIFF-015
+  - OBL-XLIFF-016
+  - OBL-XLIFF-017
+  - OBL-XLIFF-018
+  - OBL-XLIFF-019
+  - OBL-XLIFF-020
+  - OBL-XLIFF-021
+  - OBL-XLIFF-022
+  - OBL-XLIFF-023
+  - OBL-XLIFF-024
+  - OBL-XLIFF-025
+  - OBL-XLIFF-026
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Declare per-module coverage (modeled/preservation-only/unsupported); preserve unknown module content losslessly; never
+    drop module data silently.
+  - Declare per-module coverage programmatically (modeled, preservation-only, or unsupported) for every optional module of
+    the target version, and preserve unknown module content losslessly - production-complete status requires all modules modeled.
+  preservation_contract:
+  - Unknown module content preserved losslessly through round trip.
+  - Per-module coverage manifest matches implementation behavior.
+  error_contract:
+  - Silent module downgrade forbidden; diagnosed with structured diagnostic.
+  - Module schema validation failures reported with module namespace, code, and severity.
+  security_contract:
+  - Module content parsed as data; no execution of module payloads.
+  resource_limits:
+  - Configurable limits on module element count per document.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Module content dropped silently on save.
+  - Coverage manifest declares modeled but implementation does not support the module.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: XLIFF-NOTE-001
+  format_id: xliff
+  stable_name: Notes and annotations
+  classification: stable
+  developer_use_cases:
+  - A reviewer attaches an annotation over a span crossing segment content and it round-trips.
+  spec_profiles:
+  - xliff_2.1
+  authority_fact_ids:
+  - POL-XLC-NOTE-01
+  - SAL-XLIFF-00014
+  - SAL-XLIFF-00015
+  - SAL-XLIFF-00027
+  normative_obligation_ids:
+  - OBL-XLIFF-004
+  - OBL-XLIFF-011
+  - OBL-XLIFF-023
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Support notes with priorities/categories and annotation spans with valid marker relationships, including overlapping structures
+    the standard permits.
+  preservation_contract:
+  - Overlapping annotation markers (sm/em) round-trip correctly.
+  - Note priorities and categories preserved through edits.
+  error_contract:
+  - Invalid marker pairing diagnosed with structured diagnostic including source_location and originating_rule.
+  security_contract:
+  - Note and annotation content treated as data; no evaluation of embedded payloads.
+  resource_limits:
+  - Configurable limit on note count per structural element.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Orphaned sm/em annotation markers after edit.
+  - Invalid marker pairing relationships.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: XLIFF-PARSE-001
+  format_id: xliff
+  stable_name: Version-aware namespace parsing
+  classification: stable
+  developer_use_cases:
+  - A developer loads files from mixed tool chains and the library reports exact version and module namespaces in use.
+  spec_profiles:
+  - xliff_2.1
+  authority_fact_ids:
+  - POL-XLC-PARSE-01
+  - POL-XLC-PARSE-02
+  - SAL-XLIFF-00001
+  - SAL-XLIFF-00002
+  - SAL-XLIFF-00003
+  - SAL-XLIFF-00004
+  - SAL-XLIFF-00005
+  - SAL-XLIFF-00006
+  - SAL-XLIFF-00007
+  - SAL-XLIFF-00008
+  - SAL-XLIFF-00009
+  - SAL-XLIFF-00010
+  - SAL-XLIFF-00011
+  - SAL-XLIFF-00012
+  - SAL-XLIFF-00013
+  - SAL-XLIFF-00014
+  - SAL-XLIFF-00015
+  - SAL-XLIFF-00016
+  - SAL-XLIFF-00017
+  - SAL-XLIFF-00018
+  - SAL-XLIFF-00019
+  - SAL-XLIFF-00020
+  - SAL-XLIFF-00021
+  - SAL-XLIFF-00022
+  - SAL-XLIFF-00023
+  - SAL-XLIFF-00024
+  - SAL-XLIFF-00025
+  - SAL-XLIFF-00026
+  - SAL-XLIFF-00027
+  - SAL-XLIFF-00028
+  - SAL-XLIFF-00029
+  - SAL-XLIFF-00030
+  - SAL-XLIFF-10A6F1FB1C146A18
+  normative_obligation_ids:
+  - OBL-XLIFF-001
+  - OBL-XLIFF-002
+  - OBL-XLIFF-003
+  - OBL-XLIFF-004
+  - OBL-XLIFF-005
+  - OBL-XLIFF-006
+  - OBL-XLIFF-007
+  - OBL-XLIFF-008
+  - OBL-XLIFF-009
+  - OBL-XLIFF-010
+  - OBL-XLIFF-011
+  - OBL-XLIFF-012
+  - OBL-XLIFF-013
+  - OBL-XLIFF-014
+  - OBL-XLIFF-015
+  - OBL-XLIFF-016
+  - OBL-XLIFF-017
+  - OBL-XLIFF-018
+  - OBL-XLIFF-019
+  - OBL-XLIFF-020
+  - OBL-XLIFF-021
+  - OBL-XLIFF-022
+  - OBL-XLIFF-023
+  - OBL-XLIFF-024
+  - OBL-XLIFF-025
+  - OBL-XLIFF-026
+  - OBL-XLIFF-027
+  - OBL-XLIFF-028
+  - OBL-XLIFF-029
+  - OBL-XLIFF-030
+  - OBL-XLIFF-031
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Recognize supported version namespaces, validate namespace/version consistency, and preserve custom extension namespaces
+    and attributes.
+  - Never interpret an unsupported or legacy version as the target version; route it to an explicit compatibility adapter
+    or refuse with diagnostics.
+  preservation_contract:
+  - Custom extension namespaces and attributes preserved through parse-save cycle.
+  - Version attribute never silently rewritten.
+  error_contract:
+  - Namespace/version inconsistency diagnosed with structured diagnostic including code, severity, source_location, and originating_rule.
+  - Legacy-version input refused with diagnostics when no compatibility adapter is available.
+  security_contract:
+  - XML external entities disabled by default during parsing.
+  - No network resource resolution during parse unless explicitly enabled.
+  resource_limits:
+  - Configurable input size limit.
+  - Configurable nesting depth limit.
+  - Configurable element count limit.
+  - Configurable total decoded payload bytes limit.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Namespace/version attribute mismatch.
+  - Unsupported or legacy XLIFF version without compatibility adapter.
+  - Malformed XML input.
+  - Input exceeding configured size, depth, or element count limits.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: XLIFF-PRESERVE-001
+  format_id: xliff
+  stable_name: Baseline preservation duties
+  classification: stable
+  developer_use_cases:
+  - A developer round-trips files containing constructs the library does not model and loses nothing silently.
+  spec_profiles:
+  - xliff_2.1
+  authority_fact_ids:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+  normative_obligation_ids: []
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Preserve unknown or future-version constructs that can be carried safely; never silently drop unrecognized content in
+    lossless mode.
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty value.
+  - Report every construct that cannot be preserved before saving, through a loss report API, rather than failing silently.
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller choice.
+  preservation_contract:
+  - Unknown constructs preserved in lossless mode.
+  - Absent-vs-default distinction maintained.
+  - Loss report emitted before save for any non-preservable construct.
+  - Lossless and normalized output modes are explicit caller choices.
+  error_contract:
+  - Loss report API returns structured diagnostics listing every construct that cannot be preserved.
+  security_contract:
+  - Preserved unknown constructs treated as untrusted data; no evaluation.
+  resource_limits:
+  - Configurable limit on total preserved unknown content size.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Silent data loss on round trip in lossless mode.
+  - Absent optional value conflated with explicitly written default.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: XLIFF-QA-001
+  format_id: xliff
+  stable_name: Localization quality checks
+  classification: optional_adapter
+  developer_use_cases:
+  - A reviewer runs a QA profile and triages warnings without conflating them with format errors.
+  spec_profiles:
+  - xliff_2.1
+  authority_fact_ids:
+  - POL-XLC-QA-01
+  normative_obligation_ids: []
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Provide pluggable QA checks (missing/unchanged targets, placeholder mismatches, drift, length, consistency) reported separately
+    from conformance diagnostics.
+  preservation_contract:
+  - QA check results do not alter document content.
+  error_contract:
+  - QA warnings reported separately from conformance errors with distinct severity taxonomy.
+  - Each QA check produces structured diagnostics including code, severity, message, and object_path.
+  security_contract:
+  - QA checks operate on in-memory model only; no external resource access.
+  resource_limits:
+  - Configurable QA check timeout per document.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - QA warnings conflated with conformance errors in output.
+  - Missing/unchanged target not detected by QA check.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: XLIFF-SEC-001
+  format_id: xliff
+  stable_name: Baseline security posture
+  classification: stable
+  developer_use_cases:
+  - A developer processes untrusted input with safe defaults and only opts into external effects explicitly.
+  spec_profiles:
+  - xliff_2.1
+  authority_fact_ids:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+  normative_obligation_ids: []
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded payload bytes, with
+    safe defaults enabled.
+  - Never resolve network resources, execute embedded code, load plugins, or follow external references during load, validate,
+    or save unless explicitly enabled by the caller.
+  - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced resource.
+  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing must not evaluate them.
+  - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations and bound recursion
+    depth.
+  preservation_contract:
+  - Security limits do not silently corrupt preserved content; documents exceeding limits are refused, not truncated.
+  error_contract:
+  - Limit violations diagnosed with structured diagnostics including code, severity, message, and the specific limit exceeded.
+  - Path traversal attempts refused with diagnostic.
+  - External reference resolution refused by default with diagnostic.
+  security_contract:
+  - XML external entities disabled by default.
+  - Resource-data resolution opt-in with allowlists and limits.
+  - Bounded nesting depth and document size with configurable limits.
+  - No implicit network access, code execution, or plugin loading.
+  - Checked arithmetic for all size and count calculations.
+  resource_limits:
+  - Configurable input size limit with safe default.
+  - Configurable nesting depth limit with safe default.
+  - Configurable element/record count limit with safe default.
+  - Configurable total decoded payload bytes limit with safe default.
+  - Bounded recursion depth.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - XML external entity expansion attempted.
+  - Path traversal in resource-data reference.
+  - Input exceeding configured size, depth, or element count limits.
+  - Algorithmic complexity attack via deeply nested or pathologically structured input.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: XLIFF-SEG-001
+  format_id: xliff
+  stable_name: Segmentation operations
+  classification: stable
+  developer_use_cases:
+  - A developer re-segments a unit and hands the mapping report downstream so references stay valid.
+  spec_profiles:
+  - xliff_2.1
+  authority_fact_ids:
+  - POL-XLC-SEG-01
+  - SAL-XLIFF-00002
+  - SAL-XLIFF-00018
+  - SAL-XLIFF-00019
+  - RF-XLF-00004
+  normative_obligation_ids:
+  - OBL-XLIFF-008
+  - OBL-XLIFF-012
+  - OBL-XLIFF-013
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Split and join segments maintaining IDs, state, inline-code validity, annotations, and references; produce a segment mapping
+    report after structural edits.
+  - Produce a machine-readable segment mapping report after every split/join so downstream merge tooling can rebind references
+    across re-segmentation.
+  preservation_contract:
+  - Segment IDs, state, inline-code validity, and annotations preserved through split/join operations.
+  - Segment mapping report enables downstream reference rebinding.
+  error_contract:
+  - Invalid split/join operations (e.g., splitting mid-paired-code) refused with structured diagnostic.
+  security_contract:
+  - Segmentation operations operate on in-memory model only; no external resource access.
+  resource_limits:
+  - Configurable limit on segment count per unit after split.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Split operation that would orphan or cross paired inline codes.
+  - Join operation that would create invalid state combinations.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: XLIFF-STATE-001
+  format_id: xliff
+  stable_name: Translation-state workflow
+  classification: stable
+  developer_use_cases:
+  - A workflow engine advances unit states and invalid transitions are diagnosed per configured policy.
+  spec_profiles:
+  - xliff_2.1
+  authority_fact_ids:
+  - POL-XLC-STATE-01
+  - SAL-XLIFF-00018
+  normative_obligation_ids:
+  - OBL-XLIFF-012
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Expose target state and substate without inventing proprietary semantics; allow configurable workflow transition validation.
+  preservation_contract:
+  - State and substate values preserved exactly as declared; no proprietary meanings invented for standard states.
+  error_contract:
+  - Invalid state transitions diagnosed per configured workflow policy with structured diagnostic including current state,
+    attempted state, and originating_rule.
+  - State values translated/reviewed/final without target child diagnosed.
+  security_contract:
+  - State transitions operate on in-memory model only; no external effects.
+  resource_limits: []
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - State set to translated/reviewed/final without target child present.
+  - Invalid state transition per configured workflow policy.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: XLIFF-TEXT-001
+  format_id: xliff
+  stable_name: Source/target text editing
+  classification: stable
+  developer_use_cases:
+  - A translator tool sets target text from a token projection and the codes land in legal positions.
+  spec_profiles:
+  - xliff_2.1
+  authority_fact_ids:
+  - POL-XLC-TEXT-01
+  - SAL-XLIFF-00002
+  - SAL-XLIFF-00007
+  - SAL-XLIFF-00008
+  - SAL-XLIFF-00009
+  - SAL-XLIFF-00018
+  - SAL-XLIFF-00019
+  - SAL-XLIFF-00020
+  - SAL-XLIFF-00021
+  - SAL-XLIFF-00025
+  - SAL-XLIFF-00028
+  normative_obligation_ids:
+  - OBL-XLIFF-008
+  - OBL-XLIFF-012
+  - OBL-XLIFF-013
+  - OBL-XLIFF-016
+  - OBL-XLIFF-017
+  - OBL-XLIFF-019
+  - OBL-XLIFF-021
+  - OBL-XLIFF-024
+  - OBL-XLIFF-029
+  - OBL-XLIFF-030
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Edit source/target with inline-code positions preserved; expose plain-text and token-aware projections; support target
+    creation from source with explicit code-copy policy.
+  preservation_contract:
+  - Inline-code positions preserved through text edits.
+  - Whitespace and xml:lang attributes survive editing operations.
+  error_contract:
+  - Edits that would place inline codes in illegal positions diagnosed with structured diagnostic.
+  - Target creation without explicit code-copy policy selection refused with diagnostic.
+  security_contract:
+  - Text editing operates on in-memory model only; no external effects.
+  resource_limits:
+  - Configurable limit on target content size.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Text edit that orphans or displaces inline codes.
+  - Target creation without explicit code-copy policy.
+  - Whitespace or xml:lang attribute loss through edit.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: XLIFF-VALIDATE-001
+  format_id: xliff
+  stable_name: Core and module validation
+  classification: stable
+  developer_use_cases:
+  - A pipeline gates hand-off on unit-scope validation and receives every violation with paths.
+  spec_profiles:
+  - xliff_2.1
+  authority_fact_ids:
+  - POL-XLC-VALIDATE-01
+  - SAL-XLIFF-00004
+  - SAL-XLIFF-00005
+  - SAL-XLIFF-00007
+  - SAL-XLIFF-00011
+  - SAL-XLIFF-00013
+  - SAL-XLIFF-00025
+  - SAL-XLIFF-00028
+  - SAL-XLIFF-00029
+  - SAL-XLIFF-00030
+  - RF-XLF-00005
+  normative_obligation_ids:
+  - OBL-XLIFF-001
+  - OBL-XLIFF-003
+  - OBL-XLIFF-016
+  - OBL-XLIFF-018
+  - OBL-XLIFF-021
+  - OBL-XLIFF-024
+  - OBL-XLIFF-025
+  - OBL-XLIFF-026
+  - OBL-XLIFF-028
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Validate schema plus semantic constraints not expressible in schema (IDs, references, pairing, source/target consistency,
+    module constraints) at multiple scopes.
+  - Build validation matrices covering every core structural and inline element plus each optional module, including deeply
+    nested and overlapping markers, paired-code errors, bidi content, and supplementary Unicode code points.
+  preservation_contract:
+  - Validation is read-only; it does not alter document content.
+  error_contract:
+  - Each validation layer (syntax, schema, structural, referential, semantic, security) produces structured diagnostics with
+    code, severity, message, source_location, object_path, originating_rule, repair_suggestion, and auto_repair_eligible.
+  - Validation operates at document, file, unit, and segment scopes.
+  - Every documented constraint class has negative-test coverage.
+  security_contract:
+  - Validation does not resolve external references or execute embedded content.
+  - Security validation layer enforces size/nesting limits.
+  resource_limits:
+  - Configurable validation timeout per document.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Malformed XML (syntax layer).
+  - Schema violations in core or module content.
+  - Duplicate IDs or unresolved references (structural/referential layers).
+  - Source/target consistency violations (semantic layer).
+  - Inline-code pairing errors.
+  - Input exceeding security limits.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: XLIFF-WRITE-001
+  format_id: xliff
+  stable_name: Lossless and normalized serialization
+  classification: stable
+  developer_use_cases:
+  - A developer saves in lossless mode and the downstream merger receives byte-compatible skeleton references.
+  spec_profiles:
+  - xliff_2.1
+  authority_fact_ids:
+  - POL-XLC-WRITE-01
+  - RF-XLF-00006
+  normative_obligation_ids: []
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Preserve custom extensions and modules on write; deterministic prefixing/formatting; report version-downgrade loss before
+    writing.
+  - Round-trip custom extensions byte-semantically in lossless mode and report any version-downgrade loss before writing,
+    so no tool in the chain silently loses vendor data.
+  preservation_contract:
+  - Custom extensions and module content preserved byte-semantically in lossless mode.
+  - Deterministic namespace prefixing and formatting across repeated serializations.
+  - Schema-valid element ordering and namespace declarations in output.
+  error_contract:
+  - Version-downgrade loss reported before writing with structured diagnostic listing every affected construct.
+  security_contract:
+  - Write operations do not resolve external references or execute embedded content.
+  - Output does not include DTD declarations or entity definitions.
+  resource_limits:
+  - Configurable output size limit.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Custom extension content lost on save in lossless mode.
+  - Non-deterministic output across repeated serializations of unchanged document.
+  - Version downgrade without loss report.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED

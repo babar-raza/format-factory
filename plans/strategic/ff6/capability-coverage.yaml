@@ -1,0 +1,302 @@
+schema: ff6/capability-coverage@1
+goal_id: FF6-PRODUCTION-LIBRARIES-001
+task_id: TC-FF6-PROGRAM-CAPABILITIES-001
+generated_at: "2026-07-29"
+generated_by: claude
+last_reconciled_by: codex
+assessment_status: NEEDS_REPAIR
+
+summary:
+  total_capabilities: 89
+  total_obligations: 128
+  submitted_inventory_obligations: 128
+  canonical_compiler_minimum_obligations: 636
+  canonical_obligation_id_overlap: 0
+  formats: 6
+  classifications:
+    stable: 81
+    optional_adapter: 4
+    preview: 4
+    excluded: 0
+  release_states:
+    PLANNED: 89
+    IN_PROGRESS: 0
+    IMPLEMENTED: 0
+    PROVEN: 0
+    EXCLUDED: 0
+  certifications: 0
+  promotions: 0
+
+independent_audit:
+  event_id: FF6-EVENT-000009
+  verdict: FAIL_INCOMPLETE_UNIVERSE
+  successor_architecture_unlocked: false
+  canonical_compiler_counts:
+    ipynb: 105
+    ora: 32
+    nrrd: 94
+    xliff: 125
+    safetensors: 86
+    ubl: 194
+    total: 636
+  submitted_counts:
+    ipynb: 19
+    ora: 7
+    nrrd: 18
+    xliff: 31
+    safetensors: 19
+    ubl: 34
+    total: 128
+  failures:
+    - All 636 canonical stable obligation IDs are absent from the submitted inventory.
+    - The submitted records use a parallel OBL-* identity family instead of the canonical SAL-<FORMAT>-OBL-* IDs.
+    - OpenRaster accounts for only 7 of 20 SAL facts and its generic container surface omits required image, layer-tree, mask, compositing, rendering, and multi-profile behavior.
+    - The classification vocabulary does not match the locked STABLE_REQUIRED, OPTIONAL_ADAPTER_REQUIRED, PREVIEW_ISOLATED, and EXCLUDED_WITH_AUTHORITY contract.
+    - IPYNB execution is included even though the mission contract prohibits notebook code execution.
+    - No reproducible compiler command, three-run byte comparison, or verifiable aggregate-digest construction was supplied.
+    - Required repository-local authority artifacts are absent for all six formats, so production contract compilation currently fails closed.
+
+per_format:
+  ipynb:
+    format_canonical_name: Jupyter Notebook
+    contract_id: FC-IPYNB-V1
+    target_spec_version: nbformat v4.5
+    authority_status: AUTHORITATIVE
+    authority_confidence: medium
+    capability_count: 20
+    obligation_count: 19
+    classifications:
+      stable: 17
+      optional_adapter: 2
+      preview: 1
+      excluded: 0
+    stable_capabilities:
+      - IPYNB-ATTACH-001
+      - IPYNB-CLEAN-001
+      - IPYNB-DIFF-001
+      - IPYNB-EDIT-001
+      - IPYNB-ID-001
+      - IPYNB-LIFECYCLE-001
+      - IPYNB-META-001
+      - IPYNB-MODEL-001
+      - IPYNB-OUTPUT-001
+      - IPYNB-PARSE-001
+      - IPYNB-PRESERVE-001
+      - IPYNB-SANITIZE-001
+      - IPYNB-SEC-001
+      - IPYNB-TRUST-001
+      - IPYNB-UPGRADE-001
+      - IPYNB-VALIDATE-001
+      - IPYNB-WRITE-001
+    optional_adapter_capabilities:
+      - IPYNB-EXEC-001
+      - IPYNB-EXPORT-001
+    preview_capabilities:
+      - IPYNB-MERGE-001
+    source_exists: true
+    source_python_files: 46
+    source_python_lines: 7226
+    test_functions: 344
+    architecture_result: FAIL
+    oracle_verdict: PARTIAL_PASS
+    install_proof_verdict: PASS_NON_PROMOTING_STALE_INPUT_CLOSURE
+    certification: not_certified
+    promotion: UNASSESSED
+
+  ora:
+    format_canonical_name: OpenRaster Image
+    contract_id: FC-ORA-V1
+    target_spec_version: OpenRaster 0.0.3 (informal)
+    authority_status: NEEDS_AUTHORITY
+    authority_confidence: low
+    capability_count: 10
+    obligation_count: 7
+    classifications:
+      stable: 10
+      optional_adapter: 0
+      preview: 0
+      excluded: 0
+    stable_capabilities:
+      - ORA-CODEC-001
+      - ORA-CONTAINER-001
+      - ORA-EDIT-001
+      - ORA-LIFECYCLE-001
+      - ORA-MODEL-001
+      - ORA-PRESERVE-001
+      - ORA-SEC-001
+      - ORA-STREAM-001
+      - ORA-VALIDATE-001
+      - ORA-WRITE-001
+    source_exists: false
+    test_functions: 0
+    architecture_result: N/A
+    oracle_verdict: N/A
+    install_proof_verdict: N/A
+    certification: absent
+    promotion: UNASSESSED
+
+  nrrd:
+    format_canonical_name: Nearly Raw Raster Data
+    contract_id: FC-NRRD-V1
+    target_spec_version: NRRD0005
+    authority_status: AUTHORITATIVE
+    authority_confidence: medium
+    capability_count: 15
+    obligation_count: 18
+    classifications:
+      stable: 14
+      optional_adapter: 0
+      preview: 1
+      excluded: 0
+    stable_capabilities:
+      - NRRD-ARRAY-001
+      - NRRD-ENC-001
+      - NRRD-HEADER-001
+      - NRRD-LAZY-001
+      - NRRD-LIFECYCLE-001
+      - NRRD-META-001
+      - NRRD-PAYLOAD-001
+      - NRRD-PRESERVE-001
+      - NRRD-SEC-001
+      - NRRD-SHAPE-001
+      - NRRD-SPACE-001
+      - NRRD-TYPES-001
+      - NRRD-VALIDATE-001
+      - NRRD-WRITE-001
+    preview_capabilities:
+      - NRRD-CONVERT-001
+    source_exists: true
+    source_python_files: 32
+    source_python_lines: 2661
+    test_functions: 227
+    architecture_result: FAIL
+    oracle_verdict: PARTIAL_PASS
+    install_proof_verdict: PASS_NON_PROMOTING_STALE_INPUT_CLOSURE
+    certification: not_certified
+    promotion: UNASSESSED
+
+  xliff:
+    format_canonical_name: XLIFF (XML Localisation Interchange File Format)
+    contract_id: FC-XLIFF-V1
+    target_spec_version: XLIFF 2.1
+    authority_status: AUTHORITATIVE
+    authority_confidence: medium
+    capability_count: 15
+    obligation_count: 31
+    classifications:
+      stable: 13
+      optional_adapter: 2
+      preview: 0
+      excluded: 0
+    stable_capabilities:
+      - XLIFF-INLINE-001
+      - XLIFF-LIFECYCLE-001
+      - XLIFF-MODEL-001
+      - XLIFF-MODULE-001
+      - XLIFF-NOTE-001
+      - XLIFF-PARSE-001
+      - XLIFF-PRESERVE-001
+      - XLIFF-SEC-001
+      - XLIFF-SEG-001
+      - XLIFF-STATE-001
+      - XLIFF-TEXT-001
+      - XLIFF-VALIDATE-001
+      - XLIFF-WRITE-001
+    optional_adapter_capabilities:
+      - XLIFF-MERGE-001
+      - XLIFF-QA-001
+    source_exists: true
+    source_python_files: 38
+    source_python_lines: 2932
+    test_functions: 186
+    architecture_result: FAIL
+    oracle_verdict: PARTIAL_PASS
+    install_proof_verdict: PASS_NON_PROMOTING_STALE_INPUT_CLOSURE
+    certification: not_certified
+    promotion: UNASSESSED
+
+  safetensors:
+    format_canonical_name: SafeTensors
+    contract_id: FC-SAFETENSORS-V1
+    target_spec_version: v0.8.0 commit a406ca3e7a90598be0cd05a50069cb9bf5ef6ba6
+    authority_status: AUTHORITATIVE
+    authority_confidence: low
+    capability_count: 11
+    obligation_count: 19
+    classifications:
+      stable: 11
+      optional_adapter: 0
+      preview: 0
+      excluded: 0
+    stable_capabilities:
+      - SAFETENSORS-ADAPTER-001
+      - SAFETENSORS-HEADER-001
+      - SAFETENSORS-INTEROP-001
+      - SAFETENSORS-LAZY-001
+      - SAFETENSORS-LIFECYCLE-001
+      - SAFETENSORS-MODEL-001
+      - SAFETENSORS-PAYLOAD-001
+      - SAFETENSORS-PRESERVE-001
+      - SAFETENSORS-SHARD-001
+      - SAFETENSORS-VALIDATE-001
+      - SAFETENSORS-WRITE-001
+    source_exists: true
+    source_python_files: 38
+    source_python_lines: 2441
+    test_functions: 269
+    architecture_result: PASS
+    oracle_verdict: PARTIAL_PASS
+    install_proof_verdict: PASS_NON_PROMOTING_STALE_INPUT_CLOSURE
+    certification: not_certified
+    promotion: UNASSESSED
+
+  ubl:
+    format_canonical_name: OASIS Universal Business Language
+    contract_id: FC-UBL-V1
+    target_spec_version: UBL 2.3
+    authority_status: AUTHORITATIVE
+    authority_confidence: medium
+    capability_count: 18
+    obligation_count: 34
+    classifications:
+      stable: 16
+      optional_adapter: 0
+      preview: 2
+      excluded: 0
+    stable_capabilities:
+      - UBL-CODELIST-001
+      - UBL-DOCTYPES-001
+      - UBL-EDIT-001
+      - UBL-EXT-001
+      - UBL-LIFECYCLE-001
+      - UBL-MODEL-001
+      - UBL-PARSE-001
+      - UBL-PRESERVE-001
+      - UBL-PROFILE-001
+      - UBL-QUERY-001
+      - UBL-REF-001
+      - UBL-SEC-001
+      - UBL-SIGN-001
+      - UBL-VALIDATE-001
+      - UBL-VALUES-001
+      - UBL-WRITE-001
+    preview_capabilities:
+      - UBL-CALC-001
+      - UBL-UPGRADE-001
+    source_exists: true
+    source_python_files: 39
+    source_python_lines: 3159
+    test_functions: 239
+    architecture_result: PASS
+    oracle_verdict: PARTIAL_PASS
+    install_proof_verdict: PASS_NON_PROMOTING_STALE_INPUT_CLOSURE
+    certification: not_certified
+    promotion: UNASSESSED
+
+cross_format_invariants:
+  - The 89 submitted capabilities have release_state PLANNED; their completeness is not established.
+  - The 128 submitted obligations have verification_status UNVERIFIED and are not the canonical 636-obligation projection.
+  - No capability counts existing source as implementation evidence.
+  - No product is promoted or certified.
+  - All 6 contracts are lifecycle DRAFT.
+  - Existing source symbols are observations, not obligation closures.

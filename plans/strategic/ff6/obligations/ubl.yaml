@@ -1,0 +1,772 @@
+schema: ff6/format-obligations@1
+goal_id: FF6-PRODUCTION-LIBRARIES-001
+task_id: TC-FF6-PROGRAM-CAPABILITIES-001
+format_id: ubl
+format_canonical_name: OASIS Universal Business Language
+contract_id: FC-UBL-V1
+target_spec_version: UBL 2.3
+generated_at: "2026-07-29"
+generated_by: claude
+obligation_count: 34
+
+obligations:
+  # --- From UBL-CALC-001 (first alphabetically with normative_rules) ---
+
+  - obligation_id: OBL-UBL-001
+    format_id: ubl
+    capability_id: UBL-CALC-001
+    also_referenced_by:
+      - UBL-CODELIST-001
+      - UBL-DOCTYPES-001
+      - UBL-EXT-001
+      - UBL-MODEL-001
+      - UBL-REF-001
+      - UBL-VALUES-001
+    authority_source: "OASIS UBL 2.3"
+    authority_reference: SRC-UBL-002
+    rule_text: >-
+      (UBL document totals) UBL AmountType is decimal and requires currencyID; aggregate definitions
+      document line extension, tax, and payable amounts, but the XSD does not encode cross-field
+      arithmetic reconciliation.
+    rule_category: semantic
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-UBL-00110
+      - SAL-UBL-00122
+      - SAL-UBL-00127
+    invalidation_conditions:
+      - specification version change
+
+  - obligation_id: OBL-UBL-002
+    format_id: ubl
+    capability_id: UBL-CALC-001
+    also_referenced_by:
+      - UBL-EXT-001
+      - UBL-MODEL-001
+      - UBL-PARSE-001
+      - UBL-VALUES-001
+    authority_source: "UBL common library"
+    authority_reference: SRC-UBL-002
+    rule_text: >-
+      (UBL common library - LegalMonetaryTotal) cac:LegalMonetaryTotal is an aggregate component type
+      carrying line extension, tax-inclusive, allowance, charge, and payable amount elements
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-UBL-00110
+      - SAL-UBL-00122
+      - SAL-UBL-00123
+    invalidation_conditions:
+      - specification version change
+
+  - obligation_id: OBL-UBL-003
+    format_id: ubl
+    capability_id: UBL-CALC-001
+    also_referenced_by:
+      - UBL-EDIT-001
+      - UBL-MODEL-001
+      - UBL-PARSE-001
+      - UBL-REF-001
+    authority_source: "UBL common library"
+    authority_reference: SRC-UBL-002
+    rule_text: >-
+      (UBL common library - Party) cac:Party is an aggregate component type carrying party
+      identification, names, postal addresses, tax schemes, and contacts as child elements
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-UBL-00110
+      - SAL-UBL-00123
+    invalidation_conditions:
+      - specification version change
+
+  - obligation_id: OBL-UBL-004
+    format_id: ubl
+    capability_id: UBL-CALC-001
+    also_referenced_by:
+      - UBL-MODEL-001
+      - UBL-PARSE-001
+      - UBL-VALUES-001
+    authority_source: "UBL common library"
+    authority_reference: SRC-UBL-002
+    rule_text: >-
+      (UBL common library - TaxTotal) cac:TaxTotal is an aggregate component type carrying
+      cbc:TaxAmount and nested cac:TaxSubtotal elements per tax category
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-UBL-00110
+      - SAL-UBL-00127
+    invalidation_conditions:
+      - specification version change
+
+  - obligation_id: OBL-UBL-005
+    format_id: ubl
+    capability_id: UBL-CALC-001
+    also_referenced_by:
+      - UBL-DOCTYPES-001
+      - UBL-MODEL-001
+      - UBL-PARSE-001
+    authority_source: "UBL 2.3 schema package"
+    authority_reference: SRC-UBL-002
+    rule_text: >-
+      (xsd/maindoc/UBL-*-2.3.xsd) Each UBL 2.3 maindoc XSD declares a document-type target namespace
+      and qualified XML element syntax for its document element and content model.
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-UBL-50613DF5EFE944E0
+    invalidation_conditions:
+      - specification version change
+
+  # --- From UBL-CODELIST-001 (new rules only) ---
+
+  - obligation_id: OBL-UBL-006
+    format_id: ubl
+    capability_id: UBL-CODELIST-001
+    also_referenced_by:
+      - UBL-MODEL-001
+      - UBL-REF-001
+      - UBL-VALUES-001
+    authority_source: "OASIS UBL 2.3"
+    authority_reference: SRC-UBL-001
+    rule_text: >-
+      (UBL code lists) UBL CodeType values are normalized strings with optional listID and related
+      list-identification attributes; the base UBL XSD does not enumerate business code values.
+    rule_category: semantic
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-UBL-00112
+      - SAL-UBL-00116
+      - SAL-UBL-00124
+    invalidation_conditions:
+      - specification version change
+
+  - obligation_id: OBL-UBL-007
+    format_id: ubl
+    capability_id: UBL-CODELIST-001
+    also_referenced_by:
+      - UBL-MODEL-001
+      - UBL-REF-001
+      - UBL-VALUES-001
+    authority_source: "UBL unqualified data types"
+    authority_reference: SRC-UBL-002
+    rule_text: >-
+      (UBL unqualified data types - QuantityType) Quantity-typed basic components carry an optional
+      unitCode attribute identifying the unit of measure
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-UBL-00118
+      - SAL-UBL-00121
+    invalidation_conditions:
+      - specification version change
+
+  - obligation_id: OBL-UBL-008
+    format_id: ubl
+    capability_id: UBL-CODELIST-001
+    also_referenced_by:
+      - UBL-DOCTYPES-001
+      - UBL-MODEL-001
+      - UBL-PARSE-001
+      - UBL-VALUES-001
+    authority_source: "UBL common library"
+    authority_reference: SRC-UBL-002
+    rule_text: >-
+      (UBL common library - AllowanceCharge) cac:AllowanceCharge is an aggregate component type with
+      a charge indicator, reason codes, and amount elements applied at document or line level
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-UBL-00119
+      - SAL-UBL-00124
+    invalidation_conditions:
+      - specification version change
+
+  - obligation_id: OBL-UBL-009
+    format_id: ubl
+    capability_id: UBL-CODELIST-001
+    also_referenced_by:
+      - UBL-DOCTYPES-001
+      - UBL-MODEL-001
+      - UBL-PARSE-001
+      - UBL-REF-001
+      - UBL-VALUES-001
+    authority_source: "UBL common library"
+    authority_reference: SRC-UBL-002
+    rule_text: >-
+      (UBL common library - ExternalReference) cac:ExternalReference is an aggregate with optional
+      URI, DocumentHash, MimeCode, FileName, and Description elements.
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-UBL-00119
+      - SAL-UBL-00129
+    invalidation_conditions:
+      - specification version change
+
+  - obligation_id: OBL-UBL-010
+    format_id: ubl
+    capability_id: UBL-CODELIST-001
+    also_referenced_by:
+      - UBL-DOCTYPES-001
+      - UBL-MODEL-001
+      - UBL-PARSE-001
+      - UBL-REF-001
+      - UBL-VALUES-001
+    authority_source: "UBL common library"
+    authority_reference: SRC-UBL-002
+    rule_text: >-
+      (UBL common library - Item) cac:Item is an aggregate component type describing traded items with
+      names, identification schemes, and classification code elements
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-UBL-00118
+      - SAL-UBL-00121
+      - SAL-UBL-00124
+    invalidation_conditions:
+      - specification version change
+
+  - obligation_id: OBL-UBL-011
+    format_id: ubl
+    capability_id: UBL-CODELIST-001
+    also_referenced_by:
+      - UBL-MODEL-001
+      - UBL-PARSE-001
+      - UBL-VALUES-001
+    authority_source: "UBL common library"
+    authority_reference: SRC-UBL-002
+    rule_text: >-
+      (UBL common library - PaymentMeans) cac:PaymentMeans is an aggregate component type carrying
+      payment means codes, due dates, and payee financial account elements
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-UBL-00116
+      - SAL-UBL-00121
+    invalidation_conditions:
+      - specification version change
+
+  - obligation_id: OBL-UBL-012
+    format_id: ubl
+    capability_id: UBL-CODELIST-001
+    also_referenced_by:
+      - UBL-DOCTYPES-001
+      - UBL-MODEL-001
+      - UBL-VALUES-001
+    authority_source: "UBL common library"
+    authority_reference: SRC-UBL-002
+    rule_text: >-
+      (UBL common library - attachments) cbc:EmbeddedDocumentBinaryObject restricts UDT
+      BinaryObjectType, whose value is base64Binary and whose mimeCode attribute is required in the
+      UBL UDT.
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-UBL-00110
+      - SAL-UBL-00129
+    invalidation_conditions:
+      - specification version change
+
+  # --- From UBL-DOCTYPES-001 (new rules only) ---
+
+  - obligation_id: OBL-UBL-013
+    format_id: ubl
+    capability_id: UBL-DOCTYPES-001
+    also_referenced_by:
+      - UBL-MODEL-001
+      - UBL-PARSE-001
+      - UBL-REF-001
+      - UBL-VALIDATE-001
+      - UBL-VALUES-001
+    authority_source: "OASIS UBL 2.1"
+    authority_reference: SRC-UBL-001
+    rule_text: >-
+      (OASIS UBL 2.1 -- Order document schema) A UBL Order document is rooted at an <Order> element
+      in the UBL-Order-2 namespace, composed of common basic components (cbc: e.g. ID, IssueDate) and
+      common aggregate components (cac: e.g. OrderLine)
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-UBL-00001
+      - SAL-UBL-00105
+      - SAL-UBL-00106
+    invalidation_conditions:
+      - specification version change
+
+  - obligation_id: OBL-UBL-014
+    format_id: ubl
+    capability_id: UBL-DOCTYPES-001
+    also_referenced_by:
+      - UBL-EXT-001
+      - UBL-MODEL-001
+      - UBL-PARSE-001
+      - UBL-REF-001
+      - UBL-VALIDATE-001
+      - UBL-VALUES-001
+    authority_source: "OASIS UBL 2.1"
+    authority_reference: SRC-UBL-001
+    rule_text: >-
+      (OASIS UBL 2.1 -- Invoice document schema) A UBL Invoice document is rooted at an <Invoice>
+      element in the UBL-Invoice-2 namespace; each invoice line is a cac:InvoiceLine aggregate
+      carrying cbc:ID, cbc:InvoicedQuantity, and cbc:LineExtensionAmount (shared aggregate referenced
+      by ubl:line-item)
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-UBL-00002
+      - SAL-UBL-00107
+      - SAL-UBL-00108
+    invalidation_conditions:
+      - specification version change
+
+  - obligation_id: OBL-UBL-015
+    format_id: ubl
+    capability_id: UBL-DOCTYPES-001
+    also_referenced_by:
+      - UBL-EDIT-001
+      - UBL-MODEL-001
+      - UBL-PARSE-001
+      - UBL-VALIDATE-001
+    authority_source: "OASIS UBL 2.1"
+    authority_reference: SRC-UBL-001
+    rule_text: >-
+      (OASIS UBL 2.1 -- CreditNote document schema) A UBL CreditNote document is rooted at a
+      <CreditNote> element in the UBL-CreditNote-2 namespace with cac:CreditNoteLine aggregates for
+      its lines
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-UBL-00105
+      - SAL-UBL-00111
+    invalidation_conditions:
+      - specification version change
+
+  - obligation_id: OBL-UBL-016
+    format_id: ubl
+    capability_id: UBL-DOCTYPES-001
+    also_referenced_by:
+      - UBL-MODEL-001
+      - UBL-PARSE-001
+      - UBL-VALIDATE-001
+    authority_source: "UBL 2.3 maindoc schemas"
+    authority_reference: SRC-UBL-002
+    rule_text: >-
+      (UBL maindoc schemas - ApplicationResponse) A UBL ApplicationResponse document is rooted at an
+      ApplicationResponse document root element carrying cac:DocumentResponse aggregates for
+      business-level acknowledgement
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-UBL-00117
+      - SAL-UBL-00119
+    invalidation_conditions:
+      - specification version change
+
+  - obligation_id: OBL-UBL-017
+    format_id: ubl
+    capability_id: UBL-DOCTYPES-001
+    also_referenced_by:
+      - UBL-MODEL-001
+      - UBL-PARSE-001
+      - UBL-VALIDATE-001
+    authority_source: "UBL 2.3 maindoc schemas"
+    authority_reference: SRC-UBL-002
+    rule_text: >-
+      (UBL maindoc schemas - DespatchAdvice) A UBL DespatchAdvice document is rooted at a
+      DespatchAdvice document root element in its own maindoc namespace carrying cac:DespatchLine
+      aggregates
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-UBL-00117
+      - SAL-UBL-00120
+    invalidation_conditions:
+      - specification version change
+
+  - obligation_id: OBL-UBL-018
+    format_id: ubl
+    capability_id: UBL-DOCTYPES-001
+    also_referenced_by:
+      - UBL-MODEL-001
+      - UBL-PARSE-001
+      - UBL-VALIDATE-001
+    authority_source: "UBL 2.3 maindoc schemas"
+    authority_reference: SRC-UBL-002
+    rule_text: >-
+      (UBL maindoc schemas - Order) A UBL Order document is rooted at an Order document root element
+      in its own maindoc namespace with order lines carried as cac:OrderLine aggregate components
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-UBL-00001
+      - SAL-UBL-00117
+    invalidation_conditions:
+      - specification version change
+
+  - obligation_id: OBL-UBL-019
+    format_id: ubl
+    capability_id: UBL-DOCTYPES-001
+    also_referenced_by:
+      - UBL-MODEL-001
+      - UBL-PARSE-001
+      - UBL-REF-001
+      - UBL-SIGN-001
+      - UBL-VALIDATE-001
+    authority_source: "UBL naming and design rules"
+    authority_reference: SRC-UBL-001
+    rule_text: >-
+      (UBL naming and design rules - element order) Child elements inside UBL aggregate components
+      must appear in the order declared by the schema sequence model for the document to be valid
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-UBL-00105
+      - SAL-UBL-00106
+      - SAL-UBL-00107
+    invalidation_conditions:
+      - specification version change
+
+  - obligation_id: OBL-UBL-020
+    format_id: ubl
+    capability_id: UBL-DOCTYPES-001
+    also_referenced_by:
+      - UBL-MODEL-001
+      - UBL-PARSE-001
+      - UBL-SIGN-001
+      - UBL-VALIDATE-001
+    authority_source: "UBL naming and design rules"
+    authority_reference: SRC-UBL-001
+    rule_text: >-
+      (UBL naming and design rules - namespaces) Every UBL maindoc type declares its own document root
+      namespace of the form urn:oasis:names:specification:ubl:schema:xsd:<Type>-2
+    rule_category: semantic
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-UBL-00108
+      - SAL-UBL-00111
+      - SAL-UBL-00115
+    invalidation_conditions:
+      - specification version change
+
+  - obligation_id: OBL-UBL-021
+    format_id: ubl
+    capability_id: UBL-DOCTYPES-001
+    also_referenced_by:
+      - UBL-MODEL-001
+      - UBL-PARSE-001
+      - UBL-REF-001
+      - UBL-VALIDATE-001
+    authority_source: "OASIS UBL 2.3"
+    authority_reference: SRC-UBL-001
+    rule_text: >-
+      (UBL conformance - schema validation) UBL document schemas are W3C XML Schema definitions and
+      conforming documents must be valid against the maindoc schema of their declared type
+    rule_category: behavioral
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-UBL-00105
+      - SAL-UBL-00106
+      - SAL-UBL-00133
+    invalidation_conditions:
+      - specification version change
+
+  - obligation_id: OBL-UBL-022
+    format_id: ubl
+    capability_id: UBL-DOCTYPES-001
+    also_referenced_by:
+      - UBL-EXT-001
+      - UBL-MODEL-001
+      - UBL-PARSE-001
+      - UBL-REF-001
+      - UBL-VALUES-001
+    authority_source: "UBL common library"
+    authority_reference: SRC-UBL-002
+    rule_text: >-
+      (UBL common library - InvoiceLine) cac:InvoiceLine is an aggregate component type carrying
+      cbc:ID, cbc:InvoicedQuantity, cbc:LineExtensionAmount, and a cac:Item element
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-UBL-00002
+      - SAL-UBL-00107
+      - SAL-UBL-00108
+    invalidation_conditions:
+      - specification version change
+
+  - obligation_id: OBL-UBL-023
+    format_id: ubl
+    capability_id: UBL-DOCTYPES-001
+    also_referenced_by:
+      - UBL-MODEL-001
+      - UBL-PROFILE-001
+      - UBL-REF-001
+    authority_source: "OASIS UBL 2.3"
+    authority_reference: SRC-UBL-001
+    rule_text: >-
+      (UBL document metadata - customization and profile) cbc:CustomizationID and cbc:ProfileID
+      identify the customization profile and business process profile a document instance follows
+    rule_category: semantic
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-UBL-00128
+      - SAL-UBL-00131
+    invalidation_conditions:
+      - specification version change
+
+  - obligation_id: OBL-UBL-024
+    format_id: ubl
+    capability_id: UBL-DOCTYPES-001
+    also_referenced_by:
+      - UBL-MODEL-001
+      - UBL-PROFILE-001
+      - UBL-REF-001
+      - UBL-UPGRADE-001
+    authority_source: "OASIS UBL 2.3"
+    authority_reference: SRC-UBL-001
+    rule_text: >-
+      (UBL document metadata - version identification) cbc:UBLVersionID identifies the UBL
+      specification version a document instance declares
+    rule_category: semantic
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-UBL-00131
+      - SAL-UBL-00132
+    invalidation_conditions:
+      - specification version change
+
+  - obligation_id: OBL-UBL-025
+    format_id: ubl
+    capability_id: UBL-DOCTYPES-001
+    also_referenced_by:
+      - UBL-EXT-001
+      - UBL-MODEL-001
+      - UBL-PARSE-001
+      - UBL-REF-001
+      - UBL-VALIDATE-001
+    authority_source: "OASIS UBL 2.3"
+    authority_reference: SRC-UBL-001
+    rule_text: >-
+      (UBL extension model) ext:UBLExtensions is the first optional component in UBL document
+      sequences; each UBLExtension contains ExtensionContent, which permits one foreign-namespaced
+      apex element with lax validation.
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-UBL-00120
+      - SAL-UBL-00132
+    invalidation_conditions:
+      - specification version change
+
+  - obligation_id: OBL-UBL-026
+    format_id: ubl
+    capability_id: UBL-DOCTYPES-001
+    also_referenced_by:
+      - UBL-PARSE-001
+      - UBL-VALIDATE-001
+    authority_source: "UBL 2.3 schema package"
+    authority_reference: SRC-UBL-002
+    rule_text: >-
+      (UBL 2.3 schema package - maindoc inventory) The pinned UBL 2.3 OASIS Standard package contains
+      exactly 91 maindoc XSD files, one for each supported UBL document root.
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-UBL-00133
+      - SAL-UBL-50613DF5EFE944E0
+    invalidation_conditions:
+      - specification version change
+
+  # --- From UBL-EDIT-001 (new rules only) ---
+
+  - obligation_id: OBL-UBL-027
+    format_id: ubl
+    capability_id: UBL-EDIT-001
+    also_referenced_by:
+      - UBL-MODEL-001
+      - UBL-PARSE-001
+    authority_source: "UBL common library"
+    authority_reference: SRC-UBL-002
+    rule_text: >-
+      (UBL common library - Address) cac:PostalAddress is an aggregate component type composed of
+      street, city, postal zone, and country sub-elements
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-UBL-00123
+      - SAL-UBL-00125
+    invalidation_conditions:
+      - specification version change
+
+  # --- From UBL-MODEL-001 (new rules only) ---
+
+  - obligation_id: OBL-UBL-028
+    format_id: ubl
+    capability_id: UBL-MODEL-001
+    also_referenced_by:
+      - UBL-REF-001
+      - UBL-VALUES-001
+    authority_source: "UBL unqualified data types"
+    authority_reference: SRC-UBL-002
+    rule_text: >-
+      (UBL unqualified data types - AmountType) Amount-typed basic components require a currencyID
+      attribute identifying the ISO 4217 currency of the value
+    rule_category: semantic
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-UBL-00109
+      - SAL-UBL-00110
+      - SAL-UBL-00122
+    invalidation_conditions:
+      - specification version change
+
+  - obligation_id: OBL-UBL-029
+    format_id: ubl
+    capability_id: UBL-MODEL-001
+    also_referenced_by:
+      - UBL-PARSE-001
+    authority_source: "UBL common library"
+    authority_reference: SRC-UBL-002
+    rule_text: >-
+      (UBL common library - CAC namespace) Common aggregate components live in the
+      CommonAggregateComponents-2 namespace conventionally prefixed cac and represent typed composite
+      structures
+    rule_category: semantic
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-UBL-00113
+      - SAL-UBL-00114
+    invalidation_conditions:
+      - specification version change
+
+  - obligation_id: OBL-UBL-030
+    format_id: ubl
+    capability_id: UBL-MODEL-001
+    also_referenced_by:
+      - UBL-PARSE-001
+    authority_source: "UBL common library"
+    authority_reference: SRC-UBL-002
+    rule_text: >-
+      (UBL common library - CBC namespace) Common basic components live in the
+      CommonBasicComponents-2 namespace conventionally prefixed cbc and represent typed leaf values
+    rule_category: semantic
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-UBL-00113
+      - SAL-UBL-00114
+    invalidation_conditions:
+      - specification version change
+
+  - obligation_id: OBL-UBL-031
+    format_id: ubl
+    capability_id: UBL-MODEL-001
+    also_referenced_by:
+      - UBL-PARSE-001
+      - UBL-VALUES-001
+    authority_source: "UBL common library"
+    authority_reference: SRC-UBL-002
+    rule_text: >-
+      (UBL common library - Price) cac:Price is an aggregate component type carrying cbc:PriceAmount
+      and quantity-basis elements for unit pricing
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-UBL-00126
+      - SAL-UBL-00127
+    invalidation_conditions:
+      - specification version change
+
+  - obligation_id: OBL-UBL-032
+    format_id: ubl
+    capability_id: UBL-MODEL-001
+    also_referenced_by:
+      - UBL-PARSE-001
+      - UBL-REF-001
+      - UBL-VALUES-001
+    authority_source: "UBL common library"
+    authority_reference: SRC-UBL-002
+    rule_text: >-
+      (UBL common library - Identifier type) cbc:ID is a basic component element of UDT
+      IdentifierType carrying optional schemeID and schemeAgencyID attributes
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-UBL-00109
+      - SAL-UBL-00130
+    invalidation_conditions:
+      - specification version change
+
+  - obligation_id: OBL-UBL-033
+    format_id: ubl
+    capability_id: UBL-MODEL-001
+    also_referenced_by:
+      - UBL-PARSE-001
+      - UBL-VALIDATE-001
+    authority_source: "UBL 2.3 schema package"
+    authority_reference: SRC-UBL-002
+    rule_text: >-
+      (xsd/common/UBL-CommonBasicComponents-2.3.xsd) The UBL 2.3 Common Basic Components XSD declares
+      namespace-qualified XML elements whose values use the qualified and unqualified data-type
+      schemas.
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-UBL-00113
+      - SAL-UBL-00114
+      - SAL-UBL-6D5AF510AAF4874B
+    invalidation_conditions:
+      - specification version change
+
+  - obligation_id: OBL-UBL-034
+    format_id: ubl
+    capability_id: UBL-MODEL-001
+    also_referenced_by:
+      - UBL-PARSE-001
+      - UBL-VALIDATE-001
+    authority_source: "UBL 2.3 schema package"
+    authority_reference: SRC-UBL-002
+    rule_text: >-
+      (xsd/common/BDNDR-UnqualifiedDataTypes-1.1.xsd) The UBL 2.3 unqualified data-type XSD defines
+      scalar lexical representations through W3C XML Schema simple-content types and restrictions.
+    rule_category: structural
+    verification_status: UNVERIFIED
+    verification_evidence: []
+    related_fact_ids:
+      - SAL-UBL-00114
+      - SAL-UBL-87F7B313CE24D408
+    invalidation_conditions:
+      - specification version change

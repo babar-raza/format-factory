@@ -1,0 +1,888 @@
+schema: ff6/format-capabilities@1
+goal_id: FF6-PRODUCTION-LIBRARIES-001
+task_id: TC-FF6-PROGRAM-CAPABILITIES-001
+format_id: nrrd
+format_canonical_name: Nearly Raw Raster Data
+contract_id: FC-NRRD-V1
+target_spec_version: NRRD0005
+generated_at: '2026-07-29'
+generated_by: claude
+capability_count: 15
+capabilities:
+- capability_id: NRRD-ARRAY-001
+  format_id: nrrd
+  stable_name: Typed N-dimensional array access
+  classification: stable
+  developer_use_cases:
+  - A developer crops a volume and every axis-aligned metadata field follows the crop.
+  spec_profiles:
+  - nrrd0005
+  authority_fact_ids:
+  - POL-SCR-ARRAY-01
+  - SAL-NRRD-00011
+  - SAL-NRRD-00012
+  - SAL-NRRD-00014
+  - RF-NRRD-00001
+  normative_obligation_ids:
+  - OBL-NRRD-001
+  - OBL-NRRD-002
+  - OBL-NRRD-003
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Expose shape, strides, dtype, and axis metadata with element access, slicing, permutation, flip, and crop that update
+    orientation and per-axis metadata; zero-copy views where safe, explicit copies otherwise.
+  - Expose typed N-dimensional array access with shape, strides, dtype, slicing, axis permutation, flip, and crop where orientation
+    and per-axis metadata follow every operation - the imaging-pipeline core.
+  preservation_contract:
+  - Per-axis metadata follows every array operation (permutation, flip, crop, slice).
+  - Zero-copy views preserve backing data; explicit copies are independent.
+  error_contract:
+  - Axis index out of range raises a diagnostic with object_path and originating_rule.
+  - Shape/stride inconsistency reported with severity, code, and repair_suggestion.
+  security_contract:
+  - Checked arithmetic for size and stride calculations; reject overflow explicitly.
+  resource_limits:
+  - Element count bounded by configurable limit before allocation.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Axis index exceeding declared dimension count.
+  - Permutation order with duplicate or out-of-range indices.
+  - Crop region exceeding axis size.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: NRRD-CONVERT-001
+  format_id: nrrd
+  stable_name: Data conversion
+  classification: preview
+  developer_use_cases:
+  - A developer converts float data to a narrower type under an explicit clipping policy with a report of affected values.
+  spec_profiles:
+  - nrrd0005
+  authority_fact_ids:
+  - POL-SCR-CONVERT-01
+  normative_obligation_ids: []
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Convert dtype, encoding, attached/detached form, and endian with explicit overflow/clipping/scaling/rounding policies
+    and a conversion report.
+  preservation_contract:
+  - Conversion report documents every value affected by overflow, clipping, or rounding.
+  - Semantics never change silently; policy must be explicitly specified.
+  error_contract:
+  - Missing or invalid conversion policy raises a diagnostic with code and message.
+  - Overflow or clipping events reported with severity, affected value count, and repair_suggestion.
+  security_contract:
+  - Checked arithmetic for type-width calculations during conversion.
+  resource_limits:
+  - Output allocation bounded by configurable decoded-payload limit.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - No explicit conversion policy provided.
+  - Source dtype incompatible with target dtype (e.g., block to scalar).
+  - Target encoding unavailable at runtime.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: NRRD-ENC-001
+  format_id: nrrd
+  stable_name: All defined encodings
+  classification: stable
+  developer_use_cases:
+  - A developer queries supported encodings at runtime and receives explicit errors rather than silent fallbacks.
+  spec_profiles:
+  - nrrd0005
+  authority_fact_ids:
+  - POL-SCR-ENC-01
+  - SAL-NRRD-00002
+  - SAL-NRRD-00003
+  - SAL-NRRD-00011
+  - SAL-NRRD-00013
+  - SAL-NRRD-00014
+  - SAL-NRRD-00017
+  - RF-NRRD-00005
+  normative_obligation_ids:
+  - OBL-NRRD-001
+  - OBL-NRRD-003
+  - OBL-NRRD-004
+  - OBL-NRRD-005
+  - OBL-NRRD-006
+  - OBL-NRRD-007
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Read and write every specified encoding using the correct container framing; expose codec availability; fail explicitly
+    when an optional codec is unavailable.
+  - Test every magic version, every type alias, every encoding, endian combinations, attached plus all detached data-file
+    forms, and hostile fixtures (decompression bombs, overflow shapes, traversal paths, truncated payloads).
+  preservation_contract:
+  - Encoding round-trips preserve payload byte-identity for lossless encodings.
+  - Codec availability is queryable; unavailable codecs produce explicit errors, not silent fallbacks.
+  error_contract:
+  - Unavailable codec raises a diagnostic with code, severity, and message naming the missing encoding.
+  - Malformed encoded payload reported with source_location and originating_rule.
+  security_contract:
+  - Decompressed-byte and compression-ratio limits with configurable policy for compressed encodings.
+  - Checked arithmetic for payload size calculations.
+  resource_limits:
+  - Decompressed payload byte limit enforced before full decompression.
+  - Compression ratio limit guards against decompression bombs.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Encoding field declares an unrecognized or unsupported encoding.
+  - Compressed payload exceeds decompression ratio limit.
+  - Truncated payload stream.
+  - Block type combined with ascii encoding (specification violation).
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: NRRD-HEADER-001
+  format_id: nrrd
+  stable_name: Complete header parsing
+  classification: stable
+  developer_use_cases:
+  - A developer inspects any conformant file's full metadata without touching the payload.
+  spec_profiles:
+  - nrrd0005
+  authority_fact_ids:
+  - POL-SCR-HEADER-01
+  - POL-SCR-HEADER-02
+  - SAL-NRRD-00002
+  - SAL-NRRD-00003
+  - SAL-NRRD-00004
+  - SAL-NRRD-00005
+  - SAL-NRRD-00006
+  - SAL-NRRD-00007
+  - SAL-NRRD-00008
+  - SAL-NRRD-00010
+  - SAL-NRRD-00012
+  - SAL-NRRD-00013
+  - SAL-NRRD-00014
+  - SAL-NRRD-00015
+  - SAL-NRRD-00016
+  - SAL-NRRD-00017
+  - SAL-NRRD-00018
+  - SAL-NRRD-00019
+  normative_obligation_ids:
+  - OBL-NRRD-002
+  - OBL-NRRD-003
+  - OBL-NRRD-004
+  - OBL-NRRD-005
+  - OBL-NRRD-006
+  - OBL-NRRD-007
+  - OBL-NRRD-008
+  - OBL-NRRD-009
+  - OBL-NRRD-010
+  - OBL-NRRD-011
+  - OBL-NRRD-012
+  - OBL-NRRD-013
+  - OBL-NRRD-014
+  - OBL-NRRD-015
+  - OBL-NRRD-016
+  - OBL-NRRD-017
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Recognize every specified magic/version; parse fields, comments, and key/value metadata; enforce field uniqueness/ordering;
+    preserve unknown metadata and optional-field absence.
+  - Accept the specification's permitted line endings and lexical variants while preserving original lexical form in lossless
+    mode.
+  preservation_contract:
+  - Unknown key/value pairs preserved in lossless mode.
+  - Optional-field absence preserved (not filled with defaults).
+  - Original lexical form of values preserved in lossless mode.
+  error_contract:
+  - Unrecognized magic line reported with code, severity, source_location, and message.
+  - Duplicate field reported with code, object_path, originating_rule, and repair_suggestion.
+  - Invalid field ordering reported with severity and originating_rule.
+  security_contract:
+  - Header size bounded by configurable input-size limit.
+  - No execution of embedded content during header parsing.
+  resource_limits:
+  - Maximum header line count enforced.
+  - Maximum key/value pair count enforced.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Magic line not matching NRRD000X pattern.
+  - Duplicate field identifiers in header.
+  - Missing blank-line header terminator.
+  - Per-axis field with entry count not matching dimension.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: NRRD-LAZY-001
+  format_id: nrrd
+  stable_name: Large-data and lazy I/O
+  classification: stable
+  developer_use_cases:
+  - A developer streams a slice from a huge compressed dataset and is told when a request forces full decode.
+  spec_profiles:
+  - nrrd0005
+  authority_fact_ids:
+  - POL-SCR-LAZY-01
+  - RF-NRRD-00002
+  normative_obligation_ids: []
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Provide header-only and lazy payload loading, memory mapping for eligible uncompressed data, streaming decode, and region
+    reads where layout permits, reporting when full decompression is required.
+  - Provide header-only loading, lazy payload access, memory mapping for eligible raw data, and streaming decode for compressed
+    payloads, reporting when a requested slice forces full decompression.
+  preservation_contract:
+  - Lazy access returns identical data to eager access for the same region.
+  - Memory-mapped views are read-only unless explicitly requested as writable.
+  error_contract:
+  - Full-decompression-required condition reported with code, severity, and message.
+  - Memory-mapping ineligibility reported with code and originating_rule.
+  security_contract:
+  - Lazy access does not bypass decompression or payload-size limits.
+  - Memory-mapped regions bounded by declared payload size.
+  resource_limits:
+  - Bounded memory consumption for header-only and lazy modes.
+  - Streaming decode buffers bounded by configurable limit.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Compressed encoding with slice request that requires full decompression.
+  - Detached payload file inaccessible or truncated.
+  - Payload encoding incompatible with memory mapping (compressed or text).
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: NRRD-LIFECYCLE-001
+  format_id: nrrd
+  stable_name: Baseline lifecycle I/O
+  classification: stable
+  developer_use_cases:
+  - A developer integrates the library with only lifecycle APIs and never needs format-internal knowledge for I/O plumbing.
+  spec_profiles:
+  - nrrd0005
+  authority_fact_ids:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+  normative_obligation_ids: []
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Provide load from filesystem path, readable stream, and in-memory bytes, returning the format's root document/model object.
+  - Provide save to filesystem path and writable stream, plus serialization to bytes, producing output the library's own loader
+    accepts.
+  - Expose the detected format version and any declared version separately; never silently rewrite a declared version.
+  - Support a strict read mode that rejects malformed input with diagnostics and a tolerant read mode that recovers where
+    the format permits, with recovery actions reported.
+  - Expose validation as a first-class callable operation returning structured diagnostics, not only as exceptions raised
+    during parsing.
+  - Offer deterministic serialization such that an unchanged loaded document serializes to identical bytes across repeated
+    calls in the same mode.
+  preservation_contract:
+  - Declared format version preserved; never silently rewritten.
+  - Strict/tolerant mode distinction is an explicit caller choice.
+  error_contract:
+  - Strict mode rejects malformed input with structured diagnostics including code, severity, message, source_location, and
+    originating_rule.
+  - Tolerant mode reports recovery actions with severity and repair_suggestion.
+  - Validation callable returns structured diagnostics independent of load exceptions.
+  security_contract:
+  - Load from untrusted input respects all configured limits by default.
+  - No implicit external effects during load, validate, or save.
+  resource_limits:
+  - Configurable input size limit applied at load boundary.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Input bytes not starting with NRRD magic line.
+  - Filesystem path pointing to non-existent or unreadable file.
+  - Stream providing fewer bytes than declared payload size.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: NRRD-META-001
+  format_id: nrrd
+  stable_name: Metadata fidelity
+  classification: stable
+  developer_use_cases:
+  - A developer round-trips files with unusual labels/units and nothing is normalized away.
+  spec_profiles:
+  - nrrd0005
+  authority_fact_ids:
+  - POL-SCR-META-01
+  - SAL-NRRD-00002
+  - SAL-NRRD-00004
+  - SAL-NRRD-00009
+  - SAL-NRRD-00010
+  - SAL-NRRD-00011
+  normative_obligation_ids:
+  - OBL-NRRD-001
+  - OBL-NRRD-004
+  - OBL-NRRD-008
+  - OBL-NRRD-013
+  - OBL-NRRD-018
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Preserve optional metadata with absence-vs-explicit-value distinctions and the format's quoting/escaping rules; carry
+    legacy fields in lossless mode.
+  preservation_contract:
+  - Absence-vs-explicit-value distinction preserved for every optional metadata field.
+  - Quoting and escaping rules for labels and units preserved in lossless mode.
+  - Legacy and unknown metadata fields carried in lossless mode.
+  error_contract:
+  - Malformed quoted value reported with code, source_location, object_path, and originating_rule.
+  - Per-axis metadata count mismatch reported with severity and message.
+  security_contract:
+  - Metadata values treated as untrusted data; no evaluation of embedded content.
+  resource_limits:
+  - Per-axis metadata count bounded by declared dimension.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Quoted label with unescaped embedded double quote.
+  - Per-axis field entry count not matching dimension.
+  - NaN vs absent vs empty-string ambiguity in optional fields.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: NRRD-PAYLOAD-001
+  format_id: nrrd
+  stable_name: Attached and detached payload handling
+  classification: stable
+  developer_use_cases:
+  - A developer loads a detached-header dataset and file-count or path violations surface before any read.
+  spec_profiles:
+  - nrrd0005
+  authority_fact_ids:
+  - POL-SCR-PAYLOAD-01
+  - SAL-NRRD-00002
+  - SAL-NRRD-00003
+  - SAL-NRRD-00004
+  - SAL-NRRD-00006
+  - SAL-NRRD-00011
+  - SAL-NRRD-00013
+  - SAL-NRRD-00018
+  normative_obligation_ids:
+  - OBL-NRRD-001
+  - OBL-NRRD-004
+  - OBL-NRRD-005
+  - OBL-NRRD-006
+  - OBL-NRRD-008
+  - OBL-NRRD-010
+  - OBL-NRRD-016
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Support attached and all specified detached payload forms with file counts validated against declared dimensions and resolution
+    relative to the header location under a secure path policy.
+  preservation_contract:
+  - Attached/detached form preserved in lossless mode; form changes are explicit conversion operations.
+  - Line-skip and byte-skip values preserved when re-serializing in lossless mode.
+  error_contract:
+  - Detached file count mismatch reported with code, severity, message, and object_path.
+  - Path traversal violation reported with code, severity, and source_location.
+  - Payload size mismatch reported with originating_rule and expected vs actual counts.
+  security_contract:
+  - Detached references resolve only inside configured roots; absolute paths gated.
+  - Path traversal prevention for all detached data-file references.
+  - Header-first validation; no payload allocation before size verification.
+  resource_limits:
+  - Detached file count bounded by declared dimensions.
+  - Total payload byte count bounded by configurable limit.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Detached data-file path containing traversal sequences (../).
+  - Detached file count not matching declared dimension slicing.
+  - Payload bytes fewer than declared shape requires.
+  - Data-file field referencing absolute path outside configured roots.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: NRRD-PRESERVE-001
+  format_id: nrrd
+  stable_name: Baseline preservation duties
+  classification: stable
+  developer_use_cases:
+  - A developer round-trips files containing constructs the library does not model and loses nothing silently.
+  spec_profiles:
+  - nrrd0005
+  authority_fact_ids:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+  normative_obligation_ids: []
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Preserve unknown or future-version constructs that can be carried safely; never silently drop unrecognized content in
+    lossless mode.
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty value.
+  - Report every construct that cannot be preserved before saving, through a loss report API, rather than failing silently.
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller choice.
+  preservation_contract:
+  - Unknown or future-version constructs carried safely in lossless mode.
+  - Absent-vs-default distinction preserved across round-trip.
+  - Loss report API enumerates every non-preservable construct before save.
+  - Lossless vs canonical output mode is an explicit caller choice.
+  error_contract:
+  - Non-preservable construct reported via loss report API with code, severity, message, and object_path.
+  - Silent data loss in lossless mode raises a diagnostic with originating_rule.
+  security_contract:
+  - Preserved unknown constructs treated as opaque data; never evaluated.
+  resource_limits:
+  - Unknown construct storage bounded by overall input-size limit.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Save in lossless mode with constructs that cannot be carried safely.
+  - Save in canonical mode applied to a document expecting lossless fidelity.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: NRRD-SEC-001
+  format_id: nrrd
+  stable_name: Baseline security posture
+  classification: stable
+  developer_use_cases:
+  - A developer processes untrusted input with safe defaults and only opts into external effects explicitly.
+  spec_profiles:
+  - nrrd0005
+  authority_fact_ids:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+  normative_obligation_ids: []
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded payload bytes, with
+    safe defaults enabled.
+  - Never resolve network resources, execute embedded code, load plugins, or follow external references during load, validate,
+    or save unless explicitly enabled by the caller.
+  - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced resource.
+  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing must not evaluate them.
+  - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations and bound recursion
+    depth.
+  preservation_contract:
+  - Security limits do not alter preserved data; they reject input before model construction.
+  error_contract:
+  - Input size limit exceeded reported with code, severity, and message.
+  - Decompression ratio exceeded reported with code, severity, source_location, and originating_rule.
+  - Path traversal attempt reported with code, severity, and message.
+  - Arithmetic overflow in size calculation reported with code and originating_rule.
+  security_contract:
+  - Checked arithmetic for all size and count calculations; reject overflow explicitly.
+  - Decompressed-byte and compression-ratio limits with configurable policy.
+  - Detached references resolve only inside configured roots; absolute paths gated.
+  - Header-first validation; no full-payload allocation before size verification.
+  - No network resolution, code execution, or plugin loading during load/validate/save.
+  resource_limits:
+  - Configurable input size limit with safe default.
+  - Configurable element/record count limit with safe default.
+  - Configurable total decoded payload byte limit with safe default.
+  - Configurable decompression ratio limit with safe default.
+  - Bounded recursion depth.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Hostile header declaring dimensions whose product overflows size arithmetic.
+  - Compressed payload designed as a decompression bomb.
+  - Detached data-file path with directory traversal sequences.
+  - Declared payload size exceeding configured byte limit.
+  - Input file exceeding configured input size limit.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: NRRD-SHAPE-001
+  format_id: nrrd
+  stable_name: Dimensions, axis order, and endian correctness
+  classification: stable
+  developer_use_cases:
+  - A developer converts between format axis order and host array order through an explicit documented operation.
+  spec_profiles:
+  - nrrd0005
+  authority_fact_ids:
+  - POL-SCR-SHAPE-01
+  - POL-SCR-SHAPE-02
+  - SAL-NRRD-00003
+  - SAL-NRRD-00009
+  - SAL-NRRD-00010
+  - SAL-NRRD-00011
+  - SAL-NRRD-00012
+  - SAL-NRRD-00014
+  - SAL-NRRD-00015
+  - SAL-NRRD-00019
+  normative_obligation_ids:
+  - OBL-NRRD-001
+  - OBL-NRRD-002
+  - OBL-NRRD-003
+  - OBL-NRRD-005
+  - OBL-NRRD-013
+  - OBL-NRRD-014
+  - OBL-NRRD-017
+  - OBL-NRRD-018
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Validate dimension/sizes/per-axis arity with checked multiplication for sample and byte counts; represent the format's
+    axis order explicitly and convert to host order only via explicit operations.
+  - Enforce endian declaration rules where element size exceeds one byte; byte-swap transparently on read/write; never endian-transform
+    opaque blocks.
+  preservation_contract:
+  - Format axis order preserved in model; host-order conversion is explicit and reversible.
+  - Endian declaration preserved; byte-swap is transparent to caller.
+  error_contract:
+  - Dimension/sizes arity mismatch reported with code, severity, object_path, and originating_rule.
+  - Overflow in sample or byte count multiplication reported with code and originating_rule.
+  - Missing endian field for multi-byte type reported with code, severity, and repair_suggestion.
+  security_contract:
+  - Checked multiplication for sample and byte count calculations; overflow rejected explicitly.
+  - Opaque block types never endian-transformed.
+  resource_limits:
+  - Total sample count bounded by configurable limit before allocation.
+  - Total byte count bounded by configurable decoded-payload limit.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Sizes field with zero or negative axis size.
+  - Product of sizes overflowing platform integer.
+  - Missing endian field with multi-byte element type.
+  - Per-axis field count not matching declared dimension.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: NRRD-SPACE-001
+  format_id: nrrd
+  stable_name: Orientation and space metadata
+  classification: stable
+  developer_use_cases:
+  - A medical-imaging developer obtains the index-to-world transform and non-spatial axes are handled correctly.
+  spec_profiles:
+  - nrrd0005
+  authority_fact_ids:
+  - POL-SCR-SPACE-01
+  - SAL-NRRD-00019
+  - RF-NRRD-00004
+  normative_obligation_ids:
+  - OBL-NRRD-017
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Support space/orientation metadata with vector-length validation against space dimension, non-spatial axes, and index-to-world
+    transforms; never infer axis order from a named space.
+  - Expose index-to-world and measurement-frame transforms from space metadata without ever inferring axis order from a named
+    space - medical-imaging orientation correctness.
+  preservation_contract:
+  - Space name, origin, direction vectors, and measurement frame preserved in lossless mode.
+  - Non-spatial axis markers preserved.
+  error_contract:
+  - Space direction vector length not matching space dimension reported with code, severity, object_path, and originating_rule.
+  - Measurement frame dimension mismatch reported with code and originating_rule.
+  security_contract:
+  - Space metadata treated as passive data; no coordinate-system resolution triggers external effects.
+  resource_limits:
+  - Vector and matrix dimensions bounded by declared space dimension.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Space direction vector count not matching array dimension.
+  - Space direction vector length not matching declared space dimension.
+  - Measurement frame matrix with inconsistent dimensions.
+  - Named space with inferred axis ordering (specification violation).
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: NRRD-TYPES-001
+  format_id: nrrd
+  stable_name: Complete scalar and block types
+  classification: stable
+  developer_use_cases:
+  - A developer reads a dataset's exact declared type and receives documented host-type mappings.
+  spec_profiles:
+  - nrrd0005
+  authority_fact_ids:
+  - POL-SCR-TYPES-01
+  - SAL-NRRD-00003
+  - SAL-NRRD-00006
+  - SAL-NRRD-00009
+  - SAL-NRRD-00011
+  - SAL-NRRD-00016
+  - SAL-NRRD-00017
+  normative_obligation_ids:
+  - OBL-NRRD-001
+  - OBL-NRRD-005
+  - OBL-NRRD-007
+  - OBL-NRRD-010
+  - OBL-NRRD-015
+  - OBL-NRRD-018
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Support every specified scalar type and alias plus block types with their validity rules; represent declared types independently
+    from host-language type names.
+  preservation_contract:
+  - Declared type name and alias preserved in lossless mode; host-type mapping is separate.
+  - Block type and block size preserved as a pair.
+  error_contract:
+  - Unrecognized type name reported with code, severity, message, and source_location.
+  - Block type without block size reported with code, originating_rule, and repair_suggestion.
+  - Block type with ascii encoding reported with code, originating_rule, and auto_repair_eligible.
+  security_contract:
+  - Type-derived byte width used with checked arithmetic for payload size validation.
+  resource_limits:
+  - Block size bounded by configurable payload-byte limit.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Type field with unrecognized type name or alias.
+  - Block type declared without block size field.
+  - Block type combined with ascii encoding.
+  - Type alias resolving to different widths across versions.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: NRRD-VALIDATE-001
+  format_id: nrrd
+  stable_name: Header and payload validation
+  classification: stable
+  developer_use_cases:
+  - A service validates uploads cheaply (header-first) and rejects shape/payload mismatches with exact reasons.
+  spec_profiles:
+  - nrrd0005
+  authority_fact_ids:
+  - POL-SCR-VALIDATE-01
+  - SAL-NRRD-00007
+  - SAL-NRRD-00011
+  - SAL-NRRD-00012
+  - SAL-NRRD-00013
+  - SAL-NRRD-00014
+  - SAL-NRRD-00015
+  - SAL-NRRD-00016
+  - SAL-NRRD-00017
+  - RF-NRRD-00003
+  normative_obligation_ids:
+  - OBL-NRRD-001
+  - OBL-NRRD-002
+  - OBL-NRRD-003
+  - OBL-NRRD-006
+  - OBL-NRRD-007
+  - OBL-NRRD-011
+  - OBL-NRRD-014
+  - OBL-NRRD-015
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Check required and conditional fields, arity, version-feature compatibility, and expected sample/byte counts after decoding;
+    treat trailing payload per policy with reporting.
+  - Validate declared shape and encoded payload size with checked arithmetic BEFORE any payload allocation, with decompressed-size
+    and ratio limits - hostile headers must fail cheaply.
+  preservation_contract:
+  - Validation is non-destructive; it does not alter the model or input.
+  error_contract:
+  - Missing required field reported with code, severity, message, object_path, and originating_rule.
+  - Per-axis arity mismatch reported with code, severity, object_path, and originating_rule.
+  - Version-feature incompatibility reported with code, severity, and repair_suggestion.
+  - Payload size mismatch reported with code, severity, expected vs actual values, and originating_rule.
+  - Trailing payload data reported with code, severity, and configurable policy action.
+  security_contract:
+  - Checked arithmetic for all size and count validation; overflow rejected before allocation.
+  - Header-first validation rejects hostile headers cheaply without payload allocation.
+  - Decompressed-size and compression-ratio limits enforced during validation.
+  resource_limits:
+  - Validation operates within header-only memory budget when payload is not yet loaded.
+  - Decompressed-size limit enforced before full decompression during payload validation.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Missing required field (type, dimension, sizes, encoding).
+  - Per-axis field count not matching declared dimension.
+  - Payload byte count not matching product of sizes times element byte width.
+  - Truncated or oversized payload relative to declaration.
+  - Version-feature mismatch (feature used requires newer version than declared).
+  - Conditional field absent when condition is met (endian for multi-byte types).
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: NRRD-WRITE-001
+  format_id: nrrd
+  stable_name: Canonical and lossless writing
+  classification: stable
+  developer_use_cases:
+  - A developer writes a dataset and any conformant reader loads it; rewriting an unchanged file is byte-stable.
+  spec_profiles:
+  - nrrd0005
+  authority_fact_ids:
+  - POL-SCR-WRITE-01
+  normative_obligation_ids: []
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Write required/conditional fields correctly with version selection honoring used features; preserve optional absence in
+    lossless mode; deterministic field ordering and detached-partition policies.
+  preservation_contract:
+  - Optional field absence preserved in lossless mode (not filled with defaults).
+  - Version selection honors used features; explicit target version validated against feature set.
+  - Deterministic field ordering produces byte-identical output for unchanged documents.
+  error_contract:
+  - Explicit version target incompatible with used features reported with code, severity, and repair_suggestion.
+  - Detached-partition policy violation reported with code and originating_rule.
+  security_contract:
+  - Writer does not resolve external references or execute embedded content during serialization.
+  resource_limits:
+  - Output size bounded by available write target capacity.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - Explicit version target lower than minimum version required by used features.
+  - Model containing constructs that cannot be serialized to the target format.
+  - Detached-partition policy conflicting with attached-only output request.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED

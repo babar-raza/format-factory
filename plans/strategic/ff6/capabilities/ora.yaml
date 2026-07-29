@@ -1,0 +1,580 @@
+schema: ff6/format-capabilities@1
+goal_id: FF6-PRODUCTION-LIBRARIES-001
+task_id: TC-FF6-PROGRAM-CAPABILITIES-001
+format_id: ora
+format_canonical_name: OpenRaster Image
+contract_id: FC-ORA-V1
+target_spec_version: OpenRaster 0.0.3 (informal)
+generated_at: '2026-07-29'
+generated_by: claude
+capability_count: 10
+capabilities:
+- capability_id: ORA-CODEC-001
+  format_id: ora
+  stable_name: Compression codec correctness
+  classification: stable
+  developer_use_cases:
+  - A developer decompresses reference-produced data and byte-identical content emerges.
+  spec_profiles:
+  - openraster_0.0.3
+  authority_fact_ids:
+  - POL-ARC-CODEC-01
+  - SAL-ORA-00007
+  - SAL-ORA-00016
+  normative_obligation_ids:
+  - OBL-ORA-001
+  - OBL-ORA-002
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Match reference implementation outputs on the specification's test vectors; honor declared parameters, dictionaries, and
+    window constraints.
+  preservation_contract:
+  - Preserve unknown or future-version constructs that can be carried safely; never silently drop unrecognized content in
+    lossless mode.
+  error_contract:
+  - code
+  - severity
+  - message
+  - source_location
+  - object_path
+  - originating_rule
+  - repair_suggestion
+  - auto_repair_eligible
+  security_contract:
+  - Decompression bombs exhausting memory or disk.
+  - Corrupted size fields causing over-allocation.
+  resource_limits:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded payload bytes, with
+    safe defaults enabled.
+  - Decompressed-size and ratio limits enforced before and during decode.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - ORA authority status is NEEDS_AUTHORITY; provenance may shift when authoritative source is fully acquired.
+  - Reference test vectors unavailable or changed upstream.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: ORA-CONTAINER-001
+  format_id: ora
+  stable_name: Frame/entry structure decoding
+  classification: stable
+  developer_use_cases:
+  - A developer probes a file, enumerates its frames/entries and metadata, and verifies integrity without extraction.
+  spec_profiles:
+  - openraster_0.0.3
+  authority_fact_ids:
+  - POL-ARC-CONTAINER-01
+  normative_obligation_ids: []
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Decode magic numbers, frame/entry headers, size fields, and checksums per specification; verify integrity and report exact
+    corruption positions.
+  preservation_contract:
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty value.
+  error_contract:
+  - code
+  - severity
+  - message
+  - source_location
+  - object_path
+  - originating_rule
+  - repair_suggestion
+  - auto_repair_eligible
+  security_contract:
+  - Corrupted size fields causing over-allocation.
+  resource_limits:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded payload bytes, with
+    safe defaults enabled.
+  - Size fields validated with checked arithmetic before allocation.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - ORA authority status is NEEDS_AUTHORITY; provenance may shift when authoritative source is fully acquired.
+  - Container structure specification changes in future OpenRaster versions.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: ORA-EDIT-001
+  format_id: ora
+  stable_name: Container update semantics
+  classification: stable
+  developer_use_cases:
+  - A developer replaces one entry and the container remains valid for all consumers.
+  spec_profiles:
+  - openraster_0.0.3
+  authority_fact_ids:
+  - POL-ARC-EDIT-01
+  normative_obligation_ids: []
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Add, replace, and remove payloads/entries per the format's update semantics with checksums and indexes recomputed.
+  preservation_contract:
+  - Preserve unknown or future-version constructs that can be carried safely; never silently drop unrecognized content in
+    lossless mode.
+  - Report every construct that cannot be preserved before saving, through a loss report API, rather than failing silently.
+  error_contract:
+  - code
+  - severity
+  - message
+  - source_location
+  - object_path
+  - originating_rule
+  - repair_suggestion
+  - auto_repair_eligible
+  security_contract:
+  - Entry-name path traversal on extraction.
+  resource_limits:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded payload bytes, with
+    safe defaults enabled.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - ORA authority status is NEEDS_AUTHORITY; provenance may shift when authoritative source is fully acquired.
+  - Update semantics undefined in current informal spec; behavior derived from ZIP container conventions.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: ORA-LIFECYCLE-001
+  format_id: ora
+  stable_name: Baseline lifecycle I/O
+  classification: stable
+  developer_use_cases:
+  - A developer integrates the library with only lifecycle APIs and never needs format-internal knowledge for I/O plumbing.
+  spec_profiles:
+  - openraster_0.0.3
+  authority_fact_ids:
+  - POL-SLC-LIFECYCLE-01
+  - POL-SLC-LIFECYCLE-02
+  - POL-SLC-LIFECYCLE-03
+  - POL-SLC-LIFECYCLE-04
+  - POL-SLC-LIFECYCLE-05
+  - POL-SLC-LIFECYCLE-06
+  normative_obligation_ids: []
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Provide load from filesystem path, readable stream, and in-memory bytes, returning the format's root document/model object.
+  - Provide save to filesystem path and writable stream, plus serialization to bytes, producing output the library's own loader
+    accepts.
+  - Expose the detected format version and any declared version separately; never silently rewrite a declared version.
+  - Support a strict read mode that rejects malformed input with diagnostics and a tolerant read mode that recovers where
+    the format permits, with recovery actions reported.
+  - Expose validation as a first-class callable operation returning structured diagnostics, not only as exceptions raised
+    during parsing.
+  - Offer deterministic serialization such that an unchanged loaded document serializes to identical bytes across repeated
+    calls in the same mode.
+  preservation_contract:
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller choice.
+  error_contract:
+  - code
+  - severity
+  - message
+  - source_location
+  - object_path
+  - originating_rule
+  - repair_suggestion
+  - auto_repair_eligible
+  security_contract:
+  - Never resolve network resources, execute embedded code, load plugins, or follow external references during load, validate,
+    or save unless explicitly enabled by the caller.
+  resource_limits:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded payload bytes, with
+    safe defaults enabled.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - ORA authority status is NEEDS_AUTHORITY; provenance may shift when authoritative source is fully acquired.
+  - Lifecycle API surface depends on shared-library-contract baseline which may evolve.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: ORA-MODEL-001
+  format_id: ora
+  stable_name: Container metadata model
+  classification: stable
+  developer_use_cases:
+  - A developer lists entries with sizes and metadata from a large archive in milliseconds.
+  spec_profiles:
+  - openraster_0.0.3
+  authority_fact_ids:
+  - POL-ARC-MODEL-01
+  - SAL-ORA-00004
+  - SAL-ORA-00014
+  normative_obligation_ids:
+  - OBL-ORA-003
+  - OBL-ORA-004
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Expose typed container metadata (frames/entries, sizes, checksums, format flags) enumerable without full payload decode.
+  preservation_contract:
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty value.
+  error_contract:
+  - code
+  - severity
+  - message
+  - source_location
+  - object_path
+  - originating_rule
+  - repair_suggestion
+  - auto_repair_eligible
+  security_contract:
+  - Corrupted size fields causing over-allocation.
+  resource_limits:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded payload bytes, with
+    safe defaults enabled.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - ORA authority status is NEEDS_AUTHORITY; provenance may shift when authoritative source is fully acquired.
+  - Layer Stack authority labels version 0.0.5 an early draft; metadata model may change.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: ORA-PRESERVE-001
+  format_id: ora
+  stable_name: Baseline preservation duties
+  classification: stable
+  developer_use_cases:
+  - A developer round-trips files containing constructs the library does not model and loses nothing silently.
+  spec_profiles:
+  - openraster_0.0.3
+  authority_fact_ids:
+  - POL-SLC-PRESERVE-01
+  - POL-SLC-PRESERVE-02
+  - POL-SLC-PRESERVE-03
+  - POL-SLC-PRESERVE-04
+  normative_obligation_ids: []
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Preserve unknown or future-version constructs that can be carried safely; never silently drop unrecognized content in
+    lossless mode.
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty value.
+  - Report every construct that cannot be preserved before saving, through a loss report API, rather than failing silently.
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller choice.
+  preservation_contract:
+  - Preserve unknown or future-version constructs that can be carried safely; never silently drop unrecognized content in
+    lossless mode.
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty value.
+  - Report every construct that cannot be preserved before saving, through a loss report API, rather than failing silently.
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller choice.
+  error_contract:
+  - code
+  - severity
+  - message
+  - source_location
+  - object_path
+  - originating_rule
+  - repair_suggestion
+  - auto_repair_eligible
+  security_contract:
+  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing must not evaluate them.
+  resource_limits:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded payload bytes, with
+    safe defaults enabled.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - ORA authority status is NEEDS_AUTHORITY; provenance may shift when authoritative source is fully acquired.
+  - Unknown-construct preservation scope depends on ZIP container extension mechanisms.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: ORA-SEC-001
+  format_id: ora
+  stable_name: Baseline security posture
+  classification: stable
+  developer_use_cases:
+  - A developer processes untrusted input with safe defaults and only opts into external effects explicitly.
+  spec_profiles:
+  - openraster_0.0.3
+  authority_fact_ids:
+  - POL-SLC-SEC-01
+  - POL-SLC-SEC-02
+  - POL-SLC-SEC-03
+  - POL-SLC-SEC-04
+  - POL-SLC-SEC-05
+  normative_obligation_ids: []
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded payload bytes, with
+    safe defaults enabled.
+  - Never resolve network resources, execute embedded code, load plugins, or follow external references during load, validate,
+    or save unless explicitly enabled by the caller.
+  - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced resource.
+  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing must not evaluate them.
+  - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations and bound recursion
+    depth.
+  preservation_contract:
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller choice.
+  error_contract:
+  - code
+  - severity
+  - message
+  - source_location
+  - object_path
+  - originating_rule
+  - repair_suggestion
+  - auto_repair_eligible
+  security_contract:
+  - Decompression bombs exhausting memory or disk.
+  - Entry-name path traversal on extraction.
+  - Corrupted size fields causing over-allocation.
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded payload bytes, with
+    safe defaults enabled.
+  - Never resolve network resources, execute embedded code, load plugins, or follow external references during load, validate,
+    or save unless explicitly enabled by the caller.
+  - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced resource.
+  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing must not evaluate them.
+  - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations and bound recursion
+    depth.
+  resource_limits:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded payload bytes, with
+    safe defaults enabled.
+  - Decompressed-size and ratio limits enforced before and during decode.
+  - Extraction confined to configured roots with entry-name sanitization.
+  - Size fields validated with checked arithmetic before allocation.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - ORA authority status is NEEDS_AUTHORITY; provenance may shift when authoritative source is fully acquired.
+  - Security attack surface may expand with new OpenRaster features or ZIP extensions.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: ORA-STREAM-001
+  format_id: ora
+  stable_name: Bounded-memory streaming
+  classification: stable
+  developer_use_cases:
+  - A developer pipes multi-GB data through the codec with flat memory usage.
+  spec_profiles:
+  - openraster_0.0.3
+  authority_fact_ids:
+  - POL-ARC-STREAM-01
+  normative_obligation_ids: []
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Stream encode/decode in bounded memory; support random access (seek tables/entry indexes) where the specification defines
+    it.
+  preservation_contract:
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller choice.
+  error_contract:
+  - code
+  - severity
+  - message
+  - source_location
+  - object_path
+  - originating_rule
+  - repair_suggestion
+  - auto_repair_eligible
+  security_contract:
+  - Decompression bombs exhausting memory or disk.
+  - Corrupted size fields causing over-allocation.
+  resource_limits:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded payload bytes, with
+    safe defaults enabled.
+  - Decompressed-size and ratio limits enforced before and during decode.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - ORA authority status is NEEDS_AUTHORITY; provenance may shift when authoritative source is fully acquired.
+  - Streaming characteristics depend on ZIP container random-access support.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: ORA-VALIDATE-001
+  format_id: ora
+  stable_name: Integrity and structure validation
+  classification: stable
+  developer_use_cases:
+  - A service validates uploads and rejects corrupt or hostile containers with exact reasons.
+  spec_profiles:
+  - openraster_0.0.3
+  authority_fact_ids:
+  - POL-ARC-VALIDATE-01
+  - SAL-ORA-00004
+  - SAL-ORA-00010
+  - SAL-ORA-00016
+  - SAL-ORA-00019
+  normative_obligation_ids:
+  - OBL-ORA-002
+  - OBL-ORA-003
+  - OBL-ORA-005
+  - OBL-ORA-006
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Validate structure, checksums, and declared-vs-actual sizes with positions; run security checks (limits, ratios, paths)
+    as a distinct layer.
+  preservation_contract:
+  - Report every construct that cannot be preserved before saving, through a loss report API, rather than failing silently.
+  error_contract:
+  - code
+  - severity
+  - message
+  - source_location
+  - object_path
+  - originating_rule
+  - repair_suggestion
+  - auto_repair_eligible
+  security_contract:
+  - Decompression bombs exhausting memory or disk.
+  - Entry-name path traversal on extraction.
+  - Corrupted size fields causing over-allocation.
+  resource_limits:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded payload bytes, with
+    safe defaults enabled.
+  - Decompressed-size and ratio limits enforced before and during decode.
+  - Extraction confined to configured roots with entry-name sanitization.
+  - Size fields validated with checked arithmetic before allocation.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - ORA authority status is NEEDS_AUTHORITY; provenance may shift when authoritative source is fully acquired.
+  - Validation rules for xres/yres and thumbnail constraints may evolve with spec drafts.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
+- capability_id: ORA-WRITE-001
+  format_id: ora
+  stable_name: Deterministic container writing
+  classification: stable
+  developer_use_cases:
+  - A developer writes archives in CI and reruns produce identical bytes.
+  spec_profiles:
+  - openraster_0.0.3
+  authority_fact_ids:
+  - POL-ARC-WRITE-01
+  - SAL-ORA-00004
+  - SAL-ORA-00017
+  normative_obligation_ids:
+  - OBL-ORA-003
+  - OBL-ORA-007
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Emit conformant containers with deterministic framing/ordering; verify output by self-decode round trip.
+  preservation_contract:
+  - Preserve unknown or future-version constructs that can be carried safely; never silently drop unrecognized content in
+    lossless mode.
+  - Report every construct that cannot be preserved before saving, through a loss report API, rather than failing silently.
+  error_contract:
+  - code
+  - severity
+  - message
+  - source_location
+  - object_path
+  - originating_rule
+  - repair_suggestion
+  - auto_repair_eligible
+  security_contract:
+  - Entry-name path traversal on extraction.
+  resource_limits:
+  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded payload bytes, with
+    safe defaults enabled.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: []
+  invalidation_inputs:
+  - ORA authority status is NEEDS_AUTHORITY; provenance may shift when authoritative source is fully acquired.
+  - Deterministic output depends on ZIP library ordering and timestamp handling.
+  taskcard_ids:
+  - TC-FF6-PROGRAM-CAPABILITIES-001
+  release_state: PLANNED
