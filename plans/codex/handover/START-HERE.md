@@ -29,15 +29,17 @@ C:\Users\prora\OneDrive\Documents\GitHub\format-factory\plans\codex\handover\STA
 |---|---|
 | Forge | GitLab only |
 | Remote and branch | `origin/main` |
-| Source commit | `865558bb88243acda08c2a8d58a0d5ec887dedeb` |
+| Required ancestor | `4e3eff822f57ea336f52233c25452be2be75bbad` |
 | Controller state | `CONTRACT` |
-| Journal head | `FF6-EVENT-000019` |
-| Event hash | `76b580d72f865428e92bc5b6089a89487356c69163aadf6b615b70c6867221f8` |
+| Journal head | `FF6-EVENT-000020` |
+| Event hash | `b7c06bba2afe60bcbc580d240cc57c4e990a017070b50d75904be469c75fea0c` |
 | Parent task | `TC-FF6-PROGRAM-CAPABILITIES-001` — `NEEDS_REPAIR` |
 | Last completed child | `TC-FF6-NRRD-PROFILE-SURFACE-001` — `PASS` |
-| Exact next task | `TC-FF6-XLIFF-PROFILE-SURFACE-001` — `READY` |
+| Active task | `TC-FF6-XLIFF-PROFILE-SURFACE-001` — `WORK_IN_PROGRESS` |
+| Completed atomic steps | `XLF-01`, `XLF-02` |
+| First unmet step | `XLF-03` |
 | Current compiled denominator | 110 capabilities / 672 obligations |
-| Authority closure | 15/15 `MATCH` |
+| Authority closure | 17/17 global; 5/5 XLIFF `MATCH` |
 | Certified products | 0/6 |
 | Promotion | all six `UNASSESSED` |
 
@@ -63,15 +65,16 @@ packet to contain its own final commit hash.
 10. [`TC-FF6-PROGRAM-CAPABILITIES-001.md`](../../../taskcards/TC-FF6-PROGRAM-CAPABILITIES-001.md)
 11. [`TC-FF6-NRRD-PROFILE-SURFACE-001.md`](../../../taskcards/TC-FF6-NRRD-PROFILE-SURFACE-001.md)
 12. [`TC-FF6-XLIFF-PROFILE-SURFACE-001.md`](../../../taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md)
-13. [`ACTIVE-WORK-CHECKPOINT.md`](ACTIVE-WORK-CHECKPOINT.md)
-14. [`STATE-MACHINE-AND-TASKCARD-PROTOCOL.md`](STATE-MACHINE-AND-TASKCARD-PROTOCOL.md)
-15. [`SHIFT-AND-RESUME-PROTOCOL.md`](SHIFT-AND-RESUME-PROTOCOL.md)
-16. [`EXECUTION-RUNBOOK.md`](EXECUTION-RUNBOOK.md)
-17. [`CURRENT-STATE-AND-ROOT-CAUSES.md`](CURRENT-STATE-AND-ROOT-CAUSES.md)
-18. [`VALIDATION-AND-RELEASE.md`](VALIDATION-AND-RELEASE.md)
-19. [`CLAUDE-START.md`](CLAUDE-START.md)
-20. [`checkpoint.yaml`](checkpoint.yaml)
-21. [`manifest.yaml`](manifest.yaml)
+13. [`xliff-authority-member-inventory.yaml`](../../../reports/ff6/xliff-authority-member-inventory.yaml)
+14. [`ACTIVE-WORK-CHECKPOINT.md`](ACTIVE-WORK-CHECKPOINT.md)
+15. [`STATE-MACHINE-AND-TASKCARD-PROTOCOL.md`](STATE-MACHINE-AND-TASKCARD-PROTOCOL.md)
+16. [`SHIFT-AND-RESUME-PROTOCOL.md`](SHIFT-AND-RESUME-PROTOCOL.md)
+17. [`EXECUTION-RUNBOOK.md`](EXECUTION-RUNBOOK.md)
+18. [`CURRENT-STATE-AND-ROOT-CAUSES.md`](CURRENT-STATE-AND-ROOT-CAUSES.md)
+19. [`VALIDATION-AND-RELEASE.md`](VALIDATION-AND-RELEASE.md)
+20. [`CLAUDE-START.md`](CLAUDE-START.md)
+21. [`checkpoint.yaml`](checkpoint.yaml)
+22. [`manifest.yaml`](manifest.yaml)
 
 ## Authority precedence
 
@@ -89,7 +92,7 @@ If two records disagree, stop trusting the lower record and use this order:
 The assessment snapshot `current-state.yaml` remains valuable for product-tree
 inventory, but it was captured at baseline commit `e4f8f5f…`. Its contract
 hashes and pre-profile-repair capability totals are historical where they
-disagree with event 19 and `capability-coverage.yaml`.
+disagree with event 20 and `capability-coverage.yaml`.
 
 ## Mechanical resume preflight
 
@@ -100,7 +103,7 @@ git fetch origin main --prune
 git status --short --branch
 git rev-parse HEAD
 git rev-parse origin/main
-git merge-base --is-ancestor 865558bb88243acda08c2a8d58a0d5ec887dedeb origin/main
+git merge-base --is-ancestor 4e3eff822f57ea336f52233c25452be2be75bbad origin/main
 python tools/evidence/check_current_state_consistency.py
 python -m tools.supervisor.coordination --json status
 ```
@@ -113,22 +116,26 @@ event schema. That integration defect is tracked as `FF6-GAP-011`.
 Resume only if:
 
 - the worktree is clean or every dirty path is classified and outside scope;
-- event 19 and controller state agree;
-- the exact READY task exists in `taskcards/index.yaml`;
+- event 20 and controller state agree;
+- the active `WORK_IN_PROGRESS` task exists in `taskcards/index.yaml`;
 - the capability aggregate equals
   `4d17d8c8c0ef3de74d59e1d5b16884c0210fd0836e0593591871f10d0af2efd2`;
-- all 15 authority artifacts still match;
+- all 17 authority artifacts still match, including all five XLIFF records;
 - no live lease owns the intended files.
 
 ## Exact continuation
 
-Execute only `TC-FF6-XLIFF-PROFILE-SURFACE-001`.
+Resume only `TC-FF6-XLIFF-PROFILE-SURFACE-001` at `XLF-03`.
 
-The first technical action is XLIFF step `XLF-01`: revalidate event 19,
-task/controller/index agreement, the current 15-source authority closure, and
-coordination ownership. Step `XLF-02` then acquires and independently
-hash-pins the official XLIFF 2.0 OASIS Standard package, which is genuinely
-absent from the current authority lock. The task must compile exact XLIFF 2.0
+Steps `XLF-01` and `XLF-02` are complete at event 20. The official XLIFF 2.0
+package and prose are now independently pinned, the 2.0 published SHA-1
+cross-check passed, the 2.0/2.1 package inventory contains 42 exact members,
+and clean offline XLIFF reconstruction passes 5/5. Recompute those steps only
+if their input digests changed.
+
+`XLF-03` must now compile a source-located normative delta and module matrix
+from the tracked inventory and pinned authority bytes. The task must compile
+exact XLIFF 2.0
 and 2.1 Core plus separate coverage for all eight official 2.1 modules:
 Translation Candidates/Matches, Glossary, Format Style, Metadata, Resource
 Data, Size and Length Restriction, Validation, and ITS. The pinned bundle has
@@ -143,6 +150,7 @@ packaging, certification, gate movement, and promotion are prohibited.
 The executor must not:
 
 - repeat the completed OpenRaster, IPYNB, or NRRD repairs;
+- repeat authority acquisition unless event-20 inputs were invalidated;
 - infer XLIFF 2.0 from the pinned XLIFF 2.1 prose or schema bundle;
 - collapse eight normative modules into one generic module-support claim,
   omit either `fs` or ITS, count the `its`/`itsm` vocabularies as two modules,

@@ -22,9 +22,9 @@ fixtures are never sufficient evidence.
 
 ## Current evidence boundary
 
-Events 16 through 19 prove:
+Events 16 through 20 prove:
 
-- 15 of 15 locked authorities live-match;
+- 17 of 17 locked authorities live-match;
 - strict six-format ProductContract compilation;
 - deterministic 110-capability/672-obligation planning projections;
 - clean offline and clean online authority replay;
@@ -43,7 +43,15 @@ Events 16 through 19 prove:
 - IPYNB exact SAL verification `25/25`;
 - NRRD exact SAL verification `25/25`, 18-domain/41-policy explicit-complete
   family ownership, and all five profiles claimed;
-- native FF6 event chain passes through event 19.
+- native FF6 event chain passes through event 20;
+- the official XLIFF 2.0 package and prose are independently pinned, legally
+  classified, and reconstructed offline with all five XLIFF authorities
+  matching;
+- the 15-member XLIFF 2.0 and 27-member XLIFF 2.1 packages have a tracked,
+  replay-checked exact member inventory;
+- authority bootstrap focused tests `12 passed`, format-contract regression
+  `94 passed, 1 baseline-known test deselected`, Ruff passed, Pyright 1.1.411
+  passed, and bounded Mypy passed on the touched source modules.
 
 It does not prove:
 
@@ -67,7 +75,7 @@ All obligations remain unverified and all promotion states remain
   application interoperability;
 - exact profile applicability for every capability and obligation;
 - no `FF6-ORA-SURFACE-001` or `FF6-ORA-PROFILE-001` finding;
-- three identical strict runs with authority still 15/15 match;
+- three identical strict runs with the then-current 15/15 authority set;
 - affected contract, SAL, program, event, and static gates;
 - no product source or promotion changes.
 
@@ -85,7 +93,7 @@ named interoperability certification, not universal conformance.
 - all six target profiles claimed;
 - no `FF6-IPYNB-PROFILE-001` finding;
 - retained no-execution exclusion;
-- three identical strict runs with 15/15 authorities still matching;
+- three identical strict runs with the then-current 15/15 authority set;
 - affected contract, SAL, capability, event and static gates;
 - no product source, product test, certification, gate, or promotion change.
 
@@ -102,7 +110,7 @@ named interoperability certification, not universal conformance.
   protections;
 - every capability and obligation assigned a non-empty exact profile subset;
 - all five target profiles claimed and no `FF6-NRRD-PROFILE-001` finding;
-- three identical strict runs with 15/15 authorities still matching;
+- three identical strict runs with the then-current 15/15 authority set;
 - a governed source repair separating NRRD0004 coordinate transforms from
   NRRD0005 measurement-frame semantics;
 - an explicit record that Teem's permissive later-field parsing under earlier
@@ -113,8 +121,9 @@ named interoperability certification, not universal conformance.
 
 `TC-FF6-XLIFF-PROFILE-SURFACE-001` requires:
 
-- independent acquisition, digest verification, legal classification, lock,
-  and clean offline reconstruction of the official XLIFF 2.0 Standard package;
+- event-20 XLF-01/XLF-02 evidence retained: independent acquisition, digest
+  verification, legal classification, lock, exact package inventory, and
+  clean offline reconstruction of the official XLIFF 2.0 Standard package;
 - source-located XLIFF 2.0/2.1 Core and module deltas;
 - complete semantic obligations for hierarchy, inline pairing/order,
   segmentation, state, original data, skeletons, extensions, ITS mappings,
@@ -131,8 +140,7 @@ named interoperability certification, not universal conformance.
   model;
 - negative controls for missing module ownership, cross-profile
   contamination, malformed identity, and preview leakage;
-- three identical strict runs and complete authority matches after the 2.0
-  authority record is added;
+- three identical strict runs and complete 17/17 authority matches;
 - no product source, product test, certification, gate, or promotion change.
 
 ## Required proof for each mandatory obligation

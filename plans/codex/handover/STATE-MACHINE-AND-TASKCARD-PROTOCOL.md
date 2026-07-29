@@ -142,9 +142,9 @@ Task: `TC-FF6-XLIFF-PROFILE-SURFACE-001`.
 
 | Step | Required output | Exit test |
 |---|---|---|
-| XLF-01 | event 19, task/index/controller, authority and worktree preflight | native chain, exact READY task, clean or classified tree, 15/15 predecessor authority match |
-| XLF-02 | official XLIFF 2.0 authority record and local CAS materialization | independent digest, legal record, clean offline reconstruction, no 2.1-as-2.0 proxy |
-| XLF-03 | source-located 2.0/2.1 Core and module delta matrix | every requirement has source/member/location, profile set, Core/module owner, confidence, and contradiction note |
+| XLF-01 — PASS at event 20 | event 19, task/index/controller, authority and worktree preflight | native chain, exact READY task, clean or classified tree, 15/15 predecessor authority match |
+| XLF-02 — PASS at event 20 | official XLIFF 2.0 authority record, five-source XLIFF closure, and 42-member 2.0/2.1 inventory | independent digest plus published SHA-1 cross-check, legal record, 5/5 clean offline reconstruction, no 2.1-as-2.0 proxy |
+| XLF-03 — FIRST UNMET | source-located 2.0/2.1 Core and module delta matrix | every requirement has source/member/location, profile set, Core/module owner, confidence, and contradiction note |
 | XLF-04 | complete Core SAL and processing-requirement map | exact verifier passes; inline, segmentation, state, extension, skeleton, ITS, and agent rules are not reduced to XSD validity |
 | XLF-05 | separately owned Translation Candidates/Matches, Glossary, Format Style, Metadata, Resource Data, Size/Length, Validation, and ITS families | all eight official modules and all nine module schema vocabularies are accounted for; each module has typed-model, read/write, validation, preservation, rejection, and proof obligations |
 | XLF-06 | repaired research/family/enrichment layers | mixed-profile requirements split; explicit-complete ownership; no keyword duplication |

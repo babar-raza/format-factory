@@ -4,10 +4,10 @@ goal_status: ACTIVE
 generated_by: codex
 visibility: internal
 controller_state: CONTRACT
-transition_sequence: 19
+transition_sequence: 20
 last_verified_event:
-  event_id: FF6-EVENT-000019
-  event_hash: 76b580d72f865428e92bc5b6089a89487356c69163aadf6b615b70c6867221f8
+  event_id: FF6-EVENT-000020
+  event_hash: b7c06bba2afe60bcbc580d240cc57c4e990a017070b50d75904be469c75fea0c
 event_journal: plans/strategic/ff6/events.jsonl
 baseline_commit: e4f8f5f086b5e627c07c2ef2d940eda2601a22a8
 digest_policy:
@@ -24,23 +24,29 @@ handover_checkpoint:
   start: plans/codex/handover/START-HERE.md
   manifest: plans/codex/handover/manifest.yaml
   checkpoint: plans/codex/handover/checkpoint.yaml
-  packet_commit: 865558bb88243acda08c2a8d58a0d5ec887dedeb
-  packet_remote_verified: true
+  packet_base_commit: 4e3eff822f57ea336f52233c25452be2be75bbad
+  packet_commit_rule: >-
+    The fetched origin/main checkpoint containing this projection must be a
+    descendant of packet_base_commit. A packet cannot embed the hash of the
+    commit that contains its own final bytes.
   next_taskcard: taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md
 active_task:
   task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
-  state: READY
+  state: WORK_IN_PROGRESS
   parent_task_id: TC-FF6-PROGRAM-CAPABILITIES-001
-  completed_subtask_id: TC-FF6-NRRD-PROFILE-SURFACE-001
+  completed_steps:
+    - XLF-01
+    - XLF-02
+  first_unmet_step: XLF-03
 next_task:
   task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
-  state: READY
+  state: WORK_IN_PROGRESS
   unlock_condition: >-
-    Resume from event 19. Pin an independent official XLIFF 2.0 authority,
-    compile source-located 2.0/2.1 Core and official-module applicability,
-    isolate 2.2 preview behavior, and preserve semantic inline-code,
-    segmentation, state, extension, and processing requirements. Product
-    source and architecture remain blocked.
+    Resume from event 20 at XLF-03. Revalidate the 17-source global and
+    five-source XLIFF authority closure, then build the source-located XLIFF
+    2.0/2.1 Core and module delta matrix from the pinned 42-member package
+    inventory. Do not rerun XLF-01 or XLF-02 unless their recorded inputs
+    changed. Product source and architecture remain blocked.
 promotion:
   program: UNASSESSED
   ipynb: UNASSESSED
@@ -70,7 +76,7 @@ capability_compilation:
   manifest_aggregate_sha256: 4d17d8c8c0ef3de74d59e1d5b16884c0210fd0836e0593591871f10d0af2efd2
   three_run_digest: 389be84634941d3f244387bbc488c2303dcdb3add74b7d1edfb5def85710d3fc
   authority_artifacts:
-    match: 15
+    match: 17
     missing: 0
     mismatch: 0
     undeclared: 0
@@ -80,14 +86,16 @@ capability_compilation:
     - FF6-UBL-TYPING-001
 authority_closure_checkpoint:
   status: PASS
-  authority_lock_sha256: 78e74d8708a1811aae8cc88eb32f001f275653004b699fca4e6210831a760233
-  authority_records: 15
-  live_matches: 15
-  clean_offline_replay: PASS
-  clean_online_replay: PASS
+  authority_lock_sha256: 5c1ac942018f1e26e0fc0ca7c8284313452d1cb44c04d7e225faad4b21219929
+  authority_records: 17
+  live_matches: 17
+  predecessor_clean_offline_replay: PASS_15_OF_15
+  predecessor_clean_online_replay: PASS_15_OF_15
+  xliff_clean_offline_reconstruction: PASS_5_OF_5
+  full_clean_replay_17: NOT_RERUN_AT_WIP_CHECKPOINT
   online_rebuild_cas_bytes: 73206772
   strict_product_contract_compiles: 6
-  materializer_focused_tests: 10 passed
+  materializer_focused_tests: 12 passed
   affected_regression: >-
     NRRD checkpoint: 92 format-contract tests passed with 1 baseline-known
     stateful CSV idempotency test deselected; 96 affected tests passed; 119
@@ -97,7 +105,7 @@ authority_closure_checkpoint:
   pyright: PASS (1.1.411)
   tracked_product_requirement_documents: 4
   canonical_authority_lock: VERIFIED
-  materialized_authority_sources: 15
+  materialized_authority_sources: 17
   promotion_effect: none
 current_gap_summary:
   critical: 1
@@ -110,7 +118,7 @@ current_gap_summary:
   production_certifications: 0
 control_plane_compatibility:
   ff6_event_schema: ff6/controller-event@1
-  native_chain_validation: PASS_THROUGH_EVENT_19
+  native_chain_validation: PASS_THROUGH_EVENT_20
   generic_plan_control_doctor: >-
     INCOMPATIBLE_SCHEMA: tools.plan_control expects previous_hash and its own
     event payload; FF6 uses previous_event_hash. This is the already-tracked
@@ -121,3 +129,18 @@ invariants:
   - Product promotion is computed from current proof and cannot be edited here.
   - Failure of one format does not stop safe work on the others.
   - Publication authority is external and cannot be bypassed.
+xlf_checkpoint:
+  status: WORK_IN_PROGRESS
+  completed_steps: [XLF-01, XLF-02]
+  first_unmet_step: XLF-03
+  inventory: reports/ff6/xliff-authority-member-inventory.yaml
+  xliff_authority_sources: 5
+  xliff_authority_matches: 5
+  package_members:
+    xliff_2.0: 15
+    xliff_2.1: 27
+    total: 42
+  official_2_0_package_sha256: aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055
+  official_2_0_prose_sha256: 4b19c8d7c878c34b5422310f340abf099dedccf968c0a3c145548d3a691da7c2
+  clean_offline_reconstruction: PASS_5_OF_5
+  product_promotion_effect: none

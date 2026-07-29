@@ -299,6 +299,32 @@ sources:
   fetch:
     kind: LOCAL_FILE
     source_path: shared/format-contracts/product-requirements/ubl.yaml
+- source_id: SRC-XLF-001
+  format_id: xliff
+  title: OASIS XLIFF 2.0 Standard release package
+  organization: OASIS
+  version: XLIFF 2.0 OASIS Standard
+  authority_class: AUTHORITATIVE
+  materialized_path: .local/format-contracts/acquired/xliff/src-xlf-001.bin
+  expected_sha256: aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055
+  media_type: application/zip
+  legal:
+    license_id: LicenseRef-OASIS-Specification-Notice
+    redistribution: ALLOWED_WITH_NOTICE
+    use_status: APPROVED_FOR_LOCAL_USE
+    evidence: Copyright and permission notice distributed with the official OASIS XLIFF 2.0 Standard package.
+    notes: External package bytes remain in the ignored local CAS.
+  limits:
+    max_bytes: 104857600
+    timeout_seconds: 120
+    max_redirects: 3
+  fetch:
+    kind: URL
+    locators:
+    - url: https://docs.oasis-open.org/xliff/xliff-core/v2.0/os/xliff-core-v2.0-os.zip
+      immutable: true
+    allowed_hosts:
+    - docs.oasis-open.org
 - source_id: SRC-XLF-002
   format_id: xliff
   title: OASIS XLIFF 2.1 Standard release package
@@ -369,5 +395,28 @@ sources:
     kind: ZIP_MEMBER
     container_source_id: SRC-XLF-002
     member_path: xliff-core-v2.1-os.html
+- source_id: SRC-XLIFF-003
+  format_id: xliff
+  title: OASIS XLIFF 2.0 Standard prose specification
+  organization: OASIS
+  version: XLIFF 2.0 OASIS Standard
+  authority_class: AUTHORITATIVE
+  expected_sha256: 4b19c8d7c878c34b5422310f340abf099dedccf968c0a3c145548d3a691da7c2
+  materialized_path: .local/format-contracts/acquired/xliff/src-xliff-003.bin
+  media_type: text/html
+  legal:
+    license_id: LicenseRef-OASIS-Specification-Notice
+    redistribution: ALLOWED_WITH_NOTICE
+    use_status: APPROVED_FOR_LOCAL_USE
+    evidence: Copyright and permission notice embedded in the OASIS XLIFF 2.0 release package and prose member.
+    notes: Materialized from the pinned release ZIP; external bytes remain in the ignored local CAS.
+  limits:
+    max_bytes: 10485760
+    timeout_seconds: 1
+    max_redirects: 0
+  fetch:
+    kind: ZIP_MEMBER
+    container_source_id: SRC-XLF-001
+    member_path: xliff-core-v2.0-os.html
 generated_by: codex
 visibility: internal

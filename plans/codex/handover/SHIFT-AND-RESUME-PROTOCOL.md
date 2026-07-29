@@ -28,26 +28,28 @@ budget are not operational authority.
 ## Current transfer boundary
 
 - Required source ancestor before this packet:
-  `865558bb88243acda08c2a8d58a0d5ec887dedeb`.
+  `4e3eff822f57ea336f52233c25452be2be75bbad`.
 - Use the fetched `origin/main` descendant containing this packet.
 - Controller state: `CONTRACT`.
-- Event: `FF6-EVENT-000019`.
+- Event: `FF6-EVENT-000020`.
 - Event hash:
-  `76b580d72f865428e92bc5b6089a89487356c69163aadf6b615b70c6867221f8`.
+  `b7c06bba2afe60bcbc580d240cc57c4e990a017070b50d75904be469c75fea0c`.
 - Completed task: `TC-FF6-NRRD-PROFILE-SURFACE-001` - `PASS`.
-- Next task: `TC-FF6-XLIFF-PROFILE-SURFACE-001` - `READY`.
+- Active task: `TC-FF6-XLIFF-PROFILE-SURFACE-001` -
+  `WORK_IN_PROGRESS`; XLF-01/XLF-02 complete, XLF-03 first unmet.
 - Product promotion: none.
 
 ## Incoming provider procedure
 
 1. Fetch `origin/main`; do not use GitHub or a provider branch.
-2. Verify `865558bb88243acda08c2a8d58a0d5ec887dedeb` is an ancestor.
+2. Verify `4e3eff822f57ea336f52233c25452be2be75bbad` is an ancestor.
 3. Verify the worktree is clean before new mutation.
 4. Read the ordered authority list in `START-HERE.md`.
-5. Validate the journal through event 19 using FF6 native semantics:
+5. Validate the journal through event 20 using FF6 native semantics:
    `previous_event_hash`, canonical JSON, sequential event IDs and hashes.
 6. Verify controller head, parent/child task states, task index, current gaps,
-   authority 15/15 match, and capability manifest digests.
+   authority 17/17 global and 5/5 XLIFF match, and capability manifest
+   digests.
 7. Query coordination status.
 8. Register a new identity for the incoming provider.
 9. Confirm no live owner remains on the next task paths.
@@ -55,9 +57,10 @@ budget are not operational authority.
     directories, transcript, and artifact directory.
 11. Resolve the required registered skills and run the mutation guard.
 12. Capture input baselines before writing.
-13. Begin XLF-01 in `STATE-MACHINE-AND-TASKCARD-PROTOCOL.md`, then close the
-    missing official XLIFF 2.0 authority prerequisite in XLF-02 before making
-    any 2.0 claim.
+13. Validate `reports/ff6/xliff-authority-member-inventory.yaml` against both
+    pinned packages and resume XLF-03 in
+    `STATE-MACHINE-AND-TASKCARD-PROTOCOL.md`. Re-run XLF-01/XLF-02 only if
+    event-20 inputs were invalidated.
 
 Claude's hooks may auto-claim single files, but broad generated output sets
 still require explicit claims. Codex follows the CLI protocol in
@@ -182,7 +185,7 @@ print(f"PASS events={len(events)} head={previous}")
 currently fails at event 1 because it expects `previous_hash`. FF6 uses
 `previous_event_hash` under `ff6/controller-event@1`.
 
-This is `FF6-GAP-011`, not evidence that event 19 is corrupt. Validate the FF6
+This is `FF6-GAP-011`, not evidence that event 20 is corrupt. Validate the FF6
 native chain and do not edit either journal schema ad hoc.
 
 ## Transfer acceptance

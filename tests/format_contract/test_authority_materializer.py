@@ -23,6 +23,7 @@ from tools.format_contract.authority_lock import (
 from tools.format_contract.authority_runtime import (
     audit_contract_declarations,
     materialize_sources,
+    probe_url,
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -98,6 +99,76 @@ class _Response(io.BytesIO):
 
     def __exit__(self, *args):
         self.close()
+
+
+def test_probe_url_bootstraps_digest_without_persisting_bytes(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    payload = b"new official authority"
+
+    class FakeOpener:
+        def open(self, request, timeout):  # noqa: ANN001
+            assert request.full_url == "https://example.invalid/standard.zip"
+            assert timeout == 7
+            return _Response(payload, request.full_url)
+
+    monkeypatch.setattr(
+        authority_runtime.urllib.request,
+        "build_opener",
+        lambda *handlers: FakeOpener(),
+    )
+    result = probe_url(
+        "https://example.invalid/standard.zip",
+        allowed_hosts=["example.invalid"],
+        max_bytes=1024,
+        timeout_seconds=7,
+        max_redirects=1,
+        expected_sha1=hashlib.sha1(payload, usedforsecurity=False).hexdigest(),
+    )
+    assert result.sha256 == hashlib.sha256(payload).hexdigest()
+    assert result.byte_count == len(payload)
+    assert result.expected_sha1_match is True
+    assert list(tmp_path.rglob("*")) == []
+
+
+def test_probe_url_rejects_published_digest_mismatch_and_oversize(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    payload = b"x" * 33
+
+    class FakeOpener:
+        def open(self, request, timeout):  # noqa: ANN001
+            return _Response(payload, request.full_url)
+
+    monkeypatch.setattr(
+        authority_runtime.urllib.request,
+        "build_opener",
+        lambda *handlers: FakeOpener(),
+    )
+    kwargs = {
+        "allowed_hosts": ["example.invalid"],
+        "timeout_seconds": 5,
+        "max_redirects": 1,
+    }
+    with pytest.raises(AuthorityLockError, match="published SHA-1 mismatch"):
+        probe_url(
+            "https://example.invalid/standard.zip",
+            max_bytes=1024,
+            expected_sha1="0" * 40,
+            **kwargs,
+        )
+    with pytest.raises(AuthorityLockError, match="download exceeds max_bytes"):
+        probe_url(
+            "https://example.invalid/standard.zip",
+            max_bytes=32,
+            **kwargs,
+        )
+    with pytest.raises(AuthorityLockError, match="HTTPS host policy"):
+        probe_url(
+            "https://blocked.invalid/standard.zip",
+            max_bytes=1024,
+            **kwargs,
+        )
 
 
 def test_online_then_offline_replay_is_content_addressed_and_atomic(

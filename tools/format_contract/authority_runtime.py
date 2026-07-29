@@ -104,6 +104,105 @@ class AuthorityResult:
         return asdict(self)
 
 
+@dataclass(frozen=True)
+class AuthorityUrlProbe:
+    """Read-only digest evidence for enrolling a new authority URL."""
+
+    url: str
+    final_url: str
+    status: int
+    byte_count: int
+    sha256: str
+    sha1: str
+    expected_sha1: str | None
+    expected_sha1_match: bool | None
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+def probe_url(
+    url: str,
+    *,
+    allowed_hosts: Iterable[str],
+    max_bytes: int,
+    timeout_seconds: int,
+    max_redirects: int,
+    expected_sha1: str | None = None,
+) -> AuthorityUrlProbe:
+    """Digest an unenrolled official artifact without persisting its bytes.
+
+    This is the bootstrap half of the authority lock protocol. It applies the
+    same HTTPS, host, redirect, timeout, and byte limits as materialization,
+    but emits only deterministic digest evidence. Once the SHA-256 is reviewed
+    into the lock, normal materialization downloads again and accepts bytes
+    only when they match that locked digest.
+    """
+
+    hosts = tuple(allowed_hosts)
+    _validate_network_url(url, hosts)
+    if max_bytes < 1 or timeout_seconds < 1 or max_redirects < 0:
+        raise AuthorityLockError("probe limits must be positive and bounded")
+    normalized_sha1 = expected_sha1.lower() if expected_sha1 else None
+    if normalized_sha1 is not None:
+        if len(normalized_sha1) != 40:
+            raise AuthorityLockError("expected SHA-1 must contain 40 hexadecimal characters")
+        try:
+            int(normalized_sha1, 16)
+        except ValueError as exc:
+            raise AuthorityLockError(
+                "expected SHA-1 must contain 40 hexadecimal characters"
+            ) from exc
+
+    request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+    opener = urllib.request.build_opener(
+        _HttpsRedirectHandler(max_redirects, hosts)
+    )
+    sha256 = hashlib.sha256()
+    sha1 = hashlib.sha1(usedforsecurity=False)
+    total = 0
+    with opener.open(request, timeout=timeout_seconds) as response:  # noqa: S310
+        final_url = str(response.geturl())
+        _validate_network_url(final_url, hosts)
+        status = int(getattr(response, "status", 200))
+        if not 200 <= status < 300:
+            raise AuthorityLockError(f"unexpected HTTP status {status}")
+        content_length = response.headers.get("Content-Length")
+        if content_length is not None and int(content_length) > max_bytes:
+            raise AuthorityLockError(
+                f"declared Content-Length exceeds max_bytes={max_bytes}"
+            )
+        while True:
+            block = response.read(1024 * 1024)
+            if not block:
+                break
+            total += len(block)
+            if total > max_bytes:
+                raise AuthorityLockError(
+                    f"download exceeds max_bytes={max_bytes}"
+                )
+            sha256.update(block)
+            sha1.update(block)
+
+    observed_sha1 = sha1.hexdigest()
+    match = None if normalized_sha1 is None else observed_sha1 == normalized_sha1
+    if match is False:
+        raise AuthorityLockError(
+            "published SHA-1 mismatch: "
+            f"expected {normalized_sha1}, observed {observed_sha1}"
+        )
+    return AuthorityUrlProbe(
+        url=url,
+        final_url=final_url,
+        status=status,
+        byte_count=total,
+        sha256=sha256.hexdigest(),
+        sha1=observed_sha1,
+        expected_sha1=normalized_sha1,
+        expected_sha1_match=match,
+    )
+
+
 def _observed(path: Path) -> str | None:
     return sha256_file(path) if path.is_file() else None
 

@@ -6,14 +6,15 @@ publish_allowed: false
 generated_by: codex
 generated_at: 2026-07-29
 authoritative_state: false
-canonical_event: FF6-EVENT-000019
+canonical_event: FF6-EVENT-000020
 ---
 
 # Active Work Checkpoint: XLIFF Stable Profiles and Modules
 
-This is the provider-neutral shift boundary after the NRRD contract
-repair. Canonical authority remains the controller, event journal, current-gap
-projection, and taskcards; this document explains how to resume them.
+This is the provider-neutral shift boundary after XLIFF authority acquisition
+and package inventory, before the normative delta matrix. Canonical authority
+remains the controller, event journal, current-gap projection, and taskcards;
+this document explains how to resume them.
 
 ## Exact checkpoint
 
@@ -22,11 +23,13 @@ projection, and taskcards; this document explains how to resume them.
 | Mission | `FF6-PRODUCTION-LIBRARIES-001` |
 | Forge and branch | GitLab `origin/main` only |
 | Controller state | `CONTRACT` |
-| Controller sequence | `19` |
-| Event head | `76b580d72f865428e92bc5b6089a89487356c69163aadf6b615b70c6867221f8` |
+| Controller sequence | `20` |
+| Event head | `b7c06bba2afe60bcbc580d240cc57c4e990a017070b50d75904be469c75fea0c` |
 | Parent task | `TC-FF6-PROGRAM-CAPABILITIES-001` - `NEEDS_REPAIR` |
-| Completed task | `TC-FF6-NRRD-PROFILE-SURFACE-001` - `PASS` |
-| Exact next task | `TC-FF6-XLIFF-PROFILE-SURFACE-001` - `READY` |
+| Last completed task | `TC-FF6-NRRD-PROFILE-SURFACE-001` - `PASS` |
+| Active task | `TC-FF6-XLIFF-PROFILE-SURFACE-001` - `WORK_IN_PROGRESS` |
+| Completed steps | `XLF-01`, `XLF-02` |
+| First unmet step | `XLF-03` |
 | Selected finding | `FF6-XLIFF-PROFILE-001` |
 | Product source mutation | Prohibited |
 | Promotion effect | None |
@@ -34,7 +37,7 @@ projection, and taskcards; this document explains how to resume them.
 
 ## What was proved
 
-- All 15 authority artifacts remain live `MATCH`.
+- All 17 authority artifacts remain live `MATCH`.
 - All 20 OpenRaster SAL facts now pass exact assertions against the current
   commit-pinned RST authorities. Obsolete HTML proof hashes are gone.
 - The previous `SAL-ORA-00014` claim was absent from current authority. The
@@ -77,6 +80,22 @@ projection, and taskcards; this document explains how to resume them.
   explicit interoperability peculiarity, not a weakened strict contract.
 - Event 19 proves only the NRRD normative denominator and deterministic
   projection. It does not certify the existing product.
+- Event 20 records an integration-safe XLIFF WIP boundary. The official
+  XLIFF 2.0 OASIS Standard ZIP is pinned as `SRC-XLF-001` at SHA-256
+  `aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055`;
+  its published SHA-1 matched the bounded bootstrap probe.
+- The embedded XLIFF 2.0 prose is pinned as `SRC-XLIFF-003` at SHA-256
+  `4b19c8d7c878c34b5422310f340abf099dedccf968c0a3c145548d3a691da7c2`.
+- The tracked authority inventory binds 15 XLIFF 2.0 and 27 XLIFF 2.1
+  members (42 total), including schemas, Schematron, NVDL, catalogs,
+  normative prose variants, notices, and the informative Change Tracking
+  copy.
+- Global authority audit is 17/17, XLIFF is 5/5, and clean offline XLIFF
+  reconstruction from CAS/repository inputs is 5/5. This closes only XLF-02.
+- The safe authority bootstrap command hashes unenrolled bytes under the same
+  HTTPS, host, redirect, timeout, and size constraints as materialization,
+  persists no bytes, and requires the normal locked re-download before
+  acceptance.
 
 ## Current compiled planning state
 
@@ -92,7 +111,7 @@ projection, and taskcards; this document explains how to resume them.
 | Total obligations | 672 |
 | Aggregate SHA-256 | `4d17d8c8c0ef3de74d59e1d5b16884c0210fd0836e0593591871f10d0af2efd2` |
 | Three-run digest | `389be84634941d3f244387bbc488c2303dcdb3add74b7d1edfb5def85710d3fc` |
-| Authority matches | 15/15 |
+| Authority matches | 17/17 global; 5/5 XLIFF |
 | Product certifications | 0 |
 
 The portfolio remains `NEEDS_PROFILE_OR_SURFACE_REPAIR` because exact XLIFF
@@ -113,7 +132,12 @@ The portfolio remains `NEEDS_PROFILE_OR_SURFACE_REPAIR` because exact XLIFF
   explicit-complete fact ownership, valid, idempotent.
 - NRRD SAL exact verification: 25/25 pass.
 - Three strict six-format compilations: byte-identical.
-- Authority audit: 15/15 match.
+- Event-20 focused materializer tests: 12 passed.
+- Event-20 format-contract regression: 94 passed; one baseline-known stateful
+  CSV idempotency test was deselected.
+- XLIFF authority inventory replay: 42/42 exact member size/digest pairs.
+- Authority audit: 17/17 match; XLIFF offline reconstruction: 5/5 match.
+- Event-20 Ruff, Pyright 1.1.411, and bounded Mypy checks: pass.
 - Global SAL merge remains non-promoting because of pre-existing ODS/ODT alias
   contradictions. The NRRD cache content was verified and all attempted alias
   side effects were removed.
@@ -123,23 +147,23 @@ The portfolio remains `NEEDS_PROFILE_OR_SURFACE_REPAIR` because exact XLIFF
 1. Read `START-HERE.md`, `CURRENT-MACHINE-STATE.yaml`, `AGENTS.md`, and the
    provider adapter in their declared order.
 2. Fetch GitLab `origin/main`; do not use GitHub or create a branch.
-3. Require `865558bb88243acda08c2a8d58a0d5ec887dedeb` to be an ancestor of
+3. Require `4e3eff822f57ea336f52233c25452be2be75bbad` to be an ancestor of
    fetched `origin/main`.
 4. Require a clean or fully classified shared worktree.
 5. Register a fresh coordination identity and inspect live leases/conflicts.
-6. Validate event 19 natively using `previous_event_hash` and canonical JSON
+6. Validate event 20 natively using `previous_event_hash` and canonical JSON
    with `event_hash` removed.
 7. Verify the controller names
-   `TC-FF6-XLIFF-PROFILE-SURFACE-001` as `READY`.
+   `TC-FF6-XLIFF-PROFILE-SURFACE-001` as `WORK_IN_PROGRESS`, with `XLF-03`
+   first unmet.
 8. Read that taskcard, the product goal, current gaps, capability policy,
-   XLIFF contract/SAL/evidence/enrichment, the pinned 2.1 package, and the
-   authority lock showing that a separate 2.0 package is absent.
+   XLIFF contract/SAL/evidence/enrichment, both pinned packages, the tracked
+   42-member inventory, and the five XLIFF authority records.
 9. Claim exact paths, resolve registered skills, and run the mutation guard
    before every write.
-10. Execute the atomic steps XLF-01 through XLF-08 in
+10. Resume at XLF-03 and execute XLF-03 through XLF-08 in
     `STATE-MACHINE-AND-TASKCARD-PROTOCOL.md`.
-11. Acquire, independently digest-check, legally classify, lock, and prove
-    offline reconstruction of the official XLIFF 2.0 OASIS Standard package.
+11. Re-run XLF-01 or XLF-02 only if event-20 authority inputs were invalidated.
 12. Produce source-located 2.0/2.1 Core and module delta matrices.
 13. Split all eight official 2.1 modules—Translation Candidates/Matches,
     Glossary, Format Style, Metadata, Resource Data, Size and Length
@@ -176,12 +200,15 @@ Only digest-bound executed behavior can move those states.
 
 ## Outgoing self-challenge
 
-The event-19 executor recorded the required governance challenge at the shift
+The event-20 executor recorded the required governance challenge at the shift
 boundary:
 
-1. Required contract-task steps performed: yes.
-2. Required task evidence present; none missing: yes.
-3. Evidence sufficient for the contract-only acceptance boundary: yes.
+1. Required XLF-01/XLF-02 steps performed; XLF-03 through XLF-08 remain
+   explicit and unclaimed: yes.
+2. Required evidence for the event-20 WIP substep boundary present; none
+   missing for those completed steps: yes.
+3. Evidence sufficient for the authority-only WIP boundary, without claiming
+   XLIFF contract or product completion: yes.
 4. Secondary source substituted where primary authority was required: no.
 5. Phase-forbidden file created: no.
 6. Product gate self-approved: no.

@@ -7,7 +7,7 @@ generated_by: codex
 generated_at: 2026-07-29
 goal_id: FF6-PRODUCTION-LIBRARIES-001
 parent_task_id: TC-FF6-PROGRAM-CAPABILITIES-001
-status: READY
+status: WORK_IN_PROGRESS
 format_id: xliff
 skill_ids:
   - research-format-contract-sources
@@ -57,6 +57,33 @@ owners and exact profile applicability.
   policy but has no isolated compiled capability surface.
 - Product source observations and existing tests are non-promoting inputs and
   cannot fill missing normative authority.
+
+## Current checkpoint — event 20
+
+`XLF-01` and `XLF-02` are complete and integration-safe. The task remains
+`WORK_IN_PROGRESS`; the first unmet step is `XLF-03`.
+
+- The official XLIFF 2.0 OASIS Standard ZIP is enrolled as `SRC-XLF-001` at
+  SHA-256
+  `aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055`.
+- Its published SHA-1
+  `4a23114abdca2585a7b2840dae179242aca8eada` matched an independent,
+  bounded, non-persisting probe.
+- The embedded 2.0 HTML specification is enrolled as `SRC-XLIFF-003` at
+  SHA-256
+  `4b19c8d7c878c34b5422310f340abf099dedccf968c0a3c145548d3a691da7c2`.
+- The tracked member inventory at
+  `reports/ff6/xliff-authority-member-inventory.yaml` binds all 15 members of
+  the 2.0 package and all 27 members of the 2.1 package.
+- Global authority audit is 17/17 `MATCH`; XLIFF is 5/5 `MATCH`; a clean
+  offline XLIFF reconstruction from the content-addressed cache is 5/5
+  `MATCH`.
+- The capability projection remains 110 capabilities and 672 obligations.
+  No XLIFF profile gap, capability, obligation, product implementation,
+  certification, promotion, release, or gate is closed by this checkpoint.
+
+Resume at `XLF-03`. Recompute `XLF-01` or `XLF-02` only if event-20 input
+digests or authority bytes were invalidated.
 
 ## Required execution
 

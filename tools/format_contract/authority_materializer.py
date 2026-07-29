@@ -22,6 +22,7 @@ try:
         audit_contract_declarations,
         audit_sources,
         materialize_sources,
+        probe_url,
     )
 except ImportError:  # direct script execution from tools/format_contract
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
@@ -38,6 +39,7 @@ except ImportError:  # direct script execution from tools/format_contract
         audit_contract_declarations,
         audit_sources,
         materialize_sources,
+        probe_url,
     )
 
 
@@ -83,9 +85,39 @@ def main(argv: list[str] | None = None) -> int:
     sync.add_argument("--format", action="append", required=True)
     sync.add_argument("--check", action="store_true")
 
+    probe = sub.add_parser("probe-url")
+    probe.add_argument("--url", required=True)
+    probe.add_argument("--allowed-host", action="append", required=True)
+    probe.add_argument("--max-bytes", type=int, required=True)
+    probe.add_argument("--timeout-seconds", type=int, required=True)
+    probe.add_argument("--max-redirects", type=int, required=True)
+    probe.add_argument("--expected-sha1")
+
     args = parser.parse_args(argv)
     root = args.repo_root.resolve()
     try:
+        if args.command == "probe-url":
+            result = probe_url(
+                str(args.url),
+                allowed_hosts=args.allowed_host,
+                max_bytes=int(args.max_bytes),
+                timeout_seconds=int(args.timeout_seconds),
+                max_redirects=int(args.max_redirects),
+                expected_sha1=args.expected_sha1,
+            )
+            print(
+                json.dumps(
+                    {
+                        "schema_version": "1.0",
+                        "mode": "probe-url",
+                        "result": result.to_dict(),
+                        "ready": True,
+                    },
+                    sort_keys=True,
+                    separators=(",", ":"),
+                )
+            )
+            return 0
         if args.command == "sync-product-requirements":
             outputs = sync_product_requirements(
                 root, _formats(args.format), check=bool(args.check)

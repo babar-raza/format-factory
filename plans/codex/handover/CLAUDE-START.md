@@ -28,17 +28,18 @@ provider-local artifacts as authority.
    trusting its labels.
 4. Require:
    - source checkpoint
-     `865558bb88243acda08c2a8d58a0d5ec887dedeb` is an ancestor of fetched
+     `4e3eff822f57ea336f52233c25452be2be75bbad` is an ancestor of fetched
      `origin/main`;
-   - controller `CONTRACT`, sequence 19;
-   - event `FF6-EVENT-000019`, hash
-     `76b580d72f865428e92bc5b6089a89487356c69163aadf6b615b70c6867221f8`;
+   - controller `CONTRACT`, sequence 20;
+   - event `FF6-EVENT-000020`, hash
+     `b7c06bba2afe60bcbc580d240cc57c4e990a017070b50d75904be469c75fea0c`;
    - parent `TC-FF6-PROGRAM-CAPABILITIES-001` in `NEEDS_REPAIR`;
    - `TC-FF6-NRRD-PROFILE-SURFACE-001` in `PASS`;
-   - `TC-FF6-XLIFF-PROFILE-SURFACE-001` in `READY`;
+   - `TC-FF6-XLIFF-PROFILE-SURFACE-001` in `WORK_IN_PROGRESS`, with
+     `XLF-01` and `XLF-02` complete and `XLF-03` first unmet;
    - 110 capabilities, 672 obligations, and aggregate
      `4d17d8c8c0ef3de74d59e1d5b16884c0210fd0836e0593591871f10d0af2efd2`;
-   - 15/15 authority artifacts `MATCH`;
+   - 17/17 authority artifacts `MATCH`, including 5/5 XLIFF;
    - zero product certifications and no promotion.
 5. Validate the native FF6 chain with `previous_event_hash`. The generic Plan
    Control journal schema is different and must not be used to rewrite FF6.
@@ -48,14 +49,15 @@ provider-local artifacts as authority.
 
 ## Execute exactly this task
 
-Execute `taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md` through its registered
+Resume `taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md` at `XLF-03` through its registered
 authority-acquisition, SAL, family, research, contract,
 capability-compiler, taskcard, and controller skills.
 
-Required result:
+Do not reacquire XLIFF 2.0 unless event-20 inputs changed. First validate
+`reports/ff6/xliff-authority-member-inventory.yaml` against both pinned ZIPs.
 
-- official XLIFF 2.0 OASIS Standard package independently digest-checked,
-  legally classified, locked, and clean-offline reconstructible;
+Remaining required result:
+
 - source-located XLIFF 2.0/2.1 Core and official-module delta matrices;
 - exact profile applicability on every XLIFF capability and obligation;
 - separate first-class capability ownership for all eight official modules:

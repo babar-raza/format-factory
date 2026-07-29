@@ -1,0 +1,66 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "research-format-contract-sources-xliff-authority-wip-001",
+  "skill_id": "research-format-contract-sources",
+  "mode": "live",
+  "timestamp": "2026-07-29T12:52:00Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "substep": "XLF-02"
+  },
+  "allowed_files": [
+    "shared/format-contracts/authority-lock.yaml",
+    "shared/format-contracts/xliff.yaml",
+    "reports/ff6/xliff-authority-member-inventory.yaml",
+    "tools/format_contract/authority_runtime.py",
+    "tools/format_contract/authority_materializer.py",
+    "tests/format_contract/test_authority_materializer.py"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/authority-lock.yaml",
+    "shared/format-contracts/xliff.yaml",
+    "reports/ff6/xliff-authority-member-inventory.yaml",
+    "tools/format_contract/authority_runtime.py",
+    "tools/format_contract/authority_materializer.py",
+    "tests/format_contract/test_authority_materializer.py"
+  ],
+  "tests_run": [
+    "python -m tools.format_contract.authority_materializer probe-url --url https://docs.oasis-open.org/xliff/xliff-core/v2.0/os/xliff-core-v2.0-os.zip --allowed-host docs.oasis-open.org --max-bytes 104857600 --timeout-seconds 120 --max-redirects 3 --expected-sha1 4a23114abdca2585a7b2840dae179242aca8eada",
+    "python -m tools.format_contract.authority_materializer materialize --format xliff --online",
+    "python -m tools.format_contract.authority_materializer audit --contracts",
+    "python -m tools.format_contract.authority_materializer materialize --format xliff",
+    "python -m tools.format_contract.authority_materializer audit --format xliff --contracts",
+    "clean temporary-repository offline reconstruction from content-addressed XLIFF package objects",
+    "exact ZIP inventory replay for both pinned packages",
+    "python -m pytest tests/format_contract/test_authority_materializer.py -q",
+    "python -m pytest tests/format_contract -q --deselect tests/format_contract/test_consumption_chain.py::test_full_slice_second_run_is_idempotent",
+    "python -m ruff check tools/format_contract/authority_runtime.py tools/format_contract/authority_materializer.py tests/format_contract/test_authority_materializer.py",
+    "npx.cmd --yes pyright@1.1.411 tools/format_contract/authority_runtime.py tools/format_contract/authority_materializer.py tests/format_contract/test_authority_materializer.py",
+    "python -m mypy --explicit-package-bases --ignore-missing-imports tools/format_contract/authority_runtime.py tools/format_contract/authority_materializer.py"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "authority_lock_sha256": "5c1ac942018f1e26e0fc0ca7c8284313452d1cb44c04d7e225faad4b21219929",
+    "official_xliff_2_0_package_source_id": "SRC-XLF-001",
+    "official_xliff_2_0_package_sha256": "aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055",
+    "official_xliff_2_0_package_sha1": "4a23114abdca2585a7b2840dae179242aca8eada",
+    "published_sha1_match": true,
+    "probe_persisted_unenrolled_bytes": false,
+    "official_xliff_2_0_prose_source_id": "SRC-XLIFF-003",
+    "official_xliff_2_0_prose_sha256": "4b19c8d7c878c34b5422310f340abf099dedccf968c0a3c145548d3a691da7c2",
+    "global_authority_audit": "17 MATCH, 0 MISMATCH, 0 MISSING, 0 LEGAL_BLOCKED",
+    "xliff_authority_audit": "5 MATCH, 0 MISMATCH, 0 MISSING, 0 LEGAL_BLOCKED",
+    "xliff_clean_offline_reconstruction": "5 MATCH",
+    "member_inventory": "2 packages, 42 members, 42 exact size and SHA-256 matches",
+    "focused_tests": "12 passed",
+    "format_contract_regression": "94 passed, 1 baseline-known stateful CSV idempotency test deselected",
+    "ruff": "PASS",
+    "pyright_1_1_411": "PASS",
+    "mypy_boundary": "PASS on the two touched source modules; not repository-wide",
+    "promotion_effect": "none"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

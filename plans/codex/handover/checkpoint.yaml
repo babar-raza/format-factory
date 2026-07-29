@@ -22,7 +22,7 @@ source_checkpoint:
   rule: >-
     Use the fetched origin/main descendant containing this packet. A packet
     cannot embed the hash of the commit that contains its own final bytes.
-  required_ancestor_before_this_change: 865558bb88243acda08c2a8d58a0d5ec887dedeb
+  required_ancestor_before_this_change: 4e3eff822f57ea336f52233c25452be2be75bbad
   required_remote_ref: refs/remotes/origin/main
   required_worktree_state_before_resume_mutation: clean
 
@@ -34,15 +34,15 @@ digest_policy:
 
 controller_checkpoint:
   state: CONTRACT
-  transition_sequence: 19
-  last_event_id: FF6-EVENT-000019
-  last_event_hash: 76b580d72f865428e92bc5b6089a89487356c69163aadf6b615b70c6867221f8
+  transition_sequence: 20
+  last_event_id: FF6-EVENT-000020
+  last_event_hash: b7c06bba2afe60bcbc580d240cc57c4e990a017070b50d75904be469c75fea0c
   parent_task: TC-FF6-PROGRAM-CAPABILITIES-001
   parent_task_state: NEEDS_REPAIR
   completed_subtask: TC-FF6-NRRD-PROFILE-SURFACE-001
   completed_subtask_state: PASS
   next_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
-  next_task_state: READY
+  next_task_state: WORK_IN_PROGRESS
   products_certified: 0
   promotion_effect: none
 
@@ -80,16 +80,18 @@ capability_checkpoint:
 authority_checkpoint:
   status: PASS
   lock_path: shared/format-contracts/authority-lock.yaml
-  lock_lf_sha256: 78e74d8708a1811aae8cc88eb32f001f275653004b699fca4e6210831a760233
-  total_sources: 15
-  match: 15
+  lock_lf_sha256: 5c1ac942018f1e26e0fc0ca7c8284313452d1cb44c04d7e225faad4b21219929
+  total_sources: 17
+  match: 17
   missing: 0
   mismatch: 0
   undeclared: 0
   legal_blocked: 0
   product_requirement_documents: 4
-  clean_offline_replay: PASS_15_OF_15
-  clean_online_rebuild: PASS_15_OF_15
+  predecessor_clean_offline_replay: PASS_15_OF_15
+  predecessor_clean_online_rebuild: PASS_15_OF_15
+  xliff_clean_offline_reconstruction: PASS_5_OF_5
+  full_clean_replay_17: NOT_RERUN_AT_WIP_CHECKPOINT
   online_rebuild_cas_bytes: 73206772
   strict_product_contracts: 6
   authority_external_bytes_committed: false
@@ -125,7 +127,18 @@ verification_checkpoint:
     PASS for touched family_pack_validator after installing types-PyYAML
     6.0.12.20260724 in the ignored environment; not repository-wide
   plan_control_tests: 40_passed
-  ff6_native_event_chain: PASS_THROUGH_EVENT_19
+  ff6_native_event_chain: PASS_THROUGH_EVENT_20
+  xliff_authority_probe: PUBLISHED_SHA1_MATCH_NO_UNENROLLED_BYTES_PERSISTED
+  xliff_authority_inventory: PASS_42_OF_42_MEMBERS
+  xliff_authority_audit: PASS_5_OF_5
+  xliff_clean_offline_reconstruction: PASS_5_OF_5
+  xliff_materializer_pytest: 12_passed
+  event_20_format_contract_pytest: 94_passed_1_baseline_known_deselected
+  event_20_ruff: PASS
+  event_20_pyright_1_1_411: PASS_ZERO_DIAGNOSTICS
+  event_20_mypy: >-
+    PASS on the two touched source modules with explicit package bases and
+    ignored untyped third-party imports; not repository-wide
 
 current_gaps:
   active: 11
@@ -166,14 +179,13 @@ coordination:
 
 resume_decision:
   exact_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
-  exact_task_state: READY
+  exact_task_state: WORK_IN_PROGRESS
   taskcard: taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md
   active_checkpoint: plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md
   exact_first_step: >-
-    Execute XLF-01: revalidate event 19, task/controller/index agreement, all
-    current authority matches, and coordination ownership. Then execute XLF-02
-    by acquiring and independently hash-pinning the official XLIFF 2.0 OASIS
-    Standard package before any 2.0 capability claim.
+    Revalidate event 20 and the 17/17 global, 5/5 XLIFF authority closure.
+    Validate the 42-member package inventory, then execute XLF-03. Re-run
+    XLF-01 or XLF-02 only when their recorded input digests changed.
   product_source_mutation_allowed: false
   gate_or_product_promotion_allowed: false
   human_continuation_prompt_allowed: false
@@ -193,7 +205,8 @@ nrrd_contract_checkpoint:
 xliff_starting_defects:
   authority:
     official_2_1_package: MATCH
-    official_2_0_package: ABSENT_MUST_ACQUIRE
+    official_2_0_package: MATCH
+    official_2_0_prose: MATCH
   current_projection:
     capabilities: 15
     obligations: 125
@@ -223,3 +236,10 @@ xliff_starting_defects:
     prose_sha256: fdd293f4344920dfde643c578caca94da80261dc74f75baba7215da6e6d10bc1
   preview: xliff_2.2_preview_isolated_only
   excluded_compatibility_model: xliff_1.2
+  completed_steps: [XLF-01, XLF-02]
+  first_unmet_step: XLF-03
+  authority_inventory: reports/ff6/xliff-authority-member-inventory.yaml
+  package_member_counts:
+    xliff_2.0: 15
+    xliff_2.1: 27
+    total: 42

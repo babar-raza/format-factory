@@ -1,0 +1,98 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "plan-control-xliff-profile-surface-wip-001",
+  "skill_id": "plan-control",
+  "mode": "live",
+  "timestamp": "2026-07-29T12:55:00Z",
+  "inputs": {
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "task_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "operation": "project",
+    "target_paths": [
+      "plans/strategic/ff6/events.jsonl",
+      "plans/strategic/ff6/controller-state.yaml",
+      "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
+      "taskcards/index.yaml",
+      "plans/codex/handover/"
+    ],
+    "coordination_scope": "exclusive exact-path leases under agent-codex-20260729T122341-c5f295",
+    "acceptance_evidence": [
+      "valid native event-20 chain and controller agreement",
+      "valid taskcard and task-index WIP projection",
+      "all handover manifest hashes match",
+      "registered skill transcripts validate without errors or warnings"
+    ],
+    "checkpoint_event": "FF6-EVENT-000020",
+    "checkpoint_state": "WORK_IN_PROGRESS",
+    "completed_steps": [
+      "XLF-01",
+      "XLF-02"
+    ],
+    "first_unmet_step": "XLF-03"
+  },
+  "allowed_files": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
+    "taskcards/index.yaml",
+    "plans/codex/handover/START-HERE.md",
+    "plans/codex/handover/CLAUDE-START.md",
+    "plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md",
+    "plans/codex/handover/CURRENT-MACHINE-STATE.yaml",
+    "plans/codex/handover/checkpoint.yaml",
+    "plans/codex/handover/manifest.yaml",
+    "plans/codex/handover/CURRENT-STATE-AND-ROOT-CAUSES.md",
+    "plans/codex/handover/EXECUTION-RUNBOOK.md",
+    "plans/codex/handover/SHIFT-AND-RESUME-PROTOCOL.md",
+    "plans/codex/handover/STATE-MACHINE-AND-TASKCARD-PROTOCOL.md",
+    "plans/codex/handover/VALIDATION-AND-RELEASE.md",
+    "reports/skills-rff6/skill-transcripts/plan-control-xliff-profile-surface-wip-001.json"
+  ],
+  "actual_files_changed": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
+    "taskcards/index.yaml",
+    "plans/codex/handover/START-HERE.md",
+    "plans/codex/handover/CLAUDE-START.md",
+    "plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md",
+    "plans/codex/handover/CURRENT-MACHINE-STATE.yaml",
+    "plans/codex/handover/checkpoint.yaml",
+    "plans/codex/handover/manifest.yaml",
+    "plans/codex/handover/CURRENT-STATE-AND-ROOT-CAUSES.md",
+    "plans/codex/handover/EXECUTION-RUNBOOK.md",
+    "plans/codex/handover/SHIFT-AND-RESUME-PROTOCOL.md",
+    "plans/codex/handover/STATE-MACHINE-AND-TASKCARD-PROTOCOL.md",
+    "plans/codex/handover/VALIDATION-AND-RELEASE.md",
+    "reports/skills-rff6/skill-transcripts/plan-control-xliff-profile-surface-wip-001.json"
+  ],
+  "tests_run": [
+    "native FF6 canonical hash-chain validation through event 20 with controller agreement",
+    "taskcard/index/controller WORK_IN_PROGRESS and XLF-03 agreement check",
+    "handover YAML multi-document parse and manifest digest replay",
+    "python tools/supervisor/validate_skill_transcript.py reports/skills-rff6/skill-transcripts/research-format-contract-sources-xliff-authority-wip-001.json --json",
+    "python -m pytest tests/plan_control -q",
+    "python tools/evidence/check_current_state_consistency.py",
+    "python -m tools.format_contract.authority_materializer audit --contracts",
+    "git diff --check"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "event_id": "FF6-EVENT-000020",
+    "event_hash": "b7c06bba2afe60bcbc580d240cc57c4e990a017070b50d75904be469c75fea0c",
+    "controller_state": "CONTRACT",
+    "task_state": "WORK_IN_PROGRESS",
+    "first_unmet_step": "XLF-03",
+    "authority_audit": "17 MATCH",
+    "handover_manifest_entries_before_self_receipt": 31,
+    "plan_control_tests": "40 passed",
+    "current_state_consistency": "PASS",
+    "research_transcript_validation": "PASS",
+    "capability_denominator": "110 capabilities, 672 obligations, unchanged",
+    "product_certifications": "0 of 6",
+    "promotion_effect": "none"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

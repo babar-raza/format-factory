@@ -84,7 +84,7 @@ Assessment remains `NEEDS_PROFILE_OR_SURFACE_REPAIR`. The compiler currently
 reports profile/surface follow-ups for XLIFF and UBL.
 Counts cannot hide a mandatory missing profile or format surface.
 
-The assessment file `current-state.yaml` predates event 19. Its product source
+The assessment file `current-state.yaml` predates event 20. Its product source
 tree inventory is still useful because the five tracked product trees have not
 changed at the source checkpoint, but its old contract hashes and 89/636
 planning denominator are historical. This distinction is now machine-recorded

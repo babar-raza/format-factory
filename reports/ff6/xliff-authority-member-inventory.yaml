@@ -1,0 +1,244 @@
+---
+artifact_id: FF6-XLIFF-AUTHORITY-MEMBER-INVENTORY-001
+artifact_type: authority_member_inventory
+visibility: internal
+publish_allowed: false
+generated_by: codex
+generated_at: "2026-07-29"
+task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
+---
+
+schema: ff6/xliff-authority-member-inventory@1
+format_id: xliff
+status: VERIFIED_CURRENT
+purpose: >-
+  Bind the exact members of the pinned OASIS XLIFF 2.0 and 2.1 Standard
+  packages before normative delta, SAL, family, contract, and capability
+  compilation. A member's presence is inventory evidence, not proof that its
+  requirements have been modeled or implemented.
+digest_policy:
+  package_and_member_algorithm: sha256
+  published_cross_check_algorithm: sha1
+  member_bytes: exact_uncompressed_zip_member_bytes
+authority_lock:
+  path: shared/format-contracts/authority-lock.yaml
+  sha256: 5c1ac942018f1e26e0fc0ca7c8284313452d1cb44c04d7e225faad4b21219929
+packages:
+  - source_id: SRC-XLF-001
+    profile: xliff_2.0
+    version: XLIFF 2.0 OASIS Standard
+    official_url: https://docs.oasis-open.org/xliff/xliff-core/v2.0/os/xliff-core-v2.0-os.zip
+    package_sha256: aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055
+    package_sha1: 4a23114abdca2585a7b2840dae179242aca8eada
+    published_sha1_source: https://docs.oasis-open.org/xliff/xliff-core/v2.0/os/xliff-core-v2.0-os-manifest.txt
+    published_sha1_match: true
+    package_bytes: 711329
+    legal:
+      license_id: LicenseRef-OASIS-Specification-Notice
+      redistribution: ALLOWED_WITH_NOTICE
+      use_status: APPROVED_FOR_LOCAL_USE
+    member_count: 15
+    members:
+      - path: schemas/catalog.xml
+        bytes: 1178
+        sha256: 147a46f6bfa9cb47b633d50531609d4201e4737333a23151709839575ddfe699
+        role: catalog
+      - path: schemas/informativeCopiesOf3rdPartySchemas/readme.txt
+        bytes: 637
+        sha256: c699a0b829c839a1b6d03ac619fc616c6fa1fe17d647e7145d6d92e1303cf125
+        role: third_party_notice
+      - path: schemas/informativeCopiesOf3rdPartySchemas/w3c/xml.xsd
+        bytes: 8836
+        sha256: 61960fb3131e38022caad5360e2f33a3382578ab3c80cd58bd74320ede61b20c
+        role: informative_third_party_schema_copy
+      - path: schemas/modules/change_tracking.xsd
+        bytes: 1924
+        sha256: 58ff6335be373d6a96001d1ca97604d4ac51216c49e26e62aa7550c9b712b5c2
+        role: module_schema
+      - path: schemas/modules/fs.xsd
+        bytes: 2802
+        sha256: fd0a48c3b713b7efb40e414f6d0ffd79482f86fe5a0ecec614c0e0a8b0f16cad
+        role: module_schema
+      - path: schemas/modules/glossary.xsd
+        bytes: 2166
+        sha256: 48406350d01aa04686b1d1dbadce3a87ad5f8f452b88b6e24859a3418b9a9d7a
+        role: module_schema
+      - path: schemas/modules/matches.xsd
+        bytes: 2860
+        sha256: 56f299d4b4b9140e0812df13384cca9697c9a6bb460c26a1ceb734fc5cc626ad
+        role: module_schema
+      - path: schemas/modules/metadata.xsd
+        bytes: 1699
+        sha256: f81c3d8c45601df4048b4692df7c523206f71df69c8bf212fe91ea2f4f8e3d10
+        role: module_schema
+      - path: schemas/modules/resource_data.xsd
+        bytes: 3254
+        sha256: 56551904c023ab396b84e4ea342b659a08b1ba3bade7c0635e49d8c1c479893a
+        role: module_schema
+      - path: schemas/modules/size_restriction.xsd
+        bytes: 2300
+        sha256: 1794ba46413ef68092f2e106ba2b9bd00a11906d47ff98359b748b1daf4e77fa
+        role: module_schema
+      - path: schemas/modules/validation.xsd
+        bytes: 2089
+        sha256: 62ec7d080d1f291f2d25caec270f6c56f9a2848e06a2bccc2c94c124b74c8abc
+        role: module_schema
+      - path: schemas/xliff_core_2.0.xsd
+        bytes: 17144
+        sha256: fb51193694c534b6e0483fefde138488c1e6069ec569e08284434cbeb175a2e4
+        role: core_schema
+      - path: xliff-core-v2.0-os.html
+        bytes: 529803
+        sha256: 4b19c8d7c878c34b5422310f340abf099dedccf968c0a3c145548d3a691da7c2
+        role: normative_prose_html
+        materialized_source_id: SRC-XLIFF-003
+      - path: xliff-core-v2.0-os.pdf
+        bytes: 913849
+        sha256: c64efc099f6277a38e9145c7da676ceb72a970c51790b873302055bca66a74a4
+        role: normative_prose_pdf
+      - path: xliff-core-v2.0-os.xml
+        bytes: 545411
+        sha256: 07059d426de1e839540e5e84e0e061c4a6d5ef1a1b7e71ddf75bf5bd11518b73
+        role: normative_prose_xml
+  - source_id: SRC-XLF-002
+    profile: xliff_2.1
+    version: XLIFF 2.1 OASIS Standard
+    official_url: https://docs.oasis-open.org/xliff/xliff-core/v2.1/os/xliff-core-v2.1-os.zip
+    package_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    legal:
+      license_id: LicenseRef-OASIS-Specification-Notice
+      redistribution: ALLOWED_WITH_NOTICE
+      use_status: APPROVED_FOR_LOCAL_USE
+    member_count: 27
+    members:
+      - path: schemas/catalog.xml
+        bytes: 1454
+        sha256: f1ef04271cff326944cdec4f251d116853f937d4a8e3518e650554cd48848946
+        role: catalog
+      - path: schemas/fs.sch
+        bytes: 3215
+        sha256: 3fc86b3dcdef3a6d9d822fbe9162fc226024e7f668f49a8b4bf7447fe86bbcbf
+        role: module_schematron
+      - path: schemas/fs.xsd
+        bytes: 3011
+        sha256: bcbabcfe652c4f1b86c34e42010a5288c3b74f3fe44d6b817a121c3bca83ada9
+        role: module_schema
+      - path: schemas/glossary.sch
+        bytes: 3733
+        sha256: c8c108a753181203c676ed4c17df949a4d9e58b2377be564cbf252663356829a
+        role: module_schematron
+      - path: schemas/glossary.xsd
+        bytes: 2375
+        sha256: 54797c7fcc6931b0777f4c594f082ef4063d9a2f0152d6b3e8cc7588f5ada26d
+        role: module_schema
+      - path: schemas/informativeCopiesOf3rdPartySchemas/extensions/change_tracking.xsd
+        bytes: 1908
+        sha256: 30750ab626e5b313478c82c1a8a115143fdfd10844a2dde192246fba98f987ed
+        role: informative_extension_schema
+      - path: schemas/informativeCopiesOf3rdPartySchemas/readme.txt
+        bytes: 702
+        sha256: dbb2caf27591e9915c71dec8c57db8aaef877c5fe83c2fc7062d868bfa481623
+        role: third_party_notice
+      - path: schemas/informativeCopiesOf3rdPartySchemas/w3c/xml.xsd
+        bytes: 8836
+        sha256: 61960fb3131e38022caad5360e2f33a3382578ab3c80cd58bd74320ede61b20c
+        role: informative_third_party_schema_copy
+      - path: schemas/its.sch
+        bytes: 32554
+        sha256: 81849fd787c85b24a5239769f065aae712dc4401d3556245b53d567b8dc8c331
+        role: module_schematron
+      - path: schemas/its.xsd
+        bytes: 7758
+        sha256: a85624c95acc7dd17ca27ec174f24bc284dbd95e26cc68cdd04c053ab6c3903c
+        role: module_schema
+      - path: schemas/itsm.xsd
+        bytes: 965
+        sha256: ae01e40a6c7ebfa40aba509a3b5d6b7f9830dafa092adcd60fb976aba0d02399
+        role: module_schema
+      - path: schemas/matches.sch
+        bytes: 9553
+        sha256: d58c0e7a240ea7b82cfd0fa9f23c0eb7e70ac8593d203c4e9dd0af64e3973284
+        role: module_schematron
+      - path: schemas/matches.xsd
+        bytes: 3066
+        sha256: f8d348693907774259e162b9e4ab84fa673aa1655edb1eac8ff605b909e6ee46
+        role: module_schema
+      - path: schemas/metadata.sch
+        bytes: 2522
+        sha256: 0adbf007c0fcfe2b88c10e61bb78ba75ef4e884ceceb6afe8dff44d38acba079
+        role: module_schematron
+      - path: schemas/metadata.xsd
+        bytes: 1908
+        sha256: f00e5b225bd11bb71cc5494f25bd63a323730d78c1ce79a3c7bc144ef51a47e1
+        role: module_schema
+      - path: schemas/resource_data.sch
+        bytes: 6211
+        sha256: 1c461cb3bf1ea34b6afb71f93c10fda452232c37c3fd8fd71e678855cc14759a
+        role: module_schematron
+      - path: schemas/resource_data.xsd
+        bytes: 3458
+        sha256: 02249bcd1e608209fb51b0348afcee8daeb4a0b6819ac8592307cd076f6c5f10
+        role: module_schema
+      - path: schemas/size_restriction.sch
+        bytes: 2309
+        sha256: 27aadf5b0fa73048d604330569f57c28f43357dd208e0fa8ab588e62342b3230
+        role: module_schematron
+      - path: schemas/size_restriction.xsd
+        bytes: 2510
+        sha256: e90519360c7ecaaf8c35d246cd30147a804d220119bbc25eb729d19c84062614
+        role: module_schema
+      - path: schemas/validation.sch
+        bytes: 7468
+        sha256: 08b1a921794d9e98096d70e1b2b817d95c0d5511e3115ee1188c0064d30f5d1f
+        role: module_schematron
+      - path: schemas/validation.xsd
+        bytes: 2296
+        sha256: 80f7d811648d28b117c49a403bd039bc16f3c1e5a1c1ed703428ae2a34e4e4fc
+        role: module_schema
+      - path: schemas/xliff_2_advanced_validation.nvdl
+        bytes: 3077
+        sha256: 40d3f5f292a7db57a9b8ccb60aa202b2927d8ec74c5aa88252233b05d24574c2
+        role: advanced_validation_dispatch
+      - path: schemas/xliff_core_2.0.xsd
+        bytes: 17392
+        sha256: 5686d2dbe9dac95e34d1b06a805e1e0f4999db5d5a67dc8bb8514c780592a84d
+        role: core_schema
+      - path: schemas/xliff_core_2.1.sch
+        bytes: 74299
+        sha256: d4275f2d2574f892624bcd8f83bcc3001c75d623e4eb36896d15d147f16ed7a2
+        role: core_schematron
+      - path: xliff-core-v2.1-os.html
+        bytes: 868776
+        sha256: fdd293f4344920dfde643c578caca94da80261dc74f75baba7215da6e6d10bc1
+        role: normative_prose_html
+        materialized_source_id: SRC-XLIFF-001
+      - path: xliff-core-v2.1-os.pdf
+        bytes: 1779382
+        sha256: 30b113885a382e7a4ded4d7de431b7a72b89817f16023be390b9f741dc33a60b
+        role: normative_prose_pdf
+      - path: xliff-core-v2.1-os.xml
+        bytes: 884470
+        sha256: e8c72ec2314e1025f25886cd0ea2b6c10aa2405bd292026383afca2207c44e5b
+        role: normative_prose_xml
+classification_notes:
+  - >-
+    XLIFF 2.1 package validation is not XSD-only: Core and several modules
+    include Schematron constraints, and the package includes an NVDL dispatch
+    artifact. Later obligation compilation must preserve this distinction.
+  - >-
+    The XLIFF 2.1 package contains nine normative module schema vocabularies
+    for eight official modules because ITS uses both `its` and `itsm`.
+  - >-
+    The XLIFF 2.1 Change Tracking schema is located under the package's
+    informative third-party copy tree and cannot receive normative module
+    conformance credit.
+  - >-
+    XLIFF 2.0 Change Tracking appears under `schemas/modules`; its exact
+    standard status and processing requirements must be resolved from the
+    pinned 2.0 prose during XLF-03 instead of inferred from directory naming.
+verification:
+  live_global_authority_audit: PASS_17_OF_17
+  live_xliff_authority_audit: PASS_5_OF_5
+  clean_offline_xliff_reconstruction: PASS_5_OF_5
+  probe_persisted_untrusted_bytes: false
+  product_source_or_promotion_effect: none

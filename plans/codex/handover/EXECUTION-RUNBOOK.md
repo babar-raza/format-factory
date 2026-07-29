@@ -19,10 +19,12 @@ DISCOVER -> SNAPSHOT -> CONTRACT -> IMPLEMENT -> VERIFY
 
 Current state is `CONTRACT`. Authority closure passed at event 16, OpenRaster
 profile/surface repair at event 17, and IPYNB profile/surface repair at event
-18. NRRD0001-NRRD0005 profile repair passed at event 19. The parent capability
-task remains `NEEDS_REPAIR`, so product
-implementation is locked. The exact next task is
-`TC-FF6-XLIFF-PROFILE-SURFACE-001`.
+18. NRRD0001-NRRD0005 profile repair passed at event 19. Event 20
+checkpointed XLIFF steps XLF-01 and XLF-02 after closing the 2.0 authority
+prerequisite and inventorying both pinned packages. The parent capability
+task remains `NEEDS_REPAIR`, so product implementation is locked. The active
+task is `TC-FF6-XLIFF-PROFILE-SURFACE-001`, and the first unmet step is
+XLF-03.
 
 ## Canonical state precedence
 
@@ -67,7 +69,7 @@ TC-FF6-PROGRAM-TRUTH-001 [COMPLETE]
        -> TC-FF6-ORA-PROFILE-SURFACE-001 [PASS]
        -> TC-FF6-IPYNB-PROFILE-SURFACE-001 [PASS]
        -> TC-FF6-NRRD-PROFILE-SURFACE-001 [PASS]
-       -> TC-FF6-XLIFF-PROFILE-SURFACE-001 [READY]
+       -> TC-FF6-XLIFF-PROFILE-SURFACE-001 [WORK_IN_PROGRESS: XLF-03]
        -> remaining compiler-derived contract repairs
   -> TC-FF6-PROGRAM-ARCHITECTURE-001
   -> TC-FF6-PROGRAM-TASKCARDS-001
@@ -97,11 +99,9 @@ No product wave may bypass the program dependencies.
 
 ### Inputs
 
-- remote-verified event 19 and the `PASS` NRRD checkpoint;
-- the locked XLIFF 2.1 OASIS Standard package, prose member, and product
-  requirements;
-- the authority lock, which currently has no separate XLIFF 2.0 Standard
-  package and therefore cannot support 2.0 claims yet;
+- event 20 and the `PASS` NRRD checkpoint;
+- the locked XLIFF 2.0 and 2.1 OASIS Standard packages, prose members,
+  product requirements, and 42-member tracked inventory;
 - `shared/format-contracts/authority-lock.yaml`;
 - XLIFF research store, SAL facts, SAL evidence, policy, family and
   enrichment inputs;
@@ -111,53 +111,50 @@ No product wave may bypass the program dependencies.
 
 ### Steps
 
-1. Revalidate event 19, controller/task/index agreement, the remote source
-   commit, coordination ownership, and all 15 predecessor authority matches.
-2. Acquire the official XLIFF 2.0 OASIS Standard package only through the
-   legal-aware authority pipeline.
-3. Independently recompute its digest, inventory normative prose/Core XSD/
-   module XSD/Schematron/catalog/example/notice members, add the authority
-   record, and prove clean offline reconstruction.
-4. Extract a source-located 2.0/2.1 delta matrix. Separate common Core rules,
+1. Revalidate event 20, controller/task/index agreement, the remote source
+   commit, coordination ownership, all 17 global authority matches, all five
+   XLIFF matches, and the 42-member inventory.
+2. Re-run authority acquisition only if event-20 authority inputs changed.
+3. Extract a source-located 2.0/2.1 delta matrix. Separate common Core rules,
    2.1 additions/changes, module rules, processing requirements, ITS mappings,
    and uncertainty.
-5. Audit every current XLIFF SAL fact against that matrix. Split mixed 2.0/2.1
+4. Audit every current XLIFF SAL fact against that matrix. Split mixed 2.0/2.1
    claims; ingest missing facts and heal false claims only through registered
    SAL skills.
-6. Compile complete Core requirements for hierarchy, languages, identifiers,
+5. Compile complete Core requirements for hierarchy, languages, identifiers,
    inheritance, ordering/cardinality, source/target structure, notes,
    original data, skeletons, extensions, inline identity/pairing/nesting/
    isolation/order, segmentation/re-segmentation, state/sub-state, and agent
    processing.
-7. Replace the generic module bucket with separately owned Translation
+6. Replace the generic module bucket with separately owned Translation
    Candidates/Matches, Glossary, Format Style, Metadata, Resource Data, Size
    and Length Restriction, Validation, and ITS capability families.
-8. Reconcile all nine module schema vocabularies (`matches`, `glossary`, `fs`,
+7. Reconcile all nine module schema vocabularies (`matches`, `glossary`, `fs`,
    `metadata`, `resource_data`, `size_restriction`, `validation`, `its`,
    `itsm`) to the eight owners. Treat `its` and `itsm` as one ITS module.
    Inventory Change Tracking as informative and give it no normative
    conformance credit.
-9. For each module, require typed models, parse/write, schema plus processing
+8. For each module, require typed models, parse/write, schema plus processing
    validation, preservation, rejection, diagnostics, positive/negative/
    property/roundtrip/interoperability/security/resource obligations.
-10. Repair mixed-profile research or product requirements at their governed
+9. Repair mixed-profile research or product requirements at their governed
    source, then regenerate and relock; never patch only the projection.
-11. Apply explicit-complete fact ownership only after every live fact has one
+10. Apply explicit-complete fact ownership only after every live fact has one
     exact Core or module owner.
-12. Give every stable capability and obligation an exact non-empty subset of
+11. Give every stable capability and obligation an exact non-empty subset of
     `xliff_2.0` and `xliff_2.1`; never assign a 2.1-only module to 2.0.
-13. Keep XLIFF 2.2 absent or `PREVIEW_ISOLATED`, with no stable obligation
+12. Keep XLIFF 2.2 absent or `PREVIEW_ISOLATED`, with no stable obligation
     ownership. Keep XLIFF 1.2 outside the 2.x model.
-14. Preserve namespace-aware extensions and deterministic semantic roundtrip,
+13. Preserve namespace-aware extensions and deterministic semantic roundtrip,
     but do not treat preservation-only content or XSD validity as semantic
     module/processing support.
-15. Compile XLIFF and all six format projections; require zero missing stable
+14. Compile XLIFF and all six format projections; require zero missing stable
     profile, module-owner, empty-profile, duplicate, foreign, or dangling edge.
-16. Run negative controls for malformed IDs, missing module ownership,
+15. Run negative controls for malformed IDs, missing module ownership,
     cross-profile contamination, and preview leakage.
-17. Replay at least three clean strict runs plus authority, focused regression,
+16. Replay at least three clean strict runs plus authority, focused regression,
     Ruff, Pyright, and bounded strict Mypy checks.
-18. Reconcile gaps, taskcards, controller and journal atomically; retain UBL
+17. Reconcile gaps, taskcards, controller and journal atomically; retain UBL
     typing as the exact remaining contract repair.
 
 ### Failure routing
