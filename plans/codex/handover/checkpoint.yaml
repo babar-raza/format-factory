@@ -1,155 +1,75 @@
-schema: ff6/provider-neutral-checkpoint@2
-artifact_id: FF6-HANDOVER-CHECKPOINT-EVENT-27
+schema: ff6/provider-neutral-checkpoint@3
+artifact_id: FF6-HANDOVER-CHECKPOINT-EVENT-28
 visibility: internal
+publish_allowed: false
 generated_by: codex
 generated_at: "2026-07-30"
 
 source_checkpoint:
-  required_ancestor: 59ef8ee2e1b4e37168e4c7094687fac0a6098a79
-  packet_input_commit: 59ef8ee2e1b4e37168e4c7094687fac0a6098a79
-  controller_handover_source: 18bb295f94e43338611ef88caff073eed17411c9
-  latest_bounded_implementation_ancestor: 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c
-  controller_event_ancestor: 59ef8ee2e1b4e37168e4c7094687fac0a6098a79
-  implementation_ancestor: 1fef79b9d6c1ee1f6667e0c5c70435562c97544c
-  required_remote_ref: origin/main
   forge: GitLab
-  worktree_at_capture: CLASSIFIED_CONCURRENT_BATCH005_WORK_PRESENT
+  required_remote_ref: origin/main
+  required_ancestor: cde3b417006582551d2de69eff65e4ce4288529c
+  packet_input_commit: cde3b417006582551d2de69eff65e4ce4288529c
+  implementation_ancestor: f98d220a0a3903b1107de90b2e39bf480ec4b19d
   committed_handover_scope: CLEAN_AND_REMOTE_VERIFIED
-
-runtime_observation:
-  observed_at: "2026-07-29T21:08:29Z"
-  head: 0b69bddb8faab010d9d064d75655564a67ddca4a
-  origin_main: 0b69bddb8faab010d9d064d75655564a67ddca4a
-  xliff_owner: agent-codex-20260729T190440-e2dd38
-  xliff_lease_status: ACTIVE
-  xliff_last_heartbeat: "2026-07-29T19:17:24.722412Z"
-  xliff_heartbeat_ttl_seconds: 7200
-  xliff_recorded_pid: 31488
-  xliff_recorded_pid_observed: ABSENT
-  dirty_paths:
-    tracked: 3
-    untracked: 2
-    total: 5
-  coordination_status_exit: 1
-  coordination_open_conflicts: 17
-  relevant_open_conflict: .local/transcripts/ubl-prose-closure-001.json
-  classification: ACTIVE_LEASE_FOREIGN_DIRTY_WORK_DO_NOT_TOUCH
-  shift_classification: RESUMABLE_COMMITTED_BOUNDARY_WITH_FOREIGN_WORKSPACE_RECOVERY
-  incoming_provider: claude
-  incoming_identity_rule: REGISTER_NEW_IDENTITY
-  safe_disjoint_task: TC-FF6-UBL-TYPING-001
-  safe_disjoint_microstep: UBL-03
-  authority: >-
-    This is an observation only and was captured close to the lease TTL
-    boundary. Claude must recompute GitLab, journal, controller, coordination,
-    leases, and filesystem state before mutation.
-    A nonzero coordination status reflects open historical conflicts and must
-    not be reported as a clean coordination plane.
 
 controller_checkpoint:
   controller_state: CONTRACT
-  event_sequence: 27
-  event_id: FF6-EVENT-000027
-  event_head: 9a1783b0705468fec1e9f9fda96f61ab4b1da32a161d128a3120a8bf689686c2
+  event_sequence: 28
+  event_id: FF6-EVENT-000028
+  event_head: 131631d21906c86ade3775d12504f97d8b55defb8987040a97d3f29af621713e
   exact_next_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
   exact_next_state: WORK_IN_PROGRESS
+  exact_next_microstep: XLF-04-BATCH-005
   parent_task: TC-FF6-PROGRAM-CAPABILITIES-001
   parent_state: NEEDS_REPAIR
 
 resume_priority:
   canonical_active_action: XLF-04-BATCH-005
-  first_safe_action_while_xliff_live_leased: >-
-    Start UBL-03 only under a disjoint exact-path lease by compiling the
-    complete reachable UBL 2.3 schema graph. Do not repeat UBL-01, UBL-02, or
-    Event 27, and do not touch the foreign XLIFF Batch 005 working set.
+  current_xliff_status: STALE_SUSPECT_XLIFF_BATCH005_RECOVERY_WORKING_SET
+  expected_selection: GOVERNED_TAKEOVER_AND_REPLAY_XLIFF
+  fallback_if_live_owned: UBL-03-PARTIAL-002
   selection_rule: >-
-    Recompute after fetch. If Event 28 or later exists, follow it. If XLIFF is
-    safely ownable, resume Batch 005. If XLIFF remains live-owned, execute
-    UBL-03 as the disjoint fallback. Never repeat the UBL authority repair,
-    package census, or Event 27 serialization.
+    Fetch, validate, and query coordination. A newer event wins. Never infer
+    ownership from this time-stamped packet.
 
-xliff_starting_defects:
-  completed_steps:
-    - XLF-01
-    - XLF-02
-    - XLF-03
-    - XLF-04-BATCH-001
-    - XLF-04-BATCH-002
-    - XLF-04-BATCH-003
-    - XLF-04-BATCH-004
-  first_unmet_step: XLF-04
-  open:
-    - standalone census validation accepts forged content and binding fields
-    - explicit candidate class and content-sensitive digest are absent
-    - non-modal Core prose is unclassified
-    - 78 dispositions are coarse structural fallbacks
-    - 80 of 105 expected IDs lack source-bound obligations
-    - all 25 existing obligation rows are unverified
-    - complete Core census and canonical SAL verification are absent
+verified_ubl_microstep:
+  task: TC-FF6-UBL-TYPING-001
+  implementation_commit: f98d220a0a3903b1107de90b2e39bf480ec4b19d
+  substate: SCHEMA_GRAPH_ROOT_TYPE_BINDING_PARTIAL
+  completed_microstep: UBL-03-PARTIAL-001
+  next_microstep: UBL-03-PARTIAL-002
+  schema_documents: 106
+  document_roots: 91
+  nodes: 182
+  edges: 91
+  graph_sha256: 7b754187690ce1bb04db62657cfb552653cb381a1bdd745a56856e58215af029
+  focused_tests: 14 passed
+  deterministic_runs: 3
+  complete: false
 
-current_xliff_compiler_checkpoint:
-  microstate: RESUMABLE
-  completed_xlf_04_batches:
-    - XLF-04-BATCH-001
-    - XLF-04-BATCH-002
-    - XLF-04-BATCH-003
-    - XLF-04-BATCH-004
-  core_obligation_count: 25
-  core_expected_obligation_count: 105
-  core_resolved_expected_obligation_count: 25
-  core_missing_expected_obligation_count: 80
-  candidate_count: 542
-  candidate_unmapped: 0
-  candidate_multiply_dispositioned: 0
-  candidate_mapped_expected_ids: 45
-  candidate_unresolved_expected_ids: 60
-  candidate_coarse_structural_dispositions: 78
-  non_modal_prose_classification_complete: false
-  normative_obligation_inventory_complete: false
+preserved_xliff_recovery:
+  dirty_paths: 5
+  focused_tests: 62 passed
+  committed: false
+  complete: false
+  takeover_required: true
+  evidence: plans/codex/handover/INFLIGHT-RECOVERY.yaml
+
+truth_boundary:
+  products_certified: 0
+  promotions: UNASSESSED_ALL_SIX
   xlf_04_complete: false
-  evidence_wording: >-
-    The six committed Batch 004 files are source, tests, census, and three
-    skill transcripts.
-  exact_next_action: >-
-    Execute XLF-04-BATCH-005 by first closing forged text/digest/location
-    acceptance with explicit candidate classes and content-sensitive occurrence
-    digests, then classifying all non-modal Core prose, replacing 78 coarse
-    fallbacks, expanding the denominator, and compiling source-bound
-    obligations while preserving the existing 25 rows.
+  ubl_03_complete: false
+  gate_transition: none
+  release_transition: none
 
 mandatory_resume_validations:
-  - fetched origin/main descends from source checkpoint
-  - packet validator and negative controls pass
-  - native journal hash chain passes through event 27
-  - controller, taskcard, task index, and exact next action agree
-  - Event 27 output digests and the immutable Event 26 XLIFF inputs match
-  - coordination identity is new and exact-path leases are held
-  - skill manifest and mutation authorization cover every write
-  - no product or promotion state changes
-
-promotion:
-  products_certified: 0
-  program: UNASSESSED
-  ipynb: UNASSESSED
-  ora: UNASSESSED
-  nrrd: UNASSESSED
-  xliff: UNASSESSED
-  safetensors: UNASSESSED
-  ubl: UNASSESSED
-
-parallel_ubl_checkpoint:
-  implementation_commit: 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c
-  bounded_result: UBL_01_AUTHORITY_AND_UBL_02_CENSUS_VERIFIED
-  sal_facts_verified: 34
-  sal_receipt_sha256: 2cc0f2cac163b7f42ab18bbe5220837d1f49a808904ac964c536085ca6d111a0
-  taskcard_projection: WORK_IN_PROGRESS
-  detailed_substate: PACKAGE_CENSUS_COMPLETE
-  native_event_recorded: true
-  native_event: FF6-EVENT-000027
-  native_event_commit: 59ef8ee2e1b4e37168e4c7094687fac0a6098a79
-  first_unmet_work: UBL-03
-  reachable_schema_graph_complete: false
-  current_capability_manifest_aggregate_sha256: e199e84e9f7ee0579959db28283ecb89e014077cdd1605fbf0c82aee553d9960
-  current_capability_three_run_digest: eafd6f8657ed83b73dbd5975046698d24fda6d8fd58c3d6aea962e6b6a85cf7c
-  controller_capability_digest_current: true
-  product_or_promotion_effect: NONE
+  - GitLab ancestry
+  - packet hashes and links
+  - native journal hash chain
+  - controller and task projections
+  - task registration
+  - dirty-path classification
+  - coordination liveness
+  - exact-path leases and execution manifest before write

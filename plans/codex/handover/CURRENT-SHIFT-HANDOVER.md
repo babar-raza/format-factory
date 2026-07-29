@@ -1,443 +1,180 @@
 ---
-artifact_id: FF6-CURRENT-SHIFT-HANDOVER-EVENT-27
-artifact_type: provider_neutral_shift_checkpoint
+artifact_id: FF6-CURRENT-SHIFT-HANDOVER-EVENT-28
+artifact_type: provider_shift_handover
 visibility: internal
 publish_allowed: false
 generated_by: codex
 generated_at: 2026-07-30
 ---
 
-# Current Shift Handover
+# Codex to Claude shift handover — Event 28
 
-This document is the current provider-neutral continuation record for Claude,
-Codex, or another governed executor. It records the clean GitLab checkpoint,
-the concurrent dirty-worktree boundary, completed proof work, unresolved
-state transitions, exact next decisions, and the validation needed before a
-future agent can hand the same mission back without conversation memory.
+## Mission
 
-The canonical repository, native FF6 event journal, controller, taskcards,
-proof inputs, and coordination database override this derived document when
-they have advanced. Never overwrite newer state to make it match this file.
+Build six independently publishable, production-grade Python libraries for
+IPYNB, OpenRaster, NRRD, XLIFF 2.0/2.1, SafeTensors, and UBL 2.3. Each library
+must provide complete format-specific developer capabilities, professional
+package architecture, secure parsing/writing, typing, documentation,
+interoperability, installed-wheel proof, reproducible artifacts, SBOM,
+provenance, signatures, repository extraction, and technical certification.
 
-## 0. Codex-to-Claude transfer result
+The mission is autonomous and continuous. Provider changes do not change the
+goal, task ordering, evidence rules, or completion criteria.
 
-Codex ended this shift without advancing product work. The latest committed
-native state remains Event 27, controller state `CONTRACT`, XLIFF
-`XLF-04-BATCH-005` as the canonical next microstep, and UBL-03 as the safe
-disjoint fallback while XLIFF remains live-owned. Certification remains
-`0/6`; all promotion states remain `UNASSESSED`.
+## Clean authority boundary
 
-At `2026-07-29T21:08:29Z`:
+The last two GitLab commits created by this shift are:
 
-- `HEAD == origin/main ==
-  0b69bddb8faab010d9d064d75655564a67ddca4a`;
-- the handover validator returned `valid: true` for 70 bound files;
-- all eleven semantic corruption controls were rejected;
-- the same five XLIFF Batch 005 paths remained dirty;
-- coordination still classified their Codex owner and eleven leases
-  `ACTIVE`;
-- PID 31488 was absent;
-- coordination still reported 17 wider open conflicts.
+1. `f98d220a0a3903b1107de90b2e39bf480ec4b19d`
+   — bounded UBL root/type graph implementation and TDD evidence.
+2. `cde3b417`
+   — Event 28, controller projection, UBL taskcard microstate, and
+   plan-control receipt.
 
-This is a `RESUMABLE_COMMITTED_BOUNDARY_WITH_FOREIGN_WORKSPACE_RECOVERY`
-handoff. The committed mission can be resumed from GitLab without local-only
-state, but the foreign XLIFF bytes are not transferable. Claude registers a
-new identity, fetches GitLab, reruns the validator, and reclassifies the lease
-before selecting XLIFF takeover or disjoint UBL-03 work.
+The packet commit containing this document must descend from both.
 
-## 1. Mission and terminal condition
-
-Mission ID: `FF6-PRODUCTION-LIBRARIES-001`.
-
-Build six independently publishable, professional Python libraries for:
-
-- Jupyter Notebook;
-- OpenRaster;
-- NRRD;
-- XLIFF;
-- SafeTensors;
-- OASIS UBL.
-
-The terminal condition is not source presence or a passing focused suite.
-Every library must have a complete authority-bound capability denominator,
-production implementation, security/resource controls, independent
-interoperability evidence, installed-wheel validation, cross-platform
-coverage, reproducible release artifacts, SBOM, provenance, documentation,
-and an independently computed certification. Current result: `0/6`.
-
-## 2. Clean committed checkpoint
-
-| Field | Value |
-|---|---|
-| Canonical forge | GitLab |
-| Remote and branch | `origin/main` |
-| Packet input checkpoint | `59ef8ee2e1b4e37168e4c7094687fac0a6098a79` |
-| Latest bounded implementation checkpoint | `7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c` |
-| Packet input commit | `chore(ff6): journal UBL authority checkpoint` |
-| Remote verification | local `HEAD` and `origin/main` equal at capture |
-| Controller state | `CONTRACT` |
-| Native journal head | `FF6-EVENT-000027` |
-| Event hash | `9a1783b0705468fec1e9f9fda96f61ab4b1da32a161d128a3120a8bf689686c2` |
-| Canonical active task | `TC-FF6-XLIFF-PROFILE-SURFACE-001` |
-| Exact canonical microstep | `XLF-04-BATCH-005` |
-| Product certifications | `0/6` |
-| Promotion state | all six `UNASSESSED` |
-
-Commit `7fc49c29` is a valid bounded UBL evidence checkpoint. Event 27 binds
-that evidence and the package census to the native state machine. The UBL
-taskcard is `WORK_IN_PROGRESS` at `PACKAGE_CENSUS_COMPLETE`; `UBL-03` is
-first unmet. XLIFF remains the canonical active task.
-
-The packet input commit `59ef8ee2` contains the verified controller checkpoint.
-It adds no product evidence. The commit containing this refresh must descend
-from it and cannot embed its own final hash.
-
-## 3. What this Codex shift achieved
-
-The prior UBL package census at commit `7b5cce4f` already proved 890 package
-members and exactly 91 document roots. This shift closed its stale authority
-proof dependency:
-
-1. Reproduced the stale `SRC-UBL-001` member-digest failure.
-2. Added the negative control
-   `test_stale_shared_target_cannot_overwrite_receipt_or_store`.
-3. Revalidated the three prose assertions against the current pinned UBL 2.3
-   prose bytes before changing any digest.
-4. Updated only the stale prose target digest.
-5. Replayed the UBL SAL receipt and promoted fact store.
-6. Verified all 34 UBL facts through `validate_fact_promotion`.
-7. Recompiled all six capability/obligation projections because their proof
-   dependency closure changed.
-8. Proved the generated scope was semantically unchanged after removing only
-   `source_input_digests`, `direct_inputs`, and `invalidation_inputs`.
-9. Committed exactly 20 owned paths and pushed only to GitLab `main`.
-10. Preserved and excluded the active XLIFF worker's five dirty paths.
-11. Reconciled the handover again from GitLab `main`, current coordination,
-    the Event 27 journal, the UBL replay, and the foreign Batch 005 worktree.
-12. Added a provider-shift contract that fixes the cross-provider transaction,
-    Event 27 serialization, clean-checkpoint definition, and handback record.
-
-Key evidence:
-
-| Evidence | Result |
-|---|---|
-| UBL evidence manifest SHA-256 | `eb7db8167299ff9f547eb7909b1b67b7bc4ad24eb6dea9b43b4b2d9cfb405238` |
-| UBL receipt SHA-256 | `2cc0f2cac163b7f42ab18bbe5220837d1f49a808904ac964c536085ca6d111a0` |
-| UBL promoted store SHA-256 | `0de10d403fead08373c7a3e137ea3b7a84090b2adf24787bf066dc1dc24a3103` |
-| UBL authority audit | `3 MATCH`, no missing/mismatch |
-| UBL fact promotion | `34/34 PASS` |
-| UBL package graph check | 890 members, 91 roots |
-| Capability aggregate | `e199e84e9f7ee0579959db28283ecb89e014077cdd1605fbf0c82aee553d9960` |
-| Capability three-run digest | `eafd6f8657ed83b73dbd5975046698d24fda6d8fd58c3d6aea962e6b6a85cf7c` |
-| Verifier canonical receipt replay | three identical runs |
-| Verifier tests | `13 passed` |
-| Capability compiler tests | `22 passed` |
-| UBL census tests | `12 passed` |
-| Production-program regression | `69 passed` |
-| Changed-test Ruff/Mypy/Pyright/py_compile | PASS |
-
-The exact evidence receipts are:
-
-- `reports/skills-rff6/skill-transcripts/test-driven-development-ubl-prose-closure-001.json`;
-- `reports/skills-rff6/skill-transcripts/sal-pipeline-heal-ubl-prose-closure-001.json`;
-- `reports/skills-rff6/skill-transcripts/compile-production-capability-universe-ubl-prose-closure-001.json`.
-
-## 4. Current shared-worktree boundary
-
-At handover creation, only these XLIFF paths were dirty:
+Native state:
 
 ```text
- M reports/ff6/xliff-core-authority-candidate-census.yaml
- M tests/tools/test_extract_sal_facts.py
- M tools/spec/extract_sal_facts.py
-?? tests/tools/test_extract_sal_facts_candidate_binding.py
-?? tools/spec/xliff_core_candidate_binding.py
+CONTRACT
+Event 28
+canonical task: TC-FF6-XLIFF-PROFILE-SURFACE-001
+canonical microstep: XLF-04-BATCH-005
+parallel task: TC-FF6-UBL-TYPING-001
+parallel microstep complete: UBL-03-PARTIAL-001
+parallel next microstep: UBL-03-PARTIAL-002
+certified products: 0/6
 ```
 
-They belong to coordination identity
-`agent-codex-20260729T190440-e2dd38`, task
-`TC-FF6-XLIFF-PROFILE-SURFACE-001`. Last captured heartbeat:
-`2026-07-29T19:17:24.722412Z`; TTL: 7,200 seconds. The recorded process was
-absent, but process absence does not invalidate an active lease.
+## Work completed this shift
 
-These bytes are `ACTIVE_XLIFF_BATCH005_FOREIGN_WORKING_SET`, not a clean
-checkpoint and not evidence of completion. Never stage, overwrite, restore,
-delete, stash, or release them under a different provider identity.
+The first UBL-03 graph primitive was built under `test-driven-development` and
+`sal-pipeline-heal`, with independent plan-control serialization:
 
-At `2026-07-29T20:17:53Z`, the coordination plane still reported that identity
-and its eleven exact leases as `ACTIVE`; Git showed the same five dirty paths.
-The wider coordination status returned exit 1 with 17 open conflicts. One
-relevant preserved conflict is
-`.local/transcripts/ubl-prose-closure-001.json`; it is local transcript state,
-not a reason to invalidate the committed UBL evidence or touch the file.
+- RED 1: graph entrypoint absent.
+- GREEN 1: deterministic root-to-declared-type graph.
+- RED 2: security pre-scan falsely rejected a DOCTYPE string inside a comment.
+- GREEN 2: comments are excluded from the declaration pre-scan while active
+  DOCTYPE and ENTITY declarations remain rejected.
 
-At `2026-07-29T21:08:29Z`, fetched GitLab and local `HEAD` were equal at
-`0b69bddb8faab010d9d064d75655564a67ddca4a`; the same owner, leases, dirty
-paths, absent process, and 17 conflicts were observed. The observation is close
-to the lease TTL boundary. Claude must use a fresh coordination result, never a
-timestamp calculation in prose, to decide whether to preserve or take over.
-
-## 5. Why reruns were inconsistent
-
-### Symptoms
-
-- Old PASS receipts survived after authority bytes or manifests changed.
-- Generated capability projections changed widely after a small UBL proof
-  repair.
-- Status and taskcards lagged behind independently committed evidence.
-- Shared mutable outputs appeared between test discovery and execution.
-- Source/test presence was easy to mistake for production completion.
-- Provider shifts risked inheriting tokens, leases, or uncommitted bytes.
-
-### Root causes
-
-- Proof results did not always bind the complete dependency closure.
-- Status, ledgers, reports, and taskcards were competing partial authorities.
-- Generated obligations repeat global invalidation inputs, so one authority
-  acquisition legitimately invalidates several format projections.
-- The native event journal serializes task state, while safe path-disjoint
-  implementation can be committed in parallel; without an explicit follow-up
-  event, evidence and projection temporarily diverge.
-- Certification has not yet moved to immutable clean worktrees/containers
-  with built-wheel imports and content-addressed fixtures.
-
-### Structural weaknesses that remain
-
-- The canonical ProductContract/proof graph/invalidation machinery is not yet
-  the sole runtime authority.
-- UBL task-state projection cannot represent the verified parallel checkpoint
-  until a serialized event is appended.
-- Strict Mypy following imports reports five pre-existing typing defects in
-  `tools/spec/verify_sal_facts.py`.
-- The XLIFF batch is local and live-leased, not remotely checkpointed.
-- The known stateful CSV idempotency test can mutate tracked projections on a
-  second run.
-- Five product packages are partial and OpenRaster has no product package.
-- No format has complete installed-wheel, oracle, corpus, cross-platform,
-  fuzz, mutation, performance, reproducible-build, or release proof.
-
-## 6. What to preserve and what to redesign
-
-Preserve:
-
-- GitLab `origin/main` and the hash-chained FF6 event history;
-- all current authority bytes and SHA-256 bindings;
-- the 110-capability/672-obligation denominator;
-- the current XLIFF Batch 005 bytes until their owner commits or a governed
-  takeover recaptures them;
-- the UBL census, current 34-fact receipt, and dependency-closure projections;
-- existing product behavior until characterization tests make migration safe;
-- exact-path coordination and explicit-file staging.
-
-Redesign or complete:
-
-- one ProductContract and content-addressed proof graph as the sole computed
-  readiness authority;
-- descendant invalidation on every authority, contract, source, test, fixture,
-  environment, lock, and generator change;
-- isolated certification against installed wheels;
-- complete format-specific schema/capability denominators;
-- production package layers, public APIs, typing, docs, security, corpus,
-  oracles, fuzzing, mutation, performance, and release artifacts.
-
-## 7. Exact resume algorithm
-
-The incoming agent must execute this algorithm, not select work from prose:
-
-1. Fetch GitLab and read the current journal/controller/taskcards.
-2. Run the handover validator.
-3. Query coordination and classify every dirty path.
-4. If Event 28 or later exists, rebuild from that event and ignore this
-   document's task selection.
-5. If XLIFF Batch 005 has been committed without a new event, independently
-   validate its immutable commit and append one serialized event. Do not
-   reimplement it.
-6. If the XLIFF lease is still active, do not touch its files. The UBL
-   authority repair, census, and Event 27 are already complete; do not repeat
-   them. The first safe path-disjoint action is UBL-03.
-7. If the XLIFF lease is stale and no newer commit exists, use governed
-   `takeover --reason`, recapture every current file baseline, rerun the RED
-   tests, and continue `XLF-04-BATCH-005`.
-8. If no owner or dirty bytes exist and no newer commit exists, start
-   `XLF-04-BATCH-005` from the Event 27 checkpoint.
-9. After XLIFF reaches a bounded verified implementation commit, append one
-   native event, refresh projections, push, then refresh this handover.
-10. If XLIFF remains live-owned, execute UBL-03 under disjoint leases. Record
-    a later native event only after the complete reachable schema graph and
-    its negative controls independently verify.
-
-The committed Event 27 checkpoint wrote the hash-chained journal first, then the
-controller, UBL taskcard, task index, and refreshed handover. Its task
-projection is `READY -> WORK_IN_PROGRESS`, completed steps are `UBL-01` and
-`UBL-02`, first unmet step is `UBL-03`, and its promotion effect is `none`.
-The controller active task and exact action remain XLIFF Batch 005. See
-`PROVIDER-SHIFT-CONTRACT.md` and `PARALLEL-UBL-CHECKPOINT.yaml`.
-
-## 8. Exact commands for the incoming shift
-
-Run from:
+Observed official-package result:
 
 ```text
-C:\Users\prora\OneDrive\Documents\GitHub\format-factory
+schemas: 106
+document roots: 91
+reachable root/type nodes: 182
+type-reference edges: 91
+graph SHA-256: 7b754187690ce1bb04db62657cfb552653cb381a1bdd745a56856e58215af029
+three equivalent runs: identical
+focused tests: 14 passed
+Ruff: pass
+Mypy: pass
+Pyright 1.1.411: zero diagnostics
+py_compile: pass
 ```
 
-```powershell
-git fetch origin main
-git status --short --branch
-git rev-parse HEAD
-git rev-parse origin/main
-git merge-base --is-ancestor 0b69bddb8faab010d9d064d75655564a67ddca4a origin/main
-git merge-base --is-ancestor 59ef8ee2e1b4e37168e4c7094687fac0a6098a79 origin/main
-git merge-base --is-ancestor 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c origin/main
-.venv\Scripts\python.exe plans\codex\handover\validate_handover.py --self-test
-.venv\Scripts\python.exe -m tools.supervisor.coordination status
+The SAL transcript is intentionally `FAIL` at the whole-task level because no
+complete graph output exists. The TDD transcript is `PASS` for the bounded
+behavior. This distinction is deliberate.
+
+## Work not completed
+
+UBL-03 remains open. Do not change the taskcard to `PASS` until every graph
+component and edge listed in the taskcard is present and the checked-in graph
+artifact is reproducible.
+
+XLIFF Batch 005 remains uncommitted. The stale working set now passes the two
+focused files (`62 passed`), but broad verification, artifact check modes,
+three-run replay, authority audit, receipts, exact-path commit scope, and
+native event serialization have not been established by this shift.
+
+No product source, package certification, promotion, release, or gate state
+advanced.
+
+## Preserved dirty paths
+
+| Path | LF SHA-256 | Bytes | Lines |
+|---|---|---:|---:|
+| `reports/ff6/xliff-core-authority-candidate-census.yaml` | `2b2557a09a0a7c95ecbcecf72ac6c8bedb7addcb221787b9eab254f687bf8207` | 2,629,952 | 45,847 |
+| `tests/tools/test_extract_sal_facts.py` | `86dcfd486fe76552e35c0efd24c0c5036d0f11bc22b08507cb8c7e0e94274e62` | 60,349 | 1,664 |
+| `tools/spec/extract_sal_facts.py` | `8f98868393719aa249a73acdc6597536b54d674e56fbfb80539f3490e4fdb82d` | 161,850 | 4,072 |
+| `tests/tools/test_extract_sal_facts_candidate_binding.py` | `34a9cddb5986548c0a3602a90ff914eab4a9940bbebe03141936cc977a8c7db6` | 14,247 | 452 |
+| `tools/spec/xliff_core_candidate_binding.py` | `042c670acefff8d0a6932ea3df7f1582f887f756148dd0bdfc356f69ca56f8b7` | 14,443 | 387 |
+
+The table records the current filesystem observation. The packet does not
+adopt those bytes as canonical proof. If any digest changes before Claude
+takes ownership, preserve the changed version and investigate; do not force it
+back to this table.
+
+## Claude’s first decision
+
+Claude must not start by editing.
+
+1. Fetch GitLab and validate the packet.
+2. Read Event 28, controller, XLIFF taskcard, UBL taskcard, and coordination
+   status.
+3. Register a fresh Claude identity.
+4. If the XLIFF leases remain stale, use governed takeover on the logical
+   scope and all five current paths. Recapture baselines.
+5. If the leases are active, leave XLIFF untouched and claim the UBL graph
+   paths for `UBL-03-PARTIAL-002`.
+6. If a newer commit or event exists, independently verify it and rebuild the
+   projection before selecting work.
+
+## XLIFF takeover path
+
+After a successful governed takeover:
+
+1. Verify all five LF digests and inspect diffs against `HEAD`.
+2. Rerun both focused files. The captured result is `62 passed`; any other
+   result is drift requiring diagnosis.
+3. Inspect whether Batch 005 receipts and local transcripts exist. Do not
+   synthesize a passing receipt from test output.
+4. Run the full validation matrix in `event-28/RUNBOOK.md`.
+5. Run every supported `extract_sal_facts.py --check` mode for changed
+   artifacts.
+6. Generate canonical outputs three times in isolated temporary destinations
+   and compare bytes.
+7. Verify all XLIFF authorities remain `MATCH`.
+8. Determine the honest state:
+   - if Batch 005 acceptance is complete, commit the exact implementation
+     paths;
+   - if only a bounded subset is complete, commit and journal it as partial;
+   - if evidence fails, repair through another RED-GREEN cycle.
+9. Push GitLab main, append one native event, rebuild projections, refresh this
+   handover, and release leases.
+
+## UBL fallback path
+
+Continue from commit `f98d220a`, not from scratch.
+
+Next exact TDD cycle:
+
+```text
+UBL-03-PARTIAL-002
+behavior: exact offline import/include closure and unique global-reference resolution
+RED: synthetic package proves missing/unresolved/remote/ambiguous closure fails
+GREEN: add minimal closure graph while preserving current node/edge identities
+VERIFY: focused suite + real package + three equivalent runs + static checks
 ```
 
-Then read, in order:
+Then add one RED-GREEN cycle for each remaining UBL-03 behavior family. Keep
+`reachable_schema_graph_complete: false` and do not emit a complete canonical
+report until all exit criteria pass.
 
-1. `AGENTS.md`;
-2. `plans/codex/handover/START-HERE.md`;
-3. `plans/codex/handover/PROVIDER-SHIFT-CONTRACT.md`;
-4. this file;
-5. `plans/strategic/ff6/product-goal.yaml`;
-6. `plans/strategic/autonomous-six-python-production-execution-plan.md`;
-7. `plans/strategic/ff6/events.jsonl`;
-8. `plans/strategic/ff6/controller-state.yaml`;
-9. `plans/strategic/ff6/current-gaps.yaml`;
-10. `taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md`;
-11. `taskcards/TC-FF6-UBL-TYPING-001.md`;
-12. `plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml`.
+## Checkpoint handback requirement
 
-For Codex, also read `docs/governance/codex-adapter.md`. Claude follows its
-ambient hooks plus the same coordination contract.
+Claude must end its shift with:
 
-## 9. XLIFF Batch 005 acceptance boundary
+- bounded implementation commit pushed to GitLab main;
+- exactly one new native event for the verified boundary;
+- matching controller/taskcard/task-index projection;
+- receipts validating with zero warnings;
+- refreshed provider-neutral packet and manifest;
+- packet self-test passing;
+- exact dirty-path classification;
+- its own leases released and session completed.
 
-Do not reduce Batch 005 to a prompt tweak. It must:
-
-- reject forged normalized text, member/source digests, and locations;
-- assign an explicit semantic class and content-sensitive occurrence digest;
-- classify all non-modal Core prose;
-- replace all 78 coarse structural fallbacks;
-- expand the expected denominator when authority requires it;
-- preserve the identity and meaning of the 25 existing rows;
-- compile source-bound obligations for every resolved expected ID;
-- keep `complete: false` until the entire Core authority surface closes;
-- rerun focused, format-contract, production-program, static, deterministic,
-  authority, and transcript validation.
-
-The detailed RED/GREEN commands remain in `CLAUDE-START.md`.
-
-## 10. UBL next phase after serialization
-
-UBL-03 must compile a complete reachable graph for every global element,
-attribute, complex/simple/anonymous type, compositor, group, extension,
-restriction, substitution, reference, cardinality, facet, wildcard,
-namespace, and documentation node reachable from all 91 roots.
-
-The graph must be:
-
-- derived only from pinned `SRC-UBL-002` package bytes;
-- network-independent;
-- content-addressed and deterministic;
-- cycle-safe and reference-complete;
-- negative-tested for missing/foreign/ambiguous imports and unresolved QNames;
-- independent of the existing shallow product classes.
-
-Do not start Python generation until UBL-03 through UBL-07 are complete and
-the taskcard reaches the required state.
-
-## 11. Checkpoint and handback protocol
-
-Every provider shift must end at one of two explicit states:
-
-`RESUMABLE`
-
-- owned implementation is verified;
-- exact files are committed and pushed to GitLab main;
-- any required native event is appended and projections agree;
-- all owned leases are completed/released;
-- the handover is refreshed, hash-bound, and validated.
-
-`RECOVERY_REQUIRED`
-
-- local owned work is RED/GREEN or otherwise incomplete;
-- exact paths, digests, tests, owner, lease state, and next command are
-  recorded;
-- bytes are preserved but not described as a clean checkpoint.
-
-Never call an uncommitted or unjournaled state `RESUMABLE`. Never transfer an
-agent token as authority. The next agent always registers a new identity and
-recomputes current state.
-
-## 12. Mandatory regression controls
-
-- Delete/rename a test and prove its obligation evidence is revoked.
-- Modify a fixture and prove old proof cannot be reused.
-- Change each input category and prove correct descendant invalidation.
-- Run three identical generations and compare canonical bytes.
-- Build and test installed wheels, never accidental source imports.
-- Test concurrent formats in separate worktrees/environments/artifact roots.
-- Prove manual status edits cannot override computed readiness.
-- Prove repository extraction preserves canonical source/package digests.
-- Keep strict negative tests for path traversal, archive bombs, entity
-  expansion, overlap/offset corruption, invalid namespaces, and resource
-  exhaustion as applicable per format.
-
-## 13. Honest limits and risks
-
-- OpenRaster's early draft authority permits an interoperability
-  certification, not universal conformance.
-- XLIFF all-module processing semantics and UBL's complete generated schema
-  family are large, high-risk denominators.
-- External implementations can disagree; contradictions require a
-  discriminating test and primary-authority analysis.
-- Some release actions may remain externally blocked by credentials or
-  business Gate 10/11 authority, but all technical artifacts must still be
-  completed.
-- The current handover proves continuity and bounded UBL evidence only. It
-  does not prove any production library ready for publication.
-
-## 14. Forbidden actions
-
-- no `git add .` or `git add -A`;
-- no reset, clean, restore, checkout, broad stash, or deletion of unexplained
-  work;
-- no GitHub execution branch or non-main product branch;
-- no mutation under another agent's lease;
-- no manual promotion/status edit;
-- no reuse of stale receipt as current proof;
-- no product-source generation before its task state and gates authorize it;
-- no claim of production readiness from counts, files, smoke tests, or local
-  source imports.
-
-## 15. Completion self-challenge for every future shift
-
-Before reporting a checkpoint, answer:
-
-1. Did I fetch and inspect GitLab `origin/main`?
-2. Did I validate the native event chain?
-3. Did I classify every dirty path?
-4. Did I preserve foreign and unexplained bytes?
-5. Did I use a new coordination identity and exact leases?
-6. Did every write have a registered skill, manifest, guard, preflight, and
-   write receipt?
-7. Did I operate only on the controller-selected or explicitly path-disjoint
-   safe task?
-8. Did I bind evidence to current authority/source/test/fixture/tool/
-   environment inputs?
-9. Did I run a discriminating negative control?
-10. Did I run the required focused and regression suites?
-11. Did deterministic generation pass three times?
-12. Did I avoid source-tree/import confusion?
-13. Did I avoid manual gate, certification, or promotion claims?
-14. Did I stage only an explicit reviewed file list?
-15. Did I push only to GitLab main after ancestry verification?
-16. Did I append no duplicate native event?
-17. Did controller, taskcard, gap, proof, and handover projections agree?
-18. Did I record every failure honestly, including inherited failures?
-19. Is the shift truly `RESUMABLE`, or have I labeled it
-    `RECOVERY_REQUIRED`?
-20. Can the next provider resume without chat memory, tokens, or assumptions?
-
-If any required answer is no, do not claim clean completion.
+If work ends in RED or a failed broad gate, commit nothing that claims
+completion. Preserve a content-addressed recovery record and leave the last
+clean Event 28 boundary available.

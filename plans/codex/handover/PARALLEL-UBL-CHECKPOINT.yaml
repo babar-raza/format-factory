@@ -1,5 +1,5 @@
-schema: ff6/parallel-format-checkpoint@1
-artifact_id: FF6-UBL-AUTHORITY-CENSUS-CHECKPOINT-002
+schema: ff6/parallel-format-checkpoint@2
+artifact_id: FF6-UBL-SCHEMA-GRAPH-CHECKPOINT-003
 visibility: internal
 publish_allowed: false
 generated_by: codex
@@ -10,179 +10,92 @@ mission:
   format_id: ubl
   task_id: TC-FF6-UBL-TYPING-001
   canonical_controller_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
-  canonical_controller_event: FF6-EVENT-000027
-  changes_controller_head: true
+  canonical_controller_event: FF6-EVENT-000028
   changes_product_or_promotion_state: false
 
 source_checkpoint:
   forge: GitLab
   remote: origin
   branch: main
-  implementation_commit: 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c
-  required_ancestor: 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c
+  implementation_commit: f98d220a0a3903b1107de90b2e39bf480ec4b19d
+  required_ancestor: f98d220a0a3903b1107de90b2e39bf480ec4b19d
 
 bounded_result:
   status: VERIFIED_PARTIAL_NON_PROMOTING
-  completed_artifact: UBL-01_AUTHORITY_AND_UBL-02_PACKAGE_ROOT_CENSUS
+  completed_artifact: UBL-03_ROOT_TYPE_BINDING_PRIMITIVE
   taskcard_state_machine_transition_recorded: true
-  taskcard_projection_at_checkpoint: WORK_IN_PROGRESS
-  detailed_substate: PACKAGE_CENSUS_COMPLETE
+  taskcard_projection: WORK_IN_PROGRESS
+  detailed_substate: SCHEMA_GRAPH_ROOT_TYPE_BINDING_PARTIAL
+  completed_microstep: UBL-03-PARTIAL-001
   first_unmet_step: UBL-03
-  reason_projection_not_advanced: >-
-    Not applicable. Event 27 serializes the package census and full UBL-01 SAL
-    authority replay while preserving XLIFF as the canonical active task.
+  next_microstep: UBL-03-PARTIAL-002
 
 authority:
-  prose:
-    source_id: SRC-UBL-001
-    observed_sha256: ccda3f1a2b64e6bdebfe33b2c9645423ef2f6206ac676f0937a304098d43358d
-    materializer_status: MATCH
-  package:
-    source_id: SRC-UBL-002
-    observed_sha256: 623bef8310db4d979ff28000a96bcc56dbcdda4f6206cf094c0aa79b75817970
-    materializer_status: MATCH
-  product_requirements:
-    source_id: SRC-UBL-003
-    observed_sha256: 07d380f7d0b3bb973f4ca223946a4fff5f1e116f98548d036a2322483dc1fa4c
-    materializer_status: MATCH
-  authority_audit_summary:
-    matches: 3
-    mismatches: 0
-    missing: 0
+  source_id: SRC-UBL-002
+  package_sha256: 623bef8310db4d979ff28000a96bcc56dbcdda4f6206cf094c0aa79b75817970
+  authority_matches: 3
+  canonical_sal_facts_verified: 34
 
-census:
-  report: reports/ff6/ubl-package-root-census.yaml
-  report_sha256: 787c8d9258dc25a8662ee934b9b0b14096de790db87826dab970792b9494976d
-  compiler: tools/spec/compile_ubl_schema_graph.py
-  compiler_sha256: 118a51b58c5809bc819a18535b1283d3fb1e37834a8f667e2aaa264c25110b50
-  tests: tests/tools/test_compile_ubl_schema_graph.py
-  tests_sha256: 0853b17f3d651d2c63afda2a40cf962f397ebf6613feafb686b2dadf829911f8
-  package_members: 890
-  maindoc_roots: 91
-  unique_root_qnames: 91
-  common_xsds: 15
-  all_xsds: 212
-  official_examples: 76
-  code_list_resources: 14
-  root_member_names_sha256: f9ab3f16a0ac89dbcd42f4e93d1eb5e59a4709bc7d151aedd8b2577c3fc114a2
-  deterministic_replays: 3
-  deterministic_output_sha256: 787c8d9258dc25a8662ee934b9b0b14096de790db87826dab970792b9494976d
+graph:
+  source: tools/spec/ubl_schema_graph.py
+  source_sha256: aa2e3f240c76a573c8216dcdb794dde8b04530d188d1422da789ebd9626a4326
+  entrypoint: tools/spec/compile_ubl_schema_graph.py
+  entrypoint_sha256: 69a62b78b4ff8784a5d9a0679bf2b51fb7ffc7c1ec42baf5a07ac0ff08af2a81
+  tests: tests/tools/test_ubl_schema_graph.py
+  tests_sha256: c6590b0bb6e5534007e7f1402bb2de44003a8d6642972d13fc70a81e5ad11f3d
+  schema_documents: 106
+  document_roots: 91
+  nodes: 182
+  edges: 91
+  graph_sha256: 7b754187690ce1bb04db62657cfb552653cb381a1bdd745a56856e58215af029
+  deterministic_runs: 3
 
 verification:
-  focused_pytest: 13 verifier and 12 census tests passed
-  production_program_regression: 69 passed
+  focused_pytest: 14 passed
   ruff: PASS
-  mypy_strict: PASS
+  mypy: PASS
   pyright_1_1_411: PASS_ZERO_DIAGNOSTICS
   py_compile: PASS
-  authority_materializer: PASS_3_OF_3
-  census_check_mode: PASS
+  official_package: PASS_91_ROOTS_106_SCHEMAS
   deterministic_replay: PASS_3_IDENTICAL
-  sal_replay: PASS_34_OF_34
-  sal_receipt_sha256: 2cc0f2cac163b7f42ab18bbe5220837d1f49a808904ac964c536085ca6d111a0
-  capability_compiler_check: PASS
-  capability_manifest_aggregate_sha256: e199e84e9f7ee0579959db28283ecb89e014077cdd1605fbf0c82aee553d9960
-  capability_three_run_digest: eafd6f8657ed83b73dbd5975046698d24fda6d8fd58c3d6aea962e6b6a85cf7c
-  broad_format_contract_regression: 94 passed, 1 unrelated CSV idempotency failure
 
-open_failures:
-  - gap_id: FF6-UBL-SCHEMA-GRAPH-001
-    severity: HIGH
-    blocking_step: UBL-03
-    failure: >-
-      The package/root census is complete, but the content-addressed graph of
-      every schema declaration reachable from all 91 roots does not exist.
-    required_repair: >-
-      Compile and independently verify the complete reachable graph with exact
-      reference, inheritance, occurrence, ordering, facet, wildcard,
-      substitution-group, and namespace semantics.
-    forbidden_shortcut: >-
-      Do not infer graph completeness from the 91 root names, current product
-      classes, XSD validation alone, or generated class counts.
-  - gap_id: FF6-SAL-VERIFIER-STRICT-MYPY-001
-    severity: MEDIUM
-    blocking_step: NONE_FOR_COMMITTED_UBL_EVIDENCE
-    failure: >-
-      Strict Mypy following imports reports five pre-existing typing defects
-      in tools/spec/verify_sal_facts.py involving ZipInfo/TarInfo variable
-      reuse and an observed-name redefinition.
-    required_repair: >-
-      Fix under a separately owned verifier-source task with discriminating
-      tests; do not hide the failure with a global ignore.
-  - gap_id: FF6-BASELINE-CSV-IDEMPOTENCY-001
-    severity: MEDIUM
-    blocking_step: NONE_FOR_UBL_CENSUS
-    failure: >-
-      tests/format_contract/test_consumption_chain.py::
-      test_full_slice_second_run_is_idempotent adds CSV gap IDs on the second
-      run. The test-generated tracked deltas were restored exactly to HEAD.
-    required_repair: >-
-      Handle as a separate format-contract machinery task; do not mix it into
-      UBL source or handover changes.
-
-exact_resume:
-  canonical_priority: >-
-    XLF-04-BATCH-005 remains the controller-selected next work.
-  disjoint_fallback_when_xliff_is_live_leased: >-
-    Do not repeat the completed stale-SAL repair, package census, or Event 27.
-    Begin UBL-03 after revalidating the Event 27 projections.
-  next_ubl_state_after_checkpoint: PACKAGE_CENSUS_COMPLETE
-  next_ubl_task_step_after_checkpoint: UBL-03
+open_work:
+  gap_id: FF6-UBL-SCHEMA-GRAPH-001
+  blocking_step: UBL-03
+  next_tdd_cycle: exact import/include closure and unique reference resolution
+  remaining:
+    - local and global element and attribute references
+    - anonymous types
+    - compositors and groups
+    - inheritance and restrictions
+    - substitutions and abstract declarations
+    - occurrence, order, nil, default, fixed, and form rules
+    - simple and complex content and facets
+    - union and list
+    - wildcards and processContents
+    - documentation annotations
+    - complete negative controls
+    - canonical complete graph output and clean-process reproducibility
 
 serialized_checkpoint_contract:
   recorded_event:
-    sequence: 27
-    previous_event_hash: 34b36bf5dc4344713ac1c0f026b30e6b15fb6a63b86f4876ee98230952fabcd0
+    sequence: 28
+    previous_event_hash: 9a1783b0705468fec1e9f9fda96f61ab4b1da32a161d128a3120a8bf689686c2
     state_before: CONTRACT
     state_after: CONTRACT
-    transition: PARALLEL_TASK_CHECKPOINT_VERIFIED
+    transition: PARALLEL_TASK_MICROSTEP_VERIFIED
     task_id: TC-FF6-UBL-TYPING-001
-    task_state_before: READY
+    task_state_before: WORK_IN_PROGRESS
     task_state_after: WORK_IN_PROGRESS
     next_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
     next_task_state: WORK_IN_PROGRESS
-    completed_task_steps: [UBL-01, UBL-02]
     first_unmet_task_step: UBL-03
     promotion_effect: none
-  required_projection_updates:
-    - plans/strategic/ff6/controller-state.yaml
-    - taskcards/TC-FF6-UBL-TYPING-001.md
-    - taskcards/index.yaml
-  event_first_write_order:
-    - already appended plans/strategic/ff6/events.jsonl
-    - record the journal write in coordination
-    - update controller projection
-    - update UBL taskcard projection
-    - update task index projection
-    - validate event hash chain and projection agreement
-    - committed and pushed the plan-control checkpoint as 59ef8ee2
-    - refresh the provider-neutral handover separately
-  controller_invariants:
-    - active task remains TC-FF6-XLIFF-PROFILE-SURFACE-001
-    - exact active microstep remains XLF-04-BATCH-005
-    - parent capability task remains NEEDS_REPAIR
-    - all six promotions remain UNASSESSED
-    - products certified remains 0
-    - UBL-03 remains incomplete
-  fresh_replay_expected:
-    authority_matches: 3
-    sal_facts_verified: 34
-    package_members: 890
-    maindoc_roots: 91
-    focused_tests: 25
-    production_program_tests: 69
-    capability_manifest_aggregate_sha256: e199e84e9f7ee0579959db28283ecb89e014077cdd1605fbf0c82aee553d9960
-    capability_three_run_digest: eafd6f8657ed83b73dbd5975046698d24fda6d8fd58c3d6aea962e6b6a85cf7c
-  lease_recovery: >-
-    Event, controller, and XLIFF taskcard paths still have stale leases from
-    agent-codex-20260729T172400-6f0f00. Use the governed takeover verb with a
-    reason and recapture baselines. Never release the stale agent's leases
-    manually, and never touch the active Batch 005 implementation paths.
 
 truth_boundary:
   package_census_complete: true
-  root_denominator_complete: true
   full_authority_sal_replay_complete: true
+  root_type_binding_complete: true
   reachable_schema_graph_complete: false
   naming_contract_complete: false
   obligation_denominator_complete: false

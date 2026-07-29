@@ -1,240 +1,105 @@
-schema: ff6/inflight-recovery@2
-artifact_id: FF6-INFLIGHT-RECOVERY-EVENT-27
+schema: ff6/inflight-recovery@3
+artifact_id: FF6-INFLIGHT-RECOVERY-EVENT-28
 visibility: internal
+publish_allowed: false
 generated_by: codex
 generated_at: "2026-07-30"
 
 clean_checkpoint:
   status: RESUMABLE
-  source_commit: 59ef8ee2e1b4e37168e4c7094687fac0a6098a79
-  latest_bounded_implementation_commit: 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c
-  controller_handover_source: 18bb295f94e43338611ef88caff073eed17411c9
-  controller_event_commit: 59ef8ee2e1b4e37168e4c7094687fac0a6098a79
-  implementation_commit: 1fef79b9d6c1ee1f6667e0c5c70435562c97544c
-  event_sequence: 27
-  event_id: FF6-EVENT-000027
-  event_hash: 9a1783b0705468fec1e9f9fda96f61ab4b1da32a161d128a3120a8bf689686c2
-  worktree_at_capture: CLASSIFIED_CONCURRENT_BATCH005_WORK_PRESENT
-  committed_handover_scope: CLEAN_AND_REMOTE_VERIFIED
+  source_commit: cde3b417006582551d2de69eff65e4ce4288529c
+  implementation_commit: f98d220a0a3903b1107de90b2e39bf480ec4b19d
+  event_sequence: 28
+  event_id: FF6-EVENT-000028
+  event_hash: 131631d21906c86ade3775d12504f97d8b55defb8987040a97d3f29af621713e
   exact_next_microstep: XLF-04-BATCH-005
   local_only_required_for_resume: false
 
 captured_workspace:
-  observed_at: "2026-07-29T18:36:00Z"
-  status: IN_FLIGHT_RED_NOT_TRANSFERABLE
-  live_owner_at_capture: agent-codex-20260729T181022-74dc4a
-  logical_scope: logical:FF6-XLIFF-BATCH005
+  observed_at: "2026-07-29T21:44:00Z"
+  status: STALE_SUSPECT_XLIFF_BATCH005_RECOVERY_WORKING_SET
+  owner_at_capture: agent-codex-20260729T190440-e2dd38
+  owner_coordination_status: STALE_SUSPECT
+  task: TC-FF6-XLIFF-PROFILE-SURFACE-001
+  logical_scope: logical:ff6-xliff-xlf04-batch005
+  takeover_required: true
+  current_bytes_canonical: false
+  focused_test_result:
+    passed: 62
+    failed: 0
+    interpretation: >-
+      The two focused files pass on current local bytes. This is recovery
+      evidence only; broad proof and immutable integration are absent.
   recovery_assets:
+    - path: reports/ff6/xliff-core-authority-candidate-census.yaml
+      presence_policy: OPTIONAL_LOCAL_RECOVERY
+      git_state_at_capture: MODIFIED_TRACKED
+      lf_sha256: 2b2557a09a0a7c95ecbcecf72ac6c8bedb7addcb221787b9eab254f687bf8207
+      canonical_bytes: 2629952
+      lines: 45847
+      role: GENERATED_CANDIDATE_CENSUS_IN_PROGRESS
+    - path: tests/tools/test_extract_sal_facts.py
+      presence_policy: OPTIONAL_LOCAL_RECOVERY
+      git_state_at_capture: MODIFIED_TRACKED
+      lf_sha256: 86dcfd486fe76552e35c0efd24c0c5036d0f11bc22b08507cb8c7e0e94274e62
+      canonical_bytes: 60349
+      lines: 1664
+      role: PRIMARY_BATCH005_TESTS
+    - path: tools/spec/extract_sal_facts.py
+      presence_policy: OPTIONAL_LOCAL_RECOVERY
+      git_state_at_capture: MODIFIED_TRACKED
+      lf_sha256: 8f98868393719aa249a73acdc6597536b54d674e56fbfb80539f3490e4fdb82d
+      canonical_bytes: 161850
+      lines: 4072
+      role: BATCH005_INTEGRATION_SOURCE
+    - path: tests/tools/test_extract_sal_facts_candidate_binding.py
+      presence_policy: OPTIONAL_LOCAL_RECOVERY
+      git_state_at_capture: UNTRACKED
+      lf_sha256: 34a9cddb5986548c0a3602a90ff914eab4a9940bbebe03141936cc977a8c7db6
+      canonical_bytes: 14247
+      lines: 452
+      role: CANDIDATE_BINDING_AND_TAMPER_CONTROLS
     - path: tools/spec/xliff_core_candidate_binding.py
       presence_policy: OPTIONAL_LOCAL_RECOVERY
       git_state_at_capture: UNTRACKED
       lf_sha256: 042c670acefff8d0a6932ea3df7f1582f887f756148dd0bdfc356f69ca56f8b7
       canonical_bytes: 14443
       lines: 387
-      role: GREEN_STANDALONE_BINDING_PRIMITIVE
-    - path: tests/tools/test_extract_sal_facts_candidate_binding.py
-      presence_policy: OPTIONAL_LOCAL_RECOVERY
-      git_state_at_capture: UNTRACKED
-      lf_sha256: fcb25b8f9400fc72a485eea23e8daf7d29e579f45a27353e3bf9a15d4c89dcb3
-      canonical_bytes: 13375
-      lines: 427
-      role: RED_INTEGRATION_AND_TAMPER_CONTROLS
-  focused_test_result:
-    passed: 17
-    failed: 10
-    phase: RED
-  authority_at_resume: >-
-    This is a captured observation only. Requery origin/main, the native
-    controller and journal, coordination liveness and leases, filesystem
-    status, and focused tests before choosing a recovery case.
-  asset_adoption_rule: >-
-    Adopt a present asset only after its LF-normalized digest, byte count,
-    line count, and untracked status match this record. Absence means restart
-    from the clean Event 27 checkpoint. A mismatch is a conflict to preserve
-    and investigate, not permission to overwrite either copy.
-
-latest_xliff_refresh_observation:
-  observed_at: "2026-07-29T19:27:45Z"
-  status: ACTIVE_XLIFF_BATCH005_FOREIGN_WORKING_SET
-  owner: agent-codex-20260729T190440-e2dd38
-  task: TC-FF6-XLIFF-PROFILE-SURFACE-001
-  coordination_status: ACTIVE
-  last_heartbeat: "2026-07-29T19:17:24.722412Z"
-  heartbeat_ttl_seconds: 7200
-  recorded_pid: 31488
-  recorded_pid_observed: ABSENT
-  takeover_disposition: DO_NOT_TAKEOVER_WHILE_LEASE_ACTIVE
-  logical_scope: logical:ff6-xliff-xlf04-batch005
-  paths:
-    - tools/spec/extract_sal_facts.py
-    - tools/spec/xliff_core_candidate_binding.py
-    - tests/tools/test_extract_sal_facts.py
-    - tests/tools/test_extract_sal_facts_candidate_binding.py
-    - reports/ff6/xliff-core-authority-candidate-census.yaml
-    - reports/ff6/xliff-core-obligation-denominator.yaml
-    - reports/ff6/xliff-core-obligation-inventory.yaml
-    - reports/skills-rff6/skill-transcripts/test-driven-development-xliff-xlf04-core-batch-005.json
-    - reports/skills-rff6/skill-transcripts/ingest-spec-sal-xliff-xlf04-core-batch-005.json
-    - reports/skills-rff6/skill-transcripts/sal-pipeline-heal-xliff-xlf04-core-batch-005.json
-    - .local/transcripts/xliff-xlf04-core-batch005.json
-  action: >-
-    Requery coordination. Process absence does not invalidate an ACTIVE lease.
-    While the lease is live, preserve the working set and continue only
-    disjoint work. The UBL stale-SAL closure repair is already committed and
-    must not be repeated. Do not inherit the identity, freeze mutable bytes as
-    evidence, stage them with the handover, or take over before the
-    coordination plane reports a stale lease.
-
-current_handover_observation:
-  observed_at: "2026-07-29T21:08:29Z"
-  head: 0b69bddb8faab010d9d064d75655564a67ddca4a
-  origin_main: 0b69bddb8faab010d9d064d75655564a67ddca4a
-  xliff_owner: agent-codex-20260729T190440-e2dd38
-  xliff_coordination_status: ACTIVE
-  xliff_process_observed: ABSENT
-  dirty_paths:
-    - reports/ff6/xliff-core-authority-candidate-census.yaml
-    - tests/tools/test_extract_sal_facts.py
-    - tools/spec/extract_sal_facts.py
-    - tests/tools/test_extract_sal_facts_candidate_binding.py
-    - tools/spec/xliff_core_candidate_binding.py
-  tracked_dirty_count: 3
-  untracked_dirty_count: 2
-  current_bytes_frozen_as_evidence: false
-  coordination_status_exit: 1
-  coordination_open_conflicts: 17
-  first_safe_disjoint_action: UBL-03
-  shift_classification: RESUMABLE_COMMITTED_BOUNDARY_WITH_FOREIGN_WORKSPACE_RECOVERY
-  intended_incoming_provider: claude
-  incoming_identity_rule: REGISTER_NEW_IDENTITY_NEVER_REUSE_CODEX_TOKEN
-  recovery_rule: >-
-    Requery all state because this observation was captured close to the lease
-    TTL boundary. If the XLIFF lease remains active, preserve its five dirty
-    paths and execute UBL-03 under disjoint ownership. Event 27 is already
-    committed and must not be repeated. If the lease becomes stale, use
-    governed takeover and recapture all baselines before adopting any bytes.
+      role: CANDIDATE_BINDING_PRIMITIVE
+  adoption_rule: >-
+    Requery coordination. If stale, use governed takeover and recapture
+    baselines. If a dirty asset is present, its status, LF digest, byte count,
+    and line count must match before adoption. A difference is preserved and
+    investigated, never overwritten. A clean checkout resumes from Event 28
+    without requiring these optional bytes.
 
 committed_parallel_checkpoint:
-  observed_at: "2026-07-29T19:52:00Z"
-  status: SERIALIZED_PARALLEL_CHECKPOINT
+  status: SERIALIZED_PARTIAL_CHECKPOINT
   task: TC-FF6-UBL-TYPING-001
-  implementation_commit: 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c
-  paths:
-    - reports/ff6/ubl-package-root-census.yaml
-    - tests/tools/test_compile_ubl_schema_graph.py
-    - tools/spec/compile_ubl_schema_graph.py
-    - shared/sal-facts/evidence/ubl.yaml
-    - reports/sal-verification/ubl.json
-    - shared/sal-facts/ubl.yaml
-    - tests/tools/test_verify_sal_facts.py
-  report_sha256: 787c8d9258dc25a8662ee934b9b0b14096de790db87826dab970792b9494976d
-  sal_receipt_sha256: 2cc0f2cac163b7f42ab18bbe5220837d1f49a808904ac964c536085ca6d111a0
-  bounded_result: UBL_01_AUTHORITY_AND_UBL_02_CENSUS_VERIFIED
-  taskcard_projection: WORK_IN_PROGRESS
-  detailed_substate: PACKAGE_CENSUS_COMPLETE
-  native_event_recorded: true
-  native_event: FF6-EVENT-000027
-  native_event_commit: 59ef8ee2e1b4e37168e4c7094687fac0a6098a79
+  implementation_commit: f98d220a0a3903b1107de90b2e39bf480ec4b19d
+  native_event: FF6-EVENT-000028
+  detailed_substate: SCHEMA_GRAPH_ROOT_TYPE_BINDING_PARTIAL
   first_unmet_work: UBL-03
+  next_microstep: UBL-03-PARTIAL-002
+  graph_sha256: 7b754187690ce1bb04db62657cfb552653cb381a1bdd745a56856e58215af029
+  reachable_schema_graph_complete: false
   action: >-
-    Treat the committed paths as read-only evidence until a new UBL mutation
-    task owns them. Do not repeat the authority repair or treat the evidence
-    as a reachable schema graph, product implementation, or promotion. Event
-    27 records UBL-01 and UBL-02 and retains XLIFF as the active task. Begin
-    UBL-03 only after revalidating the event/controller/task projections.
-
-resolved_history:
-  batch_003:
-    status: RECONCILED_NO_DATA_LOSS
-    implementation_commit: 2522752776f64ab800a2a21c8fa46c1f2a4e361c
-    event: FF6-EVENT-000025
-  batch_004:
-    status: COMMITTED_PUSHED_AND_JOURNALED
-    implementation_commit: 1fef79b9d6c1ee1f6667e0c5c70435562c97544c
-    event: FF6-EVENT-000026
-
-non_transferable_runtime_state:
-  - provider coordination identity
-  - coordination token
-  - leases
-  - local skill execution manifest
-  - mutation authorization
-  - shell environment
-  - uncommitted RED or GREEN state
+    Continue from the committed primitive. Do not repeat UBL-01, UBL-02, or
+    root/type binding, and do not claim a complete graph.
 
 recovery_cases:
-  clean_equal_checkpoint:
-    condition: HEAD and origin/main descend from the source checkpoint and validator passes
-    action: register a new identity and execute XLF-04-BATCH-005
-  remote_advanced:
-    condition: origin/main contains commits after this packet
-    action: >-
-      Recompute controller, complete journal, task index, active taskcard,
-      current gaps, proofs, and exact next work; refresh the packet before
-      mutating.
-  implementation_commit_without_event:
-    condition: a valid bounded implementation commit exists but no native event binds it
-    action: >-
-      Independently rerun its declared evidence. If valid and owned, append the
-      next native event and projections through plan-control. Never recreate or
-      cherry-pick an already integrated commit.
-  event_present_projection_stale:
-    condition: journal head is newer than controller or handover
-    action: >-
-      Validate the event hash chain, rebuild derived projections from the
-      journal, and refresh the handover. Do not append a duplicate event.
-  owned_red_or_green_worktree:
-    condition: current provider has attributable uncommitted Batch 005 files
-    action: >-
-      Continue only under the same live identity and leases. If the provider
-      is ending, record a non-clean recovery packet; do not label it RESUMABLE.
-  unattributed_or_foreign_dirty_paths:
-    condition: any modification is not attributable to the incoming identity
-    action: >-
-      Preserve bytes, inspect coordination journal and diffs, avoid reset,
-      clean, restore, or stash, and work only on non-overlapping safe paths.
-  stale_lease:
-    condition: a required path is owned by a stale identity
-    action: >-
-      Use governed takeover with a recorded reason only after rechecking the
-      owner and filesystem baseline. Expiry never authorizes discarding bytes.
-  live_lease:
-    condition: another active identity owns a required path
-    action: >-
-      Do not write or release the lease. Continue other safe work or wait for
-      the owner to reach a clean checkpoint.
-  live_owner_committed_without_event:
-    condition: >-
-      the captured owner pushed a bounded implementation commit but no later
-      native event binds it
-    action: >-
-      Fetch origin/main, inspect the immutable commit and receipts, rerun its
-      declared tests independently, and only then append one event through
-      plan-control. Do not reimplement, cherry-pick, or duplicate the commit.
-  live_owner_ended_with_red_files:
-    condition: >-
-      the captured owner is no longer live, no implementation commit exists,
-      its leases remain stale, and the two attributable files remain RED or
-      incomplete
-    action: >-
-      Preserve exact bytes and their Git status, use governed takeover with a
-      recorded reason, recapture baselines, and continue the same TDD batch.
-      The files are recovery input, not a checkpoint.
-  prior_owner_completed_and_released:
-    condition: >-
-      the prior owner completed normally, its leases are released, no
-      implementation commit exists, and both optional assets exactly match
-      their recorded identities
-    action: >-
-      Register a new provider identity, claim the logical Batch 005 scope and
-      both exact files, preflight and recapture baselines, then adopt the
-      preserved RED/GREEN work. No takeover is needed when no foreign lease
-      remains.
-  authority_or_oracle_contradiction:
-    condition: primary sources or independent implementations disagree
-    action: >-
-      Preserve both results, add a discriminating test, and resolve from
-      primary authority. Never select the result that makes a test pass.
+  newer_event:
+    action: validate and follow the newer journal projection
+  xliff_stale_matching:
+    action: governed takeover, rebaseline, independently replay, then continue
+  xliff_live:
+    action: preserve XLIFF and continue UBL-03-PARTIAL-002
+  xliff_bytes_drift:
+    action: preserve and investigate; do not restore or overwrite
+  xliff_committed_without_event:
+    action: independently verify the immutable commit, then append one event
+  clean_checkout:
+    action: resume from Event 28; local recovery assets are optional
 
 forbidden_recovery_actions:
   - git reset --hard
@@ -242,11 +107,5 @@ forbidden_recovery_actions:
   - git checkout --
   - git restore on unexplained state
   - broad git stash
-  - deleting another provider's worktree or lease
-  - editing promotion status to bypass proof
-
-checkpoint_creation_rule: >-
-  A future clean checkpoint requires implementation evidence committed and
-  pushed, a native event bound to that immutable commit, consistent controller
-  and task projections, a refreshed validated handover, and no unexplained
-  worktree changes.
+  - deleting or releasing another provider's state
+  - editing readiness or promotion labels to bypass proof

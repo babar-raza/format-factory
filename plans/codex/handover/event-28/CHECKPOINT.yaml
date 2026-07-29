@@ -1,0 +1,58 @@
+schema: ff6/versioned-handover-checkpoint@1
+artifact_id: FF6-HANDOVER-EVENT-28-CHECKPOINT
+visibility: internal
+publish_allowed: false
+generated_by: codex
+generated_at: "2026-07-30"
+
+source:
+  forge: GitLab
+  remote: origin
+  branch: main
+  implementation_commit: f98d220a0a3903b1107de90b2e39bf480ec4b19d
+  event_checkpoint_commit: cde3b417
+
+controller:
+  state: CONTRACT
+  sequence: 28
+  event_id: FF6-EVENT-000028
+  event_hash: 131631d21906c86ade3775d12504f97d8b55defb8987040a97d3f29af621713e
+  active_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
+  active_task_state: WORK_IN_PROGRESS
+
+exact_next:
+  first_unmet_step: XLF-04
+  microstep: XLF-04-BATCH-005
+  selection_rule: >-
+    Take over stale preserved XLIFF work and independently verify it. If XLIFF
+    is live-owned, continue the disjoint UBL graph at
+    UBL-03-PARTIAL-002. A newer event supersedes this rule.
+
+ubl:
+  task: TC-FF6-UBL-TYPING-001
+  status: WORK_IN_PROGRESS
+  substate: SCHEMA_GRAPH_ROOT_TYPE_BINDING_PARTIAL
+  completed_steps: [UBL-01, UBL-02]
+  first_unmet_step: UBL-03
+  completed_microstep: UBL-03-PARTIAL-001
+  next_microstep: UBL-03-PARTIAL-002
+  schema_documents: 106
+  document_roots: 91
+  root_type_nodes: 182
+  root_type_edges: 91
+  graph_sha256: 7b754187690ce1bb04db62657cfb552653cb381a1bdd745a56856e58215af029
+  reachable_schema_graph_complete: false
+
+xliff_recovery:
+  owner_status_at_capture: STALE_SUSPECT
+  dirty_paths: 5
+  focused_tests: 62 passed
+  canonical_checkpoint: false
+  takeover_required: true
+
+truth:
+  products_certified: 0
+  promotions: UNASSESSED_ALL_SIX
+  product_source_changed: false
+  release_state_changed: false
+  gate_state_changed: false

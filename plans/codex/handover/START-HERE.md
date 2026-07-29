@@ -7,302 +7,165 @@ generated_by: codex
 generated_at: 2026-07-30
 ---
 
-# FF6 Provider-Neutral Handover: Start Here
+# FF6 production mission — start here
 
-This is the only current human entrypoint for the six-library production
-mission. It is written for Claude, Codex, or another governed executor. The
-canonical repository state always wins over this derived packet.
-
-Absolute path:
+Absolute start path:
 
 ```text
 C:\Users\prora\OneDrive\Documents\GitHub\format-factory\plans\codex\handover\START-HERE.md
 ```
 
-## Current committed checkpoint
+This is the only current human entrypoint for Claude, Codex, or another
+governed executor. The native journal, controller, taskcards, immutable Git
+commits, and evidence always outrank this derived packet.
+
+## Current clean checkpoint
 
 | Field | Verified value |
 |---|---|
-| Forge / branch | GitLab `origin/main` only |
-| Packet input checkpoint | `59ef8ee2e1b4e37168e4c7094687fac0a6098a79` |
-| Latest bounded implementation ancestor | `7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c` |
-| Controller handover source | `18bb295f94e43338611ef88caff073eed17411c9` |
-| Controller Event 27 commit | `59ef8ee2e1b4e37168e4c7094687fac0a6098a79` |
+| Forge and branch | GitLab `origin/main` only |
+| Latest implementation commit | `f98d220a0a3903b1107de90b2e39bf480ec4b19d` |
+| Native checkpoint commit | `cde3b417` or a descendant containing Event 28 |
 | Controller state | `CONTRACT` |
-| Native event | `FF6-EVENT-000027` |
-| Event hash | `9a1783b0705468fec1e9f9fda96f61ab4b1da32a161d128a3120a8bf689686c2` |
-| Active task | `TC-FF6-XLIFF-PROFILE-SURFACE-001` |
-| Task state | `WORK_IN_PROGRESS` |
-| Completed task steps | `XLF-01`, `XLF-02`, `XLF-03` |
-| Completed XLF-04 batches | `001`, `002`, `003`, `004` |
-| First unmet step | `XLF-04` |
-| Exact next microstep | `XLF-04-BATCH-005` |
-| Production certifications | `0/6` |
-| Promotion state | all six products `UNASSESSED` |
+| Journal head | `FF6-EVENT-000028` |
+| Event hash | `131631d21906c86ade3775d12504f97d8b55defb8987040a97d3f29af621713e` |
+| Canonical active task | `TC-FF6-XLIFF-PROFILE-SURFACE-001` |
+| Canonical microstep | `XLF-04-BATCH-005` |
+| Parallel UBL task | `TC-FF6-UBL-TYPING-001` |
+| UBL substate | `SCHEMA_GRAPH_ROOT_TYPE_BINDING_PARTIAL` |
+| Certified libraries | `0/6` |
+| Promotions | all six `UNASSESSED` |
 
-The packet commit that contains this file must descend from the source
-checkpoint. It cannot truthfully embed its own final commit hash.
+The handover packet commit cannot embed its own final hash. A valid packet
+must instead prove that its cited checkpoint commits are ancestors of fetched
+GitLab `origin/main`.
 
-At the final refresh, Event 27 serialized the verified UBL-01/UBL-02
-authority and package-census evidence. UBL is `WORK_IN_PROGRESS` at
-`PACKAGE_CENSUS_COMPLETE`; `UBL-03` is first unmet. A separately leased Batch
-005 worker still owned five dirty XLIFF implementation/report paths in the
-shared worktree. Those classified paths are preserved and are not part of the
-controller or handover commits.
+## What Codex actually completed in the last shift
 
-Read [the current shift handover](CURRENT-SHIFT-HANDOVER.md) immediately after
-this entrypoint. It is the exact delta from the older Event 26 packet.
+Codex implemented and pushed the first bounded UBL-03 graph increment:
 
-## Immediate Claude handoff
+- a digest-bound entrypoint in `tools/spec/compile_ubl_schema_graph.py`;
+- a decomposed graph primitive in `tools/spec/ubl_schema_graph.py`;
+- focused tests in `tests/tools/test_ubl_schema_graph.py`;
+- exact parsing of all 106 XSD documents from the pinned official UBL 2.3
+  package;
+- unique binding of all 91 maindoc roots to declared content types;
+- 182 content-addressed root/type nodes and 91 type-reference edges;
+- active DOCTYPE/entity rejection without false rejection of declaration text
+  inside XML comments;
+- three identical official-package graph identities:
+  `7b754187690ce1bb04db62657cfb552653cb381a1bdd745a56856e58215af029`;
+- 14 focused and existing census tests passing;
+- Ruff, Mypy, Pyright 1.1.411, and `py_compile` passing.
 
-Codex stopped at a documentation-only clean checkpoint. No product,
-controller, taskcard, proof, promotion, gate, or release state advanced after
-Event 27. At `2026-07-29T21:08:29Z`, fetched GitLab `origin/main` and local
-`HEAD` both resolved to
-`0b69bddb8faab010d9d064d75655564a67ddca4a`. The handover validator passed
-all 70 file bindings, the complete Event 27 chain, and eleven semantic negative
-controls.
+Implementation commit:
+`f98d220a0a3903b1107de90b2e39bf480ec4b19d`.
 
-The shared worktree still contained exactly the five XLIFF Batch 005 paths
-listed below. Coordination still reported their owner as `ACTIVE`, although
-its recorded process was absent and its last heartbeat was
-`2026-07-29T19:17:24.722412Z` with a 7,200-second TTL. This is a time-stamped
-observation, not continuing authority. Claude must fetch and requery it.
+Event 28 records this as a partial, non-promoting microstep. It does not claim
+that UBL-03 is complete.
 
-Claude must not inherit a Codex identity, token, lease, execution manifest, or
-uncommitted byte. It registers a new identity and follows the deterministic
-decision table:
+## What is not complete
 
-1. Event 28 or later exists: validate and follow the newer journal projection.
-2. Batch 005 is still live-owned: preserve its five paths and execute `UBL-03`
-   under disjoint exact-path leases.
-3. Batch 005 is stale-owned with preserved bytes: use governed takeover,
-   recapture baselines, and continue the same Batch 005 transaction.
-4. Batch 005 is released or committed: independently replay the current bytes
-   or immutable commit before adopting or journaling it.
+The UBL graph still lacks:
 
-This makes the handoff provider-neutral and resumable without treating the
-volatile coordination snapshot as a permanent fact.
+- import/include closure edges;
+- all reachable global and local element/attribute references;
+- anonymous-type stable identities;
+- sequences, choices, all-groups, model groups, and attribute groups;
+- extension, restriction, substitution, and abstract semantics;
+- order, occurrence, nil, default, fixed, and form rules;
+- simple/complex content and all required facets;
+- union/list semantics;
+- wildcards and `processContents`;
+- schema documentation annotations;
+- complete reference/security negative controls;
+- the checked-in canonical complete graph artifact;
+- three clean-process, byte-identical canonical graph generations.
 
-## Current transfer state
+No format library is production-certified. OpenRaster still has no production
+Python product package. Existing packages for the other five formats remain
+partial. The 110-capability / 672-obligation projection is a planning
+denominator, not product proof.
 
-Two different states exist and must never be collapsed into one status:
+## Preserved XLIFF working set
 
-| Boundary | State | Meaning |
-|---|---|---|
-| Committed Event 27 checkpoint | `RESUMABLE` | A clean checkout of GitLab `origin/main` can reconstruct the last verified state without local-only files |
-| Shared workspace at 2026-07-29T21:08Z | `ACTIVE_XLIFF_BATCH005_FOREIGN_WORKING_SET` | Another Codex identity was still reported live and owned five dirty Batch 005 paths; Claude must requery and must not claim, overwrite, commit, or present those bytes as a clean checkpoint while that lease remains live |
+Five XLIFF Batch 005 paths remain dirty and were not staged, reset, cleaned,
+stashed, restored, or overwritten:
 
-The earlier captured transfer classifier
-`IN_FLIGHT_RED_NOT_TRANSFERABLE` remains a valid historical description of
-the same uncommitted XLIFF lane. The later active-working-set label is more
-specific and does not make the bytes transferable.
-
-The live owner observed at capture was
-`agent-codex-20260729T181022-74dc4a`. It owned:
-
-- `tools/spec/xliff_core_candidate_binding.py`
+- `reports/ff6/xliff-core-authority-candidate-census.yaml`
+- `tests/tools/test_extract_sal_facts.py`
+- `tools/spec/extract_sal_facts.py`
 - `tests/tools/test_extract_sal_facts_candidate_binding.py`
-- `logical:FF6-XLIFF-BATCH005`
+- `tools/spec/xliff_core_candidate_binding.py`
 
-The focused in-flight test file produced `17 passed, 10 failed`. The ten
-failures are the expected RED integration boundary: the committed census is
-still schema v1, non-modal prose is not classified, and the committed
-standalone validator does not yet reject the eight forged candidate-content
-mutations. This is evidence of unfinished work, not a regression in the clean
-Event 26 checkpoint and not completion evidence.
+The prior owner is now `STALE_SUSPECT`. A fresh combined focused run produced
+`62 passed`. That is useful recovery evidence, but it is not an immutable
+implementation checkpoint, complete Batch 005 proof, or authority to commit
+the bytes. The incoming executor must use governed `takeover --reason`,
+recapture every baseline, rerun all required validations, create missing
+receipts, and only then decide whether the working set is commit-ready.
 
-The optional local recovery bytes are content-addressed:
+Exact LF-normalized identities and recovery rules are in
+[INFLIGHT-RECOVERY.yaml](INFLIGHT-RECOVERY.yaml).
 
-| Path | LF-normalized SHA-256 | Bytes | Lines | Role |
-|---|---|---:|---:|---|
-| `tools/spec/xliff_core_candidate_binding.py` | `042c670acefff8d0a6932ea3df7f1582f887f756148dd0bdfc356f69ca56f8b7` | 14,443 | 387 | green standalone binding primitive |
-| `tests/tools/test_extract_sal_facts_candidate_binding.py` | `fcb25b8f9400fc72a485eea23e8daf7d29e579f45a27353e3bf9a15d4c89dcb3` | 13,375 | 427 | RED integration and tamper controls |
+## Deterministic next-action rule
 
-They are deliberately not required for a clean-checkout resume. If present,
-the validator requires exact bytes and untracked status unless the path is
-explicitly classified as a newer active foreign XLIFF working set. Active
-foreign bytes are preserved but deliberately not frozen. If absent, resume
-from Event 27. If different without that active classification, preserve them
-and reconcile the conflict; never overwrite or silently prefer either copy.
+After fetch and live coordination requery:
 
-At the 2026-07-29T19:17Z refresh, a newer live XLIFF worker,
-`agent-codex-20260729T190440-e2dd38`, owned the Batch 005 logical scope and
-eleven exact implementation/report/receipt paths. State:
-`ACTIVE_XLIFF_BATCH005_FOREIGN_WORKING_SET`. Its tracked extractor, primary
-test, and candidate-census paths already differed from HEAD, so the handover
-does not freeze or stage those changing bytes. This identity is an observation
-only, not a credential or permanent owner. Requery coordination before acting;
-while it remains live, preserve its paths and use the disjoint UBL resume.
+1. If Event 29 or later exists, validate the newer journal and rebuild this
+   projection. Do not execute stale instructions.
+2. If the five XLIFF paths are still live-owned, preserve them and continue
+   UBL-03 at `UBL-03-PARTIAL-002` under disjoint exact-path leases.
+3. If their leases are stale and the five bytes match the recovery record,
+   take over the XLIFF leases with a recorded reason, recapture baselines, and
+   resume Batch 005 from the preserved working set.
+4. If the bytes differ, preserve both the observed filesystem state and the
+   committed Event 28 boundary; investigate before any write.
+5. If Batch 005 has since been committed, independently replay its immutable
+   evidence before appending a new event. Never reimplement or duplicate an
+   integrated commit.
 
-At 2026-07-29T19:27:45Z, GitLab `origin/main` and local `HEAD` both resolved
-to `9ff40eb0900efe417b36a2d10486630b1c4b635a`. The XLIFF owner's recorded
-process (`PID 31488`) was absent, but its coordination record was still
-`ACTIVE`: the last heartbeat was `2026-07-29T19:17:24.722412Z` and its
-configured TTL was 7,200 seconds. Process absence is a warning, not takeover
-authority. Until the coordination plane changes the lease to stale or the
-owner completes, Claude must not touch those eleven paths. This distinction
-prevents a provider shift from converting a process-level observation into an
-unsafe filesystem write.
+At the captured state, rule 3 is expected to select XLIFF. Live state, not this
+sentence, decides.
 
-At the latest refresh, `2026-07-29T20:17:53Z`, local `HEAD` and fetched
-GitLab `origin/main` both resolved to
-`d5e8927a85ed0f2e8c68e1e061084c67b85363c9`. Coordination still reported the
-same XLIFF identity and leases as `ACTIVE`; the process remained absent. Git
-showed exactly five foreign dirty paths: three tracked modifications and two
-untracked Batch 005 files. Coordination status returned nonzero because 17
-open conflicts exist across the wider shared system, including a preserved
-local UBL transcript conflict; none authorizes mutation or deletion. The
-incoming executor must requery rather than trusting this time-stamped result.
+## Required reading order
 
-At the final Codex-to-Claude handoff observation,
-`2026-07-29T21:08:29Z`, local `HEAD` and fetched GitLab `origin/main` both
-resolved to `0b69bddb8faab010d9d064d75655564a67ddca4a`. The same five XLIFF paths
-were dirty, the same owner and eleven leases were reported `ACTIVE`, PID 31488
-was absent, and the coordination plane still reported 17 open conflicts.
-Because the observation occurred shortly before the lease's calculated TTL
-boundary, Claude must not infer either liveness or staleness from this file.
-Only its fresh coordination query selects live-owner preservation versus
-governed takeover.
+1. [AGENTS.md](../../../AGENTS.md)
+2. [Current Event 28 packet](event-28/START-HERE.md)
+3. [Current shift handover](CURRENT-SHIFT-HANDOVER.md)
+4. [Claude execution instructions](CLAUDE-START.md)
+5. [Provider-shift contract](PROVIDER-SHIFT-CONTRACT.md)
+6. [Current machine state](CURRENT-MACHINE-STATE.yaml)
+7. [Recovery state](INFLIGHT-RECOVERY.yaml)
+8. [Parallel UBL checkpoint](PARALLEL-UBL-CHECKPOINT.yaml)
+9. [Product goal](../../strategic/ff6/product-goal.yaml)
+10. [Autonomous execution plan](../../strategic/autonomous-six-python-production-execution-plan.md)
+11. [Native controller](../../strategic/ff6/controller-state.yaml)
+12. [Complete native event journal](../../strategic/ff6/events.jsonl)
+13. [Active XLIFF taskcard](../../../taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md)
+14. [Parallel UBL taskcard](../../../taskcards/TC-FF6-UBL-TYPING-001.md)
 
-The UBL package census and subsequent authority-closure repair are committed
-and pushed to GitLab main. The latest bounded checkpoint is
-`7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c`.
+Historical Event 26 and Event 27 packets remain immutable rationale and
+recovery inputs; they do not select current work.
 
-State: `SERIALIZED_PARALLEL_CHECKPOINT`.
+## Complete supporting-document index
 
-- `reports/ff6/ubl-package-root-census.yaml`
-- `tests/tools/test_compile_ubl_schema_graph.py`
-- `tools/spec/compile_ubl_schema_graph.py`
+The following documents explain the durable design and remain required
+background. They are not allowed to override a newer native event:
 
-Together they establish a secure, deterministic census of 890 UBL 2.3
-package members and exactly 91 document roots, plus a current three-source
-authority audit and deterministic full SAL replay for all 34 UBL facts. The
-report digest is
-`787c8d9258dc25a8662ee934b9b0b14096de790db87826dab970792b9494976d`.
-The SAL receipt digest is
-`2cc0f2cac163b7f42ab18bbe5220837d1f49a808904ac964c536085ca6d111a0`.
-This is real bounded evidence for UBL-01 and UBL-02. Event 27 records it,
-advances the UBL taskcard to `WORK_IN_PROGRESS` at
-`PACKAGE_CENSUS_COMPLETE`, and keeps XLIFF as the canonical active task. It
-does not prove the reachable schema graph or product readiness. Read the
-[parallel UBL checkpoint](PARALLEL-UBL-CHECKPOINT.yaml) before resuming that
-lane.
+- [Production truth and root-cause analysis](CURRENT-STATE-AND-ROOT-CAUSES.md)
+- [Program execution runbook](EXECUTION-RUNBOOK.md)
+- [Provider-shift and resume protocol](SHIFT-AND-RESUME-PROTOCOL.md)
+- [State-machine and taskcard protocol](STATE-MACHINE-AND-TASKCARD-PROTOCOL.md)
+- [Validation, certification, and release controls](VALIDATION-AND-RELEASE.md)
+- [Provider-neutral shift contract](PROVIDER-SHIFT-CONTRACT.md)
+- [Event 26 historical packet](event-26/START-HERE.md)
+- [Event 27 historical packet](event-27/START-HERE.md)
 
-Historical gap `FF6-UBL-SAL-PROSE-TARGET-STALE-001` is closed by
-`7fc49c29`; its name is retained only to prevent duplicate execution. It is
-not the exact UBL resume task.
-
-At resume time, query the coordination plane and GitLab again. The captured
-identity and test counts are forensic observations, not transferable
-credentials or timeless authority. Use the decision table in
-[Claude/Codex execution instructions](CLAUDE-START.md#transfer-state-discriminator).
-
-Claude's first executable decision is deterministic:
-
-1. If Event 28 or later is on GitLab, recompute from the journal and ignore
-   this runtime observation.
-2. If the XLIFF lease is still live, leave the five current dirty XLIFF paths
-   untouched. Do not repeat the completed UBL stale-SAL repair, package
-   census, or Event 27. The first safe disjoint action is `UBL-03`, the
-   complete reachable-schema-graph compiler and proof.
-3. If the XLIFF lease is stale and no newer commit exists, use governed
-   `takeover --reason`, recapture every baseline, and continue Batch 005 from
-   the preserved bytes.
-4. If the XLIFF owner completed and released cleanly, claim the exact paths
-   under Claude's new identity and independently rerun the focused tests
-   before accepting any result.
-
-## Mission
-
-Produce six independently publishable, production-grade Python libraries:
-
-- Jupyter Notebook (`format-factory-ipynb`)
-- OpenRaster (`format-factory-openraster`)
-- NRRD (`format-factory-nrrd`)
-- XLIFF (`format-factory-xliff`)
-- SafeTensors (`format-factory-safetensors`)
-- OASIS UBL (`format-factory-ubl`)
-
-The libraries and every developer-facing capability must be secure, typed,
-documented, maintainable, interoperable, professionally structured, tested
-against installed wheels, and supported by current digest-bound evidence.
-Planning, source presence, test counts, package smoke tests, candidate routing,
-or old readiness labels do not satisfy this goal.
-
-Read the canonical [product goal](../../strategic/ff6/product-goal.yaml) and
-[execution plan](../../strategic/autonomous-six-python-production-execution-plan.md)
-before changing mission state.
-
-The provider-independent shift transaction, clean-checkpoint definition, exact
-Event 27 contract, and handback requirements are binding in the
-[provider-shift contract](PROVIDER-SHIFT-CONTRACT.md).
-
-## True current product state
-
-The program has a deterministic 110-capability / 672-obligation planning
-universe. That is a contract denominator, not implementation proof.
-For the active XLIFF Core work, 25 of 105 expected IDs have source-bound
-obligation rows and 80 remain missing.
-
-| Format | Contract-stage state | Source state | Production state |
-|---|---|---|---|
-| IPYNB | profile surface repaired; 25 capabilities / 68 obligations | existing partial package | not certified |
-| OpenRaster | profile surface repaired; 20 / 134 | no Python product package | not certified |
-| NRRD | profile surface repaired; 21 / 65 | existing partial package | not certified |
-| XLIFF | profile compilation in progress; 15 / 125 | existing partial package | not certified |
-| SafeTensors | compiled planning surface; 11 / 86 | existing partial package | not certified |
-| UBL | `PACKAGE_CENSUS_COMPLETE`; Event 27 records UBL-01/UBL-02; UBL-03 reachable schema graph remains; 18 / 194 | existing partial package | not certified |
-
-All six ProductContracts remain lifecycle `DRAFT`. Five existing oracle
-summaries are shallow `D0` partial evidence, the existing install proofs have
-stale input closures, clean-checkout collection is not yet proven, corpus
-adequacy is not proven, and OpenRaster source is absent. See
-[current gaps](../../strategic/ff6/current-gaps.yaml).
-
-## Exact next work
-
-There are two non-conflicting next-action axes:
-
-| Axis | Exact action |
-|---|---|
-| Canonical controller action | Resume `TC-FF6-XLIFF-PROFILE-SURFACE-001` at `XLF-04-BATCH-005` |
-| First safe action while XLIFF is live-owned | Execute `UBL-03` under disjoint leases without changing the XLIFF active task |
-
-Machine action ID: `UBL-03`.
-
-Resume `TC-FF6-XLIFF-PROFILE-SURFACE-001` at `XLF-04-BATCH-005`.
-
-1. Add RED controls for the independent post-commit finding that the
-   standalone census validator accepts forged normalized requirement text,
-   member/source digests, and occurrence locations.
-2. Bind every candidate occurrence with an explicit candidate class and a
-   content-sensitive digest while preserving stable candidate identity.
-3. Classify every non-modal Core prose paragraph excluded by Batch 004.
-4. Replace all 78 coarse structural dispositions with an exact semantic
-   mapping or an explicit, source-located, reasoned non-obligation.
-5. Expand the 105-ID expected-obligation denominator when the newly classified
-   authority surface exposes missing normative behavior.
-6. Compile source-bound obligations for remaining expected IDs without
-   changing the meaning or identity of the 25 stable rows already present.
-7. Keep `complete: false` until the full Core authority surface is exhaustive,
-   every expected ID has a source-bound obligation, and canonical SAL
-   verification succeeds.
-
-Do not start product source, architecture, packaging, certification,
-promotion, release, or gate work. Do not skip to XLF-05 while this mandatory
-XLF-04 work is safely executable.
-
-If live coordination shows another agent owns the XLIFF Batch 005 scope, do
-not compete for those paths and do not repeat commit `7fc49c29`. The UBL
-authority replay, package census, and Event 27 serialization are already
-complete. Begin UBL-03 only under disjoint leases and independently validate
-the complete reachable-schema graph before recording any later event.
-
-Read [Claude/Codex execution instructions](CLAUDE-START.md), the
-[active checkpoint](ACTIVE-WORK-CHECKPOINT.md), and the
-[machine state](CURRENT-MACHINE-STATE.yaml) before acting. The immutable
-Event 26 packet is [here](event-26/START-HERE.md).
+The repository-wide goal, task ordering, product profiles, architecture,
+quality bars, exact validation commands, and known limits are deliberately
+split across these documents. This entrypoint links them rather than
+duplicating and silently drifting their contents.
 
 ## Resume preflight
 
@@ -313,83 +176,41 @@ git fetch origin
 git status --short --branch
 git rev-parse HEAD
 git rev-parse origin/main
-git merge-base --is-ancestor 0b69bddb8faab010d9d064d75655564a67ddca4a origin/main
-git merge-base --is-ancestor 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c origin/main
-git merge-base --is-ancestor 7b5cce4fefaf3b7e8c4d1f1891821d1bfcd7acce origin/main
-git merge-base --is-ancestor 18bb295f94e43338611ef88caff073eed17411c9 origin/main
+git merge-base --is-ancestor f98d220a0a3903b1107de90b2e39bf480ec4b19d origin/main
+git merge-base --is-ancestor cde3b417 origin/main
 .venv\Scripts\python.exe plans\codex\handover\validate_handover.py --self-test
-python -m tools.supervisor.coordination status
+python -m tools.supervisor.coordination --json status
 ```
 
-Proceed only when:
+Then:
 
-- the handover source checkpoint is an ancestor of fetched `origin/main`;
-- the handover validator returns `valid: true`;
-- the native controller and journal still select the same task/microstep;
-- any local changes are classified and preserved;
-- the workspace transfer state has been recomputed from live coordination,
-  Git, and test evidence;
-- the incoming provider has registered its own coordination identity and
-  claimed exact paths;
-- the registered skill route and execution manifest cover every intended
-  mutation.
+- register a new provider identity;
+- never inherit the Codex identity, token, leases, local manifest, or
+  mutation authorizations;
+- classify all dirty paths;
+- select work through the Event 28 decision rule;
+- claim the exact logical scope and paths;
+- create a new execution manifest;
+- call the mutation guard;
+- preflight before every write and record every write;
+- use one RED-GREEN-REFACTOR cycle per behavior increment;
+- stage explicit files only;
+- push only GitLab `main`;
+- finish with implementation commit, native event/projections, refreshed
+  handover, validation, and released leases.
 
-If `origin/main` has advanced, do not blindly follow this projection. Recompute
-the latest native event, controller, taskcard, gaps, proofs, and exact next
-task, then refresh this packet through `/refresh-provider-neutral-handover`.
-
-## Authority and reading order
-
-Read these in order:
-
-1. [AGENTS.md](../../../AGENTS.md)
-2. [Codex adapter](../../../docs/governance/codex-adapter.md) when using Codex
-3. [Product goal](../../strategic/ff6/product-goal.yaml)
-4. [Execution plan](../../strategic/autonomous-six-python-production-execution-plan.md)
-5. [Controller](../../strategic/ff6/controller-state.yaml)
-6. [Complete event journal](../../strategic/ff6/events.jsonl)
-7. [Current gaps](../../strategic/ff6/current-gaps.yaml)
-8. [Active XLIFF taskcard](../../../taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md)
-9. [Provider-shift contract](PROVIDER-SHIFT-CONTRACT.md)
-10. [Machine state](CURRENT-MACHINE-STATE.yaml)
-11. [Current Event 27 runbook](event-27/RUNBOOK.md)
-12. [Historical Event 26 runbook](event-26/RUNBOOK.md)
-
-The root [manifest](manifest.yaml) binds the current packet and canonical
-inputs. [Checkpoint](checkpoint.yaml) is the compact machine projection.
-[Recovery](INFLIGHT-RECOVERY.yaml) describes dirty-worktree and crash cases.
-[Validation](validate_handover.py) proves hashes, links, journal agreement,
-task registration, GitLab ancestry, and negative controls.
-
-## Historical documents
-
-The following files retain deeper design background but are historical
-projections. Their embedded Event 24/25 exact-next instructions are superseded
-by this file and Event 27:
-
-- [root-cause analysis](CURRENT-STATE-AND-ROOT-CAUSES.md)
-- [older execution runbook](EXECUTION-RUNBOOK.md)
-- [shift protocol](SHIFT-AND-RESUME-PROTOCOL.md)
-- [state-machine protocol](STATE-MACHINE-AND-TASKCARD-PROTOCOL.md)
-- [validation and release notes](VALIDATION-AND-RELEASE.md)
-- [Event 25 packet](event-25/START-HERE.md)
-- [Event 26 packet](event-26/START-HERE.md)
-
-Use them for rationale only. Never select work from a historical packet.
+The full command-level procedure is in [event-28/RUNBOOK.md](event-28/RUNBOOK.md).
 
 ## Shift invariants
 
-- One writer owns the active task at a time.
-- Provider identities, tokens, leases, local manifests, and uncommitted state
-  are never transferred as authority.
-- Every shift ends only at a `RESUMABLE` boundary: successful work committed,
-  pushed to GitLab `main`, native event appended, controller/task projections
-  updated, and the handover refreshed and validated.
-- RED-only, unjournaled, local-only, or unexplained dirty states are recovery
-  states, not clean checkpoints.
-- Existing user or agent work is preserved. Never reset, clean, stash, restore,
-  or overwrite unexplained paths.
-- Explicit file staging only. Never use `git add .` or `git add -A`.
-- The next executor recomputes state from GitLab, the journal, controller,
-  taskcard, proofs, and coordination plane; it does not trust conversation
-  memory.
+- Provider-local identity and runtime state are never authority.
+- Uncommitted bytes are recovery input, never completion evidence.
+- A task shift is clean only when successful work is committed and pushed,
+  the native event and projections agree, and this packet validates.
+- Product status is computed from proof; it is never edited into readiness.
+- One blocked format does not stop disjoint safe work.
+- No agent may discard unexplained or foreign changes.
+- `git add .`, `git add -A`, reset, clean, broad stash, checkout, and restore
+  of unexplained state are forbidden.
+- Gate 10 and other human-only business authorization remain external; all
+  technically possible release preparation proceeds without prompting.

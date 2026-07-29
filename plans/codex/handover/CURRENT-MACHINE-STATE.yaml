@@ -1,5 +1,5 @@
-schema: ff6/provider-neutral-machine-state@2
-artifact_id: FF6-CURRENT-MACHINE-STATE-EVENT-27
+schema: ff6/provider-neutral-machine-state@3
+artifact_id: FF6-CURRENT-MACHINE-STATE-EVENT-28
 visibility: internal
 publish_allowed: false
 generated_by: codex
@@ -9,184 +9,12 @@ source_checkpoint:
   forge: GitLab
   remote: origin
   branch: main
-  required_ancestor: 59ef8ee2e1b4e37168e4c7094687fac0a6098a79
-  packet_input_commit: 59ef8ee2e1b4e37168e4c7094687fac0a6098a79
-  latest_bounded_implementation_ancestor: 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c
-  controller_event_ancestor: 59ef8ee2e1b4e37168e4c7094687fac0a6098a79
-  implementation_ancestor: 1fef79b9d6c1ee1f6667e0c5c70435562c97544c
-  parallel_ubl_ancestor: 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c
-  worktree_at_capture: CLASSIFIED_CONCURRENT_BATCH005_WORK_PRESENT
-  committed_handover_scope: CLEAN_AND_REMOTE_VERIFIED
+  required_ancestor: cde3b417006582551d2de69eff65e4ce4288529c
+  packet_input_commit: cde3b417006582551d2de69eff65e4ce4288529c
+  implementation_ancestor: f98d220a0a3903b1107de90b2e39bf480ec4b19d
   packet_commit_rule: >-
-    The commit containing this packet must descend from required_ancestor.
-    This derived file cannot contain its own final commit hash.
-
-workspace_transfer:
-  captured_at: "2026-07-29T18:36:00Z"
-  committed_checkpoint_status: RESUMABLE
-  status: IN_FLIGHT_RED_NOT_TRANSFERABLE
-  current_bytes_are_clean_checkpoint: false
-  incoming_provider_may_claim_batch005_now: false
-  captured_live_owner:
-    agent_id: agent-codex-20260729T181022-74dc4a
-    task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
-    provider: codex
-    transferable: false
-  captured_leases:
-    - logical:FF6-XLIFF-BATCH005
-    - tools/spec/xliff_core_candidate_binding.py
-    - tests/tools/test_extract_sal_facts_candidate_binding.py
-  recovery_assets:
-    - path: tools/spec/xliff_core_candidate_binding.py
-      presence_policy: OPTIONAL_LOCAL_RECOVERY
-      git_state_at_capture: UNTRACKED
-      lf_sha256: 042c670acefff8d0a6932ea3df7f1582f887f756148dd0bdfc356f69ca56f8b7
-      canonical_bytes: 14443
-      lines: 387
-      role: GREEN_STANDALONE_BINDING_PRIMITIVE
-    - path: tests/tools/test_extract_sal_facts_candidate_binding.py
-      presence_policy: OPTIONAL_LOCAL_RECOVERY
-      git_state_at_capture: UNTRACKED
-      lf_sha256: fcb25b8f9400fc72a485eea23e8daf7d29e579f45a27353e3bf9a15d4c89dcb3
-      canonical_bytes: 13375
-      lines: 427
-      role: RED_INTEGRATION_AND_TAMPER_CONTROLS
-  focused_red_replay:
-    command: >-
-      .venv\Scripts\python.exe -m pytest
-      tests/tools/test_extract_sal_facts_candidate_binding.py -q --tb=short
-    passed: 17
-    failed: 10
-    interpretation: >-
-      Standalone binding primitives have passing unit coverage, while census
-      schema migration, non-modal classification, extractor integration, and
-      eight forged-content rejection controls remain RED.
-  clean_checkout_required_for_unowned_resume: true
-  resume_authority: REQUERY_GIT_CONTROLLER_JOURNAL_COORDINATION_AND_FILESYSTEM
-  asset_adoption_rule: >-
-    The assets are optional because a clean checkout can restart from Event
-    27 and Batch 005. If either asset exists, its LF-normalized digest, byte count, line
-    count, and untracked status must match before it is adopted. Missing assets
-    are not reconstructed from this packet; mismatched assets are preserved
-    and treated as a coordination conflict, never overwritten.
-  transfer_rule: >-
-    If the captured owner remains live, do not write its scope. If it has
-    committed and pushed, recompute from origin/main. If it is stale with
-    preserved local bytes, use governed takeover and recapture baselines. Never
-    copy its token, release its lease, or call these bytes RESUMABLE.
-
-latest_xliff_refresh_observation:
-  observed_at: "2026-07-29T19:27:45Z"
-  status: ACTIVE_XLIFF_BATCH005_FOREIGN_WORKING_SET
-  owner:
-    agent_id: agent-codex-20260729T190440-e2dd38
-    task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
-    provider: codex
-    coordination_status: ACTIVE
-    last_heartbeat: "2026-07-29T19:17:24.722412Z"
-    heartbeat_ttl_seconds: 7200
-    recorded_pid: 31488
-    recorded_pid_observed: ABSENT
-    takeover_disposition: DO_NOT_TAKEOVER_WHILE_LEASE_ACTIVE
-  logical_scope: logical:ff6-xliff-xlf04-batch005
-  paths:
-    - tools/spec/extract_sal_facts.py
-    - tools/spec/xliff_core_candidate_binding.py
-    - tests/tools/test_extract_sal_facts.py
-    - tests/tools/test_extract_sal_facts_candidate_binding.py
-    - reports/ff6/xliff-core-authority-candidate-census.yaml
-    - reports/ff6/xliff-core-obligation-denominator.yaml
-    - reports/ff6/xliff-core-obligation-inventory.yaml
-    - reports/skills-rff6/skill-transcripts/test-driven-development-xliff-xlf04-core-batch-005.json
-    - reports/skills-rff6/skill-transcripts/ingest-spec-sal-xliff-xlf04-core-batch-005.json
-    - reports/skills-rff6/skill-transcripts/sal-pipeline-heal-xliff-xlf04-core-batch-005.json
-    - .local/transcripts/xliff-xlf04-core-batch005.json
-  current_bytes_frozen_by_handover: false
-  rule: >-
-    The owner and paths are a time-stamped coordination observation, not
-    transferable credentials. Process absence is not lease expiry. Do not
-    stage, mutate, hash as completed evidence, release, or take over this
-    working set while its lease is live. Requery coordination and GitLab at
-    resume; use governed takeover only after the plane reports the lease stale.
-
-handover_refresh_observation:
-  observed_at: "2026-07-29T21:08:29Z"
-  head: 0b69bddb8faab010d9d064d75655564a67ddca4a
-  origin_main: 0b69bddb8faab010d9d064d75655564a67ddca4a
-  active_xliff_owner: agent-codex-20260729T190440-e2dd38
-  active_xliff_lease_count: 11
-  active_xliff_lease_status: ACTIVE
-  active_xliff_last_heartbeat: "2026-07-29T19:17:24.722412Z"
-  active_xliff_heartbeat_ttl_seconds: 7200
-  active_xliff_process_observed: ABSENT
-  dirty_paths:
-    - status: MODIFIED_TRACKED
-      path: reports/ff6/xliff-core-authority-candidate-census.yaml
-    - status: MODIFIED_TRACKED
-      path: tests/tools/test_extract_sal_facts.py
-    - status: MODIFIED_TRACKED
-      path: tools/spec/extract_sal_facts.py
-    - status: UNTRACKED
-      path: tests/tools/test_extract_sal_facts_candidate_binding.py
-    - status: UNTRACKED
-      path: tools/spec/xliff_core_candidate_binding.py
-  dirty_paths_frozen_as_evidence: false
-  coordination:
-    mode: enforcing
-    status_exit: 1
-    active_agent_records: 105
-    live_lease_records: 142
-    stale_candidates: 103
-    open_conflicts: 17
-    relevant_preserved_conflict:
-      conflict_id: conf-492a303a5a
-      path: .local/transcripts/ubl-prose-closure-001.json
-      action: PRESERVE_AND_REBASELINE_IF_OWNED_LATER
-  first_safe_disjoint_action: UBL-03
-  shift_classification: RESUMABLE_COMMITTED_BOUNDARY_WITH_FOREIGN_WORKSPACE_RECOVERY
-  incoming_provider: claude
-  incoming_identity_rule: REGISTER_NEW_IDENTITY_NEVER_INHERIT_OUTGOING_TOKEN
-  rule: >-
-    This is a time-stamped observation. The incoming executor must fetch and
-    requery; it was captured close to the lease TTL boundary and cannot prove
-    later liveness or staleness. While Batch 005 remains active-owned, do not
-    mutate its paths. If it is stale, use governed takeover and recapture every
-    baseline. Event 27 already serializes the UBL evidence while retaining
-    XLIFF as the controller-selected active task. The next disjoint fallback is
-    UBL-03.
-
-parallel_ubl_checkpoint:
-  observed_at: "2026-07-29T19:52:00Z"
-  status: SERIALIZED_PARALLEL_CHECKPOINT
-  task_id: TC-FF6-UBL-TYPING-001
-  implementation_commit: 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c
-  paths:
-    - reports/ff6/ubl-package-root-census.yaml
-    - tests/tools/test_compile_ubl_schema_graph.py
-    - tools/spec/compile_ubl_schema_graph.py
-    - shared/sal-facts/evidence/ubl.yaml
-    - reports/sal-verification/ubl.json
-    - shared/sal-facts/ubl.yaml
-    - tests/tools/test_verify_sal_facts.py
-  report_sha256: 787c8d9258dc25a8662ee934b9b0b14096de790db87826dab970792b9494976d
-  sal_receipt_sha256: 2cc0f2cac163b7f42ab18bbe5220837d1f49a808904ac964c536085ca6d111a0
-  bounded_result: UBL_01_AUTHORITY_AND_UBL_02_CENSUS_VERIFIED
-  taskcard_projection: WORK_IN_PROGRESS
-  detailed_substate: PACKAGE_CENSUS_COMPLETE
-  native_event_recorded: true
-  native_event: FF6-EVENT-000027
-  native_event_commit: 59ef8ee2e1b4e37168e4c7094687fac0a6098a79
-  controller_effect: UBL_CHECKPOINT_PROJECTED_XLIFF_RETAINED_ACTIVE
-  product_or_promotion_effect: NONE
-  first_unmet_work: UBL-03
-  capability_manifest_aggregate_sha256: e199e84e9f7ee0579959db28283ecb89e014077cdd1605fbf0c82aee553d9960
-  capability_three_run_digest: eafd6f8657ed83b73dbd5975046698d24fda6d8fd58c3d6aea962e6b6a85cf7c
-  native_event_expected: FF6-EVENT-000028_OR_LATER_AFTER_NEW_VERIFIED_WORK
-  rule: >-
-    These paths are committed evidence on GitLab main and are safe to inspect.
-    They prove the current authority replay and package/root census. The UBL
-    taskcard is now WORK_IN_PROGRESS at PACKAGE_CENSUS_COMPLETE. The reachable
-    schema graph is absent, and no product or promotion status changed.
+    The packet commit must descend from both ancestors. The packet cannot
+    embed the hash of the commit containing its own final bytes.
 
 goal:
   goal_id: FF6-PRODUCTION-LIBRARIES-001
@@ -197,33 +25,20 @@ goal:
 
 controller:
   state: CONTRACT
-  transition_sequence: 27
-  event_id: FF6-EVENT-000027
-  event_hash: 9a1783b0705468fec1e9f9fda96f61ab4b1da32a161d128a3120a8bf689686c2
+  transition_sequence: 28
+  event_id: FF6-EVENT-000028
+  event_hash: 131631d21906c86ade3775d12504f97d8b55defb8987040a97d3f29af621713e
   next_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
   next_task_state: WORK_IN_PROGRESS
+  exact_microstep: XLF-04-BATCH-005
   parent_task: TC-FF6-PROGRAM-CAPABILITIES-001
   parent_task_state: NEEDS_REPAIR
 
-resume_route:
-  canonical_active_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
-  canonical_exact_action: XLF-04-BATCH-005
-  safe_action_if_batch005_live_owned: >-
-    Execute UBL-03 under disjoint leases: compile the complete reachable
-    schema graph, independently verify it, and only then append the next
-    native event while retaining XLIFF as active.
-  safe_action_if_batch005_unowned: >-
-    Claim exact XLIFF paths and continue Batch 005 from Event 27 or from a
-    validated newer immutable implementation commit.
-
-program_denominator:
+program_truth:
   capabilities: 110
   obligations: 672
-  authority_records: 17
-  authority_matches: 17
-  product_contract_lifecycle:
-    draft: 6
-  promotion:
+  product_contracts_draft: 6
+  promotions:
     program: UNASSESSED
     ipynb: UNASSESSED
     ora: UNASSESSED
@@ -231,195 +46,109 @@ program_denominator:
     xliff: UNASSESSED
     safetensors: UNASSESSED
     ubl: UNASSESSED
+  production_certifications: 0
 
-products:
-  ipynb:
-    capabilities: 25
-    obligations: 68
-    profile_surface: PASS_CONTRACT_ONLY
-    source_package: present_partial
-    production_certification: absent
-  ora:
-    capabilities: 20
-    obligations: 134
-    profile_surface: PASS_INTEROPERABILITY_CONTRACT_ONLY
-    source_package: absent
-    production_certification: absent
-  nrrd:
-    capabilities: 21
-    obligations: 65
-    profile_surface: PASS_CONTRACT_ONLY
-    source_package: present_partial
-    production_certification: absent
-  xliff:
-    capabilities: 15
-    obligations: 125
-    profile_surface: WORK_IN_PROGRESS
-    source_package: present_partial
-    production_certification: absent
-  safetensors:
-    capabilities: 11
-    obligations: 86
-    profile_surface: COMPILED_NOT_PROVEN
-    source_package: present_partial
-    production_certification: absent
-  ubl:
-    capabilities: 18
-    obligations: 194
-    profile_surface: PACKAGE_CENSUS_COMPLETE
-    package_census: VERIFIED_890_MEMBERS_91_ROOTS
-    authority_sal_replay: VERIFIED_34_OF_34
-    taskcard_projection: WORK_IN_PROGRESS
-    reachable_schema_graph: absent
-    source_package: present_partial
-    production_certification: absent
+workspace_transfer:
+  status: RESUMABLE_COMMITTED_BOUNDARY_WITH_STALE_XLIFF_RECOVERY
+  clean_checkpoint_commit: cde3b417006582551d2de69eff65e4ce4288529c
+  local_only_required_for_clean_resume: false
+  current_bytes_are_clean_checkpoint: false
+  current_bytes_frozen_by_handover: false
+  incoming_provider: claude
+  incoming_identity_rule: REGISTER_NEW_IDENTITY
+  selection_rule: >-
+    Recompute live state. Take over stale XLIFF recovery and resume Batch 005;
+    if XLIFF is live-owned, continue the disjoint UBL graph microstep. A newer
+    native event supersedes this projection.
+  recovery_assets:
+    - path: reports/ff6/xliff-core-authority-candidate-census.yaml
+      presence_policy: OPTIONAL_LOCAL_RECOVERY
+      git_state_at_capture: MODIFIED_TRACKED
+      lf_sha256: 2b2557a09a0a7c95ecbcecf72ac6c8bedb7addcb221787b9eab254f687bf8207
+      canonical_bytes: 2629952
+      lines: 45847
+      role: GENERATED_CANDIDATE_CENSUS_IN_PROGRESS
+    - path: tests/tools/test_extract_sal_facts.py
+      presence_policy: OPTIONAL_LOCAL_RECOVERY
+      git_state_at_capture: MODIFIED_TRACKED
+      lf_sha256: 86dcfd486fe76552e35c0efd24c0c5036d0f11bc22b08507cb8c7e0e94274e62
+      canonical_bytes: 60349
+      lines: 1664
+      role: PRIMARY_BATCH005_TESTS
+    - path: tools/spec/extract_sal_facts.py
+      presence_policy: OPTIONAL_LOCAL_RECOVERY
+      git_state_at_capture: MODIFIED_TRACKED
+      lf_sha256: 8f98868393719aa249a73acdc6597536b54d674e56fbfb80539f3490e4fdb82d
+      canonical_bytes: 161850
+      lines: 4072
+      role: BATCH005_INTEGRATION_SOURCE
+    - path: tests/tools/test_extract_sal_facts_candidate_binding.py
+      presence_policy: OPTIONAL_LOCAL_RECOVERY
+      git_state_at_capture: UNTRACKED
+      lf_sha256: 34a9cddb5986548c0a3602a90ff914eab4a9940bbebe03141936cc977a8c7db6
+      canonical_bytes: 14247
+      lines: 452
+      role: CANDIDATE_BINDING_AND_TAMPER_CONTROLS
+    - path: tools/spec/xliff_core_candidate_binding.py
+      presence_policy: OPTIONAL_LOCAL_RECOVERY
+      git_state_at_capture: UNTRACKED
+      lf_sha256: 042c670acefff8d0a6932ea3df7f1582f887f756148dd0bdfc356f69ca56f8b7
+      canonical_bytes: 14443
+      lines: 387
+      role: CANDIDATE_BINDING_PRIMITIVE
 
-next_task_prerequisite:
-  task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
-  state: WORK_IN_PROGRESS
-  completed_steps:
-    - XLF-01
-    - XLF-02
-    - XLF-03
-    - XLF-04-BATCH-001
-    - XLF-04-BATCH-002
-    - XLF-04-BATCH-003
-    - XLF-04-BATCH-004
-  first_unmet_step: XLF-04
-  exact_next_action: >-
-    Execute XLF-04-BATCH-005: first reject forged requirement text,
-    member/source digests, and occurrence locations; add explicit candidate
-    classes and content-sensitive occurrence digests; then classify every
-    non-modal Core prose paragraph, replace all 78 coarse structural
-    dispositions, expand the expected-ID denominator where required, and
-    compile source-bound obligations while preserving the existing 25 rows.
-  xlf_04_batch_004:
-    implementation_commit: 1fef79b9d6c1ee1f6667e0c5c70435562c97544c
-    obligation_count: 25
-    expected_obligation_count: 105
-    resolved_expected_obligation_count: 25
-    missing_expected_obligation_count: 80
-    verification_status: SOURCE_BOUND_UNVERIFIED
-    denominator_status: OPEN_AUTHORITY_CENSUS
-    candidate_count: 542
-    candidate_counts:
-      normative_prose: 182
-      core_xsd: 264
-      core_schematron: 96
-    profile_relations:
-      common_identical: 411
-      common_changed: 19
-      removed_in_xliff_2_1: 4
-      added_in_xliff_2_1: 108
-    candidate_unmapped: 0
-    candidate_multiply_dispositioned: 0
-    candidate_mapped_expected_ids: 45
-    candidate_unresolved_expected_ids: 60
-    lexical_or_context_dispositions: 464
-    coarse_structural_dispositions: 78
-    candidate_scope_complete: true
-    non_modal_prose_classification_complete: false
-    normative_obligation_inventory_complete: false
-    independent_post_commit_audit:
-      status: NEEDS_REPAIR
-      accepted_tamper_mutations:
-        - normalized_requirement_without_digest_update
-        - member_sha256
-        - source_sha256
-        - occurrence_location
-      missing_explicit_fields:
-        - content_sensitive_candidate_digest
-        - candidate_class
-    core_obligation_inventory:
-      obligations: 25
-      expected_obligation_count: 105
-      resolved_expected_obligation_count: 25
-      missing_expected_obligation_count: 80
-    evidence_wording: >-
-      The six committed Batch 004 files are source, tests, census, and three
-      skill transcripts.
+latest_xliff_observation:
+  observed_at: "2026-07-29T21:44:00Z"
+  status: STALE_SUSPECT_XLIFF_BATCH005_RECOVERY_WORKING_SET
+  owner:
+    agent_id: agent-codex-20260729T190440-e2dd38
+    task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
+    coordination_status: STALE_SUSPECT
+  takeover_required: true
+  current_bytes_canonical: false
+  dirty_path_count: 5
+  focused_replay:
+    command: >-
+      .venv\Scripts\python.exe -m pytest
+      tests/tools/test_extract_sal_facts.py
+      tests/tools/test_extract_sal_facts_candidate_binding.py -q
+    passed: 62
+    failed: 0
+  truth_boundary: >-
+    Focused tests pass on the current local bytes. Broad gates, deterministic
+    generation, authority replay, receipts, commit, and native event proof
+    remain absent. Governed takeover and independent verification are required.
 
-artifacts:
-  source:
-    path: tools/spec/extract_sal_facts.py
-    sha256: 138385387e78e567782df467829a468707b4edaeb32e458d7092c11f0f0270fa
-  tests:
-    path: tests/tools/test_extract_sal_facts.py
-    sha256: f0dc5db56d19f9669d9875e7f11303c87d2a4ee49a2d0619710ccb45b21eef72
-  matrix:
-    path: reports/ff6/xliff-normative-delta-matrix.yaml
-    sha256: 9f4ea4b8b71378217af26c0fb2b97a759817a0aca6c64255b8cd55170c60a090
-  denominator:
-    path: reports/ff6/xliff-core-obligation-denominator.yaml
-    sha256: c1a326e42bd1b47ec792088258f81fc4eac0b02543c57beedb48242181d008da
-  obligation_inventory:
-    path: reports/ff6/xliff-core-obligation-inventory.yaml
-    sha256: ae4d00af06fffc1eaf7741cd131d8ed7e7fc8a89b2a195acf4f649b5f44b6bbb
-  candidate_census:
-    path: reports/ff6/xliff-core-authority-candidate-census.yaml
-    sha256: 7227f43bb8d5ad93d0770df60f061d24cdd0ac5f521bd2ae5af2a6712407c69a
-  ubl_package_root_census:
-    path: reports/ff6/ubl-package-root-census.yaml
-    sha256: 787c8d9258dc25a8662ee934b9b0b14096de790db87826dab970792b9494976d
-  ubl_census_compiler:
-    path: tools/spec/compile_ubl_schema_graph.py
-    sha256: 118a51b58c5809bc819a18535b1283d3fb1e37834a8f667e2aaa264c25110b50
-  ubl_census_tests:
-    path: tests/tools/test_compile_ubl_schema_graph.py
-    sha256: 0853b17f3d651d2c63afda2a40cf962f397ebf6613feafb686b2dadf829911f8
-
-verified_at_event_26:
-  focused_tests: 34 passed
-  format_contract_regression: 94 passed, 1 baseline-known deselected
-  production_program_regression: 69 passed
-  ruff: PASS
-  mypy_strict: PASS
-  pyright: PASS_ZERO_DIAGNOSTICS_1_1_411
-  py_compile: PASS
-  xliff_authority_audit: 5/5 MATCH
-  artifact_check_modes: PASS
-  census_replay: 3 byte-identical
-
-verified_parallel_ubl_checkpoint:
-  implementation_commit: 7fc49c290bdbfcb8c27bb8ca5c39f6f5576f242c
-  focused_tests: 13 verifier and 12 census tests passed
-  production_program_regression: 69 passed
-  ruff: PASS
-  mypy_strict: PASS
-  pyright: PASS_ZERO_DIAGNOSTICS_1_1_411
-  py_compile: PASS
-  ubl_authority_materializer: 3/3 MATCH
-  census_check_mode: PASS
-  census_replay: 3 byte-identical
-  census_sha256: 787c8d9258dc25a8662ee934b9b0b14096de790db87826dab970792b9494976d
-  sal_replay: PASS_34_OF_34
-  sal_receipt_sha256: 2cc0f2cac163b7f42ab18bbe5220837d1f49a808904ac964c536085ca6d111a0
-  capability_compiler_check: PASS
-  capability_three_run_digest: eafd6f8657ed83b73dbd5975046698d24fda6d8fd58c3d6aea962e6b6a85cf7c
-  format_contract_regression: 94 passed, 1 unrelated CSV idempotency failure
-  native_event: FF6-EVENT-000027
-  controller_checkpoint_commit: 59ef8ee2e1b4e37168e4c7094687fac0a6098a79
-  taskcard_state: WORK_IN_PROGRESS
-  detailed_substate: PACKAGE_CENSUS_COMPLETE
+parallel_ubl_checkpoint:
+  status: SERIALIZED_PARTIAL_CHECKPOINT
+  task_id: TC-FF6-UBL-TYPING-001
+  implementation_commit: f98d220a0a3903b1107de90b2e39bf480ec4b19d
+  event_id: FF6-EVENT-000028
+  detailed_substate: SCHEMA_GRAPH_ROOT_TYPE_BINDING_PARTIAL
+  completed_steps: [UBL-01, UBL-02]
   first_unmet_step: UBL-03
+  completed_microstep: UBL-03-PARTIAL-001
+  next_microstep: UBL-03-PARTIAL-002
+  package_sha256: 623bef8310db4d979ff28000a96bcc56dbcdda4f6206cf094c0aa79b75817970
+  schema_documents: 106
+  document_roots: 91
+  root_type_nodes: 182
+  root_type_edges: 91
+  graph_sha256: 7b754187690ce1bb04db62657cfb552653cb381a1bdd745a56856e58215af029
+  focused_tests: 14 passed
+  deterministic_runs: 3
+  reachable_schema_graph_complete: false
+  product_or_promotion_effect: NONE
 
-current_gaps:
-  critical: 1
-  high: 7
-  medium: 3
-  total: 11
-  first_program_block: FF6-XLIFF-PROFILE-001
-  next_program_block: FF6-UBL-TYPING-001
+resume_route:
+  canonical_action: XLF-04-BATCH-005
+  canonical_action_requires: governed takeover and independent replay
+  safe_disjoint_fallback: UBL-03-PARTIAL-002
+  newer_event_rule: validate and follow the newer projection
 
 truth_boundary:
-  contract_compilation_is_product_proof: false
-  candidate_routing_is_obligation_resolution: false
-  tests_or_file_presence_are_certification: false
   xlf_04_complete: false
+  ubl_03_complete: false
+  product_source_changed_by_event_28: false
+  product_or_promotion_change_in_event_28: false
   products_certified: 0
-  product_or_promotion_change_in_event_26: false
-  product_or_promotion_change_in_event_27: false
-  ubl_package_census_is_product_proof: false
-  ubl_full_authority_replay_complete: true
-  ubl_reachable_schema_graph_complete: false
-  product_or_promotion_change_in_parallel_ubl_checkpoint: false
