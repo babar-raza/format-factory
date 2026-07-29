@@ -6,11 +6,11 @@ contract_metadata:
   extensions:
   - .safetensors
   family: binary_tensor
-  target_spec_version: v0.8.0 commit a406ca3e7a90598be0cd05a50069cb9bf5ef6ba6
+  target_spec_version: safetensors v0.8.0 commit a406ca3e7a90598be0cd05a50069cb9bf5ef6ba6
   source_authority_status: AUTHORITATIVE
   generator_version: fcl-compiler/1.0.0
   lifecycle_status: DRAFT
-  confidence: low
+  confidence: medium
   supersedes: null
   input_digests:
     authority_lock_impl_sha256: 3295565e37b8a5ff47a6e05aa8b49b70bb8574171bbe2e7ba9362f344e20012c
@@ -20,9 +20,9 @@ contract_metadata:
     authority_runtime_sha256: 63e054c159f7e281fa12ef78a7de1af573606f74097ed398e662040e99f21682
     authority_src_safetensors_002_sha256: 50bc2c823b5b83f2411e03f3f74cd53b93202f3777160471092837cde68cbf12
     canonical_io_impl_sha256: aca19b1319bf7304d5136fd6c9d729cb50b22d8a23a17ca9314fdb0c58cc164d
-    contract_compiler_impl_sha256: e8c910d85e3618c4a1e884dab096e557e06e17678b3d878dc9c1faadd55a9eda
+    contract_compiler_impl_sha256: a872b9a71d459e57ff6600df0a3513af8c03e9714cfa0207881cd770984b586c
     contract_stores_impl_sha256: cd120c7990a37b0f913a2b59e81ab28fdf7b3d50897e38d78cb20fc9e0823f7a
-    fact_categories_sha256: fe2732633cdf17bad0a5e152b1f8c845ab46e1d8e018cb29b67dfb7a66181fce
+    fact_categories_sha256: aedd4c838073695752c724e8f53fd189f58653ca22e01b88f5932ebe9fe376bc
     family_pack_sha256: 229a99aeb5e4d5787049adb59ba7f07f21205977c583fe5268b8a84f19535574
     format_contract_schema_sha256: 4eb5cae2d69d0831291646f3cf21e5d019d6b0de2904a745b712cf5fa6c37da9
     qname_registry_sha256: 934a0866002b2ad70dc5144fed6d89d11dbf1965806ccb54af968a5a94ae4a51
@@ -37,7 +37,7 @@ format_identity:
     policy: Tensor metadata and payload bytes are passive data and are never executed, imported, or interpreted
       as plugins.
   data_model_type: binary
-  description: 'SafeTensors: binary tensor container (Hugging Face v0.8.0 commit a406ca3e7a90598be0cd05a50069cb9bf5ef6ba6)
+  description: 'SafeTensors: binary tensor container (Hugging Face safetensors v0.8.0 commit a406ca3e7a90598be0cd05a50069cb9bf5ef6ba6)
     with bounded metadata, named typed tensor descriptors, and a raw byte payload.'
   primary_use_cases:
   - Inspect tensor names, dtypes, shapes, metadata, and byte regions without loading the payload

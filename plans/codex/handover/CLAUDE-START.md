@@ -23,10 +23,10 @@ branch, a stale worktree, or a local transcript as authority.
 4. `plans/strategic/ff6/product-goal.yaml`
 5. `plans/strategic/autonomous-six-python-production-execution-plan.md`
 6. `plans/strategic/ff6/controller-state.yaml`
-7. all 16 records in `plans/strategic/ff6/events.jsonl`
+7. all 17 records in `plans/strategic/ff6/events.jsonl`
 8. `plans/strategic/ff6/current-gaps.yaml`
 9. `taskcards/TC-FF6-PROGRAM-CAPABILITIES-001.md`
-10. `taskcards/TC-FF6-ORA-PROFILE-SURFACE-001.md`
+10. `taskcards/TC-FF6-IPYNB-PROFILE-SURFACE-001.md`
 11. `plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md`
 12. `.supervisor/knowledge/registry.yaml` and every verified-current contract
     applicable before any later product-source mutation
@@ -36,14 +36,14 @@ branch, a stale worktree, or a local transcript as authority.
 Fetch `origin/main` and require that the checkout contains:
 
 - controller state `CONTRACT`;
-- event `FF6-EVENT-000016` with hash
-  `2ea206536ff0ccecaa0a4e93df32ada3e7575018f4cdcafb7525c59d51dd50ba`;
+- event `FF6-EVENT-000017` with hash
+  `44cb90a67aec8fff244de05d84c047f1d31077d694eda1ff1e27ee0aaa0f3015`;
 - parent `TC-FF6-PROGRAM-CAPABILITIES-001` in `NEEDS_REPAIR`;
-- completed `TC-FF6-AUTHORITY-CLOSURE-001` in `PASS`;
-- exact next task `TC-FF6-ORA-PROFILE-SURFACE-001` in `READY`;
+- completed `TC-FF6-ORA-PROFILE-SURFACE-001` in `PASS`;
+- exact next task `TC-FF6-IPYNB-PROFILE-SURFACE-001` in `READY`;
 - 15/15 authority artifacts `MATCH`;
 - capability aggregate
-  `667cd4cb69773e6746ad46173b53de39c18ef44d39ef7db91c6337d8a3761a73`.
+  `de6a38a86aa7a82cc50dc7dc6ebfa0066c811d8de782a37684fd26d20a89272a`.
 
 Validate the FF6 journal using its native
 `previous_event_hash`/`ff6/controller-event@1` contract. The generic
@@ -53,17 +53,17 @@ permission to alter either journal.
 
 ## Execute exactly this task
 
-Execute `TC-FF6-ORA-PROFILE-SURFACE-001`. Repair the OpenRaster 0.0.3,
-0.0.4, and 0.0.5 profile applicability and explicit image/layer/mask/
-compositing/rendering capability surface through the registered SAL, contract,
-capability-compiler, taskcard, and controller skills.
+Execute `TC-FF6-IPYNB-PROFILE-SURFACE-001`. Compile exact nbformat 4.0-4.5
+capability and obligation applicability from the pinned official schemas and
+documentation through the registered SAL, contract, capability-compiler,
+taskcard, and controller skills.
 
 Do not:
 
 - recreate the authority lock or materializer;
 - modify product source or product tests during this task;
-- suppress `FF6-ORA-SURFACE-001` or `FF6-ORA-PROFILE-001` in policy;
-- treat an early OpenRaster draft as universal conformance authority;
+- suppress `FF6-IPYNB-PROFILE-001` in policy;
+- weaken the notebook no-execution boundary;
 - close the parent while another mandatory profile/surface gap remains;
 - create a branch or use GitHub;
 - ask for continuation.

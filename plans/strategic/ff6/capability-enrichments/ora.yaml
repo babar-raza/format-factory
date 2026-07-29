@@ -2,38 +2,319 @@ schema: ff6/capability-enrichment@1
 goal_id: FF6-PRODUCTION-LIBRARIES-001
 format_id: ora
 capabilities:
-- capability_id: ORA-CODEC-001
-  stable_name: Compression codec correctness
+- capability_id: ORA-ASSET-001
+  stable_name: Referenced raster asset model
   classification: STABLE_REQUIRED
   developer_use_cases:
-  - A developer decompresses reference-produced data and byte-identical content emerges.
+  - A developer replaces layer pixels or streams an asset without losing its relationship to the layer tree.
   spec_profiles:
   - openraster_0.0.3
+  - openraster_0.0.4
+  - openraster_0.0.5
   authority_fact_ids:
-  - POL-ARC-CODEC-01
+  - POL-LRA-ASSET-01
+  - SAL-ORA-00003
+  - SAL-ORA-00004
+  - SAL-ORA-00006
   - SAL-ORA-00007
+  - SAL-ORA-00008
+  - SAL-ORA-00009
+  - SAL-ORA-00016
+  - SAL-ORA-00017
+  - SAL-ORA-00018
+  - SAL-ORA-00019
+  - SAL-ORA-00020
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Resolve archive-root-relative asset references safely; expose raster metadata before decode; validate existence, media type, dimensions, channel depth, and declared resource budgets.
+  preservation_contract: &id001
+  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller choice.
+  - Report every construct that cannot be preserved before saving, through a loss report API, rather than failing silently.
+  - Preserve the distinction between an absent optional value and an explicitly written default or empty value.
+  - Preserve unknown or future-version constructs that can be carried safely; never silently drop unrecognized content in lossless mode.
+  error_contract: &id002
+  - code
+  - severity
+  - message
+  - source_location
+  - object_path
+  - originating_rule
+  - repair_suggestion
+  - auto_repair_eligible
+  security_contract:
+  - Treat all input as untrusted and enforce configured resource limits before allocation or external access.
+  resource_limits:
+  - Bound input bytes, expanded bytes, nesting, object count, and decoded payload size.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - canonical authority lock and materialized authority bytes
+  - canonical format contract and SAL facts/evidence
+  - FF6 capability and profile policy
+  taskcard_ids:
+  - TC-FF6-ORA-PROFILE-SURFACE-001
+  release_state: PLANNED
+- capability_id: ORA-BASELINEASSET-001
+  stable_name: Thumbnail and flattened viewing assets
+  classification: STABLE_REQUIRED
+  developer_use_cases:
+  - A developer refreshes thumbnails and flattened views for file browsers and non-editing consumers.
+  spec_profiles:
+  - openraster_0.0.3
+  - openraster_0.0.4
+  - openraster_0.0.5
+  authority_fact_ids:
+  - POL-LRA-BASELINE-ASSET-01
+  - SAL-ORA-00009
+  - SAL-ORA-00019
+  - SAL-ORA-00020
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Read, validate, generate, and replace required thumbnail and flattened-view assets without confusing them with editable layer sources.
+  preservation_contract: *id001
+  error_contract: *id002
+  security_contract:
+  - Treat all input as untrusted and enforce configured resource limits before allocation or external access.
+  resource_limits:
+  - Bound input bytes, expanded bytes, nesting, object count, and decoded payload size.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - canonical authority lock and materialized authority bytes
+  - canonical format contract and SAL facts/evidence
+  - FF6 capability and profile policy
+  taskcard_ids:
+  - TC-FF6-ORA-PROFILE-SURFACE-001
+  release_state: PLANNED
+- capability_id: ORA-COMPOSITE-001
+  stable_name: Compositing operation semantics
+  classification: STABLE_REQUIRED
+  developer_use_cases:
+  - A developer renders or changes blend modes and receives predictable pixel results.
+  spec_profiles:
+  - openraster_0.0.3
+  - openraster_0.0.4
+  - openraster_0.0.5
+  authority_fact_ids:
+  - POL-LRA-COMPOSITE-01
+  - SAL-ORA-00011
+  - SAL-ORA-00015
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Expose the selected profile's complete compositing-operation inventory, default operation, validation, and pixel semantics through a replaceable rendering adapter.
+  preservation_contract: *id001
+  error_contract: *id002
+  security_contract:
+  - Treat all input as untrusted and enforce configured resource limits before allocation or external access.
+  resource_limits:
+  - Bound input bytes, expanded bytes, nesting, object count, and decoded payload size.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - canonical authority lock and materialized authority bytes
+  - canonical format contract and SAL facts/evidence
+  - FF6 capability and profile policy
+  taskcard_ids:
+  - TC-FF6-ORA-PROFILE-SURFACE-001
+  release_state: PLANNED
+- capability_id: ORA-CONTAINER-001
+  stable_name: Layered raster archive structure
+  classification: STABLE_REQUIRED
+  developer_use_cases:
+  - A developer probes an archive and enumerates its document and raster members without extracting them.
+  spec_profiles:
+  - openraster_0.0.3
+  - openraster_0.0.4
+  - openraster_0.0.5
+  authority_fact_ids:
+  - POL-LRA-CONTAINER-01
+  - SAL-ORA-00002
+  - SAL-ORA-00003
+  - SAL-ORA-00004
+  - SAL-ORA-00007
+  - SAL-ORA-00008
+  - SAL-ORA-00016
+  - SAL-ORA-00017
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Decode the archive wrapper and member directory; reject duplicate, traversal, absolute, malformed Unicode, unsupported-compression, truncated, or limit-exceeding entries before payload use.
+  preservation_contract: *id001
+  error_contract: *id002
+  security_contract:
+  - Treat all input as untrusted and enforce configured resource limits before allocation or external access.
+  resource_limits:
+  - Bound input bytes, expanded bytes, nesting, object count, and decoded payload size.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - canonical authority lock and materialized authority bytes
+  - canonical format contract and SAL facts/evidence
+  - FF6 capability and profile policy
+  taskcard_ids:
+  - TC-FF6-ORA-PROFILE-SURFACE-001
+  release_state: PLANNED
+- capability_id: ORA-DOCUMENT-001
+  stable_name: Image document and canvas model
+  classification: STABLE_REQUIRED
+  developer_use_cases:
+  - A developer creates and inspects an image document and canvas without manipulating XML directly.
+  spec_profiles:
+  - openraster_0.0.3
+  - openraster_0.0.4
+  - openraster_0.0.5
+  authority_fact_ids:
+  - POL-LRA-DOCUMENT-01
+  - SAL-ORA-00010
+  - SAL-ORA-00018
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Expose typed root-document, declared-profile, canvas-size, resolution, and root-stack values; validate dimensions with checked arithmetic.
+  preservation_contract: *id001
+  error_contract: *id002
+  security_contract:
+  - Treat all input as untrusted and enforce configured resource limits before allocation or external access.
+  resource_limits:
+  - Bound input bytes, expanded bytes, nesting, object count, and decoded payload size.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - canonical authority lock and materialized authority bytes
+  - canonical format contract and SAL facts/evidence
+  - FF6 capability and profile policy
+  taskcard_ids:
+  - TC-FF6-ORA-PROFILE-SURFACE-001
+  release_state: PLANNED
+- capability_id: ORA-EDIT-001
+  stable_name: Transactional document editing
+  classification: STABLE_REQUIRED
+  developer_use_cases:
+  - A developer performs multi-step edits atomically and can validate or abandon the result.
+  spec_profiles:
+  - openraster_0.0.3
+  - openraster_0.0.4
+  - openraster_0.0.5
+  authority_fact_ids:
+  - POL-LRA-EDIT-01
+  - SAL-ORA-00001
+  - SAL-ORA-00002
+  - SAL-ORA-00003
+  - SAL-ORA-00005
+  - SAL-ORA-00008
+  - SAL-ORA-00009
+  - SAL-ORA-00010
+  - SAL-ORA-00011
+  - SAL-ORA-00012
+  - SAL-ORA-00013
+  - SAL-ORA-00014
+  - SAL-ORA-00015
+  - SAL-ORA-00017
+  - SAL-ORA-00018
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Provide transactional add, replace, move, rename, and remove operations for groups, layers, assets, and metadata; maintain references and invalidate stale derived views.
+  preservation_contract: *id001
+  error_contract: *id002
+  security_contract:
+  - Treat all input as untrusted and enforce configured resource limits before allocation or external access.
+  resource_limits:
+  - Bound input bytes, expanded bytes, nesting, object count, and decoded payload size.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - canonical authority lock and materialized authority bytes
+  - canonical format contract and SAL facts/evidence
+  - FF6 capability and profile policy
+  taskcard_ids:
+  - TC-FF6-ORA-PROFILE-SURFACE-001
+  release_state: PLANNED
+- capability_id: ORA-GROUP-001
+  stable_name: Editable layer groups
+  classification: STABLE_REQUIRED
+  developer_use_cases:
+  - A developer groups layers and edits group properties without flattening pixels.
+  spec_profiles:
+  - openraster_0.0.3
+  - openraster_0.0.4
+  - openraster_0.0.5
+  authority_fact_ids:
+  - POL-LRA-GROUP-01
+  - SAL-ORA-00004
+  - SAL-ORA-00005
+  - SAL-ORA-00011
+  - SAL-ORA-00012
+  - SAL-ORA-00013
+  - SAL-ORA-00015
   - SAL-ORA-00016
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
-  - Match reference implementation outputs on the specification's test vectors; honor declared parameters, dictionaries, and window constraints.
-  preservation_contract:
-  - Preserve unknown or future-version constructs that can be carried safely; never silently drop unrecognized content in lossless mode.
-  error_contract:
-  - code
-  - severity
-  - message
-  - source_location
-  - object_path
-  - originating_rule
-  - repair_suggestion
-  - auto_repair_eligible
+  - Create, edit, move, and remove nested layer groups while enforcing group attributes, root restrictions, and lossless child preservation.
+  preservation_contract: *id001
+  error_contract: *id002
   security_contract:
-  - Decompression bombs exhausting memory or disk.
-  - Corrupted size fields causing over-allocation.
+  - Treat all input as untrusted and enforce configured resource limits before allocation or external access.
   resource_limits:
-  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded payload bytes, with safe defaults enabled.
-  - Decompressed-size and ratio limits enforced before and during decode.
+  - Bound input bytes, expanded bytes, nesting, object count, and decoded payload size.
   performance_budget: PLANNED
   dependency_policy: PLANNED
   positive_tests: PLANNED
@@ -46,40 +327,33 @@ capabilities:
   compatibility_status: PLANNED
   proof_node_ids: PLANNED
   invalidation_inputs:
-  - ORA authority status is NEEDS_AUTHORITY; provenance may shift when authoritative source is fully acquired.
-  - Reference test vectors unavailable or changed upstream.
+  - canonical authority lock and materialized authority bytes
+  - canonical format contract and SAL facts/evidence
+  - FF6 capability and profile policy
   taskcard_ids:
-  - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-ORA-PROFILE-SURFACE-001
   release_state: PLANNED
-- capability_id: ORA-CONTAINER-001
-  stable_name: Frame/entry structure decoding
+- capability_id: ORA-ISOLATION-001
+  stable_name: Group isolation semantics
   classification: STABLE_REQUIRED
   developer_use_cases:
-  - A developer probes a file, enumerates its frames/entries and metadata, and verifies integrity without extraction.
+  - A developer renders nested groups without backdrop leakage or profile ambiguity.
   spec_profiles:
-  - openraster_0.0.3
+  - openraster_0.0.4
+  - openraster_0.0.5
   authority_fact_ids:
-  - POL-ARC-CONTAINER-01
+  - POL-LRA-ISOLATION-01
+  - SAL-ORA-00011
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
-  - Decode magic numbers, frame/entry headers, size fields, and checksums per specification; verify integrity and report exact corruption positions.
-  preservation_contract:
-  - Preserve the distinction between an absent optional value and an explicitly written default or empty value.
-  error_contract:
-  - code
-  - severity
-  - message
-  - source_location
-  - object_path
-  - originating_rule
-  - repair_suggestion
-  - auto_repair_eligible
+  - Model declared and inferred group isolation separately, enforce profile availability, and render isolated groups against a transparent intermediate backdrop.
+  preservation_contract: *id001
+  error_contract: *id002
   security_contract:
-  - Corrupted size fields causing over-allocation.
+  - Treat all input as untrusted and enforce configured resource limits before allocation or external access.
   resource_limits:
-  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded payload bytes, with safe defaults enabled.
-  - Size fields validated with checked arithmetic before allocation.
+  - Bound input bytes, expanded bytes, nesting, object count, and decoded payload size.
   performance_budget: PLANNED
   dependency_policy: PLANNED
   positive_tests: PLANNED
@@ -92,40 +366,39 @@ capabilities:
   compatibility_status: PLANNED
   proof_node_ids: PLANNED
   invalidation_inputs:
-  - ORA authority status is NEEDS_AUTHORITY; provenance may shift when authoritative source is fully acquired.
-  - Container structure specification changes in future OpenRaster versions.
+  - canonical authority lock and materialized authority bytes
+  - canonical format contract and SAL facts/evidence
+  - FF6 capability and profile policy
   taskcard_ids:
-  - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-ORA-PROFILE-SURFACE-001
   release_state: PLANNED
-- capability_id: ORA-EDIT-001
-  stable_name: Container update semantics
+- capability_id: ORA-LAYER-001
+  stable_name: Editable raster layers
   classification: STABLE_REQUIRED
   developer_use_cases:
-  - A developer replaces one entry and the container remains valid for all consumers.
+  - A developer adds, edits, moves, hides, blends, and removes raster layers.
   spec_profiles:
   - openraster_0.0.3
+  - openraster_0.0.4
+  - openraster_0.0.5
   authority_fact_ids:
-  - POL-ARC-EDIT-01
+  - POL-LRA-LAYER-01
+  - SAL-ORA-00002
+  - SAL-ORA-00005
+  - SAL-ORA-00011
+  - SAL-ORA-00012
+  - SAL-ORA-00013
+  - SAL-ORA-00015
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
-  - Add, replace, and remove payloads/entries per the format's update semantics with checksums and indexes recomputed.
-  preservation_contract:
-  - Preserve unknown or future-version constructs that can be carried safely; never silently drop unrecognized content in lossless mode.
-  - Report every construct that cannot be preserved before saving, through a loss report API, rather than failing silently.
-  error_contract:
-  - code
-  - severity
-  - message
-  - source_location
-  - object_path
-  - originating_rule
-  - repair_suggestion
-  - auto_repair_eligible
+  - Model and edit raster-layer source, name, signed offsets, opacity, visibility, and compositing operation; reject invalid values without altering the document.
+  preservation_contract: *id001
+  error_contract: *id002
   security_contract:
-  - Entry-name path traversal on extraction.
+  - Treat all input as untrusted and enforce configured resource limits before allocation or external access.
   resource_limits:
-  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded payload bytes, with safe defaults enabled.
+  - Bound input bytes, expanded bytes, nesting, object count, and decoded payload size.
   performance_budget: PLANNED
   dependency_policy: PLANNED
   positive_tests: PLANNED
@@ -138,10 +411,11 @@ capabilities:
   compatibility_status: PLANNED
   proof_node_ids: PLANNED
   invalidation_inputs:
-  - ORA authority status is NEEDS_AUTHORITY; provenance may shift when authoritative source is fully acquired.
-  - Update semantics undefined in current informal spec; behavior derived from ZIP container conventions.
+  - canonical authority lock and materialized authority bytes
+  - canonical format contract and SAL facts/evidence
+  - FF6 capability and profile policy
   taskcard_ids:
-  - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-ORA-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: ORA-LIFECYCLE-001
   stable_name: Baseline lifecycle I/O
@@ -150,6 +424,8 @@ capabilities:
   - A developer integrates the library with only lifecycle APIs and never needs format-internal knowledge for I/O plumbing.
   spec_profiles:
   - openraster_0.0.3
+  - openraster_0.0.4
+  - openraster_0.0.5
   authority_fact_ids:
   - POL-SLC-LIFECYCLE-01
   - POL-SLC-LIFECYCLE-02
@@ -166,21 +442,12 @@ capabilities:
   - Support a strict read mode that rejects malformed input with diagnostics and a tolerant read mode that recovers where the format permits, with recovery actions reported.
   - Expose validation as a first-class callable operation returning structured diagnostics, not only as exceptions raised during parsing.
   - Offer deterministic serialization such that an unchanged loaded document serializes to identical bytes across repeated calls in the same mode.
-  preservation_contract:
-  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller choice.
-  error_contract:
-  - code
-  - severity
-  - message
-  - source_location
-  - object_path
-  - originating_rule
-  - repair_suggestion
-  - auto_repair_eligible
+  preservation_contract: *id001
+  error_contract: *id002
   security_contract:
-  - Never resolve network resources, execute embedded code, load plugins, or follow external references during load, validate, or save unless explicitly enabled by the caller.
+  - Treat all input as untrusted and enforce configured resource limits before allocation or external access.
   resource_limits:
-  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded payload bytes, with safe defaults enabled.
+  - Bound input bytes, expanded bytes, nesting, object count, and decoded payload size.
   performance_budget: PLANNED
   dependency_policy: PLANNED
   positive_tests: PLANNED
@@ -193,41 +460,35 @@ capabilities:
   compatibility_status: PLANNED
   proof_node_ids: PLANNED
   invalidation_inputs:
-  - ORA authority status is NEEDS_AUTHORITY; provenance may shift when authoritative source is fully acquired.
-  - Lifecycle API surface depends on shared-library-contract baseline which may evolve.
+  - canonical authority lock and materialized authority bytes
+  - canonical format contract and SAL facts/evidence
+  - FF6 capability and profile policy
   taskcard_ids:
-  - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-ORA-PROFILE-SURFACE-001
   release_state: PLANNED
-- capability_id: ORA-MODEL-001
-  stable_name: Container metadata model
+- capability_id: ORA-MASK-001
+  stable_name: Safe mask extension surface
   classification: STABLE_REQUIRED
   developer_use_cases:
-  - A developer lists entries with sizes and metadata from a large archive in milliseconds.
+  - A developer can carry application masks through an edit pipeline without silent loss.
   spec_profiles:
   - openraster_0.0.3
+  - openraster_0.0.4
+  - openraster_0.0.5
   authority_fact_ids:
-  - POL-ARC-MODEL-01
-  - SAL-ORA-00004
-  - SAL-ORA-00014
+  - POL-LRA-MASK-01
+  - SAL-ORA-00006
+  - SAL-ORA-00008
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
-  - Expose typed container metadata (frames/entries, sizes, checksums, format flags) enumerable without full payload decode.
-  preservation_contract:
-  - Preserve the distinction between an absent optional value and an explicitly written default or empty value.
-  error_contract:
-  - code
-  - severity
-  - message
-  - source_location
-  - object_path
-  - originating_rule
-  - repair_suggestion
-  - auto_repair_eligible
+  - Provide an explicit mask extension model and registry boundary; preserve unrecognized mask elements and assets losslessly, and label them as extensions rather than baseline constructs.
+  preservation_contract: *id001
+  error_contract: *id002
   security_contract:
-  - Corrupted size fields causing over-allocation.
+  - Treat all input as untrusted and enforce configured resource limits before allocation or external access.
   resource_limits:
-  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded payload bytes, with safe defaults enabled.
+  - Bound input bytes, expanded bytes, nesting, object count, and decoded payload size.
   performance_budget: PLANNED
   dependency_policy: PLANNED
   positive_tests: PLANNED
@@ -240,10 +501,53 @@ capabilities:
   compatibility_status: PLANNED
   proof_node_ids: PLANNED
   invalidation_inputs:
-  - ORA authority status is NEEDS_AUTHORITY; provenance may shift when authoritative source is fully acquired.
-  - Layer Stack authority labels version 0.0.5 an early draft; metadata model may change.
+  - canonical authority lock and materialized authority bytes
+  - canonical format contract and SAL facts/evidence
+  - FF6 capability and profile policy
   taskcard_ids:
-  - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-ORA-PROFILE-SURFACE-001
+  release_state: PLANNED
+- capability_id: ORA-MIMETYPE-001
+  stable_name: Archive media-type sentinel
+  classification: STABLE_REQUIRED
+  developer_use_cases:
+  - A service cheaply rejects a renamed or structurally ambiguous archive before parsing its document.
+  spec_profiles:
+  - openraster_0.0.3
+  - openraster_0.0.4
+  - openraster_0.0.5
+  authority_fact_ids:
+  - POL-LRA-MIMETYPE-01
+  - SAL-ORA-00003
+  - SAL-ORA-00007
+  - SAL-ORA-00016
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Validate the format media-type sentinel exactly, including required archive position, compression method, bytes, and absence of forbidden whitespace.
+  preservation_contract: *id001
+  error_contract: *id002
+  security_contract:
+  - Treat all input as untrusted and enforce configured resource limits before allocation or external access.
+  resource_limits:
+  - Bound input bytes, expanded bytes, nesting, object count, and decoded payload size.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - canonical authority lock and materialized authority bytes
+  - canonical format contract and SAL facts/evidence
+  - FF6 capability and profile policy
+  taskcard_ids:
+  - TC-FF6-ORA-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: ORA-PRESERVE-001
   stable_name: Baseline preservation duties
@@ -252,6 +556,8 @@ capabilities:
   - A developer round-trips files containing constructs the library does not model and loses nothing silently.
   spec_profiles:
   - openraster_0.0.3
+  - openraster_0.0.4
+  - openraster_0.0.5
   authority_fact_ids:
   - POL-SLC-PRESERVE-01
   - POL-SLC-PRESERVE-02
@@ -264,24 +570,12 @@ capabilities:
   - Preserve the distinction between an absent optional value and an explicitly written default or empty value.
   - Report every construct that cannot be preserved before saving, through a loss report API, rather than failing silently.
   - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller choice.
-  preservation_contract:
-  - Preserve unknown or future-version constructs that can be carried safely; never silently drop unrecognized content in lossless mode.
-  - Preserve the distinction between an absent optional value and an explicitly written default or empty value.
-  - Report every construct that cannot be preserved before saving, through a loss report API, rather than failing silently.
-  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller choice.
-  error_contract:
-  - code
-  - severity
-  - message
-  - source_location
-  - object_path
-  - originating_rule
-  - repair_suggestion
-  - auto_repair_eligible
+  preservation_contract: *id001
+  error_contract: *id002
   security_contract:
-  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing must not evaluate them.
+  - Treat all input as untrusted and enforce configured resource limits before allocation or external access.
   resource_limits:
-  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded payload bytes, with safe defaults enabled.
+  - Bound input bytes, expanded bytes, nesting, object count, and decoded payload size.
   performance_budget: PLANNED
   dependency_policy: PLANNED
   positive_tests: PLANNED
@@ -294,10 +588,96 @@ capabilities:
   compatibility_status: PLANNED
   proof_node_ids: PLANNED
   invalidation_inputs:
-  - ORA authority status is NEEDS_AUTHORITY; provenance may shift when authoritative source is fully acquired.
-  - Unknown-construct preservation scope depends on ZIP container extension mechanisms.
+  - canonical authority lock and materialized authority bytes
+  - canonical format contract and SAL facts/evidence
+  - FF6 capability and profile policy
   taskcard_ids:
-  - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-ORA-PROFILE-SURFACE-001
+  release_state: PLANNED
+- capability_id: ORA-RENDER-001
+  stable_name: Deterministic document rendering
+  classification: STABLE_REQUIRED
+  developer_use_cases:
+  - A developer renders a document or subtree to a raster through a pinned adapter.
+  spec_profiles:
+  - openraster_0.0.3
+  - openraster_0.0.4
+  - openraster_0.0.5
+  authority_fact_ids:
+  - POL-LRA-RENDER-01
+  - SAL-ORA-00001
+  - SAL-ORA-00011
+  - SAL-ORA-00012
+  - SAL-ORA-00013
+  - SAL-ORA-00015
+  - SAL-ORA-00020
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Render documents and subtrees deterministically with clipping, order, offsets, visibility, opacity, compositing, isolation, color-mode, and resource-limit semantics documented.
+  preservation_contract: *id001
+  error_contract: *id002
+  security_contract:
+  - Treat all input as untrusted and enforce configured resource limits before allocation or external access.
+  resource_limits:
+  - Bound input bytes, expanded bytes, nesting, object count, and decoded payload size.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - canonical authority lock and materialized authority bytes
+  - canonical format contract and SAL facts/evidence
+  - FF6 capability and profile policy
+  taskcard_ids:
+  - TC-FF6-ORA-PROFILE-SURFACE-001
+  release_state: PLANNED
+- capability_id: ORA-RESOLUTION-001
+  stable_name: Profile-dependent document resolution
+  classification: STABLE_REQUIRED
+  developer_use_cases:
+  - A developer reads or changes print resolution without altering canvas pixels.
+  spec_profiles:
+  - openraster_0.0.3
+  - openraster_0.0.4
+  - openraster_0.0.5
+  authority_fact_ids:
+  - POL-LRA-RESOLUTION-01
+  - SAL-ORA-00010
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Model paired positive horizontal and vertical resolution values, distinguish absent values from defaults, and enforce the profiles in which resolution is defined.
+  preservation_contract: *id001
+  error_contract: *id002
+  security_contract:
+  - Treat all input as untrusted and enforce configured resource limits before allocation or external access.
+  resource_limits:
+  - Bound input bytes, expanded bytes, nesting, object count, and decoded payload size.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - canonical authority lock and materialized authority bytes
+  - canonical format contract and SAL facts/evidence
+  - FF6 capability and profile policy
+  taskcard_ids:
+  - TC-FF6-ORA-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: ORA-SEC-001
   stable_name: Baseline security posture
@@ -306,6 +686,8 @@ capabilities:
   - A developer processes untrusted input with safe defaults and only opts into external effects explicitly.
   spec_profiles:
   - openraster_0.0.3
+  - openraster_0.0.4
+  - openraster_0.0.5
   authority_fact_ids:
   - POL-SLC-SEC-01
   - POL-SLC-SEC-02
@@ -320,31 +702,12 @@ capabilities:
   - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced resource.
   - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing must not evaluate them.
   - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations and bound recursion depth.
-  preservation_contract:
-  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller choice.
-  error_contract:
-  - code
-  - severity
-  - message
-  - source_location
-  - object_path
-  - originating_rule
-  - repair_suggestion
-  - auto_repair_eligible
+  preservation_contract: *id001
+  error_contract: *id002
   security_contract:
-  - Decompression bombs exhausting memory or disk.
-  - Entry-name path traversal on extraction.
-  - Corrupted size fields causing over-allocation.
-  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded payload bytes, with safe defaults enabled.
-  - Never resolve network resources, execute embedded code, load plugins, or follow external references during load, validate, or save unless explicitly enabled by the caller.
-  - Prevent path traversal and unapproved absolute-path access when resolving any detached or referenced resource.
-  - Treat all embedded payloads (scripts, styles, binary blobs, signatures) as untrusted data; parsing must not evaluate them.
-  - Guard against algorithmic complexity attacks; use checked arithmetic for size and count calculations and bound recursion depth.
+  - Treat all input as untrusted and enforce configured resource limits before allocation or external access.
   resource_limits:
-  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded payload bytes, with safe defaults enabled.
-  - Decompressed-size and ratio limits enforced before and during decode.
-  - Extraction confined to configured roots with entry-name sanitization.
-  - Size fields validated with checked arithmetic before allocation.
+  - Bound input bytes, expanded bytes, nesting, object count, and decoded payload size.
   performance_budget: PLANNED
   dependency_policy: PLANNED
   positive_tests: PLANNED
@@ -357,143 +720,91 @@ capabilities:
   compatibility_status: PLANNED
   proof_node_ids: PLANNED
   invalidation_inputs:
-  - ORA authority status is NEEDS_AUTHORITY; provenance may shift when authoritative source is fully acquired.
-  - Security attack surface may expand with new OpenRaster features or ZIP extensions.
+  - canonical authority lock and materialized authority bytes
+  - canonical format contract and SAL facts/evidence
+  - FF6 capability and profile policy
   taskcard_ids:
-  - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-ORA-PROFILE-SURFACE-001
+  release_state: PLANNED
+- capability_id: ORA-STACK-001
+  stable_name: Ordered nested layer tree
+  classification: STABLE_REQUIRED
+  developer_use_cases:
+  - A developer traverses, reorders, inserts, and removes nested content while visual order remains explicit.
+  spec_profiles:
+  - openraster_0.0.3
+  - openraster_0.0.4
+  - openraster_0.0.5
+  authority_fact_ids:
+  - POL-LRA-STACK-01
+  - SAL-ORA-00001
+  - SAL-ORA-00002
+  - SAL-ORA-00003
+  - SAL-ORA-00005
+  - SAL-ORA-00009
+  - SAL-ORA-00010
+  - SAL-ORA-00011
+  - SAL-ORA-00012
+  - SAL-ORA-00013
+  - SAL-ORA-00014
+  - SAL-ORA-00015
+  - SAL-ORA-00017
+  - SAL-ORA-00018
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Model the root and nested ordered layer tree, preserving child kind, exact visual order, nesting, and root-versus-non-root constraints.
+  preservation_contract: *id001
+  error_contract: *id002
+  security_contract:
+  - Treat all input as untrusted and enforce configured resource limits before allocation or external access.
+  resource_limits:
+  - Bound input bytes, expanded bytes, nesting, object count, and decoded payload size.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - canonical authority lock and materialized authority bytes
+  - canonical format contract and SAL facts/evidence
+  - FF6 capability and profile policy
+  taskcard_ids:
+  - TC-FF6-ORA-PROFILE-SURFACE-001
   release_state: PLANNED
 - capability_id: ORA-STREAM-001
-  stable_name: Bounded-memory streaming
+  stable_name: Bounded archive and raster processing
   classification: STABLE_REQUIRED
   developer_use_cases:
-  - A developer pipes multi-GB data through the codec with flat memory usage.
+  - A service inspects large documents and lazily decodes selected layers without loading the whole archive.
   spec_profiles:
   - openraster_0.0.3
+  - openraster_0.0.4
+  - openraster_0.0.5
   authority_fact_ids:
-  - POL-ARC-STREAM-01
-  public_symbols: PLANNED
-  source_symbols: PLANNED
-  model_invariants:
-  - Stream encode/decode in bounded memory; support random access (seek tables/entry indexes) where the specification defines it.
-  preservation_contract:
-  - Distinguish lossless round-trip output mode from normalized/canonical output mode as an explicit caller choice.
-  error_contract:
-  - code
-  - severity
-  - message
-  - source_location
-  - object_path
-  - originating_rule
-  - repair_suggestion
-  - auto_repair_eligible
-  security_contract:
-  - Decompression bombs exhausting memory or disk.
-  - Corrupted size fields causing over-allocation.
-  resource_limits:
-  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded payload bytes, with safe defaults enabled.
-  - Decompressed-size and ratio limits enforced before and during decode.
-  performance_budget: PLANNED
-  dependency_policy: PLANNED
-  positive_tests: PLANNED
-  negative_tests: PLANNED
-  property_tests: PLANNED
-  roundtrip_tests: PLANNED
-  fixtures: PLANNED
-  independent_oracles: PLANNED
-  documentation_examples: PLANNED
-  compatibility_status: PLANNED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - ORA authority status is NEEDS_AUTHORITY; provenance may shift when authoritative source is fully acquired.
-  - Streaming characteristics depend on ZIP container random-access support.
-  taskcard_ids:
-  - TC-FF6-PROGRAM-CAPABILITIES-001
-  release_state: PLANNED
-- capability_id: ORA-VALIDATE-001
-  stable_name: Integrity and structure validation
-  classification: STABLE_REQUIRED
-  developer_use_cases:
-  - A service validates uploads and rejects corrupt or hostile containers with exact reasons.
-  spec_profiles:
-  - openraster_0.0.3
-  authority_fact_ids:
-  - POL-ARC-VALIDATE-01
+  - POL-LRA-STREAM-01
+  - SAL-ORA-00002
+  - SAL-ORA-00003
   - SAL-ORA-00004
-  - SAL-ORA-00010
+  - SAL-ORA-00008
   - SAL-ORA-00016
-  - SAL-ORA-00019
-  public_symbols: PLANNED
-  source_symbols: PLANNED
-  model_invariants:
-  - Validate structure, checksums, and declared-vs-actual sizes with positions; run security checks (limits, ratios, paths) as a distinct layer.
-  preservation_contract:
-  - Report every construct that cannot be preserved before saving, through a loss report API, rather than failing silently.
-  error_contract:
-  - code
-  - severity
-  - message
-  - source_location
-  - object_path
-  - originating_rule
-  - repair_suggestion
-  - auto_repair_eligible
-  security_contract:
-  - Decompression bombs exhausting memory or disk.
-  - Entry-name path traversal on extraction.
-  - Corrupted size fields causing over-allocation.
-  resource_limits:
-  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded payload bytes, with safe defaults enabled.
-  - Decompressed-size and ratio limits enforced before and during decode.
-  - Extraction confined to configured roots with entry-name sanitization.
-  - Size fields validated with checked arithmetic before allocation.
-  performance_budget: PLANNED
-  dependency_policy: PLANNED
-  positive_tests: PLANNED
-  negative_tests: PLANNED
-  property_tests: PLANNED
-  roundtrip_tests: PLANNED
-  fixtures: PLANNED
-  independent_oracles: PLANNED
-  documentation_examples: PLANNED
-  compatibility_status: PLANNED
-  proof_node_ids: PLANNED
-  invalidation_inputs:
-  - ORA authority status is NEEDS_AUTHORITY; provenance may shift when authoritative source is fully acquired.
-  - Validation rules for xres/yres and thumbnail constraints may evolve with spec drafts.
-  taskcard_ids:
-  - TC-FF6-PROGRAM-CAPABILITIES-001
-  release_state: PLANNED
-- capability_id: ORA-WRITE-001
-  stable_name: Deterministic container writing
-  classification: STABLE_REQUIRED
-  developer_use_cases:
-  - A developer writes archives in CI and reruns produce identical bytes.
-  spec_profiles:
-  - openraster_0.0.3
-  authority_fact_ids:
-  - POL-ARC-WRITE-01
-  - SAL-ORA-00004
   - SAL-ORA-00017
   public_symbols: PLANNED
   source_symbols: PLANNED
   model_invariants:
-  - Emit conformant containers with deterministic framing/ordering; verify output by self-decode round trip.
-  preservation_contract:
-  - Preserve unknown or future-version constructs that can be carried safely; never silently drop unrecognized content in lossless mode.
-  - Report every construct that cannot be preserved before saving, through a loss report API, rather than failing silently.
-  error_contract:
-  - code
-  - severity
-  - message
-  - source_location
-  - object_path
-  - originating_rule
-  - repair_suggestion
-  - auto_repair_eligible
+  - Stream archive and XML inspection in bounded memory, expose lazy asset access, and fail before exceeding configured compressed, expanded, raster, nesting, or render budgets.
+  preservation_contract: *id001
+  error_contract: *id002
   security_contract:
-  - Entry-name path traversal on extraction.
+  - Treat all input as untrusted and enforce configured resource limits before allocation or external access.
   resource_limits:
-  - Provide configurable limits for input size, nesting depth, element/record count, and total decoded payload bytes, with safe defaults enabled.
+  - Bound input bytes, expanded bytes, nesting, object count, and decoded payload size.
   performance_budget: PLANNED
   dependency_policy: PLANNED
   positive_tests: PLANNED
@@ -506,8 +817,105 @@ capabilities:
   compatibility_status: PLANNED
   proof_node_ids: PLANNED
   invalidation_inputs:
-  - ORA authority status is NEEDS_AUTHORITY; provenance may shift when authoritative source is fully acquired.
-  - Deterministic output depends on ZIP library ordering and timestamp handling.
+  - canonical authority lock and materialized authority bytes
+  - canonical format contract and SAL facts/evidence
+  - FF6 capability and profile policy
   taskcard_ids:
-  - TC-FF6-PROGRAM-CAPABILITIES-001
+  - TC-FF6-ORA-PROFILE-SURFACE-001
+  release_state: PLANNED
+- capability_id: ORA-VALIDATE-001
+  stable_name: Layered document validation
+  classification: STABLE_REQUIRED
+  developer_use_cases:
+  - A service validates untrusted uploads and receives all actionable issues without mutation.
+  spec_profiles:
+  - openraster_0.0.3
+  - openraster_0.0.4
+  - openraster_0.0.5
+  authority_fact_ids:
+  - POL-LRA-VALIDATE-01
+  - SAL-ORA-00003
+  - SAL-ORA-00004
+  - SAL-ORA-00006
+  - SAL-ORA-00009
+  - SAL-ORA-00010
+  - SAL-ORA-00016
+  - SAL-ORA-00017
+  - SAL-ORA-00018
+  - SAL-ORA-00019
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Validate each layer independently, aggregate stable diagnostics, distinguish errors from interoperability warnings, and never repair or normalize unless explicitly requested.
+  preservation_contract: *id001
+  error_contract: *id002
+  security_contract:
+  - Treat all input as untrusted and enforce configured resource limits before allocation or external access.
+  resource_limits:
+  - Bound input bytes, expanded bytes, nesting, object count, and decoded payload size.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - canonical authority lock and materialized authority bytes
+  - canonical format contract and SAL facts/evidence
+  - FF6 capability and profile policy
+  taskcard_ids:
+  - TC-FF6-ORA-PROFILE-SURFACE-001
+  release_state: PLANNED
+- capability_id: ORA-WRITE-001
+  stable_name: Deterministic interoperable archive writing
+  classification: STABLE_REQUIRED
+  developer_use_cases:
+  - A developer writes reproducible documents that reopen in independent applications.
+  spec_profiles:
+  - openraster_0.0.3
+  - openraster_0.0.4
+  - openraster_0.0.5
+  authority_fact_ids:
+  - POL-LRA-WRITE-01
+  - SAL-ORA-00002
+  - SAL-ORA-00003
+  - SAL-ORA-00004
+  - SAL-ORA-00008
+  - SAL-ORA-00016
+  - SAL-ORA-00017
+  - SAL-ORA-00018
+  - SAL-ORA-00019
+  - SAL-ORA-00020
+  public_symbols: PLANNED
+  source_symbols: PLANNED
+  model_invariants:
+  - Write stable member order, normalized timestamps and metadata, exact sentinels, deterministic XML, validated raster assets, and explicit lossless-versus-canonical preservation modes.
+  preservation_contract: *id001
+  error_contract: *id002
+  security_contract:
+  - Treat all input as untrusted and enforce configured resource limits before allocation or external access.
+  resource_limits:
+  - Bound input bytes, expanded bytes, nesting, object count, and decoded payload size.
+  performance_budget: PLANNED
+  dependency_policy: PLANNED
+  positive_tests: PLANNED
+  negative_tests: PLANNED
+  property_tests: PLANNED
+  roundtrip_tests: PLANNED
+  fixtures: PLANNED
+  independent_oracles: PLANNED
+  documentation_examples: PLANNED
+  compatibility_status: PLANNED
+  proof_node_ids: PLANNED
+  invalidation_inputs:
+  - canonical authority lock and materialized authority bytes
+  - canonical format contract and SAL facts/evidence
+  - FF6 capability and profile policy
+  taskcard_ids:
+  - TC-FF6-ORA-PROFILE-SURFACE-001
   release_state: PLANNED

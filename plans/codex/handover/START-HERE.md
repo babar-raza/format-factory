@@ -31,11 +31,11 @@ tests, and executed proof.
 | Forge | GitLab only |
 | Remote/branch | `origin/main` |
 | Controller state | `CONTRACT` |
-| Journal head | `FF6-EVENT-000016` |
-| Event hash | `2ea206536ff0ccecaa0a4e93df32ada3e7575018f4cdcafb7525c59d51dd50ba` |
+| Journal head | `FF6-EVENT-000017` |
+| Event hash | `44cb90a67aec8fff244de05d84c047f1d31077d694eda1ff1e27ee0aaa0f3015` |
 | Parent | `TC-FF6-PROGRAM-CAPABILITIES-001` — `NEEDS_REPAIR` |
 | Completed repair | `TC-FF6-AUTHORITY-CLOSURE-001` — `PASS` |
-| Exact next task | `TC-FF6-ORA-PROFILE-SURFACE-001` — `READY` |
+| Exact next task | `TC-FF6-IPYNB-PROFILE-SURFACE-001` — `READY` |
 | Capability inventory | 89 |
 | Canonical obligations | 636 |
 | Authority results | 15 `MATCH`; zero missing/mismatch/undeclared/legal-blocked |
@@ -44,7 +44,7 @@ tests, and executed proof.
 
 The handover cannot embed the hash of the commit that will contain itself.
 After this change set is committed and pushed, the receiving agent must fetch
-`origin/main`, verify event 16 and the packet hashes, and use that remote
+`origin/main`, verify event 17 and the packet hashes, and use that remote
 descendant as the source checkpoint.
 
 ## Read in order
@@ -57,7 +57,7 @@ descendant as the source checkpoint.
 6. [`current-gaps.yaml`](../../strategic/ff6/current-gaps.yaml)
 7. [`current-state.yaml`](../../strategic/ff6/current-state.yaml)
 8. [`TC-FF6-PROGRAM-CAPABILITIES-001.md`](../../../taskcards/TC-FF6-PROGRAM-CAPABILITIES-001.md)
-9. [`TC-FF6-ORA-PROFILE-SURFACE-001.md`](../../../taskcards/TC-FF6-ORA-PROFILE-SURFACE-001.md)
+9. [`TC-FF6-IPYNB-PROFILE-SURFACE-001.md`](../../../taskcards/TC-FF6-IPYNB-PROFILE-SURFACE-001.md)
 10. [`ACTIVE-WORK-CHECKPOINT.md`](ACTIVE-WORK-CHECKPOINT.md)
 11. [`checkpoint.yaml`](checkpoint.yaml)
 12. [`CURRENT-STATE-AND-ROOT-CAUSES.md`](CURRENT-STATE-AND-ROOT-CAUSES.md)
@@ -85,9 +85,9 @@ release:
 - six strict ProductContracts;
 - 89 capabilities and 636 obligations;
 - final capability aggregate
-  `667cd4cb69773e6746ad46173b53de39c18ef44d39ef7db91c6337d8a3761a73`;
+  `de6a38a86aa7a82cc50dc7dc6ebfa0066c811d8de782a37684fd26d20a89272a`;
 - final three-run digest
-  `04114c84221edcdb00dae1097d75e55a7c1a6be75a074c9c0b8b07f0de5533a8`;
+  `2c998635a64f36c2b93c397ab0a5c834379ad5d74fd0544c6017a65337d907fc`;
 - 250 affected tests passed; one pre-existing CSV idempotency test is
   separately tracked and deselected because it mutates unrelated reports;
 - Ruff, mypy, and Pyright 1.1.411 pass.
@@ -128,7 +128,7 @@ Then independently validate all 16 FF6 events by:
 2. recomputing SHA-256 over canonical JSON with `event_hash` removed;
 3. requiring `sequence` 1–16;
 4. requiring each `previous_event_hash` to equal the preceding event hash;
-5. requiring the controller head to equal event 16.
+5. requiring the controller head to equal event 17.
 
 Do not run the generic Plan Control doctor as an FF6 chain validator. It uses
 `previous_hash` and its own event schema. That integration mismatch is already
@@ -142,10 +142,10 @@ discard another agent’s work.
 ## Exact continuation
 
 Execute only
-[`TC-FF6-ORA-PROFILE-SURFACE-001.md`](../../../taskcards/TC-FF6-ORA-PROFILE-SURFACE-001.md).
+[`TC-FF6-IPYNB-PROFILE-SURFACE-001.md`](../../../taskcards/TC-FF6-IPYNB-PROFILE-SURFACE-001.md).
 
 Start with the three already locked OpenRaster authorities. Build a
-source-located 0.0.3/0.0.4/0.0.5 delta matrix, repair SAL facts and evidence,
+source-located nbformat 4.0-4.5 delta matrix, repair SAL facts and evidence,
 compile explicit format-specific capabilities and profile applicability, and
 remove the compiler’s OpenRaster findings through evidence—not policy
 suppression. Product source remains prohibited in this task.

@@ -30,11 +30,11 @@ budget are not operational authority.
 - Required ancestor before this packet: `9437dcc47763c17ce090ce538d2ff7ba5350da0d`.
 - Use the fetched `origin/main` descendant containing this packet.
 - Controller state: `CONTRACT`.
-- Event: `FF6-EVENT-000016`.
+- Event: `FF6-EVENT-000017`.
 - Event hash:
-  `2ea206536ff0ccecaa0a4e93df32ada3e7575018f4cdcafb7525c59d51dd50ba`.
+  `44cb90a67aec8fff244de05d84c047f1d31077d694eda1ff1e27ee0aaa0f3015`.
 - Completed task: `TC-FF6-AUTHORITY-CLOSURE-001` - `PASS`.
-- Next task: `TC-FF6-ORA-PROFILE-SURFACE-001` - `READY`.
+- Next task: `TC-FF6-IPYNB-PROFILE-SURFACE-001` - `READY`.
 - Product promotion: none.
 
 ## Incoming provider procedure
@@ -43,7 +43,7 @@ budget are not operational authority.
 2. Verify `9437dcc47763c17ce090ce538d2ff7ba5350da0d` is an ancestor.
 3. Verify the worktree is clean before new mutation.
 4. Read the ordered authority list in `START-HERE.md`.
-5. Validate the journal through event 16 using FF6 native semantics:
+5. Validate the journal through event 17 using FF6 native semantics:
    `previous_event_hash`, canonical JSON, sequential event IDs and hashes.
 6. Verify controller head, parent/child task states, task index, current gaps,
    authority 15/15 match, and capability manifest digests.
@@ -131,7 +131,7 @@ excluding `event_hash`.
 currently fails at event 1 because it expects `previous_hash`. FF6 uses
 `previous_event_hash` under `ff6/controller-event@1`.
 
-This is `FF6-GAP-011`, not evidence that event 16 is corrupt. Validate the FF6
+This is `FF6-GAP-011`, not evidence that event 17 is corrupt. Validate the FF6
 native chain and do not edit either journal schema ad hoc.
 
 ## Transfer acceptance

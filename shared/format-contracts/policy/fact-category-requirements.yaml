@@ -84,6 +84,11 @@ families:
     threshold: 0.70
     required_categories: [structure_roots, data_model, constraints_validation]
     weights: {structure_roots: 0.40, data_model: 0.35, constraints_validation: 0.25}
+  layered_raster_archive:
+    threshold: 0.80
+    required_categories: [structure_roots, data_model, syntax_encoding, constraints_validation, versioning_profiles, security_behavior]
+    weights: {structure_roots: 0.20, data_model: 0.25, syntax_encoding: 0.15, constraints_validation: 0.15, versioning_profiles: 0.15, security_behavior: 0.10}
+    min_facts_overrides: {structure_roots: 3, data_model: 8, syntax_encoding: 3, constraints_validation: 4, versioning_profiles: 2, security_behavior: 1}
   image_raster:
     threshold: 0.70
     required_categories: [structure_roots, data_model, syntax_encoding, constraints_validation]

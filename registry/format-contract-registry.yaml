@@ -1,7 +1,7 @@
 schema_version: '1.0'
 contracts:
 - format_id: abw
-  state: VALIDATED
+  state: BLOCKED_NEEDS_AUTHORITY
   contract_path: shared/format-contracts/abw.yaml
   readiness_score: 0.8
   readiness_threshold: 0.7
@@ -14,12 +14,14 @@ contracts:
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
     fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
     qname_registry_sha256: 249f9453dac647a97ed6ff6f4e4cc386d9a3dfc05bba5870dacd99135fc50a88
-  updated_at: '2026-07-16T10:43:03Z'
+  updated_at: '2026-07-29T09:05:57Z'
   quality_score: 61.7
   quality_verdict: NEEDS_REVIEW
   quality_policy_revision: 1
   review_verdict: ACCEPT_WITH_REPAIRS
   reviewed_contract_sha256: 7c767f4c8a4966dbcd959eb9caa89f60431afb7cd4f8f0b550eb566738661313
+  missing_categories:
+  - constraints_validation
 - format_id: csv
   state: COMPILED
   contract_path: shared/format-contracts/csv.yaml
@@ -32,9 +34,9 @@ contracts:
     research_sha256: 9e9310764d6d9e2758fc7f09e69108bfe8a01678f9b9b70678ad530f7259c817
     family_pack_sha256: a546af31bd73a7c0001896273606fa87ff836efcc06a9c0dec19158aa0718e53
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
-    fact_categories_sha256: fe2732633cdf17bad0a5e152b1f8c845ab46e1d8e018cb29b67dfb7a66181fce
+    fact_categories_sha256: aedd4c838073695752c724e8f53fd189f58653ca22e01b88f5932ebe9fe376bc
     qname_registry_sha256: 102684596395beea835a34ec644401ccbf5d002264f04c0408b286096d6d81fc
-  updated_at: '2026-07-28T10:49:10Z'
+  updated_at: '2026-07-29T09:11:53Z'
   quality_score: 74.2
   quality_verdict: NEEDS_REVIEW
   quality_policy_revision: 1
@@ -42,7 +44,7 @@ contracts:
   reviewed_contract_sha256: f591d2819f267a3e6f9473d1aa358bcc7369d7ae3c3eaf5cb1afeffd52ad663f
   missing_categories: []
 - format_id: dif
-  state: VALIDATED
+  state: BLOCKED_NEEDS_AUTHORITY
   contract_path: shared/format-contracts/dif.yaml
   readiness_score: 0.85
   readiness_threshold: 0.7
@@ -55,38 +57,80 @@ contracts:
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
     fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
     qname_registry_sha256: 965fe6002595f631e9b19eff3edb9d152980736b9b6c81a6851f093927f1f32d
-  updated_at: '2026-07-16T10:44:09Z'
+  updated_at: '2026-07-29T09:05:59Z'
   quality_score: 64.3
   quality_verdict: NEEDS_REVIEW
   quality_policy_revision: 1
   review_verdict: ACCEPT_WITH_REPAIRS
   reviewed_contract_sha256: 117e9b8a017fac2d2097ec68ceba940625034032a23a78c73b98f9e430283d78
+  missing_categories:
+  - constraints_validation
 - format_id: fodg
-  state: BLOCKED_NEEDS_AUTHORITY
-  readiness_score: 0.0
-  missing_categories:
-  - no_sal_fact_store
-  updated_at: '2026-07-16T10:40:57Z'
+  state: COMPILED
+  readiness_score: 1.0
+  missing_categories: []
+  updated_at: '2026-07-29T09:11:54Z'
+  contract_path: shared/format-contracts/fodg.yaml
+  readiness_threshold: 0.7
+  capability_count: 11
+  generator_version: fcl-compiler/1.0.0
+  input_digests:
+    sal_facts_sha256: e04df0985d5299262219970c183fbffa200ada8ff7207ead7e73efa2c23b9d1e
+    research_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    family_pack_sha256: a0c9e6a36ee0bc426d4a9b2e12de9ce1b0ec10239395c8a492e9bd1feb498d19
+    shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+    fact_categories_sha256: aedd4c838073695752c724e8f53fd189f58653ca22e01b88f5932ebe9fe376bc
+    qname_registry_sha256: f7df7ac6e30f965e978cfd99e7abc42468c4f6f891ba578ce52837cc57f53336
 - format_id: fodp
-  state: BLOCKED_NEEDS_AUTHORITY
-  readiness_score: 0.0
-  missing_categories:
-  - no_sal_fact_store
-  updated_at: '2026-07-16T10:40:58Z'
+  state: COMPILED
+  readiness_score: 1.0
+  missing_categories: []
+  updated_at: '2026-07-29T09:11:55Z'
+  contract_path: shared/format-contracts/fodp.yaml
+  readiness_threshold: 0.7
+  capability_count: 11
+  generator_version: fcl-compiler/1.0.0
+  input_digests:
+    sal_facts_sha256: 4e6717ef60cb25db12480c9a6aa57a3864c91d0d08adbab0ad4f7a90a5d71280
+    research_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    family_pack_sha256: a0c9e6a36ee0bc426d4a9b2e12de9ce1b0ec10239395c8a492e9bd1feb498d19
+    shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+    fact_categories_sha256: aedd4c838073695752c724e8f53fd189f58653ca22e01b88f5932ebe9fe376bc
+    qname_registry_sha256: 5443f6eb106af9e2669dddd886c05f63f4747015425438c430906a72bd22a8a3
 - format_id: fods
-  state: BLOCKED_NEEDS_AUTHORITY
-  readiness_score: 0.0
-  missing_categories:
-  - no_sal_fact_store
-  updated_at: '2026-07-16T10:40:56Z'
+  state: COMPILED
+  readiness_score: 1.0
+  missing_categories: []
+  updated_at: '2026-07-29T09:11:55Z'
+  contract_path: shared/format-contracts/fods.yaml
+  readiness_threshold: 0.7
+  capability_count: 11
+  generator_version: fcl-compiler/1.0.0
+  input_digests:
+    sal_facts_sha256: c19952372a99fea0f67575747f1f75d43bd46487de4242ff919ed9554267d820
+    research_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    family_pack_sha256: a0c9e6a36ee0bc426d4a9b2e12de9ce1b0ec10239395c8a492e9bd1feb498d19
+    shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+    fact_categories_sha256: aedd4c838073695752c724e8f53fd189f58653ca22e01b88f5932ebe9fe376bc
+    qname_registry_sha256: 9af2fe640c9a46584e05d32df7535884f97402cff8a3c90ce1098d746b4da768
 - format_id: fodt
-  state: BLOCKED_NEEDS_AUTHORITY
-  readiness_score: 0.0
-  missing_categories:
-  - no_sal_fact_store
-  updated_at: '2026-07-16T10:40:57Z'
+  state: COMPILED
+  readiness_score: 1.0
+  missing_categories: []
+  updated_at: '2026-07-29T09:11:56Z'
+  contract_path: shared/format-contracts/fodt.yaml
+  readiness_threshold: 0.7
+  capability_count: 11
+  generator_version: fcl-compiler/1.0.0
+  input_digests:
+    sal_facts_sha256: bb1da87e102f9f704c25f10281eef7ec410a8534ace3ed359107b70efa394aae
+    research_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    family_pack_sha256: a0c9e6a36ee0bc426d4a9b2e12de9ce1b0ec10239395c8a492e9bd1feb498d19
+    shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+    fact_categories_sha256: aedd4c838073695752c724e8f53fd189f58653ca22e01b88f5932ebe9fe376bc
+    qname_registry_sha256: e9ffff636120c9cfc8a8a15b06455a133065eb1cb6bc3f8d7123c13fb1bed9ca
 - format_id: gnumeric
-  state: VALIDATED
+  state: BLOCKED_NEEDS_AUTHORITY
   contract_path: shared/format-contracts/gnumeric.yaml
   readiness_score: 0.8
   readiness_threshold: 0.7
@@ -99,18 +143,20 @@ contracts:
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
     fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
     qname_registry_sha256: 5b7810690da47f5ea68ba9af821d52a1f06746712d49ca34ddc841f17ea61f82
-  updated_at: '2026-07-16T10:43:16Z'
+  updated_at: '2026-07-29T09:06:02Z'
   quality_score: 61.7
   quality_verdict: NEEDS_REVIEW
   quality_policy_revision: 1
   review_verdict: ACCEPT_WITH_REPAIRS
   reviewed_contract_sha256: b5dc8a3edc1fd16e94848fe7113b12a0e78cadc2313f13358cda5b79c1c4dab3
+  missing_categories:
+  - syntax_encoding
 - format_id: ipynb
   state: COMPILED
   readiness_score: 1.0
   readiness_threshold: 0.75
   missing_categories: []
-  updated_at: '2026-07-29T08:09:06Z'
+  updated_at: '2026-07-29T09:11:57Z'
   contract_path: shared/format-contracts/ipynb.yaml
   capability_count: 20
   generator_version: fcl-compiler/1.0.0
@@ -119,10 +165,10 @@ contracts:
     research_sha256: ef4b130cf19a916eaaed86629d80c14eeaaa4dbd2be943400a8b508ff1eb9b7a
     family_pack_sha256: bdc43666de37ffe17cbc827308747c60389ecb7e6e7d52a759e78f071ab32456
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
-    fact_categories_sha256: fe2732633cdf17bad0a5e152b1f8c845ab46e1d8e018cb29b67dfb7a66181fce
+    fact_categories_sha256: aedd4c838073695752c724e8f53fd189f58653ca22e01b88f5932ebe9fe376bc
     qname_registry_sha256: 11b280a73609e21feffb65527712942d55ecd067724f43a03592093cb80836ef
     format_contract_schema_sha256: 4eb5cae2d69d0831291646f3cf21e5d019d6b0de2904a745b712cf5fa6c37da9
-    contract_compiler_impl_sha256: e8c910d85e3618c4a1e884dab096e557e06e17678b3d878dc9c1faadd55a9eda
+    contract_compiler_impl_sha256: a872b9a71d459e57ff6600df0a3513af8c03e9714cfa0207881cd770984b586c
     contract_stores_impl_sha256: cd120c7990a37b0f913a2b59e81ab28fdf7b3d50897e38d78cb20fc9e0823f7a
     canonical_io_impl_sha256: aca19b1319bf7304d5136fd6c9d729cb50b22d8a23a17ca9314fdb0c58cc164d
     source_researcher_impl_sha256: 4367e7591a368bcbc6a01199a7eb6da0f569ccc5c706d6650cdd96db0b7083a3
@@ -141,15 +187,11 @@ contracts:
   review_verdict: ACCEPT
   reviewed_contract_sha256: 2ab230700729109cc847b6abba3eb320c8cbee467e1e9e5fed6ade2ffce5fc27
 - format_id: mtlx
-  state: REVIEWED
+  state: COMPILED
   readiness_score: 1.0
   readiness_threshold: 0.75
-  missing_categories:
-  - constraints_validation
-  - data_model
-  - structure_roots
-  - versioning_profiles
-  updated_at: '2026-07-16T10:42:12Z'
+  missing_categories: []
+  updated_at: '2026-07-29T09:11:57Z'
   contract_path: shared/format-contracts/mtlx.yaml
   capability_count: 22
   generator_version: fcl-compiler/1.0.0
@@ -158,7 +200,7 @@ contracts:
     research_sha256: 7cfca9d51cb99d9915dc31af0ddce2ffbac61068eee7837e33cd799526635352
     family_pack_sha256: dafd3307dc08c8c9a7c57b5f41c5a3907a925b8494822d94f536d5c446cd0875
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
-    fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
+    fact_categories_sha256: aedd4c838073695752c724e8f53fd189f58653ca22e01b88f5932ebe9fe376bc
     qname_registry_sha256: 612cc4e65e82d35e7c477bd11dee95e9951e1ac88ce9d5f54d52412c5bc4fa95
   quality_score: 83.3
   quality_verdict: PASS
@@ -166,7 +208,7 @@ contracts:
   review_verdict: ACCEPT
   reviewed_contract_sha256: 45ebf09fff93fc8a9febbad9d8b6843c0bcf0420065f8e53126a2deb605efe75
 - format_id: ndjson
-  state: VALIDATED
+  state: COMPILED
   contract_path: shared/format-contracts/ndjson.yaml
   readiness_score: 1.0
   readiness_threshold: 0.7
@@ -177,20 +219,21 @@ contracts:
     research_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
     family_pack_sha256: 5f390403816c87da2414f5c424759cb2f17882a71c019a9ade2d370391c33116
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
-    fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
+    fact_categories_sha256: aedd4c838073695752c724e8f53fd189f58653ca22e01b88f5932ebe9fe376bc
     qname_registry_sha256: f6203a007a2782dab8a90996b8369085af40bc989c14fc138ac988b4be7cac28
-  updated_at: '2026-07-16T10:42:25Z'
+  updated_at: '2026-07-29T09:11:58Z'
   quality_score: 62.6
   quality_verdict: NEEDS_REVIEW
   quality_policy_revision: 1
   review_verdict: ACCEPT_WITH_REPAIRS
   reviewed_contract_sha256: 2dfadfefd7b6d9ffab7a8b66f557da2168f587c5a548873b282db6a3b9829686
+  missing_categories: []
 - format_id: nrrd
   state: COMPILED
   readiness_score: 1.0
   readiness_threshold: 0.75
   missing_categories: []
-  updated_at: '2026-07-29T08:09:08Z'
+  updated_at: '2026-07-29T09:11:59Z'
   contract_path: shared/format-contracts/nrrd.yaml
   capability_count: 15
   generator_version: fcl-compiler/1.0.0
@@ -199,10 +242,10 @@ contracts:
     research_sha256: 848c8ae12d467c2673d278a78c4dc3f0a2fcc502a56b25dc6d921ad09e8c114d
     family_pack_sha256: 97b425d6661312e1ab8d8765c680e181f4c23a119512526c0d34c9cedc489a9c
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
-    fact_categories_sha256: fe2732633cdf17bad0a5e152b1f8c845ab46e1d8e018cb29b67dfb7a66181fce
+    fact_categories_sha256: aedd4c838073695752c724e8f53fd189f58653ca22e01b88f5932ebe9fe376bc
     qname_registry_sha256: 3523cada8363fbaaabf139d437af79aa392bbf98a9e3f435d8aed3ee453e1f92
     format_contract_schema_sha256: 4eb5cae2d69d0831291646f3cf21e5d019d6b0de2904a745b712cf5fa6c37da9
-    contract_compiler_impl_sha256: e8c910d85e3618c4a1e884dab096e557e06e17678b3d878dc9c1faadd55a9eda
+    contract_compiler_impl_sha256: a872b9a71d459e57ff6600df0a3513af8c03e9714cfa0207881cd770984b586c
     contract_stores_impl_sha256: cd120c7990a37b0f913a2b59e81ab28fdf7b3d50897e38d78cb20fc9e0823f7a
     canonical_io_impl_sha256: aca19b1319bf7304d5136fd6c9d729cb50b22d8a23a17ca9314fdb0c58cc164d
     source_researcher_impl_sha256: 4367e7591a368bcbc6a01199a7eb6da0f569ccc5c706d6650cdd96db0b7083a3
@@ -222,32 +265,52 @@ contracts:
   review_verdict: ACCEPT
   reviewed_contract_sha256: a7594ab2fc042ad1ef01e5d8c93c7a1fa17282ec28110555ddf62c611c05f0ba
 - format_id: ods
-  state: BLOCKED_NEEDS_AUTHORITY
-  readiness_score: 0.0
-  missing_categories:
-  - no_sal_fact_store
-  updated_at: '2026-07-16T10:40:55Z'
-- format_id: odt
-  state: BLOCKED_NEEDS_AUTHORITY
-  readiness_score: 0.0
-  missing_categories:
-  - no_sal_fact_store
-  updated_at: '2026-07-16T10:40:56Z'
-- format_id: ora
   state: COMPILED
-  contract_path: shared/format-contracts/ora.yaml
   readiness_score: 1.0
+  missing_categories: []
+  updated_at: '2026-07-29T09:12:00Z'
+  contract_path: shared/format-contracts/ods.yaml
   readiness_threshold: 0.7
   capability_count: 10
   generator_version: fcl-compiler/1.0.0
   input_digests:
-    sal_facts_sha256: c3236b25fe15c3f90377d7d47dff94bcc250544732b5a58401953a5691856456
-    research_sha256: bb607e2f45ae5f86ad8c91a5eb751db18128b0167cece7575fd90582851a2165
+    sal_facts_sha256: a0d88104a04f9c0265d93f662669c58599cf84903a075750493d1c5fee3b29b3
+    research_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
     family_pack_sha256: 79ffac447b248a76ea0406b1e2347c4ed8b24440e9e9eaeb34adee92e5078416
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
-    fact_categories_sha256: fe2732633cdf17bad0a5e152b1f8c845ab46e1d8e018cb29b67dfb7a66181fce
+    fact_categories_sha256: aedd4c838073695752c724e8f53fd189f58653ca22e01b88f5932ebe9fe376bc
+    qname_registry_sha256: 0d6b16ba379e590666e4fc1c5584319897f7d33a59c88e0d2aa12009c1bd3791
+- format_id: odt
+  state: COMPILED
+  readiness_score: 1.0
+  missing_categories: []
+  updated_at: '2026-07-29T09:12:00Z'
+  contract_path: shared/format-contracts/odt.yaml
+  readiness_threshold: 0.7
+  capability_count: 10
+  generator_version: fcl-compiler/1.0.0
+  input_digests:
+    sal_facts_sha256: a25d4fcdba5a36e5b5e755d06f0eb1a9ac4e9e826150fd3f1ba9a029fb4b47d1
+    research_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    family_pack_sha256: 79ffac447b248a76ea0406b1e2347c4ed8b24440e9e9eaeb34adee92e5078416
+    shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+    fact_categories_sha256: aedd4c838073695752c724e8f53fd189f58653ca22e01b88f5932ebe9fe376bc
+    qname_registry_sha256: 7b997e2ba50b4eca58ac08645713baef30229c5330c2d8e17f9f42f4bf7fd6c1
+- format_id: ora
+  state: COMPILED
+  contract_path: shared/format-contracts/ora.yaml
+  readiness_score: 1.0
+  readiness_threshold: 0.8
+  capability_count: 20
+  generator_version: fcl-compiler/1.0.0
+  input_digests:
+    sal_facts_sha256: 8e3ad5d9893bd413c6887be8661de1563c94074104df03ba8defcf766a438cd7
+    research_sha256: bb607e2f45ae5f86ad8c91a5eb751db18128b0167cece7575fd90582851a2165
+    family_pack_sha256: 915e258dc7ad5d824738acab73d81a77c9be0f23d6df424eaca9313a2b76e837
+    shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+    fact_categories_sha256: aedd4c838073695752c724e8f53fd189f58653ca22e01b88f5932ebe9fe376bc
     format_contract_schema_sha256: 4eb5cae2d69d0831291646f3cf21e5d019d6b0de2904a745b712cf5fa6c37da9
-    contract_compiler_impl_sha256: e8c910d85e3618c4a1e884dab096e557e06e17678b3d878dc9c1faadd55a9eda
+    contract_compiler_impl_sha256: a872b9a71d459e57ff6600df0a3513af8c03e9714cfa0207881cd770984b586c
     contract_stores_impl_sha256: cd120c7990a37b0f913a2b59e81ab28fdf7b3d50897e38d78cb20fc9e0823f7a
     canonical_io_impl_sha256: aca19b1319bf7304d5136fd6c9d729cb50b22d8a23a17ca9314fdb0c58cc164d
     source_researcher_impl_sha256: 4367e7591a368bcbc6a01199a7eb6da0f569ccc5c706d6650cdd96db0b7083a3
@@ -260,34 +323,31 @@ contracts:
     authority_src_ora_001_sha256: bd584b4b998df16c735bc3ce575e382569a101427fd4c4be14b677d30d210613
     authority_src_ora_002_sha256: a9f2cb90009e3cc76883ab9db2f43607a9518e723b9d03f1aa1b150f2c2e546a
     authority_src_ora_003_sha256: 29c77a95396c8c245d259b349fa438e3b40019d7fe6f7e06b8520c2fc9f63a49
-  updated_at: '2026-07-29T08:09:07Z'
+  updated_at: '2026-07-29T09:12:01Z'
   missing_categories: []
 - format_id: pbm
   state: BLOCKED_NEEDS_AUTHORITY
-  readiness_score: 0.5
+  readiness_score: 0.8
   readiness_threshold: 0.7
   missing_categories:
   - constraints_validation
-  - data_model
-  updated_at: '2026-07-16T10:40:02Z'
+  updated_at: '2026-07-29T09:06:09Z'
 - format_id: pgm
   state: BLOCKED_NEEDS_AUTHORITY
-  readiness_score: 0.5
+  readiness_score: 0.8
   readiness_threshold: 0.7
   missing_categories:
   - constraints_validation
-  - data_model
-  updated_at: '2026-07-16T10:40:02Z'
+  updated_at: '2026-07-29T09:06:09Z'
 - format_id: ppm
   state: BLOCKED_NEEDS_AUTHORITY
-  readiness_score: 0.5
+  readiness_score: 0.8
   readiness_threshold: 0.7
   missing_categories:
   - constraints_validation
-  - data_model
-  updated_at: '2026-07-16T10:40:03Z'
+  updated_at: '2026-07-29T09:06:09Z'
 - format_id: qoi
-  state: VALIDATED
+  state: BLOCKED_NEEDS_AUTHORITY
   contract_path: shared/format-contracts/qoi.yaml
   readiness_score: 0.8
   readiness_threshold: 0.7
@@ -300,18 +360,20 @@ contracts:
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
     fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
     qname_registry_sha256: ec4940c11965b71fa208b42caa6952a6620d37bcd9b55fa044ab1de53d3dcf5f
-  updated_at: '2026-07-16T10:44:09Z'
+  updated_at: '2026-07-29T09:06:10Z'
   quality_score: 61.1
   quality_verdict: NEEDS_REVIEW
   quality_policy_revision: 1
   review_verdict: ACCEPT_WITH_REPAIRS
   reviewed_contract_sha256: 3998ce003088b77b9309cf6a17c75616ca9af62ea90ea6a3acedd65e02b4d85c
+  missing_categories:
+  - constraints_validation
 - format_id: safetensors
   state: COMPILED
   readiness_score: 1.0
   readiness_threshold: 0.8
   missing_categories: []
-  updated_at: '2026-07-29T08:09:11Z'
+  updated_at: '2026-07-29T09:12:02Z'
   contract_path: shared/format-contracts/safetensors.yaml
   capability_count: 11
   generator_version: fcl-compiler/1.0.0
@@ -320,10 +382,10 @@ contracts:
     research_sha256: 6154e23f67d8e78554803125043fd991557e7d8238435544f80ad763f2248c53
     family_pack_sha256: 229a99aeb5e4d5787049adb59ba7f07f21205977c583fe5268b8a84f19535574
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
-    fact_categories_sha256: fe2732633cdf17bad0a5e152b1f8c845ab46e1d8e018cb29b67dfb7a66181fce
+    fact_categories_sha256: aedd4c838073695752c724e8f53fd189f58653ca22e01b88f5932ebe9fe376bc
     qname_registry_sha256: 934a0866002b2ad70dc5144fed6d89d11dbf1965806ccb54af968a5a94ae4a51
     format_contract_schema_sha256: 4eb5cae2d69d0831291646f3cf21e5d019d6b0de2904a745b712cf5fa6c37da9
-    contract_compiler_impl_sha256: e8c910d85e3618c4a1e884dab096e557e06e17678b3d878dc9c1faadd55a9eda
+    contract_compiler_impl_sha256: a872b9a71d459e57ff6600df0a3513af8c03e9714cfa0207881cd770984b586c
     contract_stores_impl_sha256: cd120c7990a37b0f913a2b59e81ab28fdf7b3d50897e38d78cb20fc9e0823f7a
     canonical_io_impl_sha256: aca19b1319bf7304d5136fd6c9d729cb50b22d8a23a17ca9314fdb0c58cc164d
     source_researcher_impl_sha256: 4367e7591a368bcbc6a01199a7eb6da0f569ccc5c706d6650cdd96db0b7083a3
@@ -335,7 +397,7 @@ contracts:
     authority_materializer_sha256: 3c7cb9ba0b4c2fb87c32281a6d6c596aec8fc6c69663a8a873927755332da7c9
     authority_src_safetensors_002_sha256: 50bc2c823b5b83f2411e03f3f74cd53b93202f3777160471092837cde68cbf12
 - format_id: sylk
-  state: VALIDATED
+  state: COMPILED
   contract_path: shared/format-contracts/sylk.yaml
   readiness_score: 1.0
   readiness_threshold: 0.7
@@ -346,16 +408,17 @@ contracts:
     research_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
     family_pack_sha256: a546af31bd73a7c0001896273606fa87ff836efcc06a9c0dec19158aa0718e53
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
-    fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
+    fact_categories_sha256: aedd4c838073695752c724e8f53fd189f58653ca22e01b88f5932ebe9fe376bc
     qname_registry_sha256: 947a08cd9e0d665ae73036c9332a0b286aecb203dbb15b372b7a85613e61cc51
-  updated_at: '2026-07-16T10:42:23Z'
+  updated_at: '2026-07-29T09:12:02Z'
   quality_score: 61.7
   quality_verdict: NEEDS_REVIEW
   quality_policy_revision: 1
   review_verdict: ACCEPT_WITH_REPAIRS
   reviewed_contract_sha256: bc768d170daceef0e8ef685e330258128d25f0788120fd2ed05b19ec2184ac22
+  missing_categories: []
 - format_id: toml
-  state: VALIDATED
+  state: COMPILED
   contract_path: shared/format-contracts/toml.yaml
   readiness_score: 1.0
   readiness_threshold: 0.7
@@ -366,16 +429,17 @@ contracts:
     research_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
     family_pack_sha256: 5f390403816c87da2414f5c424759cb2f17882a71c019a9ade2d370391c33116
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
-    fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
+    fact_categories_sha256: aedd4c838073695752c724e8f53fd189f58653ca22e01b88f5932ebe9fe376bc
     qname_registry_sha256: 39e301cf61075bccb2bb1b6c4b8613cb6801b344c21cae40624e3b254047e6a7
-  updated_at: '2026-07-16T10:41:51Z'
+  updated_at: '2026-07-29T09:12:03Z'
   quality_score: 64.8
   quality_verdict: NEEDS_REVIEW
   quality_policy_revision: 1
   review_verdict: ACCEPT_WITH_REPAIRS
   reviewed_contract_sha256: ff6cb96c001b7880744593a2ef2262af2228de76042cf129d88cac069f892c1a
+  missing_categories: []
 - format_id: tsv
-  state: VALIDATED
+  state: COMPILED
   contract_path: shared/format-contracts/tsv.yaml
   readiness_score: 1.0
   readiness_threshold: 0.7
@@ -386,20 +450,21 @@ contracts:
     research_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
     family_pack_sha256: a546af31bd73a7c0001896273606fa87ff836efcc06a9c0dec19158aa0718e53
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
-    fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
+    fact_categories_sha256: aedd4c838073695752c724e8f53fd189f58653ca22e01b88f5932ebe9fe376bc
     qname_registry_sha256: 9437f89f6dd800e85e178eb40b269f932acd9069721abd65b914f7d146448470
-  updated_at: '2026-07-16T10:42:18Z'
+  updated_at: '2026-07-29T09:12:04Z'
   quality_score: 61.7
   quality_verdict: NEEDS_REVIEW
   quality_policy_revision: 1
   review_verdict: ACCEPT_WITH_REPAIRS
   reviewed_contract_sha256: 5716057d5ba72365e2009889467a09d0899e0dab8cfb942c90d2d447660a2cc4
+  missing_categories: []
 - format_id: ubl
   state: COMPILED
   readiness_score: 1.0
   readiness_threshold: 0.75
   missing_categories: []
-  updated_at: '2026-07-29T08:09:15Z'
+  updated_at: '2026-07-29T09:12:06Z'
   contract_path: shared/format-contracts/ubl.yaml
   capability_count: 18
   generator_version: fcl-compiler/1.0.0
@@ -408,10 +473,10 @@ contracts:
     research_sha256: 7a076fc9ad6175159081fa0836f028213930879c2f50f906221c8bb3f85b4ebe
     family_pack_sha256: 6d0b519714dab6f50c35c67bbd11db29ccdba6e77d9a3ab4d2bcad2929ac4646
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
-    fact_categories_sha256: fe2732633cdf17bad0a5e152b1f8c845ab46e1d8e018cb29b67dfb7a66181fce
+    fact_categories_sha256: aedd4c838073695752c724e8f53fd189f58653ca22e01b88f5932ebe9fe376bc
     qname_registry_sha256: 9ca85535d450af64bab3f26811be019bdebbd2701041ff291c043d096af87fb6
     format_contract_schema_sha256: 4eb5cae2d69d0831291646f3cf21e5d019d6b0de2904a745b712cf5fa6c37da9
-    contract_compiler_impl_sha256: e8c910d85e3618c4a1e884dab096e557e06e17678b3d878dc9c1faadd55a9eda
+    contract_compiler_impl_sha256: a872b9a71d459e57ff6600df0a3513af8c03e9714cfa0207881cd770984b586c
     contract_stores_impl_sha256: cd120c7990a37b0f913a2b59e81ab28fdf7b3d50897e38d78cb20fc9e0823f7a
     canonical_io_impl_sha256: aca19b1319bf7304d5136fd6c9d729cb50b22d8a23a17ca9314fdb0c58cc164d
     source_researcher_impl_sha256: 4367e7591a368bcbc6a01199a7eb6da0f569ccc5c706d6650cdd96db0b7083a3
@@ -431,19 +496,27 @@ contracts:
   review_verdict: ACCEPT
   reviewed_contract_sha256: 22c00dc47fd8e1340962079e8af61abe4c723f744796505517cb7577f9f5d11d
 - format_id: xcf
-  state: BLOCKED_NEEDS_AUTHORITY
-  readiness_score: 0.6
+  state: COMPILED
+  readiness_score: 1.0
   readiness_threshold: 0.7
-  missing_categories:
-  - constraints_validation
-  - syntax_encoding
-  updated_at: '2026-07-16T10:40:01Z'
+  missing_categories: []
+  updated_at: '2026-07-29T09:12:06Z'
+  contract_path: shared/format-contracts/xcf.yaml
+  capability_count: 9
+  generator_version: fcl-compiler/1.0.0
+  input_digests:
+    sal_facts_sha256: d7abfda33680fa2e9ee3f8fb9225b515146ac14dcdc9e3604c640eb6763625c0
+    research_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    family_pack_sha256: 5811104a395d9a79ca5edf12d245ad9d699c7c1330f094884fe9d503dc0e0241
+    shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
+    fact_categories_sha256: aedd4c838073695752c724e8f53fd189f58653ca22e01b88f5932ebe9fe376bc
+    qname_registry_sha256: 18a87422ea795de7028fbd77bb48ef190ebe5bbd5619f2eb26aca00f38c9c061
 - format_id: xliff
   state: COMPILED
   readiness_score: 1.0
   readiness_threshold: 0.75
   missing_categories: []
-  updated_at: '2026-07-29T08:09:10Z'
+  updated_at: '2026-07-29T09:12:07Z'
   contract_path: shared/format-contracts/xliff.yaml
   capability_count: 15
   generator_version: fcl-compiler/1.0.0
@@ -452,10 +525,10 @@ contracts:
     research_sha256: c6b7b60a45b87575f94b00a4ef2685ff69ca627ce87ca760fd4dea7d4bcd7371
     family_pack_sha256: 407c11dd45eae83afef02160f90a357d086b4fcbfff4ad408463f374e3361a86
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
-    fact_categories_sha256: fe2732633cdf17bad0a5e152b1f8c845ab46e1d8e018cb29b67dfb7a66181fce
+    fact_categories_sha256: aedd4c838073695752c724e8f53fd189f58653ca22e01b88f5932ebe9fe376bc
     qname_registry_sha256: b1d86cceffe18233a731a2216be51a74fe1690f3c6d89fda64c92690598fe8ba
     format_contract_schema_sha256: 4eb5cae2d69d0831291646f3cf21e5d019d6b0de2904a745b712cf5fa6c37da9
-    contract_compiler_impl_sha256: e8c910d85e3618c4a1e884dab096e557e06e17678b3d878dc9c1faadd55a9eda
+    contract_compiler_impl_sha256: a872b9a71d459e57ff6600df0a3513af8c03e9714cfa0207881cd770984b586c
     contract_stores_impl_sha256: cd120c7990a37b0f913a2b59e81ab28fdf7b3d50897e38d78cb20fc9e0823f7a
     canonical_io_impl_sha256: aca19b1319bf7304d5136fd6c9d729cb50b22d8a23a17ca9314fdb0c58cc164d
     source_researcher_impl_sha256: 4367e7591a368bcbc6a01199a7eb6da0f569ccc5c706d6650cdd96db0b7083a3
@@ -475,7 +548,7 @@ contracts:
   review_verdict: ACCEPT
   reviewed_contract_sha256: b8dad56653e936cb19074e40e33aa192dc891d99a0e30a0814e31fe671711ca1
 - format_id: zst
-  state: VALIDATED
+  state: COMPILED
   contract_path: shared/format-contracts/zst.yaml
   readiness_score: 1.0
   readiness_threshold: 0.7
@@ -486,11 +559,12 @@ contracts:
     research_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
     family_pack_sha256: 79ffac447b248a76ea0406b1e2347c4ed8b24440e9e9eaeb34adee92e5078416
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
-    fact_categories_sha256: 27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468
+    fact_categories_sha256: aedd4c838073695752c724e8f53fd189f58653ca22e01b88f5932ebe9fe376bc
     qname_registry_sha256: c0394b68f007a8929aded6ea968bba1ae05c305494e5af9ed71467689aa3ec23
-  updated_at: '2026-07-16T10:42:56Z'
+  updated_at: '2026-07-29T09:12:08Z'
   quality_score: 73.3
   quality_verdict: NEEDS_REVIEW
   quality_policy_revision: 1
   review_verdict: ACCEPT_WITH_REPAIRS
   reviewed_contract_sha256: 6d1a9a866f2a1a678adff7f59a595f54ac92bcc52c1f076fdc9cf1d861364931
+  missing_categories: []

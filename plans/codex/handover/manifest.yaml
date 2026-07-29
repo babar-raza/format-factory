@@ -1,14 +1,12 @@
 schema: ff6/agent-handover-manifest@2
 handover_id: FF6-HANDOVER-CLAUDE-001
 generated_by: codex
-generated_at: "2026-07-29"
+generated_at: '2026-07-29'
 visibility: internal
 authoritative_state: false
-self_reference_policy: >-
-  This manifest excludes its own digest and cannot embed the final commit hash
-  that contains its own bytes. The required ancestor plus the fetched
-  origin/main descendant identify the packet without a recursive claim.
-
+self_reference_policy: This manifest excludes its own digest and cannot embed the final commit hash that
+  contains its own bytes. The required ancestor plus the fetched origin/main descendant identify the packet
+  without a recursive claim.
 source_checkpoint:
   required_ancestor: 9437dcc47763c17ce090ce538d2ff7ba5350da0d
   remote: origin
@@ -17,110 +15,106 @@ source_checkpoint:
   required_remote_ref: refs/remotes/origin/main
   remote_verified_before_packet_commit: true
   github_allowed_for_mission: false
-
 digest_policy:
   algorithm: sha256
   canonicalization: CRLF_TO_LF
   manifest_self_digest: excluded
-
 files:
-  - path: plans/codex/handover/START-HERE.md
-    role: single entry point
-    sha256: 355b6f9ed43664b1f4ef2cbc89b660a8b8d76332d608e8543f58ed872a7a1257
-  - path: plans/codex/handover/checkpoint.yaml
-    role: machine-readable checkpoint
-    sha256: b01918241b2dabed36a06783dee25af29132284b4953252a4462a1ddc5f6cedb
-  - path: plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md
-    role: exact event-16 boundary and next execution
-    sha256: 6404a12daede844be7f717d0979a8418ef511fafc8a320459bd50aef9b3211d2
-  - path: plans/codex/handover/CURRENT-STATE-AND-ROOT-CAUSES.md
-    role: truthful product and machinery assessment
-    sha256: 90172637b6be472fd00a73374adc30d7a22dd420bb2ccecf623a40c0732ab795
-  - path: plans/codex/handover/SHIFT-AND-RESUME-PROTOCOL.md
-    role: provider-neutral checkpoint protocol
-    sha256: 53defa6a3699ae16e8aa137d20fa6441d29bdcb855ce1d6bd1d9f9bab555586f
-  - path: plans/codex/handover/EXECUTION-RUNBOOK.md
-    role: state machine, task DAG and execution algorithm
-    sha256: 6fe0f51e6166fbf2faf5ad1f339dadeb6669c73e861fe6c47c91d9652f8ba24f
-  - path: plans/codex/handover/VALIDATION-AND-RELEASE.md
-    role: proof, regression and release contract
-    sha256: b3daf99c20e98eb200b5410833c2d5811eb7e8a53fa0ff0a81fbaf3d0c6e59ac
-  - path: plans/codex/handover/CLAUDE-START.md
-    role: ready-to-run Claude instruction
-    sha256: dfbe32fb21971116154d1ac984b117df630c652c9d6faab253d4bcb433cbfecb
-  - path: taskcards/TC-FF6-PROGRAM-CAPABILITIES-001.md
-    role: parent capability task in repair
-    sha256: bae01107c0184f8ab7aad2ae5dcb9a040b5644f254a8505a586738d68bd808dc
-  - path: taskcards/TC-FF6-CAPABILITY-COMPILER-001.md
-    role: completed deterministic compiler subtask
-    sha256: d1cabfb95cacafd80c116e4ebdcd2c385655c71ef87c94ef12613ea32c880f5d
-  - path: taskcards/TC-FF6-AUTHORITY-CLOSURE-001.md
-    role: completed authority closure subtask
-    sha256: 77f514090bd68d3f9b5e1453a7101f69082b0ffb1f5858cbeec308d840dd8343
-  - path: taskcards/TC-FF6-ORA-PROFILE-SURFACE-001.md
-    role: exact next task
-    sha256: 329913640475807acd307a1d9d9a4b3a8cfcfaa8b5a0320800e3c00643414e12
-  - path: taskcards/TC-FF6-HANDOVER-CLAUDE-001.md
-    role: handover construction task
-    sha256: a921e55cf31fc71273c409f3b19c1997fe6002549982f96b88416e573e434d21
-  - path: plans/strategic/ff6/controller-state.yaml
-    role: canonical controller projection
-    sha256: 01f914e01de1c225ae22c7a88029bd77477b08dcdb60e4d9f0337594568ce7ef
-  - path: plans/strategic/ff6/events.jsonl
-    role: canonical append-only journal through event 16
-    sha256: 6c050e77d17aa76cf93eb891e5c0d21280c4a63379229abfd82bf7709dda98b6
-  - path: plans/strategic/ff6/current-gaps.yaml
-    role: current gap projection
-    sha256: bdab2198aec0a956c9ff3fda715faf747e83982aaa3686b6caff375b870679fe
-  - path: plans/strategic/ff6/capability-manifest.json
-    role: canonical compiler input closure and output manifest
-    sha256: ef9f7e685f1012b32cfa73238ebe0b035dda660c33fc4316ee09b42fd82ee773
-  - path: shared/format-contracts/authority-lock.yaml
-    role: canonical 15-source authority lock
-    sha256: 8eefb28e3ef24b5b533496b54860daee981853d9c872fddc1ba5de4ff150f249
-
+- path: plans/codex/handover/START-HERE.md
+  role: single entry point
+  sha256: 858f00c5e2c00fd97613eac24262f369c477bd90a2f6a3c6fcd26f1a6a7f6ab8
+- path: plans/codex/handover/checkpoint.yaml
+  role: machine-readable checkpoint
+  sha256: fdac63f54902e9759ba831538fbc467feaa6aab9dff385c554d8c7b737370c21
+- path: plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md
+  role: exact event-16 boundary and next execution
+  sha256: aa3d869497da8805cf9833c766bf402727a828d5883c67a2c0a297e71674fdb6
+- path: plans/codex/handover/CURRENT-STATE-AND-ROOT-CAUSES.md
+  role: truthful product and machinery assessment
+  sha256: 90172637b6be472fd00a73374adc30d7a22dd420bb2ccecf623a40c0732ab795
+- path: plans/codex/handover/SHIFT-AND-RESUME-PROTOCOL.md
+  role: provider-neutral checkpoint protocol
+  sha256: 5f736d79bddf8ab8ed6a29ad80b3c37f886e7ff19fe595884fd25a984551381c
+- path: plans/codex/handover/EXECUTION-RUNBOOK.md
+  role: state machine, task DAG and execution algorithm
+  sha256: d08fd7e17862013f5a6816b6fefe074381a9ea5d776efd032f735affa037678d
+- path: plans/codex/handover/VALIDATION-AND-RELEASE.md
+  role: proof, regression and release contract
+  sha256: b3daf99c20e98eb200b5410833c2d5811eb7e8a53fa0ff0a81fbaf3d0c6e59ac
+- path: plans/codex/handover/CLAUDE-START.md
+  role: ready-to-run Claude instruction
+  sha256: 321ed27d9fd8fe078667861df38f8b28d4dc1f32e8df2f7bd612263f844079e6
+- path: taskcards/TC-FF6-PROGRAM-CAPABILITIES-001.md
+  role: parent capability task in repair
+  sha256: bae01107c0184f8ab7aad2ae5dcb9a040b5644f254a8505a586738d68bd808dc
+- path: taskcards/TC-FF6-CAPABILITY-COMPILER-001.md
+  role: completed deterministic compiler subtask
+  sha256: d1cabfb95cacafd80c116e4ebdcd2c385655c71ef87c94ef12613ea32c880f5d
+- path: taskcards/TC-FF6-AUTHORITY-CLOSURE-001.md
+  role: completed authority closure subtask
+  sha256: 77f514090bd68d3f9b5e1453a7101f69082b0ffb1f5858cbeec308d840dd8343
+- path: taskcards/TC-FF6-ORA-PROFILE-SURFACE-001.md
+  role: completed OpenRaster profile/surface task
+  sha256: f689d705b2b82d7b13d678e03fab0d4c8e802b64bf2b5ac1e64d55058008ee3d
+- path: taskcards/TC-FF6-HANDOVER-CLAUDE-001.md
+  role: handover construction task
+  sha256: a921e55cf31fc71273c409f3b19c1997fe6002549982f96b88416e573e434d21
+- path: plans/strategic/ff6/controller-state.yaml
+  role: canonical controller projection
+  sha256: e5adf945572168325dd314be55accb11f269b23ba855f236b04c3e98c282a443
+- path: plans/strategic/ff6/events.jsonl
+  role: canonical append-only journal through event 16
+  sha256: 37c9cb8bdfa51304dce406a98c0fc95f8babedad8fa5a1434d570682815a367e
+- path: plans/strategic/ff6/current-gaps.yaml
+  role: current gap projection
+  sha256: 2cdc43e1c2dbafc3f46c3f7dc20eba02744fcdf008b090a62297b13ca67c5c76
+- path: plans/strategic/ff6/capability-manifest.json
+  role: canonical compiler input closure and output manifest
+  sha256: 2ec467e002acd3738bb2d82846f34060c5da6e2b1d733645d2181537cc2c79ef
+- path: shared/format-contracts/authority-lock.yaml
+  role: canonical 15-source authority lock
+  sha256: 8eefb28e3ef24b5b533496b54860daee981853d9c872fddc1ba5de4ff150f249
+- path: taskcards/TC-FF6-IPYNB-PROFILE-SURFACE-001.md
+  role: exact next task
+  sha256: 70362f6ac2b6283389bdb14d324226f3bccaca4999aa7456c2ce433da7d5548a
 canonical_reference_digests:
   product_goal_lf_sha256: a7683f75ef62c72e88e3c0e4ff14df240fa0f9b80be9b0cf4cdacc96c62811c8
   current_state_lf_sha256: 09fe7783d0fd40cdb1803f3ead2582e3ed9cf8782f23d740904ce7dd39e0ebbf
   execution_plan_lf_sha256: b0bbffa5ccf2c4abc08a07f0b0f8213d2d161c6a9a2d6ea02e713b85b8c4c2db
-  capability_manifest_aggregate_sha256: 667cd4cb69773e6746ad46173b53de39c18ef44d39ef7db91c6337d8a3761a73
-  capability_manifest_file_lf_sha256: ef9f7e685f1012b32cfa73238ebe0b035dda660c33fc4316ee09b42fd82ee773
-  capability_three_run_digest: 04114c84221edcdb00dae1097d75e55a7c1a6be75a074c9c0b8b07f0de5533a8
+  capability_manifest_aggregate_sha256: de6a38a86aa7a82cc50dc7dc6ebfa0066c811d8de782a37684fd26d20a89272a
+  capability_manifest_file_lf_sha256: 2ec467e002acd3738bb2d82846f34060c5da6e2b1d733645d2181537cc2c79ef
+  capability_three_run_digest: 2c998635a64f36c2b93c397ab0a5c834379ad5d74fd0544c6017a65337d907fc
   authority_lock_lf_sha256: 8eefb28e3ef24b5b533496b54860daee981853d9c872fddc1ba5de4ff150f249
-
 controller:
   state: CONTRACT
-  event_sequence: 16
-  event_head: 2ea206536ff0ccecaa0a4e93df32ada3e7575018f4cdcafb7525c59d51dd50ba
+  event_sequence: 17
+  event_head: 44cb90a67aec8fff244de05d84c047f1d31077d694eda1ff1e27ee0aaa0f3015
   parent_task: TC-FF6-PROGRAM-CAPABILITIES-001
   parent_state: NEEDS_REPAIR
-  completed_task: TC-FF6-AUTHORITY-CLOSURE-001
+  completed_task: TC-FF6-ORA-PROFILE-SURFACE-001
   completed_task_state: PASS
-  exact_next_task: TC-FF6-ORA-PROFILE-SURFACE-001
+  exact_next_task: TC-FF6-IPYNB-PROFILE-SURFACE-001
   exact_next_state: READY
-
 active_work:
   path: plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md
-  checkpoint_event: FF6-EVENT-000016
-  exact_next_step: >-
-    Revalidate event 16 and the three locked OpenRaster authorities, then
-    build the source-located 0.0.3/0.0.4/0.0.5 profile delta matrix.
+  checkpoint_event: FF6-EVENT-000017
+  exact_next_step: Revalidate event 17 and the locked IPYNB authorities, then build the source-located
+    nbformat 4.0-4.5 profile delta matrix.
   product_source_allowed: false
   promotion_effect: none
-
 validation:
   internal_links: PASS
   yaml_json_parse: PASS
-  manifest_hashes: PASS_18_FILES
-  ff6_native_event_chain: PASS_EVENT_16
+  manifest_hashes: PASS_19_FILES
+  ff6_native_event_chain: PASS_EVENT_17
   authority_audit: PASS_15_OF_15
   authority_clean_offline_replay: PASS_15_OF_15
   authority_clean_online_rebuild: PASS_15_OF_15
   strict_capability_replay: PASS_THREE_IDENTICAL
-  affected_pytest: PASS_250_ONE_KNOWN_BASELINE_DESELECTED
+  affected_pytest: PASS_166_ONE_KNOWN_BASELINE_DESELECTED
   ruff: PASS
   mypy: PASS
-  pyright_1_1_411: PASS
+  pyright_1_1_411: UNAVAILABLE_CURRENT_SHELL
   task_index: PASS
   skill_routes: PASS_198_FULL_PARITY
   product_promotion_effect: none

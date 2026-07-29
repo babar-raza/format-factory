@@ -1,0 +1,253 @@
+# Family pack: layered_raster_archive - editable layered raster documents in a ZIP archive.
+# Authority class: PORTFOLIO_GOVERNANCE. Format-specific normative facts are supplied by SAL.
+schema_version: '1.0'
+family: layered_raster_archive
+applicability:
+  representative_formats: [ora]
+  semantic_scope: "Archive-based raster documents whose editable image is represented by an ordered XML layer tree plus referenced raster assets and flattened viewing assets."
+  excluded_concepts:
+  - "generic compression streams without an editable image model"
+  - "single-image raster codecs without an archive or layer tree"
+  - "office-document packages whose primary model is pages, sheets, or text flow"
+identity_defaults:
+  data_model_type: layered_raster_archive
+  description_template: "{display_name}: editable layered raster archive ({spec_body} {spec_version}). An ordered layer tree and raster assets are preserved, validated, rendered, and written safely."
+  primary_use_cases:
+  - "Read, inspect, edit, render, validate, and write layered raster documents."
+  - "Exchange editable and flattened views between independent graphics applications."
+  active_content_model:
+    has_active_content: false
+    policy: "Archive members and XML are untrusted passive data; parsing and rendering never execute embedded content or resolve network resources."
+scope_defaults:
+  production_complete_target: "Complete document/canvas, layer tree, raster asset, viewing asset, compositing, preservation, security, deterministic-write, and interoperability behavior for every selected stable profile."
+  minimum_viable_support: "Securely decode and encode conforming archives, preserve the editable layer tree, validate required assets, and produce an independently renderable flattened view."
+shared_groups: [lifecycle_io, preservation, security_limits, diagnostics, quality_proof]
+depth_floors: {parse: 4, model: 5, edit: 5, write: 5, validate: 5, performance: 4, advanced: 5}
+simplicity_budget:
+  max_capabilities: 20
+  max_requirement_lines_per_capability: 18
+validation_layers:
+- layer: archive
+  description: "ZIP structure, member naming, ordering, compression methods, duplicates, paths, sizes, and expansion limits."
+- layer: document
+  description: "XML root, declared profile, canvas, tree ordering, attributes, references, and extension boundaries."
+- layer: raster
+  description: "Raster member existence, type, dimensions, channel depth, interlace constraints, and decode limits."
+- layer: render
+  description: "Layer order, offsets, visibility, opacity, isolation, compositing operations, and flattened viewing assets."
+- layer: interoperability
+  description: "Independent application read/write/render agreement for each selected profile."
+security_defaults:
+  attack_surfaces:
+  - "ZIP traversal, duplicate names, ambiguous Unicode names, oversized declarations, and decompression bombs."
+  - "Hostile XML depth, entity expansion, excessive node counts, and external-resource resolution."
+  - "Hostile raster dimensions, malformed PNG payloads, and rendering resource exhaustion."
+  safe_defaults:
+  - "Reject unsafe or ambiguous archive members before XML or raster decoding."
+  - "Disable XML entities and external resources; enforce archive, XML, raster, and render budgets."
+  - "Preserve safe unknown extensions without interpreting or executing them."
+domains:
+- domain: CONTAINER
+  category: parse
+  level: MUST
+  title: Layered raster archive structure
+  production_meaning: "The archive wrapper, member names, compression methods, and required layout are decoded without ambiguity."
+  developer_use_case: "A developer probes an archive and enumerates its document and raster members without extracting them."
+  baseline_behavior:
+  - id: POL-LRA-CONTAINER-01
+    text: "Decode the archive wrapper and member directory; reject duplicate, traversal, absolute, malformed Unicode, unsupported-compression, truncated, or limit-exceeding entries before payload use."
+  fact_keywords: [archive, zip, wrapper, compression, member, utf-8, path]
+  required_tests: ["Valid and hostile archive matrices cover member naming, compression, duplicates, traversal, truncation, and expansion limits."]
+  release_gates: ["Every archive rule has positive and negative executed evidence."]
+- domain: MIMETYPE
+  category: validate
+  level: MUST
+  title: Archive media-type sentinel
+  production_meaning: "The format sentinel is checked for exact name, position, storage method, and content where the selected format requires them."
+  developer_use_case: "A service cheaply rejects a renamed or structurally ambiguous archive before parsing its document."
+  baseline_behavior:
+  - id: POL-LRA-MIMETYPE-01
+    text: "Validate the format media-type sentinel exactly, including required archive position, compression method, bytes, and absence of forbidden whitespace."
+  fact_keywords: [mimetype, first archive member, stored, whitespace]
+  required_tests: ["One negative fixture independently varies each sentinel invariant."]
+  release_gates: ["Sentinel validation fails closed before document parsing."]
+- domain: DOCUMENT
+  category: model
+  level: MUST
+  title: Image document and canvas model
+  production_meaning: "The root image, declared profile, canvas dimensions, resolution, and root layer tree are typed separately from I/O."
+  developer_use_case: "A developer creates and inspects an image document and canvas without manipulating XML directly."
+  baseline_behavior:
+  - id: POL-LRA-DOCUMENT-01
+    text: "Expose typed root-document, declared-profile, canvas-size, resolution, and root-stack values; validate dimensions with checked arithmetic."
+  fact_keywords: [root image, image element, version, width, height, xres, yres, resolution]
+  required_tests: ["Root/canvas/profile boundary and overflow matrices; model construction without I/O."]
+  release_gates: ["All root attributes and profile-dependent canvas fields are modeled and validated."]
+- domain: STACK
+  category: model
+  level: MUST
+  title: Ordered nested layer tree
+  production_meaning: "Root and nested stacks retain exact child order and supported child kinds."
+  developer_use_case: "A developer traverses, reorders, inserts, and removes nested content while visual order remains explicit."
+  baseline_behavior:
+  - id: POL-LRA-STACK-01
+    text: "Model the root and nested ordered layer tree, preserving child kind, exact visual order, nesting, and root-versus-non-root constraints."
+  fact_keywords: [stack, nested, child, uppermost, layer order]
+  required_tests: ["Deep nesting, mixed-child ordering, root-attribute rejection, and reorder round trips."]
+  release_gates: ["Tree order and nesting survive semantic round trips and independent rendering."]
+- domain: GROUP
+  category: edit
+  level: MUST
+  title: Editable layer groups
+  production_meaning: "Nested groups have typed identity, opacity, visibility, blend operation, and profile-dependent isolation behavior."
+  developer_use_case: "A developer groups layers and edits group properties without flattening pixels."
+  baseline_behavior:
+  - id: POL-LRA-GROUP-01
+    text: "Create, edit, move, and remove nested layer groups while enforcing group attributes, root restrictions, and lossless child preservation."
+  fact_keywords: [non-root stack, group, name, opacity, visibility, composite-op]
+  required_tests: ["Group create/edit/move/remove, root restriction, and unknown-extension preservation tests."]
+  release_gates: ["Group edits remain accepted and visually equivalent in independent applications."]
+- domain: LAYER
+  category: edit
+  level: MUST
+  title: Editable raster layers
+  production_meaning: "Raster layers expose source, name, offsets, opacity, visibility, and compositing properties with strict domains."
+  developer_use_case: "A developer adds, edits, moves, hides, blends, and removes raster layers."
+  baseline_behavior:
+  - id: POL-LRA-LAYER-01
+    text: "Model and edit raster-layer source, name, signed offsets, opacity, visibility, and compositing operation; reject invalid values without altering the document."
+  fact_keywords: [layer element, graphical layer, src attribute, x and y, opacity, visibility, composite-op]
+  required_tests: ["Full attribute boundary matrix and add/edit/move/remove semantic round trips."]
+  release_gates: ["Every layer attribute and edit operation has behavior and rejection proof."]
+- domain: MASK
+  category: advanced
+  level: SHOULD
+  title: Safe mask extension surface
+  production_meaning: "Mask-like extension payloads are typed when recognized and preserved losslessly when unknown, without being misrepresented as baseline conformance."
+  developer_use_case: "A developer can carry application masks through an edit pipeline without silent loss."
+  baseline_behavior:
+  - id: POL-LRA-MASK-01
+    text: "Provide an explicit mask extension model and registry boundary; preserve unrecognized mask elements and assets losslessly, and label them as extensions rather than baseline constructs."
+  fact_keywords: [extension, custom extension, safely with the baseline]
+  required_tests: ["Recognized-mask edit tests and unknown-mask byte-preservation tests from independent producers."]
+  release_gates: ["Mask support is explicitly classified as extension behavior and never inflates baseline conformance."]
+- domain: ASSET
+  category: model
+  level: MUST
+  title: Referenced raster asset model
+  production_meaning: "Layer and extension assets are content-addressed, type-checked, dimension-bounded, and referentially validated."
+  developer_use_case: "A developer replaces layer pixels or streams an asset without losing its relationship to the layer tree."
+  baseline_behavior:
+  - id: POL-LRA-ASSET-01
+    text: "Resolve archive-root-relative asset references safely; expose raster metadata before decode; validate existence, media type, dimensions, channel depth, and declared resource budgets."
+  fact_keywords: [data files, data/, full path, raster, png, referenced]
+  required_tests: ["Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips."]
+  release_gates: ["All tree-to-asset references and raster limits are proven."]
+- domain: BASELINEASSET
+  category: write
+  level: MUST
+  title: Thumbnail and flattened viewing assets
+  production_meaning: "Required preview and flattened assets follow their exact path, raster, dimension, and reference constraints."
+  developer_use_case: "A developer refreshes thumbnails and flattened views for file browsers and non-editing consumers."
+  baseline_behavior:
+  - id: POL-LRA-BASELINE-ASSET-01
+    text: "Read, validate, generate, and replace required thumbnail and flattened-view assets without confusing them with editable layer sources."
+  fact_keywords: [thumbnail.png, mergedimage.png, final rendered image, viewing baseline, png]
+  required_tests: ["Raster-depth, dimension, aspect, interlace, path, XML-reference, and stale-view regeneration matrices."]
+  release_gates: ["Generated viewing assets are accepted and visually checked by independent consumers."]
+- domain: COMPOSITE
+  category: advanced
+  level: MUST
+  title: Compositing operation semantics
+  production_meaning: "Every selected-profile blend and Porter-Duff operation is modeled, validated, and rendered with documented color/alpha semantics."
+  developer_use_case: "A developer renders or changes blend modes and receives predictable pixel results."
+  baseline_behavior:
+  - id: POL-LRA-COMPOSITE-01
+    text: "Expose the selected profile's complete compositing-operation inventory, default operation, validation, and pixel semantics through a replaceable rendering adapter."
+  fact_keywords: [composite-op, blending, porter-duff, rendering, svg:src-over]
+  required_tests: ["Golden pixel vectors, alpha edge cases, unsupported-operation preservation, and adapter differential tests."]
+  release_gates: ["All claimed operations match pinned rendering references within declared tolerances."]
+- domain: ISOLATION
+  category: advanced
+  level: MUST
+  title: Group isolation semantics
+  production_meaning: "Profile-dependent isolated and non-isolated group rendering is explicit and round-trippable."
+  developer_use_case: "A developer renders nested groups without backdrop leakage or profile ambiguity."
+  baseline_behavior:
+  - id: POL-LRA-ISOLATION-01
+    text: "Model declared and inferred group isolation separately, enforce profile availability, and render isolated groups against a transparent intermediate backdrop."
+  fact_keywords: [isolation, isolated group, non-isolated, transparent backdrop]
+  required_tests: ["Declared/inferred isolation pixel vectors and pre-profile rejection/preservation cases."]
+  release_gates: ["Isolation semantics agree with independent application renders for every applicable profile."]
+- domain: RESOLUTION
+  category: model
+  level: MUST
+  title: Profile-dependent document resolution
+  production_meaning: "Horizontal and vertical resolution values preserve defaults, pairing, units, and version applicability."
+  developer_use_case: "A developer reads or changes print resolution without altering canvas pixels."
+  baseline_behavior:
+  - id: POL-LRA-RESOLUTION-01
+    text: "Model paired positive horizontal and vertical resolution values, distinguish absent values from defaults, and enforce the profiles in which resolution is defined."
+  fact_keywords: [xres, yres, resolution, pixels per inch, 0.0.3]
+  required_tests: ["Absent/default/pairing/minimum/profile-boundary round trips."]
+  release_gates: ["Resolution behavior is exact for each declared profile."]
+- domain: RENDER
+  category: advanced
+  level: MUST
+  title: Deterministic document rendering
+  production_meaning: "The layer tree can be rendered without executing content, with documented color, clipping, and resource semantics."
+  developer_use_case: "A developer renders a document or subtree to a raster through a pinned adapter."
+  baseline_behavior:
+  - id: POL-LRA-RENDER-01
+    text: "Render documents and subtrees deterministically with clipping, order, offsets, visibility, opacity, compositing, isolation, color-mode, and resource-limit semantics documented."
+  fact_keywords: [render, displaying, cropped, layer order, opacity, visibility, compositing]
+  required_tests: ["Golden images, subtree rendering, clipping, resource exhaustion, and adapter-version differential tests."]
+  release_gates: ["Rendering is reproducible and agrees with at least two independent producers/consumers within declared tolerances."]
+- domain: EDIT
+  category: edit
+  level: MUST
+  title: Transactional document editing
+  production_meaning: "Tree, metadata, and raster edits preserve referential integrity and expose loss before save."
+  developer_use_case: "A developer performs multi-step edits atomically and can validate or abandon the result."
+  baseline_behavior:
+  - id: POL-LRA-EDIT-01
+    text: "Provide transactional add, replace, move, rename, and remove operations for groups, layers, assets, and metadata; maintain references and invalidate stale derived views."
+  fact_keywords: [editing, full baseline, preserve, layer, stack, data]
+  required_tests: ["Transaction rollback, reference repair, stale-view invalidation, and independent application reopen tests."]
+  release_gates: ["Editing workflows preserve all unmodified supported and unknown data."]
+- domain: STREAM
+  category: performance
+  level: MUST
+  title: Bounded archive and raster processing
+  production_meaning: "Probe, archive traversal, XML parsing, asset access, and rendering respect explicit memory and work budgets."
+  developer_use_case: "A service inspects large documents and lazily decodes selected layers without loading the whole archive."
+  baseline_behavior:
+  - id: POL-LRA-STREAM-01
+    text: "Stream archive and XML inspection in bounded memory, expose lazy asset access, and fail before exceeding configured compressed, expanded, raster, nesting, or render budgets."
+  fact_keywords: [zip64, files larger, archive, data file]
+  required_tests: ["Large sparse archives, lazy-read instrumentation, flat-memory checks, cancellation, and every resource limit."]
+  release_gates: ["Large-file tests prove bounded behavior rather than only successful completion."]
+- domain: VALIDATE
+  category: validate
+  level: MUST
+  title: Layered document validation
+  production_meaning: "Archive, XML, model, reference, raster, profile, render, and preservation diagnostics are complete and source-located."
+  developer_use_case: "A service validates untrusted uploads and receives all actionable issues without mutation."
+  baseline_behavior:
+  - id: POL-LRA-VALIDATE-01
+    text: "Validate each layer independently, aggregate stable diagnostics, distinguish errors from interoperability warnings, and never repair or normalize unless explicitly requested."
+  fact_keywords: [must, required, valid, baseline, specification, constraint]
+  required_tests: ["One discriminating negative per normative and security obligation plus multi-error aggregation."]
+  release_gates: ["Every rejection obligation has executed negative evidence bound to exact inputs."]
+- domain: WRITE
+  category: write
+  level: MUST
+  title: Deterministic interoperable archive writing
+  production_meaning: "Writers emit canonical, safe, profile-correct archives with deterministic bytes and explicit preservation choices."
+  developer_use_case: "A developer writes reproducible documents that reopen in independent applications."
+  baseline_behavior:
+  - id: POL-LRA-WRITE-01
+    text: "Write stable member order, normalized timestamps and metadata, exact sentinels, deterministic XML, validated raster assets, and explicit lossless-versus-canonical preservation modes."
+  fact_keywords: [write, archive, mimetype, stack.xml, png, version]
+  required_tests: ["Three-run byte determinism, installed-wheel writes, independent application reopen, and unknown-extension preservation."]
+  release_gates: ["Writer output passes strict self-validation and independent application interoperability."]

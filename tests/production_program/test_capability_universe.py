@@ -258,6 +258,12 @@ def test_compiler_emits_every_canonical_obligation_and_no_parallel_ids(
     }
     assert linked == {item["obligation_id"] for item in obligations}
     assert all(item["authority_source_ids"] == ["SRC-NB-001"] for item in obligations)
+    assert all(item["spec_profiles"] for item in obligations)
+    assert {
+        tuple(item["spec_profiles"])
+        for item in obligations
+        if item["capability_id"] == "IPYNB-READ-001"
+    } == {("nbformat_4_5",)}
     assert result.manifest["authority_artifacts"] == [
         {
             "format_id": "ipynb",
@@ -279,6 +285,29 @@ def test_compiler_is_byte_deterministic_and_input_complete(tmp_path: Path) -> No
     assert first.outputs == second.outputs == third.outputs
     assert first.manifest["diagnostic_authority_override"] is False
     assert first.manifest["promotion_eligible"] is True
+
+
+def test_required_product_surface_fails_closed(tmp_path: Path) -> None:
+    root = _repo(tmp_path)
+    policy_path = root / "policy.yaml"
+    policy = yaml.safe_load(policy_path.read_text(encoding="utf-8"))
+    policy["formats"]["ipynb"]["required_capability_ids"] = [
+        "IPYNB-READ-001",
+        "IPYNB-MISSING-001",
+    ]
+    _write_yaml(policy_path, policy)
+    with pytest.raises(UniverseError, match="required product surface is missing"):
+        _compile(root)
+
+
+def test_obligation_profiles_reject_values_outside_target(tmp_path: Path) -> None:
+    root = _repo(tmp_path)
+    enrichment_path = root / "enrichments/ipynb.yaml"
+    enrichment = yaml.safe_load(enrichment_path.read_text(encoding="utf-8"))
+    enrichment["capabilities"][0]["spec_profiles"] = ["nbformat_5_0"]
+    _write_yaml(enrichment_path, enrichment)
+    with pytest.raises(UniverseError, match="profiles outside the selected stable target"):
+        _compile(root)
 
 
 def test_authority_artifact_mutation_fails_closed(tmp_path: Path) -> None:

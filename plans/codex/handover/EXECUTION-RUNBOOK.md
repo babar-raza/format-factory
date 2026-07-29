@@ -17,9 +17,9 @@ DISCOVER -> SNAPSHOT -> CONTRACT -> IMPLEMENT -> VERIFY
          -> REPAIR -> CERTIFY -> EXTRACT -> RELEASE_PREP -> COMPLETE
 ```
 
-Current state is `CONTRACT`. Authority closure passed at event 16. The parent
+Current state is `CONTRACT`. Authority closure passed at event 17. The parent
 capability task remains `NEEDS_REPAIR`, so product implementation is locked.
-The exact next task is `TC-FF6-ORA-PROFILE-SURFACE-001`.
+The exact next task is `TC-FF6-IPYNB-PROFILE-SURFACE-001`.
 
 ## Canonical state precedence
 
@@ -61,7 +61,7 @@ TC-FF6-PROGRAM-TRUTH-001 [COMPLETE]
   -> TC-FF6-PROGRAM-CAPABILITIES-001 [NEEDS_REPAIR]
        -> TC-FF6-CAPABILITY-COMPILER-001 [PASS]
        -> TC-FF6-AUTHORITY-CLOSURE-001 [PASS]
-       -> TC-FF6-ORA-PROFILE-SURFACE-001 [READY]
+       -> TC-FF6-IPYNB-PROFILE-SURFACE-001 [READY]
        -> remaining compiler-derived contract repairs
   -> TC-FF6-PROGRAM-ARCHITECTURE-001
   -> TC-FF6-PROGRAM-TASKCARDS-001
@@ -97,13 +97,13 @@ No product wave may bypass the program dependencies.
   enrichment inputs;
 - current `shared/format-contracts/ora.yaml`;
 - capability universe compiler and all six generated projections;
-- taskcard `TC-FF6-ORA-PROFILE-SURFACE-001`.
+- taskcard `TC-FF6-IPYNB-PROFILE-SURFACE-001`.
 
 ### Steps
 
-1. Revalidate event 16 and three OpenRaster authority matches.
+1. Revalidate event 17 and three OpenRaster authority matches.
 2. Materialize sources only through the canonical authority machinery.
-3. Extract the 0.0.3/0.0.4/0.0.5 delta matrix with exact source fragments.
+3. Extract the nbformat 4.0-4.5 delta matrix with exact source fragments.
 4. Classify each item as draft-normative, interoperability, product
    requirement, optional, preview, unsupported, or uncertain.
 5. Compare every current OpenRaster SAL fact to the matrix.

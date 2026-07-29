@@ -7,7 +7,7 @@ generated_by: codex
 generated_at: 2026-07-29
 goal_id: FF6-PRODUCTION-LIBRARIES-001
 parent_task_id: TC-FF6-PROGRAM-CAPABILITIES-001
-status: READY
+status: PASS
 format_id: ora
 skill_ids:
   - ingest-spec-sal
@@ -22,7 +22,7 @@ skill_ids:
 
 ## State and boundary
 
-- Status: `READY`
+- Status: `PASS`
 - Parent: `TC-FF6-PROGRAM-CAPABILITIES-001` (`NEEDS_REPAIR`)
 - Source gap: `FF6-GAP-013`
 - Controller predecessor: `FF6-EVENT-000016`
@@ -156,3 +156,24 @@ affirmatively allowed by the lock’s legal evidence.
   remains incomplete.
 - `TECHNICALLY_BLOCKED`: only after three materially different failed repairs
   to the same external contradiction, with evidence and no suppression.
+
+## Verified completion checkpoint
+
+- The three current RST authorities are digest-bound and all 20 SAL facts pass
+  exact declarative verification. The obsolete HTML proof closure was revoked.
+- `SAL-ORA-00014` carried a claim absent from the current authority; its
+  correction provenance is retained and the replacement claim is proved
+  against the pinned Layer Stack introduction.
+- The generic archive family was replaced by the 20-capability
+  `layered_raster_archive` contract surface.
+- ORA compiles to 20 capabilities and 134 canonical obligations. All
+  capabilities and obligations declare exact profile applicability; isolation
+  is limited to 0.0.4 and 0.0.5.
+- `FF6-ORA-SURFACE-001` and `FF6-ORA-PROFILE-001` are absent from live
+  coverage. All three profiles are claimed.
+- Three-run digest:
+  `2c998635a64f36c2b93c397ab0a5c834379ad5d74fd0544c6017a65337d907fc`.
+- Six-format aggregate:
+  `de6a38a86aa7a82cc50dc7dc6ebfa0066c811d8de782a37684fd26d20a89272a`.
+- Authority artifacts remain 15/15 `MATCH`; no product, certification,
+  promotion, release, or gate state changed.

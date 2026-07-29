@@ -3,10 +3,10 @@ goal_id: FF6-PRODUCTION-LIBRARIES-001
 assessment_status: NEEDS_PROFILE_OR_SURFACE_REPAIR
 summary:
   formats: 6
-  total_capabilities: 89
-  total_obligations: 636
+  total_capabilities: 99
+  total_obligations: 738
   classifications:
-    STABLE_REQUIRED: 80
+    STABLE_REQUIRED: 90
     OPTIONAL_ADAPTER_REQUIRED: 4
     PREVIEW_ISOLATED: 4
     EXCLUDED_WITH_AUTHORITY: 1
@@ -43,8 +43,8 @@ per_format:
       PREVIEW_ISOLATED: 1
       EXCLUDED_WITH_AUTHORITY: 1
   ora:
-    capability_count: 10
-    obligation_count: 32
+    capability_count: 20
+    obligation_count: 134
     authority_status: READY
     authority_issues: []
     target_profiles:
@@ -53,16 +53,12 @@ per_format:
     - openraster_0.0.5
     claimed_profiles:
     - openraster_0.0.3
-    missing_profiles:
     - openraster_0.0.4
     - openraster_0.0.5
-    known_surface_gaps:
-    - gap_id: FF6-ORA-SURFACE-001
-      description: The current archive-family contract is generic and omits explicit image, stack, group, layer, mask, thumbnail, merged-image, compositing, rendering, and editing/viewing-baseline capabilities.
-    - gap_id: FF6-ORA-PROFILE-001
-      description: The current contract metadata names only the informal 0.0.3 profile; 0.0.4 and 0.0.5 capability deltas are not yet compiled.
+    missing_profiles: []
+    known_surface_gaps: []
     classifications:
-      STABLE_REQUIRED: 10
+      STABLE_REQUIRED: 20
       OPTIONAL_ADAPTER_REQUIRED: 0
       PREVIEW_ISOLATED: 0
       EXCLUDED_WITH_AUTHORITY: 0
@@ -150,5 +146,6 @@ invariants:
 - Compilation is not implementation or certification evidence.
 - Every emitted obligation uses canonical ProductContract identity.
 - Every obligation has exactly one capability owner.
+- Every obligation declares the exact selected profiles of its owner capability.
 - Missing authority, profile, or surface coverage remains blocking.
 - Diagnostic authority overrides are never promotion eligible.

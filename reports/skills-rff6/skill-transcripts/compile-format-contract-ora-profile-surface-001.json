@@ -1,0 +1,22 @@
+{
+  "schema": "skills-first/transcript@1",
+  "skill_id": "compile-format-contract",
+  "taskcard_id": "TC-FF6-ORA-PROFILE-SURFACE-001",
+  "format_id": "ora",
+  "outputs": [
+    "shared/format-contracts/ora.yaml",
+    "registry/format-contract-registry.yaml"
+  ],
+  "contract": {
+    "family": "layered_raster_archive",
+    "target_spec_version": "OpenRaster 0.0.5 commit f050b99fa8af44cb4cc3c9d842d25097458765f6",
+    "source_authority_status": "AUTHORITATIVE",
+    "capability_count": 20
+  },
+  "validation": {
+    "idempotency": "PASS",
+    "check_mode": "PASS",
+    "focused_tests": "33 passed"
+  },
+  "verdict": "PASS"
+}

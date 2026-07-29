@@ -7,19 +7,19 @@ obligation_count: 105
 source_input_digests:
   .local/format-contracts/acquired/ipynb/src-nb-002.bin: 4d3750b55006e92d8063a6ac427a84eb1f91c44e376d90de53d03893674991d9
   plans/strategic/ff6/capability-enrichments/ipynb.yaml: 1a56d12b5db2ecc0ee29344ca15e9dd7bf36d118c723607d91ce6b8300980158
-  plans/strategic/ff6/capability-policy.yaml: 9da2c2fa4a69aba3e6cbdc80f1d928d066452986e0beb9108eed462c861304fb
-  schemas/ff6/capability-universe.schema.json: deef239675a39daeb3f48e0be2e9926e38aa122eb61bc2486ac22b621148f89b
+  plans/strategic/ff6/capability-policy.yaml: 7550817db7772d46b18802df0992ec90f2430facf36447aef381224f55cf2457
+  schemas/ff6/capability-universe.schema.json: fea60893c5bfc54e3a6fedebdd6220a572a36f7c72f1fc2f20dec8dfe03d8974
   schemas/format-contracts/authority-lock.schema.json: a8b860f4bef1ceae1b9dd6348c29cc99b35f2bde2dca032217398bddb061f913
   shared/format-contracts/authority-lock.yaml: 8eefb28e3ef24b5b533496b54860daee981853d9c872fddc1ba5de4ff150f249
-  shared/format-contracts/ipynb.yaml: ef4e59cf7bfcf457a79c28ec3241ba9ba2e2994e2044104f23630e214303bb04
+  shared/format-contracts/ipynb.yaml: bd45c8409debd0724df5c34698a35e8e1585b3a57c66c28c16e3b84e064af637
   shared/format-contracts/policy/family-packs/executable_document.yaml: bdc43666de37ffe17cbc827308747c60389ecb7e6e7d52a759e78f071ab32456
   shared/format-contracts/policy/shared-library-contract.yaml: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
   shared/format-contracts/product-requirements/ipynb.yaml: 903b5e9c4d3f371105d209794221a342ee676f4bd5f36dc15c3ddacb7ceadccd
   shared/format-contracts/research/ipynb.yaml: ef4b130cf19a916eaaed86629d80c14eeaaa4dbd2be943400a8b508ff1eb9b7a
   shared/sal-facts/evidence/ipynb.yaml: 223238c07e531daddb9d8c1b596ddeed9365775c625a77ccc86a0cbb9335887b
   shared/sal-facts/ipynb.yaml: a51321c18230497ec932b5132657f2b29897696f5ec20dc87a4710df0e89a04b
-  tools/format_contract/capability_universe.py: 30e56f501bcc7d34063b1deb59b6c1d72f476835d368f95773b749518ccc014d
-  tools/format_contract/capability_universe_command.py: dca779a6d08c5b34e1a8b7bd184cda8401d8b696c997ac55b9933fda5913c19d
+  tools/format_contract/capability_universe.py: d8dbd5018acd0737786db9d81f9e0ddddafb2a8a27001d9567998125943ad708
+  tools/format_contract/capability_universe_command.py: 60432981f60025a71b334f20bf63935cf26d4c9b21ddc37de38219f86d5c72a5
   tools/format_contract/capability_universe_runtime.py: d3df691b1c6e09c3a5746bfdde655bb99f51e878e4eca4b4caf469c2a57f1b4a
   tools/format_contract/capability_universe_validation.py: 8cd57b1fc32754181a0b4e243e09fde56249a5f3769d340778a3b2f436cd44ea
   tools/format_contract/product_contract.py: 3e1e0ca49852751b1ce8bda9a1f996574832460d33844a77618cea591a605205
@@ -27,6 +27,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-010C554B8692D166
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-OUTPUT-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -88,6 +90,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-029B1CD925618F17
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-PARSE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -166,6 +170,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-02A00C213D2B0190
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-ATTACH-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -209,6 +215,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-03A1429F7B7AF3E1
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-MERGE-001
   classification: PREVIEW_ISOLATED
   level: SHOULD
@@ -247,6 +255,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-06EFB1D8AC058AC6
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-PARSE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -325,6 +335,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-121BE1F7FB462D30
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-PARSE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -403,6 +415,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-13F3815D0E5C95E6
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-META-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -454,6 +468,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-14DF9ED57CF9FC2E
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-SEC-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -496,6 +512,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-14E091F2690EE701
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-SEC-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -538,6 +556,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-14E67D7A8E9A1AFE
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-PARSE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -616,6 +636,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-1CEEABB4EB56C405
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-LIFECYCLE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -659,6 +681,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-1F8C3D9742EBC830
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-VALIDATE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -704,6 +728,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-2011BE4892BBBC37
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-UPGRADE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -755,6 +781,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-2558D9E311DA3594
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-OUTPUT-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -816,6 +844,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-27E9715B97C8FD8B
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-PARSE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -894,6 +924,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-2B44543CA510ED94
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-PARSE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -972,6 +1004,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-346FB023299D218E
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-META-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -1023,6 +1057,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-356297A15A50C85B
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-ATTACH-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -1066,6 +1102,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-3AE0DC2692EF0AD9
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-PARSE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -1144,6 +1182,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-3B3B7588125383AB
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-MODEL-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -1198,6 +1238,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-3EF5FF3B64091AB4
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-MODEL-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -1252,6 +1294,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-3FA9A87DE3411DC4
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-MODEL-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -1306,6 +1350,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-4471354A239702DB
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-META-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -1357,6 +1403,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-44833AF0A0BFC6C5
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-EDIT-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -1402,6 +1450,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-44E62E9AB8ECC2E3
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-ATTACH-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -1445,6 +1495,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-4651E92D2D018089
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-MODEL-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -1499,6 +1551,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-499CD4389B386A40
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-SANITIZE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -1540,6 +1594,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-4D73E1AD5BFDA838
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-EXEC-001
   classification: EXCLUDED_WITH_AUTHORITY
   level: SHOULD
@@ -1587,6 +1643,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-55260C0279763885
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-ID-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -1638,6 +1696,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-5BB2228FA079F793
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-UPGRADE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -1689,6 +1749,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-5CA1914777C61A9D
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-OUTPUT-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -1750,6 +1812,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-63250AAB7522792F
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-EXEC-001
   classification: EXCLUDED_WITH_AUTHORITY
   level: SHOULD
@@ -1797,6 +1861,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-6401915AE1FC1ECF
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-PRESERVE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -1838,6 +1904,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-650D957D94A33790
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-LIFECYCLE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -1881,6 +1949,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-6790961797EE55CD
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-DIFF-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -1920,6 +1990,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-679A623D14CBF763
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-OUTPUT-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -1981,6 +2053,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-6998AFE571DA4FA3
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-EDIT-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -2026,6 +2100,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-6D98E9BE6A406DC3
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-PRESERVE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -2067,6 +2143,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-6DCE21F7DD6D971B
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-PARSE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -2145,6 +2223,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-6EA457DD191446C5
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-PARSE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -2223,6 +2303,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-6F4551856EC21F7B
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-ID-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -2274,6 +2356,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-7217D5542A605065
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-VALIDATE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -2319,6 +2403,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-733D902E103E53BD
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-PRESERVE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -2360,6 +2446,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-77C54BA16B30D129
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-OUTPUT-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -2421,6 +2509,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-793EE40165C8DB16
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-PARSE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -2499,6 +2589,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-7A3434FAAB98570C
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-EXEC-001
   classification: EXCLUDED_WITH_AUTHORITY
   level: SHOULD
@@ -2546,6 +2638,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-7B453CA0FD8BCD5D
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-DIFF-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -2585,6 +2679,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-7B4D9801EC12E4D6
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-VALIDATE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -2630,6 +2726,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-80272AC687E3FBED
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-TRUST-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -2669,6 +2767,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-83A15CABF90C4B84
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-ID-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -2720,6 +2820,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-867F546314F11812
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-EXEC-001
   classification: EXCLUDED_WITH_AUTHORITY
   level: SHOULD
@@ -2767,6 +2869,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-8AD14BB7AFB32F2E
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-OUTPUT-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -2828,6 +2932,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-8B873E4A7F5AB781
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-UPGRADE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -2879,6 +2985,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-8CB6767A2C5B196C
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-EDIT-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -2924,6 +3032,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-91F2FEE89658B49D
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-MODEL-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -2978,6 +3088,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-9544ABFA3D62EC79
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-SEC-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -3020,6 +3132,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-99A77B35A2B0E5E8
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-PRESERVE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -3061,6 +3175,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-9A6A2B857F357379
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-PARSE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -3139,6 +3255,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-9C6A2746BA63E841
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-META-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -3190,6 +3308,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-A34640B83CC70822
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-ID-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -3241,6 +3361,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-A416086282D30BB9
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-MODEL-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -3295,6 +3417,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-A87B92BEB23E3B35
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-PARSE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -3373,6 +3497,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-A9D840BD579F5C6F
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-ID-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -3424,6 +3550,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-AA72252FB6D0AA7C
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-PARSE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -3502,6 +3630,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-AAB3BBF81F346B07
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-PARSE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -3580,6 +3710,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-AABAEFD635A6381D
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-EXPORT-001
   classification: OPTIONAL_ADAPTER_REQUIRED
   level: SHOULD
@@ -3618,6 +3750,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-AC36F06FBB685FE8
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-UPGRADE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -3669,6 +3803,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-AF1F9CEECF5D7E42
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-PARSE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -3747,6 +3883,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-B2FA0BFF8CA07D78
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-OUTPUT-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -3808,6 +3946,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-B3EFD046C72D3E4B
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-OUTPUT-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -3869,6 +4009,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-BB3A2A8AA8E143B3
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-CLEAN-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -3908,6 +4050,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-BBE5B3445AD56F9C
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-OUTPUT-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -3969,6 +4113,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-BCE9E0CCCCC2236B
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-PARSE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -4047,6 +4193,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-BD6E7B4AA7C7E06C
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-EDIT-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -4092,6 +4240,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-BE024415D521227D
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-PARSE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -4170,6 +4320,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-C1DA361949F015E7
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-UPGRADE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -4221,6 +4373,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-C599FB180ACF8D49
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-UPGRADE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -4272,6 +4426,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-C5EFBC1F7327CCE7
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-SEC-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -4314,6 +4470,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-C62F62D99CDA6EAF
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-LIFECYCLE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -4357,6 +4515,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-C7460C113E33FAE7
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-CLEAN-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -4396,6 +4556,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-C795205AC0A4BD0F
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-META-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -4447,6 +4609,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-C98190C29177A3A6
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-UPGRADE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -4498,6 +4662,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-CA94E60DA1A97571
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-MODEL-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -4552,6 +4718,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-CDB7DEE07F2275F7
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-OUTPUT-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -4613,6 +4781,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-CF73A081DA5F99EA
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-PARSE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -4691,6 +4861,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-D2D8157D991DBDCA
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-MODEL-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -4745,6 +4917,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-D3F0C114980A469D
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-PARSE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -4823,6 +4997,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-D9ECFCF32654F42A
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-TRUST-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -4862,6 +5038,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-DADE5C18B400176C
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-ID-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -4913,6 +5091,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-DB0F793B92DED8A3
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-META-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -4964,6 +5144,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-DB823E1426D979E1
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-SEC-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -5006,6 +5188,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-DD20FA864FE34971
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-LIFECYCLE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -5049,6 +5233,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-E561BFC0FADBA29D
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-OUTPUT-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -5110,6 +5296,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-E72B508EFCCD0E0C
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-WRITE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -5148,6 +5336,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-EAD1D09BDE25610F
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-OUTPUT-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -5209,6 +5399,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-ECA691E11183033E
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-META-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -5260,6 +5452,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-EE733D1EEE459015
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-EXEC-001
   classification: EXCLUDED_WITH_AUTHORITY
   level: SHOULD
@@ -5307,6 +5501,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-F1F17437C4D0257D
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-MODEL-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -5361,6 +5557,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-F581800E69395375
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-SANITIZE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -5402,6 +5600,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-F6811E708E96AF83
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-LIFECYCLE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -5445,6 +5645,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-FB9678CB40F31893
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-ID-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -5496,6 +5698,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-FD198DA5CD4E92A6
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-PARSE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -5574,6 +5778,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-FDC73ED8FA39A31E
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-PARSE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -5652,6 +5858,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-FE413358B1144149
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-VALIDATE-001
   classification: STABLE_REQUIRED
   level: MUST
@@ -5697,6 +5905,8 @@ obligations:
 - obligation_id: SAL-IPYNB-OBL-FFF232183E2BB71E
   format_id: ipynb
   profile_id: production
+  spec_profiles:
+  - nbformat_v4.5
   capability_id: IPYNB-LIFECYCLE-001
   classification: STABLE_REQUIRED
   level: MUST

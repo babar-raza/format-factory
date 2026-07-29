@@ -1,0 +1,31 @@
+{
+  "schema": "skills-first/transcript@1",
+  "skill_id": "compile-production-capability-universe",
+  "taskcard_id": "TC-FF6-ORA-PROFILE-SURFACE-001",
+  "format_ids": ["ipynb", "ora", "nrrd", "xliff", "safetensors", "ubl"],
+  "outputs": [
+    "plans/strategic/ff6/capabilities",
+    "plans/strategic/ff6/obligations",
+    "plans/strategic/ff6/capability-coverage.yaml",
+    "plans/strategic/ff6/capability-manifest.json"
+  ],
+  "evidence": {
+    "capabilities": 99,
+    "obligations": 738,
+    "ora_capabilities": 20,
+    "ora_obligations": 134,
+    "ora_missing_profiles": [],
+    "ora_known_surface_gaps": [],
+    "authority_matches": 15,
+    "three_run_digest": "2c998635a64f36c2b93c397ab0a5c834379ad5d74fd0544c6017a65337d907fc",
+    "aggregate_sha256": "de6a38a86aa7a82cc50dc7dc6ebfa0066c811d8de782a37684fd26d20a89272a"
+  },
+  "validation": {
+    "affected_tests": "166 passed; 1 baseline-known CSV idempotency test deselected",
+    "ruff": "PASS",
+    "mypy": "PASS",
+    "pyright": "UNAVAILABLE_IN_CURRENT_SHELL"
+  },
+  "promotion_effect": "none",
+  "verdict": "PASS"
+}

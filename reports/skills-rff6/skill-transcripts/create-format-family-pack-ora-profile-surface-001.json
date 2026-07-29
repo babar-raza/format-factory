@@ -1,0 +1,23 @@
+{
+  "schema": "skills-first/transcript@1",
+  "skill_id": "create-format-family-pack",
+  "taskcard_id": "TC-FF6-ORA-PROFILE-SURFACE-001",
+  "format_id": "ora",
+  "inputs": {
+    "family_id": "layered_raster_archive",
+    "representative_formats": ["ora"],
+    "required_fact_categories": ["structure_roots", "data_model", "syntax_encoding", "constraints_validation", "versioning_profiles", "security_behavior"]
+  },
+  "outputs": [
+    "shared/format-contracts/policy/family-packs/layered_raster_archive.yaml",
+    "shared/format-contracts/policy/format-family-map.yaml",
+    "shared/format-contracts/policy/fact-category-requirements.yaml"
+  ],
+  "validation": {
+    "domain_count": 17,
+    "policy_id_count": 38,
+    "valid": true,
+    "idempotent": true
+  },
+  "verdict": "PASS"
+}

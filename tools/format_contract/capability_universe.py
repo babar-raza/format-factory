@@ -204,6 +204,29 @@ def compile_universe(
             policy_ids,
             locks,
         )
+        targets = [str(item) for item in format_policy[format_id].get("target_profiles", [])]
+        if not targets:
+            raise UniverseError(f"{format_id}: target_profiles must not be empty")
+        required_capability_ids = {
+            str(item)
+            for item in format_policy[format_id].get("required_capability_ids", [])
+        }
+        missing_required_capabilities = sorted(
+            required_capability_ids - set(contract_capabilities)
+        )
+        if missing_required_capabilities:
+            raise UniverseError(
+                f"{format_id}: required product surface is missing capabilities "
+                f"{missing_required_capabilities}"
+            )
+        for capability_id, source in by_id.items():
+            profiles = [str(item) for item in source["spec_profiles"]]
+            foreign_profiles = sorted(set(profiles) - set(targets))
+            if foreign_profiles:
+                raise UniverseError(
+                    f"{capability_id}: profiles outside the selected stable target "
+                    f"{foreign_profiles}"
+                )
 
         compiled = compile_product_contract(
             contract,
@@ -259,6 +282,7 @@ def compile_universe(
                 "obligation_id": obligation_id,
                 "format_id": format_id,
                 "profile_id": item["profile_id"],
+                "spec_profiles": list(by_id[capability_id]["spec_profiles"]),
                 "capability_id": capability_id,
                 "classification": by_id[capability_id]["classification"],
                 "level": item["level"],
@@ -307,7 +331,6 @@ def compile_universe(
             classification_counts[str(source["classification"])] += 1
             capability_records.append(record)
 
-        targets = list(format_policy[format_id].get("target_profiles", []))
         claimed_profiles = sorted(
             {
                 str(profile)
@@ -413,6 +436,7 @@ def compile_universe(
                 "Compilation is not implementation or certification evidence.",
                 "Every emitted obligation uses canonical ProductContract identity.",
                 "Every obligation has exactly one capability owner.",
+                "Every obligation declares the exact selected profiles of its owner capability.",
                 "Missing authority, profile, or surface coverage remains blocking.",
                 "Diagnostic authority overrides are never promotion eligible.",
             ],

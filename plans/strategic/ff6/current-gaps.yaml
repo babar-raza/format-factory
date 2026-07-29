@@ -207,27 +207,25 @@ gaps:
       state, eliminating branch-bound identity and wrong-task
       selection.
 
-  - gap_id: FF6-GAP-013
-    severity: high
-    format: ora
-    category: profile_and_surface_incompleteness
-    title: OpenRaster capability surface and profile contract remain incomplete
-    description: >-
-      The deterministic compiler now enforces the locked release vocabulary,
-      excludes IPYNB execution, and isolates SafeTensors framework adapters.
-      OpenRaster remains represented primarily through generic archive/codec
-      capabilities and does not yet account completely for image, layer-tree,
-      mask, compositing, rendering, and distinct 0.0.3/0.0.4/0.0.5 behavior.
-    source_event: FF6-EVENT-000009
-    blocks:
-      - OpenRaster capability acceptance
-      - OpenRaster public API and package architecture task generation
-    resolution: >-
-      Repair the OpenRaster authority/SAL/contract chain, add explicit
-      format-specific capabilities and profile applicability, then recompile
-      without changing already-correct identities for the other five formats.
-
 resolved_gaps:
+  - gap_id: FF6-GAP-013
+    resolved_by: TC-FF6-ORA-PROFILE-SURFACE-001
+    source_event: FF6-EVENT-000017
+    evidence:
+      ora_capabilities: 20
+      ora_obligations: 134
+      claimed_profiles: [openraster_0.0.3, openraster_0.0.4, openraster_0.0.5]
+      sal_facts_verified: 20
+      authority_matches: 15
+      capability_manifest_aggregate_sha256: de6a38a86aa7a82cc50dc7dc6ebfa0066c811d8de782a37684fd26d20a89272a
+      capability_three_run_digest: 2c998635a64f36c2b93c397ab0a5c834379ad5d74fd0544c6017a65337d907fc
+    disposition: >-
+      Replaced generic archive modeling with a layered-raster family and
+      explicit document, stack, group, layer, mask-extension, asset,
+      rendering, compositing, security, preservation, validation, and writer
+      capabilities. Profile applicability is explicit on every capability and
+      obligation. This is contract completion only, not implementation proof.
+
   - gap_id: FF6-GAP-012
     resolved_by: TC-FF6-CAPABILITY-COMPILER-001
     evidence:

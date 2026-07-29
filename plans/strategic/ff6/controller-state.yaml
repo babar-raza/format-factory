@@ -4,10 +4,10 @@ goal_status: ACTIVE
 generated_by: codex
 visibility: internal
 controller_state: CONTRACT
-transition_sequence: 16
+transition_sequence: 17
 last_verified_event:
-  event_id: FF6-EVENT-000016
-  event_hash: 2ea206536ff0ccecaa0a4e93df32ada3e7575018f4cdcafb7525c59d51dd50ba
+  event_id: FF6-EVENT-000017
+  event_hash: 44cb90a67aec8fff244de05d84c047f1d31077d694eda1ff1e27ee0aaa0f3015
 event_journal: plans/strategic/ff6/events.jsonl
 baseline_commit: e4f8f5f086b5e627c07c2ef2d940eda2601a22a8
 digest_policy:
@@ -28,19 +28,17 @@ handover_checkpoint:
   packet_remote_verified: true
   next_taskcard: taskcards/TC-FF6-PROGRAM-CAPABILITIES-001.md
 active_task:
-  task_id: TC-FF6-ORA-PROFILE-SURFACE-001
+  task_id: TC-FF6-IPYNB-PROFILE-SURFACE-001
   state: READY
   parent_task_id: TC-FF6-PROGRAM-CAPABILITIES-001
-  completed_subtask_id: TC-FF6-AUTHORITY-CLOSURE-001
+  completed_subtask_id: TC-FF6-ORA-PROFILE-SURFACE-001
 next_task:
-  task_id: TC-FF6-ORA-PROFILE-SURFACE-001
+  task_id: TC-FF6-IPYNB-PROFILE-SURFACE-001
   state: READY
   unlock_condition: >-
-    Resume from event 16. Repair the OpenRaster authority/SAL/contract
-    semantics so explicit image, layer-tree, mask, compositing, rendering,
-    editable/viewing baseline, and 0.0.3/0.0.4/0.0.5 profile applicability
-    compile without suppressing known surface gaps. Product source and
-    architecture remain blocked.
+    Resume from event 17. Compile source-located nbformat 4.0-4.5 deltas and
+    exact per-capability/per-obligation applicability without weakening the
+    no-execution boundary. Product source and architecture remain blocked.
 promotion:
   program: UNASSESSED
   ipynb: UNASSESSED
@@ -51,24 +49,24 @@ promotion:
   ubl: UNASSESSED
 capability_compilation:
   assessment_status: NEEDS_PROFILE_OR_SURFACE_REPAIR
-  total_capabilities: 89
-  total_obligations: 636
+  total_capabilities: 99
+  total_obligations: 738
   canonical_obligations:
     ipynb: 105
-    ora: 32
+    ora: 134
     nrrd: 94
     xliff: 125
     safetensors: 86
     ubl: 194
-    total: 636
-  canonical_obligation_id_overlap: 636
-  stable: 80
+    total: 738
+  canonical_obligation_id_overlap: 738
+  stable: 90
   optional_adapter: 4
   preview: 4
   excluded: 1
   compiler_subtask: PASS
-  manifest_aggregate_sha256: 667cd4cb69773e6746ad46173b53de39c18ef44d39ef7db91c6337d8a3761a73
-  three_run_digest: 04114c84221edcdb00dae1097d75e55a7c1a6be75a074c9c0b8b07f0de5533a8
+  manifest_aggregate_sha256: de6a38a86aa7a82cc50dc7dc6ebfa0066c811d8de782a37684fd26d20a89272a
+  three_run_digest: 2c998635a64f36c2b93c397ab0a5c834379ad5d74fd0544c6017a65337d907fc
   authority_artifacts:
     match: 15
     missing: 0
@@ -76,7 +74,10 @@ capability_compilation:
     undeclared: 0
     legal_blocked: 0
   remaining_blocks:
-    - FF6-GAP-013
+    - FF6-IPYNB-PROFILE-001
+    - FF6-NRRD-PROFILE-001
+    - FF6-XLIFF-PROFILE-001
+    - FF6-UBL-TYPING-001
 authority_closure_checkpoint:
   status: PASS
   authority_lock_sha256: 8eefb28e3ef24b5b533496b54860daee981853d9c872fddc1ba5de4ff150f249
@@ -97,9 +98,9 @@ authority_closure_checkpoint:
   promotion_effect: none
 current_gap_summary:
   critical: 1
-  high: 8
+  high: 7
   medium: 3
-  total: 12
+  total: 11
   source_packages_present: 5
   source_packages_absent: 1
   product_contracts_draft: 6

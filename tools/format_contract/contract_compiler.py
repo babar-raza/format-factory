@@ -304,6 +304,21 @@ def assemble(ctx: dict, capabilities: list[dict]) -> dict:
         and record.get("acquisition_status") == "ACQUIRED"
         and record.get("content_hash")
     ]
+    pinned_versions = {
+        str(record.get("version", "")).strip()
+        for record in pinned_authorities
+        if str(record.get("version", "")).strip()
+    }
+    # The acquired, digest-bound authority is the current technical source of
+    # truth. Registry metadata may legitimately lag acquisition and must not
+    # keep a compiled contract on an obsolete target version.
+    if len(pinned_versions) == 1:
+        spec_version = next(iter(pinned_versions))
+        description = identity["description_template"].format(
+            display_name=display_name,
+            spec_body=spec_body,
+            spec_version=spec_version,
+        )
     registry_source = {
         "source_id": f"SRC-{fmt}-001",
         "title": f"{spec_body} {spec_version}".strip(),
@@ -330,14 +345,14 @@ def assemble(ctx: dict, capabilities: list[dict]) -> dict:
         else [registry_source, *research_sources]
     )
     seen_source_ids: set[str] = set()
-    sources = [
-        source
-        for source in sources
-        if not (
-            source.get("source_id") in seen_source_ids
-            or seen_source_ids.add(str(source.get("source_id")))
-        )
-    ]
+    unique_sources: list[dict] = []
+    for source in sources:
+        source_id = str(source.get("source_id"))
+        if source_id in seen_source_ids:
+            continue
+        seen_source_ids.add(source_id)
+        unique_sources.append(source)
+    sources = unique_sources
 
     shared_groups = shared_store["groups"]
     selected_shared_groups = set(pack.get("shared_groups", []))
@@ -408,10 +423,18 @@ def assemble(ctx: dict, capabilities: list[dict]) -> dict:
             "extensions": list(reg.get("extensions", []) or []),
             "family": ctx["family"],
             "target_spec_version": str(spec_version),
-            "source_authority_status": "AUTHORITATIVE" if reg.get("spec_url") else "NEEDS_AUTHORITY",
+            "source_authority_status": (
+                "AUTHORITATIVE"
+                if pinned_authorities or reg.get("spec_url")
+                else "NEEDS_AUTHORITY"
+            ),
             "generator_version": GENERATOR_VERSION,
             "lifecycle_status": "DRAFT",
-            "confidence": "medium" if research.get("findings") else "low",
+            "confidence": (
+                "medium"
+                if pinned_authorities or research.get("findings")
+                else "low"
+            ),
             "supersedes": None,
             "input_digests": stores.input_digests(fmt_id, ctx["family"]),
         },
@@ -493,7 +516,7 @@ def main(argv: list[str] | None = None) -> int:
 
     try:
         if args.readiness_only:
-            report, doc = readiness(classify(fmt)), {}
+            report, doc = readiness(classify(fmt)), {}  # type: dict, dict
         else:
             report, doc = compile_contract(fmt)
     except stores.StoreError as exc:

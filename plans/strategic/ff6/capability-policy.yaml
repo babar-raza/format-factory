@@ -52,16 +52,31 @@ formats:
       - openraster_0.0.5
     classification_locks: {}
     exclusions: {}
-    known_surface_gaps:
-      - gap_id: FF6-ORA-SURFACE-001
-        description: >-
-          The current archive-family contract is generic and omits explicit
-          image, stack, group, layer, mask, thumbnail, merged-image,
-          compositing, rendering, and editing/viewing-baseline capabilities.
-      - gap_id: FF6-ORA-PROFILE-001
-        description: >-
-          The current contract metadata names only the informal 0.0.3 profile;
-          0.0.4 and 0.0.5 capability deltas are not yet compiled.
+    required_capability_ids:
+      - ORA-CONTAINER-001
+      - ORA-MIMETYPE-001
+      - ORA-DOCUMENT-001
+      - ORA-STACK-001
+      - ORA-GROUP-001
+      - ORA-LAYER-001
+      - ORA-MASK-001
+      - ORA-ASSET-001
+      - ORA-BASELINEASSET-001
+      - ORA-COMPOSITE-001
+      - ORA-ISOLATION-001
+      - ORA-RESOLUTION-001
+      - ORA-RENDER-001
+      - ORA-EDIT-001
+      - ORA-STREAM-001
+      - ORA-VALIDATE-001
+      - ORA-WRITE-001
+      - ORA-LIFECYCLE-001
+      - ORA-PRESERVE-001
+      - ORA-SEC-001
+    profile_applicability:
+      ORA-ISOLATION-001:
+        - openraster_0.0.4
+        - openraster_0.0.5
   nrrd:
     target_profiles:
       - nrrd0001

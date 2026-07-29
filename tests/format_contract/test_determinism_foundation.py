@@ -214,6 +214,7 @@ def test_acquired_research_authority_replaces_synthetic_url_record(
             {
                 "source_id": "SRC-CSV-099",
                 "title": "Pinned authority",
+                "version": "CSV Pinned 9.9",
                 "authority_class": "AUTHORITATIVE",
                 "canonical_url": "https://example.invalid/pinned",
                 "content_hash": "a" * 64,
@@ -232,6 +233,9 @@ def test_acquired_research_authority_replaces_synthetic_url_record(
         source["source_id"] != "SRC-CSV-001"
         for source in document["authoritative_sources"]
     )
+    assert document["contract_metadata"]["target_spec_version"] == "CSV Pinned 9.9"
+    assert document["contract_metadata"]["source_authority_status"] == "AUTHORITATIVE"
+    assert document["contract_metadata"]["confidence"] == "medium"
 
 
 def test_contract_body_has_no_timestamps():

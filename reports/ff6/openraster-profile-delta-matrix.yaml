@@ -1,0 +1,225 @@
+schema: ff6/openraster-profile-delta-matrix@1
+generated_by: codex
+visibility: generated
+task_id: TC-FF6-ORA-PROFILE-SURFACE-001
+format_id: ora
+authority_snapshot:
+  upstream_commit: f050b99fa8af44cb4cc3c9d842d25097458765f6
+  artifacts:
+    - source_id: SRC-ORA-001
+      path: .local/format-contracts/acquired/ora/src-ora-001.bin
+      sha256: bd584b4b998df16c735bc3ce575e382569a101427fd4c4be14b677d30d210613
+    - source_id: SRC-ORA-002
+      path: .local/format-contracts/acquired/ora/src-ora-002.bin
+      sha256: a9f2cb90009e3cc76883ab9db2f43607a9518e723b9d03f1aa1b150f2c2e546a
+    - source_id: SRC-ORA-003
+      path: .local/format-contracts/acquired/ora/src-ora-003.bin
+      sha256: 29c77a95396c8c245d259b349fa438e3b40019d7fe6f7e06b8520c2fc9f63a49
+interpretation_rules:
+  - "A feature explicitly marked 'Since' is applicable from that profile forward."
+  - "Unmarked baseline behavior present in the 0.0.3 example and not marked as later is classified as common to 0.0.3-0.0.5."
+  - "The selected 0.0.5 snapshot does not provide a complete historical changelog or separate 0.0.3 and 0.0.4 documents. Absence of a marked delta is not proof that no historical editorial or behavioral delta existed."
+  - "Certification must therefore be named interoperability certification against the pinned snapshot and independent applications, not universal conformance to every historical implementation."
+delta_rows:
+  - concept: baseline exchange and extension boundary
+    first_applicable_version: openraster_0.0.3
+    later_change_or_removal: "No later change or removal is stated in the pinned authority."
+    strength: NORMATIVE_BASELINE_INTENT_WITH_INTEROP_QUALIFICATION
+    source_id: SRC-ORA-001
+    source_fragment: "Baseline Intent: every OpenRaster file is compliant to Baseline; exchange between applications; custom extensions are allowed."
+    facts: [SAL-ORA-00006]
+    required_proof: [positive, preservation, independent_application_interoperability]
+  - concept: ZIP wrapper and .ora identity
+    first_applicable_version: openraster_0.0.3
+    later_change_or_removal: "No later change or removal is stated."
+    strength: NORMATIVE
+    source_id: SRC-ORA-002
+    source_fragment: "Storage: '.ora' extension and Zip file wrapper."
+    facts: [SAL-ORA-00008]
+    required_proof: [positive, rejection, security]
+  - concept: ZIP compression, UTF-8 names, case sensitivity, and ZIP64
+    first_applicable_version: openraster_0.0.3
+    later_change_or_removal: "No later change or removal is stated."
+    strength: NORMATIVE_AND_TECHNICAL_NOTE
+    source_id: SRC-ORA-002
+    source_fragment: "Storage technical note: DEFLATED/STORED only; case-sensitive UTF-8 member names; UTF-8 flag; 64-bit extension for files above 4GB."
+    facts: [SAL-ORA-00004, SAL-ORA-00007]
+    required_proof: [positive, rejection, security, large_file]
+  - concept: exact mimetype sentinel
+    first_applicable_version: openraster_0.0.3
+    later_change_or_removal: "No later change or removal is stated."
+    strength: NORMATIVE
+    source_id: SRC-ORA-002
+    source_fragment: "Required Files / mimetype: first member, exact name, STORED, exact image/openraster bytes, no whitespace/newline."
+    facts: [SAL-ORA-00016]
+    required_proof: [positive, rejection, deterministic_write]
+  - concept: stack.xml encoding and layer-stack role
+    first_applicable_version: openraster_0.0.3
+    later_change_or_removal: "No later change or removal is stated."
+    strength: NORMATIVE
+    source_id: SRC-ORA-002
+    source_fragment: "Required Files / stack.xml: UTF-8 encoded XML from the Layers Stack Specification."
+    facts: [SAL-ORA-00017]
+    required_proof: [positive, rejection, semantic_roundtrip, namespace_extension_preservation]
+  - concept: image root, declared version, canvas dimensions, and clipping
+    first_applicable_version: openraster_0.0.3
+    later_change_or_removal: "The version attribute itself is marked since 0.0.1; no later removal is stated."
+    strength: NORMATIVE
+    source_id: SRC-ORA-003
+    source_fragment: "image element: root; mandatory positive w/h; crop to (0,0,w,h); mandatory SemVer version."
+    facts: [SAL-ORA-00018]
+    required_proof: [positive, rejection, clipping_render]
+  - concept: paired document resolution
+    first_applicable_version: openraster_0.0.3
+    later_change_or_removal: "No change or removal is stated for 0.0.4 or 0.0.5."
+    strength: NORMATIVE_EXPLICIT_SINCE_MARKER
+    source_id: SRC-ORA-003
+    source_fragment: "image element / xres and yres: positive integer PPI, default 72, pair requirement, '(Since: 0.0.3)'."
+    facts: [SAL-ORA-00010]
+    required_proof: [positive, rejection, preservation, profile_boundary]
+  - concept: ordered nested stack content
+    first_applicable_version: openraster_0.0.3
+    later_change_or_removal: "No later change or removal is stated."
+    strength: NORMATIVE
+    source_id: SRC-ORA-003
+    source_fragment: "stack element: nested stack/layer/text children; first child is uppermost; root restrictions."
+    facts: [SAL-ORA-00001]
+    required_proof: [positive, rejection, semantic_roundtrip, render_order]
+  - concept: layer source and archive-root-relative asset paths
+    first_applicable_version: openraster_0.0.3
+    later_change_or_removal: "No later change or removal is stated."
+    strength: NORMATIVE
+    source_id: SRC-ORA-003
+    source_fragment: "layer element: required src path to a separate archive file; File Layout data section requires full root-relative paths."
+    facts: [SAL-ORA-00002, SAL-ORA-00003]
+    required_proof: [positive, rejection, path_traversal_security, preservation]
+  - concept: layer signed offsets
+    first_applicable_version: openraster_0.0.3
+    later_change_or_removal: "No later change or removal is stated; non-root stack offsets are ignored."
+    strength: NORMATIVE
+    source_id: SRC-ORA-003
+    source_fragment: "x and y attributes: signed integer layer offsets, default zero; non-root stack offsets ignored."
+    facts: [SAL-ORA-00005]
+    required_proof: [positive, rejection, render_position, semantic_roundtrip]
+  - concept: opacity and visibility
+    first_applicable_version: openraster_0.0.3
+    later_change_or_removal: "No later change or removal is stated."
+    strength: NORMATIVE
+    source_id: SRC-ORA-003
+    source_fragment: "Common attributes: opacity range 0.0-1.0/default 1.0; visibility visible|hidden/default visible."
+    facts: [SAL-ORA-00012, SAL-ORA-00013]
+    required_proof: [positive, rejection, default_preservation, golden_render]
+  - concept: compositing operation inventory and default
+    first_applicable_version: openraster_0.0.3
+    later_change_or_removal: "The authority says future modes may be added; none is marked as added or removed in 0.0.4/0.0.5."
+    strength: NORMATIVE_WITH_EXTERNAL_RENDERING_REFERENCE
+    source_id: SRC-ORA-003
+    source_fragment: "composite-op: documented blend plus Porter-Duff operator; default svg:src-over; W3C Compositing-1 rendering model."
+    facts: [SAL-ORA-00015]
+    required_proof: [positive, rejection, golden_pixel, differential_renderer]
+  - concept: isolated group semantics
+    first_applicable_version: openraster_0.0.4
+    later_change_or_removal: "No change or removal is stated for 0.0.5."
+    strength: NORMATIVE_EXPLICIT_SINCE_MARKER
+    source_id: SRC-ORA-003
+    source_fragment: "Compositing the image: isolation inference and required isolation='isolate' declaration, '(Since: 0.0.4)'."
+    facts: [SAL-ORA-00011]
+    required_proof: [positive, rejection, profile_boundary, golden_pixel, independent_application_interoperability]
+  - concept: full and viewing baselines
+    first_applicable_version: openraster_0.0.3
+    later_change_or_removal: "No later change or removal is stated."
+    strength: NORMATIVE_INTEROPERABILITY_CLASSIFICATION
+    source_id: SRC-ORA-003
+    source_fragment: "Baseline documents: Full baseline permits reading/editing; Viewing baseline guarantees visualization but editing may damage the result."
+    facts: [SAL-ORA-00009, SAL-ORA-00014]
+    required_proof: [editable_roundtrip, viewing_render, independent_application_interoperability]
+  - concept: thumbnail viewing asset
+    first_applicable_version: openraster_0.0.3
+    later_change_or_removal: "No later change or removal is stated."
+    strength: NORMATIVE
+    source_id: SRC-ORA-002
+    source_fragment: "Thumbnails/thumbnail.png: required, non-interlaced 8-bit PNG, max 256x256, preserve aspect, no XML reference."
+    facts: [SAL-ORA-00019]
+    required_proof: [positive, rejection, raster_validation, deterministic_regeneration]
+  - concept: merged flattened viewing image
+    first_applicable_version: openraster_0.0.3
+    historical_first_marker: openraster_0.0.2
+    later_change_or_removal: "Mandatory since 0.0.2; no later change or removal is stated."
+    strength: NORMATIVE_EXPLICIT_SINCE_MARKER
+    source_id: SRC-ORA-002
+    source_fragment: "mergedimage.png: final rendered image, PNG 8 or 16 bits per channel, mandatory since 0.0.2."
+    facts: [SAL-ORA-00020]
+    required_proof: [positive, rejection, raster_validation, visual_equivalence, deterministic_regeneration]
+  - concept: mask extension model
+    first_applicable_version: openraster_0.0.3
+    later_change_or_removal: "No baseline mask construct exists in the pinned authority."
+    strength: PRODUCT_EXTENSION_REQUIREMENT_NOT_NORMATIVE
+    source_id: SRC-ORA-001
+    source_fragment: "Baseline Intent permits custom extensions; Layer Stack Baseline requires extensions to work safely with baseline."
+    facts: [SAL-ORA-00006]
+    required_proof: [extension_labeling, recognized_extension_behavior, unknown_extension_preservation, independent_producer_corpus]
+profiles:
+  openraster_0.0.3:
+    applicability: stable
+    introduced:
+      - capability_id: ORA-RESOLUTION-001
+        facts: [SAL-ORA-00010]
+        source_location: "SRC-ORA-003, image element, xres/yres paragraph, '(Since: 0.0.3)'"
+    common_surface:
+      - ORA-CONTAINER-001
+      - ORA-MIMETYPE-001
+      - ORA-DOCUMENT-001
+      - ORA-STACK-001
+      - ORA-GROUP-001
+      - ORA-LAYER-001
+      - ORA-MASK-001
+      - ORA-ASSET-001
+      - ORA-BASELINEASSET-001
+      - ORA-COMPOSITE-001
+      - ORA-RESOLUTION-001
+      - ORA-RENDER-001
+      - ORA-EDIT-001
+      - ORA-STREAM-001
+      - ORA-VALIDATE-001
+      - ORA-WRITE-001
+      - ORA-LIFECYCLE-001
+      - ORA-PRESERVE-001
+      - ORA-SEC-001
+    excluded_by_profile:
+      - ORA-ISOLATION-001
+    uncertainty: "The authority includes a 0.0.3 document example and explicit later markers, but no separately pinned 0.0.3 specification bundle."
+  openraster_0.0.4:
+    applicability: stable
+    introduced:
+      - capability_id: ORA-ISOLATION-001
+        facts: [SAL-ORA-00011]
+        source_location: "SRC-ORA-003, Compositing the image, isolation declaration, '(Since: 0.0.4)'"
+    inherits: openraster_0.0.3
+    uncertainty: "No separately pinned 0.0.4 bundle is available; the delta is derived from the explicit 0.0.4 marker in the current authority."
+  openraster_0.0.5:
+    applicability: stable
+    introduced: []
+    inherits: openraster_0.0.4
+    authority_role: "Default write profile and complete current pinned authority snapshot."
+    uncertainty: "The pinned snapshot contains no explicit 'Since 0.0.5' capability marker. This matrix does not claim that historical 0.0.4 and 0.0.5 texts were byte- or editorially identical."
+extension_classification:
+  ORA-MASK-001:
+    status: PRODUCT_EXTENSION_SURFACE
+    normative_baseline_claim: false
+    basis:
+      facts: [SAL-ORA-00006]
+      policy: POL-LRA-MASK-01
+      explanation: "The authority permits safe custom extensions but does not define a baseline mask element. Typed recognized masks and lossless unknown-mask preservation are developer-product requirements and must never be counted as baseline conformance."
+obligation_projection:
+  rule: "Every emitted obligation inherits the exact spec_profiles array of its owning capability."
+  exception: "ORA-ISOLATION-001 obligations apply only to openraster_0.0.4 and openraster_0.0.5."
+  validator: tools.format_contract.capability_universe
+evidence_contradiction:
+  fact_id: SAL-ORA-00014
+  previous_claim: "The obsolete HTML page labeled the 0.0.5 layer-stack text an early draft open for discussion."
+  finding: "That text is absent from all three current commit-pinned RST authorities."
+  disposition: "The previous proof was invalidated. The stable numeric fact slot now records the authority-present interoperability/nondestructive-save goals, with correction provenance retained in the SAL store."
+limits:
+  - "No product implementation or interoperability corpus is proved by this matrix."
+  - "Mask behavior remains an explicitly labeled extension surface."
+  - "Independent application evidence is still required before ORA certification."
