@@ -6,9 +6,14 @@ publish_allowed: false
 generated_by: codex
 generated_at: 2026-07-29
 authoritative_state: false
+historical_projection: true
 ---
 
 # FF6 Execution Runbook
+
+> Historical runbook background. Do not execute an embedded exact-next action
+> from this file. The current authority is [START-HERE.md](START-HERE.md) and
+> the immutable [Event 26 runbook](event-26/RUNBOOK.md).
 
 ## Mission state machine
 

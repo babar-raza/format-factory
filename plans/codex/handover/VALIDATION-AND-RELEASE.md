@@ -6,9 +6,14 @@ publish_allowed: false
 generated_by: codex
 generated_at: 2026-07-29
 authoritative_state: false
+historical_projection: true
 ---
 
 # Validation, Regression, and Release Contract
+
+> Historical validation background. Current checkpoint facts and commands are
+> in [START-HERE.md](START-HERE.md) and the immutable
+> [Event 26 runbook](event-26/RUNBOOK.md). No release state is implied here.
 
 ## Completion semantics
 

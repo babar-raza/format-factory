@@ -1,185 +1,257 @@
 ---
-artifact_id: FF6-CLAUDE-START-001
-artifact_type: agent_resume_prompt
+artifact_id: FF6-PROVIDER-EXECUTOR-INSTRUCTIONS
+artifact_type: execution_handover
 visibility: internal
 publish_allowed: false
 generated_by: codex
 generated_at: 2026-07-29
-authoritative_state: false
 ---
 
-# Claude Resume Instruction
+# Claude/Codex Shift Instructions
 
-MODE: EXECUTION MODE
+Resume the FF6 production mission from the clean Event 26 checkpoint. Do not
+infer state from chat history, provider-local branches, local tokens, or old
+handover prose.
 
-Continue `FF6-PRODUCTION-LIBRARIES-001` autonomously from the verified GitLab
-`main` checkpoint. Do not use chat memory, an old branch, a stale worktree, or
-provider-local artifacts as authority.
+## Locked inputs
 
-## Required reconstruction
+```text
+mission_id: FF6-PRODUCTION-LIBRARIES-001
+canonical_forge: GitLab
+canonical_remote: origin
+canonical_branch: main
+source_checkpoint: 18bb295f94e43338611ef88caff073eed17411c9
+controller_event_commit: 15ab7d0455e109bd88289e16d73c0835324a21ab
+controller: plans/strategic/ff6/controller-state.yaml
+journal: plans/strategic/ff6/events.jsonl
+current_taskcard: taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md
+controller_event: FF6-EVENT-000026
+controller_event_hash: 34b36bf5dc4344713ac1c0f026b30e6b15fb6a63b86f4876ee98230952fabcd0
+exact_next_microstep: XLF-04-BATCH-005
+```
 
-1. Read `AGENTS.md`, `docs/governance/skill-only-policy.yaml`,
-   `plans/codex/handover/START-HERE.md`, and every file in its ordered reading
-   list. No separate Claude adapter is tracked; Claude must use its ambient
-   hooks plus the shared `AGENTS.md` contract.
-2. Fetch GitLab `origin/main`. Do not create or use another branch and do not
-   use GitHub for this mission.
-3. Validate `CURRENT-MACHINE-STATE.yaml` against live tracked state rather than
-   trusting its labels.
-4. Require:
-   - GitLab handover checkpoint
-     `d02a00fedf669c6e2b2dd58e480715550fb2afe8` is an ancestor of fetched
-     `origin/main`;
-   - event/controller checkpoint
-     `220ee7f5b9d39c3684cff6af6331b56a03ae9e75` is also an ancestor;
-   - controller `CONTRACT`, sequence 25;
-   - event `FF6-EVENT-000025`, hash
-     `237f7759e2286cfc08c547c53a0b47d44e1c77307329ec0215c5326e3f811e48`;
-   - parent `TC-FF6-PROGRAM-CAPABILITIES-001` in `NEEDS_REPAIR`;
-   - `TC-FF6-NRRD-PROFILE-SURFACE-001` in `PASS`;
-   - `TC-FF6-XLIFF-PROFILE-SURFACE-001` in `WORK_IN_PROGRESS`, with
-     `XLF-01`, `XLF-02`, `XLF-03`, `XLF-04-BATCH-001`, and
-     `XLF-04-BATCH-002`, and `XLF-04-BATCH-003` complete,
-     `XLF-04` still first unmet, and
-     canonical provider-shift microstate `RESUMABLE` at event 25;
-   - 110 capabilities, 672 obligations, and aggregate
-     `4d17d8c8c0ef3de74d59e1d5b16884c0210fd0836e0593591871f10d0af2efd2`;
-   - 17/17 authority artifacts `MATCH`, including 5/5 XLIFF;
-   - zero product certifications and no promotion.
-5. Validate the native FF6 chain with `previous_event_hash`. The generic Plan
-   Control journal schema is different and must not be used to rewrite FF6.
-6. Query coordination, register this Claude session, inspect conflicts and
-   leases, and claim exact task paths before writing. Preserve all unrelated
-   state.
-7. Read `plans/codex/handover/INFLIGHT-RECOVERY.yaml` as a closed recovery
-   audit. Confirm implementation commit `25227527` and checkpoint commit
-   `220ee7f5` are on `origin/main`; do not repeat or re-journal batch 003.
+## Start procedure
 
-Do not reuse a Codex coordination token. If the outgoing Codex identity is
-still `ACTIVE`, do not create a second writer on the same paths. Accept its
-normal completion, or perform an audited stale-owner takeover only after
-capturing and classifying the current filesystem state.
+1. Read `AGENTS.md` completely. If using Codex, also read
+   `docs/governance/codex-adapter.md` and the canonical skill-only policy.
+2. Fetch `origin`; confirm the source checkpoint is an ancestor of
+   `origin/main`. GitHub is not a mission remote.
+3. Inspect status and coordination. Preserve every unexplained change.
+4. Run:
 
-## Execute exactly this task
+   ```powershell
+   .venv\Scripts\python.exe plans\codex\handover\validate_handover.py --self-test
+   ```
 
-Resume `taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md` at `XLF-04` through its registered
-authority-acquisition, SAL, family, research, contract,
-capability-compiler, taskcard, and controller skills.
+5. Re-read the product goal, execution plan, full native journal, controller,
+   current gaps, active taskcard, Batch 004 artifacts, and Batch 004 receipts.
+6. Register a new provider-specific coordination identity. Never reuse the
+   outgoing provider's token or release another agent's lease.
+7. Select the registered skills required by the active task. Expected
+   composition for Batch 005 is:
 
-Do not reacquire XLIFF 2.0, rebuild XLF-03, restart XLF-04-BATCH-003, or
-rewrite the 25 obligations unless independent replay exposes a
-defect. First:
+   - `test-driven-development`
+   - `ingest-spec-sal`
+   - `sal-pipeline-heal`
+   - `plan-control` only after implementation evidence is committed
+   - `refresh-provider-neutral-handover` only after the new native checkpoint
 
-1. fetch GitLab, compare `origin/main`, local HEAD, event 25, implementation
-   commit `25227527`, and checkpoint commit `220ee7f5`;
-2. query coordination and use audited takeover only when eligible;
-3. verify the six committed-file digests (four implementation/report files and two skill transcripts)
-   in `INFLIGHT-RECOVERY.yaml`;
-4. validate both batch-003 transcripts;
-5. run `python -m pytest tests/tools/test_extract_sal_facts.py -q` and require
-   27 passed;
-6. independently replay the affected regression/static/determinism/authority
-   checks reported by the transcripts;
-7. verify event 25 binds the immutable implementation and the controller,
-   taskcard, event chain, and receipt agree;
-8. keep 25 of 105 expected IDs resolved, 80 missing, denominator census open,
-   and XLF-04 incomplete;
-9. execute `XLF-04-BATCH-004` as the next bounded authority-census batch.
+8. Claim exact files, create a skill execution manifest, call the mutation
+   guard, preflight before each write, and record every write.
 
-The previous event-24 replay remains a predecessor-chain check; event 25 is
-the current replay boundary:
+If any canonical input has advanced, recompute state and refresh the handover
+before implementation. Do not ask for continuation; keep doing safe unblocked
+work.
 
-1. verify the event-24 source, test, matrix, Core inventory, and transcript
-   SHA-256 values;
-2. run `python -m pytest tests/tools/test_extract_sal_facts.py -q` and require
-   24 passed;
-3. rerun Ruff, strict Mypy, Pyright 1.1.411, and bytecode compilation;
-4. validate `reports/ff6/xliff-authority-member-inventory.yaml` against both
-   pinned ZIPs;
-5. run matrix `--check` and require three byte-identical generations at
-   `9f4ea4b8b71378217af26c0fb2b97a759817a0aca6c64255b8cd55170c60a090`;
-6. verify three byte-identical Core-inventory generations at
-   `5930f1e28d21e277325c9a88ad8486ce9076ff1aa680ae21979440fd85d3244b`;
-7. prove the batch-003 commit preserves all 19 predecessor IDs and separates
-   21 specification obligations from four production-policy obligations;
-8. keep `complete=false` while the explicit 105-ID denominator census remains
-   open and 80 IDs are unresolved. Category presence is never the
-   completeness denominator.
+## Current truth boundary
 
-The matrix acceptance count is 293/420 total DocBook `section` elements. The
-197/312 figures are only the subsets with direct `id`/`xml:id` attributes;
-sections without IDs remain evidence and receive deterministic title-path
-locations. Treating 197/312 as the matrix denominator would lose normative
-source coverage.
+Batch 004 proves a deterministic census only for its declared selector:
+direct/leaf modal Core prose, Core XSD nodes, and Core Schematron assertions.
+It selected 542 candidates:
 
-Preserve the existing tested compiler unless replay exposes a defect. Its 36
-rows are source-surface anchors, not a complete semantic obligation inventory.
-The batch-003 commit's 25 cumulative obligations are source-bound but unverified
-against canonical SAL and are also not a complete inventory. Never satisfy XLF-04 by
-relabeling anchors, counting XSD components, or counting covered categories.
+- 182 normative-prose candidates
+- 264 Core XSD candidates
+- 96 Core Schematron candidates
+- 411 common-identical profile relations
+- 19 common-changed relations
+- 4 removed in XLIFF 2.1
+- 108 added in XLIFF 2.1
+- 0 unmapped and 0 multiply dispositioned within the declared selector
+- 464 lexical/context dispositions
+- 78 coarse structural fallback dispositions
 
-Remaining required result:
+This does not prove the Core obligation inventory complete. Non-modal prose is
+unclassified. Candidate dispositions mention 45 of 105 expected IDs, but only
+25 IDs have source-bound obligation rows and 80 remain missing. Every existing
+row is `SOURCE_BOUND_UNVERIFIED`. XLF-04 is open; product certification is
+0/6.
 
-- source-located XLIFF 2.0/2.1 Core and official-module delta matrices;
-- exact profile applicability on every XLIFF capability and obligation;
-- separate first-class capability ownership for all eight official modules:
-  Translation Candidates/Matches, Glossary, Format Style, Metadata, Resource
-  Data, Size and Length Restriction, Validation, and ITS;
-- exact accounting for all nine module schema vocabularies, with `its` and
-  `itsm` assigned to the single ITS module and informative Change Tracking
-  excluded from normative module coverage;
-- semantic obligations for inline pairing/order/nesting/isolation,
-  segmentation/re-segmentation, state/sub-state, original data, skeletons,
-  extensions, ITS mappings, deterministic canonical XML, security, resource
-  limits, downgrade-loss reporting, and normative agent processing;
-- stable ownership of every `SAL-XLIFF-OBL-*` rule;
-- XLIFF 2.2 absent or isolated preview-only and XLIFF 1.2 kept outside the 2.x
-  model;
-- `FF6-XLIFF-PROFILE-001` removed only by compiled evidence;
-- all six projections regenerated three byte-identical times;
-- every authority record, including the new XLIFF 2.0 record, matches;
-- task, gap, controller, event, and handover projections reconciled;
-- no product, package, gate, certification, or promotion mutation.
+The six committed Batch 004 files are source, tests, census, and three skill
+transcripts. Their existence is evidence input, not self-certification.
 
-## Execution discipline
+## Execute XLF-04-BATCH-005
 
-- Work one atomic, independently verifiable substep at a time.
-- Use the TDD microstate in
-  `STATE-MACHINE-AND-TASKCARD-PROTOCOL.md`; a planned shift may occur only
-  after GREEN verification, journal, packet refresh, commit, push, and remote
-  verification.
-- Before each write: resolve skill, ensure execution manifest, own the lease,
-  run preflight and mutation guard.
-- After each write: record it in coordination.
-- Never stage broadly; use an explicit reviewed path list.
-- If the task completes, append close intent, independently verify, append the
-  verified event, and select the next mandatory gap.
-- If the shift must end first, reach an integration-safe substep boundary,
-  record `WORK_IN_PROGRESS` and the first unmet criterion, refresh the packet,
-  commit and push GitLab main, and remote-verify.
-- Before the Claude token budget becomes operationally unsafe, either finish
-  the current RED/GREEN cycle and publish a resumable checkpoint or do not
-  start another mutation cycle. Token pressure never permits a RED-only,
-  unjournaled, or local-only handoff.
-- Never ask for continuation. Continue safe unblocked work until a clean shift
-  checkpoint is required.
-- Treat the exact next action as deterministic but select its exact test name
-  after inspecting the existing XLF-04 test namespace; record that name in the
-  batch-004 RED receipt and next checkpoint. Do not invent a conflicting test ID.
+### RED: define failure before implementation
 
-## Forbidden
+Add focused tests that initially fail for the intended missing behavior:
 
-- product source or product tests during the current task;
-- ad hoc authority-lock recreation or a 2.0 claim derived from 2.1 bytes;
-- status/policy edits that suppress failed evidence;
-- collapsing modules into a generic support claim or treating XSD validity as
-  semantic/processing support;
-- weakening XML external-resource or resource-exhaustion safety;
-- self-certification or gate approval;
-- stash, reset, restore, clean, checkout-discard, broad add, or another
-  provider's lease release;
-- publication authority bypass.
+1. Forged normalized requirement text, authority-member digest,
+   authority-source digest, and occurrence location are rejected even when
+   other fields are unchanged.
+2. Every candidate publishes an explicit semantic class and a
+   content-sensitive occurrence digest. Digest validation binds the normalized
+   content, source member, source package, profile, and occurrence location.
+3. Candidate classes distinguish prose, XSD declaration/type/facet/
+   cardinality/order/wildcard semantics, and Schematron assert/report
+   semantics.
+4. Every non-modal paragraph in the unique Core section of both pinned
+   standards is classified exactly once as:
+   - normative and mapped to an expected obligation;
+   - normative and requiring a newly added expected obligation; or
+   - non-obligation with a deterministic reason code and source location.
+5. No selected or classified paragraph can disappear, duplicate, or acquire
+   multiple dispositions.
+6. Every one of the 78 Batch 004 coarse structural fallbacks is replaced by:
+   - an exact semantic obligation mapping; or
+   - an explicit reasoned non-obligation.
+7. The new artifact rejects coarse fallback, unmapped candidates, duplicate
+   disposition, foreign/preview profiles, invalid source digests, and
+   denominator drift.
+8. Denominator expansion is deterministic and preserves every existing ID.
+9. All 25 current source-bound obligation rows preserve ID, authority class,
+   profiles, source location, and semantic meaning.
+10. Newly resolved expected IDs compile to source-bound obligation rows with
+   positive and rejection evidence requirements.
+11. `complete` remains false unless the full authority census, expected-ID
+   closure, and canonical SAL verification conditions are all true.
 
-The final response must state the pushed GitLab commit, journal head, exact
-task state, verification results, remaining gaps, and the absolute
-`START-HERE.md` path. Repository state, not the response, is the handover.
+Capture the RED failure and its intended reason in the TDD receipt. Do not add
+tests that merely assert filenames or counts.
+
+### GREEN and refactor
+
+Implement the smallest coherent production pipeline in
+`tools/spec/extract_sal_facts.py` and its generated FF6 reports. Keep parsing,
+classification, disposition, denominator compilation, obligation compilation,
+validation, and serialization separate enough to test independently.
+
+Requirements:
+
+- deterministic IDs and ordering;
+- exact digest binding to both pinned OASIS packages and policy inputs;
+- bounded ZIP/XML processing and fail-closed validation;
+- semantic-token matching with boundary controls;
+- no short-name substring inference;
+- stable profiles only (`xliff_2.0`, `xliff_2.1`);
+- no XLIFF 2.2 leakage;
+- source locations sufficient for independent replay;
+- canonical LF YAML and atomic replacement;
+- explicit limitations and current verification status.
+
+Do not rewrite the existing 25 rows simply to simplify generation. If an
+authority contradiction is found, add a discriminating test and record it;
+never choose the interpretation that merely makes tests pass.
+
+### Verify the bounded batch
+
+At minimum run, using the repository virtual environment:
+
+```powershell
+.venv\Scripts\python.exe -m pytest -q tests\tools\test_extract_sal_facts.py
+.venv\Scripts\python.exe -m pytest -q tests\format_contract --deselect tests/format_contract/test_compile_contract.py::test_compile_contract_check_is_idempotent_for_all_inventory_formats
+.venv\Scripts\python.exe -m pytest -q tests\production_program
+.venv\Scripts\python.exe -m ruff check tools\spec\extract_sal_facts.py tests\tools\test_extract_sal_facts.py
+.venv\Scripts\python.exe -m mypy --strict tools\spec\extract_sal_facts.py
+.venv\Scripts\python.exe -m pyright tools\spec\extract_sal_facts.py tests\tools\test_extract_sal_facts.py
+.venv\Scripts\python.exe -m py_compile tools\spec\extract_sal_facts.py tests\tools\test_extract_sal_facts.py
+```
+
+The deselected format-contract test is a documented baseline-known stateful CSV
+test. Recheck whether it is still the same baseline condition; never broaden
+the deselection.
+
+Run `tools/spec/extract_sal_facts.py --help` and invoke `--check` for:
+
+- `matrix`
+- `core-denominator`
+- `core-obligations`
+- `core-census`
+- every new Batch 005 artifact
+
+Use the pinned packages:
+
+```text
+.local/format-contracts/acquired/xliff/src-xlf-001.bin
+SHA-256 aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055
+.local/format-contracts/acquired/xliff/src-xlf-002.bin
+SHA-256 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+```
+
+Generate the new canonical outputs three times in clean temporary locations and
+prove byte identity. Run the XLIFF authority audit and validate every skill
+transcript with zero warnings.
+
+### Checkpoint protocol
+
+Use two commits so implementation proof cannot be confused with controller
+projection:
+
+1. Commit only the bounded Batch 005 source/tests/reports/receipts. Push to
+   GitLab `main` and verify remote ancestry.
+2. Recompute the native FF6 event from that immutable implementation commit.
+   Append exactly one event, update controller/taskcard/current projection
+   through the registered `plan-control` skill, validate the full chain, commit
+   explicit files, push, and verify.
+3. Refresh this provider-neutral handover through
+   `refresh-provider-neutral-handover`, commit explicit packet files, push, and
+   verify.
+
+Never manually promote a product. If Batch 005 does not close XLF-04, keep the
+task `WORK_IN_PROGRESS`, append the verified partial microstep, and select the
+next deterministic XLF-04 batch.
+
+## State machine
+
+Program:
+
+```text
+DISCOVER -> SNAPSHOT -> CONTRACT -> IMPLEMENT -> VERIFY
+         -> REPAIR -> CERTIFY -> EXTRACT -> RELEASE_PREP -> COMPLETE
+```
+
+Current program state is `CONTRACT`.
+
+Batch:
+
+```text
+REVALIDATE -> RED -> GREEN -> REFACTOR -> VERIFY
+           -> COMMIT_IMPLEMENTATION -> APPEND_EVENT
+           -> UPDATE_PROJECTIONS -> PUSH -> REFRESH_HANDOVER -> RESUMABLE
+```
+
+Only `RESUMABLE` is a planned provider-shift boundary.
+
+## What must be preserved
+
+- Event journal history and hashes.
+- The 17 authority records and exact bytes.
+- The 110-capability / 672-obligation canonical planning universe.
+- The 25 current source-bound XLIFF Core/policy rows.
+- Working existing product behavior until characterized and deliberately
+  migrated.
+- Existing user and concurrent-agent work.
+- GitLab `origin/main` as the sole execution line.
+
+## What remains redesigned by the mission
+
+- one authoritative ProductContract and content-addressed proof graph;
+- complete dependency-closure invalidation;
+- immutable fixtures and isolated certification;
+- current-state gap projection rather than historical-ledger scheduling;
+- independently publishable namespace packages;
+- installed-wheel and external-oracle evidence;
+- complete format-specific obligations and professional internal layering;
+- reproducible builds, SBOM, provenance, signatures, and extraction proof.
+
+No local prompt tweak, file-presence check, self-reported status, or synthetic
+fixture alone can close these structural requirements.

@@ -6,9 +6,14 @@ publish_allowed: false
 generated_by: codex
 generated_at: 2026-07-29
 authoritative_state: false
+historical_projection: true
 ---
 
 # State Machine and Taskcard Execution Protocol
+
+> Historical protocol background. Preserve its durable state-machine concepts,
+> but select current work only from [START-HERE.md](START-HERE.md), the native
+> FF6 journal, controller, and active taskcard.
 
 ## Purpose
 

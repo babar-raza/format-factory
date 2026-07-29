@@ -268,3 +268,24 @@ validates the event hash chain, manifest digests, local links, and GitLab
 ancestry, and carries negative controls for a missing batch, stale next batch,
 wrong event head, and predecessor-as-current wording. This repair changes no
 product, controller, task, gate, certification, or promotion state.
+
+## Event-26 provider-neutral refresh
+
+The hardened packet is refreshed from GitLab `origin/main` handover source
+checkpoint `18bb295f94e43338611ef88caff073eed17411c9`; native Event 26 remains
+bound to controller commit `15ab7d0455e109bd88289e16d73c0835324a21ab`.
+
+- Native event `FF6-EVENT-000026` and controller sequence 26 agree.
+- XLIFF implementation checkpoint `1fef79b9` and Batch 004 are committed,
+  pushed, and journaled.
+- Batch 004 reconciles 542 candidates in its declared modal-prose, Core XSD,
+  and Core Schematron selector with zero unmapped or multiply dispositioned
+  candidates.
+- Non-modal prose remains unclassified; 78 dispositions remain coarse; only
+  25 of 105 expected IDs have source-bound obligations and 80 remain missing.
+- All current obligation rows remain `SOURCE_BOUND_UNVERIFIED`.
+- The exact successor is `XLF-04-BATCH-005`; XLF-04 remains incomplete.
+- The root packet and immutable `event-26/` packet are provider-neutral and
+  require no local identity, lease, branch, or conversation memory.
+- Product source, product proof, certification, promotion, release, and gate
+  state are unchanged. Production certification remains 0/6.

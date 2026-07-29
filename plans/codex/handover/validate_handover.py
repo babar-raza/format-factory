@@ -1,11 +1,11 @@
-"""Fail-closed semantic validator for the provider-neutral FF6 handover.
+"""Fail-closed validator for the provider-neutral FF6 handover.
 
 generated_by: codex
 visibility: internal
 
-The manifest already protects bytes.  This validator additionally proves that
-the derived packet still projects the latest native FF6 event and controller
-semantics.  It is deliberately read-only and does not repair stale state.
+The packet is a derived projection. This validator binds it to the native FF6
+journal, controller, task registry, GitLab ancestry, and LF-normalized bytes.
+It is read-only and never repairs state.
 """
 
 from __future__ import annotations
@@ -26,30 +26,39 @@ import yaml
 HANDOVER_ROOT = Path(__file__).resolve().parent
 REPO_ROOT = HANDOVER_ROOT.parents[2]
 MANIFEST_PATH = HANDOVER_ROOT / "manifest.yaml"
-CHECKPOINT_PATH = HANDOVER_ROOT / "event-26/CHECKPOINT.yaml"
-MACHINE_STATE_PATH = CHECKPOINT_PATH
+CHECKPOINT_PATH = HANDOVER_ROOT / "checkpoint.yaml"
+MACHINE_STATE_PATH = HANDOVER_ROOT / "CURRENT-MACHINE-STATE.yaml"
+VERSIONED_CHECKPOINT_PATH = HANDOVER_ROOT / "event-26/CHECKPOINT.yaml"
+VERSIONED_MANIFEST_PATH = HANDOVER_ROOT / "event-26/manifest.yaml"
 CONTROLLER_PATH = REPO_ROOT / "plans/strategic/ff6/controller-state.yaml"
 JOURNAL_PATH = REPO_ROOT / "plans/strategic/ff6/events.jsonl"
+TASK_INDEX_PATH = REPO_ROOT / "taskcards/index.yaml"
+ACTIVE_TASK_PATH = REPO_ROOT / "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md"
 
-EXPECTED_EVIDENCE_WORDING = (
-    "six committed-file digests (four implementation/report files and two "
-    "skill transcripts)"
-)
-STALE_ACTIVE_PATTERNS = {
-    "plans/codex/handover/CLAUDE-START.md": ("batch-002 RED receipt",),
-    "plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md": (
-        "Event 24 binds the current implementation",
-        "current XLF-04 suite passes 24",
-    ),
-    "plans/codex/handover/VALIDATION-AND-RELEASE.md": (
-        "current XLF-04 slice is bound to commit",
-    ),
-}
+BATCH_PATTERN = re.compile(r"\bXLF-04-BATCH-\d{3}\b")
 LINK_PATTERN = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
+CURRENT_TEXT_PATHS = (
+    "plans/codex/handover/START-HERE.md",
+    "plans/codex/handover/CLAUDE-START.md",
+    "plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md",
+)
+ALLOWED_CHANGED_PATHS = {
+    "taskcards/TC-FF6-HANDOVER-CLAUDE-001.md",
+}
+ALLOWED_CHANGED_PREFIX = "plans/codex/handover/"
 
 
 class ValidationFailure(RuntimeError):
-    """Raised when one or more handover invariants fail."""
+    """Raised when a packet cannot be parsed as a governed projection."""
+
+
+def _run_git(*args: str) -> subprocess.CompletedProcess[bytes]:
+    return subprocess.run(
+        ["git", *args],
+        cwd=REPO_ROOT,
+        check=False,
+        capture_output=True,
+    )
 
 
 def _load_yaml(path: Path) -> dict[str, Any]:
@@ -59,25 +68,27 @@ def _load_yaml(path: Path) -> dict[str, Any]:
     return value
 
 
+def _load_json(path: Path) -> dict[str, Any]:
+    value = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(value, dict):
+        raise ValidationFailure(f"{path.relative_to(REPO_ROOT)} is not an object")
+    return value
+
+
 def _lf_bytes(path: Path) -> bytes:
     return path.read_bytes().replace(b"\r\n", b"\n")
 
 
 def _tracked_lf_bytes(relative: str) -> bytes:
-    """Return committed bytes so concurrent classified writes cannot poison proof."""
-    result = subprocess.run(
-        ["git", "show", f"HEAD:{relative}"],
-        cwd=REPO_ROOT,
-        check=False,
-        capture_output=True,
-    )
-    if result.returncode == 0:
-        return result.stdout.replace(b"\r\n", b"\n")
-    path = REPO_ROOT / relative
-    return _lf_bytes(path)
+    """Use the staged snapshot first, then HEAD, then the worktree."""
+    for spec in (f":{relative}", f"HEAD:{relative}"):
+        result = _run_git("show", spec)
+        if result.returncode == 0:
+            return result.stdout.replace(b"\r\n", b"\n")
+    return _lf_bytes(REPO_ROOT / relative)
 
 
-def _tracked_lf_sha256(relative: str) -> str:
+def _tracked_sha256(relative: str) -> str:
     return hashlib.sha256(_tracked_lf_bytes(relative)).hexdigest()
 
 
@@ -102,11 +113,11 @@ def _load_events() -> list[dict[str, Any]]:
             raise ValidationFailure(f"journal line {line_number} is not an object")
         events.append(value)
     if not events:
-        raise ValidationFailure("native FF6 event journal is empty")
+        raise ValidationFailure("native FF6 journal is empty")
     return events
 
 
-def _validate_event_chain(events: Sequence[Mapping[str, Any]]) -> list[str]:
+def _event_chain_errors(events: Sequence[Mapping[str, Any]]) -> list[str]:
     errors: list[str] = []
     previous_hash: str | None = None
     for expected_sequence, event in enumerate(events, start=1):
@@ -124,256 +135,59 @@ def _validate_event_chain(events: Sequence[Mapping[str, Any]]) -> list[str]:
             )
         if expected_sequence > 1 and event.get("previous_event_hash") != previous_hash:
             errors.append(
-                f"event {sequence} previous_event_hash does not bind event "
-                f"{expected_sequence - 1}"
+                f"event {sequence} does not bind event {expected_sequence - 1}"
             )
         previous_hash = str(actual_hash)
     return errors
 
 
-def _event_projection(latest_event: Mapping[str, Any]) -> dict[str, Any]:
-    evidence = latest_event.get("evidence")
+def _projection(latest: Mapping[str, Any]) -> dict[str, Any]:
+    evidence = latest.get("evidence")
     if not isinstance(evidence, Mapping):
         raise ValidationFailure("latest event evidence is not a mapping")
-    task_steps = evidence.get("completed_task_steps", [])
-    batches = evidence.get("completed_xlf_04_batches", [])
+    task_steps = evidence.get("completed_task_steps")
+    batches = evidence.get("completed_xlf_04_batches")
     if not isinstance(task_steps, list) or not isinstance(batches, list):
-        raise ValidationFailure("latest event completed-step fields are not lists")
+        raise ValidationFailure("latest event completed steps are not lists")
+    next_batches = sorted(
+        set(BATCH_PATTERN.findall(str(latest.get("exact_next_action", ""))))
+    )
+    if len(next_batches) != 1:
+        raise ValidationFailure(
+            f"latest event must select exactly one next XLF-04 batch: {next_batches}"
+        )
     return {
-        "sequence": latest_event.get("sequence"),
-        "event_id": latest_event.get("event_id"),
-        "event_hash": latest_event.get("event_hash"),
-        "state": latest_event.get("state_after"),
-        "parent_task": latest_event.get("parent_task"),
-        "parent_state": latest_event.get("parent_task_state"),
-        "next_task": latest_event.get("next_task"),
-        "next_state": latest_event.get("next_task_state"),
+        "sequence": latest.get("sequence"),
+        "event_id": latest.get("event_id"),
+        "event_hash": latest.get("event_hash"),
+        "state": latest.get("state_after"),
+        "task": latest.get("next_task"),
+        "task_state": latest.get("next_task_state"),
+        "parent": latest.get("parent_task"),
+        "parent_state": latest.get("parent_task_state"),
+        "completed_task_steps": task_steps,
+        "completed_batches": batches,
         "completed_steps": [*task_steps, *batches],
-        "first_unmet_step": evidence.get("first_unmet_task_step"),
-        "next_action": latest_event.get("exact_next_action"),
+        "first_unmet": evidence.get("first_unmet_task_step"),
+        "next_batch": next_batches[0],
+        "next_action": latest.get("exact_next_action"),
         "obligations": evidence.get("batch_obligations"),
         "expected": evidence.get("expected_obligation_ids"),
         "resolved": evidence.get("resolved_expected_obligation_ids"),
         "missing": evidence.get("missing_expected_obligation_ids"),
+        "candidate_count": evidence.get("candidate_count"),
+        "coarse": evidence.get("candidate_coarse_structural_dispositions"),
+        "non_modal_complete": evidence.get(
+            "non_modal_prose_classification_complete"
+        ),
     }
 
 
-def _expect_equal(
+def _expect(
     errors: list[str], label: str, actual: Any, expected: Any
 ) -> None:
     if actual != expected:
         errors.append(f"{label}: expected {expected!r}, got {actual!r}")
-
-
-def _semantic_errors(
-    *,
-    manifest: Mapping[str, Any],
-    checkpoint: Mapping[str, Any],
-    machine: Mapping[str, Any],
-    controller: Mapping[str, Any],
-    latest_event: Mapping[str, Any],
-    texts: Mapping[str, str],
-) -> list[str]:
-    errors: list[str] = []
-    projection = _event_projection(latest_event)
-    controller_event = controller.get("last_verified_event", {})
-    controller_active = controller.get("active_task", {})
-    controller_xlf = controller.get("xlf_checkpoint", {})
-    manifest_controller = manifest.get("controller", {})
-    checkpoint_controller = checkpoint.get("controller_checkpoint", {})
-    checkpoint_xlf = checkpoint.get("current_xliff_compiler_checkpoint", {})
-    checkpoint_defects = checkpoint.get("xliff_starting_defects", {})
-    machine_controller = machine.get("controller", {})
-    machine_next = machine.get("next_task_prerequisite", {})
-    machine_xlf = machine_next.get("xlf_04_batch_003", {})
-
-    _expect_equal(
-        errors,
-        "controller.transition_sequence",
-        controller.get("transition_sequence"),
-        projection["sequence"],
-    )
-    _expect_equal(
-        errors,
-        "controller.last_verified_event.event_id",
-        controller_event.get("event_id"),
-        projection["event_id"],
-    )
-    _expect_equal(
-        errors,
-        "controller.last_verified_event.event_hash",
-        controller_event.get("event_hash"),
-        projection["event_hash"],
-    )
-    _expect_equal(
-        errors,
-        "controller.controller_state",
-        controller.get("controller_state"),
-        projection["state"],
-    )
-    _expect_equal(
-        errors,
-        "controller.active_task.task_id",
-        controller_active.get("task_id"),
-        projection["next_task"],
-    )
-    _expect_equal(
-        errors,
-        "controller.active_task.state",
-        controller_active.get("state"),
-        projection["next_state"],
-    )
-    combined_controller_steps = [
-        *controller_active.get("completed_steps", []),
-        *controller_xlf.get("completed_xlf_04_batches", []),
-    ]
-    _expect_equal(
-        errors,
-        "controller combined completed steps",
-        combined_controller_steps,
-        projection["completed_steps"],
-    )
-
-    for label, current in (
-        ("manifest.controller", manifest_controller),
-        ("checkpoint.controller_checkpoint", checkpoint_controller),
-        ("machine.controller", machine_controller),
-    ):
-        _expect_equal(
-            errors,
-            f"{label}.sequence",
-            current.get("event_sequence", current.get("transition_sequence", current.get("sequence"))),
-            projection["sequence"],
-        )
-        _expect_equal(
-            errors,
-            f"{label}.event_hash",
-            current.get("event_head", current.get("last_event_hash", current.get("event_hash"))),
-            projection["event_hash"],
-        )
-        _expect_equal(
-            errors,
-            f"{label}.next_task",
-            current.get("exact_next_task", current.get("next_task")),
-            projection["next_task"],
-        )
-        _expect_equal(
-            errors,
-            f"{label}.next_state",
-            current.get("exact_next_state", current.get("next_task_state")),
-            projection["next_state"],
-        )
-
-    step_projections = (
-        ("manifest.controller.completed_steps", manifest_controller.get("completed_steps")),
-        (
-            "checkpoint.current_xliff_compiler_checkpoint.completed_xlf_04_batches",
-            [
-                *projection["completed_steps"][:3],
-                *checkpoint_xlf.get("completed_xlf_04_batches", []),
-            ],
-        ),
-        (
-            "checkpoint.xliff_starting_defects.completed_steps",
-            checkpoint_defects.get("completed_steps"),
-        ),
-        (
-            "machine.next_task_prerequisite.completed_steps",
-            machine_next.get("completed_steps"),
-        ),
-    )
-    for label, value in step_projections:
-        _expect_equal(errors, label, value, projection["completed_steps"])
-
-    for label, current in (
-        ("checkpoint.current_xliff_compiler_checkpoint", checkpoint_xlf),
-        ("machine.xlf_checkpoint", machine_xlf),
-    ):
-        _expect_equal(
-            errors,
-            f"{label}.obligation_count",
-            current.get(
-                "core_obligation_count",
-                current.get(
-                    "obligation_count",
-                    current.get("core_obligation_inventory", {}).get("obligations"),
-                ),
-            ),
-            projection["obligations"],
-        )
-        _expect_equal(
-            errors,
-            f"{label}.expected",
-            current.get(
-                "core_expected_obligation_count",
-                current.get(
-                    "expected_obligation_count",
-                    current.get("core_obligation_inventory", {}).get(
-                        "expected_obligation_count",
-                        current.get("core_obligation_denominator", {}).get(
-                            "expected_obligation_count"
-                        ),
-                    ),
-                ),
-            ),
-            projection["expected"],
-        )
-        _expect_equal(
-            errors,
-            f"{label}.resolved",
-            current.get(
-                "core_resolved_expected_obligation_count",
-                current.get(
-                    "resolved_expected_obligation_count",
-                    current.get("core_obligation_inventory", {}).get(
-                        "resolved_expected_obligation_count",
-                        current.get("core_obligation_denominator", {}).get(
-                            "resolved_expected_obligation_count"
-                        ),
-                    ),
-                ),
-            ),
-            projection["resolved"],
-        )
-        _expect_equal(
-            errors,
-            f"{label}.missing",
-            current.get(
-                "core_missing_expected_obligation_count",
-                current.get(
-                    "missing_expected_obligation_count",
-                    current.get("core_obligation_inventory", {}).get(
-                        "missing_expected_obligation_count",
-                        current.get("core_obligation_denominator", {}).get(
-                            "missing_expected_obligation_count"
-                        ),
-                    ),
-                ),
-            ),
-            projection["missing"],
-        )
-
-    next_match = re.search(r"XLF-04-BATCH-\d{3}", str(projection["next_action"]))
-    if next_match is None:
-        errors.append("latest event does not select a bounded XLF-04 batch")
-        expected_next = ""
-    else:
-        expected_next = next_match.group(0)
-    for label, action in (
-        ("manifest.controller.exact_next_action", manifest_controller.get("exact_next_action")),
-        ("checkpoint exact_next_action", checkpoint_xlf.get("exact_next_action")),
-        ("machine exact_next_action", machine_next.get("exact_next_action")),
-    ):
-        if expected_next and expected_next not in str(action):
-            errors.append(f"{label} does not select {expected_next}")
-
-    for path, patterns in STALE_ACTIVE_PATTERNS.items():
-        text = texts.get(path, "")
-        for pattern in patterns:
-            if pattern in text:
-                errors.append(f"{path} contains stale active-state phrase: {pattern!r}")
-
-    return errors
 
 
 def _manifest_errors(manifest: Mapping[str, Any]) -> list[str]:
@@ -387,8 +201,9 @@ def _manifest_errors(manifest: Mapping[str, Any]) -> list[str]:
             errors.append("manifest file entry is not a mapping")
             continue
         relative = entry.get("path")
-        if not isinstance(relative, str):
-            errors.append("manifest file entry lacks path")
+        expected = entry.get("sha256")
+        if not isinstance(relative, str) or not isinstance(expected, str):
+            errors.append("manifest entry lacks path or sha256")
             continue
         if relative in seen:
             errors.append(f"duplicate manifest path: {relative}")
@@ -397,16 +212,67 @@ def _manifest_errors(manifest: Mapping[str, Any]) -> list[str]:
         if not path.is_file():
             errors.append(f"manifest path missing: {relative}")
             continue
-        actual = _tracked_lf_sha256(relative)
-        expected = entry.get("sha256")
+        actual = _tracked_sha256(relative)
         if actual != expected:
             errors.append(
-                f"manifest digest mismatch for {relative}: expected {expected}, got {actual}"
+                f"manifest digest mismatch for {relative}: "
+                f"expected {expected}, got {actual}"
             )
+        try:
+            if path.suffix.lower() in {".yaml", ".yml"}:
+                yaml.safe_load(path.read_text(encoding="utf-8"))
+            elif path.suffix.lower() == ".json":
+                json.loads(path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, yaml.YAMLError) as exc:
+            errors.append(f"parse failure for {relative}: {exc}")
     if "plans/codex/handover/manifest.yaml" in seen:
-        errors.append("manifest must exclude its own digest")
-    if "plans/codex/handover/validate_handover.py" not in seen:
-        errors.append("semantic validator is not bound into the manifest")
+        errors.append("root manifest must exclude its own digest")
+    required = {
+        "plans/codex/handover/START-HERE.md",
+        "plans/codex/handover/validate_handover.py",
+        "plans/codex/handover/event-26/manifest.yaml",
+        "plans/strategic/ff6/controller-state.yaml",
+        "plans/strategic/ff6/events.jsonl",
+        "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
+    }
+    for path in sorted(required - seen):
+        errors.append(f"required manifest binding absent: {path}")
+    return errors
+
+
+def _versioned_manifest_errors(manifest: Mapping[str, Any]) -> list[str]:
+    errors: list[str] = []
+    files = manifest.get("files")
+    if not isinstance(files, list):
+        return ["event-26 manifest.files is not a list"]
+    seen: set[str] = set()
+    for entry in files:
+        if not isinstance(entry, Mapping):
+            errors.append("event-26 manifest entry is not a mapping")
+            continue
+        relative = entry.get("path")
+        expected = entry.get("lf_sha256")
+        if not isinstance(relative, str) or not isinstance(expected, str):
+            errors.append("event-26 entry lacks path or lf_sha256")
+            continue
+        if relative in seen:
+            errors.append(f"duplicate event-26 manifest path: {relative}")
+        seen.add(relative)
+        repo_relative = f"plans/codex/handover/event-26/{relative}"
+        path = REPO_ROOT / repo_relative
+        if not path.is_file():
+            errors.append(f"event-26 path missing: {relative}")
+            continue
+        actual = _tracked_sha256(repo_relative)
+        if actual != expected:
+            errors.append(
+                f"event-26 digest mismatch for {relative}: "
+                f"expected {expected}, got {actual}"
+            )
+    if "manifest.yaml" in seen:
+        errors.append("event-26 manifest must exclude itself")
+    if seen != {"START-HERE.md", "CHECKPOINT.yaml", "RUNBOOK.md", "receipt.json"}:
+        errors.append(f"unexpected event-26 file set: {sorted(seen)}")
     return errors
 
 
@@ -421,9 +287,8 @@ def _link_errors(manifest: Mapping[str, Any]) -> list[str]:
             continue
         for target in LINK_PATTERN.findall(source.read_text(encoding="utf-8")):
             target = target.strip().strip("<>")
-            if (
-                not target
-                or target.startswith(("#", "http://", "https://", "mailto:"))
+            if not target or target.startswith(
+                ("#", "http://", "https://", "mailto:")
             ):
                 continue
             target_path = target.split("#", 1)[0]
@@ -442,29 +307,251 @@ def _link_errors(manifest: Mapping[str, Any]) -> list[str]:
 
 def _git_errors(manifest: Mapping[str, Any]) -> list[str]:
     errors: list[str] = []
-    source = manifest.get("source_checkpoint", {})
+    source = manifest.get("source_checkpoint")
+    if not isinstance(source, Mapping):
+        return ["manifest source_checkpoint is not a mapping"]
     ancestor = source.get("required_ancestor")
     remote_ref = source.get("required_remote_ref")
     if not isinstance(ancestor, str) or not isinstance(remote_ref, str):
-        return ["manifest source checkpoint lacks required ancestor or remote ref"]
-    checks = (
+        return ["manifest lacks required ancestor or remote ref"]
+    for older, newer, label in (
         (ancestor, remote_ref, "source checkpoint"),
         ("HEAD", remote_ref, "current HEAD"),
-    )
-    for older, newer, label in checks:
-        result = subprocess.run(
-            ["git", "merge-base", "--is-ancestor", older, newer],
-            cwd=REPO_ROOT,
-            check=False,
-            capture_output=True,
-            text=True,
-        )
+    ):
+        result = _run_git("merge-base", "--is-ancestor", older, newer)
         if result.returncode != 0:
             errors.append(f"{label} {older} is not an ancestor of {newer}")
-    remote = source.get("remote")
-    branch = source.get("branch")
-    if (remote, branch, source.get("forge")) != ("origin", "main", "GitLab"):
+    if (
+        source.get("forge"),
+        source.get("remote"),
+        source.get("branch"),
+    ) != ("GitLab", "origin", "main"):
         errors.append("handover source is not GitLab origin/main")
+    remote_url = _run_git("remote", "get-url", "origin")
+    if remote_url.returncode != 0 or b"gitlab" not in remote_url.stdout.lower():
+        errors.append("origin does not resolve to a GitLab URL")
+    return errors
+
+
+def _staged_path_errors() -> list[str]:
+    """Prove the packet commit scope without rejecting classified concurrent dirt."""
+    errors: list[str] = []
+    result = _run_git("diff", "--cached", "--name-only")
+    if result.returncode != 0:
+        return ["cannot inspect staged handover paths"]
+    staged = {
+        line.strip().replace("\\", "/")
+        for line in result.stdout.decode("utf-8").splitlines()
+        if line.strip()
+    }
+    for path in sorted(staged):
+        if path in ALLOWED_CHANGED_PATHS or path.startswith(ALLOWED_CHANGED_PREFIX):
+            continue
+        errors.append(f"handover index contains out-of-scope change: {path}")
+    return errors
+
+
+def _task_registered(value: Any, task_id: str) -> bool:
+    if isinstance(value, Mapping):
+        if value.get("id") == task_id:
+            return str(value.get("status", "")).lower() == "work_in_progress"
+        return any(_task_registered(item, task_id) for item in value.values())
+    if isinstance(value, list):
+        return any(_task_registered(item, task_id) for item in value)
+    return False
+
+
+def _semantic_errors(
+    *,
+    manifest: Mapping[str, Any],
+    checkpoint: Mapping[str, Any],
+    machine: Mapping[str, Any],
+    versioned: Mapping[str, Any],
+    controller: Mapping[str, Any],
+    task_index: Mapping[str, Any],
+    latest: Mapping[str, Any],
+    texts: Mapping[str, str],
+) -> list[str]:
+    errors: list[str] = []
+    p = _projection(latest)
+    controller_event = controller.get("last_verified_event", {})
+    controller_active = controller.get("active_task", {})
+    controller_xlf = controller.get("xlf_checkpoint", {})
+    manifest_controller = manifest.get("controller", {})
+    checkpoint_controller = checkpoint.get("controller_checkpoint", {})
+    checkpoint_xlf = checkpoint.get("current_xliff_compiler_checkpoint", {})
+    machine_controller = machine.get("controller", {})
+    machine_next = machine.get("next_task_prerequisite", {})
+    versioned_controller = versioned.get("controller", {})
+    versioned_next = versioned.get("exact_next", {})
+
+    _expect(errors, "controller sequence", controller.get("transition_sequence"), p["sequence"])
+    _expect(errors, "controller event id", controller_event.get("event_id"), p["event_id"])
+    _expect(errors, "controller event hash", controller_event.get("event_hash"), p["event_hash"])
+    _expect(errors, "controller state", controller.get("controller_state"), p["state"])
+    _expect(errors, "controller task", controller_active.get("task_id"), p["task"])
+    _expect(errors, "controller task state", controller_active.get("state"), p["task_state"])
+    _expect(
+        errors,
+        "controller completed steps",
+        [
+            *controller_active.get("completed_steps", []),
+            *controller_xlf.get("completed_xlf_04_batches", []),
+        ],
+        p["completed_steps"],
+    )
+
+    for label, current, sequence_key, hash_key, task_key, state_key in (
+        (
+            "manifest",
+            manifest_controller,
+            "event_sequence",
+            "event_hash",
+            "exact_next_task",
+            "exact_next_state",
+        ),
+        (
+            "checkpoint",
+            checkpoint_controller,
+            "event_sequence",
+            "event_head",
+            "exact_next_task",
+            "exact_next_state",
+        ),
+        (
+            "machine",
+            machine_controller,
+            "transition_sequence",
+            "event_hash",
+            "next_task",
+            "next_task_state",
+        ),
+        (
+            "versioned",
+            versioned_controller,
+            "sequence",
+            "event_hash",
+            "active_task",
+            "active_task_state",
+        ),
+    ):
+        _expect(errors, f"{label} sequence", current.get(sequence_key), p["sequence"])
+        _expect(errors, f"{label} event hash", current.get(hash_key), p["event_hash"])
+        _expect(errors, f"{label} task", current.get(task_key), p["task"])
+        _expect(errors, f"{label} task state", current.get(state_key), p["task_state"])
+
+    _expect(
+        errors,
+        "manifest completed steps",
+        manifest_controller.get("completed_steps"),
+        p["completed_steps"],
+    )
+    _expect(
+        errors,
+        "checkpoint completed batches",
+        checkpoint_xlf.get("completed_xlf_04_batches"),
+        p["completed_batches"],
+    )
+    _expect(
+        errors,
+        "checkpoint all completed steps",
+        checkpoint.get("xliff_starting_defects", {}).get("completed_steps"),
+        p["completed_steps"],
+    )
+    _expect(
+        errors,
+        "machine completed steps",
+        machine_next.get("completed_steps"),
+        p["completed_steps"],
+    )
+
+    latest_key = p["completed_batches"][-1].lower().replace("-", "_")
+    machine_batch = machine_next.get(latest_key, {})
+    for label, current in (
+        ("checkpoint XLF-04", checkpoint_xlf),
+        ("machine latest batch", machine_batch),
+    ):
+        _expect(
+            errors,
+            f"{label} obligations",
+            current.get("core_obligation_count", current.get("obligation_count")),
+            p["obligations"],
+        )
+        _expect(
+            errors,
+            f"{label} expected",
+            current.get(
+                "core_expected_obligation_count",
+                current.get("expected_obligation_count"),
+            ),
+            p["expected"],
+        )
+        _expect(
+            errors,
+            f"{label} resolved",
+            current.get(
+                "core_resolved_expected_obligation_count",
+                current.get("resolved_expected_obligation_count"),
+            ),
+            p["resolved"],
+        )
+        _expect(
+            errors,
+            f"{label} missing",
+            current.get(
+                "core_missing_expected_obligation_count",
+                current.get("missing_expected_obligation_count"),
+            ),
+            p["missing"],
+        )
+
+    actions = {
+        "manifest": manifest_controller.get("exact_next_action"),
+        "checkpoint": checkpoint_xlf.get("exact_next_action"),
+        "machine": machine_next.get("exact_next_action"),
+        "versioned": versioned_next.get("microstep"),
+    }
+    for label, action in actions.items():
+        matches = sorted(set(BATCH_PATTERN.findall(str(action))))
+        if matches != [p["next_batch"]]:
+            errors.append(
+                f"{label} exact next batch: expected {p['next_batch']}, got {matches}"
+            )
+    if p["next_batch"] in p["completed_batches"]:
+        errors.append("latest event selects an already completed batch")
+
+    _expect(errors, "machine candidate count", machine_batch.get("candidate_count"), p["candidate_count"])
+    _expect(errors, "machine coarse dispositions", machine_batch.get("coarse_structural_dispositions"), p["coarse"])
+    _expect(
+        errors,
+        "machine non-modal classification",
+        machine_batch.get("non_modal_prose_classification_complete"),
+        p["non_modal_complete"],
+    )
+    _expect(errors, "products certified", machine.get("goal", {}).get("products_certified"), 0)
+    _expect(errors, "versioned products certified", versioned.get("program", {}).get("products_certified"), 0)
+
+    if not _task_registered(task_index, str(p["task"])):
+        errors.append(f"active task {p['task']} is not registered work_in_progress")
+    task_text = ACTIVE_TASK_PATH.read_text(encoding="utf-8")
+    if p["next_batch"] not in task_text:
+        errors.append(f"active taskcard does not name {p['next_batch']}")
+
+    required_truth = (
+        p["next_batch"],
+        "0/6",
+        "80",
+        "78",
+    )
+    for path in CURRENT_TEXT_PATHS:
+        text = texts.get(path, "")
+        for token in required_truth:
+            if token not in text:
+                errors.append(f"{path} lacks current truth token {token!r}")
+        for completed in p["completed_batches"]:
+            stale_phrase = f"exact next microstep: `{completed}`"
+            if stale_phrase in text:
+                errors.append(f"{path} treats completed {completed} as exact next")
     return errors
 
 
@@ -483,30 +570,38 @@ def validate_current() -> tuple[dict[str, Any], dict[str, Any]]:
     manifest = _load_yaml(MANIFEST_PATH)
     checkpoint = _load_yaml(CHECKPOINT_PATH)
     machine = _load_yaml(MACHINE_STATE_PATH)
+    versioned = _load_yaml(VERSIONED_CHECKPOINT_PATH)
+    versioned_manifest = _load_yaml(VERSIONED_MANIFEST_PATH)
     controller = _load_yaml(CONTROLLER_PATH)
+    task_index = _load_yaml(TASK_INDEX_PATH)
     events = _load_events()
     latest = events[-1]
     texts = _tracked_texts(manifest)
     errors = [
-        *_validate_event_chain(events),
+        *_event_chain_errors(events),
         *_manifest_errors(manifest),
+        *_versioned_manifest_errors(versioned_manifest),
         *_link_errors(manifest),
+        *_git_errors(manifest),
+        *_staged_path_errors(),
         *_semantic_errors(
             manifest=manifest,
             checkpoint=checkpoint,
             machine=machine,
+            versioned=versioned,
             controller=controller,
-            latest_event=latest,
+            task_index=task_index,
+            latest=latest,
             texts=texts,
         ),
-        *_git_errors(manifest),
     ]
     result = {
-        "schema": "ff6/handover-validation@1",
+        "schema": "ff6/handover-validation@2",
         "valid": not errors,
         "event_id": latest.get("event_id"),
         "event_sequence": latest.get("sequence"),
         "event_hash": latest.get("event_hash"),
+        "next_batch": _projection(latest)["next_batch"],
         "manifest_files": len(manifest.get("files", [])),
         "errors": errors,
     }
@@ -514,11 +609,26 @@ def validate_current() -> tuple[dict[str, Any], dict[str, Any]]:
         "manifest": manifest,
         "checkpoint": checkpoint,
         "machine": machine,
+        "versioned": versioned,
         "controller": controller,
+        "task_index": task_index,
         "latest": latest,
         "texts": texts,
     }
     return result, context
+
+
+def _semantic_only(context: Mapping[str, Any]) -> list[str]:
+    return _semantic_errors(
+        manifest=context["manifest"],
+        checkpoint=context["checkpoint"],
+        machine=context["machine"],
+        versioned=context["versioned"],
+        controller=context["controller"],
+        task_index=context["task_index"],
+        latest=context["latest"],
+        texts=context["texts"],
+    )
 
 
 def run_self_test(context: Mapping[str, Any]) -> dict[str, Any]:
@@ -529,33 +639,25 @@ def run_self_test(context: Mapping[str, Any]) -> dict[str, Any]:
     cases.append(("missing_completed_batch", missing_batch))
 
     stale_next = copy.deepcopy(context)
-    stale_next["manifest"]["controller"]["exact_next_action"] = "stale restart"
-    cases.append(("stale_next_batch", stale_next))
+    completed = _projection(context["latest"])["completed_batches"][-1]
+    stale_next["manifest"]["controller"]["exact_next_action"] = completed
+    cases.append(("completed_batch_reselected", stale_next))
 
-    bad_head = copy.deepcopy(context)
-    bad_head["machine"]["controller"]["event_hash"] = "0" * 64
-    cases.append(("wrong_controller_head", bad_head))
+    wrong_head = copy.deepcopy(context)
+    wrong_head["machine"]["controller"]["event_hash"] = "0" * 64
+    cases.append(("wrong_controller_head", wrong_head))
 
-    stale_phrase = copy.deepcopy(context)
-    stale_path = "plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md"
-    stale_phrase["texts"][stale_path] += "\nEvent 24 binds the current implementation\n"
-    cases.append(("stale_predecessor_as_current", stale_phrase))
+    false_certification = copy.deepcopy(context)
+    false_certification["machine"]["goal"]["products_certified"] = 6
+    cases.append(("false_product_certification", false_certification))
 
-    outcomes: list[dict[str, Any]] = []
-    for name, case in cases:
-        errors = _semantic_errors(
-            manifest=case["manifest"],
-            checkpoint=case["checkpoint"],
-            machine=case["machine"],
-            controller=case["controller"],
-            latest_event=case["latest"],
-            texts=case["texts"],
-        )
-        outcomes.append({"case": name, "rejected": bool(errors)})
-    passed = all(item["rejected"] for item in outcomes)
+    outcomes = [
+        {"case": name, "rejected": bool(_semantic_only(case))}
+        for name, case in cases
+    ]
     return {
-        "schema": "ff6/handover-validation-self-test@1",
-        "valid": passed,
+        "schema": "ff6/handover-validation-self-test@2",
+        "valid": all(item["rejected"] for item in outcomes),
         "negative_controls": outcomes,
     }
 
@@ -565,7 +667,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument(
         "--self-test",
         action="store_true",
-        help="also prove that four semantic corruptions are rejected",
+        help="also prove four semantic corruptions are rejected",
     )
     args = parser.parse_args(argv)
     try:
@@ -573,9 +675,16 @@ def main(argv: Sequence[str] | None = None) -> int:
         if args.self_test:
             result["self_test"] = run_self_test(context)
             result["valid"] = bool(result["valid"] and result["self_test"]["valid"])
-    except (OSError, ValueError, TypeError, json.JSONDecodeError, yaml.YAMLError) as exc:
+    except (
+        OSError,
+        ValueError,
+        TypeError,
+        ValidationFailure,
+        json.JSONDecodeError,
+        yaml.YAMLError,
+    ) as exc:
         result = {
-            "schema": "ff6/handover-validation@1",
+            "schema": "ff6/handover-validation@2",
             "valid": False,
             "errors": [f"{type(exc).__name__}: {exc}"],
         }

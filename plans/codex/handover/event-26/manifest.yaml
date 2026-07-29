@@ -1,0 +1,43 @@
+schema: ff6/provider-neutral-packet-manifest@1
+packet_id: FF6-EVENT-26-HANDOVER
+generated_by: codex
+generated_at: "2026-07-29"
+visibility: internal
+source_checkpoint:
+  forge: GitLab
+  remote: origin
+  branch: main
+  required_ancestor: 18bb295f94e43338611ef88caff073eed17411c9
+digest_policy:
+  algorithm: sha256
+  text_canonicalization: CRLF_TO_LF
+  manifest_self_hashed: false
+files:
+  - path: START-HERE.md
+    lf_sha256: ebb85eade29b862213a1cfe147636f1ebe1f4adc8d74b908197e4d656425b2bd
+    canonical_bytes: 1508
+  - path: CHECKPOINT.yaml
+    lf_sha256: 291a9a8a2945102e55139e7d8c87ad5396215fd0195e41872dabd1e59829822f
+    canonical_bytes: 1947
+  - path: RUNBOOK.md
+    lf_sha256: cd84652704beaa62bcb4649f92c560be59b5837bf775d7e999304d6cf1e61344
+    canonical_bytes: 4092
+  - path: receipt.json
+    lf_sha256: 7be634d0a0f414b8556adcabb79d120abef7a6f4b54d02a4c8c864d6e17e1633
+    canonical_bytes: 4754
+canonical_bindings:
+  event_sequence: 26
+  event_id: FF6-EVENT-000026
+  event_hash: 34b36bf5dc4344713ac1c0f026b30e6b15fb6a63b86f4876ee98230952fabcd0
+  exact_next_microstep: XLF-04-BATCH-005
+  products_certified: 0
+validation:
+  status: PASS
+  packet_internal_links: PASS
+  yaml_json_parse: PASS
+  packet_hashes: PASS
+  ff6_native_event_chain: PASS_EVENT_26
+  controller_agreement: PASS
+  gitlab_ancestry: PASS
+  exact_next_task_registered: PASS
+  no_product_or_promotion_mutation: PASS

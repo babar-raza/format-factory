@@ -1,65 +1,88 @@
-schema: ff6/agent-handover-checkpoint@2
-handover_id: FF6-HANDOVER-CLAUDE-001
+schema: ff6/provider-neutral-checkpoint@2
+artifact_id: FF6-HANDOVER-CHECKPOINT-EVENT-26
+visibility: internal
 generated_by: codex
 generated_at: "2026-07-29"
-visibility: internal
-authoritative_state: false
-
-canonical_authorities:
-  forge: GitLab
-  remote: origin
-  branch: main
-  github_allowed_for_mission: false
-  goal: plans/strategic/ff6/product-goal.yaml
-  plan: plans/strategic/autonomous-six-python-production-execution-plan.md
-  controller: plans/strategic/ff6/controller-state.yaml
-  journal: plans/strategic/ff6/events.jsonl
-  gaps: plans/strategic/ff6/current-gaps.yaml
-  snapshot: plans/strategic/ff6/current-state.yaml
-  task_index: taskcards/index.yaml
 
 source_checkpoint:
-  rule: >-
-    Use the fetched origin/main descendant containing this packet. A packet
-    cannot embed the hash of the commit that contains its own final bytes.
-  required_ancestor_before_this_change: d02a00fedf669c6e2b2dd58e480715550fb2afe8
-  required_remote_ref: refs/remotes/origin/main
-  required_worktree_state_before_resume_mutation: clean_or_fully_classified
-
-implementation_recovery_overlay:
-  record: plans/codex/handover/INFLIGHT-RECOVERY.yaml
-  local_commit: 2522752776f64ab800a2a21c8fa46c1f2a4e361c
-  parent_on_gitlab: 210c1383da40cf569abe8c1dbe5f6d161769c1eb
-  checkpoint_commit: 220ee7f5b9d39c3684cff6af6331b56a03ae9e75
-  on_origin_main_at_capture: true
-  event_25_present_at_capture: true
-  controller_reconciled_at_capture: true
-  state: RECONCILED_REMOTE_VERIFIED
-  action: >-
-    Treat this as a closed recovery audit. Verify both commits are on GitLab
-    main and do not repeat or re-journal batch 003.
-
-digest_policy:
-  algorithm: sha256
-  text_canonicalization: CRLF_TO_LF
-  structured_event_canonicalization: >-
-    UTF-8 JSON, sort_keys=true, separators comma/colon, event_hash removed.
+  required_ancestor: 18bb295f94e43338611ef88caff073eed17411c9
+  controller_event_ancestor: 15ab7d0455e109bd88289e16d73c0835324a21ab
+  implementation_ancestor: 1fef79b9d6c1ee1f6667e0c5c70435562c97544c
+  required_remote_ref: origin/main
+  forge: GitLab
+  worktree_at_capture: CLEAN
 
 controller_checkpoint:
-  state: CONTRACT
-  transition_sequence: 25
-  last_event_id: FF6-EVENT-000025
-  last_event_hash: 237f7759e2286cfc08c547c53a0b47d44e1c77307329ec0215c5326e3f811e48
+  controller_state: CONTRACT
+  event_sequence: 26
+  event_id: FF6-EVENT-000026
+  event_head: 34b36bf5dc4344713ac1c0f026b30e6b15fb6a63b86f4876ee98230952fabcd0
+  exact_next_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
+  exact_next_state: WORK_IN_PROGRESS
   parent_task: TC-FF6-PROGRAM-CAPABILITIES-001
-  parent_task_state: NEEDS_REPAIR
-  completed_subtask: TC-FF6-NRRD-PROFILE-SURFACE-001
-  completed_subtask_state: PASS
-  next_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
-  next_task_state: WORK_IN_PROGRESS
-  products_certified: 0
-  promotion_effect: none
+  parent_state: NEEDS_REPAIR
+
+xliff_starting_defects:
+  completed_steps:
+    - XLF-01
+    - XLF-02
+    - XLF-03
+    - XLF-04-BATCH-001
+    - XLF-04-BATCH-002
+    - XLF-04-BATCH-003
+    - XLF-04-BATCH-004
+  first_unmet_step: XLF-04
+  open:
+    - standalone census validation accepts forged content and binding fields
+    - explicit candidate class and content-sensitive digest are absent
+    - non-modal Core prose is unclassified
+    - 78 dispositions are coarse structural fallbacks
+    - 80 of 105 expected IDs lack source-bound obligations
+    - all 25 existing obligation rows are unverified
+    - complete Core census and canonical SAL verification are absent
+
+current_xliff_compiler_checkpoint:
+  microstate: RESUMABLE
+  completed_xlf_04_batches:
+    - XLF-04-BATCH-001
+    - XLF-04-BATCH-002
+    - XLF-04-BATCH-003
+    - XLF-04-BATCH-004
+  core_obligation_count: 25
+  core_expected_obligation_count: 105
+  core_resolved_expected_obligation_count: 25
+  core_missing_expected_obligation_count: 80
+  candidate_count: 542
+  candidate_unmapped: 0
+  candidate_multiply_dispositioned: 0
+  candidate_mapped_expected_ids: 45
+  candidate_unresolved_expected_ids: 60
+  candidate_coarse_structural_dispositions: 78
+  non_modal_prose_classification_complete: false
+  normative_obligation_inventory_complete: false
+  xlf_04_complete: false
+  evidence_wording: >-
+    The six committed Batch 004 files are source, tests, census, and three
+    skill transcripts.
+  exact_next_action: >-
+    Execute XLF-04-BATCH-005 by first closing forged text/digest/location
+    acceptance with explicit candidate classes and content-sensitive occurrence
+    digests, then classifying all non-modal Core prose, replacing 78 coarse
+    fallbacks, expanding the denominator, and compiling source-bound
+    obligations while preserving the existing 25 rows.
+
+mandatory_resume_validations:
+  - fetched origin/main descends from source checkpoint
+  - packet validator and negative controls pass
+  - native journal hash chain passes through event 26
+  - controller, taskcard, task index, and exact next action agree
+  - source and report digests match event 26
+  - coordination identity is new and exact-path leases are held
+  - skill manifest and mutation authorization cover every write
+  - no product or promotion state changes
 
 promotion:
+  products_certified: 0
   program: UNASSESSED
   ipynb: UNASSESSED
   ora: UNASSESSED
@@ -67,327 +90,3 @@ promotion:
   xliff: UNASSESSED
   safetensors: UNASSESSED
   ubl: UNASSESSED
-
-capability_checkpoint:
-  assessment_status: NEEDS_PROFILE_OR_SURFACE_REPAIR
-  capabilities: 110
-  obligations:
-    ipynb: 68
-    ora: 134
-    nrrd: 65
-    xliff: 125
-    safetensors: 86
-    ubl: 194
-    total: 672
-  classifications:
-    stable_required: 101
-    optional_adapter_required: 4
-    preview_isolated: 4
-    excluded_with_authority: 1
-  manifest_aggregate_sha256: 4d17d8c8c0ef3de74d59e1d5b16884c0210fd0836e0593591871f10d0af2efd2
-  manifest_file_lf_sha256: 58e284acd5bd3b13c35a9f2ca3a0cec152faa19bd194a3641cf8077cd72fcf1e
-  three_run_digest: 389be84634941d3f244387bbc488c2303dcdb3add74b7d1edfb5def85710d3fc
-  diagnostic_override_promotion_eligible: false
-  strict_current_replay: PASS
-
-authority_checkpoint:
-  status: PASS
-  lock_path: shared/format-contracts/authority-lock.yaml
-  lock_lf_sha256: 5c1ac942018f1e26e0fc0ca7c8284313452d1cb44c04d7e225faad4b21219929
-  total_sources: 17
-  match: 17
-  missing: 0
-  mismatch: 0
-  undeclared: 0
-  legal_blocked: 0
-  product_requirement_documents: 4
-  predecessor_clean_offline_replay: PASS_15_OF_15
-  predecessor_clean_online_rebuild: PASS_15_OF_15
-  xliff_clean_offline_reconstruction: PASS_5_OF_5
-  full_clean_replay_17: NOT_RERUN_AT_WIP_CHECKPOINT
-  online_rebuild_cas_bytes: 73206772
-  strict_product_contracts: 6
-  authority_external_bytes_committed: false
-
-verification_checkpoint:
-  authority_closure_pytest: 250_passed_1_baseline_known_deselected
-  ipynb_profile_pytest: 126_passed_1_baseline_known_deselected
-  known_deselected_test: >-
-    tests/format_contract/test_consumption_chain.py::
-    test_full_slice_second_run_is_idempotent
-  known_test_reason: >-
-    Pre-existing CSV idempotency defect; it mutates three unrelated tracked
-    reports before failing. Those side effects were restored to exact HEAD
-    bytes and are not FF6 closure evidence.
-  ruff: PASS
-  mypy: PASS
-  authority_closure_pyright:
-    version: 1.1.411
-    result: PASS
-  ipynb_profile_pyright:
-    version: 1.1.411
-    result: PASS
-  nrrd_sal_exact: 25_of_25_PASS
-  nrrd_family_pack: 18_domains_41_policy_ids_explicit_complete_valid_idempotent
-  nrrd_format_contract_pytest: 92_passed_1_baseline_known_deselected
-  nrrd_affected_pytest: 96_passed
-  nrrd_authority_closure_pytest: 119_passed
-  nrrd_ruff: PASS
-  nrrd_pyright:
-    version: 1.1.411
-    result: PASS_ZERO_DIAGNOSTICS
-  nrrd_mypy: >-
-    PASS for touched family_pack_validator after installing types-PyYAML
-    6.0.12.20260724 in the ignored environment; not repository-wide
-  plan_control_tests: 40_passed
-  ff6_native_event_chain: PASS_THROUGH_EVENT_24
-  xliff_authority_probe: PUBLISHED_SHA1_MATCH_NO_UNENROLLED_BYTES_PERSISTED
-  xliff_authority_inventory: PASS_42_OF_42_MEMBERS
-  xliff_authority_audit: PASS_5_OF_5
-  xliff_clean_offline_reconstruction: PASS_5_OF_5
-  xliff_materializer_pytest: 12_passed
-  event_20_format_contract_pytest: 94_passed_1_baseline_known_deselected
-  event_20_ruff: PASS
-  event_20_pyright_1_1_411: PASS_ZERO_DIAGNOSTICS
-  event_20_mypy: >-
-    PASS on the two touched source modules with explicit package bases and
-    ignored untyped third-party imports; not repository-wide
-
-current_gaps:
-  active: 11
-  critical: 1
-  high: 7
-  medium: 3
-  selected: FF6-XLIFF-PROFILE-001
-  resolved_this_checkpoint: FF6-NRRD-PROFILE-001
-  compiler_reported_followups:
-    - FF6-XLIFF-PROFILE-001
-    - FF6-UBL-TYPING-001
-
-control_plane_contradictions:
-  - id: FF6-GAP-011
-    symptom: >-
-      The generic tools.plan_control doctor rejects the FF6 journal at event 1.
-    root_cause: >-
-      Plan Control expects its own previous_hash schema; FF6 correctly uses
-      previous_event_hash under ff6/controller-event@1.
-    safe_rule: >-
-      Validate the FF6 native chain directly and use the FF6 controller for
-      mission task selection until integration is repaired.
-  - id: FF6-HO-GAP-001
-    symptom: global Plan Control retains branch-bound legacy configuration.
-    safe_rule: use GitLab main plus the FF6 controller and journal.
-  - id: FF6-HO-GAP-002
-    symptom: global Plan Control may select a legacy broad FF6 task.
-    safe_rule: execute TC-FF6-XLIFF-PROFILE-SURFACE-001.
-
-coordination:
-  mode: enforcing
-  rule: >-
-    Register a new provider identity; inspect current status; claim exact
-    paths; preflight every write; record every write; take over only stale
-    leases with an audited reason; never release another agent's lease.
-  historical_open_conflicts_may_exist: true
-  preserve_unrelated_state: true
-  provider_shift:
-    simultaneous_writers_for_active_task: false
-    outgoing_identity_completed_after_remote_verification: required
-    incoming_identity: new_registration_required
-    credential_or_token_transfer: prohibited
-    takeover: stale_owner_only_with_audited_reason_and_byte_classification
-
-resume_decision:
-  exact_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
-  exact_task_state: WORK_IN_PROGRESS
-  taskcard: taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md
-  active_checkpoint: plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md
-  exact_first_step: >-
-    Revalidate event 25 and commit 25227527. Verify the
-    six committed-file digests (four implementation/report files and two skill transcripts),
-    27 focused tests, affected regressions, static checks,
-    deterministic reports, and authorities. Then execute XLF-04-BATCH-004:
-    compile the deterministic authority-candidate census and reconcile every
-    candidate exactly once. Do not duplicate batch 003.
-  product_source_mutation_allowed: false
-  gate_or_product_promotion_allowed: false
-  human_continuation_prompt_allowed: false
-  blocked_format_stops_other_formats: false
-
-current_xliff_compiler_checkpoint:
-  xlf_03_complete: true
-  xlf_04_complete: false
-  canonical_event_microstate: RESUMABLE
-  recovery_microstate: RESOLVED
-  source_commit: 2522752776f64ab800a2a21c8fa46c1f2a4e361c
-  source:
-    path: tools/spec/extract_sal_facts.py
-    sha256: a5c67f56378e586bf46ddb8c39881ab9ea81e42e76539bac942c5220c45f0190
-  tests:
-    path: tests/tools/test_extract_sal_facts.py
-    sha256: bf7fa725496979e3f5a50125319f9974c6205803c8358adbfb0ba8677c52bc32
-    result: 27_passed
-  matrix:
-    path: reports/ff6/xliff-normative-delta-matrix.yaml
-    sha256: 9f4ea4b8b71378217af26c0fb2b97a759817a0aca6c64255b8cd55170c60a090
-    rows: 36
-    unique_ids: 36
-    replay: PASS_THREE_IDENTICAL
-  tdd_receipt:
-    path: reports/skills-rff6/skill-transcripts/test-driven-development-xliff-xlf03-cli-001.json
-    sha256: ff3c01917056f02a85cb552e0f6459b1c4f5531f33e8fd0c8d083645e44079df
-    validation: PASS_ZERO_WARNINGS
-  ingestion_receipt:
-    path: reports/skills-rff6/skill-transcripts/ingest-spec-sal-xliff-xlf03-002.json
-    sha256: 18497bd7b49eb50f20b9476610754b62935aa8cf993a2b85a82aefd2232a7859
-    validation: PASS_ZERO_WARNINGS
-  batch_001_tdd_receipt:
-    path: reports/skills-rff6/skill-transcripts/test-driven-development-xliff-xlf04-core-batch-001.json
-    sha256: fdc58db6e65238b037c95032a4135f75462eb32763096974a2413982138a0071
-    validation: PASS_ZERO_WARNINGS
-  batch_001_ingestion_receipt:
-    path: reports/skills-rff6/skill-transcripts/ingest-spec-sal-xliff-xlf04-core-batch-001.json
-    sha256: 66629de2736f8ba4f48ba6dd7b585c7d054989da590fc340bb83e7ba01a15951
-    validation: PASS_ZERO_WARNINGS
-  batch_002_tdd_receipt:
-    path: reports/skills-rff6/skill-transcripts/test-driven-development-xliff-xlf04-core-batch-002.json
-    sha256: e72251010fe98d52ca71116ca57f6369340dfdc5357c4b1b67ee5be23f554acc
-    validation: PASS_ZERO_WARNINGS
-  batch_002_ingestion_receipt:
-    path: reports/skills-rff6/skill-transcripts/ingest-spec-sal-xliff-xlf04-core-batch-002.json
-    sha256: 501f9d47b5789e9be065c0686696bff51a4bc47fa956b634d345d6e529920993
-    validation: PASS_ZERO_WARNINGS
-  implemented:
-    - exact_package_digest_verification
-    - bounded_secure_archive_inventory
-    - safe_xml_parse_and_entity_rejection
-    - xliff_2_0_2_1_core_and_module_inventory
-    - section_delta_inventory
-    - curated_requirement_row_validation
-    - canonical_yaml_atomic_write_and_drift_check
-    - cli_entry_point
-    - default_curated_requirement_seeds
-    - complete_negative_controls
-    - real_package_matrix_output
-    - three_run_real_authority_replay
-    - source_bound_core_obligation_schema
-    - exact_paragraph_digest_binding
-    - fail_closed_completeness_denominator
-    - seven_obligation_real_authority_batch
-    - per_obligation_batch_provenance
-    - future_batch_rejection
-    - identifier_reference_and_inheritance_obligations
-    - language_direction_and_whitespace_obligations
-    - source_target_correspondence_obligations
-    - cumulative_nineteen_obligation_real_authority_batch
-    - specification_and_production_policy_obligation_separation
-    - semantic_roundtrip_and_canonical_output_policy_obligation
-    - xml_external_resolution_and_resource_limit_policy_obligations
-    - explicit_105_id_open_authority_census_denominator
-    - denominator_authority_input_tamper_rejection
-    - tracked_denominator_direct_input_binding
-    - cumulative_twenty_five_obligation_real_authority_batch
-  first_unmet_step: XLF-04
-  completed_xlf_04_batches: [XLF-04-BATCH-001, XLF-04-BATCH-002, XLF-04-BATCH-003]
-  core_obligation_inventory:
-    path: reports/ff6/xliff-core-obligation-inventory.yaml
-    sha256: ae4d00af06fffc1eaf7741cd131d8ed7e7fc8a89b2a195acf4f649b5f44b6bbb
-    obligations: 25
-    expected_obligation_count: 105
-    resolved_expected_obligation_count: 25
-    missing_expected_obligation_count: 80
-    verification_status: SOURCE_BOUND_UNVERIFIED
-    complete: false
-    completeness_basis: EXPLICIT_EXPECTED_OBLIGATION_IDS_OPEN_CENSUS
-  exact_next_action: >-
-    Start XLF-04-BATCH-004 by compiling a deterministic authority-candidate
-    census over direct/leaf normative prose, Core XSD, Core Schematron, and
-    2.0/2.1 deltas. Map every candidate exactly once to an expected ID or a
-    reasoned non-obligation disposition; keep complete=false.
-  prose_section_denominator:
-    total_section_elements:
-      xliff_2.0: 293
-      xliff_2.1: 420
-    directly_id_bearing_sections:
-      xliff_2.0: 197
-      xliff_2.1: 312
-    unlabelled_section_location: deterministic_title_path
-    acceptance_uses: total_section_elements
-  static_results:
-    ruff: PASS
-    mypy_strict: PASS
-    py_compile: PASS
-    pyright: PASS_ZERO_DIAGNOSTICS_1_1_411
-  promotion_effect: none
-
-shift_acceptance:
-  required_microstate: RESUMABLE
-  remote_contains_implementation_commit: true
-  remote_contains_packet_commit: true
-  native_event_and_controller_agree: true
-  first_unmet_criterion_recorded: true
-  validation_boundary_recorded: true
-  outgoing_coordination_identity_completion: >-
-    REQUIRED_AFTER_REMOTE_VERIFICATION_AND_NOT_DURABLE_PACKET_STATE
-  incoming_replay_before_mutation: REQUIRED
-  incoming_new_coordination_registration: REQUIRED
-  provider_token_or_lease_transfer: PROHIBITED
-  simultaneous_writers_for_active_task: PROHIBITED
-  live_coordination_authority: >-
-    Query the off-repo coordination CLI at resume time. This tracked packet
-    cannot prove that a provider identity remains complete after its commit.
-  chat_only_state_allowed: false
-
-nrrd_contract_checkpoint:
-  delta_report: reports/ff6/nrrd-profile-delta-matrix.yaml
-  sal_facts_verified: 25
-  capabilities: 21
-  obligations: 65
-  profiles: [nrrd0001, nrrd0002, nrrd0003, nrrd0004, nrrd0005]
-  contract_sha256: a5de17bfd0d6f978b07d0e00b109b6fc4e16257c6299444081e356fc9b1b693b
-  capability_sha256: 36fd53d95ae006c5709f4e44285c8c1edd554be992f1dc99ef6db1453a92116a
-  obligation_sha256: 12dfc9adffc69c0762756972f6de2552c1a721cccad51d020d1e08c130d4cef9
-  status_boundary: CONTRACT_ONLY_NOT_PRODUCT_CERTIFICATION
-
-xliff_starting_defects:
-  authority:
-    official_2_1_package: MATCH
-    official_2_0_package: MATCH
-    official_2_0_prose: MATCH
-  current_projection:
-    capabilities: 15
-    obligations: 125
-    claimed_profiles: [xliff_2.1]
-    missing_profiles: [xliff_2.0]
-    module_model: BROAD_SINGLE_BUCKET_REQUIRES_SPLIT
-  required_stable_profiles: [xliff_2.0, xliff_2.1]
-  official_2_1_module_count: 8
-  required_2_1_modules:
-    [matches, glossary, format_style, metadata, resource_data, size_and_length_restriction, validation, its]
-  official_2_1_module_schema_vocabulary_count: 9
-  required_2_1_module_schema_vocabularies:
-    [matches, glossary, fs, metadata, resource_data, size_restriction, validation, its, itsm]
-  counting_rule: >-
-    ITS is one official module backed by the `its` and `itsm` schema
-    vocabularies; these are not two modules.
-  informative_extension:
-    id: change_tracking
-    normative_module: false
-    required_treatment: inventory_and_classify_without_conformance_credit
-  correction_authority:
-    package_source_id: SRC-XLF-002
-    package_status: MATCH
-    package_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
-    prose_source_id: SRC-XLIFF-001
-    prose_status: MATCH
-    prose_sha256: fdd293f4344920dfde643c578caca94da80261dc74f75baba7215da6e6d10bc1
-  preview: xliff_2.2_preview_isolated_only
-  excluded_compatibility_model: xliff_1.2
-  completed_steps:
-    [XLF-01, XLF-02, XLF-03, XLF-04-BATCH-001, XLF-04-BATCH-002, XLF-04-BATCH-003]
-  first_unmet_step: XLF-04
-  shift_microstate: RESUMABLE
-  authority_inventory: reports/ff6/xliff-authority-member-inventory.yaml
-  package_member_counts:
-    xliff_2.0: 15
-    xliff_2.1: 27
-    total: 42

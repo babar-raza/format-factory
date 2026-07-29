@@ -6,9 +6,14 @@ publish_allowed: false
 generated_by: codex
 generated_at: 2026-07-29
 authoritative_state: false
+historical_projection: true
 ---
 
 # Provider-Neutral Shift and Resume Protocol
+
+> Historical protocol background. Current shift state and exact next work are
+> defined only by [START-HERE.md](START-HERE.md), the native FF6 journal, and
+> the immutable [Event 26 packet](event-26/START-HERE.md).
 
 ## Invariant
 

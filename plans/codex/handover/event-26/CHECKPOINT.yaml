@@ -1,62 +1,62 @@
-schema: ff6/provider-shift-checkpoint@1
-generated_by: codex
+schema: ff6/versioned-handover-checkpoint@1
+packet_id: FF6-EVENT-26-HANDOVER
 visibility: internal
-source_checkpoint: 15ab7d0455e109bd88289e16d73c0835324a21ab
-implementation_commit: 1fef79b9d6c1ee1f6667e0c5c70435562c97544c
+generated_by: codex
+generated_at: "2026-07-29"
 
-controller_checkpoint:
-  state: CONTRACT
-  transition_sequence: 26
-  last_event_id: FF6-EVENT-000026
-  last_event_hash: 34b36bf5dc4344713ac1c0f026b30e6b15fb6a63b86f4876ee98230952fabcd0
-  next_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
-  next_task_state: WORK_IN_PROGRESS
-current_xliff_compiler_checkpoint:
-  completed_xlf_04_batches:
-    [XLF-04-BATCH-001, XLF-04-BATCH-002, XLF-04-BATCH-003, XLF-04-BATCH-004]
-  core_obligation_inventory:
-    obligations: 25
-    expected_obligation_count: 105
-    resolved_expected_obligation_count: 25
-    missing_expected_obligation_count: 80
-  exact_next_action: XLF-04-BATCH-005
-xliff_starting_defects:
-  completed_steps:
-    [XLF-01, XLF-02, XLF-03, XLF-04-BATCH-001, XLF-04-BATCH-002, XLF-04-BATCH-003, XLF-04-BATCH-004]
+source:
+  forge: GitLab
+  remote: origin
+  branch: main
+  required_ancestor: 18bb295f94e43338611ef88caff073eed17411c9
+  controller_event_ancestor: 15ab7d0455e109bd88289e16d73c0835324a21ab
+  implementation_ancestor: 1fef79b9d6c1ee1f6667e0c5c70435562c97544c
+
 controller:
   state: CONTRACT
   sequence: 26
+  event_id: FF6-EVENT-000026
   event_hash: 34b36bf5dc4344713ac1c0f026b30e6b15fb6a63b86f4876ee98230952fabcd0
-  next_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
-  next_task_state: WORK_IN_PROGRESS
-next_task_prerequisite:
-  completed_steps:
-    [XLF-01, XLF-02, XLF-03, XLF-04-BATCH-001, XLF-04-BATCH-002, XLF-04-BATCH-003, XLF-04-BATCH-004]
-  exact_next_action: XLF-04-BATCH-005
-  xlf_04_batch_003:
-    obligation_count: 25
-    expected_obligation_count: 105
-    resolved_expected_obligation_count: 25
-    missing_expected_obligation_count: 80
-candidate_census:
-  sha256: 7227f43bb8d5ad93d0770df60f061d24cdd0ac5f521bd2ae5af2a6712407c69a
-  candidates: 542
-  selected_scope_complete: true
-  non_modal_prose_complete: false
-  mapped_expected_ids: 45
-  unresolved_expected_ids: 60
-  coarse_dispositions: 78
-  normative_obligation_inventory_complete: false
-independent_post_commit_audit:
-  status: NEEDS_REPAIR
-  accepted_tamper_mutations:
-    - normalized_requirement_without_digest_update
-    - member_sha256
-    - source_sha256
-    - occurrence_location
-  missing_explicit_fields:
-    - content_sensitive_candidate_digest
-    - candidate_class
-portfolio:
-  certified_products: 0
-  promotion: UNASSESSED_ALL_SIX
+  active_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
+  active_task_state: WORK_IN_PROGRESS
+  parent_task_state: NEEDS_REPAIR
+
+completed:
+  task_steps: [XLF-01, XLF-02, XLF-03]
+  xlf_04_batches:
+    - XLF-04-BATCH-001
+    - XLF-04-BATCH-002
+    - XLF-04-BATCH-003
+    - XLF-04-BATCH-004
+
+exact_next:
+  task: TC-FF6-XLIFF-PROFILE-SURFACE-001
+  step: XLF-04
+  microstep: XLF-04-BATCH-005
+  action: >-
+    Reject forged text/digest/location bindings; add explicit candidate classes
+    and content-sensitive occurrence digests; classify excluded non-modal Core
+    prose; replace 78 coarse dispositions; expand the denominator and compile
+    source-bound obligations without changing the existing 25 rows.
+
+xlf_04:
+  complete: false
+  expected_obligation_ids: 105
+  source_bound_obligation_ids: 25
+  missing_source_bound_obligation_ids: 80
+  candidate_count: 542
+  candidate_mapped_expected_ids: 45
+  candidate_unresolved_expected_ids: 60
+  coarse_structural_dispositions: 78
+  non_modal_prose_classification_complete: false
+  obligation_verification: SOURCE_BOUND_UNVERIFIED
+  independent_tamper_controls:
+    status: NEEDS_REPAIR
+    accepted: [normalized_requirement, member_sha256, source_sha256, occurrence_location]
+    missing: [candidate_class, content_sensitive_candidate_digest]
+
+program:
+  capabilities: 110
+  obligations: 672
+  products_certified: 0
+  promotion: UNASSESSED_ALL_PRODUCTS
