@@ -28,15 +28,16 @@ provider-local artifacts as authority.
    trusting its labels.
 4. Require:
    - source checkpoint
-     `4e3eff822f57ea336f52233c25452be2be75bbad` is an ancestor of fetched
+     `a1316b4fae21c20c71ccb6d60e4b9fe634dca573` is an ancestor of fetched
      `origin/main`;
-   - controller `CONTRACT`, sequence 20;
-   - event `FF6-EVENT-000020`, hash
-     `b7c06bba2afe60bcbc580d240cc57c4e990a017070b50d75904be469c75fea0c`;
+   - controller `CONTRACT`, sequence 21;
+   - event `FF6-EVENT-000021`, hash
+     `3e83a764c53da658cb1dd348ed20d041db850f1cef45bec5eaa5637ccafecc11`;
    - parent `TC-FF6-PROGRAM-CAPABILITIES-001` in `NEEDS_REPAIR`;
    - `TC-FF6-NRRD-PROFILE-SURFACE-001` in `PASS`;
    - `TC-FF6-XLIFF-PROFILE-SURFACE-001` in `WORK_IN_PROGRESS`, with
-     `XLF-01` and `XLF-02` complete and `XLF-03` first unmet;
+     `XLF-01` and `XLF-02` complete, `XLF-03` first unmet, and XLF-03
+     microstate `GREEN_VERIFIED_CHECKPOINTED`;
    - 110 capabilities, 672 obligations, and aggregate
      `4d17d8c8c0ef3de74d59e1d5b16884c0210fd0836e0593591871f10d0af2efd2`;
    - 17/17 authority artifacts `MATCH`, including 5/5 XLIFF;
@@ -53,8 +54,23 @@ Resume `taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md` at `XLF-03` through its r
 authority-acquisition, SAL, family, research, contract,
 capability-compiler, taskcard, and controller skills.
 
-Do not reacquire XLIFF 2.0 unless event-20 inputs changed. First validate
-`reports/ff6/xliff-authority-member-inventory.yaml` against both pinned ZIPs.
+Do not reacquire XLIFF 2.0 unless event-20 authority inputs changed. First:
+
+1. verify the event-21 source, test, and transcript SHA-256 values;
+2. run `python -m pytest tests/tools/test_extract_sal_facts.py -q` and require
+   3 passed;
+3. rerun Ruff, strict Mypy, and bytecode compilation;
+4. validate `reports/ff6/xliff-authority-member-inventory.yaml` against both
+   pinned ZIPs;
+5. add `test_cli_writes_and_checks_default_xliff_matrix` and prove it RED;
+6. implement default curated Core/module/validation seeds and deterministic
+   CLI/check mode to make it GREEN;
+7. add the declared archive/XML/matrix negative controls;
+8. generate the real matrix and prove three byte-identical outputs.
+
+Preserve the existing tested compiler slice unless replay exposes a defect.
+The CLI, default seed inventory, full negative suite, and real authority output
+are absent at the checkpoint; XLF-03 is not complete.
 
 Remaining required result:
 
@@ -82,6 +98,10 @@ Remaining required result:
 ## Execution discipline
 
 - Work one atomic, independently verifiable substep at a time.
+- Use the TDD microstate in
+  `STATE-MACHINE-AND-TASKCARD-PROTOCOL.md`; a planned shift may occur only
+  after GREEN verification, journal, packet refresh, commit, push, and remote
+  verification.
 - Before each write: resolve skill, ensure execution manifest, own the lease,
   run preflight and mutation guard.
 - After each write: record it in coordination.

@@ -106,3 +106,28 @@ XLIFF 2.1 authority bytes, not from current product code.
 This refresh replaces every event-18/NRRD-as-next statement in the packet,
 recomputes normalized hashes, and preserves the same provider-neutral,
 GitLab-main-only, atomic-shift contract.
+
+## Event-21 XLF-03 microstep refresh
+
+The packet was rebuilt after a tested XLF-03 implementation slice was committed
+at `a1316b4fae21c20c71ccb6d60e4b9fe634dca573` and bound to
+`FF6-EVENT-000021` /
+`3e83a764c53da658cb1dd348ed20d041db850f1cef45bec5eaa5637ccafecc11`.
+
+- The active task remains
+  `TC-FF6-XLIFF-PROFILE-SURFACE-001` / `WORK_IN_PROGRESS`.
+- `XLF-01` and `XLF-02` are complete; `XLF-03` is still first unmet.
+- The nested XLF-03 microstate is `GREEN_VERIFIED_CHECKPOINTED`.
+- The digest-bound authority reader, Core/module inventories, section delta,
+  source-row validation, canonical YAML, atomic write, and drift check
+  primitives are committed and covered by 3 passing tests.
+- Ruff, strict Mypy, and bytecode compilation pass. Pyright was unavailable in
+  the checkpoint shell and is not claimed.
+- The exact next RED test is
+  `test_cli_writes_and_checks_default_xliff_matrix`.
+- The CLI/default curated seeds, complete negative suite, real matrix, and
+  three-run real-authority replay remain.
+- The packet now defines a nested TDD/provider-shift state machine and a
+  two-commit checkpoint protocol so a provider switch never depends on chat or
+  an unjournaled source commit.
+- No product source, certification, promotion, release, or gate changed.

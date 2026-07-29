@@ -4,10 +4,10 @@ goal_status: ACTIVE
 generated_by: codex
 visibility: internal
 controller_state: CONTRACT
-transition_sequence: 20
+transition_sequence: 21
 last_verified_event:
-  event_id: FF6-EVENT-000020
-  event_hash: b7c06bba2afe60bcbc580d240cc57c4e990a017070b50d75904be469c75fea0c
+  event_id: FF6-EVENT-000021
+  event_hash: 3e83a764c53da658cb1dd348ed20d041db850f1cef45bec5eaa5637ccafecc11
 event_journal: plans/strategic/ff6/events.jsonl
 baseline_commit: e4f8f5f086b5e627c07c2ef2d940eda2601a22a8
 digest_policy:
@@ -42,11 +42,12 @@ next_task:
   task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
   state: WORK_IN_PROGRESS
   unlock_condition: >-
-    Resume from event 20 at XLF-03. Revalidate the 17-source global and
-    five-source XLIFF authority closure, then build the source-located XLIFF
-    2.0/2.1 Core and module delta matrix from the pinned 42-member package
-    inventory. Do not rerun XLF-01 or XLF-02 unless their recorded inputs
-    changed. Product source and architecture remain blocked.
+    Resume from event 21 inside XLF-03. Revalidate the committed extractor
+    slice and its three tests, then add the default curated requirement seeds
+    and command-line/check-mode contract through a new RED/GREEN cycle. Follow
+    with negative controls and real-package matrix generation. Do not rerun
+    XLF-01 or XLF-02 unless their recorded inputs changed. Product source and
+    architecture remain blocked.
 promotion:
   program: UNASSESSED
   ipynb: UNASSESSED
@@ -118,7 +119,7 @@ current_gap_summary:
   production_certifications: 0
 control_plane_compatibility:
   ff6_event_schema: ff6/controller-event@1
-  native_chain_validation: PASS_THROUGH_EVENT_20
+  native_chain_validation: PASS_THROUGH_EVENT_21
   generic_plan_control_doctor: >-
     INCOMPATIBLE_SCHEMA: tools.plan_control expects previous_hash and its own
     event payload; FF6 uses previous_event_hash. This is the already-tracked
@@ -133,6 +134,28 @@ xlf_checkpoint:
   status: WORK_IN_PROGRESS
   completed_steps: [XLF-01, XLF-02]
   first_unmet_step: XLF-03
+  microstate: GREEN_VERIFIED_CHECKPOINTED
+  checkpoint_source_commit: a1316b4fae21c20c71ccb6d60e4b9fe634dca573
+  implemented_slice:
+    - digest_bound_bounded_zip_authority_reader
+    - xliff_2_0_2_1_core_module_structural_inventory
+    - docbook_section_delta_inventory
+    - source_located_requirement_row_validation
+    - canonical_atomic_matrix_write_and_check
+  remaining_xlf_03_slice:
+    - default_curated_requirement_seeds
+    - cli_and_check_mode
+    - negative_controls
+    - real_authority_matrix_generation_and_three_run_replay
+  exact_next_test: test_cli_writes_and_checks_default_xliff_matrix
+  source: tools/spec/extract_sal_facts.py
+  source_sha256: 16466e1e7778259cd284fcf89af61ca902c1b2aac609ccf6b6ebce388590388c
+  tests: tests/tools/test_extract_sal_facts.py
+  tests_sha256: 93a4e5ce49cc8e2dcd2a513d6a6e598fd966849cfe63a58b7e84d2fcd4fc0c84
+  focused_tests: 3 passed
+  ruff: PASS
+  mypy_strict: PASS
+  pyright: UNAVAILABLE_IN_CURRENT_SHELL_NO_CLAIM
   inventory: reports/ff6/xliff-authority-member-inventory.yaml
   xliff_authority_sources: 5
   xliff_authority_matches: 5

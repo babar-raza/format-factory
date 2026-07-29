@@ -1,0 +1,56 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "plan-control-xliff-profile-surface-wip-002",
+  "skill_id": "plan-control",
+  "mode": "live",
+  "timestamp": "2026-07-29T13:40:00Z",
+  "inputs": {
+    "task_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "operation": "project",
+    "target_paths": [
+      "plans/strategic/ff6/events.jsonl",
+      "plans/strategic/ff6/controller-state.yaml",
+      "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md"
+    ],
+    "coordination_scope": "Exact files plus logical XLF-03 scope under agent-codex-20260729T130656-5296b2",
+    "acceptance_evidence": "Native event chain through event 21, controller agreement, committed source/test/transcript digests, 3 focused tests, Ruff, strict Mypy, py_compile, no promotion",
+    "source_checkpoint": "a1316b4fae21c20c71ccb6d60e4b9fe634dca573",
+    "execution_manifest_id": "sfx-08ed496d2980acb0"
+  },
+  "allowed_files": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
+    "reports/skills-rff6/skill-transcripts/plan-control-xliff-profile-surface-wip-002.json",
+    ".local/transcripts/plan-control-xliff-profile-surface-wip-002.json"
+  ],
+  "actual_files_changed": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md"
+  ],
+  "tests_run": [
+    "native FF6 hash-chain replay through FF6-EVENT-000021",
+    "controller transition_sequence and last_verified_event agreement",
+    "python -m pytest tests/tools/test_extract_sal_facts.py -q",
+    "python -m ruff check tools/spec/extract_sal_facts.py tests/tools/test_extract_sal_facts.py",
+    "python -m mypy --strict --explicit-package-bases --ignore-missing-imports tools/spec/extract_sal_facts.py tests/tools/test_extract_sal_facts.py",
+    "python -m py_compile tools/spec/extract_sal_facts.py tests/tools/test_extract_sal_facts.py"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "event_id": "FF6-EVENT-000021",
+    "event_hash": "3e83a764c53da658cb1dd348ed20d041db850f1cef45bec5eaa5637ccafecc11",
+    "task_state": "WORK_IN_PROGRESS",
+    "task_step": "XLF-03",
+    "microstate": "GREEN_VERIFIED_CHECKPOINTED",
+    "xlf_03_complete": false,
+    "exact_next_test": "test_cli_writes_and_checks_default_xliff_matrix",
+    "product_promotion": "none",
+    "pyright": "UNAVAILABLE_IN_CURRENT_SHELL_NO_CLAIM"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

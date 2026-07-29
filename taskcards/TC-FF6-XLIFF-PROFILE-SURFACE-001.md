@@ -45,7 +45,10 @@ requirements, extension preservation, schema validation, deterministic
 serialization, and developer-facing editing workflows must each have explicit
 owners and exact profile applicability.
 
-## Known starting state
+## Historical starting state
+
+The bullets below describe the defect when this task was created. They are not
+the resume state; event 21 and the checkpoint sections below supersede them.
 
 - The authority lock contains the XLIFF 2.1 OASIS Standard package and its
   prose member, but no separately pinned XLIFF 2.0 Standard package.
@@ -84,6 +87,52 @@ owners and exact profile applicability.
 
 Resume at `XLF-03`. Recompute `XLF-01` or `XLF-02` only if event-20 input
 digests or authority bytes were invalidated.
+
+## Current implementation checkpoint — event 21
+
+XLF-03 is still the first unmet task step. Event 21 binds an
+integration-safe `GREEN_VERIFIED_CHECKPOINTED` microstep at source commit
+`a1316b4fae21c20c71ccb6d60e4b9fe634dca573`.
+
+Completed inside XLF-03:
+
+- the previously registered but missing
+  `tools/spec/extract_sal_facts.py` implementation path now exists;
+- pinned archive SHA-256, ZIP path/duplicate/size/compression limits, XML
+  entity rejection, and fail-closed parsing are implemented;
+- XLIFF 2.0 and 2.1 Core/module structural inventories are compiled from
+  exact authority members;
+- XLIFF 2.0 Change Tracking is classified as a normative module while XLIFF
+  2.1 Change Tracking is classified as informative;
+- XLIFF 2.1 ITS owns both `its` and `itsm`;
+- DocBook section delta, curated source-row validation, canonical YAML bytes,
+  atomic write, and drift check primitives are implemented;
+- 3 focused tests, Ruff, strict Mypy, and bytecode compilation pass;
+- Pyright was unavailable in the checkpoint shell and is not claimed.
+
+Exact committed digests:
+
+- source:
+  `16466e1e7778259cd284fcf89af61ca902c1b2aac609ccf6b6ebce388590388c`;
+- tests:
+  `93a4e5ce49cc8e2dcd2a513d6a6e598fd966849cfe63a58b7e84d2fcd4fc0c84`;
+- ingest transcript:
+  `d1e283235efc0ee3af5a36a7257e6bf0ed93162ea7bc394c9eab5a4331f819ef`.
+
+Still required before XLF-03 can pass:
+
+1. add `test_cli_writes_and_checks_default_xliff_matrix` as the next RED test;
+2. add default curated Core/module/validation requirement seeds and the
+   deterministic CLI/check-mode contract;
+3. add digest, duplicate/path, entity, missing-member, malformed-row, duplicate
+   ID, and preview-contamination negative controls;
+4. generate the real matrix from both pinned packages, prove three identical
+   outputs, and validate exact 293/420 section and 8/8 module inventories;
+5. write the final XLF-03 receipt and only then mark XLF-03 complete.
+
+Do not reinterpret the existence of the compiler or its three tests as a
+completed normative matrix, SAL repair, capability repair, product
+implementation, or certification.
 
 ## Required execution
 

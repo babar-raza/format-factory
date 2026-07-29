@@ -21,10 +21,12 @@ Current state is `CONTRACT`. Authority closure passed at event 16, OpenRaster
 profile/surface repair at event 17, and IPYNB profile/surface repair at event
 18. NRRD0001-NRRD0005 profile repair passed at event 19. Event 20
 checkpointed XLIFF steps XLF-01 and XLF-02 after closing the 2.0 authority
-prerequisite and inventorying both pinned packages. The parent capability
-task remains `NEEDS_REPAIR`, so product implementation is locked. The active
-task is `TC-FF6-XLIFF-PROFILE-SURFACE-001`, and the first unmet step is
-XLF-03.
+prerequisite and inventorying both pinned packages. Event 21 binds the first
+tested XLF-03 compiler slice at commit
+`a1316b4fae21c20c71ccb6d60e4b9fe634dca573`; XLF-03 remains unmet. The
+parent capability task remains `NEEDS_REPAIR`, so product implementation is
+locked. The active task is `TC-FF6-XLIFF-PROFILE-SURFACE-001`, and the first
+unmet step is XLF-03.
 
 ## Canonical state precedence
 
@@ -99,7 +101,7 @@ No product wave may bypass the program dependencies.
 
 ### Inputs
 
-- event 20 and the `PASS` NRRD checkpoint;
+- event 21 and the `PASS` NRRD checkpoint;
 - the locked XLIFF 2.0 and 2.1 OASIS Standard packages, prose members,
   product requirements, and 42-member tracked inventory;
 - `shared/format-contracts/authority-lock.yaml`;
@@ -111,50 +113,65 @@ No product wave may bypass the program dependencies.
 
 ### Steps
 
-1. Revalidate event 20, controller/task/index agreement, the remote source
+1. Revalidate event 21, controller/task/index agreement, the remote source
    commit, coordination ownership, all 17 global authority matches, all five
    XLIFF matches, and the 42-member inventory.
-2. Re-run authority acquisition only if event-20 authority inputs changed.
-3. Extract a source-located 2.0/2.1 delta matrix. Separate common Core rules,
+2. Require commit `a1316b4fae21c20c71ccb6d60e4b9fe634dca573`
+   as a GitLab-main ancestor; verify the exact source, test, and transcript
+   SHA-256 values from event 21; replay 3 focused tests, Ruff, strict Mypy, and
+   bytecode compilation.
+3. Re-run authority acquisition only if event-20 authority inputs changed.
+4. Add `test_cli_writes_and_checks_default_xliff_matrix`; prove RED because
+   the default seed/CLI layer is absent.
+5. Implement deterministic default Core, per-profile module, informative
+   extension, Schematron, NVDL, 2.2-preview-absent, and 1.2-excluded rows plus
+   CLI write/check mode; prove the new test GREEN.
+6. Add digest mismatch, duplicate/casefold member, unsafe path, entity,
+   missing schema, malformed/duplicate row, and preview contamination negative
+   tests.
+7. Generate the real matrix from both pinned packages and prove three
+   byte-identical outputs, 293/420 section inventories, 8/8 normative module
+   owners, and 8/9 module schema-vocabulary counts.
+8. Extract the complete source-located 2.0/2.1 delta matrix. Separate common Core rules,
    2.1 additions/changes, module rules, processing requirements, ITS mappings,
    and uncertainty.
-4. Audit every current XLIFF SAL fact against that matrix. Split mixed 2.0/2.1
+9. Audit every current XLIFF SAL fact against that matrix. Split mixed 2.0/2.1
    claims; ingest missing facts and heal false claims only through registered
    SAL skills.
-5. Compile complete Core requirements for hierarchy, languages, identifiers,
+10. Compile complete Core requirements for hierarchy, languages, identifiers,
    inheritance, ordering/cardinality, source/target structure, notes,
    original data, skeletons, extensions, inline identity/pairing/nesting/
    isolation/order, segmentation/re-segmentation, state/sub-state, and agent
    processing.
-6. Replace the generic module bucket with separately owned Translation
+11. Replace the generic module bucket with separately owned Translation
    Candidates/Matches, Glossary, Format Style, Metadata, Resource Data, Size
    and Length Restriction, Validation, and ITS capability families.
-7. Reconcile all nine module schema vocabularies (`matches`, `glossary`, `fs`,
+12. Reconcile all nine module schema vocabularies (`matches`, `glossary`, `fs`,
    `metadata`, `resource_data`, `size_restriction`, `validation`, `its`,
    `itsm`) to the eight owners. Treat `its` and `itsm` as one ITS module.
    Inventory Change Tracking as informative and give it no normative
    conformance credit.
-8. For each module, require typed models, parse/write, schema plus processing
+13. For each module, require typed models, parse/write, schema plus processing
    validation, preservation, rejection, diagnostics, positive/negative/
    property/roundtrip/interoperability/security/resource obligations.
-9. Repair mixed-profile research or product requirements at their governed
+14. Repair mixed-profile research or product requirements at their governed
    source, then regenerate and relock; never patch only the projection.
-10. Apply explicit-complete fact ownership only after every live fact has one
+15. Apply explicit-complete fact ownership only after every live fact has one
     exact Core or module owner.
-11. Give every stable capability and obligation an exact non-empty subset of
+16. Give every stable capability and obligation an exact non-empty subset of
     `xliff_2.0` and `xliff_2.1`; never assign a 2.1-only module to 2.0.
-12. Keep XLIFF 2.2 absent or `PREVIEW_ISOLATED`, with no stable obligation
+17. Keep XLIFF 2.2 absent or `PREVIEW_ISOLATED`, with no stable obligation
     ownership. Keep XLIFF 1.2 outside the 2.x model.
-13. Preserve namespace-aware extensions and deterministic semantic roundtrip,
+18. Preserve namespace-aware extensions and deterministic semantic roundtrip,
     but do not treat preservation-only content or XSD validity as semantic
     module/processing support.
-14. Compile XLIFF and all six format projections; require zero missing stable
+19. Compile XLIFF and all six format projections; require zero missing stable
     profile, module-owner, empty-profile, duplicate, foreign, or dangling edge.
-15. Run negative controls for malformed IDs, missing module ownership,
+20. Run negative controls for malformed IDs, missing module ownership,
     cross-profile contamination, and preview leakage.
-16. Replay at least three clean strict runs plus authority, focused regression,
+21. Replay at least three clean strict runs plus authority, focused regression,
     Ruff, Pyright, and bounded strict Mypy checks.
-17. Reconcile gaps, taskcards, controller and journal atomically; retain UBL
+22. Reconcile gaps, taskcards, controller and journal atomically; retain UBL
     typing as the exact remaining contract repair.
 
 ### Failure routing
@@ -205,19 +222,26 @@ standalone repository replay.
 
 1. Run the task's focused and regression suites.
 2. Record self-challenge answers and unresolved limitations.
-3. Write close-intent event.
-4. Compute LF-normalized output and evidence digests.
-5. Independently replay/validate.
-6. Write verified close event.
-7. Update controller, taskcard, task index, gaps, handover, and receipt.
-8. Validate journal from event 1.
-9. Stage explicit reviewed files only.
-10. Run coordination precommit check.
-11. Fetch and classify any remote movement.
-12. Commit with a precise Conventional Commit message.
-13. Push only to GitLab `origin/main`.
-14. Verify remote main equals the pushed commit.
-15. Complete only the outgoing agent's coordination session.
+3. Compute LF-normalized output and evidence digests.
+4. Stage explicit implementation/test/receipt files only and run the
+   coordination precommit check.
+5. Fetch and classify remote movement; commit the coherent implementation
+   slice.
+6. Write close-intent or WIP event bound to that immutable commit.
+7. Independently replay/validate.
+8. Write verified close event when task acceptance passes; otherwise preserve
+   the truthful WIP event.
+9. Update controller, taskcard, task index, gaps, handover, and receipt.
+10. Validate journal from event 1.
+11. Stage explicit reviewed control/packet files only.
+12. Run coordination precommit check.
+13. Fetch and classify any new remote movement.
+14. Commit the checkpoint projection with a precise Conventional Commit
+    message.
+15. Push only to GitLab `origin/main`.
+16. Verify remote main equals the checkpoint commit and contains the
+    implementation commit as an ancestor.
+17. Complete only the outgoing agent's coordination session.
 
 ## Program waves after contract readiness
 

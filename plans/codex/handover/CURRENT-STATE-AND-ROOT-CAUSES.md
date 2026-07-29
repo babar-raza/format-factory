@@ -103,9 +103,12 @@ in `CURRENT-MACHINE-STATE.yaml`.
    committed, journaled, and remote-verified.
 9. Generic Plan Control rejects the FF6 event schema.
 10. Shared worktrees and mutable ignored inputs can alter reruns.
-11. XLIFF 2.0 claims exist in prose/SAL wording without a separately pinned
-    2.0 Standard package, and six normative 2.1 modules are collapsed into one
-    broad capability.
+11. XLIFF authority closure now exists, but the current SAL/capability
+    projection still assigns only XLIFF 2.1 and collapses eight normative 2.1
+    modules into one broad capability.
+12. A coarse task step can remain unmet while several valid TDD microsteps have
+    landed, so a journal that records only task-step completion cannot identify
+    the exact provider resume point.
 
 ## Root causes
 
@@ -153,6 +156,38 @@ Conversation memory and provider-local changes previously mattered. That made
 handoffs depend on the outgoing agent. The correct resume key is remote commit
 plus controller, journal, taskcard, proof digests, and coordination ownership.
 
+### Task and TDD state used different granularity
+
+`XLF-03` describes a complete normative-matrix outcome, while implementing it
+requires multiple RED/GREEN cycles. Recording only `XLF-03 incomplete` loses
+which cycles are safely reusable; recording only a source commit loses the
+governed task meaning and next acceptance criterion. This is why the previous
+packet could truthfully say “start XLF-03” while the worktree already contained
+a partially working extractor.
+
+The durable correction is a nested microstate. A shift-safe event binds:
+
+- the immutable implementation commit;
+- exact source, test, and receipt digests;
+- the focused/regression/static results;
+- the unfinished parent criterion;
+- the exact next RED test;
+- no-promotion and unsupported/unavailable boundaries.
+
+That event is followed by a derived packet commit and remote verification.
+Neither chat memory nor an unjournaled Git commit is enough.
+
+### Missing registered implementation paths hid machinery debt
+
+The `ingest-spec-sal` registry and command named
+`tools/spec/extract_sal_facts.py`, but the file did not exist. The visible
+symptom was “XLF-03 has no matrix”; the underlying cause was that governance
+could declare an execution path without verifying the implementation path,
+entry point, tests, or idempotent behavior as one referential-integrity unit.
+Event 21 repairs the first implementation slice, but the wider machinery still
+needs a validator that fails any active registered skill whose implementation
+path or executable contract is absent.
+
 ## What must be preserved
 
 - All working source and tests, including characterization behavior.
@@ -164,6 +199,8 @@ plus controller, journal, taskcard, proof digests, and coordination ownership.
 - GitLab-main-only integration.
 - PEP 420 namespace and independent package boundaries.
 - Explicit unsupported, preview, and interoperability profiles.
+- The tested event-21 extractor primitives and their RED/GREEN history; later
+  work extends them rather than rewriting them without evidence.
 
 ## What must be redesigned
 
@@ -177,18 +214,24 @@ plus controller, journal, taskcard, proof digests, and coordination ownership.
 - Compute promotion from live proof and revoke it on dependency change.
 - Use fresh worktrees/containers for certification.
 - Make provider shifts atomic, remote-verifiable checkpoints.
+- Add TDD microstates below task steps and bind them to immutable commits in
+  the native journal.
+- Validate active skill registry entries against implementation paths, command
+  contracts, focused tests, and executable smoke checks.
 
 ## Immediate repair order
 
-1. XLIFF 2.0 authority closure; exact 2.0/2.1 Core and per-module
-   applicability; isolated 2.2 preview semantics.
-2. UBL all-root/common-component typing contract.
-3. Production package chassis and architecture only after contract readiness.
-4. SafeTensors and IPYNB implementation/certification waves.
-5. NRRD and OpenRaster implementation/certification waves.
-6. XLIFF full vocabulary and processing semantics.
-7. UBL generator and all-root typed certification.
-8. Repository extraction, reproducible packaging, SBOM, provenance, and
+1. Finish XLF-03 from event 21: default curated seeds, CLI/check mode, negative
+   controls, real-package matrix, and three-run replay.
+2. Compile exact XLIFF 2.0/2.1 Core and per-module applicability with isolated
+   2.2 preview semantics.
+3. UBL all-root/common-component typing contract.
+4. Production package chassis and architecture only after contract readiness.
+5. SafeTensors and IPYNB implementation/certification waves.
+6. NRRD and OpenRaster implementation/certification waves.
+7. XLIFF full vocabulary and processing semantics.
+8. UBL generator and all-root typed certification.
+9. Repository extraction, reproducible packaging, SBOM, provenance, and
    release preparation.
 
 The controller, not this prose ordering alone, selects each exact task.
@@ -211,6 +254,14 @@ The controller, not this prose ordering alone, selects each exact task.
   technical release preparation must still finish autonomously.
 - The generic Plan Control compatibility gap remains open. Native FF6 chain
   validation is the safe interim authority, not a permanent second truth.
+- Microstep journaling creates more commits, events, hashes, and receipts. The
+  cost is additional integration ceremony; the benefit is exact crash/token
+  recovery and removal of provider-memory dependence. It should be applied to
+  code-producing substeps, not every read-only command.
+- A two-commit shift checkpoint briefly leaves local main ahead between the
+  implementation and packet commits. Coordination leases and a final atomic
+  GitLab push reduce, but do not eliminate, remote-race risk; every shift must
+  fetch before both commits and before push.
 
 ## Confidence boundary
 
@@ -221,5 +272,6 @@ Confidence is moderate in the observed implementation footholds because the
 product source trees are unchanged from the baseline snapshot but no current
 production certification binds their complete package/environment closure.
 Confidence is low that the 672-obligation denominator is final until XLIFF and
-UBL repairs pass. In particular, XLIFF currently lacks a separate 2.0 authority
-lock and has a shallow single module bucket. No stronger claim is justified.
+UBL repairs pass. XLIFF 2.0 is now separately pinned and matched, but the
+compiled projection still lacks the exact 2.0/2.1 Core/module denominator and
+retains a shallow single module bucket. No stronger claim is justified.

@@ -22,7 +22,7 @@ fixtures are never sufficient evidence.
 
 ## Current evidence boundary
 
-Events 16 through 20 prove:
+Events 16 through 21 prove:
 
 - 17 of 17 locked authorities live-match;
 - strict six-format ProductContract compilation;
@@ -43,7 +43,7 @@ Events 16 through 20 prove:
 - IPYNB exact SAL verification `25/25`;
 - NRRD exact SAL verification `25/25`, 18-domain/41-policy explicit-complete
   family ownership, and all five profiles claimed;
-- native FF6 event chain passes through event 20;
+- native FF6 event chain passes through event 21;
 - the official XLIFF 2.0 package and prose are independently pinned, legally
   classified, and reconstructed offline with all five XLIFF authorities
   matching;
@@ -52,6 +52,14 @@ Events 16 through 20 prove:
 - authority bootstrap focused tests `12 passed`, format-contract regression
   `94 passed, 1 baseline-known test deselected`, Ruff passed, Pyright 1.1.411
   passed, and bounded Mypy passed on the touched source modules.
+- the first XLF-03 compiler slice is bound to commit
+  `a1316b4fae21c20c71ccb6d60e4b9fe634dca573`, exact source/test/receipt
+  digests, and a zero-warning skill transcript;
+- the extractor slice passes 3 focused tests, Ruff, strict Mypy, and bytecode
+  compilation; Pyright was unavailable in that shell and is not claimed;
+- XLF-03 remains incomplete because the default curated seeds, CLI/check mode,
+  complete negative controls, real-package matrix, and three-run real-authority
+  replay remain.
 
 It does not prove:
 
@@ -124,6 +132,12 @@ named interoperability certification, not universal conformance.
 - event-20 XLF-01/XLF-02 evidence retained: independent acquisition, digest
   verification, legal classification, lock, exact package inventory, and
   clean offline reconstruction of the official XLIFF 2.0 Standard package;
+- event-21 XLF-03 microstep retained and replayed: exact source/test/receipt
+  digests, 3 focused tests, Ruff, strict Mypy, and bytecode compilation;
+- `test_cli_writes_and_checks_default_xliff_matrix` added as the next RED
+  test, followed by deterministic default seeds and CLI/check mode;
+- complete archive/XML/matrix negative controls and three byte-identical real
+  authority outputs before XLF-03 completion;
 - source-located XLIFF 2.0/2.1 Core and module deltas;
 - complete semantic obligations for hierarchy, inline pairing/order,
   segmentation, state, original data, skeletons, extensions, ITS mappings,

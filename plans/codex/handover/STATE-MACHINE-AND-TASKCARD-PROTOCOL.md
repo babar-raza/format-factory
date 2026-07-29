@@ -136,6 +136,43 @@ A substep is not checkpointable if the source fails to import, generated output
 is inconsistent with its generator, required tests newly fail, or projections
 claim evidence not yet executed.
 
+## TDD microstep and provider-shift state machine
+
+A task step such as XLF-03 is too coarse to identify an interrupted TDD cycle.
+Every code-producing substep therefore uses this provider-neutral microstate:
+
+```text
+PLANNED
+  -> RED_OBSERVED
+  -> GREEN_VERIFIED
+  -> CHECKPOINT_COMMITTED
+  -> JOURNALED
+  -> PACKET_REFRESHED
+  -> REMOTE_VERIFIED
+  -> RESUMABLE
+```
+
+- `RED_OBSERVED` proves the test detects the missing behavior. It is not a
+  shift boundary and must not be promoted or pushed as a clean checkpoint.
+- `GREEN_VERIFIED` requires the focused test plus the declared regression and
+  static tiers.
+- `CHECKPOINT_COMMITTED` binds coherent source, tests, and a skill receipt to
+  one Git commit. A commit alone is not a durable resume instruction.
+- `JOURNALED` records that commit, file digests, exact validation, unfinished
+  parent criterion, and exact next test in the native FF6 chain.
+- `PACKET_REFRESHED` makes the journaled state discoverable without relying on
+  provider memory.
+- `REMOTE_VERIFIED` requires the GitLab `origin/main` ref to contain both the
+  implementation commit and the packet/controller commit.
+- `RESUMABLE` additionally requires prior coordination ownership to be
+  completed or safely taken over.
+
+A crash may leave an uncommitted `RED_OBSERVED` tree. The incoming executor
+must classify and preserve it through coordination takeover, then continue to
+`GREEN_VERIFIED`; it must not call that state a clean checkpoint. Planned
+token exhaustion is handled before starting a microstep or after
+`REMOTE_VERIFIED`, never between RED and GREEN.
+
 ## Current task decomposition
 
 Task: `TC-FF6-XLIFF-PROFILE-SURFACE-001`.
@@ -144,7 +181,7 @@ Task: `TC-FF6-XLIFF-PROFILE-SURFACE-001`.
 |---|---|---|
 | XLF-01 — PASS at event 20 | event 19, task/index/controller, authority and worktree preflight | native chain, exact READY task, clean or classified tree, 15/15 predecessor authority match |
 | XLF-02 — PASS at event 20 | official XLIFF 2.0 authority record, five-source XLIFF closure, and 42-member 2.0/2.1 inventory | independent digest plus published SHA-1 cross-check, legal record, 5/5 clean offline reconstruction, no 2.1-as-2.0 proxy |
-| XLF-03 — FIRST UNMET | source-located 2.0/2.1 Core and module delta matrix | every requirement has source/member/location, profile set, Core/module owner, confidence, and contradiction note |
+| XLF-03 — FIRST UNMET; event-21 microstate `GREEN_VERIFIED_CHECKPOINTED` | source-located 2.0/2.1 Core and module delta matrix | first compiler slice is committed and tested; next RED test is `test_cli_writes_and_checks_default_xliff_matrix`; XLF-03 passes only when every requirement has source/member/location, profile set, Core/module owner, confidence, and contradiction note |
 | XLF-04 | complete Core SAL and processing-requirement map | exact verifier passes; inline, segmentation, state, extension, skeleton, ITS, and agent rules are not reduced to XSD validity |
 | XLF-05 | separately owned Translation Candidates/Matches, Glossary, Format Style, Metadata, Resource Data, Size/Length, Validation, and ITS families | all eight official modules and all nine module schema vocabularies are accounted for; each module has typed-model, read/write, validation, preservation, rejection, and proof obligations |
 | XLF-06 | repaired research/family/enrichment layers | mixed-profile requirements split; explicit-complete ownership; no keyword duplication |
@@ -196,6 +233,12 @@ agent’s self-verdict without replay.
 - A WIP event may be committed only when the partial tree passes its declared
   integration-safe gate.
 - Uncommitted work is never advertised as a clean checkpoint.
+- A shift event for partial code must bind the implementation commit, source
+  and test digests, validation boundary, first unmet task criterion, and exact
+  next RED test.
+- The outgoing provider commits the coherent implementation slice first,
+  journals that immutable commit second, refreshes projections/packet third,
+  and verifies the two-commit descendant on GitLab main last.
 - If remote main moved, classify overlap and rerun affected proof before
   integrating.
 - A blocked format does not stop another ready format.

@@ -1,4 +1,4 @@
-schema: ff6/agent-handover-manifest@3
+schema: ff6/agent-handover-manifest@4
 handover_id: FF6-HANDOVER-CLAUDE-001
 generated_by: codex
 generated_at: "2026-07-29"
@@ -10,7 +10,7 @@ self_reference_policy: >-
   origin/main descendant and all listed content digests identify the packet.
 
 source_checkpoint:
-  required_ancestor: 4e3eff822f57ea336f52233c25452be2be75bbad
+  required_ancestor: a1316b4fae21c20c71ccb6d60e4b9fe634dca573
   remote: origin
   forge: GitLab
   branch: main
@@ -26,34 +26,34 @@ digest_policy:
 files:
   - path: plans/codex/handover/START-HERE.md
     role: single absolute entry point and authority precedence
-    sha256: 4e414a2f1f3968339d3ff82d838e0c5e9be969aa52ead5153ec937291c9306cb
+    sha256: 59a8e500061ff8d95b4b4e3e39056fed097e063c4de8e6b873b7b0820d94c3a9
   - path: plans/codex/handover/CURRENT-MACHINE-STATE.yaml
     role: machine-readable provider-neutral state
-    sha256: a043fa50a8b507ed2f7669b5f524341efb4037256785b1ec4db645fa6c5924a2
+    sha256: 1e62bea1c4ffe3508423f1944b5fdfee6b4a8e56c069a92d9b300ad3061944c6
   - path: plans/codex/handover/checkpoint.yaml
     role: detailed machine checkpoint and proof boundary
-    sha256: 2d6249f2f3ffd208aeec1ad704cc656268ac2dfd50e98e530c96b13be65f4904
+    sha256: 03a93c2543d725588f0b210d1f626c9f635e033db072c4a26da318f8424b3c5c
   - path: plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md
-    role: exact event-20 WIP boundary and next execution
-    sha256: a2fbc38cde1ea39fb600e801f49e48eaf9014a3bcdcf65def8f10458a06434ad
+    role: exact event-21 tested XLF-03 WIP boundary and next TDD cycle
+    sha256: 89723d44ed92ec99d83e82087b1d1971fd6fd99fc4689fb46aadce21e2d4628e
   - path: plans/codex/handover/STATE-MACHINE-AND-TASKCARD-PROTOCOL.md
     role: provider-neutral program, task and atomic-substep state machines
-    sha256: 380e04824b392d321f16e685328585334f027b8ed9c1119add445d388bc18c45
+    sha256: 86db1f30270ef0bd06f58afb64f6085f73143629e2ac8b9696c0979bf994a12c
   - path: plans/codex/handover/SHIFT-AND-RESUME-PROTOCOL.md
     role: incoming, outgoing, takeover and native chain procedure
-    sha256: 99840b4a009ea58801e934d859cdc81a2cf8eab7cf56b15d171a6aa29ec35c12
+    sha256: b3d25d2501385c993e907a15284beb87caf357737e29edd9fe90696c09ff2448
   - path: plans/codex/handover/EXECUTION-RUNBOOK.md
     role: current DAG and exact XLIFF execution algorithm
-    sha256: 15cabf8be11fe0534aaf55a0d6540cd67c9b81d9a54c6d16c1946a73a8cde57d
+    sha256: 63da84bfa3aa63370e5486a426e47515ef4d307b421070060d2c5e86eaa75b07
   - path: plans/codex/handover/CURRENT-STATE-AND-ROOT-CAUSES.md
     role: symptoms, causes, structural weaknesses, preservation and redesign
-    sha256: 3a99ed8aa14b8af08a0b49e11a9c958c0b476e7d29c47fac50fc99bdbe4b5857
+    sha256: daf1d87a492fc947230d2d7c1f98473cef4ab4fb5b90388efc8adf11f0da3f4d
   - path: plans/codex/handover/VALIDATION-AND-RELEASE.md
     role: proof, regression, certification and release contract
-    sha256: baad29510a76df6a797791ef1b4e7e0ad7c3eb2b5ac9e6f16ebd0cc3fa14ed44
+    sha256: 3d42f45432d18f1eecb1d8bae3c970bcea8604cc6701a47d9d43b98d58c3973e
   - path: plans/codex/handover/CLAUDE-START.md
     role: ready-to-run Claude execution instruction
-    sha256: b32eec542655456fa5cc011b3a01e0882959e0645ee10cf441bb7b8006fd4541
+    sha256: 0390982e6f3d52e7588875e421aca82773fd6922343f5f839e62f873e21612bb
   - path: taskcards/TC-FF6-PROGRAM-CAPABILITIES-001.md
     role: parent capability task in repair
     sha256: c596168b2ac497bc17bf11c0dd4d2687f1392b554fd87620d4f0225a221fe3aa
@@ -68,7 +68,7 @@ files:
     sha256: f689d705b2b82d7b13d678e03fab0d4c8e802b64bf2b5ac1e64d55058008ee3d
   - path: taskcards/TC-FF6-HANDOVER-CLAUDE-001.md
     role: handover task authority
-    sha256: 77967c79ac35d3bdcfced7ef580ac0cfe7f4d01c4e82c88592f8a55d5867cd6c
+    sha256: f07b7d57d5bf8d94a41e742bab659015f656a23f6c135c144ddb786db7f558db
   - path: taskcards/TC-FF6-IPYNB-PROFILE-SURFACE-001.md
     role: completed IPYNB profile/surface repair
     sha256: 08b95ac863c2ad495cf51158fde940eea03d4a2ec263c29cadcc90d03caf4520
@@ -76,14 +76,14 @@ files:
     role: completed exact NRRD profile repair
     sha256: 2668478ec750290dff62a88bb050843ef45dbe264c77d07b3257a741988fea2e
   - path: taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md
-    role: active WIP task with XLF-03 first unmet
-    sha256: 14f19afbbb47aeea39bf2a0833c7925023b45dd65e4b456786654d169bebc3b9
+    role: active WIP task with event-21 XLF-03 microstate
+    sha256: 0c1d8bff8d47e1bb31d5201289d4b5512baa0c68110bd61a93dedff7c491b455
   - path: plans/strategic/ff6/controller-state.yaml
     role: canonical controller projection
-    sha256: 348951b60fc2e7993467de73d89b1e6d8063d13d7da86bdecc17b6a255eef9fa
+    sha256: cc31f6bd6d729b520370c9e91fdd4d0dcc7571b62b92db720b70c74b1dc6891f
   - path: plans/strategic/ff6/events.jsonl
-    role: canonical append-only journal through event 20
-    sha256: 2956f0d2f31a822f2569d39072c9449815cc051bd68ab57ca02f8ef0ca4035ea
+    role: canonical append-only journal through event 21
+    sha256: 68e4447ed4fc8eba6177d0533e8291d98cc86ad1e43c2e8cfa0fe6d590527e8e
   - path: plans/strategic/ff6/current-gaps.yaml
     role: current materialized gap projection
     sha256: 75d1c6bd1eec59818a57ab5f860f2cebe79bbc7a0128f9bbd41ad2b10a6e3717
@@ -120,11 +120,23 @@ files:
   - path: reports/skills-rff6/skill-transcripts/plan-control-xliff-profile-surface-wip-001.json
     role: tracked event-20 controller and handover projection receipt
     sha256: 114e6006f5166269544b3f33b2618424d2bf0c5243753f1d9085b440765332c7
+  - path: tools/spec/extract_sal_facts.py
+    role: tested XLF-03 digest-bound authority matrix compiler slice
+    sha256: 16466e1e7778259cd284fcf89af61ca902c1b2aac609ccf6b6ebce388590388c
+  - path: tests/tools/test_extract_sal_facts.py
+    role: focused RED-GREEN and deterministic output tests for the compiler slice
+    sha256: 93a4e5ce49cc8e2dcd2a513d6a6e598fd966849cfe63a58b7e84d2fcd4fc0c84
+  - path: reports/skills-rff6/skill-transcripts/ingest-spec-sal-xliff-xlf03-001.json
+    role: tracked zero-warning XLF-03 compiler implementation receipt
+    sha256: d1e283235efc0ee3af5a36a7257e6bf0ed93162ea7bc394c9eab5a4331f819ef
+  - path: reports/skills-rff6/skill-transcripts/plan-control-xliff-profile-surface-wip-002.json
+    role: tracked event-21 microstep checkpoint receipt
+    sha256: a50f7a684748cc6b0635abedfd43067674bf423e09b9ee8c7a35028c071571f8
 
 controller:
   state: CONTRACT
-  event_sequence: 20
-  event_head: b7c06bba2afe60bcbc580d240cc57c4e990a017070b50d75904be469c75fea0c
+  event_sequence: 21
+  event_head: 3e83a764c53da658cb1dd348ed20d041db850f1cef45bec5eaa5637ccafecc11
   parent_task: TC-FF6-PROGRAM-CAPABILITIES-001
   parent_state: NEEDS_REPAIR
   completed_task: TC-FF6-NRRD-PROFILE-SURFACE-001
@@ -133,6 +145,8 @@ controller:
   exact_next_state: WORK_IN_PROGRESS
   completed_steps: [XLF-01, XLF-02]
   first_unmet_step: XLF-03
+  xlf_03_microstate: GREEN_VERIFIED_CHECKPOINTED
+  exact_next_test: test_cli_writes_and_checks_default_xliff_matrix
 
 proof_boundary:
   capability_aggregate_sha256: 4d17d8c8c0ef3de74d59e1d5b16884c0210fd0836e0593591871f10d0af2efd2
@@ -146,14 +160,14 @@ proof_boundary:
 validation:
   packet_internal_links: PASS
   yaml_json_parse: PASS
-  manifest_hashes: PASS_32_FILES
-  ff6_native_event_chain: PASS_EVENT_20
+  manifest_hashes: PASS_36_FILES
+  ff6_native_event_chain: PASS_EVENT_21
   source_ancestor_on_origin_main: PASS
   exact_next_task_registered: PASS
   authority_audit: PASS_17_OF_17_AT_EVENT_20
   xliff_clean_offline_reconstruction: PASS_5_OF_5_AT_EVENT_20
   xliff_authority_inventory: PASS_42_OF_42_MEMBERS
-  skill_transcripts: PASS_2_ZERO_WARNINGS
+  skill_transcripts: PASS_4_ZERO_WARNINGS
   strict_capability_replay: PASS_THREE_IDENTICAL_AT_EVENT_19
   plan_control_regression: PASS_40
   current_state_consistency: PASS
@@ -161,3 +175,5 @@ validation:
   xliff_module_inventory_correction: >-
     PASS_8_OFFICIAL_MODULES_9_MODULE_SCHEMA_VOCABULARIES_CHANGE_TRACKING_INFORMATIVE
   no_product_or_promotion_mutation: PASS_AUTHORITY_CONTRACT_AND_HANDOVER_ONLY
+  xlf_03_microstep: >-
+    PASS_TESTED_COMPILER_SLICE_XLF03_REMAINS_UNMET_CLI_SEEDS_NEGATIVE_REAL_REPLAY_REMAIN

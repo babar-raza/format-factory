@@ -29,15 +29,17 @@ C:\Users\prora\OneDrive\Documents\GitHub\format-factory\plans\codex\handover\STA
 |---|---|
 | Forge | GitLab only |
 | Remote and branch | `origin/main` |
-| Required ancestor | `4e3eff822f57ea336f52233c25452be2be75bbad` |
+| Required ancestor | `a1316b4fae21c20c71ccb6d60e4b9fe634dca573` |
 | Controller state | `CONTRACT` |
-| Journal head | `FF6-EVENT-000020` |
-| Event hash | `b7c06bba2afe60bcbc580d240cc57c4e990a017070b50d75904be469c75fea0c` |
+| Journal head | `FF6-EVENT-000021` |
+| Event hash | `3e83a764c53da658cb1dd348ed20d041db850f1cef45bec5eaa5637ccafecc11` |
 | Parent task | `TC-FF6-PROGRAM-CAPABILITIES-001` — `NEEDS_REPAIR` |
 | Last completed child | `TC-FF6-NRRD-PROFILE-SURFACE-001` — `PASS` |
 | Active task | `TC-FF6-XLIFF-PROFILE-SURFACE-001` — `WORK_IN_PROGRESS` |
 | Completed atomic steps | `XLF-01`, `XLF-02` |
 | First unmet step | `XLF-03` |
+| XLF-03 microstate | `GREEN_VERIFIED_CHECKPOINTED` |
+| Exact next test | `test_cli_writes_and_checks_default_xliff_matrix` |
 | Current compiled denominator | 110 capabilities / 672 obligations |
 | Authority closure | 17/17 global; 5/5 XLIFF `MATCH` |
 | Certified products | 0/6 |
@@ -66,15 +68,19 @@ packet to contain its own final commit hash.
 11. [`TC-FF6-NRRD-PROFILE-SURFACE-001.md`](../../../taskcards/TC-FF6-NRRD-PROFILE-SURFACE-001.md)
 12. [`TC-FF6-XLIFF-PROFILE-SURFACE-001.md`](../../../taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md)
 13. [`xliff-authority-member-inventory.yaml`](../../../reports/ff6/xliff-authority-member-inventory.yaml)
-14. [`ACTIVE-WORK-CHECKPOINT.md`](ACTIVE-WORK-CHECKPOINT.md)
-15. [`STATE-MACHINE-AND-TASKCARD-PROTOCOL.md`](STATE-MACHINE-AND-TASKCARD-PROTOCOL.md)
-16. [`SHIFT-AND-RESUME-PROTOCOL.md`](SHIFT-AND-RESUME-PROTOCOL.md)
-17. [`EXECUTION-RUNBOOK.md`](EXECUTION-RUNBOOK.md)
-18. [`CURRENT-STATE-AND-ROOT-CAUSES.md`](CURRENT-STATE-AND-ROOT-CAUSES.md)
-19. [`VALIDATION-AND-RELEASE.md`](VALIDATION-AND-RELEASE.md)
-20. [`CLAUDE-START.md`](CLAUDE-START.md)
-21. [`checkpoint.yaml`](checkpoint.yaml)
-22. [`manifest.yaml`](manifest.yaml)
+14. [`extract_sal_facts.py`](../../../tools/spec/extract_sal_facts.py)
+15. [`test_extract_sal_facts.py`](../../../tests/tools/test_extract_sal_facts.py)
+16. [`ingest-spec-sal XLF-03 receipt`](../../../reports/skills-rff6/skill-transcripts/ingest-spec-sal-xliff-xlf03-001.json)
+17. [`plan-control event-21 receipt`](../../../reports/skills-rff6/skill-transcripts/plan-control-xliff-profile-surface-wip-002.json)
+18. [`ACTIVE-WORK-CHECKPOINT.md`](ACTIVE-WORK-CHECKPOINT.md)
+19. [`STATE-MACHINE-AND-TASKCARD-PROTOCOL.md`](STATE-MACHINE-AND-TASKCARD-PROTOCOL.md)
+20. [`SHIFT-AND-RESUME-PROTOCOL.md`](SHIFT-AND-RESUME-PROTOCOL.md)
+21. [`EXECUTION-RUNBOOK.md`](EXECUTION-RUNBOOK.md)
+22. [`CURRENT-STATE-AND-ROOT-CAUSES.md`](CURRENT-STATE-AND-ROOT-CAUSES.md)
+23. [`VALIDATION-AND-RELEASE.md`](VALIDATION-AND-RELEASE.md)
+24. [`CLAUDE-START.md`](CLAUDE-START.md)
+25. [`checkpoint.yaml`](checkpoint.yaml)
+26. [`manifest.yaml`](manifest.yaml)
 
 ## Authority precedence
 
@@ -92,7 +98,7 @@ If two records disagree, stop trusting the lower record and use this order:
 The assessment snapshot `current-state.yaml` remains valuable for product-tree
 inventory, but it was captured at baseline commit `e4f8f5f…`. Its contract
 hashes and pre-profile-repair capability totals are historical where they
-disagree with event 20 and `capability-coverage.yaml`.
+disagree with event 21 and `capability-coverage.yaml`.
 
 ## Mechanical resume preflight
 
@@ -103,7 +109,7 @@ git fetch origin main --prune
 git status --short --branch
 git rev-parse HEAD
 git rev-parse origin/main
-git merge-base --is-ancestor 4e3eff822f57ea336f52233c25452be2be75bbad origin/main
+git merge-base --is-ancestor a1316b4fae21c20c71ccb6d60e4b9fe634dca573 origin/main
 python tools/evidence/check_current_state_consistency.py
 python -m tools.supervisor.coordination --json status
 ```
@@ -116,24 +122,46 @@ event schema. That integration defect is tracked as `FF6-GAP-011`.
 Resume only if:
 
 - the worktree is clean or every dirty path is classified and outside scope;
-- event 20 and controller state agree;
+- event 21 and controller state agree;
 - the active `WORK_IN_PROGRESS` task exists in `taskcards/index.yaml`;
 - the capability aggregate equals
   `4d17d8c8c0ef3de74d59e1d5b16884c0210fd0836e0593591871f10d0af2efd2`;
 - all 17 authority artifacts still match, including all five XLIFF records;
+- the committed source SHA-256 is
+  `16466e1e7778259cd284fcf89af61ca902c1b2aac609ccf6b6ebce388590388c`
+  and the test SHA-256 is
+  `93a4e5ce49cc8e2dcd2a513d6a6e598fd966849cfe63a58b7e84d2fcd4fc0c84`;
+- the three focused tests, Ruff, strict Mypy, and bytecode compilation replay;
 - no live lease owns the intended files.
 
 ## Exact continuation
 
 Resume only `TC-FF6-XLIFF-PROFILE-SURFACE-001` at `XLF-03`.
 
-Steps `XLF-01` and `XLF-02` are complete at event 20. The official XLIFF 2.0
+Steps `XLF-01` and `XLF-02` are complete at event 20. Event 21 additionally
+records a tested implementation microstep inside XLF-03 without marking
+XLF-03 complete. The official XLIFF 2.0
 package and prose are now independently pinned, the 2.0 published SHA-1
 cross-check passed, the 2.0/2.1 package inventory contains 42 exact members,
 and clean offline XLIFF reconstruction passes 5/5. Recompute those steps only
 if their input digests changed.
 
-`XLF-03` must now compile a source-located normative delta and module matrix
+The committed extractor already implements the bounded digest-verified archive
+reader, Core/module structural inventory, DocBook section delta, curated-row
+validation, and deterministic atomic output primitives. Its three tests pass.
+Do not rewrite that working slice unless a replay fails.
+
+The exact next cycle is:
+
+1. add `test_cli_writes_and_checks_default_xliff_matrix` and prove it RED
+   because the CLI/default seed layer does not yet exist;
+2. implement deterministic default Core/module/validation seeds plus
+   `--check`;
+3. add all archive/XML/matrix negative controls;
+4. run the tool against both real pinned packages and prove three byte-identical
+   outputs.
+
+Only then may XLF-03 claim its source-located normative delta and module matrix
 from the tracked inventory and pinned authority bytes. The task must compile
 exact XLIFF 2.0
 and 2.1 Core plus separate coverage for all eight official 2.1 modules:
@@ -174,7 +202,8 @@ Every provider shift ends at a GitLab-main checkpoint that contains:
 - no unexplained or required uncommitted work.
 
 If a provider cannot finish the whole taskcard, it must finish the current
-atomic substep to an integration-safe state, run the substep gates, append a
-truthful `WORK_IN_PROGRESS` checkpoint event, refresh this packet, commit, push,
-and remote-verify. A token boundary is never a reason to commit broken code or
-to leave operational state only in chat.
+microstep to an integration-safe state, run its gates, commit the coherent
+slice, append a truthful `WORK_IN_PROGRESS` checkpoint event that binds that
+commit, refresh this packet, commit, push, and remote-verify. A token boundary
+is never a reason to commit broken code or leave operational state only in
+chat.
