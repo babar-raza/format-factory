@@ -21,9 +21,10 @@ Current state is `CONTRACT`. Authority closure passed at event 16, OpenRaster
 profile/surface repair at event 17, and IPYNB profile/surface repair at event
 18. NRRD0001-NRRD0005 profile repair passed at event 19. Event 20
 checkpointed XLIFF steps XLF-01 and XLF-02 after closing the 2.0 authority
-prerequisite and inventorying both pinned packages. Event 22 completes the
-XLF-03 deterministic source-surface matrix at commit
-`6622aa1fef947530128b5b49de67afba3cc10088`; XLF-04 is first unmet. The
+prerequisite and inventorying both pinned packages. Event 22 completed the
+XLF-03 deterministic source-surface matrix. Event 23 binds the first seven
+source-bound Core obligations at commit
+`4f0e8793d7aa694ccb45a57e9d3abc8f8cce92f7`; XLF-04 remains first unmet. The
 parent capability task remains `NEEDS_REPAIR`, so product implementation is
 locked. The active task is `TC-FF6-XLIFF-PROFILE-SURFACE-001`, and the first
 unmet step is XLF-04.
@@ -101,7 +102,7 @@ No product wave may bypass the program dependencies.
 
 ### Inputs
 
-- event 22 and the `PASS` NRRD checkpoint;
+- event 23 and the `PASS` NRRD checkpoint;
 - the locked XLIFF 2.0 and 2.1 OASIS Standard packages, prose members,
   product requirements, and 42-member tracked inventory;
 - `shared/format-contracts/authority-lock.yaml`;
@@ -113,27 +114,27 @@ No product wave may bypass the program dependencies.
 
 ### Steps
 
-1. Revalidate event 22, controller/task/index agreement, the remote source
+1. Revalidate event 23, controller/task/index agreement, the remote source
    commit, coordination ownership, all 17 global authority matches, all five
    XLIFF matches, and the 42-member inventory.
-2. Require commit `6622aa1fef947530128b5b49de67afba3cc10088`
-   as a GitLab-main ancestor; verify exact source, test, matrix, and final
-   transcript SHA-256 values from event 22; replay 18 focused tests, Ruff,
+2. Require commit `4f0e8793d7aa694ccb45a57e9d3abc8f8cce92f7`
+   as a GitLab-main ancestor; verify exact source, test, matrix, Core inventory,
+   and final transcript SHA-256 values from event 23; replay 23 focused tests, Ruff,
    strict Mypy, Pyright 1.1.411, bytecode compilation, matrix check mode, and
    three identical real-authority generations.
-3. Re-run XLF-01 through XLF-03 only if their recorded input closure changed.
-4. Define the fine-grained Core-obligation schema: stable profiles, canonical
-   owner, authority/source/member/location, normalized rule, requirement
-   class, positive/rejection evidence needs, and interpretation note.
-5. Add the first RED test for a representative source-located Core batch,
-   covering root/hierarchy, inline identity/pairing, segmentation/state,
-   extension, and agent-processing behavior.
-6. Implement the bounded batch, make it GREEN, run the task regression tier,
-   and record exactly which XLF-04 categories remain.
-7. Continue bounded source-located batches until the complete Core delta and
+3. Re-run completed XLF steps only if their recorded input closure changed.
+4. Verify the seven batch-001 stable IDs and exact paragraph digests remain
+   unchanged; they are source-bound, not canonical-SAL-verified.
+5. Add `XLF-04-BATCH-002` RED tests for identifier/reference/inheritance,
+   language/direction/whitespace, and source-target correspondence.
+6. Implement only that bounded batch, make it GREEN, run the regression tier,
+   and keep `complete=false` without an explicit expected-obligation ID set.
+7. Compile and independently test the full expected-ID denominator. Continue
+   bounded source-located batches until the complete Core delta and
    processing map exists. Separate common Core rules, 2.1 additions/changes,
    processing requirements, ITS mappings, preservation, security, limits, and
-   uncertainty. Never count the 36 coarse XLF-03 anchors as complete semantics.
+   uncertainty. Never count coarse anchors, obligation counts, or covered
+   categories as complete semantics.
 8. Audit every current XLIFF SAL fact against that map. Split mixed 2.0/2.1
    claims; ingest missing facts and heal false claims only through registered
    SAL skills.

@@ -154,14 +154,15 @@ controller or product task.
   taskcard, source, test, authority, contract, controller, promotion, gate, or
   release state changed.
 
-## Event-22 XLF-03 completion refresh
+## Event-23 XLF-04 batch-001 checkpoint refresh
 
 The packet was rebuilt from immutable implementation commit
-`6622aa1fef947530128b5b49de67afba3cc10088` and native event
-`FF6-EVENT-000022` /
-`05e95766f573441844bf88efb6d4ee56c27d46ab3db8f0029577804a054732d5`.
+`4f0e8793d7aa694ccb45a57e9d3abc8f8cce92f7` and native event
+`FF6-EVENT-000023` /
+`01c265ecd5284320a82f31316b404e3f3f4edbab3b92cd071be8f9ec27f83641`.
 
-- `XLF-01`, `XLF-02`, and `XLF-03` are complete; `XLF-04` is first unmet.
+- `XLF-01`, `XLF-02`, `XLF-03`, and `XLF-04-BATCH-001` are complete;
+  `XLF-04` remains first unmet.
 - XLF-03 now includes deterministic default anchors, CLI/check mode, declared
   archive/XML/matrix negative controls, and a real pinned-authority matrix.
 - The matrix has 36 unique source-surface anchors, 293/420 sections, 8/8
@@ -173,8 +174,13 @@ The packet was rebuilt from immutable implementation commit
 - The 36 rows are coarse source-surface anchors, not complete semantic
   obligations. XLF-04 must compile full Core semantics; XLF-05 must compile
   every module as a first-class capability family.
+- Batch 001 adds seven source-bound obligations covering seven categories,
+  but they remain `SOURCE_BOUND_UNVERIFIED`; five categories and the explicit
+  expected-obligation ID denominator remain. Category presence cannot close
+  XLF-04.
 - The mission remains in `CONTRACT`, the active task remains
   `WORK_IN_PROGRESS`, the parent remains `NEEDS_REPAIR`, product certification
   remains 0/6, and every promotion remains `UNASSESSED`.
-- The exact continuation is a first RED test for a source-located fine-grained
-  Core obligation batch after replaying event 22 and its bound evidence.
+- The exact continuation is `XLF-04-BATCH-002`: RED tests for source-located
+  identifier/reference/inheritance, language/direction/whitespace, and
+  source-target correspondence after replaying event 23 and its bound evidence.

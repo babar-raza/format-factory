@@ -9,7 +9,7 @@ canonical_inputs:
   forge: GitLab
   remote: origin
   branch: main
-  source_commit: 6622aa1fef947530128b5b49de67afba3cc10088
+  source_commit: 4f0e8793d7aa694ccb45a57e9d3abc8f8cce92f7
   source_commit_rule: >-
     This commit must be an ancestor of the fetched origin/main commit that
     contains this packet. The packet cannot embed its own final commit hash.
@@ -46,9 +46,9 @@ provider_shift_contract:
 
 controller:
   state: CONTRACT
-  sequence: 22
-  event_id: FF6-EVENT-000022
-  event_hash: 05e95766f573441844bf88efb6d4ee56c27d46ab3db8f0029577804a054732d5
+  sequence: 23
+  event_id: FF6-EVENT-000023
+  event_hash: 01c265ecd5284320a82f31316b404e3f3f4edbab3b92cd071be8f9ec27f83641
   parent_task: TC-FF6-PROGRAM-CAPABILITIES-001
   parent_state: NEEDS_REPAIR
   completed_task: TC-FF6-NRRD-PROFILE-SURFACE-001
@@ -162,7 +162,7 @@ known_non_promoting_evidence:
   product_test_matrix: not_currently_certified
   product_contracts: DRAFT
 
-completed_source_surface_checkpoint:
+historical_source_surface_checkpoint:
   checkpoint_commit: 6622aa1fef947530128b5b49de67afba3cc10088
   event: FF6-EVENT-000022
   event_hash: 05e95766f573441844bf88efb6d4ee56c27d46ab3db8f0029577804a054732d5
@@ -220,7 +220,8 @@ completed_source_surface_checkpoint:
     XLF-03 proves a deterministic source-located profile/module surface and
     safety behavior. The 36 anchors are not the complete fine-grained Core or
     module semantics, SAL closure, capability closure, product implementation,
-    certification, or promotion.
+    certification, or promotion. This is a retained historical proof node;
+    current resume authority is event 23 and the xlf_resume section below.
 
 resume_gate:
   require_clean_or_fully_classified_worktree: true
@@ -253,7 +254,7 @@ completed_contract_checkpoint:
 next_task_prerequisite:
   task: TC-FF6-XLIFF-PROFILE-SURFACE-001
   task_state: WORK_IN_PROGRESS
-  completed_steps: [XLF-01, XLF-02, XLF-03]
+  completed_steps: [XLF-01, XLF-02, XLF-03, XLF-04-BATCH-001]
   first_unmet_step: XLF-04
   shift_microstate: RESUMABLE
   missing_authority: null
@@ -303,8 +304,24 @@ next_task_prerequisite:
   stable_profiles: [xliff_2.0, xliff_2.1]
   preview_profile: xliff_2.2_preview
   exact_next_action: >-
-    Replay event 22, exact source/test/matrix/receipt digests, 18 focused
-    tests, static checks, matrix check mode, three identical real-authority
-    outputs, and 17/17 authority matches. Then begin XLF-04 with a failing test
-    for a source-located fine-grained Core obligation batch. Do not repeat
-    XLF-01 through XLF-03 unless their recorded inputs changed.
+    Replay event 23, exact source/test/matrix/Core-inventory/receipt digests,
+    23 focused tests, static checks, matrix check mode, three identical
+    outputs for both generated reports, and 17/17 authority matches. Then
+    start XLF-04-BATCH-002 with failing tests for source-located
+    identifier/reference/inheritance, language/direction/whitespace, and
+    source-target correspondence obligations. Preserve batch-001 IDs and keep
+    complete=false until an explicit expected-obligation denominator exists.
+  xlf_04_batch_001:
+    status: SOURCE_LOCATED_PARTIAL
+    report: reports/ff6/xliff-core-obligation-inventory.yaml
+    report_sha256: d9c3fc4b9dd7002cc86ef0852864fb03acdc3be5fa4aead05efc15d39dfd11ff
+    obligation_count: 7
+    verification_status: SOURCE_BOUND_UNVERIFIED
+    completeness_basis: EXPECTED_OBLIGATION_DENOMINATOR_ABSENT
+    complete: false
+    remaining_categories:
+      - identifiers_references_inheritance
+      - language_direction_whitespace
+      - semantic_roundtrip_canonical_output
+      - source_target_correspondence
+      - xml_security_resource_limits

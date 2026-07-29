@@ -72,6 +72,12 @@ These statements describe observed code breadth, not certification.
   `9f4ea4b8b71378217af26c0fb2b97a759817a0aca6c64255b8cd55170c60a090`.
   XLF-03 is complete, while fine-grained Core and module semantics remain
   XLF-04 and XLF-05.
+- Event 23: a typed fine-grained Core-obligation schema, exact
+  source/member/section/paragraph digests, fail-closed profile and evidence
+  declarations, seven real-authority obligations, and a tested rule that
+  category presence cannot self-certify completeness. The report remains
+  incomplete because its expected-obligation ID denominator is absent; five
+  categories and canonical SAL reconciliation remain.
 
 This removes a major rerun-consistency failure: `ACQUIRED` can no longer
 survive as promoting evidence when the locked bytes are absent or changed.
@@ -262,8 +268,10 @@ an underspecified denominator correct.
 
 ## Immediate repair order
 
-1. Compile complete source-located XLIFF 2.0/2.1 Core obligations at XLF-04;
-   do not inflate the 36 XLF-03 anchors into semantic coverage.
+1. Continue source-located XLIFF 2.0/2.1 Core obligations at XLF-04-BATCH-002;
+   do not inflate the 36 anchors, seven obligations, or seven covered
+   categories into semantic completeness. Compile an explicit expected-ID
+   denominator before closure.
 2. Compile exact per-module applicability with isolated
    2.2 preview semantics.
 3. UBL all-root/common-component typing contract.

@@ -1,0 +1,79 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "plan-control-xliff-profile-surface-wip-004",
+  "skill_id": "plan-control",
+  "mode": "live",
+  "timestamp": "2026-07-29T15:34:06.2072104Z",
+  "inputs": {
+    "task_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "operation": "project",
+    "target_paths": [
+      "plans/strategic/ff6/events.jsonl",
+      "plans/strategic/ff6/controller-state.yaml",
+      "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md"
+    ],
+    "coordination_scope": "Exact event, controller, taskcard, receipt, and provider-neutral handover paths under agent-codex-20260729T145745-697027",
+    "acceptance_evidence": "Immutable implementation commit 4f0e879, native event chain through event 23, seven source-bound Core obligations with completeness false, 23 focused tests, deterministic report replays, static checks, and zero product promotion",
+    "source_checkpoint": "4f0e8793d7aa694ccb45a57e9d3abc8f8cce92f7"
+  },
+  "allowed_files": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
+    "reports/skills-rff6/skill-transcripts/plan-control-xliff-profile-surface-wip-004.json"
+  ],
+  "actual_files_changed": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
+    "reports/skills-rff6/skill-transcripts/plan-control-xliff-profile-surface-wip-004.json"
+  ],
+  "tests_run": [
+    "native FF6 hash-chain replay through FF6-EVENT-000023: PASS",
+    "controller sequence, event head, active task, completed batch, first unmet step, and exact next action agreement: PASS",
+    "python tools/evidence/check_current_state_consistency.py: PASS",
+    "XLF-04 batch-001 evidence: 23 tests and three identical Core-inventory outputs: PASS"
+  ],
+  "result": "PASS",
+  "evidence": {
+    "event_id": "FF6-EVENT-000023",
+    "event_hash": "01c265ecd5284320a82f31316b404e3f3f4edbab3b92cd071be8f9ec27f83641",
+    "task_state": "WORK_IN_PROGRESS",
+    "completed_steps": [
+      "XLF-01",
+      "XLF-02",
+      "XLF-03"
+    ],
+    "completed_batches": [
+      "XLF-04-BATCH-001"
+    ],
+    "first_unmet_step": "XLF-04",
+    "microstate": "RESUMABLE",
+    "xlf_04_complete": false,
+    "obligations": 7,
+    "obligation_status": "SOURCE_BOUND_UNVERIFIED",
+    "completeness_basis": "EXPECTED_OBLIGATION_DENOMINATOR_ABSENT",
+    "exact_next_action": "XLF-04-BATCH-002 RED tests for identifier/reference/inheritance, language/direction/whitespace, and source-target correspondence",
+    "product_promotion": "none"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for the event-23 projection boundary",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for batch-001 source binding and batch-002 selection only",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, no new contradiction required a gap",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

@@ -28,15 +28,16 @@ provider-local artifacts as authority.
    trusting its labels.
 4. Require:
    - source checkpoint
-     `6622aa1fef947530128b5b49de67afba3cc10088` is an ancestor of fetched
+     `4f0e8793d7aa694ccb45a57e9d3abc8f8cce92f7` is an ancestor of fetched
      `origin/main`;
-   - controller `CONTRACT`, sequence 22;
-   - event `FF6-EVENT-000022`, hash
-     `05e95766f573441844bf88efb6d4ee56c27d46ab3db8f0029577804a054732d5`;
+   - controller `CONTRACT`, sequence 23;
+   - event `FF6-EVENT-000023`, hash
+     `01c265ecd5284320a82f31316b404e3f3f4edbab3b92cd071be8f9ec27f83641`;
    - parent `TC-FF6-PROGRAM-CAPABILITIES-001` in `NEEDS_REPAIR`;
    - `TC-FF6-NRRD-PROFILE-SURFACE-001` in `PASS`;
    - `TC-FF6-XLIFF-PROFILE-SURFACE-001` in `WORK_IN_PROGRESS`, with
-     `XLF-01`, `XLF-02`, and `XLF-03` complete, `XLF-04` first unmet, and
+     `XLF-01`, `XLF-02`, `XLF-03`, and `XLF-04-BATCH-001` complete,
+     `XLF-04` still first unmet, and
      provider-shift microstate `RESUMABLE`;
    - 110 capabilities, 672 obligations, and aggregate
      `4d17d8c8c0ef3de74d59e1d5b16884c0210fd0836e0593591871f10d0af2efd2`;
@@ -59,24 +60,27 @@ Resume `taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md` at `XLF-04` through its r
 authority-acquisition, SAL, family, research, contract,
 capability-compiler, taskcard, and controller skills.
 
-Do not reacquire XLIFF 2.0 or rebuild XLF-03 unless their recorded inputs
-changed. First:
+Do not reacquire XLIFF 2.0, rebuild XLF-03, or rewrite the seven batch-001
+obligations unless their recorded inputs changed. First:
 
-1. verify the event-22 source, test, matrix, and transcript SHA-256 values;
+1. verify the event-23 source, test, matrix, Core inventory, and transcript
+   SHA-256 values;
 2. run `python -m pytest tests/tools/test_extract_sal_facts.py -q` and require
-   18 passed;
+   23 passed;
 3. rerun Ruff, strict Mypy, Pyright 1.1.411, and bytecode compilation;
 4. validate `reports/ff6/xliff-authority-member-inventory.yaml` against both
    pinned ZIPs;
 5. run matrix `--check` and require three byte-identical generations at
    `9f4ea4b8b71378217af26c0fb2b97a759817a0aca6c64255b8cd55170c60a090`;
-6. read XLF-04 in the taskcard and define the fine-grained Core-obligation
-   record shape before mutation;
-7. add the first RED test for a source-located Core obligation batch covering
-   representative root/hierarchy, inline-code, segmentation/state, extension,
-   and processing-agent rules;
-8. make only that bounded batch GREEN, record its exact coverage and remaining
-   XLF-04 categories, then continue batchwise.
+6. verify three byte-identical Core-inventory generations at
+   `d9c3fc4b9dd7002cc86ef0852864fb03acdc3be5fa4aead05efc15d39dfd11ff`;
+7. add the `XLF-04-BATCH-002` RED tests for source-located
+   identifier/reference/inheritance, language/direction/whitespace, and
+   source-target correspondence obligations;
+8. make only that bounded batch GREEN while retaining the seven batch-001 IDs;
+9. keep `complete=false` until an explicit expected-obligation ID denominator
+   is compiled and every ID is present. Category presence is never the
+   completeness denominator.
 
 The matrix acceptance count is 293/420 total DocBook `section` elements. The
 197/312 figures are only the subsets with direct `id`/`xml:id` attributes;
@@ -86,7 +90,9 @@ source coverage.
 
 Preserve the existing tested compiler unless replay exposes a defect. Its 36
 rows are source-surface anchors, not a complete semantic obligation inventory.
-Never satisfy XLF-04 by relabeling those anchors or by counting XSD components.
+The seven batch-001 obligations are source-bound but unverified against
+canonical SAL and are also not a complete inventory. Never satisfy XLF-04 by
+relabeling anchors, counting XSD components, or counting covered categories.
 
 Remaining required result:
 
@@ -135,7 +141,7 @@ Remaining required result:
   checkpoint is required.
 - Treat the exact next action as deterministic but select its exact test name
   after inspecting the existing XLF-04 test namespace; record that name in the
-  first RED receipt and next checkpoint. Do not invent a conflicting test ID.
+  batch-002 RED receipt and next checkpoint. Do not invent a conflicting test ID.
 
 ## Forbidden
 

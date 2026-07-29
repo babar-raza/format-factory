@@ -186,7 +186,7 @@ Task: `TC-FF6-XLIFF-PROFILE-SURFACE-001`.
 | XLF-01 — PASS at event 20 | event 19, task/index/controller, authority and worktree preflight | native chain, exact READY task, clean or classified tree, 15/15 predecessor authority match |
 | XLF-02 — PASS at event 20 | official XLIFF 2.0 authority record, five-source XLIFF closure, and 42-member 2.0/2.1 inventory | independent digest plus published SHA-1 cross-check, legal record, 5/5 clean offline reconstruction, no 2.1-as-2.0 proxy |
 | XLF-03 — PASS at event 22 | deterministic source-located 2.0/2.1 Core/module/schema surface matrix | 36 unique coarse anchors; 293/420 sections; 8/8 modules; 8/9 schema vocabularies; full declared archive/XML/matrix negative controls; 18 tests; three identical real-authority outputs; this does not satisfy fine-grained semantics |
-| XLF-04 — FIRST UNMET | complete Core SAL and processing-requirement map | exact verifier passes; every rule has source, profile, owner and requirement class; inline, segmentation, state, extension, skeleton, ITS, and agent rules are not reduced to XSD validity |
+| XLF-04 — FIRST UNMET; batch 001 PASS at event 23 | complete Core SAL and processing-requirement map | seven source-bound obligations cover seven categories but remain `SOURCE_BOUND_UNVERIFIED`; five categories and the explicit expected-ID denominator remain; exact verifier must pass and category presence must not self-certify completeness |
 | XLF-05 | separately owned Translation Candidates/Matches, Glossary, Format Style, Metadata, Resource Data, Size/Length, Validation, and ITS families | all eight official modules and all nine module schema vocabularies are accounted for; each module has typed-model, read/write, validation, preservation, rejection, and proof obligations |
 | XLF-06 | repaired research/family/enrichment layers | mixed-profile requirements split; explicit-complete ownership; no keyword duplication |
 | XLF-07 | exact stable and preview projections | both stable profiles claimed; 2.1-only rules excluded from 2.0; 2.2 preview isolated; 1.2 outside model |
@@ -248,21 +248,22 @@ agent’s self-verdict without replay.
 - A blocked format does not stop another ready format.
 - Human-only release authority never blocks technical release preparation.
 
-## Event-22 resume invariant
+## Event-23 resume invariant
 
 The receiving provider starts at XLF-04 only after replaying:
 
 - implementation commit
-  `6622aa1fef947530128b5b49de67afba3cc10088`;
-- event `FF6-EVENT-000022` and controller sequence 22;
-- exact source, test, matrix, and final receipt digests;
-- 18 focused tests plus Ruff, strict Mypy, Pyright 1.1.411, and bytecode
+  `4f0e8793d7aa694ccb45a57e9d3abc8f8cce92f7`;
+- event `FF6-EVENT-000023` and controller sequence 23;
+- exact source, test, matrix, Core inventory, and final receipt digests;
+- 23 focused tests plus Ruff, strict Mypy, Pyright 1.1.411, and bytecode
   compilation;
-- matrix check mode and three byte-identical real-authority generations;
+- matrix check mode and three byte-identical generations of each report;
 - 17/17 global and 5/5 XLIFF authority matches.
 
-The first XLF-04 RED test must target a source-located fine-grained Core
-obligation batch. Its exact test identifier is chosen only after inspecting the
-current test namespace and is then persisted in the skill receipt and next
-checkpoint. A provider must not invent a duplicate identifier or relabel one
-of the 36 source-surface anchors as complete semantic coverage.
+The next RED cycle is `XLF-04-BATCH-002`. Its tests target source-located
+identifier/reference/inheritance, language/direction/whitespace, and
+source-target correspondence rules. The provider must preserve all seven
+batch-001 IDs, must keep `complete=false` while
+`EXPECTED_OBLIGATION_DENOMINATOR_ABSENT`, and must not relabel coarse anchors
+or covered categories as complete semantic coverage.

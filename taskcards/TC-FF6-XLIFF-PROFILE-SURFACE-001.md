@@ -184,13 +184,60 @@ fine-grained Core or module semantic obligation inventory and cannot satisfy
 XLF-04, XLF-05, SAL closure, capability closure, product implementation, or
 certification.
 
-Resume at `XLF-04`. First revalidate event 22, the implementation commit,
-exact file digests, 18 tests, matrix check mode, three-run replay, and 17/17
-authority audit. Then add the first failing test for complete Core obligation
-extraction. Every emitted Core obligation must identify exact stable profile
-applicability, owner, authority/member/location, requirement class, and
-processing semantics. Do not treat the XSD inventory or the 36 anchors as
-complete semantic coverage.
+## Current XLF-04 microstep checkpoint — event 23
+
+Event 23 supersedes the event-22 resume paragraph. `XLF-04-BATCH-001` is
+integration-safe at implementation commit
+`4f0e8793d7aa694ccb45a57e9d3abc8f8cce92f7`, but XLF-04 remains the first
+unmet task step and the task remains `WORK_IN_PROGRESS`.
+
+The bounded batch adds:
+
+- a separate fine-grained Core obligation compiler and deterministic
+  `--artifact core-obligations` command;
+- seven stable source-bound IDs covering document structure, hierarchy
+  cardinality, spanning inline semantics, segmentation, state, extension
+  preservation, and agent processing;
+- exact authority package, member, section, paragraph, anchor, and normalized
+  paragraph digests for both stable profiles;
+- mandatory positive and rejection evidence declarations;
+- seed-schema rejection of self-declared verification;
+- safe DocBook public/internal entity handling through the existing bounded
+  parser path;
+- an explicit completeness rule: category presence cannot close XLF-04.
+
+Tracked evidence:
+
+- `reports/ff6/xliff-core-obligation-inventory.yaml` — seven obligations,
+  SHA-256
+  `d9c3fc4b9dd7002cc86ef0852864fb03acdc3be5fa4aead05efc15d39dfd11ff`;
+- source SHA-256
+  `e44a70d39d0415190854a3dc048da8f7927d3ce6fb22cbe93875121c648df685`;
+- test SHA-256
+  `627949766f2a5acffb8c0c1176cb03438a8c1fd9126cc51524870ed61be8fb43`;
+- 23 focused tests, Ruff, strict Mypy, Pyright 1.1.411, and bytecode
+  compilation pass;
+- three real-authority generations are byte-identical at the inventory digest;
+- the XLF-03 matrix remains unchanged at
+  `9f4ea4b8b71378217af26c0fb2b97a759817a0aca6c64255b8cd55170c60a090`;
+- both batch receipts validate with zero warnings; XLIFF authority remains
+  5/5 `MATCH`.
+
+Truth boundary: the inventory is `SOURCE_LOCATED_PARTIAL` and every obligation
+is `SOURCE_BOUND_UNVERIFIED`. Five top-level categories remain absent:
+identifiers/references/inheritance, language/direction/whitespace,
+source-target correspondence, XML security/resource limits, and semantic
+roundtrip/canonical output. Even after those categories have rows, XLF-04
+cannot become complete until an explicit expected-obligation ID denominator
+exists and every expected ID resolves. Canonical SAL reconciliation,
+capability repair, product source, certification, and promotion remain
+untouched.
+
+Resume at `XLF-04-BATCH-002`. Revalidate event 23, implementation commit,
+23 tests, both report digests, three-run replay, receipts, and authority audit.
+Then add the next RED test for source-located identifier/reference/inheritance,
+language/direction/whitespace, and source-target correspondence rules. Preserve
+the seven batch-001 IDs and do not treat category coverage as completeness.
 
 ## Required execution
 

@@ -29,17 +29,17 @@ C:\Users\prora\OneDrive\Documents\GitHub\format-factory\plans\codex\handover\STA
 |---|---|
 | Forge | GitLab only |
 | Remote and branch | `origin/main` |
-| Required ancestor | `6622aa1fef947530128b5b49de67afba3cc10088` |
+| Required ancestor | `4f0e8793d7aa694ccb45a57e9d3abc8f8cce92f7` |
 | Controller state | `CONTRACT` |
-| Journal head | `FF6-EVENT-000022` |
-| Event hash | `05e95766f573441844bf88efb6d4ee56c27d46ab3db8f0029577804a054732d5` |
+| Journal head | `FF6-EVENT-000023` |
+| Event hash | `01c265ecd5284320a82f31316b404e3f3f4edbab3b92cd071be8f9ec27f83641` |
 | Parent task | `TC-FF6-PROGRAM-CAPABILITIES-001` — `NEEDS_REPAIR` |
 | Last completed child | `TC-FF6-NRRD-PROFILE-SURFACE-001` — `PASS` |
 | Active task | `TC-FF6-XLIFF-PROFILE-SURFACE-001` — `WORK_IN_PROGRESS` |
-| Completed atomic steps | `XLF-01`, `XLF-02`, `XLF-03` |
+| Completed atomic steps | `XLF-01`, `XLF-02`, `XLF-03`, `XLF-04-BATCH-001` |
 | First unmet step | `XLF-04` |
 | Shift microstate | `RESUMABLE` |
-| Exact next action | Add the first RED test for complete Core obligation extraction |
+| Exact next action | Start `XLF-04-BATCH-002` with the specified three-category RED batch |
 | Current compiled denominator | 110 capabilities / 672 obligations |
 | Authority closure | 17/17 global; 5/5 XLIFF `MATCH` |
 | Certified products | 0/6 |
@@ -71,18 +71,19 @@ packet to contain its own final commit hash.
 14. [`extract_sal_facts.py`](../../../tools/spec/extract_sal_facts.py)
 15. [`test_extract_sal_facts.py`](../../../tests/tools/test_extract_sal_facts.py)
 16. [`xliff-normative-delta-matrix.yaml`](../../../reports/ff6/xliff-normative-delta-matrix.yaml)
-17. [`XLF-03 TDD receipt`](../../../reports/skills-rff6/skill-transcripts/test-driven-development-xliff-xlf03-cli-001.json)
-18. [`XLF-03 real-authority receipt`](../../../reports/skills-rff6/skill-transcripts/ingest-spec-sal-xliff-xlf03-002.json)
-19. [`plan-control event-22 receipt`](../../../reports/skills-rff6/skill-transcripts/plan-control-xliff-profile-surface-wip-003.json)
-20. [`ACTIVE-WORK-CHECKPOINT.md`](ACTIVE-WORK-CHECKPOINT.md)
-21. [`STATE-MACHINE-AND-TASKCARD-PROTOCOL.md`](STATE-MACHINE-AND-TASKCARD-PROTOCOL.md)
-22. [`SHIFT-AND-RESUME-PROTOCOL.md`](SHIFT-AND-RESUME-PROTOCOL.md)
-23. [`EXECUTION-RUNBOOK.md`](EXECUTION-RUNBOOK.md)
-24. [`CURRENT-STATE-AND-ROOT-CAUSES.md`](CURRENT-STATE-AND-ROOT-CAUSES.md)
-25. [`VALIDATION-AND-RELEASE.md`](VALIDATION-AND-RELEASE.md)
-26. [`CLAUDE-START.md`](CLAUDE-START.md)
-27. [`checkpoint.yaml`](checkpoint.yaml)
-28. [`manifest.yaml`](manifest.yaml)
+17. [`xliff-core-obligation-inventory.yaml`](../../../reports/ff6/xliff-core-obligation-inventory.yaml)
+18. [`XLF-04 batch-001 TDD receipt`](../../../reports/skills-rff6/skill-transcripts/test-driven-development-xliff-xlf04-core-batch-001.json)
+19. [`XLF-04 batch-001 authority receipt`](../../../reports/skills-rff6/skill-transcripts/ingest-spec-sal-xliff-xlf04-core-batch-001.json)
+20. [`plan-control event-23 receipt`](../../../reports/skills-rff6/skill-transcripts/plan-control-xliff-profile-surface-wip-004.json)
+21. [`ACTIVE-WORK-CHECKPOINT.md`](ACTIVE-WORK-CHECKPOINT.md)
+22. [`STATE-MACHINE-AND-TASKCARD-PROTOCOL.md`](STATE-MACHINE-AND-TASKCARD-PROTOCOL.md)
+23. [`SHIFT-AND-RESUME-PROTOCOL.md`](SHIFT-AND-RESUME-PROTOCOL.md)
+24. [`EXECUTION-RUNBOOK.md`](EXECUTION-RUNBOOK.md)
+25. [`CURRENT-STATE-AND-ROOT-CAUSES.md`](CURRENT-STATE-AND-ROOT-CAUSES.md)
+26. [`VALIDATION-AND-RELEASE.md`](VALIDATION-AND-RELEASE.md)
+27. [`CLAUDE-START.md`](CLAUDE-START.md)
+28. [`checkpoint.yaml`](checkpoint.yaml)
+29. [`manifest.yaml`](manifest.yaml)
 
 ## Authority precedence
 
@@ -100,7 +101,7 @@ If two records disagree, stop trusting the lower record and use this order:
 The assessment snapshot `current-state.yaml` remains valuable for product-tree
 inventory, but it was captured at baseline commit `e4f8f5f…`. Its contract
 hashes and pre-profile-repair capability totals are historical where they
-disagree with event 22 and `capability-coverage.yaml`.
+disagree with event 23 and `capability-coverage.yaml`.
 
 ## Provider-shift contract
 
@@ -132,7 +133,7 @@ git fetch origin main --prune
 git status --short --branch
 git rev-parse HEAD
 git rev-parse origin/main
-git merge-base --is-ancestor 6622aa1fef947530128b5b49de67afba3cc10088 origin/main
+git merge-base --is-ancestor 4f0e8793d7aa694ccb45a57e9d3abc8f8cce92f7 origin/main
 python tools/evidence/check_current_state_consistency.py
 python -m tools.supervisor.coordination --json status
 ```
@@ -145,52 +146,66 @@ event schema. That integration defect is tracked as `FF6-GAP-011`.
 Resume only if:
 
 - the worktree is clean or every dirty path is classified and outside scope;
-- event 22 and controller state agree;
+- event 23 and controller state agree;
 - the active `WORK_IN_PROGRESS` task exists in `taskcards/index.yaml`;
 - the capability aggregate equals
   `4d17d8c8c0ef3de74d59e1d5b16884c0210fd0836e0593591871f10d0af2efd2`;
 - all 17 authority artifacts still match, including all five XLIFF records;
 - the committed source SHA-256 is
-  `f7e59ae41ac3e0a82c8e0b2523711e3f7569c33b0cfa58d32f2ef9ee14096dbb`
+  `e44a70d39d0415190854a3dc048da8f7927d3ce6fb22cbe93875121c648df685`
   and the test SHA-256 is
-  `4a9e5f6aa1cf68a80dcd4c93f135b80c84ff18ff0bbccc5d81e87677ddae2e58`;
+  `627949766f2a5acffb8c0c1176cb03438a8c1fd9126cc51524870ed61be8fb43`;
 - the matrix SHA-256 is
   `9f4ea4b8b71378217af26c0fb2b97a759817a0aca6c64255b8cd55170c60a090`;
-- 18 focused tests, Ruff, strict Mypy, Pyright 1.1.411, bytecode compilation,
-  check mode, and three identical authority generations replay;
+- the Core inventory SHA-256 is
+  `d9c3fc4b9dd7002cc86ef0852864fb03acdc3be5fa4aead05efc15d39dfd11ff`;
+- 23 focused tests, Ruff, strict Mypy, Pyright 1.1.411, bytecode compilation,
+  matrix check mode, and three identical generations of both authority-bound
+  outputs replay;
 - no live lease owns the intended files.
 
 ## Exact continuation
 
 Resume only `TC-FF6-XLIFF-PROFILE-SURFACE-001` at `XLF-04`.
 
-Steps `XLF-01` through `XLF-03` are complete at event 22. The immutable
+Steps `XLF-01` through `XLF-03` and `XLF-04-BATCH-001` are complete at event
+23. The immutable
 implementation commit adds the deterministic CLI/default seed layer, complete
 declared archive/XML/matrix negative controls, the real authority matrix, and
-three byte-identical replays. Recompute those steps only if their recorded
-input digests changed.
+the first seven fine-grained, source-bound Core obligations. Recompute those
+steps only if their recorded input digests changed.
 
 The XLF-03 matrix contains 36 unique coarse source-surface anchors. It proves
 authority/member/profile/Core-or-module ownership, not complete semantic
 obligation coverage. This distinction is the critical resume boundary:
-`XLF-04` must now derive and verify the complete Core obligation inventory,
+`XLF-04` must continue deriving and verifying the complete Core obligation inventory,
 including hierarchy, cardinality, ordering, inline-code identity and pairing,
 segmentation, state, original data, skeleton, extension, processing-agent,
 security, resource-limit, preservation, and canonical-output rules.
 
+Batch 001 now covers seven categories: document structure, hierarchy and
+cardinality, inline-code semantics, segmentation, state, extension
+preservation, and agent processing. These obligations remain
+`SOURCE_BOUND_UNVERIFIED`; they are not yet canonical SAL facts or behavior
+proof.
+
 The exact next cycle is:
 
-1. replay event 22, the 18 tests, check mode, three-run matrix digest, static
+1. replay event 23, the 23 tests, matrix check, both three-run digests, static
    checks, and 17/17 authority audit;
-2. define the machine schema for fine-grained Core obligations and exact
-   stable-profile applicability;
-3. add the first RED test using pinned prose/schema locations for representative
-   root, hierarchy, inline-code, segmentation, state, extension, and processing
-   requirements;
-4. implement only enough extraction/curation machinery to make that bounded
-   Core batch GREEN, then run the declared regression tier;
-5. continue in bounded source-located batches until every XLF-04 Core category
-   in the taskcard has exact ownership and positive/negative obligation types.
+2. add the RED tests for `XLF-04-BATCH-002`, covering
+   `identifiers_references_inheritance`, `language_direction_whitespace`, and
+   `source_target_correspondence` using exact pinned paragraph locations;
+3. implement only enough authority-bound records and verifier behavior to make
+   that bounded batch GREEN without changing the seven stable batch-001 IDs;
+4. retain `complete: false` and
+   `completeness_basis: EXPECTED_OBLIGATION_DENOMINATOR_ABSENT`;
+5. separately compile an explicit expected-obligation ID denominator before
+   any later completeness claim; category presence, counts, filenames, or
+   prose assertions cannot satisfy that denominator;
+6. leave `semantic_roundtrip_canonical_output` and
+   `xml_security_resource_limits` visibly remaining unless this same bounded
+   cycle independently locates and tests them.
 
 Do not inflate the 36 anchors into a false “complete Core” count. XLF-05 still
 must split all eight official 2.1 modules—Translation Candidates/Matches,
