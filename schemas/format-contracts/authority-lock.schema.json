@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://format-factory.local/schemas/authority-lock.schema.json",
+  "title": "Format Factory Authority Lock",
+  "type": "object",
+  "required": ["schema_version", "lock_id", "sources", "generated_by", "visibility"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "lock_id": {"const": "FF-AUTHORITY-LOCK-001"},
+    "generated_by": {"type": "string", "minLength": 1},
+    "visibility": {"enum": ["internal", "generated"]},
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/source"}
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "source": {
+      "type": "object",
+      "required": [
+        "source_id", "format_id", "title", "organization", "version",
+        "authority_class", "materialized_path", "expected_sha256",
+        "media_type", "legal", "limits", "fetch"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "source_id": {"type": "string", "pattern": "^SRC-[A-Z0-9-]+$"},
+        "format_id": {"enum": ["ipynb", "ora", "nrrd", "xliff", "safetensors", "ubl"]},
+        "title": {"type": "string", "minLength": 1},
+        "organization": {"type": "string", "minLength": 1},
+        "version": {"type": ["string", "null"]},
+        "authority_class": {"enum": ["AUTHORITATIVE", "PRODUCT_REQUIREMENT"]},
+        "materialized_path": {"type": "string", "minLength": 1},
+        "expected_sha256": {"$ref": "#/$defs/sha256"},
+        "media_type": {"type": "string", "minLength": 1},
+        "legal": {"$ref": "#/$defs/legal"},
+        "limits": {"$ref": "#/$defs/limits"},
+        "fetch": {
+          "oneOf": [
+            {"$ref": "#/$defs/urlFetch"},
+            {"$ref": "#/$defs/memberFetch"},
+            {"$ref": "#/$defs/localFetch"}
+          ]
+        }
+      }
+    },
+    "legal": {
+      "type": "object",
+      "required": ["license_id", "redistribution", "use_status", "evidence"],
+      "additionalProperties": false,
+      "properties": {
+        "license_id": {"type": "string", "minLength": 1},
+        "redistribution": {
+          "enum": ["ALLOWED", "ALLOWED_WITH_NOTICE", "LOCAL_CACHE_ONLY", "INTERNAL_ONLY"]
+        },
+        "use_status": {"enum": ["APPROVED_FOR_LOCAL_USE", "APPROVED", "BLOCKED"]},
+        "evidence": {"type": "string", "minLength": 1},
+        "notes": {"type": "string"}
+      }
+    },
+    "limits": {
+      "type": "object",
+      "required": ["max_bytes", "timeout_seconds"],
+      "additionalProperties": false,
+      "properties": {
+        "max_bytes": {"type": "integer", "minimum": 1},
+        "timeout_seconds": {"type": "integer", "minimum": 1, "maximum": 600}
+      }
+    },
+    "locator": {
+      "type": "object",
+      "required": ["url", "immutable"],
+      "additionalProperties": false,
+      "properties": {
+        "url": {"type": "string", "pattern": "^https://"},
+        "immutable": {"type": "boolean"}
+      }
+    },
+    "urlFetch": {
+      "type": "object",
+      "required": ["kind", "locators"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {"const": "URL"},
+        "locators": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/locator"}
+        }
+      }
+    },
+    "memberFetch": {
+      "type": "object",
+      "required": ["kind", "container_source_id", "member_path"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {"const": "ZIP_MEMBER"},
+        "container_source_id": {"type": "string", "pattern": "^SRC-[A-Z0-9-]+$"},
+        "member_path": {"type": "string", "minLength": 1}
+      }
+    },
+    "localFetch": {
+      "type": "object",
+      "required": ["kind", "source_path"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {"const": "LOCAL_FILE"},
+        "source_path": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

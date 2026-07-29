@@ -1,0 +1,61 @@
+schema_version: '1.0'
+source_id: SRC-NB-003
+format_id: ipynb
+authority_class: PRODUCT_REQUIREMENT
+status: VERIFIED_CURRENT
+title: Notebook-pipeline developer-workflow requirements (CI cleaning, diffing, trust handling practice)
+organization: Format Factory
+derived_from: shared/format-contracts/research/ipynb.yaml
+requirements:
+- finding_id: RF-NB-00001
+  kind: api_expectation
+  capability_domain: MODEL
+  depth_hint: 4
+  requirement: Expose typed Notebook/MarkdownCell/CodeCell/RawCell/NotebookOutput/MimeBundle objects with search by ID, type, tag, and source text, so pipelines manipulate notebooks without raw dictionary access.
+  api_expectations:
+    mutation_operations:
+    - notebook.clear_outputs(filter=...)
+    - notebook.sanitize(policy)
+    read_operations:
+    - Notebook.load(...)
+    - notebook.cells.find(...)
+    root_types:
+    - Notebook
+    - Cell
+    - NotebookOutput
+    - MimeBundle
+    validation_operations:
+    - notebook.validate(mode='declared|current')
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+- finding_id: RF-NB-00002
+  kind: product_requirement
+  capability_domain: CLEAN
+  depth_hint: 6
+  requirement: Output clearing, execution-count reset, and transient-metadata stripping run as configurable, dry-runnable, idempotent operations - the pre-commit staple for notebook version control.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+- finding_id: RF-NB-00003
+  kind: product_requirement
+  capability_domain: DIFF
+  depth_hint: 6
+  requirement: Diff notebooks by stable cell identity with move detection and ignore policies for outputs, execution counts, and transient metadata, producing machine-applicable patches with preconditions.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+- finding_id: RF-NB-00004
+  kind: security_expectation
+  capability_domain: TRUST
+  depth_hint: 5
+  requirement: Integrate a pluggable notebook-notary trust backend where modified notebooks are never auto-trusted and cryptographic trust stays separate from schema validity.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+generated_by: codex
+visibility: internal

@@ -1,0 +1,69 @@
+schema_version: '1.0'
+source_id: SRC-XLF-003
+format_id: xliff
+authority_class: PRODUCT_REQUIREMENT
+status: VERIFIED_CURRENT
+title: Localization-pipeline developer-workflow requirements (extraction/translation/merge practice)
+organization: Format Factory
+derived_from: shared/format-contracts/research/xliff.yaml
+requirements:
+- finding_id: RF-XLF-00001
+  kind: api_expectation
+  capability_domain: MODEL
+  depth_hint: 4
+  requirement: Expose the document hierarchy as typed XliffDocument/XliffFile/XliffGroup/XliffUnit/ XliffSegment objects with tree order and inherited attributes resolved, so tools navigate structure without XML spelunking.
+  api_expectations:
+    mutation_operations:
+    - segment.set_target_tokens(tokens)
+    - unit.split_segment(...)
+    - unit.join_segments(...)
+    read_operations:
+    - document.files()
+    - unit.segments()
+    - segment.get_source_tokens()
+    root_types:
+    - XliffDocument
+    - XliffFile
+    - XliffUnit
+    - XliffSegment
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+- finding_id: RF-XLF-00002
+  kind: product_requirement
+  capability_domain: INLINE
+  depth_hint: 5
+  requirement: Represent inline content as a token sequence preserving paired-code identity and nesting, and refuse edits that orphan, cross, duplicate, or illegally reorder paired codes - the mergeability guarantee translation tools depend on.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+- finding_id: RF-XLF-00003
+  kind: product_requirement
+  capability_domain: MODULE
+  depth_hint: 4
+  requirement: Declare per-module coverage programmatically (modeled, preservation-only, or unsupported) for every optional module of the target version, and preserve unknown module content losslessly - production-complete status requires all modules modeled.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+- finding_id: RF-XLF-00004
+  kind: product_requirement
+  capability_domain: SEG
+  depth_hint: 5
+  requirement: Produce a machine-readable segment mapping report after every split/join so downstream merge tooling can rebind references across re-segmentation.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+- finding_id: RF-XLF-00006
+  kind: security_expectation
+  capability_domain: WRITE
+  requirement: Round-trip custom extensions byte-semantically in lossless mode and report any version-downgrade loss before writing, so no tool in the chain silently loses vendor data.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+generated_by: codex
+visibility: internal

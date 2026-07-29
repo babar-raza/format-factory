@@ -26,11 +26,13 @@ GitLab commit
 + off-repo coordination ownership
 ```
 
-At this transfer, the reconstructable checkpoint is source commit
-`a2a5d6403da9a6bd6d3999fb10166663ca61791c`, controller state `CONTRACT`,
-event 13, parent `TC-FF6-PROGRAM-CAPABILITIES-001` in `NEEDS_REPAIR`, and exact
-next task `TC-FF6-AUTHORITY-CLOSURE-001` in `READY`. Current `origin/main` must
-be a descendant containing the refreshed packet.
+At this transfer, the last pre-shift source commit is
+`2129ad278c5d7a8b7f81559388489e6231def550`. The reconstructable shift
+checkpoint is the GitLab-main descendant containing controller state
+`CONTRACT`, event 14, parent `TC-FF6-PROGRAM-CAPABILITIES-001` in
+`NEEDS_REPAIR`, and active task `TC-FF6-AUTHORITY-CLOSURE-001` in
+`WORK_IN_PROGRESS`. The exact completed and pending substeps are in
+`ACTIVE-WORK-CHECKPOINT.md`.
 
 ## Start of every shift
 
@@ -39,8 +41,8 @@ be a descendant containing the refreshed packet.
 3. Create a fresh detached worktree from the exact current `origin/main`.
 4. Read `START-HERE.md` and its ordered authorities.
 5. Validate normalized digests and the FF6 event chain.
-   At this packet version, require event 13 with hash
-   `f6cd635eaa0a4ba6b6e785f9cdbb965fa300107b64ba4ea0f74b1b839f7dafc6`.
+   At this packet version, require event 14 with hash
+   `399a5069b3c843d1b4f668a8f7abeb0deffe40a234a584f6c9f7b5b3a3e70fc8`.
 6. Run current-state consistency and focused plan-control tests.
 7. Query coordination status.
 8. Register a new provider identity.
@@ -48,6 +50,8 @@ be a descendant containing the refreshed packet.
    controller projection, event journal, and transcript.
 10. Run provider preflight and the registered skill mutation guard.
 11. Recompute the task's inputs before writing.
+12. Compare each event-14 WIP path against its recorded LF-normalized digest.
+    If any differs, classify it through coordination before executing.
 
 Claude hooks may register and auto-claim individual files, but broad scopes and
 generated output sets still require explicit claims. Codex must perform every
@@ -56,6 +60,8 @@ CLI step in `docs/governance/codex-adapter.md`.
 ## During a shift
 
 - One taskcard owns one bounded, explicit changed-file set.
+- Resume the first unchecked atomic step in the active taskcard. Do not restart
+  completed steps unless their recorded input digest is invalidated.
 - Before every write, preflight the target.
 - After every write, record the resulting digest.
 - Heartbeat during long work.
@@ -64,6 +70,8 @@ CLI step in `docs/governance/codex-adapter.md`.
 - Do not resolve another agent's conflict or lease.
 - If `origin/main` advances, stop integration, fetch, classify the delta, and
   replay affected verification.
+- Use only GitLab `origin/main`; do not create provider branches or push to the
+  configured GitHub remote.
 - Do not edit promotion state directly.
 - Do not let a blocked format stop safe work on another format.
 
@@ -102,14 +110,40 @@ Never label partial work `COMPLETE` merely to create a clean handoff.
 
 ### If the task is incomplete
 
-1. Do not push an unverified source change.
-2. Record exact completed substeps, changed files, failing command, evidence,
+1. Do not push a failing or internally contradictory source change.
+2. A bounded partial implementation may be pushed only when it is internally
+   valid, tested at its declared tier, explicitly non-promoting, and journaled
+   as `WORK_IN_PROGRESS`.
+3. Record exact completed substeps, changed files, failing command, evidence,
    root cause, and next deterministic action.
-3. Prefer a clean committed checkpoint only when the partial artifact is valid,
+4. Prefer a clean committed checkpoint only when the partial artifact is valid,
    explicitly non-promoting, and the taskcard state is truthful.
-4. Otherwise retain the isolated worktree, abandon the coordination session
+5. Otherwise retain the isolated worktree, abandon the coordination session
    with a reason, and require governed takeover.
-5. Never rely on ignored local files as the only checkpoint.
+6. Never rely on ignored local files as the only checkpoint.
+
+## Transfer handshake
+
+The outgoing provider:
+
+1. writes and validates the checkpoint event;
+2. commits and remote-verifies the exact tracked paths;
+3. records the final write set and commit in its local receipt;
+4. completes its coordination session, releasing only its own leases.
+
+The incoming provider:
+
+1. fetches and validates the remote checkpoint before registering;
+2. registers a new provider identity;
+3. confirms no active owner remains;
+4. claims the task and exact output paths;
+5. if the prior owner is stale rather than complete, uses governed takeover
+   with a reason and recaptures every baseline;
+6. continues from the first unchecked taskcard step.
+
+There is never a period in which two providers may mutate the same task scope.
+The handoff packet transfers intent; the coordination plane transfers write
+authority.
 
 ## Takeover
 

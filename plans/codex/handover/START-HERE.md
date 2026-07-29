@@ -22,16 +22,23 @@ history, coordination database, or executed proof.
 
 - Canonical forge: GitLab.
 - Canonical remote and branch: `origin/main`.
-- Source checkpoint commit: `a2a5d6403da9a6bd6d3999fb10166663ca61791c`.
-- Source checkpoint tree: `66d312c4cf2005c0ea24ecee7814d77931b1d101`.
+- Last pre-shift durable source commit:
+  `2129ad278c5d7a8b7f81559388489e6231def550`.
+- Last pre-shift durable tree:
+  `44714dc4d74b784ab7b09d6735eae3ebc1482743`.
 - FF6 controller state: `CONTRACT`.
-- Last verified event: `FF6-EVENT-000013`.
+- Last verified event: `FF6-EVENT-000014`.
 - Completed repair subtask: `TC-FF6-CAPABILITY-COMPILER-001` (`PASS`).
 - Parent task: `TC-FF6-PROGRAM-CAPABILITIES-001` (`NEEDS_REPAIR`).
-- Exact next task: `TC-FF6-AUTHORITY-CLOSURE-001` (`READY`).
+- Active resumable task: `TC-FF6-AUTHORITY-CLOSURE-001`
+  (`WORK_IN_PROGRESS`).
 - Canonical planning inventory: 89 capabilities and 636 obligations.
 - Product certifications: zero.
 - Product promotion states: all six `UNASSESSED`.
+
+The GitLab commit containing this packet and event 14 is the clean provider
+shift checkpoint. The pre-shift commit above is recorded to make ancestry
+verifiable without embedding a self-referential hash in this packet.
 
 Do not resume from a conversation summary, old branch, local transcript, stale
 worktree, test count, package-smoke report, or `tools.plan_control next`.
@@ -54,21 +61,23 @@ Reconstruct the checkpoint from GitLab and the canonical files below.
    [`TC-FF6-PROGRAM-CAPABILITIES-001.md`](../../../taskcards/TC-FF6-PROGRAM-CAPABILITIES-001.md).
 8. Exact next executable taskcard:
    [`TC-FF6-AUTHORITY-CLOSURE-001.md`](../../../taskcards/TC-FF6-AUTHORITY-CLOSURE-001.md).
-9. Canonical capability manifest:
+9. Exact in-progress implementation checkpoint:
+   [`ACTIVE-WORK-CHECKPOINT.md`](ACTIVE-WORK-CHECKPOINT.md).
+10. Canonical capability manifest:
    [`capability-manifest.json`](../../strategic/ff6/capability-manifest.json).
-10. Machine-readable handover checkpoint:
+11. Machine-readable handover checkpoint:
    [`checkpoint.yaml`](checkpoint.yaml).
-11. Current findings and causal assessment:
+12. Current findings and causal assessment:
    [`CURRENT-STATE-AND-ROOT-CAUSES.md`](CURRENT-STATE-AND-ROOT-CAUSES.md).
-12. Provider-neutral execution and checkpoint protocol:
+13. Provider-neutral execution and checkpoint protocol:
     [`SHIFT-AND-RESUME-PROTOCOL.md`](SHIFT-AND-RESUME-PROTOCOL.md).
-13. Exact execution sequence and task DAG:
+14. Exact execution sequence and task DAG:
     [`EXECUTION-RUNBOOK.md`](EXECUTION-RUNBOOK.md).
-14. Quality, evidence, regression, and release rules:
+15. Quality, evidence, regression, and release rules:
     [`VALIDATION-AND-RELEASE.md`](VALIDATION-AND-RELEASE.md).
-15. Ready-to-use Claude instruction:
+16. Ready-to-use Claude instruction:
     [`CLAUDE-START.md`](CLAUDE-START.md).
-16. Packet file hashes:
+17. Packet file hashes:
     [`manifest.yaml`](manifest.yaml).
 
 ## Mandatory preflight
@@ -87,12 +96,13 @@ python -m tools.supervisor.coordination --json status
 
 Expected at this checkpoint:
 
-- `origin/main` contains the handover refresh and descends from
-  `a2a5d6403da9a6bd6d3999fb10166663ca61791c`.
+- `origin/main` contains the event-14 handover checkpoint and descends from
+  `2129ad278c5d7a8b7f81559388489e6231def550`.
 - the chosen execution worktree is clean before mutation;
 - current-state consistency prints `CURRENT_STATE_CONSISTENCY: PASS`;
 - plan-control tests report `40 passed`;
-- no fresh agent owns `TC-FF6-AUTHORITY-CLOSURE-001` or its output paths.
+- the previous provider has completed its coordination session, or the
+  receiving provider performs a governed takeover after digest comparison.
 
 The coordination command currently exits nonzero because 15 historical OPEN
 conflicts exist. That is not permission to resolve or discard them. Four point
@@ -143,16 +153,24 @@ certification. `FF6-GAP-012` and `FF6-GAP-015` are resolved. The parent remains
 open for `FF6-GAP-013` (OpenRaster profile/surface depth) and `FF6-GAP-014`
 (authority dependency closure).
 
-## First allowed action
+## Exact continuation action
 
-Execute only `TC-FF6-AUTHORITY-CLOSURE-001`. It repairs the shared authority
-lock/materialization dependency closure for all six formats. It must not modify
-product source, certify a format, or promote a product.
+Resume only `TC-FF6-AUTHORITY-CLOSURE-001` from
+[`ACTIVE-WORK-CHECKPOINT.md`](ACTIVE-WORK-CHECKPOINT.md). The shared
+lock/runtime, materializer, schema, four internal requirement documents, and
+six focused tests already exist and are valid bounded WIP. Do not recreate
+them.
 
-Start from the 15 authority records in `capability-manifest.json`: 11 are
-`MISSING`, 4 are `UNDECLARED`, and none is `MATCH`. Do not hide this with
-`--allow-blocked-authority`, edit expected digests to downloaded bytes, or
-commit specification content without redistribution evidence.
+Finish the immutable source/legal matrix beginning at the unresolved NRRD
+authority decision, create the canonical 15-source lock, harden the known
+materializer gaps, integrate the registered acquisition skill and strict
+compiler closure, and complete the taskcard acceptance suite. The promoting
+baseline remains 11 `MISSING`, 4 `UNDECLARED`, 0 `MATCH` until a real
+lock/materialization/audit run proves otherwise.
+
+Do not hide the baseline with `--allow-blocked-authority`, edit expected
+digests to whatever downloaded, commit specification bytes without
+redistribution evidence, modify product source, or promote a format.
 
 ## How to stop safely
 

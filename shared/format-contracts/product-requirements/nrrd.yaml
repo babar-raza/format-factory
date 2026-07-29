@@ -1,0 +1,60 @@
+schema_version: '1.0'
+source_id: SRC-NRRD-003
+format_id: nrrd
+authority_class: PRODUCT_REQUIREMENT
+status: VERIFIED_CURRENT
+title: Scientific/medical raster developer-workflow requirements (imaging pipeline practice)
+organization: Format Factory
+derived_from: shared/format-contracts/research/nrrd.yaml
+requirements:
+- finding_id: RF-NRRD-00001
+  kind: api_expectation
+  capability_domain: ARRAY
+  depth_hint: 6
+  requirement: Expose typed N-dimensional array access with shape, strides, dtype, slicing, axis permutation, flip, and crop where orientation and per-axis metadata follow every operation - the imaging-pipeline core.
+  api_expectations:
+    mutation_operations:
+    - document.array.permute_axes(order)
+    - document.array.flip_axis(axis)
+    read_operations:
+    - NrrdDocument.load(..., data='eager|lazy|header_only')
+    - document.array.slice(...)
+    - document.index_to_world(index)
+    root_types:
+    - NrrdDocument
+    - NrrdHeader
+    - NrrdArray
+    - NrrdAxis
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+- finding_id: RF-NRRD-00002
+  kind: performance_expectation
+  capability_domain: LAZY
+  depth_hint: 5
+  requirement: Provide header-only loading, lazy payload access, memory mapping for eligible raw data, and streaming decode for compressed payloads, reporting when a requested slice forces full decompression.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+- finding_id: RF-NRRD-00003
+  kind: security_expectation
+  capability_domain: VALIDATE
+  depth_hint: 5
+  requirement: Validate declared shape and encoded payload size with checked arithmetic BEFORE any payload allocation, with decompressed-size and ratio limits - hostile headers must fail cheaply.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+- finding_id: RF-NRRD-00004
+  kind: product_requirement
+  capability_domain: SPACE
+  depth_hint: 5
+  requirement: Expose index-to-world and measurement-frame transforms from space metadata without ever inferring axis order from a named space - medical-imaging orientation correctness.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+generated_by: codex
+visibility: internal

@@ -7,7 +7,7 @@ generated_by: codex
 generated_at: 2026-07-29
 goal_id: FF6-PRODUCTION-LIBRARIES-001
 parent_task_id: TC-FF6-PROGRAM-CAPABILITIES-001
-status: READY
+status: WORK_IN_PROGRESS
 skill_ids:
   - sal-pipeline-heal
   - ingest-spec-sal
@@ -21,13 +21,49 @@ skill_ids:
 
 ## State
 
-- Status: `READY`
+- Status: `WORK_IN_PROGRESS`
 - Parent: `TC-FF6-PROGRAM-CAPABILITIES-001` (`NEEDS_REPAIR`)
 - Predecessor: `TC-FF6-CAPABILITY-COMPILER-001` (`PASS`)
 - Source gap: `FF6-GAP-014`
 - Controller predecessor event: `FF6-EVENT-000013`
 - Product source mutation: prohibited
 - Product promotion effect: none
+
+## Durable provider-shift checkpoint
+
+Controller event `FF6-EVENT-000014` records a bounded, non-promoting
+implementation checkpoint. The task is not complete and none of the 15
+authority records is yet promotably closed.
+
+Completed and independently rerunnable:
+
+- `tools/format_contract/authority_lock.py` implements schema-backed lock
+  loading, repository-path containment, semantic validation, deterministic
+  source projection, and deterministic internal-requirement generation.
+- `tools/format_contract/authority_runtime.py` implements content-addressed
+  caching, digest-before-placement, online/offline URL materialization,
+  bounded ZIP-member extraction, and live authority/contract audit results.
+- `tools/format_contract/authority_materializer.py` exposes deterministic
+  `materialize`, `audit`, and `sync-product-requirements` commands.
+- `schemas/format-contracts/authority-lock.schema.json` defines the shared
+  source, legal, limit, and fetch record vocabulary.
+- Four tracked `PRODUCT_REQUIREMENT` artifacts were generated for IPYNB,
+  NRRD, XLIFF, and UBL and remain explicitly non-spec authority.
+- Six focused tests pass; Ruff and mypy pass for the new machinery.
+
+Not completed and not implied by that evidence:
+
+- the canonical 15-source `authority-lock.yaml`;
+- the immutable NRRD locator decision and its primary-source/legal evidence;
+- registered `research-format-contract-sources` skill/command integration;
+- redirect-count enforcement and same-process concurrency testing;
+- ProductContract, input-closure, and capability-compiler integration;
+- real online materialization, offline replay, six strict contract compiles,
+  three clean capability compiles, or parent-task closure.
+
+The exact next step is Step 3 below: finish the source-by-source immutable
+authority and legal matrix, beginning with NRRD, then create the 15-source
+lock. Do not rewrite the completed modules merely because the executor changed.
 
 ## Objective
 

@@ -1,0 +1,95 @@
+schema_version: '1.0'
+source_id: SRC-UBL-003
+format_id: ubl
+authority_class: PRODUCT_REQUIREMENT
+status: VERIFIED_CURRENT
+title: Business-document library developer-workflow requirements (invoicing/procurement integration practice)
+organization: Format Factory
+derived_from: shared/format-contracts/research/ubl.yaml
+requirements:
+- finding_id: RF-UBL-00001
+  kind: api_expectation
+  capability_domain: DOCTYPES
+  depth_hint: 4
+  requirement: Expose a distinct typed root document class per supported maindoc type together with create_empty(document_type), detect_document_type(), and supported_document_types() so integrations enumerate coverage programmatically.
+  api_expectations:
+    mutation_operations:
+    - UblDocument.create(document_type)
+    read_operations:
+    - UblDocument.load(path_or_stream_or_bytes)
+    - document.detect_document_type()
+    root_types:
+    - UblDocument
+    - UblDocumentType
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+- finding_id: RF-UBL-00002
+  kind: product_requirement
+  capability_domain: VALUES
+  depth_hint: 4
+  requirement: Represent monetary amounts and quantities with decimal arithmetic and retain currencyID, unitCode, and scheme attributes through edits, with explicit rounding policies for any calculation - binary floating point is never acceptable for money.
+  required_tests:
+  - Extreme decimal fixtures (large precision, trailing zeros) round-trip with attributes intact.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+- finding_id: RF-UBL-00003
+  kind: product_requirement
+  capability_domain: CODELIST
+  depth_hint: 5
+  requirement: Load official code lists from their distribution artifacts, cache them immutably, and validate coded values deterministically offline, with user- or profile-supplied lists pluggable at runtime.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+- finding_id: RF-UBL-00004
+  kind: product_requirement
+  capability_domain: SIGN
+  depth_hint: 4
+  requirement: Report before saving whenever an edit invalidates an existing enveloped or detached signature, and never rewrite signed subtrees in lossless mode; verification and signing remain a separate pluggable opt-in.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+- finding_id: RF-UBL-00005
+  kind: product_requirement
+  capability_domain: CALC
+  depth_hint: 6
+  requirement: Calculate line extensions, allowance/charge totals, tax totals, and payable amounts under explicit rounding/tolerance policies and reconcile them against declared totals with per-total deltas, never mutating declared values outside explicit repair mode.
+  api_expectations:
+    validation_operations:
+    - document.calculate_totals(policy)
+    - document.reconcile_totals(policy)
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+- finding_id: RF-UBL-00006
+  kind: api_expectation
+  capability_domain: QUERY
+  requirement: Find components by QName, business identifier (party, item, line, document reference), and typed role with path-aware results, including read-only indexed views for large documents.
+  api_expectations:
+    diagnostic_types:
+    - UblDiagnostic
+    read_operations:
+    - document.find_by_id(id)
+    - document.query(qname_or_selector)
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+- finding_id: RF-UBL-00007
+  kind: security_expectation
+  capability_domain: EXT
+  requirement: Treat extension payloads and embedded binary attachments as untrusted data; expose their media types and checksums without decoding side effects, and gate any external attachment retrieval behind allowlists, byte limits, and timeouts.
+  security_requirements:
+  - Extension payload decoding never executes or resolves content implicitly.
+  review:
+    reviewed_at: '2026-07-16'
+    reviewer: FCL-MACHINERY-2026-07-16 pilot review
+    verdict: ACCEPTED
+generated_by: codex
+visibility: internal

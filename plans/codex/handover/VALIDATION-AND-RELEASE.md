@@ -34,9 +34,38 @@ not format behavior:
 - all six product promotions remain `UNASSESSED`;
 - 15 authority sources remain unresolved: 11 missing and 4 undeclared.
 
-The next task must make strict authority compilation pass without an override.
+Event 14 additionally proves only a bounded authority WIP tier:
+
+- the shared schema/runtime/CLI and four internal requirement artifacts exist
+  with recorded digests;
+- six focused tests pass;
+- Ruff and mypy pass;
+- Pyright was not available in the current interpreter;
+- the canonical lock, real-network audit, strict compiles, and replay remain
+  absent.
+
+The active task must make strict authority compilation pass without an override.
 Even that result would establish `CONTRACT_READY` prerequisites only; it would
 not make product implementation or certification claims.
+
+## Provider-shift checkpoint gate
+
+A provider shift is acceptable only when:
+
+- the checkpoint is committed to and verified on GitLab `origin/main`;
+- controller, journal, taskcard, task index, and handover agree;
+- every changed tracked path has a recorded digest;
+- completed substeps have passing focused verification;
+- missing gates and known defects are named, not omitted;
+- the next substep is deterministic;
+- no result required for continuation exists only in chat or ignored storage;
+- the outgoing coordination session is completed, or the incoming provider
+  uses governed takeover;
+- promotion state is no stronger than before the partial checkpoint.
+
+This gate allows a valid, explicitly non-promoting `WORK_IN_PROGRESS` commit.
+It does not allow a failing, contradictory, or unclassified change set to be
+normalized as a checkpoint.
 
 ## Required evidence per mandatory obligation
 
@@ -56,6 +85,11 @@ not make product implementation or certification claims.
 - Ruff, mypy, pyright, architecture, API compatibility, and security checks;
 - generator reproducibility for generated outputs;
 - wheel build and installed-wheel smoke tests.
+
+For machinery-only contract tasks that prohibit product/package mutation, the
+wheel check is deferred by the taskcard, but the deferral does not satisfy any
+product obligation. The focused machinery test, static, security, idempotency,
+and affected regression gates still apply.
 
 ## Merge and nightly tier
 

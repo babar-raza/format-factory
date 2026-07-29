@@ -4,10 +4,10 @@ goal_status: ACTIVE
 generated_by: codex
 visibility: internal
 controller_state: CONTRACT
-transition_sequence: 13
+transition_sequence: 14
 last_verified_event:
-  event_id: FF6-EVENT-000013
-  event_hash: f6cd635eaa0a4ba6b6e785f9cdbb965fa300107b64ba4ea0f74b1b839f7dafc6
+  event_id: FF6-EVENT-000014
+  event_hash: 399a5069b3c843d1b4f668a8f7abeb0deffe40a234a584f6c9f7b5b3a3e70fc8
 event_journal: plans/strategic/ff6/events.jsonl
 baseline_commit: e4f8f5f086b5e627c07c2ef2d940eda2601a22a8
 digest_policy:
@@ -28,16 +28,18 @@ handover_checkpoint:
   packet_remote_verified: true
   next_taskcard: taskcards/TC-FF6-PROGRAM-CAPABILITIES-001.md
 active_task:
-  task_id: TC-FF6-PROGRAM-CAPABILITIES-001
-  state: NEEDS_REPAIR
+  task_id: TC-FF6-AUTHORITY-CLOSURE-001
+  state: WORK_IN_PROGRESS
+  parent_task_id: TC-FF6-PROGRAM-CAPABILITIES-001
   completed_subtask_id: TC-FF6-CAPABILITY-COMPILER-001
 next_task:
   task_id: TC-FF6-AUTHORITY-CLOSURE-001
-  state: READY
+  state: WORK_IN_PROGRESS
   unlock_condition: >-
-    Begin from the 15-source authority inventory in capability-manifest.json.
-    Product source and architecture remain blocked until authority closure and
-    OpenRaster profile/surface repair both pass.
+    Resume from event 14 and the tracked authority-lock runtime checkpoint.
+    Finish the immutable source/legal matrix beginning with NRRD, then create
+    the canonical 15-source lock. Product source and architecture remain
+    blocked until authority closure and OpenRaster profile/surface repair pass.
 promotion:
   program: UNASSESSED
   ipynb: UNASSESSED
@@ -73,6 +75,17 @@ capability_compilation:
   remaining_blocks:
     - FF6-GAP-013
     - FF6-GAP-014
+authority_closure_checkpoint:
+  status: WORK_IN_PROGRESS
+  materializer_focused_tests: 6 passed
+  ruff: PASS
+  mypy: PASS
+  pyright: NOT_RUN_TOOL_UNAVAILABLE
+  tracked_product_requirement_documents: 4
+  canonical_authority_lock: NOT_YET_CREATED
+  materialized_external_sources: 0
+  strict_contract_compiles: 0
+  promotion_effect: none
 current_gap_summary:
   critical: 1
   high: 9

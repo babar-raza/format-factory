@@ -13,8 +13,10 @@ authoritative_state: false
 ## What has actually been achieved
 
 The mission has a hardened production plan, an immutable six-product goal, a
-clean GitLab-main checkpoint, a digest-bound product snapshot, a 13-event
-controller journal, and a deterministic capability/obligation compiler.
+clean GitLab-main checkpoint, a digest-bound product snapshot, a 14-event
+controller journal, and a deterministic capability/obligation compiler. Event
+14 records a tested, explicitly non-promoting authority-materializer WIP
+checkpoint.
 
 Five Python packages contain meaningful source and tests:
 
@@ -36,6 +38,15 @@ schema, code, contracts, SAL stores/evidence, policies, research, and
 enrichments; three clean runs are byte-identical. This repaired a false
 128-obligation close but did not implement or certify product behavior.
 
+The active authority task has also completed a bounded first implementation
+slice: a shared authority-lock schema/runtime, content-addressed materializer,
+four deterministic internal requirement documents, and six focused tests.
+Ruff and mypy pass. The canonical 15-source lock, real authority
+materialization, compiler integration, concurrency/redirect hardening, strict
+contract compiles, and three-run replay are still pending. See
+`ACTIVE-WORK-CHECKPOINT.md` for exact files, hashes, source research, and the
+next substep.
+
 ## What has not been achieved
 
 - The current canonical inventory is mechanically complete relative to the
@@ -49,6 +60,8 @@ enrichments; three clean runs are byte-identical. This repaired a false
 - No complete independent corpus and external-oracle suite exists.
 - No standalone repository extraction and re-certification has passed.
 - No release candidate or release has been produced.
+- The authority WIP does not change the live promoting denominator: it remains
+  0 `MATCH`, 11 `MISSING`, and 4 `UNDECLARED` until a lock-backed audit runs.
 
 ## Symptoms
 
@@ -98,6 +111,19 @@ local paths or have no path/digest at all. There is no unified legal,
 redistribution, lock, cache, fetch, and offline verification contract. Historic
 labels therefore survive after their inputs disappear.
 
+The event-14 WIP starts the structural repair, but it is not yet wired into the
+source researcher, ProductContract compiler, stores, or capability compiler.
+Until that wiring and replay pass, the old failure mode remains operational.
+
+### Provider shifts previously occurred above the durable state plane
+
+Earlier handovers pointed to a clean older commit while newer implementation
+existed only in one provider's worktree. That creates two plausible resume
+points and encourages either data loss or duplicate work. The repair is to
+record a truthful `WORK_IN_PROGRESS` controller event, commit the bounded
+tested slice to GitLab main, include exact output digests, and transfer
+coordination ownership. A chat summary is never part of the resume key.
+
 ### Mutable execution context
 
 Shared worktrees, source-tree imports, non-locked dependencies, editable
@@ -126,6 +152,9 @@ complete capability contract first.
 - Separate generated schema source from handwritten workflows.
 - Require fresh detached worktrees or containers for certification.
 - Make promotion computed and revocable when any dependency changes.
+- Make every provider boundary a remote-verifiable event/task/proof checkpoint;
+  a provider name or token budget must not alter task semantics or reopen
+  completed substeps.
 
 ## What must be preserved
 

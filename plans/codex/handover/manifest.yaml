@@ -9,8 +9,8 @@ self_reference_policy: >-
   final packet commit hash. Source checkpoint ancestry plus current
   origin/main identify the packet without a recursive hash claim.
 source_checkpoint:
-  commit: a2a5d6403da9a6bd6d3999fb10166663ca61791c
-  tree_oid: 66d312c4cf2005c0ea24ecee7814d77931b1d101
+  commit: 2129ad278c5d7a8b7f81559388489e6231def550
+  tree_oid: 44714dc4d74b784ab7b09d6735eae3ebc1482743
   remote_ref: refs/heads/main
   remote_verified: true
 digest_policy:
@@ -20,25 +20,28 @@ digest_policy:
 files:
   - path: plans/codex/handover/START-HERE.md
     role: single entry point
-    sha256: 8c3fcb4fe7abe3cec108ec307e054b5a98eb91755104d4853711d4220623959e
+    sha256: 5bf66a5797c82bceb10faa5f83862030a596032b9246ecde4fc4f1fcbbe5e217
   - path: plans/codex/handover/checkpoint.yaml
     role: machine-readable checkpoint
-    sha256: 7722c0740379672bcea98dd00b3021e754ad075bdb295e9254fa29aa7f38ece1
+    sha256: 64b84edd672334bf25cb8fa765ef307654b69e547fa310572429f4c3d9ad7d0d
+  - path: plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md
+    role: exact completed and pending authority-closure substeps
+    sha256: 8a875c74ab029d67b60aafdd000c091b11fac9f9ef14f567658b18b09d61ea2f
   - path: plans/codex/handover/CURRENT-STATE-AND-ROOT-CAUSES.md
     role: truthful product and machinery assessment
-    sha256: 709872a75fc668fda667e45900ca5f4c41106697959cc46d89ed06b5c08d8219
+    sha256: 2106109feb88c649f235ab589ef195d15f709030cc44dc5109f96d8c9960c033
   - path: plans/codex/handover/SHIFT-AND-RESUME-PROTOCOL.md
     role: provider-neutral checkpoint protocol
-    sha256: ecb443fe756f5a9678d966b272976fe52189c2026c6a2291132b5706d0d7cfdb
+    sha256: e77f3445a88cdd5f1819b69c1d9ab1879ff6154f8fe1897f4775dfd635d3316e
   - path: plans/codex/handover/EXECUTION-RUNBOOK.md
     role: state machine and exact task DAG
-    sha256: 5e7bc13fcc889cda6012876ac214d9413d380ac106a5326006f9cca9d0122915
+    sha256: a0b5fcef7b565981cc5293013d557c7fe397e319809f8eb74a44af1b6a851d51
   - path: plans/codex/handover/VALIDATION-AND-RELEASE.md
     role: proof, regression, and release contract
-    sha256: 15b5ba03bfa06c17a60b37c723858762dd30426feb8065e6ebcad33031e5ae6b
+    sha256: b2665a108bf2c4e81e32e4ad93d7abac2a5abd713010e949d5fe62105998ab3f
   - path: plans/codex/handover/CLAUDE-START.md
     role: ready-to-run Claude instruction
-    sha256: e5a4bab1e4e3856513b583c79c65d4f2503df09ab9621c2c75b502fb242f8b20
+    sha256: 7f4efc2c2a98c830e33feba90772a6b021f71ac2bfeeba5dbd7f0b4f5ad455bb
   - path: taskcards/TC-FF6-PROGRAM-CAPABILITIES-001.md
     role: parent task in repair
     sha256: 87be37db89d308ca048b8ecec81544c67ee880d7837b4503a5a06db73d21a91b
@@ -46,17 +49,17 @@ files:
     role: completed compiler repair subtask
     sha256: d1cabfb95cacafd80c116e4ebdcd2c385655c71ef87c94ef12613ea32c880f5d
   - path: taskcards/TC-FF6-AUTHORITY-CLOSURE-001.md
-    role: exact next executable task
-    sha256: 49fbb322339c62952a173198f65bc1eebf2050dc1765961812d59b1ccaecc001
+    role: active resumable task
+    sha256: d0cfabcb41dffd8d4c9e00dd0b1518745fe9cb91db577b3f84b9c187f84eb28c
   - path: taskcards/TC-FF6-HANDOVER-CLAUDE-001.md
     role: handover construction and refresh task
     sha256: 2e1e7179d7ce84fbe16695f4bbeeeb030687398fe16f4f0013c1cde15e02a4b2
   - path: plans/strategic/ff6/controller-state.yaml
     role: canonical controller projection
-    sha256: 8b1f8e5c6bdb1009a883cb5208ff00ddba6fa469db2bbcec5a6c4ef9eac61446
+    sha256: 0d8870af6117b2fa79cab5e2adb5ab1dec301b2c8d817ab2fa2fe1ae44e9e097
   - path: plans/strategic/ff6/events.jsonl
-    role: canonical append-only controller journal through event 13
-    sha256: f91b2aa3bb75ff08e75d1f152f5820b9f3032a9b11ace2f9676db0d77adfe0a1
+    role: canonical append-only controller journal through event 14
+    sha256: 48a1201fb0f61cf847bf7a755b95c2f45dfc5ce694db17e9039e0cf7fdf61969
   - path: plans/strategic/ff6/capability-manifest.json
     role: canonical compiler input-output and authority closure
     sha256: 9e04da6feefc82fbbe2cc462eea6ee684453bd93d7c6476c41d2369b1f834d8d
@@ -68,21 +71,29 @@ canonical_reference_digests:
   capability_three_run_digest: 018c26be67ea91fe86aeb65374365b5e917eb8c0058235f999d59909bfd08943
 controller:
   state: CONTRACT
-  event_sequence: 13
-  event_head: f6cd635eaa0a4ba6b6e785f9cdbb965fa300107b64ba4ea0f74b1b839f7dafc6
+  event_sequence: 14
+  event_head: 399a5069b3c843d1b4f668a8f7abeb0deffe40a234a584f6c9f7b5b3a3e70fc8
   parent_task: TC-FF6-PROGRAM-CAPABILITIES-001
   parent_state: NEEDS_REPAIR
   exact_next_task: TC-FF6-AUTHORITY-CLOSURE-001
-  exact_next_state: READY
+  exact_next_state: WORK_IN_PROGRESS
+active_work:
+  path: plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md
+  checkpoint_event: FF6-EVENT-000014
+  completed_slice: authority lock schema/runtime/CLI plus four internal requirements
+  focused_tests: 6 passed
+  exact_next_substep: finish NRRD immutable source/legal decision
+  promotion_effect: none
 validation:
   internal_links: PASS
   yaml_json_parse: PASS
-  manifest_hashes: PASS_14_FILES
-  ff6_event_chain: PASS_EVENT_13
+  manifest_hashes: PASS_15_FILES
+  ff6_event_chain: PASS_EVENT_14
   task_index: PASS
   skill_routes: PASS_198
   gitlab_source_checkpoint: PASS
   current_state_consistency: PASS
   plan_control_tests: PASS_40
-  capability_compiler_replay: PASS
+  capability_compiler_historical_planning_replay: PASS_WITH_NON_PROMOTING_AUTHORITY_OVERRIDE
+  capability_compiler_strict_replay: BLOCKED_AUTHORITY_ARTIFACT_MISSING
   product_promotion_effect: none

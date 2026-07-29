@@ -19,7 +19,39 @@ DISCOVER -> SNAPSHOT -> CONTRACT -> IMPLEMENT -> VERIFY
 
 Current state is `CONTRACT`. The canonical capability compiler subtask passed,
 but the parent contract task remains `NEEDS_REPAIR`. Product implementation is
-still locked.
+still locked. Authority closure is `WORK_IN_PROGRESS` at controller event 14.
+
+## Provider-neutral task lifecycle
+
+Every bounded taskcard uses the same lifecycle regardless of executor:
+
+```text
+UNREGISTERED
+  -> READY
+  -> CLAIMED
+  -> WORK_IN_PROGRESS
+  -> VERIFYING
+  -> PASS | NEEDS_REPAIR | TECHNICALLY_BLOCKED
+  -> CLOSE_INTENT
+  -> COMPLETE
+```
+
+Rules:
+
+- `READY` means dependencies and an exact skill/allowlist exist; it does not
+  mean implementation exists.
+- `CLAIMED` is off-repo coordination state and cannot be inferred from Git.
+- `WORK_IN_PROGRESS` must name completed substeps, exact changed files,
+  digests, failing/absent gates, and next substep.
+- `PASS` means the taskcard acceptance criteria pass; it does not imply product
+  certification.
+- `NEEDS_REPAIR` names a reproducible technical failure and schedules repair.
+- `TECHNICALLY_BLOCKED` requires three materially different failed repairs for
+  the same root cause; other unblocked work continues.
+- `CLOSE_INTENT` is write-ahead state. Only independently replayed proof may
+  produce `COMPLETE`.
+- Only the hash-chained journal may change the controller projection.
+- Provider/token/session changes never change lifecycle state or acceptance.
 
 ## Program task DAG
 
@@ -27,7 +59,7 @@ still locked.
 TC-FF6-PROGRAM-TRUTH-001 [COMPLETE]
   -> TC-FF6-PROGRAM-CAPABILITIES-001 [NEEDS_REPAIR]
        -> TC-FF6-CAPABILITY-COMPILER-001 [PASS]
-       -> TC-FF6-AUTHORITY-CLOSURE-001 [READY]
+       -> TC-FF6-AUTHORITY-CLOSURE-001 [WORK_IN_PROGRESS, EVENT 14]
        -> OpenRaster profile/surface repair [NOT YET REGISTERED]
   -> TC-FF6-PROGRAM-ARCHITECTURE-001
   -> TC-FF6-PROGRAM-TASKCARDS-001
@@ -50,7 +82,7 @@ Execute
 - all 15 authority source declarations and expected digests;
 - existing acquisition tools, spec cache, receipts, and artifact index;
 - primary official endpoints, immutable versions, and license/terms evidence;
-- controller event 13 and parent gaps 13/14.
+- controller event 14, `ACTIVE-WORK-CHECKPOINT.md`, and parent gaps 13/14.
 
 ### Outputs
 
@@ -63,25 +95,36 @@ authority skills and coordination preflight.
 
 ### Atomic steps
 
-1. Recompute the 15-source authority inventory; do not trust `ACQUIRED`.
-2. Reuse existing valid artifacts and tools before creating new ones.
-3. Verify official immutable endpoints, versions, expected digests, license,
-   terms, and redistribution status source by source.
-4. Implement one shared content-addressed lock/cache/materializer, not six
-   one-off download scripts.
-5. Make fetching temporary, size/redirect/timeout bounded, digest-before-place,
-   atomic, and concurrency-safe.
-6. Convert four internal product-requirement identities into tracked canonical
-   non-spec artifacts with paths and digests.
-7. Never commit external spec bytes without affirmative redistribution
+1. `[DONE]` Recompute the 15-source authority inventory; do not trust
+   `ACQUIRED`.
+2. `[DONE]` Reuse the existing source-research owner and select one shared
+   lock/materializer design.
+3. `[IN PROGRESS]` Verify official immutable endpoints, versions, expected
+   digests, license, terms, and redistribution source by source. IPYNB,
+   OpenRaster candidates, XLIFF, SafeTensors, and UBL candidates are recorded;
+   finish NRRD and reverify all before lock creation.
+4. `[PARTIAL]` Implement one shared content-addressed lock/cache/materializer,
+   not six one-off download scripts. The schema/runtime/CLI exist and focused
+   tests pass; redirect and concurrency hardening remain.
+5. `[PARTIAL]` Make fetching temporary, size/redirect/timeout bounded,
+   digest-before-place, atomic, and concurrency-safe. Size, timeout, digest,
+   and basic atomicity are implemented; explicit redirect count and
+   same-process concurrency proof remain.
+6. `[DONE]` Convert four internal product-requirement identities into tracked
+   canonical non-spec artifacts with paths and digests.
+7. `[PENDING]` Create the canonical 15-source authority lock and reconcile
+   contract declarations.
+8. `[PENDING]` Never commit external spec bytes without affirmative redistribution
    evidence; use deterministic external cache materialization otherwise.
-8. Treat digest mismatch as a contradiction; never edit the expected value
+9. `[ONGOING INVARIANT]` Treat digest mismatch as a contradiction; never edit the expected value
    merely to accept downloaded bytes.
-9. Prove clean online materialization and offline matching-cache replay.
-10. Compile all six ProductContracts without authority override.
-11. Recompile the universe three times without
+10. `[PENDING]` Integrate the registered source-research skill, ProductContract
+    verifier, store input closure, and capability compiler.
+11. `[PENDING]` Prove clean online materialization and offline matching-cache replay.
+12. `[PENDING]` Compile all six ProductContracts without authority override.
+13. `[PENDING]` Recompile the universe three times without
     `--allow-blocked-authority`; require all authority artifacts `MATCH`.
-12. Update event/controller/task/gap projections atomically, leaving the parent
+14. `[PENDING]` Update event/controller/task/gap projections atomically, leaving the parent
     open for OpenRaster gap 13.
 
 ### Format breadth floors
