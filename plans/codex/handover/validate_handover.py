@@ -397,16 +397,88 @@ def _recovery_errors(
         return ["recovery projections are not mappings"]
     machine_assets = transfer.get("recovery_assets")
     recovery_assets = captured.get("recovery_assets")
-    _expect(errors, "recovery asset projection", recovery_assets, machine_assets)
-    _expect(errors, "recovery assets", machine_assets, [])
+    if not isinstance(machine_assets, list) or not isinstance(
+        recovery_assets, list
+    ):
+        return [*errors, "recovery assets are not a list"]
+    compact_recovery_assets = [
+        {
+            key: asset.get(key)
+            for key in ("path", "git_status", "sha256")
+        }
+        for asset in recovery_assets
+        if isinstance(asset, Mapping)
+    ]
+    _expect(
+        errors,
+        "recovery asset projection",
+        compact_recovery_assets,
+        machine_assets,
+    )
+    expected_paths = {
+        "reports/sal-verification/xliff.json",
+        "shared/sal-facts/xliff.yaml",
+        "tests/tools/test_extract_sal_facts.py",
+        "reports/sal-verification/xliff-core-candidate-adjudications.yaml",
+        "shared/sal-facts/evidence/xliff-core-candidate-decisions.yaml",
+        "tests/tools/test_xliff_core_candidate_adjudication.py",
+        "tools/spec/xliff_core_candidate_adjudication.py",
+    }
+    observed_paths: set[str] = set()
+    for asset in machine_assets:
+        if not isinstance(asset, Mapping):
+            errors.append("recovery asset is not a mapping")
+            continue
+        relative = asset.get("path")
+        expected_status = asset.get("git_status")
+        expected_digest = asset.get("sha256")
+        if not isinstance(relative, str):
+            errors.append("recovery asset path is missing")
+            continue
+        observed_paths.add(relative)
+        path = REPO_ROOT / relative
+        if not path.is_file():
+            errors.append(f"recovery asset is missing: {relative}")
+            continue
+        _expect(
+            errors,
+            f"recovery Git status {relative}",
+            _porcelain(relative),
+            expected_status,
+        )
+        _expect(
+            errors,
+            f"recovery digest {relative}",
+            hashlib.sha256(path.read_bytes()).hexdigest(),
+            expected_digest,
+        )
+    _expect(errors, "recovery asset path set", observed_paths, expected_paths)
     _expect(
         errors,
         "recovery status",
         captured.get("status"),
-        "CLEAN_COMMITTED_GITLAB_MAIN",
+        "RECOVERY_REQUIRED_RED_OBSERVED",
     )
     _expect(errors, "recovery takeover", captured.get("takeover_required"), False)
-    _expect(errors, "recovery canonical bytes", captured.get("current_bytes_canonical"), True)
+    _expect(
+        errors,
+        "recovery incoming claim",
+        captured.get("incoming_claim_required"),
+        True,
+    )
+    _expect(
+        errors,
+        "recovery canonical bytes",
+        captured.get("current_bytes_canonical"),
+        False,
+    )
+    _expect(
+        errors,
+        "recovery content addressing",
+        captured.get("current_bytes_content_addressed"),
+        True,
+    )
+    _expect(errors, "recovery microstate", captured.get("microstate"), "RED_OBSERVED")
     return errors
 
 
@@ -608,10 +680,32 @@ def _semantic_errors(context: Mapping[str, Any]) -> list[str]:
         errors,
         "workspace transfer state",
         workspace.get("status"),
-        "RESUMABLE_CLEAN_COMMITTED_BOUNDARY",
+        "RECOVERY_REQUIRED_RED_OBSERVED",
     )
-    _expect(errors, "workspace clean bytes", workspace.get("current_bytes_are_clean_checkpoint"), True)
-    _expect(errors, "workspace frozen bytes", workspace.get("current_bytes_frozen_by_handover"), False)
+    _expect(
+        errors,
+        "workspace clean bytes",
+        workspace.get("current_bytes_are_clean_checkpoint"),
+        False,
+    )
+    _expect(
+        errors,
+        "workspace frozen bytes",
+        workspace.get("current_bytes_frozen_by_handover"),
+        True,
+    )
+    _expect(
+        errors,
+        "lossless local-overlay requirement",
+        workspace.get("local_only_required_for_lossless_resume"),
+        True,
+    )
+    _expect(
+        errors,
+        "outgoing identity transfer",
+        workspace.get("outgoing_identity_transferable"),
+        False,
+    )
     _expect(
         errors,
         "XLIFF recovery status",
@@ -752,7 +846,29 @@ def _semantic_errors(context: Mapping[str, Any]) -> list[str]:
         errors,
         "independent review state",
         first_batch.get("independent_review", {}).get("status"),
-        "NOT_YET_EXECUTED",
+        "LOCAL_AUTHORITY_ADJUDICATION_IMPLEMENTED_UNCOMMITTED",
+    )
+    overlay = next_microstep.get("workspace_overlay", {})
+    _expect(errors, "next overlay state", overlay.get("status"), "RED_OBSERVED")
+    _expect(
+        errors,
+        "local adjudication count",
+        overlay.get("adjudication_projection", {}).get(
+            "locally_verified_disposition_count"
+        ),
+        1,
+    )
+    _expect(
+        errors,
+        "local adjudication remains incomplete",
+        overlay.get("adjudication_projection", {}).get("complete"),
+        False,
+    )
+    _expect(
+        errors,
+        "canonical baseline remains unpromoted",
+        next_baseline.get("dispositions_verified"),
+        0,
     )
     red_ids = {
         row.get("id")
@@ -952,10 +1068,24 @@ def run_self_test(context: dict[str, Any]) -> dict[str, Any]:
     cases.append(("wrong_active_task", wrong_task))
 
     bad_recovery = copy.deepcopy(context)
-    bad_recovery["machine"]["workspace_transfer"]["recovery_assets"] = [
-        {"path": "uncommitted-provider-local-byte"}
-    ]
-    cases.append(("unexpected_recovery_asset", bad_recovery))
+    bad_recovery["machine"]["workspace_transfer"]["recovery_assets"][0][
+        "sha256"
+    ] = "0" * 64
+    cases.append(("recovery_asset_digest_drift", bad_recovery))
+
+    false_clean_transfer = copy.deepcopy(context)
+    false_clean_transfer["machine"]["workspace_transfer"][
+        "status"
+    ] = "RESUMABLE_CLEAN_COMMITTED_BOUNDARY"
+    cases.append(("false_clean_transfer", false_clean_transfer))
+
+    lost_recovery_asset = copy.deepcopy(context)
+    lost_recovery_asset["machine"]["workspace_transfer"][
+        "recovery_assets"
+    ] = lost_recovery_asset["machine"]["workspace_transfer"][
+        "recovery_assets"
+    ][1:]
+    cases.append(("lost_recovery_asset", lost_recovery_asset))
 
     false_promotion = copy.deepcopy(context)
     false_promotion["machine"]["program_truth"]["promotions"]["ubl"] = "RELEASED"
@@ -1006,8 +1136,14 @@ def run_self_test(context: dict[str, Any]) -> dict[str, Any]:
     false_independent_review = copy.deepcopy(context)
     false_independent_review["next_microstep"]["first_candidate_batch"][
         "independent_review"
-    ]["status"] = "VERIFIED"
-    cases.append(("unexecuted_adjudication_overclaim", false_independent_review))
+    ]["status"] = "COMMITTED_CONTROLLER_EVIDENCE"
+    cases.append(("local_adjudication_overclaim", false_independent_review))
+
+    false_local_promotion = copy.deepcopy(context)
+    false_local_promotion["next_microstep"]["baseline"][
+        "dispositions_verified"
+    ] = 1
+    cases.append(("local_overlay_promoted_into_event_baseline", false_local_promotion))
 
     missing_red_control = copy.deepcopy(context)
     missing_red_control["next_microstep"]["red_controls"] = missing_red_control[
@@ -1020,7 +1156,7 @@ def run_self_test(context: dict[str, Any]) -> dict[str, Any]:
         for name, case in cases
     ]
     return {
-        "schema": "ff6/handover-validation-self-test@9",
+        "schema": "ff6/handover-validation-self-test@10",
         "valid": all(item["rejected"] for item in outcomes),
         "negative_controls": outcomes,
     }

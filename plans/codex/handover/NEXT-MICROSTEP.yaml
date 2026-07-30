@@ -31,6 +31,32 @@ baseline:
   missing_source_bound_obligation_rows: 80
   denominator_status: OPEN_AUTHORITY_CENSUS
 
+workspace_overlay:
+  status: RED_OBSERVED
+  canonical_event_effect: none
+  promotion_effect: none
+  recoverable_paths: 7
+  adjudication_projection:
+    candidate_count: 1130
+    decision_count: 1
+    locally_verified_disposition_count: 1
+    locally_unverified_disposition_count: 1129
+    complete: false
+    path: reports/sal-verification/xliff-core-candidate-adjudications.yaml
+    sha256: f736477668de37501a658fe7e4faf1b909df37103619c812b9c053918cea4a1a
+  test_boundary:
+    adjudication_controls: 13 passed
+    obligation_compiler_control: 1 expected RED failure
+    exact_failure: >-
+      Failed: DID NOT RAISE ExtractionError because
+      _default_core_obligation_seeds currently accepts
+      through_batch=XLF-04-BATCH-005 without independently adjudicated IDs.
+  first_unmet_implementation_action: >-
+    Gate Batch 005 seed compilation in tools/spec/extract_sal_facts.py on a
+    verified obligation-ID set, add the one authority-located trgLang seed,
+    and make the existing RED control GREEN without changing the default
+    Batch 003 behavior.
+
 root_cause:
   classification: GENERATED_PROPOSAL_CONFLATED_WITH_SEMANTIC_ADJUDICATION
   evidence: >-
@@ -87,12 +113,18 @@ first_candidate_batch:
     - obligation_id: SAL-XLIFF-CORE-SOURCE-TARGET-OPTIONAL-001
       reason: target presence triggers trgLang but does not establish segment source-target cardinality
   independent_review:
-    status: NOT_YET_EXECUTED
+    status: LOCAL_AUTHORITY_ADJUDICATION_IMPLEMENTED_UNCOMMITTED
     expected_direct_semantic_owner: SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001
-    unresolved_policy_question: >-
-      Decide with explicit evidence whether the generic validator capability
-      is a separate downstream implementation obligation rather than a direct
-      semantic disposition of every Schematron assertion.
+    decision_id: XLF-ADJ-CORE-SCHEMATRON-0001
+    accepted_obligation_ids:
+      - SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001
+    rejected_obligation_count: 4
+    sal_fact_ids:
+      - SAL-XLIFF-00009
+    truth_boundary: >-
+      This decision passes local content-addressed validation but is not
+      current controller evidence until the bounded slice is GREEN,
+      regression-tested, committed, replayed, journaled, and projected.
 
 required_design:
   - preserve the generator output as a proposed_disposition
@@ -124,27 +156,34 @@ red_controls:
       decisions fail closed.
 
 implementation_order:
-  - read the TDD, ingest-spec-sal, and sal-pipeline-heal command contracts completely
-  - revalidate Event 29 and the selected candidate from pinned authority bytes
-  - write the four RED controls before changing disposition logic
-  - implement the smallest reusable adjudication schema and validator
-  - overlay verified adjudications without destroying generated proposals
-  - adjudicate only the selected bounded candidate family
-  - compile or repair its source-bound obligation only when the adjudication proves it
+  - "DONE: read the TDD, ingest-spec-sal, and sal-pipeline-heal command contracts completely"
+  - "DONE: revalidate Event 29 and the selected candidate from pinned authority bytes"
+  - "DONE: write the four RED controls before changing disposition logic"
+  - "DONE: implement the smallest reusable adjudication schema and validator"
+  - "DONE: overlay verified adjudications without destroying generated proposals"
+  - "DONE: adjudicate only the selected bounded candidate family"
+  - >-
+    NEXT: compile or repair its source-bound obligation only when the
+    adjudication proves it; begin in tools/spec/extract_sal_facts.py from
+    test_batch_five_compiles_only_the_independently_adjudicated_obligation
   - regenerate affected artifacts atomically and compare three clean processes
   - run focused, affected-regression, static, authority, transcript, and handover checks
   - commit implementation, replay it, append one native event, rebuild projections, and refresh the handover
 
 candidate_mutation_scope:
-  likely_paths:
-    - tools/spec/extract_sal_facts.py
-    - tools/spec/xliff_core_candidate_binding.py
-    - tests/tools/test_extract_sal_facts.py
-    - tests/tools/test_extract_sal_facts_candidate_binding.py
-    - reports/ff6/xliff-core-authority-candidate-census.yaml
-    - reports/ff6/xliff-core-obligation-denominator.yaml
-    - reports/ff6/xliff-core-obligation-inventory.yaml
+  preserved_recovery_paths:
+    - reports/sal-verification/xliff.json
     - shared/sal-facts/xliff.yaml
+    - tests/tools/test_extract_sal_facts.py
+    - reports/sal-verification/xliff-core-candidate-adjudications.yaml
+    - shared/sal-facts/evidence/xliff-core-candidate-decisions.yaml
+    - tests/tools/test_xliff_core_candidate_adjudication.py
+    - tools/spec/xliff_core_candidate_adjudication.py
+  next_likely_paths:
+    - tools/spec/extract_sal_facts.py
+    - tests/tools/test_extract_sal_facts.py
+    - reports/ff6/xliff-core-obligation-inventory.yaml
+    - reports/skills-rff6/skill-transcripts/
   rule: >-
     Claim and manifest only paths actually required after RED establishes the
     change. Do not pre-authorize this entire list as a broad write set.

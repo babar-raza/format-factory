@@ -74,7 +74,7 @@ Every shift records three independent state axes:
 |---|---|---|
 | Mission state | What does the native journal authorize next? | `CONTRACT`, Event 29, XLIFF `XLF-04-BATCH-005-PARTIAL-002_DISPOSITION_VERIFICATION_AND_OBLIGATION_COMPILATION` |
 | Immutable evidence state | What committed work can be replayed? | The 1,130-row XLIFF authority-bound census and the first UBL-03 root/type primitive are journaled; semantic XLIFF dispositions and the reachable UBL graph remain open |
-| Workspace transfer state | Which current local bytes can the incoming executor own? | No local-only byte is required; GitLab main is the clean checkpoint and new dirt must be independently attributed |
+| Workspace transfer state | Which current local bytes can the incoming executor own? | Event 29 is the clean GitLab checkpoint; the exact seven-file Partial-002-A RED overlay in `INFLIGHT-RECOVERY.yaml` is required for lossless continuation and must be hash-verified before adoption |
 
 An immutable evidence commit without a journal transition is not a task-state
 transition. A dirty worktree with a passing test is not a committed checkpoint.
@@ -83,10 +83,10 @@ duplicate work, status inflation, and cross-provider data loss.
 
 ## 4. Current clean checkpoint
 
-At this packet refresh:
+At the immutable Event 29 packet boundary:
 
-- GitLab `origin/main` and local `HEAD` are
-  `45af65bb132f9440bad7aead4c71e90eac515c62`.
+- Event 29's implementation and projection commits remain the canonical
+  controller evidence.
 - XLIFF implementation is immutable at
   `315efa5f5f4420202b5254c86ccd8863a91c385f`.
 - Native journal/Event projection is immutable at
@@ -115,6 +115,14 @@ The packet is derived from Event/projection commit `c1f4be66`. The commit
 containing a future refresh must descend from that commit; the packet cannot
 embed its own final commit hash.
 
+At the current outbound freeze, GitLab `origin/main` and local `HEAD` are
+`edcc121152e4a238b62c33180f9e733badfde4b7`. Seven uncommitted XLIFF paths
+form a content-addressed `RED_OBSERVED` overlay. That overlay has 13 passing
+adjudication controls and one expected compiler failure. It does not change
+Event 29's zero verified dispositions, controller, task state, or promotion.
+The exact statuses, hashes, test result, and adoption procedure are in
+`INFLIGHT-RECOVERY.yaml`.
+
 ## 5. Exact start algorithm for every incoming executor
 
 Run this algorithm before any mutation:
@@ -122,12 +130,12 @@ Run this algorithm before any mutation:
 1. Read `AGENTS.md` completely. Codex also reads
    `docs/governance/codex-adapter.md` and
    `docs/governance/skill-only-policy.yaml`.
-2. Read this contract, `START-HERE.md`, `CURRENT-SHIFT-HANDOVER.md`,
-   `checkpoint.yaml`, `CURRENT-MACHINE-STATE.yaml`, and
-   `INFLIGHT-RECOVERY.yaml`.
+2. Read this contract, `START-HERE.md`, `INFLIGHT-RECOVERY.yaml`,
+   `CLAUDE-START.md`, `CURRENT-SHIFT-HANDOVER.md`, `checkpoint.yaml`, and
+   `CURRENT-MACHINE-STATE.yaml`.
 3. Fetch GitLab `origin`; do not fetch or push GitHub for this mission.
 4. Compare `HEAD`, `origin/main`, the required packet ancestor, the controller
-   event, and the journal tail.
+   event, the journal tail, and every recorded recovery-path hash.
 5. Run `validate_handover.py --self-test`.
 6. Query coordination status, live leases, stale candidates, open conflicts,
    Git status, and relevant process state. Coordination status may be nonzero
@@ -135,7 +143,8 @@ Run this algorithm before any mutation:
    pretending the database is clean.
 7. Register a new provider identity. Never reuse an outgoing identity or
    token.
-8. Select the exact registered skill route, claim only required paths, create
+8. Select the exact registered skill route, claim the seven matching recovery
+   paths plus only the next required production paths, create
    an execution manifest, run the mutation guard, preflight before every
    write, and record every write.
 9. Recompute the next action from the decision table below.
@@ -150,11 +159,13 @@ Use this decision order:
 ```text
 new native event after Event 29?
   yes -> validate the complete chain and execute the newly computed task
-  no  -> exact XLIFF partial-002 scope owned by another ACTIVE lease?
-           yes -> preserve all XLIFF bytes; execute UBL-03 under disjoint
-                  leases; do not repeat Events 28 or 29
-           no  -> independently revalidate Event 29 and execute the fixed
-                  first adjudication batch in NEXT-MICROSTEP.yaml
+  no  -> seven recovery paths match INFLIGHT-RECOVERY.yaml?
+           no  -> freeze mismatched paths, reconcile ownership and evidence
+           yes -> exact XLIFF partial-002 scope owned by another ACTIVE lease?
+                    yes -> preserve all XLIFF bytes; execute UBL-03 under
+                           disjoint leases; do not repeat Events 28 or 29
+                    no  -> adopt the overlay, replay 13 pass / 1 RED, and
+                           continue at the obligation-compiler gate
 ```
 
 Canonical priority and operationally safe priority are different:
@@ -238,12 +249,13 @@ replacement. The exact first candidate and RED controls are locked in
 
 1. preserve the 25 existing source-bound obligation rows;
 2. retain generated dispositions as proposals, never as proof;
-3. create a separate content-addressed adjudication record binding candidate,
+3. preserve and revalidate the existing local content-addressed adjudication
+   record binding candidate,
    occurrence, authority, denominator, decision, accepted IDs, rejected IDs,
    and reasons;
-4. begin with
-   `XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90` and reject incidental XPath
-   context overmapping through a discriminating RED test;
+4. replay the 13 passing controls for
+   `XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90`, then observe the exact
+   obligation-compiler RED;
 5. increment verified counts only from valid independent adjudications;
 6. expand the 105-ID denominator for newly exposed semantics;
 7. compile source-bound obligations only after their adjudications validate;

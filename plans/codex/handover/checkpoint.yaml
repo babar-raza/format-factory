@@ -11,7 +11,8 @@ source_checkpoint:
   required_ancestor: c1f4be66b97acb9a23faa02764e3d41ec1e4a3b0
   packet_input_commit: c1f4be66b97acb9a23faa02764e3d41ec1e4a3b0
   implementation_ancestor: 315efa5f5f4420202b5254c86ccd8863a91c385f
-  committed_handover_scope: CLEAN_AND_REMOTE_VERIFIED
+  committed_handover_scope: CLEAN_AND_REMOTE_VERIFIED_EVENT_29_BASELINE
+  packet_source_head: edcc121152e4a238b62c33180f9e733badfde4b7
 
 controller_checkpoint:
   controller_state: CONTRACT
@@ -45,6 +46,21 @@ verified_xliff_microstep:
   missing_source_bound_rows: 80
   focused_tests: 64 passed
   complete: false
+
+workspace_recovery_overlay:
+  status: RED_OBSERVED
+  event_effect: none
+  local_paths: 7
+  adjudication_tests: 13 passed
+  compiler_test: 1 expected RED failure
+  locally_adjudicated_candidate: XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90
+  locally_adjudicated_count: 1
+  committed_verified_count: 0
+  exact_recovery_contract: plans/codex/handover/INFLIGHT-RECOVERY.yaml
+  exact_next_file: tools/spec/extract_sal_facts.py
+  exact_next_test: >-
+    tests/tools/test_extract_sal_facts.py::
+    test_batch_five_compiles_only_the_independently_adjudicated_obligation
 
 truth_boundary:
   products_certified: 0

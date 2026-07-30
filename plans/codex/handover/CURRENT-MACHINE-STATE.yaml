@@ -46,14 +46,40 @@ program_truth:
   production_certifications: 0
 
 workspace_transfer:
-  status: RESUMABLE_CLEAN_COMMITTED_BOUNDARY
-  clean_checkpoint_commit: c1f4be66b97acb9a23faa02764e3d41ec1e4a3b0
+  status: RECOVERY_REQUIRED_RED_OBSERVED
+  clean_checkpoint_commit: edcc121152e4a238b62c33180f9e733badfde4b7
+  clean_checkpoint_event_projection_commit: c1f4be66b97acb9a23faa02764e3d41ec1e4a3b0
   local_only_required_for_clean_resume: false
-  current_bytes_are_clean_checkpoint: true
-  current_bytes_frozen_by_handover: false
+  local_only_required_for_lossless_resume: true
+  current_bytes_are_clean_checkpoint: false
+  current_bytes_frozen_by_handover: true
   incoming_provider: claude_or_codex
   incoming_identity_rule: REGISTER_NEW_IDENTITY
-  recovery_assets: []
+  outgoing_identity_transferable: false
+  outgoing_manifest_transferable: false
+  outgoing_mutation_authorization_transferable: false
+  recovery_assets:
+    - path: reports/sal-verification/xliff.json
+      git_status: " M"
+      sha256: c99de3edee666c1f402beaccac3e72229199a43627160cd319f461715da1c1c9
+    - path: shared/sal-facts/xliff.yaml
+      git_status: " M"
+      sha256: b5154c73c7ad87d3058cd793f41f99305816ec56ea5c37cb112ae437443dee39
+    - path: tests/tools/test_extract_sal_facts.py
+      git_status: " M"
+      sha256: d90cf49d4924c500c2362649f3f7762678cecb36f19e31b32d3b66dde90ea6d6
+    - path: reports/sal-verification/xliff-core-candidate-adjudications.yaml
+      git_status: "??"
+      sha256: f736477668de37501a658fe7e4faf1b909df37103619c812b9c053918cea4a1a
+    - path: shared/sal-facts/evidence/xliff-core-candidate-decisions.yaml
+      git_status: "??"
+      sha256: a132266069372a2cbef9e0285fec61ed3a01180f0f3ab4faf49f27a376db6b83
+    - path: tests/tools/test_xliff_core_candidate_adjudication.py
+      git_status: "??"
+      sha256: be9b5b17a8f01b94e4e1b5f2efbbf176ad151003ec70d360e69d424087e5257c
+    - path: tools/spec/xliff_core_candidate_adjudication.py
+      git_status: "??"
+      sha256: 44458a5fc2f0e7d9f612f55e223add6aa765317d0cbd85553f52f3c17bea30ee
 
 latest_xliff_observation:
   status: COMMITTED_SOURCE_AUTHENTIC_DISPOSITIONS_UNVERIFIED
@@ -69,6 +95,26 @@ latest_xliff_observation:
   missing_source_bound_obligation_rows: 80
   focused_tests: 64 passed
   xlf_04_complete: false
+
+inflight_xliff_overlay:
+  status: RED_OBSERVED
+  canonical_state_effect: none
+  promotion_effect: none
+  first_candidate: XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90
+  locally_adjudicated_dispositions: 1
+  locally_unverified_dispositions: 1129
+  adjudication_tests: 13 passed
+  compiler_red_control: >-
+    1 failed because _default_core_obligation_seeds does not yet require
+    independently adjudicated obligation IDs for XLF-04-BATCH-005.
+  next_production_file: tools/spec/extract_sal_facts.py
+  next_production_file_sha256: 148dab047c4ea1cece55734b0e083b7222175b3d0df759a5d7e762cd8684634a
+  next_test: >-
+    tests/tools/test_extract_sal_facts.py::
+    test_batch_five_compiles_only_the_independently_adjudicated_obligation
+  clean_checkpoint_rule: >-
+    This overlay is recoverable local work, not Event 30, not a task
+    transition, and not a production or conformance claim.
 
 parallel_ubl_checkpoint:
   status: SERIALIZED_PARTIAL_CHECKPOINT

@@ -12,12 +12,22 @@ generated_at: 2026-07-30
 Committed checkpoint status: `RESUMABLE`
 
 Shared-workspace transfer status at capture:
-`CLEAN_COMMITTED_GITLAB_MAIN`
+`RECOVERY_REQUIRED_RED_OBSERVED`
+
+The underlying Event 29 boundary remains `CLEAN_COMMITTED_GITLAB_MAIN` at
+GitLab head `edcc121152e4a238b62c33180f9e733badfde4b7`. The current working
+tree adds a seven-file content-addressed overlay that is deliberately frozen
+for lossless provider adoption.
 
 `RESUMABLE` means a clean checkout can reconstruct Event 29 without any
 provider-local byte, lease, token, execution manifest, or chat history. It
 does not authorize a provider to skip fresh coordination registration and
 exact-path claims.
+
+It does not mean the current worktree is clean. A clean checkout would omit
+the Partial-002-A adjudication work. Claude must adopt the local overlay from
+[INFLIGHT-RECOVERY.yaml](INFLIGHT-RECOVERY.yaml) before continuing or it would
+lose valid work.
 
 XLIFF implementation checkpoint:
 `315efa5f5f4420202b5254c86ccd8863a91c385f`
@@ -85,17 +95,27 @@ Exact next action: follow [CLAUDE-START.md](CLAUDE-START.md),
 [Event 29 runbook](event-29/RUNBOOK.md). Events 25 through 28 remain immutable
 history.
 
-## Closed recovery history
+## Current recovery overlay
 
 The earlier five-path Batch 005 recovery set is fully represented by
-implementation commit `315efa5f` and native Event 29. The current clean
-checkpoint has no recovery asset and requires no takeover. Old coordination
-identities are historical observations only; the incoming provider always
-registers a new identity and queries live state before claiming paths.
+implementation commit `315efa5f` and native Event 29. A later seven-file
+Partial-002-A overlay is now present:
+
+- 3 tracked modified paths and 4 untracked paths;
+- one content-addressed adjudication compiler/validator;
+- one independent decision source and generated projection;
+- 13 adjudication tests passing;
+- one obligation-compiler test failing RED for the expected missing gate.
+
+The overlay is not transferable by lease or provider token. The outgoing
+identity releases its leases. The incoming provider registers a new identity,
+verifies every byte hash, claims the paths, creates fresh manifests and
+authorizations, and resumes at the compiler RED.
 
 If unexpected dirty bytes appear after checkout, they are new evidence.
-Preserve and classify them; do not reinterpret the resolved Event 29 recovery
-story as permission to discard or adopt them.
+Preserve and classify them; do not interpret either the resolved Event 29
+history or this exact seven-file record as permission to discard or adopt
+different bytes.
 
 ## Parallel UBL checkpoint
 

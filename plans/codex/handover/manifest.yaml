@@ -1,5 +1,5 @@
-schema: ff6/provider-neutral-handover-manifest@4
-packet_id: FF6-HANDOVER-EVENT-29
+schema: ff6/provider-neutral-handover-manifest@5
+packet_id: FF6-HANDOVER-EVENT-29-RED-OVERLAY
 visibility: internal
 generated_by: codex
 generated_at: '2026-07-30'
@@ -53,6 +53,16 @@ truth_boundary:
   ubl_reachable_schema_graph_complete: false
   products_certified: 0
   promotion_effect: none
+workspace_recovery:
+  status: RECOVERY_REQUIRED_RED_OBSERVED
+  base_head: edcc121152e4a238b62c33180f9e733badfde4b7
+  recovery_paths: 7
+  local_adjudication_tests_passed: 13
+  local_compiler_tests_failed_expected_red: 1
+  local_candidate_dispositions_verified: 1
+  local_candidate_dispositions_unverified: 1129
+  controller_effect: none
+  clean_checkpoint_authority: event-29
 files:
 - path: AGENTS.md
   sha256: d983762eff9ce3c391903a1d554430d96d07757f3d2ee39614e7a6b5fe5df848
@@ -175,35 +185,35 @@ files:
   sha256: 0e0ed5f28c871c62f240b41ce69f578a1eedbdb35fd8fec245383aced1d88d95
   canonical_bytes: 3427
 - path: plans/codex/handover/START-HERE.md
-  sha256: c135d4f3338c3b904b51f3224b81b632d8c9695a6a572c88f195705da2374ed8
-  canonical_bytes: 6918
+  sha256: 7fee6b063242f8e3951182ebe53b5e24e7756546ba06908b973236bb4a3cd6b4
+  canonical_bytes: 9243
 - path: plans/codex/handover/CLAUDE-START.md
-  sha256: 406326f0048e11220c6f6dc97b52e78cb45e2a79fa38ff0b94535abd70432749
-  canonical_bytes: 3703
+  sha256: 1cc150eff2105e1a548d9b0b0d7617a8da95c0e8fcf336db2c59f47932283fd1
+  canonical_bytes: 18507
 - path: plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md
-  sha256: 6d92bdc5619f135a626cdec6917c9f59d10e90e774b4285b875f37eb8f303a7d
-  canonical_bytes: 5248
+  sha256: dd041fadd9337cd24de908762a1746ddbe9ffaf6d83d923fbdbf69df0b7e7e4a
+  canonical_bytes: 6170
 - path: plans/codex/handover/CURRENT-MACHINE-STATE.yaml
-  sha256: cbc61f1074ac61ceea3e5175811337500c755e7a63b9b4223aa69b8398d2c1c3
-  canonical_bytes: 3271
+  sha256: 91885ca3289c9c3faa8c3b3965cf4fd5addd32c33e05742426e8c4adae95dde4
+  canonical_bytes: 5545
 - path: plans/codex/handover/checkpoint.yaml
-  sha256: c7621a21a39741d6ed0bb81b5ed3d585e2a1afefb5d02022c88d940b58118f2e
-  canonical_bytes: 2302
+  sha256: 9c87c59058604a672acce5402fa281345995a00087fae80373677b8d487506f8
+  canonical_bytes: 2944
 - path: plans/codex/handover/INFLIGHT-RECOVERY.yaml
-  sha256: 84982c185c1a3c681cfb4153148aa48d88ff708f811c6f9ff9ebeca59dc584bd
-  canonical_bytes: 1661
+  sha256: bb8bef5d7aa728ec0d2d71bb0ad9b74e853336d1caafd9b132a2f1deccf62455
+  canonical_bytes: 5526
 - path: plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml
   sha256: f60cbe12998165981f00a83b6206dc82180c03b917805a4e01b2c5de8f103017
   canonical_bytes: 3533
 - path: plans/codex/handover/NEXT-MICROSTEP.yaml
-  sha256: d594361b98069bd4ccf3d8ba61ff259ac8355e2c6f6e0686676e41ac9564d856
-  canonical_bytes: 8114
+  sha256: 165790058bd8d63a0f2d1ce221eda06ae5d86e9dfda7782ccf76ca86bd96c204
+  canonical_bytes: 9777
 - path: plans/codex/handover/CURRENT-SHIFT-HANDOVER.md
-  sha256: 3149e224df83a733781b5b77c741507d5f3278eae11951c3d4deaf358f321531
-  canonical_bytes: 6380
+  sha256: de77e15718f2f7095d70a8178a4d25d694541d74d1e2a57e0c3c1b203b346bdb
+  canonical_bytes: 10057
 - path: plans/codex/handover/PROVIDER-SHIFT-CONTRACT.md
-  sha256: 6847342941a54e2067f43c2dc94a4915558c3186bc3f8c6cc3fcdd230c2c6140
-  canonical_bytes: 18317
+  sha256: 4af67e875e05353bc1500475c9b38a28af0e812043332dbb5c45308978601041
+  canonical_bytes: 19198
 - path: plans/codex/handover/CURRENT-STATE-AND-ROOT-CAUSES.md
   sha256: 6a9fd56f7ca24247bef5eed871a26c3ba42b02a22ce64786fe107ebb7b8c5fbd
   canonical_bytes: 22917
@@ -220,8 +230,8 @@ files:
   sha256: fedf8d9337a4ec4a2ba0b06c2069f3cfb0dba56fef72eb1dc55eaed2edaad869
   canonical_bytes: 15058
 - path: plans/codex/handover/validate_handover.py
-  sha256: 134945d44920816c5a6aa49bfc7f3ca66db5d86836955bcd6c98bcd639a1e2da
-  canonical_bytes: 39038
+  sha256: 59a7e04ab4a3f518ff0ffa823bd9da6d0d52edffd4982dff3f3e67e19354986b
+  canonical_bytes: 43142
 - path: reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-ubl-checkpoint-001.json
   sha256: 8bb650bce720b5ee5e2b867037d3da35ee028723cb3ef4eefaf740b7fb03f294
   canonical_bytes: 3639
@@ -349,7 +359,7 @@ validation:
   controller_task_projection: PASS
   task_registration: PASS
   gitlab_main_ancestry: PASS
-  semantic_negative_controls: PASS_16_OF_16
+  semantic_negative_controls: PASS_19_OF_19
   semantic_projection_currency: PASS
   no_product_or_promotion_mutation: PASS
 versioned_packet: event-29
