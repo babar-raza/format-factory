@@ -1,0 +1,104 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "test-driven-development-ubl-schema-graph-005",
+  "skill_id": "test-driven-development",
+  "task_id": "TC-FF6-UBL-TYPING-001",
+  "mode": "live",
+  "timestamp": "2026-07-30T06:27:51Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_step": "UBL-03-PARTIAL-005-DERIVATION-AND-INHERITANCE-EDGES",
+    "execution_manifest_ids": [
+      "sfx-fe2322bfc022ab9e",
+      "sfx-1f34acf72affdcdf"
+    ],
+    "base_git_commit": "591fcfe18808e5195c33570eaa9d334770e90166",
+    "authority_source_id": "SRC-UBL-002",
+    "authority_sha256": "623bef8310db4d979ff28000a96bcc56dbcdda4f6206cf094c0aa79b75817970",
+    "scope": "Fifth resumable TDD increment of the content-addressed UBL 2.3 reachable-schema graph.",
+    "target_behavior_description": "Compile exact, owner-bound extension and restriction edges across complex content, simple content, and simple types while preserving all prior graph identities."
+  },
+  "allowed_files": [
+    "tests/tools/test_ubl_schema_graph.py",
+    "tools/spec/ubl_schema_derivations.py",
+    "tools/spec/ubl_schema_graph.py",
+    "reports/skills-rff6/skill-transcripts/test-driven-development-ubl-schema-graph-005.json",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-ubl-schema-graph-005.json",
+    ".local/transcripts/ubl-schema-graph-005.json"
+  ],
+  "actual_files_changed": [
+    "tests/tools/test_ubl_schema_graph.py",
+    "tools/spec/ubl_schema_derivations.py",
+    "tools/spec/ubl_schema_graph.py",
+    "reports/skills-rff6/skill-transcripts/test-driven-development-ubl-schema-graph-005.json",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-ubl-schema-graph-005.json",
+    ".local/transcripts/ubl-schema-graph-005.json"
+  ],
+  "red_green_cycles": [
+    {
+      "red": "test_graph_compiles_exact_derivation_and_inheritance_edges failed with KeyError derivation_edge_count because the graph exposed generic base references but no owner-bound derivation surface.",
+      "green": "Added a segregated derivation compiler and graph projection for complex-content extension/restriction, simple-content extension/restriction, and simple-type restriction."
+    },
+    {
+      "red": "test_graph_rejects_complex_content_with_simple_builtin_base failed because xsd:string was accepted as a complex-content inheritance base.",
+      "green": "Restricted complex-content bases to named complex types or the XSD anyType builtin and retained exact failure diagnostics."
+    }
+  ],
+  "tests_run": [
+    "python -m pytest -q tests/tools/test_ubl_schema_graph.py::test_graph_compiles_exact_derivation_and_inheritance_edges: RED KeyError derivation_edge_count, then PASS",
+    "python -m pytest -q tests/tools/test_ubl_schema_graph.py::test_graph_rejects_complex_content_with_simple_builtin_base: RED did-not-raise, then PASS",
+    "positive and missing-base rejection controls: 4 passed",
+    "python -m pytest -q tests/tools/test_ubl_schema_graph.py tests/tools/test_compile_ubl_schema_graph.py: 32 passed",
+    "python -m pytest -q tests/production_program: 69 passed",
+    "ruff check touched UBL graph source and test modules: PASS",
+    "mypy --strict --explicit-package-bases on touched UBL graph source modules: PASS",
+    "npx --yes pyright@1.1.411 on touched UBL graph source and tests: 0 errors, 0 warnings, 0 information",
+    "python -m py_compile on touched UBL graph source and tests: PASS",
+    "three in-process official-package compilations: identical dictionaries and derivation graph SHA-256 783506c4dcccaefbeb94960dcb5e6d7e0c54a6d8487ee1746eca082535b60e9f",
+    "prior root/type, global-reference closure, local-particle, and anonymous-type identities retained exactly"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "derivation_source_sha256": "6d4329c02b5cce6c9893e22af7c814ac6aa458019408134f98a55bbb0c851acc",
+    "graph_source_sha256": "ccbae6e1fbd1be339639b29ea96e027de4ecfacbb632393609a1decc47ed13e2",
+    "test_sha256": "d51211a04102676ce3b952744d4d46ceb2583751c3cd70f971b01db88565ff0e",
+    "package_sha256": "623bef8310db4d979ff28000a96bcc56dbcdda4f6206cf094c0aa79b75817970",
+    "observed_schema_documents": 106,
+    "observed_roots": 91,
+    "observed_derivation_edges": 1178,
+    "observed_derivation_edge_counts": {
+      "complex_content_extension": 2,
+      "complex_content_restriction": 2,
+      "simple_content_extension": 36,
+      "simple_content_restriction": 1133,
+      "simple_type_restriction": 5
+    },
+    "root_type_graph_sha256": "7b754187690ce1bb04db62657cfb552653cb381a1bdd745a56856e58215af029",
+    "closure_sha256": "2e43a3e83b1ad96ce287299cd7e7c6d86a4a4a02cc3423d30e18f0c9b4ee9fc3",
+    "particle_graph_sha256": "49b0c1ba5c75df0562ab6334fb14f8fe6dc4a9db31ff8e2b130d3bf04cf8eae1",
+    "anonymous_type_graph_sha256": "666634cb0d90f17b05e0b9fd4babe13fe5087f253ef2afb276bf6066d82eaf6e",
+    "derivation_graph_sha256": "783506c4dcccaefbeb94960dcb5e6d7e0c54a6d8487ee1746eca082535b60e9f",
+    "canonical_complete_graph_emitted": false,
+    "truth_boundary": "This checkpoint proves exact QName-based derivation edges and fail-closed base semantics only. UBL-03 remains incomplete: attributes, facets, complete groups and wildcards, substitutions, documentation, and full reachability remain open."
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for the bounded UBL-03-PARTIAL-005 cycles",
+    "2_required_evidence_present": "YES for derivation and inheritance edges only",
+    "3_evidence_sufficient": "YES for this bounded microstep; explicitly insufficient for UBL-03 completion",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO at transcript creation",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO; remaining UBL-03 surfaces remain open in the taskcard and checkpoint",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, no contradiction requiring a new gap was found",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

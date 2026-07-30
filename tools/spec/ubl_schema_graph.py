@@ -31,6 +31,7 @@ from tools.spec.ubl_schema_dependencies import (
     resolve_schema_location,
 )
 from tools.spec.ubl_schema_anonymous_types import compile_anonymous_types
+from tools.spec.ubl_schema_derivations import compile_derivation_edges
 from tools.spec.ubl_schema_particles import compile_local_particles
 from tools.spec.ubl_schema_references import compile_global_reference_uses
 
@@ -90,6 +91,13 @@ def compile_reachable_schema_graph(
         documents,
         components=components,
         particles=particles,
+        limits=active_limits,
+    )
+    derivation_edges = compile_derivation_edges(
+        documents,
+        components=components,
+        anonymous_types=anonymous_types,
+        reference_uses=reference_uses,
         limits=active_limits,
     )
     if (
@@ -170,6 +178,7 @@ def compile_reachable_schema_graph(
         + len(edges)
         + len(particle_edges)
         + len(anonymous_type_edges)
+        + len(derivation_edges)
         > active_limits.max_graph_edges
     ):
         raise UblSchemaGraphError("graph edge limit exceeded")
@@ -205,6 +214,9 @@ def compile_reachable_schema_graph(
     anonymous_type_kind_counts = Counter(
         str(row["kind"]) for row in anonymous_types
     )
+    derivation_edge_counts = Counter(
+        str(row["kind"]) for row in derivation_edges
+    )
     graph_identity = {
         "package_sha256": package_sha256,
         "schemas_sha256": digest(schema_rows),
@@ -226,6 +238,9 @@ def compile_reachable_schema_graph(
     anonymous_type_identity = {
         "anonymous_types_sha256": digest(anonymous_types),
         "anonymous_type_edges_sha256": digest(anonymous_type_edges),
+    }
+    derivation_identity = {
+        "derivation_edges_sha256": digest(derivation_edges),
     }
     return {
         "schema": "ff6/ubl-reachable-schema-graph@1",
@@ -279,6 +294,9 @@ def compile_reachable_schema_graph(
         "anonymous_types": anonymous_types,
         "anonymous_type_edge_count": len(anonymous_type_edges),
         "anonymous_type_edges": anonymous_type_edges,
+        "derivation_edge_count": len(derivation_edges),
+        "derivation_edge_counts": dict(sorted(derivation_edge_counts.items())),
+        "derivation_edges": derivation_edges,
         "identity": {
             **graph_identity,
             "graph_sha256": digest(graph_identity),
@@ -296,6 +314,10 @@ def compile_reachable_schema_graph(
             "anonymous_type_graph_sha256": digest(
                 anonymous_type_identity
             ),
+        },
+        "derivation_identity": {
+            **derivation_identity,
+            "derivation_graph_sha256": digest(derivation_identity),
         },
         "validation": {
             "duplicate_component_count": 0,
@@ -319,8 +341,9 @@ def compile_reachable_schema_graph(
             "offline import/include closure, and unique global QName-reference "
             "resolution. It also preserves named-type compositor trees, local "
             "element occurrence/order, nillability, defaults, fixed values, "
-            "and form. Anonymous types, complete group/wildcard semantics, "
-            "facets, inheritance edges, documentation, and complete "
+            "and form, plus exact QName-based type derivation edges. Complete "
+            "group/wildcard semantics, attributes, facets, substitutions, "
+            "documentation, and complete "
             "reachability remain open."
         ),
     }

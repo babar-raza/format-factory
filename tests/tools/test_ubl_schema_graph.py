@@ -351,6 +351,165 @@ def test_graph_assigns_stable_path_owned_anonymous_type_identities() -> None:
     assert first["completion"]["reachable_schema_graph_complete"] is False
 
 
+def test_graph_compiles_exact_derivation_and_inheritance_edges() -> None:
+    compiler = _load_compiler()
+    namespace = "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
+    schema = (
+        f'<xsd:schema xmlns="{namespace}" xmlns:xsd="{XS}" '
+        f'targetNamespace="{namespace}" elementFormDefault="qualified">'
+        '<xsd:element name="Invoice" type="ExtendedComplex"/>'
+        '<xsd:complexType name="BaseComplex"><xsd:sequence>'
+        '<xsd:element name="ID" type="xsd:string" minOccurs="0"/>'
+        "</xsd:sequence></xsd:complexType>"
+        '<xsd:complexType name="ExtendedComplex"><xsd:complexContent>'
+        '<xsd:extension base="BaseComplex"><xsd:sequence>'
+        '<xsd:element name="Note" type="xsd:string" minOccurs="0"/>'
+        "</xsd:sequence></xsd:extension>"
+        "</xsd:complexContent></xsd:complexType>"
+        '<xsd:complexType name="RestrictedComplex"><xsd:complexContent>'
+        '<xsd:restriction base="BaseComplex"><xsd:sequence>'
+        '<xsd:element name="ID" type="xsd:string" minOccurs="0"/>'
+        "</xsd:sequence></xsd:restriction>"
+        "</xsd:complexContent></xsd:complexType>"
+        '<xsd:simpleType name="BaseSimple">'
+        '<xsd:restriction base="xsd:string"/>'
+        "</xsd:simpleType>"
+        '<xsd:simpleType name="RestrictedSimple">'
+        '<xsd:restriction base="BaseSimple"/>'
+        "</xsd:simpleType>"
+        '<xsd:complexType name="SimpleExtension"><xsd:simpleContent>'
+        '<xsd:extension base="BaseSimple"/>'
+        "</xsd:simpleContent></xsd:complexType>"
+        '<xsd:complexType name="SimpleRestriction"><xsd:simpleContent>'
+        '<xsd:restriction base="BaseSimple"/>'
+        "</xsd:simpleContent></xsd:complexType>"
+        "</xsd:schema>"
+    ).encode()
+    package = _package({"xsd/maindoc/UBL-Invoice-2.3.xsd": schema})
+
+    first = compiler.compile_ubl_reachable_schema_graph(
+        package,
+        expected_package_sha256=hashlib.sha256(package).hexdigest(),
+        expected_root_count=1,
+    )
+    second = compiler.compile_ubl_reachable_schema_graph(
+        package,
+        expected_package_sha256=hashlib.sha256(package).hexdigest(),
+        expected_root_count=1,
+    )
+
+    assert first["derivation_edge_count"] == 6
+    assert first["derivation_edge_counts"] == {
+        "complex_content_extension": 1,
+        "complex_content_restriction": 1,
+        "simple_content_extension": 1,
+        "simple_content_restriction": 1,
+        "simple_type_restriction": 2,
+    }
+    assert first["derivation_edges"] == second["derivation_edges"]
+    projection = {
+        (
+            row["kind"],
+            row["source_node_id"],
+            row["target_node_id"],
+            row["lexical_base"],
+        )
+        for row in first["derivation_edges"]
+    }
+    assert projection == {
+        (
+            "complex_content_extension",
+            f"complex-type::{{{namespace}}}ExtendedComplex",
+            f"complex-type::{{{namespace}}}BaseComplex",
+            "BaseComplex",
+        ),
+        (
+            "complex_content_restriction",
+            f"complex-type::{{{namespace}}}RestrictedComplex",
+            f"complex-type::{{{namespace}}}BaseComplex",
+            "BaseComplex",
+        ),
+        (
+            "simple_content_extension",
+            f"complex-type::{{{namespace}}}SimpleExtension",
+            f"simple-type::{{{namespace}}}BaseSimple",
+            "BaseSimple",
+        ),
+        (
+            "simple_content_restriction",
+            f"complex-type::{{{namespace}}}SimpleRestriction",
+            f"simple-type::{{{namespace}}}BaseSimple",
+            "BaseSimple",
+        ),
+        (
+            "simple_type_restriction",
+            f"simple-type::{{{namespace}}}BaseSimple",
+            f"xsd-builtin-type::{{{XS}}}string",
+            "xsd:string",
+        ),
+        (
+            "simple_type_restriction",
+            f"simple-type::{{{namespace}}}RestrictedSimple",
+            f"simple-type::{{{namespace}}}BaseSimple",
+            "BaseSimple",
+        ),
+    }
+    assert len({row["edge_id"] for row in first["derivation_edges"]}) == 6
+    assert first["derivation_identity"]["derivation_graph_sha256"]
+    assert first["completion"]["reachable_schema_graph_complete"] is False
+
+
+def test_graph_rejects_complex_content_with_simple_builtin_base() -> None:
+    compiler = _load_compiler()
+    namespace = "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
+    schema = (
+        f'<xsd:schema xmlns="{namespace}" xmlns:xsd="{XS}" '
+        f'targetNamespace="{namespace}">'
+        '<xsd:element name="Invoice" type="InvoiceType"/>'
+        '<xsd:complexType name="InvoiceType"><xsd:complexContent>'
+        '<xsd:extension base="xsd:string"/>'
+        "</xsd:complexContent></xsd:complexType>"
+        "</xsd:schema>"
+    ).encode()
+    package = _package({"xsd/maindoc/UBL-Invoice-2.3.xsd": schema})
+
+    with pytest.raises(
+        compiler.UblCensusError,
+        match="complex content has non-complex base",
+    ):
+        compiler.compile_ubl_reachable_schema_graph(
+            package,
+            expected_package_sha256=hashlib.sha256(package).hexdigest(),
+            expected_root_count=1,
+        )
+
+
+@pytest.mark.parametrize("method", ["extension", "restriction"])
+def test_graph_rejects_content_derivation_without_base(method: str) -> None:
+    compiler = _load_compiler()
+    namespace = "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
+    schema = (
+        f'<xsd:schema xmlns="{namespace}" xmlns:xsd="{XS}" '
+        f'targetNamespace="{namespace}">'
+        '<xsd:element name="Invoice" type="InvoiceType"/>'
+        '<xsd:complexType name="InvoiceType"><xsd:complexContent>'
+        f"<xsd:{method}/>"
+        "</xsd:complexContent></xsd:complexType>"
+        "</xsd:schema>"
+    ).encode()
+    package = _package({"xsd/maindoc/UBL-Invoice-2.3.xsd": schema})
+
+    with pytest.raises(
+        compiler.UblCensusError,
+        match="derivation base must resolve exactly once",
+    ):
+        compiler.compile_ubl_reachable_schema_graph(
+            package,
+            expected_package_sha256=hashlib.sha256(package).hexdigest(),
+            expected_root_count=1,
+        )
+
+
 def test_graph_rejects_declared_and_anonymous_type_on_one_element() -> None:
     compiler = _load_compiler()
     namespace = "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
@@ -629,6 +788,28 @@ def test_real_package_closure_is_complete_deterministic_and_additive() -> None:
         first["anonymous_type_identity"]["anonymous_type_graph_sha256"]
         == "666634cb0d90f17b05e0b9fd4babe13fe5087f253ef2afb276bf6066d82eaf6e"
     )
+    assert first["derivation_edge_count"] == 1_178
+    assert first["derivation_edge_counts"] == {
+        "complex_content_extension": 2,
+        "complex_content_restriction": 2,
+        "simple_content_extension": 36,
+        "simple_content_restriction": 1_133,
+        "simple_type_restriction": 5,
+    }
+    assert (
+        first["derivation_identity"]["derivation_graph_sha256"]
+        == "783506c4dcccaefbeb94960dcb5e6d7e0c54a6d8487ee1746eca082535b60e9f"
+    )
+    assert (
+        len({row["edge_id"] for row in first["derivation_edges"]})
+        == first["derivation_edge_count"]
+    )
+    reference_use_ids = {
+        row["use_id"] for row in first["global_reference_uses"]
+    }
+    assert {
+        row["reference_use_id"] for row in first["derivation_edges"]
+    } <= reference_use_ids
     assert (
         len({edge["edge_id"] for edge in first["schema_dependency_edges"]})
         == first["schema_dependency_edge_count"]
