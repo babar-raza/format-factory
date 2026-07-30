@@ -1,44 +1,33 @@
-schema: ff6/provider-neutral-machine-state@6
-artifact_id: FF6-CURRENT-MACHINE-STATE-EVENT-31
+schema: ff6/provider-neutral-machine-state@8
+artifact_id: FF6-CURRENT-MACHINE-STATE-EVENT-32
 visibility: internal
 publish_allowed: false
 generated_by: codex
-generated_at: "2026-07-30"
-
+generated_at: '2026-07-30'
 repository:
   forge: GitLab
   remote: origin
   branch: main
-  control_checkpoint_commit: 240474babf868fa141850d4ed4792d3a8269ef28
-  attempted_implementation_commit: d99fc6bf3679cd39396afbf5621847e3009ddf31
-  last_accepted_implementation_commit: e13e103de0bb789ff51a8e931af0fb649474be20
-  observed_checkout_commit: 240474babf868fa141850d4ed4792d3a8269ef28
-  observed_origin_main_commit: 240474babf868fa141850d4ed4792d3a8269ef28
-  implementation_pushed: true
-  other_branches_authorized: false
+  checkpoint_commit: 530f18fe89a6875276e8f4442351445564df80e9
+  implementation_commit: ff8f7d9f9ff1ff613be376e1361b0dd8304566e3
+  head_must_equal_origin_main: true
   github_authorized: false
-
+  other_branches_authorized: false
 goal:
   goal_id: FF6-PRODUCTION-LIBRARIES-001
   status: ACTIVE
-  objective: >-
-    Six independently publishable, production-grade Python libraries for
-    Jupyter Notebook, OpenRaster, NRRD, XLIFF, SafeTensors, and OASIS UBL.
-  products_certified: 0
+  products_required: [ipynb, ora, nrrd, xliff, safetensors, ubl]
   terminal_condition_met: false
-
 controller:
   state: CONTRACT
-  transition_sequence: 31
-  event_id: FF6-EVENT-000031
-  event_hash: 26f95f054774f35244a2edbfc08072156a1422acfb1e1d29c2c37a617dd90d55
-  next_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
-  next_task_state: WORK_IN_PROGRESS
+  transition_sequence: 32
+  event_id: FF6-EVENT-000032
+  event_hash: 1b04941583c0015b42115b8d07ca748a744561a000833b38fc64412531164054
+  task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
+  task_state: WORK_IN_PROGRESS
   first_unmet_step: XLF-04
-  exact_microstep: XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001
-  parent_task: TC-FF6-PROGRAM-CAPABILITIES-001
-  parent_task_state: NEEDS_REPAIR
-
+  completed_microstep: XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001
+  exact_microstep: XLF-04-BATCH-005-PARTIAL-002-C
 program_truth:
   capabilities: 110
   obligations: 672
@@ -52,130 +41,56 @@ program_truth:
     xliff: UNASSESSED
     safetensors: UNASSESSED
     ubl: UNASSESSED
-
 workspace_transfer:
-  status: REMOTE_CLEAN_EVENT_31_LOCAL_HANDOVER_PROJECTION_ONLY
-  remote_checkpoint: CLEAN_AND_RECONSTRUCTIBLE
-  local_product_overlay: none
-  local_contract_test_overlay: none
-  provider_credentials_transferable: false
-  provider_leases_transferable: false
+  status: CLEAN_REMOTE_RECONSTRUCTIBLE
+  local_only_required_for_resume: false
+  provider_identity_transferable: false
+  leases_transferable: false
   execution_manifests_transferable: false
-  incoming_provider_rule: REGISTER_FRESH_IDENTITY
-  dirty_state_rule: PRESERVE_ATTRIBUTE_AND_REVALIDATE
-  observation:
-    observed_at_utc: "2026-07-30T02:14:00Z"
-    owner_at_observation: agent-codex-20260730T013049-b59249
-    owner_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
-    owner_status: ACTIVE
-    owner_last_heartbeat_utc: "2026-07-30T02:06:52.594219Z"
-    logical_lease: logical:XLF-04-BATCH-005-PARTIAL-002-B
-    claimed_paths:
-      - tests/tools/test_xliff_core_candidate_adjudication.py
-      - tests/tools/test_extract_sal_facts.py
-      - shared/sal-facts/evidence/xliff-core-candidate-decisions.yaml
-      - reports/sal-verification/xliff-core-candidate-adjudications.yaml
-      - tools/spec/extract_sal_facts.py
-      - reports/ff6/xliff-core-obligation-inventory.yaml
-      - reports/skills-rff6/skill-transcripts/test-driven-development-xliff-xlf04-core-batch-005-partial-002-b.json
-      - reports/skills-rff6/skill-transcripts/ingest-spec-sal-xliff-xlf04-core-batch-005-partial-002-b.json
-      - reports/skills-rff6/skill-transcripts/sal-pipeline-heal-xliff-xlf04-core-batch-005-partial-002-b.json
-    dirty_paths_observed: []
-    freshness_rule: >-
-      This is a timestamped observation, not a transferable lease. Requery the
-      The attempted implementation and Event 31 control update are committed.
-      The listed leases are still not transferable. Requery the coordination
-      plane before selecting XLIFF or the UBL fallback.
-
-checkpoint_validation:
-  immutable_command: >-
-    .venv\Scripts\python.exe
-    plans\codex\handover\validate_committed_checkpoint.py --ref origin/main
-  shared_workspace_command: >-
-    .venv\Scripts\python.exe plans\codex\handover\validate_handover.py
-  immutable_expected_result: PASS
-  shared_workspace_observed_result: FAIL_HANDOVER_PROJECTION_ONLY
-  separation_rule: >-
-    The detached validation proves the committed checkpoint. The shared
-    workspace validation separately detects overlay drift. Handover-only
-    mutations are expected before this packet is committed; any other path
-    requires ownership classification.
-
-known_control_constraints:
-  - gap_id: FF6-GAP-011
-    status: OPEN
-    effect: >-
-      Generic tools.plan_control journal semantics are incompatible with the
-      native FF6 previous_event_hash schema. Validate the FF6 chain natively;
-      do not reinterpret it as corruption.
-  - gap_id: FF6-LOCAL-ARTIFACT-INDEX-YAML-001
-    status: PRE_EXISTING_LOCAL_INVALID
-    path: .local/artifact-index.yaml
-    observed_error: >-
-      YAML mapping beginning at line 17 encounters a sequence item at line
-      1163. The current handover did not rewrite this shared local registry.
-    effect: >-
-      Reuse-before-regenerate lookups against this local file fail until a
-      separately governed repair reconciles both structures without loss.
-    execution_rule: >-
-      Record new tracked evidence in canonical task, journal, and manifest
-      authorities; do not hand-edit or truncate the local index as a shortcut.
-
 xliff:
   status: WORK_IN_PROGRESS
   completed_steps: [XLF-01, XLF-02, XLF-03]
-  completed_xlf_04_batches:
-    - XLF-04-BATCH-001
-    - XLF-04-BATCH-002
-    - XLF-04-BATCH-003
-    - XLF-04-BATCH-004
-  active_batch: XLF-04-BATCH-005
-  completed_partial: XLF-04-BATCH-005-PARTIAL-002-A
-  next_partial: XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001
-  candidate_census:
-    path: reports/ff6/xliff-core-authority-candidate-census.yaml
-    sha256: 24c1902b6387cc9fa3402f78392ba91c6e6656407719ec11cfaab1c4f3d22b9e
+  first_unmet_step: XLF-04
+  authority_candidates:
     count: 1130
+    sha256: 24c1902b6387cc9fa3402f78392ba91c6e6656407719ec11cfaab1c4f3d22b9e
   adjudication:
     path: reports/sal-verification/xliff-core-candidate-adjudications.yaml
-    mechanical_sha256: 3d9c81773ceaddaae97a55fc804bd35efaf6501fe24c9fae8bf941fe338ceb01
-    mechanical_decisions: 2
-    mechanically_reported_verified: 2
-    production_accepted_dispositions: 1
-    production_open_dispositions: 1129
-    production_acceptance: REJECTED_INCREMENT
+    sha256: 0a1d964ce29efd5a767fb0b5904149491949d9da82557f1e28e9f9fad461b81c
+    production_accepted_dispositions: 3
+    production_open_dispositions: 1127
+    complete: false
   obligation_inventory:
     path: reports/ff6/xliff-core-obligation-inventory.yaml
-    mechanical_sha256: d5f77d95c703f62766e4ef4178ee3d811147df06844f0eacdec372bbd51cb351
+    sha256: 2575bcbb10bf42c1590b7c3dfdaa53622577e542e25e4ba5483f206f36dcdaaf
     expected: 105
-    mechanical_source_bound: 27
-    mechanical_missing: 78
-    production_accepted_source_bound: 26
-    production_accepted_missing: 79
-    production_acceptance: REJECTED_INCREMENT
+    production_accepted_source_bound: 27
+    production_accepted_missing: 78
     complete: false
   next_candidate:
-    candidate_id: XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
-    candidate_content_sha256: 0a37761215603eb4db3f9602f6e979869b4f1f44c124c1f5ca2183cba1d7578a
-    location: schematron/rule[47]/assert[2]
-    direct_rule: subFlowsStart and subFlowsEnd on pc must be used as a pair
-
-parallel_ubl_checkpoint:
-  status: SERIALIZED_PARTIAL_CHECKPOINT
-  task_id: TC-FF6-UBL-TYPING-001
-  implementation_commit: f98d220a0a3903b1107de90b2e39bf480ec4b19d
+    candidate_id: XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92
+    requirement_sha256: bebad4a8709a137a204c13bf6a058d6c38e512099ebcf5ed7119e2668f38f61d
+    profile: xliff_2.1
+ubl:
+  status: WORK_IN_PROGRESS
   completed_steps: [UBL-01, UBL-02]
   first_unmet_step: UBL-03
-  completed_microstep: UBL-03-PARTIAL-001
-  next_microstep: UBL-03-PARTIAL-002
-  reachable_schema_graph_complete: false
-  use_only_if: exact XLIFF paths have a current live owner
-
-truth_boundary:
-  xlf_04_complete: false
-  ubl_03_complete: false
-  product_source_changed_by_event_31: false
-  product_or_promotion_change_in_event_31: false
-  rejected_attempt_preserved: true
-  rejected_attempt_counts_are_non_promoting: true
-  products_certified: 0
+  latest_commits: [730c8fdf359dd11d3b485738e7dac0d80e074adf, bdc66bd5df495710f8226d734f67c7a8d25cacf4]
+  schema_documents: 106
+  document_roots: 91
+  dependency_edges: 297
+  global_components: 3788
+  global_reference_uses: 8926
+  unresolved_global_references: 0
+  ambiguous_global_references: 0
+  closure_sha256: 2e43a3e83b1ad96ce287299cd7e7c6d86a4a4a02cc3423d30e18f0c9b4ee9fc3
+  complete: false
+other_products:
+  ipynb: {source_exists: true, certification: not_certified}
+  ora: {source_exists: false, certification: absent}
+  nrrd: {source_exists: true, certification: not_certified}
+  safetensors: {source_exists: true, certification: not_certified}
+known_limits:
+  - Contracts and obligation compilation precede product deepening.
+  - Existing install/oracle results are shallow or stale and non-promoting.
+  - Gate 10 and publication authority remain external even after technical certification.

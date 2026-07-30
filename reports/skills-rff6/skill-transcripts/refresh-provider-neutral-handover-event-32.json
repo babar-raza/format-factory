@@ -1,0 +1,83 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "refresh-provider-neutral-handover-event-32",
+  "skill_id": "refresh-provider-neutral-handover",
+  "mode": "live",
+  "timestamp": "2026-07-30T03:45:00Z",
+  "inputs": {
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "source_checkpoint": "530f18fe89a6875276e8f4442351445564df80e9",
+    "canonical_remote": "origin",
+    "canonical_branch": "main",
+    "controller_path": "plans/strategic/ff6/controller-state.yaml",
+    "journal_path": "plans/strategic/ff6/events.jsonl",
+    "current_taskcard": "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
+    "exact_next_task": "XLF-04-BATCH-005-PARTIAL-002-C",
+    "packet_root": "plans/codex/handover/",
+    "execution_manifest": ".local/skills-first/manifests/sfx-4101e6d8cf13f360.json",
+    "authorization_id": "5b13ab8adbb435b4"
+  },
+  "allowed_files": [
+    "plans/codex/handover/START-HERE.md",
+    "plans/codex/handover/CLAUDE-START.md",
+    "plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md",
+    "plans/codex/handover/CURRENT-MACHINE-STATE.yaml",
+    "plans/codex/handover/checkpoint.yaml",
+    "plans/codex/handover/INFLIGHT-RECOVERY.yaml",
+    "plans/codex/handover/CURRENT-SHIFT-HANDOVER.md",
+    "plans/codex/handover/NEXT-MICROSTEP.yaml",
+    "plans/codex/handover/manifest.yaml",
+    "plans/codex/handover/validate_handover.py",
+    "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-event-32.json",
+    ".local/transcripts/refresh-provider-neutral-handover-event-32.json"
+  ],
+  "actual_files_changed": [
+    "plans/codex/handover/START-HERE.md",
+    "plans/codex/handover/CLAUDE-START.md",
+    "plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md",
+    "plans/codex/handover/CURRENT-MACHINE-STATE.yaml",
+    "plans/codex/handover/checkpoint.yaml",
+    "plans/codex/handover/INFLIGHT-RECOVERY.yaml",
+    "plans/codex/handover/CURRENT-SHIFT-HANDOVER.md",
+    "plans/codex/handover/NEXT-MICROSTEP.yaml",
+    "plans/codex/handover/manifest.yaml",
+    "plans/codex/handover/validate_handover.py",
+    "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-event-32.json",
+    ".local/transcripts/refresh-provider-neutral-handover-event-32.json"
+  ],
+  "tests_run": [
+    "Native journal replay through Event 32: PASS.",
+    "Controller, event, taskcard, packet, adjudication, inventory, and next-candidate semantics: PASS.",
+    "Nineteen LF-normalized manifest hashes and byte counts: PASS.",
+    "Manifest structured parsing and internal links: PASS.",
+    "Seven semantic negative controls: PASS.",
+    "GitLab Event 32 and implementation ancestry: PASS.",
+    "Ruff and bytecode compilation for validate_handover.py: PASS.",
+    "Shared packet validator --self-test: PASS with zero errors."
+  ],
+  "result": "PASS",
+  "evidence": {
+    "event_id": "FF6-EVENT-000032",
+    "event_hash": "1b04941583c0015b42115b8d07ca748a744561a000833b38fc64412531164054",
+    "implementation_commit": "ff8f7d9f9ff1ff613be376e1361b0dd8304566e3",
+    "checkpoint_commit": "530f18fe89a6875276e8f4442351445564df80e9",
+    "manifest_sha256": "cdbf785a8ecb164fa537fc4fab7525394f90c4562d083cf16059f345b187d6de",
+    "validator_sha256": "a831bd64b0fbcfa9974b8188c45aae1a096ae2b5e2f4147778a6f3995f96254c",
+    "manifest_files": 19,
+    "local_only_required_for_resume": false,
+    "next_microstep": "XLF-04-BATCH-005-PARTIAL-002-C",
+    "products_certified": 0,
+    "promotion_effect": "none"
+  },
+  "self_challenge": {
+    "canonical_state_recomputed": "YES",
+    "old_status_copied_without_replay": "NO",
+    "remote_reconstructible": "YES",
+    "provider_identity_transferred": "NO",
+    "uncommitted_product_bytes_required": "NO",
+    "historical_event_files_preserved": "YES",
+    "completion_exaggerated": "NO"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

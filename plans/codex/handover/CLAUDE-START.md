@@ -1,213 +1,73 @@
 ---
-artifact_id: FF6-CLAUDE-EXECUTION-HANDOFF-EVENT-31
-artifact_type: provider_execution_handoff
+artifact_id: FF6-CLAUDE-START-EVENT-32
 visibility: internal
 publish_allowed: false
 generated_by: codex
 generated_at: 2026-07-30
 ---
 
-# Claude execution handoff — Event 31
+# Claude exact start sequence
 
-Continue the active mission without asking for continuation. Use the same
-controller, taskcard, skills, evidence rules, and checkpoint protocol that
-Codex used. Provider identity changes; mission state and acceptance criteria do
-not.
+Run from:
 
-## Locked scope
-
-- Repository: `C:\Users\prora\OneDrive\Documents\GitHub\format-factory`
-- Canonical SCM: GitLab remote `origin`, branch `main`
-- Goal: `FF6-PRODUCTION-LIBRARIES-001`
-- Controller state: `CONTRACT`
-- Journal head: `FF6-EVENT-000031`
-- Active task: `TC-FF6-XLIFF-PROFILE-SURFACE-001`
-- Exact microstep: `XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001`
-- Control checkpoint:
-  `240474babf868fa141850d4ed4792d3a8269ef28`
-- Preserved rejected attempt:
-  `d99fc6bf3679cd39396afbf5621847e3009ddf31`
-- Last accepted XLIFF implementation:
-  `e13e103de0bb789ff51a8e931af0fb649474be20`
-
-Do not create a branch, use GitHub, move work to an isolated stale worktree,
-or reinterpret old provider notes as current authority.
-
-## First actions
-
-1. Fetch and verify GitLab main.
-2. Read `AGENTS.md`, `docs/governance/codex-adapter.md` or the Claude
-   equivalent, `docs/governance/skill-only-policy.yaml`,
-   `plans/master-plan.md`, and the applicable skill contracts.
-3. Run `validate_committed_checkpoint.py --ref origin/main` before mutation.
-   This proves the immutable packet in a temporary detached worktree.
-4. Register a fresh coordination identity.
-5. Inspect live agents, leases, conflicts, and exact path status.
-6. Run `validate_handover.py` in the shared checkout and classify every
-   failure as committed-checkpoint drift, attributed live overlay, or
-   unexplained state. Never merge these classes.
-7. If Event 32 or later exists, validate and follow it. Do not duplicate Event
-   31.
-8. If XLIFF has a current live owner, do not replay or mutate its working
-   files; continue only `UBL-03-PARTIAL-002`.
-9. Replay current artifact checks and the three immutable smoke tests in the
-   selected unowned lane.
-10. Create fresh execution manifests for:
-   - test-driven-development;
-   - ingest-spec-sal;
-   - sal-pipeline-heal.
-11. Start the next candidate with a RED test. Do not edit the decision source
-   first.
-
-## Current proof and non-proof
-
-Event 31 rejected the `d99fc6bf` increment despite its mechanical green
-results. Read [EVENT-31-DELTA.md](EVENT-31-DELTA.md). Production acceptance
-remains at Event 30: 26/105 rows and one independently accepted disposition.
-The generated 27/105 and 2/1,130 counts are diagnostic outputs only.
-
-Proven:
-
-- the 1,130-row census is bound to pinned authority bytes;
-- one candidate decision is independently reasoned and content-addressed;
-- the real Batch 005 compiler requires complete adjudication proof;
-- every relevant proof dependency has a negative drift control;
-- 26 source-bound rows exist and the exact current inventory is reproducible;
-- the implementation commit is pushed to GitLab main.
-
-Not proven:
-
-- the remaining 1,129 candidate dispositions;
-- the remaining 79 expected obligation rows;
-- complete Core semantics or any XLIFF module surface;
-- XLF-04 completion;
-- a production XLIFF parser/writer;
-- any product certification, promotion, release, or gate.
-
-## Partial-002-B Repair-001 TDD target
-
-Candidate:
-
-```text
-XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
-candidate_content_sha256:
-0a37761215603eb4db3f9602f6e979869b4f1f44c124c1f5ca2183cba1d7578a
+```powershell
+Set-Location 'C:\Users\prora\OneDrive\Documents\GitHub\format-factory'
+git fetch origin main --prune
+git rev-parse HEAD
+git rev-parse origin/main
+git merge-base --is-ancestor 530f18fe89a6875276e8f4442351445564df80e9 origin/main
+.venv\Scripts\python.exe plans\codex\handover\validate_handover.py --require-clean --self-test
+.venv\Scripts\python.exe plans\codex\handover\validate_committed_checkpoint.py --ref origin/main
 ```
 
-Authority:
+Expected before work: both refs equal
+`530f18fe89a6875276e8f4442351445564df80e9`; both validators pass; Git status is
+clean; accepted implementation
+`ff8f7d9f9ff1ff613be376e1361b0dd8304566e3` is an ancestor; journal head is
+`FF6-EVENT-000032` /
+`1b04941583c0015b42115b8d07ca748a744561a000833b38fc64412531164054`.
 
-```text
-source:   SRC-XLF-002
-member:   schemas/xliff_core_2.1.sch
-location: schematron/rule[47]/assert[2]
-context:  xlf:pc[@subFlowsStart][ancestor::xlf:segment|ancestor::xlf:ignorable]
-test:     @subFlowsEnd
-message:  'subFlowsStart' and 'subFlowsEnd' must be used in pair.
+Then read, in order:
+
+1. `AGENTS.md`
+2. `docs/governance/codex-adapter.md` if running Codex
+3. `plans/strategic/ff6/product-goal.yaml`
+4. `plans/strategic/ff6/controller-state.yaml`
+5. `taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md`
+6. `plans/codex/handover/NEXT-MICROSTEP.yaml`
+7. the complete command files for every selected registered skill
+
+Register a new provider identity:
+
+```powershell
+.venv\Scripts\python.exe -m tools.supervisor.coordination register `
+  --provider claude-code --mode interactive `
+  --task TC-FF6-XLIFF-PROFILE-SURFACE-001
 ```
 
-Generated proposal:
+Persist the returned ID/token only for this shift. Query `status`, claim the
+logical microstep and exact file set, preflight before every write, record
+every write, and use a fresh execution manifest plus mutation authorization.
+Do not release or take over an active foreign lease.
 
-- `SAL-XLIFF-CORE-AGENT-VALIDATOR-001`
-- `SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001`
-- `SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001`
-- `SAL-XLIFF-CORE-INLINE-PC-001`
+Execute only `XLF-04-BATCH-005-PARTIAL-002-C` unless the live lease check
+shows that lane is owned. The exact candidate is
+`XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92`. Start with a RED control; do not
+accept the generated mappings as authority.
 
-Do not copy this list into the verified decision. Independently determine the
-direct semantic owner. The ancestor names limit rule applicability; they do
-not automatically establish hierarchy behavior. The generic validator ID is a
-downstream capability, not necessarily the direct rule owner.
+Required closing sequence:
 
-The Event 31 contradiction checkpoint confirms that the
-direct owner as `SAL-XLIFF-CORE-INLINE-PAIRING-001`. This is a finding to test,
-not a completed implementation. The current adjudicator contains a structural
-defect at `tools/spec/xliff_core_candidate_adjudication.py`: it requires the
-union of accepted and rejected IDs to equal the generated proposal set. That
-means an independent decision cannot accept a valid denominator obligation
-that the generator omitted. Repair that invariant before adding the decision;
-otherwise the new evidence would still be generator-constrained.
+1. focused tests;
+2. check modes and three deterministic generations;
+3. SAL and authority replay;
+4. Ruff, strict Mypy, pinned Pyright, and bytecode compilation;
+5. format-contract and production-program regressions;
+6. zero-warning skill transcripts;
+7. explicit-file commit and GitLab push;
+8. immutable replay;
+9. native event append and projection update;
+10. handover refresh, clean validator pass, and release of only this shift's
+    leases.
 
-The reverse direction is a separate candidate and must be proven separately:
-
-```text
-candidate: XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF
-digest:    246f6e9e4c64fe142760045dbca69070405ae50f552b34387ce8709c3c7226e3
-location:  schematron/rule[46]/assert[2]
-context:   xlf:pc[@subFlowsEnd][ancestor::xlf:segment|ancestor::xlf:ignorable]
-test:      @subFlowsStart
-occurrence:
-1443b1090a3a0f118c4c478fbabe27a2fef549a4c3ad0168d7b6ef0d95d8b80f
-```
-
-`SAL-XLIFF-00005` currently has no exact manifest assertion for either mutual
-presence rule. Repair its claim/evidence/receipt through `ingest-spec-sal` and
-`sal-pipeline-heal`; do not hand-edit only downstream hashes. The pair
-assertions are present in the pinned 2.1 Schematron. The pinned 2.0 package
-defines both attributes but the reassessment did not find the equivalent
-must-be-used-in-pair requirement. Therefore either find and bind separate 2.0
-normative authority or narrow this exact pairing obligation to `xliff_2.1`.
-Never project the 2.1 rule into 2.0 merely to preserve the current denominator.
-
-Required RED controls:
-
-1. Generated proposal alone cannot increment `verified_disposition_count`.
-2. A valid denominator obligation omitted by the proposal can be independently
-   accepted, and the normalized artifact exposes it as unproposed.
-3. Every generated proposal ID is accepted or reasoned-rejected.
-4. `segment` and `ignorable` context tokens cannot create independent
-   hierarchy obligations.
-5. `subFlowsStart` without `subFlowsEnd` is rejected.
-6. `subFlowsEnd` without `subFlowsStart` is rejected from its exact authority
-   occurrence, not inferred.
-7. One reciprocal decision cannot compile a bidirectional pairing obligation;
-   both exact candidates are required.
-8. Any candidate, occurrence, member, denominator, decision, SAL, or
-   adjudicator drift invalidates the projection.
-9. Duplicate, unknown, foreign-format, missing, or unreasoned decisions fail
-   closed.
-
-## Expected execution sequence
-
-1. Reproduce current green from immutable commit.
-2. Write focused failing tests for generator-omitted acceptance, reciprocal
-   proof, and one-sided compilation rejection.
-3. Inspect both exact authority occurrences and canonical `SAL-XLIFF-00005`.
-4. Repair the independent-adjudication invariant.
-5. Add two reasoned decisions that accept only the direct pairing owner and
-   explicitly reject every incidental proposal.
-6. Repair the canonical SAL proof and profile claim, then regenerate only
-   affected artifacts.
-7. Preserve all 26 existing obligation IDs and all 1,130 candidate IDs.
-8. Run focused tests, nine dependency drift classes, static checks,
-   format-contract and production-program regression, SAL verification,
-   authority audit, transcript checks, and three clean generations.
-9. Record the honest boundary. Counts may remain unchanged if the authority
-   supports no new denominator obligation.
-10. Explicitly stage reviewed paths, run coordination precommit, commit, and
-    push GitLab `main`.
-11. Replay from the immutable commit.
-12. Append one new native event and update projections before handover.
-
-## Failure handling
-
-- A test regression creates a repair task; it does not weaken the test.
-- An oracle contradiction requires a discriminating test and authority review.
-- A dirty workspace is preserved and attributed.
-- A live XLIFF owner triggers the already-serialized UBL fallback only.
-- A stale digest invalidates descendants.
-- Three materially different failed repair attempts may mark only that
-  obligation technically blocked; other safe work continues.
-- Missing publication credentials never blocks completing release-ready
-  artifacts.
-
-## Completion rules
-
-Partial-002-B Repair-001 is complete only when both reciprocal decisions and
-all negative controls
-are committed, pushed, independently replayed, journaled, and projected.
-XLF-04 remains incomplete unless all Core and module obligation exit criteria
-pass. The overall mission remains active until six libraries are technically
-certified and extraction-ready.
-
-Use [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml) for the hardened
-machine-readable acceptance rules and
-[event-31/RUNBOOK.md](event-31/RUNBOOK.md) for exact replay commands.
+Never claim product completion. The next microstep can advance one contract
+obligation or disposition; it cannot certify XLIFF or any other library.

@@ -1,84 +1,56 @@
-schema: ff6/provider-neutral-checkpoint@6
-artifact_id: FF6-HANDOVER-CHECKPOINT-EVENT-31
+schema: ff6/provider-neutral-checkpoint@8
+artifact_id: FF6-HANDOVER-CHECKPOINT-EVENT-32
 visibility: internal
 publish_allowed: false
 generated_by: codex
-generated_at: "2026-07-30"
-
+generated_at: '2026-07-30'
 source_checkpoint:
   forge: GitLab
   remote: origin
   branch: main
-  required_remote_ref: origin/main
-  control_commit: 240474babf868fa141850d4ed4792d3a8269ef28
-  attempted_implementation_commit: d99fc6bf3679cd39396afbf5621847e3009ddf31
-  last_accepted_implementation_commit: e13e103de0bb789ff51a8e931af0fb649474be20
-  implementation_on_remote: true
+  repository_checkpoint: 530f18fe89a6875276e8f4442351445564df80e9
+  implementation_commit: ff8f7d9f9ff1ff613be376e1361b0dd8304566e3
   packet_commit_rule: >-
-    The commit containing this packet must descend from the implementation
-    commit. The packet does not claim the hash of the commit containing its
-    own final bytes.
-
+    The commit containing this packet must descend from repository_checkpoint;
+    the packet does not self-reference the hash of its own final commit.
 controller_checkpoint:
   controller_state: CONTRACT
-  event_sequence: 31
-  event_id: FF6-EVENT-000031
-  event_hash: 26f95f054774f35244a2edbfc08072156a1422acfb1e1d29c2c37a617dd90d55
+  event_sequence: 32
+  event_id: FF6-EVENT-000032
+  event_hash: 1b04941583c0015b42115b8d07ca748a744561a000833b38fc64412531164054
   task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
   task_state: WORK_IN_PROGRESS
-  parent_task: TC-FF6-PROGRAM-CAPABILITIES-001
-  parent_state: NEEDS_REPAIR
   first_unmet_step: XLF-04
-  exact_next_microstep: XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001
-
+  completed_microstep: XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001
+  exact_microstep: XLF-04-BATCH-005-PARTIAL-002-C
 verified_xliff_boundary:
-  candidate_census_sha256: 24c1902b6387cc9fa3402f78392ba91c6e6656407719ec11cfaab1c4f3d22b9e
   candidates: 1130
-  dispositions_verified: 1
-  dispositions_unverified: 1129
-  adjudication_sha256: 28399664d50afdd15e9f8b5ab2824a9566aa478fd0fcb18c97ce1451fd90d521
+  dispositions_verified: 3
+  dispositions_unverified: 1127
   expected_obligation_ids: 105
-  source_bound_rows: 26
-  missing_source_bound_rows: 79
-  inventory_sha256: 83b9f2da44b33a93cea6740e7510b32b961dda80791f9f148c163e913922f5e0
+  source_bound_rows: 27
+  missing_source_bound_rows: 78
   complete: false
-
-rejected_attempt:
-  commit: d99fc6bf3679cd39396afbf5621847e3009ddf31
-  mechanical_adjudication_sha256: 3d9c81773ceaddaae97a55fc804bd35efaf6501fe24c9fae8bf941fe338ceb01
-  mechanical_inventory_sha256: d5f77d95c703f62766e4ef4178ee3d811147df06844f0eacdec372bbd51cb351
-  mechanical_rows: 27
-  mechanical_verified_dispositions: 2
-  production_acceptance: REJECTED
-  reason_summary: >-
-    Wrong semantic owner, missing reciprocal decision, unsupported XLIFF 2.0
-    projection, incomplete SAL assertion closure, and generator-constrained
-    adjudication.
-
-exact_next_candidate:
-  candidate_id: XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
-  candidate_content_sha256: 0a37761215603eb4db3f9602f6e979869b4f1f44c124c1f5ca2183cba1d7578a
-  source_id: SRC-XLF-002
-  source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
-  member: schemas/xliff_core_2.1.sch
-  member_sha256: d4275f2d2574f892624bcd8f83bcc3001c75d623e4eb36896d15d147f16ed7a2
-  location: schematron/rule[47]/assert[2]
-  occurrence_sha256: a6e64656091d0985bf218c985ee545b328844d909414e4bbe83f8ddf6a663a0e
-  direct_rule: subFlowsStart and subFlowsEnd on pc must be used as a pair
-
+verified_ubl_boundary:
+  schema_documents: 106
+  document_roots: 91
+  dependency_edges: 297
+  global_components: 3788
+  global_reference_uses: 8926
+  unresolved_references: 0
+  ambiguous_references: 0
+  ubl_03_complete: false
 truth_boundary:
   products_certified: 0
   promotions: UNASSESSED_ALL_SIX
   xlf_04_complete: false
   ubl_03_complete: false
-  product_source_effect: none
   gate_transition: none
   release_transition: none
-
 mandatory_resume_validations:
-  - GitLab main ancestry and exact implementation commit
-  - native journal hash chain through Event 31
-  - controller, taskcard, and handover semantic agreement
-  - artifact check modes and exact digests
-  - clean workspace or explicit coordination attribution
-  - fresh provider identity, exact-path leases, and new execution manifests
+  - GitLab main equality and ancestry
+  - native event chain through Event 32
+  - controller, taskcard, packet, adjudication, and inventory agreement
+  - manifest hashes and structured parsing
+  - clean worktree with no local-only dependency
+  - fresh provider identity, exact leases, manifests, and mutation guard

@@ -1,48 +1,48 @@
 ---
-artifact_id: FF6-ACTIVE-WORK-CHECKPOINT-EVENT-31
-artifact_type: active_checkpoint
+artifact_id: FF6-ACTIVE-CHECKPOINT-EVENT-32
 visibility: internal
 publish_allowed: false
 generated_by: codex
 generated_at: 2026-07-30
 ---
 
-# Active work checkpoint
+# Active FF6 checkpoint
 
-The current control boundary is clean, committed, and pushed:
+## Achieved and immutable — `FF6-EVENT-000032`
 
-```text
-control commit: 240474babf868fa141850d4ed4792d3a8269ef28
-attempt commit: d99fc6bf3679cd39396afbf5621847e3009ddf31
-event:  FF6-EVENT-000031
-state:  CONTRACT
-task:   TC-FF6-XLIFF-PROFILE-SURFACE-001 / WORK_IN_PROGRESS
-next:   XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001
-```
+- GitLab `main` contains the XLIFF repair at `ff8f7d9f` and Event 32 control
+  commit `530f18fe`.
+- XLIFF authority census: 1,130 stable candidate identities.
+- XLIFF Core denominator: 105 expected obligations.
+- Production-accepted XLIFF boundary: 27 obligations, 78 missing; 3 candidate
+  dispositions verified, 1,127 open.
+- The repaired XLIFF 2.1 reciprocal `pc` subflow constraint has two independent
+  decisions and one narrow `SAL-XLIFF-CORE-INLINE-PAIRING-001` row.
+- All 26 predecessor rows are unchanged.
+- Focused 64, format-contract 94 (one exact known deselection), and
+  production-program 69 tests pass. Static, SAL, authority, check-mode, and
+  three-run determinism controls pass.
+- UBL commits `730c8fdf` and `bdc66bd5` bind 106 schemas, 91 roots, 297
+  dependency edges, 3,788 global components, and 8,926 reference uses with
+  zero unresolved/ambiguous global references. Eighteen focused tests pass.
 
-There is no local-only recovery dependency. The attempted implementation is
-preserved on GitLab but is not production-accepted.
+## Not achieved
 
-## Verified bounded result
+- XLF-04 is incomplete: 78 obligation IDs and 1,127 candidate dispositions
+  remain open.
+- UBL-03 is incomplete: local particles, anonymous types, derivation,
+  occurrence/order, facets, wildcards, substitutions, documentation, and the
+  final checked-in graph remain open.
+- No library is technically certified; every promotion remains `UNASSESSED`.
+- OpenRaster still has no product package. The five existing products are
+  partial pre-production implementations, not publication candidates.
+- Cross-platform installed-wheel, complete corpus/oracle, fuzz, mutation,
+  performance, SBOM, provenance, signature, and release proof are not complete
+  for any of the six.
 
-- one candidate independently accepted at Event 30;
-- 1 accepted and 1,129 open dispositions;
-- 26 of 105 expected obligations source-bound;
-- 79 rows still missing;
-- XLF-04 incomplete;
-- 0 of 6 products certified;
-- no promotion, release, gate, or product-source transition.
+## Exact continuation
 
-## Exact resume
-
-Validate Event 31, create a fresh provider identity, and execute
-`XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001` for
-`XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1`.
-
-Do not rerun completed XLF batches unless an input digest changed. Do not treat
-the generated mapping proposal as independent evidence. Do not begin product
-source while the controller remains in `CONTRACT`.
-
-The immutable packet is [event-31/START-HERE.md](event-31/START-HERE.md).
-Event 30 is the accepted evidence predecessor, not the current execution
-instruction.
+Perform `XLF-04-BATCH-005-PARTIAL-002-C` from
+[NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml). Preserve the Event 32 boundary,
+compile at most one independently proven row, and keep all completion and
+promotion flags false.
