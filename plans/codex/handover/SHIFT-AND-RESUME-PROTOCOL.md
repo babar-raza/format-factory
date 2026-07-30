@@ -39,36 +39,32 @@ disjoint, separately taskcarded scopes with non-overlapping leases.
 ## Current transfer boundary
 
 - Required XLIFF implementation ancestor:
-  `315efa5f5f4420202b5254c86ccd8863a91c385f`.
-- Required Event 29 projection ancestor:
-  `c1f4be66b97acb9a23faa02764e3d41ec1e4a3b0`.
+  `e13e103de0bb789ff51a8e931af0fb649474be20`.
 - Use the fetched `origin/main` descendant containing this packet.
 - Controller state: `CONTRACT`.
-- Event: `FF6-EVENT-000029`.
+- Event: `FF6-EVENT-000030`.
 - Event hash:
-  `de12acdefd04c37a918e3fd27dcb8dd076f53e576ee7049cf1efc732d02028bb`.
+  `2d365d013b94c386014d7e75813114de6d7a225e2a9e16d21a485a38cd2d9398`.
 - Completed task: `TC-FF6-NRRD-PROFILE-SURFACE-001` - `PASS`.
 - Active task: `TC-FF6-XLIFF-PROFILE-SURFACE-001` -
   `WORK_IN_PROGRESS`; XLF-01/XLF-02/XLF-03 and XLF-04 batches 001-004
   complete, XLF-04 still first unmet.
-- Canonical event microstate: `RESUMABLE` at Event 29.
-- Exact next action:
-  `XLF-04-BATCH-005-PARTIAL-002_DISPOSITION_VERIFICATION_AND_OBLIGATION_COMPILATION`.
-- First TDD slice: `XLF-04-BATCH-005-PARTIAL-002-A` in
-  `NEXT-MICROSTEP.yaml`.
-- Current boundary: 1,130 source-authentic candidates, zero verified
-  dispositions, 25/105 source-bound IDs, 80 missing rows, and 60 expected IDs
-  with no candidate mapping.
+- Canonical event microstate: `RESUMABLE` at Event 30.
+- Exact next action: `XLF-04-BATCH-005-PARTIAL-002-B`.
+- Current boundary: 1,130 source-authentic candidates, one verified
+  disposition, 26/105 source-bound IDs, and 79 missing rows.
+- Workspace boundary: no product overlay and no provider-local recovery asset.
 - Product promotion: none.
 
 ## Incoming provider procedure
 
 1. Fetch `origin/main`; do not use GitHub or a provider branch.
-2. Verify `315efa5f` and `c1f4be66` are ancestors of fetched GitLab main.
+2. Verify `e13e103de0bb789ff51a8e931af0fb649474be20` is an ancestor
+   of fetched GitLab main.
 3. Read `INFLIGHT-RECOVERY.yaml` and verify that no local recovery asset is
    required.
 4. Read the ordered authority list in `START-HERE.md`.
-5. Validate the journal through Event 29 using FF6 native semantics:
+5. Validate the journal through Event 30 using FF6 native semantics:
    `previous_event_hash`, canonical JSON, sequential event IDs and hashes.
 6. Verify controller head, parent/child task states, task index, current gaps,
    authority 17/17 global and 5/5 XLIFF match, and capability manifest
@@ -80,22 +76,22 @@ disjoint, separately taskcarded scopes with non-overlapping leases.
     directories, transcript, and artifact directory.
 11. Resolve the required registered skills and run the mutation guard.
 12. Capture input baselines before writing.
-13. Validate `reports/ff6/xliff-authority-member-inventory.yaml` against both
-    pinned packages; replay Event 29 evidence and independently validate
-    commit `315efa5f`, its 64 focused tests, affected regressions, static
-    checks, all artifact check modes, authority replay, and three identical
-    census outputs. Verify the controller projection and taskcard agree.
-    Re-run completed behavior only if its recorded inputs were invalidated.
+13. Replay Event 30 using `event-30/RUNBOOK.md`: verify both adjudication and
+    obligation check modes, the three immutable smoke tests, exact
+    adjudication and inventory digests, 5/5 XLIFF authority replay, and
+    controller/taskcard agreement. Re-run broader completed behavior only if
+    a bound input was invalidated.
 14. Read `NEXT-MICROSTEP.yaml`; begin with its fixed candidate and RED
     controls, not a newly selected convenience batch.
 
 ## Implementation-only commit recovery
 
 The former implementation-only recovery conditions are closed. GitLab
-contains immutable implementation commit `315efa5f` and Event 29 checkpoint
-`c1f4be66`. Incoming providers must verify both ancestors and must not append a
-duplicate Event 29. `INFLIGHT-RECOVERY.yaml` records that no provider-local
-byte is required.
+contains immutable implementation commit
+`e13e103de0bb789ff51a8e931af0fb649474be20` and the Event 30 packet.
+Incoming providers must verify the ancestor and must not append a duplicate
+Event 30. `INFLIGHT-RECOVERY.yaml` records that no provider-local byte is
+required.
 
 The new provider reconstructs the state; it does not accept a prior provider's
 claim on trust. A mismatch produces a named discrepancy and invalidates only
@@ -297,7 +293,7 @@ print(f"PASS events={len(events)} head={previous}")
 currently fails at event 1 because it expects `previous_hash`. FF6 uses
 `previous_event_hash` under `ff6/controller-event@1`.
 
-This is `FF6-GAP-011`, not evidence that Event 29 is corrupt. Validate the FF6
+This is `FF6-GAP-011`, not evidence that Event 30 is corrupt. Validate the FF6
 native chain and do not edit either journal schema ad hoc.
 
 ## XLIFF completed surface and next semantic denominator

@@ -77,9 +77,9 @@ Every shift records three independent state axes:
 
 | Axis | Question | Current answer |
 |---|---|---|
-| Mission state | What does the native journal authorize next? | `CONTRACT`, Event 29, XLIFF `XLF-04-BATCH-005-PARTIAL-002_DISPOSITION_VERIFICATION_AND_OBLIGATION_COMPILATION` |
-| Immutable evidence state | What committed work can be replayed? | The 1,130-row XLIFF authority-bound census and the first UBL-03 root/type primitive are journaled; semantic XLIFF dispositions and the reachable UBL graph remain open |
-| Workspace transfer state | Which current local bytes can the incoming executor own? | Event 29 is the clean GitLab checkpoint; the exact seven-file Partial-002-A RED overlay in `INFLIGHT-RECOVERY.yaml` is required for lossless continuation and must be hash-verified before adoption |
+| Mission state | What does the native journal authorize next? | `CONTRACT`, `FF6-EVENT-000030`, XLIFF `XLF-04-BATCH-005-PARTIAL-002-B` |
+| Immutable evidence state | What committed work can be replayed? | Event 30 binds one independently adjudicated XLIFF candidate, 26/105 source-bound obligations, the 1,130-row candidate census, and the earlier UBL root/type primitive |
+| Workspace transfer state | Which current local bytes can the incoming executor own? | No product overlay exists; all required implementation bytes are reconstructible from GitLab `origin/main`, and the incoming provider obtains fresh leases |
 
 An immutable evidence commit without a journal transition is not a task-state
 transition. A dirty worktree with a passing test is not a committed checkpoint.
@@ -88,23 +88,19 @@ duplicate work, status inflation, and cross-provider data loss.
 
 ## 4. Current clean checkpoint
 
-At the immutable Event 29 packet boundary:
+At the immutable Event 30 boundary:
 
-- Event 29's implementation and projection commits remain the canonical
-  controller evidence.
-- XLIFF implementation is immutable at
-  `315efa5f5f4420202b5254c86ccd8863a91c385f`.
-- Native journal/Event projection is immutable at
-  `c1f4be66b97acb9a23faa02764e3d41ec1e4a3b0`.
-- Native journal head is `FF6-EVENT-000029`,
-  hash
-  `de12acdefd04c37a918e3fd27dcb8dd076f53e576ee7049cf1efc732d02028bb`.
+- The bounded XLIFF implementation commit is
+  `e13e103de0bb789ff51a8e931af0fb649474be20`.
+- Native journal head is `FF6-EVENT-000030`, hash
+  `2d365d013b94c386014d7e75813114de6d7a225e2a9e16d21a485a38cd2d9398`.
 - Canonical active task is
   `TC-FF6-XLIFF-PROFILE-SURFACE-001`.
 - Canonical exact next microstep is
-  `XLF-04-BATCH-005-PARTIAL-002_DISPOSITION_VERIFICATION_AND_OBLIGATION_COMPILATION`.
-- XLIFF Event 29 proves 1,130 source-authentic candidates and zero
-  independently verified dispositions. It does not close XLF-04.
+  `XLF-04-BATCH-005-PARTIAL-002-B`.
+- XLIFF Event 30 proves 1,130 source-authentic candidates, one independently
+  verified disposition, 26 source-bound obligation rows, and 79 missing rows.
+  It does not close XLF-04.
 - UBL commits `7b5cce4f` and `7fc49c29` prove UBL-02 and UBL-01;
   `f98d220a` proves the first UBL-03 root/type graph primitive. Events 27 and
   28 record those task-state effects.
@@ -113,20 +109,10 @@ At the immutable Event 29 packet boundary:
   `e199e84e9f7ee0579959db28283ecb89e014077cdd1605fbf0c82aee553d9960`;
   three-run digest
   `eafd6f8657ed83b73dbd5975046698d24fda6d8fd58c3d6aea962e6b6a85cf7c`.
-- The controller contains the fresh capability aggregate and three-run
-  digests carried through Event 29.
-
-The packet is derived from Event/projection commit `c1f4be66`. The commit
-containing a future refresh must descend from that commit; the packet cannot
-embed its own final commit hash.
-
-At the current outbound freeze, GitLab `origin/main` and local `HEAD` are
-`edcc121152e4a238b62c33180f9e733badfde4b7`. Seven uncommitted XLIFF paths
-form a content-addressed `RED_OBSERVED` overlay. That overlay has 13 passing
-adjudication controls and one expected compiler failure. It does not change
-Event 29's zero verified dispositions, controller, task state, or promotion.
-The exact statuses, hashes, test result, and adoption procedure are in
-`INFLIGHT-RECOVERY.yaml`.
+- The controller contains those capability digests and the Event 30 XLIFF
+  adjudication and inventory digests.
+- No product overlay or provider-local recovery asset is required. The packet
+  commit must descend from the implementation commit, but cannot hash itself.
 
 ## 5. Exact start algorithm for every incoming executor
 
@@ -148,10 +134,9 @@ Run this algorithm before any mutation:
    pretending the database is clean.
 7. Register a new provider identity. Never reuse an outgoing identity or
    token.
-8. Select the exact registered skill route, claim the seven matching recovery
-   paths plus only the next required production paths, create
-   an execution manifest, run the mutation guard, preflight before every
-   write, and record every write.
+8. Select the exact registered skill route, claim only paths demonstrated by
+   the next RED test, create a fresh execution manifest, run the mutation
+   guard, preflight before every write, and record every write.
 9. Recompute the next action from the decision table below.
 
 If any higher authority advanced, stop following the old exact-next text,
@@ -162,15 +147,13 @@ rebuild the state projection, and refresh the packet before product work.
 Use this decision order:
 
 ```text
-new native event after Event 29?
+new native event after Event 30?
   yes -> validate the complete chain and execute the newly computed task
-  no  -> seven recovery paths match INFLIGHT-RECOVERY.yaml?
-           no  -> freeze mismatched paths, reconcile ownership and evidence
-           yes -> exact XLIFF partial-002 scope owned by another ACTIVE lease?
-                    yes -> preserve all XLIFF bytes; execute UBL-03 under
-                           disjoint leases; do not repeat Events 28 or 29
-                    no  -> adopt the overlay, replay 13 pass / 1 RED, and
-                           continue at the obligation-compiler gate
+  no  -> product overlay or unexplained dirty state exists?
+           yes -> preserve and reconcile; continue only disjoint safe work
+           no  -> exact XLIFF Partial-002-B scope live-owned?
+                    yes -> preserve XLIFF; execute serialized UBL fallback
+                    no  -> replay Event 30 and start the fixed RED candidate
 ```
 
 Canonical priority and operationally safe priority are different:
@@ -179,7 +162,7 @@ Canonical priority and operationally safe priority are different:
 - While that scope is live-owned, the first safe disjoint action is UBL-03.
   It does not replace XLIFF as active task.
 - The machine action ID is `UBL-03`.
-- After Event 29, if XLIFF remains live-owned, UBL-03 may continue only if the
+- After Event 30, if XLIFF remains live-owned, UBL-03 may continue only if the
   serialized projections agree and its exact source/report paths are
   independently leased.
 
@@ -218,8 +201,7 @@ Required serialized result:
 - record first unmet step `UBL-03`;
 - keep canonical active/next task XLIFF
   `TC-FF6-XLIFF-PROFILE-SURFACE-001`;
-- keep exact XLIFF next action
-  `XLF-04-BATCH-005-PARTIAL-002_DISPOSITION_VERIFICATION_AND_OBLIGATION_COMPILATION`;
+- keep exact XLIFF next action `XLF-04-BATCH-005-PARTIAL-002-B`;
 - update the controller capability digests only from a fresh identical replay;
 - update the UBL taskcard and task index consistently;
 - keep the broad UBL typing gap open;
@@ -252,28 +234,29 @@ When its paths are safely ownable, resume the same task rather than starting a
 replacement. The exact first candidate and RED controls are locked in
 `NEXT-MICROSTEP.yaml`:
 
-1. preserve the 25 existing source-bound obligation rows;
+1. preserve the 26 existing source-bound obligation rows;
 2. retain generated dispositions as proposals, never as proof;
-3. preserve and revalidate the existing local content-addressed adjudication
-   record binding candidate,
+3. preserve and revalidate the committed content-addressed adjudication record
+   binding candidate,
    occurrence, authority, denominator, decision, accepted IDs, rejected IDs,
    and reasons;
-4. replay the 13 passing controls for
-   `XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90`, then observe the exact
-   obligation-compiler RED;
+4. replay Event 30 check modes and its three immutable smoke tests, then write
+   the new failing decision test for
+   `XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1`;
 5. increment verified counts only from valid independent adjudications;
-6. expand the 105-ID denominator for newly exposed semantics;
+6. reuse an exact canonical obligation only if its semantics own the rule;
+   otherwise add a new stable denominator ID with exact authority evidence;
 7. compile source-bound obligations only after their adjudications validate;
 8. retain `complete: false` until authority census, expected-ID closure, and
    canonical SAL verification are all complete.
 
-Event 29 facts that must not be weakened:
+Event 30 facts that must not be weakened:
 
 - 1,130 candidates: 182 normative prose, 588 non-modal prose, 264 XSD, and 96
   Schematron;
 - every candidate is bound to pinned authority replay;
-- all 1,130 semantic dispositions remain independently unverified;
-- 25 source-bound rows, 80 expected IDs still missing;
+- one disposition is independently verified and 1,129 remain unverified;
+- 26 source-bound rows exist and 79 expected IDs remain missing;
 - every existing row remains `SOURCE_BOUND_UNVERIFIED`.
 
 ## 9. Per-task execution transaction

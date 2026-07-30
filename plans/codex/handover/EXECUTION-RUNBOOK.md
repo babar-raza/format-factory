@@ -24,14 +24,14 @@ DISCOVER -> SNAPSHOT -> CONTRACT -> IMPLEMENT -> VERIFY
 ```
 
 Current state is `CONTRACT`. Events 16-19 passed the authority and first four
-format-profile prerequisites. Events 20-29 advanced XLIFF to 1,130
-source-authentic Core candidates and UBL to a deterministic 91-root
-root/type primitive. XLF-04 remains first unmet because zero XLIFF candidate
-dispositions are independently verified, 80 expected obligation rows are
-missing, and 60 expected IDs have no candidate mapping. The parent capability
-task remains `NEEDS_REPAIR`, so product implementation is
-locked. The active task is `TC-FF6-XLIFF-PROFILE-SURFACE-001`, and the first
-unmet step is XLF-04.
+format-profile prerequisites. Events 20-30 advanced XLIFF to 1,130
+source-authentic Core candidates, one independently verified disposition, and
+26/105 source-bound obligations; UBL has a deterministic 91-root root/type
+primitive. XLF-04 remains first unmet because 1,129 candidate dispositions and
+79 expected obligation rows remain open. The parent capability task remains
+`NEEDS_REPAIR`, so product implementation is locked. The active task is
+`TC-FF6-XLIFF-PROFILE-SURFACE-001`; the exact next microstep is
+`XLF-04-BATCH-005-PARTIAL-002-B`.
 
 ## Canonical state precedence
 
@@ -106,8 +106,8 @@ No product wave may bypass the program dependencies.
 
 ### Inputs
 
-- Event 29, implementation commit `315efa5f`, and projection commit
-  `c1f4be66`;
+- `FF6-EVENT-000030` and implementation commit
+  `e13e103de0bb789ff51a8e931af0fb649474be20`;
 - the locked XLIFF 2.0 and 2.1 OASIS Standard packages, prose members,
   product requirements, and 42-member tracked inventory;
 - `shared/format-contracts/authority-lock.yaml`;
@@ -121,30 +121,32 @@ No product wave may bypass the program dependencies.
 
 ### Steps
 
-1. Revalidate Event 29, the complete journal, controller/task/index
-   agreement, both immutable commits, all five XLIFF authority matches, all
-   artifact check modes, 64 focused tests, affected regressions, static
-   checks, and three identical census generations.
+1. Revalidate Event 30, the complete journal, controller/task/index
+   agreement, the immutable implementation ancestor, all five XLIFF authority
+   matches, both current artifact check modes, the three immutable smoke
+   tests, and recorded adjudication/inventory digests.
 2. Re-run completed XLF steps only if their recorded input closure changed.
-   Preserve the 1,130 candidate IDs, 105 expected IDs, and 25 existing
+   Preserve the 1,130 candidate IDs, 105 expected IDs, and 26 existing
    obligation rows.
 3. Read the TDD, SAL ingestion, and SAL healing command contracts. Register a
    fresh provider identity, claim exact paths, create an execution manifest,
    run the mutation guard, and preflight every write.
-4. Execute the fixed first batch in `NEXT-MICROSTEP.yaml`. Start with RED
-   controls proving that incidental XPath context names cannot create direct
-   hierarchy/cardinality ownership and that generated proposals cannot
-   increment verified counts.
-5. Implement a separate content-addressed adjudication record and validator.
-   Preserve the proposal; overlay only independently justified decisions.
+4. Execute `XLF-04-BATCH-005-PARTIAL-002-B` from
+   `NEXT-MICROSTEP.yaml`. Start with a RED decision test for
+   `XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1`; prove that incidental
+   ancestor names cannot create hierarchy ownership and that the reciprocal
+   pair rule comes from its own authority occurrence.
+5. Extend the existing separate content-addressed adjudication record and
+   validator. Preserve generated proposals; overlay only independently
+   justified decisions.
 6. Bind adjudication invalidation to candidate content, occurrence, authority,
    denominator, decision, tool, and dependency digests.
 7. Compile or repair a source-bound obligation only after its adjudication
    passes. Record accepted and rejected obligation IDs with exact authority
    reasons.
 8. Keep `complete=false`: the tracked denominator has 105 expected IDs, only
-   25 source-bound rows, 80 missing rows, and 60 IDs without candidate
-   mappings. Continue bounded adjudication batches until the complete Core
+   26 source-bound rows, 79 missing rows, and 1,129 unverified candidate
+   dispositions. Continue bounded adjudication batches until the complete Core
    delta and processing map exists.
 9. Audit every current XLIFF SAL fact against that map. Split mixed 2.0/2.1
    claims; ingest missing facts and heal false claims only through registered

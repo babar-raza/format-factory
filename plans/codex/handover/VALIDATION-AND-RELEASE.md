@@ -49,7 +49,7 @@ Events 16 through 22 prove:
 - IPYNB exact SAL verification `25/25`;
 - NRRD exact SAL verification `25/25`, 18-domain/41-policy explicit-complete
   family ownership, and all five profiles claimed;
-- native FF6 event chain passes through Event 29;
+- native FF6 event chain passes through `FF6-EVENT-000030`;
 - the official XLIFF 2.0 package and prose are independently pinned, legally
   classified, and reconstructed offline with all five XLIFF authorities
   matching;
@@ -90,19 +90,25 @@ Events 16 through 22 prove:
 - batch 003 produces 25 source-bound obligations against a 105-ID open
   denominator, leaving 80 IDs unresolved. All 12 categories are represented,
   but the authority census and XLF-04 remain incomplete.
-- Event 29 binds implementation commit `315efa5f` and projection commit
-  `c1f4be66`, with 1,130 source-authentic candidates: 182 normative prose, 588
-  non-modal prose, 264 Core XSD, and 96 Core Schematron;
+- Event 30 binds implementation commit
+  `e13e103de0bb789ff51a8e931af0fb649474be20`, with 1,130
+  source-authentic candidates: 182 normative prose, 588 non-modal prose, 264
+  Core XSD, and 96 Core Schematron;
 - all candidate content, occurrences, members, profiles, and authority inputs
   replay against pinned XLIFF 2.0/2.1 bytes;
 - 64 focused tests, 94 affected format-contract tests with one named
   baseline-known deselection, 69 production-program tests, Ruff, strict
   Mypy, Pyright 1.1.411, bytecode compilation, 5/5 XLIFF authority matches,
   and three identical census generations pass;
-- zero of 1,130 semantic dispositions are independently verified; 60 expected
-  IDs lack a candidate mapping and 80 expected IDs lack source-bound rows;
+- one of 1,130 semantic dispositions is independently verified; 1,129 remain
+  open and 79 expected IDs lack source-bound rows;
 - the current token router can over-map incidental XPath context names, so
   proposal replay is not accepted as independent semantic verification.
+- the separate adjudication compiler rejects overmapped proposals and binds
+  the accepted decision to candidate, occurrence, authority, denominator,
+  canonical SAL, decision, tool, and dependency digests;
+- the Event 30 inventory is reproducible at 26/105 source-bound rows, while
+  XLF-04 remains explicitly incomplete.
 
 It does not prove:
 
@@ -112,8 +118,9 @@ It does not prove:
 - installed-wheel platform/dependency matrices;
 - certification, extraction, or release readiness.
 
-All obligations remain unverified and all promotion states remain
-`UNASSESSED`.
+No product obligation is certified and all promotion states remain
+`UNASSESSED`. Contract-source binding and candidate adjudication are
+prerequisites, not product behavior proof.
 
 ## Completed OpenRaster contract-task gate
 
@@ -180,12 +187,11 @@ named interoperability certification, not universal conformance.
   tests, Ruff,
   strict Mypy, Pyright 1.1.411, bytecode compilation, check mode, and three
   identical outputs for both reports;
-- Event-29 evidence is also required: exact implementation/census/tool/test/
-  receipt digests, 64 focused tests, affected regressions, static checks,
-  five authority matches, and three identical authority-bound generations;
-- XLF-04 continues at
-  `BATCH-005-PARTIAL-002_DISPOSITION_VERIFICATION_AND_OBLIGATION_COMPILATION`
-  until every
+- Event-30 evidence is also required: exact implementation/census/decision/
+  adjudication/denominator/SAL/inventory/tool/test/receipt digests, both
+  artifact check modes, focused and affected regressions, static checks, five
+  authority matches, and three identical authority-bound generations;
+- XLF-04 continues at `XLF-04-BATCH-005-PARTIAL-002-B` until every
   Core obligation, not merely
   every category, has exact stable
   profile, owner, authority/member/location, requirement class, and processing
@@ -317,3 +323,11 @@ Before every close:
 14. Do controller, taskcard, index, gaps, proof and packet agree?
 15. Were governance and release boundaries preserved?
 16. Is the final state no stronger than live evidence?
+17. Is every byte required to resume committed on GitLab main or identified as
+    an immutable content-addressed external input?
+18. Has the outgoing provider released only its own leases and avoided
+    transferring provider credentials or execution manifests?
+19. Did the shift avoid stash, reset, restore, checkout-discard, clean, broad
+    staging, and unscoped generators?
+20. Does the handover validator reject predecessor event instructions as well
+    as wrong hashes, counts, completion, certification, and recovery state?

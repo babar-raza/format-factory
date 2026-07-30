@@ -28,8 +28,8 @@ and advanced UBL through its first root/type graph primitive.
 It does not yet have a production-ready library. Five formats have existing
 implementation footholds of uneven depth. OpenRaster has no product package.
 All 672 compiled obligations are planning requirements, not verified behavior.
-The XLIFF census has zero independently verified semantic dispositions. All
-six promotion states are `UNASSESSED`.
+The XLIFF census has one independently verified semantic disposition and 1,129
+still open. All six promotion states are `UNASSESSED`.
 
 ## Product depth actually present
 
@@ -270,7 +270,7 @@ native event and every active-state projection.
 
 The durable control is `plans/codex/handover/validate_handover.py`. It derives
 the event head, controller sequence, completed steps, next batch, and
-25/105/80 denominator counts from the native journal; compares those semantics
+26/105/79 denominator counts from the native journal; compares those semantics
 with the manifest, checkpoint, and machine-state projections; verifies the
 complete event hash chain, local links, LF-normalized manifest digests, and
 GitLab ancestry; and rejects known predecessor-as-current language. Its
@@ -284,6 +284,15 @@ foreign dirty XLIFF workspace as current. Their bytes matched the manifest;
 their meaning did not match the journal. The validator must therefore bind
 every live-root projection to the machine state and reject known stale-state
 sentences, not merely validate the small set of primary projections.
+
+The Event 30 transfer audit found the same structural class again: several
+current operational documents still routed through the predecessor event,
+obsolete commits, and a closed uncommitted-overlay recovery procedure. The
+packet hash validator passed because it proved the stale bytes faithfully.
+The Event 30 hardening adds a current-operational-document set, required
+current markers, forbidden predecessor tokens, a seventh tamper control, and
+a working `--self-test` interface. Historical event directories remain
+immutable; only root instructions are required to describe the live boundary.
 
 ### Deterministic mapping is not independent semantic verification
 
@@ -354,12 +363,11 @@ The first bounded implementation cycle is fixed in
 
 ## Immediate repair order
 
-1. Execute
-   `XLF-04-BATCH-005-PARTIAL-002_DISPOSITION_VERIFICATION_AND_OBLIGATION_COMPILATION`
-   from the exact first candidate and RED controls in
-   `NEXT-MICROSTEP.yaml`. Build the independent adjudication layer, repair
-   overmapping, and retain XLF-04 incomplete until all 1,130 dispositions,
-   105 expected IDs, and source-bound obligations close through canonical SAL.
+1. Execute `XLF-04-BATCH-005-PARTIAL-002-B` from the exact candidate and RED
+   controls in `NEXT-MICROSTEP.yaml`. Extend the independent adjudication
+   layer, reject incidental hierarchy overmapping, and retain XLF-04
+   incomplete until all 1,130 dispositions, 105 expected IDs, and source-bound
+   obligations close through canonical SAL.
 2. Compile exact per-module applicability with isolated
    2.2 preview semantics.
 3. UBL all-root/common-component typing contract.
@@ -410,6 +418,7 @@ product source trees are unchanged from the baseline snapshot but no current
 production certification binds their complete package/environment closure.
 Confidence is low that the 672-obligation denominator is final until XLIFF and
 UBL repairs pass. XLIFF 2.0/2.1 candidate coverage is now much deeper and
-source-authentic, but all 1,130 candidate dispositions remain independently
-unverified, 80 expected IDs lack source-bound rows, and module ownership is
-still open. No stronger claim is justified.
+source-authentic, but only one of 1,130 candidate dispositions is independently
+verified, 79 expected IDs lack source-bound rows, and module ownership is still
+open. Event 30 proves a durable adjudication mechanism and one bounded
+decision, not broad XLIFF semantic coverage. No stronger claim is justified.

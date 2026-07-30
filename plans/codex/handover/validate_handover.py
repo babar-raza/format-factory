@@ -39,6 +39,22 @@ ADJUDICATION_PATH = (
     REPO_ROOT / "reports/sal-verification/xliff-core-candidate-adjudications.yaml"
 )
 INVENTORY_PATH = REPO_ROOT / "reports/ff6/xliff-core-obligation-inventory.yaml"
+OPERATIONAL_DOC_PATHS = (
+    "plans/codex/handover/START-HERE.md",
+    "plans/codex/handover/CLAUDE-START.md",
+    "plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md",
+    "plans/codex/handover/CURRENT-MACHINE-STATE.yaml",
+    "plans/codex/handover/checkpoint.yaml",
+    "plans/codex/handover/NEXT-MICROSTEP.yaml",
+    "plans/codex/handover/CURRENT-SHIFT-HANDOVER.md",
+    "plans/codex/handover/PROVIDER-SHIFT-CONTRACT.md",
+    "plans/codex/handover/SHIFT-AND-RESUME-PROTOCOL.md",
+    "plans/codex/handover/EXECUTION-RUNBOOK.md",
+    "plans/codex/handover/STATE-MACHINE-AND-TASKCARD-PROTOCOL.md",
+    "plans/codex/handover/VALIDATION-AND-RELEASE.md",
+    "plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml",
+    "plans/codex/handover/INFLIGHT-RECOVERY.yaml",
+)
 
 EXPECTED_EVENT_ID = "FF6-EVENT-000030"
 EXPECTED_EVENT_HASH = (
@@ -56,6 +72,16 @@ EXPECTED_ADJUDICATION_SHA256 = (
 )
 EXPECTED_INVENTORY_SHA256 = (
     "83b9f2da44b33a93cea6740e7510b32b961dda80791f9f148c163e913922f5e0"
+)
+STALE_OPERATIONAL_TOKENS = (
+    "FF6-EVENT-000029",
+    "315efa5f5f4420202b5254c86ccd8863a91c385f",
+    "c1f4be66b97acb9a23faa02764e3d41ec1e4a3b0",
+    "edcc121152e4a238b62c33180f9e733badfde4b7",
+    "XLF-04-BATCH-005-PARTIAL-002_DISPOSITION_VERIFICATION_AND_OBLIGATION_COMPILATION",
+    "seven recovery paths",
+    "seven matching recovery",
+    "packet_projection_changes_pending_commit: true",
 )
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
 LINK = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
@@ -336,6 +362,34 @@ def _manifest_errors(manifest: Mapping[str, Any]) -> list[str]:
     return errors
 
 
+def _manifest_parse_errors(manifest: Mapping[str, Any]) -> list[str]:
+    """Parse every structured artifact named by the packet manifest."""
+
+    errors: list[str] = []
+    for row in manifest.get("files", []):
+        if not isinstance(row, Mapping) or not isinstance(row.get("path"), str):
+            continue
+        relative = row["path"]
+        path = REPO_ROOT / relative
+        if not path.is_file():
+            continue
+        try:
+            if path.suffix in {".yaml", ".yml"}:
+                yaml.safe_load(path.read_text(encoding="utf-8"))
+            elif path.suffix == ".json":
+                json.loads(path.read_text(encoding="utf-8"))
+            elif path.suffix == ".jsonl":
+                for number, line in enumerate(
+                    path.read_text(encoding="utf-8").splitlines(),
+                    start=1,
+                ):
+                    if line.strip():
+                        json.loads(line)
+        except (UnicodeDecodeError, json.JSONDecodeError, yaml.YAMLError) as exc:
+            errors.append(f"structured artifact parse failed: {relative}: {exc}")
+    return errors
+
+
 def _link_errors(manifest: Mapping[str, Any]) -> list[str]:
     errors: list[str] = []
     rows = manifest.get("files", [])
@@ -369,6 +423,65 @@ def _task_errors() -> list[str]:
     for value in (EXPECTED_EVENT_ID, EXPECTED_MICROSTEP, EXPECTED_CANDIDATE):
         if value not in text:
             errors.append(f"active taskcard omits {value}")
+    return errors
+
+
+def _operational_documents() -> dict[str, str]:
+    return {
+        relative: (REPO_ROOT / relative).read_text(encoding="utf-8")
+        for relative in OPERATIONAL_DOC_PATHS
+    }
+
+
+def _operational_doc_errors(documents: Mapping[str, str]) -> list[str]:
+    """Reject current instructions that still route through an older event."""
+
+    errors: list[str] = []
+    for relative in OPERATIONAL_DOC_PATHS:
+        text = documents.get(relative)
+        if text is None:
+            errors.append(f"operational document missing from validation: {relative}")
+            continue
+        for token in STALE_OPERATIONAL_TOKENS:
+            if token in text:
+                errors.append(f"stale operational token in {relative}: {token}")
+
+    required_markers = {
+        "plans/codex/handover/PROVIDER-SHIFT-CONTRACT.md": (
+            EXPECTED_EVENT_ID,
+            EXPECTED_IMPLEMENTATION,
+            EXPECTED_MICROSTEP,
+        ),
+        "plans/codex/handover/SHIFT-AND-RESUME-PROTOCOL.md": (
+            EXPECTED_EVENT_ID,
+            EXPECTED_IMPLEMENTATION,
+            EXPECTED_MICROSTEP,
+        ),
+        "plans/codex/handover/EXECUTION-RUNBOOK.md": (
+            EXPECTED_EVENT_ID,
+            EXPECTED_MICROSTEP,
+        ),
+        "plans/codex/handover/STATE-MACHINE-AND-TASKCARD-PROTOCOL.md": (
+            EXPECTED_EVENT_ID,
+            EXPECTED_MICROSTEP,
+        ),
+        "plans/codex/handover/VALIDATION-AND-RELEASE.md": (
+            EXPECTED_EVENT_ID,
+        ),
+        "plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml": (
+            EXPECTED_EVENT_ID,
+        ),
+        "plans/codex/handover/INFLIGHT-RECOVERY.yaml": (
+            EXPECTED_EVENT_ID,
+            EXPECTED_IMPLEMENTATION,
+            EXPECTED_MICROSTEP,
+        ),
+    }
+    for relative, markers in required_markers.items():
+        text = documents.get(relative, "")
+        for marker in markers:
+            if marker not in text:
+                errors.append(f"current marker missing from {relative}: {marker}")
     return errors
 
 
@@ -434,6 +547,11 @@ def _negative_control_errors(base: dict[str, Any]) -> list[str]:
         )
         if not found:
             errors.append(f"negative control was not rejected: {label}")
+    mutated_documents = copy.deepcopy(base["documents"])
+    provider_contract = "plans/codex/handover/PROVIDER-SHIFT-CONTRACT.md"
+    mutated_documents[provider_contract] += "\nFF6-EVENT-000029\n"
+    if not _operational_doc_errors(mutated_documents):
+        errors.append("negative control was not rejected: stale operational event")
     return errors
 
 
@@ -448,6 +566,7 @@ def validate(*, require_clean: bool = False) -> dict[str, Any]:
     inventory = _load_yaml(INVENTORY_PATH)
     events = _events()
     latest = events[-1]
+    documents = _operational_documents()
     base = {
         "manifest": manifest,
         "checkpoint": checkpoint,
@@ -458,6 +577,7 @@ def validate(*, require_clean: bool = False) -> dict[str, Any]:
         "latest": latest,
         "adjudication": adjudication,
         "inventory": inventory,
+        "documents": documents,
     }
     errors = [
         *_event_chain_errors(events),
@@ -473,8 +593,10 @@ def validate(*, require_clean: bool = False) -> dict[str, Any]:
             inventory=inventory,
         ),
         *_manifest_errors(manifest),
+        *_manifest_parse_errors(manifest),
         *_link_errors(manifest),
         *_task_errors(),
+        *_operational_doc_errors(documents),
         *_git_errors(require_clean=require_clean),
         *_negative_control_errors(base),
     ]
@@ -486,7 +608,7 @@ def validate(*, require_clean: bool = False) -> dict[str, Any]:
         "next_microstep": EXPECTED_MICROSTEP,
         "next_candidate": EXPECTED_CANDIDATE,
         "manifest_files": len(manifest.get("files", [])),
-        "semantic_negative_controls": 6,
+        "semantic_negative_controls": 7,
         "errors": errors,
     }
 
@@ -494,6 +616,11 @@ def validate(*, require_clean: bool = False) -> dict[str, Any]:
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--require-clean", action="store_true")
+    parser.add_argument(
+        "--self-test",
+        action="store_true",
+        help="Run the built-in semantic tamper controls (always enabled).",
+    )
     args = parser.parse_args(argv)
     try:
         result = validate(require_clean=args.require_clean)
