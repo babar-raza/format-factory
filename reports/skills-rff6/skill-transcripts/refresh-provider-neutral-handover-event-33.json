@@ -68,7 +68,8 @@
     "Ruff on both handover validators: PASS.",
     "Python bytecode compilation on both handover validators: PASS.",
     "Stable double-read of seven preserved XLIFF occurrence paths: PASS; exact baseline and occurrence digests recorded.",
-    "Canonical occurrence-backed XLIFF evidence read from GitLab commit a79dad747a5305b24c41f42437f1824b3d92ec67 rather than unadopted workspace bytes."
+    "Canonical occurrence-backed XLIFF evidence read from GitLab commit a79dad747a5305b24c41f42437f1824b3d92ec67 rather than unadopted workspace bytes.",
+    "GitLab origin/main packet commit 7649786fe84c40ea01878a9368e35dcb6a428af6: PASS from a temporary detached worktree; shared_worktree_mutated=false."
   ],
   "result": "PASS",
   "evidence": {
@@ -76,6 +77,9 @@
     "event_hash": "eae356bca531c8cec38f57b012444d1032884b61eb5ef986018d7dd57c474988",
     "implementation_commit": "a79dad747a5305b24c41f42437f1824b3d92ec67",
     "accepted_xliff_implementation_commit": "ff8f7d9f9ff1ff613be376e1361b0dd8304566e3",
+    "packet_commit_replayed": "7649786fe84c40ea01878a9368e35dcb6a428af6",
+    "packet_replay_mode": "TEMPORARY_DETACHED_WORKTREE",
+    "packet_replay_result": "PASS",
     "manifest_files": 26,
     "semantic_negative_controls": 8,
     "xlf_source_bound_obligations": "27/105",
