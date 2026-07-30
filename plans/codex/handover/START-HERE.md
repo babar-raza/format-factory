@@ -17,7 +17,7 @@ C:\Users\prora\OneDrive\Documents\GitHub\format-factory\plans\codex\handover\STA
 
 The canonical repository is GitLab `origin/main`. Do not use the GitHub
 remote, create a branch, reuse another provider identity, or depend on ignored
-local bytes. The clean source checkpoint is GitLab commit
+local bytes. The native Event 32 control checkpoint is GitLab commit
 `530f18fe89a6875276e8f4442351445564df80e9`, containing native
 `FF6-EVENT-000032`. Its accepted implementation is
 `ff8f7d9f9ff1ff613be376e1361b0dd8304566e3`, and the exact continuation is
@@ -42,8 +42,9 @@ does not complete UBL-03.
 
 1. Read [AGENTS.md](../../../AGENTS.md), then
    [Claude start](CLAUDE-START.md).
-2. Fetch GitLab and require `HEAD == origin/main == 530f18fe...` before any
-   mutation.
+2. Fetch GitLab and require `HEAD == origin/main`, with `530f18fe...` as an
+   ancestor, before any mutation. The packet commit is necessarily later than
+   the control checkpoint.
 3. Run:
 
    ```powershell

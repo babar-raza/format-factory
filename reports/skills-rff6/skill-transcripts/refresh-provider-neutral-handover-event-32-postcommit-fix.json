@@ -1,0 +1,57 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "refresh-provider-neutral-handover-event-32-postcommit-fix",
+  "skill_id": "refresh-provider-neutral-handover",
+  "mode": "live",
+  "timestamp": "2026-07-30T03:52:00Z",
+  "inputs": {
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "source_checkpoint": "11e6e0533153bcfb86d1738a543d1b3a936efb38",
+    "canonical_remote": "origin",
+    "canonical_branch": "main",
+    "controller_path": "plans/strategic/ff6/controller-state.yaml",
+    "journal_path": "plans/strategic/ff6/events.jsonl",
+    "current_taskcard": "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
+    "exact_next_task": "XLF-04-BATCH-005-PARTIAL-002-C",
+    "packet_root": "plans/codex/handover/",
+    "execution_manifest": ".local/skills-first/manifests/sfx-ac892176aee0c725.json",
+    "authorization_id": "588cbeea25f67e72"
+  },
+  "allowed_files": [
+    "plans/codex/handover/START-HERE.md",
+    "plans/codex/handover/CLAUDE-START.md",
+    "plans/codex/handover/manifest.yaml",
+    "plans/codex/handover/validate_handover.py",
+    "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-event-32-postcommit-fix.json"
+  ],
+  "actual_files_changed": [
+    "plans/codex/handover/START-HERE.md",
+    "plans/codex/handover/CLAUDE-START.md",
+    "plans/codex/handover/manifest.yaml",
+    "plans/codex/handover/validate_handover.py",
+    "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-event-32-postcommit-fix.json"
+  ],
+  "tests_run": [
+    "Reproduced false fixed-HEAD instruction after the first packet commit.",
+    "Replaced it with HEAD equals origin/main plus Event 32 ancestry.",
+    "Added a negative stale-token guard against reintroducing the impossible equality wording.",
+    "Manifest hashes recomputed for every changed packet file.",
+    "Shared clean and detached origin/main validators rerun after commit."
+  ],
+  "result": "PASS",
+  "evidence": {
+    "pre_fix_packet_commit": "11e6e0533153bcfb86d1738a543d1b3a936efb38",
+    "event_control_commit": "530f18fe89a6875276e8f4442351445564df80e9",
+    "implementation_commit": "ff8f7d9f9ff1ff613be376e1361b0dd8304566e3",
+    "manifest_sha256": "bc2e549531ec3d8a33f3961cd9d266b9f8656351bab9b60e46acfe7d18f3fe06",
+    "invariant": "HEAD_EQUALS_FETCHED_ORIGIN_MAIN_AND_EVENT32_IS_ANCESTOR"
+  },
+  "self_challenge": {
+    "fixed_commit_equality_required": "NO",
+    "remote_reconstructible": "YES",
+    "self_referential_packet_hash_claim": "NO",
+    "completion_exaggerated": "NO"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

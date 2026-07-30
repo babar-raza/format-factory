@@ -74,6 +74,7 @@ STALE_OPERATIONAL_TOKENS = (
     "XLF-04-BATCH-005-PARTIAL-002_DISPOSITION_VERIFICATION_AND_OBLIGATION_COMPILATION",
     "packet_projection_changes_pending_commit: true",
     "local_only_required_for_resume: true",
+    "Expected before work: both refs equal",
 )
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
 LINK = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
@@ -82,7 +83,7 @@ ALLOWED_DIRTY_PREFIXES = (
     "reports/skills-rff6/skill-transcripts/"
     "plan-control-xliff-profile-surface-wip-009.json",
     "reports/skills-rff6/skill-transcripts/"
-    "refresh-provider-neutral-handover-event-32.json",
+    "refresh-provider-neutral-handover-event-32",
 )
 ALLOWED_DIRTY_EXACT = {
     "plans/strategic/ff6/controller-state.yaml",

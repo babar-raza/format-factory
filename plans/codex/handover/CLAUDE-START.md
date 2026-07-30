@@ -20,9 +20,10 @@ git merge-base --is-ancestor 530f18fe89a6875276e8f4442351445564df80e9 origin/mai
 .venv\Scripts\python.exe plans\codex\handover\validate_committed_checkpoint.py --ref origin/main
 ```
 
-Expected before work: both refs equal
-`530f18fe89a6875276e8f4442351445564df80e9`; both validators pass; Git status is
-clean; accepted implementation
+Expected before work: `HEAD` equals the fetched `origin/main`; the merge-base
+command proves Event 32 control commit
+`530f18fe89a6875276e8f4442351445564df80e9` is an ancestor; both validators
+pass; Git status is clean; accepted implementation
 `ff8f7d9f9ff1ff613be376e1361b0dd8304566e3` is an ancestor; journal head is
 `FF6-EVENT-000032` /
 `1b04941583c0015b42115b8d07ca748a744561a000833b38fc64412531164054`.
