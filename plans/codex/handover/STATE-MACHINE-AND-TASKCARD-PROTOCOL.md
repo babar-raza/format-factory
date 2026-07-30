@@ -13,7 +13,8 @@ historical_projection: true
 
 > Historical protocol background. Preserve its durable state-machine concepts,
 > but select current work only from [START-HERE.md](START-HERE.md), the native
-> FF6 journal, controller, and active taskcard.
+> FF6 journal, controller, active taskcard, and immutable
+> [Event 30 packet](event-30/START-HERE.md).
 
 ## Purpose
 

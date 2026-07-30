@@ -1,5 +1,5 @@
-schema: ff6/provider-neutral-checkpoint@4
-artifact_id: FF6-HANDOVER-CHECKPOINT-EVENT-29
+schema: ff6/provider-neutral-checkpoint@5
+artifact_id: FF6-HANDOVER-CHECKPOINT-EVENT-30
 visibility: internal
 publish_allowed: false
 generated_by: codex
@@ -7,75 +7,64 @@ generated_at: "2026-07-30"
 
 source_checkpoint:
   forge: GitLab
+  remote: origin
+  branch: main
   required_remote_ref: origin/main
-  required_ancestor: c1f4be66b97acb9a23faa02764e3d41ec1e4a3b0
-  packet_input_commit: c1f4be66b97acb9a23faa02764e3d41ec1e4a3b0
-  implementation_ancestor: 315efa5f5f4420202b5254c86ccd8863a91c385f
-  committed_handover_scope: CLEAN_AND_REMOTE_VERIFIED_EVENT_29_BASELINE
-  packet_source_head: edcc121152e4a238b62c33180f9e733badfde4b7
+  implementation_commit: e13e103de0bb789ff51a8e931af0fb649474be20
+  implementation_on_remote: true
+  packet_commit_rule: >-
+    The commit containing this packet must descend from the implementation
+    commit. The packet does not claim the hash of the commit containing its
+    own final bytes.
 
 controller_checkpoint:
   controller_state: CONTRACT
-  event_sequence: 29
-  event_id: FF6-EVENT-000029
-  event_head: de12acdefd04c37a918e3fd27dcb8dd076f53e576ee7049cf1efc732d02028bb
-  exact_next_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
-  exact_next_state: WORK_IN_PROGRESS
-  exact_next_microstep: XLF-04-BATCH-005-PARTIAL-002_DISPOSITION_VERIFICATION_AND_OBLIGATION_COMPILATION
+  event_sequence: 30
+  event_id: FF6-EVENT-000030
+  event_hash: 2d365d013b94c386014d7e75813114de6d7a225e2a9e16d21a485a38cd2d9398
+  task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
+  task_state: WORK_IN_PROGRESS
   parent_task: TC-FF6-PROGRAM-CAPABILITIES-001
   parent_state: NEEDS_REPAIR
+  first_unmet_step: XLF-04
+  exact_next_microstep: XLF-04-BATCH-005-PARTIAL-002-B
 
-resume_priority:
-  canonical_active_action: XLF-04-BATCH-005-PARTIAL-002_DISPOSITION_VERIFICATION_AND_OBLIGATION_COMPILATION
-  current_xliff_status: COMMITTED_SOURCE_AUTHENTIC_DISPOSITIONS_UNVERIFIED
-  expected_selection: CONTINUE_XLIFF
-  fallback_if_live_owned: UBL-03-PARTIAL-002
-  selection_rule: >-
-    Fetch, validate, and query coordination. A newer event wins. Never infer
-    task priority from provider identity or conversation memory.
-
-verified_xliff_microstep:
-  implementation_commit: 315efa5f5f4420202b5254c86ccd8863a91c385f
-  census_sha256: 24c1902b6387cc9fa3402f78392ba91c6e6656407719ec11cfaab1c4f3d22b9e
+verified_xliff_boundary:
+  candidate_census_sha256: 24c1902b6387cc9fa3402f78392ba91c6e6656407719ec11cfaab1c4f3d22b9e
   candidates: 1130
-  dispositions_verified: 0
-  dispositions_unverified: 1130
-  expected_ids: 105
-  expected_ids_without_candidate_mapping: 60
-  source_bound_rows: 25
-  missing_source_bound_rows: 80
-  focused_tests: 64 passed
+  dispositions_verified: 1
+  dispositions_unverified: 1129
+  adjudication_sha256: 28399664d50afdd15e9f8b5ab2824a9566aa478fd0fcb18c97ce1451fd90d521
+  expected_obligation_ids: 105
+  source_bound_rows: 26
+  missing_source_bound_rows: 79
+  inventory_sha256: 83b9f2da44b33a93cea6740e7510b32b961dda80791f9f148c163e913922f5e0
   complete: false
 
-workspace_recovery_overlay:
-  status: RED_OBSERVED
-  event_effect: none
-  local_paths: 7
-  adjudication_tests: 13 passed
-  compiler_test: 1 expected RED failure
-  locally_adjudicated_candidate: XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90
-  locally_adjudicated_count: 1
-  committed_verified_count: 0
-  exact_recovery_contract: plans/codex/handover/INFLIGHT-RECOVERY.yaml
-  exact_next_file: tools/spec/extract_sal_facts.py
-  exact_next_test: >-
-    tests/tools/test_extract_sal_facts.py::
-    test_batch_five_compiles_only_the_independently_adjudicated_obligation
+exact_next_candidate:
+  candidate_id: XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
+  candidate_content_sha256: 0a37761215603eb4db3f9602f6e979869b4f1f44c124c1f5ca2183cba1d7578a
+  source_id: SRC-XLF-002
+  source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+  member: schemas/xliff_core_2.1.sch
+  member_sha256: d4275f2d2574f892624bcd8f83bcc3001c75d623e4eb36896d15d147f16ed7a2
+  location: schematron/rule[47]/assert[2]
+  occurrence_sha256: a6e64656091d0985bf218c985ee545b328844d909414e4bbe83f8ddf6a663a0e
+  direct_rule: subFlowsStart and subFlowsEnd on pc must be used as a pair
 
 truth_boundary:
   products_certified: 0
   promotions: UNASSESSED_ALL_SIX
   xlf_04_complete: false
   ubl_03_complete: false
+  product_source_effect: none
   gate_transition: none
   release_transition: none
 
 mandatory_resume_validations:
-  - GitLab ancestry
-  - packet hashes and links
-  - native journal hash chain
-  - controller and task projections
-  - task registration
-  - clean workspace or explicit dirty-path attribution
-  - coordination liveness
-  - fresh execution manifest and exact-path leases before write
+  - GitLab main ancestry and exact implementation commit
+  - native journal hash chain through Event 30
+  - controller, taskcard, and handover semantic agreement
+  - artifact check modes and exact digests
+  - clean workspace or explicit coordination attribution
+  - fresh provider identity, exact-path leases, and new execution manifests

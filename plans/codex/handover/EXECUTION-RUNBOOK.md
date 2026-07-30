@@ -11,10 +11,10 @@ historical_projection: true
 
 # FF6 Execution Runbook
 
-> Durable program procedure refreshed through Event 29. Exact current inputs
+> Durable program procedure refreshed through Event 30. Exact current inputs
 > and the first RED cycle are in [START-HERE.md](START-HERE.md),
 > [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml), and the immutable
-> [Event 29 runbook](event-29/RUNBOOK.md).
+> [Event 30 runbook](event-30/RUNBOOK.md).
 
 ## Mission state machine
 

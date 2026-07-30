@@ -1,33 +1,37 @@
-schema: ff6/provider-neutral-machine-state@4
-artifact_id: FF6-CURRENT-MACHINE-STATE-EVENT-29
+schema: ff6/provider-neutral-machine-state@5
+artifact_id: FF6-CURRENT-MACHINE-STATE-EVENT-30
 visibility: internal
 publish_allowed: false
 generated_by: codex
 generated_at: "2026-07-30"
 
-source_checkpoint:
+repository:
   forge: GitLab
   remote: origin
   branch: main
-  required_ancestor: c1f4be66b97acb9a23faa02764e3d41ec1e4a3b0
-  packet_input_commit: c1f4be66b97acb9a23faa02764e3d41ec1e4a3b0
-  implementation_ancestor: 315efa5f5f4420202b5254c86ccd8863a91c385f
+  implementation_commit: e13e103de0bb789ff51a8e931af0fb649474be20
+  implementation_pushed: true
+  other_branches_authorized: false
+  github_authorized: false
 
 goal:
   goal_id: FF6-PRODUCTION-LIBRARIES-001
   status: ACTIVE
-  objective: six independently publishable production-grade Python libraries
+  objective: >-
+    Six independently publishable, production-grade Python libraries for
+    Jupyter Notebook, OpenRaster, NRRD, XLIFF, SafeTensors, and OASIS UBL.
   products_certified: 0
   terminal_condition_met: false
 
 controller:
   state: CONTRACT
-  transition_sequence: 29
-  event_id: FF6-EVENT-000029
-  event_hash: de12acdefd04c37a918e3fd27dcb8dd076f53e576ee7049cf1efc732d02028bb
+  transition_sequence: 30
+  event_id: FF6-EVENT-000030
+  event_hash: 2d365d013b94c386014d7e75813114de6d7a225e2a9e16d21a485a38cd2d9398
   next_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
   next_task_state: WORK_IN_PROGRESS
-  exact_microstep: XLF-04-BATCH-005-PARTIAL-002_DISPOSITION_VERIFICATION_AND_OBLIGATION_COMPILATION
+  first_unmet_step: XLF-04
+  exact_microstep: XLF-04-BATCH-005-PARTIAL-002-B
   parent_task: TC-FF6-PROGRAM-CAPABILITIES-001
   parent_task_state: NEEDS_REPAIR
 
@@ -35,7 +39,8 @@ program_truth:
   capabilities: 110
   obligations: 672
   product_contracts_draft: 6
-  promotions:
+  production_certifications: 0
+  promotion:
     program: UNASSESSED
     ipynb: UNASSESSED
     ora: UNASSESSED
@@ -43,103 +48,84 @@ program_truth:
     xliff: UNASSESSED
     safetensors: UNASSESSED
     ubl: UNASSESSED
-  production_certifications: 0
 
 workspace_transfer:
-  status: RECOVERY_REQUIRED_RED_OBSERVED
-  clean_checkpoint_commit: edcc121152e4a238b62c33180f9e733badfde4b7
-  clean_checkpoint_event_projection_commit: c1f4be66b97acb9a23faa02764e3d41ec1e4a3b0
-  local_only_required_for_clean_resume: false
-  local_only_required_for_lossless_resume: true
-  current_bytes_are_clean_checkpoint: false
-  current_bytes_frozen_by_handover: true
-  incoming_provider: claude_or_codex
-  incoming_identity_rule: REGISTER_NEW_IDENTITY
-  outgoing_identity_transferable: false
-  outgoing_manifest_transferable: false
-  outgoing_mutation_authorization_transferable: false
-  recovery_assets:
-    - path: reports/sal-verification/xliff.json
-      git_status: " M"
-      sha256: c99de3edee666c1f402beaccac3e72229199a43627160cd319f461715da1c1c9
-    - path: shared/sal-facts/xliff.yaml
-      git_status: " M"
-      sha256: b5154c73c7ad87d3058cd793f41f99305816ec56ea5c37cb112ae437443dee39
-    - path: tests/tools/test_extract_sal_facts.py
-      git_status: " M"
-      sha256: d90cf49d4924c500c2362649f3f7762678cecb36f19e31b32d3b66dde90ea6d6
-    - path: reports/sal-verification/xliff-core-candidate-adjudications.yaml
-      git_status: "??"
-      sha256: f736477668de37501a658fe7e4faf1b909df37103619c812b9c053918cea4a1a
-    - path: shared/sal-facts/evidence/xliff-core-candidate-decisions.yaml
-      git_status: "??"
-      sha256: a132266069372a2cbef9e0285fec61ed3a01180f0f3ab4faf49f27a376db6b83
-    - path: tests/tools/test_xliff_core_candidate_adjudication.py
-      git_status: "??"
-      sha256: be9b5b17a8f01b94e4e1b5f2efbbf176ad151003ec70d360e69d424087e5257c
-    - path: tools/spec/xliff_core_candidate_adjudication.py
-      git_status: "??"
-      sha256: 44458a5fc2f0e7d9f612f55e223add6aa765317d0cbd85553f52f3c17bea30ee
+  status: CLEAN_IMPLEMENTATION_CHECKPOINT_EVENT_30_PENDING_PACKET_COMMIT
+  local_product_overlay: none
+  provider_credentials_transferable: false
+  provider_leases_transferable: false
+  execution_manifests_transferable: false
+  incoming_provider_rule: REGISTER_FRESH_IDENTITY
+  dirty_state_rule: PRESERVE_ATTRIBUTE_AND_REVALIDATE
 
-latest_xliff_observation:
-  status: COMMITTED_SOURCE_AUTHENTIC_DISPOSITIONS_UNVERIFIED
-  implementation_commit: 315efa5f5f4420202b5254c86ccd8863a91c385f
-  current_bytes_canonical: true
-  census_sha256: 24c1902b6387cc9fa3402f78392ba91c6e6656407719ec11cfaab1c4f3d22b9e
-  candidate_count: 1130
-  dispositions_verified: 0
-  dispositions_unverified: 1130
-  expected_obligation_ids: 105
-  expected_ids_without_candidate_mapping: 60
-  source_bound_obligation_rows: 25
-  missing_source_bound_obligation_rows: 80
-  focused_tests: 64 passed
-  xlf_04_complete: false
+known_control_constraints:
+  - gap_id: FF6-GAP-011
+    status: OPEN
+    effect: >-
+      Generic tools.plan_control journal semantics are incompatible with the
+      native FF6 previous_event_hash schema. Validate the FF6 chain natively;
+      do not reinterpret it as corruption.
+  - gap_id: FF6-LOCAL-ARTIFACT-INDEX-YAML-001
+    status: PRE_EXISTING_LOCAL_INVALID
+    path: .local/artifact-index.yaml
+    observed_error: >-
+      YAML mapping beginning at line 17 encounters a sequence item at line
+      1163. The current handover did not rewrite this shared local registry.
+    effect: >-
+      Reuse-before-regenerate lookups against this local file fail until a
+      separately governed repair reconciles both structures without loss.
+    execution_rule: >-
+      Record new tracked evidence in canonical task, journal, and manifest
+      authorities; do not hand-edit or truncate the local index as a shortcut.
 
-inflight_xliff_overlay:
-  status: RED_OBSERVED
-  canonical_state_effect: none
-  promotion_effect: none
-  first_candidate: XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90
-  locally_adjudicated_dispositions: 1
-  locally_unverified_dispositions: 1129
-  adjudication_tests: 13 passed
-  compiler_red_control: >-
-    1 failed because _default_core_obligation_seeds does not yet require
-    independently adjudicated obligation IDs for XLF-04-BATCH-005.
-  next_production_file: tools/spec/extract_sal_facts.py
-  next_production_file_sha256: 148dab047c4ea1cece55734b0e083b7222175b3d0df759a5d7e762cd8684634a
-  next_test: >-
-    tests/tools/test_extract_sal_facts.py::
-    test_batch_five_compiles_only_the_independently_adjudicated_obligation
-  clean_checkpoint_rule: >-
-    This overlay is recoverable local work, not Event 30, not a task
-    transition, and not a production or conformance claim.
+xliff:
+  status: WORK_IN_PROGRESS
+  completed_steps: [XLF-01, XLF-02, XLF-03]
+  completed_xlf_04_batches:
+    - XLF-04-BATCH-001
+    - XLF-04-BATCH-002
+    - XLF-04-BATCH-003
+    - XLF-04-BATCH-004
+  active_batch: XLF-04-BATCH-005
+  completed_partial: XLF-04-BATCH-005-PARTIAL-002-A
+  next_partial: XLF-04-BATCH-005-PARTIAL-002-B
+  candidate_census:
+    path: reports/ff6/xliff-core-authority-candidate-census.yaml
+    sha256: 24c1902b6387cc9fa3402f78392ba91c6e6656407719ec11cfaab1c4f3d22b9e
+    count: 1130
+  adjudication:
+    path: reports/sal-verification/xliff-core-candidate-adjudications.yaml
+    sha256: 28399664d50afdd15e9f8b5ab2824a9566aa478fd0fcb18c97ce1451fd90d521
+    decisions: 1
+    verified_dispositions: 1
+    unverified_dispositions: 1129
+  obligation_inventory:
+    path: reports/ff6/xliff-core-obligation-inventory.yaml
+    sha256: 83b9f2da44b33a93cea6740e7510b32b961dda80791f9f148c163e913922f5e0
+    expected: 105
+    source_bound: 26
+    missing: 79
+    complete: false
+  next_candidate:
+    candidate_id: XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
+    candidate_content_sha256: 0a37761215603eb4db3f9602f6e979869b4f1f44c124c1f5ca2183cba1d7578a
+    location: schematron/rule[47]/assert[2]
+    direct_rule: subFlowsStart and subFlowsEnd on pc must be used as a pair
 
 parallel_ubl_checkpoint:
   status: SERIALIZED_PARTIAL_CHECKPOINT
   task_id: TC-FF6-UBL-TYPING-001
   implementation_commit: f98d220a0a3903b1107de90b2e39bf480ec4b19d
-  detailed_substate: SCHEMA_GRAPH_ROOT_TYPE_BINDING_PARTIAL
   completed_steps: [UBL-01, UBL-02]
   first_unmet_step: UBL-03
   completed_microstep: UBL-03-PARTIAL-001
   next_microstep: UBL-03-PARTIAL-002
-  schema_documents: 106
-  document_roots: 91
-  root_type_nodes: 182
-  root_type_edges: 91
-  graph_sha256: 7b754187690ce1bb04db62657cfb552653cb381a1bdd745a56856e58215af029
   reachable_schema_graph_complete: false
-
-resume_route:
-  canonical_action: XLF-04-BATCH-005-PARTIAL-002_DISPOSITION_VERIFICATION_AND_OBLIGATION_COMPILATION
-  safe_disjoint_fallback: UBL-03-PARTIAL-002
-  newer_event_rule: validate and follow the newer projection
+  use_only_if: exact XLIFF paths have a current live owner
 
 truth_boundary:
   xlf_04_complete: false
   ubl_03_complete: false
-  product_source_changed_by_event_29: false
-  product_or_promotion_change_in_event_29: false
+  product_source_changed_by_event_30: false
+  product_or_promotion_change_in_event_30: false
   products_certified: 0

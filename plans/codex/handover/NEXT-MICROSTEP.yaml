@@ -1,21 +1,21 @@
-schema: ff6/provider-neutral-next-microstep@1
-artifact_id: FF6-NEXT-MICROSTEP-EVENT-29
+schema: ff6/provider-neutral-next-microstep@2
+artifact_id: FF6-NEXT-MICROSTEP-EVENT-30
 visibility: internal
 publish_allowed: false
 generated_by: codex
 generated_at: "2026-07-30"
 
 checkpoint:
-  event_id: FF6-EVENT-000029
-  event_hash: de12acdefd04c37a918e3fd27dcb8dd076f53e576ee7049cf1efc732d02028bb
-  implementation_commit: 315efa5f5f4420202b5254c86ccd8863a91c385f
-  event_projection_commit: c1f4be66b97acb9a23faa02764e3d41ec1e4a3b0
+  event_id: FF6-EVENT-000030
+  event_hash: 2d365d013b94c386014d7e75813114de6d7a225e2a9e16d21a485a38cd2d9398
+  implementation_commit: e13e103de0bb789ff51a8e931af0fb649474be20
 
 task:
   task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
   task_state: WORK_IN_PROGRESS
   first_unmet_step: XLF-04
-  microstep: XLF-04-BATCH-005-PARTIAL-002_DISPOSITION_VERIFICATION_AND_OBLIGATION_COMPILATION
+  batch: XLF-04-BATCH-005
+  microstep: XLF-04-BATCH-005-PARTIAL-002-B
   execution_mode: BOUNDED_TDD_AUTHORITY_ADJUDICATION
   completion_claim_before_execution: false
 
@@ -23,188 +23,103 @@ baseline:
   candidate_census: reports/ff6/xliff-core-authority-candidate-census.yaml
   candidate_census_sha256: 24c1902b6387cc9fa3402f78392ba91c6e6656407719ec11cfaab1c4f3d22b9e
   candidates: 1130
-  dispositions_verified: 0
-  dispositions_unverified: 1130
+  dispositions_verified: 1
+  dispositions_unverified: 1129
   expected_obligation_ids: 105
-  expected_ids_without_candidate_mapping: 60
-  source_bound_obligation_rows: 25
-  missing_source_bound_obligation_rows: 80
+  source_bound_obligation_rows: 26
+  missing_source_bound_obligation_rows: 79
   denominator_status: OPEN_AUTHORITY_CENSUS
 
-workspace_overlay:
-  status: RED_OBSERVED
-  canonical_event_effect: none
-  promotion_effect: none
-  recoverable_paths: 7
-  adjudication_projection:
-    candidate_count: 1130
-    decision_count: 1
-    locally_verified_disposition_count: 1
-    locally_unverified_disposition_count: 1129
-    complete: false
-    path: reports/sal-verification/xliff-core-candidate-adjudications.yaml
-    sha256: f736477668de37501a658fe7e4faf1b909df37103619c812b9c053918cea4a1a
-  test_boundary:
-    adjudication_controls: 13 passed
-    obligation_compiler_control: 1 expected RED failure
-    exact_failure: >-
-      Failed: DID NOT RAISE ExtractionError because
-      _default_core_obligation_seeds currently accepts
-      through_batch=XLF-04-BATCH-005 without independently adjudicated IDs.
-  first_unmet_implementation_action: >-
-    Gate Batch 005 seed compilation in tools/spec/extract_sal_facts.py on a
-    verified obligation-ID set, add the one authority-located trgLang seed,
-    and make the existing RED control GREEN without changing the default
-    Batch 003 behavior.
-
-root_cause:
-  classification: GENERATED_PROPOSAL_CONFLATED_WITH_SEMANTIC_ADJUDICATION
-  evidence: >-
-    The candidate generator tokenizes the complete semantic location and
-    normalized requirement. Incidental XPath context names can therefore add
-    hierarchy or cardinality obligations that the assertion does not itself
-    establish. Deterministic replay proves repeatability and source identity,
-    but it does not prove semantic precision.
-  structural_weaknesses:
-    - generated disposition and independent verification have no separate durable authorities
-    - the current validator recomputes the same proposal algorithm it validates
-    - a candidate can be source-authentic while its obligation mapping is over-broad
-    - canonical SAL contains no verified SAL-XLIFF-CORE disposition facts for this census
-  prohibited_shortcut: >-
-    Never copy generated obligation IDs into SAL and label the copy
-    independent verification.
-
-first_candidate_batch:
-  batch_id: XLF-04-BATCH-005-PARTIAL-002-A
-  selection_policy: STABLE_CANDIDATE_ID_SMALLEST_DISCRIMINATING_FAMILY
-  candidate_ids:
-    - XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90
-  source_kind: CORE_SCHEMATRON
+selected_candidate:
+  selection_policy: SMALLEST_UNVERIFIED_STABLE_CANDIDATE_ID
+  candidate_id: XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
   candidate_class: SCHEMATRON_ASSERT
+  source_kind: CORE_SCHEMATRON
   profile_relation: ADDED_IN_XLIFF_2_1
   stable_profiles: [xliff_2.1]
+  candidate_content_sha256: 0a37761215603eb4db3f9602f6e979869b4f1f44c124c1f5ca2183cba1d7578a
   authority:
     source_id: SRC-XLF-002
     source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
     member: schemas/xliff_core_2.1.sch
     member_sha256: d4275f2d2574f892624bcd8f83bcc3001c75d623e4eb36896d15d147f16ed7a2
-    location: schematron/rule[10]/assert[1]
-    occurrence_sha256: 5e3a01b5b04deb533489a2d436d238ccd6de21bf88a530969e1195ae00c39c7b
-    candidate_content_sha256: 844d0783d2fb5956ef51413c3811015848987cdb13414d5d04e819c6200c02f6
-  observed_rule:
-    context: "xlf:target[parent::xlf:segment | parent::xlf:ignorable]"
-    test: "/xlf:xliff/@trgLang"
-    semantic_effect: >-
-      In XLIFF 2.1, a document containing target content under segment or
-      ignorable requires the root xliff trgLang attribute.
-  current_generated_proposal:
-    obligation_ids:
-      - SAL-XLIFF-CORE-AGENT-VALIDATOR-001
-      - SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001
-      - SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001
-      - SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001
-      - SAL-XLIFF-CORE-SOURCE-TARGET-OPTIONAL-001
-    verification_status: SOURCE_LOCATED_RULE_DISPOSITION_UNVERIFIED
-  suspected_overmapping:
-    - obligation_id: SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001
-      reason: ignorable is an incidental parent name in the XPath context
-    - obligation_id: SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001
-      reason: segment is an incidental parent name in the XPath context
-    - obligation_id: SAL-XLIFF-CORE-SOURCE-TARGET-OPTIONAL-001
-      reason: target presence triggers trgLang but does not establish segment source-target cardinality
-  independent_review:
-    status: LOCAL_AUTHORITY_ADJUDICATION_IMPLEMENTED_UNCOMMITTED
-    expected_direct_semantic_owner: SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001
-    decision_id: XLF-ADJ-CORE-SCHEMATRON-0001
-    accepted_obligation_ids:
-      - SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001
-    rejected_obligation_count: 4
-    sal_fact_ids:
-      - SAL-XLIFF-00009
-    truth_boundary: >-
-      This decision passes local content-addressed validation but is not
-      current controller evidence until the bounded slice is GREEN,
-      regression-tested, committed, replayed, journaled, and projected.
+    location: schematron/rule[47]/assert[2]
+    occurrence_sha256: a6e64656091d0985bf218c985ee545b328844d909414e4bbe83f8ddf6a663a0e
+  normalized_rule:
+    context: "xlf:pc[@subFlowsStart][ancestor::xlf:segment|ancestor::xlf:ignorable]"
+    test: "@subFlowsEnd"
+    message: "'subFlowsStart' and 'subFlowsEnd' must be used in pair."
+  generated_proposal_only:
+    - SAL-XLIFF-CORE-AGENT-VALIDATOR-001
+    - SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001
+    - SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001
+    - SAL-XLIFF-CORE-INLINE-PC-001
 
-required_design:
-  - preserve the generator output as a proposed_disposition
-  - create a separate content-addressed adjudication record keyed by candidate ID and content digest
-  - record accepted and rejected obligation IDs with authority-located reasons
-  - make verified counts derive only from valid adjudications
-  - invalidate adjudications when candidate, occurrence, authority, denominator, or tool digests change
-  - compile source-bound obligations only after adjudication validates
-  - keep the 1130-row census and all current stable IDs
+root_cause:
+  classification: GENERATED_PROPOSAL_IS_NOT_INDEPENDENT_SEMANTIC_EVIDENCE
+  structural_weaknesses:
+    - context tokens can over-map generic hierarchy obligations
+    - the generator cannot adjudicate its own proposal
+    - one-sided pair rules require both positive and rejection proof
+    - count growth can reward false closure unless stable-ID evidence is mandatory
+  preserve:
+    - all 1130 candidates and stable candidate IDs
+    - all 26 current obligation rows and stable obligation IDs
+    - independent decision source separate from generated projection
+    - complete digest closure and fail-closed invalidation
 
 red_controls:
-  - id: RED-XLF-DISPOSITION-001
-    requirement: >-
-      The trgLang Schematron assertion must not acquire hierarchy or
-      source-target cardinality obligations only because those names occur in
-      its XPath context.
-  - id: RED-XLF-DISPOSITION-002
-    requirement: >-
-      A generated proposal cannot increment dispositions_verified without a
-      separate authority-bound adjudication record.
-  - id: RED-XLF-DISPOSITION-003
-    requirement: >-
-      Changing candidate content, occurrence digest, authority member digest,
-      denominator identity, or adjudication decision must invalidate the
-      verified projection.
-  - id: RED-XLF-DISPOSITION-004
-    requirement: >-
-      Unknown, duplicate, foreign-format, missing, or unreasoned obligation
-      decisions fail closed.
+  - a generated proposal cannot increment the verified count
+  - segment and ignorable ancestor tokens cannot create hierarchy obligations
+  - subFlowsStart without subFlowsEnd is rejected
+  - subFlowsEnd without subFlowsStart is adjudicated against the exact reciprocal authority rule
+  - candidate, occurrence, member, denominator, decision, SAL, or tool drift invalidates projection
+  - duplicate, foreign, unknown, missing, or unreasoned decisions fail closed
 
-implementation_order:
-  - "DONE: read the TDD, ingest-spec-sal, and sal-pipeline-heal command contracts completely"
-  - "DONE: revalidate Event 29 and the selected candidate from pinned authority bytes"
-  - "DONE: write the four RED controls before changing disposition logic"
-  - "DONE: implement the smallest reusable adjudication schema and validator"
-  - "DONE: overlay verified adjudications without destroying generated proposals"
-  - "DONE: adjudicate only the selected bounded candidate family"
-  - >-
-    NEXT: compile or repair its source-bound obligation only when the
-    adjudication proves it; begin in tools/spec/extract_sal_facts.py from
-    test_batch_five_compiles_only_the_independently_adjudicated_obligation
-  - regenerate affected artifacts atomically and compare three clean processes
-  - run focused, affected-regression, static, authority, transcript, and handover checks
-  - commit implementation, replay it, append one native event, rebuild projections, and refresh the handover
+implementation_steps:
+  - replay Event 30 and check-mode artifacts from GitLab main
+  - read the exact authority occurrence and relevant canonical SAL facts
+  - add a failing adjudication decision test before changing source
+  - append one independently reasoned decision to the decision source
+  - extend the adjudication projection without editing generated proposals
+  - add or reuse the exact inline pc pairing obligation only when authority proves ownership
+  - regenerate adjudication and obligation artifacts atomically
+  - confirm 26 existing rows and IDs are byte-semantically preserved
+  - run focused, tamper, static, regression, authority, and SAL verification
+  - produce three identical clean-process generations
+  - commit implementation, push GitLab main, and replay from the immutable commit
+  - append exactly one native event and refresh this handover
 
-candidate_mutation_scope:
-  preserved_recovery_paths:
-    - reports/sal-verification/xliff.json
-    - shared/sal-facts/xliff.yaml
-    - tests/tools/test_extract_sal_facts.py
-    - reports/sal-verification/xliff-core-candidate-adjudications.yaml
+expected_files:
+  likely_mutations:
     - shared/sal-facts/evidence/xliff-core-candidate-decisions.yaml
+    - reports/sal-verification/xliff-core-candidate-adjudications.yaml
     - tests/tools/test_xliff_core_candidate_adjudication.py
-    - tools/spec/xliff_core_candidate_adjudication.py
-  next_likely_paths:
-    - tools/spec/extract_sal_facts.py
     - tests/tools/test_extract_sal_facts.py
+    - tools/spec/extract_sal_facts.py
     - reports/ff6/xliff-core-obligation-inventory.yaml
     - reports/skills-rff6/skill-transcripts/
   rule: >-
-    Claim and manifest only paths actually required after RED establishes the
-    change. Do not pre-authorize this entire list as a broad write set.
+    Claim and manifest only paths proven necessary by RED. This list is not
+    blanket mutation authorization.
 
 acceptance_boundary:
   required:
-    - selected adjudication is independently authority-bound and content-addressed
-    - incidental-context overmapping negative control passes
-    - verified and unverified counts are recomputed, not edited
-    - every changed artifact passes check mode and three-run deterministic replay
-    - all existing 25 obligation rows remain present with stable IDs
-    - XLF-04 and Batch 005 remain incomplete unless their full exit criteria actually pass
-    - no product, promotion, release, certification, or gate state changes
+    - selected decision is authority-located, independently reasoned, and content-addressed
+    - incidental ancestor overmapping controls pass
+    - pair-presence positive and rejection evidence execute
+    - every changed artifact passes check mode and three-run replay
+    - all 26 prior obligation rows and all 1130 candidate IDs remain stable
+    - XLF-04 remains incomplete unless every exit criterion actually passes
   non_claims:
-    - all 1130 dispositions verified
+    - all candidate dispositions verified
     - XLF-04 complete
-    - XLIFF contract complete
+    - XLIFF modules complete
     - XLIFF product implementation ready
-    - any library certified
+    - any library certified or release-ready
 
 fallback:
-  condition: exact XLIFF write scope is live-owned by another current provider
+  condition: exact XLIFF paths are live-owned by another current provider
+  task: TC-FF6-UBL-TYPING-001
   microstep: UBL-03-PARTIAL-002
   contract: plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml

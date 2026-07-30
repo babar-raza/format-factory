@@ -15,195 +15,186 @@ Absolute start path:
 C:\Users\prora\OneDrive\Documents\GitHub\format-factory\plans\codex\handover\START-HERE.md
 ```
 
-This is the only handover entrypoint. It is a derived index: fetched GitLab
-`origin/main`, `AGENTS.md`, the native event journal, controller, taskcards,
-and immutable proof always outrank this document.
+This is the only operational entrypoint for Claude, Codex, or another governed
+executor. It is a derived index. Fetched GitLab `origin/main`, `AGENTS.md`, the
+native event journal, controller, taskcards, and immutable proof always outrank
+this packet.
 
-## Current authority and workspace transfer
+## Current clean checkpoint
 
 | Field | Verified value |
 |---|---|
-| Forge/branch | GitLab `origin/main` only |
-| Packet source ancestor | `edcc121152e4a238b62c33180f9e733badfde4b7` |
-| XLIFF implementation commit | `315efa5f5f4420202b5254c86ccd8863a91c385f` |
-| Event/projection commit | `c1f4be66b97acb9a23faa02764e3d41ec1e4a3b0` |
-| Controller | `CONTRACT`, sequence 29 |
-| Journal head | `FF6-EVENT-000029` |
-| Event hash | `de12acdefd04c37a918e3fd27dcb8dd076f53e576ee7049cf1efc732d02028bb` |
+| Forge and branch | GitLab `origin/main` only |
+| Implementation commit | `e13e103de0bb789ff51a8e931af0fb649474be20` |
+| Controller | `CONTRACT`, sequence 30 |
+| Journal head | `FF6-EVENT-000030` |
+| Event hash | `2d365d013b94c386014d7e75813114de6d7a225e2a9e16d21a485a38cd2d9398` |
 | Active task | `TC-FF6-XLIFF-PROFILE-SURFACE-001` |
 | First unmet step | `XLF-04` |
-| Exact next microstep | `XLF-04-BATCH-005-PARTIAL-002_DISPOSITION_VERIFICATION_AND_OBLIGATION_COMPILATION` |
-| Safe disjoint fallback | `UBL-03-PARTIAL-002` only if XLIFF is live-owned |
+| Exact next microstep | `XLF-04-BATCH-005-PARTIAL-002-B` |
+| Exact next candidate | `XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1` |
+| XLIFF obligation inventory | `26/105`, `79` missing |
+| Candidate adjudication | `1/1,130` verified, `1,129` open |
 | Certified libraries | `0/6` |
 | Promotions | all six `UNASSESSED` |
-| Committed-state disposition | clean, pushed, replayable Event 29 baseline |
-| Current workspace disposition | `RECOVERY_REQUIRED_RED_OBSERVED` |
-| Lossless local dependency | seven content-addressed XLIFF paths |
-| Local test boundary | adjudication `13 passed`; compiler `1 expected RED failure` |
+| Product overlay | none; implementation is committed and pushed |
+| Safe disjoint fallback | UBL `UBL-03-PARTIAL-002` only if XLIFF is live-owned |
 
-The packet commit cannot embed its own final hash. Its validator instead proves
-that both cited commits are ancestors of fetched GitLab main.
+Event 30 is a partial contract-evidence checkpoint. It is not a completed XLIFF
+contract, product implementation, certification, release candidate, or gate.
 
-Do not confuse the two layers. Event 29 still records zero independently
-verified candidate dispositions. The local overlay contains one adjudication
-that passes its own fail-closed controls, but it has not reached GREEN
-obligation compilation, an implementation commit, immutable replay, Event 30,
-or controller projection. Read
-[the exact recovery record](INFLIGHT-RECOVERY.yaml) before any write.
+Two control-plane constraints remain explicit: generic `tools.plan_control`
+cannot validate the native FF6 event schema (`FF6-GAP-011`), and the shared
+local `.local/artifact-index.yaml` is pre-existing invalid YAML at line 1163.
+Neither invalidates Event 30. Do not "fix" either by deleting history or
+silently converting status; follow the native chain and create a separately
+governed reconciliation task.
 
-## What the last shift achieved
+## Mission objective
 
-Codex recovered the stale Batch 005 working set through governed lease
-takeover, independently replayed it, hardened its truth boundary, and pushed
-two commits:
+Produce six independently publishable, production-grade Python libraries:
 
-1. `315efa5f` — source, tests, canonical census, and three production-skill
-   receipts.
-2. `c1f4be66` — Event 29, controller/taskcard projections, and plan-control
-   receipt.
+- Jupyter Notebook;
+- OpenRaster;
+- NRRD;
+- XLIFF 2.0/2.1, including official 2.1 modules;
+- SafeTensors;
+- OASIS UBL 2.3, including all 91 document roots.
 
-Implemented machinery:
+Each library must have a complete authority-backed product contract, secure and
+typed implementation, independent interoperability evidence, installed-wheel
+proof, cross-platform CI evidence, reproducible packages, SBOM, provenance,
+documentation, and repository extraction readiness. No count, source file,
+test definition, or agent assertion is sufficient proof by itself.
 
-- complete declared Core candidate census across modal prose, non-modal prose,
-  Core XSD, and Core Schematron;
-- content, occurrence, member, profile, and source-package digests;
-- full replay of report content from pinned XLIFF 2.0/2.1 authority bytes;
-- deterministic recomputation of disposition label, precision, rationale, and
-  mapping IDs;
-- negative controls rejecting forged mapping labels and self-consistent,
-  rehashed authority-forged candidate content;
-- honest `_UNVERIFIED` precision vocabulary;
-- package-safe import structure without ad hoc `sys.path` mutation.
+The mission remains in controller state `CONTRACT` because XLIFF and UBL
+contract surfaces are still incomplete. Product source expansion is not the
+current task.
 
-After that clean checkpoint, the outgoing Codex shift began the fixed
-Partial-002-A cycle and stopped deliberately at RED:
+## What Event 30 actually achieved
 
-- implemented a separate content-addressed adjudication compiler/validator;
-- added 13 passing controls for incidental-context overmapping, generated
-  proposal nonpromotion, dependency invalidation, malformed decisions, and
-  deterministic CLI/check mode;
-- independently accepted only
-  `SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001` for the fixed Schematron
-  candidate and explicitly rejected four overmapped proposal IDs;
-- refreshed the existing canonical SAL proof closure without changing claims;
-- generated a one-decision local projection (`1` local / `1,129` open);
-- wrote the next RED control proving Batch 005 obligation seeds are not yet
-  gated by independently adjudicated IDs.
+The previous shift completed and pushed the bounded XLIFF Partial-002-A cycle:
 
-These seven paths are uncommitted recovery input, not achieved controller
-state. Their exact statuses and hashes are in
-[INFLIGHT-RECOVERY.yaml](INFLIGHT-RECOVERY.yaml).
+- introduced a separate content-addressed candidate-adjudication compiler;
+- kept generated candidate proposals distinct from independent decisions;
+- independently accepted only the root `trgLang` obligation for candidate
+  `XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90`;
+- explicitly rejected four overmapped proposal IDs with reason codes;
+- invalidated evidence when candidate, occurrence, authority member,
+  denominator, decision, SAL store, SAL manifest, SAL receipt, or adjudicator
+  content changes;
+- gated the real Batch 005 obligation compiler on replayed adjudication proof;
+- preserved Batch 003 byte identity;
+- grew the source-bound inventory from 25 to 26 rows without claiming
+  completeness.
 
-Observed proof:
+Proof boundary:
 
 ```text
-candidate rows: 1,130
-modal normative prose: 182
-non-modal prose: 588
-Core XSD: 264
-Core Schematron: 96
-focused tests: 64 passed
-census replay: 3 identical clean processes
-census LF SHA-256: 24c1902b6387cc9fa3402f78392ba91c6e6656407719ec11cfaab1c4f3d22b9e
-XLIFF authority audit: 5/5 MATCH
-Ruff / strict Mypy / Pyright 1.1.411 / py_compile: PASS
-affected format-contract suite: 94 passed, 1 named baseline-known deselection
-production-program suite: 69 passed
+candidate census:          1,130
+verified dispositions:     1
+unverified dispositions:   1,129
+expected obligation IDs:   105
+source-bound rows:          26
+missing rows:               79
+XLF-04 complete:            false
+products certified:        0/6
 ```
 
-## The critical truth boundary
+Immutable artifact replay:
 
-The committed census is source-authentic; its Event 29 semantic dispositions
-are not independently verified:
+```text
+adjudication SHA-256:
+28399664d50afdd15e9f8b5ab2824a9566aa478fd0fcb18c97ce1451fd90d521
 
-- verified dispositions: `0`;
-- unverified dispositions: `1,130`;
-- expected obligation IDs: `105`;
-- expected IDs without candidate mapping: `60`;
-- source-bound obligation rows: `25`;
-- missing source-bound obligation rows: `80`;
-- denominator: `OPEN_AUTHORITY_CENSUS`;
-- XLF-04: incomplete;
-- Batch 005: incomplete.
+obligation inventory SHA-256:
+83b9f2da44b33a93cea6740e7510b32b961dda80791f9f148c163e913922f5e0
+```
 
-The generator cannot certify its own mappings. The next provider must perform
-independent authority reading through canonical SAL and add discriminating
-tests when it finds contradictions. Mechanically copying generated
-dispositions into SAL would be false closure.
+The bounded evidence also records 89 focused passes across split runs, 94
+format-contract passes with one named baseline-known CSV deselection, 69
+production-program passes, three identical generations, static-analysis
+passes, canonical SAL verification, five matching XLIFF authorities, and three
+zero-warning production-skill transcripts. These results prove only the
+bounded change.
 
-The local overlay narrows one candidate correctly, but the compiler RED proves
-the evidence is not yet integrated. The next agent must preserve the local
-adjudication while keeping the committed baseline at zero until a valid Event
-30 exists.
+## Exact next work
 
-## Deterministic resume rule
+Open [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml). The selected candidate is:
 
-1. Freeze the current overlay and read `INFLIGHT-RECOVERY.yaml`.
-2. Fetch GitLab and validate this packet.
-3. If Event 30 or later exists, validate the newer event chain and rebuild the
-   projection; never execute stale instructions.
-4. Register a fresh provider identity; never inherit the outgoing token,
-   leases, manifests, or mutation authorizations.
-5. Verify all seven recovery statuses and SHA-256 values, then claim those
-   paths and `tools/spec/extract_sal_facts.py`.
-6. Replay `13 passed / 1 expected RED failure`; continue from the compiler
-   gate, not from initial discovery.
-7. If XLIFF is live-owned, preserve it and continue only the disjoint UBL
-   `UBL-03-PARTIAL-002` import/include and reference-resolution cycle.
-8. A dirty or divergent workspace is investigated and preserved; it is never
-   reset, cleaned, restored, or broadly stashed.
+```text
+candidate: XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
+authority: schemas/xliff_core_2.1.sch
+location:  schematron/rule[47]/assert[2]
+rule:      subFlowsStart and subFlowsEnd on pc must be used as a pair
+```
+
+The generated proposal lists generic validator, segment hierarchy, ignorable
+hierarchy, and inline `pc` obligations. Those are hypotheses, not evidence.
+The next executor must independently adjudicate the direct semantic owner,
+write a failing test first, reject incidental context mappings, and only then
+compile any obligation proven by authority and canonical SAL.
+
+Do not batch-adjudicate hundreds of candidates without discriminating tests.
+The durable unit of progress is one independently evidenced decision family,
+its negative controls, immutable replay, and native checkpoint event.
+
+## Resume protocol
+
+1. Read `AGENTS.md`, the Codex or Claude governance adapter, skill policy,
+   current master plan, and applicable registered skill contracts.
+2. Fetch GitLab `origin/main`; do not use GitHub or create another branch.
+3. Run `plans/codex/handover/validate_handover.py`.
+4. Verify the implementation commit is an ancestor of `origin/main`.
+5. Register a fresh coordination identity. Never reuse another provider's
+   token, leases, manifests, or authorization.
+6. Query live leases and preserve any unexplained dirty state.
+7. Claim only exact paths required after the first RED test establishes scope.
+8. Replay both artifact check modes and the three immutable smoke tests.
+9. Execute Partial-002-B using TDD, `ingest-spec-sal`, and
+   `sal-pipeline-heal`.
+10. Commit and push the bounded implementation to GitLab `main`.
+11. Replay from the immutable commit.
+12. Append one native event, rebuild current projections, refresh this packet,
+    validate negative controls, and commit/push the checkpoint metadata.
+
+If XLIFF exact paths have a current live owner, use only the serialized UBL
+fallback in [PARALLEL-UBL-CHECKPOINT.yaml](PARALLEL-UBL-CHECKPOINT.yaml).
 
 ## Required reading order
 
 1. [AGENTS.md](../../../AGENTS.md)
-2. [Current in-flight recovery record](INFLIGHT-RECOVERY.yaml)
-3. [Claude execution handoff](CLAUDE-START.md)
+2. [Claude execution instructions](CLAUDE-START.md)
+3. [Current machine state](CURRENT-MACHINE-STATE.yaml)
 4. [Exact next microstep](NEXT-MICROSTEP.yaml)
-5. [Event 29 immutable packet](event-29/START-HERE.md)
-6. [Current shift handover](CURRENT-SHIFT-HANDOVER.md)
-7. [Provider-shift contract](PROVIDER-SHIFT-CONTRACT.md)
-8. [Current machine state](CURRENT-MACHINE-STATE.yaml)
-9. [Parallel UBL checkpoint](PARALLEL-UBL-CHECKPOINT.yaml)
-10. [Product goal](../../strategic/ff6/product-goal.yaml)
-11. [Autonomous production plan](../../strategic/autonomous-six-python-production-execution-plan.md)
-12. [Native controller](../../strategic/ff6/controller-state.yaml)
-13. [Complete event journal](../../strategic/ff6/events.jsonl)
-14. [Active XLIFF taskcard](../../../taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md)
-15. [UBL fallback taskcard](../../../taskcards/TC-FF6-UBL-TYPING-001.md)
+5. [Checkpoint record](checkpoint.yaml)
+6. [Recovery and provider transfer rules](INFLIGHT-RECOVERY.yaml)
+7. [Current shift handover](CURRENT-SHIFT-HANDOVER.md)
+8. [Immutable Event 30 packet](event-30/START-HERE.md)
+9. [Provider-shift contract](PROVIDER-SHIFT-CONTRACT.md)
+10. [Root causes and structural design](CURRENT-STATE-AND-ROOT-CAUSES.md)
+11. [Execution runbook](EXECUTION-RUNBOOK.md)
+12. [State-machine/taskcard protocol](STATE-MACHINE-AND-TASKCARD-PROTOCOL.md)
+13. [Validation and release controls](VALIDATION-AND-RELEASE.md)
+14. [Product goal](../../strategic/ff6/product-goal.yaml)
+15. [Autonomous production plan](../../strategic/autonomous-six-python-production-execution-plan.md)
+16. [Native controller](../../strategic/ff6/controller-state.yaml)
+17. [Complete event journal](../../strategic/ff6/events.jsonl)
+18. [Active taskcard](../../../taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md)
 
-Supporting durable design:
+Historical Event 26 through 29 packets remain immutable evidence and are not
+current instructions.
 
-- [Root causes and production truth](CURRENT-STATE-AND-ROOT-CAUSES.md)
-- [Program execution runbook](EXECUTION-RUNBOOK.md)
-- [Provider resume protocol](SHIFT-AND-RESUME-PROTOCOL.md)
-- [State-machine/taskcard protocol](STATE-MACHINE-AND-TASKCARD-PROTOCOL.md)
-- [Validation and release controls](VALIDATION-AND-RELEASE.md)
-- [Historical Event 26](event-26/START-HERE.md)
-- [Historical Event 27](event-27/START-HERE.md)
-- [Historical Event 28](event-28/START-HERE.md)
-
-## First commands
+## First verification commands
 
 ```powershell
 git fetch origin main --prune
 git status --short --branch
 git rev-parse HEAD
 git rev-parse origin/main
-git merge-base --is-ancestor 315efa5f5f4420202b5254c86ccd8863a91c385f origin/main
-git merge-base --is-ancestor c1f4be66b97acb9a23faa02764e3d41ec1e4a3b0 origin/main
-.venv\Scripts\python.exe plans\codex\handover\validate_handover.py --self-test
-python -m tools.supervisor.coordination --json status
+git merge-base --is-ancestor e13e103de0bb789ff51a8e931af0fb649474be20 origin/main
+.venv\Scripts\python.exe plans\codex\handover\validate_handover.py
 ```
 
-Expected Git status includes exactly the seven recovery paths, not a clean
-tree. Verify their hashes before using any mutation tool. Then follow the
-[Claude execution handoff](CLAUDE-START.md). Work remains autonomous: do not
-ask for continuation, do not edit readiness labels, and do not claim a library
-complete until its complete proof graph and certification gates pass.
-
-The first bounded RED cycle is fixed in
-[NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml). Its first half is now implemented
-in the local overlay: the separate adjudication authority passes 13 tests. The
-first unmet action is the obligation-compiler gate in
-`tools/spec/extract_sal_facts.py`. The incoming provider must not restart the
-adjudication design or let the proposal generator become its own verifier.
+Then replay the exact artifact checks from the Event 30 runbook. A failure
+invalidates the affected proof edge; it does not authorize editing a status.

@@ -11,10 +11,10 @@ historical_projection: true
 
 # Provider-Neutral Shift and Resume Protocol
 
-> Durable provider-shift protocol refreshed through Event 29. Current exact
+> Durable provider-shift protocol refreshed through Event 30. Current exact
 > work is defined by [START-HERE.md](START-HERE.md),
 > [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml), the native FF6 journal, and the
-> immutable [Event 29 packet](event-29/START-HERE.md).
+> immutable [Event 30 packet](event-30/START-HERE.md).
 
 ## Invariant
 

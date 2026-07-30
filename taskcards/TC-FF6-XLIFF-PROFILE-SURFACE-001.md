@@ -500,6 +500,55 @@ only allowed fallback is the already-journaled UBL lane at
 `UBL-03`: exact import/include closure and reference resolution from commit
 `f98d220a`. That fallback must not mutate XLIFF paths or claim UBL-03 complete.
 
+## Current XLF-04 microstep checkpoint — event 30
+
+Native `FF6-EVENT-000030` supersedes the event-29 resume instructions.
+Partial-002-A is
+integration-safe on GitLab `main` at implementation commit
+`e13e103de0bb789ff51a8e931af0fb649474be20`. It proves exactly one independent
+candidate adjudication and one additional source-bound obligation row:
+
+- `1/1,130` candidate dispositions independently verified;
+- `26/105` expected Core obligations source-bound;
+- `1,129` dispositions and `79` expected rows remain open;
+- XLF-04 and XLF-04-BATCH-005 remain incomplete;
+- product source, certification, promotion, release, and gate state remain
+  unchanged.
+
+The exact next microstep is `XLF-04-BATCH-005-PARTIAL-002-B` for
+`XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1`, content digest
+`0a37761215603eb4db3f9602f6e979869b4f1f44c124c1f5ca2183cba1d7578a`.
+The authority is XLIFF 2.1 Core Schematron
+`schemas/xliff_core_2.1.sch`, rule 47/assert 2. It states that
+`subFlowsStart` and `subFlowsEnd` on `pc` must occur as a pair.
+
+Execute the next microstep as a new RED-GREEN-refactor cycle:
+
+1. Replay Event 30 and both committed artifact check modes from GitLab `main`.
+2. Add a failing decision test before extending the adjudication artifact.
+3. Independently decide whether the assertion directly owns an inline `pc`
+   pairing obligation. Do not accept the generated generic-validator,
+   `segment`, or `ignorable` mappings merely because those tokens occur in the
+   rule context.
+4. Bind accepted and rejected mappings to the exact candidate, occurrence,
+   member, denominator, SAL store, SAL manifest, SAL receipt, and adjudicator
+   digests.
+5. Add negative controls proving that incidental ancestor names do not create
+   hierarchy obligations and that one-sided subflow attributes are rejected.
+6. Regenerate the adjudication projection and obligation inventory. Preserve
+   all 26 current stable rows and IDs.
+7. Run focused tests, all dependency-drift controls, static checks, affected
+   regressions, authority audit, SAL verification, three clean deterministic
+   generations, and installed proof only when product source is eventually
+   in scope.
+8. Commit the bounded implementation first, replay from that immutable commit,
+   then append the next native event and rebuild provider-neutral handover
+   projections.
+
+No future executor may promote this task from counts alone. Completion still
+requires every mandatory Core and module obligation, independent evidence,
+and the downstream product/certification gates.
+
 ## Required execution
 
 ### XLF-01 — Revalidate the clean predecessor

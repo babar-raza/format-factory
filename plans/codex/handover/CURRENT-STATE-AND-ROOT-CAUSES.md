@@ -11,17 +11,17 @@ historical_projection: false
 
 # Current State, Root Causes, and Structural Weaknesses
 
-> Design analysis refreshed through Event 29. This file explains causes and
+> Design analysis refreshed through Event 30. This file explains causes and
 > redesign direction; executable state remains derived from
 > [START-HERE.md](START-HERE.md), [CURRENT-MACHINE-STATE.yaml](CURRENT-MACHINE-STATE.yaml),
-> the native journal, and the immutable [Event 29 packet](event-29/START-HERE.md).
+> the native journal, and the immutable [Event 30 packet](event-30/START-HERE.md).
 
 ## Executive truth
 
 The FF6 mission has a durable goal, deterministic contract compiler, locked
 authority dependency plane, hash-chained controller, current gap projection,
 and a provider-neutral resume protocol. Events 16-19 closed authority,
-OpenRaster, IPYNB, and NRRD contract prerequisites. Events 20-29 advanced
+OpenRaster, IPYNB, and NRRD contract prerequisites. Events 20-30 advanced
 XLIFF authority/profile work through a complete 1,130-candidate Core census
 and advanced UBL through its first root/type graph primitive.
 

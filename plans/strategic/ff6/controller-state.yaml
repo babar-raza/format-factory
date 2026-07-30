@@ -4,10 +4,10 @@ goal_status: ACTIVE
 generated_by: codex
 visibility: internal
 controller_state: CONTRACT
-transition_sequence: 29
+transition_sequence: 30
 last_verified_event:
-  event_id: FF6-EVENT-000029
-  event_hash: de12acdefd04c37a918e3fd27dcb8dd076f53e576ee7049cf1efc732d02028bb
+  event_id: FF6-EVENT-000030
+  event_hash: 2d365d013b94c386014d7e75813114de6d7a225e2a9e16d21a485a38cd2d9398
 event_journal: plans/strategic/ff6/events.jsonl
 baseline_commit: e4f8f5f086b5e627c07c2ef2d940eda2601a22a8
 digest_policy:
@@ -43,20 +43,17 @@ next_task:
   task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
   state: WORK_IN_PROGRESS
   unlock_condition: >-
-    Resume from event 29 at
-    XLF-04-BATCH-005-PARTIAL-002_DISPOSITION_VERIFICATION_AND_OBLIGATION_COMPILATION.
-    Revalidate implementation commit 315efa5f, the 1,130-candidate report,
-    64 focused tests, unchanged matrix, denominator and obligation-inventory
-    digests, three zero-warning batch-005 receipts, five XLIFF authority
-    matches, and three identical authority-bound census generations. Then
-    independently verify all 1,130 deterministic candidate dispositions
-    through canonical SAL, repair contradictions instead of accepting
-    generated labels, expand the denominator for newly exposed normative
-    semantics, compile source-bound obligation rows for the 80 missing
-    expected IDs, and resolve the 60 expected IDs with no candidate mapping.
-    The denominator remains OPEN_AUTHORITY_CENSUS. Candidate routing of 45 IDs
-    is not obligation resolution. Do not rerun completed batches unless their
-    inputs changed. Product source and architecture remain blocked.
+    Resume from event 30 at XLF-04-BATCH-005-PARTIAL-002-B for candidate
+    XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1. Revalidate implementation
+    commit e13e103d, one content-addressed adjudication, the 26/105 obligation
+    inventory with 79 missing rows, 1/1,130 verified dispositions, all three
+    zero-warning batch receipts, five XLIFF authority matches, and immutable
+    check-mode replay. Then independently adjudicate the subFlowsStart and
+    subFlowsEnd pairing assertion. Treat generated validator, hierarchy, and
+    inline-pc mappings as proposals, repair contradictions with negative
+    controls, and compile a source-bound obligation only when the adjudication
+    proves it. The denominator remains OPEN_AUTHORITY_CENSUS. Product source
+    and architecture remain blocked.
 promotion:
   program: UNASSESSED
   ipynb: UNASSESSED
@@ -128,7 +125,7 @@ current_gap_summary:
   production_certifications: 0
 control_plane_compatibility:
   ff6_event_schema: ff6/controller-event@1
-  native_chain_validation: PASS_THROUGH_EVENT_29
+  native_chain_validation: PASS_THROUGH_EVENT_30
   generic_plan_control_doctor: >-
     INCOMPATIBLE_SCHEMA: tools.plan_control expects previous_hash and its own
     event payload; FF6 uses previous_event_hash. This is the already-tracked
@@ -186,8 +183,8 @@ xlf_checkpoint:
   completed_xlf_04_batches: [XLF-04-BATCH-001, XLF-04-BATCH-002, XLF-04-BATCH-003, XLF-04-BATCH-004]
   first_unmet_step: XLF-04
   microstate: RESUMABLE
-  active_microstep: XLF-04-BATCH-005-PARTIAL-002_DISPOSITION_VERIFICATION_AND_OBLIGATION_COMPILATION
-  checkpoint_source_commit: 315efa5f5f4420202b5254c86ccd8863a91c385f
+  active_microstep: XLF-04-BATCH-005-PARTIAL-002-B
+  checkpoint_source_commit: e13e103de0bb789ff51a8e931af0fb649474be20
   implemented_slice:
     - digest_bound_bounded_zip_authority_reader
     - xliff_2_0_2_1_core_module_structural_inventory
@@ -230,26 +227,33 @@ xlf_checkpoint:
     - authority_replay_bound_census_validation
     - honest_unverified_disposition_precision
     - forged_mapping_and_rehashed_content_negative_controls
+    - content_addressed_candidate_adjudication_schema_and_validator
+    - independent_target_language_candidate_adjudication
+    - candidate_denominator_sal_and_tool_drift_invalidation
+    - batch_005_cli_proof_boundary
+    - cumulative_twenty_six_obligation_real_authority_batch
   remaining_steps: [XLF-04, XLF-05, XLF-06, XLF-07, XLF-08]
   exact_next_action: >-
-    Continue XLF-04-BATCH-005 by independently verifying all 1,130 candidate
-    dispositions through canonical SAL and repairing contradictions in the
-    deterministic mapping rules. Expand the expected-ID denominator where the
-    authority exposes missing normative behavior, compile source-bound
-    obligation rows for the 80 missing expected IDs, and resolve the 60
-    expected IDs with no candidate mapping. Preserve all 25 existing
-    obligation rows. Keep completeness false until the entire authority
-    surface is verified, every expected ID has a source-bound obligation, and
-    canonical SAL verification succeeds.
+    Execute XLF-04-BATCH-005-PARTIAL-002-B for candidate
+    XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1. Independently adjudicate the
+    exact subFlowsStart/subFlowsEnd pairing assertion. Treat generated
+    validator, hierarchy, and inline-pc mappings as proposals; add negative
+    controls for incidental ancestor names; compile a new obligation only if
+    canonical authority and SAL prove it. Preserve all 26 current rows and
+    keep completeness false.
   source: tools/spec/extract_sal_facts.py
-  source_sha256: 148dab047c4ea1cece55734b0e083b7222175b3d0df759a5d7e762cd8684634a
+  source_sha256: 17393ef46bb6a044a5e220fefa44157e5fdfabb3b09c824e7a9e3175b00fcb20
+  candidate_adjudication_source: tools/spec/xliff_core_candidate_adjudication.py
+  candidate_adjudication_source_sha256: 26c5a8e30abaf1f2ef44745ae44480c15869406e2ce6cc8c1d3a3d4469ed6c5b
   candidate_binding_source: tools/spec/xliff_core_candidate_binding.py
   candidate_binding_source_sha256: 042c670acefff8d0a6932ea3df7f1582f887f756148dd0bdfc356f69ca56f8b7
   tests: tests/tools/test_extract_sal_facts.py
-  tests_sha256: a698dbd7e11892fe5218939a001e73492f724c1d13622a386f5bb514f5c0c59c
+  tests_sha256: f2fcc1a668e16b7ff0de193324cf5b0f40717a9456c17f7ce367c0ad1ea325c9
+  candidate_adjudication_tests: tests/tools/test_xliff_core_candidate_adjudication.py
+  candidate_adjudication_tests_sha256: be9b5b17a8f01b94e4e1b5f2efbbf176ad151003ec70d360e69d424087e5257c
   candidate_binding_tests: tests/tools/test_extract_sal_facts_candidate_binding.py
   candidate_binding_tests_sha256: 576868da9f490fda3e9ca0913cd9335df8a38746dee347246052384aebe27caf
-  focused_tests: 64 passed
+  focused_tests: 89 passed across bounded runs
   ruff: PASS
   mypy_strict: PASS
   pyright: PASS_ZERO_DIAGNOSTICS_1_1_411
@@ -260,10 +264,14 @@ xlf_checkpoint:
   matrix_unique_ids: 36
   real_authority_replays: 3_identical
   core_obligation_inventory: reports/ff6/xliff-core-obligation-inventory.yaml
-  core_obligation_inventory_sha256: ae4d00af06fffc1eaf7741cd131d8ed7e7fc8a89b2a195acf4f649b5f44b6bbb
-  core_obligation_count: 25
+  core_obligation_inventory_sha256: 83b9f2da44b33a93cea6740e7510b32b961dda80791f9f148c163e913922f5e0
+  core_obligation_count: 26
   core_obligation_status: SOURCE_BOUND_PARTIAL
-  core_obligation_verification_status: SOURCE_BOUND_UNVERIFIED
+  core_obligation_verification_status: PARTIAL_INDEPENDENTLY_ADJUDICATED
+  candidate_adjudication_artifact: reports/sal-verification/xliff-core-candidate-adjudications.yaml
+  candidate_adjudication_sha256: 28399664d50afdd15e9f8b5ab2824a9566aa478fd0fcb18c97ce1451fd90d521
+  candidate_dispositions_verified: 1
+  candidate_dispositions_unverified: 1129
   core_covered_categories:
     - agent_processing
     - document_structure
@@ -283,9 +291,9 @@ xlf_checkpoint:
   core_denominator_sha256: c1a326e42bd1b47ec792088258f81fc4eac0b02543c57beedb48242181d008da
   core_denominator_status: OPEN_AUTHORITY_CENSUS
   core_expected_obligation_count: 105
-  core_resolved_expected_obligation_count: 25
-  core_missing_expected_obligation_count: 80
-  core_specification_obligation_count: 21
+  core_resolved_expected_obligation_count: 26
+  core_missing_expected_obligation_count: 79
+  core_specification_obligation_count: 22
   core_production_policy_obligation_count: 4
   core_completeness_basis: EXPLICIT_EXPECTED_OBLIGATION_IDS_OPEN_CENSUS
   core_complete: false
@@ -316,8 +324,8 @@ xlf_checkpoint:
   core_non_modal_prose_census_complete: true
   core_non_modal_prose_disposition_complete: true
   core_non_modal_prose_classification_verified: false
-  core_candidate_dispositions_verified: 0
-  core_candidate_dispositions_unverified: 1130
+  core_candidate_dispositions_verified: 1
+  core_candidate_dispositions_unverified: 1129
   core_candidate_authority_replay_bound: true
   core_normative_obligation_inventory_complete: false
   core_candidate_real_authority_replays: 3_identical
@@ -333,15 +341,15 @@ xlf_checkpoint:
   truth_boundary: >-
     XLF-03 proves the deterministic source-surface matrix and safety controls.
     XLF-04-BATCH-001 through BATCH-003 add 25 cumulative source-bound Core and
-    separately classified production-policy obligations. The explicit 105-ID
-    denominator resolves 25 IDs and leaves 80 missing, but it remains an open
-    authority census and cannot prove completeness. BATCH-005 partial expands
-    the census to 1,130 candidates across modal and non-modal prose, XSD, and
-    Schematron; binds their content to pinned authority replay; and
-    deterministically recomputes every disposition. All 1,130 dispositions
-    remain explicitly unverified, 60 expected IDs have no candidate mapping,
-    and 80 expected IDs lack source-bound obligation rows. Candidate routing
-    to 45 expected IDs is not obligation resolution. Canonical SAL
+    separately classified production-policy obligations. BATCH-005
+    Partial-002-A independently adjudicates one candidate and adds one
+    specification obligation, producing 26/105 source-bound rows. The
+    denominator remains an open authority census and cannot prove
+    completeness. The census has 1,130 candidates across modal and non-modal
+    prose, XSD, and Schematron; 1 disposition is independently verified and
+    1,129 remain unverified. Sixty expected IDs still have no generated
+    candidate mapping and 79 expected IDs lack source-bound rows. Candidate
+    routing to 45 expected IDs is not obligation resolution. Canonical SAL
     reconciliation, complete verified classification, module obligations,
     product behavior, certification, and promotion remain open.
   inventory: reports/ff6/xliff-authority-member-inventory.yaml

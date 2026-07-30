@@ -329,3 +329,30 @@ to the lease TTL boundary. Claude must register a new identity and requery
 coordination. It resumes XLIFF only after safe release or governed stale
 takeover; otherwise it executes UBL-03 under disjoint leases. Certification
 remains 0/6 and all promotions remain `UNASSESSED`.
+
+## Event-30 clean provider-neutral checkpoint
+
+Event 30 supersedes all earlier operational resume paragraphs while preserving
+them as history. XLIFF Partial-002-A is committed and pushed to GitLab `main`
+at `e13e103de0bb789ff51a8e931af0fb649474be20`; there is no local-only product
+overlay.
+
+- Native journal head: `FF6-EVENT-000030`.
+- Controller remains `CONTRACT`.
+- Active task remains `TC-FF6-XLIFF-PROFILE-SURFACE-001` /
+  `WORK_IN_PROGRESS`.
+- Exactly 1 of 1,130 candidate dispositions is independently verified.
+- Exactly 26 of 105 expected Core obligation rows are source-bound; 79 remain
+  missing.
+- XLF-04, all product implementations, certification, promotion, release, and
+  gates remain incomplete or unchanged.
+- Exact next microstep:
+  `XLF-04-BATCH-005-PARTIAL-002-B`.
+- Exact next candidate:
+  `XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1`.
+
+The incoming provider must start at
+`plans/codex/handover/START-HERE.md`, validate the Event 30 packet, register a
+fresh coordination identity, replay immutable check modes, and begin the new
+candidate with a failing independent-adjudication test. Provider credentials,
+leases, manifests, and uncommitted assumptions are never transferred.

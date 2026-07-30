@@ -18,6 +18,11 @@ The goal, phase order, task semantics, evidence standard, and terminal
 condition do not change when the provider changes. Only the current executor
 identity and its leased files change.
 
+Current operational authority is Event 30 and
+[CURRENT-MACHINE-STATE.yaml](CURRENT-MACHINE-STATE.yaml). Event-specific
+examples below that cite Event 29 are retained as historical illustrations;
+they cannot override the latest valid native event.
+
 ## 1. Locked mission
 
 Mission: `FF6-PRODUCTION-LIBRARIES-001`.

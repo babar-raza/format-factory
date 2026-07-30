@@ -1,0 +1,39 @@
+schema: ff6/versioned-checkpoint@1
+artifact_id: FF6-EVENT-30-CHECKPOINT
+visibility: internal
+publish_allowed: false
+generated_by: codex
+generated_at: "2026-07-30"
+event:
+  sequence: 30
+  event_id: FF6-EVENT-000030
+  event_hash: 2d365d013b94c386014d7e75813114de6d7a225e2a9e16d21a485a38cd2d9398
+  previous_event_hash: de12acdefd04c37a918e3fd27dcb8dd076f53e576ee7049cf1efc732d02028bb
+  state: CONTRACT
+implementation:
+  commit: e13e103de0bb789ff51a8e931af0fb649474be20
+  remote: origin
+  branch: main
+task:
+  task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
+  state: WORK_IN_PROGRESS
+  first_unmet_step: XLF-04
+  completed_partial: XLF-04-BATCH-005-PARTIAL-002-A
+  next_partial: XLF-04-BATCH-005-PARTIAL-002-B
+evidence:
+  candidate_count: 1130
+  verified_dispositions: 1
+  unverified_dispositions: 1129
+  expected_obligations: 105
+  source_bound_obligations: 26
+  missing_obligations: 79
+  adjudication_sha256: 28399664d50afdd15e9f8b5ab2824a9566aa478fd0fcb18c97ce1451fd90d521
+  inventory_sha256: 83b9f2da44b33a93cea6740e7510b32b961dda80791f9f148c163e913922f5e0
+next_candidate:
+  candidate_id: XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
+  candidate_content_sha256: 0a37761215603eb4db3f9602f6e979869b4f1f44c124c1f5ca2183cba1d7578a
+  location: schematron/rule[47]/assert[2]
+truth_boundary:
+  xlf_04_complete: false
+  products_certified: 0
+  promotion_effect: none

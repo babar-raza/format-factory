@@ -1,0 +1,79 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "plan-control-xliff-profile-surface-wip-009",
+  "skill_id": "plan-control",
+  "mode": "live",
+  "timestamp": "2026-07-30T01:20:00Z",
+  "inputs": {
+    "task_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "mission_id": "FF6-PRODUCTION",
+    "operation": "project",
+    "source_checkpoint": "e13e103de0bb789ff51a8e931af0fb649474be20",
+    "coordination_scope": "exact Event 30 journal, controller, and active taskcard paths",
+    "target_paths": [
+      "plans/strategic/ff6/events.jsonl",
+      "plans/strategic/ff6/controller-state.yaml",
+      "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md"
+    ],
+    "acceptance_evidence": [
+      "native event chain through Event 30",
+      "controller and task projection agreement",
+      "immutable implementation replay"
+    ]
+  },
+  "allowed_files": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
+    "reports/skills-rff6/skill-transcripts/plan-control-xliff-profile-surface-wip-009.json"
+  ],
+  "actual_files_changed": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
+    "reports/skills-rff6/skill-transcripts/plan-control-xliff-profile-surface-wip-009.json"
+  ],
+  "tests_run": [
+    "Implementation commit is present on GitLab origin/main.",
+    "Native event chain recomputed through sequence 30.",
+    "Event 30 hash and previous-event binding match.",
+    "Controller, taskcard, and Event 30 agree on CONTRACT / WORK_IN_PROGRESS.",
+    "Adjudication and obligation artifacts replayed in check mode.",
+    "Post-commit immutable smoke: 3 passed."
+  ],
+  "result": "PASS",
+  "ledger_entry_id": null,
+  "evidence": {
+    "event_id": "FF6-EVENT-000030",
+    "event_hash": "2d365d013b94c386014d7e75813114de6d7a225e2a9e16d21a485a38cd2d9398",
+    "controller_state": "CONTRACT",
+    "task_state": "WORK_IN_PROGRESS",
+    "source_bound_obligations": 26,
+    "missing_source_bound_obligations": 79,
+    "verified_candidate_dispositions": 1,
+    "unverified_candidate_dispositions": 1129,
+    "next_microstep": "XLF-04-BATCH-005-PARTIAL-002-B",
+    "next_candidate": "XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1",
+    "promotion_effect": "none",
+    "truth_boundary": "Event 30 proves only Partial-002-A; XLF-04 and all product certification remain open."
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for this bounded projection checkpoint",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for Event 30; not for XLF-04 completion",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_checkpoint_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES; no contradiction to log",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

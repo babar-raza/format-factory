@@ -11,10 +11,10 @@ historical_projection: true
 
 # Validation, Regression, and Release Contract
 
-> Durable validation contract refreshed through Event 29. Current checkpoint
+> Durable validation contract refreshed through Event 30. Current checkpoint
 > facts and commands are in [START-HERE.md](START-HERE.md),
 > [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml), and the immutable
-> [Event 29 runbook](event-29/RUNBOOK.md). No release state is implied here.
+> [Event 30 runbook](event-30/RUNBOOK.md). No release state is implied here.
 
 ## Completion semantics
 
