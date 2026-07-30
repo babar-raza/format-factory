@@ -86,7 +86,7 @@ missing_expected_obligation_ids:
 - SAL-XLIFF-CORE-INLINE-ORDER-001
 - SAL-XLIFF-CORE-INLINE-ORIGINAL-DATA-001
 - SAL-XLIFF-CORE-INLINE-OVERLAP-001
-- SAL-XLIFF-CORE-INLINE-PAIRING-001
+- SAL-XLIFF-CORE-INLINE-PC-001
 - SAL-XLIFF-CORE-INLINE-PH-001
 - SAL-XLIFF-CORE-INLINE-SC-001
 - SAL-XLIFF-CORE-INLINE-SM-001
@@ -174,7 +174,7 @@ missing_expected_obligations_by_category:
   - SAL-XLIFF-CORE-INLINE-ORDER-001
   - SAL-XLIFF-CORE-INLINE-ORIGINAL-DATA-001
   - SAL-XLIFF-CORE-INLINE-OVERLAP-001
-  - SAL-XLIFF-CORE-INLINE-PAIRING-001
+  - SAL-XLIFF-CORE-INLINE-PC-001
   - SAL-XLIFF-CORE-INLINE-PH-001
   - SAL-XLIFF-CORE-INLINE-SC-001
   - SAL-XLIFF-CORE-INLINE-SM-001
@@ -578,12 +578,11 @@ obligations:
     - reject behavior that ignores the inherited translate value
   interpretation_note: Second source-located XLF-04 batch covering stable identifier, inheritance, language, direction, whitespace, and source-target rules.
   verification_status: SOURCE_BOUND_UNVERIFIED
-- obligation_id: SAL-XLIFF-CORE-INLINE-PC-001
+- obligation_id: SAL-XLIFF-CORE-INLINE-PAIRING-001
   obligation_basis: XLIFF_SPECIFICATION
   conformance_effect: STANDARD_CONFORMANCE
   introduced_in_batch: XLF-04-BATCH-005
   stable_profiles:
-  - xliff_2.0
   - xliff_2.1
   owner: core:inline-code
   category: inline_code_semantics
@@ -591,16 +590,6 @@ obligations:
   requirement_class: SEMANTIC_CONSTRAINT
   normative_level: MUST
   authority_locations:
-  - profile: xliff_2.0
-    authority_source_id: SRC-XLF-001
-    source_sha256: aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055
-    location_kind: prose_paragraph
-    member: xliff-core-v2.0-os.xml
-    member_sha256: 07059d426de1e839540e5e84e0e061c4a6d5ef1a1b7e71ddf75bf5bd11518b73
-    section_id: pc
-    paragraph_index: 0
-    source_anchor: Represents a well-formed spanning original code
-    source_text_sha256: 84eec87369ab7a0ac71226705c1c3331941df0aeef767eadf35fe6e4a2027a7c
   - profile: xliff_2.1
     authority_source_id: SRC-XLF-002
     source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
@@ -617,8 +606,11 @@ obligations:
     - accept pc content with neither subFlows attribute
     rejection:
     - reject pc content with only one of subFlowsStart or subFlowsEnd
-  interpretation_note: Independent adjudication XLF-ADJ-CORE-SCHEMATRON-0002 binds this obligation to SAL-XLIFF-00005 and SAL-XLIFF-00006. The reciprocal XLIFF 2.1 Schematron assertions require subFlowsStart and subFlowsEnd as a pair; the ancestor names in their XPath contexts do not establish hierarchy obligations.
+  interpretation_note: Independent adjudications XLF-ADJ-CORE-SCHEMATRON-0002 and XLF-ADJ-CORE-SCHEMATRON-0003 bind this obligation to exact SAL-XLIFF-00005 proof. The reciprocal XLIFF 2.1 Schematron assertions require subFlowsStart and subFlowsEnd as a pair; the ancestor names in their XPath contexts do not establish hierarchy obligations.
   verification_status: SOURCE_BOUND_UNVERIFIED
+  adjudication_candidate_ids:
+  - XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
+  - XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF
 - obligation_id: SAL-XLIFF-CORE-INLINE-SPANNING-001
   obligation_basis: XLIFF_SPECIFICATION
   conformance_effect: STANDARD_CONFORMANCE
@@ -1247,13 +1239,20 @@ obligations:
 truth_boundary: XLIFF specification obligations and production-policy duties are separate authority classes. Neither source binding nor category presence turns the 36 coarse XLF-03 anchors into complete Core semantics, product source, or certification.
 adjudication_input:
   artifact_id: FF6-XLIFF-CORE-CANDIDATE-ADJUDICATIONS
-  artifact_sha256: 3d9c81773ceaddaae97a55fc804bd35efaf6501fe24c9fae8bf941fe338ceb01
-  input_closure_sha256: 881e0798daf4ca376e5cf31a9c2e50d380082ecdfcb0cc2e80f194228b7e8223
-  decision_set_sha256: 00d2334d857cf28969ebb2a8ce51c0184912e0e88d6091e1836d404b8bccc504
-  decision_count: 2
-  verified_disposition_count: 2
-  unverified_disposition_count: 1128
+  artifact_sha256: 0a1d964ce29efd5a767fb0b5904149491949d9da82557f1e28e9f9fad461b81c
+  input_closure_sha256: 4d693ecea4e0881e776191d6c960a91c0d4c840717cc8267c6c014c164a415dc
+  decision_set_sha256: cf6175bef63fea3cbdf41f6550b86ad70ec3277bbb1601781fdf993644f45161
+  decision_count: 3
+  verified_disposition_count: 3
+  unverified_disposition_count: 1127
   verified_candidate_ids:
   - XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
+  - XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF
   - XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90
-denominator_input_sha256: c1a326e42bd1b47ec792088258f81fc4eac0b02543c57beedb48242181d008da
+  accepted_obligation_candidate_ids:
+    SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001:
+    - XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90
+    SAL-XLIFF-CORE-INLINE-PAIRING-001:
+    - XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
+    - XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF
+denominator_input_sha256: 264e0092b27789dca60e210233f99088ee90c7e747c0765cf9c99286a5b4783f

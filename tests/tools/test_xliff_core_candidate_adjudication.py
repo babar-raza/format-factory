@@ -51,6 +51,7 @@ SUBFLOW_PAIR_RECIPROCAL_CANDIDATE_ID = (
     "XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF"
 )
 INLINE_PC_ID = "SAL-XLIFF-CORE-INLINE-PC-001"
+INLINE_PAIRING_ID = "SAL-XLIFF-CORE-INLINE-PAIRING-001"
 REJECTED_PROPOSAL_IDS = {
     "SAL-XLIFF-CORE-AGENT-VALIDATOR-001":
         "DOWNSTREAM_CAPABILITY_NOT_DIRECT_SEMANTIC_OWNER",
@@ -68,6 +69,7 @@ SUBFLOW_PAIR_REJECTED_PROPOSAL_IDS = {
         "INCIDENTAL_XPATH_CONTEXT_TOKEN",
     "SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001":
         "INCIDENTAL_XPATH_CONTEXT_TOKEN",
+    INLINE_PC_ID: "ELEMENT_SURFACE_NOT_DIRECT_PAIRING_OWNER",
 }
 
 
@@ -209,7 +211,72 @@ def test_trg_lang_adjudication_rejects_incidental_context_overmapping() -> None:
     )
 
 
-def test_subflow_pair_adjudication_accepts_only_inline_pc_semantics() -> None:
+def _pairing_decision(candidate_id: str, sequence: int) -> dict[str, Any]:
+    return {
+        "decision_id": f"XLF-ADJ-CORE-SCHEMATRON-{sequence:04d}",
+        "candidate_id": candidate_id,
+        "accepted_obligation_ids": [INLINE_PAIRING_ID],
+        "rejected_obligations": [
+            {
+                "obligation_id": obligation_id,
+                "reason_code": reason_code,
+                "reason": (
+                    "Independent reading of this exact Schematron assertion "
+                    "does not establish the proposed behavior as its direct "
+                    "semantic owner."
+                ),
+            }
+            for obligation_id, reason_code in sorted(
+                SUBFLOW_PAIR_REJECTED_PROPOSAL_IDS.items()
+            )
+        ],
+        "sal_fact_ids": ["SAL-XLIFF-00005"],
+        "authority_reason": (
+            "This exact XLIFF 2.1 Schematron assertion is one direction of "
+            "the mutual subFlowsStart and subFlowsEnd presence constraint. "
+            "Its direct denominator owner is the inline pairing obligation; "
+            "the generated validator, hierarchy, and element-surface "
+            "proposals are incidental or downstream."
+        ),
+    }
+
+
+def test_adjudication_accepts_denominator_owner_omitted_by_generator() -> None:
+    module = _load_module()
+    census = _load_yaml(CENSUS_PATH)
+    denominator = _load_yaml(DENOMINATOR_PATH)
+    store = _load_yaml(SAL_STORE_PATH)
+    receipt = _load_yaml(SAL_RECEIPT_PATH)
+
+    artifact = module.compile_adjudication_artifact(
+        candidate_census=census,
+        candidate_census_sha256=_sha256(CENSUS_PATH),
+        denominator=denominator,
+        denominator_sha256=_sha256(DENOMINATOR_PATH),
+        sal_store=store,
+        sal_store_sha256=_sha256(SAL_STORE_PATH),
+        sal_manifest_sha256=_sha256(SAL_MANIFEST_PATH),
+        sal_receipt=receipt,
+        sal_receipt_sha256=_sha256(SAL_RECEIPT_PATH),
+        decisions=[
+            _pairing_decision(
+                SUBFLOW_PAIR_CANDIDATE_ID,
+                2,
+            )
+        ],
+    )
+
+    decision = artifact["decisions"][0]
+    assert decision["accepted_obligation_ids"] == [INLINE_PAIRING_ID]
+    assert decision["unproposed_accepted_obligation_ids"] == [
+        INLINE_PAIRING_ID
+    ]
+    assert {
+        row["obligation_id"] for row in decision["rejected_obligations"]
+    } == set(SUBFLOW_PAIR_REJECTED_PROPOSAL_IDS)
+
+
+def test_subflow_pair_adjudication_requires_both_reciprocal_decisions() -> None:
     module = _load_module()
     census = _load_yaml(CENSUS_PATH)
     candidates = {
@@ -249,22 +316,23 @@ def test_subflow_pair_adjudication_accepts_only_inline_pc_semantics() -> None:
     decisions = [
         row
         for row in decision_source["decisions"]
-        if row["candidate_id"] == SUBFLOW_PAIR_CANDIDATE_ID
+        if row["candidate_id"]
+        in {
+            SUBFLOW_PAIR_CANDIDATE_ID,
+            SUBFLOW_PAIR_RECIPROCAL_CANDIDATE_ID,
+        }
     ]
-    assert len(decisions) == 1, (
-        "the selected subFlowsStart rule requires exactly one independent "
-        "content-addressed decision"
+    assert len(decisions) == 2, (
+        "the mutual-presence obligation requires one independent decision "
+        "for each exact reciprocal Schematron assertion"
     )
-    decision = decisions[0]
-    assert decision["accepted_obligation_ids"] == [INLINE_PC_ID]
-    assert {
-        row["obligation_id"]: row["reason_code"]
-        for row in decision["rejected_obligations"]
-    } == SUBFLOW_PAIR_REJECTED_PROPOSAL_IDS
-    assert decision["sal_fact_ids"] == [
-        "SAL-XLIFF-00005",
-        "SAL-XLIFF-00006",
-    ]
+    for decision in decisions:
+        assert decision["accepted_obligation_ids"] == [INLINE_PAIRING_ID]
+        assert {
+            row["obligation_id"]: row["reason_code"]
+            for row in decision["rejected_obligations"]
+        } == SUBFLOW_PAIR_REJECTED_PROPOSAL_IDS
+        assert decision["sal_fact_ids"] == ["SAL-XLIFF-00005"]
 
     accepted, evidence = module.validated_obligation_ids_from_paths(
         adjudications_path=ADJUDICATION_PATH,
@@ -274,11 +342,20 @@ def test_subflow_pair_adjudication_accepts_only_inline_pc_semantics() -> None:
         sal_manifest_path=SAL_MANIFEST_PATH,
         sal_receipt_path=SAL_RECEIPT_PATH,
     )
-    assert INLINE_PC_ID in accepted
-    assert evidence["decision_count"] == 2
-    assert evidence["verified_disposition_count"] == 2
+    assert INLINE_PAIRING_ID in accepted
+    assert INLINE_PC_ID not in accepted
+    assert evidence["accepted_obligation_candidate_ids"][
+        INLINE_PAIRING_ID
+    ] == sorted(
+        [
+            SUBFLOW_PAIR_CANDIDATE_ID,
+            SUBFLOW_PAIR_RECIPROCAL_CANDIDATE_ID,
+        ]
+    )
+    assert evidence["decision_count"] == 3
+    assert evidence["verified_disposition_count"] == 3
     assert evidence["unverified_disposition_count"] == (
-        census["candidate_count"] - 2
+        census["candidate_count"] - 3
     )
 
 

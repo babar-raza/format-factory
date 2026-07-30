@@ -1030,6 +1030,7 @@ def _core_obligation_rows(
         "evidence_requirements",
         "interpretation_note",
     }
+    optional = {"adjudication_candidate_ids"}
     rows: list[dict[str, Any]] = []
     seen: set[str] = set()
     stable_profile_set = set(sources)
@@ -1037,7 +1038,7 @@ def _core_obligation_rows(
         missing = sorted(required - set(raw))
         if missing:
             raise ExtractionError(f"Core obligation seed missing fields: {missing}")
-        unsupported = sorted(set(raw) - required)
+        unsupported = sorted(set(raw) - required - optional)
         if unsupported:
             raise ExtractionError(
                 "unsupported Core obligation seed fields: "
@@ -1103,6 +1104,20 @@ def _core_obligation_rows(
         if len(interpretation_note) < 15:
             raise ExtractionError(
                 f"{obligation_id} interpretation_note is too short"
+            )
+        adjudication_candidate_ids = sorted(
+            set(map(str, raw.get("adjudication_candidate_ids", [])))
+        )
+        if (
+            len(adjudication_candidate_ids)
+            != len(raw.get("adjudication_candidate_ids", []))
+            or any(
+                not candidate_id.startswith("XLF-CAND-CORE-")
+                for candidate_id in adjudication_candidate_ids
+            )
+        ):
+            raise ExtractionError(
+                f"{obligation_id} has invalid adjudication candidate IDs"
             )
 
         evidence = raw["evidence_requirements"]
@@ -1272,8 +1287,7 @@ def _core_obligation_rows(
                 "policy-rule authority"
             )
 
-        rows.append(
-            {
+        row = {
                 "obligation_id": obligation_id,
                 "obligation_basis": obligation_basis,
                 "conformance_effect": (
@@ -1303,7 +1317,11 @@ def _core_obligation_rows(
                 "interpretation_note": interpretation_note,
                 "verification_status": "SOURCE_BOUND_UNVERIFIED",
             }
-        )
+        if adjudication_candidate_ids:
+            row["adjudication_candidate_ids"] = (
+                adjudication_candidate_ids
+            )
+        rows.append(row)
     return sorted(rows, key=lambda item: item["obligation_id"])
 
 
@@ -1471,7 +1489,10 @@ def _default_core_obligation_expectations() -> list[dict[str, Any]]:
                     "stable_profiles": (
                         ["xliff_2.1"]
                         if obligation_id
-                        == "SAL-XLIFF-CORE-SECURITY-URI-RISK-001"
+                        in {
+                            "SAL-XLIFF-CORE-INLINE-PAIRING-001",
+                            "SAL-XLIFF-CORE-SECURITY-URI-RISK-001",
+                        }
                         else ["xliff_2.0", "xliff_2.1"]
                     ),
                     "obligation_basis": (
@@ -2986,10 +3007,16 @@ def _default_core_obligation_seeds(
     *,
     through_batch: str = "XLF-04-BATCH-003",
     verified_obligation_ids: set[str] | None = None,
+    adjudication_evidence: Mapping[str, Any] | None = None,
 ) -> list[dict[str, Any]]:
     """Return the bounded, curated XLF-04 Core obligation batches."""
 
-    def locations(section_id: str, source_anchor: str) -> list[dict[str, Any]]:
+    def locations(
+        section_id: str,
+        source_anchor: str,
+        *,
+        profiles: Sequence[str] = ("xliff_2.0", "xliff_2.1"),
+    ) -> list[dict[str, Any]]:
         return [
             {
                 "profile": profile,
@@ -3002,7 +3029,7 @@ def _default_core_obligation_seeds(
                 "section_id": section_id,
                 "source_anchor": source_anchor,
             }
-            for profile in ("xliff_2.0", "xliff_2.1")
+            for profile in profiles
         ]
 
     common_evidence = {
@@ -3667,7 +3694,11 @@ def _default_core_obligation_seeds(
     batch_five_target_language_id = (
         "SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001"
     )
-    batch_five_inline_pc_id = "SAL-XLIFF-CORE-INLINE-PC-001"
+    batch_five_pairing_id = "SAL-XLIFF-CORE-INLINE-PAIRING-001"
+    batch_five_pairing_candidate_ids = {
+        "XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1",
+        "XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF",
+    }
     seeds.append(
         {
             "obligation_id": batch_five_target_language_id,
@@ -3706,10 +3737,10 @@ def _default_core_obligation_seeds(
     )
     seeds.append(
         {
-            "obligation_id": batch_five_inline_pc_id,
+            "obligation_id": batch_five_pairing_id,
             "obligation_basis": "XLIFF_SPECIFICATION",
             "introduced_in_batch": "XLF-04-BATCH-005",
-            "stable_profiles": ["xliff_2.0", "xliff_2.1"],
+            "stable_profiles": ["xliff_2.1"],
             "owner": "core:inline-code",
             "category": "inline_code_semantics",
             "normalized_rule": (
@@ -3720,7 +3751,12 @@ def _default_core_obligation_seeds(
             "requirement_class": "SEMANTIC_CONSTRAINT",
             "normative_level": "MUST",
             "authority_locations": locations(
-                "pc", "Represents a well-formed spanning original code"
+                "pc",
+                "Represents a well-formed spanning original code",
+                profiles=("xliff_2.1",),
+            ),
+            "adjudication_candidate_ids": sorted(
+                batch_five_pairing_candidate_ids
             ),
             "evidence_requirements": {
                 "positive": [
@@ -3733,9 +3769,10 @@ def _default_core_obligation_seeds(
                 ],
             },
             "interpretation_note": (
-                "Independent adjudication XLF-ADJ-CORE-SCHEMATRON-0002 binds "
-                "this obligation to SAL-XLIFF-00005 and SAL-XLIFF-00006. "
-                "The reciprocal XLIFF 2.1 Schematron assertions require "
+                "Independent adjudications XLF-ADJ-CORE-SCHEMATRON-0002 and "
+                "XLF-ADJ-CORE-SCHEMATRON-0003 bind this obligation to exact "
+                "SAL-XLIFF-00005 proof. The reciprocal XLIFF 2.1 "
+                "Schematron assertions require "
                 "subFlowsStart and subFlowsEnd as a pair; the ancestor names "
                 "in their XPath contexts do not establish hierarchy "
                 "obligations."
@@ -3775,6 +3812,28 @@ def _default_core_obligation_seeds(
             "XLF-04-BATCH-005 requires an independently adjudicated "
             f"{batch_five_target_language_id} obligation"
         )
+    if (
+        maximum_sequence >= 5
+        and batch_five_pairing_id in verified_ids
+    ):
+        accepted_candidates = (
+            adjudication_evidence or {}
+        ).get("accepted_obligation_candidate_ids", {})
+        pairing_candidates = (
+            accepted_candidates.get(batch_five_pairing_id, [])
+            if isinstance(accepted_candidates, Mapping)
+            else []
+        )
+        if not isinstance(pairing_candidates, Sequence) or isinstance(
+            pairing_candidates,
+            (str, bytes),
+        ) or not batch_five_pairing_candidate_ids <= set(
+            map(str, pairing_candidates)
+        ):
+            raise ExtractionError(
+                "XLF-04-BATCH-005 requires both reciprocal Schematron "
+                f"candidates for {batch_five_pairing_id}"
+            )
     return [
         seed
         for seed in seeds
@@ -4252,6 +4311,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 obligation_seeds=_default_core_obligation_seeds(
                     through_batch=args.batch_id,
                     verified_obligation_ids=verified_obligation_ids,
+                    adjudication_evidence=adjudication_evidence,
                 ),
                 batch_id=args.batch_id,
                 policy_sources=policy_sources,

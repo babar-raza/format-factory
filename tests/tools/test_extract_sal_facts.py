@@ -31,6 +31,11 @@ TARGET_LANGUAGE_OBLIGATION_ID = (
     "SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001"
 )
 INLINE_PC_OBLIGATION_ID = "SAL-XLIFF-CORE-INLINE-PC-001"
+INLINE_PAIRING_OBLIGATION_ID = "SAL-XLIFF-CORE-INLINE-PAIRING-001"
+SUBFLOW_PAIR_CANDIDATE_IDS = {
+    "XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1",
+    "XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF",
+}
 
 
 def test_registered_extractor_implementation_exists() -> None:
@@ -1243,7 +1248,7 @@ def test_cli_batch_five_compiles_only_validated_adjudication_ids(
     assert output.read_bytes() == first_bytes
 
 
-def test_cli_batch_five_compiles_adjudicated_subflow_pair_obligation(
+def test_cli_batch_five_compiles_only_reciprocally_adjudicated_pairing_obligation(
     tmp_path: Path,
 ) -> None:
     extractor = _load_module()
@@ -1308,26 +1313,77 @@ def test_cli_batch_five_compiles_adjudicated_subflow_pair_obligation(
     assert inventory["resolved_expected_obligation_count"] == 27
     assert len(inventory["missing_expected_obligation_ids"]) == 78
     assert inventory["complete"] is False
-    assert inventory["adjudication_input"]["decision_count"] == 2
-    assert inventory["adjudication_input"]["verified_disposition_count"] == 2
-    assert inventory["adjudication_input"]["unverified_disposition_count"] == 1128
+    assert inventory["adjudication_input"]["decision_count"] == 3
+    assert inventory["adjudication_input"]["verified_disposition_count"] == 3
+    assert inventory["adjudication_input"]["unverified_disposition_count"] == 1127
 
     rows = {row["obligation_id"]: row for row in inventory["obligations"]}
-    inline_pc = rows[INLINE_PC_OBLIGATION_ID]
-    assert inline_pc["introduced_in_batch"] == "XLF-04-BATCH-005"
-    assert inline_pc["category"] == "inline_code_semantics"
-    assert inline_pc["stable_profiles"] == ["xliff_2.0", "xliff_2.1"]
-    assert "subFlowsStart" in inline_pc["normalized_rule"]
-    assert "subFlowsEnd" in inline_pc["normalized_rule"]
+    assert INLINE_PC_OBLIGATION_ID not in {
+        row["obligation_id"]
+        for row in inventory["obligations"]
+        if row["introduced_in_batch"] == "XLF-04-BATCH-005"
+    }
+    pairing = rows[INLINE_PAIRING_OBLIGATION_ID]
+    assert pairing["introduced_in_batch"] == "XLF-04-BATCH-005"
+    assert pairing["category"] == "inline_code_semantics"
+    assert pairing["stable_profiles"] == ["xliff_2.1"]
+    assert pairing["adjudication_candidate_ids"] == sorted(
+        SUBFLOW_PAIR_CANDIDATE_IDS
+    )
+    assert "subFlowsStart" in pairing["normalized_rule"]
+    assert "subFlowsEnd" in pairing["normalized_rule"]
     assert {
-        location["profile"] for location in inline_pc["authority_locations"]
-    } == {"xliff_2.0", "xliff_2.1"}
+        location["profile"] for location in pairing["authority_locations"]
+    } == {"xliff_2.1"}
     assert all(
         location["section_id"] == "pc"
         and len(location["source_text_sha256"]) == 64
-        for location in inline_pc["authority_locations"]
+        for location in pairing["authority_locations"]
     )
     assert extractor.main([*args, "--check"]) == 0
+
+
+def test_batch_five_pairing_seed_rejects_one_sided_candidate_proof() -> None:
+    extractor = _load_module()
+    verified = {
+        "SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001",
+        INLINE_PAIRING_OBLIGATION_ID,
+    }
+    one_sided_evidence = {
+        "accepted_obligation_candidate_ids": {
+            INLINE_PAIRING_OBLIGATION_ID: [
+                min(SUBFLOW_PAIR_CANDIDATE_IDS)
+            ]
+        }
+    }
+
+    with pytest.raises(
+        extractor.ExtractionError,
+        match="both reciprocal",
+    ):
+        extractor._default_core_obligation_seeds(
+            through_batch="XLF-04-BATCH-005",
+            verified_obligation_ids=verified,
+            adjudication_evidence=one_sided_evidence,
+        )
+
+    seeds = extractor._default_core_obligation_seeds(
+        through_batch="XLF-04-BATCH-005",
+        verified_obligation_ids=verified,
+        adjudication_evidence={
+            "accepted_obligation_candidate_ids": {
+                INLINE_PAIRING_OBLIGATION_ID: sorted(
+                    SUBFLOW_PAIR_CANDIDATE_IDS
+                )
+            }
+        },
+    )
+    pairing = next(
+        seed
+        for seed in seeds
+        if seed["obligation_id"] == INLINE_PAIRING_OBLIGATION_ID
+    )
+    assert pairing["stable_profiles"] == ["xliff_2.1"]
 
 
 @pytest.mark.parametrize(

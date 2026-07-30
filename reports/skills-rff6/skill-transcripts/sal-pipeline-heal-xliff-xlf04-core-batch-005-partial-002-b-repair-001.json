@@ -1,0 +1,69 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "sal-pipeline-heal-xliff-xlf04-core-batch-005-partial-002-b-repair-001",
+  "skill_id": "sal-pipeline-heal",
+  "mode": "live",
+  "timestamp": "2026-07-30T03:23:08Z",
+  "inputs": {
+    "taskcard_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "format_id": "xliff",
+    "root_cause_id": "ROOT-08",
+    "spec_cache_path": ".local/format-contracts/acquired/xliff/",
+    "target_stage": "census",
+    "microstep_id": "XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001",
+    "execution_manifest": ".local/skills-first/manifests/sfx-089d864a34023acb.json"
+  },
+  "allowed_files": [
+    "tools/spec/xliff_core_candidate_adjudication.py",
+    "shared/sal-facts/evidence/xliff-core-candidate-decisions.yaml",
+    "shared/sal-facts/evidence/xliff.yaml",
+    "shared/sal-facts/xliff.yaml",
+    "reports/sal-verification/xliff.json",
+    "reports/sal-verification/xliff-core-candidate-adjudications.yaml",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-xliff-xlf04-core-batch-005-partial-002-b-repair-001.json"
+  ],
+  "actual_files_changed": [
+    "tools/spec/xliff_core_candidate_adjudication.py",
+    "shared/sal-facts/evidence/xliff-core-candidate-decisions.yaml",
+    "shared/sal-facts/evidence/xliff.yaml",
+    "shared/sal-facts/xliff.yaml",
+    "reports/sal-verification/xliff.json",
+    "reports/sal-verification/xliff-core-candidate-adjudications.yaml",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-xliff-xlf04-core-batch-005-partial-002-b-repair-001.json"
+  ],
+  "tests_run": [
+    "Both reciprocal candidate identities and exact normalized Schematron assertions were replayed from the 1130-row census.",
+    "Each assertion has an independent decision accepting only the denominator pairing owner.",
+    "Canonical SAL verification passed after adding exact reciprocal XPath assertions.",
+    "Adjudication check mode passed at 3 decisions, 3 verified dispositions, and 1127 open dispositions.",
+    "Three clean-process adjudication generations were byte-identical at SHA-256 0a1d964ce29efd5a767fb0b5904149491949d9da82557f1e28e9f9fad461b81c.",
+    "Affected and regression suites, static analysis, and five-source authority audit passed."
+  ],
+  "result": "PASS",
+  "evidence": {
+    "adjudicator_sha256": "0b37a291178baee0ecb5add32360624cdc5c6f3c10a89988b2cccc8bd6348f67",
+    "decision_source_sha256": "9665eb1502f6a7e9b537f1ff467162e2870b2f5fe44ec740876ea61045fee4e2",
+    "sal_manifest_sha256": "3a961199eb156658c978f36361f483498aefcd5e7a1582c14df6577a53410b9a",
+    "sal_store_sha256": "1a94baa5f19e4d09f438a6325580e5e9d2969be8529d72103d9d849486061fe7",
+    "sal_receipt_sha256": "911ebf4d9701af71d117af2a2347e0b2e102a5b8f5104af9e162355dd095daa2",
+    "adjudication_sha256": "0a1d964ce29efd5a767fb0b5904149491949d9da82557f1e28e9f9fad461b81c",
+    "candidate_count": 1130,
+    "decision_count": 3,
+    "verified_disposition_count": 3,
+    "unverified_disposition_count": 1127,
+    "accepted_obligation_id": "SAL-XLIFF-CORE-INLINE-PAIRING-001",
+    "content_addressed_receipt_bound": true,
+    "xlf_04_complete": false,
+    "promotion_effect": "none"
+  },
+  "self_challenge": {
+    "required_steps_complete": "YES for this bounded pipeline repair",
+    "source_authentic_candidates": "YES",
+    "proposal_generator_treated_as_authority": "NO",
+    "evidence_sufficient": "YES for the reciprocal pairing disposition only",
+    "self_approved_gate": "NO",
+    "broader_completion_claim": "NO"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

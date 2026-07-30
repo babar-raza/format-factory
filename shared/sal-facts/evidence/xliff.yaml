@@ -189,6 +189,30 @@ facts:
     expected: >-
       If 'isolated' is set to 'yes', only 'id' must be used and if set to 'no'
       (or missing), only 'startRef' must be specified
+  - assertion_id: pc-subflows-end-requires-start
+    target: core_schematron
+    kind: xml_xpath_attributes_equal
+    xpath: >-
+      .//sch:rule[@context="xlf:pc[@subFlowsEnd][ancestor::xlf:segment|ancestor::xlf:ignorable]"]/sch:assert[@test='@subFlowsStart']
+    attribute: test
+    expected: ['@subFlowsStart']
+    namespaces: *sch_namespaces
+  - assertion_id: pc-subflows-start-requires-end
+    target: core_schematron
+    kind: xml_xpath_attributes_equal
+    xpath: >-
+      .//sch:rule[@context="xlf:pc[@subFlowsStart][ancestor::xlf:segment|ancestor::xlf:ignorable]"]/sch:assert[@test='@subFlowsEnd']
+    attribute: test
+    expected: ['@subFlowsEnd']
+    namespaces: *sch_namespaces
+  - assertion_id: pc-subflows-pair-message
+    target: core_schematron
+    kind: xml_xpath_text_contains
+    xpath: >-
+      .//sch:rule[@context="xlf:pc[@subFlowsEnd][ancestor::xlf:segment|ancestor::xlf:ignorable]"]/sch:assert
+    expected: >-
+      'subFlowsStart' and 'subFlowsEnd' must be used in pair.
+    namespaces: *sch_namespaces
 - fact_id: SAL-XLIFF-00006
   claim_sha256: f5fd1fc0b783de607dbc3329e764c50f26d3f61f1bc849ed3ed8e51d6b2d25c5
   assertions:

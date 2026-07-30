@@ -29,7 +29,7 @@ from typing import Any
 import yaml
 
 
-SCHEMA = "ff6/xliff-core-candidate-adjudications@1"
+SCHEMA = "ff6/xliff-core-candidate-adjudications@2"
 ARTIFACT_ID = "FF6-XLIFF-CORE-CANDIDATE-ADJUDICATIONS"
 _FORMAT_ID = "xliff"
 _DECISION_ID = re.compile(r"^XLF-ADJ-[A-Z0-9][A-Z0-9-]*$")
@@ -327,11 +327,24 @@ def _normalize_decision(
         raise AdjudicationError(
             f"{decision_id} both accepts and rejects an obligation"
         )
-    proposal_ids = _proposal_ids(candidate)
-    if set(accepted) | set(rejected_ids) != set(proposal_ids):
+    proposal_ids = set(_proposal_ids(candidate))
+    rejected_id_set = set(rejected_ids)
+    accepted_id_set = set(accepted)
+    foreign_rejections = sorted(rejected_id_set - proposal_ids)
+    if foreign_rejections:
         raise AdjudicationError(
-            f"{decision_id} does not disposition every proposed obligation"
+            f"{decision_id} rejects obligations absent from the proposal: "
+            f"{foreign_rejections}"
         )
+    undispositioned = sorted(
+        proposal_ids - accepted_id_set - rejected_id_set
+    )
+    if undispositioned:
+        raise AdjudicationError(
+            f"{decision_id} does not disposition every proposed obligation: "
+            f"{undispositioned}"
+        )
+    unproposed_accepted = sorted(accepted_id_set - proposal_ids)
 
     sal_fact_ids_raw = _require_sequence(
         raw["sal_fact_ids"],
@@ -366,8 +379,10 @@ def _normalize_decision(
             candidate["candidate_content_sha256"]
         ),
         "proposal_sha256": _digest(candidate["disposition"]),
+        "proposed_obligation_ids": sorted(proposal_ids),
         "authority_occurrences": authority_bindings,
         "accepted_obligation_ids": sorted(accepted),
+        "unproposed_accepted_obligation_ids": unproposed_accepted,
         "rejected_obligations": sorted(
             rejected,
             key=lambda value: value["obligation_id"],
@@ -447,6 +462,19 @@ def compile_adjudication_artifact(
     if len(candidate_ids) != len(set(candidate_ids)):
         raise AdjudicationError("a candidate has multiple adjudications")
     normalized.sort(key=lambda row: row["candidate_id"])
+    accepted_obligation_candidate_ids: dict[str, list[str]] = {}
+    for row in normalized:
+        for obligation_id in row["accepted_obligation_ids"]:
+            accepted_obligation_candidate_ids.setdefault(
+                obligation_id,
+                [],
+            ).append(row["candidate_id"])
+    accepted_obligation_candidate_ids = {
+        obligation_id: sorted(candidate_ids_for_obligation)
+        for obligation_id, candidate_ids_for_obligation in sorted(
+            accepted_obligation_candidate_ids.items()
+        )
+    }
     artifact: dict[str, Any] = {
         "schema": SCHEMA,
         "artifact_id": ARTIFACT_ID,
@@ -467,6 +495,9 @@ def compile_adjudication_artifact(
         "unverified_disposition_count": len(candidates) - len(normalized),
         "disposition_verification_complete": len(normalized) == len(candidates),
         "verified_candidate_ids": sorted(candidate_ids),
+        "accepted_obligation_candidate_ids": (
+            accepted_obligation_candidate_ids
+        ),
         "decisions": normalized,
         "status": "PARTIAL_VERIFIED" if normalized else "NO_VERIFIED_DECISIONS",
         "truth_boundary": (
@@ -587,6 +618,9 @@ def apply_adjudication_projection(
             "decision_id": decision["decision_id"],
             "decision_sha256": decision["decision_sha256"],
             "accepted_obligation_ids": decision["accepted_obligation_ids"],
+            "unproposed_accepted_obligation_ids": decision[
+                "unproposed_accepted_obligation_ids"
+            ],
             "rejected_obligations": decision["rejected_obligations"],
             "validation_status": "CANONICAL_SAL_VERIFIED",
         }
@@ -709,6 +743,9 @@ def validated_obligation_ids_from_paths(
             "unverified_disposition_count"
         ],
         "verified_candidate_ids": adjudications["verified_candidate_ids"],
+        "accepted_obligation_candidate_ids": adjudications[
+            "accepted_obligation_candidate_ids"
+        ],
     }
     return obligation_ids, evidence
 

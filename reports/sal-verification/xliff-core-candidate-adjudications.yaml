@@ -1,4 +1,4 @@
-schema: ff6/xliff-core-candidate-adjudications@1
+schema: ff6/xliff-core-candidate-adjudications@2
 artifact_id: FF6-XLIFF-CORE-CANDIDATE-ADJUDICATIONS
 artifact_type: candidate_disposition_adjudications
 visibility: generated
@@ -6,26 +6,38 @@ publish_allowed: false
 generated_by: codex
 format_id: xliff
 candidate_census_sha256: 24c1902b6387cc9fa3402f78392ba91c6e6656407719ec11cfaab1c4f3d22b9e
-denominator_sha256: c1a326e42bd1b47ec792088258f81fc4eac0b02543c57beedb48242181d008da
-sal_store_sha256: b5154c73c7ad87d3058cd793f41f99305816ec56ea5c37cb112ae437443dee39
-sal_manifest_sha256: 7d168c3383e96e47427ec57a4e65f8c090a90ad304dd2be2b1d227befc21ca47
-sal_receipt_sha256: c99de3edee666c1f402beaccac3e72229199a43627160cd319f461715da1c1c9
-adjudicator_sha256: 26c5a8e30abaf1f2ef44745ae44480c15869406e2ce6cc8c1d3a3d4469ed6c5b
+denominator_sha256: 264e0092b27789dca60e210233f99088ee90c7e747c0765cf9c99286a5b4783f
+sal_store_sha256: 1a94baa5f19e4d09f438a6325580e5e9d2969be8529d72103d9d849486061fe7
+sal_manifest_sha256: 3a961199eb156658c978f36361f483498aefcd5e7a1582c14df6577a53410b9a
+sal_receipt_sha256: 911ebf4d9701af71d117af2a2347e0b2e102a5b8f5104af9e162355dd095daa2
+adjudicator_sha256: 0b37a291178baee0ecb5add32360624cdc5c6f3c10a89988b2cccc8bd6348f67
 candidate_census_artifact_id: FF6-XLIFF-CORE-AUTHORITY-CANDIDATE-CENSUS
 denominator_artifact_id: FF6-XLIFF-CORE-OBLIGATION-DENOMINATOR
 candidate_count: 1130
-decision_count: 2
-verified_disposition_count: 2
-unverified_disposition_count: 1128
+decision_count: 3
+verified_disposition_count: 3
+unverified_disposition_count: 1127
 disposition_verification_complete: false
 verified_candidate_ids:
 - XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
+- XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF
 - XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90
+accepted_obligation_candidate_ids:
+  SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001:
+  - XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90
+  SAL-XLIFF-CORE-INLINE-PAIRING-001:
+  - XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
+  - XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF
 decisions:
 - decision_id: XLF-ADJ-CORE-SCHEMATRON-0002
   candidate_id: XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
   candidate_content_sha256: 0a37761215603eb4db3f9602f6e979869b4f1f44c124c1f5ca2183cba1d7578a
   proposal_sha256: b7bf7acd703db7031973625973345b7bf3b800b66f4faea4a6a74384542904cc
+  proposed_obligation_ids:
+  - SAL-XLIFF-CORE-AGENT-VALIDATOR-001
+  - SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001
+  - SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001
+  - SAL-XLIFF-CORE-INLINE-PC-001
   authority_occurrences:
   - profile: xliff_2.1
     source_id: SRC-XLF-002
@@ -35,7 +47,9 @@ decisions:
     location: schematron/rule[47]/assert[2]
     occurrence_sha256: a6e64656091d0985bf218c985ee545b328844d909414e4bbe83f8ddf6a663a0e
   accepted_obligation_ids:
-  - SAL-XLIFF-CORE-INLINE-PC-001
+  - SAL-XLIFF-CORE-INLINE-PAIRING-001
+  unproposed_accepted_obligation_ids:
+  - SAL-XLIFF-CORE-INLINE-PAIRING-001
   rejected_obligations:
   - obligation_id: SAL-XLIFF-CORE-AGENT-VALIDATOR-001
     reason_code: DOWNSTREAM_CAPABILITY_NOT_DIRECT_SEMANTIC_OWNER
@@ -49,25 +63,80 @@ decisions:
     reason_code: INCIDENTAL_XPATH_CONTEXT_TOKEN
     reason: The segment ancestor limits the pc elements to which the assertion applies and does not independently
       establish segment hierarchy or cardinality semantics.
+  - obligation_id: SAL-XLIFF-CORE-INLINE-PC-001
+    reason_code: ELEMENT_SURFACE_NOT_DIRECT_PAIRING_OWNER
+    reason: The pc element is the surface on which the attributes occur, but this assertion governs mutual
+      attribute presence and does not establish the complete pc element model or all of its processing
+      semantics.
   sal_proofs:
   - fact_id: SAL-XLIFF-00005
     claim_sha256: 2bf57553f907611b59ee5dacefeb029c83415514aaa10259895842f024e606c6
-    fact_proof_sha256: 72d5c2cfb14217c07f09829d3d88cf5831dd7b50cafb0cab8deaa8eeb83b1e0f
-  - fact_id: SAL-XLIFF-00006
-    claim_sha256: f5fd1fc0b783de607dbc3329e764c50f26d3f61f1bc849ed3ed8e51d6b2d25c5
-    fact_proof_sha256: 8a15d890f018874b507456e2ac34869b3488d2046a2c6b1dfbd04dad91eb0847
-  authority_reason: 'The exact XLIFF 2.1 Core Schematron rule selects pc elements carrying subFlowsStart
-    and requires subFlowsEnd. Its reciprocal rule selects pc elements carrying subFlowsEnd and requires
-    subFlowsStart. Together they establish a paired-container inline-code constraint: either both attributes
-    occur or neither occurs. The segment and ignorable names are applicability context, and the rule is
-    not the generic validator capability. Verified SAL facts SAL-XLIFF-00005 and SAL-XLIFF-00006 bind
-    the Core inline-pair and pc element semantics.'
+    fact_proof_sha256: d8e013ca24c53603b4c66a5d89ea53996e089d52de5b161d0b1fcc2fb7694f85
+  authority_reason: This exact XLIFF 2.1 Core Schematron assertion selects pc elements carrying subFlowsStart
+    and requires subFlowsEnd. It is the start-to-end direction of the mutual-presence constraint. The
+    segment and ignorable names are applicability context, while the validator and pc element surfaces
+    are downstream or broader than the direct inline-pairing semantic owner.
   outcome: VERIFIED_AUTHORITY_DISPOSITION
-  decision_sha256: ba6c908d60a95b0a0bb6b3fce8b812c625c030bb2754169f8b8ad48ba4a75158
+  decision_sha256: e8262f37dd99df2942a437422948ce19586b8146ab40a1ca6f3b00cec0e99c80
+- decision_id: XLF-ADJ-CORE-SCHEMATRON-0003
+  candidate_id: XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF
+  candidate_content_sha256: 246f6e9e4c64fe142760045dbca69070405ae50f552b34387ce8709c3c7226e3
+  proposal_sha256: b7bf7acd703db7031973625973345b7bf3b800b66f4faea4a6a74384542904cc
+  proposed_obligation_ids:
+  - SAL-XLIFF-CORE-AGENT-VALIDATOR-001
+  - SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001
+  - SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001
+  - SAL-XLIFF-CORE-INLINE-PC-001
+  authority_occurrences:
+  - profile: xliff_2.1
+    source_id: SRC-XLF-002
+    source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    member: schemas/xliff_core_2.1.sch
+    member_sha256: d4275f2d2574f892624bcd8f83bcc3001c75d623e4eb36896d15d147f16ed7a2
+    location: schematron/rule[46]/assert[2]
+    occurrence_sha256: 1443b1090a3a0f118c4c478fbabe27a2fef549a4c3ad0168d7b6ef0d95d8b80f
+  accepted_obligation_ids:
+  - SAL-XLIFF-CORE-INLINE-PAIRING-001
+  unproposed_accepted_obligation_ids:
+  - SAL-XLIFF-CORE-INLINE-PAIRING-001
+  rejected_obligations:
+  - obligation_id: SAL-XLIFF-CORE-AGENT-VALIDATOR-001
+    reason_code: DOWNSTREAM_CAPABILITY_NOT_DIRECT_SEMANTIC_OWNER
+    reason: A conforming validator must enforce this assertion, but the single sub-flow pair rule does
+      not establish the generic validator-agent processing capability.
+  - obligation_id: SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001
+    reason_code: INCIDENTAL_XPATH_CONTEXT_TOKEN
+    reason: The ignorable ancestor limits the pc elements to which the assertion applies and does not
+      independently establish ignorable hierarchy or cardinality semantics.
+  - obligation_id: SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001
+    reason_code: INCIDENTAL_XPATH_CONTEXT_TOKEN
+    reason: The segment ancestor limits the pc elements to which the assertion applies and does not independently
+      establish segment hierarchy or cardinality semantics.
+  - obligation_id: SAL-XLIFF-CORE-INLINE-PC-001
+    reason_code: ELEMENT_SURFACE_NOT_DIRECT_PAIRING_OWNER
+    reason: The pc element is the surface on which the attributes occur, but this assertion governs mutual
+      attribute presence and does not establish the complete pc element model or all of its processing
+      semantics.
+  sal_proofs:
+  - fact_id: SAL-XLIFF-00005
+    claim_sha256: 2bf57553f907611b59ee5dacefeb029c83415514aaa10259895842f024e606c6
+    fact_proof_sha256: d8e013ca24c53603b4c66a5d89ea53996e089d52de5b161d0b1fcc2fb7694f85
+  authority_reason: This exact XLIFF 2.1 Core Schematron assertion selects pc elements carrying subFlowsEnd
+    and requires subFlowsStart. It is the end-to-start direction of the mutual-presence constraint. The
+    segment and ignorable names are applicability context, while the validator and pc element surfaces
+    are downstream or broader than the direct inline-pairing semantic owner.
+  outcome: VERIFIED_AUTHORITY_DISPOSITION
+  decision_sha256: 87e4824decda42a25d883001556220974c7da28eaa7ca55823e0fb4931863454
 - decision_id: XLF-ADJ-CORE-SCHEMATRON-0001
   candidate_id: XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90
   candidate_content_sha256: 844d0783d2fb5956ef51413c3811015848987cdb13414d5d04e819c6200c02f6
   proposal_sha256: 39ae23118955692a53b906cbe25395b1da124256116131a9e4c81df777bf0723
+  proposed_obligation_ids:
+  - SAL-XLIFF-CORE-AGENT-VALIDATOR-001
+  - SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001
+  - SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001
+  - SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001
+  - SAL-XLIFF-CORE-SOURCE-TARGET-OPTIONAL-001
   authority_occurrences:
   - profile: xliff_2.1
     source_id: SRC-XLF-002
@@ -78,6 +147,7 @@ decisions:
     occurrence_sha256: 5e3a01b5b04deb533489a2d436d238ccd6de21bf88a530969e1195ae00c39c7b
   accepted_obligation_ids:
   - SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001
+  unproposed_accepted_obligation_ids: []
   rejected_obligations:
   - obligation_id: SAL-XLIFF-CORE-AGENT-VALIDATOR-001
     reason_code: DOWNSTREAM_CAPABILITY_NOT_DIRECT_SEMANTIC_OWNER
@@ -105,9 +175,9 @@ decisions:
     obligation. The XPath parent names describe the trigger context rather than independent hierarchy
     rules.
   outcome: VERIFIED_AUTHORITY_DISPOSITION
-  decision_sha256: df507bb3ec37d56e14606826a5dc6edbc399d74f8f5e2ac9fb0ff67c721f2105
+  decision_sha256: 6550fecc8aa699f6def1ad3221fd3862fa3872b2dfa25995ea31862f7ce56c92
 status: PARTIAL_VERIFIED
 truth_boundary: Only listed content-addressed decisions are verified. Generated candidate proposals remain
   non-promoting, and this partial artifact does not complete XLF-04.
-input_closure_sha256: 881e0798daf4ca376e5cf31a9c2e50d380082ecdfcb0cc2e80f194228b7e8223
-decision_set_sha256: 00d2334d857cf28969ebb2a8ce51c0184912e0e88d6091e1836d404b8bccc504
+input_closure_sha256: 4d693ecea4e0881e776191d6c960a91c0d4c840717cc8267c6c014c164a415dc
+decision_set_sha256: cf6175bef63fea3cbdf41f6550b86ad70ec3277bbb1601781fdf993644f45161

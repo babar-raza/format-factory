@@ -1,0 +1,63 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "ingest-spec-sal-xliff-xlf04-core-batch-005-partial-002-b-repair-001",
+  "skill_id": "ingest-spec-sal",
+  "mode": "live",
+  "timestamp": "2026-07-30T03:23:08Z",
+  "inputs": {
+    "task_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "format_id": "xliff",
+    "spec_source_uri": "Pinned local OASIS XLIFF 2.0 and 2.1 Standard packages",
+    "spec_version": "XLIFF 2.0 and XLIFF 2.1",
+    "spec_body": "OASIS XLIFF 2.1 Core Schematron reciprocal pc subFlowsStart and subFlowsEnd assertions",
+    "target_fact_count_min": 1,
+    "authority_2_0_sha256": "aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055",
+    "authority_2_1_sha256": "73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751",
+    "execution_manifest": ".local/skills-first/manifests/sfx-536f1a465ebfd5f4.json"
+  },
+  "allowed_files": [
+    "tools/spec/extract_sal_facts.py",
+    "reports/ff6/xliff-core-obligation-denominator.yaml",
+    "reports/ff6/xliff-core-obligation-inventory.yaml",
+    "reports/skills-rff6/skill-transcripts/ingest-spec-sal-xliff-xlf04-core-batch-005-partial-002-b-repair-001.json"
+  ],
+  "actual_files_changed": [
+    "tools/spec/extract_sal_facts.py",
+    "reports/ff6/xliff-core-obligation-denominator.yaml",
+    "reports/ff6/xliff-core-obligation-inventory.yaml",
+    "reports/skills-rff6/skill-transcripts/ingest-spec-sal-xliff-xlf04-core-batch-005-partial-002-b-repair-001.json"
+  ],
+  "tests_run": [
+    "Canonical denominator generation and check mode passed at 105 rows.",
+    "Canonical inventory generation and check mode passed at 27 resolved and 78 missing.",
+    "The added pairing row is XLIFF 2.1-only and binds both reciprocal candidate IDs.",
+    "The 26 previously accepted rows are semantically unchanged.",
+    "Three clean-process inventory generations were byte-identical at SHA-256 2575bcbb10bf42c1590b7c3dfdaa53622577e542e25e4ba5483f206f36dcdaaf.",
+    "Affected and regression suites, static analysis, SAL verification, and authority audit passed."
+  ],
+  "result": "PASS",
+  "evidence": {
+    "extractor_sha256": "6ed351dfcdf5f74556e5ba8da4983f0899941b21d5ead4f2565d00e433010a3b",
+    "denominator_sha256": "264e0092b27789dca60e210233f99088ee90c7e747c0765cf9c99286a5b4783f",
+    "inventory_sha256": "2575bcbb10bf42c1590b7c3dfdaa53622577e542e25e4ba5483f206f36dcdaaf",
+    "expected_obligation_count": 105,
+    "resolved_obligation_count": 27,
+    "missing_obligation_count": 78,
+    "prior_rows_unchanged": "26/26",
+    "added_obligation_id": "SAL-XLIFF-CORE-INLINE-PAIRING-001",
+    "stable_profiles": [
+      "xliff_2.1"
+    ],
+    "complete": false,
+    "promotion_effect": "none"
+  },
+  "self_challenge": {
+    "required_steps_complete": "YES for this bounded ingestion repair",
+    "primary_authority_used": "YES",
+    "evidence_sufficient": "YES for one obligation, not the denominator",
+    "self_approved_gate": "NO",
+    "broader_completion_claim": "NO"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}
