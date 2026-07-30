@@ -3,76 +3,78 @@
   "invocation_id": "plan-control-xliff-profile-surface-wip-009",
   "skill_id": "plan-control",
   "mode": "live",
-  "timestamp": "2026-07-30T01:20:00Z",
+  "timestamp": "2026-07-30T03:34:00Z",
   "inputs": {
     "task_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
-    "mission_id": "FF6-PRODUCTION",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
     "operation": "project",
-    "source_checkpoint": "e13e103de0bb789ff51a8e931af0fb649474be20",
-    "coordination_scope": "exact Event 30 journal, controller, and active taskcard paths",
     "target_paths": [
       "plans/strategic/ff6/events.jsonl",
       "plans/strategic/ff6/controller-state.yaml",
       "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md"
     ],
-    "acceptance_evidence": [
-      "native event chain through Event 30",
-      "controller and task projection agreement",
-      "immutable implementation replay"
-    ]
+    "coordination_scope": "Exact Event 32 journal, controller, XLIFF taskcard, and transcript paths under agent-codex-20260730T024135-4231f4. No foreign lease was released or modified.",
+    "acceptance_evidence": "Immutable XLIFF repair commit ff8f7d9f on GitLab origin/main; 64 focused tests; 94 format-contract tests with one exact known deselection; 69 production-program tests; three identical generations; strict static checks; SAL proof; five authority matches; three zero-warning source-pipeline transcripts; preserved UBL commits 730c8fdf and bdc66bd5.",
+    "source_checkpoint": "ff8f7d9f9ff1ff613be376e1361b0dd8304566e3",
+    "execution_manifest": ".local/skills-first/manifests/sfx-1511da6ca9d78bb6.json",
+    "authorization_id": "b560fb5aba30158a"
   },
   "allowed_files": [
     "plans/strategic/ff6/events.jsonl",
     "plans/strategic/ff6/controller-state.yaml",
     "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
-    "reports/skills-rff6/skill-transcripts/plan-control-xliff-profile-surface-wip-009.json"
+    "reports/skills-rff6/skill-transcripts/plan-control-xliff-profile-surface-wip-009.json",
+    ".local/transcripts/plan-control-xliff-profile-surface-wip-009.json"
   ],
   "actual_files_changed": [
     "plans/strategic/ff6/events.jsonl",
     "plans/strategic/ff6/controller-state.yaml",
     "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
-    "reports/skills-rff6/skill-transcripts/plan-control-xliff-profile-surface-wip-009.json"
+    "reports/skills-rff6/skill-transcripts/plan-control-xliff-profile-surface-wip-009.json",
+    ".local/transcripts/plan-control-xliff-profile-surface-wip-009.json"
   ],
   "tests_run": [
-    "Implementation commit is present on GitLab origin/main.",
-    "Native event chain recomputed through sequence 30.",
-    "Event 30 hash and previous-event binding match.",
-    "Controller, taskcard, and Event 30 agree on CONTRACT / WORK_IN_PROGRESS.",
-    "Adjudication and obligation artifacts replayed in check mode.",
-    "Post-commit immutable smoke: 3 passed."
+    "Native FF6 hash-chain replay through FF6-EVENT-000032: PASS.",
+    "Event 32, controller sequence/head, active task, accepted counts, next candidate, and taskcard semantics agree.",
+    "XLIFF immutable implementation is GitLab commit ff8f7d9f.",
+    "XLIFF focused verification: 64 passed.",
+    "Format-contract regression: 94 passed with one exact baseline-known stateful CSV test deselected.",
+    "Production-program regression: 69 passed.",
+    "Three clean adjudication and inventory generations: byte-identical.",
+    "Ruff, strict Mypy, Pyright 1.1.411, py_compile, SAL verification, artifact check modes, and XLIFF authority audit: PASS.",
+    "UBL parallel checkpoint tests: 18 passed; UBL-03 remains incomplete."
   ],
-  "result": "PASS",
   "ledger_entry_id": null,
+  "result": "PASS",
   "evidence": {
-    "event_id": "FF6-EVENT-000030",
-    "event_hash": "2d365d013b94c386014d7e75813114de6d7a225e2a9e16d21a485a38cd2d9398",
-    "controller_state": "CONTRACT",
+    "event_id": "FF6-EVENT-000032",
+    "event_hash": "1b04941583c0015b42115b8d07ca748a744561a000833b38fc64412531164054",
+    "events_sha256": "1cf31436513611e0013b34f3cf89df06c9dfd7a0c705e1f6ac91619ae5460e70",
+    "controller_sha256": "b3dc6e521a9bf68b98c27882210f15e43d6063b9f2483d3868aef20fa8074578",
+    "taskcard_sha256": "7f6509d6895e9ca7dc72ecd1c58c390aeba30cc813010acd5f0e80dae9e8e221",
     "task_state": "WORK_IN_PROGRESS",
-    "source_bound_obligations": 26,
-    "missing_source_bound_obligations": 79,
-    "verified_candidate_dispositions": 1,
-    "unverified_candidate_dispositions": 1129,
-    "next_microstep": "XLF-04-BATCH-005-PARTIAL-002-B",
-    "next_candidate": "XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1",
-    "promotion_effect": "none",
-    "truth_boundary": "Event 30 proves only Partial-002-A; XLF-04 and all product certification remain open."
+    "first_unmet_step": "XLF-04",
+    "completed_microstep": "XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001",
+    "next_microstep": "XLF-04-BATCH-005-PARTIAL-002-C",
+    "next_candidate_id": "XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92",
+    "candidate_count": 1130,
+    "candidate_dispositions_verified": 3,
+    "candidate_dispositions_unverified": 1127,
+    "source_bound_obligations": 27,
+    "expected_obligations": 105,
+    "missing_obligations": 78,
+    "xlf_04_complete": false,
+    "ubl_03_complete": false,
+    "product_promotion": "none",
+    "production_certifications": "0/6"
   },
   "self_challenge": {
-    "1_all_required_steps": "YES for this bounded projection checkpoint",
-    "2_required_evidence_present": "YES",
-    "3_evidence_sufficient": "YES for Event 30; not for XLF-04 completion",
-    "4_secondary_source_used_where_primary_required": "NO",
-    "5_phase_forbidden_file_created": "NO",
-    "6_self_approved_gate": "NO",
-    "7_next_phase_work_performed": "NO",
-    "8_unauthorized_commit_or_push": "NO",
-    "9_checkpoint_inspection_preserved": "YES",
-    "10_unlogged_gap": "NO",
-    "11_relevant_memory_read": "YES",
-    "12_memory_context_only": "YES",
-    "13_memory_contradiction_logged": "YES; no contradiction to log",
-    "14_memory_update_trigger": "NOT APPLICABLE",
-    "15_human_review_requested": "NOT APPLICABLE"
+    "all_required_steps": "YES for serialization of the bounded Event 32 checkpoint",
+    "required_evidence_present": "YES",
+    "evidence_sufficient": "YES for the repaired XLIFF pairing microstep only",
+    "self_approved_gate": "NO",
+    "broader_completion_claim": "NO",
+    "foreign_work_preserved": "YES"
   },
   "generated_by": "codex",
   "visibility": "generated"

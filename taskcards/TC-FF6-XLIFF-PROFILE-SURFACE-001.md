@@ -629,6 +629,69 @@ Resume exactly at `XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001`:
 Do not advance to another candidate and do not report 27 accepted obligations
 or two accepted dispositions until every item above passes.
 
+## Verified repair checkpoint — event 32
+
+Native `FF6-EVENT-000032` supersedes the Event 31 resume instructions.
+Immutable GitLab `main` commit
+`ff8f7d9f9ff1ff613be376e1361b0dd8304566e3` satisfies the hardened repair
+contract for `XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001`.
+
+Accepted evidence:
+
+- the two exact reciprocal XLIFF 2.1 Schematron assertions have separate,
+  content-addressed decisions;
+- both decisions accept only
+  `SAL-XLIFF-CORE-INLINE-PAIRING-001`;
+- generated `AGENT-VALIDATOR`, `HIERARCHY-SEGMENT`,
+  `HIERARCHY-IGNORABLE`, and broad `INLINE-PC` proposals are explicitly
+  rejected with narrow reason codes;
+- generated-proposal accountability is retained while a true denominator
+  owner omitted by heuristic generation can be explicitly accepted;
+- a one-sided decision cannot compile the pairing obligation;
+- the compiled pairing row is `xliff_2.1`-only;
+- all 26 Event 30 accepted rows are semantically unchanged.
+
+Verified boundary:
+
+- `3/1,130` candidate dispositions accepted and `1,127` open;
+- `27/105` Core obligations accepted and `78` missing;
+- adjudication SHA-256
+  `0a1d964ce29efd5a767fb0b5904149491949d9da82557f1e28e9f9fad461b81c`;
+- inventory SHA-256
+  `2575bcbb10bf42c1590b7c3dfdaa53622577e542e25e4ba5483f206f36dcdaaf`;
+- 64 affected tool tests, 94 format-contract tests with one exact
+  baseline-known stateful CSV test deselected, and 69 production-program
+  tests pass;
+- three independent adjudication and inventory generations are byte-identical;
+- Ruff, strict Mypy, Pyright 1.1.411, bytecode compilation, SAL verification,
+  all artifact check modes, and five XLIFF authority matches pass;
+- all three repair skill transcripts validate with zero warnings.
+
+This advances only the production-accepted contract boundary. XLF-04 remains
+open; no product source, product API, certification, promotion, release,
+publication, or gate state changes.
+
+Resume at `XLF-04-BATCH-005-PARTIAL-002-C` with exact candidate
+`XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92`, requirement SHA-256
+`bebad4a8709a137a204c13bf6a058d6c38e512099ebcf5ed7119e2668f38f61d`.
+Its XLIFF 2.1 Schematron report says a `skeleton` must not be empty when
+`href` is absent.
+
+1. Revalidate Event 32 and commit `ff8f7d9f`.
+2. Read the exact candidate occurrence from the pinned source; do not infer
+   semantics from its generated proposals.
+3. Treat `AGENT-VALIDATOR` and `REFERENCE-SKELETON-HREF` only as proposals,
+   and explicitly decide whether `HIERARCHY-SKELETON` is the narrow direct
+   owner or incidental context.
+4. Add a RED positive control for the no-`href`/empty-content condition and
+   negative controls against broader or incidental ownership.
+5. Bind exact canonical SAL evidence, create one content-addressed decision,
+   and compile at most the proven denominator obligation.
+6. Preserve all 27 accepted rows and all 1,130 candidate IDs.
+7. Replay tamper, deterministic, static, authority, SAL, format-contract,
+   production-program, transcript, immutable-commit, and native-event gates.
+8. Keep `complete: false` and do not start product source.
+
 ## Required execution
 
 ### XLF-01 — Revalidate the clean predecessor
