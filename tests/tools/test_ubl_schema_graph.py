@@ -289,6 +289,123 @@ def test_graph_retains_local_particle_order_occurrence_and_element_rules() -> No
     assert graph["completion"]["reachable_schema_graph_complete"] is False
 
 
+def test_graph_assigns_stable_path_owned_anonymous_type_identities() -> None:
+    compiler = _load_compiler()
+    namespace = "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
+    schema = (
+        f'<xsd:schema xmlns="{namespace}" xmlns:xsd="{XS}" '
+        f'targetNamespace="{namespace}" elementFormDefault="qualified">'
+        '<xsd:element name="Invoice" type="InvoiceType"/>'
+        '<xsd:complexType name="InvoiceType"><xsd:sequence>'
+        '<xsd:element name="Detail"><xsd:complexType>'
+        '<xsd:sequence><xsd:element name="Value" type="xsd:string"/>'
+        "</xsd:sequence>"
+        '<xsd:attribute name="code"><xsd:simpleType>'
+        '<xsd:restriction base="xsd:string"/>'
+        "</xsd:simpleType></xsd:attribute>"
+        "</xsd:complexType></xsd:element>"
+        "</xsd:sequence></xsd:complexType>"
+        "</xsd:schema>"
+    ).encode()
+    package = _package({"xsd/maindoc/UBL-Invoice-2.3.xsd": schema})
+
+    first = compiler.compile_ubl_reachable_schema_graph(
+        package,
+        expected_package_sha256=hashlib.sha256(package).hexdigest(),
+        expected_root_count=1,
+    )
+    second = compiler.compile_ubl_reachable_schema_graph(
+        package,
+        expected_package_sha256=hashlib.sha256(package).hexdigest(),
+        expected_root_count=1,
+    )
+
+    assert first["anonymous_type_count"] == 2
+    assert first["anonymous_type_kind_counts"] == {
+        "anonymous_complex_type": 1,
+        "anonymous_simple_type": 1,
+    }
+    assert first["anonymous_type_edge_count"] == 2
+    assert first["anonymous_types"] == second["anonymous_types"]
+    assert first["anonymous_type_edges"] == second["anonymous_type_edges"]
+    by_kind = {row["kind"]: row for row in first["anonymous_types"]}
+    complex_type = by_kind["anonymous_complex_type"]
+    simple_type = by_kind["anonymous_simple_type"]
+    assert complex_type["source_path"] == (
+        "/schema[1]/complexType[1]/sequence[1]/element[1]/complexType[1]"
+    )
+    assert complex_type["owner_kind"] == "local_element"
+    assert complex_type["owner_node_id"].startswith("particle::")
+    assert complex_type["enclosing_type_node_id"] == (
+        f"complex-type::{{{namespace}}}InvoiceType"
+    )
+    assert simple_type["source_path"] == (
+        "/schema[1]/complexType[1]/sequence[1]/element[1]/complexType[1]"
+        "/attribute[1]/simpleType[1]"
+    )
+    assert simple_type["owner_kind"] == "local_attribute"
+    assert simple_type["owner_node_id"].startswith("schema-declaration::")
+    assert simple_type["enclosing_type_node_id"] == complex_type["node_id"]
+    assert len({row["node_id"] for row in first["anonymous_types"]}) == 2
+    assert first["anonymous_type_identity"]["anonymous_type_graph_sha256"]
+    assert first["completion"]["reachable_schema_graph_complete"] is False
+
+
+def test_graph_rejects_declared_and_anonymous_type_on_one_element() -> None:
+    compiler = _load_compiler()
+    namespace = "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
+    schema = (
+        f'<xsd:schema xmlns="{namespace}" xmlns:xsd="{XS}" '
+        f'targetNamespace="{namespace}">'
+        '<xsd:element name="Invoice" type="InvoiceType"/>'
+        '<xsd:complexType name="InvoiceType"><xsd:sequence>'
+        '<xsd:element name="Detail" type="xsd:string">'
+        "<xsd:complexType/>"
+        "</xsd:element>"
+        "</xsd:sequence></xsd:complexType>"
+        "</xsd:schema>"
+    ).encode()
+    package = _package({"xsd/maindoc/UBL-Invoice-2.3.xsd": schema})
+
+    with pytest.raises(
+        compiler.UblCensusError,
+        match="cannot combine type with an anonymous type",
+    ):
+        compiler.compile_ubl_reachable_schema_graph(
+            package,
+            expected_package_sha256=hashlib.sha256(package).hexdigest(),
+            expected_root_count=1,
+        )
+
+
+def test_graph_rejects_multiple_anonymous_types_on_one_declaration() -> None:
+    compiler = _load_compiler()
+    namespace = "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
+    schema = (
+        f'<xsd:schema xmlns="{namespace}" xmlns:xsd="{XS}" '
+        f'targetNamespace="{namespace}">'
+        '<xsd:element name="Invoice" type="InvoiceType"/>'
+        '<xsd:complexType name="InvoiceType"><xsd:sequence>'
+        '<xsd:element name="Detail">'
+        "<xsd:complexType/>"
+        '<xsd:simpleType><xsd:restriction base="xsd:string"/></xsd:simpleType>'
+        "</xsd:element>"
+        "</xsd:sequence></xsd:complexType>"
+        "</xsd:schema>"
+    ).encode()
+    package = _package({"xsd/maindoc/UBL-Invoice-2.3.xsd": schema})
+
+    with pytest.raises(
+        compiler.UblCensusError,
+        match="multiple anonymous types",
+    ):
+        compiler.compile_ubl_reachable_schema_graph(
+            package,
+            expected_package_sha256=hashlib.sha256(package).hexdigest(),
+            expected_root_count=1,
+        )
+
+
 @pytest.mark.parametrize(
     "all_body",
     [
@@ -503,6 +620,14 @@ def test_real_package_closure_is_complete_deterministic_and_additive() -> None:
     assert (
         first["closure_identity"]["closure_sha256"]
         == "2e43a3e83b1ad96ce287299cd7e7c6d86a4a4a02cc3423d30e18f0c9b4ee9fc3"
+    )
+    assert first["anonymous_type_count"] == 0
+    assert first["anonymous_type_kind_counts"] == {}
+    assert first["anonymous_type_owner_count"] == 0
+    assert first["anonymous_type_edge_count"] == 0
+    assert (
+        first["anonymous_type_identity"]["anonymous_type_graph_sha256"]
+        == "666634cb0d90f17b05e0b9fd4babe13fe5087f253ef2afb276bf6066d82eaf6e"
     )
     assert (
         len({edge["edge_id"] for edge in first["schema_dependency_edges"]})

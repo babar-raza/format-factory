@@ -1,0 +1,57 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "rollback-and-recovery-ubl-regression-csv-side-effect-001",
+  "skill_id": "rollback-and-recovery",
+  "mode": "live",
+  "timestamp": "2026-07-30T05:12:06Z",
+  "inputs": {
+    "task_id": "TC-FF6-UBL-TYPING-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "rollback_target": "Three exact CSV/capability report files dirtied by tests/format_contract/test_consumption_chain.py::test_full_slice_second_run_is_idempotent",
+    "backup_path_or_stash_ref": "Git commit b83e3825e0facef823b403a3874396dbb8c5d2cd",
+    "before_state_description": "The UBL-unrelated stateful regression test wrote six new CSV gap rows and a regenerated reconciliation into three previously clean tracked files.",
+    "after_state_expected": "All three files exactly match their pre-test Git blobs; seven foreign XLIFF paths and all UBL work remain byte-unchanged.",
+    "execution_manifest_id": "sfx-810486a822fba80f",
+    "authorization_id": "4cfc8232f42ccfc5"
+  },
+  "allowed_files": [
+    "reports/capability-layer/gap-ledger.json",
+    "reports/format-contract-layer/csv-contract-gaps.json",
+    "reports/format-contract-layer/csv-reconciliation.json",
+    "reports/skills-rff6/skill-transcripts/rollback-and-recovery-ubl-regression-csv-side-effect-001.json",
+    ".local/transcripts/rollback-and-recovery-ubl-regression-csv-side-effect-001.json"
+  ],
+  "actual_files_changed": [
+    "reports/capability-layer/gap-ledger.json",
+    "reports/format-contract-layer/csv-contract-gaps.json",
+    "reports/format-contract-layer/csv-reconciliation.json",
+    "reports/skills-rff6/skill-transcripts/rollback-and-recovery-ubl-regression-csv-side-effect-001.json",
+    ".local/transcripts/rollback-and-recovery-ubl-regression-csv-side-effect-001.json"
+  ],
+  "tests_run": [
+    "Confirmed all three targets were clean before the regression command and had no coordination owner.",
+    "Captured distinct dirty worktree blob identities after the failing stateful test.",
+    "Applied only the reverse Git diff for the three declared targets.",
+    "Verified git status is clean for all three restored targets.",
+    "Verified the seven preserved XLIFF occurrence paths remain present and outside the rollback target.",
+    "Future broad format-contract replay is routed to an isolated detached worktree."
+  ],
+  "result": "PASS",
+  "evidence": {
+    "source_commit": "b83e3825e0facef823b403a3874396dbb8c5d2cd",
+    "restored_git_blobs": {
+      "reports/capability-layer/gap-ledger.json": "8f7cfef2fb03c7e77819a4307ce78c89177ca218",
+      "reports/format-contract-layer/csv-contract-gaps.json": "dfcde049c1626e0abe8ff13cbdfdc017eefe99b6",
+      "reports/format-contract-layer/csv-reconciliation.json": "5724c8ac8bd740b4053f987a71fb4b1911883222"
+    },
+    "post_restore_sha256": {
+      "reports/capability-layer/gap-ledger.json": "4aa3e6bd131d8f624df3bee6ee067cacedccc5db57f85ef7c81e5cc99d537c49",
+      "reports/format-contract-layer/csv-contract-gaps.json": "2456ac7e219c5a7e63ee0bfbdebcef40e7787931632590c33e84ea5ba52d57b6",
+      "reports/format-contract-layer/csv-reconciliation.json": "2fa46fde9a4628192fabe8a132f480a856df9ef99670805ebb7c4925f79eb25e"
+    },
+    "foreign_xliff_paths_touched": 0,
+    "ubl_paths_reverted": 0
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

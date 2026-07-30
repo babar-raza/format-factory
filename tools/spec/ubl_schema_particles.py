@@ -23,8 +23,8 @@ from tools.spec.ubl_schema_common import (
     XSD,
     canonical_qname,
     digest,
-    local_name,
     resolve_qname,
+    schema_element_paths,
 )
 
 
@@ -47,22 +47,6 @@ _WRAPPER_TAGS = {
     f"{XSD}simpleContent",
 }
 _NON_NEGATIVE_INTEGER = re.compile(r"\+?[0-9]+")
-
-
-def _element_paths(root: ET.Element) -> dict[int, str]:
-    paths: dict[int, str] = {}
-
-    def visit(element: ET.Element, path: str) -> None:
-        paths[id(element)] = path
-        sibling_counts: dict[str, int] = {}
-        for child in list(element):
-            child_name = local_name(child.tag)
-            position = sibling_counts.get(child_name, 0) + 1
-            sibling_counts[child_name] = position
-            visit(child, f"{path}/{child_name}[{position}]")
-
-    visit(root, "/schema[1]")
-    return paths
 
 
 def _occurrence(
@@ -345,7 +329,7 @@ def compile_local_particles(
             )
 
     for document in sorted(documents, key=lambda item: item.member):
-        paths = _element_paths(document.root)
+        paths = schema_element_paths(document.root)
         for owner in list(document.root):
             owner_kind = _OWNER_KINDS.get(owner.tag)
             owner_name = owner.get("name")

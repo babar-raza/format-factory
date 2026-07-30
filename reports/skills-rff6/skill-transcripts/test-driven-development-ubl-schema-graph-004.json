@@ -1,0 +1,110 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "test-driven-development-ubl-schema-graph-004",
+  "skill_id": "test-driven-development",
+  "task_id": "TC-FF6-UBL-TYPING-001",
+  "mode": "live",
+  "timestamp": "2026-07-30T05:15:53Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_step": "UBL-03-PARTIAL-004-ANONYMOUS-TYPE-IDENTITY",
+    "execution_manifest_ids": [
+      "sfx-f405fbf60b26aa3c",
+      "sfx-72dc4fe778f09e31"
+    ],
+    "base_git_commit": "b83e3825e0facef823b403a3874396dbb8c5d2cd",
+    "authority_source_id": "SRC-UBL-002",
+    "authority_sha256": "623bef8310db4d979ff28000a96bcc56dbcdda4f6206cf094c0aa79b75817970",
+    "scope": "Fourth resumable TDD increment of the content-addressed UBL 2.3 reachable-schema graph.",
+    "target_behavior_description": "Compile stable identities and ownership edges for anonymous XML Schema simple and complex types without conflating declaration ownership, enclosing-type ownership, traversal order, or future generated Python names."
+  },
+  "allowed_files": [
+    "tests/tools/test_ubl_schema_graph.py",
+    "tools/spec/ubl_schema_common.py",
+    "tools/spec/ubl_schema_particles.py",
+    "tools/spec/ubl_schema_anonymous_types.py",
+    "tools/spec/ubl_schema_graph.py",
+    "reports/skills-rff6/skill-transcripts/test-driven-development-ubl-schema-graph-004.json",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-ubl-schema-graph-004.json",
+    ".local/transcripts/ubl-schema-graph-004.json"
+  ],
+  "actual_files_changed": [
+    "tests/tools/test_ubl_schema_graph.py",
+    "tools/spec/ubl_schema_common.py",
+    "tools/spec/ubl_schema_particles.py",
+    "tools/spec/ubl_schema_anonymous_types.py",
+    "tools/spec/ubl_schema_graph.py",
+    "reports/skills-rff6/skill-transcripts/test-driven-development-ubl-schema-graph-004.json",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-ubl-schema-graph-004.json",
+    ".local/transcripts/ubl-schema-graph-004.json"
+  ],
+  "red_green_cycles": [
+    {
+      "red": "test_graph_assigns_stable_path_owned_identities_to_anonymous_types failed with KeyError anonymous_type_count because the graph exposed no anonymous-type surface.",
+      "green": "Added a dedicated compiler with identities derived from authority member, exact sibling-kind-indexed source path, and anonymous type kind; declaration and enclosing ownership remain separate."
+    },
+    {
+      "red": "A declaration combining an explicit type attribute with an inline anonymous type was accepted.",
+      "green": "Added fail-closed validation rejecting explicit and anonymous type declarations on the same element or attribute."
+    },
+    {
+      "red": "A declaration containing multiple inline anonymous type children was accepted.",
+      "green": "Added fail-closed validation requiring at most one anonymous simpleType or complexType per declaration."
+    }
+  ],
+  "tests_run": [
+    "python -m pytest -q tests/tools/test_ubl_schema_graph.py::test_graph_assigns_stable_path_owned_identities_to_anonymous_types: RED KeyError anonymous_type_count, then PASS",
+    "python -m pytest -q tests/tools/test_ubl_schema_graph.py::test_graph_rejects_explicit_and_anonymous_type_on_same_declaration: RED did-not-raise, then PASS",
+    "python -m pytest -q tests/tools/test_ubl_schema_graph.py::test_graph_rejects_multiple_anonymous_types_on_one_declaration: RED did-not-raise, then PASS",
+    "python -m pytest -q tests/tools/test_ubl_schema_graph.py: 16 passed",
+    "python -m pytest -q tests/tools/test_ubl_schema_graph.py tests/tools/test_compile_ubl_schema_graph.py: 28 passed",
+    "python -m pytest -q tests/production_program: 69 passed",
+    "ruff check touched UBL graph source and test modules: PASS",
+    "mypy --strict --explicit-package-bases on touched UBL graph source modules: PASS",
+    "npx --yes pyright@1.1.411 on touched UBL graph source and tests: 0 errors, 0 warnings, 0 information",
+    "python -m py_compile on touched UBL graph source and tests: PASS",
+    "three in-process official-package compilations: identical dictionaries and anonymous-type graph SHA-256 666634cb0d90f17b05e0b9fd4babe13fe5087f253ef2afb276bf6066d82eaf6e",
+    "prior root/type, global-reference closure, and local-particle identities retained exactly"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "schema_common_sha256": "900ca8db6ad462161c096549ca7cfced6bb8f9f4ef227185900a3bae4a06d14a",
+    "particle_source_sha256": "995029372fc698b3c164392400e0f439a4c541cf94a0da765faa150aa05bb549",
+    "anonymous_type_source_sha256": "4cd633987f7363bd944d882963a58be210206bad6ce54f9b0ae1b2fdbe86b6fd",
+    "graph_source_sha256": "e5759f78a7a16284848aa3aa7d7c26fb6eb0a6d5cc41b8d7a71c74a9524d36bc",
+    "test_sha256": "9b9c5e8b6971f39806026d367821b42ca81289b26ec0a770321a5646339bb08e",
+    "package_sha256": "623bef8310db4d979ff28000a96bcc56dbcdda4f6206cf094c0aa79b75817970",
+    "observed_schema_documents": 106,
+    "observed_roots": 91,
+    "observed_particles": 6001,
+    "observed_particle_owners": 468,
+    "observed_anonymous_types": 0,
+    "observed_anonymous_type_edges": 0,
+    "root_type_graph_sha256": "7b754187690ce1bb04db62657cfb552653cb381a1bdd745a56856e58215af029",
+    "closure_sha256": "2e43a3e83b1ad96ce287299cd7e7c6d86a4a4a02cc3423d30e18f0c9b4ee9fc3",
+    "particle_graph_sha256": "49b0c1ba5c75df0562ab6334fb14f8fe6dc4a9db31ff8e2b130d3bf04cf8eae1",
+    "anonymous_type_graph_sha256": "666634cb0d90f17b05e0b9fd4babe13fe5087f253ef2afb276bf6066d82eaf6e",
+    "canonical_complete_graph_emitted": false,
+    "truth_boundary": "This checkpoint proves deterministic anonymous-type identity machinery with adversarial synthetic schemas and proves that the pinned official UBL 2.3 package contains zero anonymous type declarations. UBL-03 remains incomplete: inheritance, attributes, facets, complete groups and wildcards, documentation, and full reachability remain open."
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for the bounded UBL-03-PARTIAL-004 cycles",
+    "2_required_evidence_present": "YES for anonymous-type identity and invalid-declaration rejection only",
+    "3_evidence_sufficient": "YES for this bounded microstep; explicitly insufficient for UBL-03 completion",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO at transcript creation",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO; remaining UBL-03 surfaces remain open in the taskcard",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, no contradiction requiring a new gap was found",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

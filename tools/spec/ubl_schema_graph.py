@@ -30,6 +30,7 @@ from tools.spec.ubl_schema_dependencies import (
     compile_schema_dependencies,
     resolve_schema_location,
 )
+from tools.spec.ubl_schema_anonymous_types import compile_anonymous_types
 from tools.spec.ubl_schema_particles import compile_local_particles
 from tools.spec.ubl_schema_references import compile_global_reference_uses
 
@@ -85,8 +86,17 @@ def compile_reachable_schema_graph(
         components=components,
         limits=active_limits,
     )
+    anonymous_types, anonymous_type_edges = compile_anonymous_types(
+        documents,
+        components=components,
+        particles=particles,
+        limits=active_limits,
+    )
     if (
-        len(components) + len(builtin_nodes) + len(particles)
+        len(components)
+        + len(builtin_nodes)
+        + len(particles)
+        + len(anonymous_types)
         > active_limits.max_graph_nodes
     ):
         raise UblSchemaGraphError("graph node limit exceeded")
@@ -155,7 +165,11 @@ def compile_reachable_schema_graph(
             "unresolved root type reference: " + "; ".join(sorted(unresolved))
         )
     if (
-        len(dependency_edges) + len(reference_uses) + len(edges)
+        len(dependency_edges)
+        + len(reference_uses)
+        + len(edges)
+        + len(particle_edges)
+        + len(anonymous_type_edges)
         > active_limits.max_graph_edges
     ):
         raise UblSchemaGraphError("graph edge limit exceeded")
@@ -188,6 +202,9 @@ def compile_reachable_schema_graph(
     )
     reference_target_counts = Counter(str(row["target_kind"]) for row in reference_uses)
     particle_kind_counts = Counter(str(row["kind"]) for row in particles)
+    anonymous_type_kind_counts = Counter(
+        str(row["kind"]) for row in anonymous_types
+    )
     graph_identity = {
         "package_sha256": package_sha256,
         "schemas_sha256": digest(schema_rows),
@@ -205,6 +222,10 @@ def compile_reachable_schema_graph(
     particle_identity = {
         "particles_sha256": digest(particles),
         "particle_edges_sha256": digest(particle_edges),
+    }
+    anonymous_type_identity = {
+        "anonymous_types_sha256": digest(anonymous_types),
+        "anonymous_type_edges_sha256": digest(anonymous_type_edges),
     }
     return {
         "schema": "ff6/ubl-reachable-schema-graph@1",
@@ -248,6 +269,16 @@ def compile_reachable_schema_graph(
         "particles": particles,
         "particle_edge_count": len(particle_edges),
         "particle_edges": particle_edges,
+        "anonymous_type_count": len(anonymous_types),
+        "anonymous_type_kind_counts": dict(
+            sorted(anonymous_type_kind_counts.items())
+        ),
+        "anonymous_type_owner_count": len(
+            {str(row["owner_node_id"]) for row in anonymous_types}
+        ),
+        "anonymous_types": anonymous_types,
+        "anonymous_type_edge_count": len(anonymous_type_edges),
+        "anonymous_type_edges": anonymous_type_edges,
         "identity": {
             **graph_identity,
             "graph_sha256": digest(graph_identity),
@@ -259,6 +290,12 @@ def compile_reachable_schema_graph(
         "particle_identity": {
             **particle_identity,
             "particle_graph_sha256": digest(particle_identity),
+        },
+        "anonymous_type_identity": {
+            **anonymous_type_identity,
+            "anonymous_type_graph_sha256": digest(
+                anonymous_type_identity
+            ),
         },
         "validation": {
             "duplicate_component_count": 0,

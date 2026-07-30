@@ -101,6 +101,24 @@ def local_name(tag: str) -> str:
     return tag.rsplit("}", 1)[-1]
 
 
+def schema_element_paths(root: ET.Element) -> dict[int, str]:
+    """Return deterministic, sibling-kind-indexed paths for one schema tree."""
+
+    paths: dict[int, str] = {}
+
+    def visit(element: ET.Element, path: str) -> None:
+        paths[id(element)] = path
+        sibling_counts: dict[str, int] = {}
+        for child in list(element):
+            child_name = local_name(child.tag)
+            position = sibling_counts.get(child_name, 0) + 1
+            sibling_counts[child_name] = position
+            visit(child, f"{path}/{child_name}[{position}]")
+
+    visit(root, "/schema[1]")
+    return paths
+
+
 def canonical_qname(namespace: str, local: str) -> str:
     """Return one validated Clark-notation QName."""
 
