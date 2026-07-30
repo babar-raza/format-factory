@@ -1,0 +1,89 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "plan-control-xliff-profile-surface-wip-011",
+  "skill_id": "plan-control",
+  "mode": "live",
+  "timestamp": "2026-07-30T06:20:54Z",
+  "inputs": {
+    "task_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "operation": "project",
+    "target_paths": [
+      "plans/strategic/ff6/events.jsonl",
+      "plans/strategic/ff6/controller-state.yaml",
+      "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md"
+    ],
+    "coordination_scope": "Exact Event 35 journal, controller, XLIFF taskcard, and transcript paths under agent-codex-20260730T054510-f766b4. Seven inherited XLIFF occurrence paths were governed-taken-over, independently replayed, committed, and pushed; no foreign live lease was released.",
+    "acceptance_evidence": "Immutable XLIFF implementation commit 591fcfe18808e5195c33570eaa9d334770e90166 on GitLab origin/main; genuine pre-change RED replay; 6 focused skeleton tests; 69 affected tool tests; 94 format-contract tests with one exact known deselection; 69 production-program tests; three identical generations; strict static checks; SAL proof; five authority matches; three zero-warning source-pipeline transcripts; 27/27 predecessor-row semantic equality.",
+    "source_checkpoint": "591fcfe18808e5195c33570eaa9d334770e90166",
+    "execution_manifest": ".local/skills-first/manifests/sfx-260bb074d5e1c477.json",
+    "authorization_id": "24a96d376033e494"
+  },
+  "allowed_files": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
+    "reports/skills-rff6/skill-transcripts/plan-control-xliff-profile-surface-wip-011.json"
+  ],
+  "actual_files_changed": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
+    "reports/skills-rff6/skill-transcripts/plan-control-xliff-profile-surface-wip-011.json"
+  ],
+  "tests_run": [
+    "Native FF6 hash-chain replay through FF6-EVENT-000035: PASS.",
+    "Event 35, controller sequence/head, active task, accepted counts, next candidate, and taskcard semantics agree.",
+    "XLIFF immutable implementation is GitLab origin/main commit 591fcfe18808e5195c33570eaa9d334770e90166.",
+    "Pre-change RED replay failed at the intended unproposed-rejected-obligation and content-addressed adjudication boundaries.",
+    "XLIFF skeleton-focused verification: 6 passed; affected tool verification: 69 passed.",
+    "Format-contract regression: 94 passed with one exact baseline-known stateful CSV test deselected.",
+    "Production-program regression: 69 passed.",
+    "Three clean adjudication and inventory generations: byte-identical.",
+    "Ruff, strict Mypy with explicit package bases, Pyright 1.1.411, py_compile, SAL verification, artifact check modes, and XLIFF authority audit: PASS.",
+    "All 27 predecessor inventory rows remain semantically equal; exactly one source-bound row was added."
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "event_id": "FF6-EVENT-000035",
+    "event_hash": "2866d7e70bd193f8aa7b60ca1f92f4f842d1cd470f97984c07f47d88ed2ea97d",
+    "events_sha256": "fdd5249d02a94fa1a5486bcb1a424ca18e33b9b753728de1f47e4c4fd6b6f148",
+    "controller_sha256": "37f48569f167da78d22094e4f872bd9d154065e47a6a75c93ee3c24ee2431100",
+    "taskcard_sha256": "bf5d90d5fc58377fd469a23c25c7219a06c866707fd6b0a94c43b37de6dc2f21",
+    "task_state": "WORK_IN_PROGRESS",
+    "first_unmet_step": "XLF-04",
+    "completed_microstep": "XLF-04-BATCH-005-PARTIAL-002-C",
+    "next_microstep": "XLF-04-BATCH-005-PARTIAL-002-D",
+    "next_candidate_id": "XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E",
+    "candidate_count": 1130,
+    "candidate_dispositions_verified": 4,
+    "candidate_dispositions_unverified": 1126,
+    "source_bound_obligations": 28,
+    "expected_obligations": 105,
+    "missing_obligations": 77,
+    "xlf_04_complete": false,
+    "ubl_03_complete": false,
+    "product_promotion": "none",
+    "production_certifications": "0/6"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for serialization of the bounded Event 35 checkpoint",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for this single XLIFF skeleton contract microstep only",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_checkpoint_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO; all remaining counts and incomplete states are explicit",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES; current repository evidence supersedes stale handover details",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

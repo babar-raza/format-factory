@@ -692,6 +692,54 @@ Its XLIFF 2.1 Schematron report says a `skeleton` must not be empty when
    production-program, transcript, immutable-commit, and native-event gates.
 8. Keep `complete: false` and do not start product source.
 
+## Verified skeleton checkpoint — event 35
+
+Native `FF6-EVENT-000035` supersedes the Event 32 resume instruction.
+Immutable GitLab `main` commit
+`591fcfe18808e5195c33570eaa9d334770e90166` verifies
+`XLF-04-BATCH-005-PARTIAL-002-C`.
+
+Accepted evidence:
+
+- exact candidate `XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92` is bound by
+  separate content, normalized-requirement, and occurrence digests;
+- the decision accepts only
+  `SAL-XLIFF-CORE-REFERENCE-SKELETON-HREF-001`;
+- the generic validator proposal is rejected as a downstream capability;
+- the unproposed broader `HIERARCHY-SKELETON` context is explicitly rejected
+  as incidental rather than silently dropped;
+- the same normative biconditional sentence is independently located in the
+  pinned XLIFF 2.0 and 2.1 prose authorities;
+- all 27 predecessor rows remain semantically unchanged;
+- production acceptance advances only to `28/105` Core obligations and
+  `4/1,130` candidate dispositions.
+
+The exact next microstep is `XLF-04-BATCH-005-PARTIAL-002-D`, candidate
+`XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E`, content SHA-256
+`af94362009857b0fdd3d19881cd2c8d1866e4f5a72849ec1edf057baf7e905a1`,
+requirement SHA-256
+`d36657a907cd8be2ecf38d3fa7a78b3c3720486492cdadd09f4f0f7c25f30e84`,
+and occurrence SHA-256
+`96949f8b0f510d573b4c95640fae3e68175b853410865eaf1460a5eaee4f332a`.
+It is the reciprocal XLIFF 2.1 Schematron report that rejects child content
+when a skeleton has `href`.
+
+The next executor must:
+
+1. validate Event 35 and the immutable `591fcfe1` implementation commit;
+2. independently read the exact authority occurrence and not accept generated
+   mappings as conclusions;
+3. add a genuine pre-change RED control for the reciprocal report;
+4. account explicitly for every proposed and materially implicated denominator
+   obligation;
+5. require both skeleton reports wherever the compiled obligation expresses
+   the full biconditional;
+6. preserve all 28 accepted rows and all 1,130 candidate identities;
+7. replay deterministic, tamper, static, authority, SAL, regression,
+   transcript, installed-checkpoint, and native-event controls;
+8. leave XLF-04, product source, certification, promotion, release, and gates
+   incomplete.
+
 ## Required execution
 
 ### XLF-01 — Revalidate the clean predecessor
