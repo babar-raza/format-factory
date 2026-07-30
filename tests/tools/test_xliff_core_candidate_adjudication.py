@@ -1,0 +1,397 @@
+"""Fail-closed controls for independent XLIFF candidate adjudication."""
+
+# generated_by: codex
+
+from __future__ import annotations
+
+from copy import deepcopy
+import hashlib
+import importlib.util
+import json
+from pathlib import Path
+from types import ModuleType
+from typing import Any
+
+import pytest
+import yaml
+
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+MODULE_PATH = (
+    REPO_ROOT / "tools" / "spec" / "xliff_core_candidate_adjudication.py"
+)
+CENSUS_PATH = (
+    REPO_ROOT / "reports" / "ff6" / "xliff-core-authority-candidate-census.yaml"
+)
+DENOMINATOR_PATH = (
+    REPO_ROOT / "reports" / "ff6" / "xliff-core-obligation-denominator.yaml"
+)
+CANDIDATE_ID = "XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90"
+TARGET_LANGUAGE_ID = "SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001"
+REJECTED_PROPOSAL_IDS = {
+    "SAL-XLIFF-CORE-AGENT-VALIDATOR-001":
+        "DOWNSTREAM_CAPABILITY_NOT_DIRECT_SEMANTIC_OWNER",
+    "SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001":
+        "INCIDENTAL_XPATH_CONTEXT_TOKEN",
+    "SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001":
+        "INCIDENTAL_XPATH_CONTEXT_TOKEN",
+    "SAL-XLIFF-CORE-SOURCE-TARGET-OPTIONAL-001":
+        "TRIGGER_DOES_NOT_ESTABLISH_CARDINALITY",
+}
+
+
+def _load_module() -> ModuleType:
+    spec = importlib.util.spec_from_file_location(
+        "xliff_core_candidate_adjudication_under_test",
+        MODULE_PATH,
+    )
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def _load_yaml(path: Path) -> dict[str, Any]:
+    value = yaml.safe_load(path.read_text(encoding="utf-8"))
+    assert isinstance(value, dict)
+    return value
+
+
+def _sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _sal_inputs() -> tuple[dict[str, Any], dict[str, Any], str, str]:
+    claim = (
+        "The trgLang attribute is required when target elements occur under "
+        "segment or ignorable."
+    )
+    claim_sha256 = hashlib.sha256(claim.encode("utf-8")).hexdigest()
+    proof_sha256 = "9" * 64
+    manifest_sha256 = "7" * 64
+    receipt_sha256 = "8" * 64
+    store = {
+        "format_id": "xliff",
+        "facts": [
+            {
+                "fact_id": "SAL-XLIFF-00009",
+                "claim": claim,
+                "verification_status": "verified",
+                "provenance": {
+                    "verification": {
+                        "method": "declarative_authority_v1",
+                        "manifest_sha256": manifest_sha256,
+                        "receipt_sha256": receipt_sha256,
+                        "fact_proof_sha256": proof_sha256,
+                    }
+                },
+            }
+        ],
+    }
+    receipt = {
+        "format_id": "xliff",
+        "result": "PASS",
+        "manifest": {"sha256": manifest_sha256},
+        "facts": [
+            {
+                "fact_id": "SAL-XLIFF-00009",
+                "claim_sha256": claim_sha256,
+                "proof_sha256": proof_sha256,
+                "result": "PASS",
+            }
+        ],
+    }
+    return store, receipt, manifest_sha256, receipt_sha256
+
+
+def _decision() -> dict[str, Any]:
+    return {
+        "decision_id": "XLF-ADJ-CORE-SCHEMATRON-0001",
+        "candidate_id": CANDIDATE_ID,
+        "accepted_obligation_ids": [TARGET_LANGUAGE_ID],
+        "rejected_obligations": [
+            {
+                "obligation_id": obligation_id,
+                "reason_code": reason_code,
+                "reason": (
+                    "Independent reading of the exact Schematron assertion "
+                    "does not establish this proposed behavior."
+                ),
+            }
+            for obligation_id, reason_code in sorted(
+                REJECTED_PROPOSAL_IDS.items()
+            )
+        ],
+        "sal_fact_ids": ["SAL-XLIFF-00009"],
+        "authority_reason": (
+            "The assertion test requires /xlf:xliff/@trgLang when its target "
+            "context matches. Segment and ignorable identify the trigger "
+            "context; they do not define hierarchy or source-target "
+            "cardinality, and the assertion is not itself the generic "
+            "validator capability."
+        ),
+    }
+
+
+def _compile() -> tuple[ModuleType, dict[str, Any], dict[str, Any]]:
+    module = _load_module()
+    census = _load_yaml(CENSUS_PATH)
+    denominator = _load_yaml(DENOMINATOR_PATH)
+    store, receipt, manifest_sha256, receipt_sha256 = _sal_inputs()
+    artifact = module.compile_adjudication_artifact(
+        candidate_census=census,
+        candidate_census_sha256=_sha256(CENSUS_PATH),
+        denominator=denominator,
+        denominator_sha256=_sha256(DENOMINATOR_PATH),
+        sal_store=store,
+        sal_store_sha256="6" * 64,
+        sal_manifest_sha256=manifest_sha256,
+        sal_receipt=receipt,
+        sal_receipt_sha256=receipt_sha256,
+        decisions=[_decision()],
+    )
+    return module, census, artifact
+
+
+def test_trg_lang_adjudication_rejects_incidental_context_overmapping() -> None:
+    module, census, artifact = _compile()
+    proposal = next(
+        row["disposition"]
+        for row in census["candidates"]
+        if row["candidate_id"] == CANDIDATE_ID
+    )
+    decision = artifact["decisions"][0]
+
+    assert set(proposal["obligation_ids"]) == {
+        TARGET_LANGUAGE_ID,
+        *REJECTED_PROPOSAL_IDS,
+    }
+    assert decision["accepted_obligation_ids"] == [TARGET_LANGUAGE_ID]
+    assert {
+        row["obligation_id"]: row["reason_code"]
+        for row in decision["rejected_obligations"]
+    } == REJECTED_PROPOSAL_IDS
+    projected = module.apply_adjudication_projection(census, artifact)
+    assert projected["verified_disposition_count"] == 1
+    assert projected["unverified_disposition_count"] == (
+        projected["candidate_count"] - 1
+    )
+
+
+def test_generated_proposal_never_counts_as_verified_without_adjudication() -> None:
+    module = _load_module()
+    census = _load_yaml(CENSUS_PATH)
+    empty = {
+        "schema": module.SCHEMA,
+        "artifact_id": module.ARTIFACT_ID,
+        "format_id": "xliff",
+        "candidate_census_sha256": _sha256(CENSUS_PATH),
+        "decisions": [],
+        "decision_count": 0,
+    }
+
+    projected = module.apply_adjudication_projection(census, empty)
+
+    assert projected["verified_disposition_count"] == 0
+    assert projected["unverified_disposition_count"] == census["candidate_count"]
+    assert projected["disposition_verification_complete"] is False
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    [
+        "candidate_content",
+        "occurrence",
+        "authority_member",
+        "denominator",
+        "decision",
+    ],
+)
+def test_adjudication_invalidates_when_any_proof_input_changes(
+    mutation: str,
+) -> None:
+    module, census, artifact = _compile()
+    denominator = _load_yaml(DENOMINATOR_PATH)
+    store, receipt, manifest_sha256, receipt_sha256 = _sal_inputs()
+    changed_census = deepcopy(census)
+    changed_artifact = deepcopy(artifact)
+    changed_denominator_sha256 = _sha256(DENOMINATOR_PATH)
+    candidate = next(
+        row
+        for row in changed_census["candidates"]
+        if row["candidate_id"] == CANDIDATE_ID
+    )
+    if mutation == "candidate_content":
+        candidate["candidate_content_sha256"] = "0" * 64
+    elif mutation == "occurrence":
+        candidate["occurrences"][0]["occurrence_sha256"] = "0" * 64
+    elif mutation == "authority_member":
+        candidate["occurrences"][0]["member_sha256"] = "0" * 64
+    elif mutation == "denominator":
+        changed_denominator_sha256 = "0" * 64
+    else:
+        changed_artifact["decisions"][0]["authority_reason"] += " changed"
+
+    with pytest.raises(module.AdjudicationError):
+        module.validate_adjudication_artifact(
+            changed_artifact,
+            candidate_census=changed_census,
+            candidate_census_sha256=_sha256(CENSUS_PATH),
+            denominator=denominator,
+            denominator_sha256=changed_denominator_sha256,
+            sal_store=store,
+            sal_store_sha256="6" * 64,
+            sal_manifest_sha256=manifest_sha256,
+            sal_receipt=receipt,
+            sal_receipt_sha256=receipt_sha256,
+        )
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    ["unknown", "duplicate", "foreign", "missing", "unreasoned"],
+)
+def test_malformed_or_unreasoned_decisions_fail_closed(mutation: str) -> None:
+    module = _load_module()
+    census = _load_yaml(CENSUS_PATH)
+    denominator = _load_yaml(DENOMINATOR_PATH)
+    store, receipt, manifest_sha256, receipt_sha256 = _sal_inputs()
+    decision = _decision()
+    if mutation == "unknown":
+        decision["accepted_obligation_ids"] = [
+            "SAL-XLIFF-CORE-NOT-IN-DENOMINATOR-001"
+        ]
+    elif mutation == "duplicate":
+        decision["accepted_obligation_ids"] *= 2
+    elif mutation == "foreign":
+        decision["accepted_obligation_ids"] = ["SAL-NRRD-HEADER-001"]
+    elif mutation == "missing":
+        decision.pop("rejected_obligations")
+    else:
+        decision["authority_reason"] = ""
+
+    with pytest.raises(module.AdjudicationError):
+        module.compile_adjudication_artifact(
+            candidate_census=census,
+            candidate_census_sha256=_sha256(CENSUS_PATH),
+            denominator=denominator,
+            denominator_sha256=_sha256(DENOMINATOR_PATH),
+            sal_store=store,
+            sal_store_sha256="6" * 64,
+            sal_manifest_sha256=manifest_sha256,
+            sal_receipt=receipt,
+            sal_receipt_sha256=receipt_sha256,
+            decisions=[decision],
+        )
+
+
+def test_cli_writes_and_checks_content_addressed_adjudications(
+    tmp_path: Path,
+) -> None:
+    module = _load_module()
+    census = _load_yaml(CENSUS_PATH)
+    denominator = _load_yaml(DENOMINATOR_PATH)
+    manifest_path = tmp_path / "manifest.yaml"
+    receipt_path = tmp_path / "receipt.json"
+    store_path = tmp_path / "store.yaml"
+    decisions_path = tmp_path / "decisions.yaml"
+    output_path = tmp_path / "adjudications.yaml"
+
+    manifest_path.write_text(
+        "schema: test-manifest\nformat_id: xliff\n",
+        encoding="utf-8",
+    )
+    manifest_sha256 = _sha256(manifest_path)
+    claim = (
+        "The trgLang attribute is required when target elements occur under "
+        "segment or ignorable."
+    )
+    receipt = {
+        "format_id": "xliff",
+        "result": "PASS",
+        "manifest": {"sha256": manifest_sha256},
+        "facts": [
+            {
+                "fact_id": "SAL-XLIFF-00009",
+                "claim_sha256": hashlib.sha256(
+                    claim.encode("utf-8")
+                ).hexdigest(),
+                "proof_sha256": "9" * 64,
+                "result": "PASS",
+            }
+        ],
+    }
+    receipt_path.write_text(
+        json.dumps(receipt, sort_keys=True, separators=(",", ":")),
+        encoding="utf-8",
+    )
+    receipt_sha256 = _sha256(receipt_path)
+    store = {
+        "format_id": "xliff",
+        "facts": [
+            {
+                "fact_id": "SAL-XLIFF-00009",
+                "claim": claim,
+                "verification_status": "verified",
+                "provenance": {
+                    "verification": {
+                        "method": "declarative_authority_v1",
+                        "manifest_sha256": manifest_sha256,
+                        "receipt_sha256": receipt_sha256,
+                        "fact_proof_sha256": "9" * 64,
+                    }
+                },
+            }
+        ],
+    }
+    store_path.write_text(
+        yaml.safe_dump(store, sort_keys=False),
+        encoding="utf-8",
+    )
+    decisions_path.write_text(
+        yaml.safe_dump(
+            {
+                "schema": (
+                    "ff6/xliff-core-candidate-adjudication-decisions@1"
+                ),
+                "format_id": "xliff",
+                "decisions": [_decision()],
+            },
+            sort_keys=False,
+        ),
+        encoding="utf-8",
+    )
+    common = [
+        "--candidate-census",
+        str(CENSUS_PATH),
+        "--denominator",
+        str(DENOMINATOR_PATH),
+        "--sal-store",
+        str(store_path),
+        "--sal-manifest",
+        str(manifest_path),
+        "--sal-receipt",
+        str(receipt_path),
+        "--decisions",
+        str(decisions_path),
+        "--output",
+        str(output_path),
+    ]
+
+    assert module.main(common) == 0
+    first_bytes = output_path.read_bytes()
+    artifact = yaml.safe_load(first_bytes)
+    assert artifact["decision_count"] == 1
+    assert artifact["candidate_count"] == census["candidate_count"]
+    assert artifact["verified_disposition_count"] == 1
+    assert artifact["unverified_disposition_count"] == (
+        census["candidate_count"] - 1
+    )
+    assert artifact["disposition_verification_complete"] is False
+    assert artifact["candidate_census_sha256"] == _sha256(CENSUS_PATH)
+    assert artifact["denominator_sha256"] == _sha256(DENOMINATOR_PATH)
+    assert artifact["sal_store_sha256"] == _sha256(store_path)
+    assert artifact["sal_manifest_sha256"] == manifest_sha256
+    assert artifact["sal_receipt_sha256"] == receipt_sha256
+    assert module.main([*common, "--check"]) == 0
+    assert output_path.read_bytes() == first_bytes

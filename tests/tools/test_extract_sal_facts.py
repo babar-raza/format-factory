@@ -18,6 +18,18 @@ import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 MODULE_PATH = REPO_ROOT / "tools" / "spec" / "extract_sal_facts.py"
+ADJUDICATOR_PATH = (
+    REPO_ROOT / "tools" / "spec" / "xliff_core_candidate_adjudication.py"
+)
+CANDIDATE_CENSUS_PATH = (
+    REPO_ROOT / "reports" / "ff6" / "xliff-core-authority-candidate-census.yaml"
+)
+TARGET_LANGUAGE_CANDIDATE_ID = (
+    "XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90"
+)
+TARGET_LANGUAGE_OBLIGATION_ID = (
+    "SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001"
+)
 
 
 def test_registered_extractor_implementation_exists() -> None:
@@ -32,6 +44,17 @@ def test_registered_extractor_implementation_exists() -> None:
 def _load_module() -> ModuleType:
     spec = importlib.util.spec_from_file_location(
         "extract_sal_facts_under_test", MODULE_PATH
+    )
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def _load_adjudicator() -> ModuleType:
+    spec = importlib.util.spec_from_file_location(
+        "xliff_core_candidate_adjudication_for_extractor_test",
+        ADJUDICATOR_PATH,
     )
     assert spec and spec.loader
     module = importlib.util.module_from_spec(spec)
@@ -606,10 +629,17 @@ def _write_core_obligation_archive(
 ) -> tuple[str, str]:
     prose_member = f"xliff-core-v{profile.removeprefix('xliff_')}-os.xml"
     paragraphs: dict[str, tuple[str, ...]] = {
-        "xliff": ((
-            "Root element for XLIFF documents; it requires the version and "
-            "srcLang attributes and one or more file children."
-        ),),
+        "xliff": (
+            (
+                "Root element for XLIFF documents; it requires the version "
+                "and srcLang attributes and one or more file children."
+            ),
+            (
+                "The trgLang attribute is required if and only if the XLIFF "
+                "Document contains target elements that are children of "
+                "segment or ignorable."
+            ),
+        ),
         "unit": ("A unit must contain at least one segment element.",),
         "spanningcodeusage": ((
             "A spanning code must be represented using an sc element and an "
@@ -975,6 +1005,304 @@ def test_cli_writes_and_checks_default_core_obligation_batch(
     assert inventory["complete"] is False
     assert extractor.main([*args, "--check"]) == 0
     assert output.read_bytes() == first_bytes
+    explicit_output = tmp_path / "explicit-batch-three.yaml"
+    assert extractor.main(
+        [
+            *args[:-2],
+            "--batch-id",
+            "XLF-04-BATCH-003",
+            "--output",
+            str(explicit_output),
+        ]
+    ) == 0
+    assert explicit_output.read_bytes() == first_bytes
+
+
+def _batch_five_cli_inputs(
+    extractor: ModuleType,
+    tmp_path: Path,
+) -> tuple[list[str], dict[str, Path], Path]:
+    sources: dict[str, tuple[Path, str]] = {}
+    for profile in ("xliff_2.0", "xliff_2.1"):
+        path = tmp_path / f"{profile}.zip"
+        _member, digest = _write_core_obligation_archive(path, profile=profile)
+        sources[profile] = (path, digest)
+    denominator_path = tmp_path / "denominator.yaml"
+    common_args = [
+        "--format-id",
+        "xliff",
+        "--source-20",
+        str(sources["xliff_2.0"][0]),
+        "--source-20-id",
+        "SRC-XLF-001",
+        "--source-20-sha256",
+        sources["xliff_2.0"][1],
+        "--source-21",
+        str(sources["xliff_2.1"][0]),
+        "--source-21-id",
+        "SRC-XLF-002",
+        "--source-21-sha256",
+        sources["xliff_2.1"][1],
+    ]
+    assert extractor.main(
+        [
+            *common_args,
+            "--artifact",
+            "core-denominator",
+            "--output",
+            str(denominator_path),
+        ]
+    ) == 0
+
+    adjudicator = _load_adjudicator()
+    census_path = tmp_path / "candidate-census.yaml"
+    census_path.write_bytes(CANDIDATE_CENSUS_PATH.read_bytes())
+    census = yaml.safe_load(census_path.read_bytes())
+    denominator = yaml.safe_load(denominator_path.read_bytes())
+    manifest_path = tmp_path / "sal-manifest.yaml"
+    manifest_path.write_text(
+        "schema: test-manifest\nformat_id: xliff\n",
+        encoding="utf-8",
+    )
+    manifest_sha256 = hashlib.sha256(manifest_path.read_bytes()).hexdigest()
+    claim = (
+        "The trgLang attribute is required when target elements occur under "
+        "segment or ignorable."
+    )
+    fact_proof_sha256 = "9" * 64
+    receipt_path = tmp_path / "sal-receipt.yaml"
+    receipt = {
+        "format_id": "xliff",
+        "result": "PASS",
+        "manifest": {"sha256": manifest_sha256},
+        "facts": [
+            {
+                "fact_id": "SAL-XLIFF-00009",
+                "claim_sha256": hashlib.sha256(
+                    claim.encode("utf-8")
+                ).hexdigest(),
+                "proof_sha256": fact_proof_sha256,
+                "result": "PASS",
+            }
+        ],
+    }
+    receipt_path.write_text(
+        yaml.safe_dump(receipt, sort_keys=False),
+        encoding="utf-8",
+    )
+    receipt_sha256 = hashlib.sha256(receipt_path.read_bytes()).hexdigest()
+    store_path = tmp_path / "sal-store.yaml"
+    store = {
+        "format_id": "xliff",
+        "facts": [
+            {
+                "fact_id": "SAL-XLIFF-00009",
+                "claim": claim,
+                "verification_status": "verified",
+                "provenance": {
+                    "verification": {
+                        "method": "declarative_authority_v1",
+                        "manifest_sha256": manifest_sha256,
+                        "receipt_sha256": receipt_sha256,
+                        "fact_proof_sha256": fact_proof_sha256,
+                    }
+                },
+            }
+        ],
+    }
+    store_path.write_text(
+        yaml.safe_dump(store, sort_keys=False),
+        encoding="utf-8",
+    )
+    decision = {
+        "decision_id": "XLF-ADJ-CORE-SCHEMATRON-0001",
+        "candidate_id": TARGET_LANGUAGE_CANDIDATE_ID,
+        "accepted_obligation_ids": [TARGET_LANGUAGE_OBLIGATION_ID],
+        "rejected_obligations": [
+            {
+                "obligation_id": obligation_id,
+                "reason_code": reason_code,
+                "reason": (
+                    "Independent reading of the exact Schematron assertion "
+                    "does not establish this proposed behavior."
+                ),
+            }
+            for obligation_id, reason_code in sorted(
+                {
+                    "SAL-XLIFF-CORE-AGENT-VALIDATOR-001": (
+                        "DOWNSTREAM_CAPABILITY_NOT_DIRECT_SEMANTIC_OWNER"
+                    ),
+                    "SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001": (
+                        "INCIDENTAL_XPATH_CONTEXT_TOKEN"
+                    ),
+                    "SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001": (
+                        "INCIDENTAL_XPATH_CONTEXT_TOKEN"
+                    ),
+                    "SAL-XLIFF-CORE-SOURCE-TARGET-OPTIONAL-001": (
+                        "TRIGGER_DOES_NOT_ESTABLISH_CARDINALITY"
+                    ),
+                }.items()
+            )
+        ],
+        "sal_fact_ids": ["SAL-XLIFF-00009"],
+        "authority_reason": (
+            "The assertion directly requires the root trgLang for target "
+            "content under segment or ignorable; those context names do not "
+            "establish separate hierarchy or cardinality obligations."
+        ),
+    }
+    artifact = adjudicator.compile_adjudication_artifact(
+        candidate_census=census,
+        candidate_census_sha256=hashlib.sha256(
+            census_path.read_bytes()
+        ).hexdigest(),
+        denominator=denominator,
+        denominator_sha256=hashlib.sha256(
+            denominator_path.read_bytes()
+        ).hexdigest(),
+        sal_store=store,
+        sal_store_sha256=hashlib.sha256(store_path.read_bytes()).hexdigest(),
+        sal_manifest_sha256=manifest_sha256,
+        sal_receipt=receipt,
+        sal_receipt_sha256=receipt_sha256,
+        decisions=[decision],
+    )
+    adjudications_path = tmp_path / "adjudications.yaml"
+    adjudications_path.write_bytes(adjudicator.artifact_bytes(artifact))
+    output_path = tmp_path / "batch-five-obligations.yaml"
+    proof_paths = {
+        "candidate_census": census_path,
+        "denominator": denominator_path,
+        "sal_store": store_path,
+        "sal_manifest": manifest_path,
+        "sal_receipt": receipt_path,
+        "adjudications": adjudications_path,
+    }
+    args = [
+        *common_args,
+        "--artifact",
+        "core-obligations",
+        "--batch-id",
+        "XLF-04-BATCH-005",
+        "--denominator",
+        str(denominator_path),
+        "--output",
+        str(output_path),
+    ]
+    return args, proof_paths, output_path
+
+
+def _adjudication_cli_args(proof_paths: dict[str, Path]) -> list[str]:
+    return [
+        "--adjudications",
+        str(proof_paths["adjudications"]),
+        "--candidate-census",
+        str(proof_paths["candidate_census"]),
+        "--sal-store",
+        str(proof_paths["sal_store"]),
+        "--sal-manifest",
+        str(proof_paths["sal_manifest"]),
+        "--sal-receipt",
+        str(proof_paths["sal_receipt"]),
+    ]
+
+
+def test_cli_batch_five_requires_validated_adjudications(
+    tmp_path: Path,
+) -> None:
+    extractor = _load_module()
+    args, _proof_paths, _output = _batch_five_cli_inputs(
+        extractor,
+        tmp_path,
+    )
+
+    with pytest.raises(
+        extractor.ExtractionError,
+        match="adjudication",
+    ):
+        extractor.main(args)
+
+
+def test_cli_batch_five_compiles_only_validated_adjudication_ids(
+    tmp_path: Path,
+) -> None:
+    extractor = _load_module()
+    args, proof_paths, output = _batch_five_cli_inputs(extractor, tmp_path)
+    complete_args = [*args, *_adjudication_cli_args(proof_paths)]
+
+    assert extractor.main(complete_args) == 0
+    first_bytes = output.read_bytes()
+    inventory = yaml.safe_load(first_bytes)
+    assert inventory["batch_id"] == "XLF-04-BATCH-005"
+    assert inventory["obligation_count"] == 26
+    assert inventory["resolved_expected_obligation_count"] == 26
+    assert len(inventory["missing_expected_obligation_ids"]) == 79
+    assert inventory["complete"] is False
+    assert extractor.main([*complete_args, "--check"]) == 0
+    assert output.read_bytes() == first_bytes
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    [
+        "candidate_content",
+        "occurrence",
+        "authority_member",
+        "denominator",
+        "decision",
+        "sal_store",
+        "sal_manifest",
+        "sal_receipt",
+        "adjudicator",
+    ],
+)
+def test_cli_batch_five_rejects_adjudication_dependency_drift(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    mutation: str,
+) -> None:
+    extractor = _load_module()
+    args, proof_paths, _output = _batch_five_cli_inputs(extractor, tmp_path)
+    if mutation in {"candidate_content", "occurrence", "authority_member"}:
+        census = yaml.safe_load(proof_paths["candidate_census"].read_bytes())
+        candidate = next(
+            row
+            for row in census["candidates"]
+            if row["candidate_id"] == TARGET_LANGUAGE_CANDIDATE_ID
+        )
+        if mutation == "candidate_content":
+            candidate["candidate_content_sha256"] = "0" * 64
+        elif mutation == "occurrence":
+            candidate["occurrences"][0]["occurrence_sha256"] = "0" * 64
+        else:
+            candidate["occurrences"][0]["member_sha256"] = "0" * 64
+        proof_paths["candidate_census"].write_text(
+            yaml.safe_dump(census, sort_keys=False),
+            encoding="utf-8",
+        )
+    elif mutation == "decision":
+        artifact = yaml.safe_load(proof_paths["adjudications"].read_bytes())
+        artifact["decisions"][0]["authority_reason"] += " changed"
+        proof_paths["adjudications"].write_text(
+            yaml.safe_dump(artifact, sort_keys=False),
+            encoding="utf-8",
+        )
+    elif mutation == "adjudicator":
+        monkeypatch.setattr(
+            extractor._candidate_adjudication,
+            "module_sha256",
+            lambda: "0" * 64,
+        )
+    else:
+        proof_paths[mutation].write_bytes(
+            proof_paths[mutation].read_bytes() + b"\n"
+        )
+
+    with pytest.raises(
+        extractor.ExtractionError,
+        match="adjudication",
+    ):
+        extractor.main([*args, *_adjudication_cli_args(proof_paths)])
 
 
 def test_core_obligation_seed_cannot_self_declare_verification(
@@ -1266,6 +1594,79 @@ def test_default_core_obligation_batch_three_separates_spec_and_policy_authority
             and len(location["source_text_sha256"]) == 64
             for location in row["authority_locations"]
         )
+
+
+def test_batch_five_compiles_only_the_independently_adjudicated_obligation(
+    tmp_path: Path,
+) -> None:
+    extractor = _load_module()
+    target_language_id = (
+        "SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001"
+    )
+    with pytest.raises(
+        extractor.ExtractionError,
+        match="independently adjudicated",
+    ):
+        extractor._default_core_obligation_seeds(
+            through_batch="XLF-04-BATCH-005"
+        )
+
+    seeds = extractor._default_core_obligation_seeds(
+        through_batch="XLF-04-BATCH-005",
+        verified_obligation_ids={target_language_id},
+    )
+    batch_five = [
+        seed
+        for seed in seeds
+        if seed["introduced_in_batch"] == "XLF-04-BATCH-005"
+    ]
+    assert [seed["obligation_id"] for seed in batch_five] == [
+        target_language_id
+    ]
+
+    sources = []
+    for profile in ("xliff_2.0", "xliff_2.1"):
+        path = tmp_path / f"{profile}.zip"
+        member, digest = _write_core_obligation_archive(path, profile=profile)
+        sources.append(
+            extractor.ProfileSource(
+                profile=profile,
+                source_id=f"SRC-{profile.upper()}",
+                package_path=path,
+                expected_sha256=digest,
+                prose_member=member,
+            )
+        )
+    policy_sources = extractor._default_core_policy_sources()
+    denominator = extractor.compile_xliff_core_denominator(
+        sources,
+        policy_sources=policy_sources,
+    )
+    inventory = extractor.compile_xliff_core_obligations(
+        sources,
+        obligation_seeds=seeds,
+        batch_id="XLF-04-BATCH-005",
+        policy_sources=policy_sources,
+        expected_obligation_inventory=denominator,
+    )
+
+    assert inventory["obligation_count"] == 26
+    assert inventory["resolved_expected_obligation_count"] == 26
+    assert inventory["complete"] is False
+    rows = {row["obligation_id"]: row for row in inventory["obligations"]}
+    target_language = rows[target_language_id]
+    assert target_language["introduced_in_batch"] == "XLF-04-BATCH-005"
+    assert target_language["category"] == "document_structure"
+    assert target_language["stable_profiles"] == ["xliff_2.0", "xliff_2.1"]
+    assert {
+        location["profile"]
+        for location in target_language["authority_locations"]
+    } == {"xliff_2.0", "xliff_2.1"}
+    assert all(
+        location["section_id"] == "xliff"
+        and len(location["source_text_sha256"]) == 64
+        for location in target_language["authority_locations"]
+    )
 
 
 def test_open_core_denominator_is_independent_and_cannot_certify_completion(

@@ -1,0 +1,109 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "test-driven-development-xliff-xlf04-core-batch-005-partial-002-a",
+  "skill_id": "test-driven-development",
+  "mode": "live",
+  "timestamp": "2026-07-30T00:34:00Z",
+  "inputs": {
+    "task_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "mission_id": "FF6-PRODUCTION",
+    "batch_id": "XLF-04-BATCH-005-PARTIAL-002-A",
+    "target_behavior_description": "Compile a Batch 005 obligation only after replaying an independently validated, content-addressed adjudication closure.",
+    "source_checkpoint": "e7a95629f04d56b5d34c1062107d1a613cbfdded",
+    "execution_manifest": ".local/skills-first/manifests/sfx-daa5b458a46fae43.json"
+  },
+  "allowed_files": [
+    "tests/tools/test_extract_sal_facts.py",
+    "tests/tools/test_xliff_core_candidate_adjudication.py",
+    "reports/skills-rff6/skill-transcripts/test-driven-development-xliff-xlf04-core-batch-005-partial-002-a.json"
+  ],
+  "actual_files_changed": [
+    "tests/tools/test_extract_sal_facts.py",
+    "tests/tools/test_xliff_core_candidate_adjudication.py",
+    "reports/skills-rff6/skill-transcripts/test-driven-development-xliff-xlf04-core-batch-005-partial-002-a.json"
+  ],
+  "delegated_source_changes": {
+    "ingest-spec-sal": [
+      "tools/spec/extract_sal_facts.py",
+      "reports/ff6/xliff-core-obligation-inventory.yaml"
+    ],
+    "sal-pipeline-heal": [
+      "tools/spec/xliff_core_candidate_adjudication.py",
+      "reports/sal-verification/xliff-core-candidate-adjudications.yaml"
+    ]
+  },
+  "cycles": [
+    {
+      "behavior": "Gate the Batch 005 seed on independently adjudicated obligation identity",
+      "red_command": ".venv\\Scripts\\python.exe -m pytest tests/tools/test_xliff_core_candidate_adjudication.py tests/tools/test_extract_sal_facts.py::test_batch_five_compiles_only_the_independently_adjudicated_obligation -q",
+      "red_result": "13 passed, 1 failed; the target test failed with DID NOT RAISE ExtractionError because the seed builder silently accepted Batch 005 without proof.",
+      "green_command": ".venv\\Scripts\\python.exe -m pytest tests/tools/test_extract_sal_facts.py::test_batch_five_compiles_only_the_independently_adjudicated_obligation -q",
+      "green_result": "1 passed; the validated target ID produced 26 cumulative rows and the missing proof path failed closed.",
+      "refactor": "Kept all prior Batch 003 behavior and all 25 existing obligation IDs unchanged."
+    },
+    {
+      "behavior": "Require complete adjudication proof at the real core-obligations CLI boundary",
+      "red_command": ".venv\\Scripts\\python.exe -m pytest tests/tools/test_extract_sal_facts.py::test_cli_batch_five_requires_validated_adjudications -q",
+      "red_result": "1 failed with SystemExit 2 because --batch-id was not implemented; no Batch 005 CLI proof boundary existed.",
+      "green_command": ".venv\\Scripts\\python.exe -m pytest tests/tools/test_extract_sal_facts.py::test_cli_batch_five_requires_validated_adjudications tests/tools/test_extract_sal_facts.py::test_cli_batch_five_compiles_only_validated_adjudication_ids -q",
+      "green_result": "2 passed; missing proof fails closed and validated proof produces 26/105 incomplete rows.",
+      "refactor": "Reused the independent adjudication validator and added no raw caller-supplied verified-ID option."
+    },
+    {
+      "behavior": "Invalidate obligation compilation for every adjudication dependency class",
+      "red_result": "The inherited design required candidate, occurrence, authority member, denominator, decision, SAL store, SAL manifest, SAL receipt, and adjudicator drift controls.",
+      "green_result": "9 parameterized dependency-drift controls passed in two bounded runs: 3 passed and 6 passed.",
+      "refactor": "Bound the generated inventory to the adjudication artifact, input closure, decision set, counts, and candidate IDs."
+    }
+  ],
+  "tests_run": [
+    "Focused extractor suite excluding the separately bounded drift matrix: 38 passed, 9 deselected.",
+    "Dependency-drift matrix: 9 passed across two bounded runs.",
+    "Independent adjudication suite: 13 passed.",
+    "Candidate-binding suite: 29 passed.",
+    "Affected format-contract suite: 94 passed, 1 named baseline-known stateful test deselected.",
+    "Production-program regression: 69 passed.",
+    "Ruff, strict Mypy with explicit package bases, Pyright 1.1.411, and py_compile: PASS."
+  ],
+  "result": "PASS",
+  "evidence": {
+    "driving_test_sha256": "f2fcc1a668e16b7ff0de193324cf5b0f40717a9456c17f7ce367c0ad1ea325c9",
+    "adjudication_test_sha256": "be9b5b17a8f01b94e4e1b5f2efbbf176ad151003ec70d360e69d424087e5257c",
+    "focused_test_count": 89,
+    "dependency_drift_classes": 9,
+    "batch_003_byte_identity": "PASS",
+    "resolved_obligation_count": 26,
+    "expected_obligation_count": 105,
+    "xlf_04_complete": false,
+    "promotion_effect": "none"
+  },
+  "tdd_checklist": {
+    "1_every_new_function_tested": "YES; the accessor and CLI path are exercised by positive and tamper controls",
+    "2_each_test_observed_red": "YES; the inherited seed RED and new CLI RED were executed before their implementations",
+    "3_red_failed_for_right_reason": "YES",
+    "4_minimal_real_code": "YES",
+    "5_new_and_surrounding_tests_pass": "YES",
+    "6_output_pristine": "YES",
+    "7_no_mock_or_hardcoded_production_result": "YES",
+    "8_edge_and_invalid_inputs_covered": "YES; missing proof and nine dependency drifts fail closed"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for this bounded RED-GREEN-refactor increment",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for the bounded increment; no claim of XLF-04 completion",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_checkpoint_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES; no contradiction to log",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

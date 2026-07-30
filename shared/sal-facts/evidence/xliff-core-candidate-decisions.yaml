@@ -1,0 +1,43 @@
+schema: ff6/xliff-core-candidate-adjudication-decisions@1
+artifact_id: FF6-XLIFF-CORE-CANDIDATE-DECISIONS
+artifact_type: semantic_adjudication_decisions
+visibility: evidence-only
+publish_allowed: false
+generated_by: codex
+format_id: xliff
+batch_id: XLF-04-BATCH-005-PARTIAL-002-A
+decisions:
+- decision_id: XLF-ADJ-CORE-SCHEMATRON-0001
+  candidate_id: XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90
+  accepted_obligation_ids:
+  - SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001
+  rejected_obligations:
+  - obligation_id: SAL-XLIFF-CORE-AGENT-VALIDATOR-001
+    reason_code: DOWNSTREAM_CAPABILITY_NOT_DIRECT_SEMANTIC_OWNER
+    reason: >-
+      The assertion is one rule a validator must enforce, but it does not by
+      itself define the full generic validator-agent processing obligation.
+  - obligation_id: SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001
+    reason_code: INCIDENTAL_XPATH_CONTEXT_TOKEN
+    reason: >-
+      The ignorable name limits which target elements trigger the rule; this
+      assertion establishes no independent ignorable hierarchy constraint.
+  - obligation_id: SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001
+    reason_code: INCIDENTAL_XPATH_CONTEXT_TOKEN
+    reason: >-
+      The segment name limits which target elements trigger the rule; this
+      assertion establishes no independent segment hierarchy constraint.
+  - obligation_id: SAL-XLIFF-CORE-SOURCE-TARGET-OPTIONAL-001
+    reason_code: TRIGGER_DOES_NOT_ESTABLISH_CARDINALITY
+    reason: >-
+      Existing target content triggers the root-language condition, but the
+      assertion does not define source or target presence or cardinality.
+  sal_fact_ids:
+  - SAL-XLIFF-00009
+  authority_reason: >-
+    The exact XLIFF 2.1 Schematron assertion tests
+    /xlf:xliff/@trgLang for target elements whose parent is segment or
+    ignorable, and the matching Core prose states that trgLang is required if
+    and only if such target elements exist. Therefore the direct semantic
+    owner is the document target-language obligation. The XPath parent names
+    describe the trigger context rather than independent hierarchy rules.

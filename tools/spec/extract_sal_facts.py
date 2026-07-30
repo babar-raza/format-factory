@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib
 import json
 import os
 from pathlib import Path, PurePosixPath
@@ -28,6 +29,15 @@ except ModuleNotFoundError:
     # Direct script execution places tools/spec, rather than the repository
     # root, on sys.path.  The sibling import preserves the CLI entry point.
     import xliff_core_candidate_binding as _candidate_binding  # type: ignore[no-redef,import-not-found]
+
+try:
+    from tools.spec import (
+        xliff_core_candidate_adjudication as _candidate_adjudication,
+    )
+except ModuleNotFoundError:
+    _candidate_adjudication = importlib.import_module(
+        "xliff_core_candidate_adjudication"
+    )
 
 
 _CORE_CANDIDATE_CLASSES = _candidate_binding.CORE_CANDIDATE_CLASSES
@@ -2975,6 +2985,7 @@ def compile_xliff_core_obligations(
 def _default_core_obligation_seeds(
     *,
     through_batch: str = "XLF-04-BATCH-003",
+    verified_obligation_ids: set[str] | None = None,
 ) -> list[dict[str, Any]]:
     """Return the bounded, curated XLF-04 Core obligation batches."""
 
@@ -3653,11 +3664,78 @@ def _default_core_obligation_seeds(
             },
         ]
     )
+    batch_five_target_language_id = (
+        "SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001"
+    )
+    seeds.append(
+        {
+            "obligation_id": batch_five_target_language_id,
+            "obligation_basis": "XLIFF_SPECIFICATION",
+            "introduced_in_batch": "XLF-04-BATCH-005",
+            "stable_profiles": ["xliff_2.0", "xliff_2.1"],
+            "owner": "core:document",
+            "category": "document_structure",
+            "normalized_rule": (
+                "Require the root trgLang attribute if and only if target "
+                "elements occur as children of segment or ignorable elements."
+            ),
+            "requirement_class": "SEMANTIC_CONSTRAINT",
+            "normative_level": "MUST",
+            "authority_locations": locations(
+                "xliff",
+                "if and only if the XLIFF Document contains",
+            ),
+            "evidence_requirements": {
+                "positive": [
+                    "accept a root trgLang when target children occur under "
+                    "segment or ignorable"
+                ],
+                "rejection": [
+                    "reject target content under segment or ignorable when "
+                    "the root trgLang is absent"
+                ],
+            },
+            "interpretation_note": (
+                "Independent decision XLF-ADJ-CORE-SCHEMATRON-0001 and "
+                "verified SAL fact SAL-XLIFF-00009 establish only the root "
+                "target-language condition; incidental XPath context does "
+                "not establish separate hierarchy or cardinality rules."
+            ),
+        }
+    )
     if not re.fullmatch(r"XLF-04-BATCH-[0-9]{3}", through_batch):
         raise ExtractionError(
             f"invalid default Core through_batch: {through_batch}"
         )
     maximum_sequence = int(through_batch.rsplit("-", 1)[-1])
+    if verified_obligation_ids is None:
+        verified_ids: set[str] = set()
+    elif not isinstance(verified_obligation_ids, set) or any(
+        not isinstance(obligation_id, str)
+        for obligation_id in verified_obligation_ids
+    ):
+        raise ExtractionError(
+            "verified_obligation_ids must be a set of obligation IDs"
+        )
+    else:
+        verified_ids = set(verified_obligation_ids)
+    expected_ids = {
+        row["obligation_id"] for row in _default_core_obligation_expectations()
+    }
+    unknown_verified_ids = sorted(verified_ids - expected_ids)
+    if unknown_verified_ids:
+        raise ExtractionError(
+            "verified_obligation_ids contains unknown Core obligations: "
+            f"{unknown_verified_ids}"
+        )
+    if (
+        maximum_sequence >= 5
+        and batch_five_target_language_id not in verified_ids
+    ):
+        raise ExtractionError(
+            "XLF-04-BATCH-005 requires an independently adjudicated "
+            f"{batch_five_target_language_id} obligation"
+        )
     return [
         seed
         for seed in seeds
@@ -3996,6 +4074,37 @@ def _argument_parser() -> argparse.ArgumentParser:
             "for the core-obligations and core-census artifacts"
         ),
     )
+    parser.add_argument(
+        "--batch-id",
+        choices=("XLF-04-BATCH-003", "XLF-04-BATCH-005"),
+        default="XLF-04-BATCH-003",
+        help="bounded XLF-04 obligation batch for core-obligations",
+    )
+    parser.add_argument(
+        "--adjudications",
+        type=Path,
+        help="content-addressed adjudication artifact required by Batch 005",
+    )
+    parser.add_argument(
+        "--candidate-census",
+        type=Path,
+        help="candidate census bound by the Batch 005 adjudication",
+    )
+    parser.add_argument(
+        "--sal-store",
+        type=Path,
+        help="canonical SAL store bound by the Batch 005 adjudication",
+    )
+    parser.add_argument(
+        "--sal-manifest",
+        type=Path,
+        help="canonical SAL evidence manifest bound by the adjudication",
+    )
+    parser.add_argument(
+        "--sal-receipt",
+        type=Path,
+        help="passing canonical SAL receipt bound by the adjudication",
+    )
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument(
         "--check",
@@ -4026,6 +4135,19 @@ def main(argv: Sequence[str] | None = None) -> int:
         ),
     ]
     policy_sources = _default_core_policy_sources()
+    adjudication_paths = {
+        "--adjudications": args.adjudications,
+        "--candidate-census": args.candidate_census,
+        "--sal-store": args.sal_store,
+        "--sal-manifest": args.sal_manifest,
+        "--sal-receipt": args.sal_receipt,
+    }
+    if args.artifact != "core-obligations" and any(
+        path is not None for path in adjudication_paths.values()
+    ):
+        raise ExtractionError(
+            "adjudication inputs are valid only for core-obligations"
+        )
     denominator = compile_xliff_core_denominator(
         profile_sources,
         policy_sources=policy_sources,
@@ -4045,13 +4167,55 @@ def main(argv: Sequence[str] | None = None) -> int:
         if not isinstance(denominator_input, Mapping):
             raise ExtractionError("Core denominator must be a YAML mapping")
         if args.artifact == "core-obligations":
+            verified_obligation_ids: set[str] | None = None
+            adjudication_evidence: dict[str, Any] | None = None
+            if args.batch_id == "XLF-04-BATCH-005":
+                missing_adjudication_inputs = [
+                    name
+                    for name, path in adjudication_paths.items()
+                    if path is None
+                ]
+                if missing_adjudication_inputs:
+                    raise ExtractionError(
+                        "XLF-04-BATCH-005 requires validated adjudication "
+                        "inputs: "
+                        f"{missing_adjudication_inputs}"
+                    )
+                try:
+                    (
+                        verified_obligation_ids,
+                        adjudication_evidence,
+                    ) = (
+                        _candidate_adjudication
+                        .validated_obligation_ids_from_paths(
+                            adjudications_path=args.adjudications,
+                            candidate_census_path=args.candidate_census,
+                            denominator_path=args.denominator,
+                            sal_store_path=args.sal_store,
+                            sal_manifest_path=args.sal_manifest,
+                            sal_receipt_path=args.sal_receipt,
+                        )
+                    )
+                except _candidate_adjudication.AdjudicationError as exc:
+                    raise ExtractionError(
+                        f"Batch 005 adjudication validation failed: {exc}"
+                    ) from exc
+            elif any(path is not None for path in adjudication_paths.values()):
+                raise ExtractionError(
+                    "adjudication inputs cannot alter the Batch 003 compiler"
+                )
             artifact = compile_xliff_core_obligations(
                 profile_sources,
-                obligation_seeds=_default_core_obligation_seeds(),
-                batch_id="XLF-04-BATCH-003",
+                obligation_seeds=_default_core_obligation_seeds(
+                    through_batch=args.batch_id,
+                    verified_obligation_ids=verified_obligation_ids,
+                ),
+                batch_id=args.batch_id,
                 policy_sources=policy_sources,
                 expected_obligation_inventory=denominator_input,
             )
+            if adjudication_evidence is not None:
+                artifact["adjudication_input"] = adjudication_evidence
             row_count = artifact["obligation_count"]
         else:
             artifact = compile_xliff_core_authority_census(
