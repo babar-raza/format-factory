@@ -30,16 +30,17 @@ production UBL library. It does not authorize product-source generation,
 product tests, package mutation, certification, promotion, release, or gates.
 
 The task is `WORK_IN_PROGRESS`, but it is not the controller-selected active
-task. Native Event 34 serializes verified completion through
-`UBL-03-PARTIAL-004` as a parallel-safe checkpoint. XLIFF remains the canonical
-active task at `XLF-04-BATCH-005-PARTIAL-002-C`. UBL may continue only as a
+task. Native Event 35 is the current serialized controller boundary, and
+GitLab commit `d8c10680` verifies UBL work through `UBL-03-PARTIAL-005` as a
+parallel-safe checkpoint. XLIFF remains the canonical active task at
+`XLF-04-BATCH-005-PARTIAL-002-D`. UBL may continue only as a
 disjoint, separately leased lane when coordination permits it. It must never
 mutate XLIFF paths or rewrite the native event head without serialized
 plan-control ownership.
 
 ## Current checkpoint
 
-Detailed substate: `SCHEMA_GRAPH_ANONYMOUS_TYPE_IDENTITY_PARTIAL`.
+Detailed substate: `SCHEMA_GRAPH_DERIVATION_EDGE_PARTIAL`.
 
 Completed:
 
@@ -63,16 +64,25 @@ Completed:
   anonymous or multiple anonymous type declarations. The pinned UBL 2.3
   package contains zero anonymous type nodes and edges, while adversarial
   synthetic schemas verify that the machinery is real and deterministic.
+- `UBL-03` bounded increment 005: a segregated derivation compiler binds every
+  QName-based extension and restriction to its exact owning named or anonymous
+  type, authority path, validated base reference, and target type. The pinned
+  UBL 2.3 package yields 1,178 deterministic edges: 2 complex-content
+  extensions, 2 complex-content restrictions, 36 simple-content extensions,
+  1,133 simple-content restrictions, and 5 simple-type restrictions. Negative
+  controls reject missing bases and simple primitive bases for complex
+  content.
   These increments do not complete UBL-03.
 
 First unmet step: `UBL-03`.
 
 Resume evidence:
 
-- native event: `FF6-EVENT-000034`;
+- native event: `FF6-EVENT-000035`;
 - implementation ancestors: `7b5cce4f`, `7fc49c29`, `f98d220a`, `730c8fdf`,
   `bdc66bd5`, `a79dad747a5305b24c41f42437f1824b3d92ec67`, and
-  `8e61ee11e7598b22093d397f4006d4f189b681d4`;
+  `8e61ee11e7598b22093d397f4006d4f189b681d4`, followed by derivation
+  implementation commit `d8c106800d3331b29d8078b326e75b0e05d8c232`;
 - package/root census:
   `reports/ff6/ubl-package-root-census.yaml`;
 - census SHA-256:
@@ -88,18 +98,20 @@ Resume evidence:
   `49b0c1ba5c75df0562ab6334fb14f8fe6dc4a9db31ff8e2b130d3bf04cf8eae1`;
 - anonymous-type graph identity:
   `666634cb0d90f17b05e0b9fd4babe13fe5087f253ef2afb276bf6066d82eaf6e`;
-- focused bounded verification: 28 tests passed, 69 production-program
+- derivation graph identity:
+  `783506c4dcccaefbeb94960dcb5e6d7e0c54a6d8487ee1746eca082535b60e9f`;
+- focused bounded verification: 32 tests passed, 69 production-program
   regressions passed, Ruff passed, strict Mypy
   passed, Pyright 1.1.411 reported zero diagnostics, and three detached
   official-package runs produced identical graphs.
 
 This checkpoint proves authority closure, the package/root denominator,
 root/type binding, dependency/reference closure, the named-owner local
-particle surface, and stable anonymous-type identity machinery. The official
-package contains zero anonymous types, so the behavioral proof comes from
-adversarial synthetic schemas rather than an exaggerated corpus claim. It does
-not prove complete group/wildcard semantics, inheritance, attributes, facets,
-substitutions, annotations, the
+particle surface, stable anonymous-type identity machinery, and exact
+derivation/inheritance edges. The official package contains zero anonymous
+types, so that behavioral proof comes from adversarial synthetic schemas
+rather than an exaggerated corpus claim. It does not prove complete
+group/wildcard semantics, attributes, facets, substitutions, annotations, the
 canonical complete graph artifact, deterministic naming contract, complete
 obligation denominator, reconciled ProductContract, product source,
 certification, promotion, release, or any gate.
@@ -235,14 +247,15 @@ UBL-03-PARTIAL-001 ROOT_TYPE_BINDING_COMPLETE
 -> UBL-03-PARTIAL-002 IMPORT_INCLUDE_AND_REFERENCE_CLOSURE_COMPLETE
 -> UBL-03-PARTIAL-003 LOCAL_PARTICLE_OCCURRENCE_AND_ORDER_COMPLETE
 -> UBL-03-PARTIAL-004 ANONYMOUS_TYPE_IDENTITY_COMPLETE
--> UBL-03-PARTIAL-005 DERIVATION_AND_INHERITANCE_EDGES
+-> UBL-03-PARTIAL-005 DERIVATION_AND_INHERITANCE_EDGES_COMPLETE
+-> UBL-03-PARTIAL-006 ATTRIBUTES_AND_ATTRIBUTE_GROUPS
 ```
 
-The next UBL executor must begin with one RED test for exact extension and
-restriction edges across `complexContent`, `simpleContent`, complex types, and
-simple types. It must build on
-`8e61ee11e7598b22093d397f4006d4f189b681d4`, preserve the root, reference,
-particle, and anonymous-type graph identities, and keep
+The next UBL executor must begin with one RED test for exact global and local
+attribute declarations, attribute references, uses, form rules, defaults,
+fixed values, prohibitions, and attribute-group structure. It must build on
+`d8c106800d3331b29d8078b326e75b0e05d8c232`, preserve the root, reference,
+particle, anonymous-type, and derivation graph identities, and keep
 `reachable_schema_graph_complete: false`. Subsequent RED-GREEN cycles must
 cover each remaining bullet below. Do not emit
 `reports/ff6/ubl-reachable-schema-graph.json` as canonical-complete evidence

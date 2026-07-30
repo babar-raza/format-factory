@@ -1,0 +1,55 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "plan-control-ubl-state-checkpoint-005",
+  "skill_id": "plan-control",
+  "task_id": "TC-FF6-UBL-TYPING-001",
+  "mode": "live",
+  "timestamp": "2026-07-30T06:32:33Z",
+  "inputs": {
+    "task_id": "TC-FF6-UBL-TYPING-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "operation": "project",
+    "target_paths": [
+      "taskcards/TC-FF6-UBL-TYPING-001.md"
+    ],
+    "source_checkpoint": "d8c106800d3331b29d8078b326e75b0e05d8c232",
+    "execution_manifest_id": "sfx-9d0567d5f3f82914",
+    "coordination_scope": "logical:FF6:UBL-03-PARTIAL-005",
+    "acceptance_evidence": "Verified UBL partial-005 implementation, pinned authority census, unchanged prior graph identities, and unchanged product and promotion states"
+  },
+  "allowed_files": [
+    "taskcards/TC-FF6-UBL-TYPING-001.md",
+    "reports/skills-rff6/skill-transcripts/plan-control-ubl-state-checkpoint-005.json",
+    ".local/transcripts/plan-control-ubl-state-checkpoint-005.json"
+  ],
+  "actual_files_changed": [
+    "taskcards/TC-FF6-UBL-TYPING-001.md",
+    "reports/skills-rff6/skill-transcripts/plan-control-ubl-state-checkpoint-005.json",
+    ".local/transcripts/plan-control-ubl-state-checkpoint-005.json"
+  ],
+  "tests_run": [
+    "taskcard remains WORK_IN_PROGRESS with first unmet step UBL-03",
+    "canonical controller task remains XLIFF at native Event 35",
+    "UBL fallback advances only through UBL-03-PARTIAL-005",
+    "next bounded UBL microstep is UBL-03-PARTIAL-006 attributes and attribute groups",
+    "taskcard truth boundary retains 0/6 certification and no product-source authorization"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "implementation_commit": "d8c106800d3331b29d8078b326e75b0e05d8c232",
+    "taskcard_sha256": "eb4efe4c15321d157d34991e17f1697ba8d4b3ecc557827e88864b5275bdf5aa",
+    "controller_state": "CONTRACT",
+    "task_state": "WORK_IN_PROGRESS",
+    "first_unmet_step": "UBL-03",
+    "completed_microstep": "UBL-03-PARTIAL-005",
+    "next_microstep": "UBL-03-PARTIAL-006-ATTRIBUTES-AND-ATTRIBUTE-GROUPS",
+    "products_certified": "0/6",
+    "promotion_effect": "none",
+    "product_source_effect": "none",
+    "reachable_schema_graph_complete": false,
+    "truth_boundary": "The projection records one bounded UBL schema-graph machinery increment. It does not close UBL-03, change the controller-selected XLIFF task, or certify a product."
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}
