@@ -1,0 +1,62 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "sal-pipeline-heal-ubl-schema-graph-refactor-001",
+  "skill_id": "sal-pipeline-heal",
+  "task_id": "TC-FF6-UBL-TYPING-001",
+  "mode": "live",
+  "timestamp": "2026-07-30T03:08:51Z",
+  "inputs": {
+    "taskcard_id": "TC-FF6-UBL-TYPING-001",
+    "format_id": "ubl",
+    "root_cause_id": "ROOT-08",
+    "spec_cache_path": ".local/format-contracts/acquired/ubl/src-ubl-002.bin",
+    "target_stage": "census",
+    "authority_source_id": "SRC-UBL-002",
+    "authority_sha256": "623bef8310db4d979ff28000a96bcc56dbcdda4f6206cf094c0aa79b75817970",
+    "execution_manifest_id": "sfx-1d65d627b6269bee",
+    "refactor_reason": "The schema graph implementation reached 1005 lines and combined secure parsing, dependency closure, QName reference resolution, and graph orchestration. The split establishes focused ownership boundaries without changing canonical graph output."
+  },
+  "allowed_files": [
+    "tools/spec/ubl_schema_common.py",
+    "tools/spec/ubl_schema_dependencies.py",
+    "tools/spec/ubl_schema_references.py",
+    "tools/spec/ubl_schema_graph.py",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-ubl-schema-graph-refactor-001.json"
+  ],
+  "actual_files_changed": [
+    "tools/spec/ubl_schema_common.py",
+    "tools/spec/ubl_schema_dependencies.py",
+    "tools/spec/ubl_schema_references.py",
+    "tools/spec/ubl_schema_graph.py",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-ubl-schema-graph-refactor-001.json"
+  ],
+  "tests_run": [
+    "UBL schema graph and compiler tests: 18 passed",
+    "Ruff: PASS",
+    "Mypy: PASS",
+    "Pyright 1.1.411: 0 errors and 0 warnings",
+    "py_compile: PASS",
+    "Official UBL package deterministic graph assertion: PASS within focused tests"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "behavior_preserved": true,
+    "public_import_surface_preserved": true,
+    "canonical_graph_identity_preserved": true,
+    "canonical_closure_identity_preserved": true,
+    "module_boundaries": {
+      "ubl_schema_common.py": "secure parsing, limits, QName normalization, identities, global component index",
+      "ubl_schema_dependencies.py": "offline import and include resolution, visibility, closure",
+      "ubl_schema_references.py": "global QName-valued reference closure and built-in XSD types",
+      "ubl_schema_graph.py": "public compatibility facade and canonical graph assembly"
+    },
+    "reachable_schema_graph_complete": false,
+    "product_implementation_complete": false,
+    "production_certification_complete": false,
+    "safe_response": "Accept the decomposition as a structural checkpoint and continue UBL-03 with local particle and anonymous-type identities.",
+    "truth_boundary": "This refactor changes source organization only. It does not close UBL-03, generate the UBL product library, certify UBL, or promote any format."
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}
