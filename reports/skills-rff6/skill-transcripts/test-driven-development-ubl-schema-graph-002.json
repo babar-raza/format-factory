@@ -1,0 +1,108 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "test-driven-development-ubl-schema-graph-002",
+  "skill_id": "test-driven-development",
+  "task_id": "TC-FF6-UBL-TYPING-001",
+  "mode": "live",
+  "timestamp": "2026-07-30T02:57:47Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_step": "UBL-03-PARTIAL-002-IMPORT-INCLUDE-AND-REFERENCE-CLOSURE",
+    "execution_manifest_ids": [
+      "sfx-1bcdb53f2bf3b1df",
+      "sfx-24d217cedd0ad4e6"
+    ],
+    "base_git_commit": "36e82b04851ff0b100c896cb56cf693880f98bf1",
+    "authority_source_id": "SRC-UBL-002",
+    "authority_sha256": "623bef8310db4d979ff28000a96bcc56dbcdda4f6206cf094c0aa79b75817970",
+    "scope": "Second resumable TDD increment of the content-addressed UBL 2.3 reachable-schema graph.",
+    "target_behavior_description": "Resolve the exact offline import/include dependency closure and every global QName reference exactly once without changing the previously accepted root/type node and edge identities."
+  },
+  "allowed_files": [
+    "tests/tools/test_ubl_schema_graph.py",
+    "tools/spec/ubl_schema_graph.py",
+    "tools/spec/compile_ubl_schema_graph.py",
+    "reports/skills-rff6/skill-transcripts/test-driven-development-ubl-schema-graph-002.json",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-ubl-schema-graph-002.json",
+    ".local/transcripts/ubl-schema-graph-002.json"
+  ],
+  "actual_files_changed": [
+    "tests/tools/test_ubl_schema_graph.py",
+    "tools/spec/ubl_schema_graph.py",
+    "tools/spec/compile_ubl_schema_graph.py",
+    "reports/skills-rff6/skill-transcripts/test-driven-development-ubl-schema-graph-002.json",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-ubl-schema-graph-002.json",
+    ".local/transcripts/ubl-schema-graph-002.json"
+  ],
+  "red_green_cycles": [
+    {
+      "red": "test_graph_closes_offline_dependencies_and_global_references failed with KeyError for schema_dependency_edge_count because no dependency or reference closure projection existed.",
+      "green": "Added deterministic package-local dependency edges, root dependency closures, global component indexing, QName reference-use identities, strict XSD builtin handling, and a separate closure identity while retaining the earlier root/type projection."
+    },
+    {
+      "red": "The pinned 106-schema UBL authority compile failed because UBL-xmldsig11-schema-2.3.xsd contains a legal namespace import without schemaLocation.",
+      "green": "Added exact namespace-family resolution that accepts a location-less import only when the pinned package contains one uniquely connected include family for the declared namespace."
+    },
+    {
+      "red": "test_graph_rejects_reference_visible_only_through_transitive_import failed because a QName reference could incorrectly consume a namespace imported only by another imported schema.",
+      "green": "Separated transitive dependency closure from direct import/include reference visibility and rejected the over-permissive reference."
+    },
+    {
+      "red": "test_graph_rejects_duplicate_schema_dependency_identity failed because two identical import declarations emitted duplicate content-addressed edge IDs.",
+      "green": "Added fail-closed duplicate dependency identity validation."
+    },
+    {
+      "red": "The real-package determinism test exposed tuple-valued target_members for namespace-family imports, inconsistent with list-valued located dependencies and canonical JSON data.",
+      "green": "Normalized namespace-family target members to lists without changing the canonical digest or the preserved root/type identity."
+    }
+  ],
+  "tests_run": [
+    "python -m pytest tests/tools/test_ubl_schema_graph.py tests/tools/test_compile_ubl_schema_graph.py -q: 18 passed",
+    "ruff check tools/spec/ubl_schema_graph.py tools/spec/compile_ubl_schema_graph.py tests/tools/test_ubl_schema_graph.py tests/tools/test_compile_ubl_schema_graph.py: PASS",
+    "mypy --explicit-package-bases tools/spec/ubl_schema_graph.py tools/spec/compile_ubl_schema_graph.py --ignore-missing-imports: PASS",
+    "npx --yes pyright@1.1.411 tools/spec/ubl_schema_graph.py tools/spec/compile_ubl_schema_graph.py tests/tools/test_ubl_schema_graph.py: 0 errors, 0 warnings",
+    "python -m py_compile tools/spec/ubl_schema_graph.py tools/spec/compile_ubl_schema_graph.py tests/tools/test_ubl_schema_graph.py: PASS",
+    "three in-process official-package compilations: identical complete dictionaries and closure SHA-256 2e43a3e83b1ad96ce287299cd7e7c6d86a4a4a02cc3423d30e18f0c9b4ee9fc3",
+    "prior root/type graph SHA-256 retained exactly: 7b754187690ce1bb04db62657cfb552653cb381a1bdd745a56856e58215af029"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "graph_source_sha256": "7f97d1463fc3b8924a2e4aac771076ba623a173344c1988fadc0a760bb476866",
+    "entrypoint_source_sha256": "d527ad709fe05d1ec232224d7b851f25af9c06b677b66a049af552325e85bb96",
+    "test_sha256": "5d0c73aefcdc708c75d38e71a8d65a79da347a8fba53617e7d82b6be42b3f7df",
+    "package_sha256": "623bef8310db4d979ff28000a96bcc56dbcdda4f6206cf094c0aa79b75817970",
+    "observed_schema_documents": 106,
+    "observed_roots": 91,
+    "observed_schema_dependency_edges": 297,
+    "observed_schema_import_edges": 295,
+    "observed_schema_include_edges": 2,
+    "observed_global_components": 3788,
+    "observed_global_reference_uses": 8926,
+    "unresolved_references": 0,
+    "ambiguous_references": 0,
+    "root_type_graph_sha256": "7b754187690ce1bb04db62657cfb552653cb381a1bdd745a56856e58215af029",
+    "closure_sha256": "2e43a3e83b1ad96ce287299cd7e7c6d86a4a4a02cc3423d30e18f0c9b4ee9fc3",
+    "canonical_complete_graph_emitted": false,
+    "truth_boundary": "This checkpoint proves deterministic import/include closure and unique global QName-reference resolution for the pinned UBL 2.3 schema package. UBL-03 remains incomplete: local particles, anonymous types, occurrence/order rules, inheritance edges, facets, wildcards, documentation, and the complete canonical graph artifact remain open."
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for the bounded UBL-03-PARTIAL-002 cycle",
+    "2_required_evidence_present": "YES for dependency and reference closure only",
+    "3_evidence_sufficient": "YES for this bounded microstep; explicitly insufficient for UBL-03 completion",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO at transcript creation",
+    "9_bundle_or_continuation_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO; remaining UBL-03 surfaces remain open in the taskcard",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES, no contradiction requiring a new gap was found",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

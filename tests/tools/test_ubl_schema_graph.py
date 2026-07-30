@@ -16,6 +16,10 @@ import pytest
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 COMPILER_PATH = REPO_ROOT / "tools" / "spec" / "compile_ubl_schema_graph.py"
+PACKAGE_PATH = (
+    REPO_ROOT / ".local" / "format-contracts" / "acquired" / "ubl" / "src-ubl-002.bin"
+)
+PACKAGE_SHA256 = "623bef8310db4d979ff28000a96bcc56dbcdda4f6206cf094c0aa79b75817970"
 XS = "http://www.w3.org/2001/XMLSchema"
 
 
@@ -63,9 +67,243 @@ def test_graph_resolves_a_document_root_to_exactly_one_declared_type() -> None:
     root = graph["roots"][0]
     assert root["root_qname"] == f"{{{namespace}}}Invoice"
     assert root["content_type_qname"] == f"{{{namespace}}}InvoiceType"
-    assert root["content_type_node_id"] in {
-        node["node_id"] for node in graph["nodes"]
+    assert root["content_type_node_id"] in {node["node_id"] for node in graph["nodes"]}
+
+
+def test_graph_closes_offline_dependencies_and_global_references() -> None:
+    compiler = _load_compiler()
+    invoice_namespace = "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
+    aggregate_namespace = "urn:test:common:aggregate"
+    invoice = (
+        f'<xsd:schema xmlns="{invoice_namespace}" xmlns:xsd="{XS}" '
+        f'xmlns:cac="{aggregate_namespace}" '
+        f'targetNamespace="{invoice_namespace}" '
+        'elementFormDefault="qualified">'
+        f'<xsd:import namespace="{aggregate_namespace}" '
+        'schemaLocation="../common/CommonAggregate.xsd"/>'
+        '<xsd:element name="Invoice" type="InvoiceType"/>'
+        '<xsd:complexType name="InvoiceType"><xsd:sequence>'
+        '<xsd:element ref="cac:Party"/>'
+        "</xsd:sequence></xsd:complexType>"
+        "</xsd:schema>"
+    ).encode()
+    aggregate = (
+        f'<xsd:schema xmlns="{aggregate_namespace}" xmlns:xsd="{XS}" '
+        f'xmlns:cac="{aggregate_namespace}" '
+        f'targetNamespace="{aggregate_namespace}" '
+        'elementFormDefault="qualified">'
+        '<xsd:include schemaLocation="CommonAggregateExtra.xsd"/>'
+        '<xsd:element name="Party" type="PartyType"/>'
+        '<xsd:complexType name="PartyType"><xsd:sequence>'
+        '<xsd:element ref="cac:Name"/>'
+        "</xsd:sequence></xsd:complexType>"
+        "</xsd:schema>"
+    ).encode()
+    aggregate_extra = (
+        f'<xsd:schema xmlns="{aggregate_namespace}" xmlns:xsd="{XS}" '
+        f'targetNamespace="{aggregate_namespace}" '
+        'elementFormDefault="qualified">'
+        '<xsd:element name="Name" type="xsd:string"/>'
+        "</xsd:schema>"
+    ).encode()
+    package = _package(
+        {
+            "xsd/maindoc/UBL-Invoice-2.3.xsd": invoice,
+            "xsd/common/CommonAggregate.xsd": aggregate,
+            "xsd/common/CommonAggregateExtra.xsd": aggregate_extra,
+        }
+    )
+
+    graph = compiler.compile_ubl_reachable_schema_graph(
+        package,
+        expected_package_sha256=hashlib.sha256(package).hexdigest(),
+        expected_root_count=1,
+    )
+
+    assert graph["schema_dependency_edge_count"] == 2
+    assert graph["schema_dependency_edge_counts"] == {
+        "schema_import": 1,
+        "schema_include": 1,
     }
+    closure = graph["schema_closures"][0]
+    assert closure["root_member"] == "xsd/maindoc/UBL-Invoice-2.3.xsd"
+    assert closure["reachable_members"] == [
+        "xsd/common/CommonAggregate.xsd",
+        "xsd/common/CommonAggregateExtra.xsd",
+        "xsd/maindoc/UBL-Invoice-2.3.xsd",
+    ]
+    assert graph["global_reference_use_count"] == 5
+    assert graph["validation"]["unresolved_reference_count"] == 0
+    assert graph["validation"]["ambiguous_reference_count"] == 0
+    references = {
+        (row["attribute"], row["lexical_qname"], row["target_kind"])
+        for row in graph["global_reference_uses"]
+    }
+    assert ("ref", "cac:Party", "global_element") in references
+    assert ("ref", "cac:Name", "global_element") in references
+    assert ("type", "xsd:string", "xsd_builtin_type") in references
+
+
+def test_graph_rejects_reference_visible_only_through_transitive_import() -> None:
+    compiler = _load_compiler()
+    namespace_a = "urn:test:a"
+    namespace_b = "urn:test:b"
+    namespace_c = "urn:test:c"
+    schema_a = (
+        f'<xsd:schema xmlns="{namespace_a}" xmlns:xsd="{XS}" '
+        f'xmlns:c="{namespace_c}" targetNamespace="{namespace_a}">'
+        f'<xsd:import namespace="{namespace_b}" '
+        'schemaLocation="../common/B.xsd"/>'
+        '<xsd:element name="Invoice" type="InvoiceType"/>'
+        '<xsd:complexType name="InvoiceType"><xsd:sequence>'
+        '<xsd:element ref="c:Thing"/>'
+        "</xsd:sequence></xsd:complexType>"
+        "</xsd:schema>"
+    ).encode()
+    schema_b = (
+        f'<xsd:schema xmlns="{namespace_b}" xmlns:xsd="{XS}" '
+        f'targetNamespace="{namespace_b}">'
+        f'<xsd:import namespace="{namespace_c}" schemaLocation="C.xsd"/>'
+        '<xsd:complexType name="BType"/>'
+        "</xsd:schema>"
+    ).encode()
+    schema_c = (
+        f'<xsd:schema xmlns="{namespace_c}" xmlns:xsd="{XS}" '
+        f'targetNamespace="{namespace_c}">'
+        '<xsd:element name="Thing" type="xsd:string"/>'
+        "</xsd:schema>"
+    ).encode()
+    package = _package(
+        {
+            "xsd/maindoc/UBL-Invoice-2.3.xsd": schema_a,
+            "xsd/common/B.xsd": schema_b,
+            "xsd/common/C.xsd": schema_c,
+        }
+    )
+
+    with pytest.raises(
+        compiler.UblCensusError,
+        match="outside direct import/include visibility",
+    ):
+        compiler.compile_ubl_reachable_schema_graph(
+            package,
+            expected_package_sha256=hashlib.sha256(package).hexdigest(),
+            expected_root_count=1,
+        )
+
+
+def test_graph_rejects_duplicate_schema_dependency_identity() -> None:
+    compiler = _load_compiler()
+    invoice_namespace = "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
+    common_namespace = "urn:test:common"
+    invoice = (
+        f'<xsd:schema xmlns="{invoice_namespace}" xmlns:xsd="{XS}" '
+        f'targetNamespace="{invoice_namespace}">'
+        f'<xsd:import namespace="{common_namespace}" '
+        'schemaLocation="../common/Common.xsd"/>'
+        f'<xsd:import namespace="{common_namespace}" '
+        'schemaLocation="../common/Common.xsd"/>'
+        '<xsd:element name="Invoice" type="InvoiceType"/>'
+        '<xsd:complexType name="InvoiceType"/>'
+        "</xsd:schema>"
+    ).encode()
+    common = (
+        f'<xsd:schema xmlns="{common_namespace}" xmlns:xsd="{XS}" '
+        f'targetNamespace="{common_namespace}">'
+        '<xsd:simpleType name="CodeType">'
+        '<xsd:restriction base="xsd:string"/>'
+        "</xsd:simpleType></xsd:schema>"
+    ).encode()
+    package = _package(
+        {
+            "xsd/maindoc/UBL-Invoice-2.3.xsd": invoice,
+            "xsd/common/Common.xsd": common,
+        }
+    )
+
+    with pytest.raises(
+        compiler.UblCensusError,
+        match="duplicate schema dependency",
+    ):
+        compiler.compile_ubl_reachable_schema_graph(
+            package,
+            expected_package_sha256=hashlib.sha256(package).hexdigest(),
+            expected_root_count=1,
+        )
+
+
+def test_real_package_closure_is_complete_deterministic_and_additive() -> None:
+    compiler = _load_compiler()
+
+    first = compiler.compile_ubl_reachable_schema_graph(
+        PACKAGE_PATH,
+        expected_package_sha256=PACKAGE_SHA256,
+    )
+    second = compiler.compile_ubl_reachable_schema_graph(
+        PACKAGE_PATH,
+        expected_package_sha256=PACKAGE_SHA256,
+    )
+    third = compiler.compile_ubl_reachable_schema_graph(
+        PACKAGE_PATH,
+        expected_package_sha256=PACKAGE_SHA256,
+    )
+
+    assert first == second == third
+    assert first["schema_document_count"] == 106
+    assert first["root_count"] == 91
+    assert first["schema_dependency_edge_count"] == 297
+    assert first["schema_dependency_edge_counts"] == {
+        "schema_import": 295,
+        "schema_include": 2,
+    }
+    assert first["global_component_count"] == 3_788
+    assert first["global_reference_use_count"] == 8_926
+    assert first["global_reference_attribute_counts"] == {
+        "base": 1_178,
+        "ref": 5_383,
+        "type": 2_365,
+    }
+    assert first["global_reference_target_counts"] == {
+        "complex_type": 3_347,
+        "global_element": 5_383,
+        "simple_type": 21,
+        "xsd_builtin_type": 175,
+    }
+    assert (
+        first["identity"]["graph_sha256"]
+        == "7b754187690ce1bb04db62657cfb552653cb381a1bdd745a56856e58215af029"
+    )
+    assert (
+        first["closure_identity"]["closure_sha256"]
+        == "2e43a3e83b1ad96ce287299cd7e7c6d86a4a4a02cc3423d30e18f0c9b4ee9fc3"
+    )
+    assert (
+        len({edge["edge_id"] for edge in first["schema_dependency_edges"]})
+        == first["schema_dependency_edge_count"]
+    )
+    assert (
+        len({row["use_id"] for row in first["global_reference_uses"]})
+        == first["global_reference_use_count"]
+    )
+    namespace_imports = [
+        edge
+        for edge in first["schema_dependency_edges"]
+        if edge["resolution_mode"] == "namespace_family"
+    ]
+    assert namespace_imports == [
+        {
+            **namespace_imports[0],
+            "kind": "schema_import",
+            "source_member": "xsd/common/UBL-xmldsig11-schema-2.3.xsd",
+            "schema_location": "",
+            "declared_namespace": "http://www.w3.org/2000/09/xmldsig#",
+            "target_members": [
+                "xsd/common/UBL-xmldsig-core-schema-2.3.xsd",
+                "xsd/common/UBL-xmldsig1-schema-2.3.xsd",
+            ],
+        }
+    ]
+    assert first["completion"]["reachable_schema_graph_complete"] is False
 
 
 def test_xml_declaration_guard_ignores_comments_but_rejects_active_doctype() -> None:
@@ -81,9 +319,7 @@ def test_xml_declaration_guard_ignores_comments_but_rejects_active_doctype() -> 
     commented = (
         "<!-- removed upstream declaration: <!DOCTYPE schema> -->" + schema_body
     ).encode()
-    commented_package = _package(
-        {"xsd/maindoc/UBL-Invoice-2.3.xsd": commented}
-    )
+    commented_package = _package({"xsd/maindoc/UBL-Invoice-2.3.xsd": commented})
 
     graph = compiler.compile_ubl_reachable_schema_graph(
         commented_package,

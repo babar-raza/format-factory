@@ -24,7 +24,6 @@ import tempfile
 from collections import Counter
 from collections.abc import Mapping, Sequence
 from typing import Any
-from urllib.parse import urlsplit
 import xml.etree.ElementTree as ET
 from zipfile import (
     BadZipFile,
@@ -40,6 +39,7 @@ from tools.spec.ubl_schema_graph import (
     GraphLimits,
     UblSchemaGraphError,
     compile_reachable_schema_graph,
+    resolve_schema_location,
 )
 
 
@@ -283,26 +283,6 @@ def _parse_xsd(
     return root
 
 
-def _resolve_import(
-    *,
-    owner_member: str,
-    schema_location: str,
-    members: Mapping[str, bytes],
-) -> str:
-    parsed = urlsplit(schema_location)
-    if parsed.scheme or parsed.netloc or schema_location.startswith("/"):
-        raise UblCensusError(
-            f"remote import is prohibited in {owner_member}: {schema_location}"
-        )
-    owner_dir = posixpath.dirname(owner_member)
-    resolved = posixpath.normpath(posixpath.join(owner_dir, schema_location))
-    if resolved.startswith("../") or resolved not in members:
-        raise UblCensusError(
-            f"unresolved import in {owner_member}: {schema_location}"
-        )
-    return resolved
-
-
 def _root_row(
     *,
     member: str,
@@ -346,11 +326,15 @@ def _root_row(
         namespace = node.get("namespace")
         if not location:
             raise UblCensusError(f"schema import lacks location: {member}")
-        resolved = _resolve_import(
-            owner_member=member,
-            schema_location=location,
-            members=members,
-        )
+        try:
+            resolved = resolve_schema_location(
+                owner_member=member,
+                schema_location=location,
+                members=members,
+                dependency_kind="import",
+            )
+        except UblSchemaGraphError as exc:
+            raise UblCensusError(str(exc)) from exc
         import_rows.append(
             {
                 "namespace": namespace or "",
