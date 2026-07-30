@@ -1,5 +1,5 @@
 ---
-artifact_id: FF6-HANDOVER-START-EVENT-34
+artifact_id: FF6-HANDOVER-START-EVENT-35
 artifact_type: provider_neutral_handover_entry
 visibility: internal
 publish_allowed: false
@@ -17,12 +17,11 @@ C:\Users\prora\OneDrive\Documents\GitHub\format-factory\plans\codex\handover\STA
 
 The canonical repository is GitLab `origin/main`. Do not use the GitHub
 remote, create a branch, reuse another provider identity, or depend on ignored
-local bytes. The native head is `FF6-EVENT-000034` /
-`7cab150d9d49deeba140c6a0ce56e619ae560f8b0abc7510e555ca54d6f307da`.
-Its latest immutable implementation is GitLab commit
-`8e61ee11e7598b22093d397f4006d4f189b681d4`. XLIFF's accepted implementation
-boundary remains `ff8f7d9f9ff1ff613be376e1361b0dd8304566e3`, and the canonical
-continuation remains `XLF-04-BATCH-005-PARTIAL-002-C`.
+local bytes. The native head is `FF6-EVENT-000035` /
+`2866d7e70bd193f8aa7b60ca1f92f4f842d1cd470f97984c07f47d88ed2ea97d`.
+Its immutable XLIFF implementation is GitLab commit
+`591fcfe18808e5195c33570eaa9d334770e90166`, and the canonical continuation is
+`XLF-04-BATCH-005-PARTIAL-002-D`.
 
 ## Mission
 
@@ -34,9 +33,10 @@ independent interoperability evidence, installed-wheel proof, and reproducible
 release artifacts. Planning, source presence, test counts, contract compilation,
 or a passing smoke test do not certify a product.
 
-Current truth: controller `CONTRACT`, Event 34, `0/6` certified, every product
+Current truth: controller `CONTRACT`, Event 35, `0/6` certified, every product
 `UNASSESSED`. XLIFF is the selected lane because its complete stable contract
-surface is still open. Event 34 additionally verifies 6,001 UBL local particle
+surface is still open. Event 35 accepts only 28 of 105 Core obligations and 4
+of 1,130 candidate dispositions. Event 34 separately verifies 6,001 UBL local particle
 nodes across 468 owners and stable anonymous-type identity machinery. The
 pinned official package contains zero anonymous types, so this behavior is
 proved with adversarial synthetic schemas and does not complete UBL-03.
@@ -45,21 +45,22 @@ The selected XLIFF candidate has three distinct digests. Do not substitute
 one for another:
 
 - candidate content:
-  `647b9f67a1c64e9e9030652e9c527666fa8aadeb521ed48fda87cebcecbcb6b1`;
+  `af94362009857b0fdd3d19881cd2c8d1866e4f5a72849ec1edf057baf7e905a1`;
 - normalized requirement:
-  `bebad4a8709a137a204c13bf6a058d6c38e512099ebcf5ed7119e2668f38f61d`;
+  `d36657a907cd8be2ecf38d3fa7a78b3c3720486492cdadd09f4f0f7c25f30e84`;
 - occurrence:
-  `bd3194ac5b25856e984d3eec9c38cb76f8b912fb63679034e236b766b8f6ca77`.
+  `96949f8b0f510d573b4c95640fae3e68175b853410865eaf1460a5eaee4f332a`.
 
-Earlier Event 32 packet bytes mislabeled the requirement digest as the
-candidate-content digest. This packet corrects the label without changing the
-candidate, authority, event, task, accepted counts, or product state.
+These identify the still-unadjudicated reciprocal report at
+`schematron/rule[11]/report[2]`; they are not the digests of the report already
+accepted by Event 35.
 
 ## Mandatory resume order
 
 1. Read [AGENTS.md](../../../AGENTS.md), then
    [Claude start](CLAUDE-START.md).
-2. Fetch GitLab and require `HEAD == origin/main`, with `8e61ee11...` as an
+2. Fetch GitLab and require `HEAD == origin/main`, with
+   `ae31baed8bfeb8a35c4ece8e52283114ee48d860` as an
    ancestor, before any mutation. The packet commit is necessarily later than
    the control checkpoint.
 3. First validate the committed GitLab checkpoint in a detached worktree:
@@ -72,10 +73,11 @@ candidate, authority, event, task, accepted counts, or product state.
    run `validate_handover.py --require-clean --self-test`. If dirty paths have
    a current foreign owner, preserve them and use the detached validation as
    the packet proof; do not call the packet corrupt and do not enter that
-   owner's scope. Event 34 also records seven exact XLIFF occurrence paths and
-   both their baseline and occurrence hashes. Those bytes are non-promoting
-   until governed takeover plus independent replay. Any other unattributed
-   dirty path fails the transfer.
+   owner's scope. UBL partial-005 was committed at `d8c10680`, checkpointed at
+   `ae31baed`, and its executor completed cleanly before this packet was
+   sealed. The UBL result is verified partial progress but is not part of Event
+   35 promotion. Re-query coordination and replay both commits before entering
+   partial-006. Any unattributed dirty path fails the transfer.
 5. Register a fresh coordination identity. Never reuse the identity, token,
    lease, or execution manifest recorded by an earlier shift.
 6. Read [the exact next microstep](NEXT-MICROSTEP.yaml), create fresh skill
@@ -86,9 +88,10 @@ candidate, authority, event, task, accepted counts, or product state.
    FF6 event, refresh this packet, validate it, then release only your leases.
 
 If another live agent owns the XLIFF paths, do not overlap or wait. Select the
-highest-severity unleased FF6 obligation, normally the UBL-03 continuation in
-[the machine state](CURRENT-MACHINE-STATE.yaml), and journal that bounded
-progress before returning to XLIFF.
+highest-severity unleased FF6 obligation. UBL partial-006 is an eligible
+fallback only if a fresh coordination query shows it unleased and its two
+predecessor commits replay cleanly. Any fallback must remain disjoint and must
+not change the controller-selected XLIFF task.
 
 ## Current operational documents
 
@@ -100,18 +103,18 @@ progress before returning to XLIFF.
 - [Outgoing shift record](CURRENT-SHIFT-HANDOVER.md)
 - [Recovery contract](INFLIGHT-RECOVERY.yaml)
 - [Packet manifest](manifest.yaml)
-- [Provider shift invariants](PROVIDER-SHIFT-CONTRACT.md), current Event 34
+- [Provider shift invariants](PROVIDER-SHIFT-CONTRACT.md), current Event 35
   overlay plus durable historical rationale.
-- [Shift/resume protocol](SHIFT-AND-RESUME-PROTOCOL.md), current Event 34
+- [Shift/resume protocol](SHIFT-AND-RESUME-PROTOCOL.md), current Event 35
   overlay plus historical failure examples.
 - [Execution runbook](EXECUTION-RUNBOOK.md), durable phase procedure; current
-  routing comes only from the Event 34 overlay and `NEXT-MICROSTEP.yaml`.
+  routing comes only from the Event 35 overlay and `NEXT-MICROSTEP.yaml`.
 - [State-machine/taskcard protocol](STATE-MACHINE-AND-TASKCARD-PROTOCOL.md),
-  durable transaction rules with an Event 34 overlay.
+  durable transaction rules with an Event 35 overlay.
 - [Validation and release rules](VALIDATION-AND-RELEASE.md), durable gates and
   Event 31 as a retained negative control, not current routing.
 - [UBL parallel checkpoint](PARALLEL-UBL-CHECKPOINT.yaml), historical
-  foundation plus the current Event 34 UBL boundary.
+  foundation plus the Event 34 verified UBL boundary and Event 35 supersession.
 
 ## Canonical authorities
 
@@ -123,7 +126,7 @@ progress before returning to XLIFF.
 - [Handover refresh taskcard](../../../taskcards/TC-FF6-HANDOVER-CLAUDE-001.md)
 - [Accepted XLIFF repair proof](../../../reports/ff6/xliff-core-pairing-repair-run-manifest.yaml)
 - [UBL anonymous-type TDD proof](../../../reports/skills-rff6/skill-transcripts/test-driven-development-ubl-schema-graph-004.json)
-- [Event 34 handover receipt](../../../reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-event-34.json)
+- [Event 35 handover receipt](../../../reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-event-35.json)
 
 The journal, controller, taskcard, evidence, and Git objects override this
 derived packet if a newer valid event exists. Recompute; never hand-edit a

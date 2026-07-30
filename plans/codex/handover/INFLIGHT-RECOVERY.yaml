@@ -1,55 +1,47 @@
-schema: ff6/inflight-recovery@6
-artifact_id: FF6-RECOVERY-EVENT-34-PRESERVED-XLIFF-OCCURRENCE
+schema: ff6/inflight-recovery@7
+artifact_id: FF6-RECOVERY-EVENT-35-CLEAN-SHARED-CHECKPOINT
 visibility: internal
 publish_allowed: false
 generated_by: codex
 generated_at: '2026-07-30'
 event:
-  event_id: FF6-EVENT-000034
-  event_hash: 7cab150d9d49deeba140c6a0ce56e619ae560f8b0abc7510e555ca54d6f307da
-  implementation_commit: 8e61ee11e7598b22093d397f4006d4f189b681d4
-  accepted_xliff_implementation_commit: ff8f7d9f9ff1ff613be376e1361b0dd8304566e3
-  checkpoint_commit: 8e61ee11e7598b22093d397f4006d4f189b681d4
+  event_id: FF6-EVENT-000035
+  event_hash: 2866d7e70bd193f8aa7b60ca1f92f4f842d1cd470f97984c07f47d88ed2ea97d
+  implementation_commit: 591fcfe18808e5195c33570eaa9d334770e90166
+  accepted_xliff_implementation_commit: 591fcfe18808e5195c33570eaa9d334770e90166
+  checkpoint_commit: ae31baed8bfeb8a35c4ece8e52283114ee48d860
 captured_workspace:
-  product_overlay_status: PRESERVED_FOREIGN_XLIFF_OCCURRENCE_NON_PROMOTING
-  dirty_paths: 7
+  product_overlay_status: NO_UNCOMMITTED_XLIFF_OVERLAY
+  foreign_dirty_paths_at_capture: 0
   unexplained_paths: 0
   local_only_required_for_resume: false
   recovery_archive_required: false
   provider_identity_transferable: false
   lease_transferable: false
   execution_manifest_transferable: false
-  originating_agent: agent-codex-20260730T035429-0cf739
-  originating_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
-  originating_process_observed: absent
-  stable_double_read: true
+  prior_xliff_occurrence_resolution:
+    status: GOVERNED_TAKEOVER_REPLAY_COMMIT_PUSH_COMPLETE
+    implementation_commit: 591fcfe18808e5195c33570eaa9d334770e90166
+    paths_accounted_for: 7
+    predecessor_rows_unchanged: 27
+  latest_completed_foreign_shift:
+    provider_identity: agent-codex-20260730T061956-bac083
+    task: TC-FF6-UBL-TYPING-001
+    observed_lease: lease-18af1b6c29
+    committed_implementation: d8c106800d3331b29d8078b326e75b0e05d8c232
+    committed_checkpoint: ae31baed8bfeb8a35c4ece8e52283114ee48d860
+    completed_microstep: UBL-03-PARTIAL-005-DERIVATION-AND-INHERITANCE-EDGES
+    next_microstep: UBL-03-PARTIAL-006-ATTRIBUTES-AND-ATTRIBUTE-GROUPS
+    state: COMPLETED_CLEAN_AFTER_COMMITTED_PARTIAL_005_NON_PROMOTING
+    required_handling: >-
+      Register a fresh provider identity, re-query coordination, and replay
+      d8c10680 plus ae31baed from GitLab before entering partial-006. Preserve
+      any newly observed foreign-owned bytes; never stage, restore, stash,
+      reset, clean, or take them over without the governed protocol.
   promotion_effect: none
-  adoption_required_before_mutation: true
-  occurrence_paths:
-    - path: reports/ff6/xliff-core-obligation-inventory.yaml
-      baseline_sha256: 2575bcbb10bf42c1590b7c3dfdaa53622577e542e25e4ba5483f206f36dcdaaf
-      occurrence_sha256: 0eaf2cccc0bd45670e4eb7b880dfaa6fa8e7db4b2da2e2eb8fa3670dec9b349c
-    - path: reports/sal-verification/xliff-core-candidate-adjudications.yaml
-      baseline_sha256: 0a1d964ce29efd5a767fb0b5904149491949d9da82557f1e28e9f9fad461b81c
-      occurrence_sha256: 6d94628a2d70490493156cece2a9e146bd8b90b62f3919645e09d92d860edbd0
-    - path: shared/sal-facts/evidence/xliff-core-candidate-decisions.yaml
-      baseline_sha256: 9665eb1502f6a7e9b537f1ff467162e2870b2f5fe44ec740876ea61045fee4e2
-      occurrence_sha256: f7c1b845f09e33f998f6ef9f98494b271b299a6c9257c2f31bfbf7ee91175759
-    - path: tests/tools/test_extract_sal_facts.py
-      baseline_sha256: 335f21e32cbc416f59aed0cdae2cc5afcea1fae60256f6021ff4d46f0e60be77
-      occurrence_sha256: d1612e6533cff14a6e07b0db580cbbbb969ecd6eb6163d3ed8c369f6b9c873b2
-    - path: tests/tools/test_xliff_core_candidate_adjudication.py
-      baseline_sha256: 2552a4d0e80e8b35c917e8f53654bfc91c75d3a4b75b9f3bb76e77106e87b854
-      occurrence_sha256: 733cbdb574c6daa2639a8556c820129b002e03171ba54432406b517b5fba885b
-    - path: tools/spec/extract_sal_facts.py
-      baseline_sha256: 6ed351dfcdf5f74556e5ba8da4983f0899941b21d5ead4f2565d00e433010a3b
-      occurrence_sha256: 40708a0fd31e1f10df6ce0ae609d9aa672d171007d5c1e1948a651aedf53d018
-    - path: tools/spec/xliff_core_candidate_adjudication.py
-      baseline_sha256: 0b37a291178baee0ecb5add32360624cdc5c6f3c10a89988b2cccc8bd6348f67
-      occurrence_sha256: 240ca789f93c81e94f32852399ce7ae225377516ee46dbfe2e568347ae00db05
 reconstruction:
   source: GitLab origin/main
-  required_ancestor: 8e61ee11e7598b22093d397f4006d4f189b681d4
+  required_ancestor: ae31baed8bfeb8a35c4ece8e52283114ee48d860
   command: >-
     git fetch origin main --prune; git switch main; git pull --ff-only origin main
   validation: >-
@@ -58,7 +50,7 @@ reconstruction:
 failure_policy:
   newer_valid_event: recompute packet from newer canonical event
   dirty_leased_path: preserve and coordinate; never clean or restore
-  preserved_occurrence_path: require exact occurrence digest, governed takeover, independent replay, and explicit acceptance or rejection
+  foreign_live_path: preserve, re-query coordination, and continue only disjoint work
   unexplained_dirty_path: preserve, attribute, and fail transfer
   missing_remote_commit: stop promotion and verify GitLab remote state
   validator_failure: repair evidence or packet; never weaken the invariant

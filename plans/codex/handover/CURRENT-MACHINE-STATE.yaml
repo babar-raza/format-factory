@@ -1,5 +1,5 @@
-schema: ff6/provider-neutral-machine-state@10
-artifact_id: FF6-CURRENT-MACHINE-STATE-EVENT-34
+schema: ff6/provider-neutral-machine-state@11
+artifact_id: FF6-CURRENT-MACHINE-STATE-EVENT-35
 visibility: internal
 publish_allowed: false
 generated_by: codex
@@ -8,9 +8,9 @@ repository:
   forge: GitLab
   remote: origin
   branch: main
-  checkpoint_commit: 8e61ee11e7598b22093d397f4006d4f189b681d4
-  implementation_commit: 8e61ee11e7598b22093d397f4006d4f189b681d4
-  accepted_xliff_implementation_commit: ff8f7d9f9ff1ff613be376e1361b0dd8304566e3
+  checkpoint_commit: ae31baed8bfeb8a35c4ece8e52283114ee48d860
+  implementation_commit: 591fcfe18808e5195c33570eaa9d334770e90166
+  accepted_xliff_implementation_commit: 591fcfe18808e5195c33570eaa9d334770e90166
   head_must_equal_origin_main: true
   github_authorized: false
   other_branches_authorized: false
@@ -21,14 +21,14 @@ goal:
   terminal_condition_met: false
 controller:
   state: CONTRACT
-  transition_sequence: 34
-  event_id: FF6-EVENT-000034
-  event_hash: 7cab150d9d49deeba140c6a0ce56e619ae560f8b0abc7510e555ca54d6f307da
+  transition_sequence: 35
+  event_id: FF6-EVENT-000035
+  event_hash: 2866d7e70bd193f8aa7b60ca1f92f4f842d1cd470f97984c07f47d88ed2ea97d
   task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
   task_state: WORK_IN_PROGRESS
   first_unmet_step: XLF-04
-  completed_microstep: XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001
-  exact_microstep: XLF-04-BATCH-005-PARTIAL-002-C
+  completed_microstep: XLF-04-BATCH-005-PARTIAL-002-C
+  exact_microstep: XLF-04-BATCH-005-PARTIAL-002-D
 program_truth:
   capabilities: 110
   obligations: 672
@@ -43,7 +43,7 @@ program_truth:
     safetensors: UNASSESSED
     ubl: UNASSESSED
 workspace_transfer:
-  status: REMOTE_RECONSTRUCTIBLE_WITH_PRESERVED_LOCAL_OCCURRENCE
+  status: REMOTE_RECONSTRUCTIBLE_XLIFF_CHECKPOINT_WITH_FOREIGN_UBL_INFLIGHT
   local_only_required_for_resume: false
   provider_identity_transferable: false
   leases_transferable: false
@@ -57,28 +57,28 @@ xliff:
     sha256: 24c1902b6387cc9fa3402f78392ba91c6e6656407719ec11cfaab1c4f3d22b9e
   adjudication:
     path: reports/sal-verification/xliff-core-candidate-adjudications.yaml
-    sha256: 0a1d964ce29efd5a767fb0b5904149491949d9da82557f1e28e9f9fad461b81c
-    production_accepted_dispositions: 3
-    production_open_dispositions: 1127
+    sha256: 6d94628a2d70490493156cece2a9e146bd8b90b62f3919645e09d92d860edbd0
+    production_accepted_dispositions: 4
+    production_open_dispositions: 1126
     complete: false
   obligation_inventory:
     path: reports/ff6/xliff-core-obligation-inventory.yaml
-    sha256: 2575bcbb10bf42c1590b7c3dfdaa53622577e542e25e4ba5483f206f36dcdaaf
+    sha256: 0eaf2cccc0bd45670e4eb7b880dfaa6fa8e7db4b2da2e2eb8fa3670dec9b349c
     expected: 105
-    production_accepted_source_bound: 27
-    production_accepted_missing: 78
+    production_accepted_source_bound: 28
+    production_accepted_missing: 77
     complete: false
   next_candidate:
-    candidate_id: XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92
-    candidate_content_sha256: 647b9f67a1c64e9e9030652e9c527666fa8aadeb521ed48fda87cebcecbcb6b1
-    requirement_sha256: bebad4a8709a137a204c13bf6a058d6c38e512099ebcf5ed7119e2668f38f61d
-    occurrence_sha256: bd3194ac5b25856e984d3eec9c38cb76f8b912fb63679034e236b766b8f6ca77
+    candidate_id: XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E
+    candidate_content_sha256: af94362009857b0fdd3d19881cd2c8d1866e4f5a72849ec1edf057baf7e905a1
+    requirement_sha256: d36657a907cd8be2ecf38d3fa7a78b3c3720486492cdadd09f4f0f7c25f30e84
+    occurrence_sha256: 96949f8b0f510d573b4c95640fae3e68175b853410865eaf1460a5eaee4f332a
     profile: xliff_2.1
 ubl:
   status: WORK_IN_PROGRESS
   completed_steps: [UBL-01, UBL-02]
   first_unmet_step: UBL-03
-  latest_commits: [730c8fdf359dd11d3b485738e7dac0d80e074adf, bdc66bd5df495710f8226d734f67c7a8d25cacf4, a79dad747a5305b24c41f42437f1824b3d92ec67, 8e61ee11e7598b22093d397f4006d4f189b681d4]
+  latest_commits: [730c8fdf359dd11d3b485738e7dac0d80e074adf, bdc66bd5df495710f8226d734f67c7a8d25cacf4, a79dad747a5305b24c41f42437f1824b3d92ec67, 8e61ee11e7598b22093d397f4006d4f189b681d4, d8c106800d3331b29d8078b326e75b0e05d8c232, ae31baed8bfeb8a35c4ece8e52283114ee48d860]
   schema_documents: 106
   document_roots: 91
   dependency_edges: 297
@@ -94,9 +94,23 @@ ubl:
   anonymous_type_nodes: 0
   anonymous_type_edges: 0
   anonymous_type_graph_sha256: 666634cb0d90f17b05e0b9fd4babe13fe5087f253ef2afb276bf6066d82eaf6e
-  completed_microstep: UBL-03-PARTIAL-004-ANONYMOUS-TYPE-IDENTITY
-  next_microstep: UBL-03-PARTIAL-005-DERIVATION-AND-INHERITANCE-EDGES
+  derivation_edges: 1178
+  derivation_edge_counts:
+    complex_content_extension: 2
+    complex_content_restriction: 2
+    simple_content_extension: 36
+    simple_content_restriction: 1133
+    simple_type_restriction: 5
+  derivation_graph_sha256: 783506c4dcccaefbeb94960dcb5e6d7e0c54a6d8487ee1746eca082535b60e9f
+  completed_microstep: UBL-03-PARTIAL-005-DERIVATION-AND-INHERITANCE-EDGES
+  next_microstep: UBL-03-PARTIAL-006-ATTRIBUTES-AND-ATTRIBUTE-GROUPS
   complete: false
+  latest_completed_foreign_shift:
+    provider_identity: agent-codex-20260730T061956-bac083
+    committed_implementation: d8c106800d3331b29d8078b326e75b0e05d8c232
+    committed_checkpoint: ae31baed8bfeb8a35c4ece8e52283114ee48d860
+    status: COMPLETED_CLEAN_AFTER_PARTIAL_005_NON_PROMOTING
+    handling: fresh_identity_requery_and_replay_before_any_ubl_write
 other_products:
   ipynb: {source_exists: true, certification: not_certified}
   ora: {source_exists: false, certification: absent}

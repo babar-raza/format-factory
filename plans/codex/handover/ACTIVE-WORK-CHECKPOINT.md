@@ -1,5 +1,5 @@
 ---
-artifact_id: FF6-ACTIVE-CHECKPOINT-EVENT-34
+artifact_id: FF6-ACTIVE-CHECKPOINT-EVENT-35
 visibility: internal
 publish_allowed: false
 generated_by: codex
@@ -8,19 +8,23 @@ generated_at: 2026-07-30
 
 # Active FF6 checkpoint
 
-## Achieved and immutable — `FF6-EVENT-000034`
+## Achieved and immutable — `FF6-EVENT-000035`
 
-- GitLab `main` contains the accepted XLIFF repair at `ff8f7d9f`, the UBL
+- GitLab `main` contains the accepted XLIFF skeleton checkpoint at `591fcfe1`, the UBL
   particle implementation at `a79dad74`, the anonymous-type implementation at
-  `8e61ee11`, and native Event 34.
+  `8e61ee11`, and native Event 35 at control commit `414897ac`.
 - XLIFF authority census: 1,130 stable candidate identities.
 - XLIFF Core denominator: 105 expected obligations.
-- Production-accepted XLIFF boundary: 27 obligations, 78 missing; 3 candidate
-  dispositions verified, 1,127 open.
+- Production-accepted XLIFF boundary: 28 obligations, 77 missing; 4 candidate
+  dispositions verified, 1,126 open.
 - The repaired XLIFF 2.1 reciprocal `pc` subflow constraint has two independent
   decisions and one narrow `SAL-XLIFF-CORE-INLINE-PAIRING-001` row.
-- All 26 predecessor rows are unchanged.
-- Focused 64, format-contract 94 (one exact known deselection), and
+- The first skeleton report has one independent decision, the generic
+  validator proposal is rejected, broader hierarchy context is explicitly
+  accounted for, and the same biconditional prose rule is bound in both stable
+  profiles. The reciprocal Schematron report remains open.
+- All 27 predecessor rows are unchanged.
+- Affected-tool 69, format-contract 94 (one exact known deselection), and
   production-program 69 tests pass. Static, SAL, authority, check-mode, and
   three-run determinism controls pass.
 - UBL commits `730c8fdf`, `bdc66bd5`, `a79dad74`, and `8e61ee11` bind 106
@@ -29,19 +33,24 @@ generated_at: 2026-07-30
   local particle nodes and edges across 468 named owners. Stable path-owned
   anonymous simple/complex type identities and declaration validation are
   implemented; the official package contains zero anonymous nodes, while
-  adversarial schemas prove the machinery. Twenty-eight focused and 69
-  production-program tests pass.
+  adversarial schemas prove the machinery.
+- UBL commit `d8c10680` and checkpoint `ae31baed` add 1,178 exact derivation
+  edges with identity `783506c4...`; 32 focused and 69 production-program
+  tests pass. UBL-03 remains incomplete and partial-006 is attributes and
+  attribute groups.
 
 ## Not achieved
 
-- XLF-04 is incomplete: 78 obligation IDs and 1,127 candidate dispositions
+- XLF-04 is incomplete: 77 obligation IDs and 1,126 candidate dispositions
   remain open.
 - UBL-03 is incomplete: derivation/inheritance, attributes, facets, complete
   group/wildcard semantics, substitutions, documentation, and the final
   checked-in graph remain open.
-- Seven hash-bound XLIFF occurrence paths exist in the shared worktree. They
-  are preserved and non-promoting until governed takeover and independent
-  replay.
+- The prior seven-path XLIFF occurrence was governed-taken-over, independently
+  replayed, committed, and pushed. A different agent completed and committed
+  UBL partial-005, checkpointed it, and then completed its coordination
+  session. Its committed result is included as verified non-promoting history;
+  any later bytes remain excluded until separately committed and replayed.
 - No library is technically certified; every promotion remains `UNASSESSED`.
 - OpenRaster still has no product package. The five existing products are
   partial pre-production implementations, not publication candidates.
@@ -51,9 +60,7 @@ generated_at: 2026-07-30
 
 ## Exact continuation
 
-Perform `XLF-04-BATCH-005-PARTIAL-002-C` from
-[NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml) only after adopting the preserved
-XLIFF occurrence safely. Otherwise execute
-`UBL-03-PARTIAL-005-DERIVATION-AND-INHERITANCE-EDGES`. Preserve the Event 32
-accepted XLIFF boundary and Event 34 controller head; keep all completion and
-promotion flags false.
+Perform `XLF-04-BATCH-005-PARTIAL-002-D` from
+[NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml). Re-query coordination first and
+preserve any foreign UBL partial-005 work. Preserve the Event 35 accepted
+XLIFF boundary; keep all completion and promotion flags false.

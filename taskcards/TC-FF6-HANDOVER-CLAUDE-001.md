@@ -418,3 +418,33 @@ The packet remains derived. Every incoming Claude or Codex shift starts at
 `plans/codex/handover/START-HERE.md`, validates fetched GitLab main in a
 detached worktree, registers a fresh coordination identity, and never
 inherits prior leases, tokens, manifests, or uncommitted claims.
+
+## Event-35 provider-neutral shift checkpoint
+
+Event 35 supersedes the Event 34 operational routing while retaining Event 34
+as verified UBL history.
+
+- The seven inherited XLIFF paths were governed-taken-over, independently
+  replayed, committed, and pushed without discarding any bytes.
+- Immutable XLIFF implementation:
+  `591fcfe18808e5195c33570eaa9d334770e90166`.
+- Native head: `FF6-EVENT-000035` /
+  `2866d7e70bd193f8aa7b60ca1f92f4f842d1cd470f97984c07f47d88ed2ea97d`.
+- Accepted XLIFF boundary: 28/105 Core obligations, 77 missing; 4/1,130
+  candidate dispositions verified, 1,126 open.
+- Completed microstep: `XLF-04-BATCH-005-PARTIAL-002-C`.
+- Exact successor: `XLF-04-BATCH-005-PARTIAL-002-D`, candidate
+  `XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E`.
+- The successor must independently adjudicate the reciprocal skeleton report,
+  start with a genuine RED test, preserve all 28 accepted rows, and must not
+  duplicate the already compiled biconditional obligation.
+- UBL partial-005 was independently committed as `d8c10680` and checkpointed
+  as `ae31baed`: 1,178 exact derivation edges and identity `783506c4...`.
+  Its executor completed cleanly before packet seal. The next provider still
+  registers a fresh identity, re-queries coordination, and replays both
+  commits before entering partial-006.
+- XLF-04, UBL-03, all six product certifications, promotion, release, and
+  gates remain incomplete or unchanged.
+
+This taskcard, the packet, and the refresh receipt record a transfer
+checkpoint only. They do not certify any product or authorize publication.

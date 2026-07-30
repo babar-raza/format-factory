@@ -1,5 +1,5 @@
-schema: ff6/provider-neutral-checkpoint@10
-artifact_id: FF6-HANDOVER-CHECKPOINT-EVENT-34
+schema: ff6/provider-neutral-checkpoint@11
+artifact_id: FF6-HANDOVER-CHECKPOINT-EVENT-35
 visibility: internal
 publish_allowed: false
 generated_by: codex
@@ -8,29 +8,29 @@ source_checkpoint:
   forge: GitLab
   remote: origin
   branch: main
-  repository_checkpoint: 8e61ee11e7598b22093d397f4006d4f189b681d4
-  implementation_commit: 8e61ee11e7598b22093d397f4006d4f189b681d4
-  accepted_xliff_implementation_commit: ff8f7d9f9ff1ff613be376e1361b0dd8304566e3
+  repository_checkpoint: ae31baed8bfeb8a35c4ece8e52283114ee48d860
+  implementation_commit: 591fcfe18808e5195c33570eaa9d334770e90166
+  accepted_xliff_implementation_commit: 591fcfe18808e5195c33570eaa9d334770e90166
   packet_commit_rule: >-
     The commit containing this packet must descend from repository_checkpoint;
     the packet does not self-reference the hash of its own final commit.
 controller_checkpoint:
   controller_state: CONTRACT
-  event_sequence: 34
-  event_id: FF6-EVENT-000034
-  event_hash: 7cab150d9d49deeba140c6a0ce56e619ae560f8b0abc7510e555ca54d6f307da
+  event_sequence: 35
+  event_id: FF6-EVENT-000035
+  event_hash: 2866d7e70bd193f8aa7b60ca1f92f4f842d1cd470f97984c07f47d88ed2ea97d
   task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
   task_state: WORK_IN_PROGRESS
   first_unmet_step: XLF-04
-  completed_microstep: XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001
-  exact_microstep: XLF-04-BATCH-005-PARTIAL-002-C
+  completed_microstep: XLF-04-BATCH-005-PARTIAL-002-C
+  exact_microstep: XLF-04-BATCH-005-PARTIAL-002-D
 verified_xliff_boundary:
   candidates: 1130
-  dispositions_verified: 3
-  dispositions_unverified: 1127
+  dispositions_verified: 4
+  dispositions_unverified: 1126
   expected_obligation_ids: 105
-  source_bound_rows: 27
-  missing_source_bound_rows: 78
+  source_bound_rows: 28
+  missing_source_bound_rows: 77
   complete: false
 verified_ubl_boundary:
   schema_documents: 106
@@ -47,8 +47,10 @@ verified_ubl_boundary:
   anonymous_type_nodes: 0
   anonymous_type_edges: 0
   anonymous_type_graph_sha256: 666634cb0d90f17b05e0b9fd4babe13fe5087f253ef2afb276bf6066d82eaf6e
-  completed_microstep: UBL-03-PARTIAL-004-ANONYMOUS-TYPE-IDENTITY
-  next_microstep: UBL-03-PARTIAL-005-DERIVATION-AND-INHERITANCE-EDGES
+  derivation_edges: 1178
+  derivation_graph_sha256: 783506c4dcccaefbeb94960dcb5e6d7e0c54a6d8487ee1746eca082535b60e9f
+  completed_microstep: UBL-03-PARTIAL-005-DERIVATION-AND-INHERITANCE-EDGES
+  next_microstep: UBL-03-PARTIAL-006-ATTRIBUTES-AND-ATTRIBUTE-GROUPS
   ubl_03_complete: false
 truth_boundary:
   products_certified: 0
@@ -59,8 +61,8 @@ truth_boundary:
   release_transition: none
 mandatory_resume_validations:
   - GitLab main equality and ancestry
-  - native event chain through Event 34
+  - native event chain through Event 35
   - controller, taskcard, packet, adjudication, and inventory agreement
   - manifest hashes and structured parsing
-  - detached clean packet proof plus exact classification of the seven preserved local XLIFF occurrence paths
+  - detached clean packet proof plus preservation of any current foreign live UBL paths
   - fresh provider identity, exact leases, manifests, and mutation guard

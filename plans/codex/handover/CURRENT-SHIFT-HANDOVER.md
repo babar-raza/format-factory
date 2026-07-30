@@ -1,5 +1,5 @@
 ---
-artifact_id: FF6-SHIFT-HANDOVER-EVENT-34
+artifact_id: FF6-SHIFT-HANDOVER-EVENT-35
 visibility: internal
 publish_allowed: false
 generated_by: codex
@@ -8,9 +8,50 @@ generated_at: 2026-07-30
 
 # Outgoing shift record
 
-## Event 34 UBL checkpoint
+## Event 35 XLIFF checkpoint
 
-The latest Codex shift revalidated GitLab main and the complete native event
+The outgoing Codex shift safely took over the seven inherited XLIFF paths,
+independently replayed their claims, corrected the implementation where the
+replay exposed missing denominator accountability, and pushed the bounded
+implementation to GitLab `main` as
+`591fcfe18808e5195c33570eaa9d334770e90166`. No inherited byte was discarded.
+
+The accepted microstep is `XLF-04-BATCH-005-PARTIAL-002-C`. It:
+
+- binds candidate `XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92` by distinct
+  content, normalized-requirement, and occurrence digests;
+- accepts only `SAL-XLIFF-CORE-REFERENCE-SKELETON-HREF-001`;
+- rejects the generated generic-validator mapping and explicitly rejects the
+  materially implicated broader hierarchy owner as incidental;
+- independently locates the same biconditional rule in both pinned stable
+  prose authorities;
+- preserves all 27 predecessor rows and all 1,130 candidate identities.
+
+The genuine pre-change replay failed at the intended
+`unproposed_rejected_obligations` and content-addressed-adjudication
+boundaries. After repair, 6 focused skeleton tests, 69 affected tool tests, 94
+format-contract tests with one exact known CSV deselection, 69
+production-program tests, Ruff, strict Mypy, Pyright 1.1.411, bytecode
+compilation, five authority matches, SAL validation, three deterministic
+generations, and three zero-warning implementation transcripts passed.
+
+`FF6-EVENT-000035` records the honest boundary: 28/105 Core obligations, 77 missing,
+4/1,130 dispositions verified, 1,126 open, XLF-04 incomplete, and 0/6 products
+certified. The exact next microstep is
+`XLF-04-BATCH-005-PARTIAL-002-D` for reciprocal candidate
+`XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E`.
+
+The Event 35 control-plane checkpoint is GitLab commit `414897ac`. During the
+handover refresh, a different agent completed UBL partial-005, committed the
+1,178-edge derivation graph as `d8c10680`, and checkpointed its taskcard as
+`ae31baed`. It then completed its coordination session with a clean shared
+tree. Its work was not modified, staged, or claimed by this shift. The next
+shift must still register a fresh identity, re-query coordination, and replay
+both commits before entering UBL partial-006.
+
+## Historical Event 34 UBL checkpoint
+
+The prior Codex shift revalidated GitLab main and the complete native event
 chain, preserved all seven in-flight XLIFF paths, attempted the governed
 XLIFF takeover, and correctly stopped that overlapping mutation because the
 lease remained `ACTIVE`. It then took the documented disjoint UBL lane.
@@ -42,17 +83,15 @@ transcript is
 `reports/skills-rff6/skill-transcripts/rollback-and-recovery-ubl-regression-csv-side-effect-001.json`.
 Future broad stateful regressions must run in a disposable detached worktree.
 
-UBL-03 is still incomplete. The next disjoint UBL step is
-`UBL-03-PARTIAL-005-DERIVATION-AND-INHERITANCE-EDGES`. XLIFF remains the
-canonical controller task at `XLF-04-BATCH-005-PARTIAL-002-C`, with its
-accepted boundary still 27/105 obligations and 3/1,130 dispositions at
-`ff8f7d9f9ff1ff613be376e1361b0dd8304566e3`.
+UBL-03 was still incomplete. The then-next disjoint UBL step was
+`UBL-03-PARTIAL-005-DERIVATION-AND-INHERITANCE-EDGES`. XLIFF remained the
+canonical controller task at `XLF-04-BATCH-005-PARTIAL-002-C`. Event 35
+supersedes that routing boundary.
 
-The shared worktree still contains seven stable, hash-recorded XLIFF occurrence
-paths from absent agent `agent-codex-20260730T035429-0cf739`. They were not
-staged, committed, reset, or treated as evidence. `INFLIGHT-RECOVERY.yaml`
-records baseline and occurrence digests. A successor must use governed
-takeover plus independent replay before modifying them.
+The shared worktree then contained seven stable, hash-recorded XLIFF occurrence
+paths from absent agent `agent-codex-20260730T035429-0cf739`. They were later
+governed-taken-over, independently replayed, committed, and pushed at
+`591fcfe1`; this historical restriction no longer routes current work.
 
 ## Event 32 accepted XLIFF boundary
 
@@ -85,7 +124,7 @@ No product source, certification, promotion, release, gate, GitHub, or branch
 state was changed. The outgoing coordination identity and leases must not be
 reused. The next provider starts from the clean remote checkpoint and follows
 [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml).
-That file selects `XLF-04-BATCH-005-PARTIAL-002-C`.
+That file now selects `XLF-04-BATCH-005-PARTIAL-002-D`.
 
 ## Event 32 handover hardening checkpoint (historical)
 
@@ -113,5 +152,5 @@ At the handover-hardening observation, another registered Codex executor for
 Those paths are not part of this handover commit and were preserved. This is
 an observation, not transferable authority. Claude must requery coordination.
 If that scope remains live-owned, use the disjoint UBL-03 fallback; if it has
-reached a committed Event 34 or later checkpoint, rebuild the packet from the
+reached a committed Event 35 or later checkpoint, rebuild the packet from the
 new journal head before doing any product work.

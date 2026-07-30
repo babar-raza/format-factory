@@ -1,5 +1,5 @@
 schema: ff6/parallel-format-checkpoint@4
-artifact_id: FF6-UBL-SCHEMA-GRAPH-CHECKPOINT-005
+artifact_id: FF6-UBL-SCHEMA-GRAPH-CHECKPOINT-006
 visibility: internal
 publish_allowed: false
 generated_by: codex
@@ -10,10 +10,10 @@ mission:
   format_id: ubl
   task_id: TC-FF6-UBL-TYPING-001
   canonical_controller_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
-  canonical_controller_event: FF6-EVENT-000034
+  canonical_controller_event: FF6-EVENT-000035
   changes_product_or_promotion_state: false
 
-current_event_34_overlay:
+verified_event_34_ubl_overlay:
   status: VERIFIED_PARTIAL_NON_PROMOTING
   latest_commits:
     - 730c8fdf359dd11d3b485738e7dac0d80e074adf
@@ -43,22 +43,34 @@ current_event_34_overlay:
     declarations, so adversarial synthetic schemas provide the behavioral
     proof. This overlay does not imply a complete reachable schema graph.
 
+post_event_35_committed_ubl_overlay:
+  status: VERIFIED_PARTIAL_NON_PROMOTING
+  implementation_commit: d8c106800d3331b29d8078b326e75b0e05d8c232
+  taskcard_checkpoint_commit: ae31baed8bfeb8a35c4ece8e52283114ee48d860
+  completed_microstep: UBL-03-PARTIAL-005-DERIVATION-AND-INHERITANCE-EDGES
+  derivation_edges: 1178
+  derivation_graph_sha256: 783506c4dcccaefbeb94960dcb5e6d7e0c54a6d8487ee1746eca082535b60e9f
+  next_microstep: UBL-03-PARTIAL-006-ATTRIBUTES-AND-ATTRIBUTE-GROUPS
+  controller_effect: none
+  certification_effect: none
+
 source_checkpoint:
   forge: GitLab
   remote: origin
   branch: main
-  implementation_commit: 8e61ee11e7598b22093d397f4006d4f189b681d4
-  required_ancestor: 8e61ee11e7598b22093d397f4006d4f189b681d4
+  implementation_commit: d8c106800d3331b29d8078b326e75b0e05d8c232
+  checkpoint_commit: ae31baed8bfeb8a35c4ece8e52283114ee48d860
+  required_ancestor: ae31baed8bfeb8a35c4ece8e52283114ee48d860
 
 bounded_result:
   status: VERIFIED_PARTIAL_NON_PROMOTING
-  completed_artifact: UBL-03_ANONYMOUS_TYPE_IDENTITY_GRAPH
+  completed_artifact: UBL-03_DERIVATION_AND_INHERITANCE_GRAPH
   taskcard_state_machine_transition_recorded: true
   taskcard_projection: WORK_IN_PROGRESS
-  detailed_substate: SCHEMA_GRAPH_ANONYMOUS_TYPE_IDENTITY_PARTIAL
-  completed_microstep: UBL-03-PARTIAL-004
+  detailed_substate: SCHEMA_GRAPH_DERIVATION_EDGE_PARTIAL
+  completed_microstep: UBL-03-PARTIAL-005
   first_unmet_step: UBL-03
-  next_microstep: UBL-03-PARTIAL-005-DERIVATION-AND-INHERITANCE-EDGES
+  next_microstep: UBL-03-PARTIAL-006-ATTRIBUTES-AND-ATTRIBUTE-GROUPS
 
 authority:
   source_id: SRC-UBL-002
@@ -96,9 +108,19 @@ graph:
   anonymous_type_nodes: 0
   anonymous_type_edges: 0
   anonymous_type_graph_sha256: 666634cb0d90f17b05e0b9fd4babe13fe5087f253ef2afb276bf6066d82eaf6e
+  derivation_source: tools/spec/ubl_schema_derivations.py
+  derivation_source_sha256: 6d4329c02b5cce6c9893e22af7c814ac6aa458019408134f98a55bbb0c851acc
+  derivation_edges: 1178
+  derivation_edge_counts:
+    complex_content_extension: 2
+    complex_content_restriction: 2
+    simple_content_extension: 36
+    simple_content_restriction: 1133
+    simple_type_restriction: 5
+  derivation_graph_sha256: 783506c4dcccaefbeb94960dcb5e6d7e0c54a6d8487ee1746eca082535b60e9f
 
 verification:
-  focused_pytest: 28 passed
+  focused_pytest: 32 passed
   production_program_pytest: 69 passed
   ruff: PASS
   mypy: PASS
@@ -110,10 +132,9 @@ verification:
 open_work:
   gap_id: FF6-UBL-SCHEMA-GRAPH-001
   blocking_step: UBL-03
-  next_tdd_cycle: exact derivation and inheritance edges
+  next_tdd_cycle: exact attributes and attribute groups
   remaining:
     - complete group and wildcard semantics
-    - inheritance and restrictions
     - attributes and attribute groups
     - substitutions and abstract declarations
     - simple and complex content and facets
@@ -126,7 +147,9 @@ serialized_checkpoint_contract:
   recorded_event:
     sequence: 34
     event_hash: 7cab150d9d49deeba140c6a0ce56e619ae560f8b0abc7510e555ca54d6f307da
-    superseded_as_journal_head_by: null
+    superseded_as_journal_head_by:
+      event_id: FF6-EVENT-000035
+      event_hash: 2866d7e70bd193f8aa7b60ca1f92f4f842d1cd470f97984c07f47d88ed2ea97d
     state_before: CONTRACT
     state_after: CONTRACT
     transition: PARALLEL_TASK_MICROSTEP_VERIFIED
@@ -145,6 +168,7 @@ truth_boundary:
   dependency_and_global_reference_closure_complete: true
   named_owner_local_particles_complete: true
   anonymous_type_identity_complete: true
+  derivation_and_inheritance_edges_complete: true
   official_package_anonymous_type_count: 0
   reachable_schema_graph_complete: false
   naming_contract_complete: false

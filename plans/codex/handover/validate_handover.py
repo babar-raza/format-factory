@@ -59,33 +59,33 @@ REFERENCE_DOC_PATHS = (
 )
 PARALLEL_UBL_PATH = "plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml"
 
-EXPECTED_EVENT_ID = "FF6-EVENT-000034"
+EXPECTED_EVENT_ID = "FF6-EVENT-000035"
 EXPECTED_EVENT_HASH = (
-    "7cab150d9d49deeba140c6a0ce56e619ae560f8b0abc7510e555ca54d6f307da"
+    "2866d7e70bd193f8aa7b60ca1f92f4f842d1cd470f97984c07f47d88ed2ea97d"
 )
-EXPECTED_SEQUENCE = 34
-EXPECTED_CONTROL = "8e61ee11e7598b22093d397f4006d4f189b681d4"
-EXPECTED_IMPLEMENTATION = "8e61ee11e7598b22093d397f4006d4f189b681d4"
-EXPECTED_XLIFF_IMPLEMENTATION = "ff8f7d9f9ff1ff613be376e1361b0dd8304566e3"
-EXPECTED_EVENT_TASK = "TC-FF6-UBL-TYPING-001"
+EXPECTED_SEQUENCE = 35
+EXPECTED_CONTROL = "ae31baed8bfeb8a35c4ece8e52283114ee48d860"
+EXPECTED_IMPLEMENTATION = "591fcfe18808e5195c33570eaa9d334770e90166"
+EXPECTED_XLIFF_IMPLEMENTATION = "591fcfe18808e5195c33570eaa9d334770e90166"
+EXPECTED_EVENT_TASK = "TC-FF6-XLIFF-PROFILE-SURFACE-001"
 EXPECTED_TASK = "TC-FF6-XLIFF-PROFILE-SURFACE-001"
-EXPECTED_XLIFF_EVENT_ID = "FF6-EVENT-000032"
-EXPECTED_MICROSTEP = "XLF-04-BATCH-005-PARTIAL-002-C"
-EXPECTED_CANDIDATE = "XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92"
+EXPECTED_XLIFF_EVENT_ID = "FF6-EVENT-000035"
+EXPECTED_MICROSTEP = "XLF-04-BATCH-005-PARTIAL-002-D"
+EXPECTED_CANDIDATE = "XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E"
 EXPECTED_CANDIDATE_CONTENT_SHA256 = (
-    "647b9f67a1c64e9e9030652e9c527666fa8aadeb521ed48fda87cebcecbcb6b1"
+    "af94362009857b0fdd3d19881cd2c8d1866e4f5a72849ec1edf057baf7e905a1"
 )
 EXPECTED_REQUIREMENT_SHA256 = (
-    "bebad4a8709a137a204c13bf6a058d6c38e512099ebcf5ed7119e2668f38f61d"
+    "d36657a907cd8be2ecf38d3fa7a78b3c3720486492cdadd09f4f0f7c25f30e84"
 )
 EXPECTED_OCCURRENCE_SHA256 = (
-    "bd3194ac5b25856e984d3eec9c38cb76f8b912fb63679034e236b766b8f6ca77"
+    "96949f8b0f510d573b4c95640fae3e68175b853410865eaf1460a5eaee4f332a"
 )
 EXPECTED_ADJUDICATION_SHA256 = (
-    "0a1d964ce29efd5a767fb0b5904149491949d9da82557f1e28e9f9fad461b81c"
+    "6d94628a2d70490493156cece2a9e146bd8b90b62f3919645e09d92d860edbd0"
 )
 EXPECTED_INVENTORY_SHA256 = (
-    "2575bcbb10bf42c1590b7c3dfdaa53622577e542e25e4ba5483f206f36dcdaaf"
+    "0eaf2cccc0bd45670e4eb7b880dfaa6fa8e7db4b2da2e2eb8fa3670dec9b349c"
 )
 STALE_OPERATIONAL_TOKENS = (
     "FF6-EVENT-000033",
@@ -100,7 +100,7 @@ SHA256 = re.compile(r"^[0-9a-f]{64}$")
 LINK = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
 ALLOWED_DIRTY_PREFIXES = (
     "plans/codex/handover/",
-    "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-event-34",
+    "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-event-35",
 )
 ALLOWED_DIRTY_EXACT = {
     "plans/strategic/ff6/controller-state.yaml",
@@ -108,7 +108,7 @@ ALLOWED_DIRTY_EXACT = {
     "taskcards/TC-FF6-UBL-TYPING-001.md",
     "taskcards/TC-FF6-HANDOVER-CLAUDE-001.md",
     "reports/skills-rff6/skill-transcripts/plan-control-ubl-state-checkpoint-004.json",
-    "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-event-34.json",
+    "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-event-35.json",
 }
 
 
@@ -239,6 +239,17 @@ def _semantic_errors(
         _expect(errors, f"{label} event hash", event_hash, EXPECTED_EVENT_HASH)
         _expect(errors, f"{label} event sequence", sequence, EXPECTED_SEQUENCE)
 
+    repository_views = (
+        ("manifest", manifest.get("source_checkpoint", {}).get("checkpoint_commit")),
+        (
+            "checkpoint",
+            checkpoint.get("source_checkpoint", {}).get("repository_checkpoint"),
+        ),
+        ("machine", machine.get("repository", {}).get("checkpoint_commit")),
+    )
+    for label, value in repository_views:
+        _expect(errors, f"{label} repository checkpoint", value, EXPECTED_CONTROL)
+
     _expect(errors, "latest event id", latest.get("event_id"), EXPECTED_EVENT_ID)
     _expect(errors, "latest event hash", latest.get("event_hash"), EXPECTED_EVENT_HASH)
     _expect(errors, "latest state", latest.get("state_after"), "CONTRACT")
@@ -356,21 +367,21 @@ def _semantic_errors(
         errors,
         "machine accepted dispositions",
         xliff.get("adjudication", {}).get("production_accepted_dispositions"),
-        3,
+        4,
     )
     _expect(
         errors,
         "machine open dispositions",
         xliff.get("adjudication", {}).get("production_open_dispositions"),
-        1127,
+        1126,
     )
-    _expect(errors, "plan verified dispositions", baseline.get("dispositions_verified"), 3)
-    _expect(errors, "plan open dispositions", baseline.get("dispositions_unverified"), 1127)
+    _expect(errors, "plan verified dispositions", baseline.get("dispositions_verified"), 4)
+    _expect(errors, "plan open dispositions", baseline.get("dispositions_unverified"), 1126)
     _expect(
         errors,
         "event accepted dispositions",
-        event_evidence.get("active_task_accepted_candidate_dispositions"),
-        3,
+        event_evidence.get("candidate_dispositions_verified"),
+        4,
     )
 
     inventory_view = xliff.get("obligation_inventory", {})
@@ -379,34 +390,34 @@ def _semantic_errors(
         errors,
         "machine accepted source-bound obligations",
         inventory_view.get("production_accepted_source_bound"),
-        27,
+        28,
     )
     _expect(
         errors,
         "machine accepted missing obligations",
         inventory_view.get("production_accepted_missing"),
-        78,
+        77,
     )
     _expect(errors, "machine XLF complete", inventory_view.get("complete"), False)
     _expect(errors, "inventory expected", inventory.get("expected_obligation_count"), 105)
-    _expect(errors, "inventory resolved", inventory.get("resolved_expected_obligation_count"), 27)
+    _expect(errors, "inventory resolved", inventory.get("resolved_expected_obligation_count"), 28)
     _expect(
         errors,
         "inventory missing",
         len(inventory.get("missing_expected_obligation_ids", [])),
-        78,
+        77,
     )
     _expect(errors, "inventory complete", inventory.get("complete"), False)
     _expect(errors, "adjudication candidate count", adjudication.get("candidate_count"), 1130)
-    _expect(errors, "adjudication verified", adjudication.get("verified_disposition_count"), 3)
-    _expect(errors, "adjudication unverified", adjudication.get("unverified_disposition_count"), 1127)
+    _expect(errors, "adjudication verified", adjudication.get("verified_disposition_count"), 4)
+    _expect(errors, "adjudication unverified", adjudication.get("unverified_disposition_count"), 1126)
     _expect(errors, "adjudication complete", adjudication.get("disposition_verification_complete"), False)
 
     _expect(
         errors,
         "recovery product overlay",
         recovery.get("captured_workspace", {}).get("product_overlay_status"),
-        "PRESERVED_FOREIGN_XLIFF_OCCURRENCE_NON_PROMOTING",
+        "NO_UNCOMMITTED_XLIFF_OVERLAY",
     )
     _expect(
         errors,
@@ -449,6 +460,18 @@ def _semantic_errors(
         "UBL anonymous type identity",
         machine.get("ubl", {}).get("anonymous_type_graph_sha256"),
         "666634cb0d90f17b05e0b9fd4babe13fe5087f253ef2afb276bf6066d82eaf6e",
+    )
+    _expect(
+        errors,
+        "UBL derivation edges",
+        machine.get("ubl", {}).get("derivation_edges"),
+        1178,
+    )
+    _expect(
+        errors,
+        "UBL derivation identity",
+        machine.get("ubl", {}).get("derivation_graph_sha256"),
+        "783506c4dcccaefbeb94960dcb5e6d7e0c54a6d8487ee1746eca082535b60e9f",
     )
     _expect(
         errors,
@@ -610,12 +633,14 @@ def _operational_doc_errors(documents: Mapping[str, str]) -> list[str]:
     required_markers = {
         "plans/codex/handover/START-HERE.md": (
             EXPECTED_EVENT_ID,
+            EXPECTED_CONTROL,
             EXPECTED_IMPLEMENTATION,
             EXPECTED_XLIFF_IMPLEMENTATION,
             EXPECTED_MICROSTEP,
         ),
         "plans/codex/handover/CLAUDE-START.md": (
             EXPECTED_EVENT_ID,
+            EXPECTED_CONTROL,
             EXPECTED_IMPLEMENTATION,
             EXPECTED_XLIFF_IMPLEMENTATION,
             EXPECTED_MICROSTEP,
@@ -655,14 +680,14 @@ def _operational_doc_errors(documents: Mapping[str, str]) -> list[str]:
     for relative in REFERENCE_DOC_PATHS:
         text = documents.get(relative, "")
         for marker in (
-            "Current authority overlay: Event 34",
+            "Current authority overlay: Event 35",
             EXPECTED_EVENT_ID,
-            "27/105",
-            "3/1,130",
+            "28/105",
+            "4/1,130",
             "6,001",
         ):
             if marker not in text:
-                errors.append(f"Event 34 overlay marker missing from {relative}: {marker}")
+                errors.append(f"Event 35 overlay marker missing from {relative}: {marker}")
     return errors
 
 
@@ -679,7 +704,7 @@ def _git_errors(
         "origin/main",
     )
     if control.returncode != 0:
-        errors.append("Event 34 source commit is not an ancestor of origin/main")
+        errors.append("Event 35 source commit is not an ancestor of origin/main")
     ancestor = _git(
         "merge-base",
         "--is-ancestor",
@@ -712,6 +737,14 @@ def _git_errors(
         )
         if isinstance(row, Mapping) and isinstance(row.get("path"), str)
     }
+    current_foreign = recovery.get("captured_workspace", {}).get(
+        "current_foreign_work",
+        {},
+    )
+    foreign_paths = {
+        current_foreign.get("observed_path")
+    } if isinstance(current_foreign, Mapping) else set()
+    foreign_paths.discard(None)
     for raw in status.stdout.decode("utf-8", errors="replace").splitlines():
         path = raw[3:].replace("\\", "/")
         if " -> " in path:
@@ -726,6 +759,11 @@ def _git_errors(
                     f"preserved occurrence digest mismatch: {path}: "
                     f"expected {expected}, got {actual}"
                 )
+        elif path in foreign_paths:
+            # The shared-worktree validation may observe an explicitly
+            # recorded foreign live path. It is never included in packet
+            # evidence, and --require-clean still rejects the transfer.
+            continue
         elif not (
             path in ALLOWED_DIRTY_EXACT
             or any(path.startswith(prefix) for prefix in ALLOWED_DIRTY_PREFIXES)

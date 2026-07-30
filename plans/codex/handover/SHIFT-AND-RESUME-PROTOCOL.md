@@ -11,15 +11,15 @@ historical_projection: true
 
 # Provider-Neutral Shift and Resume Protocol
 
-> **Current authority overlay: Event 33.** Native head
-> `FF6-EVENT-000033`; current exact work is
-> `XLF-04-BATCH-005-PARTIAL-002-C`, derived from
+> **Current authority overlay: Event 35.** Native head
+> `FF6-EVENT-000035`; current exact work is
+> `XLF-04-BATCH-005-PARTIAL-002-D`, derived from
 > [START-HERE.md](START-HERE.md),
 > [CURRENT-MACHINE-STATE.yaml](CURRENT-MACHINE-STATE.yaml),
 > [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml), and the native FF6 journal.
-> The accepted XLIFF boundary is 27/105 obligations and 3/1,130 dispositions
-> at implementation `ff8f7d9f`. The latest implementation checkpoint
-> `a79dad74` also proves 6,001 UBL local particle nodes. Event 30-31 material
+> The accepted XLIFF boundary is 28/105 obligations and 4/1,130 dispositions
+> at implementation `591fcfe1`. Event 34 separately proves 6,001 UBL local
+> particle nodes. Event 30-34 material
 > below is preserved as recovery history and is non-operative.
 
 ## Invariant
@@ -353,13 +353,13 @@ A provider switch is safe only when:
 - known failures and limits remain visible;
 - promotion is no stronger than live proof.
 
-## Current authority overlay: Event 34
+## Current authority overlay: Event 35
 
-`FF6-EVENT-000034` is the current native head. The selected task remains
-XLIFF `XLF-04-BATCH-005-PARTIAL-002-C` at 27/105 accepted obligations and
-3/1,130 verified dispositions. Seven hash-bound XLIFF occurrence paths must
-be adopted through governed takeover and independent replay before mutation.
-When that lane remains live-owned, the disjoint fallback is UBL
-`UBL-03-PARTIAL-005-DERIVATION-AND-INHERITANCE-EDGES` from `8e61ee11`.
-The UBL graph retains 6,001 particle nodes and stable anonymous-type identity
-machinery, but UBL-03 is incomplete. Certification remains 0/6.
+`FF6-EVENT-000035` is the current native head. The selected task remains
+XLIFF `XLF-04-BATCH-005-PARTIAL-002-D` at 28/105 accepted obligations and
+4/1,130 verified dispositions. The seven inherited XLIFF paths are committed
+at `591fcfe1`. UBL partial-005 is committed at `d8c10680` with 1,178
+derivation edges; its executor completed cleanly before packet seal. A fresh
+provider must still re-query coordination and replay before partial-006. The UBL graph retains 6,001 particle
+nodes and stable anonymous-type identity machinery, but UBL-03 is incomplete.
+Certification remains 0/6.

@@ -11,13 +11,13 @@ historical_projection: false
 
 # Current State, Root Causes, and Structural Weaknesses
 
-> **Current authority overlay: Event 33.** Native head
-> `FF6-EVENT-000033`. Event 31 remains the negative
+> **Current authority overlay: Event 35.** Native head
+> `FF6-EVENT-000035`. Event 31 remains the negative
 > control proving that deterministic mechanical evidence can encode the wrong
-> semantic owner and profile. Event 32 accepted the repaired boundary at
-> 27/105 obligations and 3/1,130 dispositions. Event 33 binds implementation
-> `a79dad74` and 6,001 UBL local particle nodes without changing promotion or
-> the canonical XLIFF successor. This file explains causes and redesign
+> semantic owner and profile. Event 35 accepts the bounded XLIFF skeleton
+> checkpoint at 28/105 obligations and 4/1,130 dispositions. Event 34
+> separately binds 6,001 UBL local particle nodes without changing promotion.
+> This file explains causes and redesign
 > direction; executable state comes only from
 > [START-HERE.md](START-HERE.md),
 > [CURRENT-MACHINE-STATE.yaml](CURRENT-MACHINE-STATE.yaml), the native
@@ -35,8 +35,8 @@ and advanced UBL through its first root/type graph primitive.
 It does not yet have a production-ready library. Five formats have existing
 implementation footholds of uneven depth. OpenRaster has no product package.
 All 672 compiled obligations are planning requirements, not verified behavior.
-The XLIFF census has three independently verified semantic dispositions and
-1,127 still open. All six promotion states are `UNASSESSED`.
+The XLIFF census has four independently verified semantic dispositions and
+1,126 still open. All six promotion states are `UNASSESSED`.
 
 ## Product depth actually present
 
@@ -493,13 +493,13 @@ verified, 79 expected IDs lack source-bound rows, and module ownership is still
 open. Event 30 proves a durable adjudication mechanism and one bounded
 decision, not broad XLIFF semantic coverage. No stronger claim is justified.
 
-## Current authority overlay: Event 34
+## Current authority overlay: Event 35
 
-`FF6-EVENT-000034` is the current native head. The selected task remains
-XLIFF `XLF-04-BATCH-005-PARTIAL-002-C` at 27/105 accepted obligations and
-3/1,130 verified dispositions. Seven hash-bound XLIFF occurrence paths must
-be adopted through governed takeover and independent replay before mutation.
-When that lane remains live-owned, the disjoint fallback is UBL
-`UBL-03-PARTIAL-005-DERIVATION-AND-INHERITANCE-EDGES` from `8e61ee11`.
-The UBL graph retains 6,001 particle nodes and stable anonymous-type identity
-machinery, but UBL-03 is incomplete. Certification remains 0/6.
+`FF6-EVENT-000035` is the current native head. The selected task remains
+XLIFF `XLF-04-BATCH-005-PARTIAL-002-D` at 28/105 accepted obligations and
+4/1,130 verified dispositions. The seven inherited XLIFF paths are committed
+at `591fcfe1`. UBL partial-005 is committed at `d8c10680` with 1,178
+derivation edges; its executor completed cleanly before packet seal. A fresh
+provider must still re-query coordination and replay before partial-006. The UBL graph retains 6,001 particle
+nodes and stable anonymous-type identity machinery, but UBL-03 is incomplete.
+Certification remains 0/6.

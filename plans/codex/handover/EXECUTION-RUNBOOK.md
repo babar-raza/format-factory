@@ -11,13 +11,13 @@ historical_projection: true
 
 # FF6 Execution Runbook
 
-> **Current authority overlay: Event 33.** Exact current inputs and the first
+> **Current authority overlay: Event 35.** Exact current inputs and the first
 > RED cycle are in [START-HERE.md](START-HERE.md),
 > [CURRENT-MACHINE-STATE.yaml](CURRENT-MACHINE-STATE.yaml), and
 > [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml). The accepted boundary is
-> 27/105 obligations and 3/1,130 dispositions at `ff8f7d9f`; the exact
-> microstep is `XLF-04-BATCH-005-PARTIAL-002-C`. The latest implementation
-> checkpoint `a79dad74` proves 6,001 UBL local particle nodes. Event 30-31
+> 28/105 obligations and 4/1,130 dispositions at `591fcfe1`; the exact
+> microstep is `XLF-04-BATCH-005-PARTIAL-002-D`. Event 34 separately proves
+> 6,001 UBL local particle nodes. Event 30-34
 > routes below are preserved only as historical recovery examples and are
 > non-operative.
 
@@ -29,13 +29,13 @@ DISCOVER -> SNAPSHOT -> CONTRACT -> IMPLEMENT -> VERIFY
 ```
 
 Current state is `CONTRACT`. XLIFF has 1,130 source-authentic Core candidates,
-three independently verified dispositions, and 27/105 source-bound
-obligations. XLF-04 remains first unmet because 1,127 candidate dispositions
-and 78 expected obligation rows remain open. UBL-03 also remains incomplete.
+four independently verified dispositions, and 28/105 source-bound
+obligations. XLF-04 remains first unmet because 1,126 candidate dispositions
+and 77 expected obligation rows remain open. UBL-03 also remains incomplete.
 The active task is `TC-FF6-XLIFF-PROFILE-SURFACE-001`; the exact next
-microstep is `XLF-04-BATCH-005-PARTIAL-002-C`.
+microstep is `XLF-04-BATCH-005-PARTIAL-002-D`.
 
-The native journal head is `FF6-EVENT-000033`. Event 31 and `d99fc6bf` remain
+The native journal head is `FF6-EVENT-000035`. Event 31 and `d99fc6bf` remain
 mandatory negative controls: mechanically green output did not establish
 correct semantic ownership, reciprocal proof, or profile boundaries.
 
@@ -294,13 +294,13 @@ standalone repository replay.
 Formats may certify independently. Mission completion requires all six or only
 true, adjudicated external blocks after all technical work.
 
-## Current authority overlay: Event 34
+## Current authority overlay: Event 35
 
-`FF6-EVENT-000034` is the current native head. The selected task remains
-XLIFF `XLF-04-BATCH-005-PARTIAL-002-C` at 27/105 accepted obligations and
-3/1,130 verified dispositions. Seven hash-bound XLIFF occurrence paths must
-be adopted through governed takeover and independent replay before mutation.
-When that lane remains live-owned, the disjoint fallback is UBL
-`UBL-03-PARTIAL-005-DERIVATION-AND-INHERITANCE-EDGES` from `8e61ee11`.
-The UBL graph retains 6,001 particle nodes and stable anonymous-type identity
-machinery, but UBL-03 is incomplete. Certification remains 0/6.
+`FF6-EVENT-000035` is the current native head. The selected task remains
+XLIFF `XLF-04-BATCH-005-PARTIAL-002-D` at 28/105 accepted obligations and
+4/1,130 verified dispositions. The seven inherited XLIFF paths are committed
+at `591fcfe1`. UBL partial-005 is committed at `d8c10680` with 1,178
+derivation edges; its executor completed cleanly before packet seal. A fresh
+provider must still re-query coordination and replay before partial-006. The UBL graph retains 6,001 particle
+nodes and stable anonymous-type identity machinery, but UBL-03 is incomplete.
+Certification remains 0/6.
