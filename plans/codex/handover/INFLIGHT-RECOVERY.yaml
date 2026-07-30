@@ -1,15 +1,15 @@
-schema: ff6/inflight-recovery@5
-artifact_id: FF6-RECOVERY-EVENT-33-PRESERVED-XLIFF-OCCURRENCE
+schema: ff6/inflight-recovery@6
+artifact_id: FF6-RECOVERY-EVENT-34-PRESERVED-XLIFF-OCCURRENCE
 visibility: internal
 publish_allowed: false
 generated_by: codex
 generated_at: '2026-07-30'
 event:
-  event_id: FF6-EVENT-000033
-  event_hash: eae356bca531c8cec38f57b012444d1032884b61eb5ef986018d7dd57c474988
-  implementation_commit: a79dad747a5305b24c41f42437f1824b3d92ec67
+  event_id: FF6-EVENT-000034
+  event_hash: 7cab150d9d49deeba140c6a0ce56e619ae560f8b0abc7510e555ca54d6f307da
+  implementation_commit: 8e61ee11e7598b22093d397f4006d4f189b681d4
   accepted_xliff_implementation_commit: ff8f7d9f9ff1ff613be376e1361b0dd8304566e3
-  checkpoint_commit: a79dad747a5305b24c41f42437f1824b3d92ec67
+  checkpoint_commit: 8e61ee11e7598b22093d397f4006d4f189b681d4
 captured_workspace:
   product_overlay_status: PRESERVED_FOREIGN_XLIFF_OCCURRENCE_NON_PROMOTING
   dirty_paths: 7
@@ -49,7 +49,7 @@ captured_workspace:
       occurrence_sha256: 240ca789f93c81e94f32852399ce7ae225377516ee46dbfe2e568347ae00db05
 reconstruction:
   source: GitLab origin/main
-  required_ancestor: a79dad747a5305b24c41f42437f1824b3d92ec67
+  required_ancestor: 8e61ee11e7598b22093d397f4006d4f189b681d4
   command: >-
     git fetch origin main --prune; git switch main; git pull --ff-only origin main
   validation: >-

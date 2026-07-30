@@ -384,3 +384,37 @@ These are `READ_ONLY_FINDING_NOT_YET_IMPLEMENTED`. They do not change the
 Event 30 counts, hashes, task state, promotion state, or certification state.
 The executable details and negative controls are in
 `plans/codex/handover/NEXT-MICROSTEP.yaml`.
+
+## Event-34 provider-neutral shift checkpoint
+
+The packet is refreshed from immutable GitLab implementation commit
+`8e61ee11e7598b22093d397f4006d4f189b681d4` and native
+`FF6-EVENT-000034` /
+`7cab150d9d49deeba140c6a0ce56e619ae560f8b0abc7510e555ca54d6f307da`.
+
+- The selected task is still XLIFF
+  `XLF-04-BATCH-005-PARTIAL-002-C`; the accepted boundary remains 27/105
+  obligations and 3/1,130 candidate dispositions.
+- Seven XLIFF occurrence paths remain preserved, hash-bound, and
+  non-promoting. The attempted governed takeover was denied because the lease
+  was still `ACTIVE`; no path was overwritten or released.
+- The disjoint UBL fallback completed
+  `UBL-03-PARTIAL-004-ANONYMOUS-TYPE-IDENTITY`.
+- Stable anonymous simple and complex type identities are derived from exact
+  authority paths. Invalid explicit-plus-anonymous and multiple-anonymous
+  declarations fail closed.
+- The official UBL 2.3 package contains zero anonymous declarations. The
+  implementation is therefore proved with adversarial schemas and a
+  zero-count authority census, not a false claim of official-corpus coverage.
+- Twenty-eight focused tests, 69 production-program regressions, Ruff, strict
+  Mypy, Pyright 1.1.411, bytecode compilation, and three identical graph runs
+  pass.
+- The next disjoint UBL fallback is
+  `UBL-03-PARTIAL-005-DERIVATION-AND-INHERITANCE-EDGES`.
+- UBL-03, XLF-04, all six production certifications, promotion, release, and
+  gates remain open or unchanged.
+
+The packet remains derived. Every incoming Claude or Codex shift starts at
+`plans/codex/handover/START-HERE.md`, validates fetched GitLab main in a
+detached worktree, registers a fresh coordination identity, and never
+inherits prior leases, tokens, manifests, or uncommitted claims.

@@ -1,5 +1,5 @@
-schema: ff6/parallel-format-checkpoint@3
-artifact_id: FF6-UBL-SCHEMA-GRAPH-CHECKPOINT-004
+schema: ff6/parallel-format-checkpoint@4
+artifact_id: FF6-UBL-SCHEMA-GRAPH-CHECKPOINT-005
 visibility: internal
 publish_allowed: false
 generated_by: codex
@@ -10,15 +10,16 @@ mission:
   format_id: ubl
   task_id: TC-FF6-UBL-TYPING-001
   canonical_controller_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
-  canonical_controller_event: FF6-EVENT-000033
+  canonical_controller_event: FF6-EVENT-000034
   changes_product_or_promotion_state: false
 
-current_event_33_overlay:
+current_event_34_overlay:
   status: VERIFIED_PARTIAL_NON_PROMOTING
   latest_commits:
     - 730c8fdf359dd11d3b485738e7dac0d80e074adf
     - bdc66bd5df495710f8226d734f67c7a8d25cacf4
     - a79dad747a5305b24c41f42437f1824b3d92ec67
+    - 8e61ee11e7598b22093d397f4006d4f189b681d4
   schema_documents: 106
   document_roots: 91
   dependency_edges: 297
@@ -30,29 +31,34 @@ current_event_33_overlay:
   local_particle_edges: 6001
   local_particle_owners: 468
   local_particle_graph_sha256: 49b0c1ba5c75df0562ab6334fb14f8fe6dc4a9db31ff8e2b130d3bf04cf8eae1
+  anonymous_type_nodes: 0
+  anonymous_type_edges: 0
+  anonymous_type_graph_sha256: 666634cb0d90f17b05e0b9fd4babe13fe5087f253ef2afb276bf6066d82eaf6e
   first_unmet_step: UBL-03
   complete: false
   note: >-
-    Root/type binding, dependency and global-reference closure, and named-owner
-    local particle compilation are verified foundations. This overlay is the
-    current boundary and does not imply a complete reachable schema graph.
+    Root/type binding, dependency and global-reference closure, named-owner
+    local particle compilation, and stable anonymous-type identity machinery
+    are verified foundations. The official package contains zero anonymous
+    declarations, so adversarial synthetic schemas provide the behavioral
+    proof. This overlay does not imply a complete reachable schema graph.
 
 source_checkpoint:
   forge: GitLab
   remote: origin
   branch: main
-  implementation_commit: a79dad747a5305b24c41f42437f1824b3d92ec67
-  required_ancestor: a79dad747a5305b24c41f42437f1824b3d92ec67
+  implementation_commit: 8e61ee11e7598b22093d397f4006d4f189b681d4
+  required_ancestor: 8e61ee11e7598b22093d397f4006d4f189b681d4
 
 bounded_result:
   status: VERIFIED_PARTIAL_NON_PROMOTING
-  completed_artifact: UBL-03_NAMED_OWNER_LOCAL_PARTICLE_GRAPH
+  completed_artifact: UBL-03_ANONYMOUS_TYPE_IDENTITY_GRAPH
   taskcard_state_machine_transition_recorded: true
   taskcard_projection: WORK_IN_PROGRESS
-  detailed_substate: SCHEMA_GRAPH_LOCAL_PARTICLE_PARTIAL
-  completed_microstep: UBL-03-PARTIAL-003
+  detailed_substate: SCHEMA_GRAPH_ANONYMOUS_TYPE_IDENTITY_PARTIAL
+  completed_microstep: UBL-03-PARTIAL-004
   first_unmet_step: UBL-03
-  next_microstep: UBL-03-PARTIAL-004
+  next_microstep: UBL-03-PARTIAL-005-DERIVATION-AND-INHERITANCE-EDGES
 
 authority:
   source_id: SRC-UBL-002
@@ -62,11 +68,11 @@ authority:
 
 graph:
   source: tools/spec/ubl_schema_graph.py
-  source_sha256: c022251782f57949b97deeaa0670096da6da94a8dccfbbdafb433c81a7c25939
+  source_sha256: e5759f78a7a16284848aa3aa7d7c26fb6eb0a6d5cc41b8d7a71c74a9524d36bc
   entrypoint: tools/spec/compile_ubl_schema_graph.py
   entrypoint_sha256: d527ad709fe05d1ec232224d7b851f25af9c06b677b66a049af552325e85bb96
   tests: tests/tools/test_ubl_schema_graph.py
-  tests_sha256: 54a2ddc579b6b1a397e48a4f448e70c25e117088ac4580f9199a2c130652a76b
+  tests_sha256: 9b9c5e8b6971f39806026d367821b42ca81289b26ec0a770321a5646339bb08e
   schema_documents: 106
   document_roots: 91
   nodes: 182
@@ -80,14 +86,20 @@ graph:
   ambiguous_global_references: 0
   reference_closure_sha256: 2e43a3e83b1ad96ce287299cd7e7c6d86a4a4a02cc3423d30e18f0c9b4ee9fc3
   particle_source: tools/spec/ubl_schema_particles.py
-  particle_source_sha256: 8e2f9a4b4fbd06bb01ee8b5ed6eb403bb9a680fafae4e56db638fb726620c704
+  particle_source_sha256: 995029372fc698b3c164392400e0f439a4c541cf94a0da765faa150aa05bb549
   local_particle_nodes: 6001
   local_particle_edges: 6001
   local_particle_owners: 468
   local_particle_graph_sha256: 49b0c1ba5c75df0562ab6334fb14f8fe6dc4a9db31ff8e2b130d3bf04cf8eae1
+  anonymous_type_source: tools/spec/ubl_schema_anonymous_types.py
+  anonymous_type_source_sha256: 4cd633987f7363bd944d882963a58be210206bad6ce54f9b0ae1b2fdbe86b6fd
+  anonymous_type_nodes: 0
+  anonymous_type_edges: 0
+  anonymous_type_graph_sha256: 666634cb0d90f17b05e0b9fd4babe13fe5087f253ef2afb276bf6066d82eaf6e
 
 verification:
-  focused_pytest: 25 passed
+  focused_pytest: 28 passed
+  production_program_pytest: 69 passed
   ruff: PASS
   mypy: PASS
   pyright_1_1_411: PASS_ZERO_DIAGNOSTICS
@@ -98,9 +110,8 @@ verification:
 open_work:
   gap_id: FF6-UBL-SCHEMA-GRAPH-001
   blocking_step: UBL-03
-  next_tdd_cycle: stable anonymous-type identities
+  next_tdd_cycle: exact derivation and inheritance edges
   remaining:
-    - anonymous types
     - complete group and wildcard semantics
     - inheritance and restrictions
     - attributes and attribute groups
@@ -113,8 +124,8 @@ open_work:
 
 serialized_checkpoint_contract:
   recorded_event:
-    sequence: 33
-    event_hash: eae356bca531c8cec38f57b012444d1032884b61eb5ef986018d7dd57c474988
+    sequence: 34
+    event_hash: 7cab150d9d49deeba140c6a0ce56e619ae560f8b0abc7510e555ca54d6f307da
     superseded_as_journal_head_by: null
     state_before: CONTRACT
     state_after: CONTRACT
@@ -133,6 +144,8 @@ truth_boundary:
   root_type_binding_complete: true
   dependency_and_global_reference_closure_complete: true
   named_owner_local_particles_complete: true
+  anonymous_type_identity_complete: true
+  official_package_anonymous_type_count: 0
   reachable_schema_graph_complete: false
   naming_contract_complete: false
   obligation_denominator_complete: false

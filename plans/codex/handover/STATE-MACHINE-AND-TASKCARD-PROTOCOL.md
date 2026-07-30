@@ -308,3 +308,14 @@ not create unrelated hierarchy ownership. Preserve all 26 current obligation
 IDs and all 1,130 candidates. Keep `complete=false` while the 105-ID authority
 census is open, 79 source-bound rows remain missing, or any of the 1,129
 remaining dispositions is unverified.
+
+## Current authority overlay: Event 34
+
+`FF6-EVENT-000034` is the current native head. The selected task remains
+XLIFF `XLF-04-BATCH-005-PARTIAL-002-C` at 27/105 accepted obligations and
+3/1,130 verified dispositions. Seven hash-bound XLIFF occurrence paths must
+be adopted through governed takeover and independent replay before mutation.
+When that lane remains live-owned, the disjoint fallback is UBL
+`UBL-03-PARTIAL-005-DERIVATION-AND-INHERITANCE-EDGES` from `8e61ee11`.
+The UBL graph retains 6,001 particle nodes and stable anonymous-type identity
+machinery, but UBL-03 is incomplete. Certification remains 0/6.

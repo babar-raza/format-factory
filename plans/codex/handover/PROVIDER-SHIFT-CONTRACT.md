@@ -447,3 +447,14 @@ batch. Content hashes alone are not accepted as semantic currency proof.
 - [Validation and release controls](VALIDATION-AND-RELEASE.md)
 - [Canonical execution plan](../../strategic/autonomous-six-python-production-execution-plan.md)
 - [Canonical product goal](../../strategic/ff6/product-goal.yaml)
+
+## Current authority overlay: Event 34
+
+`FF6-EVENT-000034` is the current native head. The selected task remains
+XLIFF `XLF-04-BATCH-005-PARTIAL-002-C` at 27/105 accepted obligations and
+3/1,130 verified dispositions. Seven hash-bound XLIFF occurrence paths must
+be adopted through governed takeover and independent replay before mutation.
+When that lane remains live-owned, the disjoint fallback is UBL
+`UBL-03-PARTIAL-005-DERIVATION-AND-INHERITANCE-EDGES` from `8e61ee11`.
+The UBL graph retains 6,001 particle nodes and stable anonymous-type identity
+machinery, but UBL-03 is incomplete. Certification remains 0/6.

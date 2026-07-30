@@ -1,5 +1,5 @@
 ---
-artifact_id: FF6-HANDOVER-START-EVENT-33
+artifact_id: FF6-HANDOVER-START-EVENT-34
 artifact_type: provider_neutral_handover_entry
 visibility: internal
 publish_allowed: false
@@ -17,10 +17,10 @@ C:\Users\prora\OneDrive\Documents\GitHub\format-factory\plans\codex\handover\STA
 
 The canonical repository is GitLab `origin/main`. Do not use the GitHub
 remote, create a branch, reuse another provider identity, or depend on ignored
-local bytes. The native head is `FF6-EVENT-000033` /
-`eae356bca531c8cec38f57b012444d1032884b61eb5ef986018d7dd57c474988`.
+local bytes. The native head is `FF6-EVENT-000034` /
+`7cab150d9d49deeba140c6a0ce56e619ae560f8b0abc7510e555ca54d6f307da`.
 Its latest immutable implementation is GitLab commit
-`a79dad747a5305b24c41f42437f1824b3d92ec67`. XLIFF's accepted implementation
+`8e61ee11e7598b22093d397f4006d4f189b681d4`. XLIFF's accepted implementation
 boundary remains `ff8f7d9f9ff1ff613be376e1361b0dd8304566e3`, and the canonical
 continuation remains `XLF-04-BATCH-005-PARTIAL-002-C`.
 
@@ -34,10 +34,12 @@ independent interoperability evidence, installed-wheel proof, and reproducible
 release artifacts. Planning, source presence, test counts, contract compilation,
 or a passing smoke test do not certify a product.
 
-Current truth: controller `CONTRACT`, Event 33, `0/6` certified, every product
+Current truth: controller `CONTRACT`, Event 34, `0/6` certified, every product
 `UNASSESSED`. XLIFF is the selected lane because its complete stable contract
-surface is still open. Event 33 additionally verifies 6,001 UBL local particle
-nodes across 468 owners, but does not complete UBL-03.
+surface is still open. Event 34 additionally verifies 6,001 UBL local particle
+nodes across 468 owners and stable anonymous-type identity machinery. The
+pinned official package contains zero anonymous types, so this behavior is
+proved with adversarial synthetic schemas and does not complete UBL-03.
 
 The selected XLIFF candidate has three distinct digests. Do not substitute
 one for another:
@@ -57,7 +59,7 @@ candidate, authority, event, task, accepted counts, or product state.
 
 1. Read [AGENTS.md](../../../AGENTS.md), then
    [Claude start](CLAUDE-START.md).
-2. Fetch GitLab and require `HEAD == origin/main`, with `a79dad74...` as an
+2. Fetch GitLab and require `HEAD == origin/main`, with `8e61ee11...` as an
    ancestor, before any mutation. The packet commit is necessarily later than
    the control checkpoint.
 3. First validate the committed GitLab checkpoint in a detached worktree:
@@ -70,7 +72,7 @@ candidate, authority, event, task, accepted counts, or product state.
    run `validate_handover.py --require-clean --self-test`. If dirty paths have
    a current foreign owner, preserve them and use the detached validation as
    the packet proof; do not call the packet corrupt and do not enter that
-   owner's scope. Event 33 also records seven exact XLIFF occurrence paths and
+   owner's scope. Event 34 also records seven exact XLIFF occurrence paths and
    both their baseline and occurrence hashes. Those bytes are non-promoting
    until governed takeover plus independent replay. Any other unattributed
    dirty path fails the transfer.
@@ -98,18 +100,18 @@ progress before returning to XLIFF.
 - [Outgoing shift record](CURRENT-SHIFT-HANDOVER.md)
 - [Recovery contract](INFLIGHT-RECOVERY.yaml)
 - [Packet manifest](manifest.yaml)
-- [Provider shift invariants](PROVIDER-SHIFT-CONTRACT.md), current Event 33
+- [Provider shift invariants](PROVIDER-SHIFT-CONTRACT.md), current Event 34
   overlay plus durable historical rationale.
-- [Shift/resume protocol](SHIFT-AND-RESUME-PROTOCOL.md), current Event 33
+- [Shift/resume protocol](SHIFT-AND-RESUME-PROTOCOL.md), current Event 34
   overlay plus historical failure examples.
 - [Execution runbook](EXECUTION-RUNBOOK.md), durable phase procedure; current
-  routing comes only from the Event 33 overlay and `NEXT-MICROSTEP.yaml`.
+  routing comes only from the Event 34 overlay and `NEXT-MICROSTEP.yaml`.
 - [State-machine/taskcard protocol](STATE-MACHINE-AND-TASKCARD-PROTOCOL.md),
-  durable transaction rules with an Event 33 overlay.
+  durable transaction rules with an Event 34 overlay.
 - [Validation and release rules](VALIDATION-AND-RELEASE.md), durable gates and
   Event 31 as a retained negative control, not current routing.
 - [UBL parallel checkpoint](PARALLEL-UBL-CHECKPOINT.yaml), historical
-  foundation plus the current Event 33 UBL boundary.
+  foundation plus the current Event 34 UBL boundary.
 
 ## Canonical authorities
 
@@ -117,7 +119,11 @@ progress before returning to XLIFF.
 - [Controller projection](../../strategic/ff6/controller-state.yaml)
 - [Native event journal](../../strategic/ff6/events.jsonl)
 - [Current XLIFF taskcard](../../../taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md)
+- [Current UBL fallback taskcard](../../../taskcards/TC-FF6-UBL-TYPING-001.md)
+- [Handover refresh taskcard](../../../taskcards/TC-FF6-HANDOVER-CLAUDE-001.md)
 - [Accepted XLIFF repair proof](../../../reports/ff6/xliff-core-pairing-repair-run-manifest.yaml)
+- [UBL anonymous-type TDD proof](../../../reports/skills-rff6/skill-transcripts/test-driven-development-ubl-schema-graph-004.json)
+- [Event 34 handover receipt](../../../reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-event-34.json)
 
 The journal, controller, taskcard, evidence, and Git objects override this
 derived packet if a newer valid event exists. Recompute; never hand-edit a

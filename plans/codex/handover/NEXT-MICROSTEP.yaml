@@ -1,4 +1,4 @@
-schema: ff6/next-microstep@4
+schema: ff6/next-microstep@5
 artifact_id: FF6-XLIFF-XLF04-BATCH005-PARTIAL002-C
 visibility: internal
 publish_allowed: false
@@ -6,11 +6,11 @@ generated_by: codex
 generated_at: '2026-07-30'
 mission_id: FF6-PRODUCTION-LIBRARIES-001
 source_checkpoint:
-  event_id: FF6-EVENT-000033
-  event_hash: eae356bca531c8cec38f57b012444d1032884b61eb5ef986018d7dd57c474988
-  checkpoint_implementation_commit: a79dad747a5305b24c41f42437f1824b3d92ec67
+  event_id: FF6-EVENT-000034
+  event_hash: 7cab150d9d49deeba140c6a0ce56e619ae560f8b0abc7510e555ca54d6f307da
+  checkpoint_implementation_commit: 8e61ee11e7598b22093d397f4006d4f189b681d4
   accepted_xliff_implementation_commit: ff8f7d9f9ff1ff613be376e1361b0dd8304566e3
-  checkpoint_commit: a79dad747a5305b24c41f42437f1824b3d92ec67
+  checkpoint_commit: 8e61ee11e7598b22093d397f4006d4f189b681d4
 task:
   task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
   parent_task_id: TC-FF6-PROGRAM-CAPABILITIES-001
@@ -58,7 +58,7 @@ required_skills:
   - ingest-spec-sal
   - plan-control
 required_execution:
-  - Revalidate Event 33, the Event 32 accepted XLIFF boundary, exact source/member/candidate digests, and baseline counts.
+  - Revalidate Event 34, the Event 32 accepted XLIFF boundary, exact source/member/candidate digests, and baseline counts.
   - Attribute or adopt the seven preserved XLIFF occurrence paths through the governed coordination takeover and independent replay protocol before mutating them.
   - Create fresh skill manifests bound to this file's digest and exact paths.
   - Add RED tests for the no-href empty-skeleton report and ownership discrimination.
@@ -83,9 +83,11 @@ forbidden:
 fallback:
   when: XLIFF scope is live-owned or preserved occurrence bytes cannot yet be safely adopted
   task_id: TC-FF6-UBL-TYPING-001
-  microstep: UBL-03-PARTIAL-004-ANONYMOUS-TYPE-IDENTITY
-  implementation_base: a79dad747a5305b24c41f42437f1824b3d92ec67
+  microstep: UBL-03-PARTIAL-005-DERIVATION-AND-INHERITANCE-EDGES
+  implementation_base: 8e61ee11e7598b22093d397f4006d4f189b681d4
   rule: >-
     Continue only disjoint UBL schema-graph paths. Preserve all three accepted
-    UBL graph identities, keep reachable_schema_graph_complete false, and do
-    not change the controller-selected XLIFF task.
+    UBL graph identities plus the anonymous-type graph identity, add an
+    authority-shaped RED test for exact extension and restriction edges, keep
+    reachable_schema_graph_complete false, and do not change the
+    controller-selected XLIFF task.

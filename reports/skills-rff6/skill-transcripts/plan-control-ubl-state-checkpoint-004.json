@@ -1,0 +1,60 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "plan-control-ubl-state-checkpoint-004",
+  "skill_id": "plan-control",
+  "task_id": "TC-FF6-UBL-TYPING-001",
+  "mode": "live",
+  "timestamp": "2026-07-30T05:30:00Z",
+  "inputs": {
+    "task_id": "TC-FF6-UBL-TYPING-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "operation": "project",
+    "target_paths": [
+      "plans/strategic/ff6/events.jsonl",
+      "plans/strategic/ff6/controller-state.yaml",
+      "taskcards/TC-FF6-UBL-TYPING-001.md"
+    ],
+    "source_checkpoint": "8e61ee11e7598b22093d397f4006d4f189b681d4",
+    "execution_manifest_id": "sfx-439d07d98959cb09",
+    "coordination_scope": "logical:FF6:EVENT-34",
+    "acceptance_evidence": "Event 34 hash chain, verified UBL partial-004 implementation, unchanged product and promotion states"
+  },
+  "allowed_files": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "taskcards/TC-FF6-UBL-TYPING-001.md",
+    "reports/skills-rff6/skill-transcripts/plan-control-ubl-state-checkpoint-004.json",
+    ".local/transcripts/plan-control-ubl-state-checkpoint-004.json"
+  ],
+  "actual_files_changed": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "taskcards/TC-FF6-UBL-TYPING-001.md",
+    "reports/skills-rff6/skill-transcripts/plan-control-ubl-state-checkpoint-004.json",
+    ".local/transcripts/plan-control-ubl-state-checkpoint-004.json"
+  ],
+  "tests_run": [
+    "native FF6 event hash chain through Event 34: PASS, 34 sequential events",
+    "Event 34 computed hash: 7cab150d9d49deeba140c6a0ce56e619ae560f8b0abc7510e555ca54d6f307da",
+    "controller YAML parse: PASS",
+    "controller remains CONTRACT and all six promotion states remain UNASSESSED",
+    "controller-selected active task remains XLIFF XLF-04-BATCH-005-PARTIAL-002-C",
+    "UBL fallback advances only to UBL-03-PARTIAL-005-DERIVATION-AND-INHERITANCE-EDGES"
+  ],
+  "ledger_entry_id": "FF6-EVENT-000034",
+  "result": "PASS",
+  "evidence": {
+    "event_id": "FF6-EVENT-000034",
+    "event_hash": "7cab150d9d49deeba140c6a0ce56e619ae560f8b0abc7510e555ca54d6f307da",
+    "controller_state": "CONTRACT",
+    "transition": "PARALLEL_TASK_MICROSTEP_VERIFIED",
+    "task_state": "WORK_IN_PROGRESS",
+    "products_certified": "0/6",
+    "promotion_effect": "none",
+    "product_source_effect": "none",
+    "reachable_schema_graph_complete": false,
+    "truth_boundary": "The event serializes one bounded UBL schema-graph machinery increment. It does not close UBL-03, change the controller-selected XLIFF task, or certify a product."
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

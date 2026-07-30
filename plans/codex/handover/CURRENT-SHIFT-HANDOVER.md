@@ -1,5 +1,5 @@
 ---
-artifact_id: FF6-SHIFT-HANDOVER-EVENT-33
+artifact_id: FF6-SHIFT-HANDOVER-EVENT-34
 visibility: internal
 publish_allowed: false
 generated_by: codex
@@ -8,30 +8,47 @@ generated_at: 2026-07-30
 
 # Outgoing shift record
 
-## Event 33 UBL checkpoint
+## Event 34 UBL checkpoint
 
-The latest Codex shift preserved all seven in-flight XLIFF paths and took the
-documented disjoint UBL lane. It implemented a segregated local-particle graph
-compiler under RED-GREEN controls, committed and pushed GitLab commit
-`a79dad747a5305b24c41f42437f1824b3d92ec67`, replayed that immutable commit,
-and serialized the result as `FF6-EVENT-000033` /
-`eae356bca531c8cec38f57b012444d1032884b61eb5ef986018d7dd57c474988`.
+The latest Codex shift revalidated GitLab main and the complete native event
+chain, preserved all seven in-flight XLIFF paths, attempted the governed
+XLIFF takeover, and correctly stopped that overlapping mutation because the
+lease remained `ACTIVE`. It then took the documented disjoint UBL lane.
 
-The pinned UBL 2.3 package now yields 6,001 content-addressed particle nodes
-and containment edges across 468 named owners. Compositor structure, explicit
-order paths, min/max occurrence, nillability, default, fixed, and form are
-retained. Twenty-five focused tests, Ruff, strict Mypy, Pyright 1.1.411,
+The shift implemented a segregated anonymous-type graph compiler under three
+RED-GREEN cycles. Anonymous simple and complex type identities derive from
+the authority member, exact sibling-kind-indexed schema path, and type kind;
+declaration ownership is separate from enclosing-type ownership. Invalid
+explicit-plus-anonymous and multiple-anonymous declarations fail closed.
+The pinned UBL 2.3 package contains zero anonymous type nodes and edges, so
+the implementation is verified with adversarial synthetic schemas rather
+than pretending the official package exercises it.
+
+The bounded implementation is GitLab commit
+`8e61ee11e7598b22093d397f4006d4f189b681d4`. Twenty-eight focused tests,
+69 production-program regressions, Ruff, strict Mypy, Pyright 1.1.411,
 py_compile, and three identical authority-package runs pass. Root graph
-`7b754187...` and reference closure `2e43a3e8...` remain unchanged; the
-particle graph is `49b0c1ba...`.
+`7b754187...`, reference closure `2e43a3e8...`, and particle graph
+`49b0c1ba...` remain unchanged; the anonymous-type graph is `666634cb...`.
+The result is serialized as `FF6-EVENT-000034` /
+`7cab150d9d49deeba140c6a0ce56e619ae560f8b0abc7510e555ca54d6f307da`.
+
+One broad format-contract regression was initially run in the shared
+worktree and exercised a known stateful CSV test that changed three report
+files. The registered rollback-and-recovery skill verified their HEAD blobs
+and applied only the exact reverse diff to those three paths. All three are
+clean again; the XLIFF and UBL paths were unchanged. The tracked rollback
+transcript is
+`reports/skills-rff6/skill-transcripts/rollback-and-recovery-ubl-regression-csv-side-effect-001.json`.
+Future broad stateful regressions must run in a disposable detached worktree.
 
 UBL-03 is still incomplete. The next disjoint UBL step is
-`UBL-03-PARTIAL-004-ANONYMOUS-TYPE-IDENTITY`. XLIFF remains the canonical
-controller task at `XLF-04-BATCH-005-PARTIAL-002-C`, with its accepted boundary
-still 27/105 obligations and 3/1,130 dispositions at
+`UBL-03-PARTIAL-005-DERIVATION-AND-INHERITANCE-EDGES`. XLIFF remains the
+canonical controller task at `XLF-04-BATCH-005-PARTIAL-002-C`, with its
+accepted boundary still 27/105 obligations and 3/1,130 dispositions at
 `ff8f7d9f9ff1ff613be376e1361b0dd8304566e3`.
 
-The shared worktree contains seven stable, hash-recorded XLIFF occurrence
+The shared worktree still contains seven stable, hash-recorded XLIFF occurrence
 paths from absent agent `agent-codex-20260730T035429-0cf739`. They were not
 staged, committed, reset, or treated as evidence. `INFLIGHT-RECOVERY.yaml`
 records baseline and occurrence digests. A successor must use governed
@@ -96,5 +113,5 @@ At the handover-hardening observation, another registered Codex executor for
 Those paths are not part of this handover commit and were preserved. This is
 an observation, not transferable authority. Claude must requery coordination.
 If that scope remains live-owned, use the disjoint UBL-03 fallback; if it has
-reached a committed Event 33 or later checkpoint, rebuild the packet from the
+reached a committed Event 34 or later checkpoint, rebuild the packet from the
 new journal head before doing any product work.

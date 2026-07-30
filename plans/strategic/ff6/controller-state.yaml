@@ -4,10 +4,10 @@ goal_status: ACTIVE
 generated_by: codex
 visibility: internal
 controller_state: CONTRACT
-transition_sequence: 33
+transition_sequence: 34
 last_verified_event:
-  event_id: FF6-EVENT-000033
-  event_hash: eae356bca531c8cec38f57b012444d1032884b61eb5ef986018d7dd57c474988
+  event_id: FF6-EVENT-000034
+  event_hash: 7cab150d9d49deeba140c6a0ce56e619ae560f8b0abc7510e555ca54d6f307da
 event_journal: plans/strategic/ff6/events.jsonl
 baseline_commit: e4f8f5f086b5e627c07c2ef2d940eda2601a22a8
 digest_policy:
@@ -124,7 +124,7 @@ current_gap_summary:
   production_certifications: 0
 control_plane_compatibility:
   ff6_event_schema: ff6/controller-event@1
-  native_chain_validation: PASS_THROUGH_EVENT_33
+  native_chain_validation: PASS_THROUGH_EVENT_34
   generic_plan_control_doctor: >-
     INCOMPATIBLE_SCHEMA: tools.plan_control expects previous_hash and its own
     event payload; FF6 uses previous_event_hash. This is the already-tracked
@@ -137,10 +137,10 @@ invariants:
   - Publication authority is external and cannot be bypassed.
 ubl_checkpoint:
   status: WORK_IN_PROGRESS
-  detailed_substate: SCHEMA_GRAPH_LOCAL_PARTICLE_PARTIAL
+  detailed_substate: SCHEMA_GRAPH_ANONYMOUS_TYPE_IDENTITY_PARTIAL
   completed_steps: [UBL-01, UBL-02]
   first_unmet_step: UBL-03
-  checkpoint_source_commits: [7b5cce4f, 7fc49c29, f98d220a, 730c8fdf, bdc66bd5, a79dad74]
+  checkpoint_source_commits: [7b5cce4f, 7fc49c29, f98d220a, 730c8fdf, bdc66bd5, a79dad74, 8e61ee11]
   authority_sources: 3
   authority_matches: 3
   canonical_sal_facts: 34
@@ -165,12 +165,17 @@ ubl_checkpoint:
   local_particle_edges: 6001
   local_particle_owners: 468
   local_particle_graph_sha256: 49b0c1ba5c75df0562ab6334fb14f8fe6dc4a9db31ff8e2b130d3bf04cf8eae1
+  anonymous_type_nodes: 0
+  anonymous_type_edges: 0
+  anonymous_type_graph_sha256: 666634cb0d90f17b05e0b9fd4babe13fe5087f253ef2afb276bf6066d82eaf6e
   reachable_schema_graph_complete: false
   exact_next_action: >-
-    Continue UBL-03 from immutable GitLab commit a79dad74 with one RED-GREEN
-    cycle at a time. Root binding, dependency/reference closure, and 6,001
-    named-owner local particle nodes are now bound through segregated modules.
-    Next compile stable anonymous-type identities, followed by inheritance,
+    Continue UBL-03 from immutable GitLab commit 8e61ee11 with one RED-GREEN
+    cycle at a time. Root binding, dependency/reference closure, 6,001
+    named-owner local particle nodes, and stable anonymous-type identity
+    machinery are now bound through segregated modules. The pinned UBL package
+    contains zero anonymous types, while adversarial schemas prove the
+    machinery. Next compile derivation and inheritance edges, followed by
     attributes, facets, complete group/wildcard semantics, substitutions,
     namespace rules, and documentation before emitting the canonical complete
     graph artifact. XLIFF remains the controller-selected active task.
@@ -181,12 +186,13 @@ ubl_checkpoint:
     UBL-03 now binds all 91 roots, 297 schema dependencies, 3,788 global
     components, 8,926 global reference uses, and 6,001 local particle nodes
     across 468 named owners and 106 schemas. Compositor structure, order paths,
-    occurrence, nillability, default, fixed, and form rules are retained, and
-    prior identities are unchanged. Anonymous types, complete group/wildcard
-    semantics, derivation, attributes, facets, substitutions, documentation,
-    and the checked-in complete graph remain open; therefore UBL-03 is
-    incomplete. No product source, certification, promotion, release, or gate
-    state changed.
+    occurrence, nillability, default, fixed, form rules, and stable path-owned
+    anonymous-type identities are implemented; the pinned package has zero
+    anonymous type nodes and adversarial schemas verify the machinery. Prior
+    identities are unchanged. Complete group/wildcard semantics, derivation,
+    attributes, facets, substitutions, documentation, and the checked-in
+    complete graph remain open; therefore UBL-03 is incomplete. No product
+    source, certification, promotion, release, or gate state changed.
   product_source_effect: none
   product_promotion_effect: none
 xlf_checkpoint:

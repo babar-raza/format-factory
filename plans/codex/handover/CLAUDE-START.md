@@ -1,5 +1,5 @@
 ---
-artifact_id: FF6-CLAUDE-START-EVENT-33
+artifact_id: FF6-CLAUDE-START-EVENT-34
 visibility: internal
 publish_allowed: false
 generated_by: codex
@@ -15,19 +15,19 @@ Set-Location 'C:\Users\prora\OneDrive\Documents\GitHub\format-factory'
 git fetch origin main --prune
 git rev-parse HEAD
 git rev-parse origin/main
-git merge-base --is-ancestor a79dad747a5305b24c41f42437f1824b3d92ec67 origin/main
+git merge-base --is-ancestor 8e61ee11e7598b22093d397f4006d4f189b681d4 origin/main
 .venv\Scripts\python.exe plans\codex\handover\validate_committed_checkpoint.py --ref origin/main
 .venv\Scripts\python.exe -m tools.supervisor.coordination --json status
 git status --short
 ```
 
 Expected before work: `HEAD` equals the fetched `origin/main`; the merge-base
-command proves Event 33 source implementation
-`a79dad747a5305b24c41f42437f1824b3d92ec67` is an ancestor; detached validation
+command proves Event 34 source implementation
+`8e61ee11e7598b22093d397f4006d4f189b681d4` is an ancestor; detached validation
 passes; accepted XLIFF implementation
 `ff8f7d9f9ff1ff613be376e1361b0dd8304566e3` is also an ancestor; journal head is
-`FF6-EVENT-000033` /
-`eae356bca531c8cec38f57b012444d1032884b61eb5ef986018d7dd57c474988`.
+`FF6-EVENT-000034` /
+`7cab150d9d49deeba140c6a0ce56e619ae560f8b0abc7510e555ca54d6f307da`.
 
 Then classify the shared worktree:
 
@@ -75,7 +75,9 @@ If XLIFF is live-owned or its preserved occurrence is not yet safely adopted,
 continue only the disjoint UBL-03 schema-graph task
 described in `PARALLEL-UBL-CHECKPOINT.yaml`, after registering the UBL task,
 claiming exact non-overlapping files, and revalidating its current commits.
-The fallback does not change the controller-selected XLIFF task.
+The fallback begins at
+`UBL-03-PARTIAL-005-DERIVATION-AND-INHERITANCE-EDGES` from `8e61ee11`.
+It does not change the controller-selected XLIFF task.
 
 Required closing sequence:
 
