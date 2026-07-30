@@ -549,6 +549,86 @@ No future executor may promote this task from counts alone. Completion still
 requires every mandatory Core and module obligation, independent evidence,
 and the downstream product/certification gates.
 
+## Semantic contradiction checkpoint — event 31
+
+Native `FF6-EVENT-000031` supersedes the Event 30 execution instructions
+without closing Partial-002-B. Commit
+`d99fc6bf3679cd39396afbf5621847e3009ddf31` is preserved on GitLab `main` as
+an auditable, mechanically green implementation attempt, not as an accepted
+contract increment.
+
+The attempt passed its own focused and regression checks and generated:
+
+- two decision records and a deterministic adjudication digest
+  `3d9c81773ceaddaae97a55fc804bd35efaf6501fe24c9fae8bf941fe338ceb01`;
+- 27 mechanically source-bound rows and 78 mechanically missing rows at
+  inventory digest
+  `d5f77d95c703f62766e4ef4178ee3d811147df06844f0eacdec372bbd51cb351`;
+- 62 affected tool tests, 94 format-contract tests with the exact
+  baseline-known stateful CSV test deselected, 69 production-program tests,
+  strict static checks, three-run generation, canonical SAL verification, and
+  five matching XLIFF authority records.
+
+Those results do not satisfy the hardened semantic acceptance contract:
+
+1. The decision accepts `SAL-XLIFF-CORE-INLINE-PC-001`, but the direct
+   semantic owner of mutual subflow presence is the existing denominator ID
+   `SAL-XLIFF-CORE-INLINE-PAIRING-001`.
+2. Only candidate `XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1` has a decision.
+   Reciprocal candidate `XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF` remains
+   unverified, so a bidirectional obligation cannot be compiled.
+3. The generated row claims both stable profiles even though the exact
+   mutual-presence assertions were located only in the pinned XLIFF 2.1
+   Schematron. No separate XLIFF 2.0 normative rule was proven.
+4. The adjudicator currently requires accepted and rejected IDs to equal the
+   generated proposal set. That makes it impossible for an independent review
+   to repair a valid denominator owner omitted by generation.
+5. `SAL-XLIFF-00005` does not yet bind both reciprocal Schematron occurrences
+   as exact, separate assertions.
+6. The in-flight implementation manifest did not include the
+   provider-neutral plan digest. The concurrently hardened execution contract
+   therefore did not automatically invalidate the older active plan.
+
+Production acceptance remains at the Event 30 boundary:
+
+- `1/1,130` candidate dispositions accepted;
+- `26/105` obligation rows accepted;
+- `1,129` dispositions and `79` rows remain open;
+- XLF-04, product source, certification, promotion, release, and every gate
+  remain incomplete.
+
+Resume exactly at `XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001`:
+
+1. Start from GitLab commit `d99fc6bf` and validate Event 31 plus
+   `plans/codex/handover/NEXT-MICROSTEP.yaml` at SHA-256
+   `5fe34f5a0b5f269123c094cad4ecf88acf581fe8703fef5c084973aba555137f`.
+2. Add RED controls permitting an independently accepted current denominator
+   ID that the generator omitted, while still requiring every generated
+   proposal to be accepted or explicitly rejected.
+3. Repair the adjudicator and expose unproposed accepted IDs explicitly in the
+   normalized projection.
+4. Add exact SAL assertions for both reciprocal Schematron occurrences and
+   regenerate the canonical SAL receipt through registered SAL skills.
+5. Create one independently reasoned decision per reciprocal candidate.
+   Reject generic validator and incidental hierarchy mappings. Accept only
+   `SAL-XLIFF-CORE-INLINE-PAIRING-001`.
+6. Require both decisions before compiling at most one pairing obligation.
+   A one-sided decision must fail closed.
+7. Narrow the pairing obligation to `xliff_2.1` unless a separately pinned
+   XLIFF 2.0 normative rule is located and proven. Attribute presence in the
+   2.0 XSD is not mutual-presence authority.
+8. Preserve all 26 Event 30 accepted rows and all 1,130 candidate identities.
+   Replace or quarantine the rejected 27th row; do not count it as closure.
+9. Rerun all candidate, occurrence, member, denominator, decision, SAL, tool,
+   profile, and reciprocal-proof drift controls; then run deterministic,
+   static, authority, SAL, format-contract, and production-program gates.
+10. Bind every future implementation manifest to the exact active
+    provider-neutral plan digest so a concurrent contract change invalidates
+    the in-flight run before commit.
+
+Do not advance to another candidate and do not report 27 accepted obligations
+or two accepted dispositions until every item above passes.
+
 ## Required execution
 
 ### XLF-01 — Revalidate the clean predecessor

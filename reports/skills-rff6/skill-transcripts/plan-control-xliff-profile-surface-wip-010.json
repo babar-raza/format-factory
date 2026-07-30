@@ -1,0 +1,88 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "plan-control-xliff-profile-surface-wip-010",
+  "skill_id": "plan-control",
+  "mode": "live",
+  "timestamp": "2026-07-30T02:10:00Z",
+  "inputs": {
+    "task_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "operation": "project",
+    "source_checkpoint": "d99fc6bf3679cd39396afbf5621847e3009ddf31",
+    "coordination_scope": "exact Event 31 journal, controller, active taskcard, and plan-control receipt paths",
+    "target_paths": [
+      "plans/strategic/ff6/events.jsonl",
+      "plans/strategic/ff6/controller-state.yaml",
+      "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md"
+    ],
+    "acceptance_evidence": [
+      "native event chain through Event 31",
+      "GitLab main implementation replay",
+      "mechanical versus production-accepted count separation",
+      "hardened semantic contradiction analysis",
+      "exact resumable repair instructions"
+    ],
+    "execution_manifest": ".local/skills-first/manifests/sfx-dc6a5272742553da.json"
+  },
+  "allowed_files": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
+    "reports/skills-rff6/skill-transcripts/plan-control-xliff-profile-surface-wip-010.json"
+  ],
+  "actual_files_changed": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
+    "reports/skills-rff6/skill-transcripts/plan-control-xliff-profile-surface-wip-010.json"
+  ],
+  "tests_run": [
+    "Implementation commit d99fc6bf exists on and equals GitLab origin/main before journaling.",
+    "Post-commit adjudication check: mechanically PASS at two decisions.",
+    "Post-commit inventory check: mechanically PASS at 27 rows and 78 missing.",
+    "Post-commit immutable smoke: 3 passed.",
+    "Native event hashes recomputed from canonical JSON through Event 31.",
+    "Event 31 previous-event binding and sequence verified.",
+    "Controller and taskcard preserve CONTRACT / WORK_IN_PROGRESS / first unmet XLF-04.",
+    "Mechanical outputs are separated from the unchanged Event 30 production-accepted boundary."
+  ],
+  "result": "PASS",
+  "ledger_entry_id": null,
+  "evidence": {
+    "event_id": "FF6-EVENT-000031",
+    "event_hash": "26f95f054774f35244a2edbfc08072156a1422acfb1e1d29c2c37a617dd90d55",
+    "controller_state": "CONTRACT",
+    "task_state": "WORK_IN_PROGRESS",
+    "implementation_attempt_commit": "d99fc6bf3679cd39396afbf5621847e3009ddf31",
+    "implementation_attempt_status": "MECHANICAL_PASS_PRODUCTION_REJECTED",
+    "mechanical_source_bound_obligations": 27,
+    "production_accepted_source_bound_obligations": 26,
+    "mechanical_missing_obligations": 78,
+    "production_accepted_missing_obligations": 79,
+    "mechanical_verified_candidate_dispositions": 2,
+    "production_accepted_candidate_dispositions": 1,
+    "next_microstep": "XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001",
+    "hardened_plan_sha256": "5fe34f5a0b5f269123c094cad4ecf88acf581fe8703fef5c084973aba555137f",
+    "promotion_effect": "none",
+    "truth_boundary": "Event 31 records a failed semantic acceptance checkpoint without erasing the mechanically green implementation attempt. Event 30 remains the last production-accepted XLIFF obligation boundary; XLF-04 and all product certification remain open."
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for this contradiction checkpoint and resumable projection",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES to reject promotion and define repair; not for XLF-04 completion",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_checkpoint_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO; the semantic and plan-input invalidation defects are explicit in Event 31 and the active taskcard",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES; no memory-derived contradiction",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}
