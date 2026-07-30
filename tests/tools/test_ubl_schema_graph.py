@@ -144,6 +144,233 @@ def test_graph_closes_offline_dependencies_and_global_references() -> None:
     assert ("type", "xsd:string", "xsd_builtin_type") in references
 
 
+def test_graph_retains_local_particle_order_occurrence_and_element_rules() -> None:
+    compiler = _load_compiler()
+    invoice_namespace = "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
+    aggregate_namespace = "urn:test:common:aggregate"
+    invoice = (
+        f'<xsd:schema xmlns="{invoice_namespace}" xmlns:xsd="{XS}" '
+        f'xmlns:cac="{aggregate_namespace}" '
+        f'targetNamespace="{invoice_namespace}" '
+        'elementFormDefault="qualified">'
+        f'<xsd:import namespace="{aggregate_namespace}" '
+        'schemaLocation="../common/CommonAggregate.xsd"/>'
+        '<xsd:element name="Invoice" type="InvoiceType"/>'
+        '<xsd:complexType name="InvoiceType">'
+        '<xsd:sequence minOccurs="0" maxOccurs="2">'
+        '<xsd:element name="ID" type="xsd:string" nillable="true" '
+        'default="draft"/>'
+        '<xsd:choice minOccurs="0" maxOccurs="unbounded">'
+        '<xsd:element ref="cac:Party" minOccurs="0"/>'
+        '<xsd:element name="Note" type="xsd:string" minOccurs="0" '
+        'maxOccurs="2" fixed="locked" form="unqualified"/>'
+        "</xsd:choice>"
+        "</xsd:sequence>"
+        "</xsd:complexType>"
+        "</xsd:schema>"
+    ).encode()
+    aggregate = (
+        f'<xsd:schema xmlns="{aggregate_namespace}" xmlns:xsd="{XS}" '
+        f'targetNamespace="{aggregate_namespace}" '
+        'elementFormDefault="qualified">'
+        '<xsd:element name="Party" type="xsd:string"/>'
+        "</xsd:schema>"
+    ).encode()
+    package = _package(
+        {
+            "xsd/maindoc/UBL-Invoice-2.3.xsd": invoice,
+            "xsd/common/CommonAggregate.xsd": aggregate,
+        }
+    )
+
+    graph = compiler.compile_ubl_reachable_schema_graph(
+        package,
+        expected_package_sha256=hashlib.sha256(package).hexdigest(),
+        expected_root_count=1,
+    )
+
+    assert graph["particle_count"] == 5
+    assert graph["particle_kind_counts"] == {
+        "choice": 1,
+        "element": 3,
+        "sequence": 1,
+    }
+    assert graph["particle_owner_count"] == 1
+    owner = f"complex-type::{{{invoice_namespace}}}InvoiceType"
+    assert {row["owner_node_id"] for row in graph["particles"]} == {owner}
+    projection = [
+        {
+            key: row[key]
+            for key in (
+                "kind",
+                "order_path",
+                "min_occurs",
+                "max_occurs",
+                "name",
+                "ref_qname",
+                "type_qname",
+                "nillable",
+                "default",
+                "fixed",
+                "form",
+            )
+        }
+        for row in graph["particles"]
+    ]
+    assert projection == [
+        {
+            "kind": "sequence",
+            "order_path": [1],
+            "min_occurs": 0,
+            "max_occurs": 2,
+            "name": "",
+            "ref_qname": "",
+            "type_qname": "",
+            "nillable": False,
+            "default": None,
+            "fixed": None,
+            "form": "",
+        },
+        {
+            "kind": "element",
+            "order_path": [1, 1],
+            "min_occurs": 1,
+            "max_occurs": 1,
+            "name": "ID",
+            "ref_qname": "",
+            "type_qname": f"{{{XS}}}string",
+            "nillable": True,
+            "default": "draft",
+            "fixed": None,
+            "form": "qualified",
+        },
+        {
+            "kind": "choice",
+            "order_path": [1, 2],
+            "min_occurs": 0,
+            "max_occurs": "unbounded",
+            "name": "",
+            "ref_qname": "",
+            "type_qname": "",
+            "nillable": False,
+            "default": None,
+            "fixed": None,
+            "form": "",
+        },
+        {
+            "kind": "element",
+            "order_path": [1, 2, 1],
+            "min_occurs": 0,
+            "max_occurs": 1,
+            "name": "",
+            "ref_qname": f"{{{aggregate_namespace}}}Party",
+            "type_qname": "",
+            "nillable": False,
+            "default": None,
+            "fixed": None,
+            "form": "",
+        },
+        {
+            "kind": "element",
+            "order_path": [1, 2, 2],
+            "min_occurs": 0,
+            "max_occurs": 2,
+            "name": "Note",
+            "ref_qname": "",
+            "type_qname": f"{{{XS}}}string",
+            "nillable": False,
+            "default": None,
+            "fixed": "locked",
+            "form": "unqualified",
+        },
+    ]
+    assert len({row["particle_id"] for row in graph["particles"]}) == 5
+    assert graph["particle_identity"]["particles_sha256"]
+    assert graph["completion"]["reachable_schema_graph_complete"] is False
+
+
+@pytest.mark.parametrize(
+    "all_body",
+    [
+        '<xsd:all maxOccurs="2"><xsd:element name="ID"/></xsd:all>',
+        '<xsd:all><xsd:element name="ID" maxOccurs="2"/></xsd:all>',
+        (
+            "<xsd:all><xsd:choice>"
+            '<xsd:element name="ID"/>'
+            "</xsd:choice></xsd:all>"
+        ),
+    ],
+)
+def test_graph_rejects_invalid_all_group_particle_rules(all_body: str) -> None:
+    compiler = _load_compiler()
+    namespace = "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
+    schema = (
+        f'<xsd:schema xmlns="{namespace}" xmlns:xsd="{XS}" '
+        f'targetNamespace="{namespace}" elementFormDefault="qualified">'
+        '<xsd:element name="Invoice" type="InvoiceType"/>'
+        '<xsd:complexType name="InvoiceType">'
+        f"{all_body}"
+        "</xsd:complexType>"
+        "</xsd:schema>"
+    ).encode()
+    package = _package({"xsd/maindoc/UBL-Invoice-2.3.xsd": schema})
+
+    with pytest.raises(
+        compiler.UblCensusError,
+        match="all compositor",
+    ):
+        compiler.compile_ubl_reachable_schema_graph(
+            package,
+            expected_package_sha256=hashlib.sha256(package).hexdigest(),
+            expected_root_count=1,
+        )
+
+
+@pytest.mark.parametrize(
+    "prohibited_attribute",
+    ['nillable="true"', 'default="unsafe"', 'fixed="unsafe"'],
+)
+def test_graph_rejects_declaration_attributes_on_element_reference(
+    prohibited_attribute: str,
+) -> None:
+    compiler = _load_compiler()
+    namespace = "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
+    common_namespace = "urn:test:common"
+    invoice = (
+        f'<xsd:schema xmlns="{namespace}" xmlns:xsd="{XS}" '
+        f'xmlns:cac="{common_namespace}" targetNamespace="{namespace}">'
+        f'<xsd:import namespace="{common_namespace}" '
+        'schemaLocation="../common/Common.xsd"/>'
+        '<xsd:element name="Invoice" type="InvoiceType"/>'
+        '<xsd:complexType name="InvoiceType"><xsd:sequence>'
+        f'<xsd:element ref="cac:Party" {prohibited_attribute}/>'
+        "</xsd:sequence></xsd:complexType>"
+        "</xsd:schema>"
+    ).encode()
+    common = (
+        f'<xsd:schema xmlns="{common_namespace}" xmlns:xsd="{XS}" '
+        f'targetNamespace="{common_namespace}">'
+        '<xsd:element name="Party" type="xsd:string"/>'
+        "</xsd:schema>"
+    ).encode()
+    package = _package(
+        {
+            "xsd/maindoc/UBL-Invoice-2.3.xsd": invoice,
+            "xsd/common/Common.xsd": common,
+        }
+    )
+
+    with pytest.raises(
+        compiler.UblCensusError,
+        match="referenced local element carries prohibited attributes",
+    ):
+        compiler.compile_ubl_reachable_schema_graph(
+            package,
+            expected_package_sha256=hashlib.sha256(package).hexdigest(),
+            expected_root_count=1,
+        )
+
+
 def test_graph_rejects_reference_visible_only_through_transitive_import() -> None:
     compiler = _load_compiler()
     namespace_a = "urn:test:a"

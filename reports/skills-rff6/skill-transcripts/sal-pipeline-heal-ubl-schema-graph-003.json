@@ -1,0 +1,68 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "sal-pipeline-heal-ubl-schema-graph-003",
+  "skill_id": "sal-pipeline-heal",
+  "task_id": "TC-FF6-UBL-TYPING-001",
+  "mode": "live",
+  "timestamp": "2026-07-30T04:26:30Z",
+  "inputs": {
+    "taskcard_id": "TC-FF6-UBL-TYPING-001",
+    "format_id": "ubl",
+    "root_cause_id": "ROOT-08",
+    "spec_cache_path": ".local/format-contracts/acquired/ubl/src-ubl-002.bin",
+    "target_stage": "census",
+    "authority_source_id": "SRC-UBL-002",
+    "authority_version": "OASIS UBL 2.3 Standard distribution",
+    "authority_sha256": "623bef8310db4d979ff28000a96bcc56dbcdda4f6206cf094c0aa79b75817970",
+    "execution_manifest_ids": [
+      "sfx-71c74467c266d4e4",
+      "sfx-8d5a0b84b65731f8",
+      "sfx-98b52d99878a49dc"
+    ]
+  },
+  "allowed_files": [
+    "tools/spec/ubl_schema_common.py",
+    "tools/spec/ubl_schema_particles.py",
+    "tools/spec/ubl_schema_graph.py",
+    "tests/tools/test_ubl_schema_graph.py",
+    "reports/skills-rff6/skill-transcripts/test-driven-development-ubl-schema-graph-003.json",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-ubl-schema-graph-003.json",
+    ".local/transcripts/ubl-schema-graph-003.json"
+  ],
+  "actual_files_changed": [
+    "tools/spec/ubl_schema_common.py",
+    "tools/spec/ubl_schema_particles.py",
+    "tools/spec/ubl_schema_graph.py",
+    "tests/tools/test_ubl_schema_graph.py",
+    "reports/skills-rff6/skill-transcripts/test-driven-development-ubl-schema-graph-003.json",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-ubl-schema-graph-003.json",
+    ".local/transcripts/ubl-schema-graph-003.json"
+  ],
+  "tests_run": [
+    "pinned UBL 2.3 package digest: MATCH",
+    "official-package graph compile: 106 schemas, 91 roots, 3788 global components, 8926 global reference uses, 6001 local particle nodes across 468 owners",
+    "three equivalent official-package compilations: identical dictionaries and stable particle graph SHA-256 49b0c1ba5c75df0562ab6334fb14f8fe6dc4a9db31ff8e2b130d3bf04cf8eae1",
+    "focused graph and census tests: 25 passed",
+    "Ruff, strict Mypy, Pyright 1.1.411, and py_compile: PASS"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "spec_cache_verified": true,
+    "tool_invoked": true,
+    "output_artifact_produced": true,
+    "output_artifact": ".local/transcripts/ubl-schema-graph-003.json",
+    "output_artifact_classification": "NON_PROMOTING_EXECUTION_EVIDENCE",
+    "fact_count_produced": 0,
+    "fact_ids_in_correct_namespace": true,
+    "no_sal_store_write": true,
+    "no_canonical_complete_graph_write": true,
+    "root_type_graph_identity_preserved": true,
+    "global_reference_closure_identity_preserved": true,
+    "reachable_schema_graph_complete": false,
+    "safe_response": "Accept UBL-03-PARTIAL-003 as a bounded implementation checkpoint, retain UBL-03 as WORK_IN_PROGRESS, and begin the next RED-GREEN cycle for stable anonymous-type identities.",
+    "truth_boundary": "Authority-bound local particle structure and occurrence/order semantics pass. This is not the complete reachable schema graph, obligation denominator, generated Python source, certification, promotion, release, or a gate transition."
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

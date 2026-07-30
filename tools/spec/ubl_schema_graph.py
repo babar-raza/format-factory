@@ -30,6 +30,7 @@ from tools.spec.ubl_schema_dependencies import (
     compile_schema_dependencies,
     resolve_schema_location,
 )
+from tools.spec.ubl_schema_particles import compile_local_particles
 from tools.spec.ubl_schema_references import compile_global_reference_uses
 
 
@@ -79,6 +80,16 @@ def compile_reachable_schema_graph(
         reference_visibility=reference_visibility,
         limits=active_limits,
     )
+    particles, particle_edges = compile_local_particles(
+        documents,
+        components=components,
+        limits=active_limits,
+    )
+    if (
+        len(components) + len(builtin_nodes) + len(particles)
+        > active_limits.max_graph_nodes
+    ):
+        raise UblSchemaGraphError("graph node limit exceeded")
     elements = {
         qname: node
         for (kind, qname), node in components.items()
@@ -176,6 +187,7 @@ def compile_reachable_schema_graph(
         str(row["attribute"]) for row in reference_uses
     )
     reference_target_counts = Counter(str(row["target_kind"]) for row in reference_uses)
+    particle_kind_counts = Counter(str(row["kind"]) for row in particles)
     graph_identity = {
         "package_sha256": package_sha256,
         "schemas_sha256": digest(schema_rows),
@@ -189,6 +201,10 @@ def compile_reachable_schema_graph(
         "global_components_sha256": digest(global_components),
         "xsd_builtin_types_sha256": digest(builtin_nodes),
         "global_reference_uses_sha256": digest(reference_uses),
+    }
+    particle_identity = {
+        "particles_sha256": digest(particles),
+        "particle_edges_sha256": digest(particle_edges),
     }
     return {
         "schema": "ff6/ubl-reachable-schema-graph@1",
@@ -224,6 +240,14 @@ def compile_reachable_schema_graph(
         ),
         "global_reference_target_counts": dict(sorted(reference_target_counts.items())),
         "global_reference_uses": reference_uses,
+        "particle_count": len(particles),
+        "particle_kind_counts": dict(sorted(particle_kind_counts.items())),
+        "particle_owner_count": len(
+            {str(row["owner_node_id"]) for row in particles}
+        ),
+        "particles": particles,
+        "particle_edge_count": len(particle_edges),
+        "particle_edges": particle_edges,
         "identity": {
             **graph_identity,
             "graph_sha256": digest(graph_identity),
@@ -231,6 +255,10 @@ def compile_reachable_schema_graph(
         "closure_identity": {
             **closure_identity,
             "closure_sha256": digest(closure_identity),
+        },
+        "particle_identity": {
+            **particle_identity,
+            "particle_graph_sha256": digest(particle_identity),
         },
         "validation": {
             "duplicate_component_count": 0,
@@ -252,8 +280,10 @@ def compile_reachable_schema_graph(
         "truth_boundary": (
             "This graph currently proves exact root-to-declared-type binding, "
             "offline import/include closure, and unique global QName-reference "
-            "resolution. Local particle semantics, anonymous types, occurrence "
-            "and order rules, facets, inheritance edges, wildcards, "
-            "documentation, and complete reachability remain open."
+            "resolution. It also preserves named-type compositor trees, local "
+            "element occurrence/order, nillability, defaults, fixed values, "
+            "and form. Anonymous types, complete group/wildcard semantics, "
+            "facets, inheritance edges, documentation, and complete "
+            "reachability remain open."
         ),
     }

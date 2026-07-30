@@ -133,7 +133,7 @@ def parse_schema(member: str, payload: bytes) -> SchemaDocument:
                     )
                 namespaces[normalized_prefix] = namespace
             elif root is None:
-                root = cast(ET.Element, value)
+                root = value
     except ET.ParseError as exc:
         raise UblSchemaGraphError(f"invalid XSD XML: {member}") from exc
     if root is None:
