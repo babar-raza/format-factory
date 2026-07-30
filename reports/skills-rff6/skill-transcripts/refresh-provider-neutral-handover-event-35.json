@@ -70,7 +70,7 @@
     "packet internal links and all structured YAML, JSON, and JSONL artifacts parse",
     "semantic tamper controls reject wrong event, false completion, inflated certification, wrong candidate, inflated counts, local-only dependency, stale route, and digest-role substitution",
     "UBL partial-005 commits d8c10680 and ae31baed are included as verified non-promoting history; its completed executor identity is not transferred",
-    "clean detached GitLab checkpoint validation is required before transfer"
+    "GitLab origin/main packet commit cdddcedc1110ece97fe58974bb3d57c385e1f04d: PASS from a temporary detached worktree; shared_worktree_mutated=false"
   ],
   "ledger_entry_id": null,
   "result": "PASS",
@@ -81,6 +81,10 @@
     "implementation_commit": "591fcfe18808e5195c33570eaa9d334770e90166",
     "control_checkpoint": "414897ac389c65e81f4e0f8aa2ca79066d4c43be",
     "repository_checkpoint": "ae31baed8bfeb8a35c4ece8e52283114ee48d860",
+    "packet_commit_replayed": "cdddcedc1110ece97fe58974bb3d57c385e1f04d",
+    "packet_replay_mode": "TEMPORARY_DETACHED_WORKTREE",
+    "packet_replay_result": "PASS",
+    "shared_worktree_mutated": false,
     "selected_task": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
     "selected_microstep": "XLF-04-BATCH-005-PARTIAL-002-D",
     "selected_candidate": "XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E",
@@ -93,8 +97,8 @@
     "truth_boundary": "This is a provider-neutral transfer projection of Event 35. It does not promote product source, certify a format, transfer a provider identity or lease, include foreign UBL bytes, or authorize publication."
   },
   "self_challenge": {
-    "all_required_steps": "YES for the handover refresh before committed replay",
-    "required_evidence_present": "YES for the pre-commit packet; post-commit replay is recorded in a follow-up checkpoint",
+    "all_required_steps": "YES for the handover refresh and committed replay",
+    "required_evidence_present": "YES for the packet and post-commit replay",
     "evidence_sufficient": "YES for transfer state only, not product completion",
     "self_approved_gate": "NO",
     "broader_completion_claim": "NO",
