@@ -11,13 +11,15 @@ historical_projection: false
 
 # Current State, Root Causes, and Structural Weaknesses
 
-> Design analysis refreshed through Event 31. Event 31 confirms the central
-> failure mode: deterministic mechanical evidence can still encode the wrong
-> semantic owner and profile. Read
-> [EVENT-31-DELTA.md](EVENT-31-DELTA.md) first. This file explains causes and
-> redesign direction; executable state remains derived from
-> [START-HERE.md](START-HERE.md), [CURRENT-MACHINE-STATE.yaml](CURRENT-MACHINE-STATE.yaml),
-> the native journal, and the immutable [Event 31 packet](event-31/START-HERE.md).
+> **Current authority overlay: Event 32.** Native head
+> `FF6-EVENT-000032`. Event 31 remains the negative
+> control proving that deterministic mechanical evidence can encode the wrong
+> semantic owner and profile. Event 32 accepted the repaired boundary at
+> 27/105 obligations and 3/1,130 dispositions. This file explains causes and
+> redesign direction; executable state comes only from
+> [START-HERE.md](START-HERE.md),
+> [CURRENT-MACHINE-STATE.yaml](CURRENT-MACHINE-STATE.yaml), the native
+> journal, and [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml).
 
 ## Executive truth
 
@@ -31,8 +33,8 @@ and advanced UBL through its first root/type graph primitive.
 It does not yet have a production-ready library. Five formats have existing
 implementation footholds of uneven depth. OpenRaster has no product package.
 All 672 compiled obligations are planning requirements, not verified behavior.
-The XLIFF census has one independently verified semantic disposition and 1,129
-still open. All six promotion states are `UNASSESSED`.
+The XLIFF census has three independently verified semantic dispositions and
+1,127 still open. All six promotion states are `UNASSESSED`.
 
 ## Product depth actually present
 

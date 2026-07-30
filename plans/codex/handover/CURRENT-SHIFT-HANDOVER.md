@@ -38,3 +38,32 @@ state was changed. The outgoing coordination identity and leases must not be
 reused. The next provider starts from the clean remote checkpoint and follows
 [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml).
 That file selects `XLF-04-BATCH-005-PARTIAL-002-C`.
+
+## Event 32 handover hardening checkpoint
+
+A later handover-only audit found and repaired two transfer-layer defects
+without advancing the native controller:
+
+- six linked protocol/reference documents still presented Event 31 routing as
+  current while the authoritative packet was Event 32;
+- `NEXT-MICROSTEP.yaml` labeled the normalized-requirement digest as the
+  candidate-content digest.
+
+The refreshed packet gives all linked protocol documents an explicit Event 32
+overlay, adds them and the UBL parallel checkpoint to the content-addressed
+manifest, and verifies the three distinct candidate, requirement, and
+occurrence digests against the canonical 1,130-candidate census. The validator
+now fails if a current linked document is outside the manifest or if those
+digest roles are substituted.
+
+At the handover-hardening observation, another registered Codex executor for
+`TC-FF6-XLIFF-PROFILE-SURFACE-001` owned in-flight changes in:
+
+- `tests/tools/test_xliff_core_candidate_adjudication.py`;
+- `tools/spec/xliff_core_candidate_adjudication.py`.
+
+Those paths are not part of this handover commit and were preserved. This is
+an observation, not transferable authority. Claude must requery coordination.
+If that scope remains live-owned, use the disjoint UBL-03 fallback; if it has
+reached a committed Event 33 or later checkpoint, rebuild the packet from the
+new journal head before doing any product work.

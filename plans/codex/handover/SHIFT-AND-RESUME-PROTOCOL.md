@@ -11,11 +11,15 @@ historical_projection: true
 
 # Provider-Neutral Shift and Resume Protocol
 
-> Durable provider-shift protocol refreshed through Event 31. Current exact
-> work is defined by [START-HERE.md](START-HERE.md),
-> [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml), the native FF6 journal, and the
-> immutable [Event 31 packet](event-31/START-HERE.md). Event 30 remains the
-> last accepted XLIFF evidence boundary; it is not the current routing event.
+> **Current authority overlay: Event 32.** Native head
+> `FF6-EVENT-000032`; current exact work is
+> `XLF-04-BATCH-005-PARTIAL-002-C`, derived from
+> [START-HERE.md](START-HERE.md),
+> [CURRENT-MACHINE-STATE.yaml](CURRENT-MACHINE-STATE.yaml),
+> [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml), and the native FF6 journal.
+> The accepted boundary is 27/105 obligations and 3/1,130 dispositions at
+> implementation `ff8f7d9f`. Event 30-31 material below is preserved as
+> recovery history and is non-operative.
 
 ## Invariant
 
@@ -37,7 +41,7 @@ Codex may work in successive shifts, but they are not parallel writers for the
 same taskcard or generated output set. Parallel work is allowed only for
 disjoint, separately taskcarded scopes with non-overlapping leases.
 
-## Current transfer boundary
+## Historical Event 31 transfer boundary
 
 - Required control checkpoint:
   `240474babf868fa141850d4ed4792d3a8269ef28`.

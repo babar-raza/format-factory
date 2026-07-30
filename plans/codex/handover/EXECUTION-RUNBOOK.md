@@ -11,11 +11,13 @@ historical_projection: true
 
 # FF6 Execution Runbook
 
-> Durable program procedure refreshed through Event 31. Exact current inputs
-> and the first RED cycle are in [START-HERE.md](START-HERE.md),
-> [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml), and the immutable
-> [Event 31 runbook](event-31/RUNBOOK.md). Event 30 remains the last accepted
-> XLIFF evidence boundary.
+> **Current authority overlay: Event 32.** Exact current inputs and the first
+> RED cycle are in [START-HERE.md](START-HERE.md),
+> [CURRENT-MACHINE-STATE.yaml](CURRENT-MACHINE-STATE.yaml), and
+> [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml). The accepted boundary is
+> 27/105 obligations and 3/1,130 dispositions at `ff8f7d9f`; the exact
+> microstep is `XLF-04-BATCH-005-PARTIAL-002-C`. Event 30-31 routes below are
+> preserved only as historical recovery examples and are non-operative.
 
 ## Mission state machine
 
@@ -24,22 +26,16 @@ DISCOVER -> SNAPSHOT -> CONTRACT -> IMPLEMENT -> VERIFY
          -> REPAIR -> CERTIFY -> EXTRACT -> RELEASE_PREP -> COMPLETE
 ```
 
-Current state is `CONTRACT`. Events 16-19 passed the authority and first four
-format-profile prerequisites. Events 20-30 advanced XLIFF to 1,130
-source-authentic Core candidates, one independently verified disposition, and
-26/105 source-bound obligations; UBL has a deterministic 91-root root/type
-primitive. XLF-04 remains first unmet because 1,129 candidate dispositions and
-79 expected obligation rows remain open. The parent capability task remains
-`NEEDS_REPAIR`, so product implementation is locked. The active task is
-`TC-FF6-XLIFF-PROFILE-SURFACE-001`; the exact next microstep is
-`XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001`.
+Current state is `CONTRACT`. XLIFF has 1,130 source-authentic Core candidates,
+three independently verified dispositions, and 27/105 source-bound
+obligations. XLF-04 remains first unmet because 1,127 candidate dispositions
+and 78 expected obligation rows remain open. UBL-03 also remains incomplete.
+The active task is `TC-FF6-XLIFF-PROFILE-SURFACE-001`; the exact next
+microstep is `XLF-04-BATCH-005-PARTIAL-002-C`.
 
-The native journal head is `FF6-EVENT-000031`.
-
-Commit `d99fc6bf` mechanically reports 27/105 rows and two dispositions, but
-Event 31 rejects that increment. Do not use those counts as production
-progress; repair the semantic owner, reciprocal proof, and profile boundary
-defined in [EVENT-31-DELTA.md](EVENT-31-DELTA.md).
+The native journal head is `FF6-EVENT-000032`. Event 31 and `d99fc6bf` remain
+mandatory negative controls: mechanically green output did not establish
+correct semantic ownership, reciprocal proof, or profile boundaries.
 
 ## Canonical state precedence
 

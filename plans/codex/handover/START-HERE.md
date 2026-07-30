@@ -38,6 +38,20 @@ Current truth: controller `CONTRACT`, Event 32, `0/6` certified, every product
 surface is still open. UBL schema-graph work is valid parallel progress but
 does not complete UBL-03.
 
+The selected XLIFF candidate has three distinct digests. Do not substitute
+one for another:
+
+- candidate content:
+  `647b9f67a1c64e9e9030652e9c527666fa8aadeb521ed48fda87cebcecbcb6b1`;
+- normalized requirement:
+  `bebad4a8709a137a204c13bf6a058d6c38e512099ebcf5ed7119e2668f38f61d`;
+- occurrence:
+  `bd3194ac5b25856e984d3eec9c38cb76f8b912fb63679034e236b766b8f6ca77`.
+
+Earlier Event 32 packet bytes mislabeled the requirement digest as the
+candidate-content digest. This packet corrects the label without changing the
+candidate, authority, event, task, accepted counts, or product state.
+
 ## Mandatory resume order
 
 1. Read [AGENTS.md](../../../AGENTS.md), then
@@ -45,19 +59,23 @@ does not complete UBL-03.
 2. Fetch GitLab and require `HEAD == origin/main`, with `530f18fe...` as an
    ancestor, before any mutation. The packet commit is necessarily later than
    the control checkpoint.
-3. Run:
+3. First validate the committed GitLab checkpoint in a detached worktree:
 
    ```powershell
-   .venv\Scripts\python.exe plans\codex\handover\validate_handover.py --require-clean --self-test
    .venv\Scripts\python.exe plans\codex\handover\validate_committed_checkpoint.py --ref origin/main
    ```
 
-4. Register a fresh coordination identity. Never reuse the identity, token,
+4. Query coordination and Git status. If the shared worktree is clean, also
+   run `validate_handover.py --require-clean --self-test`. If dirty paths have
+   a current foreign owner, preserve them and use the detached validation as
+   the packet proof; do not call the packet corrupt and do not enter that
+   owner's scope. Any unattributed dirty path fails the transfer.
+5. Register a fresh coordination identity. Never reuse the identity, token,
    lease, or execution manifest recorded by an earlier shift.
-5. Read [the exact next microstep](NEXT-MICROSTEP.yaml), create fresh skill
+6. Read [the exact next microstep](NEXT-MICROSTEP.yaml), create fresh skill
    manifests, claim only its exact paths, run the mutation guard, and begin
    with the named RED test.
-6. Before the shift ends: make the bounded increment green, commit explicit
+7. Before the shift ends: make the bounded increment green, commit explicit
    files, push GitLab `main`, replay the immutable commit, append one native
    FF6 event, refresh this packet, validate it, then release only your leases.
 
@@ -76,12 +94,18 @@ progress before returning to XLIFF.
 - [Outgoing shift record](CURRENT-SHIFT-HANDOVER.md)
 - [Recovery contract](INFLIGHT-RECOVERY.yaml)
 - [Packet manifest](manifest.yaml)
-- [Provider shift invariants](PROVIDER-SHIFT-CONTRACT.md)
-- [Shift/resume protocol](SHIFT-AND-RESUME-PROTOCOL.md)
-- [Execution runbook](EXECUTION-RUNBOOK.md)
-- [State-machine/taskcard protocol](STATE-MACHINE-AND-TASKCARD-PROTOCOL.md)
-- [Validation and release rules](VALIDATION-AND-RELEASE.md)
-- [UBL parallel checkpoint](PARALLEL-UBL-CHECKPOINT.yaml)
+- [Provider shift invariants](PROVIDER-SHIFT-CONTRACT.md), current Event 32
+  overlay plus durable historical rationale.
+- [Shift/resume protocol](SHIFT-AND-RESUME-PROTOCOL.md), current Event 32
+  overlay plus historical failure examples.
+- [Execution runbook](EXECUTION-RUNBOOK.md), durable phase procedure; current
+  routing comes only from the Event 32 overlay and `NEXT-MICROSTEP.yaml`.
+- [State-machine/taskcard protocol](STATE-MACHINE-AND-TASKCARD-PROTOCOL.md),
+  durable transaction rules with an Event 32 overlay.
+- [Validation and release rules](VALIDATION-AND-RELEASE.md), durable gates and
+  Event 31 as a retained negative control, not current routing.
+- [UBL parallel checkpoint](PARALLEL-UBL-CHECKPOINT.yaml), historical
+  foundation plus the current Event 32 UBL boundary.
 
 ## Canonical authorities
 

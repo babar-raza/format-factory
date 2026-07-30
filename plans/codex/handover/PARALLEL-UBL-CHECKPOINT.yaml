@@ -10,8 +10,27 @@ mission:
   format_id: ubl
   task_id: TC-FF6-UBL-TYPING-001
   canonical_controller_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
-  canonical_controller_event: FF6-EVENT-000031
+  canonical_controller_event: FF6-EVENT-000032
   changes_product_or_promotion_state: false
+
+current_event_32_overlay:
+  status: VERIFIED_PARTIAL_NON_PROMOTING
+  latest_commits:
+    - 730c8fdf359dd11d3b485738e7dac0d80e074adf
+    - bdc66bd5df495710f8226d734f67c7a8d25cacf4
+  schema_documents: 106
+  document_roots: 91
+  dependency_edges: 297
+  global_components: 3788
+  global_reference_uses: 8926
+  unresolved_global_references: 0
+  ambiguous_global_references: 0
+  first_unmet_step: UBL-03
+  complete: false
+  note: >-
+    The source_checkpoint and graph sections below preserve the earlier
+    Event-28 root/type primitive as historical foundation. This overlay is
+    the current boundary and does not imply a complete reachable schema graph.
 
 source_checkpoint:
   forge: GitLab
@@ -81,7 +100,7 @@ serialized_checkpoint_contract:
   recorded_event:
     sequence: 28
     event_hash: 131631d21906c86ade3775d12504f97d8b55defb8987040a97d3f29af621713e
-    superseded_as_journal_head_by: FF6-EVENT-000031
+    superseded_as_journal_head_by: FF6-EVENT-000032
     state_before: CONTRACT
     state_after: CONTRACT
     transition: PARALLEL_TASK_MICROSTEP_VERIFIED

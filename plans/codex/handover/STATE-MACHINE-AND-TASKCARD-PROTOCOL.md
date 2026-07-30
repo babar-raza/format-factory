@@ -11,14 +11,16 @@ historical_projection: true
 
 # State Machine and Taskcard Execution Protocol
 
-> Historical protocol background. Preserve its durable state-machine concepts,
-> but select current work only from [START-HERE.md](START-HERE.md), the native
-> FF6 journal, controller, active taskcard, and immutable
-> [Event 31 packet](event-31/START-HERE.md). Event 31 supersedes routing while
-> retaining Event 30 as the last accepted evidence boundary.
+> **Current authority overlay: Event 32.** Preserve the durable state-machine
+> concepts in this file, but select current work only from
+> [START-HERE.md](START-HERE.md), the native FF6 journal, controller, active
+> taskcard, [CURRENT-MACHINE-STATE.yaml](CURRENT-MACHINE-STATE.yaml), and
+> [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml). Event 29-31 examples below are
+> historical and non-operative.
 
-Current native head: `FF6-EVENT-000031`; exact route:
-`XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001`.
+Current native head: `FF6-EVENT-000032`; exact route:
+`XLF-04-BATCH-005-PARTIAL-002-C`; accepted boundary: 27/105 obligations and
+3/1,130 dispositions.
 
 ## Purpose
 

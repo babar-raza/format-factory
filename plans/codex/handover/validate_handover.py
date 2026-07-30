@@ -49,6 +49,15 @@ OPERATIONAL_DOC_PATHS = (
     "plans/codex/handover/CURRENT-SHIFT-HANDOVER.md",
     "plans/codex/handover/INFLIGHT-RECOVERY.yaml",
 )
+REFERENCE_DOC_PATHS = (
+    "plans/codex/handover/PROVIDER-SHIFT-CONTRACT.md",
+    "plans/codex/handover/SHIFT-AND-RESUME-PROTOCOL.md",
+    "plans/codex/handover/EXECUTION-RUNBOOK.md",
+    "plans/codex/handover/STATE-MACHINE-AND-TASKCARD-PROTOCOL.md",
+    "plans/codex/handover/VALIDATION-AND-RELEASE.md",
+    "plans/codex/handover/CURRENT-STATE-AND-ROOT-CAUSES.md",
+)
+PARALLEL_UBL_PATH = "plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml"
 
 EXPECTED_EVENT_ID = "FF6-EVENT-000032"
 EXPECTED_EVENT_HASH = (
@@ -59,8 +68,14 @@ EXPECTED_IMPLEMENTATION = "ff8f7d9f9ff1ff613be376e1361b0dd8304566e3"
 EXPECTED_TASK = "TC-FF6-XLIFF-PROFILE-SURFACE-001"
 EXPECTED_MICROSTEP = "XLF-04-BATCH-005-PARTIAL-002-C"
 EXPECTED_CANDIDATE = "XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92"
-EXPECTED_CANDIDATE_SHA256 = (
+EXPECTED_CANDIDATE_CONTENT_SHA256 = (
+    "647b9f67a1c64e9e9030652e9c527666fa8aadeb521ed48fda87cebcecbcb6b1"
+)
+EXPECTED_REQUIREMENT_SHA256 = (
     "bebad4a8709a137a204c13bf6a058d6c38e512099ebcf5ed7119e2668f38f61d"
+)
+EXPECTED_OCCURRENCE_SHA256 = (
+    "bd3194ac5b25856e984d3eec9c38cb76f8b912fb63679034e236b766b8f6ca77"
 )
 EXPECTED_ADJUDICATION_SHA256 = (
     "0a1d964ce29efd5a767fb0b5904149491949d9da82557f1e28e9f9fad461b81c"
@@ -192,6 +207,7 @@ def _semantic_errors(
     next_step: Mapping[str, Any],
     controller: Mapping[str, Any],
     latest: Mapping[str, Any],
+    census: Mapping[str, Any],
     adjudication: Mapping[str, Any],
     inventory: Mapping[str, Any],
 ) -> list[str]:
@@ -248,10 +264,72 @@ def _semantic_errors(
     )
     _expect(
         errors,
-        "next candidate digest",
+        "next candidate content digest",
         next_step.get("selected_candidate", {}).get("candidate_content_sha256"),
-        EXPECTED_CANDIDATE_SHA256,
+        EXPECTED_CANDIDATE_CONTENT_SHA256,
     )
+    _expect(
+        errors,
+        "next candidate requirement digest",
+        next_step.get("selected_candidate", {}).get("requirement_sha256"),
+        EXPECTED_REQUIREMENT_SHA256,
+    )
+    _expect(
+        errors,
+        "next candidate occurrence digest",
+        next_step.get("selected_candidate", {}).get("occurrence_sha256"),
+        EXPECTED_OCCURRENCE_SHA256,
+    )
+    machine_candidate = machine.get("xliff", {}).get("next_candidate", {})
+    _expect(
+        errors,
+        "machine candidate content digest",
+        machine_candidate.get("candidate_content_sha256"),
+        EXPECTED_CANDIDATE_CONTENT_SHA256,
+    )
+    _expect(
+        errors,
+        "machine candidate requirement digest",
+        machine_candidate.get("requirement_sha256"),
+        EXPECTED_REQUIREMENT_SHA256,
+    )
+    _expect(
+        errors,
+        "machine candidate occurrence digest",
+        machine_candidate.get("occurrence_sha256"),
+        EXPECTED_OCCURRENCE_SHA256,
+    )
+
+    candidates = [
+        row
+        for row in census.get("candidates", [])
+        if isinstance(row, Mapping) and row.get("candidate_id") == EXPECTED_CANDIDATE
+    ]
+    _expect(errors, "candidate census match count", len(candidates), 1)
+    if len(candidates) == 1:
+        candidate = candidates[0]
+        _expect(
+            errors,
+            "census candidate content digest",
+            candidate.get("candidate_content_sha256"),
+            EXPECTED_CANDIDATE_CONTENT_SHA256,
+        )
+        occurrences = candidate.get("occurrences", [])
+        _expect(errors, "census candidate occurrence count", len(occurrences), 1)
+        if len(occurrences) == 1 and isinstance(occurrences[0], Mapping):
+            occurrence = occurrences[0]
+            _expect(
+                errors,
+                "census requirement digest",
+                occurrence.get("requirement_sha256"),
+                EXPECTED_REQUIREMENT_SHA256,
+            )
+            _expect(
+                errors,
+                "census occurrence digest",
+                occurrence.get("occurrence_sha256"),
+                EXPECTED_OCCURRENCE_SHA256,
+            )
     xliff = machine.get("xliff", {})
     baseline = next_step.get("baseline", {})
     event_evidence = latest.get("evidence", {})
@@ -361,6 +439,9 @@ def _manifest_errors(manifest: Mapping[str, Any]) -> list[str]:
             errors.append(f"manifest invalid digest: {relative}")
     expected_count = manifest.get("validation", {}).get("expected_manifest_files")
     _expect(errors, "manifest file count", len(files), expected_count)
+    for relative in (*OPERATIONAL_DOC_PATHS, *REFERENCE_DOC_PATHS, PARALLEL_UBL_PATH):
+        if relative not in seen:
+            errors.append(f"current handover artifact absent from manifest: {relative}")
     return errors
 
 
@@ -431,7 +512,7 @@ def _task_errors() -> list[str]:
 def _operational_documents() -> dict[str, str]:
     return {
         relative: (REPO_ROOT / relative).read_text(encoding="utf-8")
-        for relative in OPERATIONAL_DOC_PATHS
+        for relative in (*OPERATIONAL_DOC_PATHS, *REFERENCE_DOC_PATHS)
     }
 
 
@@ -490,6 +571,16 @@ def _operational_doc_errors(documents: Mapping[str, str]) -> list[str]:
         for marker in markers:
             if marker not in text:
                 errors.append(f"current marker missing from {relative}: {marker}")
+    for relative in REFERENCE_DOC_PATHS:
+        text = documents.get(relative, "")
+        for marker in (
+            "Current authority overlay: Event 32",
+            EXPECTED_EVENT_ID,
+            "27/105",
+            "3/1,130",
+        ):
+            if marker not in text:
+                errors.append(f"Event 32 overlay marker missing from {relative}: {marker}")
     return errors
 
 
@@ -567,6 +658,7 @@ def _negative_control_errors(base: dict[str, Any]) -> list[str]:
             next_step=mutated["next"],
             controller=mutated["controller"],
             latest=mutated["latest"],
+            census=mutated["census"],
             adjudication=mutated["adjudication"],
             inventory=mutated["inventory"],
         )
@@ -577,6 +669,23 @@ def _negative_control_errors(base: dict[str, Any]) -> list[str]:
     mutated_documents[provider_contract] += "\nFF6-EVENT-000029\n"
     if not _operational_doc_errors(mutated_documents):
         errors.append("negative control was not rejected: stale operational event")
+    mutated = copy.deepcopy(base)
+    mutated["next"]["selected_candidate"]["candidate_content_sha256"] = (
+        EXPECTED_REQUIREMENT_SHA256
+    )
+    if not _semantic_errors(
+        manifest=mutated["manifest"],
+        checkpoint=mutated["checkpoint"],
+        machine=mutated["machine"],
+        recovery=mutated["recovery"],
+        next_step=mutated["next"],
+        controller=mutated["controller"],
+        latest=mutated["latest"],
+        census=mutated["census"],
+        adjudication=mutated["adjudication"],
+        inventory=mutated["inventory"],
+    ):
+        errors.append("negative control was not rejected: digest role substitution")
     return errors
 
 
@@ -587,6 +696,7 @@ def validate(*, require_clean: bool = False) -> dict[str, Any]:
     recovery = _load_yaml(RECOVERY_PATH)
     next_step = _load_yaml(NEXT_PATH)
     controller = _load_yaml(CONTROLLER_PATH)
+    census = _load_yaml(CENSUS_PATH)
     adjudication = _load_yaml(ADJUDICATION_PATH)
     inventory = _load_yaml(INVENTORY_PATH)
     events = _events()
@@ -600,6 +710,7 @@ def validate(*, require_clean: bool = False) -> dict[str, Any]:
         "next": next_step,
         "controller": controller,
         "latest": latest,
+        "census": census,
         "adjudication": adjudication,
         "inventory": inventory,
         "documents": documents,
@@ -614,6 +725,7 @@ def validate(*, require_clean: bool = False) -> dict[str, Any]:
             next_step=next_step,
             controller=controller,
             latest=latest,
+            census=census,
             adjudication=adjudication,
             inventory=inventory,
         ),
@@ -633,7 +745,7 @@ def validate(*, require_clean: bool = False) -> dict[str, Any]:
         "next_microstep": EXPECTED_MICROSTEP,
         "next_candidate": EXPECTED_CANDIDATE,
         "manifest_files": len(manifest.get("files", [])),
-        "semantic_negative_controls": 7,
+        "semantic_negative_controls": 8,
         "errors": errors,
     }
 

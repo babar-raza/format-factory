@@ -1,0 +1,104 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "refresh-provider-neutral-handover-event-32-hardening",
+  "skill_id": "refresh-provider-neutral-handover",
+  "mode": "live",
+  "timestamp": "2026-07-30T04:06:00Z",
+  "inputs": {
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "source_checkpoint": "530f18fe89a6875276e8f4442351445564df80e9",
+    "canonical_remote": "origin",
+    "canonical_branch": "main",
+    "controller_path": "plans/strategic/ff6/controller-state.yaml",
+    "journal_path": "plans/strategic/ff6/events.jsonl",
+    "current_taskcard": "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
+    "exact_next_task": "XLF-04-BATCH-005-PARTIAL-002-C",
+    "packet_root": "plans/codex/handover/",
+    "execution_manifests": [
+      ".local/skills-first/manifests/sfx-bbb28cbffa481d00.json",
+      ".local/skills-first/manifests/sfx-3697dca799d15eea.json"
+    ],
+    "authorization_id": "3370d552e0c78d08",
+    "precommit_proof_commit": "2be1d73321cca3c07809b4b9e582f7395a948bbc"
+  },
+  "allowed_files": [
+    "plans/codex/handover/START-HERE.md",
+    "plans/codex/handover/CLAUDE-START.md",
+    "plans/codex/handover/CURRENT-MACHINE-STATE.yaml",
+    "plans/codex/handover/CURRENT-SHIFT-HANDOVER.md",
+    "plans/codex/handover/CURRENT-STATE-AND-ROOT-CAUSES.md",
+    "plans/codex/handover/EXECUTION-RUNBOOK.md",
+    "plans/codex/handover/NEXT-MICROSTEP.yaml",
+    "plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml",
+    "plans/codex/handover/PROVIDER-SHIFT-CONTRACT.md",
+    "plans/codex/handover/SHIFT-AND-RESUME-PROTOCOL.md",
+    "plans/codex/handover/STATE-MACHINE-AND-TASKCARD-PROTOCOL.md",
+    "plans/codex/handover/VALIDATION-AND-RELEASE.md",
+    "plans/codex/handover/manifest.yaml",
+    "plans/codex/handover/validate_handover.py",
+    "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-event-32-hardening.json"
+  ],
+  "actual_files_changed": [
+    "plans/codex/handover/START-HERE.md",
+    "plans/codex/handover/CLAUDE-START.md",
+    "plans/codex/handover/CURRENT-MACHINE-STATE.yaml",
+    "plans/codex/handover/CURRENT-SHIFT-HANDOVER.md",
+    "plans/codex/handover/CURRENT-STATE-AND-ROOT-CAUSES.md",
+    "plans/codex/handover/EXECUTION-RUNBOOK.md",
+    "plans/codex/handover/NEXT-MICROSTEP.yaml",
+    "plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml",
+    "plans/codex/handover/PROVIDER-SHIFT-CONTRACT.md",
+    "plans/codex/handover/SHIFT-AND-RESUME-PROTOCOL.md",
+    "plans/codex/handover/STATE-MACHINE-AND-TASKCARD-PROTOCOL.md",
+    "plans/codex/handover/VALIDATION-AND-RELEASE.md",
+    "plans/codex/handover/manifest.yaml",
+    "plans/codex/handover/validate_handover.py",
+    "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-event-32-hardening.json"
+  ],
+  "tests_run": [
+    "Pre-change shared validator: PASS at Event 32 with 19 files and seven negative controls.",
+    "Adversarial audit: FAIL as expected because six linked current-reference documents and the UBL checkpoint were outside the manifest.",
+    "Candidate census replay: PASS with candidate-content 647b9f67, requirement bebad4a8, and occurrence bd3194ac as distinct roles.",
+    "Precommit synthetic commit 2be1d733 detached validation: PASS with 26 manifest files and eight negative controls.",
+    "Ruff validate_handover.py: PASS.",
+    "Python bytecode compilation for both handover validators: PASS.",
+    "Shared worktree validation after the audit: intentionally not a transfer PASS because a live foreign XLIFF executor advanced four files; those files were preserved and excluded."
+  ],
+  "result": "PASS",
+  "evidence": {
+    "event_id": "FF6-EVENT-000032",
+    "event_hash": "1b04941583c0015b42115b8d07ca748a744561a000833b38fc64412531164054",
+    "implementation_commit": "ff8f7d9f9ff1ff613be376e1361b0dd8304566e3",
+    "checkpoint_commit": "530f18fe89a6875276e8f4442351445564df80e9",
+    "manifest_files": 26,
+    "semantic_negative_controls": 8,
+    "products_certified": 0,
+    "promotion_effect": "none",
+    "product_source_effect": "none"
+  },
+  "known_concurrent_state": {
+    "owner": "agent-codex-20260730T035429-0cf739",
+    "task_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "preserved_paths": [
+      "reports/sal-verification/xliff-core-candidate-adjudications.yaml",
+      "shared/sal-facts/evidence/xliff-core-candidate-decisions.yaml",
+      "tests/tools/test_xliff_core_candidate_adjudication.py",
+      "tools/spec/xliff_core_candidate_adjudication.py"
+    ],
+    "handover_rule": "Requery coordination. Never overlap; use UBL-03 only if still live-owned."
+  },
+  "self_challenge": {
+    "canonical_state_recomputed": "YES",
+    "linked_current_docs_content_addressed": "YES",
+    "digest_roles_verified_against_census": "YES",
+    "old_status_copied_without_replay": "NO",
+    "foreign_changes_preserved": "YES",
+    "foreign_changes_staged": "NO",
+    "provider_identity_transferred": "NO",
+    "uncommitted_product_bytes_required": "NO",
+    "completion_exaggerated": "NO",
+    "product_or_promotion_changed": "NO"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}
