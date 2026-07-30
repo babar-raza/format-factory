@@ -5,7 +5,7 @@ visibility: evidence-only
 publish_allowed: false
 generated_by: codex
 format_id: xliff
-batch_id: XLF-04-BATCH-005-PARTIAL-002-A
+batch_id: XLF-04-BATCH-005-PARTIAL-002-B
 decisions:
 - decision_id: XLF-ADJ-CORE-SCHEMATRON-0001
   candidate_id: XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90
@@ -41,3 +41,38 @@ decisions:
     and only if such target elements exist. Therefore the direct semantic
     owner is the document target-language obligation. The XPath parent names
     describe the trigger context rather than independent hierarchy rules.
+- decision_id: XLF-ADJ-CORE-SCHEMATRON-0002
+  candidate_id: XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
+  accepted_obligation_ids:
+  - SAL-XLIFF-CORE-INLINE-PC-001
+  rejected_obligations:
+  - obligation_id: SAL-XLIFF-CORE-AGENT-VALIDATOR-001
+    reason_code: DOWNSTREAM_CAPABILITY_NOT_DIRECT_SEMANTIC_OWNER
+    reason: >-
+      A conforming validator must enforce this assertion, but the single
+      sub-flow pair rule does not establish the generic validator-agent
+      processing capability.
+  - obligation_id: SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001
+    reason_code: INCIDENTAL_XPATH_CONTEXT_TOKEN
+    reason: >-
+      The ignorable ancestor limits the pc elements to which the assertion
+      applies and does not independently establish ignorable hierarchy or
+      cardinality semantics.
+  - obligation_id: SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001
+    reason_code: INCIDENTAL_XPATH_CONTEXT_TOKEN
+    reason: >-
+      The segment ancestor limits the pc elements to which the assertion
+      applies and does not independently establish segment hierarchy or
+      cardinality semantics.
+  sal_fact_ids:
+  - SAL-XLIFF-00005
+  - SAL-XLIFF-00006
+  authority_reason: >-
+    The exact XLIFF 2.1 Core Schematron rule selects pc elements carrying
+    subFlowsStart and requires subFlowsEnd. Its reciprocal rule selects pc
+    elements carrying subFlowsEnd and requires subFlowsStart. Together they
+    establish a paired-container inline-code constraint: either both
+    attributes occur or neither occurs. The segment and ignorable names are
+    applicability context, and the rule is not the generic validator
+    capability. Verified SAL facts SAL-XLIFF-00005 and SAL-XLIFF-00006 bind
+    the Core inline-pair and pc element semantics.

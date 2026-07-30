@@ -1,0 +1,82 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "ingest-spec-sal-xliff-xlf04-core-batch-005-partial-002-b",
+  "skill_id": "ingest-spec-sal",
+  "mode": "live",
+  "timestamp": "2026-07-30T01:59:00Z",
+  "inputs": {
+    "task_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "format_id": "xliff",
+    "spec_source_uri": "Pinned local OASIS XLIFF 2.0 and 2.1 Standard packages",
+    "spec_version": "XLIFF 2.0 and XLIFF 2.1",
+    "spec_body": "OASIS XLIFF Core prose and XLIFF 2.1 Core Schematron reciprocal pc subflow assertions",
+    "target_fact_count_min": 1,
+    "authority_2_0_sha256": "aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055",
+    "authority_2_1_sha256": "73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751",
+    "denominator_sha256": "c1a326e42bd1b47ec792088258f81fc4eac0b02543c57beedb48242181d008da",
+    "adjudication_sha256": "3d9c81773ceaddaae97a55fc804bd35efaf6501fe24c9fae8bf941fe338ceb01",
+    "output": "reports/ff6/xliff-core-obligation-inventory.yaml",
+    "execution_manifests": [
+      ".local/skills-first/manifests/sfx-d5d782fc11b257e3.json",
+      ".local/skills-first/manifests/sfx-f6cdbdee33d7e995.json"
+    ]
+  },
+  "allowed_files": [
+    "tools/spec/extract_sal_facts.py",
+    "reports/ff6/xliff-core-obligation-inventory.yaml",
+    "reports/skills-rff6/skill-transcripts/ingest-spec-sal-xliff-xlf04-core-batch-005-partial-002-b.json"
+  ],
+  "actual_files_changed": [
+    "tools/spec/extract_sal_facts.py",
+    "reports/ff6/xliff-core-obligation-inventory.yaml",
+    "reports/skills-rff6/skill-transcripts/ingest-spec-sal-xliff-xlf04-core-batch-005-partial-002-b.json"
+  ],
+  "tests_run": [
+    "Real-authority CLI RED observed 26 rows before the new obligation seed.",
+    "Real-authority CLI GREEN produced 27 rows, 27 resolved, and 78 missing.",
+    "Target-only validated proof continues to produce exactly the prior 26 rows.",
+    "Prior inventory comparison: 26/26 prior obligation rows byte-semantically unchanged; one new ID added.",
+    "Canonical Batch 005 generation and check mode: PASS.",
+    "Three isolated real-authority inventory generations: byte-identical SHA-256 d5f77d95c703f62766e4ef4178ee3d811147df06844f0eacdec372bbd51cb351.",
+    "Both affected tool suites: 62 passed.",
+    "Canonical SAL verification: PASS.",
+    "Five-source XLIFF authority audit: 5 MATCH.",
+    "Ruff, strict Mypy, Pyright 1.1.411, and bytecode compilation: PASS."
+  ],
+  "result": "PASS",
+  "evidence": {
+    "extractor_sha256": "f280ec407e7754b66741d55e5c846b65ad2d497fd753de617941dac886fa477f",
+    "inventory_sha256": "d5f77d95c703f62766e4ef4178ee3d811147df06844f0eacdec372bbd51cb351",
+    "inventory_schema": "ff6/xliff-core-obligation-inventory@2",
+    "batch_id": "XLF-04-BATCH-005",
+    "obligation_count": 27,
+    "resolved_expected_obligation_count": 27,
+    "missing_expected_obligation_count": 78,
+    "expected_obligation_count": 105,
+    "verified_disposition_count": 2,
+    "unverified_disposition_count": 1128,
+    "canonical_fact_count_added": 0,
+    "complete": false,
+    "xlf_04_complete": false,
+    "promotion_effect": "none"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for this bounded authority-bound obligation increment",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for one new obligation; not for denominator or XLF-04 completion",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_checkpoint_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES; no contradiction to log",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

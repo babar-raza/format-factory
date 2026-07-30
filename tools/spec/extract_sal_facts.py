@@ -3667,6 +3667,7 @@ def _default_core_obligation_seeds(
     batch_five_target_language_id = (
         "SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001"
     )
+    batch_five_inline_pc_id = "SAL-XLIFF-CORE-INLINE-PC-001"
     seeds.append(
         {
             "obligation_id": batch_five_target_language_id,
@@ -3700,6 +3701,44 @@ def _default_core_obligation_seeds(
                 "verified SAL fact SAL-XLIFF-00009 establish only the root "
                 "target-language condition; incidental XPath context does "
                 "not establish separate hierarchy or cardinality rules."
+            ),
+        }
+    )
+    seeds.append(
+        {
+            "obligation_id": batch_five_inline_pc_id,
+            "obligation_basis": "XLIFF_SPECIFICATION",
+            "introduced_in_batch": "XLF-04-BATCH-005",
+            "stable_profiles": ["xliff_2.0", "xliff_2.1"],
+            "owner": "core:inline-code",
+            "category": "inline_code_semantics",
+            "normalized_rule": (
+                "Represent well-formed paired container codes with pc and "
+                "require subFlowsStart and subFlowsEnd to occur together "
+                "whenever either attribute is present."
+            ),
+            "requirement_class": "SEMANTIC_CONSTRAINT",
+            "normative_level": "MUST",
+            "authority_locations": locations(
+                "pc", "Represents a well-formed spanning original code"
+            ),
+            "evidence_requirements": {
+                "positive": [
+                    "accept pc content with both subFlowsStart and subFlowsEnd",
+                    "accept pc content with neither subFlows attribute",
+                ],
+                "rejection": [
+                    "reject pc content with only one of subFlowsStart or "
+                    "subFlowsEnd"
+                ],
+            },
+            "interpretation_note": (
+                "Independent adjudication XLF-ADJ-CORE-SCHEMATRON-0002 binds "
+                "this obligation to SAL-XLIFF-00005 and SAL-XLIFF-00006. "
+                "The reciprocal XLIFF 2.1 Schematron assertions require "
+                "subFlowsStart and subFlowsEnd as a pair; the ancestor names "
+                "in their XPath contexts do not establish hierarchy "
+                "obligations."
             ),
         }
     )
@@ -3741,6 +3780,10 @@ def _default_core_obligation_seeds(
         for seed in seeds
         if int(str(seed["introduced_in_batch"]).rsplit("-", 1)[-1])
         <= maximum_sequence
+        and (
+            seed["introduced_in_batch"] != "XLF-04-BATCH-005"
+            or seed["obligation_id"] in verified_ids
+        )
     ]
 
 

@@ -30,6 +30,7 @@ TARGET_LANGUAGE_CANDIDATE_ID = (
 TARGET_LANGUAGE_OBLIGATION_ID = (
     "SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001"
 )
+INLINE_PC_OBLIGATION_ID = "SAL-XLIFF-CORE-INLINE-PC-001"
 
 
 def test_registered_extractor_implementation_exists() -> None:
@@ -1240,6 +1241,93 @@ def test_cli_batch_five_compiles_only_validated_adjudication_ids(
     assert inventory["complete"] is False
     assert extractor.main([*complete_args, "--check"]) == 0
     assert output.read_bytes() == first_bytes
+
+
+def test_cli_batch_five_compiles_adjudicated_subflow_pair_obligation(
+    tmp_path: Path,
+) -> None:
+    extractor = _load_module()
+    output = tmp_path / "batch-five-subflow-pair-obligations.yaml"
+    args = [
+        "--format-id",
+        "xliff",
+        "--artifact",
+        "core-obligations",
+        "--source-20",
+        str(
+            REPO_ROOT
+            / ".local"
+            / "format-contracts"
+            / "acquired"
+            / "xliff"
+            / "src-xlf-001.bin"
+        ),
+        "--source-20-id",
+        "SRC-XLF-001",
+        "--source-20-sha256",
+        "aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055",
+        "--source-21",
+        str(
+            REPO_ROOT
+            / ".local"
+            / "format-contracts"
+            / "acquired"
+            / "xliff"
+            / "src-xlf-002.bin"
+        ),
+        "--source-21-id",
+        "SRC-XLF-002",
+        "--source-21-sha256",
+        "73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751",
+        "--denominator",
+        str(REPO_ROOT / "reports/ff6/xliff-core-obligation-denominator.yaml"),
+        "--batch-id",
+        "XLF-04-BATCH-005",
+        "--adjudications",
+        str(
+            REPO_ROOT
+            / "reports"
+            / "sal-verification"
+            / "xliff-core-candidate-adjudications.yaml"
+        ),
+        "--candidate-census",
+        str(CANDIDATE_CENSUS_PATH),
+        "--sal-store",
+        str(REPO_ROOT / "shared/sal-facts/xliff.yaml"),
+        "--sal-manifest",
+        str(REPO_ROOT / "shared/sal-facts/evidence/xliff.yaml"),
+        "--sal-receipt",
+        str(REPO_ROOT / "reports/sal-verification/xliff.json"),
+        "--output",
+        str(output),
+    ]
+
+    assert extractor.main(args) == 0
+    inventory = yaml.safe_load(output.read_bytes())
+    assert inventory["obligation_count"] == 27
+    assert inventory["resolved_expected_obligation_count"] == 27
+    assert len(inventory["missing_expected_obligation_ids"]) == 78
+    assert inventory["complete"] is False
+    assert inventory["adjudication_input"]["decision_count"] == 2
+    assert inventory["adjudication_input"]["verified_disposition_count"] == 2
+    assert inventory["adjudication_input"]["unverified_disposition_count"] == 1128
+
+    rows = {row["obligation_id"]: row for row in inventory["obligations"]}
+    inline_pc = rows[INLINE_PC_OBLIGATION_ID]
+    assert inline_pc["introduced_in_batch"] == "XLF-04-BATCH-005"
+    assert inline_pc["category"] == "inline_code_semantics"
+    assert inline_pc["stable_profiles"] == ["xliff_2.0", "xliff_2.1"]
+    assert "subFlowsStart" in inline_pc["normalized_rule"]
+    assert "subFlowsEnd" in inline_pc["normalized_rule"]
+    assert {
+        location["profile"] for location in inline_pc["authority_locations"]
+    } == {"xliff_2.0", "xliff_2.1"}
+    assert all(
+        location["section_id"] == "pc"
+        and len(location["source_text_sha256"]) == 64
+        for location in inline_pc["authority_locations"]
+    )
+    assert extractor.main([*args, "--check"]) == 0
 
 
 @pytest.mark.parametrize(

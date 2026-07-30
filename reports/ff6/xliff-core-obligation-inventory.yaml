@@ -10,7 +10,7 @@ status: SOURCE_LOCATED_PARTIAL
 stable_profiles:
 - xliff_2.0
 - xliff_2.1
-obligation_count: 26
+obligation_count: 27
 covered_categories:
 - agent_processing
 - document_structure
@@ -40,7 +40,7 @@ remaining_categories:
 - xml_security_resource_limits
 completeness_basis: EXPLICIT_EXPECTED_OBLIGATION_IDS_OPEN_CENSUS
 expected_obligation_count: 105
-resolved_expected_obligation_count: 26
+resolved_expected_obligation_count: 27
 missing_expected_obligation_ids:
 - SAL-XLIFF-CORE-AGENT-EXTRACTOR-001
 - SAL-XLIFF-CORE-AGENT-LOSS-REPORT-001
@@ -87,7 +87,6 @@ missing_expected_obligation_ids:
 - SAL-XLIFF-CORE-INLINE-ORIGINAL-DATA-001
 - SAL-XLIFF-CORE-INLINE-OVERLAP-001
 - SAL-XLIFF-CORE-INLINE-PAIRING-001
-- SAL-XLIFF-CORE-INLINE-PC-001
 - SAL-XLIFF-CORE-INLINE-PH-001
 - SAL-XLIFF-CORE-INLINE-SC-001
 - SAL-XLIFF-CORE-INLINE-SM-001
@@ -176,7 +175,6 @@ missing_expected_obligations_by_category:
   - SAL-XLIFF-CORE-INLINE-ORIGINAL-DATA-001
   - SAL-XLIFF-CORE-INLINE-OVERLAP-001
   - SAL-XLIFF-CORE-INLINE-PAIRING-001
-  - SAL-XLIFF-CORE-INLINE-PC-001
   - SAL-XLIFF-CORE-INLINE-PH-001
   - SAL-XLIFF-CORE-INLINE-SC-001
   - SAL-XLIFF-CORE-INLINE-SM-001
@@ -217,7 +215,7 @@ denominator_status: OPEN_AUTHORITY_CENSUS
 denominator_complete: false
 obligation_basis_counts:
   PRODUCTION_POLICY: 4
-  XLIFF_SPECIFICATION: 22
+  XLIFF_SPECIFICATION: 23
 complete: false
 obligations:
 - obligation_id: SAL-XLIFF-CORE-AGENT-INLINE-001
@@ -579,6 +577,47 @@ obligations:
     rejection:
     - reject behavior that ignores the inherited translate value
   interpretation_note: Second source-located XLF-04 batch covering stable identifier, inheritance, language, direction, whitespace, and source-target rules.
+  verification_status: SOURCE_BOUND_UNVERIFIED
+- obligation_id: SAL-XLIFF-CORE-INLINE-PC-001
+  obligation_basis: XLIFF_SPECIFICATION
+  conformance_effect: STANDARD_CONFORMANCE
+  introduced_in_batch: XLF-04-BATCH-005
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  owner: core:inline-code
+  category: inline_code_semantics
+  normalized_rule: Represent well-formed paired container codes with pc and require subFlowsStart and subFlowsEnd to occur together whenever either attribute is present.
+  requirement_class: SEMANTIC_CONSTRAINT
+  normative_level: MUST
+  authority_locations:
+  - profile: xliff_2.0
+    authority_source_id: SRC-XLF-001
+    source_sha256: aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055
+    location_kind: prose_paragraph
+    member: xliff-core-v2.0-os.xml
+    member_sha256: 07059d426de1e839540e5e84e0e061c4a6d5ef1a1b7e71ddf75bf5bd11518b73
+    section_id: pc
+    paragraph_index: 0
+    source_anchor: Represents a well-formed spanning original code
+    source_text_sha256: 84eec87369ab7a0ac71226705c1c3331941df0aeef767eadf35fe6e4a2027a7c
+  - profile: xliff_2.1
+    authority_source_id: SRC-XLF-002
+    source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    location_kind: prose_paragraph
+    member: xliff-core-v2.1-os.xml
+    member_sha256: e8c72ec2314e1025f25886cd0ea2b6c10aa2405bd292026383afca2207c44e5b
+    section_id: pc
+    paragraph_index: 0
+    source_anchor: Represents a well-formed spanning original code
+    source_text_sha256: 84eec87369ab7a0ac71226705c1c3331941df0aeef767eadf35fe6e4a2027a7c
+  evidence_requirements:
+    positive:
+    - accept pc content with both subFlowsStart and subFlowsEnd
+    - accept pc content with neither subFlows attribute
+    rejection:
+    - reject pc content with only one of subFlowsStart or subFlowsEnd
+  interpretation_note: Independent adjudication XLF-ADJ-CORE-SCHEMATRON-0002 binds this obligation to SAL-XLIFF-00005 and SAL-XLIFF-00006. The reciprocal XLIFF 2.1 Schematron assertions require subFlowsStart and subFlowsEnd as a pair; the ancestor names in their XPath contexts do not establish hierarchy obligations.
   verification_status: SOURCE_BOUND_UNVERIFIED
 - obligation_id: SAL-XLIFF-CORE-INLINE-SPANNING-001
   obligation_basis: XLIFF_SPECIFICATION
@@ -1208,12 +1247,13 @@ obligations:
 truth_boundary: XLIFF specification obligations and production-policy duties are separate authority classes. Neither source binding nor category presence turns the 36 coarse XLF-03 anchors into complete Core semantics, product source, or certification.
 adjudication_input:
   artifact_id: FF6-XLIFF-CORE-CANDIDATE-ADJUDICATIONS
-  artifact_sha256: 28399664d50afdd15e9f8b5ab2824a9566aa478fd0fcb18c97ce1451fd90d521
+  artifact_sha256: 3d9c81773ceaddaae97a55fc804bd35efaf6501fe24c9fae8bf941fe338ceb01
   input_closure_sha256: 881e0798daf4ca376e5cf31a9c2e50d380082ecdfcb0cc2e80f194228b7e8223
-  decision_set_sha256: df0ee1c809b1f56a4df7f0bbcfd1f416b865dd5e70fdca90fffc6de5dff924d0
-  decision_count: 1
-  verified_disposition_count: 1
-  unverified_disposition_count: 1129
+  decision_set_sha256: 00d2334d857cf28969ebb2a8ce51c0184912e0e88d6091e1836d404b8bccc504
+  decision_count: 2
+  verified_disposition_count: 2
+  unverified_disposition_count: 1128
   verified_candidate_ids:
+  - XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
   - XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90
 denominator_input_sha256: c1a326e42bd1b47ec792088258f81fc4eac0b02543c57beedb48242181d008da

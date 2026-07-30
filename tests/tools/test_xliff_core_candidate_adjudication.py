@@ -26,8 +26,31 @@ CENSUS_PATH = (
 DENOMINATOR_PATH = (
     REPO_ROOT / "reports" / "ff6" / "xliff-core-obligation-denominator.yaml"
 )
+DECISIONS_PATH = (
+    REPO_ROOT
+    / "shared"
+    / "sal-facts"
+    / "evidence"
+    / "xliff-core-candidate-decisions.yaml"
+)
+ADJUDICATION_PATH = (
+    REPO_ROOT
+    / "reports"
+    / "sal-verification"
+    / "xliff-core-candidate-adjudications.yaml"
+)
+SAL_STORE_PATH = REPO_ROOT / "shared" / "sal-facts" / "xliff.yaml"
+SAL_MANIFEST_PATH = (
+    REPO_ROOT / "shared" / "sal-facts" / "evidence" / "xliff.yaml"
+)
+SAL_RECEIPT_PATH = REPO_ROOT / "reports" / "sal-verification" / "xliff.json"
 CANDIDATE_ID = "XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90"
 TARGET_LANGUAGE_ID = "SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001"
+SUBFLOW_PAIR_CANDIDATE_ID = "XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1"
+SUBFLOW_PAIR_RECIPROCAL_CANDIDATE_ID = (
+    "XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF"
+)
+INLINE_PC_ID = "SAL-XLIFF-CORE-INLINE-PC-001"
 REJECTED_PROPOSAL_IDS = {
     "SAL-XLIFF-CORE-AGENT-VALIDATOR-001":
         "DOWNSTREAM_CAPABILITY_NOT_DIRECT_SEMANTIC_OWNER",
@@ -37,6 +60,14 @@ REJECTED_PROPOSAL_IDS = {
         "INCIDENTAL_XPATH_CONTEXT_TOKEN",
     "SAL-XLIFF-CORE-SOURCE-TARGET-OPTIONAL-001":
         "TRIGGER_DOES_NOT_ESTABLISH_CARDINALITY",
+}
+SUBFLOW_PAIR_REJECTED_PROPOSAL_IDS = {
+    "SAL-XLIFF-CORE-AGENT-VALIDATOR-001":
+        "DOWNSTREAM_CAPABILITY_NOT_DIRECT_SEMANTIC_OWNER",
+    "SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001":
+        "INCIDENTAL_XPATH_CONTEXT_TOKEN",
+    "SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001":
+        "INCIDENTAL_XPATH_CONTEXT_TOKEN",
 }
 
 
@@ -175,6 +206,79 @@ def test_trg_lang_adjudication_rejects_incidental_context_overmapping() -> None:
     assert projected["verified_disposition_count"] == 1
     assert projected["unverified_disposition_count"] == (
         projected["candidate_count"] - 1
+    )
+
+
+def test_subflow_pair_adjudication_accepts_only_inline_pc_semantics() -> None:
+    module = _load_module()
+    census = _load_yaml(CENSUS_PATH)
+    candidates = {
+        row["candidate_id"]: row
+        for row in census["candidates"]
+    }
+    selected_rule = json.loads(
+        candidates[SUBFLOW_PAIR_CANDIDATE_ID]["occurrences"][0][
+            "normalized_requirement"
+        ]
+    )
+    reciprocal_rule = json.loads(
+        candidates[SUBFLOW_PAIR_RECIPROCAL_CANDIDATE_ID]["occurrences"][0][
+            "normalized_requirement"
+        ]
+    )
+    assert selected_rule == {
+        "context": (
+            "xlf:pc[@subFlowsStart]"
+            "[ancestor::xlf:segment|ancestor::xlf:ignorable]"
+        ),
+        "kind": "assert",
+        "message": "'subFlowsStart' and 'subFlowsEnd' must be used in pair.",
+        "test": "@subFlowsEnd",
+    }
+    assert reciprocal_rule == {
+        "context": (
+            "xlf:pc[@subFlowsEnd]"
+            "[ancestor::xlf:segment|ancestor::xlf:ignorable]"
+        ),
+        "kind": "assert",
+        "message": "'subFlowsStart' and 'subFlowsEnd' must be used in pair.",
+        "test": "@subFlowsStart",
+    }
+
+    decision_source = _load_yaml(DECISIONS_PATH)
+    decisions = [
+        row
+        for row in decision_source["decisions"]
+        if row["candidate_id"] == SUBFLOW_PAIR_CANDIDATE_ID
+    ]
+    assert len(decisions) == 1, (
+        "the selected subFlowsStart rule requires exactly one independent "
+        "content-addressed decision"
+    )
+    decision = decisions[0]
+    assert decision["accepted_obligation_ids"] == [INLINE_PC_ID]
+    assert {
+        row["obligation_id"]: row["reason_code"]
+        for row in decision["rejected_obligations"]
+    } == SUBFLOW_PAIR_REJECTED_PROPOSAL_IDS
+    assert decision["sal_fact_ids"] == [
+        "SAL-XLIFF-00005",
+        "SAL-XLIFF-00006",
+    ]
+
+    accepted, evidence = module.validated_obligation_ids_from_paths(
+        adjudications_path=ADJUDICATION_PATH,
+        candidate_census_path=CENSUS_PATH,
+        denominator_path=DENOMINATOR_PATH,
+        sal_store_path=SAL_STORE_PATH,
+        sal_manifest_path=SAL_MANIFEST_PATH,
+        sal_receipt_path=SAL_RECEIPT_PATH,
+    )
+    assert INLINE_PC_ID in accepted
+    assert evidence["decision_count"] == 2
+    assert evidence["verified_disposition_count"] == 2
+    assert evidence["unverified_disposition_count"] == (
+        census["candidate_count"] - 2
     )
 
 

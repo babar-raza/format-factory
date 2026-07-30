@@ -1,0 +1,88 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "sal-pipeline-heal-xliff-xlf04-core-batch-005-partial-002-b",
+  "skill_id": "sal-pipeline-heal",
+  "mode": "live",
+  "timestamp": "2026-07-30T01:59:00Z",
+  "inputs": {
+    "taskcard_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "format_id": "xliff",
+    "root_cause_id": "ROOT-08",
+    "spec_cache_path": ".local/format-contracts/acquired/xliff/",
+    "target_stage": "census",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "selected_candidate_id": "XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1",
+    "execution_manifests": [
+      ".local/skills-first/manifests/sfx-8694cfc3b1f5e858.json",
+      ".local/skills-first/manifests/sfx-31291cf57e180151.json"
+    ]
+  },
+  "allowed_files": [
+    "shared/sal-facts/evidence/xliff-core-candidate-decisions.yaml",
+    "reports/sal-verification/xliff-core-candidate-adjudications.yaml",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-xliff-xlf04-core-batch-005-partial-002-b.json"
+  ],
+  "actual_files_changed": [
+    "shared/sal-facts/evidence/xliff-core-candidate-decisions.yaml",
+    "reports/sal-verification/xliff-core-candidate-adjudications.yaml",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-xliff-xlf04-core-batch-005-partial-002-b.json"
+  ],
+  "tests_run": [
+    "Event 30 candidate, occurrence, source-member, denominator, SAL, and tool hashes matched before mutation.",
+    "Independent-decision RED: selected candidate had zero decisions.",
+    "Independent-decision GREEN: exactly INLINE-PC accepted and three incidental proposals rejected.",
+    "Reciprocal candidate rule and assertion identity verified.",
+    "Adjudication check mode: PASS at two decisions.",
+    "Three isolated adjudication generations: byte-identical SHA-256 3d9c81773ceaddaae97a55fc804bd35efaf6501fe24c9fae8bf941fe338ceb01.",
+    "All affected tool tests: 62 passed.",
+    "Affected format-contract suite: 94 passed, 1 exact baseline-known stateful CSV test deselected.",
+    "Production-program regression: 69 passed.",
+    "Ruff, strict Mypy, Pyright 1.1.411, py_compile, SAL verification, and five-source authority audit: PASS."
+  ],
+  "result": "PASS",
+  "evidence": {
+    "spec_cache_verified": true,
+    "decision_source_sha256": "7c8c32d2b2053878c3a1bfee7eaa5e8fac2117d2ebb9696e6449e87ac87981e0",
+    "adjudication_sha256": "3d9c81773ceaddaae97a55fc804bd35efaf6501fe24c9fae8bf941fe338ceb01",
+    "authority_sources_match": "5/5",
+    "candidate_count": 1130,
+    "decision_count": 2,
+    "verified_disposition_count": 2,
+    "unverified_disposition_count": 1128,
+    "accepted_capability_ids": [
+      "SAL-XLIFF-CORE-INLINE-PC-001"
+    ],
+    "rejected_capability_ids": [
+      "SAL-XLIFF-CORE-AGENT-VALIDATOR-001",
+      "SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001",
+      "SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001"
+    ],
+    "bound_sal_fact_ids": [
+      "SAL-XLIFF-00005",
+      "SAL-XLIFF-00006"
+    ],
+    "content_addressed_receipt_bound": true,
+    "manual_status_edit_non_promoting": true,
+    "xlf_04_complete": false,
+    "truth_boundary": "Exactly two of 1130 source-authentic candidate dispositions are independently verified. The second decision proves one direct inline pc obligation and rejects incidental validator and hierarchy mappings. Seventy-eight denominator obligations and 1128 candidate dispositions remain unresolved; no product, promotion, gate, certification, or release state changes."
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for this bounded SAL healing increment",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for one new decision closure; not for XLF-04 completion",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_checkpoint_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES; no contradiction to log",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

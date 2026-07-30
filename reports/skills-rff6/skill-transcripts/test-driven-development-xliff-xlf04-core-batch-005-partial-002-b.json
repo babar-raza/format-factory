@@ -1,0 +1,116 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "test-driven-development-xliff-xlf04-core-batch-005-partial-002-b",
+  "skill_id": "test-driven-development",
+  "mode": "live",
+  "timestamp": "2026-07-30T01:59:00Z",
+  "inputs": {
+    "task_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "batch_id": "XLF-04-BATCH-005-PARTIAL-002-B",
+    "target_behavior_description": "Independently adjudicate the reciprocal pc subFlowsStart/subFlowsEnd constraint and compile exactly its direct inline-code obligation.",
+    "source_checkpoint": "f883dce3a8d19e8ec0c27a223da9072c2ef71fc9",
+    "execution_manifests": [
+      ".local/skills-first/manifests/sfx-f7c7fad32d1ed401.json",
+      ".local/skills-first/manifests/sfx-aa9aa764732d1975.json",
+      ".local/skills-first/manifests/sfx-8c32738b9e7ed073.json"
+    ]
+  },
+  "allowed_files": [
+    "tests/tools/test_xliff_core_candidate_adjudication.py",
+    "tests/tools/test_extract_sal_facts.py",
+    "reports/skills-rff6/skill-transcripts/test-driven-development-xliff-xlf04-core-batch-005-partial-002-b.json"
+  ],
+  "actual_files_changed": [
+    "tests/tools/test_xliff_core_candidate_adjudication.py",
+    "tests/tools/test_extract_sal_facts.py",
+    "reports/skills-rff6/skill-transcripts/test-driven-development-xliff-xlf04-core-batch-005-partial-002-b.json"
+  ],
+  "delegated_source_changes": {
+    "sal-pipeline-heal": [
+      "shared/sal-facts/evidence/xliff-core-candidate-decisions.yaml",
+      "reports/sal-verification/xliff-core-candidate-adjudications.yaml"
+    ],
+    "ingest-spec-sal": [
+      "tools/spec/extract_sal_facts.py",
+      "reports/ff6/xliff-core-obligation-inventory.yaml"
+    ]
+  },
+  "cycles": [
+    {
+      "behavior": "Accept only the direct inline pc semantic owner for candidate XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1",
+      "red_command": ".venv\\Scripts\\python.exe -m pytest -q tests/tools/test_xliff_core_candidate_adjudication.py::test_subflow_pair_adjudication_accepts_only_inline_pc_semantics",
+      "red_result": "1 failed at the expected independent-decision boundary: observed zero decisions for the selected candidate where exactly one was required.",
+      "green_command": ".venv\\Scripts\\python.exe -m pytest -q tests/tools/test_xliff_core_candidate_adjudication.py::test_subflow_pair_adjudication_accepts_only_inline_pc_semantics",
+      "green_result": "1 passed after adding the content-addressed decision: INLINE-PC accepted; generic validator and incidental segment/ignorable XPath proposals rejected.",
+      "refactor": "Bound the decision to the reciprocal Schematron candidate, SAL-XLIFF-00005, SAL-XLIFF-00006, and existing canonical rejection vocabularies."
+    },
+    {
+      "behavior": "Compile SAL-XLIFF-CORE-INLINE-PC-001 only from the validated decision closure",
+      "red_command": ".venv\\Scripts\\python.exe -m pytest -q tests/tools/test_extract_sal_facts.py::test_cli_batch_five_compiles_adjudicated_subflow_pair_obligation",
+      "red_result": "1 failed for the intended reason: canonical Batch 005 still emitted 26 obligations instead of 27.",
+      "green_command": ".venv\\Scripts\\python.exe -m pytest -q tests/tools/test_extract_sal_facts.py::test_cli_batch_five_compiles_adjudicated_subflow_pair_obligation",
+      "green_result": "1 passed: the real pinned authority path produced 27 resolved obligations and 78 remaining without changing any prior row.",
+      "refactor": "All Batch 005 seeds now materialize only when their exact obligation IDs occur in the independently validated proof set; the previously mandatory document target-language seed remains fail-closed."
+    }
+  ],
+  "tests_run": [
+    "Both affected tool suites: 62 passed.",
+    "Affected format-contract suite: 94 passed, 1 exact baseline-known stateful CSV test deselected.",
+    "Production-program regression: 69 passed.",
+    "Adjudication and obligation check modes: PASS.",
+    "Three isolated adjudication generations and three dependent inventory generations: one digest each.",
+    "Ruff: PASS.",
+    "Strict Mypy with explicit package bases: PASS.",
+    "Pyright 1.1.411: 0 errors, 0 warnings.",
+    "Bytecode compilation: PASS.",
+    "Canonical SAL verification: PASS.",
+    "XLIFF authority materializer audit: 5 MATCH."
+  ],
+  "result": "PASS",
+  "evidence": {
+    "extractor_test_sha256": "8c535fe464015607b462bb130b8c17b43aa17eb8b6d1d6131c988fb831af9c31",
+    "adjudication_test_sha256": "f3491c2a0da8267af4bb0e21f03bc81b99ca317e247c2d885fd6be60d9d69df4",
+    "selected_candidate_id": "XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1",
+    "reciprocal_candidate_id": "XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF",
+    "accepted_capability_id": "SAL-XLIFF-CORE-INLINE-PC-001",
+    "decision_count": 2,
+    "verified_disposition_count": 2,
+    "unverified_disposition_count": 1128,
+    "resolved_obligation_count": 27,
+    "missing_obligation_count": 78,
+    "expected_obligation_count": 105,
+    "prior_rows_unchanged": "26/26",
+    "xlf_04_complete": false,
+    "promotion_effect": "none"
+  },
+  "tdd_checklist": {
+    "1_every_new_function_tested": "YES; the new decision and seed-filter behavior are exercised at their real CLI boundaries",
+    "2_each_test_observed_red": "YES; both named tests failed before their corresponding implementation change",
+    "3_red_failed_for_right_reason": "YES",
+    "4_minimal_real_code": "YES",
+    "5_new_and_surrounding_tests_pass": "YES",
+    "6_output_pristine": "YES; the one accidentally executed stateful CSV test was bounded, its three exact outputs restored to HEAD, and the suite rerun with its canonical deselection",
+    "7_no_mock_or_hardcoded_production_result": "YES",
+    "8_edge_and_invalid_inputs_covered": "YES; one-sided subflow attributes and every rejected incidental capability mapping are explicit negative controls"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for this bounded RED-GREEN-refactor increment",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for one candidate decision and one obligation; not for XLF-04 completion",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_bundle_or_checkpoint_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES; no contradiction to log",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}
