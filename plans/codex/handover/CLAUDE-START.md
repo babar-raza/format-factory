@@ -1,5 +1,5 @@
 ---
-artifact_id: FF6-CLAUDE-EXECUTION-HANDOFF-EVENT-30
+artifact_id: FF6-CLAUDE-EXECUTION-HANDOFF-EVENT-31
 artifact_type: provider_execution_handoff
 visibility: internal
 publish_allowed: false
@@ -7,7 +7,7 @@ generated_by: codex
 generated_at: 2026-07-30
 ---
 
-# Claude execution handoff — Event 30
+# Claude execution handoff — Event 31
 
 Continue the active mission without asking for continuation. Use the same
 controller, taskcard, skills, evidence rules, and checkpoint protocol that
@@ -20,10 +20,14 @@ not.
 - Canonical SCM: GitLab remote `origin`, branch `main`
 - Goal: `FF6-PRODUCTION-LIBRARIES-001`
 - Controller state: `CONTRACT`
-- Journal head: `FF6-EVENT-000030`
+- Journal head: `FF6-EVENT-000031`
 - Active task: `TC-FF6-XLIFF-PROFILE-SURFACE-001`
-- Exact microstep: `XLF-04-BATCH-005-PARTIAL-002-B`
-- Implementation ancestor:
+- Exact microstep: `XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001`
+- Control checkpoint:
+  `240474babf868fa141850d4ed4792d3a8269ef28`
+- Preserved rejected attempt:
+  `d99fc6bf3679cd39396afbf5621847e3009ddf31`
+- Last accepted XLIFF implementation:
   `e13e103de0bb789ff51a8e931af0fb649474be20`
 
 Do not create a branch, use GitHub, move work to an isolated stale worktree,
@@ -35,20 +39,32 @@ or reinterpret old provider notes as current authority.
 2. Read `AGENTS.md`, `docs/governance/codex-adapter.md` or the Claude
    equivalent, `docs/governance/skill-only-policy.yaml`,
    `plans/master-plan.md`, and the applicable skill contracts.
-3. Run the handover validator before mutation.
+3. Run `validate_committed_checkpoint.py --ref origin/main` before mutation.
+   This proves the immutable packet in a temporary detached worktree.
 4. Register a fresh coordination identity.
 5. Inspect live agents, leases, conflicts, and exact path status.
-6. If Event 31 or later exists, validate and follow it. Do not duplicate Event
-   30.
-7. Replay current artifact checks and the three immutable smoke tests.
-8. Create fresh execution manifests for:
+6. Run `validate_handover.py` in the shared checkout and classify every
+   failure as committed-checkpoint drift, attributed live overlay, or
+   unexplained state. Never merge these classes.
+7. If Event 32 or later exists, validate and follow it. Do not duplicate Event
+   31.
+8. If XLIFF has a current live owner, do not replay or mutate its working
+   files; continue only `UBL-03-PARTIAL-002`.
+9. Replay current artifact checks and the three immutable smoke tests in the
+   selected unowned lane.
+10. Create fresh execution manifests for:
    - test-driven-development;
    - ingest-spec-sal;
    - sal-pipeline-heal.
-9. Start the next candidate with a RED test. Do not edit the decision source
+11. Start the next candidate with a RED test. Do not edit the decision source
    first.
 
 ## Current proof and non-proof
+
+Event 31 rejected the `d99fc6bf` increment despite its mechanical green
+results. Read [EVENT-31-DELTA.md](EVENT-31-DELTA.md). Production acceptance
+remains at Event 30: 26/105 rows and one independently accepted disposition.
+The generated 27/105 and 2/1,130 counts are diagnostic outputs only.
 
 Proven:
 
@@ -68,7 +84,7 @@ Not proven:
 - a production XLIFF parser/writer;
 - any product certification, promotion, release, or gate.
 
-## Partial-002-B TDD target
+## Partial-002-B Repair-001 TDD target
 
 Candidate:
 
@@ -101,7 +117,7 @@ direct semantic owner. The ancestor names limit rule applicability; they do
 not automatically establish hierarchy behavior. The generic validator ID is a
 downstream capability, not necessarily the direct rule owner.
 
-The deeper read-only reassessment completed after Event 30 identifies the
+The Event 31 contradiction checkpoint confirms that the
 direct owner as `SAL-XLIFF-CORE-INLINE-PAIRING-001`. This is a finding to test,
 not a completed implementation. The current adjudicator contains a structural
 defect at `tools/spec/xliff_core_candidate_adjudication.py`: it requires the
@@ -185,11 +201,13 @@ Required RED controls:
 
 ## Completion rules
 
-Partial-002-B is complete only when its exact decision and negative controls
+Partial-002-B Repair-001 is complete only when both reciprocal decisions and
+all negative controls
 are committed, pushed, independently replayed, journaled, and projected.
 XLF-04 remains incomplete unless all Core and module obligation exit criteria
 pass. The overall mission remains active until six libraries are technically
 certified and extraction-ready.
 
-Use [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml) for machine-readable steps and
-[event-30/RUNBOOK.md](event-30/RUNBOOK.md) for exact replay commands.
+Use [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml) for the hardened
+machine-readable acceptance rules and
+[event-31/RUNBOOK.md](event-31/RUNBOOK.md) for exact replay commands.

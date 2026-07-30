@@ -54,15 +54,21 @@ OPERATIONAL_DOC_PATHS = (
     "plans/codex/handover/VALIDATION-AND-RELEASE.md",
     "plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml",
     "plans/codex/handover/INFLIGHT-RECOVERY.yaml",
+    "plans/codex/handover/EVENT-31-DELTA.md",
+    "plans/codex/handover/event-31/START-HERE.md",
+    "plans/codex/handover/event-31/RUNBOOK.md",
 )
 
-EXPECTED_EVENT_ID = "FF6-EVENT-000030"
+EXPECTED_EVENT_ID = "FF6-EVENT-000031"
 EXPECTED_EVENT_HASH = (
-    "2d365d013b94c386014d7e75813114de6d7a225e2a9e16d21a485a38cd2d9398"
+    "26f95f054774f35244a2edbfc08072156a1422acfb1e1d29c2c37a617dd90d55"
 )
-EXPECTED_IMPLEMENTATION = "e13e103de0bb789ff51a8e931af0fb649474be20"
+EXPECTED_CONTROL = "240474babf868fa141850d4ed4792d3a8269ef28"
+EXPECTED_IMPLEMENTATION = "d99fc6bf3679cd39396afbf5621847e3009ddf31"
+EXPECTED_ACCEPTED_IMPLEMENTATION = "e13e103de0bb789ff51a8e931af0fb649474be20"
 EXPECTED_TASK = "TC-FF6-XLIFF-PROFILE-SURFACE-001"
-EXPECTED_MICROSTEP = "XLF-04-BATCH-005-PARTIAL-002-B"
+EXPECTED_MICROSTEP = "XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001"
+EXPECTED_PLAN_MICROSTEP = "XLF-04-BATCH-005-PARTIAL-002-B"
 EXPECTED_CANDIDATE = "XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1"
 EXPECTED_CANDIDATE_SHA256 = (
     "0a37761215603eb4db3f9602f6e979869b4f1f44c124c1f5ca2183cba1d7578a"
@@ -73,10 +79,10 @@ EXPECTED_RECIPROCAL_CANDIDATE_SHA256 = (
 )
 EXPECTED_PAIRING_OBLIGATION = "SAL-XLIFF-CORE-INLINE-PAIRING-001"
 EXPECTED_ADJUDICATION_SHA256 = (
-    "28399664d50afdd15e9f8b5ab2824a9566aa478fd0fcb18c97ce1451fd90d521"
+    "3d9c81773ceaddaae97a55fc804bd35efaf6501fe24c9fae8bf941fe338ceb01"
 )
 EXPECTED_INVENTORY_SHA256 = (
-    "83b9f2da44b33a93cea6740e7510b32b961dda80791f9f148c163e913922f5e0"
+    "d5f77d95c703f62766e4ef4178ee3d811147df06844f0eacdec372bbd51cb351"
 )
 STALE_OPERATIONAL_TOKENS = (
     "FF6-EVENT-000029",
@@ -104,6 +110,8 @@ ALLOWED_DIRTY_EXACT = {
     "taskcards/TC-FF6-HANDOVER-CLAUDE-001.md",
     "reports/skills-rff6/skill-transcripts/"
     "refresh-provider-neutral-handover-event-30-deep-resume.json",
+    "reports/skills-rff6/skill-transcripts/"
+    "refresh-provider-neutral-handover-event-31.json",
 }
 
 
@@ -220,7 +228,7 @@ def _semantic_errors(
         sequence = value.get("event_sequence", value.get("transition_sequence"))
         _expect(errors, f"{label} event id", event_id, EXPECTED_EVENT_ID)
         _expect(errors, f"{label} event hash", event_hash, EXPECTED_EVENT_HASH)
-        _expect(errors, f"{label} event sequence", sequence, 30)
+        _expect(errors, f"{label} event sequence", sequence, 31)
 
     _expect(errors, "latest event id", latest.get("event_id"), EXPECTED_EVENT_ID)
     _expect(errors, "latest event hash", latest.get("event_hash"), EXPECTED_EVENT_HASH)
@@ -238,7 +246,7 @@ def _semantic_errors(
         controller.get("last_verified_event", {}).get("event_hash"),
         EXPECTED_EVENT_HASH,
     )
-    _expect(errors, "controller sequence", controller.get("transition_sequence"), 30)
+    _expect(errors, "controller sequence", controller.get("transition_sequence"), 31)
     _expect(errors, "controller state", controller.get("controller_state"), "CONTRACT")
 
     _expect(
@@ -251,7 +259,7 @@ def _semantic_errors(
         errors,
         "next microstep",
         next_step.get("task", {}).get("microstep"),
-        EXPECTED_MICROSTEP,
+        EXPECTED_PLAN_MICROSTEP,
     )
     _expect(
         errors,
@@ -297,52 +305,63 @@ def _semantic_errors(
     xliff = machine.get("xliff", {})
     baseline = next_step.get("baseline", {})
     event_evidence = latest.get("evidence", {})
-    for label, value in (
-        ("machine", xliff.get("adjudication", {})),
-        ("next", baseline),
-        ("event", event_evidence),
-    ):
-        verified = value.get(
-            "verified_dispositions",
-            value.get(
-                "dispositions_verified",
-                value.get("candidate_dispositions_verified"),
-            ),
-        )
-        unverified = value.get(
-            "unverified_dispositions",
-            value.get(
-                "dispositions_unverified",
-                value.get("candidate_dispositions_unverified"),
-            ),
-        )
-        _expect(errors, f"{label} verified dispositions", verified, 1)
-        _expect(errors, f"{label} unverified dispositions", unverified, 1129)
+    _expect(
+        errors,
+        "machine accepted dispositions",
+        xliff.get("adjudication", {}).get("production_accepted_dispositions"),
+        1,
+    )
+    _expect(
+        errors,
+        "machine open dispositions",
+        xliff.get("adjudication", {}).get("production_open_dispositions"),
+        1129,
+    )
+    _expect(errors, "plan verified dispositions", baseline.get("dispositions_verified"), 1)
+    _expect(errors, "plan open dispositions", baseline.get("dispositions_unverified"), 1129)
+    _expect(
+        errors,
+        "event accepted dispositions",
+        event_evidence.get("production_accepted_candidate_dispositions"),
+        1,
+    )
 
     inventory_view = xliff.get("obligation_inventory", {})
     _expect(errors, "machine expected obligations", inventory_view.get("expected"), 105)
-    _expect(errors, "machine source-bound obligations", inventory_view.get("source_bound"), 26)
-    _expect(errors, "machine missing obligations", inventory_view.get("missing"), 79)
+    _expect(
+        errors,
+        "machine accepted source-bound obligations",
+        inventory_view.get("production_accepted_source_bound"),
+        26,
+    )
+    _expect(
+        errors,
+        "machine accepted missing obligations",
+        inventory_view.get("production_accepted_missing"),
+        79,
+    )
+    _expect(errors, "machine mechanical source-bound", inventory_view.get("mechanical_source_bound"), 27)
+    _expect(errors, "machine mechanical missing", inventory_view.get("mechanical_missing"), 78)
     _expect(errors, "machine XLF complete", inventory_view.get("complete"), False)
     _expect(errors, "inventory expected", inventory.get("expected_obligation_count"), 105)
-    _expect(errors, "inventory resolved", inventory.get("resolved_expected_obligation_count"), 26)
+    _expect(errors, "inventory resolved", inventory.get("resolved_expected_obligation_count"), 27)
     _expect(
         errors,
         "inventory missing",
         len(inventory.get("missing_expected_obligation_ids", [])),
-        79,
+        78,
     )
     _expect(errors, "inventory complete", inventory.get("complete"), False)
     _expect(errors, "adjudication candidate count", adjudication.get("candidate_count"), 1130)
-    _expect(errors, "adjudication verified", adjudication.get("verified_disposition_count"), 1)
-    _expect(errors, "adjudication unverified", adjudication.get("unverified_disposition_count"), 1129)
+    _expect(errors, "adjudication verified", adjudication.get("verified_disposition_count"), 2)
+    _expect(errors, "adjudication unverified", adjudication.get("unverified_disposition_count"), 1128)
     _expect(errors, "adjudication complete", adjudication.get("disposition_verification_complete"), False)
 
     _expect(
         errors,
         "recovery product overlay",
         recovery.get("captured_workspace", {}).get("product_overlay_status"),
-        "FOREIGN_INFLIGHT_XLIFF_CONTRACT_EVIDENCE",
+        "NONE_COMMITTED_ATTEMPT_PRESERVED",
     )
     _expect(
         errors,
@@ -522,6 +541,14 @@ def _operational_doc_errors(documents: Mapping[str, str]) -> list[str]:
 
 def _git_errors(*, require_clean: bool) -> list[str]:
     errors: list[str] = []
+    control = _git(
+        "merge-base",
+        "--is-ancestor",
+        EXPECTED_CONTROL,
+        "origin/main",
+    )
+    if control.returncode != 0:
+        errors.append("Event 31 control commit is not an ancestor of origin/main")
     ancestor = _git(
         "merge-base",
         "--is-ancestor",
@@ -575,7 +602,16 @@ def _negative_control_errors(base: dict[str, Any]) -> list[str]:
             ),
             "SAL-XLIFF-CORE-INLINE-PC-001",
         ),
-        ("inflated row count", ("machine", "xliff", "obligation_inventory", "source_bound"), 105),
+        (
+            "inflated accepted row count",
+            (
+                "machine",
+                "xliff",
+                "obligation_inventory",
+                "production_accepted_source_bound",
+            ),
+            105,
+        ),
         ("local-only dependency", ("recovery", "captured_workspace", "local_only_required_for_resume"), True),
     ]
     for label, path, value in cases:

@@ -1,0 +1,139 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "refresh-provider-neutral-handover-event-31",
+  "skill_id": "refresh-provider-neutral-handover",
+  "mode": "live",
+  "timestamp": "2026-07-30T02:27:00Z",
+  "inputs": {
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "task_id": "TC-FF6-HANDOVER-CLAUDE-001",
+    "canonical_remote": "origin",
+    "canonical_branch": "main",
+    "source_checkpoint": "240474babf868fa141850d4ed4792d3a8269ef28",
+    "controller_path": "plans/strategic/ff6/controller-state.yaml",
+    "journal_path": "plans/strategic/ff6/events.jsonl",
+    "current_taskcard": "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
+    "exact_next_task": "XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001",
+    "control_checkpoint": "240474babf868fa141850d4ed4792d3a8269ef28",
+    "event_id": "FF6-EVENT-000031",
+    "event_hash": "26f95f054774f35244a2edbfc08072156a1422acfb1e1d29c2c37a617dd90d55",
+    "rejected_attempt": "d99fc6bf3679cd39396afbf5621847e3009ddf31",
+    "last_accepted_xliff_implementation": "e13e103de0bb789ff51a8e931af0fb649474be20",
+    "packet_root": "plans/codex/handover"
+  },
+  "execution_manifests": [
+    ".local/skills-first/manifests/sfx-029fb4c6e11c9864.json",
+    ".local/skills-first/manifests/sfx-4e195fc4ef8c0e8d.json",
+    ".local/skills-first/manifests/sfx-54fdcd4d12428dcb.json"
+  ],
+  "allowed_files": [
+    "plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md",
+    "plans/codex/handover/CLAUDE-START.md",
+    "plans/codex/handover/CURRENT-MACHINE-STATE.yaml",
+    "plans/codex/handover/CURRENT-SHIFT-HANDOVER.md",
+    "plans/codex/handover/CURRENT-STATE-AND-ROOT-CAUSES.md",
+    "plans/codex/handover/EVENT-31-DELTA.md",
+    "plans/codex/handover/EXECUTION-RUNBOOK.md",
+    "plans/codex/handover/INFLIGHT-RECOVERY.yaml",
+    "plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml",
+    "plans/codex/handover/PROVIDER-SHIFT-CONTRACT.md",
+    "plans/codex/handover/SHIFT-AND-RESUME-PROTOCOL.md",
+    "plans/codex/handover/START-HERE.md",
+    "plans/codex/handover/STATE-MACHINE-AND-TASKCARD-PROTOCOL.md",
+    "plans/codex/handover/VALIDATION-AND-RELEASE.md",
+    "plans/codex/handover/checkpoint.yaml",
+    "plans/codex/handover/event-31/CHECKPOINT.yaml",
+    "plans/codex/handover/event-31/RUNBOOK.md",
+    "plans/codex/handover/event-31/START-HERE.md",
+    "plans/codex/handover/event-31/manifest.yaml",
+    "plans/codex/handover/manifest.yaml",
+    "plans/codex/handover/validate_committed_checkpoint.py",
+    "plans/codex/handover/validate_handover.py",
+    "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-event-31.json"
+  ],
+  "actual_files_changed": [
+    "plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md",
+    "plans/codex/handover/CLAUDE-START.md",
+    "plans/codex/handover/CURRENT-MACHINE-STATE.yaml",
+    "plans/codex/handover/CURRENT-SHIFT-HANDOVER.md",
+    "plans/codex/handover/CURRENT-STATE-AND-ROOT-CAUSES.md",
+    "plans/codex/handover/EVENT-31-DELTA.md",
+    "plans/codex/handover/EXECUTION-RUNBOOK.md",
+    "plans/codex/handover/INFLIGHT-RECOVERY.yaml",
+    "plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml",
+    "plans/codex/handover/PROVIDER-SHIFT-CONTRACT.md",
+    "plans/codex/handover/SHIFT-AND-RESUME-PROTOCOL.md",
+    "plans/codex/handover/START-HERE.md",
+    "plans/codex/handover/STATE-MACHINE-AND-TASKCARD-PROTOCOL.md",
+    "plans/codex/handover/VALIDATION-AND-RELEASE.md",
+    "plans/codex/handover/checkpoint.yaml",
+    "plans/codex/handover/event-31/CHECKPOINT.yaml",
+    "plans/codex/handover/event-31/RUNBOOK.md",
+    "plans/codex/handover/event-31/START-HERE.md",
+    "plans/codex/handover/event-31/manifest.yaml",
+    "plans/codex/handover/manifest.yaml",
+    "plans/codex/handover/validate_committed_checkpoint.py",
+    "plans/codex/handover/validate_handover.py",
+    "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-event-31.json"
+  ],
+  "decisions": [
+    {
+      "decision": "SEPARATE_COMMITTED_CHECKPOINT_FROM_SHARED_WORKTREE",
+      "reason": "A live leased overlay must not invalidate an immutable GitLab checkpoint or be erased to manufacture cleanliness."
+    },
+    {
+      "decision": "PRESERVE_REJECTED_ATTEMPT",
+      "reason": "The mechanically green d99fc6bf result is diagnostic evidence but fails semantic owner, reciprocal proof, and profile authority acceptance."
+    },
+    {
+      "decision": "KEEP_EVENT_30_AS_ACCEPTED_EVIDENCE_BOUNDARY",
+      "reason": "Event 31 changes routing and records contradiction; it does not accept the attempted 27th row or second disposition."
+    },
+    {
+      "decision": "ROUTE_TO_XLIFF_REPAIR_OR_DISJOINT_UBL",
+      "reason": "XLIFF repair is exact next work only when unowned; otherwise autonomous execution continues at UBL-03-PARTIAL-002."
+    }
+  ],
+  "changed_scope": {
+    "packet_files_only": true,
+    "product_source_changed": false,
+    "product_tests_changed": false,
+    "controller_or_journal_changed": false,
+    "taskcard_changed": false,
+    "promotion_changed": false
+  },
+  "validation": {
+    "handover_validator": "PASS_EVENT_31_60_FILES_9_NEGATIVE_CONTROLS",
+    "structured_parse": "PASS",
+    "event_31_submanifest": "PASS",
+    "python_compile": "PASS",
+    "ruff": "PASS",
+    "mypy": "PASS",
+    "git_diff_check": "PASS",
+    "require_clean_negative_control": "EXPECTED_FAIL_BEFORE_PACKET_COMMIT",
+    "committed_checkpoint_validation": "PENDING_UNTIL_PACKET_COMMIT"
+  },
+  "truth_boundary": {
+    "products_certified": 0,
+    "promotions": "UNASSESSED_ALL_SIX",
+    "production_accepted_xliff_rows": 26,
+    "production_accepted_xliff_dispositions": 1,
+    "mechanically_reported_rows_in_rejected_attempt": 27,
+    "mechanically_reported_dispositions_in_rejected_attempt": 2,
+    "next_microstep": "XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001",
+    "fallback": "UBL-03-PARTIAL-002"
+  },
+  "tests_run": [
+    "plans/codex/handover/validate_handover.py: PASS with 61 manifest files and 9 semantic negative controls",
+    "all handover YAML and JSON parse: PASS",
+    "Event 31 submanifest hashes: PASS",
+    "Python bytecode compilation: PASS",
+    "Ruff: PASS",
+    "Mypy: PASS",
+    "git diff --check: PASS",
+    "require-clean precommit negative control: expected FAIL while packet files are uncommitted"
+  ],
+  "result": "PASS",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

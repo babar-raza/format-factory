@@ -1,5 +1,5 @@
 ---
-artifact_id: FF6-ACTIVE-WORK-CHECKPOINT-EVENT-30
+artifact_id: FF6-ACTIVE-WORK-CHECKPOINT-EVENT-31
 artifact_type: active_checkpoint
 visibility: internal
 publish_allowed: false
@@ -9,23 +9,24 @@ generated_at: 2026-07-30
 
 # Active work checkpoint
 
-The active implementation boundary is clean, committed, and pushed:
+The current control boundary is clean, committed, and pushed:
 
 ```text
-commit: e13e103de0bb789ff51a8e931af0fb649474be20
-event:  FF6-EVENT-000030
+control commit: 240474babf868fa141850d4ed4792d3a8269ef28
+attempt commit: d99fc6bf3679cd39396afbf5621847e3009ddf31
+event:  FF6-EVENT-000031
 state:  CONTRACT
 task:   TC-FF6-XLIFF-PROFILE-SURFACE-001 / WORK_IN_PROGRESS
-next:   XLF-04-BATCH-005-PARTIAL-002-B
+next:   XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001
 ```
 
-There is no local-only product recovery overlay. The only expected dirt before
-this packet is committed is controller/handover projection work.
+There is no local-only recovery dependency. The attempted implementation is
+preserved on GitLab but is not production-accepted.
 
 ## Verified bounded result
 
-- one candidate independently adjudicated;
-- 1 verified and 1,129 unverified dispositions;
+- one candidate independently accepted at Event 30;
+- 1 accepted and 1,129 open dispositions;
 - 26 of 105 expected obligations source-bound;
 - 79 rows still missing;
 - XLF-04 incomplete;
@@ -34,14 +35,14 @@ this packet is committed is controller/handover projection work.
 
 ## Exact resume
 
-Validate Event 30, create a fresh provider identity, and execute
-`XLF-04-BATCH-005-PARTIAL-002-B` for
+Validate Event 31, create a fresh provider identity, and execute
+`XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001` for
 `XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1`.
 
 Do not rerun completed XLF batches unless an input digest changed. Do not treat
 the generated mapping proposal as independent evidence. Do not begin product
 source while the controller remains in `CONTRACT`.
 
-The immutable packet is [event-30/START-HERE.md](event-30/START-HERE.md).
-Historical Event 29 describes the predecessor boundary and must not be used as
-the current resume instruction.
+The immutable packet is [event-31/START-HERE.md](event-31/START-HERE.md).
+Event 30 is the accepted evidence predecessor, not the current execution
+instruction.

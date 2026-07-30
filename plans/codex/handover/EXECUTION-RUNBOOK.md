@@ -11,10 +11,11 @@ historical_projection: true
 
 # FF6 Execution Runbook
 
-> Durable program procedure refreshed through Event 30. Exact current inputs
+> Durable program procedure refreshed through Event 31. Exact current inputs
 > and the first RED cycle are in [START-HERE.md](START-HERE.md),
 > [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml), and the immutable
-> [Event 30 runbook](event-30/RUNBOOK.md).
+> [Event 31 runbook](event-31/RUNBOOK.md). Event 30 remains the last accepted
+> XLIFF evidence boundary.
 
 ## Mission state machine
 
@@ -31,7 +32,14 @@ primitive. XLF-04 remains first unmet because 1,129 candidate dispositions and
 79 expected obligation rows remain open. The parent capability task remains
 `NEEDS_REPAIR`, so product implementation is locked. The active task is
 `TC-FF6-XLIFF-PROFILE-SURFACE-001`; the exact next microstep is
-`XLF-04-BATCH-005-PARTIAL-002-B`.
+`XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001`.
+
+The native journal head is `FF6-EVENT-000031`.
+
+Commit `d99fc6bf` mechanically reports 27/105 rows and two dispositions, but
+Event 31 rejects that increment. Do not use those counts as production
+progress; repair the semantic owner, reciprocal proof, and profile boundary
+defined in [EVENT-31-DELTA.md](EVENT-31-DELTA.md).
 
 ## Canonical state precedence
 
@@ -121,17 +129,16 @@ No product wave may bypass the program dependencies.
 
 ### Steps
 
-1. Revalidate Event 30, the complete journal, controller/task/index
-   agreement, the immutable implementation ancestor, all five XLIFF authority
-   matches, both current artifact check modes, the three immutable smoke
-   tests, and recorded adjudication/inventory digests.
+1. Revalidate Event 31, the complete journal, controller/task/index
+   agreement, control commit `240474ba`, preserved attempt `d99fc6bf`, the
+   last accepted Event 30 boundary, and all five XLIFF authority matches.
 2. Re-run completed XLF steps only if their recorded input closure changed.
    Preserve the 1,130 candidate IDs, 105 expected IDs, and 26 existing
    obligation rows.
 3. Read the TDD, SAL ingestion, and SAL healing command contracts. Register a
    fresh provider identity, claim exact paths, create an execution manifest,
    run the mutation guard, and preflight every write.
-4. Execute `XLF-04-BATCH-005-PARTIAL-002-B` from
+4. Execute `XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001` from
    `NEXT-MICROSTEP.yaml`. Start with a RED decision test for
    `XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1`; prove that incidental
    ancestor names cannot create hierarchy ownership and that the reciprocal

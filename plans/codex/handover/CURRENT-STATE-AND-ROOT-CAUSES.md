@@ -11,10 +11,13 @@ historical_projection: false
 
 # Current State, Root Causes, and Structural Weaknesses
 
-> Design analysis refreshed through Event 30. This file explains causes and
+> Design analysis refreshed through Event 31. Event 31 confirms the central
+> failure mode: deterministic mechanical evidence can still encode the wrong
+> semantic owner and profile. Read
+> [EVENT-31-DELTA.md](EVENT-31-DELTA.md) first. This file explains causes and
 > redesign direction; executable state remains derived from
 > [START-HERE.md](START-HERE.md), [CURRENT-MACHINE-STATE.yaml](CURRENT-MACHINE-STATE.yaml),
-> the native journal, and the immutable [Event 30 packet](event-30/START-HERE.md).
+> the native journal, and the immutable [Event 31 packet](event-31/START-HERE.md).
 
 ## Executive truth
 

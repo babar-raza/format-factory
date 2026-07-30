@@ -1,5 +1,5 @@
-schema: ff6/provider-neutral-checkpoint@5
-artifact_id: FF6-HANDOVER-CHECKPOINT-EVENT-30
+schema: ff6/provider-neutral-checkpoint@6
+artifact_id: FF6-HANDOVER-CHECKPOINT-EVENT-31
 visibility: internal
 publish_allowed: false
 generated_by: codex
@@ -10,7 +10,9 @@ source_checkpoint:
   remote: origin
   branch: main
   required_remote_ref: origin/main
-  implementation_commit: e13e103de0bb789ff51a8e931af0fb649474be20
+  control_commit: 240474babf868fa141850d4ed4792d3a8269ef28
+  attempted_implementation_commit: d99fc6bf3679cd39396afbf5621847e3009ddf31
+  last_accepted_implementation_commit: e13e103de0bb789ff51a8e931af0fb649474be20
   implementation_on_remote: true
   packet_commit_rule: >-
     The commit containing this packet must descend from the implementation
@@ -19,15 +21,15 @@ source_checkpoint:
 
 controller_checkpoint:
   controller_state: CONTRACT
-  event_sequence: 30
-  event_id: FF6-EVENT-000030
-  event_hash: 2d365d013b94c386014d7e75813114de6d7a225e2a9e16d21a485a38cd2d9398
+  event_sequence: 31
+  event_id: FF6-EVENT-000031
+  event_hash: 26f95f054774f35244a2edbfc08072156a1422acfb1e1d29c2c37a617dd90d55
   task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
   task_state: WORK_IN_PROGRESS
   parent_task: TC-FF6-PROGRAM-CAPABILITIES-001
   parent_state: NEEDS_REPAIR
   first_unmet_step: XLF-04
-  exact_next_microstep: XLF-04-BATCH-005-PARTIAL-002-B
+  exact_next_microstep: XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001
 
 verified_xliff_boundary:
   candidate_census_sha256: 24c1902b6387cc9fa3402f78392ba91c6e6656407719ec11cfaab1c4f3d22b9e
@@ -40,6 +42,18 @@ verified_xliff_boundary:
   missing_source_bound_rows: 79
   inventory_sha256: 83b9f2da44b33a93cea6740e7510b32b961dda80791f9f148c163e913922f5e0
   complete: false
+
+rejected_attempt:
+  commit: d99fc6bf3679cd39396afbf5621847e3009ddf31
+  mechanical_adjudication_sha256: 3d9c81773ceaddaae97a55fc804bd35efaf6501fe24c9fae8bf941fe338ceb01
+  mechanical_inventory_sha256: d5f77d95c703f62766e4ef4178ee3d811147df06844f0eacdec372bbd51cb351
+  mechanical_rows: 27
+  mechanical_verified_dispositions: 2
+  production_acceptance: REJECTED
+  reason_summary: >-
+    Wrong semantic owner, missing reciprocal decision, unsupported XLIFF 2.0
+    projection, incomplete SAL assertion closure, and generator-constrained
+    adjudication.
 
 exact_next_candidate:
   candidate_id: XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
@@ -63,7 +77,7 @@ truth_boundary:
 
 mandatory_resume_validations:
   - GitLab main ancestry and exact implementation commit
-  - native journal hash chain through Event 30
+  - native journal hash chain through Event 31
   - controller, taskcard, and handover semantic agreement
   - artifact check modes and exact digests
   - clean workspace or explicit coordination attribution

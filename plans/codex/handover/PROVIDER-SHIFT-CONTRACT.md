@@ -18,10 +18,18 @@ The goal, phase order, task semantics, evidence standard, and terminal
 condition do not change when the provider changes. Only the current executor
 identity and its leased files change.
 
-Current operational authority is Event 30 and
+Current operational authority is Event 31 and
 [CURRENT-MACHINE-STATE.yaml](CURRENT-MACHINE-STATE.yaml). Event-specific
 examples below that cite Event 29 are retained as historical illustrations;
 they cannot override the latest valid native event.
+
+Event 31 preserves
+`d99fc6bf3679cd39396afbf5621847e3009ddf31` as a mechanically green but
+production-rejected attempt. Production acceptance remains at Event 30
+(26/105 rows and 1/1,130 dispositions). The exact successor is
+`XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001`. Wherever older examples below
+imply direct execution of Partial-002-B, [EVENT-31-DELTA.md](EVENT-31-DELTA.md)
+supersedes them.
 
 ## 1. Locked mission
 
@@ -77,8 +85,8 @@ Every shift records three independent state axes:
 
 | Axis | Question | Current answer |
 |---|---|---|
-| Mission state | What does the native journal authorize next? | `CONTRACT`, `FF6-EVENT-000030`, XLIFF `XLF-04-BATCH-005-PARTIAL-002-B` |
-| Immutable evidence state | What committed work can be replayed? | Event 30 binds one independently adjudicated XLIFF candidate, 26/105 source-bound obligations, the 1,130-row candidate census, and the earlier UBL root/type primitive |
+| Mission state | What does the native journal authorize next? | `CONTRACT`, `FF6-EVENT-000031`, XLIFF `XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001` |
+| Immutable evidence state | What committed work can be replayed? | Event 31 binds rejected attempt `d99fc6bf` and preserves Event 30 as the last accepted 26/105 and 1/1,130 boundary |
 | Workspace transfer state | Which current local bytes can the incoming executor own? | No product overlay exists; all required implementation bytes are reconstructible from GitLab `origin/main`, and the incoming provider obtains fresh leases |
 
 An immutable evidence commit without a journal transition is not a task-state

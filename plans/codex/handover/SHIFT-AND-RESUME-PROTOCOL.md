@@ -11,10 +11,11 @@ historical_projection: true
 
 # Provider-Neutral Shift and Resume Protocol
 
-> Durable provider-shift protocol refreshed through Event 30. Current exact
+> Durable provider-shift protocol refreshed through Event 31. Current exact
 > work is defined by [START-HERE.md](START-HERE.md),
 > [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml), the native FF6 journal, and the
-> immutable [Event 30 packet](event-30/START-HERE.md).
+> immutable [Event 31 packet](event-31/START-HERE.md). Event 30 remains the
+> last accepted XLIFF evidence boundary; it is not the current routing event.
 
 ## Invariant
 
@@ -38,59 +39,79 @@ disjoint, separately taskcarded scopes with non-overlapping leases.
 
 ## Current transfer boundary
 
-- Required XLIFF implementation ancestor:
+- Required control checkpoint:
+  `240474babf868fa141850d4ed4792d3a8269ef28`.
+- Preserved rejected attempt:
+  `d99fc6bf3679cd39396afbf5621847e3009ddf31`.
+- Last accepted XLIFF implementation:
   `e13e103de0bb789ff51a8e931af0fb649474be20`.
 - Use the fetched `origin/main` descendant containing this packet.
 - Controller state: `CONTRACT`.
-- Event: `FF6-EVENT-000030`.
+- Event: `FF6-EVENT-000031`.
 - Event hash:
   `2d365d013b94c386014d7e75813114de6d7a225e2a9e16d21a485a38cd2d9398`.
 - Completed task: `TC-FF6-NRRD-PROFILE-SURFACE-001` - `PASS`.
 - Active task: `TC-FF6-XLIFF-PROFILE-SURFACE-001` -
   `WORK_IN_PROGRESS`; XLF-01/XLF-02/XLF-03 and XLF-04 batches 001-004
   complete, XLF-04 still first unmet.
-- Canonical event microstate: `RESUMABLE` at Event 30.
-- Exact next action: `XLF-04-BATCH-005-PARTIAL-002-B`.
+- Canonical event microstate: `RESUMABLE` at Event 31.
+- Exact next action:
+  `XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001`.
 - Current boundary: 1,130 source-authentic candidates, one verified
   disposition, 26/105 source-bound IDs, and 79 missing rows.
-- Workspace boundary: no product overlay and no provider-local recovery asset.
+- Remote workspace boundary: no provider-local recovery asset is required to
+  reconstruct Event 31 or the rejected attempt.
+- Shared checkout boundary: the previous executor's XLIFF bytes were committed,
+  but its leases were still live at the last observation. Leases are
+  non-transferable and still route the incoming provider to UBL.
 - Product promotion: none.
 
 ## Incoming provider procedure
 
 1. Fetch `origin/main`; do not use GitHub or a provider branch.
-2. Verify `e13e103de0bb789ff51a8e931af0fb649474be20` is an ancestor
+2. Verify `240474babf868fa141850d4ed4792d3a8269ef28` is an ancestor
    of fetched GitLab main.
 3. Read `INFLIGHT-RECOVERY.yaml` and verify that no local recovery asset is
    required.
 4. Read the ordered authority list in `START-HERE.md`.
-5. Validate the journal through Event 30 using FF6 native semantics:
+5. Run `validate_committed_checkpoint.py --ref origin/main`. It creates a
+   temporary detached worktree and validates the committed packet without
+   reading the shared overlay.
+6. Validate the journal through Event 31 using FF6 native semantics:
    `previous_event_hash`, canonical JSON, sequential event IDs and hashes.
-6. Verify controller head, parent/child task states, task index, current gaps,
+7. Verify controller head, parent/child task states, task index, current gaps,
    authority 17/17 global and 5/5 XLIFF match, and capability manifest
    digests.
-7. Query coordination status.
-8. Register a new identity for the incoming provider.
-9. Confirm no live owner remains on the next task paths.
-10. Claim logical task scope, exact tracked paths, generated output
+8. Register a new identity for the incoming provider, then query coordination
+   status.
+9. Run `validate_handover.py` in the shared checkout. Classify each failure as
+   a committed-checkpoint mismatch, an attributed live overlay, or
+   unexplained state. Do not use a live overlay as proof.
+10. If the XLIFF owner is still live, select only the serialized
+    `UBL-03-PARTIAL-002` fallback. If no owner remains, recover XLIFF through
+    the governed clean/stale-owner rules before claiming it.
+11. Confirm no live owner remains on the selected lane's paths.
+12. Claim logical task scope, exact tracked paths, generated output
     directories, transcript, and artifact directory.
-11. Resolve the required registered skills and run the mutation guard.
-12. Capture input baselines before writing.
-13. Replay Event 30 using `event-30/RUNBOOK.md`: verify both adjudication and
+13. Resolve the required registered skills and run the mutation guard.
+14. Capture input baselines before writing.
+15. Replay the selected lane's immutable checkpoint. For XLIFF, use
+    `event-30/RUNBOOK.md`: verify both adjudication and
     obligation check modes, the three immutable smoke tests, exact
     adjudication and inventory digests, 5/5 XLIFF authority replay, and
     controller/taskcard agreement. Re-run broader completed behavior only if
     a bound input was invalidated.
-14. Read `NEXT-MICROSTEP.yaml`; begin with its fixed candidate and RED
-    controls, not a newly selected convenience batch.
+16. Read `NEXT-MICROSTEP.yaml` for XLIFF or
+    `PARALLEL-UBL-CHECKPOINT.yaml` for the fallback; begin with the fixed RED
+    boundary, not a newly selected convenience batch.
 
 ## Implementation-only commit recovery
 
 The former implementation-only recovery conditions are closed. GitLab
-contains immutable implementation commit
-`e13e103de0bb789ff51a8e931af0fb649474be20` and the Event 30 packet.
-Incoming providers must verify the ancestor and must not append a duplicate
-Event 30. `INFLIGHT-RECOVERY.yaml` records that no provider-local byte is
+contains the rejected implementation attempt `d99fc6bf`, control checkpoint
+`240474ba`, Event 31, and the accepted Event 30 predecessor. Incoming
+providers must verify the control ancestor and must not append a duplicate
+Event 31. `INFLIGHT-RECOVERY.yaml` records that no provider-local byte is
 required.
 
 The new provider reconstructs the state; it does not accept a prior provider's

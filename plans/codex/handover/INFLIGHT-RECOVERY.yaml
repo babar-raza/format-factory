@@ -1,27 +1,30 @@
-schema: ff6/inflight-recovery@5
-artifact_id: FF6-INFLIGHT-RECOVERY-EVENT-30
+schema: ff6/inflight-recovery@6
+artifact_id: FF6-INFLIGHT-RECOVERY-EVENT-31
 visibility: internal
 publish_allowed: false
 generated_by: codex
 generated_at: "2026-07-30"
 
 checkpoint:
-  status: CLEAN_IMPLEMENTATION_COMMITTED_AND_PUSHED
-  implementation_commit: e13e103de0bb789ff51a8e931af0fb649474be20
+  status: CLEAN_CONTRADICTION_CHECKPOINT_COMMITTED_AND_PUSHED
+  control_commit: 240474babf868fa141850d4ed4792d3a8269ef28
+  attempted_implementation_commit: d99fc6bf3679cd39396afbf5621847e3009ddf31
+  last_accepted_implementation_commit: e13e103de0bb789ff51a8e931af0fb649474be20
   remote_ref: origin/main
-  event_sequence: 30
-  event_id: FF6-EVENT-000030
-  event_hash: 2d365d013b94c386014d7e75813114de6d7a225e2a9e16d21a485a38cd2d9398
-  exact_next_microstep: XLF-04-BATCH-005-PARTIAL-002-B
+  event_sequence: 31
+  event_id: FF6-EVENT-000031
+  event_hash: 26f95f054774f35244a2edbfc08072156a1422acfb1e1d29c2c37a617dd90d55
+  exact_next_microstep: XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001
 
 captured_workspace:
-  product_overlay_status: FOREIGN_INFLIGHT_XLIFF_CONTRACT_EVIDENCE
+  product_overlay_status: NONE_COMMITTED_ATTEMPT_PRESERVED
   product_source_overlay_status: NONE
-  observation_time_utc: "2026-07-30T01:41:39Z"
+  observation_time_utc: "2026-07-30T02:14:00Z"
   observed_owner:
     agent_id: agent-codex-20260730T013049-b59249
     task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
     status_at_observation: ACTIVE
+    last_heartbeat_utc: "2026-07-30T02:06:52.594219Z"
     logical_lease: logical:XLF-04-BATCH-005-PARTIAL-002-B
   claimed_paths_at_observation:
     - tests/tools/test_xliff_core_candidate_adjudication.py
@@ -30,45 +33,46 @@ captured_workspace:
     - reports/sal-verification/xliff-core-candidate-adjudications.yaml
     - tools/spec/extract_sal_facts.py
     - reports/ff6/xliff-core-obligation-inventory.yaml
-  dirty_paths_at_observation:
-    - tests/tools/test_xliff_core_candidate_adjudication.py
-    - tests/tools/test_extract_sal_facts.py
-    - shared/sal-facts/evidence/xliff-core-candidate-decisions.yaml
-    - reports/sal-verification/xliff-core-candidate-adjudications.yaml
-    - tools/spec/extract_sal_facts.py
-    - reports/ff6/xliff-core-obligation-inventory.yaml
+    - reports/skills-rff6/skill-transcripts/test-driven-development-xliff-xlf04-core-batch-005-partial-002-b.json
+    - reports/skills-rff6/skill-transcripts/ingest-spec-sal-xliff-xlf04-core-batch-005-partial-002-b.json
+    - reports/skills-rff6/skill-transcripts/sal-pipeline-heal-xliff-xlf04-core-batch-005-partial-002-b.json
+  dirty_paths_at_observation: []
   recovery_assets: []
   local_only_required_for_resume: false
   current_product_bytes_reconstructible_from_gitlab: true
   handover_projection_status: COMMITTED_AND_PUSHED
   handover_source_commit: 3a46c13eee8f3fc2afc97ea802a9bdb927866b70
   rule: >-
-    Event 30 is reconstructible from GitLab. The timestamped foreign overlay is
-    not part of Event 30 and is never staged with this handover. Requery live
-    ownership: follow a newer verified event, avoid a live owner, or use
-    governed stale takeover with fresh baselines. Never erase the overlay.
+    Event 31 and the rejected attempt are reconstructible from GitLab. Requery
+    live ownership: follow a newer verified event, avoid a live owner, or use
+    governed stale takeover with fresh baselines.
 
 incoming_adoption:
   - fetch GitLab origin/main and verify the latest native event
-  - run plans/codex/handover/validate_handover.py
+  - validate origin/main with plans/codex/handover/validate_committed_checkpoint.py
+  - run plans/codex/handover/validate_handover.py separately against the shared checkout
   - register a new provider identity and never reuse an outgoing token
   - query coordination and preserve any newly observed dirty state
   - if the recorded foreign owner remains live, do not claim or mutate XLIFF
-  - if a newer implementation/event exists, validate it instead of replaying Event 30 work
+  - if a newer implementation/event exists, validate it instead of replaying Event 31 work
   - claim only the exact files needed by Partial-002-B
   - create fresh TDD, ingest-spec-sal, and sal-pipeline-heal manifests
   - replay both current artifact check modes before writing
-  - start from the exact next candidate and a failing decision test
+  - start from the exact repair boundary and its failing semantic controls
 
 recovery_cases:
   newer_event:
     action: validate and follow the newer journal projection
   clean_checkout:
-    action: resume directly from Event 30 and Partial-002-B
+    action: resume directly from Event 31 and Partial-002-B-Repair-001
   unexpected_dirty_state:
     action: preserve, attribute, hash, and investigate; never reset or overwrite
   live_xliff_owner:
     action: continue only the disjoint UBL-03-PARTIAL-002 lane
+  clean_checkpoint_and_dirty_shared_overlay:
+    action: >-
+      retain both facts; use the detached checkpoint as proof, preserve the
+      overlay, and schedule only disjoint unowned work
   commit_without_event:
     action: independently verify the commit before appending one event
   hash_mismatch:

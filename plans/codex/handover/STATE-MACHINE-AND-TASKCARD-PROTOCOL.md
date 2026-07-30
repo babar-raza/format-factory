@@ -14,7 +14,11 @@ historical_projection: true
 > Historical protocol background. Preserve its durable state-machine concepts,
 > but select current work only from [START-HERE.md](START-HERE.md), the native
 > FF6 journal, controller, active taskcard, and immutable
-> [Event 30 packet](event-30/START-HERE.md).
+> [Event 31 packet](event-31/START-HERE.md). Event 31 supersedes routing while
+> retaining Event 30 as the last accepted evidence boundary.
+
+Current native head: `FF6-EVENT-000031`; exact route:
+`XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001`.
 
 ## Purpose
 
@@ -204,9 +208,13 @@ The XLIFF batch-003 state traversed this recovery path and reached
 history remains documented because future crashes can recur at the same
 boundary. Incoming providers must replay, not repeat, this transition.
 
-## Current task decomposition at Event 30
+## Current task decomposition at Event 31
 
 Task: `TC-FF6-XLIFF-PROFILE-SURFACE-001`.
+
+The XLF-04 row below retains the Event 30 accepted evidence history. Event 31
+supersedes its final routing sentence: `d99fc6bf` is rejected and the current
+microstep is `XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001`.
 
 | Step | Required output | Exit test |
 |---|---|---|
@@ -288,8 +296,9 @@ The receiving provider continues XLF-04 only after replaying:
   tests, and recorded focused/regression/static evidence;
 - 17/17 global and 5/5 XLIFF authority matches.
 
-The next cycle recorded by Event 30 is
-`XLF-04-BATCH-005-PARTIAL-002-B`. Execute `NEXT-MICROSTEP.yaml`: begin with
+The next cycle recorded by Event 31 is
+`XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001`. Execute
+`NEXT-MICROSTEP.yaml`: begin with
 the fixed Schematron candidate, extend the separate content-addressed
 adjudication authority, and prove that incidental ancestor context names do
 not create unrelated hierarchy ownership. Preserve all 26 current obligation

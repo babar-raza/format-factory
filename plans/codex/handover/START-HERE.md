@@ -25,13 +25,15 @@ this packet.
 | Field | Verified value |
 |---|---|
 | Forge and branch | GitLab `origin/main` only |
-| Implementation commit | `e13e103de0bb789ff51a8e931af0fb649474be20` |
-| Controller | `CONTRACT`, sequence 30 |
-| Journal head | `FF6-EVENT-000030` |
-| Event hash | `2d365d013b94c386014d7e75813114de6d7a225e2a9e16d21a485a38cd2d9398` |
+| Control checkpoint | `240474babf868fa141850d4ed4792d3a8269ef28` |
+| Preserved rejected attempt | `d99fc6bf3679cd39396afbf5621847e3009ddf31` |
+| Last accepted XLIFF implementation | `e13e103de0bb789ff51a8e931af0fb649474be20` |
+| Controller | `CONTRACT`, sequence 31 |
+| Journal head | `FF6-EVENT-000031` |
+| Event hash | `26f95f054774f35244a2edbfc08072156a1422acfb1e1d29c2c37a617dd90d55` |
 | Active task | `TC-FF6-XLIFF-PROFILE-SURFACE-001` |
 | First unmet step | `XLF-04` |
-| Exact next microstep | `XLF-04-BATCH-005-PARTIAL-002-B` |
+| Exact next microstep | `XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001` |
 | Exact next candidate | `XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1` |
 | XLIFF obligation inventory | `26/105`, `79` missing |
 | Candidate adjudication | `1/1,130` verified, `1,129` open |
@@ -40,24 +42,24 @@ this packet.
 | Product overlay | none; implementation is committed and pushed |
 | Safe disjoint fallback | UBL `UBL-03-PARTIAL-002` only if XLIFF is live-owned |
 
-Event 30 is a partial contract-evidence checkpoint. It is not a completed XLIFF
-contract, product implementation, certification, release candidate, or gate.
+Event 31 is a contradiction checkpoint. It preserves a mechanically passing
+attempt while rejecting it from production acceptance. It is not a completed
+XLIFF contract, product implementation, certification, release candidate, or
+gate. Read [EVENT-31-DELTA.md](EVENT-31-DELTA.md) before the older Event 30
+detail below.
 
 The table describes the durable GitLab checkpoint, not an unconditional claim
-that the shared worktree is idle. At the latest observation
-(`2026-07-30T01:41:39Z`), another live Codex executor owned the exact
-Partial-002-B logical lease plus six XLIFF contract/test paths, and four of
-those paths were initially dirty; all six were dirty by
-`2026-07-30T01:45:01Z`. See
-[INFLIGHT-RECOVERY.yaml](INFLIGHT-RECOVERY.yaml).
-Claude must requery ownership: follow a newer verified event if one exists,
-avoid XLIFF while the owner remains live, or perform governed stale takeover
-without erasing bytes. Never stage that overlay with this handover.
+that the shared worktree is idle. The prior executor committed both the
+attempt and Event 31, but its XLIFF leases were still live at the last
+observation. See [INFLIGHT-RECOVERY.yaml](INFLIGHT-RECOVERY.yaml). Claude must
+requery ownership: follow a newer verified event if one exists, avoid XLIFF
+while the owner remains live, or perform governed stale takeover without
+erasing bytes.
 
 Two control-plane constraints remain explicit: generic `tools.plan_control`
 cannot validate the native FF6 event schema (`FF6-GAP-011`), and the shared
 local `.local/artifact-index.yaml` is pre-existing invalid YAML at line 1163.
-Neither invalidates Event 30. Do not "fix" either by deleting history or
+Neither invalidates Event 31. Do not "fix" either by deleting history or
 silently converting status; follow the native chain and create a separately
 governed reconciliation task.
 
@@ -82,9 +84,9 @@ The mission remains in controller state `CONTRACT` because XLIFF and UBL
 contract surfaces are still incomplete. Product source expansion is not the
 current task.
 
-## What Event 30 actually achieved
+## What Event 30 actually achieved and Event 31 preserved
 
-The previous shift completed and pushed the bounded XLIFF Partial-002-A cycle:
+Event 30 completed and pushed the bounded XLIFF Partial-002-A cycle:
 
 - introduced a separate content-addressed candidate-adjudication compiler;
 - kept generated candidate proposals distinct from independent decisions;
@@ -129,6 +131,11 @@ passes, canonical SAL verification, five matching XLIFF authorities, and three
 zero-warning production-skill transcripts. These results prove only the
 bounded change.
 
+Event 31 then preserved `d99fc6bf` as a mechanically green but
+production-rejected attempt. Its 27/105 and 2/1,130 generated counts must not
+replace the accepted boundary above. The exact causes and repair contract are
+in [EVENT-31-DELTA.md](EVENT-31-DELTA.md).
+
 ## Exact next work
 
 Open [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml). The selected candidate is:
@@ -167,18 +174,26 @@ its negative controls, immutable replay, and native checkpoint event.
 1. Read `AGENTS.md`, the Codex or Claude governance adapter, skill policy,
    current master plan, and applicable registered skill contracts.
 2. Fetch GitLab `origin/main`; do not use GitHub or create another branch.
-3. Run `plans/codex/handover/validate_handover.py`.
-4. Verify the implementation commit is an ancestor of `origin/main`.
-5. Register a fresh coordination identity. Never reuse another provider's
+3. Run `plans/codex/handover/validate_committed_checkpoint.py --ref
+   origin/main` to prove the committed packet in a temporary detached
+   worktree.
+4. Run `plans/codex/handover/validate_handover.py` separately in the shared
+   checkout to detect overlays. A failure caused by live leased XLIFF paths is
+   a routing signal, not permission to erase them.
+5. Verify the implementation commit is an ancestor of `origin/main`.
+6. Register a fresh coordination identity. Never reuse another provider's
    token, leases, manifests, or authorization.
-6. Query live leases and preserve any unexplained dirty state.
-7. Claim only exact paths required after the first RED test establishes scope.
-8. Replay both artifact check modes and the three immutable smoke tests.
-9. Execute Partial-002-B using TDD, `ingest-spec-sal`, and
+7. Query live leases and preserve any unexplained dirty state.
+8. If the XLIFF owner is live, execute only the serialized
+   `UBL-03-PARTIAL-002` fallback. Otherwise claim XLIFF only after clean
+   ownership recovery.
+9. Claim only exact paths required after the first RED test establishes scope.
+10. Replay both artifact check modes and the three immutable smoke tests.
+11. Execute Partial-002-B Repair-001 using TDD, `ingest-spec-sal`, and
    `sal-pipeline-heal`.
-10. Commit and push the bounded implementation to GitLab `main`.
-11. Replay from the immutable commit.
-12. Append one native event, rebuild current projections, refresh this packet,
+12. Commit and push the bounded implementation to GitLab `main`.
+13. Replay from the immutable commit.
+14. Append one native event, rebuild current projections, refresh this packet,
     validate negative controls, and commit/push the checkpoint metadata.
 
 If XLIFF exact paths have a current live owner, use only the serialized UBL
@@ -193,17 +208,19 @@ fallback in [PARALLEL-UBL-CHECKPOINT.yaml](PARALLEL-UBL-CHECKPOINT.yaml).
 5. [Checkpoint record](checkpoint.yaml)
 6. [Recovery and provider transfer rules](INFLIGHT-RECOVERY.yaml)
 7. [Current shift handover](CURRENT-SHIFT-HANDOVER.md)
-8. [Immutable Event 30 packet](event-30/START-HERE.md)
-9. [Provider-shift contract](PROVIDER-SHIFT-CONTRACT.md)
-10. [Root causes and structural design](CURRENT-STATE-AND-ROOT-CAUSES.md)
-11. [Execution runbook](EXECUTION-RUNBOOK.md)
-12. [State-machine/taskcard protocol](STATE-MACHINE-AND-TASKCARD-PROTOCOL.md)
-13. [Validation and release controls](VALIDATION-AND-RELEASE.md)
-14. [Product goal](../../strategic/ff6/product-goal.yaml)
-15. [Autonomous production plan](../../strategic/autonomous-six-python-production-execution-plan.md)
-16. [Native controller](../../strategic/ff6/controller-state.yaml)
-17. [Complete event journal](../../strategic/ff6/events.jsonl)
-18. [Active taskcard](../../../taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md)
+8. [Event 31 delta](EVENT-31-DELTA.md)
+9. [Immutable Event 31 packet](event-31/START-HERE.md)
+10. [Immutable accepted Event 30 predecessor](event-30/START-HERE.md)
+11. [Provider-shift contract](PROVIDER-SHIFT-CONTRACT.md)
+12. [Root causes and structural design](CURRENT-STATE-AND-ROOT-CAUSES.md)
+13. [Execution runbook](EXECUTION-RUNBOOK.md)
+14. [State-machine/taskcard protocol](STATE-MACHINE-AND-TASKCARD-PROTOCOL.md)
+15. [Validation and release controls](VALIDATION-AND-RELEASE.md)
+16. [Product goal](../../strategic/ff6/product-goal.yaml)
+17. [Autonomous production plan](../../strategic/autonomous-six-python-production-execution-plan.md)
+18. [Native controller](../../strategic/ff6/controller-state.yaml)
+19. [Complete event journal](../../strategic/ff6/events.jsonl)
+20. [Active taskcard](../../../taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md)
 
 Historical Event 26 through 29 packets remain immutable evidence and are not
 current instructions.
@@ -215,9 +232,14 @@ git fetch origin main --prune
 git status --short --branch
 git rev-parse HEAD
 git rev-parse origin/main
-git merge-base --is-ancestor e13e103de0bb789ff51a8e931af0fb649474be20 origin/main
+git merge-base --is-ancestor 240474babf868fa141850d4ed4792d3a8269ef28 origin/main
+git merge-base --is-ancestor d99fc6bf3679cd39396afbf5621847e3009ddf31 origin/main
+.venv\Scripts\python.exe plans\codex\handover\validate_committed_checkpoint.py --ref origin/main
 .venv\Scripts\python.exe plans\codex\handover\validate_handover.py
 ```
 
-Then replay the exact artifact checks from the Event 30 runbook. A failure
-invalidates the affected proof edge; it does not authorize editing a status.
+The first validator must pass for the committed packet. The second describes
+the mutable shared checkout and may fail while the recorded live XLIFF overlay
+exists. Then replay the exact checks from the Event 31 runbook in the
+lane actually selected by coordination. A proof failure invalidates the
+affected edge; it does not authorize editing a status.

@@ -11,10 +11,15 @@ historical_projection: true
 
 # Validation, Regression, and Release Contract
 
-> Durable validation contract refreshed through Event 30. Current checkpoint
+> Durable validation contract refreshed through Event 31. Current checkpoint
 > facts and commands are in [START-HERE.md](START-HERE.md),
 > [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml), and the immutable
-> [Event 30 runbook](event-30/RUNBOOK.md). No release state is implied here.
+> [Event 31 runbook](event-31/RUNBOOK.md). No release state is implied here.
+
+Event 31 is a mandatory machinery negative control: deterministic output,
+passing tests, clean static analysis, and count growth did not override a
+wrong semantic owner, missing reciprocal proof, or unsupported profile claim.
+Future promotion logic must retain this discriminating failure.
 
 ## Completion semantics
 
@@ -49,7 +54,7 @@ Events 16 through 22 prove:
 - IPYNB exact SAL verification `25/25`;
 - NRRD exact SAL verification `25/25`, 18-domain/41-policy explicit-complete
   family ownership, and all five profiles claimed;
-- native FF6 event chain passes through `FF6-EVENT-000030`;
+- native FF6 event chain passes through `FF6-EVENT-000031`;
 - the official XLIFF 2.0 package and prose are independently pinned, legally
   classified, and reconstructed offline with all five XLIFF authorities
   matching;
@@ -191,7 +196,8 @@ named interoperability certification, not universal conformance.
   adjudication/denominator/SAL/inventory/tool/test/receipt digests, both
   artifact check modes, focused and affected regressions, static checks, five
   authority matches, and three identical authority-bound generations;
-- XLF-04 continues at `XLF-04-BATCH-005-PARTIAL-002-B` until every
+- XLF-04 continues at
+  `XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001` until every
   Core obligation, not merely
   every category, has exact stable
   profile, owner, authority/member/location, requirement class, and processing

@@ -1,5 +1,5 @@
-schema: ff6/provider-neutral-machine-state@5
-artifact_id: FF6-CURRENT-MACHINE-STATE-EVENT-30
+schema: ff6/provider-neutral-machine-state@6
+artifact_id: FF6-CURRENT-MACHINE-STATE-EVENT-31
 visibility: internal
 publish_allowed: false
 generated_by: codex
@@ -9,7 +9,11 @@ repository:
   forge: GitLab
   remote: origin
   branch: main
-  implementation_commit: e13e103de0bb789ff51a8e931af0fb649474be20
+  control_checkpoint_commit: 240474babf868fa141850d4ed4792d3a8269ef28
+  attempted_implementation_commit: d99fc6bf3679cd39396afbf5621847e3009ddf31
+  last_accepted_implementation_commit: e13e103de0bb789ff51a8e931af0fb649474be20
+  observed_checkout_commit: 240474babf868fa141850d4ed4792d3a8269ef28
+  observed_origin_main_commit: 240474babf868fa141850d4ed4792d3a8269ef28
   implementation_pushed: true
   other_branches_authorized: false
   github_authorized: false
@@ -25,13 +29,13 @@ goal:
 
 controller:
   state: CONTRACT
-  transition_sequence: 30
-  event_id: FF6-EVENT-000030
-  event_hash: 2d365d013b94c386014d7e75813114de6d7a225e2a9e16d21a485a38cd2d9398
+  transition_sequence: 31
+  event_id: FF6-EVENT-000031
+  event_hash: 26f95f054774f35244a2edbfc08072156a1422acfb1e1d29c2c37a617dd90d55
   next_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
   next_task_state: WORK_IN_PROGRESS
   first_unmet_step: XLF-04
-  exact_microstep: XLF-04-BATCH-005-PARTIAL-002-B
+  exact_microstep: XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001
   parent_task: TC-FF6-PROGRAM-CAPABILITIES-001
   parent_task_state: NEEDS_REPAIR
 
@@ -50,20 +54,21 @@ program_truth:
     ubl: UNASSESSED
 
 workspace_transfer:
-  status: REMOTE_CLEAN_EVENT_30_LOCAL_FOREIGN_XLIFF_INFLIGHT
+  status: REMOTE_CLEAN_EVENT_31_LOCAL_HANDOVER_PROJECTION_ONLY
   remote_checkpoint: CLEAN_AND_RECONSTRUCTIBLE
   local_product_overlay: none
-  local_contract_test_overlay: FOREIGN_LIVE_OWNED
+  local_contract_test_overlay: none
   provider_credentials_transferable: false
   provider_leases_transferable: false
   execution_manifests_transferable: false
   incoming_provider_rule: REGISTER_FRESH_IDENTITY
   dirty_state_rule: PRESERVE_ATTRIBUTE_AND_REVALIDATE
   observation:
-    observed_at_utc: "2026-07-30T01:41:39Z"
+    observed_at_utc: "2026-07-30T02:14:00Z"
     owner_at_observation: agent-codex-20260730T013049-b59249
     owner_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
     owner_status: ACTIVE
+    owner_last_heartbeat_utc: "2026-07-30T02:06:52.594219Z"
     logical_lease: logical:XLF-04-BATCH-005-PARTIAL-002-B
     claimed_paths:
       - tests/tools/test_xliff_core_candidate_adjudication.py
@@ -72,17 +77,29 @@ workspace_transfer:
       - reports/sal-verification/xliff-core-candidate-adjudications.yaml
       - tools/spec/extract_sal_facts.py
       - reports/ff6/xliff-core-obligation-inventory.yaml
-    dirty_paths_observed:
-      - tests/tools/test_xliff_core_candidate_adjudication.py
-      - tests/tools/test_extract_sal_facts.py
-      - shared/sal-facts/evidence/xliff-core-candidate-decisions.yaml
-      - reports/sal-verification/xliff-core-candidate-adjudications.yaml
-      - tools/spec/extract_sal_facts.py
-      - reports/ff6/xliff-core-obligation-inventory.yaml
+      - reports/skills-rff6/skill-transcripts/test-driven-development-xliff-xlf04-core-batch-005-partial-002-b.json
+      - reports/skills-rff6/skill-transcripts/ingest-spec-sal-xliff-xlf04-core-batch-005-partial-002-b.json
+      - reports/skills-rff6/skill-transcripts/sal-pipeline-heal-xliff-xlf04-core-batch-005-partial-002-b.json
+    dirty_paths_observed: []
     freshness_rule: >-
       This is a timestamped observation, not a transferable lease. Requery the
-      coordination plane and GitLab before acting. Do not use these uncommitted
-      bytes as proof or stage them with the handover.
+      The attempted implementation and Event 31 control update are committed.
+      The listed leases are still not transferable. Requery the coordination
+      plane before selecting XLIFF or the UBL fallback.
+
+checkpoint_validation:
+  immutable_command: >-
+    .venv\Scripts\python.exe
+    plans\codex\handover\validate_committed_checkpoint.py --ref origin/main
+  shared_workspace_command: >-
+    .venv\Scripts\python.exe plans\codex\handover\validate_handover.py
+  immutable_expected_result: PASS
+  shared_workspace_observed_result: FAIL_HANDOVER_PROJECTION_ONLY
+  separation_rule: >-
+    The detached validation proves the committed checkpoint. The shared
+    workspace validation separately detects overlay drift. Handover-only
+    mutations are expected before this packet is committed; any other path
+    requires ownership classification.
 
 known_control_constraints:
   - gap_id: FF6-GAP-011
@@ -114,23 +131,28 @@ xliff:
     - XLF-04-BATCH-004
   active_batch: XLF-04-BATCH-005
   completed_partial: XLF-04-BATCH-005-PARTIAL-002-A
-  next_partial: XLF-04-BATCH-005-PARTIAL-002-B
+  next_partial: XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001
   candidate_census:
     path: reports/ff6/xliff-core-authority-candidate-census.yaml
     sha256: 24c1902b6387cc9fa3402f78392ba91c6e6656407719ec11cfaab1c4f3d22b9e
     count: 1130
   adjudication:
     path: reports/sal-verification/xliff-core-candidate-adjudications.yaml
-    sha256: 28399664d50afdd15e9f8b5ab2824a9566aa478fd0fcb18c97ce1451fd90d521
-    decisions: 1
-    verified_dispositions: 1
-    unverified_dispositions: 1129
+    mechanical_sha256: 3d9c81773ceaddaae97a55fc804bd35efaf6501fe24c9fae8bf941fe338ceb01
+    mechanical_decisions: 2
+    mechanically_reported_verified: 2
+    production_accepted_dispositions: 1
+    production_open_dispositions: 1129
+    production_acceptance: REJECTED_INCREMENT
   obligation_inventory:
     path: reports/ff6/xliff-core-obligation-inventory.yaml
-    sha256: 83b9f2da44b33a93cea6740e7510b32b961dda80791f9f148c163e913922f5e0
+    mechanical_sha256: d5f77d95c703f62766e4ef4178ee3d811147df06844f0eacdec372bbd51cb351
     expected: 105
-    source_bound: 26
-    missing: 79
+    mechanical_source_bound: 27
+    mechanical_missing: 78
+    production_accepted_source_bound: 26
+    production_accepted_missing: 79
+    production_acceptance: REJECTED_INCREMENT
     complete: false
   next_candidate:
     candidate_id: XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
@@ -152,6 +174,8 @@ parallel_ubl_checkpoint:
 truth_boundary:
   xlf_04_complete: false
   ubl_03_complete: false
-  product_source_changed_by_event_30: false
-  product_or_promotion_change_in_event_30: false
+  product_source_changed_by_event_31: false
+  product_or_promotion_change_in_event_31: false
+  rejected_attempt_preserved: true
+  rejected_attempt_counts_are_non_promoting: true
   products_certified: 0

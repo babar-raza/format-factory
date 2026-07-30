@@ -1,5 +1,5 @@
 ---
-artifact_id: FF6-CURRENT-SHIFT-HANDOVER-EVENT-30
+artifact_id: FF6-CURRENT-SHIFT-HANDOVER-EVENT-31
 artifact_type: provider_shift_handover
 visibility: internal
 publish_allowed: false
@@ -7,34 +7,34 @@ generated_by: codex
 generated_at: 2026-07-30
 ---
 
-# Codex to Claude shift handover — Event 30
+# Codex to Claude shift handover — Event 31
 
 ## Live transfer condition
 
-The durable remote checkpoint is clean Event 30. During this handover refresh,
-a separate live Codex identity began Partial-002-B and acquired the exact
-logical/path leases. At `2026-07-30T01:41:39Z`, four of its contract/test
-paths were initially dirty; by `2026-07-30T01:45:01Z`, all six claimed paths
-were dirty. Those bytes are
-foreign in-flight work: this handover did not edit, stage, validate, or claim
-them.
+The durable remote checkpoint is clean Event 31 at control commit
+`240474babf868fa141850d4ed4792d3a8269ef28`. The prior executor committed
+attempt `d99fc6bf3679cd39396afbf5621847e3009ddf31`, then correctly recorded
+that its mechanical green result failed the hardened semantic acceptance
+contract. The attempt is preserved, not promoted.
 
-Claude must requery coordination and GitLab. If that executor has committed a
-new implementation/event checkpoint, validate and follow the newer event. If
-it remains live, do not overlap XLIFF; use only the serialized UBL fallback.
-If it is no longer live but the bytes remain, use governed stale takeover and
-recapture baselines before writing. A clean checkout can always reconstruct
-Event 30, but it must not erase this shared-worktree overlay.
+The executor still held XLIFF leases at the last observation even though its
+bytes were committed. Claude must requery coordination and GitLab. If the
+owner remains live, do not overlap XLIFF; use only the serialized UBL
+fallback. If it is no longer live, acquire fresh leases and baselines. A clean
+checkout reconstructs Event 31 without provider-local state.
 
 ## Outcome
 
-Codex completed the inherited Partial-002-A RED cycle, committed the bounded
-implementation as `e13e103de0bb789ff51a8e931af0fb649474be20`, pushed it to
-GitLab `origin/main`, replayed its generated artifacts from the immutable
-commit, and appended native Event 30. The current task remains
-`WORK_IN_PROGRESS`.
+Codex preserved both sides of the truth:
 
-## Implemented changes
+- Event 30 and `e13e103d` remain the last accepted XLIFF boundary.
+- `d99fc6bf` remains an auditable, mechanically passing but semantically
+  rejected attempt.
+- Event 31 records the contradiction and exact repair.
+
+The current task remains `WORK_IN_PROGRESS`.
+
+## Accepted changes through Event 30
 
 - New `xliff_core_candidate_adjudication.py` compiler and validator.
 - Separate durable decision source and generated adjudication projection.
@@ -45,7 +45,7 @@ commit, and appended native Event 30. The current task remains
 - Batch 003 output remains byte-identical.
 - Nine proof-drift classes and malformed-decision controls.
 
-## Evidence
+## Accepted evidence
 
 ```text
 implementation commit: e13e103de0bb789ff51a8e931af0fb649474be20
@@ -76,16 +76,21 @@ The broader mission then still requires production implementations,
 interoperability, packaging, cross-platform installed-wheel proof,
 certification, extraction, and release preparation for all six libraries.
 
-## Exact next task
+## Rejected attempt and exact next task
 
-Execute Partial-002-B for
+The rejected attempt reported 27/105 rows and two verified dispositions, but
+those numbers are non-promoting. It selected generic `INLINE-PC`, omitted the
+reciprocal decision, and overclaimed XLIFF 2.0.
+
+Execute `XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001` for
 `XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1`. Its direct rule requires paired
 `subFlowsStart` and `subFlowsEnd` attributes on `pc`. Independently adjudicate
 the direct semantic owner; reject incidental ancestor and generic-validator
 overmapping; write RED controls first.
 
-See [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml) and
-[event-30/RUNBOOK.md](event-30/RUNBOOK.md).
+See [EVENT-31-DELTA.md](EVENT-31-DELTA.md),
+[NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml), and
+[event-31/RUNBOOK.md](event-31/RUNBOOK.md).
 
 ## Provider transfer rules
 
@@ -98,7 +103,22 @@ See [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml) and
   native event.
 - A later provider resumes from the latest valid event, never this prose alone.
 
-The remote shift boundary is clean and machine-reconstructible. The shared
-local worktree is not currently a clean transfer boundary because a different
-live executor owns an XLIFF overlay. Handover projection files remain separate
-from implementation so no packet commit may absorb those foreign bytes.
+The remote shift boundary is clean and machine-reconstructible. Provider
+leases remain off-repo and non-transferable. Handover projection files remain
+separate from implementation.
+
+## Two independent validation questions
+
+Do not collapse repository proof and worktree ownership into one verdict:
+
+1. Run `validate_committed_checkpoint.py --ref origin/main`. It uses a
+   temporary detached worktree, creates no branch, and proves the immutable
+   GitLab checkpoint without reading the foreign overlay.
+2. Run `validate_handover.py` in the shared checkout. Before this packet is
+   committed, it may fail on these handover-only mutations. After the packet
+   commit, any failure must be classified and cannot be hidden by cleanup.
+
+Claude must record both results. Execution may proceed only on paths not owned
+by another live agent. If XLIFF remains owned, continue
+`UBL-03-PARTIAL-002` exactly as defined in
+[PARALLEL-UBL-CHECKPOINT.yaml](PARALLEL-UBL-CHECKPOINT.yaml).
