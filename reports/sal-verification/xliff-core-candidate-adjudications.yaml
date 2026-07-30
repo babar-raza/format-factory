@@ -10,16 +10,17 @@ denominator_sha256: 264e0092b27789dca60e210233f99088ee90c7e747c0765cf9c99286a5b4
 sal_store_sha256: 1a94baa5f19e4d09f438a6325580e5e9d2969be8529d72103d9d849486061fe7
 sal_manifest_sha256: 3a961199eb156658c978f36361f483498aefcd5e7a1582c14df6577a53410b9a
 sal_receipt_sha256: 911ebf4d9701af71d117af2a2347e0b2e102a5b8f5104af9e162355dd095daa2
-adjudicator_sha256: 0b37a291178baee0ecb5add32360624cdc5c6f3c10a89988b2cccc8bd6348f67
+adjudicator_sha256: 240ca789f93c81e94f32852399ce7ae225377516ee46dbfe2e568347ae00db05
 candidate_census_artifact_id: FF6-XLIFF-CORE-AUTHORITY-CANDIDATE-CENSUS
 denominator_artifact_id: FF6-XLIFF-CORE-OBLIGATION-DENOMINATOR
 candidate_count: 1130
-decision_count: 3
-verified_disposition_count: 3
-unverified_disposition_count: 1127
+decision_count: 4
+verified_disposition_count: 4
+unverified_disposition_count: 1126
 disposition_verification_complete: false
 verified_candidate_ids:
 - XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
+- XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92
 - XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF
 - XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90
 accepted_obligation_candidate_ids:
@@ -28,6 +29,8 @@ accepted_obligation_candidate_ids:
   SAL-XLIFF-CORE-INLINE-PAIRING-001:
   - XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
   - XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF
+  SAL-XLIFF-CORE-REFERENCE-SKELETON-HREF-001:
+  - XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92
 decisions:
 - decision_id: XLF-ADJ-CORE-SCHEMATRON-0002
   candidate_id: XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
@@ -78,6 +81,43 @@ decisions:
     are downstream or broader than the direct inline-pairing semantic owner.
   outcome: VERIFIED_AUTHORITY_DISPOSITION
   decision_sha256: e8262f37dd99df2942a437422948ce19586b8146ab40a1ca6f3b00cec0e99c80
+- decision_id: XLF-ADJ-CORE-SCHEMATRON-0004
+  candidate_id: XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92
+  candidate_content_sha256: 647b9f67a1c64e9e9030652e9c527666fa8aadeb521ed48fda87cebcecbcb6b1
+  proposal_sha256: 5efe9706b8e5b2948b0ef8272387fc02c697639952e96a5fa2461fe08b5937a7
+  proposed_obligation_ids:
+  - SAL-XLIFF-CORE-AGENT-VALIDATOR-001
+  - SAL-XLIFF-CORE-REFERENCE-SKELETON-HREF-001
+  authority_occurrences:
+  - profile: xliff_2.1
+    source_id: SRC-XLF-002
+    source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    member: schemas/xliff_core_2.1.sch
+    member_sha256: d4275f2d2574f892624bcd8f83bcc3001c75d623e4eb36896d15d147f16ed7a2
+    location: schematron/rule[11]/report[1]
+    occurrence_sha256: bd3194ac5b25856e984d3eec9c38cb76f8b912fb63679034e236b766b8f6ca77
+  accepted_obligation_ids:
+  - SAL-XLIFF-CORE-REFERENCE-SKELETON-HREF-001
+  unproposed_accepted_obligation_ids: []
+  rejected_obligations:
+  - obligation_id: SAL-XLIFF-CORE-AGENT-VALIDATOR-001
+    reason_code: DOWNSTREAM_CAPABILITY_NOT_DIRECT_SEMANTIC_OWNER
+    reason: A conforming validator enforces this report, but the report establishes only the skeleton
+      href and content constraint.
+  sal_proofs:
+  - fact_id: SAL-XLIFF-00017
+    claim_sha256: 330431735b8ae983fe481f2c64a05598cd91a4bb264a9c22eb599ab320bb9642
+    fact_proof_sha256: f9f5252860287d3701aeaa2a0a2f70a6291698a7a95266a46b336aa7a5249b84
+  authority_reason: The exact report rejects a skeleton that has neither href nor child content. Its direct
+    semantic owner is the skeleton href/content reference obligation; validator behavior is downstream
+    and element context alone does not establish the broader hierarchy obligation.
+  outcome: VERIFIED_AUTHORITY_DISPOSITION
+  unproposed_rejected_obligations:
+  - obligation_id: SAL-XLIFF-CORE-HIERARCHY-SKELETON-001
+    reason_code: ELEMENT_CONTEXT_NOT_HIERARCHY_RULE
+    reason: The skeleton context identifies the element whose content and href are constrained; it establishes
+      no parent-child placement or cardinality rule.
+  decision_sha256: 86952f46918d01391afc897cc351317cc4586f3e8aed3a0f3764f7ba3205bd68
 - decision_id: XLF-ADJ-CORE-SCHEMATRON-0003
   candidate_id: XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF
   candidate_content_sha256: 246f6e9e4c64fe142760045dbca69070405ae50f552b34387ce8709c3c7226e3
@@ -180,4 +220,4 @@ status: PARTIAL_VERIFIED
 truth_boundary: Only listed content-addressed decisions are verified. Generated candidate proposals remain
   non-promoting, and this partial artifact does not complete XLF-04.
 input_closure_sha256: 4d693ecea4e0881e776191d6c960a91c0d4c840717cc8267c6c014c164a415dc
-decision_set_sha256: cf6175bef63fea3cbdf41f6550b86ad70ec3277bbb1601781fdf993644f45161
+decision_set_sha256: 2df1907ce20f5a22385bae5a532d0a1f20701bd7cc658c1b6f384e7ea0f69218

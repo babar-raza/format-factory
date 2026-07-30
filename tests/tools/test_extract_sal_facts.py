@@ -32,6 +32,10 @@ TARGET_LANGUAGE_OBLIGATION_ID = (
 )
 INLINE_PC_OBLIGATION_ID = "SAL-XLIFF-CORE-INLINE-PC-001"
 INLINE_PAIRING_OBLIGATION_ID = "SAL-XLIFF-CORE-INLINE-PAIRING-001"
+SKELETON_CANDIDATE_ID = "XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92"
+SKELETON_REFERENCE_OBLIGATION_ID = (
+    "SAL-XLIFF-CORE-REFERENCE-SKELETON-HREF-001"
+)
 SUBFLOW_PAIR_CANDIDATE_IDS = {
     "XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1",
     "XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF",
@@ -1309,13 +1313,13 @@ def test_cli_batch_five_compiles_only_reciprocally_adjudicated_pairing_obligatio
 
     assert extractor.main(args) == 0
     inventory = yaml.safe_load(output.read_bytes())
-    assert inventory["obligation_count"] == 27
-    assert inventory["resolved_expected_obligation_count"] == 27
-    assert len(inventory["missing_expected_obligation_ids"]) == 78
+    assert inventory["obligation_count"] == 28
+    assert inventory["resolved_expected_obligation_count"] == 28
+    assert len(inventory["missing_expected_obligation_ids"]) == 77
     assert inventory["complete"] is False
-    assert inventory["adjudication_input"]["decision_count"] == 3
-    assert inventory["adjudication_input"]["verified_disposition_count"] == 3
-    assert inventory["adjudication_input"]["unverified_disposition_count"] == 1127
+    assert inventory["adjudication_input"]["decision_count"] == 4
+    assert inventory["adjudication_input"]["verified_disposition_count"] == 4
+    assert inventory["adjudication_input"]["unverified_disposition_count"] == 1126
 
     rows = {row["obligation_id"]: row for row in inventory["obligations"]}
     assert INLINE_PC_OBLIGATION_ID not in {
@@ -1339,6 +1343,22 @@ def test_cli_batch_five_compiles_only_reciprocally_adjudicated_pairing_obligatio
         location["section_id"] == "pc"
         and len(location["source_text_sha256"]) == 64
         for location in pairing["authority_locations"]
+    )
+    skeleton = rows[SKELETON_REFERENCE_OBLIGATION_ID]
+    assert skeleton["introduced_in_batch"] == "XLF-04-BATCH-005"
+    assert skeleton["owner"] == "core:references"
+    assert skeleton["category"] == "identifiers_references_inheritance"
+    assert skeleton["stable_profiles"] == ["xliff_2.0", "xliff_2.1"]
+    assert skeleton["adjudication_candidate_ids"] == [SKELETON_CANDIDATE_ID]
+    assert "href is absent" in skeleton["normalized_rule"]
+    assert "non-empty embedded content" in skeleton["normalized_rule"]
+    assert {
+        location["profile"] for location in skeleton["authority_locations"]
+    } == {"xliff_2.0", "xliff_2.1"}
+    assert all(
+        location["section_id"] == "skeleton"
+        and len(location["source_text_sha256"]) == 64
+        for location in skeleton["authority_locations"]
     )
     assert extractor.main([*args, "--check"]) == 0
 

@@ -3699,6 +3699,12 @@ def _default_core_obligation_seeds(
         "XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1",
         "XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF",
     }
+    batch_five_skeleton_reference_id = (
+        "SAL-XLIFF-CORE-REFERENCE-SKELETON-HREF-001"
+    )
+    batch_five_skeleton_candidate_id = (
+        "XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92"
+    )
     seeds.append(
         {
             "obligation_id": batch_five_target_language_id,
@@ -3776,6 +3782,48 @@ def _default_core_obligation_seeds(
                 "subFlowsStart and subFlowsEnd as a pair; the ancestor names "
                 "in their XPath contexts do not establish hierarchy "
                 "obligations."
+            ),
+        }
+    )
+    seeds.append(
+        {
+            "obligation_id": batch_five_skeleton_reference_id,
+            "obligation_basis": "XLIFF_SPECIFICATION",
+            "introduced_in_batch": "XLF-04-BATCH-005",
+            "stable_profiles": ["xliff_2.0", "xliff_2.1"],
+            "owner": "core:references",
+            "category": "identifiers_references_inheritance",
+            "normalized_rule": (
+                "When href is absent, require the skeleton element to contain "
+                "non-empty embedded content."
+            ),
+            "requirement_class": "SEMANTIC_CONSTRAINT",
+            "normative_level": "MUST",
+            "authority_locations": locations(
+                "skeleton",
+                "The attribute href is required if and only if",
+            ),
+            "adjudication_candidate_ids": [
+                batch_five_skeleton_candidate_id
+            ],
+            "evidence_requirements": {
+                "positive": [
+                    "accept a skeleton without href when it contains embedded "
+                    "content"
+                ],
+                "rejection": [
+                    "reject an empty skeleton when href is absent"
+                ],
+            },
+            "interpretation_note": (
+                "Independent adjudication XLF-ADJ-CORE-SCHEMATRON-0004 and "
+                "verified SAL fact SAL-XLIFF-00017 establish the no-href "
+                "direction of the skeleton reference rule. The identical "
+                "normative skeleton paragraph is independently located and "
+                "hashed in both pinned stable authorities; XLIFF 2.0 "
+                "applicability is not inferred from the 2.1 Schematron. The "
+                "candidate does not establish generic validator behavior or "
+                "skeleton hierarchy/cardinality."
             ),
         }
     )

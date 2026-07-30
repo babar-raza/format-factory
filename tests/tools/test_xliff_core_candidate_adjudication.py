@@ -52,6 +52,9 @@ SUBFLOW_PAIR_RECIPROCAL_CANDIDATE_ID = (
 )
 INLINE_PC_ID = "SAL-XLIFF-CORE-INLINE-PC-001"
 INLINE_PAIRING_ID = "SAL-XLIFF-CORE-INLINE-PAIRING-001"
+SKELETON_CANDIDATE_ID = "XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92"
+SKELETON_REFERENCE_ID = "SAL-XLIFF-CORE-REFERENCE-SKELETON-HREF-001"
+SKELETON_HIERARCHY_ID = "SAL-XLIFF-CORE-HIERARCHY-SKELETON-001"
 REJECTED_PROPOSAL_IDS = {
     "SAL-XLIFF-CORE-AGENT-VALIDATOR-001":
         "DOWNSTREAM_CAPABILITY_NOT_DIRECT_SEMANTIC_OWNER",
@@ -352,11 +355,178 @@ def test_subflow_pair_adjudication_requires_both_reciprocal_decisions() -> None:
             SUBFLOW_PAIR_RECIPROCAL_CANDIDATE_ID,
         ]
     )
-    assert evidence["decision_count"] == 3
-    assert evidence["verified_disposition_count"] == 3
+    assert evidence["decision_count"] == 4
+    assert evidence["verified_disposition_count"] == 4
     assert evidence["unverified_disposition_count"] == (
-        census["candidate_count"] - 3
+        census["candidate_count"] - 4
     )
+
+
+def _skeleton_decision() -> dict[str, Any]:
+    return {
+        "decision_id": "XLF-ADJ-CORE-SCHEMATRON-0004",
+        "candidate_id": SKELETON_CANDIDATE_ID,
+        "accepted_obligation_ids": [SKELETON_REFERENCE_ID],
+        "rejected_obligations": [
+            {
+                "obligation_id": "SAL-XLIFF-CORE-AGENT-VALIDATOR-001",
+                "reason_code": (
+                    "DOWNSTREAM_CAPABILITY_NOT_DIRECT_SEMANTIC_OWNER"
+                ),
+                "reason": (
+                    "A conforming validator enforces this report, but the "
+                    "report establishes only the skeleton href and content "
+                    "constraint."
+                ),
+            }
+        ],
+        "unproposed_rejected_obligations": [
+            {
+                "obligation_id": SKELETON_HIERARCHY_ID,
+                "reason_code": "ELEMENT_CONTEXT_NOT_HIERARCHY_RULE",
+                "reason": (
+                    "The skeleton context identifies the element whose "
+                    "content and href are constrained; it establishes no "
+                    "parent-child placement or cardinality rule."
+                ),
+            }
+        ],
+        "sal_fact_ids": ["SAL-XLIFF-00017"],
+        "authority_reason": (
+            "The exact report rejects a skeleton that has neither href nor "
+            "child content. Its direct semantic owner is the skeleton "
+            "href/content reference obligation; validator behavior is "
+            "downstream and element context alone does not establish the "
+            "broader hierarchy obligation."
+        ),
+    }
+
+
+def test_skeleton_href_adjudication_records_incidental_unproposed_owner() -> None:
+    module = _load_module()
+    census = _load_yaml(CENSUS_PATH)
+    denominator = _load_yaml(DENOMINATOR_PATH)
+    store = _load_yaml(SAL_STORE_PATH)
+    receipt = _load_yaml(SAL_RECEIPT_PATH)
+    candidate = next(
+        row
+        for row in census["candidates"]
+        if row["candidate_id"] == SKELETON_CANDIDATE_ID
+    )
+    assert candidate["stable_profiles"] == ["xliff_2.1"]
+    assert json.loads(candidate["occurrences"][0]["normalized_requirement"]) == {
+        "context": "xlf:skeleton",
+        "kind": "report",
+        "message": (
+            "'skeleton' element must not be empty when the 'href' attribute "
+            "is missing."
+        ),
+        "test": "not(@href) and not(child::node())",
+    }
+    assert set(candidate["disposition"]["obligation_ids"]) == {
+        "SAL-XLIFF-CORE-AGENT-VALIDATOR-001",
+        SKELETON_REFERENCE_ID,
+    }
+
+    artifact = module.compile_adjudication_artifact(
+        candidate_census=census,
+        candidate_census_sha256=_sha256(CENSUS_PATH),
+        denominator=denominator,
+        denominator_sha256=_sha256(DENOMINATOR_PATH),
+        sal_store=store,
+        sal_store_sha256=_sha256(SAL_STORE_PATH),
+        sal_manifest_sha256=_sha256(SAL_MANIFEST_PATH),
+        sal_receipt=receipt,
+        sal_receipt_sha256=_sha256(SAL_RECEIPT_PATH),
+        decisions=[_skeleton_decision()],
+    )
+
+    decision = artifact["decisions"][0]
+    assert decision["accepted_obligation_ids"] == [SKELETON_REFERENCE_ID]
+    assert decision["unproposed_accepted_obligation_ids"] == []
+    assert {
+        row["obligation_id"]: row["reason_code"]
+        for row in decision["rejected_obligations"]
+    } == {
+        "SAL-XLIFF-CORE-AGENT-VALIDATOR-001":
+            "DOWNSTREAM_CAPABILITY_NOT_DIRECT_SEMANTIC_OWNER"
+    }
+    assert decision["unproposed_rejected_obligations"] == [
+        {
+            "obligation_id": SKELETON_HIERARCHY_ID,
+            "reason_code": "ELEMENT_CONTEXT_NOT_HIERARCHY_RULE",
+            "reason": (
+                "The skeleton context identifies the element whose content "
+                "and href are constrained; it establishes no parent-child "
+                "placement or cardinality rule."
+            ),
+        }
+    ]
+    canonical_source = _load_yaml(DECISIONS_PATH)
+    canonical_decision = next(
+        row
+        for row in canonical_source["decisions"]
+        if row["candidate_id"] == SKELETON_CANDIDATE_ID
+    )
+    assert canonical_decision == _skeleton_decision()
+    accepted, evidence = module.validated_obligation_ids_from_paths(
+        adjudications_path=ADJUDICATION_PATH,
+        candidate_census_path=CENSUS_PATH,
+        denominator_path=DENOMINATOR_PATH,
+        sal_store_path=SAL_STORE_PATH,
+        sal_manifest_path=SAL_MANIFEST_PATH,
+        sal_receipt_path=SAL_RECEIPT_PATH,
+    )
+    assert SKELETON_REFERENCE_ID in accepted
+    assert SKELETON_HIERARCHY_ID not in accepted
+    assert evidence["accepted_obligation_candidate_ids"][
+        SKELETON_REFERENCE_ID
+    ] == [SKELETON_CANDIDATE_ID]
+    assert evidence["decision_count"] == 4
+    assert evidence["verified_disposition_count"] == 4
+    assert evidence["unverified_disposition_count"] == (
+        census["candidate_count"] - 4
+    )
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    ["unknown", "proposed", "accepted", "duplicate"],
+)
+def test_skeleton_unproposed_rejections_fail_closed(mutation: str) -> None:
+    module = _load_module()
+    census = _load_yaml(CENSUS_PATH)
+    denominator = _load_yaml(DENOMINATOR_PATH)
+    store = _load_yaml(SAL_STORE_PATH)
+    receipt = _load_yaml(SAL_RECEIPT_PATH)
+    decision = _skeleton_decision()
+    rejected = decision["unproposed_rejected_obligations"]
+    if mutation == "unknown":
+        rejected[0]["obligation_id"] = (
+            "SAL-XLIFF-CORE-NOT-IN-DENOMINATOR-001"
+        )
+    elif mutation == "proposed":
+        rejected[0]["obligation_id"] = (
+            "SAL-XLIFF-CORE-AGENT-VALIDATOR-001"
+        )
+    elif mutation == "accepted":
+        rejected[0]["obligation_id"] = SKELETON_REFERENCE_ID
+    else:
+        rejected.append(deepcopy(rejected[0]))
+
+    with pytest.raises(module.AdjudicationError):
+        module.compile_adjudication_artifact(
+            candidate_census=census,
+            candidate_census_sha256=_sha256(CENSUS_PATH),
+            denominator=denominator,
+            denominator_sha256=_sha256(DENOMINATOR_PATH),
+            sal_store=store,
+            sal_store_sha256=_sha256(SAL_STORE_PATH),
+            sal_manifest_sha256=_sha256(SAL_MANIFEST_PATH),
+            sal_receipt=receipt,
+            sal_receipt_sha256=_sha256(SAL_RECEIPT_PATH),
+            decisions=[decision],
+        )
 
 
 def test_generated_proposal_never_counts_as_verified_without_adjudication() -> None:

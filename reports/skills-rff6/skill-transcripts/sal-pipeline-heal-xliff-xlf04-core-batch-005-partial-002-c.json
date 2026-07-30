@@ -1,0 +1,72 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "sal-pipeline-heal-xliff-xlf04-core-batch-005-partial-002-c",
+  "skill_id": "sal-pipeline-heal",
+  "task_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+  "mode": "live",
+  "timestamp": "2026-07-30T06:05:51Z",
+  "inputs": {
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "taskcard_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "format_id": "xliff",
+    "root_cause_id": "FF6-XLIFF-INDEPENDENT-DISPOSITION-GAP",
+    "target_stage": "fact_id_repair",
+    "spec_cache_path": ".local/format-contracts/acquired/xliff",
+    "execution_manifest_id": "sfx-5f45a0c308929884",
+    "pre_mutation_authorization_id": "0f6f5e5b5cc5dc96",
+    "selected_candidate": "XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92",
+    "selected_candidate_content_sha256": "647b9f67a1c64e9e9030652e9c527666fa8aadeb521ed48fda87cebcecbcb6b1",
+    "requirement_sha256": "bebad4a8709a137a204c13bf6a058d6c38e512099ebcf5ed7119e2668f38f61d",
+    "occurrence_sha256": "bd3194ac5b25856e984d3eec9c38cb76f8b912fb63679034e236b766b8f6ca77"
+  },
+  "allowed_files": [
+    "tools/spec/xliff_core_candidate_adjudication.py",
+    "shared/sal-facts/evidence/xliff-core-candidate-decisions.yaml",
+    "reports/sal-verification/xliff-core-candidate-adjudications.yaml",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-xliff-xlf04-core-batch-005-partial-002-c.json"
+  ],
+  "actual_files_changed": [
+    "tools/spec/xliff_core_candidate_adjudication.py",
+    "shared/sal-facts/evidence/xliff-core-candidate-decisions.yaml",
+    "reports/sal-verification/xliff-core-candidate-adjudications.yaml",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-xliff-xlf04-core-batch-005-partial-002-c.json"
+  ],
+  "coordination_takeover": {
+    "prior_owner": "agent-codex-20260730T035429-0cf739",
+    "prior_process_present": false,
+    "all_paths_stale_before_takeover": true,
+    "lease_ids": [
+      "lease-c4e3b3a57c",
+      "lease-1d9e643b8e",
+      "lease-15508b2216"
+    ],
+    "exact_occurrence_hashes_matched_recovery_packet": true
+  },
+  "authority_reasoning": {
+    "accepted_direct_owner": "SAL-XLIFF-CORE-REFERENCE-SKELETON-HREF-001",
+    "rejected_generated_owner": "SAL-XLIFF-CORE-AGENT-VALIDATOR-001",
+    "rejected_incidental_denominator_owner": "SAL-XLIFF-CORE-HIERARCHY-SKELETON-001",
+    "stable_profile_basis": "The selected Schematron report is XLIFF 2.1-only. The same normative prose rule was independently located in the pinned XLIFF 2.0 and 2.1 Standard packages, so the obligation row applies to both stable profiles without inferring 2.0 from 2.1.",
+    "sal_fact_id": "SAL-XLIFF-00017"
+  },
+  "tests_run": [
+    "candidate adjudicator suite: 20 passed",
+    "extractor suite: 49 passed",
+    "adjudication --check: PASS, 4 decisions, digest 6d94628a2d70490493156cece2a9e146bd8b90b62f3919645e09d92d860edbd0",
+    "three clean adjudication generations: byte-identical",
+    "canonical SAL verification: PASS",
+    "XLIFF authority audit: 5 MATCH, 0 mismatch, 0 missing",
+    "Ruff, strict Mypy, Pyright 1.1.411, and py_compile: PASS",
+    "format-contract regression: 94 passed, one documented stateful CSV test deselected",
+    "production-program regression: 69 passed"
+  ],
+  "output_digests": {
+    "tools/spec/xliff_core_candidate_adjudication.py": "240ca789f93c81e94f32852399ce7ae225377516ee46dbfe2e568347ae00db05",
+    "shared/sal-facts/evidence/xliff-core-candidate-decisions.yaml": "f7c1b845f09e33f998f6ef9f98494b271b299a6c9257c2f31bfbf7ee91175759",
+    "reports/sal-verification/xliff-core-candidate-adjudications.yaml": "6d94628a2d70490493156cece2a9e146bd8b90b62f3919645e09d92d860edbd0"
+  },
+  "result": "PASS",
+  "truth_boundary": "Exactly one additional candidate disposition is independently verified. Generated proposals remain non-promoting, 1126 candidate dispositions remain open, and XLF-04 remains incomplete.",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

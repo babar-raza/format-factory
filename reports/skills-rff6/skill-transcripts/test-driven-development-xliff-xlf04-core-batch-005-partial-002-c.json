@@ -1,0 +1,85 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "test-driven-development-xliff-xlf04-core-batch-005-partial-002-c",
+  "skill_id": "test-driven-development",
+  "task_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+  "mode": "live",
+  "timestamp": "2026-07-30T06:05:51Z",
+  "inputs": {
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "microstep": "XLF-04-BATCH-005-PARTIAL-002-C",
+    "source_checkpoint": "d8ff8d87b57c6773f85af12611be044db3e01b89",
+    "execution_manifest_id": "sfx-eafcbb77b812d310",
+    "pre_mutation_authorization_id": "b56a67cfb18f96c2",
+    "coordination_agent": "agent-codex-20260730T054510-f766b4",
+    "takeover_lease_ids": [
+      "lease-086e9546f2",
+      "lease-9f68d6d097"
+    ],
+    "selected_candidate": "XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92"
+    ,
+    "target_behavior_description": "Adjudicate the XLIFF skeleton no-href constraint without overmapping validator or hierarchy obligations, then compile exactly one source-bound obligation."
+  },
+  "allowed_files": [
+    "tests/tools/test_extract_sal_facts.py",
+    "tests/tools/test_xliff_core_candidate_adjudication.py",
+    "reports/skills-rff6/skill-transcripts/test-driven-development-xliff-xlf04-core-batch-005-partial-002-c.json"
+  ],
+  "actual_files_changed": [
+    "tests/tools/test_extract_sal_facts.py",
+    "tests/tools/test_xliff_core_candidate_adjudication.py",
+    "reports/skills-rff6/skill-transcripts/test-driven-development-xliff-xlf04-core-batch-005-partial-002-c.json"
+  ],
+  "cycles": [
+    {
+      "behavior": "Represent a reasoned rejection for an independently discovered denominator obligation that was not one of the generated candidate proposals",
+      "red_replay": {
+        "method": "A disposable detached worktree at d8ff8d87 received only the two test-file diffs and exact current content-addressed authority inputs; production tools remained at the pre-change commit.",
+        "command": ".venv\\Scripts\\python.exe -m pytest tests/tools/test_xliff_core_candidate_adjudication.py::test_skeleton_href_adjudication_records_incidental_unproposed_owner -q",
+        "result": "1 failed at the intended behavior boundary with KeyError: unproposed_rejected_obligations"
+      },
+      "green": {
+        "command": ".venv\\Scripts\\python.exe -m pytest tests/tools/test_xliff_core_candidate_adjudication.py -q",
+        "result": "20 passed in 69.44s"
+      },
+      "refactor": "Centralized validation of proposed, accepted, rejected, and unproposed-rejected identity sets; no additional semantic behavior was introduced."
+    },
+    {
+      "behavior": "Compile the independently adjudicated skeleton href obligation without changing the 27 predecessor rows",
+      "red_replay": {
+        "method": "The same detached pre-change worktree ran the modified Batch 005 integration test against the pre-change adjudicator and extractor.",
+        "command": ".venv\\Scripts\\python.exe -m pytest tests/tools/test_extract_sal_facts.py::test_cli_batch_five_compiles_only_reciprocally_adjudicated_pairing_obligation -q",
+        "result": "1 failed because the pre-change adjudicator could not content-addressedly replay the new unproposed rejection field"
+      },
+      "green": {
+        "command": ".venv\\Scripts\\python.exe -m pytest tests/tools/test_extract_sal_facts.py -q",
+        "result": "49 passed in 83.02s"
+      },
+      "refactor": "Added only the named skeleton obligation seed and exact authority locations; no product behavior was added."
+    }
+  ],
+  "provenance_note": "The originating executor left an uncommitted, hash-recorded occurrence. Its conversational RED evidence is not transferable. This executor adopted the bytes only after all seven leases became stale, governed takeover succeeded, exact occurrence hashes matched the recovery packet, and RED was independently reproduced against the immutable pre-change commit.",
+  "tests_run": [
+    "detached pre-change RED replay for unproposed rejection: FAIL as intended with missing unproposed_rejected_obligations",
+    "detached pre-change RED replay for Batch 005 integration: FAIL as intended at content-addressed adjudication replay",
+    "candidate adjudicator suite: 20 passed",
+    "extractor suite: 49 passed"
+  ],
+  "final_verification_checklist": {
+    "new_behavior_has_tests": true,
+    "red_behavior_independently_reproduced": true,
+    "red_failed_for_intended_reason": true,
+    "minimal_green_implementation": true,
+    "affected_suites_pass": true,
+    "output_pristine": true,
+    "implementation_is_real": true,
+    "negative_and_boundary_cases_present": true
+  },
+  "output_digests": {
+    "tests/tools/test_extract_sal_facts.py": "d1612e6533cff14a6e07b0db580cbbbb969ecd6eb6163d3ed8c369f6b9c873b2",
+    "tests/tools/test_xliff_core_candidate_adjudication.py": "733cbdb574c6daa2639a8556c820129b002e03171ba54432406b517b5fba885b"
+  },
+  "result": "PASS",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

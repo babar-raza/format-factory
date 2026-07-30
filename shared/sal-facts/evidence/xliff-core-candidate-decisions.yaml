@@ -5,7 +5,7 @@ visibility: evidence-only
 publish_allowed: false
 generated_by: codex
 format_id: xliff
-batch_id: XLF-04-BATCH-005-PARTIAL-002-B-REPAIR-001
+batch_id: XLF-04-BATCH-005-PARTIAL-002-C
 decisions:
 - decision_id: XLF-ADJ-CORE-SCHEMATRON-0001
   candidate_id: XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90
@@ -115,3 +115,27 @@ decisions:
     of the mutual-presence constraint. The segment and ignorable names are
     applicability context, while the validator and pc element surfaces are
     downstream or broader than the direct inline-pairing semantic owner.
+- decision_id: XLF-ADJ-CORE-SCHEMATRON-0004
+  candidate_id: XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92
+  accepted_obligation_ids:
+  - SAL-XLIFF-CORE-REFERENCE-SKELETON-HREF-001
+  rejected_obligations:
+  - obligation_id: SAL-XLIFF-CORE-AGENT-VALIDATOR-001
+    reason_code: DOWNSTREAM_CAPABILITY_NOT_DIRECT_SEMANTIC_OWNER
+    reason: >-
+      A conforming validator enforces this report, but the report establishes
+      only the skeleton href and content constraint.
+  unproposed_rejected_obligations:
+  - obligation_id: SAL-XLIFF-CORE-HIERARCHY-SKELETON-001
+    reason_code: ELEMENT_CONTEXT_NOT_HIERARCHY_RULE
+    reason: >-
+      The skeleton context identifies the element whose content and href are
+      constrained; it establishes no parent-child placement or cardinality
+      rule.
+  sal_fact_ids:
+  - SAL-XLIFF-00017
+  authority_reason: >-
+    The exact report rejects a skeleton that has neither href nor child
+    content. Its direct semantic owner is the skeleton href/content reference
+    obligation; validator behavior is downstream and element context alone
+    does not establish the broader hierarchy obligation.

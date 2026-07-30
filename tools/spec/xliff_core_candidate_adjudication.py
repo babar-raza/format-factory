@@ -345,6 +345,59 @@ def _normalize_decision(
             f"{undispositioned}"
         )
     unproposed_accepted = sorted(accepted_id_set - proposal_ids)
+    unproposed_rejected_raw = _require_sequence(
+        raw.get("unproposed_rejected_obligations", []),
+        f"{decision_id}.unproposed_rejected_obligations",
+    )
+    unproposed_rejected: list[dict[str, str]] = []
+    unproposed_rejected_ids: list[str] = []
+    for item in unproposed_rejected_raw:
+        if not isinstance(item, Mapping):
+            raise AdjudicationError(
+                f"{decision_id} has a non-mapping unproposed rejection"
+            )
+        obligation_id = str(item.get("obligation_id", ""))
+        reason_code = str(item.get("reason_code", "")).strip()
+        reason = " ".join(str(item.get("reason", "")).split())
+        if (
+            not _OBLIGATION_ID.fullmatch(obligation_id)
+            or not reason_code
+            or len(reason) < 30
+        ):
+            raise AdjudicationError(
+                f"{decision_id} has an invalid or unreasoned "
+                "unproposed rejection"
+            )
+        unproposed_rejected_ids.append(obligation_id)
+        unproposed_rejected.append(
+            {
+                "obligation_id": obligation_id,
+                "reason_code": reason_code,
+                "reason": reason,
+            }
+        )
+    unproposed_rejected_id_set = set(unproposed_rejected_ids)
+    if len(unproposed_rejected_ids) != len(unproposed_rejected_id_set):
+        raise AdjudicationError(
+            f"{decision_id} rejects an unproposed obligation twice"
+        )
+    unknown_unproposed_rejections = sorted(
+        unproposed_rejected_id_set - expected_ids
+    )
+    if unknown_unproposed_rejections:
+        raise AdjudicationError(
+            f"{decision_id} rejects unknown unproposed obligations: "
+            f"{unknown_unproposed_rejections}"
+        )
+    invalid_unproposed_rejections = sorted(
+        unproposed_rejected_id_set
+        & (proposal_ids | accepted_id_set | rejected_id_set)
+    )
+    if invalid_unproposed_rejections:
+        raise AdjudicationError(
+            f"{decision_id} unproposed rejections overlap proposed or "
+            f"accepted obligations: {invalid_unproposed_rejections}"
+        )
 
     sal_fact_ids_raw = _require_sequence(
         raw["sal_fact_ids"],
@@ -397,6 +450,11 @@ def _normalize_decision(
         "authority_reason": authority_reason,
         "outcome": "VERIFIED_AUTHORITY_DISPOSITION",
     }
+    if unproposed_rejected:
+        normalized["unproposed_rejected_obligations"] = sorted(
+            unproposed_rejected,
+            key=lambda value: value["obligation_id"],
+        )
     normalized["decision_sha256"] = _digest(normalized)
     return normalized
 
@@ -551,6 +609,15 @@ def validate_adjudication_artifact(
                     if isinstance(proof, Mapping)
                 ],
                 "authority_reason": decision.get("authority_reason"),
+                **(
+                    {
+                        "unproposed_rejected_obligations": decision[
+                            "unproposed_rejected_obligations"
+                        ]
+                    }
+                    if "unproposed_rejected_obligations" in decision
+                    else {}
+                ),
             }
         )
     expected = compile_adjudication_artifact(
