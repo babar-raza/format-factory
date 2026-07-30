@@ -11,12 +11,14 @@ historical_projection: false
 
 # Current State, Root Causes, and Structural Weaknesses
 
-> **Current authority overlay: Event 32.** Native head
-> `FF6-EVENT-000032`. Event 31 remains the negative
+> **Current authority overlay: Event 33.** Native head
+> `FF6-EVENT-000033`. Event 31 remains the negative
 > control proving that deterministic mechanical evidence can encode the wrong
 > semantic owner and profile. Event 32 accepted the repaired boundary at
-> 27/105 obligations and 3/1,130 dispositions. This file explains causes and
-> redesign direction; executable state comes only from
+> 27/105 obligations and 3/1,130 dispositions. Event 33 binds implementation
+> `a79dad74` and 6,001 UBL local particle nodes without changing promotion or
+> the canonical XLIFF successor. This file explains causes and redesign
+> direction; executable state comes only from
 > [START-HERE.md](START-HERE.md),
 > [CURRENT-MACHINE-STATE.yaml](CURRENT-MACHINE-STATE.yaml), the native
 > journal, and [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml).

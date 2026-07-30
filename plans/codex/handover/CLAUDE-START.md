@@ -1,5 +1,5 @@
 ---
-artifact_id: FF6-CLAUDE-START-EVENT-32
+artifact_id: FF6-CLAUDE-START-EVENT-33
 visibility: internal
 publish_allowed: false
 generated_by: codex
@@ -15,19 +15,19 @@ Set-Location 'C:\Users\prora\OneDrive\Documents\GitHub\format-factory'
 git fetch origin main --prune
 git rev-parse HEAD
 git rev-parse origin/main
-git merge-base --is-ancestor 530f18fe89a6875276e8f4442351445564df80e9 origin/main
+git merge-base --is-ancestor a79dad747a5305b24c41f42437f1824b3d92ec67 origin/main
 .venv\Scripts\python.exe plans\codex\handover\validate_committed_checkpoint.py --ref origin/main
 .venv\Scripts\python.exe -m tools.supervisor.coordination --json status
 git status --short
 ```
 
 Expected before work: `HEAD` equals the fetched `origin/main`; the merge-base
-command proves Event 32 control commit
-`530f18fe89a6875276e8f4442351445564df80e9` is an ancestor; detached validation
-passes; accepted implementation
-`ff8f7d9f9ff1ff613be376e1361b0dd8304566e3` is an ancestor; journal head is
-`FF6-EVENT-000032` /
-`1b04941583c0015b42115b8d07ca748a744561a000833b38fc64412531164054`.
+command proves Event 33 source implementation
+`a79dad747a5305b24c41f42437f1824b3d92ec67` is an ancestor; detached validation
+passes; accepted XLIFF implementation
+`ff8f7d9f9ff1ff613be376e1361b0dd8304566e3` is also an ancestor; journal head is
+`FF6-EVENT-000033` /
+`eae356bca531c8cec38f57b012444d1032884b61eb5ef986018d7dd57c474988`.
 
 Then classify the shared worktree:
 
@@ -36,9 +36,11 @@ Then classify the shared worktree:
   and require PASS.
 - If dirty only under a current foreign agent's live leases, preserve those
   bytes, do not touch or stage them, and use the detached validation result.
-  Select only a disjoint fallback described below.
-- If any dirty path is unattributed, or its owner is stale without a governed
-  takeover, do not mutate it. Reconcile ownership first. Never clean, restore,
+- The seven XLIFF paths in `INFLIGHT-RECOVERY.yaml` are a stable, hash-bound,
+  non-promoting occurrence from an absent process. Do not mutate them until a
+  governed takeover revalidates every byte and independently replays its
+  claims. Use the disjoint UBL fallback meanwhile.
+- Any other unattributed dirty path fails the transfer. Never clean, restore,
   stash, reset, or silently absorb it.
 
 Then read, in order:
@@ -69,7 +71,8 @@ shows that lane is owned. The exact candidate is
 `XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92`. Start with a RED control; do not
 accept the generated mappings as authority.
 
-If XLIFF is live-owned, continue only the disjoint UBL-03 schema-graph task
+If XLIFF is live-owned or its preserved occurrence is not yet safely adopted,
+continue only the disjoint UBL-03 schema-graph task
 described in `PARALLEL-UBL-CHECKPOINT.yaml`, after registering the UBL task,
 claiming exact non-overlapping files, and revalidating its current commits.
 The fallback does not change the controller-selected XLIFF task.

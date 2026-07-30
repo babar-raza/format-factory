@@ -18,10 +18,12 @@ The goal, phase order, task semantics, evidence standard, and terminal
 condition do not change when the provider changes. Only the current executor
 identity and its leased files change.
 
-> **Current authority overlay: Event 32.** The native head is
-> `FF6-EVENT-000032`; accepted implementation is `ff8f7d9f`; the production
-> boundary is 27/105 source-bound obligations and 3/1,130 independently
-> verified dispositions; the exact successor is
+> **Current authority overlay: Event 33.** The native head is
+> `FF6-EVENT-000033`; the latest implementation checkpoint is `a79dad74`;
+> the accepted XLIFF boundary remains `ff8f7d9f` at 27/105 source-bound
+> obligations and 3/1,130 independently verified dispositions; UBL now has
+> 6,001 content-addressed local particle nodes and remains non-promoting.
+> The exact canonical successor is
 > `XLF-04-BATCH-005-PARTIAL-002-C`. Use
 > [CURRENT-MACHINE-STATE.yaml](CURRENT-MACHINE-STATE.yaml) and
 > [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml) for executable state.
@@ -84,9 +86,9 @@ Every shift records three independent state axes:
 
 | Axis | Question | Current answer |
 |---|---|---|
-| Mission state | What does the native journal authorize next? | `CONTRACT`, `FF6-EVENT-000032`, XLIFF `XLF-04-BATCH-005-PARTIAL-002-C` |
-| Immutable evidence state | What committed work can be replayed? | Event 32 accepts `ff8f7d9f` at 27/105 obligations and 3/1,130 dispositions; Event 31 remains a rejected-attempt negative control |
-| Workspace transfer state | Which current local bytes can the incoming executor own? | No product overlay exists; all required implementation bytes are reconstructible from GitLab `origin/main`, and the incoming provider obtains fresh leases |
+| Mission state | What does the native journal authorize next? | `CONTRACT`, `FF6-EVENT-000033`, XLIFF `XLF-04-BATCH-005-PARTIAL-002-C`; UBL partial 004 is the disjoint fallback |
+| Immutable evidence state | What committed work can be replayed? | Event 33 binds `a79dad74` and 6,001 UBL particle nodes; Event 32 accepts XLIFF `ff8f7d9f` at 27/105 obligations and 3/1,130 dispositions; Event 31 remains a rejected-attempt negative control |
+| Workspace transfer state | Which current local bytes can the incoming executor own? | Seven attributed XLIFF occurrence paths are preserved outside the checkpoint and require governed takeover plus independent replay; all accepted proof is reconstructible from GitLab `origin/main` |
 
 An immutable evidence commit without a journal transition is not a task-state
 transition. A dirty worktree with a passing test is not a committed checkpoint.

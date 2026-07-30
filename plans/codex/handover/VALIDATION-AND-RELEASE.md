@@ -11,14 +11,15 @@ historical_projection: true
 
 # Validation, Regression, and Release Contract
 
-> **Current authority overlay: Event 32.** Native head
-> `FF6-EVENT-000032`; current checkpoint facts and
+> **Current authority overlay: Event 33.** Native head
+> `FF6-EVENT-000033`; current checkpoint facts and
 > commands are in [START-HERE.md](START-HERE.md),
 > [CURRENT-MACHINE-STATE.yaml](CURRENT-MACHINE-STATE.yaml), and
 > [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml). The accepted boundary is
-> 27/105 obligations and 3/1,130 dispositions at `ff8f7d9f`. No release state
-> is implied here. Event 31 remains historical negative-control evidence, not
-> current routing.
+> 27/105 obligations and 3/1,130 dispositions at `ff8f7d9f`; the latest
+> implementation checkpoint `a79dad74` proves 6,001 UBL local particle nodes.
+> No release state is implied here. Event 31 remains historical
+> negative-control evidence, not current routing.
 
 Event 31 is a mandatory machinery negative control: deterministic output,
 passing tests, clean static analysis, and count growth did not override a

@@ -1,5 +1,5 @@
-schema: ff6/provider-neutral-machine-state@8
-artifact_id: FF6-CURRENT-MACHINE-STATE-EVENT-32
+schema: ff6/provider-neutral-machine-state@9
+artifact_id: FF6-CURRENT-MACHINE-STATE-EVENT-33
 visibility: internal
 publish_allowed: false
 generated_by: codex
@@ -8,8 +8,9 @@ repository:
   forge: GitLab
   remote: origin
   branch: main
-  checkpoint_commit: 530f18fe89a6875276e8f4442351445564df80e9
-  implementation_commit: ff8f7d9f9ff1ff613be376e1361b0dd8304566e3
+  checkpoint_commit: a79dad747a5305b24c41f42437f1824b3d92ec67
+  implementation_commit: a79dad747a5305b24c41f42437f1824b3d92ec67
+  accepted_xliff_implementation_commit: ff8f7d9f9ff1ff613be376e1361b0dd8304566e3
   head_must_equal_origin_main: true
   github_authorized: false
   other_branches_authorized: false
@@ -20,9 +21,9 @@ goal:
   terminal_condition_met: false
 controller:
   state: CONTRACT
-  transition_sequence: 32
-  event_id: FF6-EVENT-000032
-  event_hash: 1b04941583c0015b42115b8d07ca748a744561a000833b38fc64412531164054
+  transition_sequence: 33
+  event_id: FF6-EVENT-000033
+  event_hash: eae356bca531c8cec38f57b012444d1032884b61eb5ef986018d7dd57c474988
   task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
   task_state: WORK_IN_PROGRESS
   first_unmet_step: XLF-04
@@ -42,7 +43,7 @@ program_truth:
     safetensors: UNASSESSED
     ubl: UNASSESSED
 workspace_transfer:
-  status: CLEAN_REMOTE_RECONSTRUCTIBLE
+  status: REMOTE_RECONSTRUCTIBLE_WITH_PRESERVED_LOCAL_OCCURRENCE
   local_only_required_for_resume: false
   provider_identity_transferable: false
   leases_transferable: false
@@ -77,7 +78,7 @@ ubl:
   status: WORK_IN_PROGRESS
   completed_steps: [UBL-01, UBL-02]
   first_unmet_step: UBL-03
-  latest_commits: [730c8fdf359dd11d3b485738e7dac0d80e074adf, bdc66bd5df495710f8226d734f67c7a8d25cacf4]
+  latest_commits: [730c8fdf359dd11d3b485738e7dac0d80e074adf, bdc66bd5df495710f8226d734f67c7a8d25cacf4, a79dad747a5305b24c41f42437f1824b3d92ec67]
   schema_documents: 106
   document_roots: 91
   dependency_edges: 297
@@ -86,6 +87,11 @@ ubl:
   unresolved_global_references: 0
   ambiguous_global_references: 0
   closure_sha256: 2e43a3e83b1ad96ce287299cd7e7c6d86a4a4a02cc3423d30e18f0c9b4ee9fc3
+  local_particle_nodes: 6001
+  local_particle_edges: 6001
+  local_particle_owners: 468
+  particle_graph_sha256: 49b0c1ba5c75df0562ab6334fb14f8fe6dc4a9db31ff8e2b130d3bf04cf8eae1
+  next_microstep: UBL-03-PARTIAL-004-ANONYMOUS-TYPE-IDENTITY
   complete: false
 other_products:
   ipynb: {source_exists: true, certification: not_certified}

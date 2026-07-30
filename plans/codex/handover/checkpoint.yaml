@@ -1,5 +1,5 @@
-schema: ff6/provider-neutral-checkpoint@8
-artifact_id: FF6-HANDOVER-CHECKPOINT-EVENT-32
+schema: ff6/provider-neutral-checkpoint@9
+artifact_id: FF6-HANDOVER-CHECKPOINT-EVENT-33
 visibility: internal
 publish_allowed: false
 generated_by: codex
@@ -8,16 +8,17 @@ source_checkpoint:
   forge: GitLab
   remote: origin
   branch: main
-  repository_checkpoint: 530f18fe89a6875276e8f4442351445564df80e9
-  implementation_commit: ff8f7d9f9ff1ff613be376e1361b0dd8304566e3
+  repository_checkpoint: a79dad747a5305b24c41f42437f1824b3d92ec67
+  implementation_commit: a79dad747a5305b24c41f42437f1824b3d92ec67
+  accepted_xliff_implementation_commit: ff8f7d9f9ff1ff613be376e1361b0dd8304566e3
   packet_commit_rule: >-
     The commit containing this packet must descend from repository_checkpoint;
     the packet does not self-reference the hash of its own final commit.
 controller_checkpoint:
   controller_state: CONTRACT
-  event_sequence: 32
-  event_id: FF6-EVENT-000032
-  event_hash: 1b04941583c0015b42115b8d07ca748a744561a000833b38fc64412531164054
+  event_sequence: 33
+  event_id: FF6-EVENT-000033
+  event_hash: eae356bca531c8cec38f57b012444d1032884b61eb5ef986018d7dd57c474988
   task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
   task_state: WORK_IN_PROGRESS
   first_unmet_step: XLF-04
@@ -39,6 +40,11 @@ verified_ubl_boundary:
   global_reference_uses: 8926
   unresolved_references: 0
   ambiguous_references: 0
+  local_particle_nodes: 6001
+  local_particle_edges: 6001
+  local_particle_owners: 468
+  particle_graph_sha256: 49b0c1ba5c75df0562ab6334fb14f8fe6dc4a9db31ff8e2b130d3bf04cf8eae1
+  next_microstep: UBL-03-PARTIAL-004-ANONYMOUS-TYPE-IDENTITY
   ubl_03_complete: false
 truth_boundary:
   products_certified: 0
@@ -49,8 +55,8 @@ truth_boundary:
   release_transition: none
 mandatory_resume_validations:
   - GitLab main equality and ancestry
-  - native event chain through Event 32
+  - native event chain through Event 33
   - controller, taskcard, packet, adjudication, and inventory agreement
   - manifest hashes and structured parsing
-  - clean worktree with no local-only dependency
+  - detached clean packet proof plus exact classification of the seven preserved local XLIFF occurrence paths
   - fresh provider identity, exact leases, manifests, and mutation guard

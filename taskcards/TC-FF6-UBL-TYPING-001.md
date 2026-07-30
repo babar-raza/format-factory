@@ -30,15 +30,16 @@ production UBL library. It does not authorize product-source generation,
 product tests, package mutation, certification, promotion, release, or gates.
 
 The task is `WORK_IN_PROGRESS`, but it is not the controller-selected active
-task. Native Event 27 serializes verified completion of UBL-01 and UBL-02 as a
-parallel-safe checkpoint. XLIFF remains the canonical active task at
-XLF-04-BATCH-005. UBL may continue only as a disjoint, separately leased lane
-when coordination permits it. It must never mutate XLIFF paths or rewrite the
-native event head without serialized plan-control ownership.
+task. Native Event 33 serializes verified completion through
+`UBL-03-PARTIAL-003` as a parallel-safe checkpoint. XLIFF remains the canonical
+active task at `XLF-04-BATCH-005-PARTIAL-002-C`. UBL may continue only as a
+disjoint, separately leased lane when coordination permits it. It must never
+mutate XLIFF paths or rewrite the native event head without serialized
+plan-control ownership.
 
 ## Current checkpoint
 
-Detailed substate: `SCHEMA_GRAPH_ROOT_TYPE_BINDING_PARTIAL`.
+Detailed substate: `SCHEMA_GRAPH_LOCAL_PARTICLE_PARTIAL`.
 
 Completed:
 
@@ -49,14 +50,21 @@ Completed:
 - `UBL-03` bounded increment 001: the committed graph primitive parses all 106
   official XSD documents and deterministically binds all 91 document roots to
   their declared content types as 182 content-addressed nodes and 91 edges.
-  This is not completion of UBL-03.
+- `UBL-03` bounded increment 002: exact offline import/include closure contains
+  297 dependency edges, 3,788 unique global components, and 8,926 uniquely
+  resolved global QName references with zero unresolved or ambiguous uses.
+- `UBL-03` bounded increment 003: 6,001 content-addressed local particle nodes
+  and containment edges across 468 named owners preserve compositor trees,
+  order paths, occurrence, nillability, default, fixed, and form rules.
+  These increments do not complete UBL-03.
 
 First unmet step: `UBL-03`.
 
 Resume evidence:
 
-- native event: `FF6-EVENT-000027`;
-- implementation ancestors: `7b5cce4f`, `7fc49c29`;
+- native event: `FF6-EVENT-000033`;
+- implementation ancestors: `7b5cce4f`, `7fc49c29`, `f98d220a`, `730c8fdf`,
+  `bdc66bd5`, and `a79dad747a5305b24c41f42437f1824b3d92ec67`;
 - package/root census:
   `reports/ff6/ubl-package-root-census.yaml`;
 - census SHA-256:
@@ -64,21 +72,23 @@ Resume evidence:
 - SAL receipt: `reports/sal-verification/ubl.json`;
 - SAL receipt SHA-256:
   `2cc0f2cac163b7f42ab18bbe5220837d1f49a808904ac964c536085ca6d111a0`.
-- bounded graph implementation commit:
-  `f98d220a0a3903b1107de90b2e39bf480ec4b19d`;
-- bounded graph identity:
+- root/type graph identity:
   `7b754187690ce1bb04db62657cfb552653cb381a1bdd745a56856e58215af029`;
-- focused bounded verification: 14 tests passed, Ruff passed, Mypy passed,
-  Pyright 1.1.411 reported zero diagnostics, and three official-package runs
-  produced the same graph identity.
+- dependency/reference closure identity:
+  `2e43a3e83b1ad96ce287299cd7e7c6d86a4a4a02cc3423d30e18f0c9b4ee9fc3`;
+- local particle graph identity:
+  `49b0c1ba5c75df0562ab6334fb14f8fe6dc4a9db31ff8e2b130d3bf04cf8eae1`;
+- focused bounded verification: 25 tests passed, Ruff passed, strict Mypy
+  passed, Pyright 1.1.411 reported zero diagnostics, and three detached
+  official-package runs produced identical graphs.
 
-This checkpoint proves authority closure and the package/root denominator. It
-also proves only the root-to-declared-type slice of the reachable schema graph.
-It does not prove import/include closure, local particles, anonymous types,
-complete references, inheritance, facets, wildcards, annotations, the
-canonical graph artifact, deterministic naming contract, complete obligation
-denominator, reconciled ProductContract, product source, certification,
-promotion, release, or any gate.
+This checkpoint proves authority closure, the package/root denominator,
+root/type binding, dependency/reference closure, and the named-owner local
+particle surface. It does not prove anonymous types, complete group/wildcard
+semantics, inheritance, attributes, facets, substitutions, annotations, the
+canonical complete graph artifact, deterministic naming contract, complete
+obligation denominator, reconciled ProductContract, product source,
+certification, promotion, release, or any gate.
 
 ## Objective
 
@@ -208,14 +218,16 @@ Current resumable microstep:
 
 ```text
 UBL-03-PARTIAL-001 ROOT_TYPE_BINDING_COMPLETE
--> UBL-03-PARTIAL-002 IMPORT_INCLUDE_AND_REFERENCE_CLOSURE
+-> UBL-03-PARTIAL-002 IMPORT_INCLUDE_AND_REFERENCE_CLOSURE_COMPLETE
+-> UBL-03-PARTIAL-003 LOCAL_PARTICLE_OCCURRENCE_AND_ORDER_COMPLETE
+-> UBL-03-PARTIAL-004 ANONYMOUS_TYPE_IDENTITY
 ```
 
-The next executor must begin with one RED test for exact offline
-import/include closure and unique global-reference resolution. It must build
-on `f98d220a`, preserve the existing graph identities, and keep
-`reachable_schema_graph_complete: false`. Subsequent RED-GREEN cycles must
-cover each remaining bullet below. Do not emit
+The next executor must begin with one RED test for stable anonymous simple and
+complex type identities owned by exact schema paths. It must build on
+`a79dad747a5305b24c41f42437f1824b3d92ec67`, preserve all three existing graph
+identities, and keep `reachable_schema_graph_complete: false`. Subsequent
+RED-GREEN cycles must cover each remaining bullet below. Do not emit
 `reports/ff6/ubl-reachable-schema-graph.json` as canonical-complete evidence
 until the entire section's exit evidence passes.
 

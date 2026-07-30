@@ -1,4 +1,4 @@
-schema: ff6/next-microstep@3
+schema: ff6/next-microstep@4
 artifact_id: FF6-XLIFF-XLF04-BATCH005-PARTIAL002-C
 visibility: internal
 publish_allowed: false
@@ -6,10 +6,11 @@ generated_by: codex
 generated_at: '2026-07-30'
 mission_id: FF6-PRODUCTION-LIBRARIES-001
 source_checkpoint:
-  event_id: FF6-EVENT-000032
-  event_hash: 1b04941583c0015b42115b8d07ca748a744561a000833b38fc64412531164054
-  implementation_commit: ff8f7d9f9ff1ff613be376e1361b0dd8304566e3
-  checkpoint_commit: 530f18fe89a6875276e8f4442351445564df80e9
+  event_id: FF6-EVENT-000033
+  event_hash: eae356bca531c8cec38f57b012444d1032884b61eb5ef986018d7dd57c474988
+  checkpoint_implementation_commit: a79dad747a5305b24c41f42437f1824b3d92ec67
+  accepted_xliff_implementation_commit: ff8f7d9f9ff1ff613be376e1361b0dd8304566e3
+  checkpoint_commit: a79dad747a5305b24c41f42437f1824b3d92ec67
 task:
   task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
   parent_task_id: TC-FF6-PROGRAM-CAPABILITIES-001
@@ -57,7 +58,8 @@ required_skills:
   - ingest-spec-sal
   - plan-control
 required_execution:
-  - Revalidate Event 32, exact source/member/candidate digests, and baseline counts.
+  - Revalidate Event 33, the Event 32 accepted XLIFF boundary, exact source/member/candidate digests, and baseline counts.
+  - Attribute or adopt the seven preserved XLIFF occurrence paths through the governed coordination takeover and independent replay protocol before mutating them.
   - Create fresh skill manifests bound to this file's digest and exact paths.
   - Add RED tests for the no-href empty-skeleton report and ownership discrimination.
   - Add negative controls against generic-validator and incidental-context overmapping.
@@ -78,3 +80,12 @@ forbidden:
   - claiming XLIFF 2.0 applicability from XLIFF 2.1-only evidence
   - product source, certification, promotion, release, or gate mutation
   - GitHub push, non-main branch, foreign lease release, or dirty-state cleanup
+fallback:
+  when: XLIFF scope is live-owned or preserved occurrence bytes cannot yet be safely adopted
+  task_id: TC-FF6-UBL-TYPING-001
+  microstep: UBL-03-PARTIAL-004-ANONYMOUS-TYPE-IDENTITY
+  implementation_base: a79dad747a5305b24c41f42437f1824b3d92ec67
+  rule: >-
+    Continue only disjoint UBL schema-graph paths. Preserve all three accepted
+    UBL graph identities, keep reachable_schema_graph_complete false, and do
+    not change the controller-selected XLIFF task.

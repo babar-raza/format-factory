@@ -59,13 +59,17 @@ REFERENCE_DOC_PATHS = (
 )
 PARALLEL_UBL_PATH = "plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml"
 
-EXPECTED_EVENT_ID = "FF6-EVENT-000032"
+EXPECTED_EVENT_ID = "FF6-EVENT-000033"
 EXPECTED_EVENT_HASH = (
-    "1b04941583c0015b42115b8d07ca748a744561a000833b38fc64412531164054"
+    "eae356bca531c8cec38f57b012444d1032884b61eb5ef986018d7dd57c474988"
 )
-EXPECTED_CONTROL = "530f18fe89a6875276e8f4442351445564df80e9"
-EXPECTED_IMPLEMENTATION = "ff8f7d9f9ff1ff613be376e1361b0dd8304566e3"
+EXPECTED_SEQUENCE = 33
+EXPECTED_CONTROL = "a79dad747a5305b24c41f42437f1824b3d92ec67"
+EXPECTED_IMPLEMENTATION = "a79dad747a5305b24c41f42437f1824b3d92ec67"
+EXPECTED_XLIFF_IMPLEMENTATION = "ff8f7d9f9ff1ff613be376e1361b0dd8304566e3"
+EXPECTED_EVENT_TASK = "TC-FF6-UBL-TYPING-001"
 EXPECTED_TASK = "TC-FF6-XLIFF-PROFILE-SURFACE-001"
+EXPECTED_XLIFF_EVENT_ID = "FF6-EVENT-000032"
 EXPECTED_MICROSTEP = "XLF-04-BATCH-005-PARTIAL-002-C"
 EXPECTED_CANDIDATE = "XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92"
 EXPECTED_CANDIDATE_CONTENT_SHA256 = (
@@ -95,17 +99,15 @@ SHA256 = re.compile(r"^[0-9a-f]{64}$")
 LINK = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
 ALLOWED_DIRTY_PREFIXES = (
     "plans/codex/handover/",
-    "reports/skills-rff6/skill-transcripts/"
-    "plan-control-xliff-profile-surface-wip-009.json",
-    "reports/skills-rff6/skill-transcripts/"
-    "refresh-provider-neutral-handover-event-32",
+    "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-event-33",
 )
 ALLOWED_DIRTY_EXACT = {
     "plans/strategic/ff6/controller-state.yaml",
     "plans/strategic/ff6/events.jsonl",
-    "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
+    "taskcards/TC-FF6-UBL-TYPING-001.md",
     "taskcards/TC-FF6-HANDOVER-CLAUDE-001.md",
-    "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-event-32.json",
+    "reports/skills-rff6/skill-transcripts/plan-control-ubl-state-checkpoint-003.json",
+    "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-event-33.json",
 }
 
 
@@ -133,6 +135,17 @@ def _load_json(path: Path) -> dict[str, Any]:
     value = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(value, dict):
         raise ValidationFailure(f"{path.relative_to(REPO_ROOT)} is not an object")
+    return value
+
+
+def _load_yaml_at_ref(path: Path, ref: str) -> dict[str, Any]:
+    relative = path.relative_to(REPO_ROOT).as_posix()
+    result = _git("show", f"{ref}:{relative}")
+    if result.returncode != 0:
+        raise ValidationFailure(f"cannot load {relative} from {ref}")
+    value = yaml.safe_load(result.stdout.decode("utf-8"))
+    if not isinstance(value, dict):
+        raise ValidationFailure(f"{relative} at {ref} is not a mapping")
     return value
 
 
@@ -223,12 +236,12 @@ def _semantic_errors(
         sequence = value.get("event_sequence", value.get("transition_sequence"))
         _expect(errors, f"{label} event id", event_id, EXPECTED_EVENT_ID)
         _expect(errors, f"{label} event hash", event_hash, EXPECTED_EVENT_HASH)
-        _expect(errors, f"{label} event sequence", sequence, 32)
+        _expect(errors, f"{label} event sequence", sequence, EXPECTED_SEQUENCE)
 
     _expect(errors, "latest event id", latest.get("event_id"), EXPECTED_EVENT_ID)
     _expect(errors, "latest event hash", latest.get("event_hash"), EXPECTED_EVENT_HASH)
     _expect(errors, "latest state", latest.get("state_after"), "CONTRACT")
-    _expect(errors, "latest task", latest.get("task_id"), EXPECTED_TASK)
+    _expect(errors, "latest task", latest.get("task_id"), EXPECTED_EVENT_TASK)
     _expect(
         errors,
         "latest implementation",
@@ -241,7 +254,12 @@ def _semantic_errors(
         controller.get("last_verified_event", {}).get("event_hash"),
         EXPECTED_EVENT_HASH,
     )
-    _expect(errors, "controller sequence", controller.get("transition_sequence"), 32)
+    _expect(
+        errors,
+        "controller sequence",
+        controller.get("transition_sequence"),
+        EXPECTED_SEQUENCE,
+    )
     _expect(errors, "controller state", controller.get("controller_state"), "CONTRACT")
 
     _expect(
@@ -350,7 +368,7 @@ def _semantic_errors(
     _expect(
         errors,
         "event accepted dispositions",
-        event_evidence.get("candidate_dispositions_verified"),
+        event_evidence.get("active_task_accepted_candidate_dispositions"),
         3,
     )
 
@@ -387,13 +405,31 @@ def _semantic_errors(
         errors,
         "recovery product overlay",
         recovery.get("captured_workspace", {}).get("product_overlay_status"),
-        "NONE_CLEAN_CHECKPOINT",
+        "PRESERVED_FOREIGN_XLIFF_OCCURRENCE_NON_PROMOTING",
     )
     _expect(
         errors,
         "recovery local dependency",
         recovery.get("captured_workspace", {}).get("local_only_required_for_resume"),
         False,
+    )
+    _expect(
+        errors,
+        "UBL particle nodes",
+        machine.get("ubl", {}).get("local_particle_nodes"),
+        6001,
+    )
+    _expect(
+        errors,
+        "UBL particle owners",
+        machine.get("ubl", {}).get("local_particle_owners"),
+        468,
+    )
+    _expect(
+        errors,
+        "UBL particle identity",
+        machine.get("ubl", {}).get("particle_graph_sha256"),
+        "49b0c1ba5c75df0562ab6334fb14f8fe6dc4a9db31ff8e2b130d3bf04cf8eae1",
     )
     _expect(
         errors,
@@ -406,12 +442,24 @@ def _semantic_errors(
     return errors
 
 
-def _manifest_errors(manifest: Mapping[str, Any]) -> list[str]:
+def _manifest_errors(
+    manifest: Mapping[str, Any],
+    *,
+    recovery: Mapping[str, Any],
+) -> list[str]:
     errors: list[str] = []
     files = manifest.get("files")
     if not isinstance(files, list):
         return ["manifest files is not a list"]
     seen: set[str] = set()
+    occurrence_paths = {
+        row.get("path")
+        for row in recovery.get("captured_workspace", {}).get(
+            "occurrence_paths",
+            [],
+        )
+        if isinstance(row, Mapping) and isinstance(row.get("path"), str)
+    }
     for index, row in enumerate(files):
         if not isinstance(row, Mapping):
             errors.append(f"manifest file {index} is not a mapping")
@@ -429,7 +477,14 @@ def _manifest_errors(manifest: Mapping[str, Any]) -> list[str]:
         if not path.is_file():
             errors.append(f"manifest missing file: {relative}")
             continue
-        data = _lf_bytes(path)
+        if relative in occurrence_paths:
+            result = _git("show", f"{EXPECTED_IMPLEMENTATION}:{relative}")
+            if result.returncode != 0:
+                errors.append(f"manifest canonical blob missing: {relative}")
+                continue
+            data = result.stdout.replace(b"\r\n", b"\n")
+        else:
+            data = _lf_bytes(path)
         actual = hashlib.sha256(data).hexdigest()
         if digest != actual:
             errors.append(f"manifest digest mismatch: {relative}")
@@ -503,7 +558,11 @@ def _task_errors() -> list[str]:
     if EXPECTED_TASK not in serialized:
         errors.append("active task is absent from taskcards/index.yaml")
     text = XLIFF_TASK_PATH.read_text(encoding="utf-8")
-    for value in (EXPECTED_EVENT_ID, EXPECTED_MICROSTEP, EXPECTED_CANDIDATE):
+    for value in (
+        EXPECTED_XLIFF_EVENT_ID,
+        EXPECTED_MICROSTEP,
+        EXPECTED_CANDIDATE,
+    ):
         if value not in text:
             errors.append(f"active taskcard omits {value}")
     return errors
@@ -533,11 +592,13 @@ def _operational_doc_errors(documents: Mapping[str, str]) -> list[str]:
         "plans/codex/handover/START-HERE.md": (
             EXPECTED_EVENT_ID,
             EXPECTED_IMPLEMENTATION,
+            EXPECTED_XLIFF_IMPLEMENTATION,
             EXPECTED_MICROSTEP,
         ),
         "plans/codex/handover/CLAUDE-START.md": (
             EXPECTED_EVENT_ID,
             EXPECTED_IMPLEMENTATION,
+            EXPECTED_XLIFF_IMPLEMENTATION,
             EXPECTED_MICROSTEP,
         ),
         "plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md": (
@@ -559,6 +620,7 @@ def _operational_doc_errors(documents: Mapping[str, str]) -> list[str]:
         "plans/codex/handover/INFLIGHT-RECOVERY.yaml": (
             EXPECTED_EVENT_ID,
             EXPECTED_IMPLEMENTATION,
+            EXPECTED_XLIFF_IMPLEMENTATION,
         ),
         "plans/codex/handover/NEXT-MICROSTEP.yaml": (
             EXPECTED_EVENT_ID,
@@ -574,17 +636,22 @@ def _operational_doc_errors(documents: Mapping[str, str]) -> list[str]:
     for relative in REFERENCE_DOC_PATHS:
         text = documents.get(relative, "")
         for marker in (
-            "Current authority overlay: Event 32",
+            "Current authority overlay: Event 33",
             EXPECTED_EVENT_ID,
             "27/105",
             "3/1,130",
+            "6,001",
         ):
             if marker not in text:
-                errors.append(f"Event 32 overlay marker missing from {relative}: {marker}")
+                errors.append(f"Event 33 overlay marker missing from {relative}: {marker}")
     return errors
 
 
-def _git_errors(*, require_clean: bool) -> list[str]:
+def _git_errors(
+    *,
+    require_clean: bool,
+    recovery: Mapping[str, Any],
+) -> list[str]:
     errors: list[str] = []
     control = _git(
         "merge-base",
@@ -593,7 +660,7 @@ def _git_errors(*, require_clean: bool) -> list[str]:
         "origin/main",
     )
     if control.returncode != 0:
-        errors.append("Event 32 control commit is not an ancestor of origin/main")
+        errors.append("Event 33 source commit is not an ancestor of origin/main")
     ancestor = _git(
         "merge-base",
         "--is-ancestor",
@@ -602,6 +669,14 @@ def _git_errors(*, require_clean: bool) -> list[str]:
     )
     if ancestor.returncode != 0:
         errors.append("implementation commit is not an ancestor of origin/main")
+    xliff_ancestor = _git(
+        "merge-base",
+        "--is-ancestor",
+        EXPECTED_XLIFF_IMPLEMENTATION,
+        "origin/main",
+    )
+    if xliff_ancestor.returncode != 0:
+        errors.append("accepted XLIFF implementation is not an ancestor of origin/main")
     remote = _git("remote", "get-url", "origin")
     if remote.returncode != 0 or b"gitlab" not in remote.stdout.lower():
         errors.append("origin is not the GitLab remote")
@@ -610,12 +685,29 @@ def _git_errors(*, require_clean: bool) -> list[str]:
         errors.append("git status failed")
         return errors
     dirty: list[str] = []
+    occurrences = {
+        row.get("path"): row
+        for row in recovery.get("captured_workspace", {}).get(
+            "occurrence_paths",
+            [],
+        )
+        if isinstance(row, Mapping) and isinstance(row.get("path"), str)
+    }
     for raw in status.stdout.decode("utf-8", errors="replace").splitlines():
         path = raw[3:].replace("\\", "/")
         if " -> " in path:
             path = path.split(" -> ", 1)[1]
         dirty.append(path)
-        if not (
+        occurrence = occurrences.get(path)
+        if occurrence is not None:
+            actual = _sha256(REPO_ROOT / path)
+            expected = occurrence.get("occurrence_sha256")
+            if actual != expected:
+                errors.append(
+                    f"preserved occurrence digest mismatch: {path}: "
+                    f"expected {expected}, got {actual}"
+                )
+        elif not (
             path in ALLOWED_DIRTY_EXACT
             or any(path.startswith(prefix) for prefix in ALLOWED_DIRTY_PREFIXES)
         ):
@@ -697,8 +789,14 @@ def validate(*, require_clean: bool = False) -> dict[str, Any]:
     next_step = _load_yaml(NEXT_PATH)
     controller = _load_yaml(CONTROLLER_PATH)
     census = _load_yaml(CENSUS_PATH)
-    adjudication = _load_yaml(ADJUDICATION_PATH)
-    inventory = _load_yaml(INVENTORY_PATH)
+    adjudication = _load_yaml_at_ref(
+        ADJUDICATION_PATH,
+        EXPECTED_IMPLEMENTATION,
+    )
+    inventory = _load_yaml_at_ref(
+        INVENTORY_PATH,
+        EXPECTED_IMPLEMENTATION,
+    )
     events = _events()
     latest = events[-1]
     documents = _operational_documents()
@@ -729,12 +827,12 @@ def validate(*, require_clean: bool = False) -> dict[str, Any]:
             adjudication=adjudication,
             inventory=inventory,
         ),
-        *_manifest_errors(manifest),
+        *_manifest_errors(manifest, recovery=recovery),
         *_manifest_parse_errors(manifest),
         *_link_errors(manifest),
         *_task_errors(),
         *_operational_doc_errors(documents),
-        *_git_errors(require_clean=require_clean),
+        *_git_errors(require_clean=require_clean, recovery=recovery),
         *_negative_control_errors(base),
     ]
     return {

@@ -11,15 +11,16 @@ historical_projection: true
 
 # Provider-Neutral Shift and Resume Protocol
 
-> **Current authority overlay: Event 32.** Native head
-> `FF6-EVENT-000032`; current exact work is
+> **Current authority overlay: Event 33.** Native head
+> `FF6-EVENT-000033`; current exact work is
 > `XLF-04-BATCH-005-PARTIAL-002-C`, derived from
 > [START-HERE.md](START-HERE.md),
 > [CURRENT-MACHINE-STATE.yaml](CURRENT-MACHINE-STATE.yaml),
 > [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml), and the native FF6 journal.
-> The accepted boundary is 27/105 obligations and 3/1,130 dispositions at
-> implementation `ff8f7d9f`. Event 30-31 material below is preserved as
-> recovery history and is non-operative.
+> The accepted XLIFF boundary is 27/105 obligations and 3/1,130 dispositions
+> at implementation `ff8f7d9f`. The latest implementation checkpoint
+> `a79dad74` also proves 6,001 UBL local particle nodes. Event 30-31 material
+> below is preserved as recovery history and is non-operative.
 
 ## Invariant
 
@@ -91,9 +92,10 @@ disjoint, separately taskcarded scopes with non-overlapping leases.
 9. Run `validate_handover.py` in the shared checkout. Classify each failure as
    a committed-checkpoint mismatch, an attributed live overlay, or
    unexplained state. Do not use a live overlay as proof.
-10. If the XLIFF owner is still live, select only the serialized
-    `UBL-03-PARTIAL-002` fallback. If no owner remains, recover XLIFF through
-    the governed clean/stale-owner rules before claiming it.
+10. If the XLIFF occurrence is not yet adopted, select only the serialized
+    `UBL-03-PARTIAL-004` fallback. If its originating owner is absent, recover
+    XLIFF only through governed takeover, exact digest verification, and
+    independent replay before claiming or mutating it.
 11. Confirm no live owner remains on the selected lane's paths.
 12. Claim logical task scope, exact tracked paths, generated output
     directories, transcript, and artifact directory.

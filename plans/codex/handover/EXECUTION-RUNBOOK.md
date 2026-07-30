@@ -11,13 +11,15 @@ historical_projection: true
 
 # FF6 Execution Runbook
 
-> **Current authority overlay: Event 32.** Exact current inputs and the first
+> **Current authority overlay: Event 33.** Exact current inputs and the first
 > RED cycle are in [START-HERE.md](START-HERE.md),
 > [CURRENT-MACHINE-STATE.yaml](CURRENT-MACHINE-STATE.yaml), and
 > [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml). The accepted boundary is
 > 27/105 obligations and 3/1,130 dispositions at `ff8f7d9f`; the exact
-> microstep is `XLF-04-BATCH-005-PARTIAL-002-C`. Event 30-31 routes below are
-> preserved only as historical recovery examples and are non-operative.
+> microstep is `XLF-04-BATCH-005-PARTIAL-002-C`. The latest implementation
+> checkpoint `a79dad74` proves 6,001 UBL local particle nodes. Event 30-31
+> routes below are preserved only as historical recovery examples and are
+> non-operative.
 
 ## Mission state machine
 
@@ -33,7 +35,7 @@ and 78 expected obligation rows remain open. UBL-03 also remains incomplete.
 The active task is `TC-FF6-XLIFF-PROFILE-SURFACE-001`; the exact next
 microstep is `XLF-04-BATCH-005-PARTIAL-002-C`.
 
-The native journal head is `FF6-EVENT-000032`. Event 31 and `d99fc6bf` remain
+The native journal head is `FF6-EVENT-000033`. Event 31 and `d99fc6bf` remain
 mandatory negative controls: mechanically green output did not establish
 correct semantic ownership, reciprocal proof, or profile boundaries.
 
