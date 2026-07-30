@@ -103,7 +103,7 @@
     "promotion_changed": false
   },
   "validation": {
-    "handover_validator": "PASS_EVENT_31_60_FILES_9_NEGATIVE_CONTROLS",
+    "handover_validator": "PASS_EVENT_31_61_FILES_9_NEGATIVE_CONTROLS",
     "structured_parse": "PASS",
     "event_31_submanifest": "PASS",
     "python_compile": "PASS",
@@ -111,7 +111,8 @@
     "mypy": "PASS",
     "git_diff_check": "PASS",
     "require_clean_negative_control": "EXPECTED_FAIL_BEFORE_PACKET_COMMIT",
-    "committed_checkpoint_validation": "PENDING_UNTIL_PACKET_COMMIT"
+    "committed_checkpoint_validation": "PASS_TEMPORARY_DETACHED_WORKTREE_D819C35C1BE951B5AFA290496CC0FA2317C7669A",
+    "committed_checkpoint_shared_worktree_mutated": false
   },
   "truth_boundary": {
     "products_certified": 0,
@@ -131,7 +132,8 @@
     "Ruff: PASS",
     "Mypy: PASS",
     "git diff --check: PASS",
-    "require-clean precommit negative control: expected FAIL while packet files are uncommitted"
+    "require-clean precommit negative control: expected FAIL while packet files are uncommitted",
+    "origin/main at d819c35c1be951b5afa290496cc0fa2317c7669a: PASS in a temporary detached worktree; shared worktree not mutated"
   ],
   "result": "PASS",
   "generated_by": "codex",
