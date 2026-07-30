@@ -52,7 +52,8 @@
     "Inspected the adjudicator invariant and confirmed it prevents accepting denominator IDs absent from generated proposals.",
     "Compiled the hardened handover validator with py_compile: PASS.",
     "The primary shared-worktree validator failed closed, as designed, after a different live executor changed six leased XLIFF paths; no foreign byte was edited, staged, or accepted as proof.",
-    "The exact packet commit is required to pass validate_handover.py --self-test in a clean detached checkout before push."
+    "The exact packet commit 3a46c13eee8f3fc2afc97ea802a9bdb927866b70 passed validate_handover.py --self-test --require-clean in a detached clean checkout: 50 manifest files and 9 semantic negative controls.",
+    "GitLab origin/main advanced only from the verified parent d5ebbc88e478e3d906e121eede6ea8925211236d to packet commit 3a46c13eee8f3fc2afc97ea802a9bdb927866b70."
   ],
   "result": "PASS_WITH_FOREIGN_INFLIGHT_OVERLAY_PRESERVED",
   "ledger_entry_id": null,
@@ -60,6 +61,7 @@
     "event_id": "FF6-EVENT-000030",
     "event_hash": "2d365d013b94c386014d7e75813114de6d7a225e2a9e16d21a485a38cd2d9398",
     "implementation_commit": "e13e103de0bb789ff51a8e931af0fb649474be20",
+    "handover_source_commit": "3a46c13eee8f3fc2afc97ea802a9bdb927866b70",
     "direct_semantic_owner": "SAL-XLIFF-CORE-INLINE-PAIRING-001",
     "selected_candidate": "XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1",
     "reciprocal_candidate": "XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF",
