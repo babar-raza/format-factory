@@ -101,27 +101,65 @@ direct semantic owner. The ancestor names limit rule applicability; they do
 not automatically establish hierarchy behavior. The generic validator ID is a
 downstream capability, not necessarily the direct rule owner.
 
+The deeper read-only reassessment completed after Event 30 identifies the
+direct owner as `SAL-XLIFF-CORE-INLINE-PAIRING-001`. This is a finding to test,
+not a completed implementation. The current adjudicator contains a structural
+defect at `tools/spec/xliff_core_candidate_adjudication.py`: it requires the
+union of accepted and rejected IDs to equal the generated proposal set. That
+means an independent decision cannot accept a valid denominator obligation
+that the generator omitted. Repair that invariant before adding the decision;
+otherwise the new evidence would still be generator-constrained.
+
+The reverse direction is a separate candidate and must be proven separately:
+
+```text
+candidate: XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF
+digest:    246f6e9e4c64fe142760045dbca69070405ae50f552b34387ce8709c3c7226e3
+location:  schematron/rule[46]/assert[2]
+context:   xlf:pc[@subFlowsEnd][ancestor::xlf:segment|ancestor::xlf:ignorable]
+test:      @subFlowsStart
+occurrence:
+1443b1090a3a0f118c4c478fbabe27a2fef549a4c3ad0168d7b6ef0d95d8b80f
+```
+
+`SAL-XLIFF-00005` currently has no exact manifest assertion for either mutual
+presence rule. Repair its claim/evidence/receipt through `ingest-spec-sal` and
+`sal-pipeline-heal`; do not hand-edit only downstream hashes. The pair
+assertions are present in the pinned 2.1 Schematron. The pinned 2.0 package
+defines both attributes but the reassessment did not find the equivalent
+must-be-used-in-pair requirement. Therefore either find and bind separate 2.0
+normative authority or narrow this exact pairing obligation to `xliff_2.1`.
+Never project the 2.1 rule into 2.0 merely to preserve the current denominator.
+
 Required RED controls:
 
 1. Generated proposal alone cannot increment `verified_disposition_count`.
-2. `segment` and `ignorable` context tokens cannot create independent
+2. A valid denominator obligation omitted by the proposal can be independently
+   accepted, and the normalized artifact exposes it as unproposed.
+3. Every generated proposal ID is accepted or reasoned-rejected.
+4. `segment` and `ignorable` context tokens cannot create independent
    hierarchy obligations.
-3. `subFlowsStart` without `subFlowsEnd` is rejected.
-4. The reciprocal `subFlowsEnd` rule is handled from its own exact authority
+5. `subFlowsStart` without `subFlowsEnd` is rejected.
+6. `subFlowsEnd` without `subFlowsStart` is rejected from its exact authority
    occurrence, not inferred.
-5. Any candidate, occurrence, member, denominator, decision, SAL, or
+7. One reciprocal decision cannot compile a bidirectional pairing obligation;
+   both exact candidates are required.
+8. Any candidate, occurrence, member, denominator, decision, SAL, or
    adjudicator drift invalidates the projection.
-6. Duplicate, unknown, foreign-format, missing, or unreasoned decisions fail
+9. Duplicate, unknown, foreign-format, missing, or unreasoned decisions fail
    closed.
 
 ## Expected execution sequence
 
 1. Reproduce current green from immutable commit.
-2. Write a focused failing test for the new candidate decision.
-3. Inspect exact authority and canonical SAL facts.
-4. Add one reasoned decision, separating accepted and rejected mappings.
-5. Make the smallest reusable adjudication/compiler change.
-6. Regenerate only affected artifacts.
+2. Write focused failing tests for generator-omitted acceptance, reciprocal
+   proof, and one-sided compilation rejection.
+3. Inspect both exact authority occurrences and canonical `SAL-XLIFF-00005`.
+4. Repair the independent-adjudication invariant.
+5. Add two reasoned decisions that accept only the direct pairing owner and
+   explicitly reject every incidental proposal.
+6. Repair the canonical SAL proof and profile claim, then regenerate only
+   affected artifacts.
 7. Preserve all 26 existing obligation IDs and all 1,130 candidate IDs.
 8. Run focused tests, nine dependency drift classes, static checks,
    format-contract and production-program regression, SAL verification,

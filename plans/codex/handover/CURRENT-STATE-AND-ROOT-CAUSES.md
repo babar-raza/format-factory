@@ -322,6 +322,69 @@ The durable design is:
 The first bounded implementation cycle is fixed in
 `NEXT-MICROSTEP.yaml`. Mechanical copying into canonical SAL is prohibited.
 
+### Independent adjudication is still constrained by generator recall
+
+The deeper Event 30 handover audit found a second-order defect in the otherwise
+correctly separated adjudication layer. The validator currently enforces:
+
+```text
+accepted IDs union rejected IDs == generated proposal IDs
+```
+
+The visible symptom is that the selected sub-flow pair assertion can only
+accept one of the four IDs proposed by the keyword mapper. The direct
+denominator owner, `SAL-XLIFF-CORE-INLINE-PAIRING-001`, is absent from that
+proposal. The current code therefore rejects a semantically correct independent
+decision.
+
+The root cause is not the individual mapping. The proof model conflates two
+different completeness conditions:
+
+- proposal accountability: every proposed ID must be accepted or rejected;
+- semantic correction: a reviewer may identify a valid denominator ID that
+  the proposal missed.
+
+The structural weakness is generator recall acting as a hidden upper bound on
+verified truth. A deterministic proposal omission becomes impossible to repair,
+so reruns are consistent but consistently incomplete. This is precisely the
+kind of false stability that the proof graph is intended to prevent.
+
+The durable invariant is:
+
+- accepted IDs may be any current denominator IDs with valid SAL proof;
+- every generated proposal ID is accepted or explicitly reasoned-rejected;
+- accepted and rejected IDs do not overlap;
+- the normalized artifact exposes accepted-but-unproposed IDs;
+- candidate-family requirements can demand more than one exact authority
+  occurrence before a bidirectional obligation compiles.
+
+For this pair rule, candidate
+`XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1` proves start-to-end presence and
+candidate `XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF` proves end-to-start
+presence. A set of verified obligation IDs loses that distinction, so the
+extractor must retain candidate-to-obligation provenance and require both exact
+candidate IDs.
+
+### Profile claims currently outrun the exact pair authority
+
+The denominator currently marks `SAL-XLIFF-CORE-INLINE-PAIRING-001` for both
+XLIFF 2.0 and 2.1. The pinned 2.1 Schematron contains the two exact
+mutual-presence assertions. A read-only scan of the pinned 2.0 package found
+both attribute definitions in the XSD and prose, but no equivalent
+must-be-used-in-pair assertion. This is evidence of a current proof gap, not
+proof that 2.0 permits or forbids the combination.
+
+The durable response is fail-closed: locate a separate pinned 2.0 normative
+rule or narrow this exact obligation to 2.1. Reusing the 2.1 assertion for a
+2.0 profile would make a cross-profile evidence edge that survives reruns but
+has no authority basis.
+
+`SAL-XLIFF-00005` also describes Schematron pairing without exact evidence
+assertions for these two rules. Its claim, manifest predicates, receipt, fact
+proof, and dependent adjudication digests must move together through the
+registered SAL pipeline. Updating only the claim or only the downstream
+inventory would recreate the competing-authority problem.
+
 ## What must be preserved
 
 - All working source and tests, including characterization behavior.

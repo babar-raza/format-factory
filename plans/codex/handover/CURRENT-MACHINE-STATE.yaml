@@ -50,13 +50,39 @@ program_truth:
     ubl: UNASSESSED
 
 workspace_transfer:
-  status: CLEAN_IMPLEMENTATION_CHECKPOINT_EVENT_30_PENDING_PACKET_COMMIT
+  status: REMOTE_CLEAN_EVENT_30_LOCAL_FOREIGN_XLIFF_INFLIGHT
+  remote_checkpoint: CLEAN_AND_RECONSTRUCTIBLE
   local_product_overlay: none
+  local_contract_test_overlay: FOREIGN_LIVE_OWNED
   provider_credentials_transferable: false
   provider_leases_transferable: false
   execution_manifests_transferable: false
   incoming_provider_rule: REGISTER_FRESH_IDENTITY
   dirty_state_rule: PRESERVE_ATTRIBUTE_AND_REVALIDATE
+  observation:
+    observed_at_utc: "2026-07-30T01:41:39Z"
+    owner_at_observation: agent-codex-20260730T013049-b59249
+    owner_task: TC-FF6-XLIFF-PROFILE-SURFACE-001
+    owner_status: ACTIVE
+    logical_lease: logical:XLF-04-BATCH-005-PARTIAL-002-B
+    claimed_paths:
+      - tests/tools/test_xliff_core_candidate_adjudication.py
+      - tests/tools/test_extract_sal_facts.py
+      - shared/sal-facts/evidence/xliff-core-candidate-decisions.yaml
+      - reports/sal-verification/xliff-core-candidate-adjudications.yaml
+      - tools/spec/extract_sal_facts.py
+      - reports/ff6/xliff-core-obligation-inventory.yaml
+    dirty_paths_observed:
+      - tests/tools/test_xliff_core_candidate_adjudication.py
+      - tests/tools/test_extract_sal_facts.py
+      - shared/sal-facts/evidence/xliff-core-candidate-decisions.yaml
+      - reports/sal-verification/xliff-core-candidate-adjudications.yaml
+      - tools/spec/extract_sal_facts.py
+      - reports/ff6/xliff-core-obligation-inventory.yaml
+    freshness_rule: >-
+      This is a timestamped observation, not a transferable lease. Requery the
+      coordination plane and GitLab before acting. Do not use these uncommitted
+      bytes as proof or stage them with the handover.
 
 known_control_constraints:
   - gap_id: FF6-GAP-011

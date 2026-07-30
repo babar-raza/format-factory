@@ -136,55 +136,76 @@ No product wave may bypass the program dependencies.
    `XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1`; prove that incidental
    ancestor names cannot create hierarchy ownership and that the reciprocal
    pair rule comes from its own authority occurrence.
-5. Extend the existing separate content-addressed adjudication record and
+5. Add a RED control showing that the current proposal-set equality rejects a
+   correct unproposed denominator ID. Replace it with two invariants: every
+   proposal is dispositioned, while accepted IDs may also contain valid
+   denominator IDs with canonical SAL proof. Emit accepted-but-unproposed IDs
+   explicitly.
+6. Adjudicate both exact occurrences: selected rule[47]/assert[2] and
+   reciprocal candidate `XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF` at
+   rule[46]/assert[2]. Accept only
+   `SAL-XLIFF-CORE-INLINE-PAIRING-001` when proof passes. Explicitly reject
+   AGENT-VALIDATOR as downstream, segment/ignorable hierarchy as incidental
+   context, and INLINE-PC as element scope rather than complete pair semantics.
+7. Extend the existing separate content-addressed adjudication record and
    validator. Preserve generated proposals; overlay only independently
-   justified decisions.
-6. Bind adjudication invalidation to candidate content, occurrence, authority,
+   justified decisions. Do not reduce the artifact to a set of accepted
+   obligation IDs: retain which exact candidates proved each obligation.
+8. Add RED extractor controls proving that one direction cannot compile the
+   bidirectional row and both exact candidates can compile at most one row.
+9. Repair `SAL-XLIFF-00005` through registered SAL skills. Bind both exact
+   Schematron assertions in the evidence manifest and regenerate the receipt
+   and dependent proof hashes.
+10. Resolve the profile boundary from primary authority. The current evidence
+   directly proves XLIFF 2.1 only. Locate and bind a separate 2.0 normative
+   rule or narrow this pairing obligation to `xliff_2.1`; never project the
+   2.1 Schematron rule into 2.0.
+11. Bind adjudication invalidation to candidate content, occurrence, authority,
    denominator, decision, tool, and dependency digests.
-7. Compile or repair a source-bound obligation only after its adjudication
+12. Compile or repair a source-bound obligation only after its adjudication
    passes. Record accepted and rejected obligation IDs with exact authority
    reasons.
-8. Keep `complete=false`: the tracked denominator has 105 expected IDs, only
+13. Keep `complete=false`: the tracked denominator has 105 expected IDs, only
    26 source-bound rows, 79 missing rows, and 1,129 unverified candidate
    dispositions. Continue bounded adjudication batches until the complete Core
    delta and processing map exists.
-9. Audit every current XLIFF SAL fact against that map. Split mixed 2.0/2.1
+14. Audit every current XLIFF SAL fact against that map. Split mixed 2.0/2.1
    claims; ingest missing facts and heal false claims only through registered
    SAL skills.
-10. Compile complete Core requirements for hierarchy, languages, identifiers,
+15. Compile complete Core requirements for hierarchy, languages, identifiers,
    inheritance, ordering/cardinality, source/target structure, notes,
    original data, skeletons, extensions, inline identity/pairing/nesting/
    isolation/order, segmentation/re-segmentation, state/sub-state, and agent
    processing.
-11. Replace the generic module bucket with separately owned Translation
+16. Replace the generic module bucket with separately owned Translation
    Candidates/Matches, Glossary, Format Style, Metadata, Resource Data, Size
    and Length Restriction, Validation, and ITS capability families.
-12. Reconcile all nine module schema vocabularies (`matches`, `glossary`, `fs`,
+17. Reconcile all nine module schema vocabularies (`matches`, `glossary`, `fs`,
    `metadata`, `resource_data`, `size_restriction`, `validation`, `its`,
    `itsm`) to the eight owners. Treat `its` and `itsm` as one ITS module.
    Inventory Change Tracking as informative and give it no normative
    conformance credit.
-13. For each module, require typed models, parse/write, schema plus processing
+18. For each module, require typed models, parse/write, schema plus processing
    validation, preservation, rejection, diagnostics, positive/negative/
    property/roundtrip/interoperability/security/resource obligations.
-14. Repair mixed-profile research or product requirements at their governed
+19. Repair mixed-profile research or product requirements at their governed
    source, then regenerate and relock; never patch only the projection.
-15. Apply explicit-complete fact ownership only after every live fact has one
+20. Apply explicit-complete fact ownership only after every live fact has one
     exact Core or module owner.
-16. Give every stable capability and obligation an exact non-empty subset of
+21. Give every stable capability and obligation an exact non-empty subset of
     `xliff_2.0` and `xliff_2.1`; never assign a 2.1-only module to 2.0.
-17. Keep XLIFF 2.2 absent or `PREVIEW_ISOLATED`, with no stable obligation
+22. Keep XLIFF 2.2 absent or `PREVIEW_ISOLATED`, with no stable obligation
     ownership. Keep XLIFF 1.2 outside the 2.x model.
-18. Preserve namespace-aware extensions and deterministic semantic roundtrip,
+23. Preserve namespace-aware extensions and deterministic semantic roundtrip,
     but do not treat preservation-only content or XSD validity as semantic
     module/processing support.
-19. Compile XLIFF and all six format projections; require zero missing stable
+24. Compile XLIFF and all six format projections; require zero missing stable
     profile, module-owner, empty-profile, duplicate, foreign, or dangling edge.
-20. Run negative controls for malformed IDs, missing module ownership,
+25. Run negative controls for malformed IDs, missing module ownership,
     cross-profile contamination, and preview leakage.
-21. Replay at least three clean strict runs plus authority, focused regression,
+26. Replay at least three clean strict runs plus authority, focused regression,
     Ruff, Pyright, and bounded strict Mypy checks.
-22. Reconcile gaps, taskcards, controller and journal atomically; retain UBL
+27. Reconcile gaps, taskcards, controller and journal atomically; retain UBL
     typing as the exact remaining contract repair.
 
 ### Failure routing

@@ -356,3 +356,31 @@ The incoming provider must start at
 fresh coordination identity, replay immutable check modes, and begin the new
 candidate with a failing independent-adjudication test. Provider credentials,
 leases, manifests, and uncommitted assumptions are never transferred.
+
+## Event-30 deep resume audit
+
+A later read-only authority and source audit hardened the successor
+instructions without advancing the native controller or product state.
+
+- The selected rule's direct denominator owner is
+  `SAL-XLIFF-CORE-INLINE-PAIRING-001`; the generated proposal omits it.
+- The current adjudicator incorrectly makes the generated proposal set an
+  upper bound on accepted truth. It must separate proposal accountability from
+  independently discovered denominator ownership.
+- The reverse pair direction is separately pinned as
+  `XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF`, digest
+  `246f6e9e4c64fe142760045dbca69070405ae50f552b34387ce8709c3c7226e3`,
+  at `schematron/rule[46]/assert[2]`.
+- `SAL-XLIFF-00005` does not yet bind either exact pair assertion in its
+  evidence manifest.
+- The exact pair assertions were found in the pinned XLIFF 2.1 Schematron.
+  The pinned XLIFF 2.0 XSD and prose define both attributes, but this audit did
+  not find the same must-be-used-in-pair rule. The implementation must locate
+  separate 2.0 authority or narrow this obligation to 2.1.
+- The extractor must retain candidate-to-obligation provenance and require
+  both reciprocal candidates before compiling a bidirectional pairing row.
+
+These are `READ_ONLY_FINDING_NOT_YET_IMPLEMENTED`. They do not change the
+Event 30 counts, hashes, task state, promotion state, or certification state.
+The executable details and negative controls are in
+`plans/codex/handover/NEXT-MICROSTEP.yaml`.

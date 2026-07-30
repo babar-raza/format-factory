@@ -9,6 +9,23 @@ generated_at: 2026-07-30
 
 # Codex to Claude shift handover — Event 30
 
+## Live transfer condition
+
+The durable remote checkpoint is clean Event 30. During this handover refresh,
+a separate live Codex identity began Partial-002-B and acquired the exact
+logical/path leases. At `2026-07-30T01:41:39Z`, four of its contract/test
+paths were initially dirty; by `2026-07-30T01:45:01Z`, all six claimed paths
+were dirty. Those bytes are
+foreign in-flight work: this handover did not edit, stage, validate, or claim
+them.
+
+Claude must requery coordination and GitLab. If that executor has committed a
+new implementation/event checkpoint, validate and follow the newer event. If
+it remains live, do not overlap XLIFF; use only the serialized UBL fallback.
+If it is no longer live but the bytes remain, use governed stale takeover and
+recapture baselines before writing. A clean checkout can always reconstruct
+Event 30, but it must not erase this shared-worktree overlay.
+
 ## Outcome
 
 Codex completed the inherited Partial-002-A RED cycle, committed the bounded
@@ -81,6 +98,7 @@ See [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml) and
   native event.
 - A later provider resumes from the latest valid event, never this prose alone.
 
-The shift ends at a clean, machine-reconstructible product boundary. Handover
-projection files are committed separately from implementation so a failure in
-packet generation cannot corrupt product evidence.
+The remote shift boundary is clean and machine-reconstructible. The shared
+local worktree is not currently a clean transfer boundary because a different
+live executor owns an XLIFF overlay. Handover projection files remain separate
+from implementation so no packet commit may absorb those foreign bytes.

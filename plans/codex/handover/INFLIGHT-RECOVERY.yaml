@@ -15,21 +15,45 @@ checkpoint:
   exact_next_microstep: XLF-04-BATCH-005-PARTIAL-002-B
 
 captured_workspace:
-  product_overlay_status: NONE
+  product_overlay_status: FOREIGN_INFLIGHT_XLIFF_CONTRACT_EVIDENCE
+  product_source_overlay_status: NONE
+  observation_time_utc: "2026-07-30T01:41:39Z"
+  observed_owner:
+    agent_id: agent-codex-20260730T013049-b59249
+    task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
+    status_at_observation: ACTIVE
+    logical_lease: logical:XLF-04-BATCH-005-PARTIAL-002-B
+  claimed_paths_at_observation:
+    - tests/tools/test_xliff_core_candidate_adjudication.py
+    - tests/tools/test_extract_sal_facts.py
+    - shared/sal-facts/evidence/xliff-core-candidate-decisions.yaml
+    - reports/sal-verification/xliff-core-candidate-adjudications.yaml
+    - tools/spec/extract_sal_facts.py
+    - reports/ff6/xliff-core-obligation-inventory.yaml
+  dirty_paths_at_observation:
+    - tests/tools/test_xliff_core_candidate_adjudication.py
+    - tests/tools/test_extract_sal_facts.py
+    - shared/sal-facts/evidence/xliff-core-candidate-decisions.yaml
+    - reports/sal-verification/xliff-core-candidate-adjudications.yaml
+    - tools/spec/extract_sal_facts.py
+    - reports/ff6/xliff-core-obligation-inventory.yaml
   recovery_assets: []
   local_only_required_for_resume: false
   current_product_bytes_reconstructible_from_gitlab: true
-  packet_projection_changes_pending_commit: false
+  handover_projection_status: PENDING_COMMIT
   rule: >-
-    The source checkpoint and its Event 30 packet are committed on GitLab main.
-    A later packet-only hardening commit may change derived instructions, but
-    it contains no product implementation and creates no recovery overlay.
+    Event 30 is reconstructible from GitLab. The timestamped foreign overlay is
+    not part of Event 30 and is never staged with this handover. Requery live
+    ownership: follow a newer verified event, avoid a live owner, or use
+    governed stale takeover with fresh baselines. Never erase the overlay.
 
 incoming_adoption:
   - fetch GitLab origin/main and verify the latest native event
   - run plans/codex/handover/validate_handover.py
   - register a new provider identity and never reuse an outgoing token
   - query coordination and preserve any newly observed dirty state
+  - if the recorded foreign owner remains live, do not claim or mutate XLIFF
+  - if a newer implementation/event exists, validate it instead of replaying Event 30 work
   - claim only the exact files needed by Partial-002-B
   - create fresh TDD, ingest-spec-sal, and sal-pipeline-heal manifests
   - replay both current artifact check modes before writing

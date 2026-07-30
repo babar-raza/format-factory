@@ -1,4 +1,4 @@
-schema: ff6/provider-neutral-next-microstep@2
+schema: ff6/provider-neutral-next-microstep@3
 artifact_id: FF6-NEXT-MICROSTEP-EVENT-30
 visibility: internal
 publish_allowed: false
@@ -55,6 +55,72 @@ selected_candidate:
     - SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001
     - SAL-XLIFF-CORE-INLINE-PC-001
 
+reciprocal_candidate:
+  requirement: >-
+    The selected assertion proves only start-to-end presence. The reverse
+    direction must be adjudicated from this separate pinned occurrence before
+    a bidirectional pairing obligation can compile.
+  candidate_id: XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF
+  candidate_content_sha256: 246f6e9e4c64fe142760045dbca69070405ae50f552b34387ce8709c3c7226e3
+  source_kind: CORE_SCHEMATRON
+  profile_relation: ADDED_IN_XLIFF_2_1
+  stable_profiles: [xliff_2.1]
+  authority:
+    source_id: SRC-XLF-002
+    source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    member: schemas/xliff_core_2.1.sch
+    member_sha256: d4275f2d2574f892624bcd8f83bcc3001c75d623e4eb36896d15d147f16ed7a2
+    location: schematron/rule[46]/assert[2]
+    occurrence_sha256: 1443b1090a3a0f118c4c478fbabe27a2fef549a4c3ad0168d7b6ef0d95d8b80f
+  normalized_rule:
+    context: "xlf:pc[@subFlowsEnd][ancestor::xlf:segment|ancestor::xlf:ignorable]"
+    test: "@subFlowsStart"
+    message: "'subFlowsStart' and 'subFlowsEnd' must be used in pair."
+
+deep_reassessment:
+  evidence_status: READ_ONLY_FINDING_NOT_YET_IMPLEMENTED
+  direct_semantic_owner:
+    obligation_id: SAL-XLIFF-CORE-INLINE-PAIRING-001
+    reason: >-
+      The assertion governs mutual presence of the two pc sub-flow attributes.
+      INLINE-PC identifies an element surface, AGENT-VALIDATOR is a downstream
+      capability, and the segment/ignorable names only delimit context.
+  adjudicator_defect:
+    source: tools/spec/xliff_core_candidate_adjudication.py
+    current_invariant: >-
+      accepted_obligation_ids union rejected obligation IDs must equal the
+      generated proposal set.
+    consequence: >-
+      An independent reviewer cannot accept a valid denominator obligation
+      omitted by the generator, so false-negative proposals cannot be repaired.
+    required_invariant:
+      - every generated proposal ID is accepted or explicitly rejected
+      - accepted IDs may include any current denominator ID with valid SAL proof
+      - accepted and rejected IDs never overlap
+      - unproposed accepted IDs are emitted explicitly for audit
+  sal_gap:
+    fact_id: SAL-XLIFF-00005
+    current_problem: >-
+      The claim mentions Schematron pairing generally, but its manifest has no
+      exact assertion for the subFlowsStart/subFlowsEnd mutual-presence rules.
+    required_repair: >-
+      Bind both rule[46]/assert[2] and rule[47]/assert[2] through exact
+      namespace-aware structural/text assertions, then regenerate the canonical
+      SAL receipt and all dependent proof digests through registered SAL skills.
+  profile_boundary:
+    observed:
+      - the XLIFF 2.1 Schematron contains both exact pair assertions
+      - the pinned XLIFF 2.0 package defines both attributes but contains no
+        equivalent must-be-used-in-pair assertion found in its XSD or prose
+    consequence: >-
+      Do not use the 2.1 assertion to claim a 2.0 requirement. Either locate a
+      separate pinned 2.0 normative authority or narrow this denominator row
+      and compiled obligation to xliff_2.1. Absence is not conformance proof.
+  proof_family_requirement: >-
+    The pairing obligation must not compile from a set of verified obligation
+    IDs alone. The extractor must prove that both exact reciprocal candidate
+    IDs independently accept the same pairing obligation.
+
 root_cause:
   classification: GENERATED_PROPOSAL_IS_NOT_INDEPENDENT_SEMANTIC_EVIDENCE
   structural_weaknesses:
@@ -70,19 +136,28 @@ root_cause:
 
 red_controls:
   - a generated proposal cannot increment the verified count
+  - an independent decision can accept a denominator obligation omitted by the proposal
+  - every omitted-proposal acceptance is explicit in the normalized artifact
+  - all four generated proposal IDs are individually accepted or reasoned-rejected
   - segment and ignorable ancestor tokens cannot create hierarchy obligations
   - subFlowsStart without subFlowsEnd is rejected
-  - subFlowsEnd without subFlowsStart is adjudicated against the exact reciprocal authority rule
+  - subFlowsEnd without subFlowsStart is rejected from the exact reciprocal authority rule
+  - one reciprocal decision alone cannot compile the bidirectional pairing obligation
+  - both reciprocal decisions compile at most one stable pairing obligation row
   - candidate, occurrence, member, denominator, decision, SAL, or tool drift invalidates projection
   - duplicate, foreign, unknown, missing, or unreasoned decisions fail closed
 
 implementation_steps:
   - replay Event 30 and check-mode artifacts from GitLab main
-  - read the exact authority occurrence and relevant canonical SAL facts
-  - add a failing adjudication decision test before changing source
-  - append one independently reasoned decision to the decision source
-  - extend the adjudication projection without editing generated proposals
-  - add or reuse the exact inline pc pairing obligation only when authority proves ownership
+  - read both exact authority occurrences and canonical SAL-XLIFF-00005 proof
+  - add failing adjudicator tests for a valid accepted ID absent from the proposal
+  - repair the adjudicator invariant without editing generated proposals
+  - add one decision for each reciprocal candidate; reject all incidental proposals
+  - expose unproposed accepted IDs in the normalized adjudication artifact
+  - add failing extractor tests requiring both exact candidate decisions
+  - repair SAL-XLIFF-00005 and its evidence manifest through ingest-spec-sal
+  - narrow the pairing profile to xliff_2.1 unless separate 2.0 authority is found
+  - add or reuse the exact inline pairing obligation only after both directions prove ownership
   - regenerate adjudication and obligation artifacts atomically
   - confirm 26 existing rows and IDs are byte-semantically preserved
   - run focused, tamper, static, regression, authority, and SAL verification
@@ -92,11 +167,16 @@ implementation_steps:
 
 expected_files:
   likely_mutations:
+    - shared/sal-facts/xliff.yaml
+    - shared/sal-facts/evidence/xliff.yaml
+    - reports/sal-verification/xliff.json
     - shared/sal-facts/evidence/xliff-core-candidate-decisions.yaml
     - reports/sal-verification/xliff-core-candidate-adjudications.yaml
     - tests/tools/test_xliff_core_candidate_adjudication.py
     - tests/tools/test_extract_sal_facts.py
+    - tools/spec/xliff_core_candidate_adjudication.py
     - tools/spec/extract_sal_facts.py
+    - reports/ff6/xliff-core-obligation-denominator.yaml
     - reports/ff6/xliff-core-obligation-inventory.yaml
     - reports/skills-rff6/skill-transcripts/
   rule: >-
@@ -105,9 +185,13 @@ expected_files:
 
 acceptance_boundary:
   required:
-    - selected decision is authority-located, independently reasoned, and content-addressed
+    - both reciprocal decisions are authority-located, independently reasoned, and content-addressed
+    - the normalized projection names any accepted obligation absent from a generated proposal
+    - all generated proposals have an explicit accepted or rejected disposition
     - incidental ancestor overmapping controls pass
     - pair-presence positive and rejection evidence execute
+    - one-sided proof cannot compile a bidirectional pairing row
+    - the stable profile claim matches exact pinned authority
     - every changed artifact passes check mode and three-run replay
     - all 26 prior obligation rows and all 1130 candidate IDs remain stable
     - XLF-04 remains incomplete unless every exit criterion actually passes

@@ -43,6 +43,17 @@ this packet.
 Event 30 is a partial contract-evidence checkpoint. It is not a completed XLIFF
 contract, product implementation, certification, release candidate, or gate.
 
+The table describes the durable GitLab checkpoint, not an unconditional claim
+that the shared worktree is idle. At the latest observation
+(`2026-07-30T01:41:39Z`), another live Codex executor owned the exact
+Partial-002-B logical lease plus six XLIFF contract/test paths, and four of
+those paths were initially dirty; all six were dirty by
+`2026-07-30T01:45:01Z`. See
+[INFLIGHT-RECOVERY.yaml](INFLIGHT-RECOVERY.yaml).
+Claude must requery ownership: follow a newer verified event if one exists,
+avoid XLIFF while the owner remains live, or perform governed stale takeover
+without erasing bytes. Never stage that overlay with this handover.
+
 Two control-plane constraints remain explicit: generic `tools.plan_control`
 cannot validate the native FF6 event schema (`FF6-GAP-011`), and the shared
 local `.local/artifact-index.yaml` is pre-existing invalid YAML at line 1163.
@@ -134,6 +145,18 @@ hierarchy, and inline `pc` obligations. Those are hypotheses, not evidence.
 The next executor must independently adjudicate the direct semantic owner,
 write a failing test first, reject incidental context mappings, and only then
 compile any obligation proven by authority and canonical SAL.
+
+A deeper read-only reassessment found the precise first machinery defect:
+the current adjudicator requires accepted plus rejected IDs to equal the
+generator's proposal set. It therefore cannot independently accept
+`SAL-XLIFF-CORE-INLINE-PAIRING-001`, even though that is the denominator's
+direct semantic owner and the generator omitted it. The successor must repair
+this proof boundary before recording the decisions. It must also prove the
+reverse direction from candidate
+`XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF`, repair the incomplete
+`SAL-XLIFF-00005` authority assertions, and avoid claiming XLIFF 2.0 pairing
+from XLIFF 2.1 Schematron evidence. All exact digests, tests, file scopes, and
+acceptance rules are in [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml).
 
 Do not batch-adjudicate hundreds of candidates without discriminating tests.
 The durable unit of progress is one independently evidenced decision family,

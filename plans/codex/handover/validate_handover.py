@@ -67,6 +67,11 @@ EXPECTED_CANDIDATE = "XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1"
 EXPECTED_CANDIDATE_SHA256 = (
     "0a37761215603eb4db3f9602f6e979869b4f1f44c124c1f5ca2183cba1d7578a"
 )
+EXPECTED_RECIPROCAL_CANDIDATE = "XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF"
+EXPECTED_RECIPROCAL_CANDIDATE_SHA256 = (
+    "246f6e9e4c64fe142760045dbca69070405ae50f552b34387ce8709c3c7226e3"
+)
+EXPECTED_PAIRING_OBLIGATION = "SAL-XLIFF-CORE-INLINE-PAIRING-001"
 EXPECTED_ADJUDICATION_SHA256 = (
     "28399664d50afdd15e9f8b5ab2824a9566aa478fd0fcb18c97ce1451fd90d521"
 )
@@ -97,6 +102,8 @@ ALLOWED_DIRTY_EXACT = {
     "plans/strategic/ff6/events.jsonl",
     "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
     "taskcards/TC-FF6-HANDOVER-CLAUDE-001.md",
+    "reports/skills-rff6/skill-transcripts/"
+    "refresh-provider-neutral-handover-event-30-deep-resume.json",
 }
 
 
@@ -258,6 +265,34 @@ def _semantic_errors(
         next_step.get("selected_candidate", {}).get("candidate_content_sha256"),
         EXPECTED_CANDIDATE_SHA256,
     )
+    _expect(
+        errors,
+        "reciprocal candidate",
+        next_step.get("reciprocal_candidate", {}).get("candidate_id"),
+        EXPECTED_RECIPROCAL_CANDIDATE,
+    )
+    _expect(
+        errors,
+        "reciprocal candidate digest",
+        next_step.get("reciprocal_candidate", {}).get(
+            "candidate_content_sha256"
+        ),
+        EXPECTED_RECIPROCAL_CANDIDATE_SHA256,
+    )
+    _expect(
+        errors,
+        "direct semantic owner",
+        next_step.get("deep_reassessment", {})
+        .get("direct_semantic_owner", {})
+        .get("obligation_id"),
+        EXPECTED_PAIRING_OBLIGATION,
+    )
+    _expect(
+        errors,
+        "reassessment implementation status",
+        next_step.get("deep_reassessment", {}).get("evidence_status"),
+        "READ_ONLY_FINDING_NOT_YET_IMPLEMENTED",
+    )
 
     xliff = machine.get("xliff", {})
     baseline = next_step.get("baseline", {})
@@ -307,7 +342,7 @@ def _semantic_errors(
         errors,
         "recovery product overlay",
         recovery.get("captured_workspace", {}).get("product_overlay_status"),
-        "NONE",
+        "FOREIGN_INFLIGHT_XLIFF_CONTRACT_EVIDENCE",
     )
     _expect(
         errors,
@@ -525,6 +560,21 @@ def _negative_control_errors(base: dict[str, Any]) -> list[str]:
         ("false completion", ("machine", "xliff", "obligation_inventory", "complete"), True),
         ("inflated certification", ("machine", "program_truth", "production_certifications"), 1),
         ("wrong candidate", ("next", "selected_candidate", "candidate_id"), "XLF-CAND-FORGED"),
+        (
+            "wrong reciprocal candidate",
+            ("next", "reciprocal_candidate", "candidate_id"),
+            "XLF-CAND-FORGED-RECIPROCAL",
+        ),
+        (
+            "wrong direct semantic owner",
+            (
+                "next",
+                "deep_reassessment",
+                "direct_semantic_owner",
+                "obligation_id",
+            ),
+            "SAL-XLIFF-CORE-INLINE-PC-001",
+        ),
         ("inflated row count", ("machine", "xliff", "obligation_inventory", "source_bound"), 105),
         ("local-only dependency", ("recovery", "captured_workspace", "local_only_required_for_resume"), True),
     ]
@@ -608,7 +658,7 @@ def validate(*, require_clean: bool = False) -> dict[str, Any]:
         "next_microstep": EXPECTED_MICROSTEP,
         "next_candidate": EXPECTED_CANDIDATE,
         "manifest_files": len(manifest.get("files", [])),
-        "semantic_negative_controls": 7,
+        "semantic_negative_controls": 9,
         "errors": errors,
     }
 
