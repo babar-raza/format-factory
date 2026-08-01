@@ -1,15 +1,15 @@
-schema: ff6/inflight-recovery@9
-artifact_id: FF6-RECOVERY-809CC18
+schema: ff6/inflight-recovery@10
+artifact_id: FF6-RECOVERY-41BFAEF
 visibility: internal
 publish_allowed: false
 generated_by: codex
 generated_at: '2026-08-01'
 event:
-  event_id: FF6-EVENT-000035
-  event_hash: 2866d7e70bd193f8aa7b60ca1f92f4f842d1cd470f97984c07f47d88ed2ea97d
-  implementation_commit: 591fcfe18808e5195c33570eaa9d334770e90166
-  accepted_xliff_implementation_commit: 591fcfe18808e5195c33570eaa9d334770e90166
-  checkpoint_commit: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
+  event_id: FF6-EVENT-000036
+  event_hash: d4a05e36bbae4d3ab5f05a4968045552f79ae45dd7b38f6ba3bc39840f684924
+  semantic_commit: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
+  checkout_identity_repair_commit: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
+  checkpoint_commit: 41bfaef73992f69313226543dff81d3a11e232bb
 captured_workspace:
   product_overlay_status: NO_UNCOMMITTED_XLIFF_OVERLAY
   handover_overlay_status: PACKET_REFRESH_IN_PROGRESS_UNTIL_HANDOVER_COMMIT
@@ -21,24 +21,25 @@ captured_workspace:
   execution_manifest_transferable: false
   reciprocal_semantics:
     commit: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
-    status: VERIFIED_BY_CHECKOUT_IDENTITY_REPAIR
+    status: ACCEPTED_BY_EVENT_36_AFTER_CHECKOUT_IDENTITY_REPAIR
   checkout_identity_repair:
     commit: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
     pushed_to_gitlab_main: true
-    immutable_replay: PASS
-    native_event_appended: false
-    pending_action: XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001
+    immutable_replay: PASS_115_AFTER_DIGEST_VERIFIED_CAS_HYDRATION
+    native_event_appended: true
+    event_id: FF6-EVENT-000036
   promotion_effect: none
 reconstruction:
   source: GitLab origin/main
-  required_ancestor: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
+  required_ancestor: 41bfaef73992f69313226543dff81d3a11e232bb
   command: git fetch origin main --prune; git switch main; git pull --ff-only origin main
   validation: .venv\Scripts\python.exe plans\codex\handover\validate_handover.py --require-clean --self-test
   local_files_required: []
 failure_policy:
-  newer_valid_event: recompute packet from newer canonical event; never reset GitLab
+  newer_valid_event: recompute packet from the newer canonical event; never reset GitLab
   dirty_leased_path: preserve and coordinate; never clean, restore, stash, or stage
   unexplained_dirty_path: preserve, attribute, and fail transfer
-  materialized_accepted_mismatch: preserve Event 35 and execute the bounded plan-control acceptance transaction
+  accepted_materialized_mismatch: invalidate the packet and rebuild from the native journal and committed artifacts
   missing_remote_commit: stop promotion and verify GitLab remote state
+  missing_authority_cache: hydrate only digest-pinned CAS artifacts; never synthesize or weaken the check
   validator_failure: repair evidence or packet; never weaken the invariant

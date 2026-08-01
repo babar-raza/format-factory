@@ -1,5 +1,5 @@
 ---
-artifact_id: FF6-XLIFF-CLEAN-REPLAY-REPAIR-809CC18
+artifact_id: FF6-XLIFF-CLEAN-REPLAY-REPAIR-EVENT36
 artifact_type: verified_repair_handover
 visibility: internal
 publish_allowed: false
@@ -15,10 +15,11 @@ Repair commit `809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956` is on GitLab
 `origin/main` and passes clean Windows checkout replay. It makes the reciprocal
 skeleton adjudication from non-promoting semantic commit
 `2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17` portable without changing its
-meaning. No Event 36 was appended, so native authority remains
-`FF6-EVENT-000035` and the exact continuation remains
-`XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001`, now in
-`VERIFIED_PENDING_CONTROLLER_ACCEPTANCE`.
+meaning. Native `FF6-EVENT-000036`, hash
+`d4a05e36bbae4d3ab5f05a4968045552f79ae45dd7b38f6ba3bc39840f684924`,
+accepts that repaired disposition at controller commit
+`41bfaef73992f69313226543dff81d3a11e232bb`. The exact continuation is now
+`XLF-04-BATCH-005-PARTIAL-002-E`.
 
 ## Symptom, root cause, and structural weakness
 
@@ -88,22 +89,23 @@ Verification at exact commit `809cc18c`:
 - Ruff, strict Mypy, Pyright 1.1.411, and `py_compile` passed;
 - repair skill transcripts validate with zero warnings.
 
-## What is preserved
+## What Event 36 preserves
 
-- Event 35 and its hash chain;
+- the complete Event 1 through Event 36 hash chain;
 - accepted implementation `591fcfe18808e5195c33570eaa9d334770e90166`;
 - semantic attempt `2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17`;
 - all 1,130 candidate identities and 105 obligation identities;
 - 28 resolved and 77 missing obligation rows;
 - no product source or public API changes.
 
-## What remains
+## Accepted boundary and what remains
 
-The materialized adjudication contains 5 verified dispositions and 1,125 open,
-but Event 35 accepts only 4 and 1,126. This is not a contradiction: native
-state deliberately lags verified materialized evidence until `plan-control`
-commits Event 36. The next executor must perform only that acceptance
-transaction, then derive the next candidate dynamically.
+The materialized adjudication and Event 36 now agree at 5 verified dispositions
+and 1,125 open. Obligation coverage remains 28/105 with 77 missing; no
+obligation was added by the reciprocal disposition. The next executor must
+independently adjudicate
+`XLF-CAND-CORE-SCHEMATRON-100732DB0BBED389` under
+`XLF-04-BATCH-005-PARTIAL-002-E`.
 
 The repair proves checkout identity for the covered proof paths. It does not
 prove every future generated artifact portable, and it does not replace

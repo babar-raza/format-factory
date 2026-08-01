@@ -18,20 +18,19 @@ The goal, phase order, task semantics, evidence standard, and terminal
 condition do not change when the provider changes. Only the current executor
 identity and its leased files change.
 
-> **Current authority overlay: Event 35.** The native head is
-> `FF6-EVENT-000035`; the accepted XLIFF implementation is `591fcfe1` at
-> 28/105 source-bound obligations and 4/1,130 independently verified
-> dispositions; the verified Event 34 UBL foundation has
+> **Current authority overlay: Event 36.** The native head is
+> `FF6-EVENT-000036`; XLIFF is at 28/105 source-bound obligations and
+> 5/1,130 independently verified dispositions. Semantic commit `2dcb161e`,
+> checkout repair `809cc18c`, and controller acceptance `41bfaef7` are all
+> immutable GitLab ancestors. The verified UBL foundation has
 > 6,001 content-addressed local particle nodes and remains non-promoting.
 > The exact canonical successor is
-> `XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001`. Commit `2dcb161e`
-> contains the non-promoting reciprocal implementation; clean detached replay
-> exposed LF/CRLF proof-hash drift. Use
+> `XLF-04-BATCH-005-PARTIAL-002-E`. Use
 > [CURRENT-MACHINE-STATE.yaml](CURRENT-MACHINE-STATE.yaml) and
 > [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml) for executable state, and read
 > [CLEAN-REPLAY-REPAIR.md](CLEAN-REPLAY-REPAIR.md) before mutation.
 >
-> Event 29-34 routes and counts below are retained only as failure and recovery
+> Event 29-35 routes and counts below are retained only as failure and recovery
 > history. They are non-operative. In particular, `d99fc6bf` remains a useful
 > negative control, not an accepted checkpoint or resume target.
 
@@ -89,8 +88,8 @@ Every shift records three independent state axes:
 
 | Axis | Question | Current answer |
 |---|---|---|
-| Mission state | What does the native journal authorize next? | `CONTRACT`, `FF6-EVENT-000035`, XLIFF `XLF-04-BATCH-005-PARTIAL-002-D`; UBL partial-005 was foreign-live at packet capture |
-| Immutable evidence state | What committed work can be replayed? | Event 35 accepts XLIFF `591fcfe1` at 28/105 obligations and 4/1,130 dispositions; Event 34 binds 6,001 UBL particle nodes; Event 31 remains a rejected-attempt negative control |
+| Mission state | What does the native journal authorize next? | `CONTRACT`, `FF6-EVENT-000036`, XLIFF `XLF-04-BATCH-005-PARTIAL-002-E`; UBL partial-006 remains a disjoint fallback only |
+| Immutable evidence state | What committed work can be replayed? | Event 36 accepts XLIFF at 28/105 obligations and 5/1,130 dispositions after repair commit `809cc18c`; UBL retains 6,001 particle nodes and 1,178 derivation edges; Event 31 remains a rejected-attempt negative control |
 | Workspace transfer state | Which current local bytes can the incoming executor own? | Seven attributed XLIFF occurrence paths are preserved outside the checkpoint and require governed takeover plus independent replay; all accepted proof is reconstructible from GitLab `origin/main` |
 
 An immutable evidence commit without a journal transition is not a task-state
@@ -451,13 +450,11 @@ batch. Content hashes alone are not accepted as semantic currency proof.
 - [Canonical execution plan](../../strategic/autonomous-six-python-production-execution-plan.md)
 - [Canonical product goal](../../strategic/ff6/product-goal.yaml)
 
-## Current authority overlay: Event 35
+## Current authority overlay: Event 36
 
-`FF6-EVENT-000035` is the current native head. The selected task remains
-XLIFF `XLF-04-BATCH-005-PARTIAL-002-D` at 28/105 accepted obligations and
-4/1,130 verified dispositions. The seven inherited XLIFF paths are committed
-at `591fcfe1`. UBL partial-005 is committed at `d8c10680` with 1,178
-derivation edges; its executor completed cleanly before packet seal. A fresh
-provider must still re-query coordination and replay before partial-006. The UBL graph retains 6,001 particle
-nodes and stable anonymous-type identity machinery, but UBL-03 is incomplete.
-Certification remains 0/6.
+`FF6-EVENT-000036` is the current native head. The selected task remains
+XLIFF, with exact microstep `XLF-04-BATCH-005-PARTIAL-002-E`, 28/105 accepted
+obligations, and 5/1,130 verified dispositions. UBL retains 6,001 particle
+nodes, stable anonymous-type identities, and 1,178 derivation edges, but
+UBL-03 is incomplete. Every product remains `UNASSESSED`; certification is
+0/6.

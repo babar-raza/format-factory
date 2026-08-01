@@ -11,20 +11,21 @@ historical_projection: true
 
 # Validation, Regression, and Release Contract
 
-> **Current authority overlay: Event 35.** Native head
-> `FF6-EVENT-000035`; current checkpoint facts and
+> **Current authority overlay: Event 36.** Native head
+> `FF6-EVENT-000036`; current checkpoint facts and
 > commands are in [START-HERE.md](START-HERE.md),
 > [CURRENT-MACHINE-STATE.yaml](CURRENT-MACHINE-STATE.yaml), and
 > [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml). The accepted boundary is
-> 28/105 obligations and 4/1,130 dispositions at `591fcfe1`; Event 34
-> separately proves 6,001 UBL local particle nodes.
+> 28/105 obligations and 5/1,130 dispositions after repair `809cc18c` and
+> controller acceptance `41bfaef7`; UBL separately retains 6,001 local
+> particle nodes.
 > No release state is implied here. Event 31 remains historical
 > negative-control evidence, not current routing.
 
-Commit `2dcb161e` is an additional mandatory negative control: shared-worktree
-success is insufficient when a clean Windows checkout fails because raw
-proof hashes depend on line-ending conversion. The exact repair route is
-`XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001`; see
+The pre-repair state of commit `2dcb161e` is an additional mandatory negative
+control: shared-worktree success is insufficient when a clean Windows checkout
+fails because raw proof hashes depend on line-ending conversion. The accepted
+repair route is `XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001`; see
 [CLEAN-REPLAY-REPAIR.md](CLEAN-REPLAY-REPAIR.md).
 
 Event 31 is a mandatory machinery negative control: deterministic output,
@@ -349,13 +350,10 @@ Before every close:
 20. Does the handover validator reject predecessor event instructions as well
     as wrong hashes, counts, completion, certification, and recovery state?
 
-## Current authority overlay: Event 35
+## Current authority overlay: Event 36
 
-`FF6-EVENT-000035` is the current native head. The selected task remains
-XLIFF `XLF-04-BATCH-005-PARTIAL-002-D` at 28/105 accepted obligations and
-4/1,130 verified dispositions. The seven inherited XLIFF paths are committed
-at `591fcfe1`. UBL partial-005 is committed at `d8c10680` with 1,178
-derivation edges; its executor completed cleanly before packet seal. A fresh
-provider must still re-query coordination and replay before partial-006. The UBL graph retains 6,001 particle
-nodes and stable anonymous-type identity machinery, but UBL-03 is incomplete.
-Certification remains 0/6.
+`FF6-EVENT-000036` is the current native head. The selected task remains
+XLIFF, with exact microstep `XLF-04-BATCH-005-PARTIAL-002-E`, 28/105 accepted
+obligations, and 5/1,130 verified dispositions. UBL retains 6,001 particle
+nodes, stable anonymous-type identities, and 1,178 derivation edges, but
+UBL-03 is incomplete. Certification remains 0/6.

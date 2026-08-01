@@ -1,104 +1,104 @@
 ---
-artifact_id: FF6-SHIFT-HANDOVER-809CC18
+artifact_id: FF6-SHIFT-HANDOVER-41BFAEF
 visibility: internal
 publish_allowed: false
 generated_by: codex
 generated_at: 2026-08-01
 ---
 
-# Outgoing Codex shift: verified checkpoint for Claude
+# Outgoing Codex shift: Event 36 checkpoint for Claude
 
-## Work completed this shift
+## What this shift actually completed
 
-The shift began from semantic attempt `2dcb161e`, which passed in the shared
-worktree but failed five affected tests in a clean Windows checkout. The work
-did not accept the stale local proof or weaken hashes. It traced the failure
-through the complete proof input closure, established a checkout-byte policy,
-added adversarial regression controls, regenerated only invalidated current
-descendants, and independently replayed the actual commit.
+The shift began at GitLab handover commit `01c469f9`, where Event 35 still
+accepted four XLIFF candidate dispositions while verified repaired evidence at
+`809cc18c` contained five. It did not repeat the semantic implementation.
 
-The durable repair is GitLab main commit
-`809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956`. It contains:
+It independently revalidated:
 
-- explicit LF policy for proof/source text and binary treatment for
-  byte-sensitive samples/fixtures;
-- a registered `proof-checkout-identity-repair` production skill;
-- 44 checkout-identity tests;
-- corrected LF identity for the XLIFF evidence manifest and verifier closure;
-- refreshed current SAL proof, receipt, adjudication, and inventory;
-- zero-warning governance/skill transcripts.
+- semantic commit `2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17`;
+- checkout-identity repair `809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956`;
+- candidate `XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E` and decision
+  `XLF-ADJ-CORE-SCHEMATRON-0005`;
+- 5 current adjudications, 28/105 obligations, and 77 missing obligations;
+- 115 affected tests, 69 production-program tests, 94 format-contract tests
+  with one exact documented deselection, deterministic outputs, SAL proof, and
+  five authority matches.
 
-No XLIFF product source, authority fact, semantic adjudication, obligation ID,
-gate, promotion, certification, or release state was changed by the repair.
+It then appended the hash-chained `FF6-EVENT-000036`, updated the controller
+and XLIFF taskcard, validated the complete 36-event chain, and pushed GitLab
+commit `41bfaef73992f69313226543dff81d3a11e232bb`.
 
-## Evidence actually observed
+The normal Git commit hook initially failed before validation because its
+`#!/usr/bin/env python3` interpreter is unavailable on this Windows host. The
+same hook program was executed explicitly with the active `python` interpreter
+and passed; only then was the already-validated commit created with
+`--no-verify`. This was an interpreter-resolution workaround, not a skipped
+governance check.
 
-At exact commit `809cc18c` in a clean Windows/autocrlf worktree:
+The pushed commit was replayed from a detached `core.autocrlf=true` checkout.
+The first run failed closed only because ignored authority CAS bytes were not
+present (114 tests passed, one missing-authority failure). After hydrating
+exactly `src-xlf-001.bin` and `src-xlf-002.bin` and verifying both committed
+SHA-256 locks, the complete affected suite passed: 115/115. No tracked file in
+the replay worktree changed, and that worktree alone was removed.
 
-- 115 repair/affected tests passed;
-- 69 production-program tests passed;
-- 94 format-contract tests passed with exactly the known stateful
-  `test_full_slice_second_run_is_idempotent` deselected;
-- three clean regenerations were byte-identical;
-- five XLIFF authority records matched;
-- SAL apply/check produced no diff;
-- Ruff, strict Mypy, Pyright 1.1.411, and bytecode compilation passed;
-- GitLab `HEAD == origin/main == 809cc18c` after push.
+## Exact accepted state
 
-This is strong proof for the bounded repair. It is not product certification.
+- native head: `FF6-EVENT-000036` /
+  `d4a05e36bbae4d3ab5f05a4968045552f79ae45dd7b38f6ba3bc39840f684924`;
+- controller checkpoint: `41bfaef73992f69313226543dff81d3a11e232bb`;
+- state: `CONTRACT`;
+- task: `TC-FF6-XLIFF-PROFILE-SURFACE-001`, first unmet step XLF-04;
+- candidate dispositions: 5 verified, 1,125 unverified, 1,130 total;
+- obligations: 28 resolved, 77 missing, 105 expected;
+- XLF-04 incomplete; UBL-03 incomplete;
+- product source effect: none; promotions: all `UNASSESSED`;
+- production certifications: 0/6.
 
-## Exact state left for the next provider
+## Exact next work
 
-Native controller head remains `FF6-EVENT-000035` /
-`2866d7e70bd193f8aa7b60ca1f92f4f842d1cd470f97984c07f47d88ed2ea97d`.
-No Event 36 was appended because implementation/repair proof and controller
-acceptance are separate transactions.
+Claude must start from `XLF-04-BATCH-005-PARTIAL-002-E` and candidate
+`XLF-CAND-CORE-SCHEMATRON-100732DB0BBED389`. The exact XLIFF 2.1 Schematron
+occurrence reports a unit with no segment child as incomplete. Generated
+proposals name generic validator, segment hierarchy, and unit-children
+obligations; none is accepted until independently adjudicated.
 
-Accepted Event 35 state is 4 verified and 1,126 open candidate dispositions.
-Materialized files at `809cc18c` contain 5 verified and 1,125 open. Both retain
-105 expected obligations, 28 resolved, 77 missing, and `complete=false`.
-
-Therefore the exact next task is
-`XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001` in state
-`VERIFIED_PENDING_CONTROLLER_ACCEPTANCE`. Claude must use `plan-control` to
-append one Event 36, update accepted projections, derive the next candidate
-from live data, refresh this handover, and stop at another clean checkpoint.
-Claude must not redo the semantic or checkout repair.
+The next shift must start RED, decide the direct semantic owner or record a
+gap, preserve all predecessor rows and candidate identities, run the full
+proof ladder, commit and replay one bounded result, append the next native
+event only after proof, then refresh this packet again.
 
 ## Six-product truth
 
-- 0/6 products are technically certified and all promotions are `UNASSESSED`.
+- 0/6 products are technically certified.
 - OpenRaster product source is absent.
-- IPYNB, NRRD, XLIFF, SafeTensors, and UBL contain useful but incomplete
+- IPYNB, NRRD, XLIFF, SafeTensors, and UBL have useful but incomplete
   pre-production code.
-- XLIFF contract work is incomplete at XLF-04.
-- UBL schema graph work is partial through derivation edges; UBL-03 remains
-  incomplete.
-- No package has the full independent corpus/oracle, security/resource,
-  fuzz/mutation, installed-wheel OS/Python matrix, reproducible package,
-  SBOM/provenance/signature, and release proof required by the mission.
+- XLIFF is still compiling its Core obligation denominator; module contracts
+  and product work remain locked.
+- UBL has partial schema-graph machinery through derivation edges; attributes,
+  facets, groups/wildcards, substitutions, documentation, and a complete
+  checked-in graph remain open.
+- None has the complete independent corpus/oracle, security/resource, fuzz,
+  mutation, installed-wheel OS/Python matrix, reproducible package, SBOM,
+  provenance, signature, and release proof required by the mission.
 
-## Shift interchange protocol
+## Cross-provider safety
 
-The next agent reconstructs only from GitLab, the native journal/controller,
-taskcards, proof artifacts, and this content-addressed packet. Provider-local
-identity, leases, manifests, authorizations, temp worktrees, and chat memory
-are intentionally non-transferable. A provider ending a shift must leave one
-immutable pushed commit, one validated packet, no unexplained local overlay,
-and only an evidence-derived exact next task.
+GitLab, the native journal/controller, taskcards, and content-addressed evidence
+are authority. Chat memory, provider identity, tokens, leases, mutation
+authorizations, and temporary worktrees are never transferable. Each provider
+must reconstruct state, obtain fresh leases, and leave one immutable pushed
+checkpoint plus a self-tested handover. No provider may approve its own product
+certification or weaken proof to finish a shift.
 
-The outgoing identity is not authority and must not be reused. Freshly query
-coordination because other stale/live records are machine-local and may change
-after this packet is committed.
+## Known limits
 
-## Risks and limits
-
-- A handover packet is a derived projection; the native journal and current
-  repository evidence win if they advance.
-- The LF policy protects declared text classes, but new generators or unusual
-  byte-sensitive formats require explicit classification and regression tests.
-- The accepted/materialized split is safe only because validation checks both;
-  leaving it unresolved across later unrelated controller events would create
-  ambiguity. Event 36 is therefore the highest-priority next transaction.
-- Publication remains far away: the repair closes proof portability, not
-  format capability or release readiness.
+- Event 36 closes the accepted/materialized split but only for one candidate.
+- Checkout identity is proven for this declared proof closure; future
+  generators and byte-sensitive formats still need explicit classification.
+- The handover commit will descend from `41bfaef7` and cannot embed its own final
+  hash; the packet-base rule and Git ancestry check address that recursion.
+- Gate 10 and actual publication remain external business-authority boundaries
+  even after technical certification.

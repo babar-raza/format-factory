@@ -1,5 +1,5 @@
 ---
-artifact_id: FF6-CLAUDE-START-809CC18
+artifact_id: FF6-CLAUDE-START-41BFAEF
 visibility: internal
 publish_allowed: false
 generated_by: codex
@@ -8,7 +8,7 @@ generated_at: 2026-08-01
 
 # Claude exact start and stop sequence
 
-## 1. Reconstruct the immutable checkpoint
+## 1. Reconstruct authority without changing state
 
 ```powershell
 Set-Location 'C:\Users\prora\OneDrive\Documents\GitHub\format-factory'
@@ -16,50 +16,43 @@ Get-Content -LiteralPath AGENTS.md
 git fetch origin main --prune
 git rev-parse HEAD
 git rev-parse origin/main
-git merge-base --is-ancestor 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956 origin/main
+git merge-base --is-ancestor 41bfaef73992f69313226543dff81d3a11e232bb origin/main
 .venv\Scripts\python.exe plans\codex\handover\validate_committed_checkpoint.py --ref origin/main
 git status --short --branch
 .venv\Scripts\python.exe -m tools.supervisor.coordination --json status
 ```
 
-Require local `HEAD` and `origin/main` to equal
-`809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956` at initial resume. If GitLab has
-advanced, do not reset it: validate the newer journal and rebuild this packet
-from live authority. The expected native head at this checkpoint is
-`FF6-EVENT-000035` /
-`2866d7e70bd193f8aa7b60ca1f92f4f842d1cd470f97984c07f47d88ed2ea97d`.
-Its accepted XLIFF implementation is
-`591fcfe18808e5195c33570eaa9d334770e90166`.
-
-If the shared tree is clean, also run:
+At this packet, the expected native head is `FF6-EVENT-000036` /
+`d4a05e36bbae4d3ab5f05a4968045552f79ae45dd7b38f6ba3bc39840f684924`.
+If GitLab has advanced, validate the newer chain and regenerate this packet;
+do not reset or force-push. If the shared tree is clean, also run:
 
 ```powershell
 .venv\Scripts\python.exe plans\codex\handover\validate_handover.py --require-clean --self-test
 ```
 
-If it is dirty, attribute every path through coordination. Preserve foreign
-or unexplained bytes. Do not use restore, stash, reset, clean, checkout, or
-broad staging.
+If it is dirty, attribute every path through coordination. Never use restore,
+stash, reset, clean, checkout, or broad staging on unexplained state.
 
-## 2. Read authority before acting
+## 2. Read the binding execution context
 
 Read, in order:
 
 1. `plans/master-plan.md`
-2. `docs/governance/codex-adapter.md` when the executor is Codex
-3. `plans/strategic/ff6/product-goal.yaml`
-4. `plans/strategic/ff6/controller-state.yaml`
-5. the complete `plans/strategic/ff6/events.jsonl`
-6. `taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md`
-7. `plans/codex/handover/CLEAN-REPLAY-REPAIR.md`
-8. `plans/codex/handover/NEXT-MICROSTEP.yaml`
-9. `.claude/commands/plan-control.md` and every other selected skill contract
+2. `plans/strategic/ff6/product-goal.yaml`
+3. `plans/strategic/ff6/controller-state.yaml`
+4. the complete `plans/strategic/ff6/events.jsonl`
+5. `taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md`
+6. `plans/codex/handover/NEXT-MICROSTEP.yaml`
+7. `.supervisor/knowledge/registry.yaml` and every applicable verified contract
+8. every selected `.claude/commands/<skill>.md` contract
+9. `docs/governance/codex-adapter.md` if the next provider is Codex
 
-The semantic implementation commit `2dcb161e...`, accepted implementation
-`591fcfe18808e5195c33570eaa9d334770e90166`, and proof-identity repair
-commit `809cc18c...` already exist. Do not repeat either implementation.
+Do not reimplement the accepted reciprocal skeleton change or its checkout
+repair. They are immutable history at `2dcb161e`, repair commit
+`809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956`, and Event 36.
 
-## 3. Establish a new shift identity
+## 3. Establish a fresh shift identity
 
 ```powershell
 .venv\Scripts\python.exe -m tools.supervisor.coordination register `
@@ -67,42 +60,56 @@ commit `809cc18c...` already exist. Do not repeat either implementation.
   --task TC-FF6-XLIFF-PROFILE-SURFACE-001
 ```
 
-Store the returned identity and token only for this shift. Claim the logical
-transaction plus its exact controller/task/projection/handover paths.
-Preflight before each write, record each write, heartbeat during long checks,
-and never release another identity's lease.
+Use only the returned identity/token for this shift. Claim the logical
+microstep and exact files, preflight every write, record every write, heartbeat
+during long validation, and never release another provider's lease.
 
-## 4. Execute the exact next transaction
+## 4. Execute the exact next microstep
 
-Run `XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001` in substate
-`VERIFIED_PENDING_CONTROLLER_ACCEPTANCE`. Use `plan-control`, not a product
-source skill. Reconfirm:
+Run `XLF-04-BATCH-005-PARTIAL-002-E` for
+`XLF-CAND-CORE-SCHEMATRON-100732DB0BBED389`.
 
-- Event 35 is the current journal head;
-- `809cc18c` is on GitLab main;
-- the adjudication has 5 verified and 1,125 unverified dispositions;
-- the obligation inventory remains 28 resolved of 105, with 77 missing;
-- all checkout-identity, affected XLIFF, static, and regression gates pass.
+Before mutation, reconfirm:
 
-Append exactly one Event 36 accepting PARTIAL-002-D, binding both `2dcb161e`
-and `809cc18c` plus current artifact hashes. Atomically update native controller,
-taskcard/current projections, and derive the next candidate from the live
-unverified set. Do not guess it from this packet. The accepted disposition
-count becomes 5; obligation counts and all completion/promotion flags stay
-unchanged.
+- controller Event 36 and GitLab checkpoint `41bfaef7`;
+- 5 verified / 1,125 open candidate dispositions;
+- 28 resolved / 77 missing of 105 obligations;
+- candidate content digest `7564733d...`, requirement digest `51c4d1ac...`,
+  and occurrence digest `903d76dd...`;
+- exact authority occurrence `schematron/rule[12]/report[1]` in the pinned
+  XLIFF 2.1 Core Schematron member;
+- checkout identity and all predecessor proof hashes.
 
-## 5. Close the shift safely
+Execution order is RED test, independent authority adjudication, SAL/proof
+repair if required, deterministic artifact compilation, complete focused and
+regression validation, immutable checkout replay, then native controller
+projection. Generated owner mappings are proposals only. If no existing
+denominator row is the direct owner, record and schedule the gap; never force a
+mapping to make coverage rise.
 
-1. Validate the event chain and projections.
-2. Run focused and required regression gates in an isolated checkout.
-3. Create zero-warning skill transcripts and receipts.
-4. Stage only reviewed leased files and commit to `main`.
-5. Push only `origin main` and prove `HEAD == origin/main`.
-6. Replay the exact immutable commit.
-7. Refresh every operational handover file and its LF-normalized manifest.
-8. Run both handover validators with self-tests.
-9. Record all writes, release only this shift's leases, and complete its
-   coordination identity.
+## 5. Required proof before the next event
 
-Never report any library production-ready. The program remains 0/6 certified
-after this one-disposition controller acceptance.
+- positive, rejection, tamper, and predecessor-preservation tests;
+- exact candidate/occurrence/authority/SAL/decision digest closure;
+- all 28 accepted predecessor rows semantically equal;
+- all 1,130 candidate identities unchanged;
+- three byte-identical clean generations;
+- Ruff, strict Mypy, Pyright 1.1.411, and bytecode compilation on touched code;
+- SAL verification and 5/5 XLIFF authority matches;
+- affected tool tests plus format-contract and production-program regressions;
+- zero-warning skill transcripts;
+- detached checkout replay from the candidate commit;
+- native event chain and controller/task/handover agreement.
+
+## 6. Close the shift safely
+
+1. Stage only reviewed leased files.
+2. Commit to `main`; push only `origin main`; prove `HEAD == origin/main`.
+3. Replay the exact immutable commit with digest-pinned authority inputs.
+4. Refresh every operational handover file and LF-normalized manifest from the
+   new native journal head.
+5. Run both handover validators and their negative controls.
+6. Record writes, release only this shift's leases, and complete the identity.
+
+Never report a production-ready library unless the full product certification
+graph—not a focused contract microstep—proves it. Current status is 0/6.

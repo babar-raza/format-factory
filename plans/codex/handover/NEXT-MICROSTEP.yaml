@@ -1,33 +1,28 @@
-schema: ff6/next-microstep@8
-artifact_id: FF6-XLIFF-XLF04-BATCH005-PARTIAL002-D-ACCEPTANCE
+schema: ff6/next-microstep@9
+artifact_id: FF6-XLIFF-XLF04-BATCH005-PARTIAL002-E
 visibility: internal
 publish_allowed: false
 generated_by: codex
 generated_at: '2026-08-01'
 mission_id: FF6-PRODUCTION-LIBRARIES-001
 source_checkpoint:
-  event_id: FF6-EVENT-000035
-  event_hash: 2866d7e70bd193f8aa7b60ca1f92f4f842d1cd470f97984c07f47d88ed2ea97d
-  accepted_xliff_implementation_commit: 591fcfe18808e5195c33570eaa9d334770e90166
-  semantic_attempt_commit: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
-  checkpoint_commit: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
+  forge: GitLab
+  remote: origin
+  branch: main
+  packet_base_commit: 41bfaef73992f69313226543dff81d3a11e232bb
+  event_id: FF6-EVENT-000036
+  event_hash: d4a05e36bbae4d3ab5f05a4968045552f79ae45dd7b38f6ba3bc39840f684924
+  semantic_commit: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
   checkout_identity_repair_commit: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
+  controller_checkpoint_commit: 41bfaef73992f69313226543dff81d3a11e232bb
 task:
   task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
   parent_task_id: TC-FF6-PROGRAM-CAPABILITIES-001
   state: WORK_IN_PROGRESS
   first_unmet_step: XLF-04
-  microstep: XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001
-  microstep_state: VERIFIED_PENDING_CONTROLLER_ACCEPTANCE
+  microstep: XLF-04-BATCH-005-PARTIAL-002-E
+  microstep_state: READY
 accepted_baseline:
-  candidate_count: 1130
-  dispositions_verified: 4
-  dispositions_unverified: 1126
-  expected_obligations: 105
-  source_bound_obligations: 28
-  missing_obligations: 77
-  xlf_04_complete: false
-materialized_evidence:
   candidate_count: 1130
   dispositions_verified: 5
   dispositions_unverified: 1125
@@ -38,44 +33,56 @@ materialized_evidence:
   adjudication_sha256: 878c12670c5c19889259d6def1439ab106304084fee95d8257819f58879b22d2
   inventory_sha256: 76f51e51216f1b6b8fb41e24623e806bb63ad9ab15da279f16157ffe7369bf1d
 selected_candidate:
-  candidate_id: XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E
+  candidate_id: XLF-CAND-CORE-SCHEMATRON-100732DB0BBED389
   candidate_class: SCHEMATRON_REPORT
   profile: xliff_2.1
   source_id: SRC-XLF-002
   source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
   member: schemas/xliff_core_2.1.sch
   member_sha256: d4275f2d2574f892624bcd8f83bcc3001c75d623e4eb36896d15d147f16ed7a2
-  location: schematron/rule[11]/report[2]
-  candidate_content_sha256: af94362009857b0fdd3d19881cd2c8d1866e4f5a72849ec1edf057baf7e905a1
-  requirement_sha256: d36657a907cd8be2ecf38d3fa7a78b3c3720486492cdadd09f4f0f7c25f30e84
-  occurrence_sha256: 96949f8b0f510d573b4c95640fae3e68175b853410865eaf1460a5eaee4f332a
-required_skill: plan-control
+  location: schematron/rule[12]/report[1]
+  candidate_content_sha256: 7564733d38472805796896373cbdbe7807510721c9dfbac29e53843862bcf1cf
+  requirement_sha256: 51c4d1ac9834b99f5a029894cc3c179117a7b9b8de50794bed8acd36132ede7d
+  occurrence_sha256: 903d76dd0cb8472539255ce5075a884460844bc4975a030906ffb793377d3648
+  normalized_requirement: >-
+    {"context":"xlf:unit","kind":"report","message":"Incomplete 'unit';
+    it must have at least one 'segment' child.","test":"not(child::xlf:segment)"}
+generated_proposals_only:
+  - SAL-XLIFF-CORE-AGENT-VALIDATOR-001
+  - SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001
+  - SAL-XLIFF-CORE-HIERARCHY-UNIT-CHILDREN-001
+required_skills:
+  - test-driven-development
+  - ingest-spec-sal
+  - sal-pipeline-heal
+  - plan-control
 required_execution:
-  - Revalidate Event 35, commits 2dcb161e and 809cc18c, candidate identity, artifact hashes, and accepted/materialized counts.
-  - Register a fresh identity and create a fresh plan-control execution manifest and mutation authorization.
-  - Claim only the native controller, journal, current task/projection, transcript, and handover refresh paths required by the transaction.
-  - Replay the immutable checkout-identity and XLIFF proof gates; do not modify product source, semantic decisions, SAL facts, adjudication, or inventory.
-  - Append exactly one hash-chained Event 36 whose evidence binds semantic commit 2dcb161e, repair commit 809cc18c, adjudication digest, inventory digest, and executed verification.
-  - Atomically update controller/task/current projections from 4 to 5 accepted dispositions and 1126 to 1125 open dispositions.
-  - Keep 28 resolved obligations, 77 missing obligations, XLF-04 incomplete, all promotions UNASSESSED, and 0/6 certifications.
-  - Derive the next candidate from the live unverified projection after the transaction; never hard-code a successor from this handover.
-  - Commit explicit files to GitLab main, replay the immutable commit, refresh this packet, validate, and release only the new shift's leases.
+  - Validate Event 36, packet-base commit 41bfaef7, repair commit 809cc18c, candidate identity, and accepted counts before mutation.
+  - Read the exact pinned Schematron occurrence independently; generated mappings are proposals, never conclusions.
+  - Determine whether the report directly owns UNIT-CHILDREN, SEGMENT, another exact denominator row, or no valid current row. Record a machine-readable gap rather than force a mapping.
+  - Start with a genuine pre-change RED test that fails for the intended semantic and proof boundary.
+  - Account for every proposed and materially implicated obligation with explicit accepted or rejected reasoning.
+  - Bind the exact candidate, occurrence, authority, SAL proof, decision, and any compiled obligation through content digests.
+  - Preserve semantic equality of all 28 accepted predecessor rows and identity of all 1130 candidates.
+  - Run focused positive/rejection/tamper tests, three deterministic generations, static checks, SAL verification, five-authority audit, format-contract and production-program regressions, transcript validation, immutable checkout replay, and native event-chain validation.
+  - Commit explicit leased files to GitLab main, append the next native event only after proof passes, refresh this packet, and release only the current shift leases.
 acceptance:
-  event_sequence_after: 36
-  dispositions_verified_after: 5
-  dispositions_unverified_after: 1125
-  obligations_after: {expected: 105, resolved: 28, missing: 77}
-  new_obligations: 0
-  product_source_effect: none
+  prior_dispositions_verified: 5
+  expected_new_candidate_dispositions: 1
+  obligation_delta: evidence_derived_not_predeclared
+  predecessor_rows_preserved: 28
+  candidate_ids_preserved: 1130
   xlf_04_complete: false
+  product_source_effect: none
   promotion_effect: none
+  production_certification_effect: none
 forbidden:
-  - reimplementing the reciprocal semantic rule or rewriting commit 2dcb161e
-  - changing proof identity policy or regenerating evidence without an invalidated input
-  - guessing the next candidate before the accepted projection is recomputed
-  - product source, certification, promotion, release, or gate mutation
+  - accepting any generated proposal without independent authority adjudication
+  - inventing or selecting an obligation merely to increase coverage
+  - weakening checkout identity, content-addressing, tamper rejection, or predecessor equality
+  - product source, gate, promotion, release, or certification mutation
   - GitHub push, non-main branch, broad staging, foreign lease release, or dirty-state cleanup
 fallback:
-  when: native controller paths are live-owned
+  when: controller or XLIFF evidence paths are live-owned
   action: continue read-only verification or select the highest-severity disjoint unleased task from the live deterministic queue
-  invariant: fallback work must not change the controller-selected XLIFF task or claim Event 36
+  invariant: fallback work cannot claim this candidate or append its controller event
