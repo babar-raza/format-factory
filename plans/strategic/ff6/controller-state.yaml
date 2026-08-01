@@ -4,10 +4,10 @@ goal_status: ACTIVE
 generated_by: codex
 visibility: internal
 controller_state: CONTRACT
-transition_sequence: 41
+transition_sequence: 42
 last_verified_event:
-  event_id: FF6-EVENT-000041
-  event_hash: f6b81a03ef1067b4b4665c606560d4ca248c77c1b4060b3bd9a252170968ddee
+  event_id: FF6-EVENT-000042
+  event_hash: 42b943ca7d4cf67492bf1358f3835636219af2bbe5d777328396bdd434c615fe
 event_journal: plans/strategic/ff6/events.jsonl
 baseline_commit: e4f8f5f086b5e627c07c2ef2d940eda2601a22a8
 digest_policy:
@@ -54,7 +54,7 @@ next_task:
     accepted rows and all 1,130 candidate IDs. Product source and architecture
     remain blocked until XLF-04 and later contract steps close.
 acceleration_bootstrap:
-  status: SCHEDULED
+  status: IN_PROGRESS
   plan_version: 4
   scheduling_event: FF6-EVENT-000041
   source_checkpoint_commit: 00357eb2aac2e657ef087a9ea1ca8433f1d06322
@@ -66,10 +66,13 @@ acceleration_bootstrap:
   lanes:
     - lane: A
       task_id: TC-FF6-ACCEL-CONTROL-001
-      state: READY
+      state: WORK_IN_PROGRESS
       logical_lease: logical:FF6-CONTROL-ACCELERATION
+      semantic_commit: bdcdae83a78cdb2bd9225a847f814469bcd04c23
+      accepted_slices:
+        - A1_MISSING_AUTHORITY_FAIL_CLOSED
       first_action: >-
-        Add the missing-required-authority RED test before changing compilation.
+        Execute A2 proof-impact selector RED tests and full-sentinel comparison.
     - lane: B
       task_id: TC-FF6-XLIFF-SEMANTIC-BATCH-001
       state: READY
@@ -89,9 +92,11 @@ acceleration_bootstrap:
       first_action: >-
         Characterize IPYNB and SafeTensors read-only before any source restructuring.
   truth_boundary: >-
-    This projection schedules bounded work only. The active XLIFF task and
-    candidate I remain incomplete; UBL-03 remains incomplete; all products
-    remain UNASSESSED and technical certification remains 0/6.
+    A1 is accepted as control machinery only. A2 and A3 remain incomplete. The
+    active XLIFF candidate I and UBL-03 remain incomplete; five contracts retain
+    legacy validation defects; XLIFF rejects undeclared locked authority
+    SRC-XLIFF-003; all products remain UNASSESSED and technical certification
+    remains 0/6.
 promotion:
   program: UNASSESSED
   ipynb: UNASSESSED
@@ -130,7 +135,7 @@ capability_compilation:
     - FF6-XLIFF-PROFILE-001
     - FF6-UBL-TYPING-001
 authority_closure_checkpoint:
-  status: PASS
+  status: FAIL_CLOSED_CURRENT_CONTRADICTION
   authority_lock_sha256: 5c1ac942018f1e26e0fc0ca7c8284313452d1cb44c04d7e225faad4b21219929
   authority_records: 17
   live_matches: 17
@@ -139,7 +144,13 @@ authority_closure_checkpoint:
   xliff_clean_offline_reconstruction: PASS_5_OF_5
   full_clean_replay_17: NOT_RERUN_AT_WIP_CHECKPOINT
   online_rebuild_cas_bytes: 73206772
-  strict_product_contract_compiles: 6
+  strict_product_contract_compiles: 5
+  strict_product_contract_rejections: 1
+  strict_rejection:
+    format_id: xliff
+    code: AUTHORITY_LOCK_SOURCE_UNDECLARED
+    reference: SRC-XLIFF-003
+    effect: CONTRACT_DIGEST_AND_PROOF_EMISSION_BLOCKED
   materializer_focused_tests: 12 passed
   affected_regression: >-
     NRRD checkpoint: 92 format-contract tests passed with 1 baseline-known
@@ -153,10 +164,15 @@ authority_closure_checkpoint:
   materialized_authority_sources: 17
   promotion_effect: none
 current_gap_summary:
-  critical: 1
+  critical: 2
   high: 7
   medium: 3
-  total: 11
+  total: 12
+  newly_exposed:
+    - gap_id: FF6-XLIFF-AUTHORITY-LOCK-SOURCE-UNDECLARED-001
+      severity: CRITICAL
+      state: OPEN
+      evidence: AUTHORITY_LOCK_SOURCE_UNDECLARED[SRC-XLIFF-003]
   source_packages_present: 5
   source_packages_absent: 1
   product_contracts_draft: 6

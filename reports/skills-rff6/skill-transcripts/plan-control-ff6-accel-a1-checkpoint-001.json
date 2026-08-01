@@ -1,0 +1,67 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "plan-control-ff6-accel-a1-checkpoint-001",
+  "skill_id": "plan-control",
+  "mode": "live",
+  "timestamp": "2026-08-01T17:18:00Z",
+  "inputs": {
+    "task_id": "TC-FF6-ACCEL-CONTROL-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "operation": "project",
+    "target_paths": [
+      "plans/strategic/ff6/events.jsonl",
+      "plans/strategic/ff6/controller-state.yaml",
+      "reports/skills-rff6/skill-transcripts/plan-control-ff6-accel-a1-checkpoint-001.json"
+    ],
+    "coordination_scope": "Exact Event 42 journal, controller projection, and transcript paths under exclusive FF6 controller and GitLab-main integration writer leases.",
+    "acceptance_evidence": "Semantic commit bdcdae83 is present on GitLab origin/main; A1 RED/GREEN and proof-path negative controls pass; 145 affected tests pass with one exact known stateful test deselected; two semantic receipts have zero warnings; product promotion remains none.",
+    "source_checkpoint": "bdcdae83a78cdb2bd9225a847f814469bcd04c23",
+    "execution_manifest": ".local/skills-first/manifests/sfx-f5894334a9c1755e.json",
+    "authorization_id": "e03292cb35c1c433",
+    "coordination_identity": "agent-codex-20260801T163048-5b135a"
+  },
+  "allowed_files": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "reports/skills-rff6/skill-transcripts/plan-control-ff6-accel-a1-checkpoint-001.json"
+  ],
+  "actual_files_changed": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "reports/skills-rff6/skill-transcripts/plan-control-ff6-accel-a1-checkpoint-001.json"
+  ],
+  "tests_run": [
+    "Native FF6 replay passed all 42 canonical event hashes, sequence identities, and predecessor links.",
+    "Controller projection matches Event 42 ID and hash; all six product states and program state remain UNASSESSED.",
+    "Lane A projects WORK_IN_PROGRESS with A1 accepted and A2 as the next bounded slice.",
+    "Current authority truth projects five strict compiles and one deterministic XLIFF rejection for undeclared locked source SRC-XLIFF-003.",
+    "python -m pytest tests/plan_control -q: 40 passed.",
+    "python -m pytest tests/production_program/test_production_program.py tests/production_program/test_production_skills.py -q: 51 passed.",
+    "git diff --check: PASS."
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "event_id": "FF6-EVENT-000042",
+    "event_hash": "42b943ca7d4cf67492bf1358f3835636219af2bbe5d777328396bdd434c615fe",
+    "events_sha256": "08cb39f6232cc3ebf1a20d04f0ca12b87c34a2ed5ec823cb76a0eea50be740dc",
+    "controller_sha256": "db47c91c9d007f86820192ecd87f2f28888e4166b776c0e9cc4c6e13ab0784ef",
+    "semantic_commit": "bdcdae83a78cdb2bd9225a847f814469bcd04c23",
+    "accepted_slice": "A1_MISSING_AUTHORITY_FAIL_CLOSED",
+    "next_slice": "A2_PROOF_IMPACT_SELECTOR_AND_SENTINEL",
+    "xliff_authority_gap": "AUTHORITY_LOCK_SOURCE_UNDECLARED[SRC-XLIFF-003]",
+    "active_product_task_preserved": "TC-FF6-XLIFF-PROFILE-SURFACE-001 candidate I remains incomplete",
+    "product_promotion": "none",
+    "production_certifications": "0/6"
+  },
+  "self_challenge": {
+    "a1_only_claimed": true,
+    "a2_and_a3_remain_open": true,
+    "xliff_authority_contradiction_not_hidden": true,
+    "legacy_contract_defects_not_claimed_fixed": true,
+    "product_state_unchanged": true,
+    "human_only_gate_not_touched": true
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}
