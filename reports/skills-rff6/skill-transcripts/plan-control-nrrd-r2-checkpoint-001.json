@@ -1,0 +1,51 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "plan-control-nrrd-r2-checkpoint-001",
+  "skill_id": "plan-control",
+  "mode": "live",
+  "timestamp": "2026-08-01T20:41:16Z",
+  "inputs": {
+    "task_id": "TC-FF6-NRRD-READINESS-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "operation": "project",
+    "target_paths": [
+      "plans/strategic/ff6/events.jsonl",
+      "plans/strategic/ff6/controller-state.yaml"
+    ],
+    "coordination_scope": "logical:FF6-CONTROLLER-WRITE",
+    "acceptance_evidence": "R2 exact 65-row reconciliation at semantic commit ea118ba39904b54517ba6bc5839c8d4fc36fa050",
+    "execution_manifest": "sfx-8276e614ad68f8a1",
+    "mutation_authorization": "438098cdf3564bb6"
+  },
+  "allowed_files": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "reports/skills-rff6/skill-transcripts/plan-control-nrrd-r2-checkpoint-001.json"
+  ],
+  "actual_files_changed": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "reports/skills-rff6/skill-transcripts/plan-control-nrrd-r2-checkpoint-001.json"
+  ],
+  "tests_run": [
+    "native FF6 event chain validates through Event 47",
+    "Event 47 canonical hash equals d4cc0a0292b9e5ea5d473d38c195ceb7328b85d47f28569da3cb8af64b1a22ff",
+    "controller head, sequence, completed steps, next step, and promotion invariants match Event 47",
+    "tests/format_contract/test_obligation_reconciliation.py: 9 passed",
+    "reconcile-contract-obligations-nrrd-r2-001 transcript: PASS",
+    "git diff --check: PASS"
+  ],
+  "ledger_entry_id": "FF6-EVENT-000047",
+  "result": "PASS",
+  "evidence": {
+    "semantic_commit": "ea118ba39904b54517ba6bc5839c8d4fc36fa050",
+    "event_journal_sha256": "06b0f2c0d798e5ac18a0115842fcf5e6da93e1dfb88e5c4712bc670a6762577b",
+    "controller_state_sha256": "43ccc6f0b07d6c45c011fbd99bfaa303b4873e08cc23f176c7ab9f398ffb151a",
+    "controller_event": "FF6-EVENT-000047",
+    "next_step": "R3_INDEPENDENT_CORPUS_AND_ORACLE_MATRIX",
+    "production_certifications": "0/6",
+    "product_promotion_effect": "none"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

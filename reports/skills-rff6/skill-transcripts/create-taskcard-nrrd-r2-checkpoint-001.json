@@ -1,0 +1,45 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "create-taskcard-nrrd-r2-checkpoint-001",
+  "skill_id": "create-taskcard",
+  "mode": "live",
+  "timestamp": "2026-08-01T20:41:16Z",
+  "inputs": {
+    "task_id": "TC-FF6-NRRD-READINESS-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "taskcard_id": "TC-FF6-NRRD-READINESS-001",
+    "title": "Establish NRRD Production Readiness",
+    "format_id": "nrrd",
+    "execution_manifest": "sfx-d879d4f9e01fa97d",
+    "mutation_authorization": "438098cdf3564bb6"
+  },
+  "allowed_files": [
+    "taskcards/TC-FF6-NRRD-READINESS-001.md",
+    "reports/skills-rff6/skill-transcripts/create-taskcard-nrrd-r2-checkpoint-001.json"
+  ],
+  "actual_files_changed": [
+    "taskcards/TC-FF6-NRRD-READINESS-001.md",
+    "reports/skills-rff6/skill-transcripts/create-taskcard-nrrd-r2-checkpoint-001.json"
+  ],
+  "tests_run": [
+    "taskcard front matter parses as YAML",
+    "R2 exact classification acceptance is checked",
+    "R3 is the first unmet step",
+    "task status remains WORK_IN_PROGRESS",
+    "product promotion remains unchanged"
+  ],
+  "ledger_entry_id": "FF6-EVENT-000047",
+  "result": "PASS",
+  "evidence": {
+    "taskcard_sha256": "ac7d8640b328012d9f00947f30c9f89ceb191b00e2746e4af76fb536d67fa991",
+    "task_state": "WORK_IN_PROGRESS",
+    "completed_steps": [
+      "R1",
+      "R2"
+    ],
+    "next_step": "R3_INDEPENDENT_CORPUS_AND_ORACLE_MATRIX",
+    "product_promotion_effect": "none"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

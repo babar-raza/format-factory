@@ -4,10 +4,10 @@ goal_status: ACTIVE
 generated_by: codex
 visibility: internal
 controller_state: CONTRACT
-transition_sequence: 46
+transition_sequence: 47
 last_verified_event:
-  event_id: FF6-EVENT-000046
-  event_hash: 6524928fd8c8aa81106e1a5a4058e64bd6359b23501f63e5814bed1d13de6bfe
+  event_id: FF6-EVENT-000047
+  event_hash: d4cc0a0292b9e5ea5d473d38c195ceb7328b85d47f28569da3cb8af64b1a22ff
 event_journal: plans/strategic/ff6/events.jsonl
 baseline_commit: e4f8f5f086b5e627c07c2ef2d940eda2601a22a8
 digest_policy:
@@ -24,7 +24,7 @@ handover_checkpoint:
   start: plans/codex/handover/START-HERE.md
   manifest: plans/codex/handover/manifest.yaml
   checkpoint: plans/codex/handover/checkpoint.yaml
-  packet_base_commit: 767e7006a19a118e4a16d72db0a15e2f387b44af
+  packet_base_commit: ea118ba39904b54517ba6bc5839c8d4fc36fa050
   packet_commit_rule: >-
     The fetched origin/main checkpoint containing this projection must be a
     descendant of packet_base_commit. A packet cannot embed the hash of the
@@ -36,19 +36,19 @@ active_task:
   parent_task_id: TC-FF6-PROGRAM-CAPABILITIES-001
   completed_steps:
     - R1
-  partial_steps:
-    - R2_AUTHORITY_AND_CONTRACT_REFRESH
-  first_unmet_step: R2_EXACT_OBLIGATION_CLASSIFICATION
+    - R2
+  partial_steps: []
+  first_unmet_step: R3_INDEPENDENT_CORPUS_AND_ORACLE_MATRIX
 next_task:
   task_id: TC-FF6-NRRD-READINESS-001
   state: WORK_IN_PROGRESS
   unlock_condition: >-
-    Continue from Event 46 and immutable GitLab commit 767e7006 at NRRD R2.
-    Classify all 65 canonical obligations against exact source symbols and
-    executed evidence, define positive and negative proof requirements, and
-    retain heuristic reconciliation rows as non-promoting. Then execute R3
-    independent Teem/pynrrd corpus and oracle acquisition. Product source
-    remains read-only until bounded implementation taskcards exist.
+    Continue from Event 47 and immutable GitLab commit ea118ba3 at NRRD R3.
+    Acquire immutable licensed official, Teem, and pynrrd corpus inputs; bind
+    their digests and tool versions; execute independent read/write
+    differential matrices; preserve contradictions; and derive exact positive,
+    negative, preservation, and interoperability proof gaps. Product source
+    remains read-only until R4 emits bounded implementation taskcards.
 acceleration_bootstrap:
   status: COMPLETE
   plan_version: 4
@@ -70,17 +70,19 @@ acceleration_bootstrap:
         - b772469b5f6fbbcdaae83d2be8b57058c2a45b34
         - 54f2a12f6d8e7d31f9f7beb6e7b0e9f5c2cb82a7
         - 767e7006a19a118e4a16d72db0a15e2f387b44af
+        - ea118ba39904b54517ba6bc5839c8d4fc36fa050
       accepted_slices:
         - A1_MISSING_AUTHORITY_FAIL_CLOSED
         - A2_PROOF_IMPACT_SELECTOR_AND_SENTINEL
         - A3_CONTROLLER_BATCH_AND_SCHEDULER
         - A3_GENERATED_HANDOVER_AND_INTEGRATION_CONTROLS
         - NRRD_R1_IMMUTABLE_BASELINE_AND_R2_AUTHORITY_REFRESH
+        - NRRD_R2_EXACT_OBLIGATION_CLASSIFICATION
       first_action: >-
-        Continue TC-FF6-NRRD-READINESS-001 R2 from GitLab main. Complete exact
-        per-obligation classification and proof requirements, then acquire and
-        execute independent Teem/pynrrd corpus evidence; do not restructure
-        product source or claim certification.
+        Continue TC-FF6-NRRD-READINESS-001 R3 from GitLab main. Acquire and
+        execute immutable independent Teem/pynrrd corpus and oracle evidence,
+        preserve disagreements, and compile selector-bound proof gaps; do not
+        restructure product source or claim certification.
     - lane: B
       task_id: TC-FF6-XLIFF-SEMANTIC-BATCH-001
       state: READY
@@ -100,11 +102,12 @@ acceleration_bootstrap:
       first_action: >-
         Characterize IPYNB and SafeTensors read-only before any source restructuring.
   truth_boundary: >-
-    Control acceleration A1-A3 and NRRD R1 are complete. NRRD R2 has current
-    authority and contract projections but lacks exact per-obligation proof
-    classifications; XLIFF profile work and UBL-03 remain incomplete;
-    OpenRaster source remains absent; all products remain UNASSESSED and
-    technical certification remains 0/6.
+    Control acceleration A1-A3 and NRRD R1-R2 are complete. Exact conservative
+    classifications exist for all 65 NRRD obligations, but 48 remain partial,
+    missing, or preservation-only and suite-level support is non-promoting.
+    Independent Teem/pynrrd R3, XLIFF profile work, UBL-03, OpenRaster source,
+    every product certification, and release readiness remain open. All six
+    products remain UNASSESSED and technical certification remains 0/6.
 promotion:
   program: UNASSESSED
   ipynb: UNASSESSED
@@ -184,7 +187,7 @@ current_gap_summary:
   production_certifications: 0
 control_plane_compatibility:
   ff6_event_schema: ff6/controller-event@1
-  native_chain_validation: PASS_THROUGH_EVENT_46
+  native_chain_validation: PASS_THROUGH_EVENT_47
   generic_plan_control_doctor: >-
     INCOMPATIBLE_SCHEMA: tools.plan_control expects previous_hash and its own
     event payload; FF6 uses previous_event_hash. This is the already-tracked
@@ -197,18 +200,29 @@ invariants:
   - Publication authority is external and cannot be bypassed.
 nrrd_checkpoint:
   status: WORK_IN_PROGRESS
-  accepted_slice: R1_IMMUTABLE_BASELINE_AND_R2_AUTHORITY_REFRESH
-  source_checkpoint_commit: 767e7006a19a118e4a16d72db0a15e2f387b44af
-  completed_steps: [R1]
-  partial_steps: [R2_AUTHORITY_AND_CONTRACT_REFRESH]
-  first_unmet_step: R2_EXACT_OBLIGATION_CLASSIFICATION
+  accepted_slice: R2_EXACT_OBLIGATION_CLASSIFICATION
+  source_checkpoint_commit: ea118ba39904b54517ba6bc5839c8d4fc36fa050
+  completed_steps: [R1, R2]
+  partial_steps: []
+  first_unmet_step: R3_INDEPENDENT_CORPUS_AND_ORACLE_MATRIX
   public_definitions: 40
   production_namespace_python_files: 17
   production_namespace_loc: 1290
   focused_tests: 277 passed
   contract_capabilities: 21
   canonical_obligations: 65
-  exact_obligation_classification: INCOMPLETE
+  exact_obligation_classification: COMPLETE_NON_PROMOTING
+  classifications:
+    implemented: 17
+    partial: 39
+    missing: 6
+    preservation_only: 3
+  unresolved_obligations: 48
+  exact_reconciliation_sha256: f0e05101e78c3836452f9a5a4a826af9443f0190a97cf6657f60cf2b98b81395
+  implementation_evidence_sha256: ade5521116fe0dc6f2c823d7a8bb9dfd1a5e2ee137300c6796983f22e83fdf2a
+  implementation_evidence_schema_sha256: 2eef87038032303817655ef60567d972d9c4c73f26d633819ec8aab751473149
+  exact_execution_evidence_granularity: SUITE_LEVEL_SUPPORTING_NON_PROMOTING
+  independent_teem_pynrrd_oracle: OPEN_R3
   observed_depth_gaps: 6
   heuristic_reconciliation_status: NON_PROMOTING
   installed_package: format-factory-nrrd
@@ -219,7 +233,6 @@ nrrd_checkpoint:
   contract_sha256: f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39
   reconciliation_sha256: f836b45d35425bcacb0ff77444e017b8e559d9921bedb518c6c64dbb32da99e3
   remaining_scope:
-    - exact classification and proof requirements for all 65 obligations
     - immutable independent Teem and pynrrd corpus and oracle evidence
     - streaming, mmap, detached list/pattern, block-type, and metadata depth
     - architecture remediation and bounded product implementation taskcards

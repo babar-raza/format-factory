@@ -41,7 +41,7 @@ notes: NRRD production-readiness characterization and executable gap compilation
 **Status:** WORK_IN_PROGRESS
 **Owner:** deterministic FF6 Lane A scheduler
 **Created:** 2026-08-01
-**Last updated:** 2026-08-01
+**Last updated:** 2026-08-02
 **Blocking:** NRRD production implementation and certification batches
 **Blocked by:** none for read-only characterization and contract reconciliation
 **Format:** nrrd
@@ -73,9 +73,35 @@ R1 is complete and the authority/contract portion of R2 is accepted at GitLab
   the 65 obligations remain the first unmet R2 work;
 - no product source, promotion, certification, release, or gate state changed.
 
-The exact next action is R2 per-obligation classification, followed by R3
-independent Teem/pynrrd corpus and oracle acquisition. Product source remains
-read-only until R4 compiles bounded implementation taskcards.
+The Event 46 next action was R2 per-obligation classification, followed by R3
+independent Teem/pynrrd corpus and oracle acquisition. Event 47 records R2 as
+complete. Product source remains read-only until R4 compiles bounded
+implementation taskcards.
+
+## Event 47 execution checkpoint
+
+R2 exact obligation classification is complete at GitLab `main` semantic commit
+`ea118ba39904b54517ba6bc5839c8d4fc36fa050`:
+
+- all 65 canonical obligations have exactly one schema-valid current row;
+- conservative classifications are 17 implemented, 39 partial, 6 missing, and
+  3 preservation-only, leaving 48 unresolved obligations;
+- every claimed behavior row resolves exact source and test references, while
+  every missing behavior states required positive and negative proof;
+- eight fail-closed negative controls cover incomplete/duplicate/foreign rows,
+  unresolved source/tests, invalid execution evidence, status invariants, and
+  source-digest invalidation;
+- the exact report was byte-identical across three runs with SHA-256
+  `f0e05101e78c3836452f9a5a4a826af9443f0190a97cf6657f60cf2b98b81395`;
+- existing execution evidence is suite-level supporting evidence only. It is
+  not selector-bound independent interoperability proof and has no promotion
+  effect.
+
+The exact next action is R3: acquire immutable licensed official, Teem, and
+pynrrd corpus inputs; bind source/tool/environment digests; execute independent
+read and write differential matrices; preserve contradictions; and compile the
+positive, negative, preservation, interoperability, security, and performance
+gaps that R4 will turn into bounded product taskcards.
 
 ## Locked truth and invariants
 
@@ -180,7 +206,7 @@ boundary.
 - [x] Clean source and installed-wheel baselines are captured separately.
 - [x] Existing working behavior has executable characterization coverage.
 - [x] NRRD0001-NRRD0005 authority closure passes fail-closed validation.
-- [ ] All 65 canonical obligations have exact current classifications and proof
+- [x] All 65 canonical obligations have exact current classifications and proof
       requirements; no mandatory item is hidden by percentage coverage.
 - [ ] Teem and pynrrd matrices use immutable independent corpus evidence and
       preserve contradictions explicitly.
