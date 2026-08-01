@@ -1,155 +1,67 @@
-schema: ff6/provider-neutral-machine-state@19
-artifact_id: FF6-CURRENT-MACHINE-STATE-EVENT-40
+schema: ff6/provider-neutral-machine-state@20
+artifact_id: FF6-CURRENT-MACHINE-STATE-EVENT-44
 visibility: internal
 publish_allowed: false
 generated_by: codex
-generated_at: '2026-08-01'
 repository:
   forge: GitLab
   remote: origin
   branch: main
-  checkpoint_commit: de569544eebc1fff011901e61d3574dcc48e5e08
-  semantic_commit: d95af5aeb248907b4d23457ecd288723fc9c2050
-  verified_checkout_identity_repair: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
-  controller_acceptance_commit: de569544eebc1fff011901e61d3574dcc48e5e08
-  head_must_equal_origin_main_at_transfer: true
+  source_checkpoint: 4c4b80517a34534416492a772c6d3d81bfde9809
   github_authorized: false
   other_branches_authorized: false
-goal:
-  goal_id: FF6-PRODUCTION-LIBRARIES-001
-  status: ACTIVE
-  products_required: [ipynb, ora, nrrd, xliff, safetensors, ubl]
-  terminal_condition_met: false
 controller:
   state: CONTRACT
-  transition_sequence: 40
-  event_id: FF6-EVENT-000040
-  event_hash: c9c7167d447fbe0945c7a65c288f3cece78c64090e09c1ce2d674fdbf9bf2d63
+  event_sequence: 44
+  event_id: FF6-EVENT-000044
+  event_hash: 20e8f7fac635994e4f1051a5dd9cd3bd0a2da3b0e361d006a17d834536fc09cd
+  task_id: TC-FF6-ACCEL-CONTROL-001
+  task_state: WORK_IN_PROGRESS
+  semantic_commit: b772469b5f6fbbcdaae83d2be8b57058c2a45b34
+  exact_next_action: Use refresh-provider-neutral-handover from GitLab main commit b772469b to generate
+    the tracked handover projections from Event 44 and controller state. Prove three identical generations,
+    reject a stale manual event/task value, validate manifest hashes and internal links, then journal
+    A3 completion. Do not change product source, certification, promotion, release, or gates.
+product_lane:
   task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
   task_state: WORK_IN_PROGRESS
-  first_unmet_step: XLF-04
-  completed_microstep: XLF-04-BATCH-005-PARTIAL-002-H
-  exact_microstep: XLF-04-BATCH-005-PARTIAL-002-I
-  exact_microstep_state: READY_FOR_RED
+  microstep: XLF-04-BATCH-005-PARTIAL-002-I
+  semantic_commit: d95af5aeb248907b4d23457ecd288723fc9c2050
+  exact_next_action: Execute XLF-04-BATCH-005-PARTIAL-002-I from Event 40 and immutable GitLab main commit
+    d95af5ae. Independently adjudicate candidate XLF-CAND-CORE-SCHEMATRON-60B596A00F7FA06A, the XLIFF
+    2.1 target-side isolated start-code report. Determine whether it supplies reciprocal proof for the
+    existing inline-isolation obligation. Treat all eight generated mappings as unverified proposals,
+    reject incidental context and downstream surfaces, preserve all 31 accepted rows and all 1,130 candidate
+    IDs, and keep completeness false.
 program_truth:
-  capabilities: 110
-  obligations: 672
-  product_contracts_draft: 6
   production_certifications: 0
-  promotion: {program: UNASSESSED, ipynb: UNASSESSED, ora: UNASSESSED, nrrd: UNASSESSED, xliff: UNASSESSED, safetensors: UNASSESSED, ubl: UNASSESSED}
+  promotion:
+    program: UNASSESSED
+    ipynb: UNASSESSED
+    ora: UNASSESSED
+    nrrd: UNASSESSED
+    xliff: UNASSESSED
+    safetensors: UNASSESSED
+    ubl: UNASSESSED
+  terminal_condition_met: false
+xliff:
+  expected_core_obligations: 105
+  accepted_core_obligations: 31
+  missing_core_obligations: 74
+  candidate_count: 1130
+  verified_dispositions: 9
+  unverified_dispositions: 1121
+  complete: false
+ubl:
+  document_roots: 91
+  schema_documents: 106
+  local_particle_nodes: 6001
+  derivation_edges: null
+  next_microstep: null
+  complete: false
 workspace_transfer:
-  status: CLEAN_REMOTE_RECONSTRUCTIBLE_CHECKPOINT_PENDING_PACKET_COMMIT
-  local_only_required_for_resume: false
-  uncommitted_product_overlay: false
+  requires_clean_head_equal_origin_main: true
   provider_identity_transferable: false
   leases_transferable: false
   execution_manifests_transferable: false
-  mutation_authorizations_transferable: false
-xliff:
-  status: WORK_IN_PROGRESS
-  completed_steps: [XLF-01, XLF-02, XLF-03]
-  first_unmet_step: XLF-04
-  authority_candidates:
-    count: 1130
-    sha256: 9f10464e14c55a36ee1e54a5d12d04e8e23f19d2cb94d7c0c732cb40861db4b7
-  accepted_controller_projection:
-    event_id: FF6-EVENT-000040
-    verified_dispositions: 9
-    open_dispositions: 1121
-  materialized_verified_projection:
-    commit: d95af5aeb248907b4d23457ecd288723fc9c2050
-    verified_dispositions: 9
-    open_dispositions: 1121
-    controller_acceptance_pending: false
-  adjudication:
-    path: reports/sal-verification/xliff-core-candidate-adjudications.yaml
-    sha256: 51ac3adc6fa530246ff25b70e179d040d68eeb65dc8a744794e0d4fbe7738e42
-    production_accepted_dispositions: 9
-    production_open_dispositions: 1121
-    complete: false
-  obligation_inventory:
-    path: reports/ff6/xliff-core-obligation-inventory.yaml
-    sha256: 7bb46e814b5be12ad313ba0ec77c0585a279f8f85f6cb974481414368c5e713b
-    expected: 105
-    production_accepted_source_bound: 31
-    production_accepted_missing: 74
-    complete: false
-  product_contract:
-    path: shared/format-contracts/xliff.yaml
-    sha256: d584e217f5f2d06bcd71723d5d89e60c24a39f3273e8967fe920d4b03bacfc69
-    lifecycle: DRAFT
-    capabilities: 15
-    fresh: true
-  pending_candidate:
-    candidate_id: XLF-CAND-CORE-SCHEMATRON-60B596A00F7FA06A
-    candidate_content_sha256: 41719598a09ae47886c9d146932117abc74da0c2c6f51482d1e2a94c109dd900
-    requirement_sha256: 823cd7fb987463c882d783105487f3463a316392accad13d3be184487c2c4959
-    occurrence_sha256: 90c4965db1a12842770b7212cddaa078a48f48848896387093ad56cf4cdcf1a6
-    profile: xliff_2.1
-    location: schematron/rule[16]/report[1]
-    generated_proposals_are_authority: false
-  current_semantic_checkpoint:
-    commit: d95af5aeb248907b4d23457ecd288723fc9c2050
-    decision_id: XLF-ADJ-CORE-SCHEMATRON-0009
-    sal_fact_id: SAL-XLIFF-D5C1325C047A7CB0
-    legacy_fact_id: FACT-XLIFF-34
-    direct_obligation: SAL-XLIFF-CORE-INLINE-ISOLATION-001
-    selected_candidate_profiles: [xliff_2.1]
-    authority_profiles: [xliff_2.0, xliff_2.1]
-    immutable_focused_tests: PASS_3
-    affected_tool_tests: PASS_113
-    controller_event: FF6-EVENT-000040
-    controller_acceptance_commit: de569544eebc1fff011901e61d3574dcc48e5e08
-  authority_semantics:
-    xliff_2_0: isolated_biconditional_in_normative_prose
-    xliff_2_1: isolated_biconditional_plus_source_side_f5s_report
-    direct_owner: SAL-XLIFF-CORE-INLINE-ISOLATION-001
-    target_side_reciprocal_candidate_pending: true
-  immutable_replay:
-    ignored_external_authority_files:
-      - src-xlf-001.bin
-      - src-xlf-002.bin
-      - src-xliff-001.bin
-      - src-xliff-003.bin
-    tracked_authority_files: 1
-    required_matches: 5
-    two_package_replay_sufficient: false
-ubl:
-  status: WORK_IN_PROGRESS
-  completed_steps: [UBL-01, UBL-02]
-  first_unmet_step: UBL-03
-  schema_documents: 106
-  document_roots: 91
-  dependency_edges: 297
-  global_components: 3788
-  global_reference_uses: 8926
-  unresolved_global_references: 0
-  ambiguous_global_references: 0
-  closure_sha256: 2e43a3e83b1ad96ce287299cd7e7c6d86a4a4a02cc3423d30e18f0c9b4ee9fc3
-  local_particle_nodes: 6001
-  local_particle_edges: 6001
-  local_particle_owners: 468
-  particle_graph_sha256: 49b0c1ba5c75df0562ab6334fb14f8fe6dc4a9db31ff8e2b130d3bf04cf8eae1
-  anonymous_type_nodes: 0
-  anonymous_type_edges: 0
-  anonymous_type_graph_sha256: 666634cb0d90f17b05e0b9fd4babe13fe5087f253ef2afb276bf6066d82eaf6e
-  derivation_edges: 1178
-  derivation_graph_sha256: 783506c4dcccaefbeb94960dcb5e6d7e0c54a6d8487ee1746eca082535b60e9f
-  completed_microstep: UBL-03-PARTIAL-005-DERIVATION-AND-INHERITANCE-EDGES
-  next_microstep: UBL-03-PARTIAL-006-ATTRIBUTES-AND-ATTRIBUTE-GROUPS
-  complete: false
-other_products:
-  ipynb: {source_exists: true, certification: not_certified}
-  ora: {source_exists: false, certification: absent}
-  nrrd: {source_exists: true, certification: not_certified}
-  safetensors: {source_exists: true, certification: not_certified}
-known_limits:
-  - Event 40 proves one inline-isolation obligation and disposition, not XLF-04 completion.
-  - The compiler hashes a missing cached authority as empty bytes instead of failing closed; the accepted replay materialized all five records and does not claim this machinery weakness is repaired.
-  - The XLIFF ProductContract is freshly compiled but remains DRAFT and non-promoting.
-  - The local artifact index is pre-existing invalid YAML; no promotion relies on it.
-  - Checkout identity is verified for the accepted proof closure, not every future generator.
-  - Full immutable contract replay needs four ignored external authority files plus one tracked authority.
-  - Contracts and obligation compilation precede product deepening.
-  - Existing package-install and oracle evidence is shallow, stale, or incomplete and is non-promoting.
-  - Gate 10 and publication authority remain external even after technical certification.
+  local_only_required_for_resume: false

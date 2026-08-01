@@ -6,8 +6,14 @@ publish_allowed: false
 generated_by: codex
 generated_at: 2026-07-30
 authoritative_state: false
-historical_projection: false
+historical_projection: true
 ---
+
+> **Historical Event 40 analysis.** The diagnosis and design arguments are
+> retained, but its status overlay is not current. Use generated
+> [START-HERE.md](START-HERE.md),
+> [CURRENT-MACHINE-STATE.yaml](CURRENT-MACHINE-STATE.yaml), and
+> [checkpoint.yaml](checkpoint.yaml) for live state.
 
 # Current State, Root Causes, and Structural Weaknesses
 

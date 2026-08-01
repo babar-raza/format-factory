@@ -1,81 +1,51 @@
-schema: ff6/provider-neutral-checkpoint@18
-artifact_id: FF6-HANDOVER-CHECKPOINT-EVENT-40
+schema: ff6/provider-neutral-checkpoint@19
+artifact_id: FF6-HANDOVER-CHECKPOINT-EVENT-44
 visibility: internal
 publish_allowed: false
 generated_by: codex
-generated_at: '2026-08-01'
 source_checkpoint:
   forge: GitLab
   remote: origin
   branch: main
-  repository_checkpoint: de569544eebc1fff011901e61d3574dcc48e5e08
-  semantic_commit: d95af5aeb248907b4d23457ecd288723fc9c2050
-  verified_checkout_identity_repair: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
-  controller_acceptance_commit: de569544eebc1fff011901e61d3574dcc48e5e08
-  packet_commit_rule: The packet commit descends from repository_checkpoint and cannot self-reference its own final hash.
+  repository_checkpoint: 4c4b80517a34534416492a772c6d3d81bfde9809
+  packet_commit_rule: The packet commit must descend from repository_checkpoint; the packet never self-references
+    its containing commit.
 controller_checkpoint:
-  controller_state: CONTRACT
-  event_sequence: 40
-  event_id: FF6-EVENT-000040
-  event_hash: c9c7167d447fbe0945c7a65c288f3cece78c64090e09c1ce2d674fdbf9bf2d63
+  state: CONTRACT
+  event_sequence: 44
+  event_id: FF6-EVENT-000044
+  event_hash: 20e8f7fac635994e4f1051a5dd9cd3bd0a2da3b0e361d006a17d834536fc09cd
+  task_id: TC-FF6-ACCEL-CONTROL-001
+  task_state: WORK_IN_PROGRESS
+  semantic_commit: b772469b5f6fbbcdaae83d2be8b57058c2a45b34
+  exact_next_action: Use refresh-provider-neutral-handover from GitLab main commit b772469b to generate
+    the tracked handover projections from Event 44 and controller state. Prove three identical generations,
+    reject a stale manual event/task value, validate manifest hashes and internal links, then journal
+    A3 completion. Do not change product source, certification, promotion, release, or gates.
+product_checkpoint:
   task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
   task_state: WORK_IN_PROGRESS
-  first_unmet_step: XLF-04
-  completed_microstep: XLF-04-BATCH-005-PARTIAL-002-H
-  exact_microstep: XLF-04-BATCH-005-PARTIAL-002-I
-  exact_microstep_state: READY_FOR_RED
-accepted_xliff_boundary:
-  candidates: 1130
-  dispositions_verified: 9
-  dispositions_unverified: 1121
-  expected_obligation_ids: 105
-  source_bound_rows: 31
-  missing_source_bound_rows: 74
-  complete: false
-proof_checkpoint:
-  affected_tool_tests: 113
-  immutable_checkout_focused_tests: 3
-  format_contract_regression_tests: 94
-  production_program_regression_tests: 69
-  named_deselection: tests/format_contract/test_consumption_chain.py::test_full_slice_second_run_is_idempotent
-  deterministic_artifact_checks: 2
-  deterministic_runs_per_artifact: 3
-  sal_facts_verified: 34
-  authority_matches: 5
-  pyright: PASS_ZERO_DIAGNOSTICS_1_1_411
-  adjudication_sha256: 51ac3adc6fa530246ff25b70e179d040d68eeb65dc8a744794e0d4fbe7738e42
-  inventory_sha256: 7bb46e814b5be12ad313ba0ec77c0585a279f8f85f6cb974481414368c5e713b
-  compiled_contract_sha256: d584e217f5f2d06bcd71723d5d89e60c24a39f3273e8967fe920d4b03bacfc69
-  compiled_contract_lifecycle: DRAFT
-  compiled_contract_capabilities: 15
-  immutable_replay_authority_inputs:
-    ignored_external:
-      - src-xlf-001.bin
-      - src-xlf-002.bin
-      - src-xliff-001.bin
-      - src-xliff-003.bin
-    tracked: product-requirement authority
-    required_matches: 5
-verified_ubl_boundary:
-  schema_documents: 106
-  document_roots: 91
-  local_particle_nodes: 6001
-  local_particle_owners: 468
-  derivation_edges: 1178
-  derivation_graph_sha256: 783506c4dcccaefbeb94960dcb5e6d7e0c54a6d8487ee1746eca082535b60e9f
-  completed_microstep: UBL-03-PARTIAL-005-DERIVATION-AND-INHERITANCE-EDGES
-  next_microstep: UBL-03-PARTIAL-006-ATTRIBUTES-AND-ATTRIBUTE-GROUPS
-  ubl_03_complete: false
-truth_boundary:
-  products_certified: 0
-  promotions: UNASSESSED_ALL_SIX
-  xlf_04_complete: false
-  ubl_03_complete: false
-  product_source_effect: none
-  gate_transition: none
-  release_transition: none
-mandatory_resume_action:
-  skill_sequence: [test-driven-development, ingest-spec-sal, sal-pipeline-heal, compile-format-contract, plan-control]
   microstep: XLF-04-BATCH-005-PARTIAL-002-I
-  candidate_id: XLF-CAND-CORE-SCHEMATRON-60B596A00F7FA06A
-  action: independently adjudicate the XLIFF 2.1 target-side isolated start-code report as possible reciprocal proof for the existing isolation obligation, preserve all 31 accepted obligations, 9 decisions, and 1130 candidate identities, prove the bounded result from an immutable checkout with the complete five-record authority closure, and append a native event only after proof passes
+  semantic_commit: d95af5aeb248907b4d23457ecd288723fc9c2050
+  exact_next_action: Execute XLF-04-BATCH-005-PARTIAL-002-I from Event 40 and immutable GitLab main commit
+    d95af5ae. Independently adjudicate candidate XLF-CAND-CORE-SCHEMATRON-60B596A00F7FA06A, the XLIFF
+    2.1 target-side isolated start-code report. Determine whether it supplies reciprocal proof for the
+    existing inline-isolation obligation. Treat all eight generated mappings as unverified proposals,
+    reject incidental context and downstream surfaces, preserve all 31 accepted rows and all 1,130 candidate
+    IDs, and keep completeness false.
+truth_boundary:
+  production_certifications: 0
+  promotion:
+    program: UNASSESSED
+    ipynb: UNASSESSED
+    ora: UNASSESSED
+    nrrd: UNASSESSED
+    xliff: UNASSESSED
+    safetensors: UNASSESSED
+    ubl: UNASSESSED
+  terminal_condition_met: false
+mandatory_resume_action:
+  task_id: TC-FF6-ACCEL-CONTROL-001
+  skill_id: refresh-provider-neutral-handover
+  action: Generate tracked handovers from Event 44 and controller state, then run stale-value and integration-lock
+    controls before closing A3.

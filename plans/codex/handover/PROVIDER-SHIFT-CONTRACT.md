@@ -5,7 +5,15 @@ visibility: internal
 publish_allowed: false
 generated_by: codex
 generated_at: 2026-07-30
+authoritative_state: false
+historical_projection: true
 ---
+
+> **Historical design reference.** Status overlays below preserve the Event 40
+> checkpoint and are not current instructions. Current controller/task values
+> are generated in [START-HERE.md](START-HERE.md),
+> [CURRENT-MACHINE-STATE.yaml](CURRENT-MACHINE-STATE.yaml), and
+> [checkpoint.yaml](checkpoint.yaml). Those generated files win on every shift.
 
 # FF6 Provider-Shift and Clean-Checkpoint Contract
 

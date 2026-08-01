@@ -1,72 +1,100 @@
-schema: ff6/provider-neutral-handover-manifest@20
-artifact_id: FF6-HANDOVER-MANIFEST-EVENT-40
+schema: ff6/provider-neutral-handover-manifest@21
+artifact_id: FF6-HANDOVER-MANIFEST-EVENT-44
 visibility: internal
 publish_allowed: false
 generated_by: codex
-generated_at: '2026-08-01'
 canonicalization:
   algorithm: sha256
   line_endings: LF
   manifest_self_hash: excluded
 controller:
-  event_id: FF6-EVENT-000040
-  event_hash: c9c7167d447fbe0945c7a65c288f3cece78c64090e09c1ce2d674fdbf9bf2d63
-  event_sequence: 40
+  event_id: FF6-EVENT-000044
+  event_hash: 20e8f7fac635994e4f1051a5dd9cd3bd0a2da3b0e361d006a17d834536fc09cd
+  event_sequence: 44
   state: CONTRACT
 source_checkpoint:
   remote: origin
   branch: main
-  checkpoint_commit: de569544eebc1fff011901e61d3574dcc48e5e08
-  handover_refresh_base_commit: de569544eebc1fff011901e61d3574dcc48e5e08
-  semantic_commit: d95af5aeb248907b4d23457ecd288723fc9c2050
-  verified_checkout_identity_repair: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
-  controller_acceptance_commit: de569544eebc1fff011901e61d3574dcc48e5e08
+  checkpoint_commit: 4c4b80517a34534416492a772c6d3d81bfde9809
 files:
 - path: plans/codex/handover/START-HERE.md
-  sha256: a50d4a037b1a92dc0b262b4e6248424afd3775bb6d75406ab6d1a276305c5caf
-  canonical_bytes: 7854
+  sha256: bcc6cbc9b8489947b98819478088e2b702037ead37aceedb91a55ce58a45b88f
+  canonical_bytes: 3472
 - path: plans/codex/handover/CLAUDE-START.md
-  sha256: 48f34c2c3e89fdb695ee235bc7bcf6bb4adb6ed8daa73ac19df56786416b2268
-  canonical_bytes: 7001
+  sha256: 6fa2ff91ee1d22d05e64b34d547197cfe913b24ea91578c5b0b8cdd3dcc1f5dd
+  canonical_bytes: 806
 - path: plans/codex/handover/CLEAN-REPLAY-REPAIR.md
-  sha256: ce01a53a6cc2477730bdc8767a00c7c5d4f1f4a964ea811df7da6d5562a2170b
-  canonical_bytes: 4502
+  sha256: 1be6c13f6ecde9b7bc7ec3725532402ac50218240fed8dfa751c84e0c356c371
+  canonical_bytes: 815
 - path: plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md
-  sha256: 6d79336367e8061d7604b743d61243204fbc19521ea1058b92d1dcb508183c8b
-  canonical_bytes: 3864
+  sha256: 8a3262baf94fa2a588f5c5bbaee5b7418214f387e268580eb4a0a542dec3e871
+  canonical_bytes: 667
 - path: plans/codex/handover/CURRENT-MACHINE-STATE.yaml
-  sha256: e875d4af6d3d1d922b34a99a61f61855387a62b147e1539070eaf0781714d764
-  canonical_bytes: 6745
+  sha256: a62cc3ed0d31f9a8c648e52f1e1372d67322fef9cd796cd71f9df38fe9cd953d
+  canonical_bytes: 2604
 - path: plans/codex/handover/checkpoint.yaml
-  sha256: 448e8eeddfdbec4c498e1cdce00f3d42765b0b9014187595ea72ae8afd7f3724
-  canonical_bytes: 3533
-- path: plans/codex/handover/INFLIGHT-RECOVERY.yaml
-  sha256: c1719e0b6b64843cb25ae16206188edcd2eb4586d8c635037c5b66eabb5fecb4
-  canonical_bytes: 4238
-- path: plans/codex/handover/CURRENT-SHIFT-HANDOVER.md
-  sha256: 743bcc1d4fc369aab23c454db41e91ce667cb2510043f6ec67a0a391a53e229e
-  canonical_bytes: 6128
+  sha256: 10c3effe39326980f8ba836ecf9fc47beaea2ede0b4cb3318bcf14439d7dc0ce
+  canonical_bytes: 2395
 - path: plans/codex/handover/NEXT-MICROSTEP.yaml
-  sha256: 923788279007ec8dc6fb73df54f6734b03134ef2a82f90b0fab11cc69c6485b8
-  canonical_bytes: 7187
+  sha256: fdea44da68f79e68653f60436fbfa400f436137c8b26676a993882ec56fd1def
+  canonical_bytes: 1279
+- path: plans/codex/handover/CURRENT-SHIFT-HANDOVER.md
+  sha256: df29bf17b412c219f2a2a403b396cfcf8faacd00ff79bd2c14eb8f65da196004
+  canonical_bytes: 2030
+- path: plans/codex/handover/INFLIGHT-RECOVERY.yaml
+  sha256: 15e92e218318b63cf722059bb2fd8726dbcb6d157a75c8dd41d675618a1a9a4a
+  canonical_bytes: 751
+- path: plans/codex/handover/handover_projection.py
+  sha256: c3634b3edf683c91afb440fca6c48047175a8bbcef7e48bca5746af59216c427
+  canonical_bytes: 28088
 - path: plans/codex/handover/validate_handover.py
-  sha256: 4ed9a39309ce75de513999615f20679b653a79c9ebdbe07e750da41010255a1a
-  canonical_bytes: 36883
+  sha256: e341496871bcc0d3e244b8f0c9c6377b2e9ad62146cd0012093167010aa3f36c
+  canonical_bytes: 14697
 - path: plans/codex/handover/validate_committed_checkpoint.py
   sha256: 09506ce6fdd1ae276e62a7dba52d67f40e5c5ba35327feba5bc31eec6db60f61
   canonical_bytes: 4227
+- path: plans/codex/handover/PROVIDER-SHIFT-CONTRACT.md
+  sha256: 475f2dcfe7b55679eae8d3b79b8b2e79a62e85bc0e4ce7461df15d90340d5ea2
+  canonical_bytes: 20630
+- path: plans/codex/handover/SHIFT-AND-RESUME-PROTOCOL.md
+  sha256: b1ca4e841e72f7a9dc8101b67194aa03d27a6d178ba1feaa834657cc04639aa1
+  canonical_bytes: 17674
+- path: plans/codex/handover/EXECUTION-RUNBOOK.md
+  sha256: 002f0f56898a2f6abba1edaee7c570570f82a333a49e66582a890e49203498a0
+  canonical_bytes: 14698
+- path: plans/codex/handover/STATE-MACHINE-AND-TASKCARD-PROTOCOL.md
+  sha256: 1b2d3c70ee56689e987be2a2e1e927b28dd51119beb3f61e8b67c2d69f8689e3
+  canonical_bytes: 14731
+- path: plans/codex/handover/VALIDATION-AND-RELEASE.md
+  sha256: 388a20f76ba652e6f0ec82688b6b3e67dbbbd41ac3874f308547bc05d206e537
+  canonical_bytes: 17632
+- path: plans/codex/handover/CURRENT-STATE-AND-ROOT-CAUSES.md
+  sha256: 7b8adad29713732f33db2e096bf44b9e1472108d5b4d4bfa464546b202625e9d
+  canonical_bytes: 31982
+- path: plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml
+  sha256: ccd172a16e2a5dd76effb80907762f54c8c28ce6c394b20104dfde8ff22ce481
+  canonical_bytes: 7058
 - path: plans/strategic/ff6/product-goal.yaml
   sha256: a7683f75ef62c72e88e3c0e4ff14df240fa0f9b80be9b0cf4cdacc96c62811c8
   canonical_bytes: 2700
 - path: plans/strategic/ff6/controller-state.yaml
-  sha256: 5f7bd0b8f48e16b402ffee8e43560339c0c1496d7ab47cd9c691ecd0626218da
-  canonical_bytes: 27081
+  sha256: da96c0307f0182b74fc8d67f20f678df884d1164a590fe948ad85272dded76d3
+  canonical_bytes: 29787
 - path: plans/strategic/ff6/events.jsonl
-  sha256: 5e255fed9f0ffc1f2bc7f298c6a9b6405b0a04d5c3cf8313eea045030172b952
-  canonical_bytes: 150323
+  sha256: 3cf6cbb6f838e5f9a14f6e29553994a61244618f811aaf95994394f17b06899c
+  canonical_bytes: 162698
+- path: taskcards/TC-FF6-ACCEL-CONTROL-001.md
+  sha256: cb8858f0e1664e161a168a60aae854449ca7d90ceb34da22063588fce439de4d
+  canonical_bytes: 9199
 - path: taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md
   sha256: 43d5354ce26df4703d93b27b57a4e5011bf57b94a32b0a0f6b1fa864e1b1199e
   canonical_bytes: 69910
+- path: taskcards/TC-FF6-UBL-TYPING-001.md
+  sha256: eb4efe4c15321d157d34991e17f1697ba8d4b3ecc557827e88864b5275bdf5aa
+  canonical_bytes: 19449
+- path: taskcards/index.yaml
+  sha256: 3edae0dbde6ef3caa7e290451a16c0c390e528aee7cbd59537492f443fb6ebb4
+  canonical_bytes: 3128
 - path: reports/ff6/xliff-core-authority-candidate-census.yaml
   sha256: 9f10464e14c55a36ee1e54a5d12d04e8e23f19d2cb94d7c0c732cb40861db4b7
   canonical_bytes: 2652973
@@ -79,50 +107,15 @@ files:
 - path: reports/ff6/xliff-core-obligation-inventory.yaml
   sha256: 7bb46e814b5be12ad313ba0ec77c0585a279f8f85f6cb974481414368c5e713b
   canonical_bytes: 69518
-- path: reports/ff6/xliff-core-pairing-repair-run-manifest.yaml
-  sha256: 929409ba25edeb84369b8ba7f3a6684a49265bb80e2f9921b01c2d3a42d0752f
-  canonical_bytes: 4780
-- path: plans/codex/handover/PROVIDER-SHIFT-CONTRACT.md
-  sha256: e26a9a85dd9c0f9746955a78c874acb1745ea6fdf2016079c5c0eac7bce3acae
-  canonical_bytes: 20222
-- path: plans/codex/handover/SHIFT-AND-RESUME-PROTOCOL.md
-  sha256: a9aa071637a4baea7d4232ee1e890c70bc8f3d7b60b9e1b094ee356d6218d366
-  canonical_bytes: 17451
-- path: plans/codex/handover/EXECUTION-RUNBOOK.md
-  sha256: 796d1d5ab2f85a2a8c29dee843549b8cdf05f646d48abff5e0151ed35354b9d3
-  canonical_bytes: 14475
-- path: plans/codex/handover/STATE-MACHINE-AND-TASKCARD-PROTOCOL.md
-  sha256: a14877b3a2ad8f306ba75b1f14feb55353d371755ec20de5310bf895282b98cb
-  canonical_bytes: 14508
-- path: plans/codex/handover/VALIDATION-AND-RELEASE.md
-  sha256: a471237ec00a259cf81d111a4e1c42c9c5f4e88a87b9eaf8441df9a41773df02
-  canonical_bytes: 17409
-- path: plans/codex/handover/CURRENT-STATE-AND-ROOT-CAUSES.md
-  sha256: 23d81b6828bd181b3002fb581f9d4f867417d35329859fff110fd117e0c99704
-  canonical_bytes: 31691
-- path: plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml
-  sha256: 67d75cbe8c6320b2c49099848b2d2bd5bfcd2f763a430dfc170ff16965103530
-  canonical_bytes: 6932
-- path: taskcards/TC-FF6-HANDOVER-CLAUDE-001.md
-  sha256: 941fd96e21a47f570987706fc66c2ae72d8c67cf30d48295f3a271ca96a0fd0b
-  canonical_bytes: 31390
-- path: reports/skills-rff6/skill-transcripts/plan-control-xliff-profile-surface-wip-016.json
-  sha256: 71702958565e89dff86ed3957d631a7fffb958d48953030fdeb772b70d8922db
-  canonical_bytes: 5646
-- path: reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-event-40.json
-  sha256: 0e7cd746970ac892942903c513ae26589a388f5dc471090b390b866151de67a0
-  canonical_bytes: 6297
 validation:
   expected_manifest_files: 30
+  generated_operational_files: 9
+  deterministic_runs_required: 3
+  stale_value_negative_controls_required: true
   internal_links_required: true
-  structured_parse_required: true
   native_event_chain_required: true
-  semantic_negative_controls_required: true
-  semantic_negative_control_count: 11
   gitlab_ancestry_required: true
   clean_worktree_required_for_transfer: true
 truth_boundary:
   products_certified: 0
-  xlf_04_complete: false
-  ubl_03_complete: false
   promotion_effect: none

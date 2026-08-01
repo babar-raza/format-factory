@@ -1,89 +1,21 @@
-schema: ff6/inflight-recovery@15
-artifact_id: FF6-RECOVERY-EVENT-40
+schema: ff6/inflight-recovery@2
+artifact_id: FF6-INFLIGHT-RECOVERY-EVENT-44
 visibility: internal
-publish_allowed: false
 generated_by: codex
-generated_at: '2026-08-01'
-event:
-  event_id: FF6-EVENT-000040
-  event_hash: c9c7167d447fbe0945c7a65c288f3cece78c64090e09c1ce2d674fdbf9bf2d63
-  semantic_commit: d95af5aeb248907b4d23457ecd288723fc9c2050
-  checkout_identity_repair_commit: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
-  checkpoint_commit: de569544eebc1fff011901e61d3574dcc48e5e08
-captured_workspace:
-  product_overlay_status: NO_UNCOMMITTED_XLIFF_OVERLAY
-  handover_overlay_status: PACKET_REFRESH_IN_PROGRESS_UNTIL_HANDOVER_COMMIT
-  unexplained_paths_in_current_task_scope: 0
-  local_only_required_for_resume: false
-  recovery_archive_required: false
-  provider_identity_transferable: false
-  lease_transferable: false
-  execution_manifest_transferable: false
-  mutation_authorization_transferable: false
-accepted_history:
-  checkout_identity_repair:
-    commit: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
-    accepted_event_id: FF6-EVENT-000036
-  unit_cardinality_semantics:
-    commit: 1b758c2e05856552169de098d8719a82f425a1c2
-    accepted_event_id: FF6-EVENT-000037
-  source_language_semantics:
-    commit: 3fc939ad70ec6caac9e0699041076e02de00c5d2
-    accepted_event_id: FF6-EVENT-000038
-  target_language_profile_semantics:
-    commit: 39b2e89fde0f7dd5e1acebc424f4d700dfe74765
-    accepted_event_id: FF6-EVENT-000039
-  source_side_inline_isolation:
-    commit: d95af5aeb248907b4d23457ecd288723fc9c2050
-    immutable_replay: PASS_WITH_FULL_FIVE_RECORD_AUTHORITY_CLOSURE
-    affected_tool_tests: PASS_113
-    decision_id: XLF-ADJ-CORE-SCHEMATRON-0009
-    sal_fact_id: SAL-XLIFF-D5C1325C047A7CB0
-    direct_owner: SAL-XLIFF-CORE-INLINE-ISOLATION-001
-    selected_candidate_profiles: [xliff_2.1]
-    authority_profiles: [xliff_2.0, xliff_2.1]
-    obligation_rows_added: 1
-    predecessor_obligations_unchanged: 30
-    predecessor_decisions_unchanged: 8
-    accepted_event_id: FF6-EVENT-000040
-  promotion_effect: none
-reconstruction:
-  source: GitLab origin/main
-  required_ancestor: de569544eebc1fff011901e61d3574dcc48e5e08
-  semantic_ancestor: d95af5aeb248907b4d23457ecd288723fc9c2050
-  command: git fetch origin main; git switch main; git pull --ff-only origin main
-  validation: .venv\Scripts\python.exe plans\codex\handover\validate_handover.py --require-clean --self-test
-  local_files_required_for_resume: []
-  ignored_authority_files_required_for_immutable_replay:
-    - src-xlf-001.bin
-    - src-xlf-002.bin
-    - src-xliff-001.bin
-    - src-xliff-003.bin
-  tracked_authority_inputs_required: 1
-  next_work_source: NEXT-MICROSTEP.yaml
-coordination_truth:
-  source: machine-local SQLite coordination plane
-  snapshot_is_advisory_after_packet_generation: true
-  incoming_provider_must_requery: true
-  provider_state_transferable: false
-  foreign_conflicts_may_not_be_resolved_by_incoming_shift: true
-excluded_replay_attempts:
-  - reason: wrong working directory and selector prevented test collection
-    promoting_evidence: false
-  - reason: src-xliff-003.bin omitted and contract check failed
-    promoting_evidence: false
-known_machinery_gap:
-  id: FF6-XLIFF-MISSING-AUTHORITY-FAIL-CLOSED
-  symptom: contract compiler hashes a missing cached authority as empty bytes
-  current_safety: downstream contract check detects drift and blocks acceptance
-  required_repair: fail before compilation when any declared contract input is absent
-failure_policy:
-  newer_valid_event: recompute packet from the newer canonical event; never reset GitLab
-  dirty_leased_path: preserve and coordinate; never clean, restore, stash, or stage
-  unexplained_dirty_path: preserve, attribute, and fail transfer
-  accepted_materialized_mismatch: invalidate the packet and rebuild from native journal and committed artifacts
-  missing_remote_commit: stop promotion and verify GitLab remote state
-  missing_authority_cache: hydrate only digest-pinned CAS artifacts; never synthesize or weaken the check
-  incomplete_authority_closure: do not accept ProductContract replay from fewer than all five XLIFF records
-  oracle_contradiction: record the contradiction and add a discriminating test
-  validator_failure: repair evidence or packet; never weaken the invariant
+canonical_reconstruction:
+  remote: origin
+  branch: main
+  source_checkpoint: 4c4b80517a34534416492a772c6d3d81bfde9809
+  event_id: FF6-EVENT-000044
+  event_hash: 20e8f7fac635994e4f1051a5dd9cd3bd0a2da3b0e361d006a17d834536fc09cd
+  controller_path: plans/strategic/ff6/controller-state.yaml
+  journal_path: plans/strategic/ff6/events.jsonl
+non_transferable:
+- provider identity
+- coordination token
+- leases
+- execution manifests
+- mutation authorizations
+- ignored local state
+recovery_rule: Reconstruct from GitLab main and validate the committed packet; never recover by resetting,
+  stashing, cleaning, or reusing a prior identity.

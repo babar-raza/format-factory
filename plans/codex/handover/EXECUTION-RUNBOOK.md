@@ -9,6 +9,10 @@ authoritative_state: false
 historical_projection: true
 ---
 
+> **Historical design reference.** Event/status overlays below are retained for
+> audit only. Use generated [START-HERE.md](START-HERE.md) and
+> [checkpoint.yaml](checkpoint.yaml) for the current controller head and task.
+
 # FF6 Execution Runbook
 
 > **Current authority overlay: Event 40.** Exact current inputs and the first
