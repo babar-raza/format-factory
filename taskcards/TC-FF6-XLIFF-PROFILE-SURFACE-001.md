@@ -814,6 +814,81 @@ The next executor must:
 8. leave XLF-04 and every product/release state incomplete unless the complete
    evidence graph—not this single microstep—proves otherwise.
 
+## Verified unit-cardinality checkpoint — Event 37
+
+Native `FF6-EVENT-000037` supersedes the Event 36 resume instruction. The
+accepted semantic boundary is immutable GitLab `main` commit
+`1b758c2e05856552169de098d8719a82f425a1c2`.
+
+Accepted evidence:
+
+- exact candidate `XLF-CAND-CORE-SCHEMATRON-100732DB0BBED389` is bound by
+  content SHA-256
+  `7564733d38472805796896373cbdbe7807510721c9dfbac29e53843862bcf1cf`,
+  requirement SHA-256
+  `51c4d1ac9834b99f5a029894cc3c179117a7b9b8de50794bed8acd36132ede7d`,
+  and occurrence SHA-256
+  `903d76dd0cb8472539255ce5075a884460844bc4975a030906ffb793377d3648`;
+- decision `XLF-ADJ-CORE-SCHEMATRON-0006`, digest
+  `83741ff660cd95f207b19cb5c95e74d170120980432587d25965d9c95fa74646`,
+  accepts only `SAL-XLIFF-CORE-HIERARCHY-UNIT-CHILDREN-001`;
+- the generic validator proposal is rejected as a downstream capability and
+  `HIERARCHY-SEGMENT` is rejected because it names the child surface rather
+  than the direct parent-cardinality owner;
+- the exact XLIFF 2.1 Schematron report and stable Core prose independently
+  support the decision; generated mappings were not treated as conclusions;
+- all 28 predecessor obligation rows are digest-bound and semantically
+  unchanged; one new authority-bound row advances production contract
+  coverage only to `29/105`, leaving `76` missing;
+- verified candidate dispositions advance to `6/1,130`, leaving `1,124`
+  independently unverified;
+- 73 affected adjudicator/extractor tests and 117 tests from the immutable
+  semantic checkout passed, as did 69 production-program tests and 94
+  format-contract tests with the one exact documented stateful CSV
+  deselection;
+- three clean generations were byte-identical, all five XLIFF authorities
+  matched, canonical SAL verification passed, Ruff passed, strict Mypy with
+  explicit package bases passed, and bytecode compilation passed;
+- Pyright was unavailable in this environment and is explicitly not claimed;
+- `.local/artifact-index.yaml` remains pre-existing invalid YAML. Its canonical
+  updater failed before writing, so no index contents were overwritten and no
+  promotion depends on it.
+
+This checkpoint proves only one additional Core obligation and one candidate
+disposition. XLF-04, all later contract steps, product source, certification,
+promotion, release, and all gates remain incomplete. Program certification
+remains `0/6`.
+
+The exact next microstep is `XLF-04-BATCH-005-PARTIAL-002-F`, candidate
+`XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73`, content SHA-256
+`fc6bfe29b9efb1589d19e9f040ca0901bcdd8db4fe0a327760cd043257e41062`,
+requirement SHA-256
+`4d6ff61b0af6ae593955517ebde43ac5bba05e48440a601f05fa91d54df6e464`,
+and occurrence SHA-256
+`0102e918c34b6b8147324a33411e35b93d03740b2c1eb4a283e90c00bf3fb7ea`.
+The exact pinned occurrence is `schemas/xliff_core_2.1.sch` at
+`schematron/rule[13]/report[1]`; it reports when source `xml:lang` does not
+match root `srcLang`.
+
+The next executor must:
+
+1. validate Event 37 and immutable semantic commit `1b758c2e` before mutation;
+2. independently read the exact XLIFF 2.1 authority occurrence;
+3. treat generated proposals `AGENT-VALIDATOR`, `DOCUMENT-SOURCE-LANGUAGE`,
+   `HIERARCHY-IGNORABLE`, `HIERARCHY-SEGMENT`, and `SOURCE-REQUIRED` only as
+   proposals;
+4. identify the direct denominator owner from authority semantics and
+   explicitly reject incidental trigger context;
+5. add genuine pre-change RED plus positive, rejection, tamper, profile, and
+   predecessor-preservation controls;
+6. preserve all 29 accepted obligation rows, all 1,130 candidate identities,
+   and the checkout-identity invariant;
+7. replay deterministic, static, authority, SAL, format-contract,
+   production-program, transcript, immutable-checkout, and native-event
+   controls;
+8. leave XLF-04 and every product/release state incomplete unless the complete
+   evidence graph—not this single microstep—proves otherwise.
+
 ## Required execution
 
 ### XLF-01 — Revalidate the clean predecessor
