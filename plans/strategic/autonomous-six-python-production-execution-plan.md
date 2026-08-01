@@ -8,7 +8,7 @@ publish_allowed: false
 open_source_allowed: false
 commercial_allowed: false
 generated_by: codex
-generated_at: 2026-07-24
+generated_at: 2026-08-01
 skill_id: create-taskcard
 skill_ids:
   - plan-control
@@ -31,7 +31,7 @@ skill_ids:
   - post-sprint-audit
   - execution-handoff
 status: HARDENED_READY_FOR_AUTONOMOUS_EXECUTION
-plan_version: 3
+plan_version: 4
 goal_id: FF6-PRODUCTION-LIBRARIES-001
 goal_status: ACTIVE
 quality_target: production_ready
@@ -41,8 +41,11 @@ canonical_remote: origin
 canonical_branch: main
 execution_branch: main
 baseline_ref: origin/main
-baseline_commit: 54c4dacb2ed6ef8b89258db2d3f0d1ec00ab92fb
+baseline_commit: 92dcc0571f1d3a9a7331bd458536eb6ff05c02bb
 baseline_commit_policy: refresh_per_task_from_origin_main
+execution_model: evidence_preserving_parallel_semantic_batches
+maximum_active_lanes: 4
+integration_model: serialized_fast_forward_to_gitlab_main
 scope:
   - ipynb
   - openraster
@@ -76,6 +79,38 @@ fallback for this mission.
 - Do not leave additional worktrees, branch names, or uncommitted mission work
   as continuation state. Persist continuation through the controller journal,
   content-addressed proof, current-gap projection, and committed plan records.
+
+### 0.1 Binding acceleration amendment and precedence
+
+Plan version 4 replaces the earlier globally serialized, candidate-at-a-time
+execution interpretation. Sections 0.1, 5.2, 5.5, 7.1, 8.4, 11, and 12.4 are
+binding acceleration controls. Where older wave prose implies that every
+format waits for another format, every authority occurrence receives its own
+full checkpoint, every task builds a wheel, or every accepted microstep
+rewrites the complete handover packet, these acceleration controls take
+precedence.
+
+The quality target, capability denominator, proof requirements, promotion
+rules, main-only GitLab policy, release thresholds, and human-only release
+boundaries do not change. Acceleration is obtained through safer work
+aggregation, dependency-aware verification, generated projections, and
+parallel disjoint lanes. It is never obtained by lowering a gate, accepting a
+generated proposal as authority, omitting an obligation, weakening negative
+tests, or treating deferred full verification as final proof.
+
+The verified baseline for this amendment is clean GitLab `origin/main` commit
+`92dcc0571f1d3a9a7331bd458536eb6ff05c02bb`, native controller Event 40,
+controller state `CONTRACT`, six `UNASSESSED` products, and `0/6` production
+certifications. XLIFF remains at 31/105 source-bound Core obligations and
+9/1,130 independently adjudicated candidates; UBL-03 remains incomplete;
+OpenRaster product source remains absent. These facts are inputs, not progress
+claims created by this plan update.
+
+The next executor must not edit the native controller merely because this plan
+changed. It must create the acceleration taskcards through registered skills,
+validate their non-overlapping scopes, and append a normal hash-chained
+scheduling event. Until that event exists, Event 40 and
+`XLF-04-BATCH-005-PARTIAL-002-I` remain the executable controller authority.
 
 ## 1. Purpose, authority, and non-negotiable outcome
 
@@ -235,22 +270,23 @@ namespace test passes. One strong library cannot compensate for a shallow one.
 
 ## 3. Baseline and truth-recovery contract
 
-The tables below retain the 2026-07-24 recovery snapshot as historical input.
-They are not current readiness evidence. Every task captures the fetched
-`origin/main` commit and recomputes contracts, capabilities, gaps, source/API
-inventory, installed-package proof, and invalidation state before selection.
+The baseline below is the verified Event-40 handover checkpoint on 2026-08-01.
+It is current only for commit `92dcc0571f1d3a9a7331bd458536eb6ff05c02bb`.
+Every task captures fetched `origin/main` and recomputes contracts,
+capabilities, gaps, source/API inventory, installed-package proof, and
+invalidation state before selection.
 
 ### 3.1 Branch and workspace status
 
 | Item | Status | Required treatment |
 |---|---|---|
-| GitLab mainline planning snapshot | `origin/main` at `54c4dacb2ed6ef8b89258db2d3f0d1ec00ab92fb` | Historical planning input only; capture a fresh task baseline before every mutation. |
-| Production controller | Historical/partial state for all six formats | Recompute current state from committed contracts, proof, and current-gap projection; do not treat a prior worktree-local controller state as authoritative. |
+| GitLab mainline planning snapshot | `origin/main` at `92dcc0571f1d3a9a7331bd458536eb6ff05c02bb` | Verified clean handover input only; capture a fresh task baseline before every mutation. |
+| Production controller | Event 40, `CONTRACT`, XLIFF task active | Native journal and controller are executable authority; this plan cannot complete or reorder that task without a validated event. |
 | Existing plans/statuses | Historical input only | Revalidate every claim against the canonical proof graph. |
-| Shared root worktree | Potentially dirty/concurrent | Preserve; never clean, stash, reset, restore, or broadly stage it. |
-| Current SafeTensors checkpoint | Uncommitted / unpromoted | Preserve and review; it is not certification evidence until rebuilt-wheel replay. |
+| Shared root worktree | Clean at amendment baseline; concurrency may change it | Preserve unexplained later changes; never clean, stash, reset, restore, or broadly stage them. |
+| Current SafeTensors checkpoint | Tracked at commit `548ae1a7`; unpromoted | Preserve and replay; it is not certification evidence until current rebuilt-wheel proof passes. |
 
-The uncommitted SafeTensors checkpoint consists of:
+The tracked, still non-promoting SafeTensors checkpoint consists of:
 
 - `tests/python/safetensors/test_official_interop.py`
 - `reports/skills-rff6/skill-transcripts/add-roundtrip-test-safetensors-preservation-001.json`
@@ -258,7 +294,7 @@ The uncommitted SafeTensors checkpoint consists of:
 Its focused differential test passed once only with an alias-loaded official
 `safetensors` 0.8.0 distribution. A broader installed-wheel regression then
 failed during collection because the installed wheel was stale and lacked
-`PayloadAccessMode`. Therefore the checkpoint is **IN_PROGRESS**, not evidence
+`PayloadAccessMode`. Therefore the checkpoint remains **IN_PROGRESS**, not evidence
 for `SAL-SAFETENSORS-OBL-2E14EAEFAB630C7F`; do not discard it, stage it with
 unrelated files, or claim it closes the obligation.
 
@@ -269,24 +305,34 @@ The following work is usable but must continue to obey invalidation/replay:
 - the canonical product-contract compiler now handles shared capability groups,
   explicit exclusions, required family defaults, content-stable SAL identifiers,
   and missing readiness categories;
-- SafeTensors is mapped to the binary-tensor family with 11 capabilities and
-  86 strict-profile obligations, contract digest
-  `a60f33fd57d8ac98ada72b5a1ea8d03e0dc0852ae1e936e46fefb8ae38809574`;
-- XLIFF and UBL authority facts and XSD evidence manifests were added and
-  replayed; their facts are promotion-valid only while digests remain current;
-- all six strict contracts compile, but compilation proves contract integrity,
-  not implementation completion.
+- 17 registered authority records currently live-match their pinned digests;
+- six draft contracts compile into 110 capabilities and 672 canonical
+  obligations, but compilation proves contract integrity rather than
+  implementation completion;
+- XLIFF has 1,130 source-authentic Core candidates, of which 9 are independently
+  adjudicated; 31 of 105 expected Core obligation rows are source-bound;
+- UBL has a verified partial schema graph with 106 schema documents, 91 roots,
+  6,001 local particle nodes, and 1,178 derivation edges, but UBL-03 remains
+  incomplete;
+- product source exists for IPYNB, NRRD, XLIFF, SafeTensors, and UBL;
+  OpenRaster source does not exist;
+- all six products remain `UNASSESSED` and production certification remains
+  `0/6`.
 
-Current controller contract digests:
+Current Event-40 contract snapshot:
 
-| Format | Contract digest | Controller state | Meaning |
-|---|---|---|---|
-| IPYNB | `3cfd3362ad167a7e7d6e7054813779f96c483c9dda2156dd07e7f135bc676be6` | IMPLEMENT | Contract ready; implementation/certification proof incomplete. |
-| OpenRaster | `2ecf3c51da0443e1d68a82d528dce020b877fe5bb0a9070c629fa338ff785fcf` | IMPLEMENT | Contract ready; product source is policy-blocked. |
-| NRRD | `dec661f33cff0eeddb15996022f4b4502eff095605eb11e237eb963d0e0e5aaa` | IMPLEMENT | Contract ready; implementation/certification proof incomplete. |
-| XLIFF | `a8f20ae84167690d27130ad0c24076e66d538e14f48a7f6f75eb1b4fb11deaf3` | IMPLEMENT | Contract and authority proof ready; implementation incomplete. |
-| SafeTensors | `a60f33fd57d8ac98ada72b5a1ea8d03e0dc0852ae1e936e46fefb8ae38809574` | IMPLEMENT | Highest known unblocked obligation is preservation/interoperability. |
-| UBL | `81ca59edbd396364fc89c5d12154b0f53a7b7d693f8fd21d4e6f337c2b8804f7` | IMPLEMENT | Contract and authority proof ready; generator/product evidence incomplete. |
+| Format | Canonical contract bytes SHA-256 | Capabilities | Canonical obligations | Current meaning |
+|---|---|---:|---:|---|
+| IPYNB | `fa9eb823a26b366d350d25b59e7b6649fec2e9f5f6d6d023be1963edc265588b` | 25 | 68 | Draft contract; existing source requires obligation-to-symbol characterization and production verification. |
+| OpenRaster | `9f357bb3dd2c982c46a24b11b5d5592000a00494c7204b26d002126affba5cbf` | 20 | 134 | Draft contract; source absent and policy gate must be re-evaluated before creation. |
+| NRRD | `a5de17bfd0d6f978b07d0e00b109b6fc4e16257c6299444081e356fc9b1b693b` | 21 | 65 | Draft contract; existing partial source is non-promoting. |
+| XLIFF | `d584e217f5f2d06bcd71723d5d89e60c24a39f3273e8967fe920d4b03bacfc69` | 15 | 125 | Draft contract; XLF-04 authority-to-obligation compilation remains incomplete. |
+| SafeTensors | `f5be2fbef36cb342bea57a6e0b0e45e9fb43530471e88f358f7c3ba7ad9815cb` | 11 | 86 | Draft contract; existing source and prior oracle results require fresh installed-wheel reconciliation. |
+| UBL | `cc6b0b73490c0a9fc7edc5ea26dec2029c933ad10c48cf7ec575ca842a77ac82` | 18 | 194 | Draft contract; schema graph and generator remain incomplete. |
+
+These digests bind the tracked LF-canonical bytes at the amendment baseline.
+Any later plan executor must recompute them from fetched `origin/main`; this
+table must not override newer controller or proof state.
 
 ### 3.3 Known block
 
@@ -311,6 +357,11 @@ The prior system's inconsistency was structural, not a missing test or prompt:
 | Oracles appear independent but agree too easily | Synthetic or implementation-derived fixtures/oracles share faults | Require named independent corpus and external reference results; record contradictions. |
 | Old gaps keep being scheduled | Append-only history is treated as current queue | Materialize a current-state projection keyed by obligation/format. |
 | Promotion is editable | Promotion is stored as a label | Derive promotion from live proof; invalidate descendants automatically. |
+| Contract work advances too slowly | A single authority occurrence is treated as a full sprint, checkpoint, replay, handover refresh, and event | Group semantically equivalent occurrences, retain per-occurrence decisions, and accept or roll back one evidence-bound semantic batch. |
+| One difficult format stalls the portfolio | Program state is interpreted as one global phase rather than six product lifecycles plus shared prerequisites | Schedule up to four disjoint lanes and compute readiness independently per product. |
+| Verification cost dominates semantic work | Release-shaped regression and detached replay are repeated after changes that cannot affect packages or unrelated formats | Select tests from the proof dependency graph and run full sentinel/release tiers at explicit checkpoints. |
+| Handover projections become work products | The same controller facts are manually repeated across many Markdown and YAML files after every microstep | Generate four operational handover files from canonical state only at shift or transition checkpoints. |
+| Existing code does not shorten delivery | Source presence is not mapped mechanically to obligations, public symbols, and executed behavior | Characterize once, classify `KEEP/REPAIR/REPLACE/REMOVE`, and generate implementation tasks only for the residual gap. |
 
 Preserve existing characterization tests, legal authority records, valid corpus,
 and working public behavior. Redesign only the competing-status authority,
@@ -337,28 +388,52 @@ proof closure, task selection, promotion, and isolation mechanisms.
    interoperability; installed packaging; public API/docs; optional utility;
    analytics. A blocked format does not stop another format.
 
-### 5.2 One bounded change set
+### 5.2 One bounded semantic batch
 
-For each task:
+The default unit of work is one coherent semantic batch, not one authority
+occurrence and not an entire format. A batch may contain multiple obligations
+or candidate occurrences only when they share the same format, compatible
+profiles, authority closure, semantic rule family, ownership boundary,
+invalidation set, and rollback boundary. Heterogeneous members and every
+exception are split into another batch.
+
+For each batch:
 
 1. Resolve the capability route and registered production skill. No direct
    mutation of product, tests, tools, plans, or ledgers without a valid skill
    authorization and receipt.
-2. Create/use a clean, isolated worktree from the pinned integration commit;
-   separate environment, artifact directory, and proof transaction per format.
-3. Apply one bounded change only. Generated source must be checked in and
+2. Capture the pinned `origin/main` revision, target-path baselines, authority
+   closure, semantic-group identity, all member IDs, predecessor counts, and
+   expected proof descendants before mutation.
+3. Create or use a separately leased execution scope with its own environment,
+   artifact directory, and proof transaction. A detached worktree may be used
+   for isolation or immutable verification but never becomes a retained branch.
+4. Begin with a representative RED test plus group-invariant and exception
+   tests. Execute the rule for every member and retain an explicit decision for
+   every occurrence. Generated group membership and mappings are proposals;
+   an independent validator must reproduce the authority-to-obligation result.
+5. Apply one rollback-safe change set. Generated source must be checked in and
    reproducible; model code must not perform I/O; adapters own optional
    dependencies; analytics never live in codecs.
-4. Run the smallest relevant test first, then the contract-required affected
-   regression tier. On failure, minimize, classify the changed proof inputs,
-   repair, and rerun. After three materially distinct repairs for the same root
-   cause, mark that obligation technically blocked and continue other work.
-5. Build an sdist and wheel from the worktree; install it into a fresh test
-   environment and assert imported module locations are inside the installed
-   distribution. Never accept a source-tree import as package proof.
-6. Emit immutable run manifest and proof nodes; update only the materialized
-   current-gap projection. Commit successful owned files explicitly; never use
+6. Run verification tier T1 for every member and T2 for the accepted batch.
+   Run T3 only at a checkpoint or when source, package metadata, public API,
+   runtime dependencies, fixtures, generators, or environment contracts change.
+   Contract-only adjudication does not rebuild an unrelated wheel.
+7. If any member violates the group invariant, quarantine that member without
+   accepting it, restore the entire unaccepted batch transaction, split the
+   group, and rerun. Partial batch acceptance is forbidden unless the accepted
+   subgroup has a new stable identity and complete proof closure.
+8. On failure, minimize, classify the changed proof inputs, repair, and rerun.
+   After three materially distinct repairs for the same root cause, mark only
+   the affected obligation technically blocked and release its lane for other
+   work.
+9. Emit one immutable batch manifest containing every member decision and proof
+   node. Append one native event per accepted semantic batch, not per mechanically
+   identical occurrence. Commit successful owned files explicitly; never use
    `git add .` or `git add -A`.
+10. Build and install sdists/wheels whenever runtime or package inputs change,
+    and at checkpoint/release tiers. Installed-package proof always asserts the
+    import location is inside the installed distribution.
 
 ### 5.3 Controller transitions
 
@@ -395,6 +470,47 @@ produce `.local/evidence-bundles/ff6-<taskcard-id>.zip`, update
 taskcard. Committed continuation state is materialized under
 `plans/programs/ff6/` and `taskcards/ff6/`; local evidence is referenced by
 digest and never confused with committed product proof.
+
+### 5.5 Four-lane execution and serialized integration
+
+The controller maintains independent product lifecycles and may dispatch at
+most four active write lanes when their leases, proof transactions, generated
+outputs, and taskcard allowlists do not overlap:
+
+| Lane | Initial responsibility | Exclusive authority |
+|---|---|---|
+| A: control acceleration | fail-closed authority loading, proof-impact selection, generated handovers, lane scheduling, and commit queue | controller/proof machinery named by its taskcard; no product semantics |
+| B: XLIFF contract | semantic candidate grouping, authority adjudication, obligation binding, and module contract closure | XLIFF authority/contract/report/test paths only |
+| C: UBL generator | schema graph closure, attributes/groups/wildcards/substitutions/facets, naming, and reproducible type generation | UBL schema/generator/report/test paths only |
+| D: compact products | IPYNB and SafeTensors characterization, package chassis, implementation gaps, and installed-wheel proof | one product at a time plus explicitly leased shared-core paths |
+
+When Lane A completes its acceleration exit tests, its slot moves to NRRD and
+then OpenRaster preparation or implementation when policy permits. A blocked
+lane releases its slot immediately. Ready work in another product never waits
+for the blocked lane merely to preserve the original wave numbering.
+
+Only one live identity may own `logical:FF6-CONTROLLER-WRITE` and only one may
+own `logical:FF6-MAINLINE-INTEGRATION`. Product lanes never edit controller or
+promotion state directly. They produce a digest-bound closure candidate; the
+controller owner validates it and appends the event. Commits and pushes to
+GitLab `main` are serialized through the integration lease, use explicit file
+lists, and must be fast-forwards. Other lanes may continue read/compute/test
+work while integration is occupied, but may not stage or modify the integration
+candidate's paths.
+
+Before integration, compare every leased target baseline and proof input with
+current `origin/main`. If an upstream change affects the batch dependency
+closure, replay T1/T2 against the new commit. If it is disjoint, retain the
+already computed proof inputs and run the integration smoke controls. Never
+resolve concurrency by stash, reset, clean, broad restore, broad staging, an
+unreviewed merge, or a side branch.
+
+The scheduler is deterministic: security/data-loss and broken-authority work
+first; then mandatory read/write and contract closure; then interoperability,
+packaging, and developer surface. Within equal severity it prefers the batch
+that unlocks the greatest number of ready downstream obligations, then the
+oldest ready task ID. Throughput or convenience cannot outrank a higher-risk
+obligation.
 
 ## 6. Target distribution architecture
 
@@ -576,6 +692,54 @@ Each format then receives separate contract, architecture/migration, capability
 implementation, independent verification, installed-package certification, and
 extraction task families. Work may run in isolated detached worktrees, but
 successful reviewed taskcards integrate serially to GitLab `main`.
+
+### 7.1 Acceleration bootstrap and wave reinterpretation
+
+The numbered waves are dependency groups, not portfolio-wide barriers. A
+format advances when its own prerequisite proof is current even if another
+format remains in an earlier wave. Shared machinery and package-chassis changes
+still block only their actual proof descendants.
+
+At the first execution after this amendment, compile these acceleration cards
+without marking the Event-40 XLIFF task complete:
+
+1. `TC-FF6-ACCEL-CONTROL-001`: repair immediate authority fail-closed behavior;
+   implement proof-impact selection, semantic-batch manifests, generated
+   operational handovers, per-product scheduling, and the serialized mainline
+   integration lease.
+2. `TC-FF6-XLIFF-SEMANTIC-BATCH-001`: use
+   `XLF-CAND-CORE-SCHEMATRON-60B596A00F7FA06A` as the first regression case;
+   compile semantic equivalence groups and exception queues without accepting
+   generated mappings as proof.
+3. `TC-FF6-UBL-SCHEMA-GENERATOR-001`: continue UBL-03 at attributes and
+   attribute groups, then groups/wildcards/substitutions/facets, under one
+   reproducible schema-graph lane.
+4. `TC-FF6-COMPACT-READINESS-001`: independently characterize IPYNB and
+   SafeTensors source, APIs, tests, installed packages, and obligation gaps;
+   emit `KEEP`, `REPAIR`, `REPLACE`, or `REMOVE` decisions before source
+   restructuring.
+
+The acceleration bootstrap exits only when:
+
+- a missing required authority fails before digest computation, contract
+  emission, or proof-node creation;
+- three identical semantic-group compilations have identical group/member IDs,
+  exception queues, and canonical bytes;
+- seeded dependency mutations prove that the impact selector includes every
+  affected test/proof descendant, while a scheduled full-suite sentinel reports
+  zero missed dependencies;
+- a failed member rolls back the unaccepted batch without changing predecessor
+  decisions, counts, or candidate identities;
+- four simulated disjoint lanes cannot consume each other's leases, artifacts,
+  environments, controller transaction, or staged files;
+- three generated handover runs from identical controller/proof inputs are
+  byte-identical and stale manual values fail validation;
+- mainline integration is single-writer, explicit-path, fast-forward-only, and
+  retains no branch or temporary worktree continuation state.
+
+Failure of one bootstrap control blocks that mechanism, not safe work in a
+different lane. The executor records the gap and uses the conservative existing
+verification path for affected work until the mechanism is repaired.
 
 ### Wave 0 — Recover, snapshot, and quarantine
 
@@ -831,10 +995,40 @@ record version and package digests.
 
 Because GitLab `main` is the only integration branch, a taskcard candidate is
 pushed only after its affected behavior tests, static and architecture gates,
-API snapshot, invalidation checks, built-wheel tests, coordination precommit
-check, and skill receipt pass. A failed candidate remains isolated and is never
-pushed as partial product progress. After a successful push, verify the exact
-remote SHA before removing the detached worktree.
+applicable API snapshot, invalidation checks, the T3 built-wheel controls
+required by Section 8.4, coordination precommit check, and skill receipt pass.
+A failed candidate remains isolated and is never pushed as partial product
+progress. After a successful push, verify the exact remote SHA before removing
+the detached worktree.
+
+### 8.4 Verification tiers and impact-selection safety
+
+Verification cost is proportional to the changed proof closure while release
+confidence remains cumulative:
+
+| Tier | Trigger | Required work |
+|---|---|---|
+| T0: pre-write | every mutation | authority/contract identity, lease, skill manifest, target baseline, and expected invalidation check |
+| T1: member | every semantic-batch member | genuine RED/GREEN behavior or adjudication test, group invariant, exception handling, and direct proof edges |
+| T2: batch | before batch closure | all affected-format tests selected by the proof graph, changed static/architecture checks, deterministic artifacts, predecessor equality, and independent batch validation |
+| T3: checkpoint | controller transition, runtime/package/API/generator/fixture/dependency change, or provider shift | fresh detached replay, installed-wheel proof when applicable, affected dependency closure, event-chain validation, and generated handover validation |
+| T4: sentinel/nightly | scheduled full audit and before implementation verification | full-format corpus/oracles/property/fuzz/mutation/performance plus dependency and platform matrices appropriate to the schedule |
+| T5: certification/release | promotion, extraction, or release candidate | every Section 8 and 8.1 requirement from fresh independent repositories |
+
+The impact selector is optimization machinery, never proof authority. It must
+map every source, test, fixture, authority, contract, generator, dependency,
+tool, environment, and public-API input to descendants. Seeded mutation tests
+must cover all input categories. T4 compares the selector's prediction with
+the full observed failure set. Any false negative disables selective promotion
+for the affected component, records a high-severity machinery gap, expands the
+dependency graph, and replays impacted proof. There is no allowed false-negative
+budget.
+
+A contract-only semantic batch does not require an installed-wheel rebuild
+unless it changes a runtime-consumed generated artifact. A runtime, packaging,
+public-API, dependency, generator, or fixture change always runs the applicable
+T3 installed-package controls before integration. Deferred T4/T5 checks can
+delay promotion but can never be cited as already-passing evidence.
 
 ## 9. Machinery regression controls
 
@@ -877,31 +1071,45 @@ to recover. Failure handling is deterministic:
 
 ## 11. Concrete first task queue
 
-The successor must first execute the six `TC-FF6-PROGRAM-*` taskcards in Section
-7.0. Those cards recompute truth and compile the bounded per-capability queue
-from the current-gap projection. If the resulting product priorities are
-unchanged, perform in this order:
+The version-4 queue is a four-lane bootstrap, followed by independently
+computed product queues. The next executor performs these actions in order:
 
-1. `RFF6-ST-001`: rebuild core + SafeTensors wheel in a clean environment;
-   inspect/preserve the uncommitted checkpoint; run the official differential
-   test and existing SafeTensors regression through installed packages; emit
-   digest-bound proof or retain the gap.
-2. `RFF6-ST-002`: implement and prove SafeTensors preservation, lazy/mmap,
-   malformed-layout rejection, dtype edge cases, and oracle corpus obligations.
-3. `RFF6-IPYNB-001`: establish package chassis/import migration characterization
-   and installed-wheel baseline; then implement contract-selected mandatory
-   notebook behavior.
-4. `RFF6-NRRD-001`: establish NRRD package chassis and first mandatory
-   attached/detached payload contract task with Teem/pynrrd oracle harness.
-5. `RFF6-XLIFF-001`: reproduce XML models from pinned XSD inputs and prove
-   generation determinism before extending module semantics.
-6. `RFF6-UBL-001`: reproduce all-91-root generator baseline from pinned XSD
-   inputs, validate naming/collisions, and generate test instances.
-7. `RFF6-ORA-001`: maintain the policy-blocked record and perform only allowed
-   contract/corpus/interoperability planning until source authorization exists.
+1. Revalidate Event 40, the clean GitLab packet commit, current leases, contract
+   digests, candidate and obligation counts, UBL partial graph, source presence,
+   and `0/6` certification. Any difference is reconciled into current state
+   before scheduling.
+2. Create and register the four Section 7.1 acceleration taskcards with exact
+   path allowlists, logical leases, proof transactions, dependencies, T0-T5
+   triggers, rollback rules, and independently executable acceptance tests.
+3. Append one native scheduling event that keeps
+   `XLF-04-BATCH-005-PARTIAL-002-I` uncompleted, records the four disjoint
+   lanes, and designates single controller and integration writers.
+4. Start Lane A control acceleration and Lane B's XLIFF target-side isolation
+   RED test concurrently when their paths are disjoint. Candidate I is the
+   semantic-batch pilot; it is not skipped or pre-accepted.
+5. Start Lane C at UBL attributes/attribute groups and Lane D with read-only
+   IPYNB/SafeTensors characterization. Lane D may mutate product source only
+   after its per-product contract and architecture prerequisites pass and its
+   product taskcard authorizes exact paths.
+6. After the acceleration bootstrap passes, compile residual work by semantic
+   batch rather than raw candidate order. Quarantine heterogeneous exceptions
+   and preserve every source identity and decision.
+7. When compact-product readiness is reliable, split Lane D into sequential
+   IPYNB and SafeTensors implementation batches. Reassign the completed Lane A
+   slot to NRRD, then to OpenRaster work permitted by its live policy gate.
+8. Promote each product independently only from its current proof graph. The
+   aggregate program remains incomplete until all six release-candidate gates
+   pass.
 
-The controller may reorder only when its current severity/root-cause projection
-shows a higher-priority unblocked obligation. It must journal the reason.
+Deterministic scheduling within each lane uses current severity, downstream
+unlock count, then oldest stable task ID. A lane blocked by external authority,
+policy, or three failed repair approaches yields its worker slot to the next
+ready disjoint task. It never keeps the portfolio idle.
+
+Historical `RFF6-ST-001` through `RFF6-ORA-001` labels are planning aliases,
+not executable priority authority. The taskcard compiler may reuse them only
+after binding them to the current contracts, proof graph, path leases, and
+version-4 verification tiers.
 
 ### 11.1 Per-format release-candidate gates
 
@@ -935,8 +1143,18 @@ timestamps, absolute paths, random IDs, and ordering noise.
 
 Before ending a session, journal the last verified controller transition,
 materialize current gaps, retain all failures, release coordination leases, and
-write a successor handoff pointing at this plan and the exact state/manifest
-paths. Do not leave a prose-only memory as the resume mechanism.
+generate the operational successor handoff from canonical inputs. The required
+generated surface is `START-HERE.md`, `CURRENT-MACHINE-STATE.yaml`,
+`NEXT-MICROSTEP.yaml`, and `manifest.yaml`. Stable architecture, runbook, root
+cause, validation, and provider-shift documents are referenced rather than
+rewritten after each semantic batch. Refresh them only when their durable
+contract changes. Do not leave prose-only memory as the resume mechanism.
+
+A handover refresh is mandatory at a provider shift, controller-state
+transition, accepted batch whose next route changes, external-block terminal
+checkpoint, or user-requested pause. Per-member and same-route batch progress is
+already resumable from the journal and proof transaction and does not require a
+20-file documentation rewrite.
 
 ### 12.1 Required current-state artifacts
 
@@ -1012,6 +1230,43 @@ task automatically.
 Every gate-transition response ends with exactly:
 `EVIDENCE_BUNDLE: <absolute Windows path to validated zip>`.
 
+### 12.4 Throughput, reliability, and anti-gaming metrics
+
+The controller records these metrics per lane and per checkpoint:
+
+- independently accepted mandatory obligations and dispositions per semantic
+  batch and per verification compute-hour;
+- median and tail T1, T2, and T3 duration by change class;
+- batch split, rejection, rollback, retry, and repeated-root-cause rates;
+- ready-lane idle time caused by shared dependencies, integration contention,
+  missing authority, or policy gates;
+- proof invalidation fan-out and replay duration;
+- impact-selector predicted descendants versus full-sentinel observed
+  descendants, with false negatives required to remain zero;
+- generated handover determinism and manual operational-projection edits, with
+  manual edits required to reach zero after generator acceptance;
+- installed-wheel, external-oracle, corpus, and mandatory-obligation burn-down
+  per product;
+- certification progress as fully proven capabilities, never raw files, lines
+  of code, methods, test names, or passing-test counts.
+
+Metrics are diagnostic and scheduling inputs. No throughput target can waive a
+failed obligation, security issue, oracle contradiction, proof edge, or release
+gate. A faster batch with increased rollback, escaped dependencies, or weaker
+proof is a regression.
+
+### 12.5 Acceleration risks and mandatory mitigations
+
+| Risk | Failure mode | Mandatory mitigation |
+|---|---|---|
+| Semantic grouping | superficially similar authority rules hide profile or processing differences | include profile, normalized expression, authority role, QName, and processing category in group identity; split every exception |
+| Parallel lanes | overlapping files, generators, or controller writes corrupt state | exact path/logical leases, separate transactions/environments, single controller writer, serialized integration |
+| Impact selection | an omitted descendant lets a regression escape | seeded mutation coverage, periodic T4 comparison, zero-tolerance false-negative disable-and-repair policy |
+| Larger batches | failure localization or rollback becomes ambiguous | stable member IDs, representative and boundary RED tests, atomic transaction, subgroup re-identification before partial acceptance |
+| Less frequent handovers | an interruption loses uncommitted reasoning | per-member decision journal and content-addressed batch transaction; generated handover at every actual shift/pause |
+| Deferred full matrices | incompatibility appears later | T3 triggers for runtime inputs, scheduled T4 sentinels, mandatory T5 before promotion |
+| Existing-code reuse | legacy behavior is preserved without proving correctness | characterize behavior separately from acceptance, map to obligations, and require `KEEP/REPAIR/REPLACE/REMOVE` evidence |
+
 ## 13. Hard prohibitions
 
 - Do not delete, reset, restore, stash, clean, or overwrite unexplained work.
@@ -1042,8 +1297,10 @@ Every gate-transition response ends with exactly:
 Status: **HARDENED_READY_FOR_AUTONOMOUS_EXECUTION**. This means the executor has
 a durable operational sequence, a bounded definition of comprehensive
 capabilities, professional package and code contracts, taskcard compilation,
-numeric quality gates, failure rules, and honest policy blocks. It does **not**
-mean any of the six libraries is production-certified or release-ready.
+numeric quality gates, failure rules, honest policy blocks, semantic batching,
+four disjoint execution lanes, tiered verification, and serialized mainline
+integration. It does **not** mean the acceleration machinery already exists or
+that any of the six libraries is production-certified or release-ready.
 
 ## 15. Plan hardening assessment
 
@@ -1056,12 +1313,14 @@ product evidence:
 - **Scope and completeness:** normative and developer-use capability universes
   are classified; no mandatory behavior can disappear into a percentage or
   prose deferral.
-- **Execution clarity:** the controller, six program taskcards, deterministic
-  per-capability taskcard schema, state transitions, and mainline integration
-  rule remove reliance on agent memory or broad wave interpretation.
-- **Validation:** obligation proof, independent corpora/oracles, installed-wheel
-  matrices, numeric coverage/mutation/performance thresholds, reproducibility,
-  extraction, and security/supply-chain controls are explicit.
+- **Execution clarity:** the controller, acceleration bootstrap, deterministic
+  semantic-batch taskcards, independent product lifecycles, state transitions,
+  generated handover boundary, and serialized mainline integration remove
+  reliance on agent memory or broad wave interpretation.
+- **Validation:** T0-T5 impact-aware tiers preserve obligation proof,
+  independent corpora/oracles, installed-wheel matrices, numeric
+  coverage/mutation/performance thresholds, reproducibility, extraction, and
+  security/supply-chain controls; zero selector false negatives is binding.
 - **Failure handling:** invalidation, bounded repair, technical/policy/external
   block states, current-gap scheduling, and no-push-on-failure behavior preserve
   truthful state.
@@ -1070,7 +1329,8 @@ product evidence:
   generated-source reproducibility, SemVer, and compatibility controls are
   binding.
 
-The first executor action is therefore not ad hoc feature implementation. It is
-`TC-FF6-PROGRAM-TRUTH-001`, followed by capability compilation and taskcard
-generation. Only evidence from those tasks may replace the historical baseline
-or promote a library.
+The first executor action is therefore not another isolated candidate
+checkpoint or ad hoc feature implementation. It is the Section 11 live-state
+revalidation and governed creation of the four acceleration taskcards. Event 40
+and candidate I remain authoritative until the controller accepts that schedule.
+Only executed taskcard evidence may replace the baseline or promote a library.

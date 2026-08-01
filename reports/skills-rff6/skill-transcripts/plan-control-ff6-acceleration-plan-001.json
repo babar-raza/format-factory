@@ -1,0 +1,99 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "plan-control-ff6-acceleration-plan-001",
+  "skill_id": "plan-control",
+  "task_id": "TC-FF6-PROGRAM-CAPABILITIES-001",
+  "mode": "live",
+  "timestamp": "2026-08-01T15:57:10.0545006Z",
+  "inputs": {
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "sprint_id": "FF6-PLAN-ACCELERATION-001",
+    "task_id": "TC-FF6-PROGRAM-CAPABILITIES-001",
+    "operation": "project",
+    "plan_path": "plans/strategic/autonomous-six-python-production-execution-plan.md",
+    "target_paths": [
+      "plans/strategic/autonomous-six-python-production-execution-plan.md"
+    ],
+    "coordination_scope": "logical:FF6-PLAN-ACCELERATION plus exact plan and receipt leases",
+    "acceptance_evidence": "22/22 hardening score, frontmatter validation, current-state consistency, 40 plan-control tests, structural assertions, clean diff, and valid zero-warning skill receipt",
+    "source_checkpoint": "92dcc0571f1d3a9a7331bd458536eb6ff05c02bb",
+    "controller_event": "FF6-EVENT-000040",
+    "execution_manifest_id": "sfx-33cbcf52f4c5a6e4",
+    "mutation_authorization_id": "56ffaf4366aa6128",
+    "hardening_score": "22/22"
+  },
+  "allowed_files": [
+    "plans/strategic/autonomous-six-python-production-execution-plan.md",
+    "reports/skills-rff6/skill-transcripts/plan-control-ff6-acceleration-plan-001.json"
+  ],
+  "actual_files_changed": [
+    "plans/strategic/autonomous-six-python-production-execution-plan.md",
+    "reports/skills-rff6/skill-transcripts/plan-control-ff6-acceleration-plan-001.json"
+  ],
+  "tests_run": [
+    "git fetch origin main; local HEAD and origin/main started equal at 92dcc0571f1d3a9a7331bd458536eb6ff05c02bb",
+    "python tools/evidence/check_current_state_consistency.py: PASS",
+    "python tools/validation/validate_frontmatter.py --path plans/strategic --extensions .md --summary: 0 violations",
+    "python -m pytest tests/plan_control -q: 40 passed",
+    "execution manifest sfx-33cbcf52f4c5a6e4 validation: PASS",
+    "plan version/frontmatter/required acceleration sections/current counts structural assertions: PASS",
+    "git diff --check: PASS",
+    "plan hardening checklist: 22/22"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "plan_version_before": 3,
+    "plan_version_after": 4,
+    "quality_gates_weakened": false,
+    "promotion_state_changed": false,
+    "controller_state_changed": false,
+    "product_source_changed": false,
+    "certification_state_changed": false,
+    "execution_acceleration": {
+      "semantic_batches": true,
+      "maximum_active_lanes": 4,
+      "single_controller_writer": true,
+      "serialized_gitlab_main_integration": true,
+      "verification_tiers": ["T0", "T1", "T2", "T3", "T4", "T5"],
+      "impact_selector_false_negative_budget": 0,
+      "generated_operational_handover_files": 4
+    },
+    "current_truth_preserved": {
+      "event": "FF6-EVENT-000040",
+      "controller_state": "CONTRACT",
+      "products_certified": "0/6",
+      "xliff_source_bound_core_obligations": "31/105",
+      "xliff_verified_candidate_dispositions": "9/1130",
+      "ubl_03_complete": false,
+      "openraster_source_exists": false
+    },
+    "known_nonblocking_control_finding": "tools.plan_control doctor reports pre-existing GENESIS/missing generic projections and unrelated unrouted plan files; the FF6 native controller remains authoritative and this update did not claim or repair generic plan-control closure."
+  },
+  "self_challenge": {
+    "1_scope_exact": "YES; one canonical plan and this receipt",
+    "2_live_state_verified": "YES",
+    "3_referenced_current_authorities_read": "YES for the amended execution boundaries",
+    "4_facts_separated_from_assumptions": "YES",
+    "5_stale_state_corrected": "YES; July baseline and uncommitted SafeTensors wording corrected",
+    "6_contradictions_resolved": "YES; Event 40 remains executable authority until a scheduling event",
+    "7_allowed_paths_exact": "YES",
+    "8_forbidden_paths_exact": "YES",
+    "9_other_work_preserved": "YES",
+    "10_validation_commands_defined": "YES",
+    "11_evidence_outputs_defined": "YES",
+    "12_taskcard_updates_defined": "YES; four acceleration cards are required but not falsely created by this plan-only change",
+    "13_current_state_updates_defined": "YES; controller update requires a later validated event",
+    "14_stop_conditions_defined": "YES",
+    "15_final_statuses_defined": "YES",
+    "16_cleanup_prohibited": "YES",
+    "17_discovered_gaps_preserved": "YES",
+    "18_hidden_human_work_avoided": "YES",
+    "19_product_source_authority_preserved": "YES",
+    "20_llm_authority_misuse_prevented": "YES",
+    "21_evidence_bundle_boundary_preserved": "YES",
+    "22_self_challenge_complete": "YES"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}
