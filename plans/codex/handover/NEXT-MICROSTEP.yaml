@@ -1,5 +1,5 @@
-schema: ff6/next-microstep@9
-artifact_id: FF6-XLIFF-XLF04-BATCH005-PARTIAL002-E
+schema: ff6/next-microstep@10
+artifact_id: FF6-XLIFF-XLF04-BATCH005-PARTIAL002-F
 visibility: internal
 publish_allowed: false
 generated_by: codex
@@ -9,68 +9,72 @@ source_checkpoint:
   forge: GitLab
   remote: origin
   branch: main
-  packet_base_commit: 41bfaef73992f69313226543dff81d3a11e232bb
-  event_id: FF6-EVENT-000036
-  event_hash: d4a05e36bbae4d3ab5f05a4968045552f79ae45dd7b38f6ba3bc39840f684924
-  semantic_commit: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
+  packet_base_commit: 6fca743ca55a8c221e63954b4c8a371b73e2246d
+  event_id: FF6-EVENT-000037
+  event_hash: 09a3ae3d4521afc5c6c6c937d667c2246a8ad1fbae6ffb8af04a5b32e0e2b2b6
+  semantic_commit: 1b758c2e05856552169de098d8719a82f425a1c2
   checkout_identity_repair_commit: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
-  controller_checkpoint_commit: 41bfaef73992f69313226543dff81d3a11e232bb
+  controller_checkpoint_commit: 6fca743ca55a8c221e63954b4c8a371b73e2246d
 task:
   task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
   parent_task_id: TC-FF6-PROGRAM-CAPABILITIES-001
   state: WORK_IN_PROGRESS
   first_unmet_step: XLF-04
-  microstep: XLF-04-BATCH-005-PARTIAL-002-E
+  microstep: XLF-04-BATCH-005-PARTIAL-002-F
   microstep_state: READY
 accepted_baseline:
   candidate_count: 1130
-  dispositions_verified: 5
-  dispositions_unverified: 1125
+  dispositions_verified: 6
+  dispositions_unverified: 1124
   expected_obligations: 105
-  source_bound_obligations: 28
-  missing_obligations: 77
+  source_bound_obligations: 29
+  missing_obligations: 76
   xlf_04_complete: false
-  adjudication_sha256: 878c12670c5c19889259d6def1439ab106304084fee95d8257819f58879b22d2
-  inventory_sha256: 76f51e51216f1b6b8fb41e24623e806bb63ad9ab15da279f16157ffe7369bf1d
+  adjudication_sha256: 827445fe3d09cd709162531a00fffa4d0021506c38c36f29684257aa6cd85360
+  inventory_sha256: 6822db27244bea08f1bae14cd9b8ccf778e0719d1323e9a49e7c4574f0351dcc
 selected_candidate:
-  candidate_id: XLF-CAND-CORE-SCHEMATRON-100732DB0BBED389
+  candidate_id: XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73
   candidate_class: SCHEMATRON_REPORT
   profile: xliff_2.1
   source_id: SRC-XLF-002
   source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
   member: schemas/xliff_core_2.1.sch
   member_sha256: d4275f2d2574f892624bcd8f83bcc3001c75d623e4eb36896d15d147f16ed7a2
-  location: schematron/rule[12]/report[1]
-  candidate_content_sha256: 7564733d38472805796896373cbdbe7807510721c9dfbac29e53843862bcf1cf
-  requirement_sha256: 51c4d1ac9834b99f5a029894cc3c179117a7b9b8de50794bed8acd36132ede7d
-  occurrence_sha256: 903d76dd0cb8472539255ce5075a884460844bc4975a030906ffb793377d3648
+  location: schematron/rule[13]/report[1]
+  candidate_content_sha256: fc6bfe29b9efb1589d19e9f040ca0901bcdd8db4fe0a327760cd043257e41062
+  requirement_sha256: 4d6ff61b0af6ae593955517ebde43ac5bba05e48440a601f05fa91d54df6e464
+  occurrence_sha256: 0102e918c34b6b8147324a33411e35b93d03740b2c1eb4a283e90c00bf3fb7ea
   normalized_requirement: >-
-    {"context":"xlf:unit","kind":"report","message":"Incomplete 'unit';
-    it must have at least one 'segment' child.","test":"not(child::xlf:segment)"}
+    {"context":"xlf:source[@xml:lang][parent::xlf:segment | parent::xlf:ignorable]",
+    "kind":"report","message":"'xml:lang' attribute of the 'source' element
+    and 'srcLang' attribute of the 'xliff' are not matching.",
+    "test":"not(lang($srcLang))"}
 generated_proposals_only:
   - SAL-XLIFF-CORE-AGENT-VALIDATOR-001
+  - SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001
+  - SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001
   - SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001
-  - SAL-XLIFF-CORE-HIERARCHY-UNIT-CHILDREN-001
+  - SAL-XLIFF-CORE-SOURCE-REQUIRED-001
 required_skills:
   - test-driven-development
   - ingest-spec-sal
   - sal-pipeline-heal
   - plan-control
 required_execution:
-  - Validate Event 36, packet-base commit 41bfaef7, repair commit 809cc18c, candidate identity, and accepted counts before mutation.
+  - Validate Event 37, packet-base commit 6fca743c, semantic commit 1b758c2e, candidate identity, and accepted counts before mutation.
   - Read the exact pinned Schematron occurrence independently; generated mappings are proposals, never conclusions.
-  - Determine whether the report directly owns UNIT-CHILDREN, SEGMENT, another exact denominator row, or no valid current row. Record a machine-readable gap rather than force a mapping.
+  - Determine whether the report directly owns DOCUMENT-SOURCE-LANGUAGE, SOURCE-REQUIRED, another exact denominator row, or no valid current row. Treat segment and ignorable names as trigger context unless exact authority proves otherwise; record a machine-readable gap rather than force a mapping.
   - Start with a genuine pre-change RED test that fails for the intended semantic and proof boundary.
   - Account for every proposed and materially implicated obligation with explicit accepted or rejected reasoning.
   - Bind the exact candidate, occurrence, authority, SAL proof, decision, and any compiled obligation through content digests.
-  - Preserve semantic equality of all 28 accepted predecessor rows and identity of all 1130 candidates.
+  - Preserve semantic equality of all 29 accepted predecessor rows and identity of all 1130 candidates.
   - Run focused positive/rejection/tamper tests, three deterministic generations, static checks, SAL verification, five-authority audit, format-contract and production-program regressions, transcript validation, immutable checkout replay, and native event-chain validation.
   - Commit explicit leased files to GitLab main, append the next native event only after proof passes, refresh this packet, and release only the current shift leases.
 acceptance:
-  prior_dispositions_verified: 5
+  prior_dispositions_verified: 6
   expected_new_candidate_dispositions: 1
   obligation_delta: evidence_derived_not_predeclared
-  predecessor_rows_preserved: 28
+  predecessor_rows_preserved: 29
   candidate_ids_preserved: 1130
   xlf_04_complete: false
   product_source_effect: none

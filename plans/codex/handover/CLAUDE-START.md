@@ -16,14 +16,14 @@ Get-Content -LiteralPath AGENTS.md
 git fetch origin main --prune
 git rev-parse HEAD
 git rev-parse origin/main
-git merge-base --is-ancestor 41bfaef73992f69313226543dff81d3a11e232bb origin/main
+git merge-base --is-ancestor 6fca743ca55a8c221e63954b4c8a371b73e2246d origin/main
 .venv\Scripts\python.exe plans\codex\handover\validate_committed_checkpoint.py --ref origin/main
 git status --short --branch
 .venv\Scripts\python.exe -m tools.supervisor.coordination --json status
 ```
 
-At this packet, the expected native head is `FF6-EVENT-000036` /
-`d4a05e36bbae4d3ab5f05a4968045552f79ae45dd7b38f6ba3bc39840f684924`.
+At this packet, the expected native head is `FF6-EVENT-000037` /
+`09a3ae3d4521afc5c6c6c937d667c2246a8ad1fbae6ffb8af04a5b32e0e2b2b6`.
 If GitLab has advanced, validate the newer chain and regenerate this packet;
 do not reset or force-push. If the shared tree is clean, also run:
 
@@ -50,7 +50,9 @@ Read, in order:
 
 Do not reimplement the accepted reciprocal skeleton change or its checkout
 repair. They are immutable history at `2dcb161e`, repair commit
-`809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956`, and Event 36.
+`809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956`, and Event 36. Do not
+reimplement the accepted unit-cardinality change at
+`1b758c2e05856552169de098d8719a82f425a1c2` / Event 37.
 
 ## 3. Establish a fresh shift identity
 
@@ -66,17 +68,17 @@ during long validation, and never release another provider's lease.
 
 ## 4. Execute the exact next microstep
 
-Run `XLF-04-BATCH-005-PARTIAL-002-E` for
-`XLF-CAND-CORE-SCHEMATRON-100732DB0BBED389`.
+Run `XLF-04-BATCH-005-PARTIAL-002-F` for
+`XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73`.
 
 Before mutation, reconfirm:
 
-- controller Event 36 and GitLab checkpoint `41bfaef7`;
-- 5 verified / 1,125 open candidate dispositions;
-- 28 resolved / 77 missing of 105 obligations;
-- candidate content digest `7564733d...`, requirement digest `51c4d1ac...`,
-  and occurrence digest `903d76dd...`;
-- exact authority occurrence `schematron/rule[12]/report[1]` in the pinned
+- controller Event 37 and GitLab checkpoint `6fca743c`;
+- 6 verified / 1,124 open candidate dispositions;
+- 29 resolved / 76 missing of 105 obligations;
+- candidate content digest `fc6bfe29...`, requirement digest `4d6ff61b...`,
+  and occurrence digest `0102e918...`;
+- exact authority occurrence `schematron/rule[13]/report[1]` in the pinned
   XLIFF 2.1 Core Schematron member;
 - checkout identity and all predecessor proof hashes.
 
@@ -91,10 +93,11 @@ mapping to make coverage rise.
 
 - positive, rejection, tamper, and predecessor-preservation tests;
 - exact candidate/occurrence/authority/SAL/decision digest closure;
-- all 28 accepted predecessor rows semantically equal;
+- all 29 accepted predecessor rows semantically equal;
 - all 1,130 candidate identities unchanged;
 - three byte-identical clean generations;
-- Ruff, strict Mypy, Pyright 1.1.411, and bytecode compilation on touched code;
+- Ruff, strict Mypy, Pyright when available, and bytecode compilation on
+  touched code; unavailability must be recorded, never reported as a pass;
 - SAL verification and 5/5 XLIFF authority matches;
 - affected tool tests plus format-contract and production-program regressions;
 - zero-warning skill transcripts;

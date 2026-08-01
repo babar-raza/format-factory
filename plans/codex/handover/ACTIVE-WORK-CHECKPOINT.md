@@ -1,5 +1,5 @@
 ---
-artifact_id: FF6-ACTIVE-CHECKPOINT-41BFAEF
+artifact_id: FF6-ACTIVE-CHECKPOINT-EVENT-37
 visibility: internal
 publish_allowed: false
 generated_by: codex
@@ -10,31 +10,31 @@ generated_at: 2026-08-01
 
 ## Clean resumable boundary
 
-- GitLab controller checkpoint: `41bfaef73992f69313226543dff81d3a11e232bb`.
-- Native controller: `FF6-EVENT-000036` /
-  `d4a05e36bbae4d3ab5f05a4968045552f79ae45dd7b38f6ba3bc39840f684924`.
-- XLIFF semantic commit: `2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17`.
+- GitLab controller checkpoint: `6fca743ca55a8c221e63954b4c8a371b73e2246d`.
+- Native controller: `FF6-EVENT-000037` /
+  `09a3ae3d4521afc5c6c6c937d667c2246a8ad1fbae6ffb8af04a5b32e0e2b2b6`.
+- XLIFF semantic commit: `1b758c2e05856552169de098d8719a82f425a1c2`.
 - Checkout-identity repair: `809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956`.
-- Event 36 controller acceptance: `41bfaef73992f69313226543dff81d3a11e232bb`.
+- Event 37 controller acceptance: `6fca743ca55a8c221e63954b4c8a371b73e2246d`.
 - Program state: `CONTRACT`; certifications: `0/6`; every promotion is
   `UNASSESSED`.
 
 ## Accepted XLIFF state
 
-| Measure | Event 36 |
+| Measure | Event 37 |
 |---|---:|
 | authority candidates | 1,130 |
-| independently verified dispositions | 5 |
-| unverified dispositions | 1,125 |
+| independently verified dispositions | 6 |
+| unverified dispositions | 1,124 |
 | expected obligations | 105 |
-| resolved obligations | 28 |
-| missing obligations | 77 |
+| resolved obligations | 29 |
+| missing obligations | 76 |
 | XLF-04 complete | false |
 
-The accepted controller and materialized evidence are aligned. Event 36 adds
-no obligation: it accepts the fifth disposition after cross-checkout proof
-repair. The full denominator, module contracts, product behavior, and release
-proof remain open.
+The accepted controller and materialized evidence are aligned. Event 37 adds
+one authority-bound unit-cardinality obligation and accepts the sixth
+candidate disposition. The full denominator, module contracts, product
+behavior, and release proof remain open.
 
 ## Portfolio truth
 
@@ -48,9 +48,10 @@ proof remain open.
 
 ## Exact continuation
 
-Execute `XLF-04-BATCH-005-PARTIAL-002-E` against
-`XLF-CAND-CORE-SCHEMATRON-100732DB0BBED389` from the Event 36 checkpoint.
-Independently adjudicate the exact XLIFF 2.1 unit-without-segment Schematron
-report. Generated mappings are proposals only. Start RED, preserve all 28
+Execute `XLF-04-BATCH-005-PARTIAL-002-F` against
+`XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73` from the Event 37 checkpoint.
+Independently adjudicate the exact XLIFF 2.1 source-`xml:lang` versus root
+`srcLang` Schematron report. Generated mappings are proposals only. Start RED,
+preserve all 29
 accepted rows and all 1,130 candidate IDs, prove the bounded change in an
 immutable checkout, and append the next event only after the evidence passes.

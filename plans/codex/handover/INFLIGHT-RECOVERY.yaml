@@ -1,15 +1,15 @@
-schema: ff6/inflight-recovery@10
-artifact_id: FF6-RECOVERY-41BFAEF
+schema: ff6/inflight-recovery@11
+artifact_id: FF6-RECOVERY-EVENT-37
 visibility: internal
 publish_allowed: false
 generated_by: codex
 generated_at: '2026-08-01'
 event:
-  event_id: FF6-EVENT-000036
-  event_hash: d4a05e36bbae4d3ab5f05a4968045552f79ae45dd7b38f6ba3bc39840f684924
-  semantic_commit: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
+  event_id: FF6-EVENT-000037
+  event_hash: 09a3ae3d4521afc5c6c6c937d667c2246a8ad1fbae6ffb8af04a5b32e0e2b2b6
+  semantic_commit: 1b758c2e05856552169de098d8719a82f425a1c2
   checkout_identity_repair_commit: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
-  checkpoint_commit: 41bfaef73992f69313226543dff81d3a11e232bb
+  checkpoint_commit: 6fca743ca55a8c221e63954b4c8a371b73e2246d
 captured_workspace:
   product_overlay_status: NO_UNCOMMITTED_XLIFF_OVERLAY
   handover_overlay_status: PACKET_REFRESH_IN_PROGRESS_UNTIL_HANDOVER_COMMIT
@@ -27,11 +27,17 @@ captured_workspace:
     pushed_to_gitlab_main: true
     immutable_replay: PASS_115_AFTER_DIGEST_VERIFIED_CAS_HYDRATION
     native_event_appended: true
-    event_id: FF6-EVENT-000036
+    event_id: FF6-EVENT-000037
+  current_unit_cardinality_semantics:
+    commit: 1b758c2e05856552169de098d8719a82f425a1c2
+    immutable_replay: PASS_117_AFTER_DIGEST_VERIFIED_CAS_HYDRATION
+    affected_tool_tests: PASS_73
+    native_event_appended: true
+    event_id: FF6-EVENT-000037
   promotion_effect: none
 reconstruction:
   source: GitLab origin/main
-  required_ancestor: 41bfaef73992f69313226543dff81d3a11e232bb
+  required_ancestor: 6fca743ca55a8c221e63954b4c8a371b73e2246d
   command: git fetch origin main --prune; git switch main; git pull --ff-only origin main
   validation: .venv\Scripts\python.exe plans\codex\handover\validate_handover.py --require-clean --self-test
   local_files_required: []

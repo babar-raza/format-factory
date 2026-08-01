@@ -11,13 +11,14 @@ historical_projection: true
 
 # Validation, Regression, and Release Contract
 
-> **Current authority overlay: Event 36.** Native head
-> `FF6-EVENT-000036`; current checkpoint facts and
+> **Current authority overlay: Event 37.** Native head
+> `FF6-EVENT-000037`; current checkpoint facts and
 > commands are in [START-HERE.md](START-HERE.md),
 > [CURRENT-MACHINE-STATE.yaml](CURRENT-MACHINE-STATE.yaml), and
 > [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml). The accepted boundary is
-> 28/105 obligations and 5/1,130 dispositions after repair `809cc18c` and
-> controller acceptance `41bfaef7`; UBL separately retains 6,001 local
+> 29/105 obligations and 6/1,130 dispositions after semantic commit `1b758c2e`
+> with historical repair `809cc18c` and
+> controller acceptance `6fca743c`; UBL separately retains 6,001 local
 > particle nodes.
 > No release state is implied here. Event 31 remains historical
 > negative-control evidence, not current routing.
@@ -350,10 +351,10 @@ Before every close:
 20. Does the handover validator reject predecessor event instructions as well
     as wrong hashes, counts, completion, certification, and recovery state?
 
-## Current authority overlay: Event 36
+## Current authority overlay: Event 37
 
-`FF6-EVENT-000036` is the current native head. The selected task remains
-XLIFF, with exact microstep `XLF-04-BATCH-005-PARTIAL-002-E`, 28/105 accepted
-obligations, and 5/1,130 verified dispositions. UBL retains 6,001 particle
+`FF6-EVENT-000037` is the current native head. The selected task remains
+XLIFF, with exact microstep `XLF-04-BATCH-005-PARTIAL-002-F`, 29/105 accepted
+obligations, and 6/1,130 verified dispositions. UBL retains 6,001 particle
 nodes, stable anonymous-type identities, and 1,178 derivation edges, but
 UBL-03 is incomplete. Certification remains 0/6.

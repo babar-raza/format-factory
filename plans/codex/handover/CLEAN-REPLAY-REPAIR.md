@@ -15,11 +15,13 @@ Repair commit `809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956` is on GitLab
 `origin/main` and passes clean Windows checkout replay. It makes the reciprocal
 skeleton adjudication from non-promoting semantic commit
 `2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17` portable without changing its
-meaning. Native `FF6-EVENT-000036`, hash
-`d4a05e36bbae4d3ab5f05a4968045552f79ae45dd7b38f6ba3bc39840f684924`,
-accepts that repaired disposition at controller commit
-`41bfaef73992f69313226543dff81d3a11e232bb`. The exact continuation is now
-`XLF-04-BATCH-005-PARTIAL-002-E`.
+meaning. Historical `FF6-EVENT-000036` accepted that repaired disposition at
+controller commit `41bfaef73992f69313226543dff81d3a11e232bb`. Current
+`FF6-EVENT-000037`, hash
+`09a3ae3d4521afc5c6c6c937d667c2246a8ad1fbae6ffb8af04a5b32e0e2b2b6`,
+accepts the later unit-cardinality semantic commit
+`1b758c2e05856552169de098d8719a82f425a1c2`; the exact
+continuation is `XLF-04-BATCH-005-PARTIAL-002-F`.
 
 ## Symptom, root cause, and structural weakness
 
@@ -71,8 +73,8 @@ Final current hashes:
 - `sal_proof.py`: `69ef2ef2fe2e30f428dcefe576284832b0effd9b03bd2af6f0fc80ad4c3ddeb7`
 - current SAL store: `a9ba1ddcb109ab17a7f7a954891e929cf8c90db5c21b589b9f846cedd15850e8`
 - verification receipt: `9eccaa7f7327fb6f05439a6630986f15e7699739fcc0a08c60cca190219b1b34`
-- adjudication: `878c12670c5c19889259d6def1439ab106304084fee95d8257819f58879b22d2`
-- obligation inventory: `76f51e51216f1b6b8fb41e24623e806bb63ad9ab15da279f16157ffe7369bf1d`
+- adjudication: `827445fe3d09cd709162531a00fffa4d0021506c38c36f29684257aa6cd85360`
+- obligation inventory: `6822db27244bea08f1bae14cd9b8ccf778e0719d1323e9a49e7c4574f0351dcc`
 - `.gitattributes`: `906054a6ac57f272e8ac337338a78dfea905776f6a1d2e8cf714148c99dfc982`
 - checkout regression test: `1f3a2c4dc53f9f14d5a071b74560da067383f1d3ba63c773f340931d11ecdc96`
 
@@ -95,17 +97,19 @@ Verification at exact commit `809cc18c`:
 - accepted implementation `591fcfe18808e5195c33570eaa9d334770e90166`;
 - semantic attempt `2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17`;
 - all 1,130 candidate identities and 105 obligation identities;
-- 28 resolved and 77 missing obligation rows;
+- 28 resolved and 77 missing obligation rows at Event 36;
 - no product source or public API changes.
 
 ## Accepted boundary and what remains
 
-The materialized adjudication and Event 36 now agree at 5 verified dispositions
-and 1,125 open. Obligation coverage remains 28/105 with 77 missing; no
-obligation was added by the reciprocal disposition. The next executor must
+The materialized adjudication and Event 36 agree historically at 5 verified
+dispositions, 1,125 open, and 28/105 obligations with 77 missing; no obligation
+was added by the reciprocal disposition. Event 37 then independently adds the
+unit-cardinality row and sixth disposition, reaching 29/105 with 76 missing
+and 1,124 open. The next executor must
 independently adjudicate
-`XLF-CAND-CORE-SCHEMATRON-100732DB0BBED389` under
-`XLF-04-BATCH-005-PARTIAL-002-E`.
+`XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73` under
+`XLF-04-BATCH-005-PARTIAL-002-F`.
 
 The repair proves checkout identity for the covered proof paths. It does not
 prove every future generated artifact portable, and it does not replace

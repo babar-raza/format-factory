@@ -16,7 +16,7 @@ C:\Users\prora\OneDrive\Documents\GitHub\format-factory\plans\codex\handover\STA
 ```
 
 The canonical repository is GitLab `origin/main`. The native controller
-checkpoint is `41bfaef73992f69313226543dff81d3a11e232bb`. Do not use GitHub,
+checkpoint is `6fca743ca55a8c221e63954b4c8a371b73e2246d`. Do not use GitHub,
 create another branch, reuse a prior provider identity, or depend on ignored
 local files. A newer valid GitLab event supersedes this packet; it must be
 validated and projected forward, never reset.
@@ -31,46 +31,47 @@ wheel matrices on Python 3.11–3.14 and all three desktop OS families, and emit
 reproducible release artifacts with SBOM, provenance, signature, documentation,
 and vulnerability evidence.
 
-Current authority is `FF6-EVENT-000036`, hash
-`d4a05e36bbae4d3ab5f05a4968045552f79ae45dd7b38f6ba3bc39840f684924`,
+Current authority is `FF6-EVENT-000037`, hash
+`09a3ae3d4521afc5c6c6c937d667c2246a8ad1fbae6ffb8af04a5b32e0e2b2b6`,
 in controller state `CONTRACT`. All six products remain `UNASSESSED`; the
 program is `0/6` certified. OpenRaster source is absent. The other five source
 packages are partial and pre-production. Source presence, generated contracts,
 or passing focused tests are not certification.
 
-Event 36 accepts XLIFF microstep
-`XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001`. The semantic change is
-commit `2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17`; its cross-checkout proof
-repair is `809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956`; controller acceptance is
-`41bfaef73992f69313226543dff81d3a11e232bb`.
+Event 37 accepts XLIFF microstep `XLF-04-BATCH-005-PARTIAL-002-E` at semantic
+commit `1b758c2e05856552169de098d8719a82f425a1c2`. The earlier reciprocal-skeleton
+semantic commit `2dcb161e` and checkout-identity repair `809cc18c` remain
+preserved in history; current controller acceptance is
+`6fca743ca55a8c221e63954b4c8a371b73e2246d`.
 
 Accepted XLIFF state is now aligned with materialized evidence:
 
-- 5 of 1,130 candidate dispositions independently verified;
-- 1,125 dispositions still unverified;
-- 28 of 105 obligations resolved;
-- 77 obligations still missing;
+- 6 of 1,130 candidate dispositions independently verified;
+- 1,124 dispositions still unverified;
+- 29 of 105 obligations resolved;
+- 76 obligations still missing;
 - XLF-04 remains incomplete;
 - no product source, certification, promotion, release, or gate changed.
 
 ## Exact next work
 
-The exact next microstep is `XLF-04-BATCH-005-PARTIAL-002-E`, candidate
-`XLF-CAND-CORE-SCHEMATRON-100732DB0BBED389`. It is the XLIFF 2.1 Schematron
+The exact next microstep is `XLF-04-BATCH-005-PARTIAL-002-F`, candidate
+`XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73`. It is the XLIFF 2.1 Schematron
 report at `schemas/xliff_core_2.1.sch`,
-`schematron/rule[12]/report[1]`, stating that a unit without a segment child is
-incomplete.
+`schematron/rule[13]/report[1]`, comparing source `xml:lang` with root
+`srcLang`.
 
-Generated proposals for `AGENT-VALIDATOR`, `HIERARCHY-SEGMENT`, and
-`HIERARCHY-UNIT-CHILDREN` are not decisions. The next executor must read the
-authority occurrence, decide the direct owner or record a gap, start with a
-genuine RED test, preserve every predecessor, and append the next controller
-event only after deterministic and immutable proof passes.
+Generated proposals for `AGENT-VALIDATOR`, `DOCUMENT-SOURCE-LANGUAGE`,
+`HIERARCHY-IGNORABLE`, `HIERARCHY-SEGMENT`, and `SOURCE-REQUIRED` are not
+decisions. The next executor must read the authority occurrence, decide the
+direct owner or record a gap, explicitly reject incidental trigger context,
+start with a genuine RED test, preserve every predecessor, and append the next
+controller event only after deterministic and immutable proof passes.
 
 ## Mandatory resume sequence
 
 1. Read [AGENTS.md](../../../AGENTS.md) and [Claude start](CLAUDE-START.md).
-2. Fetch GitLab; validate that `41bfaef7` is an ancestor of `origin/main`.
+2. Fetch GitLab; validate that `6fca743c` is an ancestor of `origin/main`.
 3. Run the committed-checkpoint validator before registering work.
 4. Query coordination; preserve every foreign-owned or unexplained path.
 5. Register a fresh provider identity and obtain fresh scoped leases.
@@ -108,7 +109,7 @@ Durable protocols:
 
 ## Non-negotiable truth boundary
 
-Event 36 proves one repaired authority disposition. It does not complete a
-contract, implement a library capability, certify any format, pass Gate 10, or
-authorize publication. Those claims remain false until their complete proof
-graphs close.
+Event 37 proves one unit-cardinality obligation and candidate disposition. It
+does not complete a contract, implement a library capability, certify any
+format, pass Gate 10, or authorize publication. Those claims remain false
+until their complete proof graphs close.

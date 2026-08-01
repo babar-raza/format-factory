@@ -1,5 +1,5 @@
-schema: ff6/provider-neutral-machine-state@14
-artifact_id: FF6-CURRENT-MACHINE-STATE-41BFAEF
+schema: ff6/provider-neutral-machine-state@15
+artifact_id: FF6-CURRENT-MACHINE-STATE-EVENT-37
 visibility: internal
 publish_allowed: false
 generated_by: codex
@@ -8,10 +8,10 @@ repository:
   forge: GitLab
   remote: origin
   branch: main
-  checkpoint_commit: 41bfaef73992f69313226543dff81d3a11e232bb
-  semantic_commit: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
+  checkpoint_commit: 6fca743ca55a8c221e63954b4c8a371b73e2246d
+  semantic_commit: 1b758c2e05856552169de098d8719a82f425a1c2
   verified_checkout_identity_repair: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
-  controller_acceptance_commit: 41bfaef73992f69313226543dff81d3a11e232bb
+  controller_acceptance_commit: 6fca743ca55a8c221e63954b4c8a371b73e2246d
   head_must_equal_origin_main: true
   github_authorized: false
   other_branches_authorized: false
@@ -22,14 +22,14 @@ goal:
   terminal_condition_met: false
 controller:
   state: CONTRACT
-  transition_sequence: 36
-  event_id: FF6-EVENT-000036
-  event_hash: d4a05e36bbae4d3ab5f05a4968045552f79ae45dd7b38f6ba3bc39840f684924
+  transition_sequence: 37
+  event_id: FF6-EVENT-000037
+  event_hash: 09a3ae3d4521afc5c6c6c937d667c2246a8ad1fbae6ffb8af04a5b32e0e2b2b6
   task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
   task_state: WORK_IN_PROGRESS
   first_unmet_step: XLF-04
-  completed_microstep: XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001
-  exact_microstep: XLF-04-BATCH-005-PARTIAL-002-E
+  completed_microstep: XLF-04-BATCH-005-PARTIAL-002-E
+  exact_microstep: XLF-04-BATCH-005-PARTIAL-002-F
   exact_microstep_state: READY
 program_truth:
   capabilities: 110
@@ -52,34 +52,34 @@ xliff:
     count: 1130
     sha256: 24c1902b6387cc9fa3402f78392ba91c6e6656407719ec11cfaab1c4f3d22b9e
   accepted_controller_projection:
-    event_id: FF6-EVENT-000036
-    verified_dispositions: 5
-    open_dispositions: 1125
+    event_id: FF6-EVENT-000037
+    verified_dispositions: 6
+    open_dispositions: 1124
   materialized_verified_projection:
-    commit: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
-    verified_dispositions: 5
-    open_dispositions: 1125
+    commit: 1b758c2e05856552169de098d8719a82f425a1c2
+    verified_dispositions: 6
+    open_dispositions: 1124
     controller_acceptance_pending: false
   adjudication:
     path: reports/sal-verification/xliff-core-candidate-adjudications.yaml
-    sha256: 878c12670c5c19889259d6def1439ab106304084fee95d8257819f58879b22d2
-    production_accepted_dispositions: 5
-    production_open_dispositions: 1125
+    sha256: 827445fe3d09cd709162531a00fffa4d0021506c38c36f29684257aa6cd85360
+    production_accepted_dispositions: 6
+    production_open_dispositions: 1124
     complete: false
   obligation_inventory:
     path: reports/ff6/xliff-core-obligation-inventory.yaml
-    sha256: 76f51e51216f1b6b8fb41e24623e806bb63ad9ab15da279f16157ffe7369bf1d
+    sha256: 6822db27244bea08f1bae14cd9b8ccf778e0719d1323e9a49e7c4574f0351dcc
     expected: 105
-    production_accepted_source_bound: 28
-    production_accepted_missing: 77
+    production_accepted_source_bound: 29
+    production_accepted_missing: 76
     complete: false
   pending_candidate:
-    candidate_id: XLF-CAND-CORE-SCHEMATRON-100732DB0BBED389
-    candidate_content_sha256: 7564733d38472805796896373cbdbe7807510721c9dfbac29e53843862bcf1cf
-    requirement_sha256: 51c4d1ac9834b99f5a029894cc3c179117a7b9b8de50794bed8acd36132ede7d
-    occurrence_sha256: 903d76dd0cb8472539255ce5075a884460844bc4975a030906ffb793377d3648
+    candidate_id: XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73
+    candidate_content_sha256: fc6bfe29b9efb1589d19e9f040ca0901bcdd8db4fe0a327760cd043257e41062
+    requirement_sha256: 4d6ff61b0af6ae593955517ebde43ac5bba05e48440a601f05fa91d54df6e464
+    occurrence_sha256: 0102e918c34b6b8147324a33411e35b93d03740b2c1eb4a283e90c00bf3fb7ea
     profile: xliff_2.1
-    location: schematron/rule[12]/report[1]
+    location: schematron/rule[13]/report[1]
   replay_repair:
     semantic_commit: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
     repair_commit: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
@@ -90,6 +90,14 @@ xliff:
     deterministic_runs: 3
     authority_matches: 5
     accepted_state_effect: EVENT_36_ACCEPTED_ONE_DISPOSITION_ZERO_OBLIGATION_DELTA
+  current_semantic_checkpoint:
+    commit: 1b758c2e05856552169de098d8719a82f425a1c2
+    decision_id: XLF-ADJ-CORE-SCHEMATRON-0006
+    direct_obligation: SAL-XLIFF-CORE-HIERARCHY-UNIT-CHILDREN-001
+    immutable_affected_tests: PASS_117
+    affected_tool_tests: PASS_73
+    controller_event: FF6-EVENT-000037
+    controller_acceptance_commit: 6fca743ca55a8c221e63954b4c8a371b73e2246d
 ubl:
   status: WORK_IN_PROGRESS
   completed_steps: [UBL-01, UBL-02]
@@ -120,7 +128,8 @@ other_products:
   nrrd: {source_exists: true, certification: not_certified}
   safetensors: {source_exists: true, certification: not_certified}
 known_limits:
-  - Event 36 proves one repaired XLIFF candidate disposition, not XLF-04 completion.
+  - Event 37 proves one unit-cardinality obligation and disposition, not XLF-04 completion.
+  - The local artifact index is pre-existing invalid YAML; its updater failed before writing and no promotion depends on it.
   - Checkout identity is verified for the repaired proof closure, not every future generator.
   - Contracts and obligation compilation precede product deepening.
   - Existing install and oracle results are shallow or stale and non-promoting.

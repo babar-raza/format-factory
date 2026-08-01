@@ -1,0 +1,71 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "plan-control-handover-event-37",
+  "skill_id": "plan-control",
+  "mode": "live",
+  "timestamp": "2026-08-01T10:05:00Z",
+  "inputs": {
+    "task_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "operation": "project",
+    "target_paths": ["plans/codex/handover", "reports/skills-rff6/skill-transcripts/plan-control-handover-event-37.json"],
+    "coordination_identity": "agent-codex-20260801T090426-1a1231",
+    "coordination_scope": "The 18 current provider-neutral handover/validator paths plus tracked and local handover transcripts. Historical event directories, product code, source evidence, other agents' leases, and unrelated conflicts were preserved.",
+    "acceptance_evidence": "Native Event 37/controller commit 6fca743ca55a8c221e63954b4c8a371b73e2246d; semantic commit 1b758c2e05856552169de098d8719a82f425a1c2; handover validator PASS with eight semantic negative controls and 27 digest-bound manifest files.",
+    "source_checkpoint": "6fca743ca55a8c221e63954b4c8a371b73e2246d",
+    "execution_manifest": ".local/skills-first/manifests/sfx-09f12a2edcfb004d.json",
+    "authorization_id": "480bdc27febfd203"
+  },
+  "allowed_files": [
+    "plans/codex/handover/START-HERE.md", "plans/codex/handover/CLAUDE-START.md", "plans/codex/handover/CLEAN-REPLAY-REPAIR.md", "plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md", "plans/codex/handover/CURRENT-MACHINE-STATE.yaml", "plans/codex/handover/checkpoint.yaml", "plans/codex/handover/INFLIGHT-RECOVERY.yaml", "plans/codex/handover/CURRENT-SHIFT-HANDOVER.md", "plans/codex/handover/NEXT-MICROSTEP.yaml", "plans/codex/handover/validate_handover.py", "plans/codex/handover/PROVIDER-SHIFT-CONTRACT.md", "plans/codex/handover/SHIFT-AND-RESUME-PROTOCOL.md", "plans/codex/handover/EXECUTION-RUNBOOK.md", "plans/codex/handover/STATE-MACHINE-AND-TASKCARD-PROTOCOL.md", "plans/codex/handover/VALIDATION-AND-RELEASE.md", "plans/codex/handover/CURRENT-STATE-AND-ROOT-CAUSES.md", "plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml", "plans/codex/handover/manifest.yaml", "reports/skills-rff6/skill-transcripts/plan-control-handover-event-37.json", ".local/transcripts/plan-control-handover-event-37.json"
+  ],
+  "actual_files_changed": [
+    "plans/codex/handover/START-HERE.md", "plans/codex/handover/CLAUDE-START.md", "plans/codex/handover/CLEAN-REPLAY-REPAIR.md", "plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md", "plans/codex/handover/CURRENT-MACHINE-STATE.yaml", "plans/codex/handover/checkpoint.yaml", "plans/codex/handover/INFLIGHT-RECOVERY.yaml", "plans/codex/handover/CURRENT-SHIFT-HANDOVER.md", "plans/codex/handover/NEXT-MICROSTEP.yaml", "plans/codex/handover/validate_handover.py", "plans/codex/handover/PROVIDER-SHIFT-CONTRACT.md", "plans/codex/handover/SHIFT-AND-RESUME-PROTOCOL.md", "plans/codex/handover/EXECUTION-RUNBOOK.md", "plans/codex/handover/STATE-MACHINE-AND-TASKCARD-PROTOCOL.md", "plans/codex/handover/VALIDATION-AND-RELEASE.md", "plans/codex/handover/CURRENT-STATE-AND-ROOT-CAUSES.md", "plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml", "plans/codex/handover/manifest.yaml", "reports/skills-rff6/skill-transcripts/plan-control-handover-event-37.json", ".local/transcripts/plan-control-handover-event-37.json"
+  ],
+  "tests_run": [
+    "Provider-neutral handover validator: PASS for Event 37.",
+    "All 27 manifest entries match LF-canonical SHA-256 and byte counts.",
+    "Native journal hash chain through Event 37 and controller projection: PASS.",
+    "Eight built-in semantic tamper controls: PASS (all mutations rejected).",
+    "Internal structured parsing, link checks, GitLab ancestry, taskcard markers, accepted/materialized count agreement, and recovery invariants: PASS.",
+    "The exact continuation is XLF-04-BATCH-005-PARTIAL-002-F at candidate XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73.",
+    "Program truth remains 0/6 certified; XLF-04 and UBL-03 remain incomplete."
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "event_id": "FF6-EVENT-000037",
+    "event_hash": "09a3ae3d4521afc5c6c6c937d667c2246a8ad1fbae6ffb8af04a5b32e0e2b2b6",
+    "controller_commit": "6fca743ca55a8c221e63954b4c8a371b73e2246d",
+    "semantic_commit": "1b758c2e05856552169de098d8719a82f425a1c2",
+    "next_microstep": "XLF-04-BATCH-005-PARTIAL-002-F",
+    "next_candidate": "XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73",
+    "manifest_files": 27,
+    "semantic_negative_controls": 8,
+    "source_bound_obligations": 29,
+    "expected_obligations": 105,
+    "missing_obligations": 76,
+    "candidate_dispositions_verified": 6,
+    "candidate_dispositions_unverified": 1124,
+    "products_certified": 0
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for the bounded Event 37 provider-neutral projection",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for handover integrity, not product certification",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_checkpoint_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO; the invalid local artifact index and Pyright unavailability remain explicit",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES; native GitLab/evidence state wins",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

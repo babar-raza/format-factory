@@ -11,15 +11,15 @@ historical_projection: true
 
 # Provider-Neutral Shift and Resume Protocol
 
-> **Current authority overlay: Event 36.** Native head
-> `FF6-EVENT-000036`; current exact work is
-> `XLF-04-BATCH-005-PARTIAL-002-E`, derived from
+> **Current authority overlay: Event 37.** Native head
+> `FF6-EVENT-000037`; current exact work is
+> `XLF-04-BATCH-005-PARTIAL-002-F`, derived from
 > [START-HERE.md](START-HERE.md),
 > [CURRENT-MACHINE-STATE.yaml](CURRENT-MACHINE-STATE.yaml),
 > [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml), and the native FF6 journal.
-> The accepted XLIFF boundary is 28/105 obligations and 5/1,130 dispositions
-> after semantic commit `2dcb161e`, repair `809cc18c`, and controller
-> acceptance `41bfaef7`. UBL separately retains 6,001 local particle nodes.
+> The accepted XLIFF boundary is 29/105 obligations and 6/1,130 dispositions
+> after semantic commit `1b758c2e`, historical repair `809cc18c`, and controller
+> acceptance `6fca743c`. UBL separately retains 6,001 local particle nodes.
 > See [CLEAN-REPLAY-REPAIR.md](CLEAN-REPLAY-REPAIR.md). Event 30-35 material
 > below is preserved as recovery history and is non-operative.
 
@@ -354,10 +354,10 @@ A provider switch is safe only when:
 - known failures and limits remain visible;
 - promotion is no stronger than live proof.
 
-## Current authority overlay: Event 36
+## Current authority overlay: Event 37
 
-`FF6-EVENT-000036` is the current native head. The selected task remains
-XLIFF, with exact microstep `XLF-04-BATCH-005-PARTIAL-002-E`, 28/105 accepted
-obligations, and 5/1,130 verified dispositions. UBL retains 6,001 particle
+`FF6-EVENT-000037` is the current native head. The selected task remains
+XLIFF, with exact microstep `XLF-04-BATCH-005-PARTIAL-002-F`, 29/105 accepted
+obligations, and 6/1,130 verified dispositions. UBL retains 6,001 particle
 nodes, stable anonymous-type identities, and 1,178 derivation edges, but
 UBL-03 is incomplete. Certification remains 0/6.
