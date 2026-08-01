@@ -7,7 +7,7 @@ generated_by: codex
 generated_at: 2026-08-01
 ---
 
-# Outgoing shift: accepted Event 38 checkpoint
+# Outgoing shift: Event 38 handover hardening checkpoint
 
 ## Outcome
 
@@ -19,6 +19,11 @@ and its controller projection. The semantic commit is
 
 GitLab `origin/main` matched each commit after its push. GitHub and non-main
 branches were not used.
+
+This later handover-only shift revalidated the same accepted boundary from
+clean GitLab `main` at `62f23b30a13d56bc4e1e369390aaf611e75462b4`.
+It did not mutate XLIFF source, SAL stores, the obligation denominator,
+controller state, gate state, or promotion state.
 
 ## Semantic work completed
 
@@ -80,6 +85,14 @@ The immediate successor is `XLF-04-BATCH-005-PARTIAL-002-G`, candidate
 a genuine RED test and independently adjudicate target `xml:lang` versus root
 `trgLang`. Source-language symmetry is useful context but is not proof.
 
+Read-only inspection narrowed the first RED test without deciding it. The
+existing direct-owner hypothesis is `SAL-XLIFF-CORE-TARGET-LANGUAGE-001`.
+Pinned XLIFF 2.0 and 2.1 target prose require exact equality, but the XLIFF 2.1
+F4T Schematron note and its `lang($trgLang)` expression permit a more-specific
+target-language subcategory. Claude must encode equal, more-specific, and
+reverse-specific cases before changing the obligation or accepting the
+candidate. This contradiction is deliberately unresolved.
+
 Beyond that single candidate, 1,123 candidate dispositions and 75 expected
 Core obligation bindings remain open. XLIFF modules, model/API architecture,
 product implementation, security, interoperability, packaging, cross-platform
@@ -88,8 +101,9 @@ also remain uncertified; ORA product source is still absent.
 
 ## Coordination state at handover generation
 
-The outgoing identity is
-`agent-codex-20260801T103636-a27f97`. Its token and leases are not transferable.
+The handover-refresh identity is
+`agent-codex-20260801T122600-c2f6c7`. Its token, manifests, authorizations, and
+leases are not transferable.
 The coordination plane reported 17 pre-existing open conflicts, none on this
 handover packet or the accepted XLIFF semantic paths. They were preserved and
 not resolved, taken over, cleaned, or staged.

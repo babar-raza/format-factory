@@ -24,6 +24,7 @@ git rev-parse HEAD
 git rev-parse origin/main
 git merge-base --is-ancestor d1f8b3229bf3be32675e047b1469259ad7375500 origin/main
 git merge-base --is-ancestor 3fc939ad70ec6caac9e0699041076e02de00c5d2 origin/main
+git merge-base --is-ancestor 62f23b30a13d56bc4e1e369390aaf611e75462b4 origin/main
 .venv\Scripts\python.exe plans\codex\handover\validate_committed_checkpoint.py
 .venv\Scripts\python.exe plans\codex\handover\validate_handover.py --self-test
 ```
@@ -101,27 +102,34 @@ Pinned identity:
 Required sequence:
 
 1. Read the exact pinned report and relevant Core prose independently.
-2. Add a pre-change RED test for the semantic owner and proof binding.
-3. Treat every generated proposal as a hypothesis, never as authority.
-4. Decide whether target-language compatibility maps to one existing direct
+2. Reproduce the recorded authority contradiction: both stable-profile prose
+   rows require equality, but the XLIFF 2.1 F4T note and `lang()` report allow
+   an `xml:lang` subcategory of `trgLang`.
+3. Add a pre-change RED test that distinguishes exact equality, a more-specific
+   target language, and the invalid reverse relationship.
+4. Treat every generated proposal as a hypothesis, never as authority.
+5. Decide whether target-language compatibility maps to one existing direct
    obligation or requires a new exact denominator obligation.
-5. Account for every proposal and materially implicated obligation as accepted
+6. Account for every proposal and materially implicated obligation as accepted
    or rejected with evidence-bound reasoning.
-6. Add positive, negative, tamper, profile-boundary, selected-seed, and
+7. Add positive, negative, tamper, profile-boundary, selected-seed, and
    predecessor-preservation tests.
-7. Preserve semantic equality of all 30 accepted rows and identity of all
+8. Preserve semantic equality of all 30 accepted rows and identity of all
    1,130 candidates.
-8. Generate deterministic artifacts three times and compare canonical bytes.
-9. Run focused, SAL, authority, format-contract, production-program, Ruff,
+9. Generate deterministic artifacts three times and compare canonical bytes.
+10. Run focused, SAL, authority, format-contract, production-program, Ruff,
    Mypy, Pyright, py_compile, transcript, and immutable-checkout verification.
-10. Commit the bounded semantic slice to GitLab `main`.
-11. Only after immutable replay passes, append the next hash-chained event and
+11. Commit the bounded semantic slice to GitLab `main`.
+12. Only after immutable replay passes, append the next hash-chained event and
     project controller/taskcard state through `plan-control`.
-12. Refresh this packet and complete the shift only after GitLab remote proof.
+13. Refresh this packet and complete the shift only after GitLab remote proof.
 
 ## 5. Forbidden shortcuts
 
 - Do not infer target compatibility from source-language symmetry alone.
+- Do not silently normalize the prose/Schematron contradiction into one rule;
+  record profile-specific semantics or a named contradiction outcome backed by
+  the discriminating test.
 - Do not accept `AGENT-VALIDATOR`, segment, or ignorable context as direct
   obligations without primary authority.
 - Do not weaken exact source/digest validation or selected-candidate seeding.

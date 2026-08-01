@@ -48,6 +48,26 @@ Adjudicate `XLF-CAND-CORE-SCHEMATRON-5D563A565DC6DCFE` at XLIFF 2.1
 only if primary authority proves a distinct obligation. Preserve all 30 rows
 and all 1,130 candidate identities.
 
+## Read-only pre-RED findings transferred to the successor
+
+The next provider does not need to rediscover the initial candidate landscape:
+
+- `SAL-XLIFF-CORE-TARGET-LANGUAGE-001` is the direct-owner hypothesis for
+  explicit or inherited target-language compatibility.
+- `SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001` owns root `trgLang` presence;
+  it does not own value compatibility.
+- `SAL-XLIFF-CORE-LANGUAGE-TARGET-001` owns omitted-value inheritance; it does
+  not independently prove the explicit-value comparison.
+- both pinned 2.0 and 2.1 target prose rows have normalized-text SHA-256
+  `e7dd434305b7315fd7eecf2acbc066e0f7a149d0a4fe9bb704d1ace3bd5be29e`
+  and state exact equality;
+- the pinned 2.1 F4T Schematron explicitly allows a more-specific language
+  subcategory and implements `not(lang($trgLang))`.
+
+This is an open authority-semantics contradiction, not accepted evidence. The
+next checkpoint state remains `READY_FOR_RED`; the first test must distinguish
+equal, more-specific, and reverse-specific language relationships by profile.
+
 ## Transfer status
 
 The tracked semantic and control state is reconstructible from GitLab. No

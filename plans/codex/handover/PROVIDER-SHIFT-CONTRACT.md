@@ -459,3 +459,11 @@ obligations, and 7/1,130 verified dispositions. UBL retains 6,001 particle
 nodes, stable anonymous-type identities, and 1,178 derivation edges, but
 UBL-03 is incomplete. Every product remains `UNASSESSED`; certification is
 0/6.
+
+The incoming provider must also reproduce the machine-readable pre-RED
+investigation in `NEXT-MICROSTEP.yaml`: XLIFF 2.0/2.1 prose requires exact
+target-language equality, while the official 2.1 F4T Schematron permits a
+more-specific subcategory. This contradiction is an input to the next RED
+test, not accepted evidence. A provider shift may transfer this observation
+and its digests, but may not transfer an unexecuted adjudication or silently
+choose an authority precedence policy.

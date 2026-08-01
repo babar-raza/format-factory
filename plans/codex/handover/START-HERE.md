@@ -22,6 +22,11 @@ handover source checkpoint is
 `origin/main` at packet generation. Never use GitHub, create a branch, inherit
 another provider's identity or leases, or rely on ignored local state.
 
+This packet refresh was reconstructed from clean GitLab `main` at
+`62f23b30a13d56bc4e1e369390aaf611e75462b4`. That is a packet-parent identity,
+not a new semantic checkpoint or controller event; the final packet commit
+cannot safely self-reference its own hash.
+
 ## Mission and honest state
 
 Build six independently publishable, production-grade Python libraries for
@@ -81,6 +86,16 @@ denominator row. Explicitly reject validator behavior and XPath trigger context
 that are not the direct semantic obligation. Never choose a mapping to increase
 coverage.
 
+The outgoing shift completed a read-only, non-promoting authority inspection:
+both 2.0 and 2.1 Core prose say the explicit or inherited target language must
+equal `trgLang`, while the 2.1 F4T Schematron note and `lang($trgLang)` test
+allow an `xml:lang` subcategory such as `en-IE` under `trgLang="en"`. The
+existing direct-owner hypothesis is
+`SAL-XLIFF-CORE-TARGET-LANGUAGE-001`; the root-presence and omitted-value
+obligations are semantically separate. This is not an adjudication. The next
+provider must first add a profile-aware RED test that distinguishes exact
+equality from the executable subcategory allowance.
+
 ## Mandatory resume sequence
 
 1. Read [AGENTS.md](../../../AGENTS.md) and [Claude start](CLAUDE-START.md).
@@ -93,8 +108,8 @@ coverage.
    leases, manifests, or authorizations recorded in this packet.
 6. Claim exact files and run the repository mutation guard with the registered
    skills.
-7. Execute only [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml), beginning with a
-   genuine pre-change RED test.
+7. Execute only [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml), beginning with the
+   specified equality-versus-subcategory RED test.
 8. Commit explicit reviewed files to GitLab `main`, replay from the immutable
    commit, append the next native event only after proof passes, refresh this
    packet, and release only the new shift's leases.

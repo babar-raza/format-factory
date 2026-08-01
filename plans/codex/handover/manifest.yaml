@@ -1,4 +1,4 @@
-schema: ff6/provider-neutral-handover-manifest@17
+schema: ff6/provider-neutral-handover-manifest@18
 artifact_id: FF6-HANDOVER-MANIFEST-EVENT-38
 visibility: internal
 publish_allowed: false
@@ -17,25 +17,26 @@ source_checkpoint:
   remote: origin
   branch: main
   checkpoint_commit: d1f8b3229bf3be32675e047b1469259ad7375500
+  handover_refresh_base_commit: 62f23b30a13d56bc4e1e369390aaf611e75462b4
   semantic_commit: 3fc939ad70ec6caac9e0699041076e02de00c5d2
   verified_checkout_identity_repair: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
   controller_acceptance_commit: d1f8b3229bf3be32675e047b1469259ad7375500
 files:
 - path: plans/codex/handover/START-HERE.md
-  sha256: 9c2416f6a21136d11f51437dc76b0c665346a4e812ca74fa06d6b33fa652627a
-  canonical_bytes: 5938
+  sha256: c7f91204e164faa99309ae7ad4ff8b0f51b5e5d2b9071e6837ff43a770256db2
+  canonical_bytes: 6844
 - path: plans/codex/handover/CLAUDE-START.md
-  sha256: a51ed6030e68820b5c33a4eaf4128ce20ba107d2bd34ef59a079646468c44dd8
-  canonical_bytes: 5970
+  sha256: b9e7f4b6d41bd0a3e9696bd134f050746dde6af98cef6e7ef8f27d25474248b1
+  canonical_bytes: 6503
 - path: plans/codex/handover/CLEAN-REPLAY-REPAIR.md
   sha256: d3fe70a1dc93509667b682930b14ee13579acd609a66fd28f46cfdf4b09e652e
   canonical_bytes: 3471
 - path: plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md
-  sha256: 2ae2cddb7d001e0f5e47727aafb5407f78cb9c6ff316737c2d295c6b94e64c7d
-  canonical_bytes: 2566
+  sha256: 8b6252d072ae5f399e5b223f57190e06013f249a0849d3659676c7793364923a
+  canonical_bytes: 3622
 - path: plans/codex/handover/CURRENT-MACHINE-STATE.yaml
-  sha256: 58be6766380ca4dfe1b8cd61c86e759a65ae6fab8d6c4acb154a6fb77f57bce7
-  canonical_bytes: 6140
+  sha256: 30a00327189cd58dd7789420cec94a725d39e912333a21eec0e770b41d63ed33
+  canonical_bytes: 6932
 - path: plans/codex/handover/checkpoint.yaml
   sha256: 246473208215e740d1c73000d7ac225ac4ebc65ce5f020fecb1fb75ca04e7681
   canonical_bytes: 2894
@@ -43,14 +44,14 @@ files:
   sha256: 33c0af14b4dcabbfe0b79321f751dba0dc0cf8335e7a2391f0ede4e0700a47cf
   canonical_bytes: 3943
 - path: plans/codex/handover/CURRENT-SHIFT-HANDOVER.md
-  sha256: 6f6b13aa0e066b2faeb8167235fcc1dae2d2a78091a85bacc51039bb7020b1d1
-  canonical_bytes: 4904
+  sha256: 569afc6f45c63b5d0ca6813b3c58867796cc69a55cbad13d09a918ee922a49d7
+  canonical_bytes: 5726
 - path: plans/codex/handover/NEXT-MICROSTEP.yaml
-  sha256: d4bd560e518c336028b4f68ee3f2b9bff175574f2494f04fc31177c9b11f2697
-  canonical_bytes: 5415
+  sha256: 5c77b0a33f3aa840664411054155977388db0a493029914d598c5ec9b34fbd50
+  canonical_bytes: 8299
 - path: plans/codex/handover/validate_handover.py
-  sha256: d465e6650f24aa2feabe2c6fa510cde1c0935922885f19558d8d3cbec1424d68
-  canonical_bytes: 35688
+  sha256: 38b21f9ebe6545b491891ca272be55d09725ec6af91bb2bac704a23ee9d4f66a
+  canonical_bytes: 39051
 - path: plans/codex/handover/validate_committed_checkpoint.py
   sha256: 09506ce6fdd1ae276e62a7dba52d67f40e5c5ba35327feba5bc31eec6db60f61
   canonical_bytes: 4227
@@ -82,11 +83,11 @@ files:
   sha256: 929409ba25edeb84369b8ba7f3a6684a49265bb80e2f9921b01c2d3a42d0752f
   canonical_bytes: 4780
 - path: plans/codex/handover/PROVIDER-SHIFT-CONTRACT.md
-  sha256: ce46303e5f89cdf8f1320889234a0284c4a966e362bce03c5d2b94d086997b42
-  canonical_bytes: 19817
+  sha256: 806da0821f9f532a4d700ae2913907fb1d29a89ae37aa66c8e19ad7502da4dbb
+  canonical_bytes: 20304
 - path: plans/codex/handover/SHIFT-AND-RESUME-PROTOCOL.md
-  sha256: 68c8b6a520ef0a85407b7e912971494aba0189b978421c27e8a7f091ea755b3d
-  canonical_bytes: 17143
+  sha256: c01494ca3be0ae9dd2e451eaf8c5013764e406282dbd0f4521046b564ffde8b1
+  canonical_bytes: 17595
 - path: plans/codex/handover/EXECUTION-RUNBOOK.md
   sha256: 99d5ed4d0b343081ac3bdfcea18f948bf66960b342115df5a21bfec220e358d7
   canonical_bytes: 14476
@@ -97,8 +98,8 @@ files:
   sha256: e9a7d892898bae4064b5dfaf68fc4cf8cbe113c10e3b45413cb59d1093433a40
   canonical_bytes: 17409
 - path: plans/codex/handover/CURRENT-STATE-AND-ROOT-CAUSES.md
-  sha256: 799da457c7a3aa94c1700288d40c1c3012e2c9e3544f4dc368e2b095882f2118
-  canonical_bytes: 29895
+  sha256: 0691bfcac1bc4f211cdaa12df2119a6ab7746a5273334de42bcb6885d994827b
+  canonical_bytes: 31551
 - path: plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml
   sha256: a0292af5b584809a50d849d8e8a04f7ab079271cbe76e6cce89d59f808ed7601
   canonical_bytes: 6932
@@ -117,6 +118,7 @@ validation:
   structured_parse_required: true
   native_event_chain_required: true
   semantic_negative_controls_required: true
+  semantic_negative_control_count: 11
   gitlab_ancestry_required: true
   clean_worktree_required_for_transfer: true
 truth_boundary:

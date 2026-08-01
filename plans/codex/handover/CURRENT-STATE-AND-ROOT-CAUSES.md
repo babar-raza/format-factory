@@ -544,3 +544,30 @@ XLIFF, with exact microstep `XLF-04-BATCH-005-PARTIAL-002-G`, 30/105 accepted
 obligations, and 7/1,130 verified dispositions. UBL retains 6,001 particle
 nodes, stable anonymous-type identities, and 1,178 derivation edges, but
 UBL-03 is incomplete. Certification remains 0/6.
+
+### Event 38 pre-RED contradiction found during handover replay
+
+The next target-language candidate exposes a deeper production risk than a
+missing mapping. The pinned 2.0 and 2.1 Core prose use identical normative text
+requiring the explicit or inherited target language to equal `trgLang`.
+XLIFF 2.1's F4T Schematron, however, documents and implements a one-way
+subcategory allowance through XPath `lang()`. A library that collapses those
+authorities into a single unqualified boolean rule will be deterministic but
+may be consistently wrong for one profile or one validation mode.
+
+The visible symptom would be rerun-stable disagreement between prose-derived
+tests, Schematron differential tests, and user expectations. The root cause is
+that the current obligation model has no explicit field separating normative
+semantic intent from the effective behavior of an official executable
+artifact. The structural weakness is not fixed by choosing one authority ad
+hoc. The durable resolution is a profile-aware decision that records both
+authority roles, adds discriminating equal/subcategory/reverse-subcategory
+tests, and either defines separate strict-prose and official-Schematron
+validation modes or records a justified precedence rule. Until then, the
+candidate remains unadjudicated and cannot increase coverage.
+
+Tradeoff: exposing two validation modes is more honest and interoperable but
+expands API and regression surface; choosing normative prose alone is simpler
+but will diverge from the official 2.1 Schematron. Evidence is currently
+sufficient to prove the contradiction, not to claim which public API policy
+production users will prefer.

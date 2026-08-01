@@ -1,4 +1,4 @@
-schema: ff6/next-microstep@11
+schema: ff6/next-microstep@12
 artifact_id: FF6-XLIFF-XLF04-BATCH005-PARTIAL002-G
 visibility: internal
 publish_allowed: false
@@ -10,6 +10,7 @@ source_checkpoint:
   remote: origin
   branch: main
   packet_base_commit: d1f8b3229bf3be32675e047b1469259ad7375500
+  handover_refresh_base_commit: 62f23b30a13d56bc4e1e369390aaf611e75462b4
   event_id: FF6-EVENT-000038
   event_hash: 13db4cceafcefb86d9c964d7c3e20e7d63092977faf50002ef0c88ea4f6b5603
   semantic_commit: 3fc939ad70ec6caac9e0699041076e02de00c5d2
@@ -52,6 +53,56 @@ generated_proposals_only:
   - SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001
   - SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001
   - SAL-XLIFF-CORE-SOURCE-TARGET-OPTIONAL-001
+pre_red_investigation:
+  status: READ_ONLY_REPRODUCED_UNADJUDICATED
+  evidence_effect: none
+  product_or_controller_effect: none
+  investigation_base_commit: 62f23b30a13d56bc4e1e369390aaf611e75462b4
+  direct_owner_hypothesis: SAL-XLIFF-CORE-TARGET-LANGUAGE-001
+  direct_owner_status: HYPOTHESIS_REQUIRING_RED_AND_INDEPENDENT_ADJUDICATION
+  existing_obligation_distinctions:
+    SAL-XLIFF-CORE-TARGET-LANGUAGE-001: explicit_or_inherited_target_language_compatibility
+    SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001: root_trgLang_presence_when_target_children_exist
+    SAL-XLIFF-CORE-LANGUAGE-TARGET-001: omitted_target_xml_lang_inherits_root_trgLang
+  primary_authority_observations:
+    xliff_2_0_prose:
+      source_id: SRC-XLF-001
+      source_sha256: aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055
+      member: xliff-core-v2.0-os.xml
+      member_sha256: 07059d426de1e839540e5e84e0e061c4a6d5ef1a1b7e71ddf75bf5bd11518b73
+      section_id: target
+      paragraph_index: 4
+      normalized_text_sha256: e7dd434305b7315fd7eecf2acbc066e0f7a149d0a4fe9bb704d1ace3bd5be29e
+      observed_semantics: explicit_or_inherited_target_xml_lang_must_equal_trgLang
+    xliff_2_1_prose:
+      source_id: SRC-XLF-002
+      source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+      member: xliff-core-v2.1-os.xml
+      member_sha256: e8c72ec2314e1025f25886cd0ea2b6c10aa2405bd292026383afca2207c44e5b
+      section_id: target
+      paragraph_index: 4
+      normalized_text_sha256: e7dd434305b7315fd7eecf2acbc066e0f7a149d0a4fe9bb704d1ace3bd5be29e
+      observed_semantics: explicit_or_inherited_target_xml_lang_must_equal_trgLang
+    xliff_2_1_schematron:
+      source_id: SRC-XLF-002
+      member: schemas/xliff_core_2.1.sch
+      member_sha256: d4275f2d2574f892624bcd8f83bcc3001c75d623e4eb36896d15d147f16ed7a2
+      pattern_id: F4T
+      rule_context: xlf:target[@xml:lang][parent::xlf:segment | parent::xlf:ignorable]
+      report_test: not(lang($trgLang))
+      pattern_note: permits_xml_lang_to_be_a_more_specific_subcategory_of_trgLang_but_not_the_reverse
+  authority_contradiction:
+    classification: NORMATIVE_PROSE_VS_EXECUTABLE_SCHEMATRON_SEMANTICS
+    prose_claim: exact_equality_for_2_0_and_2_1
+    schematron_effect: 2_1_accepts_equal_or_more_specific_target_language
+    status: OPEN_REQUIRES_DISCRIMINATING_PROFILE_TEST
+    forbidden_resolution: do_not_choose_the_interpretation_that_merely_increases_coverage
+  decision_lock:
+    adjudicated: false
+    accepted_obligation: null
+    new_sal_fact: null
+    obligation_delta: null
+    next_required_state: RED_OBSERVED
 required_skills:
   - test-driven-development
   - ingest-spec-sal
@@ -60,6 +111,7 @@ required_skills:
 required_execution:
   - Validate Event 38, packet-base commit d1f8b322, semantic commit 3fc939ad, candidate identity, accepted counts, and current artifact digests before mutation.
   - Read the exact pinned XLIFF 2.1 Schematron occurrence and relevant Core prose independently; generated mappings are proposals, never conclusions.
+  - Reproduce the pre-RED investigation above and add a discriminating test for exact equality versus the XLIFF 2.1 subcategory allowance before selecting an owner or changing any profile semantics.
   - Add a genuine pre-change RED test for the direct semantic owner and exact proof binding.
   - Determine whether target-language compatibility is owned by an existing denominator obligation, requires a new exact obligation, or cannot yet be mapped. Do not infer the result only from the preceding source-language rule.
   - Account for every generated proposal and materially implicated obligation with evidence-bound acceptance or rejection reasoning.

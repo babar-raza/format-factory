@@ -361,3 +361,10 @@ XLIFF, with exact microstep `XLF-04-BATCH-005-PARTIAL-002-G`, 30/105 accepted
 obligations, and 7/1,130 verified dispositions. UBL retains 6,001 particle
 nodes, stable anonymous-type identities, and 1,178 derivation edges, but
 UBL-03 is incomplete. Certification remains 0/6.
+
+The handover refresh at packet-parent `62f23b30` adds one non-promoting
+read-only observation: identical 2.0/2.1 target prose says equality, while the
+2.1 F4T Schematron note and `lang()` test allow a more-specific target
+language. The receiving executor must reproduce the hashes and begin with a
+three-case profile-aware RED test. It must not treat this observation as
+`RED_OBSERVED`, `GREEN_VERIFIED`, an obligation binding, or a controller event.

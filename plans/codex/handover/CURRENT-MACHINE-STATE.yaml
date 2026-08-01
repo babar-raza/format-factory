@@ -1,4 +1,4 @@
-schema: ff6/provider-neutral-machine-state@16
+schema: ff6/provider-neutral-machine-state@17
 artifact_id: FF6-CURRENT-MACHINE-STATE-EVENT-38
 visibility: internal
 publish_allowed: false
@@ -9,6 +9,7 @@ repository:
   remote: origin
   branch: main
   checkpoint_commit: d1f8b3229bf3be32675e047b1469259ad7375500
+  handover_refresh_base_commit: 62f23b30a13d56bc4e1e369390aaf611e75462b4
   semantic_commit: 3fc939ad70ec6caac9e0699041076e02de00c5d2
   verified_checkout_identity_repair: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
   controller_acceptance_commit: d1f8b3229bf3be32675e047b1469259ad7375500
@@ -83,6 +84,17 @@ xliff:
     profile: xliff_2.1
     location: schematron/rule[14]/report[1]
     generated_proposals_are_authority: false
+  pre_red_investigation:
+    status: READ_ONLY_REPRODUCED_UNADJUDICATED
+    direct_owner_hypothesis: SAL-XLIFF-CORE-TARGET-LANGUAGE-001
+    adjudicated: false
+    source_or_store_mutation: false
+    authority_contradiction: NORMATIVE_PROSE_VS_EXECUTABLE_SCHEMATRON_SEMANTICS
+    prose_profiles: [xliff_2.0, xliff_2.1]
+    prose_rule: exact_equality
+    schematron_profile: xliff_2.1
+    schematron_effect: equal_or_more_specific_target_language
+    next_required_state: RED_OBSERVED
   current_semantic_checkpoint:
     commit: 3fc939ad70ec6caac9e0699041076e02de00c5d2
     decision_id: XLF-ADJ-CORE-SCHEMATRON-0007
@@ -139,3 +151,4 @@ known_limits:
   - Existing package-install and oracle evidence is shallow, stale, or incomplete and is non-promoting.
   - Gate 10 and publication authority remain external even after technical certification.
   - The next target-language compatibility owner has not been adjudicated and must not be inferred from source-language symmetry.
+  - XLIFF 2.0/2.1 prose requires equality, while the 2.1 F4T Schematron note and lang() test allow a more-specific target language; promotion is blocked until a discriminating profile-aware test and decision resolve that contradiction.

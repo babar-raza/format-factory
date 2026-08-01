@@ -66,6 +66,7 @@ EXPECTED_EVENT_HASH = (
 )
 EXPECTED_SEQUENCE = 38
 EXPECTED_CONTROL = "d1f8b3229bf3be32675e047b1469259ad7375500"
+EXPECTED_HANDOVER_REFRESH_BASE = "62f23b30a13d56bc4e1e369390aaf611e75462b4"
 EXPECTED_IMPLEMENTATION = "3fc939ad70ec6caac9e0699041076e02de00c5d2"
 EXPECTED_XLIFF_IMPLEMENTATION = "3fc939ad70ec6caac9e0699041076e02de00c5d2"
 EXPECTED_PREVIOUS_NON_PROMOTING_ATTEMPT = (
@@ -92,6 +93,16 @@ EXPECTED_ADJUDICATION_SHA256 = (
 )
 EXPECTED_INVENTORY_SHA256 = (
     "483767b208b75b880804288a6f56ed3758b05d46d4ef872bc0bcb6e4d083e1ba"
+)
+EXPECTED_TARGET_OWNER_HYPOTHESIS = "SAL-XLIFF-CORE-TARGET-LANGUAGE-001"
+EXPECTED_TARGET_PROSE_SHA256 = (
+    "e7dd434305b7315fd7eecf2acbc066e0f7a149d0a4fe9bb704d1ace3bd5be29e"
+)
+EXPECTED_TARGET_SCHEMATRON_SHA256 = (
+    "d4275f2d2574f892624bcd8f83bcc3001c75d623e4eb36896d15d147f16ed7a2"
+)
+EXPECTED_AUTHORITY_CONTRADICTION = (
+    "NORMATIVE_PROSE_VS_EXECUTABLE_SCHEMATRON_SEMANTICS"
 )
 STALE_OPERATIONAL_TOKENS = (
     "FF6-EVENT-000033",
@@ -260,6 +271,19 @@ def _semantic_errors(
     for label, value in repository_views:
         _expect(errors, f"{label} repository checkpoint", value, EXPECTED_CONTROL)
 
+    _expect(
+        errors,
+        "machine handover refresh base",
+        machine.get("repository", {}).get("handover_refresh_base_commit"),
+        EXPECTED_HANDOVER_REFRESH_BASE,
+    )
+    _expect(
+        errors,
+        "next handover refresh base",
+        next_step.get("source_checkpoint", {}).get("handover_refresh_base_commit"),
+        EXPECTED_HANDOVER_REFRESH_BASE,
+    )
+
     _expect(errors, "latest event id", latest.get("event_id"), EXPECTED_EVENT_ID)
     _expect(errors, "latest event hash", latest.get("event_hash"), EXPECTED_EVENT_HASH)
     _expect(errors, "latest state", latest.get("state_after"), "CONTRACT")
@@ -380,6 +404,65 @@ def _semantic_errors(
         "machine candidate occurrence digest",
         machine_candidate.get("occurrence_sha256"),
         EXPECTED_OCCURRENCE_SHA256,
+    )
+
+    investigation = next_step.get("pre_red_investigation", {})
+    _expect(
+        errors,
+        "pre-RED investigation status",
+        investigation.get("status"),
+        "READ_ONLY_REPRODUCED_UNADJUDICATED",
+    )
+    _expect(
+        errors,
+        "pre-RED direct owner hypothesis",
+        investigation.get("direct_owner_hypothesis"),
+        EXPECTED_TARGET_OWNER_HYPOTHESIS,
+    )
+    _expect(
+        errors,
+        "pre-RED decision remains open",
+        investigation.get("decision_lock", {}).get("adjudicated"),
+        False,
+    )
+    observations = investigation.get("primary_authority_observations", {})
+    for profile in ("xliff_2_0_prose", "xliff_2_1_prose"):
+        _expect(
+            errors,
+            f"{profile} normalized text digest",
+            observations.get(profile, {}).get("normalized_text_sha256"),
+            EXPECTED_TARGET_PROSE_SHA256,
+        )
+    _expect(
+        errors,
+        "2.1 F4T member digest",
+        observations.get("xliff_2_1_schematron", {}).get("member_sha256"),
+        EXPECTED_TARGET_SCHEMATRON_SHA256,
+    )
+    _expect(
+        errors,
+        "authority contradiction class",
+        investigation.get("authority_contradiction", {}).get("classification"),
+        EXPECTED_AUTHORITY_CONTRADICTION,
+    )
+    machine_investigation = machine.get("xliff", {}).get("pre_red_investigation", {})
+    _expect(
+        errors,
+        "machine pre-RED owner hypothesis",
+        machine_investigation.get("direct_owner_hypothesis"),
+        EXPECTED_TARGET_OWNER_HYPOTHESIS,
+    )
+    _expect(
+        errors,
+        "machine pre-RED remains unadjudicated",
+        machine_investigation.get("adjudicated"),
+        False,
+    )
+    _expect(
+        errors,
+        "machine authority contradiction",
+        machine_investigation.get("authority_contradiction"),
+        EXPECTED_AUTHORITY_CONTRADICTION,
     )
 
     candidates = [
@@ -865,6 +948,26 @@ def _negative_control_errors(base: dict[str, Any]) -> list[str]:
             105,
         ),
         ("local-only dependency", ("recovery", "captured_workspace", "local_only_required_for_resume"), True),
+        (
+            "false pre-RED adjudication",
+            ("next", "pre_red_investigation", "decision_lock", "adjudicated"),
+            True,
+        ),
+        (
+            "wrong target owner hypothesis",
+            ("next", "pre_red_investigation", "direct_owner_hypothesis"),
+            "SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001",
+        ),
+        (
+            "hidden authority contradiction",
+            (
+                "next",
+                "pre_red_investigation",
+                "authority_contradiction",
+                "classification",
+            ),
+            "NO_CONTRADICTION",
+        ),
     ]
     for label, path, value in cases:
         mutated = copy.deepcopy(base)
@@ -973,7 +1076,7 @@ def validate(*, require_clean: bool = False) -> dict[str, Any]:
         "next_microstep": EXPECTED_RESUME_MICROSTEP,
         "next_candidate": EXPECTED_CANDIDATE,
         "manifest_files": len(manifest.get("files", [])),
-        "semantic_negative_controls": 8,
+        "semantic_negative_controls": 11,
         "errors": errors,
     }
 
