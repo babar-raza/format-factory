@@ -1,5 +1,5 @@
-schema: ff6/provider-neutral-machine-state@17
-artifact_id: FF6-CURRENT-MACHINE-STATE-EVENT-38
+schema: ff6/provider-neutral-machine-state@18
+artifact_id: FF6-CURRENT-MACHINE-STATE-EVENT-39
 visibility: internal
 publish_allowed: false
 generated_by: codex
@@ -8,11 +8,10 @@ repository:
   forge: GitLab
   remote: origin
   branch: main
-  checkpoint_commit: d1f8b3229bf3be32675e047b1469259ad7375500
-  handover_refresh_base_commit: 62f23b30a13d56bc4e1e369390aaf611e75462b4
-  semantic_commit: 3fc939ad70ec6caac9e0699041076e02de00c5d2
+  checkpoint_commit: c421940ae70a3dc949318eee00cbfc5e3cf8b9a3
+  semantic_commit: 39b2e89fde0f7dd5e1acebc424f4d700dfe74765
   verified_checkout_identity_repair: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
-  controller_acceptance_commit: d1f8b3229bf3be32675e047b1469259ad7375500
+  controller_acceptance_commit: c421940ae70a3dc949318eee00cbfc5e3cf8b9a3
   head_must_equal_origin_main_at_transfer: true
   github_authorized: false
   other_branches_authorized: false
@@ -23,14 +22,14 @@ goal:
   terminal_condition_met: false
 controller:
   state: CONTRACT
-  transition_sequence: 38
-  event_id: FF6-EVENT-000038
-  event_hash: 13db4cceafcefb86d9c964d7c3e20e7d63092977faf50002ef0c88ea4f6b5603
+  transition_sequence: 39
+  event_id: FF6-EVENT-000039
+  event_hash: 5f76c75ca4f7bc0845b22dccd38a195e962fb49b5f4161651737ab23d560cd36
   task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
   task_state: WORK_IN_PROGRESS
   first_unmet_step: XLF-04
-  completed_microstep: XLF-04-BATCH-005-PARTIAL-002-F
-  exact_microstep: XLF-04-BATCH-005-PARTIAL-002-G
+  completed_microstep: XLF-04-BATCH-005-PARTIAL-002-G
+  exact_microstep: XLF-04-BATCH-005-PARTIAL-002-H
   exact_microstep_state: READY_FOR_RED
 program_truth:
   capabilities: 110
@@ -39,14 +38,13 @@ program_truth:
   production_certifications: 0
   promotion: {program: UNASSESSED, ipynb: UNASSESSED, ora: UNASSESSED, nrrd: UNASSESSED, xliff: UNASSESSED, safetensors: UNASSESSED, ubl: UNASSESSED}
 workspace_transfer:
-  status: CLEAN_REMOTE_RECONSTRUCTIBLE_VERIFIED_CHECKPOINT
+  status: CLEAN_REMOTE_RECONSTRUCTIBLE_CHECKPOINT_PENDING_PACKET_COMMIT
   local_only_required_for_resume: false
   uncommitted_product_overlay: false
   provider_identity_transferable: false
   leases_transferable: false
   execution_manifests_transferable: false
   mutation_authorizations_transferable: false
-  outgoing_handover_overlay_present_until_packet_commit: true
 xliff:
   status: WORK_IN_PROGRESS
   completed_steps: [XLF-01, XLF-02, XLF-03]
@@ -55,64 +53,67 @@ xliff:
     count: 1130
     sha256: 9f10464e14c55a36ee1e54a5d12d04e8e23f19d2cb94d7c0c732cb40861db4b7
   accepted_controller_projection:
-    event_id: FF6-EVENT-000038
-    verified_dispositions: 7
-    open_dispositions: 1123
+    event_id: FF6-EVENT-000039
+    verified_dispositions: 8
+    open_dispositions: 1122
   materialized_verified_projection:
-    commit: 3fc939ad70ec6caac9e0699041076e02de00c5d2
-    verified_dispositions: 7
-    open_dispositions: 1123
+    commit: 39b2e89fde0f7dd5e1acebc424f4d700dfe74765
+    verified_dispositions: 8
+    open_dispositions: 1122
     controller_acceptance_pending: false
   adjudication:
     path: reports/sal-verification/xliff-core-candidate-adjudications.yaml
-    sha256: 61f17b6449ae1ea6b5a95c892afc075b48aa7b9a100be2d6e8168b8794baeb32
-    production_accepted_dispositions: 7
-    production_open_dispositions: 1123
+    sha256: d63a31f936262c9952a0f50afd076b8547bc5c26cbdfd5adf04464b5f2c3dcc2
+    production_accepted_dispositions: 8
+    production_open_dispositions: 1122
     complete: false
   obligation_inventory:
     path: reports/ff6/xliff-core-obligation-inventory.yaml
-    sha256: 483767b208b75b880804288a6f56ed3758b05d46d4ef872bc0bcb6e4d083e1ba
+    sha256: ea376cbaad5e8559b6789844be2bef06478e5b8ee69f7a3c557cfbc5bd474370
     expected: 105
     production_accepted_source_bound: 30
     production_accepted_missing: 75
     complete: false
+  product_contract:
+    path: shared/format-contracts/xliff.yaml
+    sha256: 7ef89b038b8b74b59ede6123a7a2ec57fea4730f84fbff3eaf21a43d02a9a2ad
+    lifecycle: DRAFT
+    capabilities: 15
+    fresh: true
   pending_candidate:
-    candidate_id: XLF-CAND-CORE-SCHEMATRON-5D563A565DC6DCFE
-    candidate_content_sha256: 2f48f02786ace40f8e45306a2622fb031a0650a1004e6d4b316f3dd5ec44ee4d
-    requirement_sha256: 85279eddf8546a96b332e7a7b5388cb4639d886f2a6a0f7168048ec3e7e483ec
-    occurrence_sha256: 639468d347a85cb3843f43bba0d0bdc9065beda22aee96021cb10f37374137fe
+    candidate_id: XLF-CAND-CORE-SCHEMATRON-E891C4DEC555F165
+    candidate_content_sha256: 04aeb46e7eeaa854cf9554005a11476334fa8f41f6db9a45ca2f0e38b8d6d0e6
+    requirement_sha256: d7daf659d3b7ad1388c42203d845b452afe12e8e05134d35d36a26cb9cc5e60c
+    occurrence_sha256: cb57d9e386c6274b0aa0aedca3e2b4bab1dbaafb41ff2e66a884681485d6c84f
     profile: xliff_2.1
-    location: schematron/rule[14]/report[1]
+    location: schematron/rule[15]/report[1]
     generated_proposals_are_authority: false
-  pre_red_investigation:
-    status: READ_ONLY_REPRODUCED_UNADJUDICATED
-    direct_owner_hypothesis: SAL-XLIFF-CORE-TARGET-LANGUAGE-001
-    adjudicated: false
-    source_or_store_mutation: false
-    authority_contradiction: NORMATIVE_PROSE_VS_EXECUTABLE_SCHEMATRON_SEMANTICS
-    prose_profiles: [xliff_2.0, xliff_2.1]
-    prose_rule: exact_equality
-    schematron_profile: xliff_2.1
-    schematron_effect: equal_or_more_specific_target_language
-    next_required_state: RED_OBSERVED
   current_semantic_checkpoint:
-    commit: 3fc939ad70ec6caac9e0699041076e02de00c5d2
-    decision_id: XLF-ADJ-CORE-SCHEMATRON-0007
-    sal_fact_id: SAL-XLIFF-39A807E74F92A266
-    direct_obligation: SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001
-    authority_profiles: [xliff_2.1]
-    immutable_affected_tests: PASS_90
-    affected_tool_tests: PASS_90
-    controller_event: FF6-EVENT-000038
-    controller_acceptance_commit: d1f8b3229bf3be32675e047b1469259ad7375500
-  selected_seed_repair:
-    exact_candidate_id: true
-    missing_and_duplicate_rejection: true
-    unrelated_invalid_row_isolation: true
-    qname_collision_protection: true
-    merge_scope: xliff
-    transactional_restore: true
-    selected_rerun_byte_idempotent: true
+    commit: 39b2e89fde0f7dd5e1acebc424f4d700dfe74765
+    decision_id: XLF-ADJ-CORE-SCHEMATRON-0008
+    sal_fact_id: SAL-XLIFF-6F42212680161FF2
+    legacy_fact_id: FACT-XLIFF-33
+    direct_obligation: SAL-XLIFF-CORE-TARGET-LANGUAGE-001
+    selected_candidate_profiles: [xliff_2.1]
+    authority_profiles: [xliff_2.0, xliff_2.1]
+    immutable_affected_tests: PASS_77
+    affected_tool_tests: PASS_77
+    controller_event: FF6-EVENT-000039
+    controller_acceptance_commit: c421940ae70a3dc949318eee00cbfc5e3cf8b9a3
+  authority_precedence:
+    xliff_2_0: exact_language_tag_equality
+    xliff_2_1: exact_or_more_specific_target_language_tag
+    conflict: display_prose_conflicts_with_normative_f4t_schematron
+    resolution: normative_machine_readable_rule_controls
+  immutable_replay:
+    ignored_external_authority_files:
+      - src-xlf-001.bin
+      - src-xlf-002.bin
+      - src-xliff-001.bin
+      - src-xliff-003.bin
+    tracked_authority_files: 1
+    required_matches: 5
+    two_package_replay_sufficient: false
 ubl:
   status: WORK_IN_PROGRESS
   completed_steps: [UBL-01, UBL-02]
@@ -143,12 +144,11 @@ other_products:
   nrrd: {source_exists: true, certification: not_certified}
   safetensors: {source_exists: true, certification: not_certified}
 known_limits:
-  - Event 38 proves one source-language compatibility obligation and disposition, not XLF-04 completion.
-  - The accepted compatibility constraint is XLIFF 2.1 only; XLIFF 2.0 is excluded by current pinned authority.
+  - Event 39 proves one profile-specific target-language correction and disposition, not XLF-04 completion.
+  - The XLIFF ProductContract is freshly compiled but remains DRAFT and non-promoting.
   - The local artifact index is pre-existing invalid YAML; no promotion relies on it.
   - Checkout identity is verified for the accepted proof closure, not every future generator.
+  - Full immutable contract replay needs four ignored external authority files plus one tracked authority.
   - Contracts and obligation compilation precede product deepening.
   - Existing package-install and oracle evidence is shallow, stale, or incomplete and is non-promoting.
   - Gate 10 and publication authority remain external even after technical certification.
-  - The next target-language compatibility owner has not been adjudicated and must not be inferred from source-language symmetry.
-  - XLIFF 2.0/2.1 prose requires equality, while the 2.1 F4T Schematron note and lang() test allow a more-specific target language; promotion is blocked until a discriminating profile-aware test and decision resolve that contradiction.

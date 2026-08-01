@@ -1,121 +1,163 @@
 ---
-artifact_id: FF6-CURRENT-SHIFT-HANDOVER-EVENT-38
-artifact_type: provider_shift_record
+artifact_id: FF6-CURRENT-SHIFT-HANDOVER-EVENT-39
+artifact_type: provider_shift_handover
 visibility: internal
 publish_allowed: false
 generated_by: codex
 generated_at: 2026-08-01
 ---
 
-# Outgoing shift: Event 38 handover hardening checkpoint
+# Outgoing shift: Event 39 production checkpoint
 
-## Outcome
+## Goal that remains active
 
-The outgoing Codex shift completed and pushed one bounded XLIFF contract slice
-and its controller projection. The semantic commit is
-`3fc939ad70ec6caac9e0699041076e02de00c5d2`; the controller checkpoint is
-`d1f8b3229bf3be32675e047b1469259ad7375500`; native authority is
-`FF6-EVENT-000038` / `13db4cceafcefb86d9c964d7c3e20e7d63092977faf50002ef0c88ea4f6b5603`.
+Deliver six independently publishable production-grade Python libraries for
+IPYNB, OpenRaster, NRRD, XLIFF, SafeTensors, and OASIS UBL, together with
+content-addressed proof machinery, independent repository extraction, complete
+verification, and release-ready artifacts. The mission is not complete until
+all six are technically certified. Current certification is `0/6`.
 
-GitLab `origin/main` matched each commit after its push. GitHub and non-main
-branches were not used.
+## Where this shift started
 
-This later handover-only shift revalidated the same accepted boundary from
-clean GitLab `main` at `62f23b30a13d56bc4e1e369390aaf611e75462b4`.
-It did not mutate XLIFF source, SAL stores, the obligation denominator,
-controller state, gate state, or promotion state.
+The accepted controller head was Event 38 at semantic commit `3fc939ad`.
+XLIFF had 30/105 source-bound Core obligations and 7/1,130 independently
+verified candidate dispositions. The selected work was target `xml:lang`
+versus root `trgLang` semantics. A read-only investigation had exposed a
+conflict between display prose and executable XLIFF 2.1 Schematron but had not
+adjudicated it.
 
-## Semantic work completed
+## What was implemented
 
-The shift independently adjudicated
-`XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73`, the XLIFF 2.1 source-language
-compatibility report. It:
+The shift completed one bounded contract microstep,
+`XLF-04-BATCH-005-PARTIAL-002-G`, at semantic commit
+`39b2e89fde0f7dd5e1acebc424f4d700dfe74765`.
 
-- added exact candidate-ID selection to the SAL seeder;
-- failed closed on missing and duplicate IDs;
-- isolated unrelated invalid queue rows from selected mode;
-- prevented QName collision when canonical fact IDs are hashed;
-- scoped the merge subprocess to XLIFF;
-- restored store, aliases, and cache on merge failure;
-- preserved existing store bytes and proved selected-rerun idempotency;
-- seeded `SAL-XLIFF-39A807E74F92A266` with exact authority evidence;
-- accepted only `SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001`;
-- rejected generic validator behavior, segment and ignorable trigger context,
-  source cardinality, and omitted-value inheritance overclaims;
-- narrowed the obligation to XLIFF 2.1 because the pinned 2.0 authority lacks
-  the compatibility constraint;
-- preserved all 29 predecessor obligation rows and all 1,130 candidate IDs.
+Implemented evidence and machinery:
 
-The accepted projection is 7/1,130 candidate dispositions and 30/105
-source-bound obligations. XLF-04 remains incomplete.
+- profile-aware target-language semantics for XLIFF 2.0 and 2.1;
+- exact XLIFF 2.0 equality versus XLIFF 2.1 exact-or-more-specific behavior;
+- explicit normative machine-readable precedence over conflicting 2.1 display
+  prose;
+- canonical fact `SAL-XLIFF-6F42212680161FF2` / `FACT-XLIFF-33` with ten
+  executed assertions and proof SHA-256
+  `d34684502ae62f211ca59fba60d947421fac3aa7bf436ae55efd3f209862fe14`;
+- decision `XLF-ADJ-CORE-SCHEMATRON-0008`, SHA-256
+  `93dd097010ceb3f5c0699336a1089ad7b1013293e524aede4040a3de48e1356e`;
+- acceptance of the existing direct owner
+  `SAL-XLIFF-CORE-TARGET-LANGUAGE-001`;
+- explicit rejection of generic validator, hierarchy, segment, optional-target,
+  root-presence, and omitted-inheritance overclaims;
+- profile correction of the existing obligation without denominator expansion;
+- missing authority source registration `SRC-XLF-001` repaired in the XLIFF
+  research contract;
+- fresh ProductContract compilation at SHA-256
+  `7ef89b038b8b74b59ede6123a7a2ec57fea4730f84fbff3eaf21a43d02a9a2ad`.
 
-## Proof executed
+The control projection was then sealed as `FF6-EVENT-000039`, event hash
+`5f76c75ca4f7bc0845b22dccd38a195e962fb49b5f4161651737ab23d560cd36`,
+and pushed at control commit
+`c421940ae70a3dc949318eee00cbfc5e3cf8b9a3`.
 
-- Seeder tests: 15 passed.
-- Adjudicator tests: 23 passed.
-- Extractor tests: 52 passed.
-- Affected shared-worktree total: 90 passed.
-- Affected immutable-detached-checkout replay: 90 passed.
-- Production-program regression: 69 passed.
-- Format-contract regression: 94 passed with only
-  `tests/format_contract/test_consumption_chain.py::test_full_slice_second_run_is_idempotent`
-  deliberately deselected as the exact baseline-known stateful test.
-- Denominator, census, adjudication, and inventory check modes reproduced
-  exact expected digests.
-- All 32 XLIFF SAL facts passed; five of five authority locks matched.
-- Selected seeding preserved store, aliases, and cache bytes on rerun.
-- Ruff, strict Mypy with established import flags, Pyright 1.1.411 with zero
-  diagnostics, py_compile, three semantic transcripts, and the 40-test native
-  plan-control suite passed.
-- The full 38-event native hash chain and controller/taskcard projection passed.
+## Exact verified boundary
 
-## Evidence identities
+- Expected XLIFF Core obligations: 105.
+- Source-bound obligations: 30.
+- Missing obligations: 75.
+- Candidate census: 1,130.
+- Independently verified dispositions: 8.
+- Unverified dispositions: 1,122.
+- XLIFF ProductContract: `DRAFT`, 15 capabilities.
+- XLF-04: incomplete.
+- UBL-03: incomplete.
+- Product source effect: none.
+- Gate/promotion/release effect: none.
+- All six promotions: `UNASSESSED`.
+- Technical certifications: `0/6`.
 
-- denominator: `86a4f2cdc6e4a341eba2a3cbb6fcc8119883d1cda64d056198c7c34b7fa880b7`
-- candidate census: `9f10464e14c55a36ee1e54a5d12d04e8e23f19d2cb94d7c0c732cb40861db4b7`
-- adjudication: `61f17b6449ae1ea6b5a95c892afc075b48aa7b9a100be2d6e8168b8794baeb32`
-- obligation inventory: `483767b208b75b880804288a6f56ed3758b05d46d4ef872bc0bcb6e4d083e1ba`
-- new fact proof: `2db27ac01f5b31faf2041066663ef76826582c0963b29c8388f86a164ecd0d46`
-- decision: `636d2524c6b9d7ccd5b71a248924d1a4be2778c4e7cd321ad81caa00f4ee13d0`
+Twenty-eight unaffected predecessor rows remained semantically exact. One
+existing target-language row changed profile semantics. It would be false to
+claim that all 30 rows were byte- or semantically unchanged.
+
+## Verification performed
+
+- 77 affected adjudicator/extractor tests passed.
+- 191 tests passed across selected seeding, SAL verification, contract, and
+  production-program tiers; the exact known stateful CSV test was deselected.
+- After contract refresh, 163 contract/production tests passed with the same
+  exact deselection.
+- All 33 XLIFF SAL facts passed.
+- XLIFF authority audit passed 5/5 with zero missing, mismatched, undeclared, or
+  legal-blocked records.
+- Three exact same-input runs reproduced:
+  - denominator
+    `86a4f2cdc6e4a341eba2a3cbb6fcc8119883d1cda64d056198c7c34b7fa880b7`;
+  - census
+    `9f10464e14c55a36ee1e54a5d12d04e8e23f19d2cb94d7c0c732cb40861db4b7`;
+  - adjudication
+    `d63a31f936262c9952a0f50afd076b8547bc5c26cbdfd5adf04464b5f2c3dcc2`;
+  - obligation inventory
+    `ea376cbaad5e8559b6789844be2bef06478e5b8ee69f7a3c557cfbc5bd474370`;
+  - compiled contract
+    `7ef89b038b8b74b59ede6123a7a2ec57fea4730f84fbff3eaf21a43d02a9a2ad`.
+- Ruff, strict Mypy with explicit package bases, Pyright 1.1.411, and
+  py_compile passed.
+- Four semantic skill transcripts and the Event 39 plan-control transcript
+  validated with zero warnings.
+- Immutable detached replay from `39b2e89f` passed the 77-test slice, SAL,
+  contract check, and 5/5 authority closure.
+
+## Critical replay lesson
+
+A detached replay with only the two XLIFF packages is incomplete. It can pass
+focused tests and SAL verification while the ProductContract check differs.
+The full replay requires:
+
+1. ignored `src-xlf-001.bin`;
+2. ignored `src-xlf-002.bin`;
+3. ignored `src-xliff-001.bin`;
+4. ignored `src-xliff-003.bin`; and
+5. the tracked product-requirement authority.
+
+This is an input-closure requirement, not optional setup. A future controller
+should materialize these content-addressed inputs automatically rather than
+relying on a provider to remember them.
 
 ## What remains
 
-The immediate successor is `XLF-04-BATCH-005-PARTIAL-002-G`, candidate
-`XLF-CAND-CORE-SCHEMATRON-5D563A565DC6DCFE`. The next provider must begin with
-a genuine RED test and independently adjudicate target `xml:lang` versus root
-`trgLang`. Source-language symmetry is useful context but is not proof.
+The immediate remaining XLIFF work is candidate
+`XLF-CAND-CORE-SCHEMATRON-E891C4DEC555F165` in
+`XLF-04-BATCH-005-PARTIAL-002-H`. Beyond that bounded candidate, 1,122
+candidate dispositions, 75 expected Core obligations, every module inventory,
+profile compilation, product architecture, production source, installed-wheel
+proof, cross-platform matrices, interoperability, fuzzing, mutation testing,
+packaging, repository extraction, and release evidence remain open.
 
-Read-only inspection narrowed the first RED test without deciding it. The
-existing direct-owner hypothesis is `SAL-XLIFF-CORE-TARGET-LANGUAGE-001`.
-Pinned XLIFF 2.0 and 2.1 target prose require exact equality, but the XLIFF 2.1
-F4T Schematron note and its `lang($trgLang)` expression permit a more-specific
-target-language subcategory. Claude must encode equal, more-specific, and
-reverse-specific cases before changing the obligation or accepting the
-candidate. This contradiction is deliberately unresolved.
+Portfolio truth remains:
 
-Beyond that single candidate, 1,123 candidate dispositions and 75 expected
-Core obligation bindings remain open. XLIFF modules, model/API architecture,
-product implementation, security, interoperability, packaging, cross-platform
-installed-wheel proof, and release evidence all remain. The other five formats
-also remain uncertified; ORA product source is still absent.
+- IPYNB: partial source and tests; not production-certified.
+- OpenRaster: product source absent.
+- NRRD: partial source and tests; not production-certified.
+- XLIFF: contract repair in progress; product source not authorized by this
+  checkpoint.
+- SafeTensors: partial source and tests; not production-certified.
+- UBL: contract/schema graph work in progress; 91 roots are counted but the
+  complete type graph and product implementation are unfinished.
 
-## Coordination state at handover generation
+These statements are boundaries, not estimates of percentage completion.
 
-The handover-refresh identity is
-`agent-codex-20260801T122600-c2f6c7`. Its token, manifests, authorizations, and
-leases are not transferable.
-The coordination plane reported 17 pre-existing open conflicts, none on this
-handover packet or the accepted XLIFF semantic paths. They were preserved and
-not resolved, taken over, cleaned, or staged.
+## Exact next action
 
-The incoming provider must requery current coordination state because this
-snapshot becomes stale immediately. It registers a new identity, acquires new
-leases, and creates new manifests and mutation authorizations. The outgoing
-identity is released only after the final handover commit is verified on
-GitLab.
+Resume from Event 39 and GitLab semantic commit `39b2e89f`. Execute
+`XLF-04-BATCH-005-PARTIAL-002-H` exactly as specified in
+[NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml). Begin with an independently
+constructed failing test. Treat all eight mappings as proposals, preserve all
+accepted rows and candidate identities, and append Event 40 only after a
+committed immutable replay succeeds.
 
-## Truth boundary
+## Shift-transfer rules
 
-Nothing in this shift certifies a product. All six products remain
-`UNASSESSED`; technical certification is `0/6`; no gate, promotion, release, or
-publication state changed.
+The next provider must create a fresh coordination identity, leases, execution
+manifest, and mutation authorization. Nothing provider-local transfers. If
+required paths are live-owned, do read-only work or a deterministic disjoint
+task; never seize a live lease. Commit explicit file lists to GitLab `main`
+only. A clean shift ends with remote validation and owned lease release.

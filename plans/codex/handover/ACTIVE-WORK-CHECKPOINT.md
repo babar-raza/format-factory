@@ -1,5 +1,5 @@
 ---
-artifact_id: FF6-ACTIVE-WORK-CHECKPOINT-EVENT-38
+artifact_id: FF6-ACTIVE-WORK-CHECKPOINT-EVENT-39
 artifact_type: active_work_checkpoint
 visibility: internal
 publish_allowed: false
@@ -7,73 +7,82 @@ generated_by: codex
 generated_at: 2026-08-01
 ---
 
-# Active work checkpoint: Event 38
+# Active work checkpoint: Event 39
 
 ## Immutable accepted boundary
 
-- GitLab control checkpoint: `d1f8b3229bf3be32675e047b1469259ad7375500`
-- XLIFF semantic commit: `3fc939ad70ec6caac9e0699041076e02de00c5d2`
-- Native event: `FF6-EVENT-000038`
-- Event hash: `13db4cceafcefb86d9c964d7c3e20e7d63092977faf50002ef0c88ea4f6b5603`
+- GitLab control checkpoint: `c421940ae70a3dc949318eee00cbfc5e3cf8b9a3`
+- XLIFF semantic commit: `39b2e89fde0f7dd5e1acebc424f4d700dfe74765`
+- Native event: `FF6-EVENT-000039`
+- Event hash:
+  `5f76c75ca4f7bc0845b22dccd38a195e962fb49b5f4161651737ab23d560cd36`
 - Controller state: `CONTRACT`
 - Active task: `TC-FF6-XLIFF-PROFILE-SURFACE-001`
 - Task state: `WORK_IN_PROGRESS`
 - First unmet task step: `XLF-04`
-- Completed microstep: `XLF-04-BATCH-005-PARTIAL-002-F`
-- Exact next microstep: `XLF-04-BATCH-005-PARTIAL-002-G`
+- Completed microstep: `XLF-04-BATCH-005-PARTIAL-002-G`
+- Exact next microstep: `XLF-04-BATCH-005-PARTIAL-002-H`
 
 ## What the outgoing shift achieved
 
-The accepted slice independently bound the XLIFF 2.1 source `xml:lang` versus
-root `srcLang` compatibility report and corroborating prose. It accepted only
-`SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001`, rejected downstream and
-incidental mappings, rejected a cardinality overclaim, rejected omitted-value
-inheritance as a separate unproved behavior, and explicitly excluded XLIFF 2.0.
+The accepted slice independently resolved the profile-specific target-language
+compatibility contradiction.
 
-It also repaired selected SAL seeding with exact-ID fail-closed selection,
-transactional restore, scoped merge, QName collision protection, and
-byte-idempotency. The repair and semantic slice passed 90 affected tests in the
-shared worktree and immutable detached checkout, 69 production-program tests,
-94 format-contract tests with one named baseline deselection, all 32 XLIFF SAL
-facts, five authority locks, and static checks including Pyright.
+- XLIFF 2.0 requires exact target/root language-tag equality.
+- XLIFF 2.1 normative F4T Schematron permits equality or a more-specific target
+  tag and rejects the reverse relation.
+- The normative machine-readable 2.1 rule controls over conflicting display
+  prose; the conflict is recorded, not hidden.
+- Decision `XLF-ADJ-CORE-SCHEMATRON-0008` accepts the existing direct owner
+  `SAL-XLIFF-CORE-TARGET-LANGUAGE-001`.
+- All generated validator, hierarchy, cardinality, and optional-target overmaps
+  are rejected.
+- Omitted-value inheritance is rejected for this candidate as a separate rule
+  not established by an explicit-value report.
+- Canonical fact `SAL-XLIFF-6F42212680161FF2` binds ten exact assertions.
+- No denominator row was added: 28 unaffected predecessor rows are exact and
+  one existing target-language row was profile-corrected.
+- The XLIFF ProductContract was freshly rebuilt and remains `DRAFT` with 15
+  capabilities.
 
-Accepted counts are 7/1,130 dispositions and 30/105 source-bound obligations.
-This is partial contract evidence only.
+Accepted counts are `8/1,130` dispositions and `30/105` source-bound
+obligations. This is partial contract evidence only.
+
+## Verification achieved
+
+- 77 affected adjudicator/extractor tests passed.
+- 191 tests passed across seeding, SAL, format-contract, and production-program
+  tiers with one exact named baseline deselection.
+- 163 post-contract-refresh regression tests passed with the same deselection.
+- All 33 XLIFF SAL facts and all five authority records passed.
+- Three runs reproduced denominator, census, adjudication, inventory, and
+  ProductContract digests.
+- Ruff, strict Mypy, Pyright 1.1.411, py_compile, and four semantic transcripts
+  passed.
+- Immutable replay from semantic commit `39b2e89f` passed 77 tests, SAL,
+  contract checks, and 5/5 authority closure.
+
+The immutable replay requires all four ignored external authority files
+(`src-xlf-001.bin`, `src-xlf-002.bin`, `src-xliff-001.bin`,
+`src-xliff-003.bin`) plus the tracked product-requirement authority. A
+two-package reconstruction is not a full contract replay.
 
 ## Exact successor
 
-Adjudicate `XLF-CAND-CORE-SCHEMATRON-5D563A565DC6DCFE` at XLIFF 2.1
-`schematron/rule[14]/report[1]`, which compares target `xml:lang` with root
-`trgLang`. Determine the direct compatibility owner or expand the denominator
-only if primary authority proves a distinct obligation. Preserve all 30 rows
-and all 1,130 candidate identities.
+Adjudicate `XLF-CAND-CORE-SCHEMATRON-E891C4DEC555F165` at XLIFF 2.1
+`schematron/rule[15]/report[1]`. It reports a source `sc` marked
+`isolated='yes'` when a referencing `ec` exists within the same unit.
 
-## Read-only pre-RED findings transferred to the successor
-
-The next provider does not need to rediscover the initial candidate landscape:
-
-- `SAL-XLIFF-CORE-TARGET-LANGUAGE-001` is the direct-owner hypothesis for
-  explicit or inherited target-language compatibility.
-- `SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001` owns root `trgLang` presence;
-  it does not own value compatibility.
-- `SAL-XLIFF-CORE-LANGUAGE-TARGET-001` owns omitted-value inheritance; it does
-  not independently prove the explicit-value comparison.
-- both pinned 2.0 and 2.1 target prose rows have normalized-text SHA-256
-  `e7dd434305b7315fd7eecf2acbc066e0f7a149d0a4fe9bb704d1ace3bd5be29e`
-  and state exact equality;
-- the pinned 2.1 F4T Schematron explicitly allows a more-specific language
-  subcategory and implements `not(lang($trgLang))`.
-
-This is an open authority-semantics contradiction, not accepted evidence. The
-next checkpoint state remains `READY_FOR_RED`; the first test must distinguish
-equal, more-specific, and reverse-specific language relationships by profile.
+All eight generated mappings remain unverified proposals. Determine the direct
+semantic owner from exact authority, expanding the denominator only if a
+distinct normative obligation is proven. Preserve all 30 rows and all 1,130
+candidate identities.
 
 ## Transfer status
 
-The tracked semantic and control state is reconstructible from GitLab. No
-uncommitted product overlay is part of this handover. Provider identities,
-tokens, leases, execution manifests, and mutation authorizations do not
-transfer. The outgoing identity remains live only while the handover packet is
-being sealed and must be released after remote verification.
+The semantic and control state is reconstructible from GitLab. No uncommitted
+product overlay belongs to this handover. Provider identities, tokens, leases,
+execution manifests, mutation authorizations, and ignored local files do not
+transfer. The next provider creates fresh state after validating this packet.
 
 All six products remain `UNASSESSED`; certification remains `0/6`.

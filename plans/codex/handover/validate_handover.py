@@ -60,50 +60,40 @@ REFERENCE_DOC_PATHS = (
 )
 PARALLEL_UBL_PATH = "plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml"
 
-EXPECTED_EVENT_ID = "FF6-EVENT-000038"
+EXPECTED_EVENT_ID = "FF6-EVENT-000039"
 EXPECTED_EVENT_HASH = (
-    "13db4cceafcefb86d9c964d7c3e20e7d63092977faf50002ef0c88ea4f6b5603"
+    "5f76c75ca4f7bc0845b22dccd38a195e962fb49b5f4161651737ab23d560cd36"
 )
-EXPECTED_SEQUENCE = 38
-EXPECTED_CONTROL = "d1f8b3229bf3be32675e047b1469259ad7375500"
-EXPECTED_HANDOVER_REFRESH_BASE = "62f23b30a13d56bc4e1e369390aaf611e75462b4"
-EXPECTED_IMPLEMENTATION = "3fc939ad70ec6caac9e0699041076e02de00c5d2"
-EXPECTED_XLIFF_IMPLEMENTATION = "3fc939ad70ec6caac9e0699041076e02de00c5d2"
+EXPECTED_SEQUENCE = 39
+EXPECTED_CONTROL = "c421940ae70a3dc949318eee00cbfc5e3cf8b9a3"
+EXPECTED_IMPLEMENTATION = "39b2e89fde0f7dd5e1acebc424f4d700dfe74765"
+EXPECTED_XLIFF_IMPLEMENTATION = "39b2e89fde0f7dd5e1acebc424f4d700dfe74765"
 EXPECTED_PREVIOUS_NON_PROMOTING_ATTEMPT = (
     "2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17"
 )
 EXPECTED_REPAIR_COMMIT = "809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956"
 EXPECTED_EVENT_TASK = "TC-FF6-XLIFF-PROFILE-SURFACE-001"
 EXPECTED_TASK = "TC-FF6-XLIFF-PROFILE-SURFACE-001"
-EXPECTED_XLIFF_EVENT_ID = "FF6-EVENT-000038"
-EXPECTED_MICROSTEP = "XLF-04-BATCH-005-PARTIAL-002-G"
-EXPECTED_RESUME_MICROSTEP = "XLF-04-BATCH-005-PARTIAL-002-G"
-EXPECTED_CANDIDATE = "XLF-CAND-CORE-SCHEMATRON-5D563A565DC6DCFE"
+EXPECTED_XLIFF_EVENT_ID = "FF6-EVENT-000039"
+EXPECTED_MICROSTEP = "XLF-04-BATCH-005-PARTIAL-002-H"
+EXPECTED_RESUME_MICROSTEP = "XLF-04-BATCH-005-PARTIAL-002-H"
+EXPECTED_CANDIDATE = "XLF-CAND-CORE-SCHEMATRON-E891C4DEC555F165"
 EXPECTED_CANDIDATE_CONTENT_SHA256 = (
-    "2f48f02786ace40f8e45306a2622fb031a0650a1004e6d4b316f3dd5ec44ee4d"
+    "04aeb46e7eeaa854cf9554005a11476334fa8f41f6db9a45ca2f0e38b8d6d0e6"
 )
 EXPECTED_REQUIREMENT_SHA256 = (
-    "85279eddf8546a96b332e7a7b5388cb4639d886f2a6a0f7168048ec3e7e483ec"
+    "d7daf659d3b7ad1388c42203d845b452afe12e8e05134d35d36a26cb9cc5e60c"
 )
 EXPECTED_OCCURRENCE_SHA256 = (
-    "639468d347a85cb3843f43bba0d0bdc9065beda22aee96021cb10f37374137fe"
+    "cb57d9e386c6274b0aa0aedca3e2b4bab1dbaafb41ff2e66a884681485d6c84f"
 )
 EXPECTED_ADJUDICATION_SHA256 = (
-    "61f17b6449ae1ea6b5a95c892afc075b48aa7b9a100be2d6e8168b8794baeb32"
+    "d63a31f936262c9952a0f50afd076b8547bc5c26cbdfd5adf04464b5f2c3dcc2"
 )
 EXPECTED_INVENTORY_SHA256 = (
-    "483767b208b75b880804288a6f56ed3758b05d46d4ef872bc0bcb6e4d083e1ba"
+    "ea376cbaad5e8559b6789844be2bef06478e5b8ee69f7a3c557cfbc5bd474370"
 )
-EXPECTED_TARGET_OWNER_HYPOTHESIS = "SAL-XLIFF-CORE-TARGET-LANGUAGE-001"
-EXPECTED_TARGET_PROSE_SHA256 = (
-    "e7dd434305b7315fd7eecf2acbc066e0f7a149d0a4fe9bb704d1ace3bd5be29e"
-)
-EXPECTED_TARGET_SCHEMATRON_SHA256 = (
-    "d4275f2d2574f892624bcd8f83bcc3001c75d623e4eb36896d15d147f16ed7a2"
-)
-EXPECTED_AUTHORITY_CONTRADICTION = (
-    "NORMATIVE_PROSE_VS_EXECUTABLE_SCHEMATRON_SEMANTICS"
-)
+EXPECTED_GENERATED_PROPOSAL_COUNT = 8
 STALE_OPERATIONAL_TOKENS = (
     "FF6-EVENT-000033",
     "FF6-EVENT-000029",
@@ -120,6 +110,7 @@ ALLOWED_DIRTY_PREFIXES = (
     "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-event-35",
     "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-replay-repair-001",
     "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-event-38",
+    "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-event-39",
     "reports/skills-rff6/skill-transcripts/plan-control-handover-event-36",
 )
 ALLOWED_DIRTY_EXACT = {
@@ -271,19 +262,6 @@ def _semantic_errors(
     for label, value in repository_views:
         _expect(errors, f"{label} repository checkpoint", value, EXPECTED_CONTROL)
 
-    _expect(
-        errors,
-        "machine handover refresh base",
-        machine.get("repository", {}).get("handover_refresh_base_commit"),
-        EXPECTED_HANDOVER_REFRESH_BASE,
-    )
-    _expect(
-        errors,
-        "next handover refresh base",
-        next_step.get("source_checkpoint", {}).get("handover_refresh_base_commit"),
-        EXPECTED_HANDOVER_REFRESH_BASE,
-    )
-
     _expect(errors, "latest event id", latest.get("event_id"), EXPECTED_EVENT_ID)
     _expect(errors, "latest event hash", latest.get("event_hash"), EXPECTED_EVENT_HASH)
     _expect(errors, "latest state", latest.get("state_after"), "CONTRACT")
@@ -335,10 +313,10 @@ def _semantic_errors(
     _expect(
         errors,
         "recovery non-promoting attempt",
-        recovery.get("captured_workspace", {})
-        .get("reciprocal_semantics", {})
+        recovery.get("accepted_history", {})
+        .get("source_language_semantics", {})
         .get("commit"),
-        EXPECTED_PREVIOUS_NON_PROMOTING_ATTEMPT,
+        "3fc939ad70ec6caac9e0699041076e02de00c5d2",
     )
     _expect(
         errors,
@@ -357,7 +335,7 @@ def _semantic_errors(
     _expect(
         errors,
         "recovery repair commit",
-        recovery.get("captured_workspace", {})
+        recovery.get("accepted_history", {})
         .get("checkout_identity_repair", {})
         .get("commit"),
         EXPECTED_REPAIR_COMMIT,
@@ -406,63 +384,24 @@ def _semantic_errors(
         EXPECTED_OCCURRENCE_SHA256,
     )
 
-    investigation = next_step.get("pre_red_investigation", {})
+    decision_lock = next_step.get("decision_lock", {})
     _expect(
         errors,
-        "pre-RED investigation status",
-        investigation.get("status"),
-        "READ_ONLY_REPRODUCED_UNADJUDICATED",
-    )
-    _expect(
-        errors,
-        "pre-RED direct owner hypothesis",
-        investigation.get("direct_owner_hypothesis"),
-        EXPECTED_TARGET_OWNER_HYPOTHESIS,
-    )
-    _expect(
-        errors,
-        "pre-RED decision remains open",
-        investigation.get("decision_lock", {}).get("adjudicated"),
-        False,
-    )
-    observations = investigation.get("primary_authority_observations", {})
-    for profile in ("xliff_2_0_prose", "xliff_2_1_prose"):
-        _expect(
-            errors,
-            f"{profile} normalized text digest",
-            observations.get(profile, {}).get("normalized_text_sha256"),
-            EXPECTED_TARGET_PROSE_SHA256,
-        )
-    _expect(
-        errors,
-        "2.1 F4T member digest",
-        observations.get("xliff_2_1_schematron", {}).get("member_sha256"),
-        EXPECTED_TARGET_SCHEMATRON_SHA256,
-    )
-    _expect(
-        errors,
-        "authority contradiction class",
-        investigation.get("authority_contradiction", {}).get("classification"),
-        EXPECTED_AUTHORITY_CONTRADICTION,
-    )
-    machine_investigation = machine.get("xliff", {}).get("pre_red_investigation", {})
-    _expect(
-        errors,
-        "machine pre-RED owner hypothesis",
-        machine_investigation.get("direct_owner_hypothesis"),
-        EXPECTED_TARGET_OWNER_HYPOTHESIS,
-    )
-    _expect(
-        errors,
-        "machine pre-RED remains unadjudicated",
-        machine_investigation.get("adjudicated"),
+        "next candidate remains unadjudicated",
+        decision_lock.get("adjudicated"),
         False,
     )
     _expect(
         errors,
-        "machine authority contradiction",
-        machine_investigation.get("authority_contradiction"),
-        EXPECTED_AUTHORITY_CONTRADICTION,
+        "next candidate has no preselected owner",
+        decision_lock.get("accepted_obligation"),
+        None,
+    )
+    _expect(
+        errors,
+        "generated proposal count",
+        len(next_step.get("generated_proposals_only", [])),
+        EXPECTED_GENERATED_PROPOSAL_COUNT,
     )
 
     candidates = [
@@ -502,21 +441,21 @@ def _semantic_errors(
         errors,
         "machine accepted dispositions",
         xliff.get("adjudication", {}).get("production_accepted_dispositions"),
-        7,
+        8,
     )
     _expect(
         errors,
         "machine open dispositions",
         xliff.get("adjudication", {}).get("production_open_dispositions"),
-        1123,
+        1122,
     )
-    _expect(errors, "plan verified dispositions", baseline.get("dispositions_verified"), 7)
-    _expect(errors, "plan open dispositions", baseline.get("dispositions_unverified"), 1123)
+    _expect(errors, "plan verified dispositions", baseline.get("dispositions_verified"), 8)
+    _expect(errors, "plan open dispositions", baseline.get("dispositions_unverified"), 1122)
     _expect(
         errors,
         "event accepted dispositions",
         event_evidence.get("candidate_dispositions_verified"),
-        7,
+        8,
     )
 
     inventory_view = xliff.get("obligation_inventory", {})
@@ -544,12 +483,12 @@ def _semantic_errors(
     )
     _expect(errors, "inventory complete", inventory.get("complete"), False)
     _expect(errors, "adjudication candidate count", adjudication.get("candidate_count"), 1130)
-    _expect(errors, "adjudication verified", adjudication.get("verified_disposition_count"), 7)
-    _expect(errors, "adjudication unverified", adjudication.get("unverified_disposition_count"), 1123)
+    _expect(errors, "adjudication verified", adjudication.get("verified_disposition_count"), 8)
+    _expect(errors, "adjudication unverified", adjudication.get("unverified_disposition_count"), 1122)
     _expect(errors, "adjudication complete", adjudication.get("disposition_verification_complete"), False)
     materialized = next_step.get("accepted_baseline", {})
-    _expect(errors, "accepted verified", materialized.get("dispositions_verified"), 7)
-    _expect(errors, "accepted open", materialized.get("dispositions_unverified"), 1123)
+    _expect(errors, "accepted verified", materialized.get("dispositions_verified"), 8)
+    _expect(errors, "accepted open", materialized.get("dispositions_unverified"), 1122)
     _expect(
         errors,
         "accepted adjudication digest",
@@ -836,14 +775,14 @@ def _operational_doc_errors(documents: Mapping[str, str]) -> list[str]:
     for relative in REFERENCE_DOC_PATHS:
         text = documents.get(relative, "")
         for marker in (
-            "Current authority overlay: Event 38",
+            "Current authority overlay: Event 39",
             EXPECTED_EVENT_ID,
             "30/105",
-            "7/1,130",
+            "8/1,130",
             "6,001",
         ):
             if marker not in text:
-                errors.append(f"Event 38 overlay marker missing from {relative}: {marker}")
+                errors.append(f"Event 39 overlay marker missing from {relative}: {marker}")
     return errors
 
 
@@ -950,23 +889,18 @@ def _negative_control_errors(base: dict[str, Any]) -> list[str]:
         ("local-only dependency", ("recovery", "captured_workspace", "local_only_required_for_resume"), True),
         (
             "false pre-RED adjudication",
-            ("next", "pre_red_investigation", "decision_lock", "adjudicated"),
+            ("next", "decision_lock", "adjudicated"),
             True,
         ),
         (
-            "wrong target owner hypothesis",
-            ("next", "pre_red_investigation", "direct_owner_hypothesis"),
+            "preselected candidate owner",
+            ("next", "decision_lock", "accepted_obligation"),
             "SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001",
         ),
         (
-            "hidden authority contradiction",
-            (
-                "next",
-                "pre_red_investigation",
-                "authority_contradiction",
-                "classification",
-            ),
-            "NO_CONTRADICTION",
+            "truncated proposal accountability",
+            ("next", "generated_proposals_only"),
+            [],
         ),
     ]
     for label, path, value in cases:

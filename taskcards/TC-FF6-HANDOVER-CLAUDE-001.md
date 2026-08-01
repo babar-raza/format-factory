@@ -519,3 +519,43 @@ mutation authorizations are deliberately not transferable. A shift is complete
 only after the refreshed packet is validated, committed, pushed to GitLab
 `main`, remote equality is proved, and the outgoing provider releases only its
 own leases.
+
+## Event-39 cross-provider checkpoint refresh
+
+This section supersedes every earlier operational resume paragraph while
+retaining them as audit history.
+
+- Accepted XLIFF semantic commit:
+  `39b2e89fde0f7dd5e1acebc424f4d700dfe74765`.
+- Accepted controller checkpoint:
+  `c421940ae70a3dc949318eee00cbfc5e3cf8b9a3`.
+- Native authority: `FF6-EVENT-000039` /
+  `5f76c75ca4f7bc0845b22dccd38a195e962fb49b5f4161651737ab23d560cd36`.
+- Accepted XLIFF boundary: 8/1,130 independently verified dispositions and
+  30/105 source-bound Core obligations; 1,122 dispositions and 75 obligations
+  remain open.
+- The semantic slice resolves profile-specific target-language compatibility,
+  records normative machine-readable precedence over conflicting display
+  prose, and corrects one existing obligation without adding a denominator row.
+- Seventy-seven affected tests passed locally and in an immutable detached
+  checkout using the complete five-record XLIFF authority closure.
+- All 33 XLIFF SAL facts, five authority records, five deterministic
+  descendant checks, Ruff, strict Mypy, Pyright 1.1.411, py_compile, semantic
+  transcripts, and native plan-control tests passed.
+- The freshly compiled XLIFF ProductContract remains `DRAFT` with 15
+  capabilities.
+- Product source, certification, promotion, release, and gates did not change.
+  Every product remains `UNASSESSED`; certification remains `0/6`.
+
+The exact successor is `XLF-04-BATCH-005-PARTIAL-002-H`, candidate
+`XLF-CAND-CORE-SCHEMATRON-E891C4DEC555F165`. The incoming provider starts
+from `plans/codex/handover/START-HERE.md`, validates fetched GitLab
+`origin/main`, creates a fresh coordination identity and skill authorization,
+and independently adjudicates the isolated start-code report. All eight
+generated mappings are proposals only. All 30 accepted obligation rows and all
+1,130 candidate identities must be preserved unless exact authority proves a
+bounded denominator change.
+
+Provider identity, token, leases, manifests, authorizations, and ignored local
+files never transfer. The next shift must recompute them and must restore the
+complete five-record authority closure for immutable contract replay.

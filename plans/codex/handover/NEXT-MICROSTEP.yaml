@@ -1,5 +1,5 @@
-schema: ff6/next-microstep@12
-artifact_id: FF6-XLIFF-XLF04-BATCH005-PARTIAL002-G
+schema: ff6/next-microstep@13
+artifact_id: FF6-XLIFF-XLF04-BATCH005-PARTIAL002-H
 visibility: internal
 publish_allowed: false
 generated_by: codex
@@ -9,120 +9,84 @@ source_checkpoint:
   forge: GitLab
   remote: origin
   branch: main
-  packet_base_commit: d1f8b3229bf3be32675e047b1469259ad7375500
-  handover_refresh_base_commit: 62f23b30a13d56bc4e1e369390aaf611e75462b4
-  event_id: FF6-EVENT-000038
-  event_hash: 13db4cceafcefb86d9c964d7c3e20e7d63092977faf50002ef0c88ea4f6b5603
-  semantic_commit: 3fc939ad70ec6caac9e0699041076e02de00c5d2
+  packet_base_commit: c421940ae70a3dc949318eee00cbfc5e3cf8b9a3
+  event_id: FF6-EVENT-000039
+  event_hash: 5f76c75ca4f7bc0845b22dccd38a195e962fb49b5f4161651737ab23d560cd36
+  semantic_commit: 39b2e89fde0f7dd5e1acebc424f4d700dfe74765
   checkout_identity_repair_commit: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
-  controller_checkpoint_commit: d1f8b3229bf3be32675e047b1469259ad7375500
+  controller_checkpoint_commit: c421940ae70a3dc949318eee00cbfc5e3cf8b9a3
 task:
   task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
   parent_task_id: TC-FF6-PROGRAM-CAPABILITIES-001
   state: WORK_IN_PROGRESS
   first_unmet_step: XLF-04
-  microstep: XLF-04-BATCH-005-PARTIAL-002-G
+  microstep: XLF-04-BATCH-005-PARTIAL-002-H
   microstep_state: READY_FOR_RED
 accepted_baseline:
   candidate_count: 1130
-  dispositions_verified: 7
-  dispositions_unverified: 1123
+  dispositions_verified: 8
+  dispositions_unverified: 1122
   expected_obligations: 105
   source_bound_obligations: 30
   missing_obligations: 75
   xlf_04_complete: false
-  adjudication_sha256: 61f17b6449ae1ea6b5a95c892afc075b48aa7b9a100be2d6e8168b8794baeb32
-  inventory_sha256: 483767b208b75b880804288a6f56ed3758b05d46d4ef872bc0bcb6e4d083e1ba
+  adjudication_sha256: d63a31f936262c9952a0f50afd076b8547bc5c26cbdfd5adf04464b5f2c3dcc2
+  inventory_sha256: ea376cbaad5e8559b6789844be2bef06478e5b8ee69f7a3c557cfbc5bd474370
+  contract_sha256: 7ef89b038b8b74b59ede6123a7a2ec57fea4730f84fbff3eaf21a43d02a9a2ad
+  contract_lifecycle: DRAFT
+  contract_capabilities: 15
 selected_candidate:
-  candidate_id: XLF-CAND-CORE-SCHEMATRON-5D563A565DC6DCFE
+  candidate_id: XLF-CAND-CORE-SCHEMATRON-E891C4DEC555F165
   candidate_class: SCHEMATRON_REPORT
   profile: xliff_2.1
   source_id: SRC-XLF-002
   source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
   member: schemas/xliff_core_2.1.sch
   member_sha256: d4275f2d2574f892624bcd8f83bcc3001c75d623e4eb36896d15d147f16ed7a2
-  location: schematron/rule[14]/report[1]
-  candidate_content_sha256: 2f48f02786ace40f8e45306a2622fb031a0650a1004e6d4b316f3dd5ec44ee4d
-  requirement_sha256: 85279eddf8546a96b332e7a7b5388cb4639d886f2a6a0f7168048ec3e7e483ec
-  occurrence_sha256: 639468d347a85cb3843f43bba0d0bdc9065beda22aee96021cb10f37374137fe
+  location: schematron/rule[15]/report[1]
+  candidate_content_sha256: 04aeb46e7eeaa854cf9554005a11476334fa8f41f6db9a45ca2f0e38b8d6d0e6
+  requirement_sha256: d7daf659d3b7ad1388c42203d845b452afe12e8e05134d35d36a26cb9cc5e60c
+  occurrence_sha256: cb57d9e386c6274b0aa0aedca3e2b4bab1dbaafb41ff2e66a884681485d6c84f
   normalized_requirement: >-
-    {"context":"xlf:target[@xml:lang][parent::xlf:segment | parent::xlf:ignorable]","kind":"report","message":"'xml:lang' attribute of the 'target' element and 'trgLang' attribute of the 'xliff' are not matching.","test":"not(lang($trgLang))"}
+    {"context":"xlf:sc[ancestor::xlf:source][@isolated='yes'][ancestor::xlf:segment | ancestor::xlf:ignorable]","kind":"report","message":"'isolated' attribute is set to 'yes', but 'ec' element(s) referencing this start code found within the same unit.","test":"ancestor::xlf:unit//xlf:ec[@startRef=$id][ancestor::xlf:source][ancestor::xlf:segment | ancestor::xlf:ignorable]"}
 generated_proposals_only:
   - SAL-XLIFF-CORE-AGENT-VALIDATOR-001
-  - SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001
   - SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001
   - SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001
-  - SAL-XLIFF-CORE-SOURCE-TARGET-OPTIONAL-001
-pre_red_investigation:
-  status: READ_ONLY_REPRODUCED_UNADJUDICATED
-  evidence_effect: none
-  product_or_controller_effect: none
-  investigation_base_commit: 62f23b30a13d56bc4e1e369390aaf611e75462b4
-  direct_owner_hypothesis: SAL-XLIFF-CORE-TARGET-LANGUAGE-001
-  direct_owner_status: HYPOTHESIS_REQUIRING_RED_AND_INDEPENDENT_ADJUDICATION
-  existing_obligation_distinctions:
-    SAL-XLIFF-CORE-TARGET-LANGUAGE-001: explicit_or_inherited_target_language_compatibility
-    SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001: root_trgLang_presence_when_target_children_exist
-    SAL-XLIFF-CORE-LANGUAGE-TARGET-001: omitted_target_xml_lang_inherits_root_trgLang
-  primary_authority_observations:
-    xliff_2_0_prose:
-      source_id: SRC-XLF-001
-      source_sha256: aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055
-      member: xliff-core-v2.0-os.xml
-      member_sha256: 07059d426de1e839540e5e84e0e061c4a6d5ef1a1b7e71ddf75bf5bd11518b73
-      section_id: target
-      paragraph_index: 4
-      normalized_text_sha256: e7dd434305b7315fd7eecf2acbc066e0f7a149d0a4fe9bb704d1ace3bd5be29e
-      observed_semantics: explicit_or_inherited_target_xml_lang_must_equal_trgLang
-    xliff_2_1_prose:
-      source_id: SRC-XLF-002
-      source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
-      member: xliff-core-v2.1-os.xml
-      member_sha256: e8c72ec2314e1025f25886cd0ea2b6c10aa2405bd292026383afca2207c44e5b
-      section_id: target
-      paragraph_index: 4
-      normalized_text_sha256: e7dd434305b7315fd7eecf2acbc066e0f7a149d0a4fe9bb704d1ace3bd5be29e
-      observed_semantics: explicit_or_inherited_target_xml_lang_must_equal_trgLang
-    xliff_2_1_schematron:
-      source_id: SRC-XLF-002
-      member: schemas/xliff_core_2.1.sch
-      member_sha256: d4275f2d2574f892624bcd8f83bcc3001c75d623e4eb36896d15d147f16ed7a2
-      pattern_id: F4T
-      rule_context: xlf:target[@xml:lang][parent::xlf:segment | parent::xlf:ignorable]
-      report_test: not(lang($trgLang))
-      pattern_note: permits_xml_lang_to_be_a_more_specific_subcategory_of_trgLang_but_not_the_reverse
-  authority_contradiction:
-    classification: NORMATIVE_PROSE_VS_EXECUTABLE_SCHEMATRON_SEMANTICS
-    prose_claim: exact_equality_for_2_0_and_2_1
-    schematron_effect: 2_1_accepts_equal_or_more_specific_target_language
-    status: OPEN_REQUIRES_DISCRIMINATING_PROFILE_TEST
-    forbidden_resolution: do_not_choose_the_interpretation_that_merely_increases_coverage
-  decision_lock:
-    adjudicated: false
-    accepted_obligation: null
-    new_sal_fact: null
-    obligation_delta: null
-    next_required_state: RED_OBSERVED
+  - SAL-XLIFF-CORE-HIERARCHY-UNIT-CHILDREN-001
+  - SAL-XLIFF-CORE-INLINE-EC-001
+  - SAL-XLIFF-CORE-INLINE-SC-001
+  - SAL-XLIFF-CORE-REFERENCE-STARTREF-001
+  - SAL-XLIFF-CORE-SOURCE-REQUIRED-001
+decision_lock:
+  adjudicated: false
+  accepted_obligation: null
+  new_sal_fact: null
+  obligation_delta: evidence_derived_not_predeclared
+  next_required_state: RED_OBSERVED
 required_skills:
   - test-driven-development
   - ingest-spec-sal
   - sal-pipeline-heal
+  - compile-format-contract
   - plan-control
 required_execution:
-  - Validate Event 38, packet-base commit d1f8b322, semantic commit 3fc939ad, candidate identity, accepted counts, and current artifact digests before mutation.
-  - Read the exact pinned XLIFF 2.1 Schematron occurrence and relevant Core prose independently; generated mappings are proposals, never conclusions.
-  - Reproduce the pre-RED investigation above and add a discriminating test for exact equality versus the XLIFF 2.1 subcategory allowance before selecting an owner or changing any profile semantics.
+  - Fetch GitLab main and validate Event 39, control checkpoint c421940a, semantic commit 39b2e89f, candidate identity, accepted counts, and artifact digests before mutation.
+  - Register a fresh coordination identity, claim exact files, and run the selected skill mutation guard. Never reuse prior identities or local authorizations.
+  - Read the exact pinned XLIFF 2.1 Schematron occurrence and relevant Core prose independently. Generated mappings are proposals, never conclusions.
   - Add a genuine pre-change RED test for the direct semantic owner and exact proof binding.
-  - Determine whether target-language compatibility is owned by an existing denominator obligation, requires a new exact obligation, or cannot yet be mapped. Do not infer the result only from the preceding source-language rule.
-  - Account for every generated proposal and materially implicated obligation with evidence-bound acceptance or rejection reasoning.
-  - Treat segment and ignorable names as trigger context and validator behavior as downstream unless exact authority proves otherwise.
-  - If a new fact is required, seed only the exact selected candidate through fail-closed --candidate-id mode; prove missing, duplicate, unrelated-row, transactional-restore, QName, and idempotency controls remain intact.
-  - Bind candidate, occurrence, authority, fact, decision, and compiled obligation through role-specific content digests.
-  - Preserve semantic equality of all 30 accepted predecessor rows and identity of all 1130 candidate records.
-  - Run positive, rejection, tamper, profile, deterministic, static, SAL, authority, format-contract, production-program, transcript, immutable-checkout, and native-event controls.
-  - Commit explicit leased semantic files to GitLab main; append the next native event only after immutable proof passes; then refresh this packet.
+  - Determine whether the isolated start-code condition is owned by an existing denominator obligation, requires a new exact obligation, or cannot yet be mapped.
+  - Account for every generated proposal and every materially implicated obligation with evidence-bound acceptance or rejection reasoning.
+  - Treat ancestor hierarchy, element names, source cardinality, and generic validator behavior as incidental or downstream unless exact authority proves direct ownership.
+  - If a fact is required, seed only the exact candidate in fail-closed selected mode and retain missing, duplicate, unrelated-row, transactional-restore, QName, and byte-idempotency controls.
+  - Bind candidate, occurrence, authority, fact, decision, obligation, and compiled contract using role-specific content digests.
+  - Preserve semantic equality of all 30 accepted obligation rows and identity of all 1130 candidates unless a proven obligation requires a bounded denominator expansion.
+  - Generate all affected deterministic artifacts three times and compare canonical bytes.
+  - Run affected tests, SAL verification, 5/5 authority audit, format-contract and production-program regressions, Ruff, strict Mypy, Pyright 1.1.411, py_compile, and transcript validation.
+  - Replay from the committed semantic revision with four ignored authority files plus tracked product-requirement authority. A two-package reconstruction is not sufficient.
+  - Commit explicit leased semantic files to GitLab main; append the next native event only after immutable proof passes; then refresh the provider-neutral packet.
 acceptance:
-  prior_dispositions_verified: 7
+  prior_dispositions_verified: 8
   expected_new_candidate_dispositions: 1
   obligation_delta: evidence_derived_not_predeclared
   predecessor_rows_preserved: 30
@@ -131,14 +95,23 @@ acceptance:
   product_source_effect: none
   promotion_effect: none
   production_certification_effect: none
+regression_controls:
+  - missing or duplicate selected candidate fails closed
+  - candidate content, requirement, occurrence, authority, decision, obligation, and contract digest roles cannot be substituted
+  - unrelated invalid candidates cannot contaminate selected mode
+  - transaction failure restores store, aliases, and cache bytes
+  - generated proposals cannot become accepted facts without an independent decision
+  - deleted or changed predecessor evidence invalidates its descendants
+  - three same-input generations are byte-identical
+  - checkout line-ending modes do not change tracked proof identity
+  - source-tree and installed-package proof remain distinct
 forbidden:
-  - accepting generated proposals or source-language symmetry without independent authority adjudication
-  - inventing or selecting an obligation to increase coverage
+  - accepting a mapping from generated names, implementation symmetry, or coverage pressure
+  - inventing an obligation to improve counts
   - weakening checkout identity, content addressing, selected seeding, tamper rejection, or predecessor equality
   - product source, gate, promotion, release, or certification mutation
-  - GitHub push, non-main branch, broad staging, foreign lease release, or dirty-state cleanup
-  - reusing a prior provider identity, token, lease, execution manifest, or mutation authorization
+  - GitHub push, non-main branch, broad staging, foreign lease release, dirty-state cleanup, or no-verify commit
 fallback:
-  when: required XLIFF paths are live-owned
-  action: continue read-only verification or select the highest-severity disjoint unleased task from the deterministic queue
+  when: required XLIFF paths are live-owned or the same root cause survives three materially different repairs
+  action: record the machine-readable blocker and continue the highest-severity disjoint unleased task; UBL-03 partial-006 is the known disjoint fallback
   invariant: fallback work cannot claim this candidate or append its controller event
