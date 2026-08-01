@@ -56,11 +56,18 @@ SOURCE_LANGUAGE_CANDIDATE_ID = (
 SOURCE_LANGUAGE_OBLIGATION_ID = (
     "SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001"
 )
+TARGET_LANGUAGE_COMPATIBILITY_CANDIDATE_ID = (
+    "XLF-CAND-CORE-SCHEMATRON-5D563A565DC6DCFE"
+)
+TARGET_LANGUAGE_COMPATIBILITY_OBLIGATION_ID = (
+    "SAL-XLIFF-CORE-TARGET-LANGUAGE-001"
+)
 PREDECESSOR_OBLIGATION_ROW_SHA256 = {
     "SAL-XLIFF-CORE-AGENT-INLINE-001": "ddc5b5252a5fe492df5f0e59e63e4c3e4552a2c019398ec80a46ed29bd30b6cb",
     "SAL-XLIFF-CORE-DIRECTION-SOURCE-001": "7e7b18ef8786c8bb667a2486568b6631ccc4ffb52a9f6a63a6032a0beefee9e3",
     "SAL-XLIFF-CORE-DIRECTION-TARGET-001": "4f68fb809b21fc4c80989b999a32cc46bb75693b360c72754425b02b1796ee38",
     "SAL-XLIFF-CORE-DOCUMENT-ROOT-001": "44bb0613f18d724c6955f9388fe3bbb8744f95496d2ace7729ce1332f742e025",
+    "SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001": "be0f44703ec996e356e08c5f5924ae1a012d42a1d1453babfa5f78ae5cb1b564",
     "SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001": "1b38a23571007e74ba4ee21a373acc0334e015bce0c074aed4595997a6cccea5",
     "SAL-XLIFF-CORE-EXTENSION-PRESERVE-001": "88c30d2b01ad4735bfd8340771c3bae883144831d03a604c910b218dbb2c01ac",
     "SAL-XLIFF-CORE-HIERARCHY-UNIT-001": "5aa17b34be039066375efc3b51c2216dcd39b2a2bb5291e9b60cf088e42c3af2",
@@ -81,7 +88,6 @@ PREDECESSOR_OBLIGATION_ROW_SHA256 = {
     "SAL-XLIFF-CORE-SEGMENT-SPLIT-001": "e3194607138388f24c116f942709560063f3d6bc7288a14c6af1becb869db9ec",
     "SAL-XLIFF-CORE-SOURCE-TARGET-OPTIONAL-001": "79dcb5df5efce4e3f859038d1622dc15826f63dd51d12853ce1daed0f6145763",
     "SAL-XLIFF-CORE-STATE-SUBSTATE-001": "68376987abc39df60e1072d925244745c01dbdcc9dad8c61322490e292bb994c",
-    "SAL-XLIFF-CORE-TARGET-LANGUAGE-001": "5478bcdf6c028c8397e96c71c93c7a2f5b2e67ea0fe52b0f0517ba4e94bdee7b",
     "SAL-XLIFF-CORE-TARGET-ORDER-001": "6bcdb78f1326373bb5e018c5f055d807efb1e3429ebf94cb6639169c18438c9d",
     "SAL-XLIFF-CORE-WHITESPACE-INHERIT-001": "b1cd4b64f53b64cb794a227e04660ad6c100206aa2868ea21bf4546cf231f3af",
     "SAL-XLIFF-CORE-WRITE-DETERMINISTIC-001": "4844e02a6c3bdf4f50f4674ecfe495c66e0c1c520c12ad1597c4672f9b42ca1b",
@@ -1363,9 +1369,9 @@ def test_cli_batch_five_compiles_only_reciprocally_adjudicated_pairing_obligatio
     assert inventory["resolved_expected_obligation_count"] == 30
     assert len(inventory["missing_expected_obligation_ids"]) == 75
     assert inventory["complete"] is False
-    assert inventory["adjudication_input"]["decision_count"] == 7
-    assert inventory["adjudication_input"]["verified_disposition_count"] == 7
-    assert inventory["adjudication_input"]["unverified_disposition_count"] == 1123
+    assert inventory["adjudication_input"]["decision_count"] == 8
+    assert inventory["adjudication_input"]["verified_disposition_count"] == 8
+    assert inventory["adjudication_input"]["unverified_disposition_count"] == 1122
 
     rows = {row["obligation_id"]: row for row in inventory["obligations"]}
     assert SOURCE_LANGUAGE_OBLIGATION_ID in rows
@@ -1438,6 +1444,28 @@ def test_cli_batch_five_compiles_only_reciprocally_adjudicated_pairing_obligatio
         and len(location["source_text_sha256"]) == 64
         for location in unit_children["authority_locations"]
     )
+    target_language = rows[TARGET_LANGUAGE_COMPATIBILITY_OBLIGATION_ID]
+    assert target_language["introduced_in_batch"] == "XLF-04-BATCH-002"
+    assert target_language["stable_profiles"] == ["xliff_2.0", "xliff_2.1"]
+    assert target_language["adjudication_candidate_ids"] == [
+        TARGET_LANGUAGE_COMPATIBILITY_CANDIDATE_ID
+    ]
+    assert "XLIFF 2.0 requires exact equality" in (
+        target_language["normalized_rule"]
+    )
+    assert "XLIFF 2.1 accepts equality or a more-specific" in (
+        target_language["normalized_rule"]
+    )
+    assert {
+        location["profile"]
+        for location in target_language["authority_locations"]
+    } == {"xliff_2.0", "xliff_2.1"}
+    assert {
+        location["source_text_sha256"]
+        for location in target_language["authority_locations"]
+    } == {
+        "e7dd434305b7315fd7eecf2acbc066e0f7a149d0a4fe9bb704d1ace3bd5be29e"
+    }
     assert extractor.main([*args, "--check"]) == 0
 
 
@@ -1611,6 +1639,67 @@ def test_batch_five_source_language_seed_requires_exact_candidate_proof() -> Non
         "compatible with the srcLang attribute of the enclosing XLIFF "
         "document."
     )
+
+
+def test_batch_five_target_language_seed_requires_profile_specific_proof(
+) -> None:
+    extractor = _load_module()
+    verified = {
+        TARGET_LANGUAGE_OBLIGATION_ID,
+        TARGET_LANGUAGE_COMPATIBILITY_OBLIGATION_ID,
+    }
+
+    with pytest.raises(
+        extractor.ExtractionError,
+        match="exact Schematron candidate",
+    ):
+        extractor._default_core_obligation_seeds(
+            through_batch="XLF-04-BATCH-005",
+            verified_obligation_ids=verified,
+            adjudication_evidence={
+                "accepted_obligation_candidate_ids": {
+                    TARGET_LANGUAGE_COMPATIBILITY_OBLIGATION_ID: []
+                }
+            },
+        )
+
+    seeds = extractor._default_core_obligation_seeds(
+        through_batch="XLF-04-BATCH-005",
+        verified_obligation_ids=verified,
+        adjudication_evidence={
+            "accepted_obligation_candidate_ids": {
+                TARGET_LANGUAGE_COMPATIBILITY_OBLIGATION_ID: [
+                    TARGET_LANGUAGE_COMPATIBILITY_CANDIDATE_ID
+                ]
+            }
+        },
+    )
+    target_language = next(
+        seed
+        for seed in seeds
+        if seed["obligation_id"]
+        == TARGET_LANGUAGE_COMPATIBILITY_OBLIGATION_ID
+    )
+    assert target_language["adjudication_candidate_ids"] == [
+        TARGET_LANGUAGE_COMPATIBILITY_CANDIDATE_ID
+    ]
+    assert target_language["stable_profiles"] == ["xliff_2.0", "xliff_2.1"]
+    assert target_language["normalized_rule"] == (
+        "Require target language compatibility with enclosing trgLang: "
+        "XLIFF 2.0 requires exact equality; XLIFF 2.1 accepts equality or a "
+        "more-specific target language subcategory and rejects the reverse "
+        "or unrelated language tags."
+    )
+    assert target_language["evidence_requirements"]["positive"] == [
+        "XLIFF 2.0 exact target xml:lang and trgLang equality is accepted.",
+        "XLIFF 2.1 exact target xml:lang and trgLang equality is accepted.",
+        "XLIFF 2.1 target xml:lang more specific than trgLang is accepted.",
+        "An omitted target xml:lang inherits the enclosing trgLang.",
+    ]
+    assert target_language["evidence_requirements"]["rejection"] == [
+        "Reject any non-exact XLIFF 2.0 target language value.",
+        "Reject reverse-specific or unrelated XLIFF 2.1 target language values.",
+    ]
 
 
 @pytest.mark.parametrize(

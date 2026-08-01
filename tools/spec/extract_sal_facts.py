@@ -3452,8 +3452,11 @@ def _default_core_obligation_seeds(
                 "owner": "core:source-target",
                 "category": "source_target_correspondence",
                 "normalized_rule": (
-                    "Require a target xml:lang value, whether explicit or "
-                    "inherited, to equal the enclosing document trgLang."
+                    "Require target language compatibility with enclosing "
+                    "trgLang: XLIFF 2.0 requires exact equality; XLIFF 2.1 "
+                    "accepts equality or a more-specific target language "
+                    "subcategory and rejects the reverse or unrelated "
+                    "language tags."
                 ),
                 "requirement_class": "SEMANTIC_CONSTRAINT",
                 "normative_level": "MUST",
@@ -3464,13 +3467,32 @@ def _default_core_obligation_seeds(
                 ),
                 "evidence_requirements": {
                     "positive": [
-                        "validate target language equal to the enclosing trgLang"
+                        "XLIFF 2.0 exact target xml:lang and trgLang equality "
+                        "is accepted.",
+                        "XLIFF 2.1 exact target xml:lang and trgLang equality "
+                        "is accepted.",
+                        "XLIFF 2.1 target xml:lang more specific than trgLang "
+                        "is accepted.",
+                        "An omitted target xml:lang inherits the enclosing "
+                        "trgLang.",
                     ],
                     "rejection": [
-                        "reject target language different from enclosing trgLang"
+                        "Reject any non-exact XLIFF 2.0 target language value.",
+                        "Reject reverse-specific or unrelated XLIFF 2.1 "
+                        "target language values.",
                     ],
                 },
-                "interpretation_note": batch_two_note,
+                "interpretation_note": (
+                    "The stable profile rules differ. XLIFF 2.0 has only the "
+                    "exact-equality prose rule. XLIFF 2.1 display prose says "
+                    "exact equality, but its normative F4T Schematron uses "
+                    "not(lang($trgLang)) and explicitly permits a more-specific "
+                    "target tag. The XLIFF 2.1 precedence clause makes the "
+                    "separate normative machine-readable artifact controlling "
+                    "when it conflicts with display prose. Omitted-value "
+                    "inheritance remains prose-grounded and is not inferred "
+                    "from the explicit-value Schematron report."
+                ),
             },
             {
                 "obligation_id": "SAL-XLIFF-CORE-TARGET-ORDER-001",
@@ -3718,6 +3740,12 @@ def _default_core_obligation_seeds(
     )
     batch_five_source_language_candidate_ids = {
         "XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73"
+    }
+    batch_five_target_language_compatibility_id = (
+        "SAL-XLIFF-CORE-TARGET-LANGUAGE-001"
+    )
+    batch_five_target_language_compatibility_candidate_ids = {
+        "XLF-CAND-CORE-SCHEMATRON-5D563A565DC6DCFE"
     }
     seeds.append(
         {
@@ -4053,6 +4081,40 @@ def _default_core_obligation_seeds(
                 "XLF-04-BATCH-005 requires the exact Schematron candidate "
                 f"for {batch_five_source_language_id}"
             )
+    if (
+        maximum_sequence >= 5
+        and batch_five_target_language_compatibility_id in verified_ids
+    ):
+        accepted_candidates = (
+            adjudication_evidence or {}
+        ).get("accepted_obligation_candidate_ids", {})
+        target_language_candidates = (
+            accepted_candidates.get(
+                batch_five_target_language_compatibility_id,
+                [],
+            )
+            if isinstance(accepted_candidates, Mapping)
+            else []
+        )
+        if not isinstance(target_language_candidates, Sequence) or isinstance(
+            target_language_candidates,
+            (str, bytes),
+        ) or not batch_five_target_language_compatibility_candidate_ids <= set(
+            map(str, target_language_candidates)
+        ):
+            raise ExtractionError(
+                "XLF-04-BATCH-005 requires the exact Schematron candidate "
+                f"for {batch_five_target_language_compatibility_id}"
+            )
+        target_language_seed = next(
+            seed
+            for seed in seeds
+            if seed["obligation_id"]
+            == batch_five_target_language_compatibility_id
+        )
+        target_language_seed["adjudication_candidate_ids"] = sorted(
+            batch_five_target_language_compatibility_candidate_ids
+        )
     return [
         seed
         for seed in seeds

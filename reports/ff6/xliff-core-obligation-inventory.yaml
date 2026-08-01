@@ -1209,7 +1209,7 @@ obligations:
   - xliff_2.1
   owner: core:source-target
   category: source_target_correspondence
-  normalized_rule: Require a target xml:lang value, whether explicit or inherited, to equal the enclosing document trgLang.
+  normalized_rule: 'Require target language compatibility with enclosing trgLang: XLIFF 2.0 requires exact equality; XLIFF 2.1 accepts equality or a more-specific target language subcategory and rejects the reverse or unrelated language tags.'
   requirement_class: SEMANTIC_CONSTRAINT
   normative_level: MUST
   authority_locations:
@@ -1235,11 +1235,17 @@ obligations:
     source_text_sha256: e7dd434305b7315fd7eecf2acbc066e0f7a149d0a4fe9bb704d1ace3bd5be29e
   evidence_requirements:
     positive:
-    - validate target language equal to the enclosing trgLang
+    - XLIFF 2.0 exact target xml:lang and trgLang equality is accepted.
+    - XLIFF 2.1 exact target xml:lang and trgLang equality is accepted.
+    - XLIFF 2.1 target xml:lang more specific than trgLang is accepted.
+    - An omitted target xml:lang inherits the enclosing trgLang.
     rejection:
-    - reject target language different from enclosing trgLang
-  interpretation_note: Second source-located XLF-04 batch covering stable identifier, inheritance, language, direction, whitespace, and source-target rules.
+    - Reject any non-exact XLIFF 2.0 target language value.
+    - Reject reverse-specific or unrelated XLIFF 2.1 target language values.
+  interpretation_note: The stable profile rules differ. XLIFF 2.0 has only the exact-equality prose rule. XLIFF 2.1 display prose says exact equality, but its normative F4T Schematron uses not(lang($trgLang)) and explicitly permits a more-specific target tag. The XLIFF 2.1 precedence clause makes the separate normative machine-readable artifact controlling when it conflicts with display prose. Omitted-value inheritance remains prose-grounded and is not inferred from the explicit-value Schematron report.
   verification_status: SOURCE_BOUND_UNVERIFIED
+  adjudication_candidate_ids:
+  - XLF-CAND-CORE-SCHEMATRON-5D563A565DC6DCFE
 - obligation_id: SAL-XLIFF-CORE-TARGET-ORDER-001
   obligation_basis: XLIFF_SPECIFICATION
   conformance_effect: STANDARD_CONFORMANCE
@@ -1355,17 +1361,18 @@ obligations:
 truth_boundary: XLIFF specification obligations and production-policy duties are separate authority classes. Neither source binding nor category presence turns the 36 coarse XLF-03 anchors into complete Core semantics, product source, or certification.
 adjudication_input:
   artifact_id: FF6-XLIFF-CORE-CANDIDATE-ADJUDICATIONS
-  artifact_sha256: 61f17b6449ae1ea6b5a95c892afc075b48aa7b9a100be2d6e8168b8794baeb32
-  input_closure_sha256: d39c2274926860c42f2cab921de76bcd91246135391e44eeb646a7d44c371bff
-  decision_set_sha256: 9e427d2eb35f5fa557f5e869f127684a0975eb1fb66d17c049197ece0c9b1103
-  decision_count: 7
-  verified_disposition_count: 7
-  unverified_disposition_count: 1123
+  artifact_sha256: d63a31f936262c9952a0f50afd076b8547bc5c26cbdfd5adf04464b5f2c3dcc2
+  input_closure_sha256: 37966c493bd37a49f980962c2a3ff565125aeb05d1c50eec02757f6280325d8d
+  decision_set_sha256: 40baebef501f2369f7d19546509c44272d3e9d1df4dbc0eb62429041e4e1c417
+  decision_count: 8
+  verified_disposition_count: 8
+  unverified_disposition_count: 1122
   verified_candidate_ids:
   - XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
   - XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92
   - XLF-CAND-CORE-SCHEMATRON-100732DB0BBED389
   - XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF
+  - XLF-CAND-CORE-SCHEMATRON-5D563A565DC6DCFE
   - XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E
   - XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73
   - XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90
@@ -1382,4 +1389,6 @@ adjudication_input:
     SAL-XLIFF-CORE-REFERENCE-SKELETON-HREF-001:
     - XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92
     - XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E
+    SAL-XLIFF-CORE-TARGET-LANGUAGE-001:
+    - XLF-CAND-CORE-SCHEMATRON-5D563A565DC6DCFE
 denominator_input_sha256: 86a4f2cdc6e4a341eba2a3cbb6fcc8119883d1cda64d056198c7c34b7fa880b7

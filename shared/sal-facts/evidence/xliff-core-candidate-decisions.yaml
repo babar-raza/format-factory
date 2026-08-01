@@ -226,3 +226,51 @@ decisions:
     source language to match srcLang. The parent names are applicability
     context, source presence is only a trigger, generic validation is
     downstream, and omitted-value inheritance is a separate obligation.
+- decision_id: XLF-ADJ-CORE-SCHEMATRON-0008
+  candidate_id: XLF-CAND-CORE-SCHEMATRON-5D563A565DC6DCFE
+  accepted_obligation_ids:
+  - SAL-XLIFF-CORE-TARGET-LANGUAGE-001
+  rejected_obligations:
+  - obligation_id: SAL-XLIFF-CORE-AGENT-VALIDATOR-001
+    reason_code: DOWNSTREAM_CAPABILITY_NOT_DIRECT_SEMANTIC_OWNER
+    reason: >-
+      A conforming validator enforces this report, but the report directly
+      establishes target-language compatibility with the document trgLang.
+  - obligation_id: SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001
+    reason_code: ROOT_PRESENCE_RULE_NOT_VALUE_COMPATIBILITY_RULE
+    reason: >-
+      The document target-language obligation establishes when root trgLang is
+      present; it does not own value compatibility for an explicit target
+      xml:lang.
+  - obligation_id: SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001
+    reason_code: INCIDENTAL_XPATH_CONTEXT_TOKEN
+    reason: >-
+      The ignorable parent limits applicability and does not establish an
+      independent hierarchy rule.
+  - obligation_id: SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001
+    reason_code: INCIDENTAL_XPATH_CONTEXT_TOKEN
+    reason: >-
+      The segment parent limits applicability and does not establish an
+      independent hierarchy rule.
+  - obligation_id: SAL-XLIFF-CORE-SOURCE-TARGET-OPTIONAL-001
+    reason_code: TRIGGER_DOES_NOT_ESTABLISH_CARDINALITY
+    reason: >-
+      The report applies when a target with xml:lang exists; it does not
+      establish target presence or cardinality.
+  unproposed_rejected_obligations:
+  - obligation_id: SAL-XLIFF-CORE-LANGUAGE-TARGET-001
+    reason_code: EXPLICIT_MATCH_DOES_NOT_ESTABLISH_INHERITANCE
+    reason: >-
+      The report checks an explicit target xml:lang value. It does not
+      establish how an omitted value inherits from the enclosing trgLang.
+  sal_fact_ids:
+  - SAL-XLIFF-6F42212680161FF2
+  authority_reason: >-
+    The XLIFF 2.0 prose requires exact target xml:lang equality with root
+    trgLang. The normative XLIFF 2.1 F4T Schematron accepts equality or a
+    more-specific target language through not(lang($trgLang)); XLIFF 2.1
+    explicitly gives normative separate machine-readable content precedence
+    over conflicting display prose. This profile-specific value rule belongs
+    to the existing target-language compatibility obligation. Root presence,
+    hierarchy, cardinality, generic validation, and omitted-value inheritance
+    are separate obligations.

@@ -67,6 +67,11 @@ SOURCE_LANGUAGE_CANDIDATE_ID = (
 SOURCE_LANGUAGE_ID = "SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001"
 SOURCE_REQUIRED_ID = "SAL-XLIFF-CORE-SOURCE-REQUIRED-001"
 LANGUAGE_SOURCE_ID = "SAL-XLIFF-CORE-LANGUAGE-SOURCE-001"
+TARGET_LANGUAGE_COMPATIBILITY_CANDIDATE_ID = (
+    "XLF-CAND-CORE-SCHEMATRON-5D563A565DC6DCFE"
+)
+TARGET_LANGUAGE_COMPATIBILITY_ID = "SAL-XLIFF-CORE-TARGET-LANGUAGE-001"
+LANGUAGE_TARGET_ID = "SAL-XLIFF-CORE-LANGUAGE-TARGET-001"
 REJECTED_PROPOSAL_IDS = {
     "SAL-XLIFF-CORE-AGENT-VALIDATOR-001":
         "DOWNSTREAM_CAPABILITY_NOT_DIRECT_SEMANTIC_OWNER",
@@ -541,6 +546,170 @@ def _source_language_decision() -> dict[str, Any]:
     }
 
 
+def _target_language_compatibility_decision() -> dict[str, Any]:
+    return {
+        "decision_id": "XLF-ADJ-CORE-SCHEMATRON-0008",
+        "candidate_id": TARGET_LANGUAGE_COMPATIBILITY_CANDIDATE_ID,
+        "accepted_obligation_ids": [TARGET_LANGUAGE_COMPATIBILITY_ID],
+        "rejected_obligations": [
+            {
+                "obligation_id": "SAL-XLIFF-CORE-AGENT-VALIDATOR-001",
+                "reason_code": (
+                    "DOWNSTREAM_CAPABILITY_NOT_DIRECT_SEMANTIC_OWNER"
+                ),
+                "reason": (
+                    "A conforming validator enforces this report, but the "
+                    "report directly establishes target-language "
+                    "compatibility with the document trgLang."
+                ),
+            },
+            {
+                "obligation_id": TARGET_LANGUAGE_ID,
+                "reason_code": (
+                    "ROOT_PRESENCE_RULE_NOT_VALUE_COMPATIBILITY_RULE"
+                ),
+                "reason": (
+                    "The document target-language obligation establishes "
+                    "when root trgLang is present; it does not own value "
+                    "compatibility for an explicit target xml:lang."
+                ),
+            },
+            {
+                "obligation_id": "SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001",
+                "reason_code": "INCIDENTAL_XPATH_CONTEXT_TOKEN",
+                "reason": (
+                    "The ignorable parent limits applicability and does not "
+                    "establish an independent hierarchy rule."
+                ),
+            },
+            {
+                "obligation_id": "SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001",
+                "reason_code": "INCIDENTAL_XPATH_CONTEXT_TOKEN",
+                "reason": (
+                    "The segment parent limits applicability and does not "
+                    "establish an independent hierarchy rule."
+                ),
+            },
+            {
+                "obligation_id": "SAL-XLIFF-CORE-SOURCE-TARGET-OPTIONAL-001",
+                "reason_code": "TRIGGER_DOES_NOT_ESTABLISH_CARDINALITY",
+                "reason": (
+                    "The report applies when a target with xml:lang exists; "
+                    "it does not establish target presence or cardinality."
+                ),
+            },
+        ],
+        "unproposed_rejected_obligations": [
+            {
+                "obligation_id": LANGUAGE_TARGET_ID,
+                "reason_code": (
+                    "EXPLICIT_MATCH_DOES_NOT_ESTABLISH_INHERITANCE"
+                ),
+                "reason": (
+                    "The report checks an explicit target xml:lang value. It "
+                    "does not establish how an omitted value inherits from "
+                    "the enclosing trgLang."
+                ),
+            }
+        ],
+        "sal_fact_ids": ["SAL-XLIFF-6F42212680161FF2"],
+        "authority_reason": (
+            "The XLIFF 2.0 prose requires exact target xml:lang equality "
+            "with root trgLang. The normative XLIFF 2.1 F4T Schematron "
+            "accepts equality or a more-specific target language through "
+            "not(lang($trgLang)); XLIFF 2.1 explicitly gives normative "
+            "separate machine-readable content precedence over conflicting "
+            "display prose. This profile-specific value rule belongs to the "
+            "existing target-language compatibility obligation. Root "
+            "presence, hierarchy, cardinality, generic validation, and "
+            "omitted-value inheritance are separate obligations."
+        ),
+    }
+
+
+def test_target_language_compatibility_is_profile_specific_and_owned_once(
+) -> None:
+    module = _load_module()
+    census = _load_yaml(CENSUS_PATH)
+    candidate = next(
+        row
+        for row in census["candidates"]
+        if row["candidate_id"] == TARGET_LANGUAGE_COMPATIBILITY_CANDIDATE_ID
+    )
+
+    assert candidate["stable_profiles"] == ["xliff_2.1"]
+    assert candidate["candidate_content_sha256"] == (
+        "2f48f02786ace40f8e45306a2622fb031a0650a1004e6d4b316f3dd5ec44ee4d"
+    )
+    occurrence = candidate["occurrences"][0]
+    assert occurrence["member_sha256"] == (
+        "d4275f2d2574f892624bcd8f83bcc3001c75d623e4eb36896d15d147f16ed7a2"
+    )
+    assert occurrence["requirement_sha256"] == (
+        "85279eddf8546a96b332e7a7b5388cb4639d886f2a6a0f7168048ec3e7e483ec"
+    )
+    assert occurrence["occurrence_sha256"] == (
+        "639468d347a85cb3843f43bba0d0bdc9065beda22aee96021cb10f37374137fe"
+    )
+    assert json.loads(occurrence["normalized_requirement"]) == {
+        "context": (
+            "xlf:target[@xml:lang][parent::xlf:segment | "
+            "parent::xlf:ignorable]"
+        ),
+        "kind": "report",
+        "message": (
+            "'xml:lang' attribute of the 'target' element and 'trgLang' "
+            "attribute of the 'xliff' are not matching."
+        ),
+        "test": "not(lang($trgLang))",
+    }
+    assert set(candidate["disposition"]["obligation_ids"]) == {
+        "SAL-XLIFF-CORE-AGENT-VALIDATOR-001",
+        TARGET_LANGUAGE_ID,
+        "SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001",
+        "SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001",
+        "SAL-XLIFF-CORE-SOURCE-TARGET-OPTIONAL-001",
+    }
+
+    decision_source = _load_yaml(DECISIONS_PATH)
+    canonical_decisions = [
+        row
+        for row in decision_source["decisions"]
+        if row["candidate_id"] == TARGET_LANGUAGE_COMPATIBILITY_CANDIDATE_ID
+    ]
+    assert canonical_decisions == [_target_language_compatibility_decision()]
+
+    accepted, evidence = module.validated_obligation_ids_from_paths(
+        adjudications_path=ADJUDICATION_PATH,
+        candidate_census_path=CENSUS_PATH,
+        denominator_path=DENOMINATOR_PATH,
+        sal_store_path=SAL_STORE_PATH,
+        sal_manifest_path=SAL_MANIFEST_PATH,
+        sal_receipt_path=SAL_RECEIPT_PATH,
+    )
+    assert TARGET_LANGUAGE_COMPATIBILITY_ID in accepted
+    assert TARGET_LANGUAGE_ID in accepted
+    assert LANGUAGE_TARGET_ID not in accepted
+    assert "SAL-XLIFF-CORE-SOURCE-TARGET-OPTIONAL-001" not in accepted
+    assert evidence["accepted_obligation_candidate_ids"][
+        TARGET_LANGUAGE_COMPATIBILITY_ID
+    ] == [TARGET_LANGUAGE_COMPATIBILITY_CANDIDATE_ID]
+    assert evidence["decision_count"] == 8
+    assert evidence["verified_disposition_count"] == 8
+    assert evidence["unverified_disposition_count"] == (
+        census["candidate_count"] - 8
+    )
+
+    compiled_decision = next(
+        row
+        for row in _load_yaml(ADJUDICATION_PATH)["decisions"]
+        if row["candidate_id"] == TARGET_LANGUAGE_COMPATIBILITY_CANDIDATE_ID
+    )
+    assert compiled_decision["unproposed_accepted_obligation_ids"] == [
+        TARGET_LANGUAGE_COMPATIBILITY_ID
+    ]
+
+
 def test_source_language_adjudicates_only_document_compatibility_owner() -> None:
     module = _load_module()
     census = _load_yaml(CENSUS_PATH)
@@ -602,10 +771,11 @@ def test_source_language_adjudicates_only_document_compatibility_owner() -> None
     assert evidence["accepted_obligation_candidate_ids"][SOURCE_LANGUAGE_ID] == [
         SOURCE_LANGUAGE_CANDIDATE_ID
     ]
-    assert evidence["decision_count"] == 7
-    assert evidence["verified_disposition_count"] == 7
+    decision_count = _canonical_decision_count()
+    assert evidence["decision_count"] == decision_count
+    assert evidence["verified_disposition_count"] == decision_count
     assert evidence["unverified_disposition_count"] == (
-        census["candidate_count"] - 7
+        census["candidate_count"] - decision_count
     )
 
 

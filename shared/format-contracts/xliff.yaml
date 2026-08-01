@@ -7,7 +7,7 @@ contract_metadata:
   - .xliff
   - .xlf
   family: xml_localization
-  target_spec_version: XLIFF 2.1 OASIS Standard
+  target_spec_version: XLIFF 2.1
   source_authority_status: AUTHORITATIVE
   generator_version: fcl-compiler/1.0.0
   lifecycle_status: DRAFT
@@ -16,12 +16,14 @@ contract_metadata:
   input_digests:
     authority_lock_impl_sha256: 3295565e37b8a5ff47a6e05aa8b49b70bb8574171bbe2e7ba9362f344e20012c
     authority_lock_schema_sha256: a8b860f4bef1ceae1b9dd6348c29cc99b35f2bde2dca032217398bddb061f913
-    authority_lock_sha256: 8eefb28e3ef24b5b533496b54860daee981853d9c872fddc1ba5de4ff150f249
-    authority_materializer_sha256: 3c7cb9ba0b4c2fb87c32281a6d6c596aec8fc6c69663a8a873927755332da7c9
-    authority_runtime_sha256: 63e054c159f7e281fa12ef78a7de1af573606f74097ed398e662040e99f21682
+    authority_lock_sha256: 5c1ac942018f1e26e0fc0ca7c8284313452d1cb44c04d7e225faad4b21219929
+    authority_materializer_sha256: b730b8f700aec1460fcd48ef2e849e7e1b2798f7849de8c37c5c15943c204f58
+    authority_runtime_sha256: a24f0834bc99cc2758e2b70201ce1d28039c11a057688f95f5a1f6c29ea23a15
+    authority_src_xlf_001_sha256: ca9fc68111b127e9bc035c3654400f27256c5fdf40b99cc34056f4f4e8b2cf21
     authority_src_xlf_002_sha256: ade8447a4b7213e6996ee128b8757c98be248bfb812b0b22e89d0f878f776224
     authority_src_xlf_003_sha256: fde62d8a1310e9cac9608e44530d2cd4b23cd67386f0a9fe64a9ff79eb54b893
     authority_src_xliff_001_sha256: fdd293f4344920dfde643c578caca94da80261dc74f75baba7215da6e6d10bc1
+    authority_src_xliff_003_sha256: 4b19c8d7c878c34b5422310f340abf099dedccf968c0a3c145548d3a691da7c2
     canonical_io_impl_sha256: aca19b1319bf7304d5136fd6c9d729cb50b22d8a23a17ca9314fdb0c58cc164d
     contract_compiler_impl_sha256: e98ad15504ab1d338f114e21c9909b2eb5af9699961c0621da964bb59403dc67
     contract_stores_impl_sha256: cd120c7990a37b0f913a2b59e81ab28fdf7b3d50897e38d78cb20fc9e0823f7a
@@ -31,8 +33,8 @@ contract_metadata:
     product_requirements_sha256: fde62d8a1310e9cac9608e44530d2cd4b23cd67386f0a9fe64a9ff79eb54b893
     qname_registry_sha256: b1d86cceffe18233a731a2216be51a74fe1690f3c6d89fda64c92690598fe8ba
     research_intake_impl_sha256: 4c7d3bfd69e7e5a74a9db2483d25b062e11cfdcb6609637b0343dfa8d3cd0579
-    research_sha256: c6b7b60a45b87575f94b00a4ef2685ff69ca627ce87ca760fd4dea7d4bcd7371
-    sal_facts_sha256: d0856a8c662242b64b094fb73b6e865195e43c138a03b144cb87a9b741d8a941
+    research_sha256: dd77e911133d83d299cb18a539248be15b99c24cbdc3df141fadbb1f2694421b
+    sal_facts_sha256: 0f55a87a818909d48479616e4a93a93d98e800878c1caa50bebf1ebebc43637b
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
     source_researcher_impl_sha256: 4367e7591a368bcbc6a01199a7eb6da0f569ccc5c706d6650cdd96db0b7083a3
 format_identity:
@@ -42,8 +44,8 @@ format_identity:
       resolver.
   data_model_type: xml
   description: 'XLIFF (XML Localisation Interchange File Format): XML localization-interchange standard
-    (OASIS XLIFF 2.1 OASIS Standard). Source/target text units with inline codes, segmentation, annotations,
-    and optional modules, exchanged across translation tools and workflows.'
+    (OASIS XLIFF 2.1). Source/target text units with inline codes, segmentation, annotations, and optional
+    modules, exchanged across translation tools and workflows.'
   primary_use_cases:
   - Extract translatable content, translate, and merge back without corrupting the original format
   - Segment, annotate, and track translation state across tool chains
@@ -56,15 +58,6 @@ authoritative_sources:
   local_path: .local/format-contracts/acquired/xliff/src-xlf-001.bin
   canonical_url: https://docs.oasis-open.org/xliff/xliff-core/v2.0/os/xliff-core-v2.0-os.zip
   content_hash: aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055
-  authority_class: AUTHORITATIVE
-  acquisition_status: ACQUIRED
-- title: OASIS XLIFF 2.0 Standard prose specification
-  source_id: SRC-XLIFF-003
-  organization: OASIS
-  version: XLIFF 2.0 OASIS Standard
-  local_path: .local/format-contracts/acquired/xliff/src-xliff-003.bin
-  canonical_url: null
-  content_hash: 4b19c8d7c878c34b5422310f340abf099dedccf968c0a3c145548d3a691da7c2
   authority_class: AUTHORITATIVE
   acquisition_status: ACQUIRED
 - title: OASIS XLIFF 2.1 Standard release package
@@ -232,6 +225,8 @@ capabilities:
   - SAL-XLIFF-00019
   - SAL-XLIFF-00023
   - SAL-XLIFF-00024
+  - SAL-XLIFF-39A807E74F92A266
+  - SAL-XLIFF-6F42212680161FF2
   - RF-XLF-00001
   required_behavior:
   - Model the full core hierarchy with tree order, IDs, references, inheritance, and scope preserved through
@@ -268,6 +263,13 @@ capabilities:
   - (XLIFF 2.1 Size and Length Restriction module) The Size and Length Restriction module uses namespace
     urn:oasis:names:tc:xliff:sizerestriction:2.0 and defines profiles, normalization, data, and restriction
     attributes including sizeRestriction and storageRestriction.
+  - (XLIFF 2.1 Core source language compatibility) An explicit xml:lang value on a source child of segment
+    or ignorable must satisfy the enclosing xliff srcLang. XLIFF 2.1 accepts exact and more-specific language
+    tags and reports incompatible values.
+  - (XLIFF Core target language compatibility) An explicit xml:lang value on a target child of segment
+    or ignorable must satisfy the enclosing xliff trgLang. XLIFF 2.0 requires exact equality; the normative
+    XLIFF 2.1 F4T Schematron accepts exact and more-specific language tags and reports incompatible or
+    reverse-specific values.
   depth_required: 4
   depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
     per L30 schema.'
@@ -426,6 +428,8 @@ capabilities:
   - SAL-XLIFF-00029
   - SAL-XLIFF-00030
   - SAL-XLIFF-10A6F1FB1C146A18
+  - SAL-XLIFF-39A807E74F92A266
+  - SAL-XLIFF-6F42212680161FF2
   required_behavior:
   - Recognize supported version namespaces, validate namespace/version consistency, and preserve custom
     extension namespaces and attributes.
@@ -508,6 +512,13 @@ capabilities:
     artifact.'
   - (schemas/xliff_core_2.1.xsd) The XLIFF 2.1 core XSD defines namespace-qualified XML element syntax
     for the core document vocabulary in urn:oasis:names:tc:xliff:document:2.0.
+  - (XLIFF 2.1 Core source language compatibility) An explicit xml:lang value on a source child of segment
+    or ignorable must satisfy the enclosing xliff srcLang. XLIFF 2.1 accepts exact and more-specific language
+    tags and reports incompatible values.
+  - (XLIFF Core target language compatibility) An explicit xml:lang value on a target child of segment
+    or ignorable must satisfy the enclosing xliff trgLang. XLIFF 2.0 requires exact equality; the normative
+    XLIFF 2.1 F4T Schematron accepts exact and more-specific language tags and reports incompatible or
+    reverse-specific values.
   depth_required: 2
   depth_rationale: 'MUST parse capability: family depth floor 2, finding hints applied; depth scale 0-8
     per L30 schema.'
@@ -555,9 +566,15 @@ capabilities:
     errors.
   provenance:
   - POL-XLC-QA-01
+  - SAL-XLIFF-6F42212680161FF2
   required_behavior:
   - Provide pluggable QA checks (missing/unchanged targets, placeholder mismatches, drift, length, consistency)
     reported separately from conformance diagnostics.
+  normative_rules:
+  - (XLIFF Core target language compatibility) An explicit xml:lang value on a target child of segment
+    or ignorable must satisfy the enclosing xliff trgLang. XLIFF 2.0 requires exact equality; the normative
+    XLIFF 2.1 F4T Schematron accepts exact and more-specific language tags and reports incompatible or
+    reverse-specific values.
   depth_required: 5
   depth_rationale: 'SHOULD validate capability: family depth floor 5, finding hints applied; depth scale
     0-8 per L30 schema.'
@@ -611,6 +628,8 @@ capabilities:
   - SAL-XLIFF-00002
   - SAL-XLIFF-00018
   - SAL-XLIFF-00019
+  - SAL-XLIFF-39A807E74F92A266
+  - SAL-XLIFF-6F42212680161FF2
   - RF-XLF-00004
   required_behavior:
   - Split and join segments maintaining IDs, state, inline-code validity, annotations, and references;
@@ -625,6 +644,13 @@ capabilities:
     a target child.
   - (XLIFF core - segment and ignorable) unit elements contain segment and ignorable elements whose source
     children carry translatable text and whose target children carry translations
+  - (XLIFF 2.1 Core source language compatibility) An explicit xml:lang value on a source child of segment
+    or ignorable must satisfy the enclosing xliff srcLang. XLIFF 2.1 accepts exact and more-specific language
+    tags and reports incompatible values.
+  - (XLIFF Core target language compatibility) An explicit xml:lang value on a target child of segment
+    or ignorable must satisfy the enclosing xliff trgLang. XLIFF 2.0 requires exact equality; the normative
+    XLIFF 2.1 F4T Schematron accepts exact and more-specific language tags and reports incompatible or
+    reverse-specific values.
   depth_required: 5
   depth_rationale: 'MUST transform capability: family depth floor 4, finding hints applied; depth scale
     0-8 per L30 schema.'
@@ -677,6 +703,8 @@ capabilities:
   - SAL-XLIFF-00021
   - SAL-XLIFF-00025
   - SAL-XLIFF-00028
+  - SAL-XLIFF-39A807E74F92A266
+  - SAL-XLIFF-6F42212680161FF2
   required_behavior:
   - Edit source/target with inline-code positions preserved; expose plain-text and token-aware projections;
     support target creation from source with explicit code-copy policy.
@@ -707,6 +735,13 @@ capabilities:
   - (XLIFF 2.1 normative schema inventory) The official XLIFF 2.1 schema bundle contains exactly nine
     first-party module XSDs covering Format Style, Glossary, ITS, ITS mapping, Translation Candidates,
     Metadata, Resource Data, Size and Length Restriction, and Validation.
+  - (XLIFF 2.1 Core source language compatibility) An explicit xml:lang value on a source child of segment
+    or ignorable must satisfy the enclosing xliff srcLang. XLIFF 2.1 accepts exact and more-specific language
+    tags and reports incompatible values.
+  - (XLIFF Core target language compatibility) An explicit xml:lang value on a target child of segment
+    or ignorable must satisfy the enclosing xliff trgLang. XLIFF 2.0 requires exact equality; the normative
+    XLIFF 2.1 F4T Schematron accepts exact and more-specific language tags and reports incompatible or
+    reverse-specific values.
   depth_required: 4
   depth_rationale: 'MUST edit capability: family depth floor 4, finding hints applied; depth scale 0-8
     per L30 schema.'
@@ -734,6 +769,8 @@ capabilities:
   - SAL-XLIFF-00028
   - SAL-XLIFF-00029
   - SAL-XLIFF-00030
+  - SAL-XLIFF-39A807E74F92A266
+  - SAL-XLIFF-6F42212680161FF2
   - RF-XLF-00005
   required_behavior:
   - Validate schema plus semantic constraints not expressible in schema (IDs, references, pairing, source/target
@@ -767,6 +804,13 @@ capabilities:
   - '(XLIFF 2.1 advanced validation artifacts) XLIFF 2.1 validation is layered: the release package supplies
     the core XSD, a core Schematron, module XSDs and Schematrons, and an NVDL advanced-validation dispatch
     artifact.'
+  - (XLIFF 2.1 Core source language compatibility) An explicit xml:lang value on a source child of segment
+    or ignorable must satisfy the enclosing xliff srcLang. XLIFF 2.1 accepts exact and more-specific language
+    tags and reports incompatible values.
+  - (XLIFF Core target language compatibility) An explicit xml:lang value on a target child of segment
+    or ignorable must satisfy the enclosing xliff trgLang. XLIFF 2.0 requires exact equality; the normative
+    XLIFF 2.1 F4T Schematron accepts exact and more-specific language tags and reports incompatible or
+    reverse-specific values.
   depth_required: 5
   depth_rationale: 'MUST validate capability: family depth floor 5, finding hints applied; depth scale
     0-8 per L30 schema.'
@@ -947,6 +991,8 @@ coverage_map:
   - SAL-XLIFF-00019
   - SAL-XLIFF-00023
   - SAL-XLIFF-00024
+  - SAL-XLIFF-39A807E74F92A266
+  - SAL-XLIFF-6F42212680161FF2
   - RF-XLF-00001
 - capability_id: XLIFF-MODULE-001
   provenance:
@@ -1008,6 +1054,8 @@ coverage_map:
   - SAL-XLIFF-00029
   - SAL-XLIFF-00030
   - SAL-XLIFF-10A6F1FB1C146A18
+  - SAL-XLIFF-39A807E74F92A266
+  - SAL-XLIFF-6F42212680161FF2
 - capability_id: XLIFF-PRESERVE-001
   provenance:
   - POL-SLC-PRESERVE-01
@@ -1017,6 +1065,7 @@ coverage_map:
 - capability_id: XLIFF-QA-001
   provenance:
   - POL-XLC-QA-01
+  - SAL-XLIFF-6F42212680161FF2
 - capability_id: XLIFF-SEC-001
   provenance:
   - POL-SLC-SEC-01
@@ -1030,6 +1079,8 @@ coverage_map:
   - SAL-XLIFF-00002
   - SAL-XLIFF-00018
   - SAL-XLIFF-00019
+  - SAL-XLIFF-39A807E74F92A266
+  - SAL-XLIFF-6F42212680161FF2
   - RF-XLF-00004
 - capability_id: XLIFF-STATE-001
   provenance:
@@ -1048,6 +1099,8 @@ coverage_map:
   - SAL-XLIFF-00021
   - SAL-XLIFF-00025
   - SAL-XLIFF-00028
+  - SAL-XLIFF-39A807E74F92A266
+  - SAL-XLIFF-6F42212680161FF2
 - capability_id: XLIFF-VALIDATE-001
   provenance:
   - POL-XLC-VALIDATE-01
@@ -1060,6 +1113,8 @@ coverage_map:
   - SAL-XLIFF-00028
   - SAL-XLIFF-00029
   - SAL-XLIFF-00030
+  - SAL-XLIFF-39A807E74F92A266
+  - SAL-XLIFF-6F42212680161FF2
   - RF-XLF-00005
 - capability_id: XLIFF-WRITE-001
   provenance:

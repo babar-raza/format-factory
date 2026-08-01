@@ -7,22 +7,23 @@ generated_by: codex
 format_id: xliff
 candidate_census_sha256: 9f10464e14c55a36ee1e54a5d12d04e8e23f19d2cb94d7c0c732cb40861db4b7
 denominator_sha256: 86a4f2cdc6e4a341eba2a3cbb6fcc8119883d1cda64d056198c7c34b7fa880b7
-sal_store_sha256: f81ad26d1497c13b3b434c57d20ffc94f564c39fee3fa540a87267499689fb3e
-sal_manifest_sha256: 368286fbb6a6ddc62b8371b40e164f5657878ec13f7330f6dca98b54ae2355f5
-sal_receipt_sha256: ee66b8e14471d35d205e9e1665f10880fe65d0bcaf299554aff53fbdd1aaca09
+sal_store_sha256: 0f55a87a818909d48479616e4a93a93d98e800878c1caa50bebf1ebebc43637b
+sal_manifest_sha256: a83e62b532801fd9e9b8fe95d94494903314b51be240cdbcc6b2a76de132c906
+sal_receipt_sha256: f5cab24f25bb0086d4795f1ef9b73a367dab4b1ceef3a5d3642ad376fe8e4921
 adjudicator_sha256: 240ca789f93c81e94f32852399ce7ae225377516ee46dbfe2e568347ae00db05
 candidate_census_artifact_id: FF6-XLIFF-CORE-AUTHORITY-CANDIDATE-CENSUS
 denominator_artifact_id: FF6-XLIFF-CORE-OBLIGATION-DENOMINATOR
 candidate_count: 1130
-decision_count: 7
-verified_disposition_count: 7
-unverified_disposition_count: 1123
+decision_count: 8
+verified_disposition_count: 8
+unverified_disposition_count: 1122
 disposition_verification_complete: false
 verified_candidate_ids:
 - XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
 - XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92
 - XLF-CAND-CORE-SCHEMATRON-100732DB0BBED389
 - XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF
+- XLF-CAND-CORE-SCHEMATRON-5D563A565DC6DCFE
 - XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E
 - XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73
 - XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90
@@ -39,6 +40,8 @@ accepted_obligation_candidate_ids:
   SAL-XLIFF-CORE-REFERENCE-SKELETON-HREF-001:
   - XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92
   - XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E
+  SAL-XLIFF-CORE-TARGET-LANGUAGE-001:
+  - XLF-CAND-CORE-SCHEMATRON-5D563A565DC6DCFE
 decisions:
 - decision_id: XLF-ADJ-CORE-SCHEMATRON-0002
   candidate_id: XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
@@ -213,6 +216,65 @@ decisions:
     are downstream or broader than the direct inline-pairing semantic owner.
   outcome: VERIFIED_AUTHORITY_DISPOSITION
   decision_sha256: 87e4824decda42a25d883001556220974c7da28eaa7ca55823e0fb4931863454
+- decision_id: XLF-ADJ-CORE-SCHEMATRON-0008
+  candidate_id: XLF-CAND-CORE-SCHEMATRON-5D563A565DC6DCFE
+  candidate_content_sha256: 2f48f02786ace40f8e45306a2622fb031a0650a1004e6d4b316f3dd5ec44ee4d
+  proposal_sha256: e332b6b112532124aa94334524c764e24ad8d58f0a7dae78a4f55be281c6d521
+  proposed_obligation_ids:
+  - SAL-XLIFF-CORE-AGENT-VALIDATOR-001
+  - SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001
+  - SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001
+  - SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001
+  - SAL-XLIFF-CORE-SOURCE-TARGET-OPTIONAL-001
+  authority_occurrences:
+  - profile: xliff_2.1
+    source_id: SRC-XLF-002
+    source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    member: schemas/xliff_core_2.1.sch
+    member_sha256: d4275f2d2574f892624bcd8f83bcc3001c75d623e4eb36896d15d147f16ed7a2
+    location: schematron/rule[14]/report[1]
+    occurrence_sha256: 639468d347a85cb3843f43bba0d0bdc9065beda22aee96021cb10f37374137fe
+  accepted_obligation_ids:
+  - SAL-XLIFF-CORE-TARGET-LANGUAGE-001
+  unproposed_accepted_obligation_ids:
+  - SAL-XLIFF-CORE-TARGET-LANGUAGE-001
+  rejected_obligations:
+  - obligation_id: SAL-XLIFF-CORE-AGENT-VALIDATOR-001
+    reason_code: DOWNSTREAM_CAPABILITY_NOT_DIRECT_SEMANTIC_OWNER
+    reason: A conforming validator enforces this report, but the report directly establishes target-language
+      compatibility with the document trgLang.
+  - obligation_id: SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001
+    reason_code: ROOT_PRESENCE_RULE_NOT_VALUE_COMPATIBILITY_RULE
+    reason: The document target-language obligation establishes when root trgLang is present; it does
+      not own value compatibility for an explicit target xml:lang.
+  - obligation_id: SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001
+    reason_code: INCIDENTAL_XPATH_CONTEXT_TOKEN
+    reason: The ignorable parent limits applicability and does not establish an independent hierarchy
+      rule.
+  - obligation_id: SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001
+    reason_code: INCIDENTAL_XPATH_CONTEXT_TOKEN
+    reason: The segment parent limits applicability and does not establish an independent hierarchy rule.
+  - obligation_id: SAL-XLIFF-CORE-SOURCE-TARGET-OPTIONAL-001
+    reason_code: TRIGGER_DOES_NOT_ESTABLISH_CARDINALITY
+    reason: The report applies when a target with xml:lang exists; it does not establish target presence
+      or cardinality.
+  sal_proofs:
+  - fact_id: SAL-XLIFF-6F42212680161FF2
+    claim_sha256: 58d596ba8f128aff5f901e483661314a1a70ef8114e67115a7346aa33f6e22c2
+    fact_proof_sha256: d34684502ae62f211ca59fba60d947421fac3aa7bf436ae55efd3f209862fe14
+  authority_reason: The XLIFF 2.0 prose requires exact target xml:lang equality with root trgLang. The
+    normative XLIFF 2.1 F4T Schematron accepts equality or a more-specific target language through not(lang($trgLang));
+    XLIFF 2.1 explicitly gives normative separate machine-readable content precedence over conflicting
+    display prose. This profile-specific value rule belongs to the existing target-language compatibility
+    obligation. Root presence, hierarchy, cardinality, generic validation, and omitted-value inheritance
+    are separate obligations.
+  outcome: VERIFIED_AUTHORITY_DISPOSITION
+  unproposed_rejected_obligations:
+  - obligation_id: SAL-XLIFF-CORE-LANGUAGE-TARGET-001
+    reason_code: EXPLICIT_MATCH_DOES_NOT_ESTABLISH_INHERITANCE
+    reason: The report checks an explicit target xml:lang value. It does not establish how an omitted
+      value inherits from the enclosing trgLang.
+  decision_sha256: 93dd097010ceb3f5c0699336a1089ad7b1013293e524aede4040a3de48e1356e
 - decision_id: XLF-ADJ-CORE-SCHEMATRON-0005
   candidate_id: XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E
   candidate_content_sha256: af94362009857b0fdd3d19881cd2c8d1866e4f5a72849ec1edf057baf7e905a1
@@ -354,5 +416,5 @@ decisions:
 status: PARTIAL_VERIFIED
 truth_boundary: Only listed content-addressed decisions are verified. Generated candidate proposals remain
   non-promoting, and this partial artifact does not complete XLF-04.
-input_closure_sha256: d39c2274926860c42f2cab921de76bcd91246135391e44eeb646a7d44c371bff
-decision_set_sha256: 9e427d2eb35f5fa557f5e869f127684a0975eb1fb66d17c049197ece0c9b1103
+input_closure_sha256: 37966c493bd37a49f980962c2a3ff565125aeb05d1c50eec02757f6280325d8d
+decision_set_sha256: 40baebef501f2369f7d19546509c44272d3e9d1df4dbc0eb62429041e4e1c417

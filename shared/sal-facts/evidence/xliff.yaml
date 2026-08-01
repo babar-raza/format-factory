@@ -18,6 +18,10 @@ targets:
     source_id: SRC-XLF-002
     member: xliff-core-v2.1-os.xml
     member_sha256: e8c72ec2314e1025f25886cd0ea2b6c10aa2405bd292026383afca2207c44e5b
+  specification_2_0:
+    source_id: SRC-XLF-001
+    member: xliff-core-v2.0-os.xml
+    member_sha256: 07059d426de1e839540e5e84e0e061c4a6d5ef1a1b7e71ddf75bf5bd11518b73
   core:
     source_id: SRC-XLF-002
     member: schemas/xliff_core_2.0.xsd
@@ -899,3 +903,86 @@ facts:
       'srcLang', but not vice versa. i.e. 'srcLang="en"/xml:lang="en-ie"' is
       a valid pair.
     namespaces: *sch_namespaces
+- fact_id: SAL-XLIFF-6F42212680161FF2
+  claim_sha256: 58d596ba8f128aff5f901e483661314a1a70ef8114e67115a7346aa33f6e22c2
+  assertions:
+  - assertion_id: target-language-20-exact-prose-rule
+    target: specification_2_0
+    kind: xml_xpath_text_contains
+    xpath: .
+    expected: >-
+      When a <target> element is a child of <segment> or <ignorable> , the
+      explicit or inherited value of the optional xml:lang must be equal to
+      the value of the trgLang attribute of the enclosing <xliff> element.
+  - assertion_id: target-language-21-exact-display-prose-rule
+    target: specification
+    kind: xml_xpath_text_contains
+    xpath: .
+    expected: >-
+      When a <target> element is a child of <segment> or <ignorable> , the
+      explicit or inherited value of the optional xml:lang must be equal to
+      the value of the trgLang attribute of the enclosing <xliff> element.
+  - assertion_id: target-language-rule-context
+    target: core_schematron
+    kind: xml_xpath_attributes_equal
+    xpath: ".//sch:pattern[@id='F4T']/sch:rule"
+    attribute: context
+    expected:
+    - "xlf:target[@xml:lang][parent::xlf:segment | parent::xlf:ignorable]"
+    namespaces: *sch_namespaces
+  - assertion_id: target-language-root-lookup
+    target: core_schematron
+    kind: xml_xpath_attributes_equal
+    xpath: ".//sch:pattern[@id='F4T']/sch:rule/sch:let[@name='trgLang']"
+    attribute: value
+    expected: [/xlf:xliff/@trgLang]
+    namespaces: *sch_namespaces
+  - assertion_id: target-language-report-test
+    target: core_schematron
+    kind: xml_xpath_attributes_equal
+    xpath: ".//sch:pattern[@id='F4T']/sch:rule/sch:report"
+    attribute: test
+    expected: [not(lang($trgLang))]
+    namespaces: *sch_namespaces
+  - assertion_id: target-language-report-message
+    target: core_schematron
+    kind: xml_xpath_text_contains
+    xpath: ".//sch:pattern[@id='F4T']/sch:rule/sch:report"
+    expected: >-
+      'xml:lang' attribute of the 'target' element and 'trgLang' attribute of
+      the 'xliff' are not matching.
+    namespaces: *sch_namespaces
+  - assertion_id: target-language-display-title
+    target: core_schematron
+    kind: xml_xpath_text_contains
+    xpath: ".//sch:pattern[@id='F4T']/sch:title"
+    expected: >-
+      When a 'target' element is a child of 'segment' or 'ignorable', the
+      explicit or inherited value of the optional xml:lang must be equal to
+      the value of the trgLang attribute of the enclosing 'xliff' element
+    namespaces: *sch_namespaces
+  - assertion_id: target-language-more-specific-tag-rule
+    target: core_schematron
+    kind: xml_xpath_text_contains
+    xpath: ".//sch:pattern[@id='F4T']/sch:p"
+    expected: >-
+      This rule does not rais an error if 'xml:lang' is a subcategory of
+      'trgLang', but not vice versa. i.e. 'trgLang="en"/xml:lang="en-ie"' is
+      a valid pair.
+    namespaces: *sch_namespaces
+  - assertion_id: validation-artifacts-are-normative
+    target: specification
+    kind: xml_xpath_text_contains
+    xpath: .
+    expected: >-
+      Schema and other validation artifacts listings (the corresponding
+      artifacts are normative, not their listings).
+  - assertion_id: machine-readable-content-precedence
+    target: specification
+    kind: text_contains
+    expected: >-
+      for any machine-readable content (aka Computer Language Definitions)
+      declared Normative for this Work Product that is provided in separate
+      plain text files, in the event of a discrepancy between any such plain
+      text file and display content in the Work Product's prose narrative
+      document(s), the content in the separate plain text file prevails.
