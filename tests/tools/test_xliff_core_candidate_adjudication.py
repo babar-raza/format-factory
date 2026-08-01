@@ -53,6 +53,9 @@ SUBFLOW_PAIR_RECIPROCAL_CANDIDATE_ID = (
 INLINE_PC_ID = "SAL-XLIFF-CORE-INLINE-PC-001"
 INLINE_PAIRING_ID = "SAL-XLIFF-CORE-INLINE-PAIRING-001"
 SKELETON_CANDIDATE_ID = "XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92"
+SKELETON_RECIPROCAL_CANDIDATE_ID = (
+    "XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E"
+)
 SKELETON_REFERENCE_ID = "SAL-XLIFF-CORE-REFERENCE-SKELETON-HREF-001"
 SKELETON_HIERARCHY_ID = "SAL-XLIFF-CORE-HIERARCHY-SKELETON-001"
 REJECTED_PROPOSAL_IDS = {
@@ -355,10 +358,10 @@ def test_subflow_pair_adjudication_requires_both_reciprocal_decisions() -> None:
             SUBFLOW_PAIR_RECIPROCAL_CANDIDATE_ID,
         ]
     )
-    assert evidence["decision_count"] == 4
-    assert evidence["verified_disposition_count"] == 4
+    assert evidence["decision_count"] == 5
+    assert evidence["verified_disposition_count"] == 5
     assert evidence["unverified_disposition_count"] == (
-        census["candidate_count"] - 4
+        census["candidate_count"] - 5
     )
 
 
@@ -400,6 +403,20 @@ def _skeleton_decision() -> dict[str, Any]:
             "broader hierarchy obligation."
         ),
     }
+
+
+def _skeleton_reciprocal_decision() -> dict[str, Any]:
+    decision = _skeleton_decision()
+    decision["decision_id"] = "XLF-ADJ-CORE-SCHEMATRON-0005"
+    decision["candidate_id"] = SKELETON_RECIPROCAL_CANDIDATE_ID
+    decision["authority_reason"] = (
+        "The exact report rejects a skeleton that combines href with child "
+        "content. Its direct semantic owner is the existing skeleton "
+        "href/content reference obligation; validator behavior is downstream "
+        "and element context alone does not establish the broader hierarchy "
+        "obligation."
+    )
+    return decision
 
 
 def test_skeleton_href_adjudication_records_incidental_unproposed_owner() -> None:
@@ -481,11 +498,13 @@ def test_skeleton_href_adjudication_records_incidental_unproposed_owner() -> Non
     assert SKELETON_HIERARCHY_ID not in accepted
     assert evidence["accepted_obligation_candidate_ids"][
         SKELETON_REFERENCE_ID
-    ] == [SKELETON_CANDIDATE_ID]
-    assert evidence["decision_count"] == 4
-    assert evidence["verified_disposition_count"] == 4
+    ] == sorted(
+        [SKELETON_CANDIDATE_ID, SKELETON_RECIPROCAL_CANDIDATE_ID]
+    )
+    assert evidence["decision_count"] == 5
+    assert evidence["verified_disposition_count"] == 5
     assert evidence["unverified_disposition_count"] == (
-        census["candidate_count"] - 4
+        census["candidate_count"] - 5
     )
 
 
@@ -527,6 +546,86 @@ def test_skeleton_unproposed_rejections_fail_closed(mutation: str) -> None:
             sal_receipt_sha256=_sha256(SAL_RECEIPT_PATH),
             decisions=[decision],
         )
+
+
+def test_skeleton_href_obligation_requires_both_reciprocal_reports() -> None:
+    module = _load_module()
+    census = _load_yaml(CENSUS_PATH)
+    candidates = {
+        row["candidate_id"]: row
+        for row in census["candidates"]
+    }
+    selected_rule = json.loads(
+        candidates[SKELETON_CANDIDATE_ID]["occurrences"][0][
+            "normalized_requirement"
+        ]
+    )
+    reciprocal_rule = json.loads(
+        candidates[SKELETON_RECIPROCAL_CANDIDATE_ID]["occurrences"][0][
+            "normalized_requirement"
+        ]
+    )
+    assert selected_rule == {
+        "context": "xlf:skeleton",
+        "kind": "report",
+        "message": (
+            "'skeleton' element must not be empty when the 'href' attribute "
+            "is missing."
+        ),
+        "test": "not(@href) and not(child::node())",
+    }
+    assert reciprocal_rule == {
+        "context": "xlf:skeleton",
+        "kind": "report",
+        "message": (
+            "'skeleton' element must be empty when containing 'href' "
+            "attribute."
+        ),
+        "test": "@href and  child::node()",
+    }
+
+    decision_source = _load_yaml(DECISIONS_PATH)
+    decisions = [
+        row
+        for row in decision_source["decisions"]
+        if row["candidate_id"]
+        in {
+            SKELETON_CANDIDATE_ID,
+            SKELETON_RECIPROCAL_CANDIDATE_ID,
+        }
+    ]
+    assert len(decisions) == 2, (
+        "the skeleton href/content biconditional requires one independent "
+        "decision for each exact reciprocal Schematron report"
+    )
+    expected_decisions = {
+        SKELETON_CANDIDATE_ID: _skeleton_decision(),
+        SKELETON_RECIPROCAL_CANDIDATE_ID:
+            _skeleton_reciprocal_decision(),
+    }
+    for decision in decisions:
+        assert decision == expected_decisions[decision["candidate_id"]]
+
+    accepted, evidence = module.validated_obligation_ids_from_paths(
+        adjudications_path=ADJUDICATION_PATH,
+        candidate_census_path=CENSUS_PATH,
+        denominator_path=DENOMINATOR_PATH,
+        sal_store_path=SAL_STORE_PATH,
+        sal_manifest_path=SAL_MANIFEST_PATH,
+        sal_receipt_path=SAL_RECEIPT_PATH,
+    )
+    assert accepted >= {SKELETON_REFERENCE_ID}
+    assert SKELETON_HIERARCHY_ID not in accepted
+    assert evidence["accepted_obligation_candidate_ids"][
+        SKELETON_REFERENCE_ID
+    ] == sorted(
+        [SKELETON_CANDIDATE_ID, SKELETON_RECIPROCAL_CANDIDATE_ID]
+    )
+    assert evidence["decision_count"] == 5
+    assert evidence["verified_disposition_count"] == 5
+    assert evidence["unverified_disposition_count"] == (
+        census["candidate_count"] - 5
+    )
 
 
 def test_generated_proposal_never_counts_as_verified_without_adjudication() -> None:

@@ -818,7 +818,7 @@ obligations:
   - xliff_2.1
   owner: core:references
   category: identifiers_references_inheritance
-  normalized_rule: When href is absent, require the skeleton element to contain non-empty embedded content.
+  normalized_rule: 'Require exactly one of the skeleton href attribute and non-empty embedded child content: embedded content is present if and only if href is absent.'
   requirement_class: SEMANTIC_CONSTRAINT
   normative_level: MUST
   authority_locations:
@@ -845,12 +845,15 @@ obligations:
   evidence_requirements:
     positive:
     - accept a skeleton without href when it contains embedded content
+    - accept a skeleton with href when it has no child content
     rejection:
     - reject an empty skeleton when href is absent
-  interpretation_note: Independent adjudication XLF-ADJ-CORE-SCHEMATRON-0004 and verified SAL fact SAL-XLIFF-00017 establish the no-href direction of the skeleton reference rule. The identical normative skeleton paragraph is independently located and hashed in both pinned stable authorities; XLIFF 2.0 applicability is not inferred from the 2.1 Schematron. The candidate does not establish generic validator behavior or skeleton hierarchy/cardinality.
+    - reject a skeleton that combines href with child content
+  interpretation_note: Independent adjudications XLF-ADJ-CORE-SCHEMATRON-0004 and XLF-ADJ-CORE-SCHEMATRON-0005 plus verified SAL fact SAL-XLIFF-00017 establish both directions of the skeleton href/content rule. The identical normative skeleton paragraph is independently located and hashed in both pinned stable authorities; XLIFF 2.0 applicability is not inferred from the 2.1 Schematron. The two candidates do not establish generic validator behavior or skeleton hierarchy/cardinality.
   verification_status: SOURCE_BOUND_UNVERIFIED
   adjudication_candidate_ids:
   - XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92
+  - XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E
 - obligation_id: SAL-XLIFF-CORE-ROUNDTRIP-SEMANTIC-001
   obligation_basis: PRODUCTION_POLICY
   conformance_effect: PRODUCTION_PROFILE_ONLY
@@ -1279,16 +1282,17 @@ obligations:
 truth_boundary: XLIFF specification obligations and production-policy duties are separate authority classes. Neither source binding nor category presence turns the 36 coarse XLF-03 anchors into complete Core semantics, product source, or certification.
 adjudication_input:
   artifact_id: FF6-XLIFF-CORE-CANDIDATE-ADJUDICATIONS
-  artifact_sha256: 6d94628a2d70490493156cece2a9e146bd8b90b62f3919645e09d92d860edbd0
+  artifact_sha256: 835ec56346e9bd6ebda8946c4e3fc1e16a510c80e54f1a96b2445e1436616ec1
   input_closure_sha256: 4d693ecea4e0881e776191d6c960a91c0d4c840717cc8267c6c014c164a415dc
-  decision_set_sha256: 2df1907ce20f5a22385bae5a532d0a1f20701bd7cc658c1b6f384e7ea0f69218
-  decision_count: 4
-  verified_disposition_count: 4
-  unverified_disposition_count: 1126
+  decision_set_sha256: 66bf2ae92e9d9fc6c8a58f5e90e7211c29a6fe5ed221288d8ede747af5a16bd3
+  decision_count: 5
+  verified_disposition_count: 5
+  unverified_disposition_count: 1125
   verified_candidate_ids:
   - XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
   - XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92
   - XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF
+  - XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E
   - XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90
   accepted_obligation_candidate_ids:
     SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001:
@@ -1298,4 +1302,5 @@ adjudication_input:
     - XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF
     SAL-XLIFF-CORE-REFERENCE-SKELETON-HREF-001:
     - XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92
+    - XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E
 denominator_input_sha256: 264e0092b27789dca60e210233f99088ee90c7e747c0765cf9c99286a5b4783f

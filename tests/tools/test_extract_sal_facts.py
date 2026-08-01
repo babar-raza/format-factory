@@ -33,6 +33,13 @@ TARGET_LANGUAGE_OBLIGATION_ID = (
 INLINE_PC_OBLIGATION_ID = "SAL-XLIFF-CORE-INLINE-PC-001"
 INLINE_PAIRING_OBLIGATION_ID = "SAL-XLIFF-CORE-INLINE-PAIRING-001"
 SKELETON_CANDIDATE_ID = "XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92"
+SKELETON_RECIPROCAL_CANDIDATE_ID = (
+    "XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E"
+)
+SKELETON_CANDIDATE_IDS = {
+    SKELETON_CANDIDATE_ID,
+    SKELETON_RECIPROCAL_CANDIDATE_ID,
+}
 SKELETON_REFERENCE_OBLIGATION_ID = (
     "SAL-XLIFF-CORE-REFERENCE-SKELETON-HREF-001"
 )
@@ -1317,9 +1324,9 @@ def test_cli_batch_five_compiles_only_reciprocally_adjudicated_pairing_obligatio
     assert inventory["resolved_expected_obligation_count"] == 28
     assert len(inventory["missing_expected_obligation_ids"]) == 77
     assert inventory["complete"] is False
-    assert inventory["adjudication_input"]["decision_count"] == 4
-    assert inventory["adjudication_input"]["verified_disposition_count"] == 4
-    assert inventory["adjudication_input"]["unverified_disposition_count"] == 1126
+    assert inventory["adjudication_input"]["decision_count"] == 5
+    assert inventory["adjudication_input"]["verified_disposition_count"] == 5
+    assert inventory["adjudication_input"]["unverified_disposition_count"] == 1125
 
     rows = {row["obligation_id"]: row for row in inventory["obligations"]}
     assert INLINE_PC_OBLIGATION_ID not in {
@@ -1349,9 +1356,12 @@ def test_cli_batch_five_compiles_only_reciprocally_adjudicated_pairing_obligatio
     assert skeleton["owner"] == "core:references"
     assert skeleton["category"] == "identifiers_references_inheritance"
     assert skeleton["stable_profiles"] == ["xliff_2.0", "xliff_2.1"]
-    assert skeleton["adjudication_candidate_ids"] == [SKELETON_CANDIDATE_ID]
-    assert "href is absent" in skeleton["normalized_rule"]
-    assert "non-empty embedded content" in skeleton["normalized_rule"]
+    assert skeleton["adjudication_candidate_ids"] == sorted(
+        SKELETON_CANDIDATE_IDS
+    )
+    assert "if and only if" in skeleton["normalized_rule"]
+    assert "embedded content" in skeleton["normalized_rule"]
+    assert "href" in skeleton["normalized_rule"]
     assert {
         location["profile"] for location in skeleton["authority_locations"]
     } == {"xliff_2.0", "xliff_2.1"}
@@ -1361,6 +1371,49 @@ def test_cli_batch_five_compiles_only_reciprocally_adjudicated_pairing_obligatio
         for location in skeleton["authority_locations"]
     )
     assert extractor.main([*args, "--check"]) == 0
+
+
+def test_batch_five_skeleton_seed_rejects_one_sided_candidate_proof() -> None:
+    extractor = _load_module()
+    verified = {
+        TARGET_LANGUAGE_OBLIGATION_ID,
+        SKELETON_REFERENCE_OBLIGATION_ID,
+    }
+    one_sided_evidence = {
+        "accepted_obligation_candidate_ids": {
+            SKELETON_REFERENCE_OBLIGATION_ID: [SKELETON_CANDIDATE_ID]
+        }
+    }
+
+    with pytest.raises(
+        extractor.ExtractionError,
+        match="both reciprocal",
+    ):
+        extractor._default_core_obligation_seeds(
+            through_batch="XLF-04-BATCH-005",
+            verified_obligation_ids=verified,
+            adjudication_evidence=one_sided_evidence,
+        )
+
+    seeds = extractor._default_core_obligation_seeds(
+        through_batch="XLF-04-BATCH-005",
+        verified_obligation_ids=verified,
+        adjudication_evidence={
+            "accepted_obligation_candidate_ids": {
+                SKELETON_REFERENCE_OBLIGATION_ID: sorted(
+                    SKELETON_CANDIDATE_IDS
+                )
+            }
+        },
+    )
+    skeleton = next(
+        seed
+        for seed in seeds
+        if seed["obligation_id"] == SKELETON_REFERENCE_OBLIGATION_ID
+    )
+    assert skeleton["adjudication_candidate_ids"] == sorted(
+        SKELETON_CANDIDATE_IDS
+    )
 
 
 def test_batch_five_pairing_seed_rejects_one_sided_candidate_proof() -> None:

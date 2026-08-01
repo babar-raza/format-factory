@@ -1,0 +1,91 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "test-driven-development-xliff-xlf04-core-batch-005-partial-002-d",
+  "skill_id": "test-driven-development",
+  "task_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+  "mode": "live",
+  "timestamp": "2026-08-01T06:09:58Z",
+  "inputs": {
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "microstep": "XLF-04-BATCH-005-PARTIAL-002-D",
+    "source_checkpoint": "1dbc81e6cf3085bcacf915f58bf4de0ee00c67ef",
+    "execution_manifest_id": "sfx-00cc8adde03b5f7f",
+    "pre_mutation_authorization_id": "5e8879cdae90cede",
+    "coordination_agent": "agent-codex-20260801T054545-06a86d",
+    "selected_candidate": "XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E",
+    "selected_candidate_content_sha256": "af94362009857b0fdd3d19881cd2c8d1866e4f5a72849ec1edf057baf7e905a1",
+    "requirement_sha256": "d36657a907cd8be2ecf38d3fa7a78b3c3720486492cdadd09f4f0f7c25f30e84",
+    "occurrence_sha256": "96949f8b0f510d573b4c95640fae3e68175b853410865eaf1460a5eaee4f332a",
+    "target_behavior_description": "Require both reciprocal XLIFF skeleton Schematron reports before the existing href/content exclusivity obligation can be treated as completely evidenced."
+  },
+  "allowed_files": [
+    "tests/tools/test_extract_sal_facts.py",
+    "tests/tools/test_xliff_core_candidate_adjudication.py",
+    "reports/skills-rff6/skill-transcripts/test-driven-development-xliff-xlf04-core-batch-005-partial-002-d.json"
+  ],
+  "actual_files_changed": [
+    "tests/tools/test_extract_sal_facts.py",
+    "tests/tools/test_xliff_core_candidate_adjudication.py",
+    "reports/skills-rff6/skill-transcripts/test-driven-development-xliff-xlf04-core-batch-005-partial-002-d.json"
+  ],
+  "non_counting_harness_correction": {
+    "observed": "The first attempted RED run encountered a test insertion syntax error and therefore did not exercise the target behavior.",
+    "response": "The test harness was repaired before RED was counted. No production file was changed to address the syntax error.",
+    "promoting_evidence": false
+  },
+  "cycles": [
+    {
+      "behavior": "The skeleton href obligation requires both independently addressed reciprocal Schematron reports.",
+      "red": {
+        "command": ".venv\\Scripts\\python.exe -m pytest tests/tools/test_xliff_core_candidate_adjudication.py::test_skeleton_href_obligation_requires_both_reciprocal_reports -q",
+        "result": "1 failed at the intended boundary because only one decision existed where two were required."
+      },
+      "green": {
+        "command": ".venv\\Scripts\\python.exe -m pytest tests/tools/test_xliff_core_candidate_adjudication.py::test_skeleton_href_obligation_requires_both_reciprocal_reports -q",
+        "result": "passed after the reciprocal authority decision was added"
+      },
+      "refactor": "Kept both decisions mapped to the same existing obligation and rejected downstream validator and incidental hierarchy owners."
+    },
+    {
+      "behavior": "One-sided candidate proof must fail closed during obligation extraction.",
+      "red": {
+        "command": ".venv\\Scripts\\python.exe -m pytest tests/tools/test_extract_sal_facts.py::test_batch_five_skeleton_seed_rejects_one_sided_candidate_proof -q",
+        "result": "1 failed at the intended boundary because ExtractionError was not raised."
+      },
+      "green": {
+        "command": ".venv\\Scripts\\python.exe -m pytest tests/tools/test_extract_sal_facts.py::test_batch_five_skeleton_seed_rejects_one_sided_candidate_proof -q",
+        "result": "passed after reciprocal completeness enforcement was added"
+      },
+      "refactor": "Represented the skeleton candidates as a required set and normalized the rule as a biconditional without creating another obligation."
+    }
+  ],
+  "tests_run": [
+    "two behavior-specific RED failures reproduced for intended reasons",
+    "focused post-GREEN selection: 3 passed",
+    "affected XLIFF adjudicator and extractor suites: 71 passed",
+    "production-program regression: 43 passed",
+    "format-contract regression: 94 passed, one named stateful CSV idempotency test deselected",
+    "Ruff: PASS",
+    "strict Mypy on four affected files: PASS with only dependency-sensitive unused-ignore reporting disabled",
+    "Pyright 1.1.411: 0 errors, 0 warnings, 0 information",
+    "py_compile: PASS"
+  ],
+  "final_verification_checklist": {
+    "new_behavior_has_tests": true,
+    "red_failed_for_intended_reason": true,
+    "invalid_harness_run_excluded_from_red_evidence": true,
+    "minimal_green_implementation": true,
+    "affected_suites_pass": true,
+    "negative_and_boundary_cases_present": true,
+    "predecessor_behavior_preserved": true,
+    "product_completion_claimed": false
+  },
+  "output_digests": {
+    "tests/tools/test_extract_sal_facts.py": "18e816e33a5525590bca33427085dd41ec91de77a1e62dc56c2c3085cd282618",
+    "tests/tools/test_xliff_core_candidate_adjudication.py": "bfd7f9d70537af0e294a629cb62b580d0fa15492db9c74a55b3d787d18285108"
+  },
+  "result": "PASS",
+  "truth_boundary": "This proves reciprocal evidence completeness for one already-existing skeleton obligation. It does not add product behavior, complete XLF-04, certify XLIFF, or change any product promotion state.",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

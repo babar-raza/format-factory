@@ -1,0 +1,62 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "sal-pipeline-heal-xliff-xlf04-core-batch-005-partial-002-d",
+  "skill_id": "sal-pipeline-heal",
+  "task_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+  "mode": "live",
+  "timestamp": "2026-08-01T06:09:58Z",
+  "inputs": {
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "taskcard_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "format_id": "xliff",
+    "microstep": "XLF-04-BATCH-005-PARTIAL-002-D",
+    "root_cause_id": "FF6-XLIFF-INDEPENDENT-DISPOSITION-GAP",
+    "target_stage": "fact_id_repair",
+    "spec_cache_path": ".local/format-contracts/acquired/xliff",
+    "execution_manifest_id": "sfx-3928e9e6a2691af9",
+    "pre_mutation_authorization_id": "2192ba819e17ac67",
+    "selected_candidate": "XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E",
+    "selected_candidate_content_sha256": "af94362009857b0fdd3d19881cd2c8d1866e4f5a72849ec1edf057baf7e905a1",
+    "requirement_sha256": "d36657a907cd8be2ecf38d3fa7a78b3c3720486492cdadd09f4f0f7c25f30e84",
+    "occurrence_sha256": "96949f8b0f510d573b4c95640fae3e68175b853410865eaf1460a5eaee4f332a"
+  },
+  "allowed_files": [
+    "tools/spec/xliff_core_candidate_adjudication.py",
+    "shared/sal-facts/evidence/xliff-core-candidate-decisions.yaml",
+    "reports/sal-verification/xliff-core-candidate-adjudications.yaml",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-xliff-xlf04-core-batch-005-partial-002-d.json"
+  ],
+  "actual_files_changed": [
+    "shared/sal-facts/evidence/xliff-core-candidate-decisions.yaml",
+    "reports/sal-verification/xliff-core-candidate-adjudications.yaml",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-xliff-xlf04-core-batch-005-partial-002-d.json"
+  ],
+  "authority_reasoning": {
+    "accepted_direct_owner": "SAL-XLIFF-CORE-REFERENCE-SKELETON-HREF-001",
+    "rejected_generated_owner": "SAL-XLIFF-CORE-AGENT-VALIDATOR-001",
+    "rejected_incidental_denominator_owner": "SAL-XLIFF-CORE-HIERARCHY-SKELETON-001",
+    "rule": "A skeleton has embedded child content if and only if href is absent; either one-sided invalid state must be rejected.",
+    "authority_location": "schemas/xliff_core_2.1.sch schematron/rule[11]/report[2]",
+    "sal_fact_id": "SAL-XLIFF-00017"
+  },
+  "tests_run": [
+    "candidate adjudication --check: PASS, 5 decisions, digest 835ec56346e9bd6ebda8946c4e3fc1e16a510c80e54f1a96b2445e1436616ec1",
+    "three isolated adjudication generations: byte-identical to canonical output",
+    "decision predecessor proof: all 4 earlier decision objects equal and one reciprocal decision appended",
+    "canonical SAL verification: PASS",
+    "XLIFF authority audit: 5 MATCH, 0 mismatch, 0 missing",
+    "affected XLIFF adjudicator and extractor suites: 71 passed",
+    "production-program regression: 43 passed",
+    "format-contract regression: 94 passed, one named stateful CSV idempotency test deselected",
+    "Ruff, strict Mypy, Pyright 1.1.411, and py_compile: PASS"
+  ],
+  "output_digests": {
+    "tools/spec/xliff_core_candidate_adjudication.py": "240ca789f93c81e94f32852399ce7ae225377516ee46dbfe2e568347ae00db05",
+    "shared/sal-facts/evidence/xliff-core-candidate-decisions.yaml": "3bd2b7d0d9469b68e1f24dc61a3db9d605ebdcefb581c1b20db09ab3a04d47ac",
+    "reports/sal-verification/xliff-core-candidate-adjudications.yaml": "835ec56346e9bd6ebda8946c4e3fc1e16a510c80e54f1a96b2445e1436616ec1"
+  },
+  "result": "PASS",
+  "truth_boundary": "Exactly one additional candidate disposition is independently verified. Generated proposals remain non-promoting, 1125 candidate dispositions remain open, XLF-04 remains incomplete, and production certifications remain 0/6.",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

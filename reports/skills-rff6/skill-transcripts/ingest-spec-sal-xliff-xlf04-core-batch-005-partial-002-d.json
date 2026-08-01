@@ -1,0 +1,59 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "ingest-spec-sal-xliff-xlf04-core-batch-005-partial-002-d",
+  "skill_id": "ingest-spec-sal",
+  "task_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+  "mode": "live",
+  "timestamp": "2026-08-01T06:09:58Z",
+  "inputs": {
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "format_id": "xliff",
+    "microstep": "XLF-04-BATCH-005-PARTIAL-002-D",
+    "spec_source_uri": ".local/format-contracts/acquired/xliff/src-xlf-001.bin and src-xlf-002.bin",
+    "spec_version": "XLIFF 2.0 and 2.1 OASIS Standards",
+    "spec_body": "OASIS",
+    "target_fact_count_min": 1,
+    "execution_manifest_id": "sfx-8bf073a705fc8216",
+    "pre_mutation_authorization_id": "d469c6b67a4fd370"
+  },
+  "allowed_files": [
+    "tools/spec/extract_sal_facts.py",
+    "reports/ff6/xliff-core-obligation-inventory.yaml",
+    "reports/skills-rff6/skill-transcripts/ingest-spec-sal-xliff-xlf04-core-batch-005-partial-002-d.json"
+  ],
+  "actual_files_changed": [
+    "tools/spec/extract_sal_facts.py",
+    "reports/ff6/xliff-core-obligation-inventory.yaml",
+    "reports/skills-rff6/skill-transcripts/ingest-spec-sal-xliff-xlf04-core-batch-005-partial-002-d.json"
+  ],
+  "tests_run": [
+    "core-obligations --check: PASS, 28 rows, digest 885185bd020e5efbbfb45215fd63ee404f983bc13a1ec23ad17156f61927d7f3",
+    "three isolated inventory generations: byte-identical to canonical output",
+    "semantic predecessor proof: all 28 obligation IDs preserved, 27 rows byte-model equal, only SAL-XLIFF-CORE-REFERENCE-SKELETON-HREF-001 changed",
+    "candidate census identity unchanged: 1130 candidates, digest 24c1902b6387cc9fa3402f78392ba91c6e6656407719ec11cfaab1c4f3d22b9e",
+    "affected XLIFF adjudicator and extractor suites: 71 passed",
+    "production-program regression: 43 passed",
+    "format-contract regression: 94 passed, one named stateful CSV idempotency test deselected",
+    "canonical SAL verification: PASS",
+    "XLIFF authority audit: 5 MATCH, 0 mismatch, 0 missing",
+    "Ruff, strict Mypy, Pyright 1.1.411, and py_compile: PASS"
+  ],
+  "output_digests": {
+    "tools/spec/extract_sal_facts.py": "aae0e1b0efa0fc3cbaaba1c523a848a546bc6b149a1475f739126fe49911ce03",
+    "reports/ff6/xliff-core-obligation-inventory.yaml": "885185bd020e5efbbfb45215fd63ee404f983bc13a1ec23ad17156f61927d7f3"
+  },
+  "result": "PASS",
+  "evidence": {
+    "candidate_count": 1130,
+    "verified_candidate_dispositions": 5,
+    "unverified_candidate_dispositions": 1125,
+    "expected_obligations": 105,
+    "source_bound_obligations": 28,
+    "missing_obligations": 77,
+    "new_obligation_ids": [],
+    "xlf_04_complete": false
+  },
+  "truth_boundary": "The obligation count remains 28/105. This microstep strengthens the proof closure for one existing obligation; it does not increase format capability or complete the Core denominator.",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

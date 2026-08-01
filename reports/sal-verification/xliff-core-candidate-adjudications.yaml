@@ -14,14 +14,15 @@ adjudicator_sha256: 240ca789f93c81e94f32852399ce7ae225377516ee46dbfe2e568347ae00
 candidate_census_artifact_id: FF6-XLIFF-CORE-AUTHORITY-CANDIDATE-CENSUS
 denominator_artifact_id: FF6-XLIFF-CORE-OBLIGATION-DENOMINATOR
 candidate_count: 1130
-decision_count: 4
-verified_disposition_count: 4
-unverified_disposition_count: 1126
+decision_count: 5
+verified_disposition_count: 5
+unverified_disposition_count: 1125
 disposition_verification_complete: false
 verified_candidate_ids:
 - XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
 - XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92
 - XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF
+- XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E
 - XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90
 accepted_obligation_candidate_ids:
   SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001:
@@ -31,6 +32,7 @@ accepted_obligation_candidate_ids:
   - XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF
   SAL-XLIFF-CORE-REFERENCE-SKELETON-HREF-001:
   - XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92
+  - XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E
 decisions:
 - decision_id: XLF-ADJ-CORE-SCHEMATRON-0002
   candidate_id: XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
@@ -167,6 +169,43 @@ decisions:
     are downstream or broader than the direct inline-pairing semantic owner.
   outcome: VERIFIED_AUTHORITY_DISPOSITION
   decision_sha256: 87e4824decda42a25d883001556220974c7da28eaa7ca55823e0fb4931863454
+- decision_id: XLF-ADJ-CORE-SCHEMATRON-0005
+  candidate_id: XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E
+  candidate_content_sha256: af94362009857b0fdd3d19881cd2c8d1866e4f5a72849ec1edf057baf7e905a1
+  proposal_sha256: 5efe9706b8e5b2948b0ef8272387fc02c697639952e96a5fa2461fe08b5937a7
+  proposed_obligation_ids:
+  - SAL-XLIFF-CORE-AGENT-VALIDATOR-001
+  - SAL-XLIFF-CORE-REFERENCE-SKELETON-HREF-001
+  authority_occurrences:
+  - profile: xliff_2.1
+    source_id: SRC-XLF-002
+    source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    member: schemas/xliff_core_2.1.sch
+    member_sha256: d4275f2d2574f892624bcd8f83bcc3001c75d623e4eb36896d15d147f16ed7a2
+    location: schematron/rule[11]/report[2]
+    occurrence_sha256: 96949f8b0f510d573b4c95640fae3e68175b853410865eaf1460a5eaee4f332a
+  accepted_obligation_ids:
+  - SAL-XLIFF-CORE-REFERENCE-SKELETON-HREF-001
+  unproposed_accepted_obligation_ids: []
+  rejected_obligations:
+  - obligation_id: SAL-XLIFF-CORE-AGENT-VALIDATOR-001
+    reason_code: DOWNSTREAM_CAPABILITY_NOT_DIRECT_SEMANTIC_OWNER
+    reason: A conforming validator enforces this report, but the report establishes only the skeleton
+      href and content constraint.
+  sal_proofs:
+  - fact_id: SAL-XLIFF-00017
+    claim_sha256: 330431735b8ae983fe481f2c64a05598cd91a4bb264a9c22eb599ab320bb9642
+    fact_proof_sha256: f9f5252860287d3701aeaa2a0a2f70a6291698a7a95266a46b336aa7a5249b84
+  authority_reason: The exact report rejects a skeleton that combines href with child content. Its direct
+    semantic owner is the existing skeleton href/content reference obligation; validator behavior is downstream
+    and element context alone does not establish the broader hierarchy obligation.
+  outcome: VERIFIED_AUTHORITY_DISPOSITION
+  unproposed_rejected_obligations:
+  - obligation_id: SAL-XLIFF-CORE-HIERARCHY-SKELETON-001
+    reason_code: ELEMENT_CONTEXT_NOT_HIERARCHY_RULE
+    reason: The skeleton context identifies the element whose content and href are constrained; it establishes
+      no parent-child placement or cardinality rule.
+  decision_sha256: 513cf8e6a882e8c1d903a1672a7cbfa610f39159d766b1d5d1ae1ac90794883e
 - decision_id: XLF-ADJ-CORE-SCHEMATRON-0001
   candidate_id: XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90
   candidate_content_sha256: 844d0783d2fb5956ef51413c3811015848987cdb13414d5d04e819c6200c02f6
@@ -220,4 +259,4 @@ status: PARTIAL_VERIFIED
 truth_boundary: Only listed content-addressed decisions are verified. Generated candidate proposals remain
   non-promoting, and this partial artifact does not complete XLF-04.
 input_closure_sha256: 4d693ecea4e0881e776191d6c960a91c0d4c840717cc8267c6c014c164a415dc
-decision_set_sha256: 2df1907ce20f5a22385bae5a532d0a1f20701bd7cc658c1b6f384e7ea0f69218
+decision_set_sha256: 66bf2ae92e9d9fc6c8a58f5e90e7211c29a6fe5ed221288d8ede747af5a16bd3

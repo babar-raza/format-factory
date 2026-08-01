@@ -139,3 +139,27 @@ decisions:
     content. Its direct semantic owner is the skeleton href/content reference
     obligation; validator behavior is downstream and element context alone
     does not establish the broader hierarchy obligation.
+- decision_id: XLF-ADJ-CORE-SCHEMATRON-0005
+  candidate_id: XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E
+  accepted_obligation_ids:
+  - SAL-XLIFF-CORE-REFERENCE-SKELETON-HREF-001
+  rejected_obligations:
+  - obligation_id: SAL-XLIFF-CORE-AGENT-VALIDATOR-001
+    reason_code: DOWNSTREAM_CAPABILITY_NOT_DIRECT_SEMANTIC_OWNER
+    reason: >-
+      A conforming validator enforces this report, but the report establishes
+      only the skeleton href and content constraint.
+  unproposed_rejected_obligations:
+  - obligation_id: SAL-XLIFF-CORE-HIERARCHY-SKELETON-001
+    reason_code: ELEMENT_CONTEXT_NOT_HIERARCHY_RULE
+    reason: >-
+      The skeleton context identifies the element whose content and href are
+      constrained; it establishes no parent-child placement or cardinality
+      rule.
+  sal_fact_ids:
+  - SAL-XLIFF-00017
+  authority_reason: >-
+    The exact report rejects a skeleton that combines href with child content.
+    Its direct semantic owner is the existing skeleton href/content reference
+    obligation; validator behavior is downstream and element context alone
+    does not establish the broader hierarchy obligation.

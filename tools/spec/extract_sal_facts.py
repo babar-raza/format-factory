@@ -3702,9 +3702,10 @@ def _default_core_obligation_seeds(
     batch_five_skeleton_reference_id = (
         "SAL-XLIFF-CORE-REFERENCE-SKELETON-HREF-001"
     )
-    batch_five_skeleton_candidate_id = (
-        "XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92"
-    )
+    batch_five_skeleton_candidate_ids = {
+        "XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92",
+        "XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E",
+    }
     seeds.append(
         {
             "obligation_id": batch_five_target_language_id,
@@ -3794,8 +3795,9 @@ def _default_core_obligation_seeds(
             "owner": "core:references",
             "category": "identifiers_references_inheritance",
             "normalized_rule": (
-                "When href is absent, require the skeleton element to contain "
-                "non-empty embedded content."
+                "Require exactly one of the skeleton href attribute and "
+                "non-empty embedded child content: embedded content is "
+                "present if and only if href is absent."
             ),
             "requirement_class": "SEMANTIC_CONSTRAINT",
             "normative_level": "MUST",
@@ -3803,27 +3805,30 @@ def _default_core_obligation_seeds(
                 "skeleton",
                 "The attribute href is required if and only if",
             ),
-            "adjudication_candidate_ids": [
-                batch_five_skeleton_candidate_id
-            ],
+            "adjudication_candidate_ids": sorted(
+                batch_five_skeleton_candidate_ids
+            ),
             "evidence_requirements": {
                 "positive": [
                     "accept a skeleton without href when it contains embedded "
-                    "content"
+                    "content",
+                    "accept a skeleton with href when it has no child content",
                 ],
                 "rejection": [
-                    "reject an empty skeleton when href is absent"
+                    "reject an empty skeleton when href is absent",
+                    "reject a skeleton that combines href with child content",
                 ],
             },
             "interpretation_note": (
-                "Independent adjudication XLF-ADJ-CORE-SCHEMATRON-0004 and "
-                "verified SAL fact SAL-XLIFF-00017 establish the no-href "
-                "direction of the skeleton reference rule. The identical "
+                "Independent adjudications XLF-ADJ-CORE-SCHEMATRON-0004 and "
+                "XLF-ADJ-CORE-SCHEMATRON-0005 plus verified SAL fact "
+                "SAL-XLIFF-00017 establish both directions of the skeleton "
+                "href/content rule. The identical "
                 "normative skeleton paragraph is independently located and "
                 "hashed in both pinned stable authorities; XLIFF 2.0 "
                 "applicability is not inferred from the 2.1 Schematron. The "
-                "candidate does not establish generic validator behavior or "
-                "skeleton hierarchy/cardinality."
+                "two candidates do not establish generic validator behavior "
+                "or skeleton hierarchy/cardinality."
             ),
         }
     )
@@ -3881,6 +3886,28 @@ def _default_core_obligation_seeds(
             raise ExtractionError(
                 "XLF-04-BATCH-005 requires both reciprocal Schematron "
                 f"candidates for {batch_five_pairing_id}"
+            )
+    if (
+        maximum_sequence >= 5
+        and batch_five_skeleton_reference_id in verified_ids
+    ):
+        accepted_candidates = (
+            adjudication_evidence or {}
+        ).get("accepted_obligation_candidate_ids", {})
+        skeleton_candidates = (
+            accepted_candidates.get(batch_five_skeleton_reference_id, [])
+            if isinstance(accepted_candidates, Mapping)
+            else []
+        )
+        if not isinstance(skeleton_candidates, Sequence) or isinstance(
+            skeleton_candidates,
+            (str, bytes),
+        ) or not batch_five_skeleton_candidate_ids <= set(
+            map(str, skeleton_candidates)
+        ):
+            raise ExtractionError(
+                "XLF-04-BATCH-005 requires both reciprocal Schematron "
+                f"candidates for {batch_five_skeleton_reference_id}"
             )
     return [
         seed
