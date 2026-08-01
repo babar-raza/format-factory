@@ -1,0 +1,49 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "plan-control-ff6-accel-a3-controller-checkpoint-001",
+  "skill_id": "plan-control",
+  "mode": "live",
+  "timestamp": "2026-08-01T18:11:00Z",
+  "inputs": {
+    "task_id": "TC-FF6-ACCEL-CONTROL-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "operation": "project",
+    "target_paths": ["plans/strategic/ff6/events.jsonl", "plans/strategic/ff6/controller-state.yaml", "reports/skills-rff6/skill-transcripts/plan-control-ff6-accel-a3-controller-checkpoint-001.json"],
+    "coordination_scope": "Exact Event 44 journal, controller projection, and receipt under the existing exclusive controller and GitLab-main integration leases.",
+    "acceptance_evidence": "A3 controller semantic commit b772469b is on origin/main; semantic batches and four-lane scheduler pass 148 affected tests; handover generation is explicitly incomplete.",
+    "source_checkpoint": "b772469b5f6fbbcdaae83d2be8b57058c2a45b34",
+    "execution_manifest": ".local/skills-first/manifests/sfx-0f0c40dcab964583.json",
+    "authorization_id": "bcbe6b4a19858e85",
+    "coordination_identity": "agent-codex-20260801T163048-5b135a"
+  },
+  "allowed_files": ["plans/strategic/ff6/events.jsonl", "plans/strategic/ff6/controller-state.yaml", "reports/skills-rff6/skill-transcripts/plan-control-ff6-accel-a3-controller-checkpoint-001.json"],
+  "actual_files_changed": ["plans/strategic/ff6/events.jsonl", "plans/strategic/ff6/controller-state.yaml", "reports/skills-rff6/skill-transcripts/plan-control-ff6-accel-a3-controller-checkpoint-001.json"],
+  "tests_run": [
+    "Native FF6 replay passed 44 canonical hashes, sequences, and predecessor links.",
+    "Controller matches Event 44 and keeps A3 and Lane A WORK_IN_PROGRESS.",
+    "All product/program promotion values remain UNASSESSED.",
+    "python -m pytest tests/plan_control -q: 40 passed.",
+    "A3 controller affected regression: 148 passed with 1 exact known stateful test deselected.",
+    "git diff --check: PASS."
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "event_id": "FF6-EVENT-000044",
+    "event_hash": "20e8f7fac635994e4f1051a5dd9cd3bd0a2da3b0e361d006a17d834536fc09cd",
+    "events_sha256": "02b213e3094d5c926ea1a299ff3eaac4ef73defc77a474e7705849958610ecc2",
+    "controller_sha256": "2738fb5c526c3187db7ec37f1e6bca7944e291163d9a2d408b23020f38de07c8",
+    "accepted_partial_slice": "A3_CONTROLLER_BATCH_AND_SCHEDULER",
+    "next_sub_slice": "A3_GENERATED_HANDOVER_AND_STALE_VALUE_CONTROLS",
+    "product_promotion": "none",
+    "production_certifications": "0/6"
+  },
+  "self_challenge": {
+    "a3_not_claimed_complete": true,
+    "handover_still_open": true,
+    "product_state_unchanged": true,
+    "human_only_gate_not_touched": true
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}
