@@ -259,10 +259,12 @@ def _git_errors(ctx: ProjectionContext, *, require_clean: bool) -> list[str]:
         elif status.stdout.strip():
             count = len(status.stdout.decode("utf-8", errors="replace").splitlines())
             errors.append(f"worktree is not clean: {count} path(s)")
-        head = _git("rev-parse", "HEAD")
-        remote_head = _git("rev-parse", "origin/main")
-        if head.returncode or remote_head.returncode or head.stdout != remote_head.stdout:
-            errors.append("clean transfer requires HEAD == origin/main")
+        symbolic = _git("symbolic-ref", "-q", "HEAD")
+        if symbolic.returncode == 0:
+            head = _git("rev-parse", "HEAD")
+            remote_head = _git("rev-parse", "origin/main")
+            if head.returncode or remote_head.returncode or head.stdout != remote_head.stdout:
+                errors.append("attached clean transfer requires HEAD == origin/main")
     return errors
 
 

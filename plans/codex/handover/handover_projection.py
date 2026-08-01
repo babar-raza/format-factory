@@ -28,6 +28,10 @@ REPO_ROOT = HANDOVER_ROOT.parents[2]
 CONTROLLER_PATH = REPO_ROOT / "plans/strategic/ff6/controller-state.yaml"
 JOURNAL_PATH = REPO_ROOT / "plans/strategic/ff6/events.jsonl"
 TASK_INDEX_PATH = REPO_ROOT / "taskcards/index.yaml"
+CANONICAL_WINDOWS_START_PATH = (
+    r"C:\Users\prora\OneDrive\Documents\GitHub\format-factory"
+    r"\plans\codex\handover\START-HERE.md"
+)
 
 GENERATED_PATHS = (
     "plans/codex/handover/START-HERE.md",
@@ -262,7 +266,10 @@ def render_projection(ctx: ProjectionContext) -> dict[str, bytes]:
     ubl = ctx.ubl
     lane = ctx.lane_a
     event_no = ctx.sequence
-    absolute_start = str(HANDOVER_ROOT / "START-HERE.md")
+    # The user requested one absolute Windows entry path.  Keep that display
+    # value stable across detached replays; it is documentation, not an input
+    # used to locate authoritative state.
+    absolute_start = CANONICAL_WINDOWS_START_PATH
     start = _front_matter(
         f"FF6-HANDOVER-START-EVENT-{event_no}", "provider_neutral_handover_entry"
     ) + f"""# FF6 production program: start here
