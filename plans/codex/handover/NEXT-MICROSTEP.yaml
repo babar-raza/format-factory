@@ -1,13 +1,14 @@
 schema: ff6/next-microstep@2
-artifact_id: FF6-NEXT-MICROSTEP-EVENT-44
+artifact_id: FF6-NEXT-MICROSTEP-EVENT-45
 visibility: internal
 generated_by: codex
 controller_task:
-  task_id: TC-FF6-ACCEL-CONTROL-001
-  state: WORK_IN_PROGRESS
-  event_id: FF6-EVENT-000044
-  action: Generate tracked handovers from Event 44 and controller state, then run stale-value and integration-lock
-    controls before closing A3.
+  task_id: TC-FF6-NRRD-READINESS-001
+  state: READY
+  event_id: FF6-EVENT-000045
+  accepted_event_task_id: TC-FF6-ACCEL-CONTROL-001
+  action: Execute TC-FF6-NRRD-READINESS-001 R1 from GitLab main. Capture an immutable source-tree and
+    installed-wheel characterization baseline; do not restructure product source or claim certification.
 product_task_after_control_closure:
   task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
   state: WORK_IN_PROGRESS

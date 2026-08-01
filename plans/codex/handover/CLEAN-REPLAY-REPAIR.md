@@ -1,5 +1,5 @@
 ---
-artifact_id: FF6-CLEAN-REPLAY-EVENT-44
+artifact_id: FF6-CLEAN-REPLAY-EVENT-45
 artifact_type: clean_replay_contract
 visibility: internal
 publish_allowed: false
@@ -10,8 +10,8 @@ generated_at: 2026-08-01
 # Clean replay and repair contract
 
 Reconstruct from GitLab `origin/main`; require source checkpoint
-`4c4b80517a34534416492a772c6d3d81bfde9809` to be an ancestor. Validate native event
-`FF6-EVENT-000044` and hash `20e8f7fac635994e4f1051a5dd9cd3bd0a2da3b0e361d006a17d834536fc09cd` before executing any mutation.
+`54f2a12f6d8e7d31f9f7beb6e7b0e9f5c2cb82a7` to be an ancestor. Validate native event
+`FF6-EVENT-000045` and hash `fbd74899787e1c3aa7ce7efcbc4eec2cb098d1ed0ebb78717858baceabf17550` before executing any mutation.
 
 Use a fresh checkout/worktree, fresh environment, fresh coordination identity,
 and immutable authority inputs. Never reset, stash, clean, or overwrite shared

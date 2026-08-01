@@ -1,5 +1,5 @@
 ---
-artifact_id: FF6-CURRENT-SHIFT-HANDOVER-EVENT-44
+artifact_id: FF6-CURRENT-SHIFT-HANDOVER-EVENT-45
 artifact_type: provider_shift_handover
 visibility: internal
 publish_allowed: false
@@ -7,7 +7,7 @@ generated_by: codex
 generated_at: 2026-08-01
 ---
 
-# Current shift handover: FF6-EVENT-000044
+# Current shift handover: FF6-EVENT-000045
 
 ## Goal
 
@@ -18,17 +18,18 @@ mission remains active and technical certification is `0`.
 ## Accepted control work
 
 Events 42 and 43 accepted A1 fail-closed authority compilation and A2
-content-addressed impact selection. `FF6-EVENT-000044` accepts only the A3
+content-addressed impact selection. `FF6-EVENT-000045` accepts only the A3
 controller half: deterministic semantic batches and collision-safe lane
 scheduling. Handover generation and stale-value controls are still the current
 work represented by this projection.
 
 ## Exact continuation
 
-- controller task: `TC-FF6-ACCEL-CONTROL-001`;
-- source checkpoint: `4c4b80517a34534416492a772c6d3d81bfde9809`;
-- control semantic commit: `b772469b5f6fbbcdaae83d2be8b57058c2a45b34`;
-- action: Generate tracked handovers from Event 44 and controller state, then run stale-value and integration-lock controls before closing A3.
+- accepted event task: `TC-FF6-ACCEL-CONTROL-001`;
+- immediate lane task: `TC-FF6-NRRD-READINESS-001`;
+- source checkpoint: `54f2a12f6d8e7d31f9f7beb6e7b0e9f5c2cb82a7`;
+- control semantic commit: `54f2a12f6d8e7d31f9f7beb6e7b0e9f5c2cb82a7`;
+- action: Execute TC-FF6-NRRD-READINESS-001 R1 from GitLab main. Capture an immutable source-tree and installed-wheel characterization baseline; do not restructure product source or claim certification.
 
 The preserved product continuation is `TC-FF6-XLIFF-PROFILE-SURFACE-001` at
 `XLF-04-BATCH-005-PARTIAL-002-I` from semantic commit

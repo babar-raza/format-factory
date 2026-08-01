@@ -64,6 +64,7 @@ PROOF_INPUT_PATHS = (
     "plans/strategic/ff6/controller-state.yaml",
     "plans/strategic/ff6/events.jsonl",
     "taskcards/TC-FF6-ACCEL-CONTROL-001.md",
+    "taskcards/TC-FF6-NRRD-READINESS-001.md",
     "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
     "taskcards/TC-FF6-UBL-TYPING-001.md",
     "taskcards/index.yaml",
@@ -235,6 +236,7 @@ def load_context(source_checkpoint: str | None = None) -> ProjectionContext:
 def _common(ctx: ProjectionContext) -> dict[str, Any]:
     xlf = ctx.xlf
     latest = ctx.latest_event
+    immediate = ctx.lane_a
     promotion = ctx.controller.get("promotion", {})
     return {
         "source_checkpoint": ctx.source_checkpoint,
@@ -246,6 +248,9 @@ def _common(ctx: ProjectionContext) -> dict[str, Any]:
         "control_task_state": latest.get("task_state_after"),
         "control_semantic_commit": latest.get("semantic_commit"),
         "control_next_action": latest.get("exact_next_action"),
+        "immediate_task_id": immediate.get("task_id"),
+        "immediate_task_state": immediate.get("state"),
+        "immediate_task_action": immediate.get("first_action"),
         "product_task_id": ctx.product_task.get("task_id"),
         "product_task_state": ctx.product_task.get("state"),
         "product_microstep": xlf.get("active_microstep"),
@@ -374,6 +379,11 @@ control slice closes and a fresh controller selection authorizes it.
             "semantic_commit": c["control_semantic_commit"],
             "exact_next_action": c["control_next_action"],
         },
+        "immediate_lane": {
+            "task_id": c["immediate_task_id"],
+            "task_state": c["immediate_task_state"],
+            "exact_next_action": c["immediate_task_action"],
+        },
         "product_lane": {
             "task_id": c["product_task_id"],
             "task_state": c["product_task_state"],
@@ -436,9 +446,9 @@ control slice closes and a fresh controller selection authorizes it.
         "product_checkpoint": machine["product_lane"],
         "truth_boundary": machine["program_truth"],
         "mandatory_resume_action": {
-            "task_id": c["control_task_id"],
-            "skill_id": "refresh-provider-neutral-handover",
-            "action": lane.get("first_action"),
+            "task_id": c["immediate_task_id"],
+            "task_state": c["immediate_task_state"],
+            "action": c["immediate_task_action"],
         },
     }
 
@@ -448,10 +458,11 @@ control slice closes and a fresh controller selection authorizes it.
         "visibility": "internal",
         "generated_by": "codex",
         "controller_task": {
-            "task_id": c["control_task_id"],
-            "state": c["control_task_state"],
+            "task_id": c["immediate_task_id"],
+            "state": c["immediate_task_state"],
             "event_id": c["event_id"],
-            "action": lane.get("first_action"),
+            "accepted_event_task_id": c["control_task_id"],
+            "action": c["immediate_task_action"],
         },
         "product_task_after_control_closure": {
             "task_id": c["product_task_id"],
@@ -514,7 +525,8 @@ work represented by this projection.
 
 ## Exact continuation
 
-- controller task: `{c['control_task_id']}`;
+- accepted event task: `{c['control_task_id']}`;
+- immediate lane task: `{c['immediate_task_id']}`;
 - source checkpoint: `{c['source_checkpoint']}`;
 - control semantic commit: `{c['control_semantic_commit']}`;
 - action: {lane.get('first_action')}
@@ -558,8 +570,8 @@ python plans/codex/handover/validate_committed_checkpoint.py --ref origin/main
 python -m tools.supervisor.coordination status
 ```
 
-Then register a fresh identity and execute `{c['control_task_id']}` through
-`refresh-provider-neutral-handover`. Never reuse recorded provider-local state.
+Then register a fresh identity and execute `{c['immediate_task_id']}` through
+its registered skill sequence. Never reuse recorded provider-local state.
 """
 
     active = _front_matter(
@@ -568,7 +580,7 @@ Then register a fresh identity and execute `{c['control_task_id']}` through
 
 Controller head: `{c['event_id']}` / `{c['event_hash']}`.
 
-Immediate task: `{c['control_task_id']}`. Immediate action:
+Immediate task: `{c['immediate_task_id']}`. Immediate action:
 
 > {lane.get('first_action')}
 

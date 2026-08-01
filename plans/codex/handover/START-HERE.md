@@ -1,5 +1,5 @@
 ---
-artifact_id: FF6-HANDOVER-START-EVENT-44
+artifact_id: FF6-HANDOVER-START-EVENT-45
 artifact_type: provider_neutral_handover_entry
 visibility: internal
 publish_allowed: false
@@ -16,9 +16,9 @@ C:\Users\prora\OneDrive\Documents\GitHub\format-factory\plans\codex\handover\STA
 ```
 
 GitLab `origin/main` is the only integration authority. The current native
-controller head is `FF6-EVENT-000044` (sequence `44`), hash
-`20e8f7fac635994e4f1051a5dd9cd3bd0a2da3b0e361d006a17d834536fc09cd`, derived from source checkpoint
-`4c4b80517a34534416492a772c6d3d81bfde9809`. Product certification remains `0`;
+controller head is `FF6-EVENT-000045` (sequence `45`), hash
+`fbd74899787e1c3aa7ce7efcbc4eec2cb098d1ed0ebb78717858baceabf17550`, derived from source checkpoint
+`54f2a12f6d8e7d31f9f7beb6e7b0e9f5c2cb82a7`. Product certification remains `0`;
 all six promotion states remain `UNASSESSED`.
 
 ## Mission
@@ -31,10 +31,10 @@ documentation, SBOMs, provenance, and extraction-ready repositories.
 
 ## Exact immediate controller work
 
-Run `TC-FF6-ACCEL-CONTROL-001` through the registered
+Run `TC-FF6-NRRD-READINESS-001` through the registered
 `refresh-provider-neutral-handover` skill. Current action:
 
-> Generate tracked handovers from Event 44 and controller state, then run stale-value and integration-lock controls before closing A3.
+> Execute TC-FF6-NRRD-READINESS-001 R1 from GitLab main. Capture an immutable source-tree and installed-wheel characterization baseline; do not restructure product source or claim certification.
 
 The product lane remains `TC-FF6-XLIFF-PROFILE-SURFACE-001` at
 `XLF-04-BATCH-005-PARTIAL-002-I`. Its accepted semantic checkpoint is

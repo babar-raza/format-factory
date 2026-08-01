@@ -175,6 +175,7 @@ def _task_errors(ctx: ProjectionContext) -> list[str]:
     serialized = json.dumps(_load_yaml(TASK_INDEX_PATH), sort_keys=True, default=str)
     for task_id in (
         ctx.latest_event.get("task_id"),
+        ctx.lane_a.get("task_id"),
         ctx.product_task.get("task_id"),
     ):
         if not isinstance(task_id, str) or task_id not in serialized:

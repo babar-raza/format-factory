@@ -8,7 +8,7 @@ visibility: internal
 publish_allowed: false
 license: null
 provenance_required: true
-provenance_status: pending-execution
+provenance_status: verified
 source_hash: null
 generated_by: codex
 generated_at: 2026-08-01
@@ -21,7 +21,7 @@ open_source_allowed: false
 commercial_allowed: false
 goal_id: FF6-PRODUCTION-LIBRARIES-001
 parent_task_id: TC-FF6-PROGRAM-CAPABILITIES-001
-status: READY
+status: COMPLETE
 lane: A
 skill_ids:
   - product-contract-runtime-repair
@@ -35,7 +35,7 @@ notes: Plan-v4 control-plane acceleration; no product or promotion effect.
 # TC-FF6-ACCEL-CONTROL-001: Fail-Closed and Impact-Aware Control Acceleration
 
 **Phase:** CONTRACT / shared machinery
-**Status:** READY
+**Status:** COMPLETE
 **Owner:** deterministic FF6 Lane A scheduler
 **Created:** 2026-08-01
 **Last updated:** 2026-08-01
@@ -160,17 +160,32 @@ Runtime outputs are isolated under
 
 ## Acceptance criteria
 
-- [ ] Missing required authority fails before digest, output, or proof creation.
-- [ ] Existing valid-authority and declared diagnostic behavior is preserved.
-- [ ] Three selector runs and three batch-manifest runs are byte-identical.
-- [ ] Seeded mutations in every input category select every affected descendant.
-- [ ] Full sentinel reports zero selector false negatives.
-- [ ] Failed batch member leaves predecessor decisions/counts/identities intact.
-- [ ] Four disjoint lanes cannot share mutable artifacts or write authorities.
-- [ ] Three handover generations are byte-identical; stale values fail closed.
-- [ ] Main integration is single-writer, explicit-path, fast-forward-only.
-- [ ] Focused, regression, static, receipt, event-chain, and detached checks pass.
-- [ ] No product, certification, release, or gate state changes.
+- [x] Missing required authority fails before digest, output, or proof creation.
+- [x] Existing valid-authority and declared diagnostic behavior is preserved.
+- [x] Three selector runs and three batch-manifest runs are byte-identical.
+- [x] Seeded mutations in every input category select every affected descendant.
+- [x] Full sentinel reports zero selector false negatives.
+- [x] Failed batch member leaves predecessor decisions/counts/identities intact.
+- [x] Four disjoint lanes cannot share mutable artifacts or write authorities.
+- [x] Three handover generations are byte-identical; stale values fail closed.
+- [x] Main integration is single-writer, explicit-path, fast-forward-only.
+- [x] Focused, regression, static, receipt, event-chain, and detached checks pass.
+- [x] No product, certification, release, or gate state changes.
+
+## Closure evidence
+
+- A1 semantic commit: `bdcdae83a78cdb2bd9225a847f814469bcd04c23`.
+- A2 semantic commit: `9ef65ce3d96ed9a8167c5d115356214c1887b11a`.
+- A3 controller semantic commit: `b772469b5f6fbbcdaae83d2be8b57058c2a45b34`.
+- Generated handover commits: `9772133c184e6cbfa041124eae36b4f2f5888919`
+  and `54f2a12f6d8e7d31f9f7beb6e7b0e9f5c2cb82a7`.
+- Three-run handover digest:
+  `a8f33bc22698279ac73d8c9f273fe34cb16679f2dccbcbb21cfd1f2dce2a0ad0`.
+- Five stale/tamper negative controls, 30-file manifest verification, Ruff,
+  strict Mypy, Pyright 1.1.411, py_compile, shared clean verification, and
+  temporary detached GitLab replay all passed.
+- Bounded truth: this closes control acceleration only. Product certification
+  remains `0/6`; all promotions remain `UNASSESSED`.
 
 ## Failure, rollback, and next-task rules
 

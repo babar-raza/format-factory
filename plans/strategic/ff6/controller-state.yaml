@@ -4,10 +4,10 @@ goal_status: ACTIVE
 generated_by: codex
 visibility: internal
 controller_state: CONTRACT
-transition_sequence: 44
+transition_sequence: 45
 last_verified_event:
-  event_id: FF6-EVENT-000044
-  event_hash: 20e8f7fac635994e4f1051a5dd9cd3bd0a2da3b0e361d006a17d834536fc09cd
+  event_id: FF6-EVENT-000045
+  event_hash: fbd74899787e1c3aa7ce7efcbc4eec2cb098d1ed0ebb78717858baceabf17550
 event_journal: plans/strategic/ff6/events.jsonl
 baseline_commit: e4f8f5f086b5e627c07c2ef2d940eda2601a22a8
 digest_policy:
@@ -24,12 +24,12 @@ handover_checkpoint:
   start: plans/codex/handover/START-HERE.md
   manifest: plans/codex/handover/manifest.yaml
   checkpoint: plans/codex/handover/checkpoint.yaml
-  packet_base_commit: 315efa5f5f4420202b5254c86ccd8863a91c385f
+  packet_base_commit: 54f2a12f6d8e7d31f9f7beb6e7b0e9f5c2cb82a7
   packet_commit_rule: >-
     The fetched origin/main checkpoint containing this projection must be a
     descendant of packet_base_commit. A packet cannot embed the hash of the
     commit that contains its own final bytes.
-  next_taskcard: taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md
+  next_taskcard: taskcards/TC-FF6-NRRD-READINESS-001.md
 active_task:
   task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
   state: WORK_IN_PROGRESS
@@ -54,7 +54,7 @@ next_task:
     accepted rows and all 1,130 candidate IDs. Product source and architecture
     remain blocked until XLF-04 and later contract steps close.
 acceleration_bootstrap:
-  status: IN_PROGRESS
+  status: COMPLETE
   plan_version: 4
   scheduling_event: FF6-EVENT-000041
   source_checkpoint_commit: 00357eb2aac2e657ef087a9ea1ca8433f1d06322
@@ -65,21 +65,23 @@ acceleration_bootstrap:
   max_active_write_lanes: 4
   lanes:
     - lane: A
-      task_id: TC-FF6-ACCEL-CONTROL-001
-      state: WORK_IN_PROGRESS
-      logical_lease: logical:FF6-CONTROL-ACCELERATION
+      task_id: TC-FF6-NRRD-READINESS-001
+      state: READY
+      logical_lease: logical:FF6-NRRD-READINESS
       semantic_commits:
         - bdcdae83a78cdb2bd9225a847f814469bcd04c23
         - 9ef65ce3d96ed9a8167c5d115356214c1887b11a
         - b772469b5f6fbbcdaae83d2be8b57058c2a45b34
+        - 54f2a12f6d8e7d31f9f7beb6e7b0e9f5c2cb82a7
       accepted_slices:
         - A1_MISSING_AUTHORITY_FAIL_CLOSED
         - A2_PROOF_IMPACT_SELECTOR_AND_SENTINEL
-      accepted_partial_slices:
         - A3_CONTROLLER_BATCH_AND_SCHEDULER
+        - A3_GENERATED_HANDOVER_AND_INTEGRATION_CONTROLS
       first_action: >-
-        Generate tracked handovers from Event 44 and controller state, then
-        run stale-value and integration-lock controls before closing A3.
+        Execute TC-FF6-NRRD-READINESS-001 R1 from GitLab main. Capture an
+        immutable source-tree and installed-wheel characterization baseline;
+        do not restructure product source or claim certification.
     - lane: B
       task_id: TC-FF6-XLIFF-SEMANTIC-BATCH-001
       state: READY
@@ -99,11 +101,10 @@ acceleration_bootstrap:
       first_action: >-
         Characterize IPYNB and SafeTensors read-only before any source restructuring.
   truth_boundary: >-
-    A1 and A2 plus the A3 controller half are accepted as control machinery
-    only; A3 remains incomplete until generated handovers and stale-value
-    controls pass. The active XLIFF candidate I and UBL-03 remain incomplete;
-    five contracts retain legacy validation defects; XLIFF rejects undeclared
-    locked authority SRC-XLIFF-003; all products remain UNASSESSED and technical
+    Control acceleration A1-A3 is complete and Lane A transfers to NRRD
+    readiness. The active XLIFF candidate I and UBL-03 remain incomplete; five
+    contracts retain legacy validation defects; XLIFF rejects undeclared locked
+    authority SRC-XLIFF-003; all products remain UNASSESSED and technical
     certification remains 0/6.
 promotion:
   program: UNASSESSED
@@ -187,7 +188,7 @@ current_gap_summary:
   production_certifications: 0
 control_plane_compatibility:
   ff6_event_schema: ff6/controller-event@1
-  native_chain_validation: PASS_THROUGH_EVENT_41
+  native_chain_validation: PASS_THROUGH_EVENT_45
   generic_plan_control_doctor: >-
     INCOMPATIBLE_SCHEMA: tools.plan_control expects previous_hash and its own
     event payload; FF6 uses previous_event_hash. This is the already-tracked
