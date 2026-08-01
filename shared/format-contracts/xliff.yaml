@@ -34,7 +34,7 @@ contract_metadata:
     qname_registry_sha256: b1d86cceffe18233a731a2216be51a74fe1690f3c6d89fda64c92690598fe8ba
     research_intake_impl_sha256: 4c7d3bfd69e7e5a74a9db2483d25b062e11cfdcb6609637b0343dfa8d3cd0579
     research_sha256: dd77e911133d83d299cb18a539248be15b99c24cbdc3df141fadbb1f2694421b
-    sal_facts_sha256: 0f55a87a818909d48479616e4a93a93d98e800878c1caa50bebf1ebebc43637b
+    sal_facts_sha256: b69be69995976328437e3fde4ab8c2767785b0e4f119805d3d7240615ae91eca
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
     source_researcher_impl_sha256: 4367e7591a368bcbc6a01199a7eb6da0f569ccc5c706d6650cdd96db0b7083a3
 format_identity:
@@ -113,6 +113,7 @@ capabilities:
   - SAL-XLIFF-00013
   - SAL-XLIFF-00014
   - SAL-XLIFF-00016
+  - SAL-XLIFF-D5C1325C047A7CB0
   - RF-XLF-00002
   required_behavior:
   - Expose inline content as a token tree/sequence preserving paired-code relationships, identity, nesting,
@@ -135,6 +136,9 @@ capabilities:
     where spans overlap element structure
   - (XLIFF core - original data) originalData elements carry native code data referenced from inline codes
     via dataRef attributes
+  - (XLIFF Core start-code isolation) An sc isolated attribute must be set to yes if and only if the corresponding
+    ec element is not in the same unit, and to no otherwise; a source sc with isolated=yes is invalid
+    when a matching ec referencing its id occurs in the same unit.
   depth_required: 5
   depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
     per L30 schema.'
@@ -227,6 +231,7 @@ capabilities:
   - SAL-XLIFF-00024
   - SAL-XLIFF-39A807E74F92A266
   - SAL-XLIFF-6F42212680161FF2
+  - SAL-XLIFF-D5C1325C047A7CB0
   - RF-XLF-00001
   required_behavior:
   - Model the full core hierarchy with tree order, IDs, references, inheritance, and scope preserved through
@@ -270,6 +275,9 @@ capabilities:
     or ignorable must satisfy the enclosing xliff trgLang. XLIFF 2.0 requires exact equality; the normative
     XLIFF 2.1 F4T Schematron accepts exact and more-specific language tags and reports incompatible or
     reverse-specific values.
+  - (XLIFF Core start-code isolation) An sc isolated attribute must be set to yes if and only if the corresponding
+    ec element is not in the same unit, and to no otherwise; a source sc with isolated=yes is invalid
+    when a matching ec referencing its id occurs in the same unit.
   depth_required: 4
   depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
     per L30 schema.'
@@ -302,6 +310,7 @@ capabilities:
   - SAL-XLIFF-00028
   - SAL-XLIFF-00029
   - SAL-XLIFF-00030
+  - SAL-XLIFF-D5C1325C047A7CB0
   - RF-XLF-00003
   required_behavior:
   - Declare per-module coverage (modeled/preservation-only/unsupported); preserve unknown module content
@@ -349,6 +358,9 @@ capabilities:
   - '(XLIFF 2.1 advanced validation artifacts) XLIFF 2.1 validation is layered: the release package supplies
     the core XSD, a core Schematron, module XSDs and Schematrons, and an NVDL advanced-validation dispatch
     artifact.'
+  - (XLIFF Core start-code isolation) An sc isolated attribute must be set to yes if and only if the corresponding
+    ec element is not in the same unit, and to no otherwise; a source sc with isolated=yes is invalid
+    when a matching ec referencing its id occurs in the same unit.
   depth_required: 4
   depth_rationale: 'MUST preserve capability: family depth floor 2, finding hints applied; depth scale
     0-8 per L30 schema.'
@@ -430,6 +442,7 @@ capabilities:
   - SAL-XLIFF-10A6F1FB1C146A18
   - SAL-XLIFF-39A807E74F92A266
   - SAL-XLIFF-6F42212680161FF2
+  - SAL-XLIFF-D5C1325C047A7CB0
   required_behavior:
   - Recognize supported version namespaces, validate namespace/version consistency, and preserve custom
     extension namespaces and attributes.
@@ -519,6 +532,9 @@ capabilities:
     or ignorable must satisfy the enclosing xliff trgLang. XLIFF 2.0 requires exact equality; the normative
     XLIFF 2.1 F4T Schematron accepts exact and more-specific language tags and reports incompatible or
     reverse-specific values.
+  - (XLIFF Core start-code isolation) An sc isolated attribute must be set to yes if and only if the corresponding
+    ec element is not in the same unit, and to no otherwise; a source sc with isolated=yes is invalid
+    when a matching ec referencing its id occurs in the same unit.
   depth_required: 2
   depth_rationale: 'MUST parse capability: family depth floor 2, finding hints applied; depth scale 0-8
     per L30 schema.'
@@ -705,6 +721,7 @@ capabilities:
   - SAL-XLIFF-00028
   - SAL-XLIFF-39A807E74F92A266
   - SAL-XLIFF-6F42212680161FF2
+  - SAL-XLIFF-D5C1325C047A7CB0
   required_behavior:
   - Edit source/target with inline-code positions preserved; expose plain-text and token-aware projections;
     support target creation from source with explicit code-copy policy.
@@ -742,6 +759,9 @@ capabilities:
     or ignorable must satisfy the enclosing xliff trgLang. XLIFF 2.0 requires exact equality; the normative
     XLIFF 2.1 F4T Schematron accepts exact and more-specific language tags and reports incompatible or
     reverse-specific values.
+  - (XLIFF Core start-code isolation) An sc isolated attribute must be set to yes if and only if the corresponding
+    ec element is not in the same unit, and to no otherwise; a source sc with isolated=yes is invalid
+    when a matching ec referencing its id occurs in the same unit.
   depth_required: 4
   depth_rationale: 'MUST edit capability: family depth floor 4, finding hints applied; depth scale 0-8
     per L30 schema.'
@@ -771,6 +791,7 @@ capabilities:
   - SAL-XLIFF-00030
   - SAL-XLIFF-39A807E74F92A266
   - SAL-XLIFF-6F42212680161FF2
+  - SAL-XLIFF-D5C1325C047A7CB0
   - RF-XLF-00005
   required_behavior:
   - Validate schema plus semantic constraints not expressible in schema (IDs, references, pairing, source/target
@@ -811,6 +832,9 @@ capabilities:
     or ignorable must satisfy the enclosing xliff trgLang. XLIFF 2.0 requires exact equality; the normative
     XLIFF 2.1 F4T Schematron accepts exact and more-specific language tags and reports incompatible or
     reverse-specific values.
+  - (XLIFF Core start-code isolation) An sc isolated attribute must be set to yes if and only if the corresponding
+    ec element is not in the same unit, and to no otherwise; a source sc with isolated=yes is invalid
+    when a matching ec referencing its id occurs in the same unit.
   depth_required: 5
   depth_rationale: 'MUST validate capability: family depth floor 5, finding hints applied; depth scale
     0-8 per L30 schema.'
@@ -963,6 +987,7 @@ coverage_map:
   - SAL-XLIFF-00013
   - SAL-XLIFF-00014
   - SAL-XLIFF-00016
+  - SAL-XLIFF-D5C1325C047A7CB0
   - RF-XLF-00002
 - capability_id: XLIFF-LIFECYCLE-001
   provenance:
@@ -993,6 +1018,7 @@ coverage_map:
   - SAL-XLIFF-00024
   - SAL-XLIFF-39A807E74F92A266
   - SAL-XLIFF-6F42212680161FF2
+  - SAL-XLIFF-D5C1325C047A7CB0
   - RF-XLF-00001
 - capability_id: XLIFF-MODULE-001
   provenance:
@@ -1012,6 +1038,7 @@ coverage_map:
   - SAL-XLIFF-00028
   - SAL-XLIFF-00029
   - SAL-XLIFF-00030
+  - SAL-XLIFF-D5C1325C047A7CB0
   - RF-XLF-00003
 - capability_id: XLIFF-NOTE-001
   provenance:
@@ -1056,6 +1083,7 @@ coverage_map:
   - SAL-XLIFF-10A6F1FB1C146A18
   - SAL-XLIFF-39A807E74F92A266
   - SAL-XLIFF-6F42212680161FF2
+  - SAL-XLIFF-D5C1325C047A7CB0
 - capability_id: XLIFF-PRESERVE-001
   provenance:
   - POL-SLC-PRESERVE-01
@@ -1101,6 +1129,7 @@ coverage_map:
   - SAL-XLIFF-00028
   - SAL-XLIFF-39A807E74F92A266
   - SAL-XLIFF-6F42212680161FF2
+  - SAL-XLIFF-D5C1325C047A7CB0
 - capability_id: XLIFF-VALIDATE-001
   provenance:
   - POL-XLC-VALIDATE-01
@@ -1115,6 +1144,7 @@ coverage_map:
   - SAL-XLIFF-00030
   - SAL-XLIFF-39A807E74F92A266
   - SAL-XLIFF-6F42212680161FF2
+  - SAL-XLIFF-D5C1325C047A7CB0
   - RF-XLF-00005
 - capability_id: XLIFF-WRITE-001
   provenance:

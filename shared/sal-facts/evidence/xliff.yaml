@@ -986,3 +986,53 @@ facts:
       plain text files, in the event of a discrepancy between any such plain
       text file and display content in the Work Product's prose narrative
       document(s), the content in the separate plain text file prevails.
+- fact_id: SAL-XLIFF-D5C1325C047A7CB0
+  claim_sha256: 27ca12d6af9f9702317f923192f841512aeb38cf45029466b78670f2fd976c3d
+  assertions:
+  - assertion_id: start-code-isolation-20-biconditional
+    target: specification_2_0
+    kind: xml_xpath_text_contains
+    xpath: .
+    expected: >-
+      The attribute isolated must be set to yes if and only if the <ec>
+      element corresponding to this start marker is not in the same <unit> ,
+      and set to no otherwise.
+  - assertion_id: start-code-isolation-21-biconditional
+    target: specification
+    kind: xml_xpath_text_contains
+    xpath: .
+    expected: >-
+      The attribute isolated must be set to yes if and only if the <ec>
+      element corresponding to this start marker is not in the same <unit> ,
+      and set to no otherwise.
+  - assertion_id: source-start-code-isolation-context
+    target: core_schematron
+    kind: xml_xpath_attributes_equal
+    xpath: ".//sch:pattern[@id='F5S']/sch:rule"
+    attribute: context
+    expected:
+    - "xlf:sc[ancestor::xlf:source][@isolated='yes'][ancestor::xlf:segment | ancestor::xlf:ignorable]"
+    namespaces: *sch_namespaces
+  - assertion_id: source-start-code-id-binding
+    target: core_schematron
+    kind: xml_xpath_attributes_equal
+    xpath: ".//sch:pattern[@id='F5S']/sch:rule/sch:let[@name='id']"
+    attribute: value
+    expected: [current()/@id]
+    namespaces: *sch_namespaces
+  - assertion_id: source-start-code-isolation-report-test
+    target: core_schematron
+    kind: xml_xpath_attributes_equal
+    xpath: ".//sch:pattern[@id='F5S']/sch:rule/sch:report"
+    attribute: test
+    expected:
+    - "ancestor::xlf:unit//xlf:ec[@startRef=$id][ancestor::xlf:source][ancestor::xlf:segment | ancestor::xlf:ignorable]"
+    namespaces: *sch_namespaces
+  - assertion_id: source-start-code-isolation-report-message
+    target: core_schematron
+    kind: xml_xpath_text_contains
+    xpath: ".//sch:pattern[@id='F5S']/sch:rule/sch:report"
+    expected: >-
+      'isolated' attribute is set to 'yes', but 'ec' element(s) referencing
+      this start code found within the same unit.
+    namespaces: *sch_namespaces

@@ -1,0 +1,96 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "sal-pipeline-heal-xliff-xlf04-core-batch-005-partial-002-h",
+  "skill_id": "sal-pipeline-heal",
+  "task_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+  "mode": "live",
+  "timestamp": "2026-08-01T14:35:30Z",
+  "inputs": {
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "taskcard_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "format_id": "xliff",
+    "microstep": "XLF-04-BATCH-005-PARTIAL-002-H",
+    "root_cause_id": "FF6-XLIFF-INDEPENDENT-DISPOSITION-GAP",
+    "target_stage": "fact_id_repair",
+    "spec_cache_path": ".local/format-contracts/acquired/xliff",
+    "execution_manifest_id": "sfx-2476701b1d8b2489",
+    "pre_mutation_authorization_id": "67f4fff711c5fd1e",
+    "selected_candidate": "XLF-CAND-CORE-SCHEMATRON-E891C4DEC555F165"
+  },
+  "allowed_files": [
+    "shared/sal-facts/xliff.yaml",
+    "shared/sal-fact-id-aliases.json",
+    "shared/sal-facts/evidence/xliff.yaml",
+    "reports/sal-verification/xliff.json",
+    "shared/sal-facts/evidence/xliff-core-candidate-decisions.yaml",
+    "reports/sal-verification/xliff-core-candidate-adjudications.yaml",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-xliff-xlf04-core-batch-005-partial-002-h.json"
+  ],
+  "actual_files_changed": [
+    "shared/sal-facts/xliff.yaml",
+    "shared/sal-fact-id-aliases.json",
+    "shared/sal-facts/evidence/xliff.yaml",
+    "reports/sal-verification/xliff.json",
+    "shared/sal-facts/evidence/xliff-core-candidate-decisions.yaml",
+    "reports/sal-verification/xliff-core-candidate-adjudications.yaml",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-xliff-xlf04-core-batch-005-partial-002-h.json"
+  ],
+  "authority_reasoning": {
+    "accepted_direct_owner": "SAL-XLIFF-CORE-INLINE-ISOLATION-001",
+    "rejected_generated_owners": [
+      "SAL-XLIFF-CORE-AGENT-VALIDATOR-001",
+      "SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001",
+      "SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001",
+      "SAL-XLIFF-CORE-HIERARCHY-UNIT-CHILDREN-001",
+      "SAL-XLIFF-CORE-INLINE-EC-001",
+      "SAL-XLIFF-CORE-INLINE-SC-001",
+      "SAL-XLIFF-CORE-REFERENCE-STARTREF-001",
+      "SAL-XLIFF-CORE-SOURCE-REQUIRED-001"
+    ],
+    "rule": "sc isolated is yes if and only if the corresponding ec is outside the same unit, and no otherwise.",
+    "authority_location": "XLIFF 2.0 and 2.1 sc normative prose plus XLIFF 2.1 Core Schematron F5S report",
+    "sal_fact_id": "SAL-XLIFF-D5C1325C047A7CB0",
+    "sal_fact_proof_sha256": "c584c795046953ff73f4de7db941bdbae9abd35fc0d838bf9cc297b9790a3085"
+  },
+  "execution_incidents": [
+    {
+      "class": "coordination_ordering",
+      "effect": "The ignored candidate queue was written before immediate record-write, so preflight raised an own-session unknown-change conflict.",
+      "resolution": "The write was journaled, conflict conf-2b2eeac8f8 was resolved with same-session-rebaseline evidence, and lease-39ccf3d2bd was rebaselined.",
+      "promoting_evidence": false
+    },
+    {
+      "class": "authority_rendering_exactness",
+      "effect": "The first verifier attempt failed because the rendered normative prose contains a space before the comma after unit.",
+      "resolution": "The evidence substring was corrected to the exact pinned-authority rendering; no requirement was weakened.",
+      "promoting_evidence": false
+    },
+    {
+      "class": "harness_output_parsing",
+      "effect": "verify_sal_facts.py --apply completed successfully, then a shell consumer raised KeyError because apply mode emits a wrapper rather than the raw receipt.",
+      "resolution": "Applied files were inspected, their digests verified, and a subsequent read-only verifier run passed.",
+      "promoting_evidence": false
+    }
+  ],
+  "tests_run": [
+    "SAL verifier: PASS; new fact has six PASS assertions",
+    "candidate adjudication --check: PASS, 9 decisions, digest 51ac3adc6fa530246ff25b70e179d040d68eeb65dc8a744794e0d4fbe7738e42",
+    "three isolated adjudication generations: byte-identical to canonical output",
+    "decision predecessor proof: all 8 earlier decision objects equal and one decision appended",
+    "XLIFF authority audit: 4 MATCH, 0 mismatch, 0 missing",
+    "affected tool suites: 113 passed",
+    "static analysis and compilation: PASS"
+  ],
+  "output_digests": {
+    "shared/sal-facts/xliff.yaml": "b69be69995976328437e3fde4ab8c2767785b0e4f119805d3d7240615ae91eca",
+    "shared/sal-fact-id-aliases.json": "24b53017d7675e586c9e18dd014536c4b59ca89cd5cbf02faf718c9fc57af6ef",
+    "shared/sal-facts/evidence/xliff.yaml": "11e77f646db5f4f7d2c147b83abdcc8212b7c34a0715041ec0914543ed1b3daa",
+    "reports/sal-verification/xliff.json": "949508670d058c34655ff50d29217a2c205b3b0e1c533834c884c108b51ff279",
+    "shared/sal-facts/evidence/xliff-core-candidate-decisions.yaml": "e1e2b41ade0fc6da820368208a31b81593917fd4ff16231495e61ac1d8f4f673",
+    "reports/sal-verification/xliff-core-candidate-adjudications.yaml": "51ac3adc6fa530246ff25b70e179d040d68eeb65dc8a744794e0d4fbe7738e42"
+  },
+  "result": "PASS",
+  "truth_boundary": "Exactly one additional candidate disposition and one SAL fact are independently verified. There are still 1121 unverified candidate dispositions; XLF-04 and all product certifications remain open.",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

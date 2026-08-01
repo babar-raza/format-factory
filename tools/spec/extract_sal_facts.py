@@ -3747,6 +3747,12 @@ def _default_core_obligation_seeds(
     batch_five_target_language_compatibility_candidate_ids = {
         "XLF-CAND-CORE-SCHEMATRON-5D563A565DC6DCFE"
     }
+    batch_five_inline_isolation_id = (
+        "SAL-XLIFF-CORE-INLINE-ISOLATION-001"
+    )
+    batch_five_inline_isolation_candidate_ids = {
+        "XLF-CAND-CORE-SCHEMATRON-E891C4DEC555F165"
+    }
     seeds.append(
         {
             "obligation_id": batch_five_target_language_id,
@@ -3966,6 +3972,53 @@ def _default_core_obligation_seeds(
             ),
         }
     )
+    seeds.append(
+        {
+            "obligation_id": batch_five_inline_isolation_id,
+            "obligation_basis": "XLIFF_SPECIFICATION",
+            "introduced_in_batch": "XLF-04-BATCH-005",
+            "stable_profiles": ["xliff_2.0", "xliff_2.1"],
+            "owner": "core:inline-code",
+            "category": "inline_code_semantics",
+            "normalized_rule": (
+                "Require sc isolated=yes if and only if its corresponding "
+                "ec is outside the same unit, and isolated=no otherwise."
+            ),
+            "requirement_class": "SEMANTIC_CONSTRAINT",
+            "normative_level": "MUST",
+            "authority_locations": locations(
+                "sc",
+                "The attribute isolated must be set to yes if and only if",
+            ),
+            "adjudication_candidate_ids": sorted(
+                batch_five_inline_isolation_candidate_ids
+            ),
+            "evidence_requirements": {
+                "positive": [
+                    "accept isolated=yes when the corresponding ec is "
+                    "outside the unit",
+                    "accept isolated=no when the corresponding ec is in "
+                    "the same unit",
+                ],
+                "rejection": [
+                    "reject isolated=yes when a matching ec occurs in the "
+                    "same unit",
+                    "reject isolated=no when the corresponding ec is "
+                    "outside the unit",
+                ],
+            },
+            "interpretation_note": (
+                "Independent adjudication XLF-ADJ-CORE-SCHEMATRON-0009 "
+                "binds the exact XLIFF 2.1 source-side isolated=yes report "
+                "to verified fact SAL-XLIFF-D5C1325C047A7CB0. Identical "
+                "normative prose in the pinned XLIFF 2.0 and 2.1 authorities "
+                "states the full biconditional and supplies stable-profile "
+                "applicability. The report does not establish generic "
+                "validator behavior, source or unit cardinality, complete "
+                "sc/ec element surfaces, or startRef resolution semantics."
+            ),
+        }
+    )
     if not re.fullmatch(r"XLF-04-BATCH-[0-9]{3}", through_batch):
         raise ExtractionError(
             f"invalid default Core through_batch: {through_batch}"
@@ -4115,6 +4168,28 @@ def _default_core_obligation_seeds(
         target_language_seed["adjudication_candidate_ids"] = sorted(
             batch_five_target_language_compatibility_candidate_ids
         )
+    if (
+        maximum_sequence >= 5
+        and batch_five_inline_isolation_id in verified_ids
+    ):
+        accepted_candidates = (
+            adjudication_evidence or {}
+        ).get("accepted_obligation_candidate_ids", {})
+        isolation_candidates = (
+            accepted_candidates.get(batch_five_inline_isolation_id, [])
+            if isinstance(accepted_candidates, Mapping)
+            else []
+        )
+        if not isinstance(isolation_candidates, Sequence) or isinstance(
+            isolation_candidates,
+            (str, bytes),
+        ) or not batch_five_inline_isolation_candidate_ids <= set(
+            map(str, isolation_candidates)
+        ):
+            raise ExtractionError(
+                "XLF-04-BATCH-005 requires the exact Schematron candidate "
+                f"for {batch_five_inline_isolation_id}"
+            )
     return [
         seed
         for seed in seeds

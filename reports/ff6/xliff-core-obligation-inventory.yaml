@@ -10,7 +10,7 @@ status: SOURCE_LOCATED_PARTIAL
 stable_profiles:
 - xliff_2.0
 - xliff_2.1
-obligation_count: 30
+obligation_count: 31
 covered_categories:
 - agent_processing
 - document_structure
@@ -40,7 +40,7 @@ remaining_categories:
 - xml_security_resource_limits
 completeness_basis: EXPLICIT_EXPECTED_OBLIGATION_IDS_OPEN_CENSUS
 expected_obligation_count: 105
-resolved_expected_obligation_count: 30
+resolved_expected_obligation_count: 31
 missing_expected_obligation_ids:
 - SAL-XLIFF-CORE-AGENT-EXTRACTOR-001
 - SAL-XLIFF-CORE-AGENT-LOSS-REPORT-001
@@ -78,7 +78,6 @@ missing_expected_obligation_ids:
 - SAL-XLIFF-CORE-INLINE-DATAREF-001
 - SAL-XLIFF-CORE-INLINE-EC-001
 - SAL-XLIFF-CORE-INLINE-EM-001
-- SAL-XLIFF-CORE-INLINE-ISOLATION-001
 - SAL-XLIFF-CORE-INLINE-MRK-001
 - SAL-XLIFF-CORE-INLINE-NESTING-001
 - SAL-XLIFF-CORE-INLINE-ORDER-001
@@ -162,7 +161,6 @@ missing_expected_obligations_by_category:
   - SAL-XLIFF-CORE-INLINE-DATAREF-001
   - SAL-XLIFF-CORE-INLINE-EC-001
   - SAL-XLIFF-CORE-INLINE-EM-001
-  - SAL-XLIFF-CORE-INLINE-ISOLATION-001
   - SAL-XLIFF-CORE-INLINE-MRK-001
   - SAL-XLIFF-CORE-INLINE-NESTING-001
   - SAL-XLIFF-CORE-INLINE-ORDER-001
@@ -209,7 +207,7 @@ denominator_status: OPEN_AUTHORITY_CENSUS
 denominator_complete: false
 obligation_basis_counts:
   PRODUCTION_POLICY: 4
-  XLIFF_SPECIFICATION: 26
+  XLIFF_SPECIFICATION: 27
 complete: false
 obligations:
 - obligation_id: SAL-XLIFF-CORE-AGENT-INLINE-001
@@ -649,6 +647,50 @@ obligations:
     - reject behavior that ignores the inherited translate value
   interpretation_note: Second source-located XLF-04 batch covering stable identifier, inheritance, language, direction, whitespace, and source-target rules.
   verification_status: SOURCE_BOUND_UNVERIFIED
+- obligation_id: SAL-XLIFF-CORE-INLINE-ISOLATION-001
+  obligation_basis: XLIFF_SPECIFICATION
+  conformance_effect: STANDARD_CONFORMANCE
+  introduced_in_batch: XLF-04-BATCH-005
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  owner: core:inline-code
+  category: inline_code_semantics
+  normalized_rule: Require sc isolated=yes if and only if its corresponding ec is outside the same unit, and isolated=no otherwise.
+  requirement_class: SEMANTIC_CONSTRAINT
+  normative_level: MUST
+  authority_locations:
+  - profile: xliff_2.0
+    authority_source_id: SRC-XLF-001
+    source_sha256: aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055
+    location_kind: prose_paragraph
+    member: xliff-core-v2.0-os.xml
+    member_sha256: 07059d426de1e839540e5e84e0e061c4a6d5ef1a1b7e71ddf75bf5bd11518b73
+    section_id: sc
+    paragraph_index: 8
+    source_anchor: The attribute isolated must be set to yes if and only if
+    source_text_sha256: 62e28cae3e30a6cc5a9821d2fce245d33c27ab7955f5e6da075cd151ea2bfd85
+  - profile: xliff_2.1
+    authority_source_id: SRC-XLF-002
+    source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    location_kind: prose_paragraph
+    member: xliff-core-v2.1-os.xml
+    member_sha256: e8c72ec2314e1025f25886cd0ea2b6c10aa2405bd292026383afca2207c44e5b
+    section_id: sc
+    paragraph_index: 8
+    source_anchor: The attribute isolated must be set to yes if and only if
+    source_text_sha256: 62e28cae3e30a6cc5a9821d2fce245d33c27ab7955f5e6da075cd151ea2bfd85
+  evidence_requirements:
+    positive:
+    - accept isolated=yes when the corresponding ec is outside the unit
+    - accept isolated=no when the corresponding ec is in the same unit
+    rejection:
+    - reject isolated=yes when a matching ec occurs in the same unit
+    - reject isolated=no when the corresponding ec is outside the unit
+  interpretation_note: Independent adjudication XLF-ADJ-CORE-SCHEMATRON-0009 binds the exact XLIFF 2.1 source-side isolated=yes report to verified fact SAL-XLIFF-D5C1325C047A7CB0. Identical normative prose in the pinned XLIFF 2.0 and 2.1 authorities states the full biconditional and supplies stable-profile applicability. The report does not establish generic validator behavior, source or unit cardinality, complete sc/ec element surfaces, or startRef resolution semantics.
+  verification_status: SOURCE_BOUND_UNVERIFIED
+  adjudication_candidate_ids:
+  - XLF-CAND-CORE-SCHEMATRON-E891C4DEC555F165
 - obligation_id: SAL-XLIFF-CORE-INLINE-PAIRING-001
   obligation_basis: XLIFF_SPECIFICATION
   conformance_effect: STANDARD_CONFORMANCE
@@ -1361,12 +1403,12 @@ obligations:
 truth_boundary: XLIFF specification obligations and production-policy duties are separate authority classes. Neither source binding nor category presence turns the 36 coarse XLF-03 anchors into complete Core semantics, product source, or certification.
 adjudication_input:
   artifact_id: FF6-XLIFF-CORE-CANDIDATE-ADJUDICATIONS
-  artifact_sha256: d63a31f936262c9952a0f50afd076b8547bc5c26cbdfd5adf04464b5f2c3dcc2
-  input_closure_sha256: 37966c493bd37a49f980962c2a3ff565125aeb05d1c50eec02757f6280325d8d
-  decision_set_sha256: 40baebef501f2369f7d19546509c44272d3e9d1df4dbc0eb62429041e4e1c417
-  decision_count: 8
-  verified_disposition_count: 8
-  unverified_disposition_count: 1122
+  artifact_sha256: 51ac3adc6fa530246ff25b70e179d040d68eeb65dc8a744794e0d4fbe7738e42
+  input_closure_sha256: 89f339dfd98889413d0667d2e61b3430a66b74fb6499bf64830a3feb20c77505
+  decision_set_sha256: a0001cbb85edf059cd40458ea5bc564bedb73b216c45b0caef37c276d0078a3c
+  decision_count: 9
+  verified_disposition_count: 9
+  unverified_disposition_count: 1121
   verified_candidate_ids:
   - XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
   - XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92
@@ -1376,6 +1418,7 @@ adjudication_input:
   - XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E
   - XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73
   - XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90
+  - XLF-CAND-CORE-SCHEMATRON-E891C4DEC555F165
   accepted_obligation_candidate_ids:
     SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001:
     - XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73
@@ -1383,6 +1426,8 @@ adjudication_input:
     - XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90
     SAL-XLIFF-CORE-HIERARCHY-UNIT-CHILDREN-001:
     - XLF-CAND-CORE-SCHEMATRON-100732DB0BBED389
+    SAL-XLIFF-CORE-INLINE-ISOLATION-001:
+    - XLF-CAND-CORE-SCHEMATRON-E891C4DEC555F165
     SAL-XLIFF-CORE-INLINE-PAIRING-001:
     - XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
     - XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF

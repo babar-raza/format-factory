@@ -62,6 +62,10 @@ TARGET_LANGUAGE_COMPATIBILITY_CANDIDATE_ID = (
 TARGET_LANGUAGE_COMPATIBILITY_OBLIGATION_ID = (
     "SAL-XLIFF-CORE-TARGET-LANGUAGE-001"
 )
+START_CODE_ISOLATION_CANDIDATE_ID = (
+    "XLF-CAND-CORE-SCHEMATRON-E891C4DEC555F165"
+)
+INLINE_ISOLATION_OBLIGATION_ID = "SAL-XLIFF-CORE-INLINE-ISOLATION-001"
 PREDECESSOR_OBLIGATION_ROW_SHA256 = {
     "SAL-XLIFF-CORE-AGENT-INLINE-001": "ddc5b5252a5fe492df5f0e59e63e4c3e4552a2c019398ec80a46ed29bd30b6cb",
     "SAL-XLIFF-CORE-DIRECTION-SOURCE-001": "7e7b18ef8786c8bb667a2486568b6631ccc4ffb52a9f6a63a6032a0beefee9e3",
@@ -1365,13 +1369,13 @@ def test_cli_batch_five_compiles_only_reciprocally_adjudicated_pairing_obligatio
 
     assert extractor.main(args) == 0
     inventory = yaml.safe_load(output.read_bytes())
-    assert inventory["obligation_count"] == 30
-    assert inventory["resolved_expected_obligation_count"] == 30
-    assert len(inventory["missing_expected_obligation_ids"]) == 75
+    assert inventory["obligation_count"] == 31
+    assert inventory["resolved_expected_obligation_count"] == 31
+    assert len(inventory["missing_expected_obligation_ids"]) == 74
     assert inventory["complete"] is False
-    assert inventory["adjudication_input"]["decision_count"] == 8
-    assert inventory["adjudication_input"]["verified_disposition_count"] == 8
-    assert inventory["adjudication_input"]["unverified_disposition_count"] == 1122
+    assert inventory["adjudication_input"]["decision_count"] == 9
+    assert inventory["adjudication_input"]["verified_disposition_count"] == 9
+    assert inventory["adjudication_input"]["unverified_disposition_count"] == 1121
 
     rows = {row["obligation_id"]: row for row in inventory["obligations"]}
     assert SOURCE_LANGUAGE_OBLIGATION_ID in rows
@@ -1465,6 +1469,24 @@ def test_cli_batch_five_compiles_only_reciprocally_adjudicated_pairing_obligatio
         for location in target_language["authority_locations"]
     } == {
         "e7dd434305b7315fd7eecf2acbc066e0f7a149d0a4fe9bb704d1ace3bd5be29e"
+    }
+    isolation = rows[INLINE_ISOLATION_OBLIGATION_ID]
+    assert isolation["introduced_in_batch"] == "XLF-04-BATCH-005"
+    assert isolation["owner"] == "core:inline-code"
+    assert isolation["category"] == "inline_code_semantics"
+    assert isolation["stable_profiles"] == ["xliff_2.0", "xliff_2.1"]
+    assert isolation["adjudication_candidate_ids"] == [
+        START_CODE_ISOLATION_CANDIDATE_ID
+    ]
+    assert "if and only if" in isolation["normalized_rule"]
+    assert {
+        location["profile"] for location in isolation["authority_locations"]
+    } == {"xliff_2.0", "xliff_2.1"}
+    assert {
+        location["source_text_sha256"]
+        for location in isolation["authority_locations"]
+    } == {
+        "62e28cae3e30a6cc5a9821d2fce245d33c27ab7955f5e6da075cd151ea2bfd85"
     }
     assert extractor.main([*args, "--check"]) == 0
 
@@ -1699,6 +1721,62 @@ def test_batch_five_target_language_seed_requires_profile_specific_proof(
     assert target_language["evidence_requirements"]["rejection"] == [
         "Reject any non-exact XLIFF 2.0 target language value.",
         "Reject reverse-specific or unrelated XLIFF 2.1 target language values.",
+    ]
+
+
+def test_batch_five_inline_isolation_seed_requires_exact_candidate_proof(
+) -> None:
+    extractor = _load_module()
+    verified = {
+        TARGET_LANGUAGE_OBLIGATION_ID,
+        INLINE_ISOLATION_OBLIGATION_ID,
+    }
+
+    with pytest.raises(
+        extractor.ExtractionError,
+        match="exact Schematron candidate",
+    ):
+        extractor._default_core_obligation_seeds(
+            through_batch="XLF-04-BATCH-005",
+            verified_obligation_ids=verified,
+            adjudication_evidence={
+                "accepted_obligation_candidate_ids": {
+                    INLINE_ISOLATION_OBLIGATION_ID: []
+                }
+            },
+        )
+
+    seeds = extractor._default_core_obligation_seeds(
+        through_batch="XLF-04-BATCH-005",
+        verified_obligation_ids=verified,
+        adjudication_evidence={
+            "accepted_obligation_candidate_ids": {
+                INLINE_ISOLATION_OBLIGATION_ID: [
+                    START_CODE_ISOLATION_CANDIDATE_ID
+                ]
+            }
+        },
+    )
+    isolation = next(
+        seed
+        for seed in seeds
+        if seed["obligation_id"] == INLINE_ISOLATION_OBLIGATION_ID
+    )
+    assert isolation["adjudication_candidate_ids"] == [
+        START_CODE_ISOLATION_CANDIDATE_ID
+    ]
+    assert isolation["stable_profiles"] == ["xliff_2.0", "xliff_2.1"]
+    assert isolation["normalized_rule"] == (
+        "Require sc isolated=yes if and only if its corresponding ec is "
+        "outside the same unit, and isolated=no otherwise."
+    )
+    assert isolation["evidence_requirements"]["positive"] == [
+        "accept isolated=yes when the corresponding ec is outside the unit",
+        "accept isolated=no when the corresponding ec is in the same unit",
+    ]
+    assert isolation["evidence_requirements"]["rejection"] == [
+        "reject isolated=yes when a matching ec occurs in the same unit",
+        "reject isolated=no when the corresponding ec is outside the unit",
     ]
 
 

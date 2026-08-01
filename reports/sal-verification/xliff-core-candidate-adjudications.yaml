@@ -7,16 +7,16 @@ generated_by: codex
 format_id: xliff
 candidate_census_sha256: 9f10464e14c55a36ee1e54a5d12d04e8e23f19d2cb94d7c0c732cb40861db4b7
 denominator_sha256: 86a4f2cdc6e4a341eba2a3cbb6fcc8119883d1cda64d056198c7c34b7fa880b7
-sal_store_sha256: 0f55a87a818909d48479616e4a93a93d98e800878c1caa50bebf1ebebc43637b
-sal_manifest_sha256: a83e62b532801fd9e9b8fe95d94494903314b51be240cdbcc6b2a76de132c906
-sal_receipt_sha256: f5cab24f25bb0086d4795f1ef9b73a367dab4b1ceef3a5d3642ad376fe8e4921
+sal_store_sha256: b69be69995976328437e3fde4ab8c2767785b0e4f119805d3d7240615ae91eca
+sal_manifest_sha256: 11e77f646db5f4f7d2c147b83abdcc8212b7c34a0715041ec0914543ed1b3daa
+sal_receipt_sha256: 949508670d058c34655ff50d29217a2c205b3b0e1c533834c884c108b51ff279
 adjudicator_sha256: 240ca789f93c81e94f32852399ce7ae225377516ee46dbfe2e568347ae00db05
 candidate_census_artifact_id: FF6-XLIFF-CORE-AUTHORITY-CANDIDATE-CENSUS
 denominator_artifact_id: FF6-XLIFF-CORE-OBLIGATION-DENOMINATOR
 candidate_count: 1130
-decision_count: 8
-verified_disposition_count: 8
-unverified_disposition_count: 1122
+decision_count: 9
+verified_disposition_count: 9
+unverified_disposition_count: 1121
 disposition_verification_complete: false
 verified_candidate_ids:
 - XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
@@ -27,6 +27,7 @@ verified_candidate_ids:
 - XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E
 - XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73
 - XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90
+- XLF-CAND-CORE-SCHEMATRON-E891C4DEC555F165
 accepted_obligation_candidate_ids:
   SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001:
   - XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73
@@ -34,6 +35,8 @@ accepted_obligation_candidate_ids:
   - XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90
   SAL-XLIFF-CORE-HIERARCHY-UNIT-CHILDREN-001:
   - XLF-CAND-CORE-SCHEMATRON-100732DB0BBED389
+  SAL-XLIFF-CORE-INLINE-ISOLATION-001:
+  - XLF-CAND-CORE-SCHEMATRON-E891C4DEC555F165
   SAL-XLIFF-CORE-INLINE-PAIRING-001:
   - XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
   - XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF
@@ -413,8 +416,76 @@ decisions:
     rules.
   outcome: VERIFIED_AUTHORITY_DISPOSITION
   decision_sha256: 6550fecc8aa699f6def1ad3221fd3862fa3872b2dfa25995ea31862f7ce56c92
+- decision_id: XLF-ADJ-CORE-SCHEMATRON-0009
+  candidate_id: XLF-CAND-CORE-SCHEMATRON-E891C4DEC555F165
+  candidate_content_sha256: 04aeb46e7eeaa854cf9554005a11476334fa8f41f6db9a45ca2f0e38b8d6d0e6
+  proposal_sha256: edea6de48ee840a51b412f570e71b94fcd8d559c0bd2413f784eb63266e42bcb
+  proposed_obligation_ids:
+  - SAL-XLIFF-CORE-AGENT-VALIDATOR-001
+  - SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001
+  - SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001
+  - SAL-XLIFF-CORE-HIERARCHY-UNIT-CHILDREN-001
+  - SAL-XLIFF-CORE-INLINE-EC-001
+  - SAL-XLIFF-CORE-INLINE-SC-001
+  - SAL-XLIFF-CORE-REFERENCE-STARTREF-001
+  - SAL-XLIFF-CORE-SOURCE-REQUIRED-001
+  authority_occurrences:
+  - profile: xliff_2.1
+    source_id: SRC-XLF-002
+    source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    member: schemas/xliff_core_2.1.sch
+    member_sha256: d4275f2d2574f892624bcd8f83bcc3001c75d623e4eb36896d15d147f16ed7a2
+    location: schematron/rule[15]/report[1]
+    occurrence_sha256: cb57d9e386c6274b0aa0aedca3e2b4bab1dbaafb41ff2e66a884681485d6c84f
+  accepted_obligation_ids:
+  - SAL-XLIFF-CORE-INLINE-ISOLATION-001
+  unproposed_accepted_obligation_ids:
+  - SAL-XLIFF-CORE-INLINE-ISOLATION-001
+  rejected_obligations:
+  - obligation_id: SAL-XLIFF-CORE-AGENT-VALIDATOR-001
+    reason_code: DOWNSTREAM_CAPABILITY_NOT_DIRECT_SEMANTIC_OWNER
+    reason: A conforming validator enforces the report, but validator behavior is downstream from the
+      inline-isolation invariant.
+  - obligation_id: SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001
+    reason_code: INCIDENTAL_XPATH_CONTEXT_TOKEN
+    reason: The ignorable ancestor limits applicability and does not establish an independent hierarchy
+      rule.
+  - obligation_id: SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001
+    reason_code: INCIDENTAL_XPATH_CONTEXT_TOKEN
+    reason: The segment ancestor limits applicability and does not establish an independent hierarchy
+      rule.
+  - obligation_id: SAL-XLIFF-CORE-HIERARCHY-UNIT-CHILDREN-001
+    reason_code: REFERENCE_SCOPE_NOT_PARENT_CARDINALITY_RULE
+    reason: The unit ancestor bounds the matching-code search; the report does not establish unit child
+      cardinality.
+  - obligation_id: SAL-XLIFF-CORE-INLINE-EC-001
+    reason_code: COUNTERPART_SURFACE_NOT_ISOLATION_STATE_OWNER
+    reason: The matching ec is the counterpart used by the predicate, not the owner of the sc isolated-state
+      invariant.
+  - obligation_id: SAL-XLIFF-CORE-INLINE-SC-001
+    reason_code: ELEMENT_SURFACE_NOT_ATTRIBUTE_INVARIANT_OWNER
+    reason: The sc element is the constrained surface, but its complete element model is broader than
+      this isolated-state invariant.
+  - obligation_id: SAL-XLIFF-CORE-REFERENCE-STARTREF-001
+    reason_code: REFERENCE_MECHANISM_NOT_ISOLATION_STATE_OWNER
+    reason: startRef locates the corresponding ec; reference resolution is not the direct owner of the
+      sc isolated-state value.
+  - obligation_id: SAL-XLIFF-CORE-SOURCE-REQUIRED-001
+    reason_code: TRIGGER_DOES_NOT_ESTABLISH_CARDINALITY
+    reason: The source ancestor limits applicability and does not establish source presence or cardinality.
+  sal_proofs:
+  - fact_id: SAL-XLIFF-D5C1325C047A7CB0
+    claim_sha256: 27ca12d6af9f9702317f923192f841512aeb38cf45029466b78670f2fd976c3d
+    fact_proof_sha256: c584c795046953ff73f4de7db941bdbae9abd35fc0d838bf9cc297b9790a3085
+  authority_reason: 'The exact XLIFF 2.1 F5S report rejects a source sc marked isolated=yes when a matching
+    ec occurs in the same unit. The identical normative XLIFF 2.0 and 2.1 prose states the complete biconditional:
+    isolated is yes exactly when the corresponding ec is outside the same unit and no otherwise. That
+    value invariant belongs to the unproposed inline-isolation obligation; element surfaces, reference
+    mechanics, hierarchy, source cardinality, and generic validation are separate concerns.'
+  outcome: VERIFIED_AUTHORITY_DISPOSITION
+  decision_sha256: 48ca690f9a75720e407b485666b0c87b1d09d6deeba06ad3fc6f38f272c20ba9
 status: PARTIAL_VERIFIED
 truth_boundary: Only listed content-addressed decisions are verified. Generated candidate proposals remain
   non-promoting, and this partial artifact does not complete XLF-04.
-input_closure_sha256: 37966c493bd37a49f980962c2a3ff565125aeb05d1c50eec02757f6280325d8d
-decision_set_sha256: 40baebef501f2369f7d19546509c44272d3e9d1df4dbc0eb62429041e4e1c417
+input_closure_sha256: 89f339dfd98889413d0667d2e61b3430a66b74fb6499bf64830a3feb20c77505
+decision_set_sha256: a0001cbb85edf059cd40458ea5bc564bedb73b216c45b0caef37c276d0078a3c

@@ -72,6 +72,11 @@ TARGET_LANGUAGE_COMPATIBILITY_CANDIDATE_ID = (
 )
 TARGET_LANGUAGE_COMPATIBILITY_ID = "SAL-XLIFF-CORE-TARGET-LANGUAGE-001"
 LANGUAGE_TARGET_ID = "SAL-XLIFF-CORE-LANGUAGE-TARGET-001"
+START_CODE_ISOLATION_CANDIDATE_ID = (
+    "XLF-CAND-CORE-SCHEMATRON-E891C4DEC555F165"
+)
+INLINE_ISOLATION_ID = "SAL-XLIFF-CORE-INLINE-ISOLATION-001"
+INLINE_ISOLATION_FACT_ID = "SAL-XLIFF-D5C1325C047A7CB0"
 REJECTED_PROPOSAL_IDS = {
     "SAL-XLIFF-CORE-AGENT-VALIDATOR-001":
         "DOWNSTREAM_CAPABILITY_NOT_DIRECT_SEMANTIC_OWNER",
@@ -627,6 +632,160 @@ def _target_language_compatibility_decision() -> dict[str, Any]:
     }
 
 
+def _start_code_isolation_decision() -> dict[str, Any]:
+    rejected = {
+        "SAL-XLIFF-CORE-AGENT-VALIDATOR-001": (
+            "DOWNSTREAM_CAPABILITY_NOT_DIRECT_SEMANTIC_OWNER",
+            "A conforming validator enforces the report, but validator "
+            "behavior is downstream from the inline-isolation invariant.",
+        ),
+        "SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001": (
+            "INCIDENTAL_XPATH_CONTEXT_TOKEN",
+            "The ignorable ancestor limits applicability and does not "
+            "establish an independent hierarchy rule.",
+        ),
+        "SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001": (
+            "INCIDENTAL_XPATH_CONTEXT_TOKEN",
+            "The segment ancestor limits applicability and does not "
+            "establish an independent hierarchy rule.",
+        ),
+        "SAL-XLIFF-CORE-HIERARCHY-UNIT-CHILDREN-001": (
+            "REFERENCE_SCOPE_NOT_PARENT_CARDINALITY_RULE",
+            "The unit ancestor bounds the matching-code search; the report "
+            "does not establish unit child cardinality.",
+        ),
+        "SAL-XLIFF-CORE-INLINE-EC-001": (
+            "COUNTERPART_SURFACE_NOT_ISOLATION_STATE_OWNER",
+            "The matching ec is the counterpart used by the predicate, not "
+            "the owner of the sc isolated-state invariant.",
+        ),
+        "SAL-XLIFF-CORE-INLINE-SC-001": (
+            "ELEMENT_SURFACE_NOT_ATTRIBUTE_INVARIANT_OWNER",
+            "The sc element is the constrained surface, but its complete "
+            "element model is broader than this isolated-state invariant.",
+        ),
+        "SAL-XLIFF-CORE-REFERENCE-STARTREF-001": (
+            "REFERENCE_MECHANISM_NOT_ISOLATION_STATE_OWNER",
+            "startRef locates the corresponding ec; reference resolution is "
+            "not the direct owner of the sc isolated-state value.",
+        ),
+        "SAL-XLIFF-CORE-SOURCE-REQUIRED-001": (
+            "TRIGGER_DOES_NOT_ESTABLISH_CARDINALITY",
+            "The source ancestor limits applicability and does not establish "
+            "source presence or cardinality.",
+        ),
+    }
+    return {
+        "decision_id": "XLF-ADJ-CORE-SCHEMATRON-0009",
+        "candidate_id": START_CODE_ISOLATION_CANDIDATE_ID,
+        "accepted_obligation_ids": [INLINE_ISOLATION_ID],
+        "rejected_obligations": [
+            {
+                "obligation_id": obligation_id,
+                "reason_code": reason_code,
+                "reason": reason,
+            }
+            for obligation_id, (reason_code, reason) in sorted(rejected.items())
+        ],
+        "sal_fact_ids": [INLINE_ISOLATION_FACT_ID],
+        "authority_reason": (
+            "The exact XLIFF 2.1 F5S report rejects a source sc marked "
+            "isolated=yes when a matching ec occurs in the same unit. The "
+            "identical normative XLIFF 2.0 and 2.1 prose states the complete "
+            "biconditional: isolated is yes exactly when the corresponding "
+            "ec is outside the same unit and no otherwise. That value "
+            "invariant belongs to the unproposed inline-isolation obligation; "
+            "element surfaces, reference mechanics, hierarchy, source "
+            "cardinality, and generic validation are separate concerns."
+        ),
+    }
+
+
+def test_start_code_isolation_adjudicates_unproposed_value_invariant() -> None:
+    module = _load_module()
+    census = _load_yaml(CENSUS_PATH)
+    candidate = next(
+        row
+        for row in census["candidates"]
+        if row["candidate_id"] == START_CODE_ISOLATION_CANDIDATE_ID
+    )
+
+    assert candidate["stable_profiles"] == ["xliff_2.1"]
+    assert candidate["candidate_content_sha256"] == (
+        "04aeb46e7eeaa854cf9554005a11476334fa8f41f6db9a45ca2f0e38b8d6d0e6"
+    )
+    occurrence = candidate["occurrences"][0]
+    assert occurrence["member_sha256"] == (
+        "d4275f2d2574f892624bcd8f83bcc3001c75d623e4eb36896d15d147f16ed7a2"
+    )
+    assert occurrence["requirement_sha256"] == (
+        "d7daf659d3b7ad1388c42203d845b452afe12e8e05134d35d36a26cb9cc5e60c"
+    )
+    assert occurrence["occurrence_sha256"] == (
+        "cb57d9e386c6274b0aa0aedca3e2b4bab1dbaafb41ff2e66a884681485d6c84f"
+    )
+    assert json.loads(occurrence["normalized_requirement"]) == {
+        "context": (
+            "xlf:sc[ancestor::xlf:source][@isolated='yes']"
+            "[ancestor::xlf:segment | ancestor::xlf:ignorable]"
+        ),
+        "kind": "report",
+        "message": (
+            "'isolated' attribute is set to 'yes', but 'ec' element(s) "
+            "referencing this start code found within the same unit."
+        ),
+        "test": (
+            "ancestor::xlf:unit//xlf:ec[@startRef=$id]"
+            "[ancestor::xlf:source]"
+            "[ancestor::xlf:segment | ancestor::xlf:ignorable]"
+        ),
+    }
+    assert set(candidate["disposition"]["obligation_ids"]) == {
+        "SAL-XLIFF-CORE-AGENT-VALIDATOR-001",
+        "SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001",
+        "SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001",
+        "SAL-XLIFF-CORE-HIERARCHY-UNIT-CHILDREN-001",
+        "SAL-XLIFF-CORE-INLINE-EC-001",
+        "SAL-XLIFF-CORE-INLINE-SC-001",
+        "SAL-XLIFF-CORE-REFERENCE-STARTREF-001",
+        "SAL-XLIFF-CORE-SOURCE-REQUIRED-001",
+    }
+
+    canonical_decisions = [
+        row
+        for row in _load_yaml(DECISIONS_PATH)["decisions"]
+        if row["candidate_id"] == START_CODE_ISOLATION_CANDIDATE_ID
+    ]
+    assert canonical_decisions == [_start_code_isolation_decision()]
+
+    accepted, evidence = module.validated_obligation_ids_from_paths(
+        adjudications_path=ADJUDICATION_PATH,
+        candidate_census_path=CENSUS_PATH,
+        denominator_path=DENOMINATOR_PATH,
+        sal_store_path=SAL_STORE_PATH,
+        sal_manifest_path=SAL_MANIFEST_PATH,
+        sal_receipt_path=SAL_RECEIPT_PATH,
+    )
+    assert INLINE_ISOLATION_ID in accepted
+    assert evidence["accepted_obligation_candidate_ids"][INLINE_ISOLATION_ID] == [
+        START_CODE_ISOLATION_CANDIDATE_ID
+    ]
+    decision_count = _canonical_decision_count()
+    assert evidence["decision_count"] == decision_count
+    assert evidence["verified_disposition_count"] == decision_count
+    assert evidence["unverified_disposition_count"] == (
+        census["candidate_count"] - decision_count
+    )
+    compiled_decision = next(
+        row
+        for row in _load_yaml(ADJUDICATION_PATH)["decisions"]
+        if row["candidate_id"] == START_CODE_ISOLATION_CANDIDATE_ID
+    )
+    assert compiled_decision["unproposed_accepted_obligation_ids"] == [
+        INLINE_ISOLATION_ID
+    ]
+
+
 def test_target_language_compatibility_is_profile_specific_and_owned_once(
 ) -> None:
     module = _load_module()
@@ -694,10 +853,11 @@ def test_target_language_compatibility_is_profile_specific_and_owned_once(
     assert evidence["accepted_obligation_candidate_ids"][
         TARGET_LANGUAGE_COMPATIBILITY_ID
     ] == [TARGET_LANGUAGE_COMPATIBILITY_CANDIDATE_ID]
-    assert evidence["decision_count"] == 8
-    assert evidence["verified_disposition_count"] == 8
+    decision_count = _canonical_decision_count()
+    assert evidence["decision_count"] == decision_count
+    assert evidence["verified_disposition_count"] == decision_count
     assert evidence["unverified_disposition_count"] == (
-        census["candidate_count"] - 8
+        census["candidate_count"] - decision_count
     )
 
     compiled_decision = next(

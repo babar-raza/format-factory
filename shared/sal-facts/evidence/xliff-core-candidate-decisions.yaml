@@ -274,3 +274,58 @@ decisions:
     to the existing target-language compatibility obligation. Root presence,
     hierarchy, cardinality, generic validation, and omitted-value inheritance
     are separate obligations.
+- decision_id: XLF-ADJ-CORE-SCHEMATRON-0009
+  candidate_id: XLF-CAND-CORE-SCHEMATRON-E891C4DEC555F165
+  accepted_obligation_ids:
+  - SAL-XLIFF-CORE-INLINE-ISOLATION-001
+  rejected_obligations:
+  - obligation_id: SAL-XLIFF-CORE-AGENT-VALIDATOR-001
+    reason_code: DOWNSTREAM_CAPABILITY_NOT_DIRECT_SEMANTIC_OWNER
+    reason: >-
+      A conforming validator enforces the report, but validator behavior is
+      downstream from the inline-isolation invariant.
+  - obligation_id: SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001
+    reason_code: INCIDENTAL_XPATH_CONTEXT_TOKEN
+    reason: >-
+      The ignorable ancestor limits applicability and does not establish an
+      independent hierarchy rule.
+  - obligation_id: SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001
+    reason_code: INCIDENTAL_XPATH_CONTEXT_TOKEN
+    reason: >-
+      The segment ancestor limits applicability and does not establish an
+      independent hierarchy rule.
+  - obligation_id: SAL-XLIFF-CORE-HIERARCHY-UNIT-CHILDREN-001
+    reason_code: REFERENCE_SCOPE_NOT_PARENT_CARDINALITY_RULE
+    reason: >-
+      The unit ancestor bounds the matching-code search; the report does not
+      establish unit child cardinality.
+  - obligation_id: SAL-XLIFF-CORE-INLINE-EC-001
+    reason_code: COUNTERPART_SURFACE_NOT_ISOLATION_STATE_OWNER
+    reason: >-
+      The matching ec is the counterpart used by the predicate, not the owner
+      of the sc isolated-state invariant.
+  - obligation_id: SAL-XLIFF-CORE-INLINE-SC-001
+    reason_code: ELEMENT_SURFACE_NOT_ATTRIBUTE_INVARIANT_OWNER
+    reason: >-
+      The sc element is the constrained surface, but its complete element
+      model is broader than this isolated-state invariant.
+  - obligation_id: SAL-XLIFF-CORE-REFERENCE-STARTREF-001
+    reason_code: REFERENCE_MECHANISM_NOT_ISOLATION_STATE_OWNER
+    reason: >-
+      startRef locates the corresponding ec; reference resolution is not the
+      direct owner of the sc isolated-state value.
+  - obligation_id: SAL-XLIFF-CORE-SOURCE-REQUIRED-001
+    reason_code: TRIGGER_DOES_NOT_ESTABLISH_CARDINALITY
+    reason: >-
+      The source ancestor limits applicability and does not establish source
+      presence or cardinality.
+  sal_fact_ids:
+  - SAL-XLIFF-D5C1325C047A7CB0
+  authority_reason: >-
+    The exact XLIFF 2.1 F5S report rejects a source sc marked isolated=yes when
+    a matching ec occurs in the same unit. The identical normative XLIFF 2.0
+    and 2.1 prose states the complete biconditional: isolated is yes exactly
+    when the corresponding ec is outside the same unit and no otherwise. That
+    value invariant belongs to the unproposed inline-isolation obligation;
+    element surfaces, reference mechanics, hierarchy, source cardinality, and
+    generic validation are separate concerns.

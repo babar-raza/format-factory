@@ -1,0 +1,40 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "compile-format-contract-xliff-xlf04-core-batch-005-partial-002-h",
+  "skill_id": "compile-format-contract",
+  "task_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+  "mode": "live",
+  "timestamp": "2026-08-01T14:35:30Z",
+  "inputs": {
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "format_id": "xliff",
+    "microstep": "XLF-04-BATCH-005-PARTIAL-002-H",
+    "execution_manifest_id": "sfx-cc922ba037444097",
+    "pre_mutation_authorization_id": "66e331b2626dd0dd",
+    "sal_facts_sha256": "b69be69995976328437e3fde4ab8c2767785b0e4f119805d3d7240615ae91eca"
+  },
+  "allowed_files": [
+    "shared/format-contracts/xliff.yaml",
+    "registry/format-contract-registry.yaml",
+    "reports/skills-rff6/skill-transcripts/compile-format-contract-xliff-xlf04-core-batch-005-partial-002-h.json"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/xliff.yaml",
+    "registry/format-contract-registry.yaml",
+    "reports/skills-rff6/skill-transcripts/compile-format-contract-xliff-xlf04-core-batch-005-partial-002-h.json"
+  ],
+  "tests_run": [
+    "contract compiler --check --verify-idempotency: PASS",
+    "compiled capability count remains 15",
+    "format-contract regression: 94 passed, one named stateful CSV writer test deselected",
+    "production-program regression: 69 passed"
+  ],
+  "output_digests": {
+    "shared/format-contracts/xliff.yaml": "d584e217f5f2d06bcd71723d5d89e60c24a39f3273e8967fe920d4b03bacfc69",
+    "registry/format-contract-registry.yaml": "3febf1167a8bae62aca8fed395cc91dd2a6fe6790f5d707ede6861e6d6f23400"
+  },
+  "result": "PASS",
+  "truth_boundary": "The derived XLIFF contract now includes the verified isolation fact in applicable capability closures. Capability count remains 15; this does not prove source implementation, installed-package behavior, certification, or promotion.",
+  "generated_by": "codex",
+  "visibility": "generated"
+}
