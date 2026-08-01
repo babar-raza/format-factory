@@ -1,0 +1,2086 @@
+{
+  "contract_id": "FC-NRRD-V1",
+  "execution_evidence": [
+    {
+      "evidence_id": "NRRD-R1-SOURCE-TESTS",
+      "expected_result": "PASS",
+      "granularity": "suite",
+      "path": "reports/skills-rff6/skill-transcripts/reconcile-contract-capabilities-nrrd-readiness-001.json",
+      "sha256": "4675509f009d4b78181543769a6e18dd8292afb65b0624bd347a5b6ccdab2869",
+      "truth_boundary": "The transcript records 58 production-namespace and 219 legacy tests passing at commit 767e7006, but it does not bind individual selector outcomes and is non-promoting support only."
+    }
+  ],
+  "format_id": "nrrd",
+  "input_digests": {
+    "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
+    "implementation_evidence": "ade5521116fe0dc6f2c823d7a8bb9dfd1a5e2ee137300c6796983f22e83fdf2a",
+    "implementation_evidence_schema": "2eef87038032303817655ef60567d972d9c4c73f26d633819ec8aab751473149",
+    "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
+    "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
+  },
+  "obligations": [
+    {
+      "capability_id": "NRRD-PHYSICALMETA-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Raw thicknesses and sample-units header values survive canonical serialization."
+      ],
+      "missing_behavior": [
+        "No typed distinction among thickness, spacing, axis units, space units, and sample units; no NRRD0004 introduction check."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-00F18A8DA59864CD",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_obligation_metadata_production.py::test_quoted_explicit_and_unknown_metadata_survive_semantic_roundtrip"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Reject physical metadata in earlier profiles and invalid arity."
+        ],
+        "positive": [
+          "Typed NRRD0004-NRRD0005 physical-metadata roundtrips."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-LIFECYCLE-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Detected magic version is exposed and the document version is preserved by default."
+      ],
+      "missing_behavior": [
+        "Detected and separately declared version are not distinct model fields."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-028C0109E783B8F3",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_lifecycle_api_and_stream_destination"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Prove no silent declared-version rewrite."
+        ],
+        "positive": [
+          "Installed-wheel tests for detected versus declared version."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::probe",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::loads",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::load",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dumps",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dump"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-KINDS-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Kinds are exposed as raw per-axis tokens and their arity is validated."
+      ],
+      "missing_behavior": [
+        "No complete kind enum/alias model, version gate, or strict unknown-kind diagnostic."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-02AE194021A775AC",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_all_standard_chassis_encodings_roundtrip"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Earlier-profile and unknown-kind strict rejection with preservation-mode carry-through."
+        ],
+        "positive": [
+          "Every specified kind and alias roundtrips."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::kinds",
+        "src/python/nrrd/src/format_factory/nrrd/validation/validator.py::validate"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-PAYLOAD-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Attached and header-relative single detached payload reads, skips, bounds, and traversal refusal exist."
+      ],
+      "missing_behavior": [
+        "Pre-NRRD0004 leading-./ path semantics and a caller-supplied resolver policy are absent."
+      ],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_detached_single_payload_is_bounded_and_path_safe"
+      ],
+      "obligation_id": "SAL-NRRD-OBL-09CDF5A28C011CD7",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_detached_single_payload_is_bounded_and_path_safe"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Absolute, traversal, missing, oversized, and profile-invalid path cases."
+        ],
+        "positive": [
+          "All profiles and detached path modes against Teem fixtures."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_safe_detached_payload",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_apply_skips",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_load"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-ENC-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Raw, ASCII/text/txt, hex, gzip/gz, and bzip2/bz2 read/write paths exist."
+      ],
+      "missing_behavior": [
+        "No public codec-availability API or optional-codec unavailable diagnostic contract."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-09FD9B976DEEA254",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_all_standard_chassis_encodings_roundtrip"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Malformed framing, unavailable codec, truncation, and expansion-limit cases."
+        ],
+        "positive": [
+          "Installed-wheel encoding/alias matrix with Teem and pynrrd."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::decode_encoding",
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::decode_ascii",
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::encode_encoding"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-PRESERVE-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Lossless replay reports missing source bytes, detached payloads, missing snapshots, and post-load mutation."
+      ],
+      "missing_behavior": [
+        "The loss report is not a complete construct-by-construct preservation analysis."
+      ],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_lossless_mode_replays_unchanged_source_and_reports_mutation"
+      ],
+      "obligation_id": "SAL-NRRD-OBL-0D0DBFB306769459",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_lossless_mode_replays_unchanged_source_and_reports_mutation"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Prove every lossy edit is reported before write."
+        ],
+        "positive": [
+          "Loss-report matrix for every supported and safely preserved construct."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::preservation_report",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dumps"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-VERSION-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "NRRD0001-NRRD0005 magics are accepted and explicit output profiles are bounded to that set."
+      ],
+      "missing_behavior": [
+        "No feature-introduction validation or oldest-sufficient-version selection."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-1DAEF31DD0BB6EBB",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_big_endian_decode_and_default_profile"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Reject every feature used before its introduction version."
+        ],
+        "positive": [
+          "Cumulative feature matrix and deterministic oldest-sufficient writer selection."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_parse_header",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dumps"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-LIFECYCLE-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Strict, preservation, and recovery mode names are explicit and invalid modes are rejected."
+      ],
+      "missing_behavior": [
+        "Recovery mode performs no defined recovery and reports no recovery decision rules."
+      ],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_recovery_mode_is_explicit_and_reports_no_unsafe_repair"
+      ],
+      "obligation_id": "SAL-NRRD-OBL-1F6231D4F759D037",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_recovery_mode_is_explicit_and_reports_no_unsafe_repair"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Unrecoverable malformed inputs remain rejected."
+        ],
+        "positive": [
+          "Deterministic recovery-rule fixtures with action reports."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::probe",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::loads",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::load",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dumps",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dump"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-HEADER-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Attached header framing, blank-line termination, payload split, and LF/CRLF acceptance are implemented."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_duplicate_header_and_truncated_payload_fail_closed"
+      ],
+      "obligation_id": "SAL-NRRD-OBL-1FBEBA8A757FACCB",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_lossless_mode_replays_unchanged_source_and_reports_mutation"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Missing terminator and non-ASCII header rejection."
+        ],
+        "positive": [
+          "Installed-wheel LF and CRLF attached roundtrips for all five magics."
+        ]
+      },
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_split_header",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_parse_header",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes"
+      ],
+      "status": "implemented"
+    },
+    {
+      "capability_id": "NRRD-META-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Optional metadata, explicit empty quoted content, unknown fields, and absence survive semantic roundtrip as raw strings."
+      ],
+      "missing_behavior": [
+        "No typed optionality, arity, quote/escape parsing, or obsolete number/range model."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-1FE17FFCC0572ABC",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_obligation_metadata_production.py::test_quoted_explicit_and_unknown_metadata_survive_semantic_roundtrip"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Bad arity, quoting, numeric, and version cases."
+        ],
+        "positive": [
+          "Typed basic/per-axis metadata and legacy-field corpus matrix."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-VALIDATE-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Required fields, sizes/dimension, kinds arity, block rules, and decoded byte/value counts receive diagnostics."
+      ],
+      "missing_behavior": [
+        "Conditional fields, version-feature rules, all per-axis arities, and trailing-payload policy are incomplete."
+      ],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_validation_reports_declared_payload_byte_mismatch"
+      ],
+      "obligation_id": "SAL-NRRD-OBL-2085AD256AFE6E96",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_validation_reports_declared_payload_byte_mismatch"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Every conditional-field, arity, profile, count, and trailing-data violation."
+        ],
+        "positive": [
+          "Full invariant matrix after each decoder."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/validation/validator.py::validate"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-SEC-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Loads do not execute code or resolve network resources; detached access is local and bounded."
+      ],
+      "missing_behavior": [
+        "No explicit resolver policy or opt-in external-resource capability contract exists."
+      ],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_detached_single_payload_is_bounded_and_path_safe"
+      ],
+      "obligation_id": "SAL-NRRD-OBL-24B57E6A78478DB0",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_detached_single_payload_is_bounded_and_path_safe"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Network URI, plugin, external reference, and absolute path attempts fail closed."
+        ],
+        "positive": [
+          "Prove offline/no-execution behavior across every input form."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_safe_detached_payload",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_apply_skips",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_load"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-WRITE-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Attached deterministic writer emits required fields and preserves explicit selected version."
+      ],
+      "missing_behavior": [
+        "No feature-derived version selection, detached partition writer, or complete conditional/optional absence policy."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-284E2438B08DA529",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_lifecycle_api_and_stream_destination"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Unrepresentable profile/partition/conditional combinations fail before write."
+        ],
+        "positive": [
+          "All profiles, encodings, detached forms, and absence semantics against independent readers."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dumps",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dump"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-SEC-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Caller-configurable input, header, entry, decoded/output byte, and compression-ratio limits are active."
+      ],
+      "missing_behavior": [
+        "No explicit record-count or recursion-depth surface and no independently benchmarked safe-default proof."
+      ],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_resource_limits_are_caller_configurable"
+      ],
+      "obligation_id": "SAL-NRRD-OBL-2A95CBAA35F7BB05",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_resource_limits_are_caller_configurable"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Boundary+1 tests for all limits and compound hostile inputs."
+        ],
+        "positive": [
+          "Document and exercise every default and override."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/security/limits.py::effective_limits",
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::checked_element_count",
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::_enforce_expansion"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-ENC-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Required raw, ASCII/text/txt, hex, gzip/gz, and bzip2/bz2 encoding names are case-normalized and decoded/written."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-31D930F1C1407AD2",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_all_standard_chassis_encodings_roundtrip"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Unknown and malformed encoding values fail explicitly."
+        ],
+        "positive": [
+          "Independent implementation matrix for all canonical names and aliases."
+        ]
+      },
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::decode_encoding",
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::decode_ascii",
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::encode_encoding"
+      ],
+      "status": "implemented"
+    },
+    {
+      "capability_id": "NRRD-SEC-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Size products and decompression expansion are bounded without recursive parsing."
+      ],
+      "missing_behavior": [
+        "No complexity budget/benchmark proof for pathological headers, token counts, or multifile expansion."
+      ],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_resource_limits_are_caller_configurable"
+      ],
+      "obligation_id": "SAL-NRRD-OBL-38C2DECC64DF5145",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_resource_limits_are_caller_configurable"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Overflow-equivalent, huge-token, huge-file-count, and ratio attacks fail cheaply."
+        ],
+        "positive": [
+          "Complexity benchmarks remain within declared envelopes."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/security/limits.py::effective_limits",
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::checked_element_count",
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::_enforce_expansion"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-PHYSICALMETA-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Raw thicknesses and sample-units values are preserved."
+      ],
+      "missing_behavior": [
+        "No typed per-axis thickness/sample-unit parsing or NRRD0004 profile enforcement."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-38F3D4743DF2B0F9",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_obligation_metadata_production.py::test_quoted_explicit_and_unknown_metadata_survive_semantic_roundtrip"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Wrong arity, invalid quotes, and earlier-version use."
+        ],
+        "positive": [
+          "Valid arity/unit roundtrips for NRRD0004-NRRD0005."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-META-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Per-axis metadata fields are preserved lexically."
+      ],
+      "missing_behavior": [
+        "Arity is not enforced for spacings, mins, maxs, centers, labels, units, or thicknesses."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-41CA935399A5A312",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_obligation_metadata_production.py::test_quoted_explicit_and_unknown_metadata_survive_semantic_roundtrip"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Dimension-1 and dimension+1 arity fixtures."
+        ],
+        "positive": [
+          "Every per-axis field at each supported profile and dimension."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-SHAPE-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Dimension is positive and sizes arity equals dimension."
+      ],
+      "missing_behavior": [
+        "Not every per-axis metadata field is arity-validated."
+      ],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_validation_reports_declared_payload_byte_mismatch"
+      ],
+      "obligation_id": "SAL-NRRD-OBL-428BE326FCBC9A6E",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_obligation_shape_production.py::test_big_endian_axis_zero_fastest_and_detached_payload"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Every per-axis field with mismatched arity."
+        ],
+        "positive": [
+          "All per-axis fields across dimensions and profiles."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_parse_sizes",
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::checked_element_count",
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::reshape_nrrd_array",
+        "src/python/nrrd/src/format_factory/nrrd/validation/validator.py::validate"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-KEYVALUE-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Basic key:=value parsing, model access, preservation, editing, and deterministic writing exist."
+      ],
+      "missing_behavior": [
+        "Duplicate keys are rejected rather than last-value-wins; escaping, forbidden delimiters, and NRRD0002 gating are absent."
+      ],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_duplicate_header_and_truncated_payload_fail_closed"
+      ],
+      "obligation_id": "SAL-NRRD-OBL-48CB227B444651BA",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_obligation_metadata_production.py::test_quoted_explicit_and_unknown_metadata_survive_semantic_roundtrip"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "NRRD0001, forbidden-key, malformed escape, and duplicate precedence cases."
+        ],
+        "positive": [
+          "Escaping/editing/duplicate semantics against Teem."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_parse_header",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-PAYLOAD-001",
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
+      "missing_behavior": [
+        "Detached path interpretation does not distinguish pre-NRRD0004 leading-./ rules from NRRD0004+ relative rules."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-4CAFF21A47F62F19",
+      "positive_test_selectors": [],
+      "proof_requirements": {
+        "negative": [
+          "Reject path forms not legal in each profile."
+        ],
+        "positive": [
+          "Profile-specific detached path matrix."
+        ]
+      },
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
+    },
+    {
+      "capability_id": "NRRD-META-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Content/min/max/old min/old max/number can be preserved as raw optional fields."
+      ],
+      "missing_behavior": [
+        "No typed numeric meaning, legacy semantics, or field-specific validation."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-556FAEE08EA61D1A",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_obligation_metadata_production.py::test_quoted_explicit_and_unknown_metadata_survive_semantic_roundtrip"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Invalid numeric, empty, and profile-specific cases."
+        ],
+        "positive": [
+          "Typed baseline and legacy metadata corpus."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-ENC-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Scalar aliases, main encodings, endian, attached/single/list/pattern reads, traversal, truncation, and some limits have tests."
+      ],
+      "missing_behavior": [
+        "The required exhaustive cross-product and hostile bomb/overflow matrix is incomplete and lacks independent oracle runs."
+      ],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_duplicate_header_and_truncated_payload_fail_closed",
+        "tests/python/nrrd/test_production_namespace.py::test_resource_limits_are_caller_configurable"
+      ],
+      "obligation_id": "SAL-NRRD-OBL-5A7992A6D1561C1D",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_all_standard_chassis_encodings_roundtrip"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Bomb, overflow, traversal, truncation, malformed framing, and unavailable-codec corpus."
+        ],
+        "positive": [
+          "Generated complete cross-product with Teem/pynrrd comparisons."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::decode_encoding",
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::decode_ascii",
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::encode_encoding"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-LIFECYCLE-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Save to path/stream and serialization to bytes produce self-loadable attached NRRD."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-5D42CA3E8390D37E",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_lifecycle_api_and_stream_destination"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Short-write, invalid destination, and filesystem error diagnostics."
+        ],
+        "positive": [
+          "Installed-wheel path, stream, and bytes roundtrips on all platforms."
+        ]
+      },
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::probe",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::loads",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::load",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dumps",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dump"
+      ],
+      "status": "implemented"
+    },
+    {
+      "capability_id": "NRRD-SHAPE-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Explicit little/big endian is honored and opaque blocks bypass scalar byte-order conversion."
+      ],
+      "missing_behavior": [
+        "Endian is not required when multi-byte raw data omits it; host-default behavior is silently used."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-5FAF36D205C887AD",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_big_endian_decode_and_default_profile"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Missing/invalid endian for exposed multi-byte encodings."
+        ],
+        "positive": [
+          "Read/write byte-order matrix including block."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::_endian_prefix",
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::decode_binary",
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::encode_binary"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-SHAPE-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Expected uncompressed bytes equal checked size product times scalar or block width."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_validation_reports_declared_payload_byte_mismatch"
+      ],
+      "obligation_id": "SAL-NRRD-OBL-5FF7E047FCC05240",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_obligation_shape_production.py::test_big_endian_axis_zero_fastest_and_detached_payload"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Truncated, oversized, zero/negative, and limit-exceeding shapes."
+        ],
+        "positive": [
+          "All scalar/block widths and dimensions."
+        ]
+      },
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::expected_binary_size",
+        "src/python/nrrd/src/format_factory/nrrd/validation/validator.py::validate"
+      ],
+      "status": "implemented"
+    },
+    {
+      "capability_id": "NRRD-SHAPE-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "When present, endian accepts little/big and controls multi-byte raw decoding."
+      ],
+      "missing_behavior": [
+        "Required-field enforcement for multi-byte byte-order-exposing encodings is absent."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-644276A28216DFC0",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_big_endian_decode_and_default_profile"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Missing, empty, and invalid endian values."
+        ],
+        "positive": [
+          "Endian-required matrix by type and encoding."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::_endian_prefix",
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::decode_binary",
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::encode_binary"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-KEYVALUE-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Key/value lines parse and serialize."
+      ],
+      "missing_behavior": [
+        "No newline/backslash unescaping, no := key prohibition, no last-value-wins duplicate behavior, and no version gate."
+      ],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_duplicate_header_and_truncated_payload_fail_closed"
+      ],
+      "obligation_id": "SAL-NRRD-OBL-6533C8FB0044E3A2",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_obligation_metadata_production.py::test_quoted_explicit_and_unknown_metadata_survive_semantic_roundtrip"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "NRRD0001, forbidden delimiter, malformed escape, and empty-key cases."
+        ],
+        "positive": [
+          "Exact escaping and duplicate precedence against Teem."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_parse_header",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-HEADER-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Field identifiers are normalized case-insensitively and duplicate normalized fields are rejected."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_duplicate_header_and_truncated_payload_fail_closed"
+      ],
+      "obligation_id": "SAL-NRRD-OBL-653B0BAE5AF9352F",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_all_standard_chassis_encodings_roundtrip"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Same and case-variant duplicate fields."
+        ],
+        "positive": [
+          "Mixed-case field roundtrips."
+        ]
+      },
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_split_header",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_parse_header",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes"
+      ],
+      "status": "implemented"
+    },
+    {
+      "capability_id": "NRRD-SPACE-001",
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
+      "missing_behavior": [
+        "No typed index-to-world or measurement-to-world transform APIs exist."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-666DA3540EE4E38D",
+      "positive_test_selectors": [],
+      "proof_requirements": {
+        "negative": [
+          "Dimension mismatch, non-spatial axes, invalid basis, and no named-space axis inference."
+        ],
+        "positive": [
+          "Known medical-orientation transform fixtures."
+        ]
+      },
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
+    },
+    {
+      "capability_id": "NRRD-LAZY-001",
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
+      "missing_behavior": [
+        "No header-only, lazy, mmap, streaming-decode, or region-read API exists."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-6A4391DE91AF6940",
+      "positive_test_selectors": [],
+      "proof_requirements": {
+        "negative": [
+          "Explicit full-decompression reporting and resource-bound refusal."
+        ],
+        "positive": [
+          "Eligible raw mmap and compressed streaming/region behavior."
+        ]
+      },
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
+    },
+    {
+      "capability_id": "NRRD-HEADER-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Magic line, header lines, and blank-line termination are parsed and written."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_duplicate_header_and_truncated_payload_fail_closed"
+      ],
+      "obligation_id": "SAL-NRRD-OBL-6F62F1E19950584D",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_lossless_mode_replays_unchanged_source_and_reports_mutation"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Bad magic width/version and missing blank line."
+        ],
+        "positive": [
+          "All five magics and both line endings."
+        ]
+      },
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_split_header",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_parse_header",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes"
+      ],
+      "status": "implemented"
+    },
+    {
+      "capability_id": "NRRD-HEADER-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "LF/CRLF and exact attached-source replay are supported."
+      ],
+      "missing_behavior": [
+        "Permitted lexical variants are not fully modeled or tested; canonical parsing strips significant field whitespace."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-6F9641D043F9DAAA",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_lossless_mode_replays_unchanged_source_and_reports_mutation"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Illegal whitespace and separators fail closed."
+        ],
+        "positive": [
+          "Lexical-variant corpus with byte-exact lossless replay."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_split_header",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_parse_header",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-VERSION-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Five profile magics and explicit target profile selection exist."
+      ],
+      "missing_behavior": [
+        "Cumulative feature gates and oldest-representable automatic selection are absent."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-725881DB5590E608",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_big_endian_decode_and_default_profile"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Every feature/profile contradiction."
+        ],
+        "positive": [
+          "One minimal document per introduction boundary and deterministic version selection."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_parse_header",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dumps"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-KINDS-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Kinds token count can be validated against dimension."
+      ],
+      "missing_behavior": [
+        "No complete value/alias validation or NRRD0003 introduction enforcement."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-7C0FD86BAE579F5C",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_all_standard_chassis_encodings_roundtrip"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Earlier-profile, bad arity, and unknown strict-mode cases."
+        ],
+        "positive": [
+          "Every kind and alias with exact arity."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::kinds",
+        "src/python/nrrd/src/format_factory/nrrd/validation/validator.py::validate"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-HEADER-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Magics, ordinary fields, comments, duplicate rejection, unknown fields, and absent optional fields are represented."
+      ],
+      "missing_behavior": [
+        "Field ordering constraints and complete field-specific parsing/validation are absent."
+      ],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_duplicate_header_and_truncated_payload_fail_closed"
+      ],
+      "obligation_id": "SAL-NRRD-OBL-7D1A84A3077B90C2",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_all_standard_chassis_encodings_roundtrip"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Duplicate, misplaced, malformed, and profile-invalid fields."
+        ],
+        "positive": [
+          "Complete field inventory and permitted ordering corpus."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_split_header",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_parse_header",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-MULTIFILE-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "LIST and printf sequences are read with basic range and traversal checks."
+      ],
+      "missing_behavior": [
+        "No multifile writer, profile gate, subdimension, file-count, per-file byte, or complete format/range validation."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-807586E5B4D0EDB2",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_obligation_detached_forms_production.py::test_list_and_printf_detached_payload_forms"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Profile, range, step, expansion, count, truncation, traversal, and bytes-per-file cases."
+        ],
+        "positive": [
+          "LIST/printf/subdimension read-write matrix against Teem."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_safe_detached_payload",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_apply_skips",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_load"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-FRAME-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Measurement-frame text can survive as an unknown/raw header field."
+      ],
+      "missing_behavior": [
+        "No typed vectors, space-dimension arity validation, profile gate, or transform API."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-818E52E28F996024",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_obligation_metadata_production.py::test_quoted_explicit_and_unknown_metadata_survive_semantic_roundtrip"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Earlier profile, wrong vector count/length, and invalid numeric forms."
+        ],
+        "positive": [
+          "Typed NRRD0005 frame fixtures and transforms."
+        ]
+      },
+      "proof_status": "PRESERVATION_ONLY",
+      "rationale": "Current behavior preserves text but does not implement measurement-frame semantics.",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes"
+      ],
+      "status": "preservation_only"
+    },
+    {
+      "capability_id": "NRRD-SHAPE-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Dimension/sizes, checked sample count, fastest-first reshape, and explicit to_array conversion exist."
+      ],
+      "missing_behavior": [
+        "All per-axis arities and a first-class axis-order model/conversion report are absent."
+      ],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_validation_reports_declared_payload_byte_mismatch"
+      ],
+      "obligation_id": "SAL-NRRD-OBL-94D8938DE18A6562",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_obligation_shape_production.py::test_big_endian_axis_zero_fastest_and_detached_payload"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Overflow/limit and every arity mismatch."
+        ],
+        "positive": [
+          "Axis-order and all per-axis metadata across dimensions."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_parse_sizes",
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::checked_element_count",
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::reshape_nrrd_array",
+        "src/python/nrrd/src/format_factory/nrrd/validation/validator.py::validate"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-LIFECYCLE-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "validate() returns a structured ValidationReport with stable diagnostic codes."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_validation_reports_declared_payload_byte_mismatch"
+      ],
+      "obligation_id": "SAL-NRRD-OBL-97BE0A55DD474AA5",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_validation_reports_declared_payload_byte_mismatch"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Representative invariant failures retain stable codes and locations."
+        ],
+        "positive": [
+          "Installed-wheel valid-document report."
+        ]
+      },
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/validation/validator.py::validate"
+      ],
+      "status": "implemented"
+    },
+    {
+      "capability_id": "NRRD-SEC-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Payload bytes are decoded as scalar/block data and never evaluated."
+      ],
+      "missing_behavior": [
+        "No explicit hostile embedded-blob test matrix or documented no-execution invariant at every adapter boundary."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-9AB0A32906D88688",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_all_standard_chassis_encodings_roundtrip"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Script/style/signature/plugin-shaped payloads cannot trigger evaluation."
+        ],
+        "positive": [
+          "Opaque hostile byte corpus remains inert."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_safe_detached_payload",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_apply_skips",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_load"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-VALIDATE-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Declared byte size is checked before scalar unpack/allocation and decompression output/ratio is bounded."
+      ],
+      "missing_behavior": [
+        "Compressed data is decompressed before comparison to declared exact size; cheap-failure and bomb coverage are incomplete."
+      ],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_resource_limits_are_caller_configurable"
+      ],
+      "obligation_id": "SAL-NRRD-OBL-9C262130232DCD09",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_validation_reports_declared_payload_byte_mismatch"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Huge shapes, overflow-equivalent products, bombs, ratio, truncation, and trailing data."
+        ],
+        "positive": [
+          "Pre-allocation and decompression envelope measurements."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::expected_binary_size",
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::_enforce_expansion",
+        "src/python/nrrd/src/format_factory/nrrd/validation/validator.py::validate"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-PAYLOAD-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Attached and one detached payload are read under encoding/type/size/endian controls."
+      ],
+      "missing_behavior": [
+        "Writer only emits attached payloads and profile-correct detached semantics are incomplete."
+      ],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_duplicate_header_and_truncated_payload_fail_closed"
+      ],
+      "obligation_id": "SAL-NRRD-OBL-9FFEE6E206F405F4",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_detached_single_payload_is_bounded_and_path_safe"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Missing/truncated/oversized/invalid detached payloads."
+        ],
+        "positive": [
+          "Attached and detached read-write matrix across profiles/encodings."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_safe_detached_payload",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_apply_skips",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_load"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-SHAPE-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Sizes are required positive integers and reshape uses axis 0 fastest."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_validation_reports_declared_payload_byte_mismatch"
+      ],
+      "obligation_id": "SAL-NRRD-OBL-A1082F4AA3DE20E5",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_obligation_shape_production.py::test_big_endian_axis_zero_fastest_and_detached_payload"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Missing, zero, negative, non-integer, and wrong-arity sizes."
+        ],
+        "positive": [
+          "1D-ND fastest-first fixtures."
+        ]
+      },
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_parse_sizes",
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::checked_element_count",
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::reshape_nrrd_array",
+        "src/python/nrrd/src/format_factory/nrrd/validation/validator.py::validate"
+      ],
+      "status": "implemented"
+    },
+    {
+      "capability_id": "NRRD-SEC-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Absolute and parent-traversal detached paths are refused and resolved paths must remain below the header directory."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_detached_single_payload_is_bounded_and_path_safe"
+      ],
+      "obligation_id": "SAL-NRRD-OBL-A1F37BAEE4586823",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_detached_single_payload_is_bounded_and_path_safe"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Absolute, parent, symlink escape, alternate separator, and pattern/list traversal."
+        ],
+        "positive": [
+          "Approved nested relative paths."
+        ]
+      },
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_safe_detached_payload",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_apply_skips",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_load"
+      ],
+      "status": "implemented"
+    },
+    {
+      "capability_id": "NRRD-HEADER-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Hash-prefixed header comments are parsed separately and deterministically serialized."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-AC287AED0DD842A5",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_all_standard_chassis_encodings_roundtrip"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Prove comments never acquire field semantics."
+        ],
+        "positive": [
+          "Empty/multiple comments with both line endings and lossless replay."
+        ]
+      },
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_split_header",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_parse_header",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes"
+      ],
+      "status": "implemented"
+    },
+    {
+      "capability_id": "NRRD-PRESERVE-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Header dictionary presence distinguishes absent fields from explicitly empty quoted raw values."
+      ],
+      "missing_behavior": [
+        "Typed defaults and empty values are not modeled, so semantic absence distinctions are only lexical."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-ADAC45BDF110C59C",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_obligation_metadata_production.py::test_quoted_explicit_and_unknown_metadata_survive_semantic_roundtrip"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Canonical output must not invent absent values."
+        ],
+        "positive": [
+          "Absent/default/empty matrix for every optional field."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::preservation_report",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dumps"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-FRAME-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Raw measurement-frame content can be carried through canonical serialization."
+      ],
+      "missing_behavior": [
+        "No NRRD0005 gate, typed vectors, arity validation, or separate measurement-to-world transform."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-BAAE59FC398A9D6C",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_obligation_metadata_production.py::test_quoted_explicit_and_unknown_metadata_survive_semantic_roundtrip"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Earlier-profile and vector/space-dimension mismatch cases."
+        ],
+        "positive": [
+          "Typed frame and transform reference fixtures."
+        ]
+      },
+      "proof_status": "PRESERVATION_ONLY",
+      "rationale": "Lexical carry-through is safe but is not semantic frame support.",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes"
+      ],
+      "status": "preservation_only"
+    },
+    {
+      "capability_id": "NRRD-HEADER-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Ordinary colon-delimited fields parse and canonical writer emits colon-space."
+      ],
+      "missing_behavior": [
+        "Reader accepts missing colon-space and leading whitespace because keys/values are stripped."
+      ],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_duplicate_header_and_truncated_payload_fail_closed"
+      ],
+      "obligation_id": "SAL-NRRD-OBL-C13492B6879B6E90",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_all_standard_chassis_encodings_roundtrip"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Leading whitespace, missing single space, empty identifier, and malformed separators."
+        ],
+        "positive": [
+          "Exact legal lexical form corpus."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_split_header",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_parse_header",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-SPACE-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Space-related fields are retained as raw header values."
+      ],
+      "missing_behavior": [
+        "No typed space dimension, units, origin, directions, version gates, or measurement-frame separation."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-C853EB5591524EF9",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_all_standard_chassis_encodings_roundtrip"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Earlier-profile, arity, vector-length, and frame-version cases."
+        ],
+        "positive": [
+          "NRRD0004-NRRD0005 typed spatial metadata fixtures."
+        ]
+      },
+      "proof_status": "PRESERVATION_ONLY",
+      "rationale": "Raw field preservation is present without spatial semantics.",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes"
+      ],
+      "status": "preservation_only"
+    },
+    {
+      "capability_id": "NRRD-LAZY-001",
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
+      "missing_behavior": [
+        "No header-only, lazy payload, mmap, streaming compressed decode, slice planning, or full-decompression report."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-D137EAE6ED40E8B8",
+      "positive_test_selectors": [],
+      "proof_requirements": {
+        "negative": [
+          "Unsupported layout and limit-bound full-decompression refusal."
+        ],
+        "positive": [
+          "Raw mmap and compressed streaming/slice behavior."
+        ]
+      },
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
+    },
+    {
+      "capability_id": "NRRD-SPACE-001",
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
+      "missing_behavior": [
+        "No typed spatial metadata validation, non-spatial-axis model, or index-to-world transform."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-D7B962F3981120A7",
+      "positive_test_selectors": [],
+      "proof_requirements": {
+        "negative": [
+          "Bad vector length, dimension, numeric values, and named-space inference."
+        ],
+        "positive": [
+          "Known orientation transforms including non-spatial axes."
+        ]
+      },
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
+    },
+    {
+      "capability_id": "NRRD-META-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Quoted labels and units survive as raw strings."
+      ],
+      "missing_behavior": [
+        "No quote-delimited token parsing, embedded quote unescaping, other-escape rejection, or arity validation."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-D8AFDA0097117585",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_obligation_metadata_production.py::test_quoted_explicit_and_unknown_metadata_survive_semantic_roundtrip"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Unclosed quotes, illegal escapes, and wrong arity."
+        ],
+        "positive": [
+          "Quoted label/unit token and embedded-quote roundtrips."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-PAYLOAD-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Line skip is applied before byte skip; positive skips and raw byte-skip -1 are implemented."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_nrrd_feature_completeness.py::TestLineAndByteSkip::test_byte_skip_negative_one_skips_to_expected_tail_size"
+      ],
+      "obligation_id": "SAL-NRRD-OBL-DD537F7E8C81FDE6",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_nrrd_feature_completeness.py::TestLineAndByteSkip::test_byte_skip_and_line_skip_combined"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Negative/oversized/non-integer and illegal -1 combinations."
+        ],
+        "positive": [
+          "Attached/detached skip matrix across eligible encodings."
+        ]
+      },
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_safe_detached_payload",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_apply_skips",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_load"
+      ],
+      "status": "implemented"
+    },
+    {
+      "capability_id": "NRRD-TYPES-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Block requires positive block size and ASCII/text/txt is rejected."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_block_type_roundtrips_and_rejects_invalid_combinations"
+      ],
+      "obligation_id": "SAL-NRRD-OBL-E11BD129EC46861D",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_block_type_roundtrips_and_rejects_invalid_combinations"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Missing/nonpositive block size and ASCII aliases."
+        ],
+        "positive": [
+          "Block widths across raw/hex/gzip/bzip2."
+        ]
+      },
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::is_block_type",
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::parse_block_size",
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::dtype_info"
+      ],
+      "status": "implemented"
+    },
+    {
+      "capability_id": "NRRD-CONVERT-001",
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
+      "missing_behavior": [
+        "No conversion API or explicit clipping/scaling/rounding/overflow report exists."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-E2B0331E7D4F6AD8",
+      "positive_test_selectors": [],
+      "proof_requirements": {
+        "negative": [
+          "Overflow, clipping, scaling, rounding, and unrepresentable-conversion cases."
+        ],
+        "positive": [
+          "Dtype, encoding, attachment, and endian conversion matrices with reports."
+        ]
+      },
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
+    },
+    {
+      "capability_id": "NRRD-ARRAY-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Flat values expose shape and can be reshaped in fastest-first order."
+      ],
+      "missing_behavior": [
+        "No dtype/stride object, element API, slicing, permutation, flip, crop, metadata propagation, or view/copy contract."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-E4B3D1A206784660",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_obligation_shape_production.py::test_big_endian_axis_zero_fastest_and_detached_payload"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Bounds, invalid axes, incompatible strides, and unsafe zero-copy cases."
+        ],
+        "positive": [
+          "Each array operation with metadata/orientation propagation and view/copy assertion."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::to_array",
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::reshape_nrrd_array"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-PRESERVE-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Unknown ordinary header fields can be retained; exact attached bytes replay when unmodified."
+      ],
+      "missing_behavior": [
+        "Future structured constructs are not classified for safe carry-through and canonical mode may normalize unmodeled lexical semantics."
+      ],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_lossless_mode_replays_unchanged_source_and_reports_mutation"
+      ],
+      "obligation_id": "SAL-NRRD-OBL-E4FE4CA1575751FB",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_lossless_mode_replays_unchanged_source_and_reports_mutation"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Unsafe or lossy unknown constructs produce explicit loss reports."
+        ],
+        "positive": [
+          "Unknown field/future-profile preservation corpus."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::preservation_report",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dumps"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-TYPES-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "All specified scalar aliases plus opaque block values have declared-type-independent codecs and core validity rules."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_block_type_roundtrips_and_rejects_invalid_combinations"
+      ],
+      "obligation_id": "SAL-NRRD-OBL-E662E631C3653034",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_every_normative_scalar_type_alias_roundtrips",
+        "tests/python/nrrd/test_production_namespace.py::test_block_type_roundtrips_and_rejects_invalid_combinations"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Unknown type, invalid alias, overflow, block size/value, and encoding combinations."
+        ],
+        "positive": [
+          "Independent reader/writer matrix for every alias and block width."
+        ]
+      },
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::is_block_type",
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::parse_block_size",
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::dtype_info"
+      ],
+      "status": "implemented"
+    },
+    {
+      "capability_id": "NRRD-LIFECYCLE-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Filesystem path, readable binary stream, bytes, bytearray, and memoryview loads return NrrdDocument."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-E8BD337EE4D0C28F",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_lifecycle_api_and_stream_destination"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Text streams, unreadable paths, oversized streams, and invalid source types."
+        ],
+        "positive": [
+          "Installed-wheel input-form matrix on all supported platforms."
+        ]
+      },
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::probe",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::loads",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::load",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dumps",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dump"
+      ],
+      "status": "implemented"
+    },
+    {
+      "capability_id": "NRRD-MULTIFILE-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Printf sequence and LIST payload declarations are recognized and concatenated."
+      ],
+      "missing_behavior": [
+        "Optional subdimension, profile gate, comprehensive sequence grammar, and writer support are absent."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-EBE5230D5204B4AD",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_obligation_detached_forms_production.py::test_list_and_printf_detached_payload_forms"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Malformed format, range, step, count, truncation, traversal, and earlier-profile cases."
+        ],
+        "positive": [
+          "LIST/sequence/subdimension corpus against Teem."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_safe_detached_payload",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_apply_skips",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_load"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "NRRD-TYPES-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Type is required and all specified integer/floating/block declarations and aliases are recognized."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_block_type_roundtrips_and_rejects_invalid_combinations"
+      ],
+      "obligation_id": "SAL-NRRD-OBL-EC4F72D746FA2AE3",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_every_normative_scalar_type_alias_roundtrips",
+        "tests/python/nrrd/test_production_namespace.py::test_block_type_roundtrips_and_rejects_invalid_combinations"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Missing, unknown, and invalid type/encoding combinations."
+        ],
+        "positive": [
+          "All aliases preserve declared spelling and values through independent readers."
+        ]
+      },
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::is_block_type",
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::parse_block_size",
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::dtype_info"
+      ],
+      "status": "implemented"
+    },
+    {
+      "capability_id": "NRRD-LIFECYCLE-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Canonical field/key ordering and gzip mtime zero make repeated same-document serialization deterministic."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-EDFA0571B89A85E0",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_all_standard_chassis_encodings_roundtrip"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Mutation changes only the expected bytes and invalidates prior digest descendants."
+        ],
+        "positive": [
+          "Three clean same-input runs across processes and platforms."
+        ]
+      },
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dumps",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dump"
+      ],
+      "status": "implemented"
+    },
+    {
+      "capability_id": "NRRD-PRESERVE-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Caller explicitly selects canonical or lossless output; unmodified attached sources can replay exact bytes."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_lossless_mode_replays_unchanged_source_and_reports_mutation"
+      ],
+      "obligation_id": "SAL-NRRD-OBL-EF1B94687F231663",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_production_namespace.py::test_lossless_mode_replays_unchanged_source_and_reports_mutation"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Modified, detached, and source-unavailable documents refuse false lossless claims."
+        ],
+        "positive": [
+          "Documented installed-wheel canonical versus lossless examples."
+        ]
+      },
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::preservation_report",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dumps"
+      ],
+      "status": "implemented"
+    },
+    {
+      "capability_id": "NRRD-ARRAY-001",
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
+      ],
+      "implemented_behavior": [
+        "Shape and fastest-first nested value access exist."
+      ],
+      "missing_behavior": [
+        "No stride/dtype metadata object, slicing, permutation, flip, crop, orientation propagation, or zero-copy/copy signaling."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-NRRD-OBL-FEF73EC95DF631C3",
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_obligation_shape_production.py::test_big_endian_axis_zero_fastest_and_detached_payload"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Invalid indices/axes/regions and unsafe view requests."
+        ],
+        "positive": [
+          "Operation-by-operation array and metadata consistency matrix."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::to_array",
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::reshape_nrrd_array"
+      ],
+      "status": "partial"
+    }
+  ],
+  "promotion_effect": "none",
+  "proof_strength": "supporting_nonpromoting",
+  "referenced_input_digests": {
+    "reports/skills-rff6/skill-transcripts/reconcile-contract-capabilities-nrrd-readiness-001.json": "4675509f009d4b78181543769a6e18dd8292afb65b0624bd347a5b6ccdab2869",
+    "src/python/nrrd/src/format_factory/nrrd/codec/payload.py": "d1d1e95fd49be4415a0d796258ed5cdb8fdbd329a6191238e667fcef2badefb0",
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "73c43d22c696e2c8c3f8f0cfb7fcf1806bf3bc6933510e74e1acf4516b85da9f",
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py": "0fadfa1ffff5921964f27e77184215b1ecc4f0337d0764a7555af125608ae08e",
+    "src/python/nrrd/src/format_factory/nrrd/model/document.py": "da9b7aaec60597d8951766cc13c24012ce1dd56d43e5930f07817bb0e5e9d1e1",
+    "src/python/nrrd/src/format_factory/nrrd/security/limits.py": "61960ec909fda7e5b9accf4934948291467bb5e8ce4ce584ec6e6ee12e60e844",
+    "src/python/nrrd/src/format_factory/nrrd/validation/validator.py": "4998f59098ae60a928e3b6b5049a7843300efd24f2b19a59d8477f914c41bd98",
+    "tests/python/nrrd/test_nrrd_feature_completeness.py": "23c20da810071461f5ed3f4575ba35e021ebaf3745b8ecbf489d519ec98c57d5",
+    "tests/python/nrrd/test_obligation_detached_forms_production.py": "0ea4f16a7602ef7ea83a4c69dead3d3204c291c30a71747696a92a97ecc2a2d8",
+    "tests/python/nrrd/test_obligation_metadata_production.py": "5c928de8b704e53560d8e845bd02f33a549a61f3c8d3c5ef492c9dee1ceebd40",
+    "tests/python/nrrd/test_obligation_shape_production.py": "17ebb172b6e8f2ac861d2ff907dbe19794d327a6e20b5f915b20a9704be9dce5",
+    "tests/python/nrrd/test_production_namespace.py": "4723abd65d29bd980d08097bb243fa65988d7ba6c6308d194d78c51bf4a17067"
+  },
+  "schema": "format-contracts/obligation-reconciliation@1",
+  "summary": {
+    "by_status": {
+      "implemented": 17,
+      "missing": 6,
+      "partial": 39,
+      "preservation_only": 3
+    },
+    "total": 65,
+    "unresolved": 48
+  },
+  "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
+}

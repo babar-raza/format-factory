@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "format-contracts/implementation-evidence.schema.json",
+  "title": "Exact format obligation implementation evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "format_id",
+    "visibility",
+    "generated_by",
+    "execution_evidence",
+    "obligations"
+  ],
+  "properties": {
+    "schema": {"const": "format-contracts/implementation-evidence@1"},
+    "format_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$"},
+    "visibility": {"const": "generated"},
+    "generated_by": {"const": "codex"},
+    "execution_evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["evidence_id", "path", "expected_result", "granularity"],
+        "properties": {
+          "evidence_id": {"type": "string", "minLength": 1},
+          "path": {"type": "string", "minLength": 1},
+          "expected_result": {"type": "string", "minLength": 1},
+          "granularity": {"enum": ["suite", "selector"]},
+          "truth_boundary": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "obligations": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/obligation"}
+    }
+  },
+  "$defs": {
+    "stringList": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1}
+    },
+    "obligation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "obligation_id",
+        "capability_id",
+        "status",
+        "source_symbols",
+        "positive_test_selectors",
+        "negative_test_selectors",
+        "execution_evidence_ids",
+        "implemented_behavior",
+        "missing_behavior",
+        "proof_requirements"
+      ],
+      "properties": {
+        "obligation_id": {"type": "string", "pattern": "^SAL-[A-Z0-9_-]+-OBL-[A-Z0-9]+$"},
+        "capability_id": {"type": "string", "minLength": 1},
+        "status": {
+          "enum": [
+            "implemented",
+            "partial",
+            "missing",
+            "rejected",
+            "unsupported",
+            "preservation_only",
+            "preview"
+          ]
+        },
+        "source_symbols": {"$ref": "#/$defs/stringList"},
+        "positive_test_selectors": {"$ref": "#/$defs/stringList"},
+        "negative_test_selectors": {"$ref": "#/$defs/stringList"},
+        "execution_evidence_ids": {"$ref": "#/$defs/stringList"},
+        "implemented_behavior": {"$ref": "#/$defs/stringList"},
+        "missing_behavior": {"$ref": "#/$defs/stringList"},
+        "rationale": {"type": "string", "minLength": 1},
+        "proof_requirements": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["positive", "negative"],
+          "properties": {
+            "positive": {"$ref": "#/$defs/stringList"},
+            "negative": {"$ref": "#/$defs/stringList"}
+          }
+        }
+      }
+    }
+  }
+}
