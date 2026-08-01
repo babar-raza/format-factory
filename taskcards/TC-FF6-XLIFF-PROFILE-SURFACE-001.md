@@ -1089,3 +1089,91 @@ Passing this task proves the normative contract and deterministic work
 denominator, not that an XLIFF library is implemented or production-ready.
 Product implementation remains locked behind closure of the parent capability
 universe and its successor architecture task.
+
+## Verified source-language compatibility checkpoint — Event 38
+
+Native `FF6-EVENT-000038` supersedes the Event 37 resume instruction. The
+accepted semantic boundary is immutable GitLab `main` commit
+`3fc939ad70ec6caac9e0699041076e02de00c5d2`.
+
+Accepted evidence:
+
+- exact candidate `XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73` is bound by
+  content SHA-256
+  `fc6bfe29b9efb1589d19e9f040ca0901bcdd8db4fe0a327760cd043257e41062`,
+  requirement SHA-256
+  `4d6ff61b0af6ae593955517ebde43ac5bba05e48440a601f05fa91d54df6e464`,
+  and occurrence SHA-256
+  `0102e918c34b6b8147324a33411e35b93d03740b2c1eb4a283e90c00bf3fb7ea`;
+- decision `XLF-ADJ-CORE-SCHEMATRON-0007`, digest
+  `636d2524c6b9d7ccd5b71a248924d1a4be2778c4e7cd321ad81caa00f4ee13d0`,
+  accepts only `SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001`;
+- the generic validator proposal is rejected as downstream, segment and
+  ignorable are rejected as incidental applicability context, and
+  source-required is rejected because an explicit-value trigger does not prove
+  cardinality;
+- unproposed `SAL-XLIFF-CORE-LANGUAGE-SOURCE-001` is explicitly rejected for
+  this candidate because an explicit-value comparison does not establish the
+  separate omitted-value inheritance rule;
+- exact fact `SAL-XLIFF-39A807E74F92A266` binds the XLIFF 2.1 Schematron F4S
+  rule, root `srcLang` lookup, report expression and message, and corroborating
+  Core prose; its proof digest is
+  `2db27ac01f5b31faf2041066663ef76826582c0963b29c8388f86a164ecd0d46`;
+- the constraint is XLIFF 2.1 only. The pinned XLIFF 2.0 authority lacks this
+  rule, so the denominator and compiled obligation deliberately exclude 2.0;
+- exact candidate seeding now fails closed for missing or duplicate IDs,
+  ignores unrelated invalid rows in selected mode, allocates QNames across
+  hashed fact IDs, scopes merge work to XLIFF, restores store/aliases/cache on
+  failure, preserves existing canonical bytes, and is byte-idempotent;
+- all 29 predecessor obligation rows are semantically unchanged; one new
+  authority-bound row advances contract coverage only to `30/105`, leaving
+  `75` missing;
+- verified candidate dispositions advance to `7/1,130`, leaving `1,123`
+  independently unverified;
+- 90 affected tests passed (`15` seeder, `23` adjudicator, `52` extractor) in
+  the shared worktree and again from the immutable detached semantic commit;
+- all four derived-artifact checks reproduced exact denominator, census,
+  adjudication, and inventory digests; selected SAL seeding left the store,
+  alias registry, and combined cache byte-identical;
+- 69 production-program tests and 94 format-contract tests passed, with only
+  the exact documented stateful CSV idempotency test deselected;
+- all 32 XLIFF SAL facts passed exact authority assertions, all five XLIFF
+  authority records matched, and Ruff, strict Mypy with the established import
+  flags, Pyright 1.1.411, and bytecode compilation passed;
+- three semantic skill transcripts validated with zero warnings.
+
+This checkpoint proves only one additional Core obligation and one candidate
+disposition. XLF-04, all later contract steps, product source, certification,
+promotion, release, and all gates remain incomplete. Program certification
+remains `0/6`, and every format remains `UNASSESSED`.
+
+The exact next microstep is `XLF-04-BATCH-005-PARTIAL-002-G`, candidate
+`XLF-CAND-CORE-SCHEMATRON-5D563A565DC6DCFE`, content SHA-256
+`2f48f02786ace40f8e45306a2622fb031a0650a1004e6d4b316f3dd5ec44ee4d`,
+requirement SHA-256
+`85279eddf8546a96b332e7a7b5388cb4639d886f2a6a0f7168048ec3e7e483ec`,
+and occurrence SHA-256
+`639468d347a85cb3843f43bba0d0bdc9065beda22aee96021cb10f37374137fe`.
+The exact pinned occurrence is `schemas/xliff_core_2.1.sch` at
+`schematron/rule[14]/report[1]`; it reports when target `xml:lang` does not
+match root `trgLang`.
+
+The next executor must:
+
+1. validate Event 38 and immutable semantic commit `3fc939ad` before mutation;
+2. independently read the exact XLIFF 2.1 authority occurrence;
+3. treat generated proposals `AGENT-VALIDATOR`, `DOCUMENT-TARGET-LANGUAGE`,
+   `HIERARCHY-IGNORABLE`, `HIERARCHY-SEGMENT`, and `SOURCE-TARGET-OPTIONAL`
+   only as proposals;
+4. determine whether an existing denominator obligation directly owns target
+   compatibility or whether the denominator must expand, and explicitly reject
+   incidental trigger context;
+5. add genuine pre-change RED plus positive, rejection, tamper, profile, and
+   predecessor-preservation controls;
+6. preserve all 30 accepted obligation rows, all 1,130 candidate identities,
+   exact selected-seed idempotency, and checkout identity;
+7. replay deterministic, static, authority, SAL, format-contract,
+   production-program, transcript, immutable-checkout, and native-event
+   controls;
+8. leave XLF-04 and every product/release state incomplete unless the complete
+   evidence graph—not this single microstep—proves otherwise.
