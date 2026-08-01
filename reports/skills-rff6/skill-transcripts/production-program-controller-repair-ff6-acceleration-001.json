@@ -1,0 +1,78 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "production-program-controller-repair-ff6-acceleration-001",
+  "skill_id": "production-program-controller-repair",
+  "mode": "live",
+  "timestamp": "2026-08-01T18:04:00Z",
+  "inputs": {
+    "task_id": "TC-FF6-ACCEL-CONTROL-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "defect_id": "FF6-ACCEL-A3-BATCH-SCHEDULER-NONDETERMINISM",
+    "product_id": "_machinery",
+    "contract_format_id": "portfolio",
+    "source_package_id": "none",
+    "target_behavior_description": "Compile immutable all-or-nothing semantic batches and choose at most four deterministic, product-isolated, write-resource-disjoint tasks while blocked lanes release their slots.",
+    "execution_manifest_id": "sfx-2351fe564fb743ee",
+    "authorization_id": "92e28ef35cbfb510",
+    "coordination_identity": "agent-codex-20260801T163048-5b135a"
+  },
+  "allowed_files": [
+    "tools/supervisor/production_program.py",
+    "tests/production_program/test_production_program.py",
+    "reports/skills-rff6/skill-transcripts/production-program-controller-repair-ff6-acceleration-001.json"
+  ],
+  "actual_files_changed": [
+    "tools/supervisor/production_program.py",
+    "tests/production_program/test_production_program.py",
+    "reports/skills-rff6/skill-transcripts/production-program-controller-repair-ff6-acceleration-001.json"
+  ],
+  "tests_run": [
+    "RED batch: semantic batch member model was missing.",
+    "GREEN batch: accepted and failed-member manifests are deterministic, order-independent, digest-bound, and preserve predecessor identities.",
+    "Batch negative controls reject duplicate member IDs and malformed SHA-256 evidence.",
+    "RED scheduler: scheduled task model was missing.",
+    "GREEN scheduler: reverse input order produces the same four selected lanes under severity, downstream unlock, oldest task ID, product isolation, and resource-collision rules.",
+    "Scheduler negative controls reject zero capacity and duplicate task IDs; a blocked critical task does not consume a slot.",
+    "tests/production_program/test_production_program.py: 50 passed.",
+    "Affected regression: 148 passed and 1 exact known stateful CSV idempotency test deselected.",
+    "Ruff, strict Mypy with explicit package bases, Pyright 1.1.411, Python bytecode compilation, and git diff --check passed."
+  ],
+  "result": "PASS",
+  "evidence": {
+    "baseline_commit": "b244c585f7dab7c915d5433c46043b41195acca2",
+    "semantic_batch": {
+      "member_order": "CANONICAL_BY_MEMBER_ID",
+      "decision_values": ["ACCEPT", "REJECT"],
+      "result_values": ["PASS", "FAIL"],
+      "failed_member_effect": "WHOLE_BATCH_UNACCEPTED",
+      "predecessor_mutation": "NONE",
+      "digest_inputs": [
+        "group_id",
+        "members_and_decisions",
+        "exception_queue",
+        "predecessor_digests",
+        "invalidation_set",
+        "tests",
+        "artifacts",
+        "acceptance_state"
+      ]
+    },
+    "scheduler": {
+      "priority_order": ["severity", "downstream_unlock_count_desc", "task_id"],
+      "max_active_tested": 4,
+      "selected_disjoint_lanes": 4,
+      "one_active_task_per_product": true,
+      "shared_write_resource_collision": "DEFERRED",
+      "blocked_lane_slot_release": "PASS",
+      "reverse_input_determinism": "PASS"
+    },
+    "nonclaims": [
+      "This is the controller half of A3, not A3 completion.",
+      "Tracked provider-neutral handovers have not yet been regenerated from Event 43.",
+      "The handover generator and stale-manual-value rejection remain open in the refresh-provider-neutral-handover sub-slice.",
+      "No product, certification, promotion, release, or gate state changed."
+    ]
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

@@ -355,6 +355,45 @@ class ImpactSelection:
     digest: str
 
 
+@dataclass(frozen=True)
+class SemanticBatchMember:
+    member_id: str
+    decision: str
+    result: str
+    evidence_digest: str
+
+
+@dataclass(frozen=True)
+class SemanticBatchManifest:
+    group_id: str
+    members: tuple[SemanticBatchMember, ...]
+    exception_queue: tuple[str, ...]
+    predecessor_digests: tuple[tuple[str, str], ...]
+    invalidation_set: tuple[str, ...]
+    tests: tuple[str, ...]
+    artifacts: tuple[tuple[str, str], ...]
+    acceptance_state: str
+    digest: str
+
+
+@dataclass(frozen=True)
+class ScheduledTask:
+    task_id: str
+    product_id: str
+    severity: str
+    downstream_unlock_count: int
+    resources: tuple[str, ...]
+    blocked: bool = False
+
+
+@dataclass(frozen=True)
+class TaskSchedule:
+    selected: tuple[ScheduledTask, ...]
+    deferred: tuple[str, ...]
+    blocked: tuple[str, ...]
+    digest: str
+
+
 class ProductionProgram:
     def __init__(self, state_dir: Path):
         # Absolute paths are required for reliable atomic replacement on
@@ -476,6 +515,149 @@ class ProductionProgram:
             false_positives=false_positives,
             safe_for_selective_verification=safe,
             verification_scope="SELECTED" if safe else "FULL",
+            digest=hashlib.sha256(canonical_bytes(projection)).hexdigest(),
+        )
+
+    @staticmethod
+    def compile_semantic_batch(
+        *,
+        group_id: str,
+        members: tuple[SemanticBatchMember, ...],
+        exception_queue: tuple[str, ...],
+        predecessor_digests: Mapping[str, str],
+        invalidation_set: tuple[str, ...],
+        tests: tuple[str, ...],
+        artifacts: Mapping[str, str],
+    ) -> SemanticBatchManifest:
+        """Compile one immutable all-or-nothing semantic batch projection."""
+
+        def require_digest(value: str, label: str) -> None:
+            if len(value) != 64 or any(
+                character not in "0123456789abcdef" for character in value
+            ):
+                raise ValueError(f"{label} must be a lowercase SHA-256 digest")
+
+        if not group_id.strip():
+            raise ValueError("semantic batch group_id is empty")
+        if not members:
+            raise ValueError("semantic batch has no members")
+        ordered_members = tuple(sorted(members, key=lambda member: member.member_id))
+        member_ids = tuple(member.member_id for member in ordered_members)
+        if any(not member_id.strip() for member_id in member_ids):
+            raise ValueError("semantic batch member_id is empty")
+        if len(set(member_ids)) != len(member_ids):
+            raise ValueError("semantic batch member IDs are not unique")
+        for member in ordered_members:
+            if member.decision not in {"ACCEPT", "REJECT"}:
+                raise ValueError(f"invalid semantic decision: {member.decision}")
+            if member.result not in {"PASS", "FAIL"}:
+                raise ValueError(f"invalid semantic result: {member.result}")
+            require_digest(member.evidence_digest, f"member {member.member_id} evidence")
+        ordered_predecessors = tuple(sorted(predecessor_digests.items()))
+        ordered_artifacts = tuple(sorted(artifacts.items()))
+        for identity, digest in (*ordered_predecessors, *ordered_artifacts):
+            if not identity.strip():
+                raise ValueError("semantic batch digest identity is empty")
+            require_digest(digest, identity)
+        exceptions = tuple(sorted(set(exception_queue)))
+        invalidations = tuple(sorted(set(invalidation_set)))
+        ordered_tests = tuple(sorted(set(tests)))
+        if any(not item.strip() for item in (*exceptions, *invalidations, *ordered_tests)):
+            raise ValueError("semantic batch contains an empty identity")
+        acceptance_state = (
+            "ACCEPTED"
+            if not exceptions and all(member.result == "PASS" for member in ordered_members)
+            else "UNACCEPTED"
+        )
+        projection = {
+            "group_id": group_id,
+            "members": [asdict(member) for member in ordered_members],
+            "exception_queue": exceptions,
+            "predecessor_digests": ordered_predecessors,
+            "invalidation_set": invalidations,
+            "tests": ordered_tests,
+            "artifacts": ordered_artifacts,
+            "acceptance_state": acceptance_state,
+        }
+        return SemanticBatchManifest(
+            group_id=group_id,
+            members=ordered_members,
+            exception_queue=exceptions,
+            predecessor_digests=ordered_predecessors,
+            invalidation_set=invalidations,
+            tests=ordered_tests,
+            artifacts=ordered_artifacts,
+            acceptance_state=acceptance_state,
+            digest=hashlib.sha256(canonical_bytes(projection)).hexdigest(),
+        )
+
+    @staticmethod
+    def schedule_acceleration_tasks(
+        tasks: tuple[ScheduledTask, ...], *, max_active: int
+    ) -> TaskSchedule:
+        """Select stable, product-isolated tasks without shared write resources."""
+
+        if max_active < 1:
+            raise ValueError("max_active must be positive")
+        normalized: list[ScheduledTask] = []
+        identities: set[str] = set()
+        for task in tasks:
+            if not task.task_id.strip() or not task.product_id.strip():
+                raise ValueError("scheduled task identity is empty")
+            if task.task_id in identities:
+                raise ValueError(f"duplicate scheduled task: {task.task_id}")
+            identities.add(task.task_id)
+            if task.severity not in SEVERITY_ORDER:
+                raise ValueError(f"unknown task severity: {task.severity}")
+            if task.downstream_unlock_count < 0:
+                raise ValueError("downstream unlock count cannot be negative")
+            resources = tuple(sorted(set(task.resources)))
+            if not resources or any(not resource.strip() for resource in resources):
+                raise ValueError(f"scheduled task has invalid resources: {task.task_id}")
+            normalized.append(
+                ScheduledTask(
+                    task_id=task.task_id,
+                    product_id=task.product_id,
+                    severity=task.severity,
+                    downstream_unlock_count=task.downstream_unlock_count,
+                    resources=resources,
+                    blocked=task.blocked,
+                )
+            )
+        blocked = tuple(sorted(task.task_id for task in normalized if task.blocked))
+        ready = sorted(
+            (task for task in normalized if not task.blocked),
+            key=lambda task: (
+                SEVERITY_ORDER[task.severity],
+                -task.downstream_unlock_count,
+                task.task_id,
+            ),
+        )
+        selected: list[ScheduledTask] = []
+        used_products: set[str] = set()
+        used_resources: set[str] = set()
+        deferred: list[str] = []
+        for task in ready:
+            collision = task.product_id in used_products or bool(
+                used_resources.intersection(task.resources)
+            )
+            if len(selected) >= max_active or collision:
+                deferred.append(task.task_id)
+                continue
+            selected.append(task)
+            used_products.add(task.product_id)
+            used_resources.update(task.resources)
+        deferred_ids = tuple(sorted(deferred))
+        projection = {
+            "selected": [asdict(task) for task in selected],
+            "deferred": deferred_ids,
+            "blocked": blocked,
+            "max_active": max_active,
+        }
+        return TaskSchedule(
+            selected=tuple(selected),
+            deferred=deferred_ids,
+            blocked=blocked,
             digest=hashlib.sha256(canonical_bytes(projection)).hexdigest(),
         )
 

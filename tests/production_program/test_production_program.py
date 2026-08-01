@@ -586,6 +586,102 @@ def test_proof_impact_selector_returns_stable_dependency_closure() -> None:
     assert unbound.verification_scope == "FULL"
 
 
+def test_semantic_batch_manifest_is_deterministic_and_transactional() -> None:
+    import tools.supervisor.production_program as module
+
+    member_type = getattr(module, "SemanticBatchMember", None)
+    compiler = getattr(ProductionProgram, "compile_semantic_batch", None)
+    assert member_type is not None, "semantic batch member model is missing"
+    assert compiler is not None, "semantic batch compiler is missing"
+    members = (
+        member_type("candidate-b", "REJECT", "PASS", "b" * 64),
+        member_type("candidate-a", "ACCEPT", "PASS", "a" * 64),
+    )
+    inputs = {
+        "group_id": "XLF-04-BATCH-006",
+        "exception_queue": (),
+        "predecessor_digests": {"candidate-prior": "c" * 64},
+        "invalidation_set": ("contract:xliff", "authority:xliff"),
+        "tests": ("tests/xliff/test_b.py", "tests/xliff/test_a.py"),
+        "artifacts": {"report": "d" * 64, "contract": "e" * 64},
+    }
+    first = compiler(members=members, **inputs)
+    second = compiler(members=tuple(reversed(members)), **inputs)
+
+    assert first == second
+    assert first.acceptance_state == "ACCEPTED"
+    assert tuple(member.member_id for member in first.members) == (
+        "candidate-a",
+        "candidate-b",
+    )
+    assert first.tests == ("tests/xliff/test_a.py", "tests/xliff/test_b.py")
+    assert len(first.digest) == 64
+
+    failed = compiler(
+        members=(
+            members[1],
+            member_type("candidate-b", "REJECT", "FAIL", "f" * 64),
+        ),
+        **inputs,
+    )
+    assert failed.acceptance_state == "UNACCEPTED"
+    assert failed.predecessor_digests == first.predecessor_digests
+    assert tuple(member.member_id for member in failed.members) == (
+        "candidate-a",
+        "candidate-b",
+    )
+    assert failed.digest != first.digest
+
+    with pytest.raises(ValueError, match="member IDs are not unique"):
+        compiler(members=(members[0], members[0]), **inputs)
+    with pytest.raises(ValueError, match="lowercase SHA-256"):
+        compiler(
+            members=(member_type("candidate-a", "ACCEPT", "PASS", "bad"),),
+            **inputs,
+        )
+
+
+def test_acceleration_scheduler_is_deterministic_disjoint_and_nonblocking() -> None:
+    import tools.supervisor.production_program as module
+
+    task_type = getattr(module, "ScheduledTask", None)
+    scheduler = getattr(ProductionProgram, "schedule_acceleration_tasks", None)
+    assert task_type is not None, "scheduled task model is missing"
+    assert scheduler is not None, "acceleration scheduler is missing"
+    tasks = (
+        task_type("TC-005", "xliff", "CRITICAL", 99, ("contract:xliff",), True),
+        task_type("TC-004", "ubl", "HIGH", 3, ("generator:ubl",), False),
+        task_type("TC-003", "nrrd", "HIGH", 5, ("contract:nrrd",), False),
+        task_type("TC-002", "ipynb", "HIGH", 5, ("contract:ipynb",), False),
+        task_type("TC-001", "ipynb", "HIGH", 5, ("tests:ipynb",), False),
+        task_type("TC-006", "safetensors", "MEDIUM", 10, ("shared:package",), False),
+        task_type("TC-007", "openraster", "LOW", 1, ("shared:package",), False),
+    )
+    first = scheduler(tasks, max_active=4)
+    second = scheduler(tuple(reversed(tasks)), max_active=4)
+
+    assert first == second
+    assert tuple(task.task_id for task in first.selected) == (
+        "TC-001",
+        "TC-003",
+        "TC-004",
+        "TC-006",
+    )
+    assert first.blocked == ("TC-005",)
+    assert "TC-002" in first.deferred
+    assert "TC-007" in first.deferred
+    assert len(first.digest) == 64
+    selected_resources = [
+        resource for task in first.selected for resource in task.resources
+    ]
+    assert len(selected_resources) == len(set(selected_resources))
+
+    with pytest.raises(ValueError, match="max_active must be positive"):
+        scheduler(tasks, max_active=0)
+    with pytest.raises(ValueError, match="duplicate scheduled task"):
+        scheduler((tasks[1], tasks[1]), max_active=1)
+
+
 def test_manual_promotion_label_cannot_override_live_proof() -> None:
     graph = ProductionProofGraph()
     graph.add_content_node(
