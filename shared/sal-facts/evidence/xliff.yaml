@@ -848,3 +848,54 @@ facts:
     xpath: "./xs:element[@name='xliff']"
     expected: 1
     namespaces: *xsd_namespaces
+- fact_id: SAL-XLIFF-39A807E74F92A266
+  claim_sha256: a7d4a7247223b6b325e66aef2f3c4afbfd345085bfb91be57430951fff1486ca
+  assertions:
+  - assertion_id: source-language-rule-context
+    target: core_schematron
+    kind: xml_xpath_attributes_equal
+    xpath: ".//sch:pattern[@id='F4S']/sch:rule"
+    attribute: context
+    expected:
+    - "xlf:source[@xml:lang][parent::xlf:segment | parent::xlf:ignorable]"
+    namespaces: *sch_namespaces
+  - assertion_id: source-language-root-lookup
+    target: core_schematron
+    kind: xml_xpath_attributes_equal
+    xpath: ".//sch:pattern[@id='F4S']/sch:rule/sch:let[@name='srcLang']"
+    attribute: value
+    expected: [/xlf:xliff/@srcLang]
+    namespaces: *sch_namespaces
+  - assertion_id: source-language-report-test
+    target: core_schematron
+    kind: xml_xpath_attributes_equal
+    xpath: ".//sch:pattern[@id='F4S']/sch:rule/sch:report"
+    attribute: test
+    expected: [not(lang($srcLang))]
+    namespaces: *sch_namespaces
+  - assertion_id: source-language-report-message
+    target: core_schematron
+    kind: xml_xpath_text_contains
+    xpath: ".//sch:pattern[@id='F4S']/sch:rule/sch:report"
+    expected: >-
+      'xml:lang' attribute of the 'source' element and 'srcLang' attribute of
+      the 'xliff' are not matching.
+    namespaces: *sch_namespaces
+  - assertion_id: source-language-explicit-or-inherited-rule
+    target: core_schematron
+    kind: xml_xpath_text_contains
+    xpath: ".//sch:pattern[@id='F4S']/sch:title"
+    expected: >-
+      When a 'source' element is a child of 'segment' or 'ignorable', the
+      explicit or inherited value of the optional xml:lang must be equal to
+      the value of the srcLang attribute of the enclosing 'xliff' element
+    namespaces: *sch_namespaces
+  - assertion_id: source-language-more-specific-tag-rule
+    target: core_schematron
+    kind: xml_xpath_text_contains
+    xpath: ".//sch:pattern[@id='F4S']/sch:p"
+    expected: >-
+      This rule does not rais an error if 'xml:lang' is a subcategory of
+      'srcLang', but not vice versa. i.e. 'srcLang="en"/xml:lang="en-ie"' is
+      a valid pair.
+    namespaces: *sch_namespaces

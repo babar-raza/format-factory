@@ -187,3 +187,42 @@ decisions:
     the direct denominator owner is the unit-children cardinality obligation.
     The segment proposal is a child surface and generic validator behavior is
     downstream.
+- decision_id: XLF-ADJ-CORE-SCHEMATRON-0007
+  candidate_id: XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73
+  accepted_obligation_ids:
+  - SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001
+  rejected_obligations:
+  - obligation_id: SAL-XLIFF-CORE-AGENT-VALIDATOR-001
+    reason_code: DOWNSTREAM_CAPABILITY_NOT_DIRECT_SEMANTIC_OWNER
+    reason: >-
+      A conforming validator enforces this report, but the report directly
+      establishes source-language compatibility with the document srcLang.
+  - obligation_id: SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001
+    reason_code: INCIDENTAL_XPATH_CONTEXT_TOKEN
+    reason: >-
+      The ignorable parent limits applicability and does not establish an
+      independent hierarchy rule.
+  - obligation_id: SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001
+    reason_code: INCIDENTAL_XPATH_CONTEXT_TOKEN
+    reason: >-
+      The segment parent limits applicability and does not establish an
+      independent hierarchy rule.
+  - obligation_id: SAL-XLIFF-CORE-SOURCE-REQUIRED-001
+    reason_code: TRIGGER_DOES_NOT_ESTABLISH_CARDINALITY
+    reason: >-
+      The report applies when a source element with xml:lang exists; it does
+      not establish source presence or cardinality.
+  unproposed_rejected_obligations:
+  - obligation_id: SAL-XLIFF-CORE-LANGUAGE-SOURCE-001
+    reason_code: EXPLICIT_MATCH_DOES_NOT_ESTABLISH_INHERITANCE
+    reason: >-
+      The report checks an explicit source xml:lang value. It does not
+      establish how an omitted value inherits from the enclosing srcLang.
+  sal_fact_ids:
+  - SAL-XLIFF-39A807E74F92A266
+  authority_reason: >-
+    The exact XLIFF 2.1 Core Schematron report checks source xml:lang against
+    root srcLang, and the XLIFF 2.1 Core prose requires the explicit or inherited
+    source language to match srcLang. The parent names are applicability
+    context, source presence is only a trigger, generic validation is
+    downstream, and omitted-value inheritance is a separate obligation.

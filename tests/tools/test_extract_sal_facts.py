@@ -50,6 +50,12 @@ SUBFLOW_PAIR_CANDIDATE_IDS = {
 }
 UNIT_CHILDREN_CANDIDATE_ID = "XLF-CAND-CORE-SCHEMATRON-100732DB0BBED389"
 UNIT_CHILDREN_OBLIGATION_ID = "SAL-XLIFF-CORE-HIERARCHY-UNIT-CHILDREN-001"
+SOURCE_LANGUAGE_CANDIDATE_ID = (
+    "XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73"
+)
+SOURCE_LANGUAGE_OBLIGATION_ID = (
+    "SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001"
+)
 PREDECESSOR_OBLIGATION_ROW_SHA256 = {
     "SAL-XLIFF-CORE-AGENT-INLINE-001": "ddc5b5252a5fe492df5f0e59e63e4c3e4552a2c019398ec80a46ed29bd30b6cb",
     "SAL-XLIFF-CORE-DIRECTION-SOURCE-001": "7e7b18ef8786c8bb667a2486568b6631ccc4ffb52a9f6a63a6032a0beefee9e3",
@@ -1353,15 +1359,16 @@ def test_cli_batch_five_compiles_only_reciprocally_adjudicated_pairing_obligatio
 
     assert extractor.main(args) == 0
     inventory = yaml.safe_load(output.read_bytes())
-    assert inventory["obligation_count"] == 29
-    assert inventory["resolved_expected_obligation_count"] == 29
-    assert len(inventory["missing_expected_obligation_ids"]) == 76
+    assert inventory["obligation_count"] == 30
+    assert inventory["resolved_expected_obligation_count"] == 30
+    assert len(inventory["missing_expected_obligation_ids"]) == 75
     assert inventory["complete"] is False
-    assert inventory["adjudication_input"]["decision_count"] == 6
-    assert inventory["adjudication_input"]["verified_disposition_count"] == 6
-    assert inventory["adjudication_input"]["unverified_disposition_count"] == 1124
+    assert inventory["adjudication_input"]["decision_count"] == 7
+    assert inventory["adjudication_input"]["verified_disposition_count"] == 7
+    assert inventory["adjudication_input"]["unverified_disposition_count"] == 1123
 
     rows = {row["obligation_id"]: row for row in inventory["obligations"]}
+    assert SOURCE_LANGUAGE_OBLIGATION_ID in rows
     assert set(PREDECESSOR_OBLIGATION_ROW_SHA256) <= set(rows)
     for obligation_id, expected_sha256 in (
         PREDECESSOR_OBLIGATION_ROW_SHA256.items()
@@ -1558,6 +1565,52 @@ def test_batch_five_unit_children_seed_requires_exact_candidate_proof() -> None:
     assert unit_children["adjudication_candidate_ids"] == [
         UNIT_CHILDREN_CANDIDATE_ID
     ]
+
+
+def test_batch_five_source_language_seed_requires_exact_candidate_proof() -> None:
+    extractor = _load_module()
+    verified = {
+        TARGET_LANGUAGE_OBLIGATION_ID,
+        SOURCE_LANGUAGE_OBLIGATION_ID,
+    }
+
+    with pytest.raises(
+        extractor.ExtractionError,
+        match="exact Schematron candidate",
+    ):
+        extractor._default_core_obligation_seeds(
+            through_batch="XLF-04-BATCH-005",
+            verified_obligation_ids=verified,
+            adjudication_evidence={
+                "accepted_obligation_candidate_ids": {
+                    SOURCE_LANGUAGE_OBLIGATION_ID: []
+                }
+            },
+        )
+
+    seeds = extractor._default_core_obligation_seeds(
+        through_batch="XLF-04-BATCH-005",
+        verified_obligation_ids=verified,
+        adjudication_evidence={
+            "accepted_obligation_candidate_ids": {
+                SOURCE_LANGUAGE_OBLIGATION_ID: [SOURCE_LANGUAGE_CANDIDATE_ID]
+            }
+        },
+    )
+    source_language = next(
+        seed
+        for seed in seeds
+        if seed["obligation_id"] == SOURCE_LANGUAGE_OBLIGATION_ID
+    )
+    assert source_language["adjudication_candidate_ids"] == [
+        SOURCE_LANGUAGE_CANDIDATE_ID
+    ]
+    assert source_language["stable_profiles"] == ["xliff_2.1"]
+    assert source_language["normalized_rule"] == (
+        "Require an explicit or inherited source xml:lang value to be "
+        "compatible with the srcLang attribute of the enclosing XLIFF "
+        "document."
+    )
 
 
 @pytest.mark.parametrize(

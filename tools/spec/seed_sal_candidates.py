@@ -34,6 +34,8 @@ SAL_DIR = REPO_ROOT / "shared" / "sal-facts"
 RESEARCH_DIR = REPO_ROOT / "shared" / "format-contracts" / "research"
 FORMAT_REGISTRY = REPO_ROOT / "registry" / "format-registry.yaml"
 MERGE = REPO_ROOT / "tools" / "spec" / "merge_sal_facts.py"
+COMBINED_CACHE = REPO_ROOT / ".local" / "spec-cache" / "sal-facts-latest.json"
+ALIASES_PATH = REPO_ROOT / "shared" / "sal-fact-id-aliases.json"
 
 
 def _format_metadata(format_id: str) -> dict[str, Any]:
@@ -132,7 +134,82 @@ def _stable_fact_id(
     return f"SAL-{format_id.upper()}-{digest}"
 
 
-def seed(format_id: str, added_by: str) -> dict[str, Any]:
+def _append_facts_preserving_store(
+    store_path: Path,
+    store: dict[str, Any],
+    new_facts: list[dict[str, Any]],
+) -> None:
+    if list(store)[-1:] != ["facts"]:
+        raise RuntimeError(
+            "existing canonical SAL store must keep facts as its final top-level key"
+        )
+    fragment = yaml.safe_dump(
+        {"facts": new_facts},
+        sort_keys=False,
+        allow_unicode=True,
+        width=110,
+    )
+    prefix = "facts:\n"
+    if not fragment.startswith(prefix):
+        raise RuntimeError("failed to serialize SAL fact append fragment")
+    fact_rows = fragment.removeprefix(prefix).encode("utf-8")
+    original = store_path.read_bytes()
+    for suffix, newline in (
+        (b"facts: []\r\n", b"\r\n"),
+        (b"facts: []\n", b"\n"),
+        (b"facts: []", b"\n"),
+    ):
+        if original.endswith(suffix):
+            prefix_bytes = original[: -len(suffix)]
+            rows = fact_rows.replace(b"\n", newline)
+            store_path.write_bytes(prefix_bytes + b"facts:" + newline + rows)
+            return
+    separator = b"" if original.endswith((b"\n", b"\r")) else b"\n"
+    with store_path.open("ab") as fh:
+        fh.write(separator + fact_rows)
+
+
+def _snapshot(path: Path) -> bytes | None:
+    return path.read_bytes() if path.is_file() else None
+
+
+def _restore_snapshot(path: Path, content: bytes | None) -> None:
+    if content is None:
+        path.unlink(missing_ok=True)
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(content)
+
+
+def _select_candidates(
+    candidates: list[dict[str, Any]],
+    candidate_id: str | None,
+) -> list[dict[str, Any]]:
+    if candidate_id is None:
+        return candidates
+    selected = [
+        candidate
+        for candidate in candidates
+        if str(candidate.get("candidate_id", "")) == candidate_id
+    ]
+    if not selected:
+        raise RuntimeError(
+            f"candidate_id {candidate_id!r} must match exactly one queue row; matched 0"
+        )
+    if len(selected) > 1:
+        raise RuntimeError(
+            f"candidate_id {candidate_id!r} must match exactly one queue row; "
+            f"matched {len(selected)}"
+        )
+    return [selected[0]]
+
+
+def seed(
+    format_id: str,
+    added_by: str,
+    *,
+    candidate_id: str | None = None,
+) -> dict[str, Any]:
     queue_path = QUEUE_DIR / f"{format_id}.yaml"
     if not queue_path.is_file():
         return {"seeded": 0, "skipped": 0, "note": "no candidate queue"}
@@ -140,11 +217,16 @@ def seed(format_id: str, added_by: str) -> dict[str, Any]:
     candidates = queue.get("candidates", [])
     if not candidates:
         return {"seeded": 0, "skipped": 0, "note": "empty queue"}
+    candidates = _select_candidates(candidates, candidate_id)
 
     store_path = SAL_DIR / f"{format_id}.yaml"
+    store_exists = store_path.is_file()
+    original_store_bytes = _snapshot(store_path)
+    original_combined_bytes = _snapshot(COMBINED_CACHE)
+    original_alias_bytes = _snapshot(ALIASES_PATH)
     store = (
         yaml.safe_load(store_path.read_text(encoding="utf-8"))
-        if store_path.is_file()
+        if store_exists
         else _new_store(format_id)
     )
     facts = store.setdefault("facts", [])
@@ -163,8 +245,15 @@ def seed(format_id: str, added_by: str) -> dict[str, Any]:
                 max_num = max(max_num, int(fid.rsplit("-", 1)[1]))
             except ValueError:
                 pass
+        qname = str(fact.get("qname", ""))
+        if qname.startswith(f"FACT-{format_id.upper()}-"):
+            try:
+                max_num = max(max_num, int(qname.rsplit("-", 1)[1]))
+            except ValueError:
+                pass
 
     seeded = skipped = 0
+    new_facts: list[dict[str, Any]] = []
     today = date.today().isoformat()
     for cand in candidates:
         claim = str(cand.get("claim", "")).strip()
@@ -189,7 +278,7 @@ def seed(format_id: str, added_by: str) -> dict[str, Any]:
         ):
             raise RuntimeError("readiness_categories must be a list of non-empty strings")
         max_num += 1
-        facts.append({
+        new_fact = {
             "fact_id": fact_id,
             "qname": f"FACT-{format_id.upper()}-{max_num}",
             "element_qname": cand.get("element_qname", f"{format_id}:unspecified"),
@@ -207,21 +296,39 @@ def seed(format_id: str, added_by: str) -> dict[str, Any]:
                 "added_at": today,
                 "authority_sources": authority_sources,
             },
-        })
+        }
+        facts.append(new_fact)
+        new_facts.append(new_fact)
         existing_claims.add(claim)
         existing_ids[fact_id] = claim
         seeded += 1
 
     if seeded:
         store_path.parent.mkdir(parents=True, exist_ok=True)
-        with store_path.open("w", encoding="utf-8", newline="\n") as fh:
-            yaml.safe_dump(store, fh, sort_keys=False, allow_unicode=True, width=110)
-        merge = subprocess.run(
-            [sys.executable, str(MERGE)], cwd=str(REPO_ROOT),
-            capture_output=True, text=True, timeout=300,
-        )
-        if merge.returncode != 0:
-            raise RuntimeError(f"merge_sal_facts failed: {merge.stderr[-400:]}")
+        if store_exists:
+            _append_facts_preserving_store(store_path, store, new_facts)
+        else:
+            with store_path.open("w", encoding="utf-8", newline="\n") as fh:
+                yaml.safe_dump(
+                    store,
+                    fh,
+                    sort_keys=False,
+                    allow_unicode=True,
+                    width=110,
+                )
+        try:
+            merge = subprocess.run(
+                [sys.executable, str(MERGE), "--formats", format_id],
+                cwd=str(REPO_ROOT),
+                capture_output=True, text=True, timeout=300,
+            )
+            if merge.returncode != 0:
+                raise RuntimeError(f"merge_sal_facts failed: {merge.stderr[-400:]}")
+        except Exception:
+            _restore_snapshot(store_path, original_store_bytes)
+            _restore_snapshot(COMBINED_CACHE, original_combined_bytes)
+            _restore_snapshot(ALIASES_PATH, original_alias_bytes)
+            raise
     return {"seeded": seeded, "skipped": skipped, "total_facts": len(facts)}
 
 
@@ -229,9 +336,17 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--format-id", required=True)
     parser.add_argument("--added-by", required=True)
+    parser.add_argument(
+        "--candidate-id",
+        help="Seed exactly one stable queue candidate ID and ignore unrelated rows.",
+    )
     args = parser.parse_args(argv)
     try:
-        result = seed(args.format_id.lower(), args.added_by)
+        result = seed(
+            args.format_id.lower(),
+            args.added_by,
+            candidate_id=args.candidate_id,
+        )
     except Exception as exc:  # noqa: BLE001
         print(f"[sal-seed] ERROR {exc}", file=sys.stderr)
         return 1

@@ -10,7 +10,7 @@ status: SOURCE_LOCATED_PARTIAL
 stable_profiles:
 - xliff_2.0
 - xliff_2.1
-obligation_count: 29
+obligation_count: 30
 covered_categories:
 - agent_processing
 - document_structure
@@ -40,7 +40,7 @@ remaining_categories:
 - xml_security_resource_limits
 completeness_basis: EXPLICIT_EXPECTED_OBLIGATION_IDS_OPEN_CENSUS
 expected_obligation_count: 105
-resolved_expected_obligation_count: 29
+resolved_expected_obligation_count: 30
 missing_expected_obligation_ids:
 - SAL-XLIFF-CORE-AGENT-EXTRACTOR-001
 - SAL-XLIFF-CORE-AGENT-LOSS-REPORT-001
@@ -51,7 +51,6 @@ missing_expected_obligation_ids:
 - SAL-XLIFF-CORE-DOCUMENT-FILE-MINIMUM-001
 - SAL-XLIFF-CORE-DOCUMENT-FILE-ORDER-001
 - SAL-XLIFF-CORE-DOCUMENT-NAMESPACE-001
-- SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001
 - SAL-XLIFF-CORE-DOCUMENT-VERSION-001
 - SAL-XLIFF-CORE-EXTENSION-CORE-CONFLICT-001
 - SAL-XLIFF-CORE-EXTENSION-DOWNGRADE-LOSS-001
@@ -130,7 +129,6 @@ missing_expected_obligations_by_category:
   - SAL-XLIFF-CORE-DOCUMENT-FILE-MINIMUM-001
   - SAL-XLIFF-CORE-DOCUMENT-FILE-ORDER-001
   - SAL-XLIFF-CORE-DOCUMENT-NAMESPACE-001
-  - SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001
   - SAL-XLIFF-CORE-DOCUMENT-VERSION-001
   extension_preservation:
   - SAL-XLIFF-CORE-EXTENSION-CORE-CONFLICT-001
@@ -211,7 +209,7 @@ denominator_status: OPEN_AUTHORITY_CENSUS
 denominator_complete: false
 obligation_basis_counts:
   PRODUCTION_POLICY: 4
-  XLIFF_SPECIFICATION: 25
+  XLIFF_SPECIFICATION: 26
 complete: false
 obligations:
 - obligation_id: SAL-XLIFF-CORE-AGENT-INLINE-001
@@ -374,6 +372,39 @@ obligations:
     - execute a discriminating non-conforming example and verify diagnostics
   interpretation_note: First source-located XLF-04 batch. This identity remains stable while later batches add the uncaptured Core categories and finer rules.
   verification_status: SOURCE_BOUND_UNVERIFIED
+- obligation_id: SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001
+  obligation_basis: XLIFF_SPECIFICATION
+  conformance_effect: STANDARD_CONFORMANCE
+  introduced_in_batch: XLF-04-BATCH-005
+  stable_profiles:
+  - xliff_2.1
+  owner: core:document
+  category: document_structure
+  normalized_rule: Require an explicit or inherited source xml:lang value to be compatible with the srcLang attribute of the enclosing XLIFF document.
+  requirement_class: SEMANTIC_CONSTRAINT
+  normative_level: MUST
+  authority_locations:
+  - profile: xliff_2.1
+    authority_source_id: SRC-XLF-002
+    source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    location_kind: prose_paragraph
+    member: xliff-core-v2.1-os.xml
+    member_sha256: e8c72ec2314e1025f25886cd0ea2b6c10aa2405bd292026383afca2207c44e5b
+    section_id: source
+    paragraph_index: 4
+    source_anchor: explicit or inherited value of the optional xml:lang
+    source_text_sha256: 92deb2087eb8b79c4a5b5e96715e14000776b9c32f11a943f24fd653be891462
+  evidence_requirements:
+    positive:
+    - accept a source whose explicit xml:lang equals srcLang
+    - accept a source whose explicit xml:lang is a more-specific subcategory of srcLang
+    - apply the inherited srcLang value when source xml:lang is omitted
+    rejection:
+    - reject an explicit source xml:lang that is incompatible with root srcLang
+  interpretation_note: Independent adjudication XLF-ADJ-CORE-SCHEMATRON-0007 binds the exact XLIFF 2.1 F4S report to verified fact SAL-XLIFF-39A807E74F92A266. The same normative source constraint is independently located and hashed in the XLIFF 2.1 prose authority; the Schematron corroborates the explicit-value compatibility rule and its more-specific language-tag exception. XLIFF 2.0 has no equivalent source constraint and is intentionally excluded. It does not establish source cardinality, generic validator behavior, or the separate omitted-value inheritance mechanism.
+  verification_status: SOURCE_BOUND_UNVERIFIED
+  adjudication_candidate_ids:
+  - XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73
 - obligation_id: SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001
   obligation_basis: XLIFF_SPECIFICATION
   conformance_effect: STANDARD_CONFORMANCE
@@ -1324,20 +1355,23 @@ obligations:
 truth_boundary: XLIFF specification obligations and production-policy duties are separate authority classes. Neither source binding nor category presence turns the 36 coarse XLF-03 anchors into complete Core semantics, product source, or certification.
 adjudication_input:
   artifact_id: FF6-XLIFF-CORE-CANDIDATE-ADJUDICATIONS
-  artifact_sha256: 827445fe3d09cd709162531a00fffa4d0021506c38c36f29684257aa6cd85360
-  input_closure_sha256: 66db924b158ca0a85d770c327616185ca35b7b7f21e898056cee5c62972b4219
-  decision_set_sha256: 53426b6d88a30c33daa53b24bb125e67366b75605588de6f270088b39e66fa07
-  decision_count: 6
-  verified_disposition_count: 6
-  unverified_disposition_count: 1124
+  artifact_sha256: 61f17b6449ae1ea6b5a95c892afc075b48aa7b9a100be2d6e8168b8794baeb32
+  input_closure_sha256: d39c2274926860c42f2cab921de76bcd91246135391e44eeb646a7d44c371bff
+  decision_set_sha256: 9e427d2eb35f5fa557f5e869f127684a0975eb1fb66d17c049197ece0c9b1103
+  decision_count: 7
+  verified_disposition_count: 7
+  unverified_disposition_count: 1123
   verified_candidate_ids:
   - XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
   - XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92
   - XLF-CAND-CORE-SCHEMATRON-100732DB0BBED389
   - XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF
   - XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E
+  - XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73
   - XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90
   accepted_obligation_candidate_ids:
+    SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001:
+    - XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73
     SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001:
     - XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90
     SAL-XLIFF-CORE-HIERARCHY-UNIT-CHILDREN-001:
@@ -1348,4 +1382,4 @@ adjudication_input:
     SAL-XLIFF-CORE-REFERENCE-SKELETON-HREF-001:
     - XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92
     - XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E
-denominator_input_sha256: 264e0092b27789dca60e210233f99088ee90c7e747c0765cf9c99286a5b4783f
+denominator_input_sha256: 86a4f2cdc6e4a341eba2a3cbb6fcc8119883d1cda64d056198c7c34b7fa880b7

@@ -28,7 +28,7 @@ try:
 except ModuleNotFoundError:
     # Direct script execution places tools/spec, rather than the repository
     # root, on sys.path.  The sibling import preserves the CLI entry point.
-    import xliff_core_candidate_binding as _candidate_binding  # type: ignore[no-redef,import-not-found]
+    import xliff_core_candidate_binding as _candidate_binding  # type: ignore[no-redef]
 
 try:
     from tools.spec import (
@@ -1490,6 +1490,7 @@ def _default_core_obligation_expectations() -> list[dict[str, Any]]:
                         ["xliff_2.1"]
                         if obligation_id
                         in {
+                            "SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001",
                             "SAL-XLIFF-CORE-INLINE-PAIRING-001",
                             "SAL-XLIFF-CORE-SECURITY-URI-RISK-001",
                         }
@@ -3712,6 +3713,12 @@ def _default_core_obligation_seeds(
     batch_five_unit_children_candidate_ids = {
         "XLF-CAND-CORE-SCHEMATRON-100732DB0BBED389"
     }
+    batch_five_source_language_id = (
+        "SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001"
+    )
+    batch_five_source_language_candidate_ids = {
+        "XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73"
+    }
     seeds.append(
         {
             "obligation_id": batch_five_target_language_id,
@@ -3881,6 +3888,56 @@ def _default_core_obligation_seeds(
             ),
         }
     )
+    seeds.append(
+        {
+            "obligation_id": batch_five_source_language_id,
+            "obligation_basis": "XLIFF_SPECIFICATION",
+            "introduced_in_batch": "XLF-04-BATCH-005",
+            "stable_profiles": ["xliff_2.1"],
+            "owner": "core:document",
+            "category": "document_structure",
+            "normalized_rule": (
+                "Require an explicit or inherited source xml:lang value to "
+                "be compatible with the srcLang attribute of the enclosing "
+                "XLIFF document."
+            ),
+            "requirement_class": "SEMANTIC_CONSTRAINT",
+            "normative_level": "MUST",
+            "authority_locations": locations(
+                "source",
+                "explicit or inherited value of the optional xml:lang",
+                profiles=("xliff_2.1",),
+            ),
+            "adjudication_candidate_ids": sorted(
+                batch_five_source_language_candidate_ids
+            ),
+            "evidence_requirements": {
+                "positive": [
+                    "accept a source whose explicit xml:lang equals srcLang",
+                    "accept a source whose explicit xml:lang is a more-specific "
+                    "subcategory of srcLang",
+                    "apply the inherited srcLang value when source xml:lang is "
+                    "omitted",
+                ],
+                "rejection": [
+                    "reject an explicit source xml:lang that is incompatible "
+                    "with root srcLang"
+                ],
+            },
+            "interpretation_note": (
+                "Independent adjudication XLF-ADJ-CORE-SCHEMATRON-0007 "
+                "binds the exact XLIFF 2.1 F4S report to verified fact "
+                "SAL-XLIFF-39A807E74F92A266. The same normative source "
+                "constraint is independently located and hashed in the "
+                "XLIFF 2.1 prose authority; the Schematron corroborates the "
+                "explicit-value compatibility rule and its more-specific "
+                "language-tag exception. XLIFF 2.0 has no equivalent source "
+                "constraint and is intentionally excluded. It does not "
+                "establish source cardinality, generic validator behavior, "
+                "or the separate omitted-value inheritance mechanism."
+            ),
+        }
+    )
     if not re.fullmatch(r"XLF-04-BATCH-[0-9]{3}", through_batch):
         raise ExtractionError(
             f"invalid default Core through_batch: {through_batch}"
@@ -3976,6 +4033,25 @@ def _default_core_obligation_seeds(
             raise ExtractionError(
                 "XLF-04-BATCH-005 requires the exact Schematron candidate "
                 f"for {batch_five_unit_children_id}"
+            )
+    if maximum_sequence >= 5 and batch_five_source_language_id in verified_ids:
+        accepted_candidates = (
+            adjudication_evidence or {}
+        ).get("accepted_obligation_candidate_ids", {})
+        source_language_candidates = (
+            accepted_candidates.get(batch_five_source_language_id, [])
+            if isinstance(accepted_candidates, Mapping)
+            else []
+        )
+        if not isinstance(source_language_candidates, Sequence) or isinstance(
+            source_language_candidates,
+            (str, bytes),
+        ) or not batch_five_source_language_candidate_ids <= set(
+            map(str, source_language_candidates)
+        ):
+            raise ExtractionError(
+                "XLF-04-BATCH-005 requires the exact Schematron candidate "
+                f"for {batch_five_source_language_id}"
             )
     return [
         seed

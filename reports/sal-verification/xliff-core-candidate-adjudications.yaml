@@ -5,18 +5,18 @@ visibility: generated
 publish_allowed: false
 generated_by: codex
 format_id: xliff
-candidate_census_sha256: 24c1902b6387cc9fa3402f78392ba91c6e6656407719ec11cfaab1c4f3d22b9e
-denominator_sha256: 264e0092b27789dca60e210233f99088ee90c7e747c0765cf9c99286a5b4783f
-sal_store_sha256: a9ba1ddcb109ab17a7f7a954891e929cf8c90db5c21b589b9f846cedd15850e8
-sal_manifest_sha256: e590c75a2fb815873b3260b841084c75ac8b6f2b6de17628bd71557fa88a12db
-sal_receipt_sha256: 9eccaa7f7327fb6f05439a6630986f15e7699739fcc0a08c60cca190219b1b34
+candidate_census_sha256: 9f10464e14c55a36ee1e54a5d12d04e8e23f19d2cb94d7c0c732cb40861db4b7
+denominator_sha256: 86a4f2cdc6e4a341eba2a3cbb6fcc8119883d1cda64d056198c7c34b7fa880b7
+sal_store_sha256: f81ad26d1497c13b3b434c57d20ffc94f564c39fee3fa540a87267499689fb3e
+sal_manifest_sha256: 368286fbb6a6ddc62b8371b40e164f5657878ec13f7330f6dca98b54ae2355f5
+sal_receipt_sha256: ee66b8e14471d35d205e9e1665f10880fe65d0bcaf299554aff53fbdd1aaca09
 adjudicator_sha256: 240ca789f93c81e94f32852399ce7ae225377516ee46dbfe2e568347ae00db05
 candidate_census_artifact_id: FF6-XLIFF-CORE-AUTHORITY-CANDIDATE-CENSUS
 denominator_artifact_id: FF6-XLIFF-CORE-OBLIGATION-DENOMINATOR
 candidate_count: 1130
-decision_count: 6
-verified_disposition_count: 6
-unverified_disposition_count: 1124
+decision_count: 7
+verified_disposition_count: 7
+unverified_disposition_count: 1123
 disposition_verification_complete: false
 verified_candidate_ids:
 - XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
@@ -24,8 +24,11 @@ verified_candidate_ids:
 - XLF-CAND-CORE-SCHEMATRON-100732DB0BBED389
 - XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF
 - XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E
+- XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73
 - XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90
 accepted_obligation_candidate_ids:
+  SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001:
+  - XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73
   SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001:
   - XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90
   SAL-XLIFF-CORE-HIERARCHY-UNIT-CHILDREN-001:
@@ -247,6 +250,58 @@ decisions:
     reason: The skeleton context identifies the element whose content and href are constrained; it establishes
       no parent-child placement or cardinality rule.
   decision_sha256: 513cf8e6a882e8c1d903a1672a7cbfa610f39159d766b1d5d1ae1ac90794883e
+- decision_id: XLF-ADJ-CORE-SCHEMATRON-0007
+  candidate_id: XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73
+  candidate_content_sha256: fc6bfe29b9efb1589d19e9f040ca0901bcdd8db4fe0a327760cd043257e41062
+  proposal_sha256: e147498411f71cfe08cdd6dc9df444fe00c4621a7c9292814ed3950c6f7dc19b
+  proposed_obligation_ids:
+  - SAL-XLIFF-CORE-AGENT-VALIDATOR-001
+  - SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001
+  - SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001
+  - SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001
+  - SAL-XLIFF-CORE-SOURCE-REQUIRED-001
+  authority_occurrences:
+  - profile: xliff_2.1
+    source_id: SRC-XLF-002
+    source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    member: schemas/xliff_core_2.1.sch
+    member_sha256: d4275f2d2574f892624bcd8f83bcc3001c75d623e4eb36896d15d147f16ed7a2
+    location: schematron/rule[13]/report[1]
+    occurrence_sha256: 0102e918c34b6b8147324a33411e35b93d03740b2c1eb4a283e90c00bf3fb7ea
+  accepted_obligation_ids:
+  - SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001
+  unproposed_accepted_obligation_ids: []
+  rejected_obligations:
+  - obligation_id: SAL-XLIFF-CORE-AGENT-VALIDATOR-001
+    reason_code: DOWNSTREAM_CAPABILITY_NOT_DIRECT_SEMANTIC_OWNER
+    reason: A conforming validator enforces this report, but the report directly establishes source-language
+      compatibility with the document srcLang.
+  - obligation_id: SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001
+    reason_code: INCIDENTAL_XPATH_CONTEXT_TOKEN
+    reason: The ignorable parent limits applicability and does not establish an independent hierarchy
+      rule.
+  - obligation_id: SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001
+    reason_code: INCIDENTAL_XPATH_CONTEXT_TOKEN
+    reason: The segment parent limits applicability and does not establish an independent hierarchy rule.
+  - obligation_id: SAL-XLIFF-CORE-SOURCE-REQUIRED-001
+    reason_code: TRIGGER_DOES_NOT_ESTABLISH_CARDINALITY
+    reason: The report applies when a source element with xml:lang exists; it does not establish source
+      presence or cardinality.
+  sal_proofs:
+  - fact_id: SAL-XLIFF-39A807E74F92A266
+    claim_sha256: a7d4a7247223b6b325e66aef2f3c4afbfd345085bfb91be57430951fff1486ca
+    fact_proof_sha256: 2db27ac01f5b31faf2041066663ef76826582c0963b29c8388f86a164ecd0d46
+  authority_reason: The exact XLIFF 2.1 Core Schematron report checks source xml:lang against root srcLang,
+    and the XLIFF 2.1 Core prose requires the explicit or inherited source language to match srcLang.
+    The parent names are applicability context, source presence is only a trigger, generic validation
+    is downstream, and omitted-value inheritance is a separate obligation.
+  outcome: VERIFIED_AUTHORITY_DISPOSITION
+  unproposed_rejected_obligations:
+  - obligation_id: SAL-XLIFF-CORE-LANGUAGE-SOURCE-001
+    reason_code: EXPLICIT_MATCH_DOES_NOT_ESTABLISH_INHERITANCE
+    reason: The report checks an explicit source xml:lang value. It does not establish how an omitted
+      value inherits from the enclosing srcLang.
+  decision_sha256: 636d2524c6b9d7ccd5b71a248924d1a4be2778c4e7cd321ad81caa00f4ee13d0
 - decision_id: XLF-ADJ-CORE-SCHEMATRON-0001
   candidate_id: XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90
   candidate_content_sha256: 844d0783d2fb5956ef51413c3811015848987cdb13414d5d04e819c6200c02f6
@@ -299,5 +354,5 @@ decisions:
 status: PARTIAL_VERIFIED
 truth_boundary: Only listed content-addressed decisions are verified. Generated candidate proposals remain
   non-promoting, and this partial artifact does not complete XLF-04.
-input_closure_sha256: 66db924b158ca0a85d770c327616185ca35b7b7f21e898056cee5c62972b4219
-decision_set_sha256: 53426b6d88a30c33daa53b24bb125e67366b75605588de6f270088b39e66fa07
+input_closure_sha256: d39c2274926860c42f2cab921de76bcd91246135391e44eeb646a7d44c371bff
+decision_set_sha256: 9e427d2eb35f5fa557f5e869f127684a0975eb1fb66d17c049197ece0c9b1103

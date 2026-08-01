@@ -61,6 +61,12 @@ SKELETON_HIERARCHY_ID = "SAL-XLIFF-CORE-HIERARCHY-SKELETON-001"
 UNIT_CHILDREN_CANDIDATE_ID = "XLF-CAND-CORE-SCHEMATRON-100732DB0BBED389"
 UNIT_CHILDREN_ID = "SAL-XLIFF-CORE-HIERARCHY-UNIT-CHILDREN-001"
 UNIT_SEGMENT_ID = "SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001"
+SOURCE_LANGUAGE_CANDIDATE_ID = (
+    "XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73"
+)
+SOURCE_LANGUAGE_ID = "SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001"
+SOURCE_REQUIRED_ID = "SAL-XLIFF-CORE-SOURCE-REQUIRED-001"
+LANGUAGE_SOURCE_ID = "SAL-XLIFF-CORE-LANGUAGE-SOURCE-001"
 REJECTED_PROPOSAL_IDS = {
     "SAL-XLIFF-CORE-AGENT-VALIDATOR-001":
         "DOWNSTREAM_CAPABILITY_NOT_DIRECT_SEMANTIC_OWNER",
@@ -101,6 +107,10 @@ def _load_yaml(path: Path) -> dict[str, Any]:
 
 def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _canonical_decision_count() -> int:
+    return len(_load_yaml(DECISIONS_PATH)["decisions"])
 
 
 def _sal_inputs() -> tuple[dict[str, Any], dict[str, Any], str, str]:
@@ -361,10 +371,11 @@ def test_subflow_pair_adjudication_requires_both_reciprocal_decisions() -> None:
             SUBFLOW_PAIR_RECIPROCAL_CANDIDATE_ID,
         ]
     )
-    assert evidence["decision_count"] == 6
-    assert evidence["verified_disposition_count"] == 6
+    decision_count = _canonical_decision_count()
+    assert evidence["decision_count"] == decision_count
+    assert evidence["verified_disposition_count"] == decision_count
     assert evidence["unverified_disposition_count"] == (
-        census["candidate_count"] - 6
+        census["candidate_count"] - decision_count
     )
 
 
@@ -462,6 +473,142 @@ def _unit_children_decision() -> dict[str, Any]:
     }
 
 
+def _source_language_decision() -> dict[str, Any]:
+    return {
+        "decision_id": "XLF-ADJ-CORE-SCHEMATRON-0007",
+        "candidate_id": SOURCE_LANGUAGE_CANDIDATE_ID,
+        "accepted_obligation_ids": [SOURCE_LANGUAGE_ID],
+        "rejected_obligations": [
+            {
+                "obligation_id": "SAL-XLIFF-CORE-AGENT-VALIDATOR-001",
+                "reason_code": (
+                    "DOWNSTREAM_CAPABILITY_NOT_DIRECT_SEMANTIC_OWNER"
+                ),
+                "reason": (
+                    "A conforming validator enforces this report, but the "
+                    "report directly establishes source-language "
+                    "compatibility with the document srcLang."
+                ),
+            },
+            {
+                "obligation_id": "SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001",
+                "reason_code": "INCIDENTAL_XPATH_CONTEXT_TOKEN",
+                "reason": (
+                    "The ignorable parent limits applicability and does not "
+                    "establish an independent hierarchy rule."
+                ),
+            },
+            {
+                "obligation_id": "SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001",
+                "reason_code": "INCIDENTAL_XPATH_CONTEXT_TOKEN",
+                "reason": (
+                    "The segment parent limits applicability and does not "
+                    "establish an independent hierarchy rule."
+                ),
+            },
+            {
+                "obligation_id": SOURCE_REQUIRED_ID,
+                "reason_code": "TRIGGER_DOES_NOT_ESTABLISH_CARDINALITY",
+                "reason": (
+                    "The report applies when a source element with xml:lang "
+                    "exists; it does not establish source presence or "
+                    "cardinality."
+                ),
+            },
+        ],
+        "unproposed_rejected_obligations": [
+            {
+                "obligation_id": LANGUAGE_SOURCE_ID,
+                "reason_code": (
+                    "EXPLICIT_MATCH_DOES_NOT_ESTABLISH_INHERITANCE"
+                ),
+                "reason": (
+                    "The report checks an explicit source xml:lang value. It "
+                    "does not establish how an omitted value inherits from "
+                    "the enclosing srcLang."
+                ),
+            }
+        ],
+        "sal_fact_ids": ["SAL-XLIFF-39A807E74F92A266"],
+        "authority_reason": (
+            "The exact XLIFF 2.1 Core Schematron report checks source "
+            "xml:lang against root srcLang, and the XLIFF 2.1 Core prose "
+            "requires the explicit or inherited source language to match "
+            "srcLang. The parent names are applicability context, source "
+            "presence is only a trigger, generic validation is downstream, "
+            "and omitted-value inheritance is a separate obligation."
+        ),
+    }
+
+
+def test_source_language_adjudicates_only_document_compatibility_owner() -> None:
+    module = _load_module()
+    census = _load_yaml(CENSUS_PATH)
+    candidate = next(
+        row
+        for row in census["candidates"]
+        if row["candidate_id"] == SOURCE_LANGUAGE_CANDIDATE_ID
+    )
+
+    assert candidate["candidate_content_sha256"] == (
+        "fc6bfe29b9efb1589d19e9f040ca0901bcdd8db4fe0a327760cd043257e41062"
+    )
+    occurrence = candidate["occurrences"][0]
+    assert occurrence["requirement_sha256"] == (
+        "4d6ff61b0af6ae593955517ebde43ac5bba05e48440a601f05fa91d54df6e464"
+    )
+    assert occurrence["occurrence_sha256"] == (
+        "0102e918c34b6b8147324a33411e35b93d03740b2c1eb4a283e90c00bf3fb7ea"
+    )
+    assert json.loads(occurrence["normalized_requirement"]) == {
+        "context": (
+            "xlf:source[@xml:lang][parent::xlf:segment | "
+            "parent::xlf:ignorable]"
+        ),
+        "kind": "report",
+        "message": (
+            "'xml:lang' attribute of the 'source' element and 'srcLang' "
+            "attribute of the 'xliff' are not matching."
+        ),
+        "test": "not(lang($srcLang))",
+    }
+    assert set(candidate["disposition"]["obligation_ids"]) == {
+        "SAL-XLIFF-CORE-AGENT-VALIDATOR-001",
+        SOURCE_LANGUAGE_ID,
+        "SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001",
+        "SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001",
+        SOURCE_REQUIRED_ID,
+    }
+
+    decision_source = _load_yaml(DECISIONS_PATH)
+    canonical_decisions = [
+        row
+        for row in decision_source["decisions"]
+        if row["candidate_id"] == SOURCE_LANGUAGE_CANDIDATE_ID
+    ]
+    assert canonical_decisions == [_source_language_decision()]
+
+    accepted, evidence = module.validated_obligation_ids_from_paths(
+        adjudications_path=ADJUDICATION_PATH,
+        candidate_census_path=CENSUS_PATH,
+        denominator_path=DENOMINATOR_PATH,
+        sal_store_path=SAL_STORE_PATH,
+        sal_manifest_path=SAL_MANIFEST_PATH,
+        sal_receipt_path=SAL_RECEIPT_PATH,
+    )
+    assert SOURCE_LANGUAGE_ID in accepted
+    assert SOURCE_REQUIRED_ID not in accepted
+    assert LANGUAGE_SOURCE_ID not in accepted
+    assert evidence["accepted_obligation_candidate_ids"][SOURCE_LANGUAGE_ID] == [
+        SOURCE_LANGUAGE_CANDIDATE_ID
+    ]
+    assert evidence["decision_count"] == 7
+    assert evidence["verified_disposition_count"] == 7
+    assert evidence["unverified_disposition_count"] == (
+        census["candidate_count"] - 7
+    )
+
+
 def test_unit_segment_minimum_adjudicates_only_parent_cardinality_owner() -> None:
     module = _load_module()
     census = _load_yaml(CENSUS_PATH)
@@ -514,10 +661,11 @@ def test_unit_segment_minimum_adjudicates_only_parent_cardinality_owner() -> Non
     assert evidence["accepted_obligation_candidate_ids"][UNIT_CHILDREN_ID] == [
         UNIT_CHILDREN_CANDIDATE_ID
     ]
-    assert evidence["decision_count"] == 6
-    assert evidence["verified_disposition_count"] == 6
+    decision_count = _canonical_decision_count()
+    assert evidence["decision_count"] == decision_count
+    assert evidence["verified_disposition_count"] == decision_count
     assert evidence["unverified_disposition_count"] == (
-        census["candidate_count"] - 6
+        census["candidate_count"] - decision_count
     )
 
 
@@ -603,10 +751,11 @@ def test_skeleton_href_adjudication_records_incidental_unproposed_owner() -> Non
     ] == sorted(
         [SKELETON_CANDIDATE_ID, SKELETON_RECIPROCAL_CANDIDATE_ID]
     )
-    assert evidence["decision_count"] == 6
-    assert evidence["verified_disposition_count"] == 6
+    decision_count = _canonical_decision_count()
+    assert evidence["decision_count"] == decision_count
+    assert evidence["verified_disposition_count"] == decision_count
     assert evidence["unverified_disposition_count"] == (
-        census["candidate_count"] - 6
+        census["candidate_count"] - decision_count
     )
 
 
@@ -723,10 +872,11 @@ def test_skeleton_href_obligation_requires_both_reciprocal_reports() -> None:
     ] == sorted(
         [SKELETON_CANDIDATE_ID, SKELETON_RECIPROCAL_CANDIDATE_ID]
     )
-    assert evidence["decision_count"] == 6
-    assert evidence["verified_disposition_count"] == 6
+    decision_count = _canonical_decision_count()
+    assert evidence["decision_count"] == decision_count
+    assert evidence["verified_disposition_count"] == decision_count
     assert evidence["unverified_disposition_count"] == (
-        census["candidate_count"] - 6
+        census["candidate_count"] - decision_count
     )
 
 
