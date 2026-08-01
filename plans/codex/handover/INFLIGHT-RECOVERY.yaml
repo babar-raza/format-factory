@@ -1,5 +1,5 @@
-schema: ff6/inflight-recovery@8
-artifact_id: FF6-RECOVERY-EVENT-35-WITH-NONPROMOTING-REPLAY-ATTEMPT
+schema: ff6/inflight-recovery@9
+artifact_id: FF6-RECOVERY-809CC18
 visibility: internal
 publish_allowed: false
 generated_by: codex
@@ -9,57 +9,36 @@ event:
   event_hash: 2866d7e70bd193f8aa7b60ca1f92f4f842d1cd470f97984c07f47d88ed2ea97d
   implementation_commit: 591fcfe18808e5195c33570eaa9d334770e90166
   accepted_xliff_implementation_commit: 591fcfe18808e5195c33570eaa9d334770e90166
-  checkpoint_commit: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
+  checkpoint_commit: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
 captured_workspace:
   product_overlay_status: NO_UNCOMMITTED_XLIFF_OVERLAY
-  foreign_dirty_paths_at_capture: 0
+  handover_overlay_status: PACKET_REFRESH_IN_PROGRESS_UNTIL_HANDOVER_COMMIT
   unexplained_paths: 0
   local_only_required_for_resume: false
   recovery_archive_required: false
   provider_identity_transferable: false
   lease_transferable: false
   execution_manifest_transferable: false
-  prior_xliff_occurrence_resolution:
-    status: GOVERNED_TAKEOVER_REPLAY_COMMIT_PUSH_COMPLETE
-    implementation_commit: 591fcfe18808e5195c33570eaa9d334770e90166
-    paths_accounted_for: 7
-    predecessor_rows_unchanged: 27
-  reciprocal_attempt:
+  reciprocal_semantics:
     commit: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
-    local_overlay_required: false
-    shared_worktree_result: PASS
-    clean_detached_windows_result: 5_FAILED_66_PASSED
-    promotion: REJECTED_PENDING_REPLAY_REPAIR
-    root_cause: TRACKED_TEXT_EOL_POLICY_AND_RAW_HASH_MODEL_DISAGREE
-    exact_repair: XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001
-  latest_completed_foreign_shift:
-    provider_identity: agent-codex-20260730T061956-bac083
-    task: TC-FF6-UBL-TYPING-001
-    observed_lease: lease-18af1b6c29
-    committed_implementation: d8c106800d3331b29d8078b326e75b0e05d8c232
-    committed_checkpoint: ae31baed8bfeb8a35c4ece8e52283114ee48d860
-    completed_microstep: UBL-03-PARTIAL-005-DERIVATION-AND-INHERITANCE-EDGES
-    next_microstep: UBL-03-PARTIAL-006-ATTRIBUTES-AND-ATTRIBUTE-GROUPS
-    state: COMPLETED_CLEAN_AFTER_COMMITTED_PARTIAL_005_NON_PROMOTING
-    required_handling: >-
-      Register a fresh provider identity, re-query coordination, and replay
-      d8c10680 plus ae31baed from GitLab before entering partial-006. Preserve
-      any newly observed foreign-owned bytes; never stage, restore, stash,
-      reset, clean, or take them over without the governed protocol.
+    status: VERIFIED_BY_CHECKOUT_IDENTITY_REPAIR
+  checkout_identity_repair:
+    commit: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
+    pushed_to_gitlab_main: true
+    immutable_replay: PASS
+    native_event_appended: false
+    pending_action: XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001
   promotion_effect: none
 reconstruction:
   source: GitLab origin/main
-  required_ancestor: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
-  command: >-
-    git fetch origin main --prune; git switch main; git pull --ff-only origin main
-  validation: >-
-    .venv\Scripts\python.exe plans\codex\handover\validate_handover.py
-    --require-clean --self-test
+  required_ancestor: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
+  command: git fetch origin main --prune; git switch main; git pull --ff-only origin main
+  validation: .venv\Scripts\python.exe plans\codex\handover\validate_handover.py --require-clean --self-test
+  local_files_required: []
 failure_policy:
-  documented_replay_failure: preserve Event 35 accepted boundary and execute CLEAN-REPLAY-REPAIR.md; do not refresh local receipts
-  newer_valid_event: recompute packet from newer canonical event
-  dirty_leased_path: preserve and coordinate; never clean or restore
-  foreign_live_path: preserve, re-query coordination, and continue only disjoint work
+  newer_valid_event: recompute packet from newer canonical event; never reset GitLab
+  dirty_leased_path: preserve and coordinate; never clean, restore, stash, or stage
   unexplained_dirty_path: preserve, attribute, and fail transfer
+  materialized_accepted_mismatch: preserve Event 35 and execute the bounded plan-control acceptance transaction
   missing_remote_commit: stop promotion and verify GitLab remote state
   validator_failure: repair evidence or packet; never weaken the invariant

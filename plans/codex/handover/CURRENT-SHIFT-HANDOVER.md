@@ -1,173 +1,104 @@
 ---
-artifact_id: FF6-SHIFT-HANDOVER-EVENT-35
+artifact_id: FF6-SHIFT-HANDOVER-809CC18
 visibility: internal
 publish_allowed: false
 generated_by: codex
 generated_at: 2026-08-01
 ---
 
-# Outgoing shift record
+# Outgoing Codex shift: verified checkpoint for Claude
 
-## 2026-08-01 reciprocal attempt and replay rejection
+## Work completed this shift
 
-The latest Codex shift implemented Event 35's requested reciprocal skeleton
-candidate and pushed it to GitLab `main` as `2dcb161e`. Shared-worktree proof
-passed: 71 affected tests, 43 production-program tests, 94 format-contract
-tests with the named stateful deselection, three identical generations,
-predecessor preservation, static checks, SAL verification, and five authority
-matches.
+The shift began from semantic attempt `2dcb161e`, which passed in the shared
+worktree but failed five affected tests in a clean Windows checkout. The work
+did not accept the stale local proof or weaken hashes. It traced the failure
+through the complete proof input closure, established a checkout-byte policy,
+added adversarial regression controls, regenerated only invalidated current
+descendants, and independently replayed the actual commit.
 
-Promotion was then rejected. A clean detached Windows checkout of the exact
-commit produced 5 failures and 66 passes because tracked proof-bearing YAML and
-JSON were materialized with CRLF while receipts bind LF raw hashes. No Event 36
-was appended; Event 35 remains the last accepted native state and 4/1,130
-dispositions remain accepted. The exact continuation is
-`XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001`, not a second semantic
-implementation. See [CLEAN-REPLAY-REPAIR.md](CLEAN-REPLAY-REPAIR.md).
+The durable repair is GitLab main commit
+`809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956`. It contains:
 
-## Event 35 XLIFF checkpoint
+- explicit LF policy for proof/source text and binary treatment for
+  byte-sensitive samples/fixtures;
+- a registered `proof-checkout-identity-repair` production skill;
+- 44 checkout-identity tests;
+- corrected LF identity for the XLIFF evidence manifest and verifier closure;
+- refreshed current SAL proof, receipt, adjudication, and inventory;
+- zero-warning governance/skill transcripts.
 
-The outgoing Codex shift safely took over the seven inherited XLIFF paths,
-independently replayed their claims, corrected the implementation where the
-replay exposed missing denominator accountability, and pushed the bounded
-implementation to GitLab `main` as
-`591fcfe18808e5195c33570eaa9d334770e90166`. No inherited byte was discarded.
+No XLIFF product source, authority fact, semantic adjudication, obligation ID,
+gate, promotion, certification, or release state was changed by the repair.
 
-The accepted microstep is `XLF-04-BATCH-005-PARTIAL-002-C`. It:
+## Evidence actually observed
 
-- binds candidate `XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92` by distinct
-  content, normalized-requirement, and occurrence digests;
-- accepts only `SAL-XLIFF-CORE-REFERENCE-SKELETON-HREF-001`;
-- rejects the generated generic-validator mapping and explicitly rejects the
-  materially implicated broader hierarchy owner as incidental;
-- independently locates the same biconditional rule in both pinned stable
-  prose authorities;
-- preserves all 27 predecessor rows and all 1,130 candidate identities.
+At exact commit `809cc18c` in a clean Windows/autocrlf worktree:
 
-The genuine pre-change replay failed at the intended
-`unproposed_rejected_obligations` and content-addressed-adjudication
-boundaries. After repair, 6 focused skeleton tests, 69 affected tool tests, 94
-format-contract tests with one exact known CSV deselection, 69
-production-program tests, Ruff, strict Mypy, Pyright 1.1.411, bytecode
-compilation, five authority matches, SAL validation, three deterministic
-generations, and three zero-warning implementation transcripts passed.
+- 115 repair/affected tests passed;
+- 69 production-program tests passed;
+- 94 format-contract tests passed with exactly the known stateful
+  `test_full_slice_second_run_is_idempotent` deselected;
+- three clean regenerations were byte-identical;
+- five XLIFF authority records matched;
+- SAL apply/check produced no diff;
+- Ruff, strict Mypy, Pyright 1.1.411, and bytecode compilation passed;
+- GitLab `HEAD == origin/main == 809cc18c` after push.
 
-`FF6-EVENT-000035` records the honest boundary: 28/105 Core obligations, 77 missing,
-4/1,130 dispositions verified, 1,126 open, XLF-04 incomplete, and 0/6 products
-certified. The exact next microstep is
-`XLF-04-BATCH-005-PARTIAL-002-D` for reciprocal candidate
-`XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E`.
+This is strong proof for the bounded repair. It is not product certification.
 
-The Event 35 control-plane checkpoint is GitLab commit `414897ac`. During the
-handover refresh, a different agent completed UBL partial-005, committed the
-1,178-edge derivation graph as `d8c10680`, and checkpointed its taskcard as
-`ae31baed`. It then completed its coordination session with a clean shared
-tree. Its work was not modified, staged, or claimed by this shift. The next
-shift must still register a fresh identity, re-query coordination, and replay
-both commits before entering UBL partial-006.
+## Exact state left for the next provider
 
-## Historical Event 34 UBL checkpoint
+Native controller head remains `FF6-EVENT-000035` /
+`2866d7e70bd193f8aa7b60ca1f92f4f842d1cd470f97984c07f47d88ed2ea97d`.
+No Event 36 was appended because implementation/repair proof and controller
+acceptance are separate transactions.
 
-The prior Codex shift revalidated GitLab main and the complete native event
-chain, preserved all seven in-flight XLIFF paths, attempted the governed
-XLIFF takeover, and correctly stopped that overlapping mutation because the
-lease remained `ACTIVE`. It then took the documented disjoint UBL lane.
+Accepted Event 35 state is 4 verified and 1,126 open candidate dispositions.
+Materialized files at `809cc18c` contain 5 verified and 1,125 open. Both retain
+105 expected obligations, 28 resolved, 77 missing, and `complete=false`.
 
-The shift implemented a segregated anonymous-type graph compiler under three
-RED-GREEN cycles. Anonymous simple and complex type identities derive from
-the authority member, exact sibling-kind-indexed schema path, and type kind;
-declaration ownership is separate from enclosing-type ownership. Invalid
-explicit-plus-anonymous and multiple-anonymous declarations fail closed.
-The pinned UBL 2.3 package contains zero anonymous type nodes and edges, so
-the implementation is verified with adversarial synthetic schemas rather
-than pretending the official package exercises it.
+Therefore the exact next task is
+`XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001` in state
+`VERIFIED_PENDING_CONTROLLER_ACCEPTANCE`. Claude must use `plan-control` to
+append one Event 36, update accepted projections, derive the next candidate
+from live data, refresh this handover, and stop at another clean checkpoint.
+Claude must not redo the semantic or checkout repair.
 
-The bounded implementation is GitLab commit
-`8e61ee11e7598b22093d397f4006d4f189b681d4`. Twenty-eight focused tests,
-69 production-program regressions, Ruff, strict Mypy, Pyright 1.1.411,
-py_compile, and three identical authority-package runs pass. Root graph
-`7b754187...`, reference closure `2e43a3e8...`, and particle graph
-`49b0c1ba...` remain unchanged; the anonymous-type graph is `666634cb...`.
-The result is serialized as `FF6-EVENT-000034` /
-`7cab150d9d49deeba140c6a0ce56e619ae560f8b0abc7510e555ca54d6f307da`.
+## Six-product truth
 
-One broad format-contract regression was initially run in the shared
-worktree and exercised a known stateful CSV test that changed three report
-files. The registered rollback-and-recovery skill verified their HEAD blobs
-and applied only the exact reverse diff to those three paths. All three are
-clean again; the XLIFF and UBL paths were unchanged. The tracked rollback
-transcript is
-`reports/skills-rff6/skill-transcripts/rollback-and-recovery-ubl-regression-csv-side-effect-001.json`.
-Future broad stateful regressions must run in a disposable detached worktree.
+- 0/6 products are technically certified and all promotions are `UNASSESSED`.
+- OpenRaster product source is absent.
+- IPYNB, NRRD, XLIFF, SafeTensors, and UBL contain useful but incomplete
+  pre-production code.
+- XLIFF contract work is incomplete at XLF-04.
+- UBL schema graph work is partial through derivation edges; UBL-03 remains
+  incomplete.
+- No package has the full independent corpus/oracle, security/resource,
+  fuzz/mutation, installed-wheel OS/Python matrix, reproducible package,
+  SBOM/provenance/signature, and release proof required by the mission.
 
-UBL-03 was still incomplete. The then-next disjoint UBL step was
-`UBL-03-PARTIAL-005-DERIVATION-AND-INHERITANCE-EDGES`. XLIFF remained the
-canonical controller task at `XLF-04-BATCH-005-PARTIAL-002-C`. Event 35
-supersedes that routing boundary.
+## Shift interchange protocol
 
-The shared worktree then contained seven stable, hash-recorded XLIFF occurrence
-paths from absent agent `agent-codex-20260730T035429-0cf739`. They were later
-governed-taken-over, independently replayed, committed, and pushed at
-`591fcfe1`; this historical restriction no longer routes current work.
+The next agent reconstructs only from GitLab, the native journal/controller,
+taskcards, proof artifacts, and this content-addressed packet. Provider-local
+identity, leases, manifests, authorizations, temp worktrees, and chat memory
+are intentionally non-transferable. A provider ending a shift must leave one
+immutable pushed commit, one validated packet, no unexplained local overlay,
+and only an evidence-derived exact next task.
 
-## Event 32 accepted XLIFF boundary
+The outgoing identity is not authority and must not be reused. Freshly query
+coordination because other stale/live records are machine-local and may change
+after this packet is committed.
 
-The outgoing Codex shift recovered the Event 31 rejected XLIFF attempt,
-implemented the hardened repair, committed it as `ff8f7d9f`, pushed it to
-GitLab `main`, and recorded the verified result in native
-`FF6-EVENT-000032` at control
-commit `530f18fe`.
+## Risks and limits
 
-The repair:
-
-- separated proposal accountability from independent semantic adjudication;
-- bound both reciprocal `pc` subflow Schematron assertions in canonical SAL;
-- created one decision per candidate;
-- accepted only the XLIFF 2.1 inline-pairing obligation;
-- rejected broad `INLINE-PC`, generic validator, and incidental hierarchy
-  mappings;
-- required both decisions before compilation;
-- preserved all 26 predecessor rows.
-
-Evidence: 64 focused tests, 94 format-contract tests with one documented
-deselection, 69 production-program tests, strict static checks, three
-byte-identical generations, SAL verification, five authority matches, and
-zero-warning transcripts.
-
-The shift also independently replayed and journaled the concurrent UBL graph
-commits. They are valid partial UBL-03 progress, not completion.
-
-No product source, certification, promotion, release, gate, GitHub, or branch
-state was changed. The outgoing coordination identity and leases must not be
-reused. The next provider starts from the clean remote checkpoint and follows
-[NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml).
-That file now selects `XLF-04-BATCH-005-PARTIAL-002-D`.
-
-## Event 32 handover hardening checkpoint (historical)
-
-A later handover-only audit found and repaired two transfer-layer defects
-without advancing the native controller:
-
-- six linked protocol/reference documents still presented Event 31 routing as
-  current while the authoritative packet was Event 32;
-- `NEXT-MICROSTEP.yaml` labeled the normalized-requirement digest as the
-  candidate-content digest.
-
-The refreshed packet gives all linked protocol documents an explicit Event 32
-overlay, adds them and the UBL parallel checkpoint to the content-addressed
-manifest, and verifies the three distinct candidate, requirement, and
-occurrence digests against the canonical 1,130-candidate census. The validator
-now fails if a current linked document is outside the manifest or if those
-digest roles are substituted.
-
-At the handover-hardening observation, another registered Codex executor for
-`TC-FF6-XLIFF-PROFILE-SURFACE-001` owned in-flight changes in:
-
-- `tests/tools/test_xliff_core_candidate_adjudication.py`;
-- `tools/spec/xliff_core_candidate_adjudication.py`.
-
-Those paths are not part of this handover commit and were preserved. This is
-an observation, not transferable authority. Claude must requery coordination.
-If that scope remains live-owned, use the disjoint UBL-03 fallback; if it has
-reached a committed Event 35 or later checkpoint, rebuild the packet from the
-new journal head before doing any product work.
+- A handover packet is a derived projection; the native journal and current
+  repository evidence win if they advance.
+- The LF policy protects declared text classes, but new generators or unusual
+  byte-sensitive formats require explicit classification and regression tests.
+- The accepted/materialized split is safe only because validation checks both;
+  leaving it unresolved across later unrelated controller events would create
+  ambiguity. Event 36 is therefore the highest-priority next transaction.
+- Publication remains far away: the repair closes proof portability, not
+  format capability or release readiness.

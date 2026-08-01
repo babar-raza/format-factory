@@ -1,5 +1,5 @@
 ---
-artifact_id: FF6-ACTIVE-CHECKPOINT-EVENT-35
+artifact_id: FF6-ACTIVE-CHECKPOINT-809CC18
 visibility: internal
 publish_allowed: false
 generated_by: codex
@@ -8,66 +8,45 @@ generated_at: 2026-08-01
 
 # Active FF6 checkpoint
 
-## Achieved and immutable — `FF6-EVENT-000035`
+## Clean resumable boundary
 
-- GitLab `main` contains the accepted XLIFF skeleton checkpoint at `591fcfe1`, the UBL
-  particle implementation at `a79dad74`, the anonymous-type implementation at
-  `8e61ee11`, and native Event 35 at control commit `414897ac`.
-- XLIFF authority census: 1,130 stable candidate identities.
-- XLIFF Core denominator: 105 expected obligations.
-- Production-accepted XLIFF boundary: 28 obligations, 77 missing; 4 candidate
-  dispositions verified, 1,126 open.
-- The repaired XLIFF 2.1 reciprocal `pc` subflow constraint has two independent
-  decisions and one narrow `SAL-XLIFF-CORE-INLINE-PAIRING-001` row.
-- The first skeleton report has one independent decision, the generic
-  validator proposal is rejected, broader hierarchy context is explicitly
-  accounted for, and the same biconditional prose rule is bound in both stable
-  profiles. The reciprocal Schematron report remains open.
-- All 27 predecessor rows are unchanged.
-- Affected-tool 69, format-contract 94 (one exact known deselection), and
-  production-program 69 tests pass. Static, SAL, authority, check-mode, and
-  three-run determinism controls pass.
-- UBL commits `730c8fdf`, `bdc66bd5`, `a79dad74`, and `8e61ee11` bind 106
-  schemas, 91 roots, 297 dependency edges, 3,788 global components, and 8,926
-  reference uses with zero unresolved/ambiguous global references, plus 6,001
-  local particle nodes and edges across 468 named owners. Stable path-owned
-  anonymous simple/complex type identities and declaration validation are
-  implemented; the official package contains zero anonymous nodes, while
-  adversarial schemas prove the machinery.
-- UBL commit `d8c10680` and checkpoint `ae31baed` add 1,178 exact derivation
-  edges with identity `783506c4...`; 32 focused and 69 production-program
-  tests pass. UBL-03 remains incomplete and partial-006 is attributes and
-  attribute groups.
+- GitLab `origin/main`: `809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956`.
+- Native controller: `FF6-EVENT-000035` /
+  `2866d7e70bd193f8aa7b60ca1f92f4f842d1cd470f97984c07f47d88ed2ea97d`.
+- Accepted XLIFF implementation: `591fcfe18808e5195c33570eaa9d334770e90166`.
+- Reciprocal semantic attempt: `2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17`.
+- Verified checkout-identity repair: `809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956`.
+- Program state: `CONTRACT`; certifications: 0/6; promotions: all `UNASSESSED`.
 
-## Not achieved
+## Accepted versus materialized XLIFF state
 
-- Commit `2dcb161e` implements the reciprocal skeleton proof and passes the
-  shared-worktree gates, but it is non-promoting: a clean detached Windows
-  replay failed 5/71 affected tests because raw proof hashes change with
-  LF/CRLF checkout conversion. See
-  [CLEAN-REPLAY-REPAIR.md](CLEAN-REPLAY-REPAIR.md).
+| Boundary | Accepted Event 35 | Verified files at 809cc18c |
+|---|---:|---:|
+| candidate dispositions verified | 4 | 5 |
+| candidate dispositions open | 1,126 | 1,125 |
+| expected obligations | 105 | 105 |
+| resolved obligations | 28 | 28 |
+| missing obligations | 77 | 77 |
+| XLF-04 complete | false | false |
 
-- XLF-04 is incomplete: 77 obligation IDs and 1,126 candidate dispositions
-  remain open.
-- UBL-03 is incomplete: derivation/inheritance, attributes, facets, complete
-  group/wildcard semantics, substitutions, documentation, and the final
-  checked-in graph remain open.
-- The prior seven-path XLIFF occurrence was governed-taken-over, independently
-  replayed, committed, and pushed. A different agent completed and committed
-  UBL partial-005, checkpointed it, and then completed its coordination
-  session. Its committed result is included as verified non-promoting history;
-  any later bytes remain excluded until separately committed and replayed.
-- No library is technically certified; every promotion remains `UNASSESSED`.
-- OpenRaster still has no product package. The five existing products are
-  partial pre-production implementations, not publication candidates.
-- Cross-platform installed-wheel, complete corpus/oracle, fuzz, mutation,
-  performance, SBOM, provenance, signature, and release proof are not complete
-  for any of the six.
+The one-row difference is intentionally pending native acceptance. It must not
+be erased, double-implemented, or described as promoted.
+
+## Product portfolio truth
+
+- IPYNB, NRRD, XLIFF, SafeTensors, and UBL contain partial implementations.
+- OpenRaster product source is absent.
+- None has complete mandatory obligation proof, independent interoperability,
+  full installed-wheel matrices, or release certification.
+- UBL has verified partial schema-graph work through derivation edges, but
+  UBL-03 remains incomplete.
+- Cross-platform packaging, complete corpora/oracles, fuzzing, mutation,
+  performance, SBOM, provenance, signature, and release proof remain open.
 
 ## Exact continuation
 
-Perform `XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001` from
-[NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml). Re-query coordination first and
-read [the repair contract](CLEAN-REPLAY-REPAIR.md) before selecting a skill.
-Preserve the Event 35 accepted XLIFF boundary; keep all completion and
-promotion flags false until clean committed-checkout replay passes.
+Execute `XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001` as a bounded
+`plan-control` acceptance transaction. Append Event 36 only after replaying
+the evidence at `809cc18c`. Move accepted dispositions 4 to 5, leave
+28/105/77 and every completion/promotion flag unchanged, then derive the next
+candidate from the live unverified projection and refresh this packet.

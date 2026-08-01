@@ -65,12 +65,13 @@ EXPECTED_EVENT_HASH = (
     "2866d7e70bd193f8aa7b60ca1f92f4f842d1cd470f97984c07f47d88ed2ea97d"
 )
 EXPECTED_SEQUENCE = 35
-EXPECTED_CONTROL = "2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17"
+EXPECTED_CONTROL = "809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956"
 EXPECTED_IMPLEMENTATION = "591fcfe18808e5195c33570eaa9d334770e90166"
 EXPECTED_XLIFF_IMPLEMENTATION = "591fcfe18808e5195c33570eaa9d334770e90166"
 EXPECTED_NON_PROMOTING_ATTEMPT = (
     "2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17"
 )
+EXPECTED_REPAIR_COMMIT = "809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956"
 EXPECTED_EVENT_TASK = "TC-FF6-XLIFF-PROFILE-SURFACE-001"
 EXPECTED_TASK = "TC-FF6-XLIFF-PROFILE-SURFACE-001"
 EXPECTED_XLIFF_EVENT_ID = "FF6-EVENT-000035"
@@ -89,10 +90,10 @@ EXPECTED_OCCURRENCE_SHA256 = (
     "96949f8b0f510d573b4c95640fae3e68175b853410865eaf1460a5eaee4f332a"
 )
 EXPECTED_ADJUDICATION_SHA256 = (
-    "6d94628a2d70490493156cece2a9e146bd8b90b62f3919645e09d92d860edbd0"
+    "878c12670c5c19889259d6def1439ab106304084fee95d8257819f58879b22d2"
 )
 EXPECTED_INVENTORY_SHA256 = (
-    "0eaf2cccc0bd45670e4eb7b880dfaa6fa8e7db4b2da2e2eb8fa3670dec9b349c"
+    "76f51e51216f1b6b8fb41e24623e806bb63ad9ab15da279f16157ffe7369bf1d"
 )
 STALE_OPERATIONAL_TOKENS = (
     "FF6-EVENT-000033",
@@ -115,6 +116,7 @@ ALLOWED_DIRTY_EXACT = {
     "plans/strategic/ff6/events.jsonl",
     "taskcards/TC-FF6-UBL-TYPING-001.md",
     "taskcards/TC-FF6-HANDOVER-CLAUDE-001.md",
+    "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
     "reports/skills-rff6/skill-transcripts/plan-control-ubl-state-checkpoint-004.json",
     "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-event-35.json",
 }
@@ -312,9 +314,31 @@ def _semantic_errors(
         errors,
         "recovery non-promoting attempt",
         recovery.get("captured_workspace", {})
-        .get("reciprocal_attempt", {})
+        .get("reciprocal_semantics", {})
         .get("commit"),
         EXPECTED_NON_PROMOTING_ATTEMPT,
+    )
+    _expect(
+        errors,
+        "machine repair commit",
+        machine.get("repository", {}).get("verified_checkout_identity_repair"),
+        EXPECTED_REPAIR_COMMIT,
+    )
+    _expect(
+        errors,
+        "checkpoint repair commit",
+        checkpoint.get("source_checkpoint", {}).get(
+            "verified_checkout_identity_repair"
+        ),
+        EXPECTED_REPAIR_COMMIT,
+    )
+    _expect(
+        errors,
+        "recovery repair commit",
+        recovery.get("captured_workspace", {})
+        .get("checkout_identity_repair", {})
+        .get("commit"),
+        EXPECTED_REPAIR_COMMIT,
     )
     _expect(
         errors,
@@ -340,7 +364,7 @@ def _semantic_errors(
         next_step.get("selected_candidate", {}).get("occurrence_sha256"),
         EXPECTED_OCCURRENCE_SHA256,
     )
-    machine_candidate = machine.get("xliff", {}).get("next_candidate", {})
+    machine_candidate = machine.get("xliff", {}).get("pending_candidate", {})
     _expect(
         errors,
         "machine candidate content digest",
@@ -391,7 +415,7 @@ def _semantic_errors(
                 EXPECTED_OCCURRENCE_SHA256,
             )
     xliff = machine.get("xliff", {})
-    baseline = next_step.get("baseline", {})
+    baseline = next_step.get("accepted_baseline", {})
     event_evidence = latest.get("evidence", {})
     _expect(
         errors,
@@ -439,9 +463,24 @@ def _semantic_errors(
     )
     _expect(errors, "inventory complete", inventory.get("complete"), False)
     _expect(errors, "adjudication candidate count", adjudication.get("candidate_count"), 1130)
-    _expect(errors, "adjudication verified", adjudication.get("verified_disposition_count"), 4)
-    _expect(errors, "adjudication unverified", adjudication.get("unverified_disposition_count"), 1126)
+    _expect(errors, "adjudication verified", adjudication.get("verified_disposition_count"), 5)
+    _expect(errors, "adjudication unverified", adjudication.get("unverified_disposition_count"), 1125)
     _expect(errors, "adjudication complete", adjudication.get("disposition_verification_complete"), False)
+    materialized = next_step.get("materialized_evidence", {})
+    _expect(errors, "materialized verified", materialized.get("dispositions_verified"), 5)
+    _expect(errors, "materialized open", materialized.get("dispositions_unverified"), 1125)
+    _expect(
+        errors,
+        "materialized adjudication digest",
+        materialized.get("adjudication_sha256"),
+        EXPECTED_ADJUDICATION_SHA256,
+    )
+    _expect(
+        errors,
+        "materialized inventory digest",
+        materialized.get("inventory_sha256"),
+        EXPECTED_INVENTORY_SHA256,
+    )
 
     _expect(
         errors,
@@ -740,7 +779,7 @@ def _git_errors(
         "origin/main",
     )
     if control.returncode != 0:
-        errors.append("Event 35 source commit is not an ancestor of origin/main")
+        errors.append("verified handover checkpoint is not an ancestor of origin/main")
     ancestor = _git(
         "merge-base",
         "--is-ancestor",
@@ -884,11 +923,11 @@ def validate(*, require_clean: bool = False) -> dict[str, Any]:
     census = _load_yaml(CENSUS_PATH)
     adjudication = _load_yaml_at_ref(
         ADJUDICATION_PATH,
-        EXPECTED_IMPLEMENTATION,
+        EXPECTED_CONTROL,
     )
     inventory = _load_yaml_at_ref(
         INVENTORY_PATH,
-        EXPECTED_IMPLEMENTATION,
+        EXPECTED_CONTROL,
     )
     events = _events()
     latest = events[-1]

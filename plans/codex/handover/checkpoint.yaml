@@ -1,5 +1,5 @@
-schema: ff6/provider-neutral-checkpoint@12
-artifact_id: FF6-HANDOVER-CHECKPOINT-REPLAY-REPAIR-001
+schema: ff6/provider-neutral-checkpoint@13
+artifact_id: FF6-HANDOVER-CHECKPOINT-809CC18
 visibility: internal
 publish_allowed: false
 generated_by: codex
@@ -8,13 +8,12 @@ source_checkpoint:
   forge: GitLab
   remote: origin
   branch: main
-  repository_checkpoint: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
+  repository_checkpoint: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
   implementation_commit: 591fcfe18808e5195c33570eaa9d334770e90166
   accepted_xliff_implementation_commit: 591fcfe18808e5195c33570eaa9d334770e90166
   latest_non_promoting_xliff_attempt: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
-  packet_commit_rule: >-
-    The commit containing this packet must descend from repository_checkpoint;
-    the packet does not self-reference the hash of its own final commit.
+  verified_checkout_identity_repair: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
+  packet_commit_rule: The packet commit must descend from repository_checkpoint and never self-reference its own final hash.
 controller_checkpoint:
   controller_state: CONTRACT
   event_sequence: 35
@@ -25,14 +24,8 @@ controller_checkpoint:
   first_unmet_step: XLF-04
   completed_microstep: XLF-04-BATCH-005-PARTIAL-002-C
   exact_microstep: XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001
-rejected_xliff_attempt:
-  microstep: XLF-04-BATCH-005-PARTIAL-002-D
-  commit: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
-  shared_worktree_verification: PASS
-  clean_detached_windows_replay: 5_FAILED_66_PASSED
-  root_cause: TRACKED_TEXT_EOL_POLICY_AND_RAW_HASH_MODEL_DISAGREE
-  acceptance_effect: none
-verified_xliff_boundary:
+  exact_microstep_state: VERIFIED_PENDING_CONTROLLER_ACCEPTANCE
+accepted_xliff_boundary:
   candidates: 1130
   dispositions_verified: 4
   dispositions_unverified: 1126
@@ -40,21 +33,29 @@ verified_xliff_boundary:
   source_bound_rows: 28
   missing_source_bound_rows: 77
   complete: false
+materialized_xliff_boundary:
+  commit: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
+  dispositions_verified: 5
+  dispositions_unverified: 1125
+  expected_obligation_ids: 105
+  source_bound_rows: 28
+  missing_source_bound_rows: 77
+  complete: false
+  native_acceptance_pending: true
+repair_proof:
+  clean_windows_affected_tests: 115
+  production_program_tests: 69
+  format_contract_tests: 94
+  named_deselection: tests/format_contract/test_consumption_chain.py::test_full_slice_second_run_is_idempotent
+  deterministic_runs: 3
+  authority_matches: 5
+  adjudication_sha256: 878c12670c5c19889259d6def1439ab106304084fee95d8257819f58879b22d2
+  inventory_sha256: 76f51e51216f1b6b8fb41e24623e806bb63ad9ab15da279f16157ffe7369bf1d
 verified_ubl_boundary:
   schema_documents: 106
   document_roots: 91
-  dependency_edges: 297
-  global_components: 3788
-  global_reference_uses: 8926
-  unresolved_references: 0
-  ambiguous_references: 0
   local_particle_nodes: 6001
-  local_particle_edges: 6001
   local_particle_owners: 468
-  particle_graph_sha256: 49b0c1ba5c75df0562ab6334fb14f8fe6dc4a9db31ff8e2b130d3bf04cf8eae1
-  anonymous_type_nodes: 0
-  anonymous_type_edges: 0
-  anonymous_type_graph_sha256: 666634cb0d90f17b05e0b9fd4babe13fe5087f253ef2afb276bf6066d82eaf6e
   derivation_edges: 1178
   derivation_graph_sha256: 783506c4dcccaefbeb94960dcb5e6d7e0c54a6d8487ee1746eca082535b60e9f
   completed_microstep: UBL-03-PARTIAL-005-DERIVATION-AND-INHERITANCE-EDGES
@@ -67,12 +68,7 @@ truth_boundary:
   ubl_03_complete: false
   gate_transition: none
   release_transition: none
-mandatory_resume_validations:
-  - GitLab main equality and ancestry
-  - native event chain through Event 35
-  - controller, taskcard, packet, adjudication, and inventory agreement
-  - manifest hashes and structured parsing
-  - detached clean packet proof plus preservation of any current foreign live UBL paths
-  - fresh provider identity, exact leases, manifests, and mutation guard
-  - RED clean-checkout reproduction and one repository-wide proof-text digest invariant
-  - clean detached Windows replay of all 71 affected XLIFF tests before PARTIAL-002-D promotion
+mandatory_resume_action:
+  skill: plan-control
+  microstep: XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001
+  action: append one Event 36 accepting the verified materialized fifth disposition; keep obligation counts and completion flags unchanged; derive the successor dynamically

@@ -1,5 +1,5 @@
-schema: ff6/provider-neutral-machine-state@12
-artifact_id: FF6-CURRENT-MACHINE-STATE-REPLAY-REPAIR-001
+schema: ff6/provider-neutral-machine-state@13
+artifact_id: FF6-CURRENT-MACHINE-STATE-809CC18
 visibility: internal
 publish_allowed: false
 generated_by: codex
@@ -8,10 +8,11 @@ repository:
   forge: GitLab
   remote: origin
   branch: main
-  checkpoint_commit: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
+  checkpoint_commit: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
   implementation_commit: 591fcfe18808e5195c33570eaa9d334770e90166
   accepted_xliff_implementation_commit: 591fcfe18808e5195c33570eaa9d334770e90166
   latest_non_promoting_xliff_attempt: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
+  verified_checkout_identity_repair: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
   head_must_equal_origin_main: true
   github_authorized: false
   other_branches_authorized: false
@@ -30,22 +31,17 @@ controller:
   first_unmet_step: XLF-04
   completed_microstep: XLF-04-BATCH-005-PARTIAL-002-C
   exact_microstep: XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001
+  exact_microstep_state: VERIFIED_PENDING_CONTROLLER_ACCEPTANCE
 program_truth:
   capabilities: 110
   obligations: 672
   product_contracts_draft: 6
   production_certifications: 0
-  promotion:
-    program: UNASSESSED
-    ipynb: UNASSESSED
-    ora: UNASSESSED
-    nrrd: UNASSESSED
-    xliff: UNASSESSED
-    safetensors: UNASSESSED
-    ubl: UNASSESSED
+  promotion: {program: UNASSESSED, ipynb: UNASSESSED, ora: UNASSESSED, nrrd: UNASSESSED, xliff: UNASSESSED, safetensors: UNASSESSED, ubl: UNASSESSED}
 workspace_transfer:
-  status: REMOTE_RECONSTRUCTIBLE_WITH_DOCUMENTED_CLEAN_REPLAY_REPAIR
+  status: CLEAN_REMOTE_RECONSTRUCTIBLE_VERIFIED_CHECKPOINT
   local_only_required_for_resume: false
+  uncommitted_product_overlay: false
   provider_identity_transferable: false
   leases_transferable: false
   execution_manifests_transferable: false
@@ -56,34 +52,45 @@ xliff:
   authority_candidates:
     count: 1130
     sha256: 24c1902b6387cc9fa3402f78392ba91c6e6656407719ec11cfaab1c4f3d22b9e
+  accepted_controller_projection:
+    event_id: FF6-EVENT-000035
+    verified_dispositions: 4
+    open_dispositions: 1126
+  materialized_verified_projection:
+    commit: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
+    verified_dispositions: 5
+    open_dispositions: 1125
+    controller_acceptance_pending: true
   adjudication:
     path: reports/sal-verification/xliff-core-candidate-adjudications.yaml
-    sha256: 6d94628a2d70490493156cece2a9e146bd8b90b62f3919645e09d92d860edbd0
+    sha256: 878c12670c5c19889259d6def1439ab106304084fee95d8257819f58879b22d2
     production_accepted_dispositions: 4
     production_open_dispositions: 1126
+    materialized_verified_dispositions: 5
+    materialized_open_dispositions: 1125
     complete: false
   obligation_inventory:
     path: reports/ff6/xliff-core-obligation-inventory.yaml
-    sha256: 0eaf2cccc0bd45670e4eb7b880dfaa6fa8e7db4b2da2e2eb8fa3670dec9b349c
+    sha256: 76f51e51216f1b6b8fb41e24623e806bb63ad9ab15da279f16157ffe7369bf1d
     expected: 105
     production_accepted_source_bound: 28
     production_accepted_missing: 77
     complete: false
-  next_candidate:
+  pending_candidate:
     candidate_id: XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E
     candidate_content_sha256: af94362009857b0fdd3d19881cd2c8d1866e4f5a72849ec1edf057baf7e905a1
     requirement_sha256: d36657a907cd8be2ecf38d3fa7a78b3c3720486492cdadd09f4f0f7c25f30e84
     occurrence_sha256: 96949f8b0f510d573b4c95640fae3e68175b853410865eaf1460a5eaee4f332a
     profile: xliff_2.1
-  non_promoting_attempt:
-    microstep: XLF-04-BATCH-005-PARTIAL-002-D
-    commit: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
-    shared_worktree_result: PASS
-    clean_detached_windows_result: 5_FAILED_66_PASSED
-    failure: canonical SAL manifest digest is stale
-    root_cause: TRACKED_TEXT_EOL_POLICY_AND_RAW_HASH_MODEL_DISAGREE
-    existing_gap: FF6-GAP-011/FF6-HO-GAP-003
-    accepted_state_effect: none
+  replay_repair:
+    semantic_commit: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
+    repair_commit: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
+    clean_detached_windows_result: PASS_115
+    production_program_result: PASS_69
+    format_contract_result: PASS_94_ONE_NAMED_DESELECTION
+    deterministic_runs: 3
+    authority_matches: 5
+    accepted_state_effect: none_pending_event_36
 ubl:
   status: WORK_IN_PROGRESS
   completed_steps: [UBL-01, UBL-02]
@@ -105,29 +112,17 @@ ubl:
   anonymous_type_edges: 0
   anonymous_type_graph_sha256: 666634cb0d90f17b05e0b9fd4babe13fe5087f253ef2afb276bf6066d82eaf6e
   derivation_edges: 1178
-  derivation_edge_counts:
-    complex_content_extension: 2
-    complex_content_restriction: 2
-    simple_content_extension: 36
-    simple_content_restriction: 1133
-    simple_type_restriction: 5
   derivation_graph_sha256: 783506c4dcccaefbeb94960dcb5e6d7e0c54a6d8487ee1746eca082535b60e9f
   completed_microstep: UBL-03-PARTIAL-005-DERIVATION-AND-INHERITANCE-EDGES
   next_microstep: UBL-03-PARTIAL-006-ATTRIBUTES-AND-ATTRIBUTE-GROUPS
   complete: false
-  latest_completed_foreign_shift:
-    provider_identity: agent-codex-20260730T061956-bac083
-    committed_implementation: d8c106800d3331b29d8078b326e75b0e05d8c232
-    committed_checkpoint: ae31baed8bfeb8a35c4ece8e52283114ee48d860
-    status: COMPLETED_CLEAN_AFTER_PARTIAL_005_NON_PROMOTING
-    handling: fresh_identity_requery_and_replay_before_any_ubl_write
 other_products:
   ipynb: {source_exists: true, certification: not_certified}
   ora: {source_exists: false, certification: absent}
   nrrd: {source_exists: true, certification: not_certified}
   safetensors: {source_exists: true, certification: not_certified}
 known_limits:
-  - Commit 2dcb161e is non-promoting until clean Windows replay passes after one repository-wide tracked-text digest invariant is enforced.
+  - Checkout identity is verified for the repaired proof closure, not every future generated artifact.
   - Contracts and obligation compilation precede product deepening.
-  - Existing install/oracle results are shallow or stale and non-promoting.
+  - Existing install and oracle results are shallow or stale and non-promoting.
   - Gate 10 and publication authority remain external even after technical certification.

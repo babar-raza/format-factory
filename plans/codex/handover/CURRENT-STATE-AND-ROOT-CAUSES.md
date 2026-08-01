@@ -11,6 +11,36 @@ historical_projection: false
 
 # Current State, Root Causes, and Structural Weaknesses
 
+## 2026-08-01 verified live overlay
+
+GitLab `origin/main` is verified through checkout-identity repair commit
+`809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956`. Native authority remains
+`FF6-EVENT-000035`; the controller has not yet accepted the fifth XLIFF
+candidate disposition. Materialized evidence now reports 5 verified and 1,125
+open dispositions, while Event 35 deliberately remains 4 and 1,126. Both
+views retain 28/105 obligations resolved and 77 missing. The exact next task is
+`XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001` in
+`VERIFIED_PENDING_CONTROLLER_ACCEPTANCE`; it is a `plan-control` transaction,
+not another product or semantic implementation.
+
+The deeper replay investigation found that the visible stale-manifest error
+was caused by workstation-dependent byte identity: mixed CRLF/LF manifest
+bytes and CRLF proof-tool copies were hashed in the shared tree, while Git
+materialized LF in a clean checkout. Commit `809cc18c` establishes declared LF
+identity for proof/source text, preserves byte-sensitive fixture classes, adds
+44 negative/positive checkout controls, and regenerates only invalidated
+current descendants. A clean Windows/autocrlf replay passed 115 affected
+tests, 69 production-program tests, and 94 format-contract tests with one exact
+known stateful deselection. This closes the bounded replay defect but does not
+certify a library.
+
+The production-level lesson is that repeatability cannot be achieved by
+refreshing a receipt in the current workspace. Durable state requires one
+authority graph, explicit input identity, immutable replay before acceptance,
+separate accepted/materialized projections, and a transactional event that
+makes their transition auditable. The handover protocol now exposes that split
+instead of silently presenting the newer files as accepted controller state.
+
 > **Current authority overlay: Event 35.** Native head
 > `FF6-EVENT-000035`. Event 31 remains the negative
 > control proving that deterministic mechanical evidence can encode the wrong
@@ -23,12 +53,10 @@ historical_projection: false
 > [CURRENT-MACHINE-STATE.yaml](CURRENT-MACHINE-STATE.yaml), the native
 > journal, and [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml).
 
-The newest evidence adds a structural weakness: commit `2dcb161e` passes in
-the shared LF worktree but fails 5/71 affected tests in a clean Windows CRLF
-checkout because proof consumers bind raw worktree hashes while the controller
-claims normalized tracked-text identity. The exact next repair is
-`XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001`; full evidence and design
-tradeoffs are in [CLEAN-REPLAY-REPAIR.md](CLEAN-REPLAY-REPAIR.md).
+The failure described by the historical text below is now repaired and kept as
+a negative-control case. Current executable state comes from the live overlay,
+[CLEAN-REPLAY-REPAIR.md](CLEAN-REPLAY-REPAIR.md), and
+[NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml).
 
 ## Executive truth
 

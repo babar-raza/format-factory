@@ -1,5 +1,5 @@
-schema: ff6/next-microstep@7
-artifact_id: FF6-XLIFF-XLF04-BATCH005-PARTIAL002-D-REPLAY-REPAIR-001
+schema: ff6/next-microstep@8
+artifact_id: FF6-XLIFF-XLF04-BATCH005-PARTIAL002-D-ACCEPTANCE
 visibility: internal
 publish_allowed: false
 generated_by: codex
@@ -8,17 +8,18 @@ mission_id: FF6-PRODUCTION-LIBRARIES-001
 source_checkpoint:
   event_id: FF6-EVENT-000035
   event_hash: 2866d7e70bd193f8aa7b60ca1f92f4f842d1cd470f97984c07f47d88ed2ea97d
-  checkpoint_implementation_commit: 591fcfe18808e5195c33570eaa9d334770e90166
   accepted_xliff_implementation_commit: 591fcfe18808e5195c33570eaa9d334770e90166
-  checkpoint_commit: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
-  non_promoting_attempt_commit: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
+  semantic_attempt_commit: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
+  checkpoint_commit: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
+  checkout_identity_repair_commit: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
 task:
   task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
   parent_task_id: TC-FF6-PROGRAM-CAPABILITIES-001
   state: WORK_IN_PROGRESS
   first_unmet_step: XLF-04
   microstep: XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001
-baseline:
+  microstep_state: VERIFIED_PENDING_CONTROLLER_ACCEPTANCE
+accepted_baseline:
   candidate_count: 1130
   dispositions_verified: 4
   dispositions_unverified: 1126
@@ -26,6 +27,16 @@ baseline:
   source_bound_obligations: 28
   missing_obligations: 77
   xlf_04_complete: false
+materialized_evidence:
+  candidate_count: 1130
+  dispositions_verified: 5
+  dispositions_unverified: 1125
+  expected_obligations: 105
+  source_bound_obligations: 28
+  missing_obligations: 77
+  xlf_04_complete: false
+  adjudication_sha256: 878c12670c5c19889259d6def1439ab106304084fee95d8257819f58879b22d2
+  inventory_sha256: 76f51e51216f1b6b8fb41e24623e806bb63ad9ab15da279f16157ffe7369bf1d
 selected_candidate:
   candidate_id: XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E
   candidate_class: SCHEMATRON_REPORT
@@ -38,65 +49,33 @@ selected_candidate:
   candidate_content_sha256: af94362009857b0fdd3d19881cd2c8d1866e4f5a72849ec1edf057baf7e905a1
   requirement_sha256: d36657a907cd8be2ecf38d3fa7a78b3c3720486492cdadd09f4f0f7c25f30e84
   occurrence_sha256: 96949f8b0f510d573b4c95640fae3e68175b853410865eaf1460a5eaee4f332a
-  exact_rule:
-    context: xlf:skeleton
-    kind: report
-    test: "@href and  child::node()"
-    message: "'skeleton' element must be empty when containing 'href' attribute."
-generated_proposals_are_not_authority:
-  proposed_obligations:
-    - SAL-XLIFF-CORE-AGENT-VALIDATOR-001
-    - SAL-XLIFF-CORE-REFERENCE-SKELETON-HREF-001
-  materially_implicated_denominator_owner_to_adjudicate:
-    - SAL-XLIFF-CORE-HIERARCHY-SKELETON-001
-  rule: >-
-    Independently determine the narrow direct semantic owner. Every generated
-    proposal must be accepted or rejected, but generation cannot restrict the
-    accepted denominator universe.
-required_skills:
-  - test-driven-development
-  - validate-missing-skill-workflow
-  - create-ff-skill
-  - sal-pipeline-heal
-  - plan-control
+required_skill: plan-control
 required_execution:
-  - Revalidate Event 35, accepted implementation 591fcfe1, non-promoting attempt 2dcb161e, exact source/member/candidate digests, and baseline counts.
-  - Register a fresh provider identity; never reuse the prior shift identity, token, lease, or execution manifest.
-  - Read CLEAN-REPLAY-REPAIR.md and create fresh skill manifests bound to this file's digest and exact paths.
-  - Reproduce the 5-of-71 clean-checkout failure with a RED test under Windows-style autocrlf checkout.
-  - Use the governed missing-skill workflow before mutating .gitattributes or shared repository digest machinery.
-  - Select one invariant only: enforced LF tracked proof bytes or a single shared canonical-text digest primitive.
-  - Add negative controls for content tamper, EOL-only drift, mixed digest models, stale receipts, deleted inputs, and foreign-format evidence.
-  - Preserve commit 2dcb161e and all Event 35 accepted rows; rebuild only invalidated descendants.
-  - Run clean detached Windows replay, focused, tamper, check-mode, three-run, SAL, authority, static, transcript, and regression gates.
-  - Only after clean replay passes, commit and push explicit files to GitLab main, append one native event accepting PARTIAL-002-D, derive the next candidate, and refresh this packet.
+  - Revalidate Event 35, commits 2dcb161e and 809cc18c, candidate identity, artifact hashes, and accepted/materialized counts.
+  - Register a fresh identity and create a fresh plan-control execution manifest and mutation authorization.
+  - Claim only the native controller, journal, current task/projection, transcript, and handover refresh paths required by the transaction.
+  - Replay the immutable checkout-identity and XLIFF proof gates; do not modify product source, semantic decisions, SAL facts, adjudication, or inventory.
+  - Append exactly one hash-chained Event 36 whose evidence binds semantic commit 2dcb161e, repair commit 809cc18c, adjudication digest, inventory digest, and executed verification.
+  - Atomically update controller/task/current projections from 4 to 5 accepted dispositions and 1126 to 1125 open dispositions.
+  - Keep 28 resolved obligations, 77 missing obligations, XLF-04 incomplete, all promotions UNASSESSED, and 0/6 certifications.
+  - Derive the next candidate from the live unverified projection after the transaction; never hard-code a successor from this handover.
+  - Commit explicit files to GitLab main, replay the immutable commit, refresh this packet, validate, and release only the new shift's leases.
 acceptance:
-  prior_rows_unchanged: 28
-  candidate_id_set_unchanged: 1130
-  accepted_decisions_before_repair: 4
-  attempted_decisions_on_main: 5
-  accepted_decisions_after_clean_replay_max: 5
-  new_obligations_max: 0
-  clean_detached_windows_affected_tests: 71
-  xlf_04_complete: false
+  event_sequence_after: 36
+  dispositions_verified_after: 5
+  dispositions_unverified_after: 1125
+  obligations_after: {expected: 105, resolved: 28, missing: 77}
+  new_obligations: 0
   product_source_effect: none
+  xlf_04_complete: false
   promotion_effect: none
 forbidden:
-  - local-only receipt refresh or accepting both raw and normalized hashes
-  - reverting, rewriting, or deleting commit 2dcb161e evidence
-  - accepting generated proposals without independent authority reasoning
-  - claiming XLIFF 2.0 applicability from XLIFF 2.1-only evidence
+  - reimplementing the reciprocal semantic rule or rewriting commit 2dcb161e
+  - changing proof identity policy or regenerating evidence without an invalidated input
+  - guessing the next candidate before the accepted projection is recomputed
   - product source, certification, promotion, release, or gate mutation
-  - GitHub push, non-main branch, foreign lease release, or dirty-state cleanup
+  - GitHub push, non-main branch, broad staging, foreign lease release, or dirty-state cleanup
 fallback:
-  when: XLIFF replay-repair scope is live-owned
-  task_id: TC-FF6-UBL-TYPING-001
-  microstep: UBL-03-PARTIAL-006-ATTRIBUTES-AND-ATTRIBUTE-GROUPS
-  implementation_base: d8c106800d3331b29d8078b326e75b0e05d8c232
-  rule: >-
-    UBL-03-PARTIAL-005 is committed and verified, and its executor completed
-    cleanly before packet seal. Treat partial-006 as available only after a
-    fresh identity re-queries coordination and replays d8c10680 plus ae31baed.
-    Preserve all accepted graph identities including the derivation graph,
-    keep reachable_schema_graph_complete false, and do not change the
-    controller-selected XLIFF task.
+  when: native controller paths are live-owned
+  action: continue read-only verification or select the highest-severity disjoint unleased task from the live deterministic queue
+  invariant: fallback work must not change the controller-selected XLIFF task or claim Event 36
