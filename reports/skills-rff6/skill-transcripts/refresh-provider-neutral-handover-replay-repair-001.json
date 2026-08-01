@@ -72,7 +72,7 @@
     "Ruff and py_compile on both packet validators: PASS",
     "reciprocal attempt shared-worktree gates: 71 affected, 43 production-program, and 94 format-contract tests passed with one exact named deselection",
     "reciprocal attempt clean detached Windows replay: correctly recorded as non-promoting after 5 failed and 66 passed",
-    "packet commit replay: PENDING_POST_COMMIT_RECEIPT"
+    "packet commit 477789bb174af980f6501c99725955bf64eceffa replayed from origin/main in a temporary detached worktree: PASS; shared_worktree_mutated=false"
   ],
   "ledger_entry_id": null,
   "result": "PASS",
@@ -84,6 +84,10 @@
     "non_promoting_attempt": "2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17",
     "attempt_clean_replay": "5_FAILED_66_PASSED",
     "root_cause": "TRACKED_TEXT_EOL_POLICY_AND_RAW_HASH_MODEL_DISAGREE",
+    "packet_commit_replayed": "477789bb174af980f6501c99725955bf64eceffa",
+    "packet_replay_mode": "TEMPORARY_DETACHED_WORKTREE",
+    "packet_replay_result": "PASS",
+    "shared_worktree_mutated": false,
     "selected_task": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
     "selected_microstep": "XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001",
     "products_certified": "0/6",
@@ -91,7 +95,7 @@
     "truth_boundary": "This refresh transfers a failure-closed repair checkpoint. It does not accept PARTIAL-002-D, change Event 35, promote product source, certify a format, or authorize publication."
   },
   "self_challenge": {
-    "all_required_packet_steps": "YES before committed replay receipt",
+    "all_required_packet_steps": "YES including committed detached replay",
     "evidence_sufficient": "YES for provider transfer and repair routing only",
     "failed_replay_hidden": "NO; exact failing tests, hashes, root cause, and tradeoffs are recorded",
     "native_state_advanced": "NO",
@@ -99,7 +103,7 @@
     "product_completion_claimed": "NO",
     "foreign_work_modified": "NO",
     "provider_identity_transferable": "NO",
-    "clean_checkpoint_required": "YES; post-commit detached packet replay remains required"
+    "clean_checkpoint_required": "SATISFIED for packet transfer; the separately documented XLIFF product replay repair remains open"
   },
   "generated_by": "codex",
   "visibility": "generated"
