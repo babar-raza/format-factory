@@ -814,6 +814,95 @@ The next executor must:
 8. leave XLF-04 and every product/release state incomplete unless the complete
    evidence graph—not this single microstep—proves otherwise.
 
+## Verified target-language profile checkpoint — Event 39
+
+Native `FF6-EVENT-000039` supersedes the Event 38 resume instruction. The
+accepted semantic boundary is immutable GitLab `main` commit
+`39b2e89fde0f7dd5e1acebc424f4d700dfe74765`.
+
+Accepted evidence:
+
+- exact candidate `XLF-CAND-CORE-SCHEMATRON-5D563A565DC6DCFE` is bound by
+  content SHA-256
+  `2f48f02786ace40f8e45306a2622fb031a0650a1004e6d4b316f3dd5ec44ee4d`,
+  requirement SHA-256
+  `85279eddf8546a96b332e7a7b5388cb4639d886f2a6a0f7168048ec3e7e483ec`,
+  and occurrence SHA-256
+  `639468d347a85cb3843f43bba0d0bdc9065beda22aee96021cb10f37374137fe`;
+- decision `XLF-ADJ-CORE-SCHEMATRON-0008`, digest
+  `93dd097010ceb3f5c0699336a1089ad7b1013293e524aede4040a3de48e1356e`,
+  accepts the existing direct owner `SAL-XLIFF-CORE-TARGET-LANGUAGE-001`;
+- all generated validator, hierarchy, cardinality, and optional-target mappings
+  are rejected as downstream or incidental, and omitted-value inheritance is
+  separately rejected because an explicit-value report does not establish it;
+- XLIFF 2.0 requires exact source/target language-tag equality. XLIFF 2.1
+  normative F4T Schematron permits an exact or more-specific target tag. The
+  normative machine-readable rule takes precedence over conflicting display
+  prose; this contradiction and precedence rule are recorded rather than
+  silently selecting the convenient interpretation;
+- fact `SAL-XLIFF-6F42212680161FF2` (`FACT-XLIFF-33`) binds ten executed
+  authority assertions with proof SHA-256
+  `d34684502ae62f211ca59fba60d947421fac3aa7bf436ae55efd3f209862fe14`;
+- the denominator does not expand. Twenty-eight unaffected predecessor rows
+  remain exact and one existing target-language row is profile-corrected;
+  coverage remains `30/105`, with `75` missing;
+- candidate dispositions advance to `8/1,130`, leaving `1,122` independently
+  unverified;
+- the XLIFF ProductContract was rebuilt from current inputs at SHA-256
+  `7ef89b038b8b74b59ede6123a7a2ec57fea4730f84fbff3eaf21a43d02a9a2ad`.
+  It remains `DRAFT` with 15 capabilities and is not promotion evidence;
+- 77 affected tests passed in the working tree and in an immutable detached
+  replay. That replay required the complete five-record XLIFF authority
+  closure: the four ignored external authority files `src-xlf-001.bin`,
+  `src-xlf-002.bin`, `src-xliff-001.bin`, and `src-xliff-003.bin`, plus the
+  tracked product-requirement authority. A two-package replay is insufficient
+  for the contract check even though focused tests and SAL verification pass;
+- the affected regression tiers passed: 191 tests before and 163 tests after
+  contract refresh, each with only the exact documented stateful CSV
+  idempotency test deselected; all 33 XLIFF SAL facts and all five authority
+  records pass;
+- three clean runs reproduced the denominator, census, adjudication,
+  inventory, and compiled-contract digests; Ruff, strict Mypy, Pyright 1.1.411,
+  bytecode compilation, and four skill transcripts passed.
+
+This checkpoint proves one profile-specific fact, one corrected existing
+obligation, and one candidate disposition. XLF-04, all later contract steps,
+product source, certification, promotion, release, and every gate remain
+incomplete. Program certification remains `0/6`, and every format remains
+`UNASSESSED`.
+
+The exact next microstep is `XLF-04-BATCH-005-PARTIAL-002-H`, candidate
+`XLF-CAND-CORE-SCHEMATRON-E891C4DEC555F165`, content SHA-256
+`04aeb46e7eeaa854cf9554005a11476334fa8f41f6db9a45ca2f0e38b8d6d0e6`,
+requirement SHA-256
+`d7daf659d3b7ad1388c42203d845b452afe12e8e05134d35d36a26cb9cc5e60c`,
+and occurrence SHA-256
+`cb57d9e386c6274b0aa0aedca3e2b4bab1dbaafb41ff2e66a884681485d6c84f`.
+The pinned occurrence is `schemas/xliff_core_2.1.sch` at
+`schematron/rule[15]/report[1]`; it reports an `sc` marked `isolated='yes'`
+when a referencing `ec` exists in the same unit.
+
+The next executor must:
+
+1. fetch GitLab `origin/main`, verify Event 39 and immutable semantic commit
+   `39b2e89f`, and recapture a clean coordination lease before mutation;
+2. independently read the exact XLIFF 2.1 authority occurrence;
+3. treat all eight generated mappings—validator, ignorable/segment/unit
+   hierarchy, `sc`/`ec`, `startRef`, and source-required—as unverified
+   proposals;
+4. identify the exact direct semantic owner, expanding the denominator only
+   if authority proves a distinct obligation, and explicitly reject incidental
+   context and downstream surfaces;
+5. begin with a genuine failing test and add positive, rejection, tamper,
+   profile, and predecessor-preservation controls;
+6. preserve all 30 accepted obligation rows, all 1,130 candidate identities,
+   selected-seed byte idempotency, and checkout identity;
+7. replay deterministic, static, authority, SAL, format-contract,
+   production-program, transcript, immutable-checkout, and native-event
+   controls; and
+8. keep XLF-04 and every product/release state incomplete unless the complete
+   evidence graph—not this single microstep—proves otherwise.
+
 ## Verified unit-cardinality checkpoint — Event 37
 
 Native `FF6-EVENT-000037` supersedes the Event 36 resume instruction. The

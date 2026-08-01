@@ -4,10 +4,10 @@ goal_status: ACTIVE
 generated_by: codex
 visibility: internal
 controller_state: CONTRACT
-transition_sequence: 38
+transition_sequence: 39
 last_verified_event:
-  event_id: FF6-EVENT-000038
-  event_hash: 13db4cceafcefb86d9c964d7c3e20e7d63092977faf50002ef0c88ea4f6b5603
+  event_id: FF6-EVENT-000039
+  event_hash: 5f76c75ca4f7bc0845b22dccd38a195e962fb49b5f4161651737ab23d560cd36
 event_journal: plans/strategic/ff6/events.jsonl
 baseline_commit: e4f8f5f086b5e627c07c2ef2d940eda2601a22a8
 digest_policy:
@@ -43,17 +43,16 @@ next_task:
   task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
   state: WORK_IN_PROGRESS
   unlock_condition: >-
-    Resume from Event 38 and immutable GitLab commit 3fc939ad at
-    XLF-04-BATCH-005-PARTIAL-002-G. Revalidate the accepted boundary of 30/105
-    obligations with 75 missing and 7/1,130 accepted dispositions. Adjudicate
-    exact candidate XLF-CAND-CORE-SCHEMATRON-5D563A565DC6DCFE independently:
-    treat generated AGENT-VALIDATOR, DOCUMENT-TARGET-LANGUAGE,
-    HIERARCHY-IGNORABLE, HIERARCHY-SEGMENT, and SOURCE-TARGET-OPTIONAL mappings
-    only as proposals. Determine the direct compatibility owner or expand the
-    denominator when authority proves a distinct obligation, and reject
-    incidental trigger context explicitly. Preserve all 30 accepted rows and
-    all 1,130 candidate IDs. Product source and architecture remain blocked
-    until XLF-04 and later contract steps close.
+    Resume from Event 39 and immutable GitLab commit 39b2e89f at
+    XLF-04-BATCH-005-PARTIAL-002-H. Revalidate the accepted boundary of 30/105
+    obligations with 75 missing and 8/1,130 accepted dispositions. Adjudicate
+    exact candidate XLF-CAND-CORE-SCHEMATRON-E891C4DEC555F165 independently.
+    Treat all eight generated mappings as unverified proposals; determine the
+    exact owner of the isolated start-code constraint or expand the denominator
+    only when authority proves a distinct obligation. Reject incidental trigger
+    context and downstream validator surfaces explicitly. Preserve all 30
+    accepted rows and all 1,130 candidate IDs. Product source and architecture
+    remain blocked until XLF-04 and later contract steps close.
 promotion:
   program: UNASSESSED
   ipynb: UNASSESSED
@@ -125,7 +124,7 @@ current_gap_summary:
   production_certifications: 0
 control_plane_compatibility:
   ff6_event_schema: ff6/controller-event@1
-  native_chain_validation: PASS_THROUGH_EVENT_38
+  native_chain_validation: PASS_THROUGH_EVENT_39
   generic_plan_control_doctor: >-
     INCOMPATIBLE_SCHEMA: tools.plan_control expects previous_hash and its own
     event payload; FF6 uses previous_event_hash. This is the already-tracked
@@ -202,8 +201,8 @@ xlf_checkpoint:
   completed_xlf_04_batches: [XLF-04-BATCH-001, XLF-04-BATCH-002, XLF-04-BATCH-003, XLF-04-BATCH-004]
   first_unmet_step: XLF-04
   microstate: RESUMABLE
-  active_microstep: XLF-04-BATCH-005-PARTIAL-002-G
-  checkpoint_source_commit: 3fc939ad70ec6caac9e0699041076e02de00c5d2
+  active_microstep: XLF-04-BATCH-005-PARTIAL-002-H
+  checkpoint_source_commit: 39b2e89fde0f7dd5e1acebc424f4d700dfe74765
   implemented_slice:
     - digest_bound_bounded_zip_authority_reader
     - xliff_2_0_2_1_core_module_structural_inventory
@@ -276,6 +275,11 @@ xlf_checkpoint:
     - independent_source_language_candidate_adjudication
     - xliff_2_1_only_source_language_compatibility_profile
     - cumulative_thirty_obligation_real_authority_batch
+    - target_language_sal_fact_exact_assertion_binding
+    - normative_machine_readable_precedence_binding
+    - profile_specific_target_language_compatibility
+    - independent_target_language_compatibility_candidate_adjudication
+    - fresh_xliff_contract_descendant_recompilation
   non_promoting_attempts:
     - attempt_id: XLF-04-BATCH-005-PARTIAL-002-B
       commit: d99fc6bf3679cd39396afbf5621847e3009ddf31
@@ -342,20 +346,31 @@ xlf_checkpoint:
       decisions: 1
       obligation_rows_added: 1
       predecessor_rows_unchanged: 29/29
+    - microstep_id: XLF-04-BATCH-005-PARTIAL-002-G
+      commit: 39b2e89fde0f7dd5e1acebc424f4d700dfe74765
+      result: PASS
+      candidate_id: XLF-CAND-CORE-SCHEMATRON-5D563A565DC6DCFE
+      decision_id: XLF-ADJ-CORE-SCHEMATRON-0008
+      decision_sha256: 93dd097010ceb3f5c0699336a1089ad7b1013293e524aede4040a3de48e1356e
+      direct_obligation: SAL-XLIFF-CORE-TARGET-LANGUAGE-001
+      selected_candidate_profiles: [xliff_2.1]
+      authority_profiles: [xliff_2.0, xliff_2.1]
+      decisions: 1
+      obligation_rows_added: 0
+      obligation_rows_profile_corrected: 1
+      unaffected_predecessor_rows_unchanged: 28/28
   remaining_steps: [XLF-04, XLF-05, XLF-06, XLF-07, XLF-08]
   exact_next_action: >-
-    Execute XLF-04-BATCH-005-PARTIAL-002-G from Event 38 and immutable GitLab
-    main commit 3fc939ad. Independently adjudicate candidate
-    XLF-CAND-CORE-SCHEMATRON-5D563A565DC6DCFE, whose exact XLIFF 2.1 report
-    compares target xml:lang with root trgLang. Treat generated AGENT-VALIDATOR,
-    DOCUMENT-TARGET-LANGUAGE, HIERARCHY-IGNORABLE, HIERARCHY-SEGMENT, and
-    SOURCE-TARGET-OPTIONAL mappings only as proposals. Determine whether an
-    existing denominator obligation directly owns compatibility or whether the
-    denominator must expand, and explicitly reject incidental trigger context.
-    Preserve all 30 accepted rows and all 1,130 candidate IDs, and keep
-    completeness false.
+    Execute XLF-04-BATCH-005-PARTIAL-002-H from Event 39 and immutable GitLab
+    main commit 39b2e89f. Independently adjudicate candidate
+    XLF-CAND-CORE-SCHEMATRON-E891C4DEC555F165, the XLIFF 2.1 isolated start-code
+    report. Treat all eight generated mappings as unverified proposals.
+    Determine the exact direct semantic owner or expand the denominator only
+    when exact authority proves a distinct obligation; reject incidental
+    trigger context and downstream validator surfaces. Preserve all 30 accepted
+    rows and all 1,130 candidate IDs, and keep completeness false.
   source: tools/spec/extract_sal_facts.py
-  source_sha256: 3677d8afbcd4244f802771bb050bca8f236b6cbb14b4c582913a3f84fba64228
+  source_sha256: 4c508b0b5b8c87323958235deeb11410457ed333658a7369bf7ad7651754e0c4
   sal_seed_source: tools/spec/seed_sal_candidates.py
   sal_seed_source_sha256: 55a980a512e80768c6aaaf2f5d0f2ee8a2857688eb2634a31dcd0ecb0723bde6
   candidate_adjudication_source: tools/spec/xliff_core_candidate_adjudication.py
@@ -363,14 +378,14 @@ xlf_checkpoint:
   candidate_binding_source: tools/spec/xliff_core_candidate_binding.py
   candidate_binding_source_sha256: 042c670acefff8d0a6932ea3df7f1582f887f756148dd0bdfc356f69ca56f8b7
   tests: tests/tools/test_extract_sal_facts.py
-  tests_sha256: e00b1094834869b05f132b3e1906cd1ed72ab5cfa7916247d551718fb0ee5849
+  tests_sha256: 1cc398aa1d1c3aa4bde8cbc443234bf0d6e754544bc89d175ed583849f7cb9df
   sal_seed_tests: tests/tools/test_seed_sal_candidates.py
   sal_seed_tests_sha256: 4686855981811295caf15c1c14840eed2c8242de84977bcb9bc7a24b21b04aa7
   candidate_adjudication_tests: tests/tools/test_xliff_core_candidate_adjudication.py
-  candidate_adjudication_tests_sha256: 3d03cc29b0659cebf414914e726f9ce2eeaedd9757da42edf992554fedf27a70
+  candidate_adjudication_tests_sha256: eddb5deb1abccdd5c21ec1dba160879ef0a687b7f96ade3b558f390c7e91fa17
   candidate_binding_tests: tests/tools/test_extract_sal_facts_candidate_binding.py
   candidate_binding_tests_sha256: 576868da9f490fda3e9ca0913cd9335df8a38746dee347246052384aebe27caf
-  focused_tests: 90 affected XLIFF tests from immutable semantic commit
+  focused_tests: 77 affected XLIFF tests from immutable semantic commit
   ruff: PASS
   mypy_strict: PASS
   pyright: PASS_ZERO_DIAGNOSTICS_1_1_411
@@ -381,15 +396,15 @@ xlf_checkpoint:
   matrix_unique_ids: 36
   real_authority_replays: 3_identical
   core_obligation_inventory: reports/ff6/xliff-core-obligation-inventory.yaml
-  core_obligation_inventory_sha256: 483767b208b75b880804288a6f56ed3758b05d46d4ef872bc0bcb6e4d083e1ba
+  core_obligation_inventory_sha256: ea376cbaad5e8559b6789844be2bef06478e5b8ee69f7a3c557cfbc5bd474370
   core_obligation_count: 30
   core_production_accepted_obligation_count: 30
   core_obligation_status: SOURCE_LOCATED_PARTIAL
   core_obligation_verification_status: VERIFIED_PARTIAL
   candidate_adjudication_artifact: reports/sal-verification/xliff-core-candidate-adjudications.yaml
-  candidate_adjudication_sha256: 61f17b6449ae1ea6b5a95c892afc075b48aa7b9a100be2d6e8168b8794baeb32
-  candidate_dispositions_verified: 7
-  candidate_dispositions_unverified: 1123
+  candidate_adjudication_sha256: d63a31f936262c9952a0f50afd076b8547bc5c26cbdfd5adf04464b5f2c3dcc2
+  candidate_dispositions_verified: 8
+  candidate_dispositions_unverified: 1122
   core_covered_categories:
     - agent_processing
     - document_structure
@@ -445,8 +460,8 @@ xlf_checkpoint:
   core_non_modal_prose_census_complete: true
   core_non_modal_prose_disposition_complete: true
   core_non_modal_prose_classification_verified: false
-  core_candidate_dispositions_verified: 7
-  core_candidate_dispositions_unverified: 1123
+  core_candidate_dispositions_verified: 8
+  core_candidate_dispositions_unverified: 1122
   core_candidate_authority_replay_bound: true
   core_normative_obligation_inventory_complete: false
   core_candidate_real_authority_replays: 3_identical
@@ -485,8 +500,16 @@ xlf_checkpoint:
     corroborating prose, accepts only the direct document source-language
     owner, rejects downstream, incidental, cardinality, and omitted-inheritance
     overclaims, and excludes XLIFF 2.0 because the pinned authority lacks the
-    constraint. Production acceptance is therefore 30/105 rows, 75 missing
-    rows, 7 verified dispositions, and 1,123 unverified dispositions.
+    constraint. Partial-002-G at commit 39b2e89f establishes profile-specific
+    target-language compatibility: XLIFF 2.0 requires exact language-tag
+    equality while the normative XLIFF 2.1 F4T Schematron permits an exact or
+    more-specific target tag and controls over conflicting display prose. It
+    accepts the existing target-language owner, rejects generated overmaps and
+    omitted-value inheritance, preserves 28 unaffected predecessor rows, and
+    corrects the existing target-language row without expanding the denominator.
+    Production acceptance is therefore 30/105 rows, 75 missing rows, 8 verified
+    dispositions, and 1,122 unverified dispositions. The freshly rebuilt XLIFF
+    ProductContract remains DRAFT with 15 capabilities.
     The denominator remains an open authority census. Complete verified
     classification, module obligations, product behavior, certification, and
     promotion remain open. The pre-existing invalid local artifact-index YAML
