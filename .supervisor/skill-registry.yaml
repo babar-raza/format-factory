@@ -5230,6 +5230,43 @@ skills:
   test_paths: []
   risk_level: MEDIUM
   advisory_only: false
+- command: /proof-checkout-identity-repair
+  command_file: .claude/commands/proof-checkout-identity-repair.md
+  created_at: '2026-08-01'
+  created_by: SKILL-GAP-FF6-PROOF-CHECKOUT-IDENTITY-001
+  idempotency: idempotent
+  implementation_paths:
+  - .gitattributes
+  mandatory_validations:
+  - clean_windows_failure_reproduced
+  - test_precedes_attribute_change
+  - proof_text_checkout_is_lf
+  - binary_fixture_attributes_unchanged
+  - supported_checkout_raw_hashes_equal
+  - non_eol_tamper_changes_hash
+  - no_dual_digest_acceptance
+  - clean_detached_replay_passes
+  - shared_worktree_not_renormalized
+  output_paths:
+  - reports/skills-*/skill-transcripts/
+  product_track: machinery_repair
+  purpose: >-
+    Repair cross-platform raw proof identity by enforcing deterministic Git
+    checkout bytes for proof-bearing text while preserving binary fixtures and
+    forbidding dual raw/canonical digest acceptance.
+  required_handoff_fields:
+  - defect_id
+  - failing_commit
+  - proof_bearing_paths
+  - supported_checkout_modes
+  - binary_fixture_paths
+  skill_id: proof-checkout-identity-repair
+  spec_qname_required: false
+  status: active
+  test_paths:
+  - tests/governance/test_proof_checkout_identity.py
+  risk_level: HIGH
+  advisory_only: false
 sprint: FORMAT-FACTORY-R98-AUTONOMOUS-LOOP-TRUST-LAYER-ITERATION-SCALING-ACCELERATION-POC-MEGA-TRAIN-001
 version: '2.0'
 visibility: generated

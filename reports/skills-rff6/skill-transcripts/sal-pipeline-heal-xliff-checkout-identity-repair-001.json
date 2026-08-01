@@ -1,0 +1,69 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "sal-pipeline-heal-xliff-checkout-identity-repair-001",
+  "skill_id": "sal-pipeline-heal",
+  "task_id": "XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001",
+  "mode": "live",
+  "timestamp": "2026-08-01T07:35:00Z",
+  "inputs": {
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "taskcard_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "format_id": "xliff",
+    "root_cause_id": "FF6-GAP-011/FF6-HO-GAP-003",
+    "target_stage": "fact_id_repair",
+    "spec_cache_path": ".local/format-contracts/acquired/xliff",
+    "execution_manifest_id": "sfx-f0f5d1d19e923167",
+    "pre_mutation_authorization_id": "797751ce8a9d29a2",
+    "invalidated_manifest_digest": "3a961199eb156658c978f36361f483498aefcd5e7a1582c14df6577a53410b9a",
+    "canonical_lf_manifest_digest": "e590c75a2fb815873b3260b841084c75ac8b6f2b6de17628bd71557fa88a12db"
+  },
+  "allowed_files": [
+    "tools/spec/verify_sal_facts.py",
+    "tools/spec/sal_proof.py",
+    "shared/sal-facts/evidence/xliff.yaml",
+    "shared/sal-facts/xliff.yaml",
+    "reports/sal-verification/xliff.json",
+    "reports/sal-verification/xliff-core-candidate-adjudications.yaml",
+    "reports/ff6/xliff-core-obligation-inventory.yaml",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-xliff-checkout-identity-repair-001.json"
+  ],
+  "actual_files_changed": [
+    "tools/spec/verify_sal_facts.py",
+    "tools/spec/sal_proof.py",
+    "shared/sal-facts/xliff.yaml",
+    "reports/sal-verification/xliff.json",
+    "reports/sal-verification/xliff-core-candidate-adjudications.yaml",
+    "reports/ff6/xliff-core-obligation-inventory.yaml",
+    "reports/skills-rff6/skill-transcripts/sal-pipeline-heal-xliff-checkout-identity-repair-001.json"
+  ],
+  "root_cause_correction": {
+    "symptom": "The first immutable LF checkout candidate still failed four adjudicator tests with canonical SAL manifest digest is stale.",
+    "cause": "The shared manifest contained 821 CRLF pairs and 29 lone LF endings, and the two verifier-closure Python inputs were CRLF, even though clean Git checkouts materialize all three as LF. The existing receipt therefore bound mutable working-copy bytes rather than the canonical checkout identity.",
+    "repair": "Materialize the current manifest and verifier closure from immutable LF checkout bytes, run the authoritative SAL verifier with --apply, and rebuild only the store proof references, current receipt, adjudication, and obligation inventory that declare those digest inputs.",
+    "preservation": "All 31 fact claims and proof hashes, 5 candidate decisions, 28 obligation rows, 1,130 candidate identities, authority inputs, and historical receipts are preserved."
+  },
+  "tests_run": [
+    "tools/spec/verify_sal_facts.py --format-id xliff --apply: PASS",
+    "XLIFF adjudication generation: PASS at final digest 878c12670c5c19889259d6def1439ab106304084fee95d8257819f58879b22d2",
+    "XLIFF obligation inventory generation: PASS at final digest 76f51e51216f1b6b8fb41e24623e806bb63ad9ab15da279f16157ffe7369bf1d",
+    "combined checkout identity, adjudicator, and extractor regression: 115 passed locally and 115 passed from final immutable candidate e9b30185",
+    "clean candidate SAL --apply regeneration: byte-identical receipt and store with zero Git diff",
+    "clean candidate production-program regression: 69 passed",
+    "clean candidate format-contract regression: 94 passed with one exact documented stateful deselection",
+    "clean candidate authority audit: 5 MATCH and generator check modes: PASS",
+    "three final clean adjudication and inventory generations: byte-identical at 878c1267 and 76f51e51"
+  ],
+  "output_digests": {
+    "shared/sal-facts/evidence/xliff.yaml": "e590c75a2fb815873b3260b841084c75ac8b6f2b6de17628bd71557fa88a12db",
+    "tools/spec/verify_sal_facts.py": "1abaab1f52b9ab70f7338bda741881dcb224bbaeec1de8f84c6e131245001aa3",
+    "tools/spec/sal_proof.py": "69ef2ef2fe2e30f428dcefe576284832b0effd9b03bd2af6f0fc80ad4c3ddeb7",
+    "shared/sal-facts/xliff.yaml": "a9ba1ddcb109ab17a7f7a954891e929cf8c90db5c21b589b9f846cedd15850e8",
+    "reports/sal-verification/xliff.json": "9eccaa7f7327fb6f05439a6630986f15e7699739fcc0a08c60cca190219b1b34",
+    "reports/sal-verification/xliff-core-candidate-adjudications.yaml": "878c12670c5c19889259d6def1439ab106304084fee95d8257819f58879b22d2",
+    "reports/ff6/xliff-core-obligation-inventory.yaml": "76f51e51216f1b6b8fb41e24623e806bb63ad9ab15da279f16157ffe7369bf1d"
+  },
+  "result": "PASS",
+  "truth_boundary": "This rebuilds only live descendants invalidated by the new checkout identity. It does not alter authority claims or XLIFF semantics, accept PARTIAL-002-D, append Event 36, complete XLF-04, or certify a product.",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

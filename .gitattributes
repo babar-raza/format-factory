@@ -4,3 +4,65 @@ reports/** linguist-generated=true
 .local/** linguist-generated=true
 oracle/formats/*/reports/** linguist-generated=true
 *.jsonl linguist-generated=true
+
+# Deterministic checkout bytes for source and content-addressed proof text.
+# Raw SHA-256 remains the single digest model; supported Git configurations
+# must therefore materialize the same bytes instead of relying on validator
+# normalization or accepting multiple hashes.
+.gitattributes text eol=lf
+*.py text eol=lf
+*.pyi text eol=lf
+*.json text eol=lf
+*.jsonl text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.toml text eol=lf
+*.md text eol=lf
+*.rst text eol=lf
+*.ini text eol=lf
+*.cfg text eol=lf
+*.xsd text eol=lf
+*.sch text eol=lf
+*.xml text eol=lf
+*.xlf text eol=lf
+*.xliff text eol=lf
+*.sh text eol=lf
+*.lock text eol=lf
+requirements*.txt text eol=lf
+constraints*.txt text eol=lf
+
+# Format samples and test/oracle fixtures are byte inputs, even when their
+# container syntax is textual. Later rules override the extension defaults.
+samples/** -text !eol
+tests/fixtures/** -text !eol
+oracle/formats/**/fixtures/** -text !eol
+
+# Binary and byte-sensitive format/container extensions are always exact.
+*.ipynb -text !eol
+*.nrrd -text !eol
+*.nhdr -text !eol
+*.ora -text !eol
+*.safetensors -text !eol
+*.bin -text !eol
+*.npy -text !eol
+*.npz -text !eol
+*.png -text !eol
+*.jpg -text !eol
+*.jpeg -text !eol
+*.gif -text !eol
+*.webp -text !eol
+*.tif -text !eol
+*.tiff -text !eol
+*.pdf -text !eol
+*.zip -text !eol
+*.tar -text !eol
+*.gz -text !eol
+*.bz2 -text !eol
+*.xz -text !eol
+*.zst -text !eol
+*.7z -text !eol
+*.whl -text !eol
+*.exe -text !eol
+*.dll -text !eol
+*.so -text !eol
+*.dylib -text !eol

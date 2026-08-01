@@ -1,0 +1,71 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "test-driven-development-proof-checkout-identity-001",
+  "skill_id": "test-driven-development",
+  "task_id": "XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001",
+  "mode": "live",
+  "timestamp": "2026-08-01T07:20:00Z",
+  "inputs": {
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "source_commit": "5644d1823b048f7135797bc8500651a70a9418ba",
+    "accepted_event": "FF6-EVENT-000035",
+    "non_promoting_xliff_attempt": "2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17",
+    "execution_manifest_id": "sfx-880fb31179ac457f",
+    "pre_mutation_authorization_id": "e77b2d6373a81a61",
+    "target_behavior_description": "The same tracked proof text must have one raw byte identity in supported Git checkout configurations while byte-exact fixtures remain unmodified and semantic tampering remains detectable."
+  },
+  "allowed_files": [
+    "tests/governance/test_proof_checkout_identity.py",
+    "reports/skills-rff6/skill-transcripts/test-driven-development-proof-checkout-identity-001.json"
+  ],
+  "actual_files_changed": [
+    "tests/governance/test_proof_checkout_identity.py",
+    "reports/skills-rff6/skill-transcripts/test-driven-development-proof-checkout-identity-001.json"
+  ],
+  "cycles": [
+    {
+      "behavior": "Proof-bearing text paths have explicit LF checkout identity and byte-sensitive corpus paths are explicitly non-text.",
+      "red": {
+        "command": ".venv\\Scripts\\python.exe -m pytest tests/governance/test_proof_checkout_identity.py -q",
+        "result": "44 failures: proof text attributes were unspecified, byte-sensitive inputs lacked explicit non-text policy, and one committed YAML object checked out with different LF and CRLF raw hashes."
+      },
+      "green_attempt": {
+        "command": ".venv\\Scripts\\python.exe -m pytest tests/governance/test_proof_checkout_identity.py -q",
+        "result": "40 passed and 4 failed because -text still inherited an eol attribute. This was treated as an incomplete implementation, not a pass."
+      },
+      "green": {
+        "command": ".venv\\Scripts\\python.exe -m pytest tests/governance/test_proof_checkout_identity.py -q",
+        "result": "44 passed after byte-sensitive overrides explicitly cleared inherited eol state with !eol."
+      },
+      "refactor": "Kept the invariant declarative in .gitattributes and the executable regression isolated in one governance test module; no digest fallback or proof consumer exception was added."
+    }
+  ],
+  "negative_controls": [
+    "core.autocrlf=false, input, and true checkouts of one committed proof object must produce identical LF bytes",
+    "a non-EOL semantic change must alter raw SHA-256",
+    "binary and archive fixture extensions under samples, tests/fixtures, and oracle fixtures must remain byte-exact",
+    "proof-bearing YAML, JSON, JSONL, XML, schemas, source, tests, configuration, and documentation are explicitly LF-normalized"
+  ],
+  "tests_run": [
+    "checkout identity regression: 44 passed",
+    "XLIFF adjudicator suite: 21 passed",
+    "XLIFF extractor suite: 50 passed",
+    "production-program regression: 69 passed",
+    "format-contract regression: 94 passed with only tests/format_contract/test_consumption_chain.py::test_full_slice_second_run_is_idempotent deliberately deselected",
+    "XLIFF adjudication and obligation inventory check modes: PASS",
+    "first immutable candidate replay: checkout identity tests passed but 4 XLIFF adjudicator tests failed because the current receipt bound a mixed-EOL manifest; this disproved the initial shallow fix",
+    "final immutable candidate e9b30185f84cc05a6b5f4b09cabcc74e939139ad: 115 affected tests passed under core.autocrlf=true",
+    "three final isolated adjudication generations: byte-identical at 878c12670c5c19889259d6def1439ab106304084fee95d8257819f58879b22d2",
+    "three final isolated inventory generations: byte-identical at 76f51e51216f1b6b8fb41e24623e806bb63ad9ab15da279f16157ffe7369bf1d",
+    "canonical SAL verification: PASS",
+    "XLIFF authority audit: 5 MATCH, 0 mismatch, 0 missing",
+    "Ruff, strict Mypy, Pyright 1.1.411, py_compile, and git diff --check: PASS"
+  ],
+  "output_digests": {
+    "tests/governance/test_proof_checkout_identity.py": "1f3a2c4dc53f9f14d5a071b74560da067383f1d3ba63c773f340931d11ecdc96"
+  },
+  "result": "PASS",
+  "promotion_boundary": "The exact staged tree 1e16157e4021d68b11aab2d767dd9d930152053d passed immutable clean replay. It is not an accepted XLIFF proof or Event 36 until the branch commit is pushed and the native controller transaction is appended.",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

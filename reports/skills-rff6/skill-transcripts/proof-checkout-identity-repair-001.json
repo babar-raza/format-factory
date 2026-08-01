@@ -1,0 +1,98 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "proof-checkout-identity-repair-001",
+  "skill_id": "proof-checkout-identity-repair",
+  "task_id": "XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001",
+  "mode": "live",
+  "timestamp": "2026-08-01T07:20:00Z",
+  "inputs": {
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "source_commit": "5644d1823b048f7135797bc8500651a70a9418ba",
+    "accepted_event": "FF6-EVENT-000035",
+    "non_promoting_xliff_attempt": "2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17",
+    "failing_commit": "2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17",
+    "defect_id": "FF6-GAP-011/FF6-HO-GAP-003",
+    "root_cause": "TRACKED_TEXT_EOL_POLICY_AND_RAW_HASH_MODEL_DISAGREE",
+    "supported_checkout_modes": ["false", "input", "true"],
+    "proof_bearing_paths": [
+      "shared/sal-facts/evidence/xliff.yaml",
+      "shared/sal-facts/xliff.yaml",
+      "reports/sal-verification/xliff.json",
+      "reports/ff6/xliff-core-authority-candidate-census.yaml",
+      "reports/ff6/xliff-core-obligation-denominator.yaml"
+    ],
+    "binary_fixture_paths": [
+      "samples/**",
+      "tests/fixtures/**",
+      "oracle/formats/**/fixtures/**"
+    ],
+    "execution_manifest_id": "sfx-e823e30b3f39c0c4",
+    "pre_mutation_authorization_id": "608b3bb3084c8cb2"
+  },
+  "allowed_files": [
+    ".gitattributes",
+    "tests/governance/test_proof_checkout_identity.py",
+    "reports/skills-rff6/skill-transcripts/proof-checkout-identity-repair-001.json"
+  ],
+  "actual_files_changed": [
+    ".gitattributes",
+    "tests/governance/test_proof_checkout_identity.py",
+    "reports/skills-rff6/skill-transcripts/proof-checkout-identity-repair-001.json"
+  ],
+  "decision": {
+    "selected_invariant": "All tracked proof-bearing text uses LF checkout bytes; byte-sensitive samples, fixtures, archives, compressed data, notebooks, images, and format payloads are explicitly non-text with inherited eol state cleared.",
+    "rejected_alternative": "No raw-versus-normalized digest fallback was introduced because accepting two identities would weaken tamper detection and preserve ambiguity.",
+    "scope": "Repository checkout identity only. No proof producer, proof consumer, historical receipt, format contract, product source, controller event, gate, promotion, or certification was changed."
+  },
+  "deeper_root_cause": {
+    "first_candidate_result": "44 checkout-policy tests passed, but clean immutable XLIFF replay still failed 4 of 21 adjudicator tests.",
+    "finding": "The live SAL receipt was generated from a manifest containing 821 CRLF pairs and 29 lone LF endings, and its verifier closure was generated from two CRLF Python working copies. The corresponding Git objects materialize as LF in a clean checkout.",
+    "durable_response": "Re-materialize the manifest and verifier closure from immutable LF checkout bytes, regenerate the current SAL receipt with the authoritative verifier, and rebuild only declared descendants. Do not accept mixed/raw alternatives."
+  },
+  "immutable_replay": {
+    "candidate_commit": "e9b30185f84cc05a6b5f4b09cabcc74e939139ad",
+    "candidate_tree": "1e16157e4021d68b11aab2d767dd9d930152053d",
+    "checkout_mode": "core.autocrlf=true",
+    "receipt_apply_idempotent": true,
+    "affected_tests": "115 passed",
+    "production_program": "69 passed",
+    "format_contract": "94 passed, 1 exact documented deselection",
+    "three_run_generation": "PASS",
+    "static_and_authority": "PASS"
+  },
+  "baseline_failure": {
+    "clean_checkout": "commit 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17 under Windows-style autocrlf",
+    "result": "5 failed, 66 passed",
+    "example_lf_digest": "3a961199eb156658c978f36361f483498aefcd5e7a1582c14df6577a53410b9a",
+    "example_crlf_digest": "dd5b1b37dbfa8c2f435dbaf4e4c6015842dba3be54fe4f31e9d042ae80d4471b",
+    "example_path": "shared/sal-facts/evidence/xliff.yaml"
+  },
+  "verification": [
+    "44 checkout-identity tests passed across text policy, binary exclusions, three core.autocrlf modes, and semantic tamper controls",
+    "combined checkout identity, XLIFF adjudicator, and extractor suite: 115 passed locally and 115 passed from immutable candidate 2 under core.autocrlf=true",
+    "69 production-program tests passed",
+    "94 format-contract tests passed with one exact documented stateful deselection",
+    "adjudication and obligation inventory check modes passed",
+    "three isolated generations of each XLIFF artifact were byte-identical to canonical outputs",
+    "canonical XLIFF SAL verification and five authority matches passed",
+    "Ruff, strict Mypy, Pyright 1.1.411, py_compile, and diff hygiene passed"
+  ],
+  "tests_run": [
+    "checkout identity regression: 44 passed",
+    "affected XLIFF adjudicator/extractor suites: 71 passed",
+    "production-program regression: 69 passed",
+    "format-contract regression: 94 passed with one exact documented stateful deselection",
+    "adjudication and obligation inventory check modes: PASS",
+    "three isolated generations of each canonical XLIFF artifact: byte-identical",
+    "canonical XLIFF SAL verification and authority audit: PASS",
+    "Ruff, strict Mypy, Pyright 1.1.411, py_compile, and git diff --check: PASS"
+  ],
+  "output_digests": {
+    ".gitattributes": "906054a6ac57f272e8ac337338a78dfea905776f6a1d2e8cf714148c99dfc982",
+    "tests/governance/test_proof_checkout_identity.py": "1f3a2c4dc53f9f14d5a071b74560da067383f1d3ba63c773f340931d11ecdc96"
+  },
+  "result": "PASS",
+  "promotion_boundary": "The exact staged tree passed clean immutable replay and self-regenerated byte-identical SAL proof. Event 35 remains authoritative until the branch commit is pushed and a separate native controller event accepts PARTIAL-002-D.",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

@@ -1,0 +1,77 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "create-ff-skill-proof-checkout-identity-001",
+  "skill_id": "create-ff-skill",
+  "task_id": "XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001",
+  "mode": "live",
+  "timestamp": "2026-08-01T06:51:49Z",
+  "inputs": {
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "target_capability_or_skill_gap": "SKILL-GAP-FF6-PROOF-CHECKOUT-IDENTITY-001",
+    "execution_manifest_id": "sfx-3019eb7ba805b2bf",
+    "pre_mutation_authorization_id": "15a77f65dcb2fdda"
+  },
+  "allowed_files": [
+    ".claude/commands/proof-checkout-identity-repair.md",
+    ".supervisor/skill-registry.yaml",
+    ".claude/commands/command-registry.yaml",
+    "plans/layers/index.yaml",
+    "reports/skills-rff6/skill-transcripts/create-ff-skill-proof-checkout-identity-001.json"
+  ],
+  "actual_files_changed": [
+    ".claude/commands/proof-checkout-identity-repair.md",
+    ".supervisor/skill-registry.yaml",
+    ".claude/commands/command-registry.yaml",
+    "plans/layers/index.yaml",
+    "reports/skills-rff6/skill-transcripts/create-ff-skill-proof-checkout-identity-001.json"
+  ],
+  "pressure_scenario_baseline": {
+    "source": "observed production replay rather than a hypothetical prompt",
+    "failing_commit": "2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17",
+    "shared_result": "71 passed",
+    "clean_windows_result": "5 failed, 66 passed",
+    "shortcut_exposed": "Refreshing checkout-local receipts would hide the byte-identity defect instead of repairing it.",
+    "note": "The active runtime prohibited spawning a subordinate agent. The already-recorded clean-checkout production failure is stronger direct RED evidence and was preserved without inventing a simulated result."
+  },
+  "authoring": {
+    "skill_id": "proof-checkout-identity-repair",
+    "command_file": ".claude/commands/proof-checkout-identity-repair.md",
+    "shape": "atomic configuration repair",
+    "should_trigger": "same Git object produces different proof bytes because text/EOL attributes are absent or contradictory",
+    "should_not_trigger": "semantic serializer nondeterminism, corrupt fixtures, authority drift, or generic formatting",
+    "anti_pattern_review": "PASS: narrow trigger, numbered execution, explicit allowed and forbidden paths, stop conditions, idempotency, no network or shell deployment, no digest fallback",
+    "skill_scanner": "PASS: no external instructions, credentials, network calls, plugin dependencies, lifecycle hooks, destructive commands, or prompt-injection content"
+  },
+  "registration_pipeline": {
+    "preflight": "PASS",
+    "registry_insertion": "PASS",
+    "sync_first": "1 repaired, 0 flags",
+    "sync_second": "0 repaired, 0 flags",
+    "duplicate_check": "0 duplicate, 0 overlapping",
+    "contract_validation": "199 skills, 0 FAIL, 0 WARN",
+    "layer_attribution": "L13 Skills Layer contains skill ID, command ID, and command evidence path"
+  },
+  "tests_run": [
+    "preflight_skill_entry.py: PASS",
+    "sync_skill_command_registry.py first run: 1 repaired, 0 flags",
+    "sync_skill_command_registry.py second run: 0 repaired, 0 flags",
+    "detect-duplicate-skills: 0 duplicate, 0 overlapping",
+    "validate_skill_contracts.py: 199 skills, 0 FAIL, 0 WARN",
+    "L13 layer attribution assertion: PASS",
+    "git diff --check: PASS"
+  ],
+  "mandatory_validations": {
+    "pressure_scenario_baseline_documented": true,
+    "ff_conventions_used_not_upstream_generic": true,
+    "synthesized_from_used_for_multi_source": true,
+    "anti_pattern_checklist_applied": true,
+    "registration_pipeline_completed": true,
+    "layer_attribution_completed": true,
+    "no_upstream_deployment_step_present": true
+  },
+  "result": "PASS",
+  "warnings": [],
+  "truth_boundary": "The skill is registered and routeable for this repair. No checkout policy, product evidence, controller event, certification, or promotion has changed yet.",
+  "generated_by": "codex",
+  "visibility": "generated"
+}

@@ -1,0 +1,64 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "validate-missing-skill-workflow-proof-checkout-identity-001",
+  "skill_id": "validate-missing-skill-workflow",
+  "task_id": "XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001",
+  "mode": "live",
+  "timestamp": "2026-08-01T06:50:18Z",
+  "inputs": {
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "capability_description": "Enforce deterministic Git checkout bytes for proof-bearing text while preserving raw SHA-256 evidence and binary fixtures.",
+    "operation_type": "changing_project_files",
+    "route_id": "missing_skill_capability",
+    "search_results": [
+      "worktree-skill-guard-repair",
+      "sal-pipeline-heal",
+      "production-program-controller-repair",
+      "test-driven-development",
+      "skill-improver"
+    ],
+    "rejection_reasons": {
+      "worktree-skill-guard-repair": "Hook-root repair scope does not include checkout policy.",
+      "sal-pipeline-heal": "SAL pipeline scope does not include .gitattributes.",
+      "production-program-controller-repair": "Controller identity scope does not include Git checkout policy.",
+      "test-driven-development": "Tests-only write scope cannot perform the GREEN config mutation.",
+      "skill-improver": "Existing-skill review scope cannot create the missing capability."
+    },
+    "execution_manifest_id": "sfx-4eb71addf6318dcf",
+    "pre_mutation_authorization_id": "b80dc9e9ac8316ea"
+  },
+  "allowed_files": [
+    ".local/taskcards/SKILL-GAP-FF6-PROOF-CHECKOUT-IDENTITY-001.yaml",
+    "reports/skills-rff6/skill-transcripts/validate-missing-skill-workflow-proof-checkout-identity-001.json"
+  ],
+  "actual_files_changed": [
+    ".local/taskcards/SKILL-GAP-FF6-PROOF-CHECKOUT-IDENTITY-001.yaml",
+    "reports/skills-rff6/skill-transcripts/validate-missing-skill-workflow-proof-checkout-identity-001.json"
+  ],
+  "search_results": [
+    "worktree-skill-guard-repair",
+    "sal-pipeline-heal",
+    "production-program-controller-repair",
+    "test-driven-development",
+    "skill-improver"
+  ],
+  "rejection_reasons": {
+    "worktree-skill-guard-repair": "Hook-root repair scope does not include checkout policy.",
+    "sal-pipeline-heal": "SAL pipeline scope does not include .gitattributes.",
+    "production-program-controller-repair": "Controller identity scope does not include Git checkout policy.",
+    "test-driven-development": "Tests-only write scope cannot perform the GREEN config mutation.",
+    "skill-improver": "Existing-skill review scope cannot create the missing capability."
+  },
+  "decision": "CREATE",
+  "proposed_skill_id": "proof-checkout-identity-repair",
+  "gap_record_path": ".local/taskcards/SKILL-GAP-FF6-PROOF-CHECKOUT-IDENTITY-001.yaml",
+  "tests_run": [
+    "skill and capability registries queried",
+    "five adjacent active skills evaluated with explicit rejection reasons",
+    "resolver false-positive check-gate rejected because its declared write scope does not cover .gitattributes"
+  ],
+  "result": "PASS",
+  "warnings": [],
+  "generated_by": "codex",
+  "visibility": "generated"
+}
