@@ -978,6 +978,95 @@ The next executor must:
 8. leave XLF-04 and every product/release state incomplete unless the complete
    evidence graph—not this single microstep—proves otherwise.
 
+## Verified start-code isolation checkpoint - Event 40
+
+Native `FF6-EVENT-000040` supersedes every earlier resume instruction in this
+taskcard. The accepted semantic boundary is immutable GitLab `main` commit
+`d95af5aeb248907b4d23457ecd288723fc9c2050`.
+
+Accepted evidence:
+
+- exact candidate `XLF-CAND-CORE-SCHEMATRON-E891C4DEC555F165` is bound by
+  content SHA-256
+  `04aeb46e7eeaa854cf9554005a11476334fa8f41f6db9a45ca2f0e38b8d6d0e6`,
+  requirement SHA-256
+  `d7daf659d3b7ad1388c42203d845b452afe12e8e05134d35d36a26cb9cc5e60c`,
+  and occurrence SHA-256
+  `cb57d9e386c6274b0aa0aedca3e2b4bab1dbaafb41ff2e66a884681485d6c84f`;
+- decision `XLF-ADJ-CORE-SCHEMATRON-0009`, digest
+  `48ca690f9a75720e407b485666b0c87b1d09d6deeba06ad3fc6f38f272c20ba9`,
+  accepts only new direct owner `SAL-XLIFF-CORE-INLINE-ISOLATION-001`;
+- generated validator, hierarchy, complete `sc`/`ec` surface, `startRef`, and
+  source-cardinality proposals are explicitly rejected as downstream,
+  incidental, or mechanism/surface concerns rather than the value invariant;
+- exact fact `SAL-XLIFF-D5C1325C047A7CB0` binds identical XLIFF 2.0 and 2.1
+  normative prose for the complete `isolated` biconditional and the XLIFF 2.1
+  F5S source-side report; six assertions pass with proof digest
+  `c584c795046953ff73f4de7db941bdbae9abd35fc0d838bf9cc297b9790a3085`;
+- all 30 predecessor obligation objects and all 8 predecessor decision objects
+  are semantically identical, the 1,130-candidate census is byte-identical,
+  and exactly one new obligation and one new decision were appended;
+- coverage advances only to `31/105`, with `74` missing; independently verified
+  candidate dispositions advance only to `9/1,130`, with `1,121` unverified;
+- three isolated regenerations produced byte-identical adjudication digest
+  `51ac3adc6fa530246ff25b70e179d040d68eeb65dc8a744794e0d4fbe7738e42`
+  and inventory digest
+  `7bb46e814b5be12ad313ba0ec77c0585a279f8f85f6cb974481414368c5e713b`;
+- 113 affected tool tests, 94 format-contract tests with the exact documented
+  stateful CSV test deselected, and 69 production-program tests pass; Ruff,
+  strict Mypy, Pyright 1.1.411, and bytecode compilation pass;
+- a detached checkout of the semantic commit passes the three focused tests,
+  SAL verification, adjudication and inventory check modes, contract
+  idempotency/check mode, and the complete five-record authority closure; and
+- four semantic skill transcripts validate with zero warnings.
+
+Two replay attempts are excluded from promoting proof. The first did not
+collect tests because it ran from the wrong working directory and used one
+incorrect selector suffix. The second copied only four of the five XLIFF
+authority records, causing the contract digest check to fail. The accepted
+replay recaptured all four cached binary authorities plus the tracked product
+requirement record, verified their digests, recreated the detached checkout,
+and then passed. This also exposes a remaining machinery weakness: the compiler
+hashes a missing local authority as empty bytes instead of failing closed.
+Event 40 does not claim that weakness is repaired.
+
+This checkpoint proves one authority-to-obligation increment only. XLF-04, all
+later contract steps, product source, certification, promotion, release, and
+every gate remain incomplete. Program certification remains `0/6`, and every
+format remains `UNASSESSED`.
+
+The exact next microstep is `XLF-04-BATCH-005-PARTIAL-002-I`, candidate
+`XLF-CAND-CORE-SCHEMATRON-60B596A00F7FA06A`, content SHA-256
+`41719598a09ae47886c9d146932117abc74da0c2c6f51482d1e2a94c109dd900`,
+requirement SHA-256
+`823cd7fb987463c882d783105487f3463a316392accad13d3be184487c2c4959`,
+and occurrence SHA-256
+`90c4965db1a12842770b7212cddaa078a48f48848896387093ad56cf4cdcf1a6`.
+The exact pinned occurrence is `schemas/xliff_core_2.1.sch` at
+`schematron/rule[16]/report[1]`; it is the target-side analogue of the accepted
+source-side isolation report.
+
+The next executor must:
+
+1. fetch GitLab `origin/main`, validate Event 40, and verify semantic commit
+   `d95af5ae` is an ancestor before mutation;
+2. independently read the exact target-side authority occurrence and stable
+   prose rather than copying the source-side conclusion;
+3. determine whether the candidate supplies reciprocal evidence for existing
+   `SAL-XLIFF-CORE-INLINE-ISOLATION-001`; do not add a duplicate obligation;
+4. treat all eight generated mappings as proposals and reject every incidental,
+   downstream, element-surface, reference-mechanism, or unrelated cardinality
+   mapping explicitly;
+5. begin with a genuine failing test and add positive, rejection, tamper,
+   profile, reciprocal-completeness, and predecessor-preservation controls;
+6. preserve all 31 accepted obligation rows, all 9 accepted decisions, all
+   1,130 candidate identities, and checkout-mode proof identity;
+7. replay deterministic, static, authority, SAL, format-contract,
+   production-program, transcript, immutable-checkout, and native-event
+   controls with all five authority records materialized; and
+8. keep XLF-04 and every product/release state incomplete unless the complete
+   evidence graph, not this single microstep, proves otherwise.
+
 ## Required execution
 
 ### XLF-01 — Revalidate the clean predecessor

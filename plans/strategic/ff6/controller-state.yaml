@@ -4,10 +4,10 @@ goal_status: ACTIVE
 generated_by: codex
 visibility: internal
 controller_state: CONTRACT
-transition_sequence: 39
+transition_sequence: 40
 last_verified_event:
-  event_id: FF6-EVENT-000039
-  event_hash: 5f76c75ca4f7bc0845b22dccd38a195e962fb49b5f4161651737ab23d560cd36
+  event_id: FF6-EVENT-000040
+  event_hash: c9c7167d447fbe0945c7a65c288f3cece78c64090e09c1ce2d674fdbf9bf2d63
 event_journal: plans/strategic/ff6/events.jsonl
 baseline_commit: e4f8f5f086b5e627c07c2ef2d940eda2601a22a8
 digest_policy:
@@ -43,14 +43,14 @@ next_task:
   task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
   state: WORK_IN_PROGRESS
   unlock_condition: >-
-    Resume from Event 39 and immutable GitLab commit 39b2e89f at
-    XLF-04-BATCH-005-PARTIAL-002-H. Revalidate the accepted boundary of 30/105
-    obligations with 75 missing and 8/1,130 accepted dispositions. Adjudicate
-    exact candidate XLF-CAND-CORE-SCHEMATRON-E891C4DEC555F165 independently.
+    Resume from Event 40 and immutable GitLab commit d95af5ae at
+    XLF-04-BATCH-005-PARTIAL-002-I. Revalidate the accepted boundary of 31/105
+    obligations with 74 missing and 9/1,130 accepted dispositions. Adjudicate
+    exact candidate XLF-CAND-CORE-SCHEMATRON-60B596A00F7FA06A independently.
     Treat all eight generated mappings as unverified proposals; determine the
-    exact owner of the isolated start-code constraint or expand the denominator
-    only when authority proves a distinct obligation. Reject incidental trigger
-    context and downstream validator surfaces explicitly. Preserve all 30
+    target-side report's direct owner and whether it supplies reciprocal proof
+    for the existing inline-isolation obligation. Reject incidental trigger
+    context and downstream validator surfaces explicitly. Preserve all 31
     accepted rows and all 1,130 candidate IDs. Product source and architecture
     remain blocked until XLF-04 and later contract steps close.
 promotion:
@@ -201,8 +201,8 @@ xlf_checkpoint:
   completed_xlf_04_batches: [XLF-04-BATCH-001, XLF-04-BATCH-002, XLF-04-BATCH-003, XLF-04-BATCH-004]
   first_unmet_step: XLF-04
   microstate: RESUMABLE
-  active_microstep: XLF-04-BATCH-005-PARTIAL-002-H
-  checkpoint_source_commit: 39b2e89fde0f7dd5e1acebc424f4d700dfe74765
+  active_microstep: XLF-04-BATCH-005-PARTIAL-002-I
+  checkpoint_source_commit: d95af5aeb248907b4d23457ecd288723fc9c2050
   implemented_slice:
     - digest_bound_bounded_zip_authority_reader
     - xliff_2_0_2_1_core_module_structural_inventory
@@ -280,6 +280,11 @@ xlf_checkpoint:
     - profile_specific_target_language_compatibility
     - independent_target_language_compatibility_candidate_adjudication
     - fresh_xliff_contract_descendant_recompilation
+    - start_code_isolation_sal_fact_exact_assertion_binding
+    - stable_profile_inline_isolation_biconditional
+    - independent_source_side_isolation_candidate_adjudication
+    - generated_surface_and_reference_mechanism_rejection
+    - cumulative_thirty_one_obligation_real_authority_batch
   non_promoting_attempts:
     - attempt_id: XLF-04-BATCH-005-PARTIAL-002-B
       commit: d99fc6bf3679cd39396afbf5621847e3009ddf31
@@ -359,18 +364,30 @@ xlf_checkpoint:
       obligation_rows_added: 0
       obligation_rows_profile_corrected: 1
       unaffected_predecessor_rows_unchanged: 28/28
+    - microstep_id: XLF-04-BATCH-005-PARTIAL-002-H
+      commit: d95af5aeb248907b4d23457ecd288723fc9c2050
+      result: PASS
+      candidate_id: XLF-CAND-CORE-SCHEMATRON-E891C4DEC555F165
+      decision_id: XLF-ADJ-CORE-SCHEMATRON-0009
+      decision_sha256: 48ca690f9a75720e407b485666b0c87b1d09d6deeba06ad3fc6f38f272c20ba9
+      direct_obligation: SAL-XLIFF-CORE-INLINE-ISOLATION-001
+      selected_candidate_profiles: [xliff_2.1]
+      authority_profiles: [xliff_2.0, xliff_2.1]
+      decisions: 1
+      obligation_rows_added: 1
+      predecessor_rows_unchanged: 30/30
   remaining_steps: [XLF-04, XLF-05, XLF-06, XLF-07, XLF-08]
   exact_next_action: >-
-    Execute XLF-04-BATCH-005-PARTIAL-002-H from Event 39 and immutable GitLab
-    main commit 39b2e89f. Independently adjudicate candidate
-    XLF-CAND-CORE-SCHEMATRON-E891C4DEC555F165, the XLIFF 2.1 isolated start-code
-    report. Treat all eight generated mappings as unverified proposals.
-    Determine the exact direct semantic owner or expand the denominator only
-    when exact authority proves a distinct obligation; reject incidental
-    trigger context and downstream validator surfaces. Preserve all 30 accepted
-    rows and all 1,130 candidate IDs, and keep completeness false.
+    Execute XLF-04-BATCH-005-PARTIAL-002-I from Event 40 and immutable GitLab
+    main commit d95af5ae. Independently adjudicate candidate
+    XLF-CAND-CORE-SCHEMATRON-60B596A00F7FA06A, the XLIFF 2.1 target-side
+    isolated start-code report. Determine whether it supplies reciprocal proof
+    for the existing inline-isolation obligation. Treat all eight generated
+    mappings as unverified proposals, reject incidental context and downstream
+    surfaces, preserve all 31 accepted rows and all 1,130 candidate IDs, and
+    keep completeness false.
   source: tools/spec/extract_sal_facts.py
-  source_sha256: 4c508b0b5b8c87323958235deeb11410457ed333658a7369bf7ad7651754e0c4
+  source_sha256: 33b619a6bd9c2eaf5ef8b22d4d5740eb1caf5e15b2845be1daef8e37a1f313e8
   sal_seed_source: tools/spec/seed_sal_candidates.py
   sal_seed_source_sha256: 55a980a512e80768c6aaaf2f5d0f2ee8a2857688eb2634a31dcd0ecb0723bde6
   candidate_adjudication_source: tools/spec/xliff_core_candidate_adjudication.py
@@ -378,14 +395,14 @@ xlf_checkpoint:
   candidate_binding_source: tools/spec/xliff_core_candidate_binding.py
   candidate_binding_source_sha256: 042c670acefff8d0a6932ea3df7f1582f887f756148dd0bdfc356f69ca56f8b7
   tests: tests/tools/test_extract_sal_facts.py
-  tests_sha256: 1cc398aa1d1c3aa4bde8cbc443234bf0d6e754544bc89d175ed583849f7cb9df
+  tests_sha256: cfcdaedf6445688023bce18f873026c942e51fd3e7e052fdb9511e7432f0d55c
   sal_seed_tests: tests/tools/test_seed_sal_candidates.py
   sal_seed_tests_sha256: 4686855981811295caf15c1c14840eed2c8242de84977bcb9bc7a24b21b04aa7
   candidate_adjudication_tests: tests/tools/test_xliff_core_candidate_adjudication.py
-  candidate_adjudication_tests_sha256: eddb5deb1abccdd5c21ec1dba160879ef0a687b7f96ade3b558f390c7e91fa17
+  candidate_adjudication_tests_sha256: d4768b405c78da4104050276fc5461026e2f2e52c26ff243f081e39970257b3e
   candidate_binding_tests: tests/tools/test_extract_sal_facts_candidate_binding.py
   candidate_binding_tests_sha256: 576868da9f490fda3e9ca0913cd9335df8a38746dee347246052384aebe27caf
-  focused_tests: 77 affected XLIFF tests from immutable semantic commit
+  focused_tests: 113 affected XLIFF tests plus 3 focused tests from immutable semantic commit
   ruff: PASS
   mypy_strict: PASS
   pyright: PASS_ZERO_DIAGNOSTICS_1_1_411
@@ -396,15 +413,15 @@ xlf_checkpoint:
   matrix_unique_ids: 36
   real_authority_replays: 3_identical
   core_obligation_inventory: reports/ff6/xliff-core-obligation-inventory.yaml
-  core_obligation_inventory_sha256: ea376cbaad5e8559b6789844be2bef06478e5b8ee69f7a3c557cfbc5bd474370
-  core_obligation_count: 30
-  core_production_accepted_obligation_count: 30
+  core_obligation_inventory_sha256: 7bb46e814b5be12ad313ba0ec77c0585a279f8f85f6cb974481414368c5e713b
+  core_obligation_count: 31
+  core_production_accepted_obligation_count: 31
   core_obligation_status: SOURCE_LOCATED_PARTIAL
   core_obligation_verification_status: VERIFIED_PARTIAL
   candidate_adjudication_artifact: reports/sal-verification/xliff-core-candidate-adjudications.yaml
-  candidate_adjudication_sha256: d63a31f936262c9952a0f50afd076b8547bc5c26cbdfd5adf04464b5f2c3dcc2
-  candidate_dispositions_verified: 8
-  candidate_dispositions_unverified: 1122
+  candidate_adjudication_sha256: 51ac3adc6fa530246ff25b70e179d040d68eeb65dc8a744794e0d4fbe7738e42
+  candidate_dispositions_verified: 9
+  candidate_dispositions_unverified: 1121
   core_covered_categories:
     - agent_processing
     - document_structure
@@ -424,12 +441,12 @@ xlf_checkpoint:
   core_denominator_sha256: 86a4f2cdc6e4a341eba2a3cbb6fcc8119883d1cda64d056198c7c34b7fa880b7
   core_denominator_status: OPEN_AUTHORITY_CENSUS
   core_expected_obligation_count: 105
-  core_resolved_expected_obligation_count: 30
-  core_production_accepted_resolved_obligation_count: 30
-  core_missing_expected_obligation_count: 75
-  core_production_accepted_missing_obligation_count: 75
-  core_specification_obligation_count: 26
-  core_production_accepted_specification_obligation_count: 26
+  core_resolved_expected_obligation_count: 31
+  core_production_accepted_resolved_obligation_count: 31
+  core_missing_expected_obligation_count: 74
+  core_production_accepted_missing_obligation_count: 74
+  core_specification_obligation_count: 27
+  core_production_accepted_specification_obligation_count: 27
   core_production_policy_obligation_count: 4
   core_completeness_basis: EXPLICIT_EXPECTED_OBLIGATION_IDS_OPEN_CENSUS
   core_complete: false
@@ -460,8 +477,8 @@ xlf_checkpoint:
   core_non_modal_prose_census_complete: true
   core_non_modal_prose_disposition_complete: true
   core_non_modal_prose_classification_verified: false
-  core_candidate_dispositions_verified: 8
-  core_candidate_dispositions_unverified: 1122
+  core_candidate_dispositions_verified: 9
+  core_candidate_dispositions_unverified: 1121
   core_candidate_authority_replay_bound: true
   core_normative_obligation_inventory_complete: false
   core_candidate_real_authority_replays: 3_identical
@@ -507,8 +524,13 @@ xlf_checkpoint:
     accepts the existing target-language owner, rejects generated overmaps and
     omitted-value inheritance, preserves 28 unaffected predecessor rows, and
     corrects the existing target-language row without expanding the denominator.
-    Production acceptance is therefore 30/105 rows, 75 missing rows, 8 verified
-    dispositions, and 1,122 unverified dispositions. The freshly rebuilt XLIFF
+    Partial-002-H at commit d95af5ae binds identical XLIFF 2.0 and 2.1 prose
+    for the sc isolated biconditional and the XLIFF 2.1 F5S source-side report,
+    accepts only the new direct inline-isolation owner, rejects downstream,
+    incidental, element-surface, and reference-mechanism overclaims, and
+    preserves all 30 predecessor rows and 8 predecessor decisions. Production
+    acceptance is therefore 31/105 rows, 74 missing rows, 9 verified
+    dispositions, and 1,121 unverified dispositions. The freshly rebuilt XLIFF
     ProductContract remains DRAFT with 15 capabilities.
     The denominator remains an open authority census. Complete verified
     classification, module obligations, product behavior, certification, and

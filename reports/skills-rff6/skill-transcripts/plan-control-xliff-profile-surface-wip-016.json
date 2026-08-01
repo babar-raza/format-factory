@@ -1,0 +1,105 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "plan-control-xliff-profile-surface-wip-016",
+  "skill_id": "plan-control",
+  "mode": "live",
+  "timestamp": "2026-08-01T14:52:07Z",
+  "inputs": {
+    "task_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "operation": "project",
+    "target_paths": [
+      "plans/strategic/ff6/events.jsonl",
+      "plans/strategic/ff6/controller-state.yaml",
+      "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md"
+    ],
+    "coordination_identity": "agent-codex-20260801T140552-7b3a68",
+    "coordination_scope": "Exact Event 40 journal, controller, XLIFF taskcard, and transcript paths. Older unrelated open conflicts and all unrelated worktree state were preserved without resolution, takeover, or mutation.",
+    "acceptance_evidence": "Semantic commit d95af5aeb248907b4d23457ecd288723fc9c2050 on GitLab main; 113 affected tests; 94 format-contract tests with one exact stateful CSV deselection; 69 production-program tests; exact SAL, adjudication, inventory, contract, authority, static, deterministic, predecessor-preservation, transcript, and detached-checkout evidence.",
+    "source_checkpoint": "d95af5aeb248907b4d23457ecd288723fc9c2050",
+    "execution_manifest": ".local/skills-first/manifests/sfx-1b20499e4cc57544.json",
+    "authorization_id": "d7d732a1d811f922"
+  },
+  "allowed_files": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
+    "reports/skills-rff6/skill-transcripts/plan-control-xliff-profile-surface-wip-016.json"
+  ],
+  "actual_files_changed": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md",
+    "reports/skills-rff6/skill-transcripts/plan-control-xliff-profile-surface-wip-016.json"
+  ],
+  "tests_run": [
+    "Native FF6 event chain: PASS through sequence 40 and hash c9c7167d447fbe0945c7a65c288f3cece78c64090e09c1ce2d674fdbf9bf2d63.",
+    "Controller sequence/head, accepted counts, next candidate, and taskcard semantics agree.",
+    "Semantic commit d95af5aeb248907b4d23457ecd288723fc9c2050 is present on GitLab main.",
+    "Affected shared-worktree suites: 113 passed; format-contract 94 passed with one exact deselection; production-program 69 passed.",
+    "Detached replay: 3 focused tests plus SAL, adjudication, obligation, contract, and authority checks pass with the complete five-record XLIFF closure.",
+    "Three isolated adjudication and inventory generations are byte-identical.",
+    "All 30 predecessor obligations, all 8 predecessor decisions, and all 1,130 candidate identities are preserved.",
+    "Ruff, strict Mypy, Pyright 1.1.411, and py_compile pass.",
+    "Four semantic skill transcripts validate with zero warnings."
+  ],
+  "excluded_attempts": [
+    {
+      "attempt": "detached replay collection attempt",
+      "reason": "wrong working directory and one incorrect long selector prevented test collection",
+      "promoting_evidence": false
+    },
+    {
+      "attempt": "detached replay with incomplete authority closure",
+      "reason": "SRC-XLIFF-003 was not copied, so the contract check correctly exposed digest drift",
+      "promoting_evidence": false
+    }
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "event_id": "FF6-EVENT-000040",
+    "event_hash": "c9c7167d447fbe0945c7a65c288f3cece78c64090e09c1ce2d674fdbf9bf2d63",
+    "events_sha256_lf": "5e255fed9f0ffc1f2bc7f298c6a9b6405b0a04d5c3cf8313eea045030172b952",
+    "controller_sha256_lf": "5f7bd0b8f48e16b402ffee8e43560339c0c1496d7ab47cd9c691ecd0626218da",
+    "taskcard_sha256_lf": "43d5354ce26df4703d93b27b57a4e5011bf57b94a32b0a0f6b1fa864e1b1199e",
+    "semantic_commit": "d95af5aeb248907b4d23457ecd288723fc9c2050",
+    "task_state": "WORK_IN_PROGRESS",
+    "first_unmet_step": "XLF-04",
+    "completed_microstep": "XLF-04-BATCH-005-PARTIAL-002-H",
+    "next_microstep": "XLF-04-BATCH-005-PARTIAL-002-I",
+    "accepted_candidate_id": "XLF-CAND-CORE-SCHEMATRON-E891C4DEC555F165",
+    "next_candidate_id": "XLF-CAND-CORE-SCHEMATRON-60B596A00F7FA06A",
+    "candidate_count": 1130,
+    "candidate_dispositions_verified": 9,
+    "candidate_dispositions_unverified": 1121,
+    "source_bound_obligations": 31,
+    "expected_obligations": 105,
+    "missing_obligations": 74,
+    "compiled_contract_lifecycle": "DRAFT",
+    "compiled_contract_capabilities": 15,
+    "xlf_04_complete": false,
+    "ubl_03_complete": false,
+    "product_promotion": "none",
+    "production_certifications": "0/6"
+  },
+  "self_challenge": {
+    "1_all_required_steps": "YES for serialization of the bounded Event 40 checkpoint",
+    "2_required_evidence_present": "YES",
+    "3_evidence_sufficient": "YES for one inline-isolation obligation and one candidate disposition only",
+    "4_secondary_source_used_where_primary_required": "NO",
+    "5_phase_forbidden_file_created": "NO",
+    "6_self_approved_gate": "NO",
+    "7_next_phase_work_performed": "NO",
+    "8_unauthorized_commit_or_push": "NO",
+    "9_checkpoint_inspection_preserved": "YES",
+    "10_unlogged_gap": "NO; incomplete authority replay attempts and missing-authority fail-closed weakness are explicit",
+    "11_relevant_memory_read": "YES",
+    "12_memory_context_only": "YES",
+    "13_memory_contradiction_logged": "YES; live GitLab, pinned authorities, native events, and immutable proof are authoritative",
+    "14_memory_update_trigger": "NOT APPLICABLE",
+    "15_human_review_requested": "NOT APPLICABLE"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}
