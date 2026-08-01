@@ -1,0 +1,42 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "create-taskcard-ff6-plan-throughput-001",
+  "skill_id": "create-taskcard",
+  "mode": "live",
+  "timestamp": "2026-08-01T19:52:03Z",
+  "inputs": {
+    "task_id": "TC-FF6-PLAN-THROUGHPUT-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "taskcard_id": "TC-FF6-PLAN-THROUGHPUT-001",
+    "title": "Harden FF6 production throughput",
+    "format_id": null,
+    "execution_manifest": "sfx-96085dc3e27ea47e"
+  },
+  "allowed_files": [
+    "taskcards/TC-FF6-PLAN-THROUGHPUT-001.md",
+    "taskcards/index.yaml",
+    "reports/skills-rff6/skill-transcripts/create-taskcard-ff6-plan-throughput-001.json"
+  ],
+  "actual_files_changed": [
+    "taskcards/TC-FF6-PLAN-THROUGHPUT-001.md",
+    "taskcards/index.yaml",
+    "reports/skills-rff6/skill-transcripts/create-taskcard-ff6-plan-throughput-001.json"
+  ],
+  "tests_run": [
+    "taskcard front matter parsed as YAML",
+    "taskcards/index.yaml parsed as YAML",
+    "TC-FF6-PLAN-THROUGHPUT-001 appears exactly once in the index",
+    "owned and forbidden paths are explicit",
+    "acceptance criteria preserve Event-46 product and controller state"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "taskcard_sha256": "dd47944accdbb7ebd8f31a8feeb5179d09bb8518e99c31a4a1527690b9fb1b89",
+    "task_index_sha256": "b81c8aa2ae1e1832ccdce47b70d53e0c56d529c33fc17e46a5053482e6ac4c07",
+    "task_state": "complete",
+    "product_promotion_effect": "none"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

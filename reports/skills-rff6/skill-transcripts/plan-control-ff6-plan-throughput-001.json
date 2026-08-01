@@ -1,0 +1,46 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "plan-control-ff6-plan-throughput-001",
+  "skill_id": "plan-control",
+  "mode": "live",
+  "timestamp": "2026-08-01T19:52:03Z",
+  "inputs": {
+    "task_id": "TC-FF6-PLAN-THROUGHPUT-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "operation": "integrate",
+    "target_paths": [
+      "plans/strategic/autonomous-six-python-production-execution-plan.md"
+    ],
+    "coordination_scope": "logical:FF6-PLAN-THROUGHPUT",
+    "acceptance_evidence": "22/22 hardening, exact 689-obligation denominator, Event-46 queue, no reduced gate",
+    "execution_manifest": "sfx-96085dc3e27ea47e"
+  },
+  "allowed_files": [
+    "plans/strategic/autonomous-six-python-production-execution-plan.md",
+    "reports/skills-rff6/skill-transcripts/plan-control-ff6-plan-throughput-001.json"
+  ],
+  "actual_files_changed": [
+    "plans/strategic/autonomous-six-python-production-execution-plan.md",
+    "reports/skills-rff6/skill-transcripts/plan-control-ff6-plan-throughput-001.json"
+  ],
+  "tests_run": [
+    "python tools/governance/validate_plan_skill_routes.py plans/strategic/autonomous-six-python-production-execution-plan.md",
+    "plan front matter parses with plan_version 5 and Event 46",
+    "canonical obligation totals: 68+134+65+142+86+194=689",
+    "stale production exit totals absent",
+    "git diff --check"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "plan_sha256": "00e13936875fa123af1802fb8e9178dfa892181f96104b129eca3b2330a976ce",
+    "hardening_score": "22/22",
+    "plan_version": 5,
+    "controller_event_unchanged": "FF6-EVENT-000046",
+    "controller_task_unchanged": "TC-FF6-NRRD-READINESS-001",
+    "promotion_state_unchanged": "UNASSESSED_0_OF_6",
+    "product_promotion_effect": "none"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

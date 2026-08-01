@@ -1,0 +1,47 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "plan-hardening-ff6-plan-throughput-001",
+  "skill_id": "plan-hardening",
+  "mode": "live",
+  "timestamp": "2026-08-01T19:52:03Z",
+  "inputs": {
+    "task_id": "TC-FF6-PLAN-THROUGHPUT-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "plan_path": "plans/strategic/autonomous-six-python-production-execution-plan.md",
+    "hardening_score": "22/22",
+    "gaps_found": 5,
+    "verdict": "PASS",
+    "execution_manifest": "sfx-31eb703af7316df1"
+  },
+  "allowed_files": [
+    "reports/skills-rff6/skill-transcripts/plan-hardening-ff6-plan-throughput-001.json"
+  ],
+  "actual_files_changed": [
+    "reports/skills-rff6/skill-transcripts/plan-hardening-ff6-plan-throughput-001.json"
+  ],
+  "tests_run": [
+    "docs/plan-hardening-checklist.md: 22 of 22 design criteria satisfied",
+    "python tools/evidence/check_current_state_consistency.py: PASS",
+    "git status and GitLab origin/main identity verified",
+    "six canonical obligation files total 689",
+    "stale Event-40 queue and stale 672/105/94/125 totals corrected",
+    "quality and promotion thresholds compared before and after: no reductions"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "plan_sha256": "00e13936875fa123af1802fb8e9178dfa892181f96104b129eca3b2330a976ce",
+    "confirmed_current_event": "FF6-EVENT-000046",
+    "confirmed_certification_boundary": "0/6",
+    "root_causes_corrected": [
+      "bootstrap prose outlived completed acceleration machinery",
+      "four lanes were schedulable but not expressed as a single-or-multi-executor pull queue",
+      "hard-coded stale obligation totals contradicted canonical files",
+      "planning and machinery batches had no product-work floor",
+      "external corpus and oracle environments could be prepared too late"
+    ],
+    "product_promotion_effect": "none"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}
