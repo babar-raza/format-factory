@@ -11,15 +11,15 @@ historical_projection: true
 
 # Provider-Neutral Shift and Resume Protocol
 
-> **Current authority overlay: Event 39.** Native head
-> `FF6-EVENT-000039`; current exact work is
-> `XLF-04-BATCH-005-PARTIAL-002-H`, derived from
+> **Current authority overlay: Event 40.** Native head
+> `FF6-EVENT-000040`; current exact work is
+> `XLF-04-BATCH-005-PARTIAL-002-I`, derived from
 > [START-HERE.md](START-HERE.md),
 > [CURRENT-MACHINE-STATE.yaml](CURRENT-MACHINE-STATE.yaml),
 > [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml), and the native FF6 journal.
-> The accepted XLIFF boundary is 30/105 obligations and 8/1,130 dispositions
-> after semantic commit `39b2e89f`, historical repair `809cc18c`, and controller
-> acceptance `c421940a`. UBL separately retains 6,001 local particle nodes.
+> The accepted XLIFF boundary is 31/105 obligations and 9/1,130 dispositions
+> after semantic commit `d95af5ae`, historical repair `809cc18c`, and controller
+> acceptance `de569544`. UBL separately retains 6,001 local particle nodes.
 > See [CLEAN-REPLAY-REPAIR.md](CLEAN-REPLAY-REPAIR.md). Event 30-35 material
 > below is preserved as recovery history and is non-operative.
 
@@ -354,17 +354,15 @@ A provider switch is safe only when:
 - known failures and limits remain visible;
 - promotion is no stronger than live proof.
 
-## Current authority overlay: Event 39
+## Current authority overlay: Event 40
 
-`FF6-EVENT-000039` is the current native head. The selected task remains
-XLIFF, with exact microstep `XLF-04-BATCH-005-PARTIAL-002-H`, 30/105 accepted
-obligations, and 8/1,130 verified dispositions. UBL retains 6,001 particle
+`FF6-EVENT-000040` is the current native head. The selected task remains
+XLIFF, with exact microstep `XLF-04-BATCH-005-PARTIAL-002-I`, 31/105 accepted
+obligations, and 9/1,130 verified dispositions. UBL retains 6,001 particle
 nodes, stable anonymous-type identities, and 1,178 derivation edges, but
 UBL-03 is incomplete. Certification remains 0/6.
 
-The handover refresh at packet-parent `62f23b30` adds one non-promoting
-read-only observation: identical 2.0/2.1 target prose says equality, while the
-2.1 F4T Schematron note and `lang()` test allow a more-specific target
-language. The receiving executor must reproduce the hashes and begin with a
-three-case profile-aware RED test. It must not treat this observation as
-`RED_OBSERVED`, `GREEN_VERIFIED`, an obligation binding, or a controller event.
+The next shift must reproduce the target-side isolation candidate and start
+with a RED test proving it remains unadjudicated. It must then decide whether
+the report adds reciprocal evidence to the existing inline-isolation owner,
+without duplicating the obligation or accepting generated proposal mappings.

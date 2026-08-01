@@ -14,12 +14,12 @@ historical_projection: false
 ## 2026-08-01 verified live overlay
 
 GitLab `origin/main` is verified through controller checkpoint
-`c421940ae70a3dc949318eee00cbfc5e3cf8b9a3`. Native authority is
-`FF6-EVENT-000039`; accepted and materialized XLIFF evidence agree at 8
-verified and 1,122 open dispositions. Obligation coverage is 30/105 with 75
-missing. The exact next task is `XLF-04-BATCH-005-PARTIAL-002-H`, an
+`de569544eebc1fff011901e61d3574dcc48e5e08`. Native authority is
+`FF6-EVENT-000040`; accepted and materialized XLIFF evidence agree at 9
+verified and 1,121 open dispositions. Obligation coverage is 31/105 with 74
+missing. The exact next task is `XLF-04-BATCH-005-PARTIAL-002-I`, an
 independent authority-adjudication microstep for
-`XLF-CAND-CORE-SCHEMATRON-E891C4DEC555F165`.
+`XLF-CAND-CORE-SCHEMATRON-60B596A00F7FA06A`.
 
 The deeper replay investigation found that the visible stale-manifest error
 was caused by workstation-dependent byte identity: mixed CRLF/LF manifest
@@ -33,28 +33,29 @@ known stateful deselection. This closes the bounded replay defect but does not
 certify a library.
 
 Semantic commit `1b758c2e` independently adjudicates the unit-cardinality
-report, and `3fc939ad` adjudicates source-language compatibility. Semantic
-commit `39b2e89f` then resolves target-language profile semantics, records
-normative machine-readable precedence over conflicting display prose, and
-passes 77 affected tests locally and from a full-authority immutable checkout.
-Event 39 projects that result without changing product or promotion state.
+report, `3fc939ad` adjudicates source-language compatibility, and `39b2e89f`
+resolves target-language profile semantics. Semantic commit `d95af5ae` then
+binds the stable start-code isolation biconditional to one direct obligation,
+with source-side executable evidence. Event 40 projects that result without
+changing product or promotion state.
 
 The production-level lesson is that repeatability cannot be achieved by
 refreshing a receipt in the current workspace. Durable state requires one
 authority graph, explicit input identity, immutable replay before acceptance,
 separate accepted/materialized projections, bounded transactional mutation,
-and a hash-chained event that makes each transition auditable. Events 36-39
+and a hash-chained event that makes each transition auditable. Events 36-40
 advance only independently proven semantic obligations and retain prior
 failures as negative controls.
 
-> **Current authority overlay: Event 39.** Native head
-> `FF6-EVENT-000039`. Event 31 remains the negative
+> **Current authority overlay: Event 40.** Native head
+> `FF6-EVENT-000040`. Event 31 remains the negative
 > control proving that deterministic mechanical evidence can encode the wrong
 > semantic owner and profile. Event 36 accepts the repaired reciprocal XLIFF
 > skeleton checkpoint at 28/105 obligations and 5/1,130 dispositions; Event 37
 > accepts unit cardinality at 29/105 and 6/1,130; Event 38 accepts the XLIFF
 > 2.1 source-language boundary at 30/105 and 7/1,130; Event 39 corrects
-> target-language profile semantics at 30/105 and 8/1,130. Event 34
+> target-language profile semantics at 30/105 and 8/1,130; Event 40 binds
+> start-code isolation at 31/105 and 9/1,130. Event 34
 > separately binds 6,001 UBL local particle nodes without changing promotion.
 > This file explains causes and redesign
 > direction; executable state comes only from
@@ -538,11 +539,11 @@ open. Events 30 through 38 prove a durable adjudication mechanism and seven
 bounded decisions, not broad XLIFF semantic coverage. No stronger claim is
 justified.
 
-## Current authority overlay: Event 39
+## Current authority overlay: Event 40
 
-`FF6-EVENT-000039` is the current native head. The selected task remains
-XLIFF, with exact microstep `XLF-04-BATCH-005-PARTIAL-002-H`, 30/105 accepted
-obligations, and 8/1,130 verified dispositions. UBL retains 6,001 particle
+`FF6-EVENT-000040` is the current native head. The selected task remains
+XLIFF, with exact microstep `XLF-04-BATCH-005-PARTIAL-002-I`, 31/105 accepted
+obligations, and 9/1,130 verified dispositions. UBL retains 6,001 particle
 nodes, stable anonymous-type identities, and 1,178 derivation edges, but
 UBL-03 is incomplete. Certification remains 0/6.
 

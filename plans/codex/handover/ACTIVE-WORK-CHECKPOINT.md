@@ -1,5 +1,5 @@
 ---
-artifact_id: FF6-ACTIVE-WORK-CHECKPOINT-EVENT-39
+artifact_id: FF6-ACTIVE-WORK-CHECKPOINT-EVENT-40
 artifact_type: active_work_checkpoint
 visibility: internal
 publish_allowed: false
@@ -7,76 +7,74 @@ generated_by: codex
 generated_at: 2026-08-01
 ---
 
-# Active work checkpoint: Event 39
+# Active work checkpoint: Event 40
 
 ## Immutable accepted boundary
 
-- GitLab control checkpoint: `c421940ae70a3dc949318eee00cbfc5e3cf8b9a3`
-- XLIFF semantic commit: `39b2e89fde0f7dd5e1acebc424f4d700dfe74765`
-- Native event: `FF6-EVENT-000039`
-- Event hash:
-  `5f76c75ca4f7bc0845b22dccd38a195e962fb49b5f4161651737ab23d560cd36`
+- GitLab control checkpoint: `de569544eebc1fff011901e61d3574dcc48e5e08`
+- XLIFF semantic commit: `d95af5aeb248907b4d23457ecd288723fc9c2050`
+- Native event: `FF6-EVENT-000040`
+- Event hash: `c9c7167d447fbe0945c7a65c288f3cece78c64090e09c1ce2d674fdbf9bf2d63`
 - Controller state: `CONTRACT`
 - Active task: `TC-FF6-XLIFF-PROFILE-SURFACE-001`
 - Task state: `WORK_IN_PROGRESS`
 - First unmet task step: `XLF-04`
-- Completed microstep: `XLF-04-BATCH-005-PARTIAL-002-G`
-- Exact next microstep: `XLF-04-BATCH-005-PARTIAL-002-H`
+- Completed microstep: `XLF-04-BATCH-005-PARTIAL-002-H`
+- Exact next microstep: `XLF-04-BATCH-005-PARTIAL-002-I`
 
 ## What the outgoing shift achieved
 
-The accepted slice independently resolved the profile-specific target-language
-compatibility contradiction.
+The accepted slice independently resolved the source-side start-code isolation
+rule without treating generated token matches as authority.
 
-- XLIFF 2.0 requires exact target/root language-tag equality.
-- XLIFF 2.1 normative F4T Schematron permits equality or a more-specific target
-  tag and rejects the reverse relation.
-- The normative machine-readable 2.1 rule controls over conflicting display
-  prose; the conflict is recorded, not hidden.
-- Decision `XLF-ADJ-CORE-SCHEMATRON-0008` accepts the existing direct owner
-  `SAL-XLIFF-CORE-TARGET-LANGUAGE-001`.
-- All generated validator, hierarchy, cardinality, and optional-target overmaps
-  are rejected.
-- Omitted-value inheritance is rejected for this candidate as a separate rule
-  not established by an explicit-value report.
-- Canonical fact `SAL-XLIFF-6F42212680161FF2` binds ten exact assertions.
-- No denominator row was added: 28 unaffected predecessor rows are exact and
-  one existing target-language row was profile-corrected.
-- The XLIFF ProductContract was freshly rebuilt and remains `DRAFT` with 15
+- Decision `XLF-ADJ-CORE-SCHEMATRON-0009` accepts only direct owner
+  `SAL-XLIFF-CORE-INLINE-ISOLATION-001`.
+- Exact fact `SAL-XLIFF-D5C1325C047A7CB0` has six passing assertions and proof
+  SHA-256 `c584c795046953ff73f4de7db941bdbae9abd35fc0d838bf9cc297b9790a3085`.
+- Identical normative XLIFF 2.0 and 2.1 prose establishes the full `isolated`
+  biconditional; XLIFF 2.1 F5S Schematron supplies source-side rejection proof.
+- Validator, hierarchy, complete `sc`/`ec` surface, `startRef`, and source
+  cardinality proposals were rejected as direct owners.
+- All 30 predecessor obligation objects, all 8 predecessor decision objects,
+  and all 1,130 candidate identities are preserved.
+- Exactly one obligation and one decision were appended.
+- The freshly compiled XLIFF ProductContract remains `DRAFT` with 15
   capabilities.
 
-Accepted counts are `8/1,130` dispositions and `30/105` source-bound
-obligations. This is partial contract evidence only.
+Accepted counts are `9/1,130` dispositions and `31/105` source-bound
+obligations. This is partial contract evidence only; 1,121 dispositions and 74
+expected obligations remain open.
 
 ## Verification achieved
 
-- 77 affected adjudicator/extractor tests passed.
-- 191 tests passed across seeding, SAL, format-contract, and production-program
-  tiers with one exact named baseline deselection.
-- 163 post-contract-refresh regression tests passed with the same deselection.
-- All 33 XLIFF SAL facts and all five authority records passed.
-- Three runs reproduced denominator, census, adjudication, inventory, and
-  ProductContract digests.
+- 113 affected adjudication, extraction, seed, and merge tests passed.
+- 94 format-contract tests passed with the exact stateful CSV writer test
+  deselected; 69 production-program tests passed.
+- All 34 XLIFF SAL facts pass exact proof verification.
+- Three runs reproduced byte-identical adjudication and inventory artifacts.
 - Ruff, strict Mypy, Pyright 1.1.411, py_compile, and four semantic transcripts
   passed.
-- Immutable replay from semantic commit `39b2e89f` passed 77 tests, SAL,
-  contract checks, and 5/5 authority closure.
+- Detached replay from `d95af5ae` passed three focused tests, SAL,
+  adjudication, inventory, ProductContract check/idempotency, and the complete
+  five-record authority closure.
 
-The immutable replay requires all four ignored external authority files
-(`src-xlf-001.bin`, `src-xlf-002.bin`, `src-xliff-001.bin`,
-`src-xliff-003.bin`) plus the tracked product-requirement authority. A
-two-package reconstruction is not a full contract replay.
+Two earlier detached attempts are non-promoting: one failed collection due to
+the replay harness working directory/selector; one omitted `src-xliff-003.bin`
+and correctly exposed ProductContract drift. The accepted replay recreated the
+worktree and materialized all four cached binary authorities plus the tracked
+product-requirement authority.
 
 ## Exact successor
 
-Adjudicate `XLF-CAND-CORE-SCHEMATRON-E891C4DEC555F165` at XLIFF 2.1
-`schematron/rule[15]/report[1]`. It reports a source `sc` marked
-`isolated='yes'` when a referencing `ec` exists within the same unit.
+Adjudicate `XLF-CAND-CORE-SCHEMATRON-60B596A00F7FA06A` at XLIFF 2.1
+`schematron/rule[16]/report[1]`. It is the target-side analogue of the accepted
+source-side isolation report.
 
-All eight generated mappings remain unverified proposals. Determine the direct
-semantic owner from exact authority, expanding the denominator only if a
-distinct normative obligation is proven. Preserve all 30 rows and all 1,130
-candidate identities.
+Do not add a duplicate obligation. Determine independently whether the target
+report completes reciprocal proof for `SAL-XLIFF-CORE-INLINE-ISOLATION-001`.
+Treat all eight generated mappings as proposals, explicitly reject incidental
+and downstream surfaces, and preserve all 31 obligations, 9 decisions, and
+1,130 candidate identities.
 
 ## Transfer status
 

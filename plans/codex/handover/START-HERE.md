@@ -1,5 +1,5 @@
 ---
-artifact_id: FF6-HANDOVER-START-EVENT-39
+artifact_id: FF6-HANDOVER-START-EVENT-40
 artifact_type: provider_neutral_handover_entry
 visibility: internal
 publish_allowed: false
@@ -18,8 +18,8 @@ C:\Users\prora\OneDrive\Documents\GitHub\format-factory\plans\codex\handover\STA
 The canonical forge is GitLab, remote `origin`, branch `main`. Do not use
 GitHub, create another branch, reuse another agent's identity, or depend on
 ignored local state. This packet is derived from control checkpoint
-`c421940ae70a3dc949318eee00cbfc5e3cf8b9a3`; the accepted XLIFF semantic
-commit is `39b2e89fde0f7dd5e1acebc424f4d700dfe74765`. The final handover commit
+`de569544eebc1fff011901e61d3574dcc48e5e08`; the accepted XLIFF semantic
+commit is `d95af5aeb248907b4d23457ecd288723fc9c2050`. The final handover commit
 must descend from the control checkpoint but cannot self-reference its own hash.
 
 ## Mission
@@ -43,8 +43,8 @@ reproducible builds, SBOMs, provenance, signatures, and release evidence.
 
 ## Honest current state
 
-The native authority is `FF6-EVENT-000039`, hash
-`5f76c75ca4f7bc0845b22dccd38a195e962fb49b5f4161651737ab23d560cd36`,
+The native authority is `FF6-EVENT-000040`, hash
+`c9c7167d447fbe0945c7a65c288f3cece78c64090e09c1ce2d674fdbf9bf2d63`,
 in controller state `CONTRACT`.
 
 - All six products remain `UNASSESSED`; technical certification is `0/6`.
@@ -57,30 +57,29 @@ in controller state `CONTRACT`.
 - No contract row, focused test, generated type, source-file presence, or
   handover statement is product certification.
 
-Event 39 accepts only a bounded XLIFF contract result:
+Event 40 accepts only a bounded XLIFF contract result:
 
-- candidate dispositions are `8/1,130`; `1,122` remain unverified;
-- Core obligation coverage remains `30/105`; `75` remain missing;
-- one existing target-language obligation was profile-corrected; no denominator
-  row was added;
-- XLIFF 2.0 requires exact language-tag equality;
-- XLIFF 2.1 normative F4T Schematron permits an exact or more-specific target
-  language tag;
-- the normative machine-readable 2.1 rule controls over conflicting display
-  prose, and that contradiction is recorded explicitly;
+- candidate dispositions are `9/1,130`; `1,121` remain unverified;
+- Core obligation coverage is `31/105`; `74` remain missing;
+- one new `INLINE-ISOLATION` obligation and one decision were added while all
+  30 predecessor obligations and 8 predecessor decisions were preserved;
+- exact XLIFF 2.0 and 2.1 prose states the full `sc` isolated biconditional;
+- XLIFF 2.1 F5S Schematron supplies source-side executable rejection evidence;
+- generated validator, hierarchy, element, reference, and cardinality mappings
+  were rejected as direct owners;
 - the freshly compiled XLIFF contract remains `DRAFT` with 15 capabilities;
 - XLF-04, product source, certification, promotion, release, and every gate
   remain incomplete.
 
 ## Exact next work
 
-Execute `XLF-04-BATCH-005-PARTIAL-002-H` under
+Execute `XLF-04-BATCH-005-PARTIAL-002-I` under
 `TC-FF6-XLIFF-PROFILE-SURFACE-001`.
 
 The exact candidate is
-`XLF-CAND-CORE-SCHEMATRON-E891C4DEC555F165`, XLIFF 2.1
+`XLF-CAND-CORE-SCHEMATRON-60B596A00F7FA06A`, XLIFF 2.1
 `schemas/xliff_core_2.1.sch` at
-`schematron/rule[15]/report[1]`. It reports an `sc` in source content with
+`schematron/rule[16]/report[1]`. It reports an `sc` in target content with
 `isolated='yes'` when a referencing `ec` exists in the same unit.
 
 Treat all eight generated mappings as unverified proposals:
@@ -92,19 +91,19 @@ Treat all eight generated mappings as unverified proposals:
 - `SAL-XLIFF-CORE-INLINE-EC-001`
 - `SAL-XLIFF-CORE-INLINE-SC-001`
 - `SAL-XLIFF-CORE-REFERENCE-STARTREF-001`
-- `SAL-XLIFF-CORE-SOURCE-REQUIRED-001`
+- `SAL-XLIFF-CORE-SOURCE-TARGET-OPTIONAL-001`
 
-Independently locate the exact authority and determine the direct semantic
-owner. Expand the denominator only when authority proves a distinct obligation.
-Explicitly reject trigger context, child surfaces, and downstream validation
-behavior that do not directly own the rule. Never select a mapping to improve
-coverage.
+Independently locate the exact authority and determine whether this target-side
+report supplies reciprocal proof for the existing inline-isolation obligation.
+Do not add a duplicate obligation. Explicitly reject trigger context, child
+surfaces, reference mechanisms, and downstream validation behavior that do not
+directly own the rule. Never select a mapping to improve coverage.
 
 ## Mandatory resume sequence
 
 1. Read [AGENTS.md](../../../AGENTS.md), [Claude start](CLAUDE-START.md), and
    the active [taskcard](../../../taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md).
-2. Fetch GitLab and prove `c421940a` and `39b2e89f` are ancestors of
+2. Fetch GitLab and prove `de569544` and `d95af5ae` are ancestors of
    `origin/main`.
 3. Run the committed packet validator before claiming work.
 4. Query the off-repo coordination plane and preserve every foreign or
@@ -165,14 +164,14 @@ claim without independent executable proof.
 The main consistency failures are stale projections, incomplete dependency
 closure, mutable or missing authority inputs in detached replay, proposal-to-
 fact leakage, broad capability buckets hiding missing semantics, and provider-
-local execution state. Event 39 demonstrates the intended remedy: one exact
+local execution state. Event 40 demonstrates the intended remedy: one exact
 authority occurrence, a discriminating RED test, explicit contradiction
 handling, independent adjudication, deterministic descendants, immutable
 replay, then a hash-chained event.
 
 ## Truth boundary
 
-Event 39 proves one profile-specific target-language fact, one corrected
-existing obligation, one candidate disposition, and fresh contract
+Event 40 proves one stable inline-isolation fact, one new direct obligation,
+one candidate disposition, and fresh contract
 recompilation. It does not complete XLF-04, implement a production library,
 certify any format, satisfy Gate 10, or authorize publication.

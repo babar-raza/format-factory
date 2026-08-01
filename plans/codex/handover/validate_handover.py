@@ -60,38 +60,38 @@ REFERENCE_DOC_PATHS = (
 )
 PARALLEL_UBL_PATH = "plans/codex/handover/PARALLEL-UBL-CHECKPOINT.yaml"
 
-EXPECTED_EVENT_ID = "FF6-EVENT-000039"
+EXPECTED_EVENT_ID = "FF6-EVENT-000040"
 EXPECTED_EVENT_HASH = (
-    "5f76c75ca4f7bc0845b22dccd38a195e962fb49b5f4161651737ab23d560cd36"
+    "c9c7167d447fbe0945c7a65c288f3cece78c64090e09c1ce2d674fdbf9bf2d63"
 )
-EXPECTED_SEQUENCE = 39
-EXPECTED_CONTROL = "c421940ae70a3dc949318eee00cbfc5e3cf8b9a3"
-EXPECTED_IMPLEMENTATION = "39b2e89fde0f7dd5e1acebc424f4d700dfe74765"
-EXPECTED_XLIFF_IMPLEMENTATION = "39b2e89fde0f7dd5e1acebc424f4d700dfe74765"
+EXPECTED_SEQUENCE = 40
+EXPECTED_CONTROL = "de569544eebc1fff011901e61d3574dcc48e5e08"
+EXPECTED_IMPLEMENTATION = "d95af5aeb248907b4d23457ecd288723fc9c2050"
+EXPECTED_XLIFF_IMPLEMENTATION = "d95af5aeb248907b4d23457ecd288723fc9c2050"
 EXPECTED_PREVIOUS_NON_PROMOTING_ATTEMPT = (
     "2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17"
 )
 EXPECTED_REPAIR_COMMIT = "809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956"
 EXPECTED_EVENT_TASK = "TC-FF6-XLIFF-PROFILE-SURFACE-001"
 EXPECTED_TASK = "TC-FF6-XLIFF-PROFILE-SURFACE-001"
-EXPECTED_XLIFF_EVENT_ID = "FF6-EVENT-000039"
-EXPECTED_MICROSTEP = "XLF-04-BATCH-005-PARTIAL-002-H"
-EXPECTED_RESUME_MICROSTEP = "XLF-04-BATCH-005-PARTIAL-002-H"
-EXPECTED_CANDIDATE = "XLF-CAND-CORE-SCHEMATRON-E891C4DEC555F165"
+EXPECTED_XLIFF_EVENT_ID = "FF6-EVENT-000040"
+EXPECTED_MICROSTEP = "XLF-04-BATCH-005-PARTIAL-002-I"
+EXPECTED_RESUME_MICROSTEP = "XLF-04-BATCH-005-PARTIAL-002-I"
+EXPECTED_CANDIDATE = "XLF-CAND-CORE-SCHEMATRON-60B596A00F7FA06A"
 EXPECTED_CANDIDATE_CONTENT_SHA256 = (
-    "04aeb46e7eeaa854cf9554005a11476334fa8f41f6db9a45ca2f0e38b8d6d0e6"
+    "41719598a09ae47886c9d146932117abc74da0c2c6f51482d1e2a94c109dd900"
 )
 EXPECTED_REQUIREMENT_SHA256 = (
-    "d7daf659d3b7ad1388c42203d845b452afe12e8e05134d35d36a26cb9cc5e60c"
+    "823cd7fb987463c882d783105487f3463a316392accad13d3be184487c2c4959"
 )
 EXPECTED_OCCURRENCE_SHA256 = (
-    "cb57d9e386c6274b0aa0aedca3e2b4bab1dbaafb41ff2e66a884681485d6c84f"
+    "90c4965db1a12842770b7212cddaa078a48f48848896387093ad56cf4cdcf1a6"
 )
 EXPECTED_ADJUDICATION_SHA256 = (
-    "d63a31f936262c9952a0f50afd076b8547bc5c26cbdfd5adf04464b5f2c3dcc2"
+    "51ac3adc6fa530246ff25b70e179d040d68eeb65dc8a744794e0d4fbe7738e42"
 )
 EXPECTED_INVENTORY_SHA256 = (
-    "ea376cbaad5e8559b6789844be2bef06478e5b8ee69f7a3c557cfbc5bd474370"
+    "7bb46e814b5be12ad313ba0ec77c0585a279f8f85f6cb974481414368c5e713b"
 )
 EXPECTED_GENERATED_PROPOSAL_COUNT = 8
 STALE_OPERATIONAL_TOKENS = (
@@ -111,6 +111,7 @@ ALLOWED_DIRTY_PREFIXES = (
     "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-replay-repair-001",
     "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-event-38",
     "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-event-39",
+    "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-event-40",
     "reports/skills-rff6/skill-transcripts/plan-control-handover-event-36",
 )
 ALLOWED_DIRTY_EXACT = {
@@ -441,21 +442,21 @@ def _semantic_errors(
         errors,
         "machine accepted dispositions",
         xliff.get("adjudication", {}).get("production_accepted_dispositions"),
-        8,
+        9,
     )
     _expect(
         errors,
         "machine open dispositions",
         xliff.get("adjudication", {}).get("production_open_dispositions"),
-        1122,
+        1121,
     )
-    _expect(errors, "plan verified dispositions", baseline.get("dispositions_verified"), 8)
-    _expect(errors, "plan open dispositions", baseline.get("dispositions_unverified"), 1122)
+    _expect(errors, "plan verified dispositions", baseline.get("dispositions_verified"), 9)
+    _expect(errors, "plan open dispositions", baseline.get("dispositions_unverified"), 1121)
     _expect(
         errors,
         "event accepted dispositions",
         event_evidence.get("candidate_dispositions_verified"),
-        8,
+        9,
     )
 
     inventory_view = xliff.get("obligation_inventory", {})
@@ -464,31 +465,31 @@ def _semantic_errors(
         errors,
         "machine accepted source-bound obligations",
         inventory_view.get("production_accepted_source_bound"),
-        30,
+        31,
     )
     _expect(
         errors,
         "machine accepted missing obligations",
         inventory_view.get("production_accepted_missing"),
-        75,
+        74,
     )
     _expect(errors, "machine XLF complete", inventory_view.get("complete"), False)
     _expect(errors, "inventory expected", inventory.get("expected_obligation_count"), 105)
-    _expect(errors, "inventory resolved", inventory.get("resolved_expected_obligation_count"), 30)
+    _expect(errors, "inventory resolved", inventory.get("resolved_expected_obligation_count"), 31)
     _expect(
         errors,
         "inventory missing",
         len(inventory.get("missing_expected_obligation_ids", [])),
-        75,
+        74,
     )
     _expect(errors, "inventory complete", inventory.get("complete"), False)
     _expect(errors, "adjudication candidate count", adjudication.get("candidate_count"), 1130)
-    _expect(errors, "adjudication verified", adjudication.get("verified_disposition_count"), 8)
-    _expect(errors, "adjudication unverified", adjudication.get("unverified_disposition_count"), 1122)
+    _expect(errors, "adjudication verified", adjudication.get("verified_disposition_count"), 9)
+    _expect(errors, "adjudication unverified", adjudication.get("unverified_disposition_count"), 1121)
     _expect(errors, "adjudication complete", adjudication.get("disposition_verification_complete"), False)
     materialized = next_step.get("accepted_baseline", {})
-    _expect(errors, "accepted verified", materialized.get("dispositions_verified"), 8)
-    _expect(errors, "accepted open", materialized.get("dispositions_unverified"), 1122)
+    _expect(errors, "accepted verified", materialized.get("dispositions_verified"), 9)
+    _expect(errors, "accepted open", materialized.get("dispositions_unverified"), 1121)
     _expect(
         errors,
         "accepted adjudication digest",
@@ -775,14 +776,14 @@ def _operational_doc_errors(documents: Mapping[str, str]) -> list[str]:
     for relative in REFERENCE_DOC_PATHS:
         text = documents.get(relative, "")
         for marker in (
-            "Current authority overlay: Event 39",
+            "Current authority overlay: Event 40",
             EXPECTED_EVENT_ID,
-            "30/105",
-            "8/1,130",
+            "31/105",
+            "9/1,130",
             "6,001",
         ):
             if marker not in text:
-                errors.append(f"Event 39 overlay marker missing from {relative}: {marker}")
+                errors.append(f"Event 40 overlay marker missing from {relative}: {marker}")
     return errors
 
 

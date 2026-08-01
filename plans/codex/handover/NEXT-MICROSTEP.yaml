@@ -1,5 +1,5 @@
-schema: ff6/next-microstep@13
-artifact_id: FF6-XLIFF-XLF04-BATCH005-PARTIAL002-H
+schema: ff6/next-microstep@14
+artifact_id: FF6-XLIFF-XLF04-BATCH005-PARTIAL002-I
 visibility: internal
 publish_allowed: false
 generated_by: codex
@@ -9,46 +9,46 @@ source_checkpoint:
   forge: GitLab
   remote: origin
   branch: main
-  packet_base_commit: c421940ae70a3dc949318eee00cbfc5e3cf8b9a3
-  event_id: FF6-EVENT-000039
-  event_hash: 5f76c75ca4f7bc0845b22dccd38a195e962fb49b5f4161651737ab23d560cd36
-  semantic_commit: 39b2e89fde0f7dd5e1acebc424f4d700dfe74765
+  packet_base_commit: de569544eebc1fff011901e61d3574dcc48e5e08
+  event_id: FF6-EVENT-000040
+  event_hash: c9c7167d447fbe0945c7a65c288f3cece78c64090e09c1ce2d674fdbf9bf2d63
+  semantic_commit: d95af5aeb248907b4d23457ecd288723fc9c2050
   checkout_identity_repair_commit: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
-  controller_checkpoint_commit: c421940ae70a3dc949318eee00cbfc5e3cf8b9a3
+  controller_checkpoint_commit: de569544eebc1fff011901e61d3574dcc48e5e08
 task:
   task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
   parent_task_id: TC-FF6-PROGRAM-CAPABILITIES-001
   state: WORK_IN_PROGRESS
   first_unmet_step: XLF-04
-  microstep: XLF-04-BATCH-005-PARTIAL-002-H
+  microstep: XLF-04-BATCH-005-PARTIAL-002-I
   microstep_state: READY_FOR_RED
 accepted_baseline:
   candidate_count: 1130
-  dispositions_verified: 8
-  dispositions_unverified: 1122
+  dispositions_verified: 9
+  dispositions_unverified: 1121
   expected_obligations: 105
-  source_bound_obligations: 30
-  missing_obligations: 75
+  source_bound_obligations: 31
+  missing_obligations: 74
   xlf_04_complete: false
-  adjudication_sha256: d63a31f936262c9952a0f50afd076b8547bc5c26cbdfd5adf04464b5f2c3dcc2
-  inventory_sha256: ea376cbaad5e8559b6789844be2bef06478e5b8ee69f7a3c557cfbc5bd474370
-  contract_sha256: 7ef89b038b8b74b59ede6123a7a2ec57fea4730f84fbff3eaf21a43d02a9a2ad
+  adjudication_sha256: 51ac3adc6fa530246ff25b70e179d040d68eeb65dc8a744794e0d4fbe7738e42
+  inventory_sha256: 7bb46e814b5be12ad313ba0ec77c0585a279f8f85f6cb974481414368c5e713b
+  contract_sha256: d584e217f5f2d06bcd71723d5d89e60c24a39f3273e8967fe920d4b03bacfc69
   contract_lifecycle: DRAFT
   contract_capabilities: 15
 selected_candidate:
-  candidate_id: XLF-CAND-CORE-SCHEMATRON-E891C4DEC555F165
+  candidate_id: XLF-CAND-CORE-SCHEMATRON-60B596A00F7FA06A
   candidate_class: SCHEMATRON_REPORT
   profile: xliff_2.1
   source_id: SRC-XLF-002
   source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
   member: schemas/xliff_core_2.1.sch
   member_sha256: d4275f2d2574f892624bcd8f83bcc3001c75d623e4eb36896d15d147f16ed7a2
-  location: schematron/rule[15]/report[1]
-  candidate_content_sha256: 04aeb46e7eeaa854cf9554005a11476334fa8f41f6db9a45ca2f0e38b8d6d0e6
-  requirement_sha256: d7daf659d3b7ad1388c42203d845b452afe12e8e05134d35d36a26cb9cc5e60c
-  occurrence_sha256: cb57d9e386c6274b0aa0aedca3e2b4bab1dbaafb41ff2e66a884681485d6c84f
+  location: schematron/rule[16]/report[1]
+  candidate_content_sha256: 41719598a09ae47886c9d146932117abc74da0c2c6f51482d1e2a94c109dd900
+  requirement_sha256: 823cd7fb987463c882d783105487f3463a316392accad13d3be184487c2c4959
+  occurrence_sha256: 90c4965db1a12842770b7212cddaa078a48f48848896387093ad56cf4cdcf1a6
   normalized_requirement: >-
-    {"context":"xlf:sc[ancestor::xlf:source][@isolated='yes'][ancestor::xlf:segment | ancestor::xlf:ignorable]","kind":"report","message":"'isolated' attribute is set to 'yes', but 'ec' element(s) referencing this start code found within the same unit.","test":"ancestor::xlf:unit//xlf:ec[@startRef=$id][ancestor::xlf:source][ancestor::xlf:segment | ancestor::xlf:ignorable]"}
+    {"context":"xlf:sc[ancestor::xlf:target][@isolated='yes'][ancestor::xlf:segment | ancestor::xlf:ignorable]","kind":"report","message":"'isolated' attribute is set to 'yes', but 'ec' element(s) referencing this start code found within the same unit.","test":"ancestor::xlf:unit//xlf:ec[@startRef=$id][ancestor::xlf:target][ancestor::xlf:segment | ancestor::xlf:ignorable]"}
 generated_proposals_only:
   - SAL-XLIFF-CORE-AGENT-VALIDATOR-001
   - SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001
@@ -57,7 +57,7 @@ generated_proposals_only:
   - SAL-XLIFF-CORE-INLINE-EC-001
   - SAL-XLIFF-CORE-INLINE-SC-001
   - SAL-XLIFF-CORE-REFERENCE-STARTREF-001
-  - SAL-XLIFF-CORE-SOURCE-REQUIRED-001
+  - SAL-XLIFF-CORE-SOURCE-TARGET-OPTIONAL-001
 decision_lock:
   adjudicated: false
   accepted_obligation: null
@@ -71,25 +71,26 @@ required_skills:
   - compile-format-contract
   - plan-control
 required_execution:
-  - Fetch GitLab main and validate Event 39, control checkpoint c421940a, semantic commit 39b2e89f, candidate identity, accepted counts, and artifact digests before mutation.
+  - Fetch GitLab main and validate Event 40, control checkpoint de569544, semantic commit d95af5ae, candidate identity, accepted counts, and artifact digests before mutation.
   - Register a fresh coordination identity, claim exact files, and run the selected skill mutation guard. Never reuse prior identities or local authorizations.
   - Read the exact pinned XLIFF 2.1 Schematron occurrence and relevant Core prose independently. Generated mappings are proposals, never conclusions.
   - Add a genuine pre-change RED test for the direct semantic owner and exact proof binding.
-  - Determine whether the isolated start-code condition is owned by an existing denominator obligation, requires a new exact obligation, or cannot yet be mapped.
+  - Determine whether the target-side report supplies reciprocal proof for existing SAL-XLIFF-CORE-INLINE-ISOLATION-001; reject duplicate-obligation creation.
   - Account for every generated proposal and every materially implicated obligation with evidence-bound acceptance or rejection reasoning.
   - Treat ancestor hierarchy, element names, source cardinality, and generic validator behavior as incidental or downstream unless exact authority proves direct ownership.
   - If a fact is required, seed only the exact candidate in fail-closed selected mode and retain missing, duplicate, unrelated-row, transactional-restore, QName, and byte-idempotency controls.
   - Bind candidate, occurrence, authority, fact, decision, obligation, and compiled contract using role-specific content digests.
-  - Preserve semantic equality of all 30 accepted obligation rows and identity of all 1130 candidates unless a proven obligation requires a bounded denominator expansion.
+  - Preserve semantic equality of all 31 accepted obligation rows, all 9 decisions, and identity of all 1130 candidates.
   - Generate all affected deterministic artifacts three times and compare canonical bytes.
   - Run affected tests, SAL verification, 5/5 authority audit, format-contract and production-program regressions, Ruff, strict Mypy, Pyright 1.1.411, py_compile, and transcript validation.
   - Replay from the committed semantic revision with four ignored authority files plus tracked product-requirement authority. A two-package reconstruction is not sufficient.
   - Commit explicit leased semantic files to GitLab main; append the next native event only after immutable proof passes; then refresh the provider-neutral packet.
 acceptance:
-  prior_dispositions_verified: 8
+  prior_dispositions_verified: 9
   expected_new_candidate_dispositions: 1
-  obligation_delta: evidence_derived_not_predeclared
-  predecessor_rows_preserved: 30
+  obligation_delta: expected_zero_unless_independent_authority_proves_distinct_semantics
+  predecessor_rows_preserved: 31
+  predecessor_decisions_preserved: 9
   candidate_ids_preserved: 1130
   xlf_04_complete: false
   product_source_effect: none
@@ -107,7 +108,7 @@ regression_controls:
   - source-tree and installed-package proof remain distinct
 forbidden:
   - accepting a mapping from generated names, implementation symmetry, or coverage pressure
-  - inventing an obligation to improve counts
+  - duplicating the accepted inline-isolation obligation to improve counts
   - weakening checkout identity, content addressing, selected seeding, tamper rejection, or predecessor equality
   - product source, gate, promotion, release, or certification mutation
   - GitHub push, non-main branch, broad staging, foreign lease release, dirty-state cleanup, or no-verify commit

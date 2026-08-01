@@ -1,5 +1,5 @@
 ---
-artifact_id: FF6-CLAUDE-START-EVENT-39
+artifact_id: FF6-CLAUDE-START-EVENT-40
 artifact_type: executor_start_instructions
 visibility: internal
 publish_allowed: false
@@ -7,7 +7,7 @@ generated_by: codex
 generated_at: 2026-08-01
 ---
 
-# Claude start instructions: Event 39
+# Claude start instructions: Event 40
 
 These instructions are provider-neutral in substance. Claude must use its
 ambient governance hooks; Codex must explicitly follow
@@ -23,8 +23,8 @@ git fetch origin main
 git remote get-url origin
 git rev-parse HEAD
 git rev-parse origin/main
-git merge-base --is-ancestor c421940ae70a3dc949318eee00cbfc5e3cf8b9a3 origin/main
-git merge-base --is-ancestor 39b2e89fde0f7dd5e1acebc424f4d700dfe74765 origin/main
+git merge-base --is-ancestor de569544eebc1fff011901e61d3574dcc48e5e08 origin/main
+git merge-base --is-ancestor d95af5aeb248907b4d23457ecd288723fc9c2050 origin/main
 .venv\Scripts\python.exe plans\codex\handover\validate_committed_checkpoint.py --ref origin/main
 .venv\Scripts\python.exe plans\codex\handover\validate_handover.py --self-test
 ```
@@ -36,16 +36,16 @@ branch.
 
 Expected checkpoint:
 
-- event: `FF6-EVENT-000039`
+- event: `FF6-EVENT-000040`
 - event hash:
-  `5f76c75ca4f7bc0845b22dccd38a195e962fb49b5f4161651737ab23d560cd36`
+  `c9c7167d447fbe0945c7a65c288f3cece78c64090e09c1ce2d674fdbf9bf2d63`
 - controller state: `CONTRACT`
-- control checkpoint: `c421940ae70a3dc949318eee00cbfc5e3cf8b9a3`
+- control checkpoint: `de569544eebc1fff011901e61d3574dcc48e5e08`
 - accepted semantic commit:
-  `39b2e89fde0f7dd5e1acebc424f4d700dfe74765`
+  `d95af5aeb248907b4d23457ecd288723fc9c2050`
 - selected task: `TC-FF6-XLIFF-PROFILE-SURFACE-001`
 - first unmet step: `XLF-04`
-- exact microstep: `XLF-04-BATCH-005-PARTIAL-002-H`
+- exact microstep: `XLF-04-BATCH-005-PARTIAL-002-I`
 
 ## 2. Re-establish coordination
 
@@ -78,14 +78,14 @@ previous shift is evidence to inspect, never authority to reuse.
 
 Before editing, recompute:
 
-- all 39 event hashes, sequences, and predecessor edges;
+- all 40 event hashes, sequences, and predecessor edges;
 - controller head and taskcard agreement;
 - exactly 1,130 candidate identities;
-- exactly 8 verified and 1,122 unverified dispositions;
-- exactly 105 expected obligations, 30 source-bound, and 75 missing;
+- exactly 9 verified and 1,121 unverified dispositions;
+- exactly 105 expected obligations, 31 source-bound, and 74 missing;
 - exact denominator, census, adjudication, inventory, and ProductContract
   digests;
-- all 33 XLIFF SAL facts and all five authority records;
+- all 34 XLIFF SAL facts and all five authority records;
 - the fresh XLIFF contract is `DRAFT` with 15 capabilities;
 - all promotions remain `UNASSESSED` and certification remains `0/6`.
 
@@ -98,22 +98,22 @@ identity.
 
 ## 4. Execute the exact TDD microstep
 
-Run `XLF-04-BATCH-005-PARTIAL-002-H` for
-`XLF-CAND-CORE-SCHEMATRON-E891C4DEC555F165`.
+Run `XLF-04-BATCH-005-PARTIAL-002-I` for
+`XLF-CAND-CORE-SCHEMATRON-60B596A00F7FA06A`.
 
 Pinned identity:
 
 - profile: `xliff_2.1`
 - source member: `schemas/xliff_core_2.1.sch`
-- occurrence: `schematron/rule[15]/report[1]`
+- occurrence: `schematron/rule[16]/report[1]`
 - content SHA-256:
-  `04aeb46e7eeaa854cf9554005a11476334fa8f41f6db9a45ca2f0e38b8d6d0e6`
+  `41719598a09ae47886c9d146932117abc74da0c2c6f51482d1e2a94c109dd900`
 - requirement SHA-256:
-  `d7daf659d3b7ad1388c42203d845b452afe12e8e05134d35d36a26cb9cc5e60c`
+  `823cd7fb987463c882d783105487f3463a316392accad13d3be184487c2c4959`
 - occurrence SHA-256:
-  `cb57d9e386c6274b0aa0aedca3e2b4bab1dbaafb41ff2e66a884681485d6c84f`
+  `90c4965db1a12842770b7212cddaa078a48f48848896387093ad56cf4cdcf1a6`
 - normalized rule:
-  `sc[isolated='yes']` in source content reports when a same-unit
+  `sc[isolated='yes']` in target content reports when a same-unit
   `ec[@startRef=$id]` exists.
 
 Required sequence:
@@ -121,15 +121,15 @@ Required sequence:
 1. Independently read the exact Schematron occurrence and relevant Core prose.
 2. Add a genuine pre-change failing test for the direct semantic obligation.
 3. Treat all eight generated mappings in `NEXT-MICROSTEP.yaml` as proposals.
-4. Decide the exact owner, or add an expected obligation only if authority
-   proves a distinct missing semantic rule.
+4. Determine whether the report supplies reciprocal evidence for existing
+   `SAL-XLIFF-CORE-INLINE-ISOLATION-001`; do not duplicate the obligation.
 5. Explicitly reject generic validator behavior, hierarchy/cardinality trigger
    context, and element-name surfaces that do not directly own the constraint.
 6. Bind candidate, occurrence, authority, fact, decision, obligation, and
    compiled contract with role-specific digests.
 7. Add positive, rejection, tamper, profile, selected-seed, transactional, and
    predecessor-preservation tests.
-8. Preserve all 30 accepted rows and all 1,130 candidate identities.
+8. Preserve all 31 accepted rows, all 9 decisions, and all 1,130 candidate identities.
 9. Rebuild deterministic descendants three times and compare canonical bytes.
 10. Run affected tests, SAL and authority verification, contract and
     production-program regressions, Ruff, strict Mypy, Pyright 1.1.411,

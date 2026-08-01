@@ -1,5 +1,5 @@
 ---
-artifact_id: FF6-CLEAN-REPLAY-REPAIR-EVENT-39
+artifact_id: FF6-CLEAN-REPLAY-REPAIR-EVENT-40
 artifact_type: machinery_repair_history
 visibility: internal
 publish_allowed: false
@@ -14,46 +14,56 @@ generated_at: 2026-08-01
 The reciprocal skeleton attempt at
 `2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17` passed in a shared worktree but
 failed from a clean Windows checkout because tracked proof text received
-different LF/CRLF raw-byte digests. A local GREEN result therefore did not prove
-checkout-reproducible evidence.
+different LF/CRLF raw-byte digests. Commit `809cc18c` established the accepted
+checkout-identity repair. Events 37-40 then accepted later bounded XLIFF
+contract slices under that policy.
 
-Commit `809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956` established the accepted
-checkout-identity repair for that proof closure. Event 36 accepted the repaired
-slice; Events 37 and 38 accepted unit-cardinality and source-language slices.
+## Event 40 replay evidence
 
-## Event 39 replay evidence
+Event 40 accepts source-side start-code isolation semantics at semantic commit
+`d95af5aeb248907b4d23457ecd288723fc9c2050`. The current native head is
+`FF6-EVENT-000040`; the exact continuation is
+`XLF-04-BATCH-005-PARTIAL-002-I`.
 
-Event 39 accepts target-language profile semantics at semantic commit
-`39b2e89fde0f7dd5e1acebc424f4d700dfe74765`. The current native head is
-`FF6-EVENT-000039`; the exact continuation is
-`XLF-04-BATCH-005-PARTIAL-002-H`.
+The semantic commit passed 113 affected tests in the working tree. Three runs
+reproduced byte-identical adjudication and obligation inventory artifacts. All
+34 XLIFF SAL facts passed, as did format-contract and production-program
+regressions, Ruff, strict Mypy, Pyright 1.1.411, py_compile, and four semantic
+transcripts.
 
-The semantic commit passed 77 affected tests in the working tree and in an
-immutable detached checkout. Three runs reproduced denominator, census,
-adjudication, inventory, and ProductContract bytes. All 33 XLIFF SAL facts and
-all five authority records passed. Ruff, strict Mypy, Pyright 1.1.411,
-py_compile, and four semantic transcripts passed.
+## Event 40 detached replay attempts
 
-## Newly exposed dependency-closure defect
+The first attempt is excluded: the command remained in the primary checkout
+and one long selector used the wrong suffix, so pytest collected no tests.
 
-A detached replay initially restored only the two official XLIFF packages. The
-77 focused tests and SAL verification passed, but ProductContract check mode
-differed. The replay was not valid because the contract dependency closure
-contains five authority records, not two.
+The second attempt is excluded: it restored `src-xlf-001.bin`,
+`src-xlf-002.bin`, and `src-xliff-001.bin` but omitted
+`src-xliff-003.bin`. Focused tests, SAL, adjudication, and inventory checks
+passed, but ProductContract check mode differed. This was a valid rejection,
+not an accepted replay.
 
-The accepted replay restored:
+The accepted attempt recreated the detached worktree at `d95af5ae`, restored
+all four cached binary authorities, and used the tracked product-requirement
+authority as the fifth record. It passed:
 
-1. ignored `src-xlf-001.bin`;
-2. ignored `src-xlf-002.bin`;
-3. ignored `src-xliff-001.bin`;
-4. ignored `src-xliff-003.bin`; and
-5. the tracked product-requirement authority.
+1. the three focused candidate/obligation tests;
+2. exact SAL verification;
+3. candidate adjudication check mode;
+4. obligation inventory check mode;
+5. ProductContract check mode and idempotency; and
+6. complete authority digest audit.
 
-After full restoration, tests, SAL, contract check, and the 5/5 authority audit
-passed. This is a structural lesson: a test suite can be GREEN while a
-downstream proof node is invalid because its complete authority closure was not
-materialized. Future automation must derive replay inputs from the proof graph,
-not from a provider-maintained list.
+## Structural weakness exposed
+
+The contract compiler currently represents a missing cached authority by the
+SHA-256 of empty bytes and continues compilation. The subsequent contract
+check detected drift, so no false acceptance occurred, but this is still a
+fail-late design. A durable repair must require every declared input before
+compilation and distinguish `MISSING` from a legitimate empty authority.
+
+This gap is recorded in the handover; Event 40 does not claim it is fixed. It
+does not block the next bounded candidate because the complete five-record
+closure is available and digest-verified.
 
 ## Current invariant
 
@@ -66,12 +76,11 @@ For every accepted semantic slice:
 3. run focused verification in the owned worktree;
 4. commit only explicit leased files to GitLab `main`;
 5. create a detached worktree at the exact semantic commit;
-6. compute and hydrate the complete content-addressed dependency closure;
+6. derive and hydrate the complete content-addressed dependency closure;
 7. rerun affected suites and every changed descendant in check mode;
-8. accept the semantic commit only if checkout identity and the full proof
-   closure pass;
+8. reject every incomplete or divergent replay;
 9. append the native event after immutable replay, never before; and
-10. regenerate all status projections and this handover from the event.
+10. regenerate status projections and this handover from the event.
 
 Line-ending normalization in the packet manifest applies only to handover
 hashing. It does not authorize generic normalization of binary authorities or
@@ -79,19 +88,18 @@ format payloads.
 
 ## Required successor controls
 
-For `XLF-04-BATCH-005-PARTIAL-002-H`, preserve the replay ladder and add
-controls for:
+For `XLF-04-BATCH-005-PARTIAL-002-I`, preserve the replay ladder and add:
 
-- exact isolated-start-code candidate identity;
-- generated proposal accountability versus independent ownership;
-- rejection of ancestor context and downstream validation as direct semantics;
-- role-swapped candidate/requirement/occurrence/authority digests;
-- profile scope;
-- all 30 accepted obligation identities and all 1,130 candidate identities;
-- selected-seed missing, duplicate, unrelated-row, transactional, QName, and
-  idempotency behavior if a fact is ingested;
+- exact target-side isolation candidate identity;
+- independent reciprocal-owner reasoning;
+- rejection of duplicate obligation creation;
+- generated proposal accountability and explicit rejections;
+- role-swapped candidate/requirement/occurrence/authority tamper controls;
+- profile and source/target-context controls;
+- equality of all 31 predecessor obligations and all 9 decisions;
+- identity of all 1,130 candidates; and
 - full five-record authority restoration before ProductContract check mode.
 
-If detached replay disagrees with the working tree, preserve the semantic commit
-as a non-promoting attempt, record the divergent inputs, and repair machinery.
-Never edit an event or promotion label to accept a failing checkout.
+If detached replay disagrees with the working tree, preserve the semantic
+commit as a non-promoting attempt, record divergent inputs, and repair the
+machinery. Never edit an event or promotion label to accept a failing checkout.

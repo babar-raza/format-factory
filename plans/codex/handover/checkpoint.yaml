@@ -1,5 +1,5 @@
-schema: ff6/provider-neutral-checkpoint@17
-artifact_id: FF6-HANDOVER-CHECKPOINT-EVENT-39
+schema: ff6/provider-neutral-checkpoint@18
+artifact_id: FF6-HANDOVER-CHECKPOINT-EVENT-40
 visibility: internal
 publish_allowed: false
 generated_by: codex
@@ -8,43 +8,44 @@ source_checkpoint:
   forge: GitLab
   remote: origin
   branch: main
-  repository_checkpoint: c421940ae70a3dc949318eee00cbfc5e3cf8b9a3
-  semantic_commit: 39b2e89fde0f7dd5e1acebc424f4d700dfe74765
+  repository_checkpoint: de569544eebc1fff011901e61d3574dcc48e5e08
+  semantic_commit: d95af5aeb248907b4d23457ecd288723fc9c2050
   verified_checkout_identity_repair: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
-  controller_acceptance_commit: c421940ae70a3dc949318eee00cbfc5e3cf8b9a3
+  controller_acceptance_commit: de569544eebc1fff011901e61d3574dcc48e5e08
   packet_commit_rule: The packet commit descends from repository_checkpoint and cannot self-reference its own final hash.
 controller_checkpoint:
   controller_state: CONTRACT
-  event_sequence: 39
-  event_id: FF6-EVENT-000039
-  event_hash: 5f76c75ca4f7bc0845b22dccd38a195e962fb49b5f4161651737ab23d560cd36
+  event_sequence: 40
+  event_id: FF6-EVENT-000040
+  event_hash: c9c7167d447fbe0945c7a65c288f3cece78c64090e09c1ce2d674fdbf9bf2d63
   task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
   task_state: WORK_IN_PROGRESS
   first_unmet_step: XLF-04
-  completed_microstep: XLF-04-BATCH-005-PARTIAL-002-G
-  exact_microstep: XLF-04-BATCH-005-PARTIAL-002-H
+  completed_microstep: XLF-04-BATCH-005-PARTIAL-002-H
+  exact_microstep: XLF-04-BATCH-005-PARTIAL-002-I
   exact_microstep_state: READY_FOR_RED
 accepted_xliff_boundary:
   candidates: 1130
-  dispositions_verified: 8
-  dispositions_unverified: 1122
+  dispositions_verified: 9
+  dispositions_unverified: 1121
   expected_obligation_ids: 105
-  source_bound_rows: 30
-  missing_source_bound_rows: 75
+  source_bound_rows: 31
+  missing_source_bound_rows: 74
   complete: false
 proof_checkpoint:
-  affected_tool_tests: 77
-  immutable_checkout_affected_tests: 77
-  pre_contract_refresh_regression_tests: 191
-  post_contract_refresh_regression_tests: 163
+  affected_tool_tests: 113
+  immutable_checkout_focused_tests: 3
+  format_contract_regression_tests: 94
+  production_program_regression_tests: 69
   named_deselection: tests/format_contract/test_consumption_chain.py::test_full_slice_second_run_is_idempotent
-  deterministic_artifact_checks: 5
-  sal_facts_verified: 33
+  deterministic_artifact_checks: 2
+  deterministic_runs_per_artifact: 3
+  sal_facts_verified: 34
   authority_matches: 5
   pyright: PASS_ZERO_DIAGNOSTICS_1_1_411
-  adjudication_sha256: d63a31f936262c9952a0f50afd076b8547bc5c26cbdfd5adf04464b5f2c3dcc2
-  inventory_sha256: ea376cbaad5e8559b6789844be2bef06478e5b8ee69f7a3c557cfbc5bd474370
-  compiled_contract_sha256: 7ef89b038b8b74b59ede6123a7a2ec57fea4730f84fbff3eaf21a43d02a9a2ad
+  adjudication_sha256: 51ac3adc6fa530246ff25b70e179d040d68eeb65dc8a744794e0d4fbe7738e42
+  inventory_sha256: 7bb46e814b5be12ad313ba0ec77c0585a279f8f85f6cb974481414368c5e713b
+  compiled_contract_sha256: d584e217f5f2d06bcd71723d5d89e60c24a39f3273e8967fe920d4b03bacfc69
   compiled_contract_lifecycle: DRAFT
   compiled_contract_capabilities: 15
   immutable_replay_authority_inputs:
@@ -75,6 +76,6 @@ truth_boundary:
   release_transition: none
 mandatory_resume_action:
   skill_sequence: [test-driven-development, ingest-spec-sal, sal-pipeline-heal, compile-format-contract, plan-control]
-  microstep: XLF-04-BATCH-005-PARTIAL-002-H
-  candidate_id: XLF-CAND-CORE-SCHEMATRON-E891C4DEC555F165
-  action: independently adjudicate the XLIFF 2.1 isolated start-code report, preserve every accepted obligation and candidate identity, prove the bounded result from an immutable checkout with the complete five-record authority closure, and append a native event only after proof passes
+  microstep: XLF-04-BATCH-005-PARTIAL-002-I
+  candidate_id: XLF-CAND-CORE-SCHEMATRON-60B596A00F7FA06A
+  action: independently adjudicate the XLIFF 2.1 target-side isolated start-code report as possible reciprocal proof for the existing isolation obligation, preserve all 31 accepted obligations, 9 decisions, and 1130 candidate identities, prove the bounded result from an immutable checkout with the complete five-record authority closure, and append a native event only after proof passes

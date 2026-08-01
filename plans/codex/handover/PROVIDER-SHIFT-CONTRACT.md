@@ -18,15 +18,15 @@ The goal, phase order, task semantics, evidence standard, and terminal
 condition do not change when the provider changes. Only the current executor
 identity and its leased files change.
 
-> **Current authority overlay: Event 39.** The native head is
-> `FF6-EVENT-000039`; XLIFF is at 30/105 source-bound obligations and
-> 8/1,130 independently verified dispositions. Current semantic commit
-> `39b2e89f`, historical checkout repair `809cc18c`, and controller acceptance
-> `c421940a` are all
+> **Current authority overlay: Event 40.** The native head is
+> `FF6-EVENT-000040`; XLIFF is at 31/105 source-bound obligations and
+> 9/1,130 independently verified dispositions. Current semantic commit
+> `d95af5ae`, historical checkout repair `809cc18c`, and controller acceptance
+> `de569544` are all
 > immutable GitLab ancestors. The verified UBL foundation has
 > 6,001 content-addressed local particle nodes and remains non-promoting.
 > The exact canonical successor is
-> `XLF-04-BATCH-005-PARTIAL-002-H`. Use
+> `XLF-04-BATCH-005-PARTIAL-002-I`. Use
 > [CURRENT-MACHINE-STATE.yaml](CURRENT-MACHINE-STATE.yaml) and
 > [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml) for executable state, and read
 > [CLEAN-REPLAY-REPAIR.md](CLEAN-REPLAY-REPAIR.md) before mutation.
@@ -89,8 +89,8 @@ Every shift records three independent state axes:
 
 | Axis | Question | Current answer |
 |---|---|---|
-| Mission state | What does the native journal authorize next? | `CONTRACT`, `FF6-EVENT-000039`, XLIFF `XLF-04-BATCH-005-PARTIAL-002-H`; UBL partial-006 remains a disjoint fallback only |
-| Immutable evidence state | What committed work can be replayed? | Event 39 accepts XLIFF at 30/105 obligations and 8/1,130 dispositions at semantic commit `39b2e89f`; UBL retains 6,001 particle nodes and 1,178 derivation edges; Event 31 remains a rejected-attempt negative control |
+| Mission state | What does the native journal authorize next? | `CONTRACT`, `FF6-EVENT-000040`, XLIFF `XLF-04-BATCH-005-PARTIAL-002-I`; UBL partial-006 remains a disjoint fallback only |
+| Immutable evidence state | What committed work can be replayed? | Event 40 accepts XLIFF at 31/105 obligations and 9/1,130 dispositions at semantic commit `d95af5ae`; UBL retains 6,001 particle nodes and 1,178 derivation edges; Event 31 remains a rejected-attempt negative control |
 | Workspace transfer state | Which current local bytes can the incoming executor own? | Seven attributed XLIFF occurrence paths are preserved outside the checkpoint and require governed takeover plus independent replay; all accepted proof is reconstructible from GitLab `origin/main` |
 
 An immutable evidence commit without a journal transition is not a task-state
@@ -451,19 +451,18 @@ batch. Content hashes alone are not accepted as semantic currency proof.
 - [Canonical execution plan](../../strategic/autonomous-six-python-production-execution-plan.md)
 - [Canonical product goal](../../strategic/ff6/product-goal.yaml)
 
-## Current authority overlay: Event 39
+## Current authority overlay: Event 40
 
-`FF6-EVENT-000039` is the current native head. The selected task remains
-XLIFF, with exact microstep `XLF-04-BATCH-005-PARTIAL-002-H`, 30/105 accepted
-obligations, and 8/1,130 verified dispositions. UBL retains 6,001 particle
+`FF6-EVENT-000040` is the current native head. The selected task remains
+XLIFF, with exact microstep `XLF-04-BATCH-005-PARTIAL-002-I`, 31/105 accepted
+obligations, and 9/1,130 verified dispositions. UBL retains 6,001 particle
 nodes, stable anonymous-type identities, and 1,178 derivation edges, but
 UBL-03 is incomplete. Every product remains `UNASSESSED`; certification is
 0/6.
 
-The incoming provider must also reproduce the machine-readable pre-RED
-investigation in `NEXT-MICROSTEP.yaml`: XLIFF 2.0/2.1 prose requires exact
-target-language equality, while the official 2.1 F4T Schematron permits a
-more-specific subcategory. This contradiction is an input to the next RED
-test, not accepted evidence. A provider shift may transfer this observation
-and its digests, but may not transfer an unexecuted adjudication or silently
-choose an authority precedence policy.
+The incoming provider must reproduce the machine-readable pre-RED
+investigation in `NEXT-MICROSTEP.yaml`: the XLIFF 2.1 target-side isolation
+report is reciprocal evidence for the stable 2.0/2.1 start-code isolation
+biconditional, not permission to add another obligation. All eight generated
+mappings remain proposals. A provider shift transfers exact authority digests,
+not an unexecuted adjudication.

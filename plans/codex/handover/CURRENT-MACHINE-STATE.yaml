@@ -1,5 +1,5 @@
-schema: ff6/provider-neutral-machine-state@18
-artifact_id: FF6-CURRENT-MACHINE-STATE-EVENT-39
+schema: ff6/provider-neutral-machine-state@19
+artifact_id: FF6-CURRENT-MACHINE-STATE-EVENT-40
 visibility: internal
 publish_allowed: false
 generated_by: codex
@@ -8,10 +8,10 @@ repository:
   forge: GitLab
   remote: origin
   branch: main
-  checkpoint_commit: c421940ae70a3dc949318eee00cbfc5e3cf8b9a3
-  semantic_commit: 39b2e89fde0f7dd5e1acebc424f4d700dfe74765
+  checkpoint_commit: de569544eebc1fff011901e61d3574dcc48e5e08
+  semantic_commit: d95af5aeb248907b4d23457ecd288723fc9c2050
   verified_checkout_identity_repair: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
-  controller_acceptance_commit: c421940ae70a3dc949318eee00cbfc5e3cf8b9a3
+  controller_acceptance_commit: de569544eebc1fff011901e61d3574dcc48e5e08
   head_must_equal_origin_main_at_transfer: true
   github_authorized: false
   other_branches_authorized: false
@@ -22,14 +22,14 @@ goal:
   terminal_condition_met: false
 controller:
   state: CONTRACT
-  transition_sequence: 39
-  event_id: FF6-EVENT-000039
-  event_hash: 5f76c75ca4f7bc0845b22dccd38a195e962fb49b5f4161651737ab23d560cd36
+  transition_sequence: 40
+  event_id: FF6-EVENT-000040
+  event_hash: c9c7167d447fbe0945c7a65c288f3cece78c64090e09c1ce2d674fdbf9bf2d63
   task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
   task_state: WORK_IN_PROGRESS
   first_unmet_step: XLF-04
-  completed_microstep: XLF-04-BATCH-005-PARTIAL-002-G
-  exact_microstep: XLF-04-BATCH-005-PARTIAL-002-H
+  completed_microstep: XLF-04-BATCH-005-PARTIAL-002-H
+  exact_microstep: XLF-04-BATCH-005-PARTIAL-002-I
   exact_microstep_state: READY_FOR_RED
 program_truth:
   capabilities: 110
@@ -53,58 +53,58 @@ xliff:
     count: 1130
     sha256: 9f10464e14c55a36ee1e54a5d12d04e8e23f19d2cb94d7c0c732cb40861db4b7
   accepted_controller_projection:
-    event_id: FF6-EVENT-000039
-    verified_dispositions: 8
-    open_dispositions: 1122
+    event_id: FF6-EVENT-000040
+    verified_dispositions: 9
+    open_dispositions: 1121
   materialized_verified_projection:
-    commit: 39b2e89fde0f7dd5e1acebc424f4d700dfe74765
-    verified_dispositions: 8
-    open_dispositions: 1122
+    commit: d95af5aeb248907b4d23457ecd288723fc9c2050
+    verified_dispositions: 9
+    open_dispositions: 1121
     controller_acceptance_pending: false
   adjudication:
     path: reports/sal-verification/xliff-core-candidate-adjudications.yaml
-    sha256: d63a31f936262c9952a0f50afd076b8547bc5c26cbdfd5adf04464b5f2c3dcc2
-    production_accepted_dispositions: 8
-    production_open_dispositions: 1122
+    sha256: 51ac3adc6fa530246ff25b70e179d040d68eeb65dc8a744794e0d4fbe7738e42
+    production_accepted_dispositions: 9
+    production_open_dispositions: 1121
     complete: false
   obligation_inventory:
     path: reports/ff6/xliff-core-obligation-inventory.yaml
-    sha256: ea376cbaad5e8559b6789844be2bef06478e5b8ee69f7a3c557cfbc5bd474370
+    sha256: 7bb46e814b5be12ad313ba0ec77c0585a279f8f85f6cb974481414368c5e713b
     expected: 105
-    production_accepted_source_bound: 30
-    production_accepted_missing: 75
+    production_accepted_source_bound: 31
+    production_accepted_missing: 74
     complete: false
   product_contract:
     path: shared/format-contracts/xliff.yaml
-    sha256: 7ef89b038b8b74b59ede6123a7a2ec57fea4730f84fbff3eaf21a43d02a9a2ad
+    sha256: d584e217f5f2d06bcd71723d5d89e60c24a39f3273e8967fe920d4b03bacfc69
     lifecycle: DRAFT
     capabilities: 15
     fresh: true
   pending_candidate:
-    candidate_id: XLF-CAND-CORE-SCHEMATRON-E891C4DEC555F165
-    candidate_content_sha256: 04aeb46e7eeaa854cf9554005a11476334fa8f41f6db9a45ca2f0e38b8d6d0e6
-    requirement_sha256: d7daf659d3b7ad1388c42203d845b452afe12e8e05134d35d36a26cb9cc5e60c
-    occurrence_sha256: cb57d9e386c6274b0aa0aedca3e2b4bab1dbaafb41ff2e66a884681485d6c84f
+    candidate_id: XLF-CAND-CORE-SCHEMATRON-60B596A00F7FA06A
+    candidate_content_sha256: 41719598a09ae47886c9d146932117abc74da0c2c6f51482d1e2a94c109dd900
+    requirement_sha256: 823cd7fb987463c882d783105487f3463a316392accad13d3be184487c2c4959
+    occurrence_sha256: 90c4965db1a12842770b7212cddaa078a48f48848896387093ad56cf4cdcf1a6
     profile: xliff_2.1
-    location: schematron/rule[15]/report[1]
+    location: schematron/rule[16]/report[1]
     generated_proposals_are_authority: false
   current_semantic_checkpoint:
-    commit: 39b2e89fde0f7dd5e1acebc424f4d700dfe74765
-    decision_id: XLF-ADJ-CORE-SCHEMATRON-0008
-    sal_fact_id: SAL-XLIFF-6F42212680161FF2
-    legacy_fact_id: FACT-XLIFF-33
-    direct_obligation: SAL-XLIFF-CORE-TARGET-LANGUAGE-001
+    commit: d95af5aeb248907b4d23457ecd288723fc9c2050
+    decision_id: XLF-ADJ-CORE-SCHEMATRON-0009
+    sal_fact_id: SAL-XLIFF-D5C1325C047A7CB0
+    legacy_fact_id: FACT-XLIFF-34
+    direct_obligation: SAL-XLIFF-CORE-INLINE-ISOLATION-001
     selected_candidate_profiles: [xliff_2.1]
     authority_profiles: [xliff_2.0, xliff_2.1]
-    immutable_affected_tests: PASS_77
-    affected_tool_tests: PASS_77
-    controller_event: FF6-EVENT-000039
-    controller_acceptance_commit: c421940ae70a3dc949318eee00cbfc5e3cf8b9a3
-  authority_precedence:
-    xliff_2_0: exact_language_tag_equality
-    xliff_2_1: exact_or_more_specific_target_language_tag
-    conflict: display_prose_conflicts_with_normative_f4t_schematron
-    resolution: normative_machine_readable_rule_controls
+    immutable_focused_tests: PASS_3
+    affected_tool_tests: PASS_113
+    controller_event: FF6-EVENT-000040
+    controller_acceptance_commit: de569544eebc1fff011901e61d3574dcc48e5e08
+  authority_semantics:
+    xliff_2_0: isolated_biconditional_in_normative_prose
+    xliff_2_1: isolated_biconditional_plus_source_side_f5s_report
+    direct_owner: SAL-XLIFF-CORE-INLINE-ISOLATION-001
+    target_side_reciprocal_candidate_pending: true
   immutable_replay:
     ignored_external_authority_files:
       - src-xlf-001.bin
@@ -144,7 +144,8 @@ other_products:
   nrrd: {source_exists: true, certification: not_certified}
   safetensors: {source_exists: true, certification: not_certified}
 known_limits:
-  - Event 39 proves one profile-specific target-language correction and disposition, not XLF-04 completion.
+  - Event 40 proves one inline-isolation obligation and disposition, not XLF-04 completion.
+  - The compiler hashes a missing cached authority as empty bytes instead of failing closed; the accepted replay materialized all five records and does not claim this machinery weakness is repaired.
   - The XLIFF ProductContract is freshly compiled but remains DRAFT and non-promoting.
   - The local artifact index is pre-existing invalid YAML; no promotion relies on it.
   - Checkout identity is verified for the accepted proof closure, not every future generator.

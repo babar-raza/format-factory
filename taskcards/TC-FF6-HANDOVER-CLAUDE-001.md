@@ -559,3 +559,55 @@ bounded denominator change.
 Provider identity, token, leases, manifests, authorizations, and ignored local
 files never transfer. The next shift must recompute them and must restore the
 complete five-record authority closure for immutable contract replay.
+
+## Event-40 cross-provider checkpoint refresh
+
+This section supersedes every earlier operational resume paragraph while
+retaining them as audit history.
+
+- Accepted XLIFF semantic commit:
+  `d95af5aeb248907b4d23457ecd288723fc9c2050`.
+- Accepted controller checkpoint:
+  `de569544eebc1fff011901e61d3574dcc48e5e08`.
+- Native authority: `FF6-EVENT-000040` /
+  `c9c7167d447fbe0945c7a65c288f3cece78c64090e09c1ce2d674fdbf9bf2d63`.
+- Accepted XLIFF boundary: 9/1,130 independently verified dispositions and
+  31/105 source-bound Core obligations; 1,121 dispositions and 74 obligations
+  remain open.
+- The semantic slice binds the stable XLIFF 2.0/2.1 start-code isolation
+  biconditional to one direct inline-isolation obligation. The XLIFF 2.1 F5S
+  report supplies source-side executable evidence. Generated validator,
+  hierarchy, element-surface, reference, and source-cardinality proposals are
+  not accepted as direct owners.
+- All 30 predecessor obligation objects, all eight predecessor decisions, and
+  all 1,130 candidate identities were preserved. The candidate census remained
+  byte-identical.
+- 113 affected tool tests, 69 production-program tests, and 94
+  format-contract tests passed with the one exact baseline-known stateful CSV
+  test deselected. The complete five-record XLIFF authority closure passed an
+  immutable detached-checkout replay.
+- All 34 XLIFF SAL facts, deterministic adjudication/inventory replay, Ruff,
+  strict Mypy, Pyright 1.1.411, py_compile, ProductContract compilation, skill
+  transcripts, and native plan-control validation passed.
+- The freshly compiled XLIFF ProductContract remains `DRAFT` with 15
+  capabilities. Product source, certification, promotion, release, and gates
+  did not change. Every product remains `UNASSESSED`; certification is `0/6`.
+
+The exact successor is `XLF-04-BATCH-005-PARTIAL-002-I`, candidate
+`XLF-CAND-CORE-SCHEMATRON-60B596A00F7FA06A`. The incoming provider starts
+from `plans/codex/handover/START-HERE.md`, validates fetched GitLab
+`origin/main`, creates a fresh coordination identity and skill authorization,
+and independently adjudicates the target-side isolated start-code report. It
+must determine whether the report adds reciprocal proof to the existing
+`SAL-XLIFF-CORE-INLINE-ISOLATION-001` owner without duplicating that
+obligation. All eight generated mappings remain unverified proposals. All 31
+accepted obligation rows and all 1,130 candidate identities must be preserved
+unless exact authority proves a bounded change.
+
+Provider identity, token, leases, manifests, authorizations, temporary
+worktrees, and ignored authority caches never transfer. The next shift must
+recompute them. The structural fail-late gap in contract compilation for a
+missing local authority remains open: missing authority bytes currently hash
+as empty before later drift checks reject the contract. Do not weaken the later
+check or treat it as product evidence; repair it through a separately governed
+machinery task.
