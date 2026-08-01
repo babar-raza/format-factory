@@ -1,0 +1,50 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "compile-format-contract-ff6-drift-repair-001",
+  "skill_id": "compile-format-contract",
+  "mode": "live",
+  "timestamp": "2026-08-01T18:45:00Z",
+  "inputs": {
+    "format_id": "portfolio_ff6",
+    "format_ids": ["ipynb", "ora", "xliff", "safetensors", "ubl"],
+    "task_ids": ["TC-FF6-PROGRAM-CAPABILITIES-001", "TC-FF6-XLIFF-PROFILE-SURFACE-001"],
+    "base_git_commit": "e0862f0f1b680ec29836070c216762863b09feef",
+    "execution_manifests": ["sfx-d4ab0589daf99e03", "sfx-bf0b053ba9755266"]
+  },
+  "allowed_files": [
+    "shared/format-contracts/ipynb.yaml",
+    "shared/format-contracts/ora.yaml",
+    "shared/format-contracts/xliff.yaml",
+    "shared/format-contracts/safetensors.yaml",
+    "shared/format-contracts/ubl.yaml",
+    "registry/format-contract-registry.yaml",
+    "reports/skills-rff6/skill-transcripts/compile-format-contract-ff6-drift-repair-001.json"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/ipynb.yaml",
+    "shared/format-contracts/ora.yaml",
+    "shared/format-contracts/xliff.yaml",
+    "shared/format-contracts/safetensors.yaml",
+    "shared/format-contracts/ubl.yaml",
+    "registry/format-contract-registry.yaml",
+    "reports/skills-rff6/skill-transcripts/compile-format-contract-ff6-drift-repair-001.json"
+  ],
+  "tests_run": [
+    "contract check and idempotency for all six target formats",
+    "authority_materializer audit --contracts",
+    "85 affected capability and contract tests passed; one pre-existing CSV stateful test deselected after detached baseline reproduction"
+  ],
+  "result": "PASS",
+  "evidence": {
+    "contract_sha256": {
+      "ipynb": "070e7486feb32cb69e64bf9bb040bb47e4671f0034835d78d081c39ae2c05903",
+      "ora": "b18759606ff94b21fbd451f3e46cd98c48350b62cfae44abc4bacd6ccf9a7e60",
+      "xliff": "72b4fc502116a6df682bbb606e42fe2350d698d07b681a52604f6febe268fca4",
+      "safetensors": "0c75ec78971819ea2d679482ea8b81334f594632bf79cdb0c4ec465c8a3bcfbb",
+      "ubl": "41aec8cae7ec194c419ce7ac98ba0b5a3c67db3af0ff2a3c6b2f0e13594f62ab"
+    },
+    "promotion_effect": "none"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

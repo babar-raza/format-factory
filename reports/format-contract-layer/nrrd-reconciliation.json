@@ -2,16 +2,31 @@
   "format_id": "nrrd",
   "contract_id": "FC-NRRD-V1",
   "contract_input_digests": {
-    "fact_categories_sha256": "27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468",
-    "family_pack_sha256": "97b425d6661312e1ab8d8765c680e181f4c23a119512526c0d34c9cedc489a9c",
+    "authority_lock_impl_sha256": "3295565e37b8a5ff47a6e05aa8b49b70bb8574171bbe2e7ba9362f344e20012c",
+    "authority_lock_schema_sha256": "a8b860f4bef1ceae1b9dd6348c29cc99b35f2bde2dca032217398bddb061f913",
+    "authority_lock_sha256": "5c1ac942018f1e26e0fc0ca7c8284313452d1cb44c04d7e225faad4b21219929",
+    "authority_materializer_sha256": "b730b8f700aec1460fcd48ef2e849e7e1b2798f7849de8c37c5c15943c204f58",
+    "authority_runtime_sha256": "a24f0834bc99cc2758e2b70201ce1d28039c11a057688f95f5a1f6c29ea23a15",
+    "authority_src_nrrd_001_sha256": "43ca6102cc998e0191e225d7954278547d491e29b74a132b3118571d85a8b0d5",
+    "authority_src_nrrd_002_sha256": "260b84db6d889b13c979789097c442ea48b671c71d28bf5ef5f1e6b812a126b3",
+    "authority_src_nrrd_003_sha256": "65cd7b76626b8c8eb91607c275db6e434d3afc73838025b4c0182efdc5f12770",
+    "canonical_io_impl_sha256": "aca19b1319bf7304d5136fd6c9d729cb50b22d8a23a17ca9314fdb0c58cc164d",
+    "contract_compiler_impl_sha256": "e98ad15504ab1d338f114e21c9909b2eb5af9699961c0621da964bb59403dc67",
+    "contract_stores_impl_sha256": "cd120c7990a37b0f913a2b59e81ab28fdf7b3d50897e38d78cb20fc9e0823f7a",
+    "fact_categories_sha256": "aedd4c838073695752c724e8f53fd189f58653ca22e01b88f5932ebe9fe376bc",
+    "family_pack_sha256": "5785fc9dae5e9fbe46f71e64392752b302c6a1c90d37eaffb5be4530f9964a07",
+    "format_contract_schema_sha256": "4eb5cae2d69d0831291646f3cf21e5d019d6b0de2904a745b712cf5fa6c37da9",
+    "product_requirements_sha256": "65cd7b76626b8c8eb91607c275db6e434d3afc73838025b4c0182efdc5f12770",
     "qname_registry_sha256": "3523cada8363fbaaabf139d437af79aa392bbf98a9e3f435d8aed3ee453e1f92",
-    "research_sha256": "e61259ab0cdbf554a3af3d4155c09cf4cf1b66b84a599db04287df028ebd744c",
-    "sal_facts_sha256": "2263a9a9bec2165d8db0350aab98841414a748e23bba845130371da2e78d15e1",
-    "shared_contract_sha256": "ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494"
+    "research_intake_impl_sha256": "4c7d3bfd69e7e5a74a9db2483d25b062e11cfdcb6609637b0343dfa8d3cd0579",
+    "research_sha256": "c8884f867e4071b79bea39d9eb1b6ddbfa6fb569170207aeaa1a5f0c70f99a4b",
+    "sal_facts_sha256": "220dfbefabf44d8c2950cade60fe6ec26766e274985ccb32246e8ce6e532b14f",
+    "shared_contract_sha256": "ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494",
+    "source_researcher_impl_sha256": "4367e7591a368bcbc6a01199a7eb6da0f569ccc5c706d6650cdd96db0b7083a3"
   },
   "product_source_present": true,
-  "function_count": 59,
-  "class_count": 8,
+  "function_count": 97,
+  "class_count": 11,
   "test_file_count": 7,
   "oracle_status": null,
   "capabilities": [
@@ -31,16 +46,17 @@
         "NrrdError",
         "NrrdHeader",
         "NrrdParseError",
-        "NrrdWriteError"
+        "NrrdValidationError",
+        "NrrdWriteError",
+        "PreservationIssue",
+        "PreservationReport"
       ],
       "test_files": [
         "tests/python/nrrd/test_nrrd_analytics.py",
         "tests/python/nrrd/test_nrrd_codec.py",
         "tests/python/nrrd/test_nrrd_feature_completeness.py",
         "tests/python/nrrd/test_nrrd_gap_coverage.py",
-        "tests/python/nrrd/test_nrrd_mutation_roundtrip.py",
-        "tests/python/nrrd/test_nrrd_spec_compat.py",
-        "tests/python/nrrd/test_nrrd_to_csv.py"
+        "tests/python/nrrd/test_nrrd_spec_compat.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -83,10 +99,19 @@
       "observed_depth": 2,
       "gap_depth": 0,
       "product_symbols": [
+        "decode_ascii",
+        "decode_binary",
+        "decode_encoding",
         "decode_nrrd_data",
         "from_file",
+        "from_mapping",
+        "load",
         "load_nrrd",
-        "probe_nrrd"
+        "loads",
+        "parse_block_size",
+        "probe",
+        "probe_nrrd",
+        "read_relative"
       ],
       "test_files": [
         "tests/python/nrrd/test_nrrd_analytics.py",
@@ -94,8 +119,42 @@
         "tests/python/nrrd/test_nrrd_feature_completeness.py",
         "tests/python/nrrd/test_nrrd_gap_coverage.py",
         "tests/python/nrrd/test_nrrd_mutation_roundtrip.py",
-        "tests/python/nrrd/test_nrrd_spec_compat.py",
-        "tests/python/nrrd/test_nrrd_to_csv.py"
+        "tests/python/nrrd/test_nrrd_spec_compat.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "NRRD-FRAME-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 3,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 0,
+      "product_symbols": [
+        "Data",
+        "Header",
+        "NrrdData",
+        "NrrdDocument",
+        "NrrdError",
+        "NrrdHeader",
+        "NrrdParseError",
+        "NrrdValidationError",
+        "NrrdWriteError",
+        "PreservationIssue",
+        "PreservationReport"
+      ],
+      "test_files": [
+        "tests/python/nrrd/test_nrrd_analytics.py",
+        "tests/python/nrrd/test_nrrd_codec.py",
+        "tests/python/nrrd/test_nrrd_feature_completeness.py",
+        "tests/python/nrrd/test_nrrd_gap_coverage.py",
+        "tests/python/nrrd/test_nrrd_spec_compat.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -113,10 +172,19 @@
       "observed_depth": 2,
       "gap_depth": 0,
       "product_symbols": [
+        "decode_ascii",
+        "decode_binary",
+        "decode_encoding",
         "decode_nrrd_data",
         "from_file",
+        "from_mapping",
+        "load",
         "load_nrrd",
-        "probe_nrrd"
+        "loads",
+        "parse_block_size",
+        "probe",
+        "probe_nrrd",
+        "read_relative"
       ],
       "test_files": [
         "tests/python/nrrd/test_nrrd_analytics.py",
@@ -124,8 +192,77 @@
         "tests/python/nrrd/test_nrrd_feature_completeness.py",
         "tests/python/nrrd/test_nrrd_gap_coverage.py",
         "tests/python/nrrd/test_nrrd_mutation_roundtrip.py",
-        "tests/python/nrrd/test_nrrd_spec_compat.py",
-        "tests/python/nrrd/test_nrrd_to_csv.py"
+        "tests/python/nrrd/test_nrrd_spec_compat.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "NRRD-KEYVALUE-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 3,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 0,
+      "product_symbols": [
+        "Data",
+        "Header",
+        "NrrdData",
+        "NrrdDocument",
+        "NrrdError",
+        "NrrdHeader",
+        "NrrdParseError",
+        "NrrdValidationError",
+        "NrrdWriteError",
+        "PreservationIssue",
+        "PreservationReport"
+      ],
+      "test_files": [
+        "tests/python/nrrd/test_nrrd_analytics.py",
+        "tests/python/nrrd/test_nrrd_codec.py",
+        "tests/python/nrrd/test_nrrd_feature_completeness.py",
+        "tests/python/nrrd/test_nrrd_gap_coverage.py",
+        "tests/python/nrrd/test_nrrd_spec_compat.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "NRRD-KINDS-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 3,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 0,
+      "product_symbols": [
+        "Data",
+        "Header",
+        "NrrdData",
+        "NrrdDocument",
+        "NrrdError",
+        "NrrdHeader",
+        "NrrdParseError",
+        "NrrdValidationError",
+        "NrrdWriteError",
+        "PreservationIssue",
+        "PreservationReport"
+      ],
+      "test_files": [
+        "tests/python/nrrd/test_nrrd_analytics.py",
+        "tests/python/nrrd/test_nrrd_codec.py",
+        "tests/python/nrrd/test_nrrd_feature_completeness.py",
+        "tests/python/nrrd/test_nrrd_gap_coverage.py",
+        "tests/python/nrrd/test_nrrd_spec_compat.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -168,7 +305,10 @@
       "observed_depth": 4,
       "gap_depth": 0,
       "product_symbols": [
+        "load",
         "load_nrrd",
+        "loads",
+        "parse_block_size",
         "write_nrrd"
       ],
       "test_files": [
@@ -177,8 +317,7 @@
         "tests/python/nrrd/test_nrrd_feature_completeness.py",
         "tests/python/nrrd/test_nrrd_gap_coverage.py",
         "tests/python/nrrd/test_nrrd_mutation_roundtrip.py",
-        "tests/python/nrrd/test_nrrd_spec_compat.py",
-        "tests/python/nrrd/test_nrrd_to_csv.py"
+        "tests/python/nrrd/test_nrrd_spec_compat.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -196,7 +335,44 @@
       "observed_depth": 2,
       "gap_depth": 0,
       "product_symbols": [
+        "is_lossless",
         "roundtrip"
+      ],
+      "test_files": [
+        "tests/python/nrrd/test_nrrd_codec.py",
+        "tests/python/nrrd/test_nrrd_feature_completeness.py",
+        "tests/python/nrrd/test_nrrd_gap_coverage.py",
+        "tests/python/nrrd/test_nrrd_mutation_roundtrip.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "NRRD-MULTIFILE-001",
+      "category": "parse",
+      "level": "MUST",
+      "depth_required": 2,
+      "observed_status": "TESTED",
+      "observed_depth": 2,
+      "gap_depth": 0,
+      "product_symbols": [
+        "decode_ascii",
+        "decode_binary",
+        "decode_encoding",
+        "decode_nrrd_data",
+        "from_file",
+        "from_mapping",
+        "load",
+        "load_nrrd",
+        "loads",
+        "parse_block_size",
+        "probe",
+        "probe_nrrd",
+        "read_relative"
       ],
       "test_files": [
         "tests/python/nrrd/test_nrrd_analytics.py",
@@ -204,8 +380,7 @@
         "tests/python/nrrd/test_nrrd_feature_completeness.py",
         "tests/python/nrrd/test_nrrd_gap_coverage.py",
         "tests/python/nrrd/test_nrrd_mutation_roundtrip.py",
-        "tests/python/nrrd/test_nrrd_spec_compat.py",
-        "tests/python/nrrd/test_nrrd_to_csv.py"
+        "tests/python/nrrd/test_nrrd_spec_compat.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -223,10 +398,19 @@
       "observed_depth": 2,
       "gap_depth": 0,
       "product_symbols": [
+        "decode_ascii",
+        "decode_binary",
+        "decode_encoding",
         "decode_nrrd_data",
         "from_file",
+        "from_mapping",
+        "load",
         "load_nrrd",
-        "probe_nrrd"
+        "loads",
+        "parse_block_size",
+        "probe",
+        "probe_nrrd",
+        "read_relative"
       ],
       "test_files": [
         "tests/python/nrrd/test_nrrd_analytics.py",
@@ -234,8 +418,32 @@
         "tests/python/nrrd/test_nrrd_feature_completeness.py",
         "tests/python/nrrd/test_nrrd_gap_coverage.py",
         "tests/python/nrrd/test_nrrd_mutation_roundtrip.py",
-        "tests/python/nrrd/test_nrrd_spec_compat.py",
-        "tests/python/nrrd/test_nrrd_to_csv.py"
+        "tests/python/nrrd/test_nrrd_spec_compat.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "NRRD-PHYSICALMETA-001",
+      "category": "preserve",
+      "level": "MUST",
+      "depth_required": 2,
+      "observed_status": "TESTED",
+      "observed_depth": 2,
+      "gap_depth": 0,
+      "product_symbols": [
+        "is_lossless",
+        "roundtrip"
+      ],
+      "test_files": [
+        "tests/python/nrrd/test_nrrd_codec.py",
+        "tests/python/nrrd/test_nrrd_feature_completeness.py",
+        "tests/python/nrrd/test_nrrd_gap_coverage.py",
+        "tests/python/nrrd/test_nrrd_mutation_roundtrip.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -253,16 +461,14 @@
       "observed_depth": 3,
       "gap_depth": 1,
       "product_symbols": [
+        "is_lossless",
         "roundtrip"
       ],
       "test_files": [
-        "tests/python/nrrd/test_nrrd_analytics.py",
         "tests/python/nrrd/test_nrrd_codec.py",
         "tests/python/nrrd/test_nrrd_feature_completeness.py",
         "tests/python/nrrd/test_nrrd_gap_coverage.py",
-        "tests/python/nrrd/test_nrrd_mutation_roundtrip.py",
-        "tests/python/nrrd/test_nrrd_spec_compat.py",
-        "tests/python/nrrd/test_nrrd_to_csv.py"
+        "tests/python/nrrd/test_nrrd_mutation_roundtrip.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -276,10 +482,13 @@
       "category": "security",
       "level": "MUST",
       "depth_required": 5,
-      "observed_status": "NOT_STARTED",
-      "observed_depth": 0,
-      "gap_depth": 5,
-      "product_symbols": [],
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 2,
+      "product_symbols": [
+        "_safe_detached_payload",
+        "effective_limits"
+      ],
       "test_files": [
         "tests/python/nrrd/test_nrrd_analytics.py",
         "tests/python/nrrd/test_nrrd_codec.py",
@@ -312,16 +521,17 @@
         "NrrdError",
         "NrrdHeader",
         "NrrdParseError",
-        "NrrdWriteError"
+        "NrrdValidationError",
+        "NrrdWriteError",
+        "PreservationIssue",
+        "PreservationReport"
       ],
       "test_files": [
         "tests/python/nrrd/test_nrrd_analytics.py",
         "tests/python/nrrd/test_nrrd_codec.py",
         "tests/python/nrrd/test_nrrd_feature_completeness.py",
         "tests/python/nrrd/test_nrrd_gap_coverage.py",
-        "tests/python/nrrd/test_nrrd_mutation_roundtrip.py",
-        "tests/python/nrrd/test_nrrd_spec_compat.py",
-        "tests/python/nrrd/test_nrrd_to_csv.py"
+        "tests/python/nrrd/test_nrrd_spec_compat.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -346,16 +556,17 @@
         "NrrdError",
         "NrrdHeader",
         "NrrdParseError",
-        "NrrdWriteError"
+        "NrrdValidationError",
+        "NrrdWriteError",
+        "PreservationIssue",
+        "PreservationReport"
       ],
       "test_files": [
         "tests/python/nrrd/test_nrrd_analytics.py",
         "tests/python/nrrd/test_nrrd_codec.py",
         "tests/python/nrrd/test_nrrd_feature_completeness.py",
         "tests/python/nrrd/test_nrrd_gap_coverage.py",
-        "tests/python/nrrd/test_nrrd_mutation_roundtrip.py",
-        "tests/python/nrrd/test_nrrd_spec_compat.py",
-        "tests/python/nrrd/test_nrrd_to_csv.py"
+        "tests/python/nrrd/test_nrrd_spec_compat.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -380,7 +591,36 @@
         "NrrdError",
         "NrrdHeader",
         "NrrdParseError",
-        "NrrdWriteError"
+        "NrrdValidationError",
+        "NrrdWriteError",
+        "PreservationIssue",
+        "PreservationReport"
+      ],
+      "test_files": [
+        "tests/python/nrrd/test_nrrd_analytics.py",
+        "tests/python/nrrd/test_nrrd_codec.py",
+        "tests/python/nrrd/test_nrrd_feature_completeness.py",
+        "tests/python/nrrd/test_nrrd_gap_coverage.py",
+        "tests/python/nrrd/test_nrrd_spec_compat.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "NRRD-VALIDATE-001",
+      "category": "validate",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "TESTED",
+      "observed_depth": 5,
+      "gap_depth": 0,
+      "product_symbols": [
+        "checked_element_count",
+        "validate"
       ],
       "test_files": [
         "tests/python/nrrd/test_nrrd_analytics.py",
@@ -399,14 +639,17 @@
       ]
     },
     {
-      "capability_id": "NRRD-VALIDATE-001",
+      "capability_id": "NRRD-VERSION-001",
       "category": "validate",
       "level": "MUST",
       "depth_required": 5,
-      "observed_status": "NOT_STARTED",
-      "observed_depth": 0,
-      "gap_depth": 5,
-      "product_symbols": [],
+      "observed_status": "TESTED",
+      "observed_depth": 5,
+      "gap_depth": 0,
+      "product_symbols": [
+        "checked_element_count",
+        "validate"
+      ],
       "test_files": [
         "tests/python/nrrd/test_nrrd_analytics.py",
         "tests/python/nrrd/test_nrrd_codec.py",
@@ -432,17 +675,18 @@
       "observed_depth": 4,
       "gap_depth": 0,
       "product_symbols": [
+        "dump",
+        "dumps",
+        "encode_binary",
+        "encode_encoding",
         "encode_nrrd_data",
         "write_nrrd"
       ],
       "test_files": [
-        "tests/python/nrrd/test_nrrd_analytics.py",
         "tests/python/nrrd/test_nrrd_codec.py",
         "tests/python/nrrd/test_nrrd_feature_completeness.py",
         "tests/python/nrrd/test_nrrd_gap_coverage.py",
-        "tests/python/nrrd/test_nrrd_mutation_roundtrip.py",
-        "tests/python/nrrd/test_nrrd_spec_compat.py",
-        "tests/python/nrrd/test_nrrd_to_csv.py"
+        "tests/python/nrrd/test_nrrd_mutation_roundtrip.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -453,12 +697,12 @@
     }
   ],
   "summary": {
-    "total": 15,
-    "with_gap": 7,
+    "total": 21,
+    "with_gap": 6,
     "by_status": {
-      "NOT_STARTED": 4,
+      "NOT_STARTED": 2,
       "IMPLEMENTED_UNPROVEN": 0,
-      "TESTED": 11,
+      "TESTED": 19,
       "ORACLE_PROVEN": 0
     }
   }

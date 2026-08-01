@@ -1,0 +1,41 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "reconcile-contract-capabilities-nrrd-readiness-001",
+  "skill_id": "reconcile-contract-capabilities",
+  "mode": "live",
+  "timestamp": "2026-08-01T18:45:00Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC-FF6-NRRD-READINESS-001",
+    "execution_manifest": "sfx-83a5598dd385abdc"
+  },
+  "allowed_files": [
+    "reports/format-contract-layer/nrrd-reconciliation.json",
+    "reports/skills-rff6/skill-transcripts/reconcile-contract-capabilities-nrrd-readiness-001.json"
+  ],
+  "actual_files_changed": [
+    "reports/format-contract-layer/nrrd-reconciliation.json",
+    "reports/skills-rff6/skill-transcripts/reconcile-contract-capabilities-nrrd-readiness-001.json"
+  ],
+  "tests_run": [
+    "contract_reconciler.py --format-id nrrd",
+    "production namespace tests: 58 passed",
+    "legacy NRRD tests: 219 passed",
+    "installed wheel proof: 2 passed, 1 skipped",
+    "package-proof regressions: 24 passed",
+    "NRRD Ruff, strict Mypy, Pyright 1.1.411: pass"
+  ],
+  "result": "PASS",
+  "evidence": {
+    "report_sha256": "f836b45d35425bcacb0ff77444e017b8e559d9921bedb518c6c64dbb32da99e3",
+    "capabilities_total": 21,
+    "capabilities_with_observed_depth_gap": 6,
+    "not_started": ["NRRD-CONVERT-001", "NRRD-LAZY-001"],
+    "partial": ["NRRD-ARRAY-001", "NRRD-PRESERVE-001", "NRRD-SEC-001", "NRRD-SPACE-001"],
+    "reconciler_limit": "heuristic and non-promoting; broad symbol/test association does not establish per-obligation proof",
+    "certification_state": "UNASSESSED",
+    "promotion_effect": "none"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

@@ -33,7 +33,11 @@ from .authority_lock import (
     records_for_format,
 )
 from .authority_runtime import audit_contract_declarations
-from .product_contract import CompiledProductContract, compile_product_contract
+from .product_contract import (
+    CompiledProductContract,
+    ProductContractCompilationError,
+    compile_product_contract,
+)
 
 
 def _contract_context(
@@ -228,13 +232,22 @@ def compile_universe(
                     f"{foreign_profiles}"
                 )
 
-        compiled = compile_product_contract(
-            contract,
-            run_legacy_validator=False,
-            authority_root=root,
-            authority_lock_document=authority_lock,
-            require_authority_lock=True,
-        )
+        try:
+            compiled = compile_product_contract(
+                contract,
+                run_legacy_validator=False,
+                authority_root=root,
+                authority_lock_document=authority_lock,
+                require_authority_lock=True,
+                # Diagnostic compilation deliberately retains authority issues
+                # in the non-promoting result. Normal compilation stays strict
+                # and fails before emitting any output.
+                strict=not allow_blocked_authority,
+            )
+        except ProductContractCompilationError as exc:
+            # Keep the capability-universe API's documented exception boundary
+            # while preserving the exact fail-closed authority diagnostics.
+            raise UniverseError(str(exc)) from exc
         authority_status, authority_issues = _authority_state(compiled)
         for result in audit_contract_declarations(
             root, authority_lock, [format_id]
@@ -476,7 +489,7 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     from .capability_universe_command import main as command_main
 
-    return command_main(argv)
+    return int(command_main(argv))
 
 
 # Compatibility exports for the initial compiler API.

@@ -1,0 +1,44 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "research-format-contract-sources-xliff-closure-001",
+  "skill_id": "research-format-contract-sources",
+  "mode": "live",
+  "timestamp": "2026-08-01T18:45:00Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "execution_manifest": "sfx-dc424286f146e713",
+    "network_used": false
+  },
+  "allowed_files": [
+    "shared/format-contracts/research/xliff.yaml",
+    ".local/format-contracts/drafts/xliff-sources.yaml",
+    ".local/format-contracts/drafts/xliff-draft.yaml",
+    ".local/supervisor/sal-candidates/xliff.yaml",
+    "reports/skills-rff6/skill-transcripts/research-format-contract-sources-xliff-closure-001.json"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/research/xliff.yaml",
+    ".local/format-contracts/drafts/xliff-sources.yaml",
+    ".local/format-contracts/drafts/xliff-draft.yaml",
+    ".local/supervisor/sal-candidates/xliff.yaml",
+    "reports/skills-rff6/skill-transcripts/research-format-contract-sources-xliff-closure-001.json"
+  ],
+  "tests_run": [
+    "authority_materializer audit --format xliff",
+    "source_researcher.py --format-id xliff --prepare-intake --reset-draft",
+    "research_intake.py --format-id xliff",
+    "authority_materializer audit --format xliff --contracts"
+  ],
+  "result": "PASS",
+  "evidence": {
+    "research_sha256": "efe52121762c0beb9c5ad1a37b3f0e556d66d7534534c39723dc382cb850246a",
+    "authority_results": "5 MATCH, 0 MISMATCH, 0 MISSING, 0 UNDECLARED",
+    "source_added": "SRC-XLIFF-003",
+    "source_sha256": "4b19c8d7c878c34b5422310f340abf099dedccf968c0a3c145548d3a691da7c2",
+    "sal_candidates_queued": 0,
+    "promotion_effect": "none"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

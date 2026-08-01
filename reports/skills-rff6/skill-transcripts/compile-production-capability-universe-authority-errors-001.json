@@ -1,0 +1,53 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "compile-production-capability-universe-authority-errors-001",
+  "skill_id": "compile-production-capability-universe",
+  "mode": "live",
+  "timestamp": "2026-08-01T18:45:00Z",
+  "inputs": {
+    "format_ids": ["ipynb", "ora", "nrrd", "xliff", "safetensors", "ubl"],
+    "policy_path": "plans/strategic/ff6/capability-policy.yaml",
+    "enrichment_dir": "plans/strategic/ff6/capability-enrichments",
+    "output_dir": "plans/strategic/ff6",
+    "task_id": "TC-FF6-CAPABILITY-COMPILER-001",
+    "execution_manifest": "sfx-085f02280945d01d",
+    "baseline_commit": "e0862f0f1b680ec29836070c216762863b09feef"
+  },
+  "allowed_files": [
+    "tools/format_contract/capability_universe.py",
+    "plans/strategic/ff6/capabilities",
+    "plans/strategic/ff6/obligations",
+    "plans/strategic/ff6/capability-taxonomy.yaml",
+    "plans/strategic/ff6/capability-coverage.yaml",
+    "plans/strategic/ff6/capability-manifest.json",
+    "reports/skills-rff6/skill-transcripts/compile-production-capability-universe-authority-errors-001.json"
+  ],
+  "actual_files_changed": [
+    "tools/format_contract/capability_universe.py",
+    "plans/strategic/ff6/capabilities",
+    "plans/strategic/ff6/obligations",
+    "plans/strategic/ff6/capability-manifest.json",
+    "reports/skills-rff6/skill-transcripts/compile-production-capability-universe-authority-errors-001.json"
+  ],
+  "tests_run": [
+    "three authority negative-control tests: 3 passed",
+    "affected capability/contract suite: 85 passed, 1 detached-baseline CSV failure deselected",
+    "Ruff: pass",
+    "Mypy strict with skipped imported implementation bodies: pass",
+    "Pyright 1.1.411: pass",
+    "py_compile: pass",
+    "six-format compiler --verify-idempotency --check: pass"
+  ],
+  "result": "PASS",
+  "evidence": {
+    "source_sha256": "228c895a7064cb0ab678800bbdfb065cbf6b6134ee5bd203075bc79f692d8e4b",
+    "aggregate_sha256": "eaf9d1e03611243d455b88a9c10d7513feedcb8264f6e3fee26eb8f45f804a62",
+    "three_run_digest": "bb35a77d1de67d7c375750aa560435a3e8278a2513c7ee350c0490e54d18dedc",
+    "manifest_sha256": "2f689c46f7885af0fe17dd9af55c53beca3c899ced83715fb1410b54cca75d3d",
+    "baseline_reproduction": "the same three authority tests failed at origin/main because ProductContractCompilationError escaped UniverseError and diagnostic override remained strict",
+    "repair": "normal mode preserves fail-closed diagnostics through UniverseError; diagnostic mode returns explicit non-promoting blocked-authority output",
+    "promotion_effect": "none"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

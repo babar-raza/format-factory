@@ -1,0 +1,48 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "compile-production-capability-universe-ff6-drift-repair-001",
+  "skill_id": "compile-production-capability-universe",
+  "mode": "live",
+  "timestamp": "2026-08-01T18:45:00Z",
+  "inputs": {
+    "format_ids": ["ipynb", "ora", "nrrd", "xliff", "safetensors", "ubl"],
+    "policy_path": "plans/strategic/ff6/capability-policy.yaml",
+    "enrichment_dir": "plans/strategic/ff6/capability-enrichments",
+    "output_dir": "plans/strategic/ff6",
+    "task_id": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "execution_manifest": "sfx-0d2e2742740d94c4"
+  },
+  "allowed_files": [
+    "plans/strategic/ff6/capability-enrichments/xliff.yaml",
+    "plans/strategic/ff6/capabilities",
+    "plans/strategic/ff6/obligations",
+    "plans/strategic/ff6/capability-taxonomy.yaml",
+    "plans/strategic/ff6/capability-coverage.yaml",
+    "plans/strategic/ff6/capability-manifest.json",
+    "reports/skills-rff6/skill-transcripts/compile-production-capability-universe-ff6-drift-repair-001.json"
+  ],
+  "actual_files_changed": [
+    "plans/strategic/ff6/capability-enrichments/xliff.yaml",
+    "plans/strategic/ff6/capabilities",
+    "plans/strategic/ff6/obligations",
+    "plans/strategic/ff6/capability-coverage.yaml",
+    "plans/strategic/ff6/capability-manifest.json",
+    "reports/skills-rff6/skill-transcripts/compile-production-capability-universe-ff6-drift-repair-001.json"
+  ],
+  "tests_run": [
+    "exact XLIFF enrichment-to-contract provenance comparison: zero mismatches",
+    "six-format compiler check and three-run idempotency",
+    "strict authority audit for all locked sources"
+  ],
+  "result": "PASS",
+  "evidence": {
+    "xliff_enrichment_sha256": "b7718cbf0e8c89603a3964d784b8d3d79495670ad428e395d81e2b0e2e975bb5",
+    "reconciled_xliff_capabilities": 8,
+    "obligation_counts": {"ipynb": 68, "ora": 134, "nrrd": 65, "xliff": 142, "safetensors": 86, "ubl": 194},
+    "total_obligations": 689,
+    "superseded_by_final_aggregate": "eaf9d1e03611243d455b88a9c10d7513feedcb8264f6e3fee26eb8f45f804a62",
+    "promotion_effect": "none"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}
