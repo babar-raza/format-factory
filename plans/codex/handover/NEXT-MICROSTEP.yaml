@@ -1,22 +1,23 @@
-schema: ff6/next-microstep@6
-artifact_id: FF6-XLIFF-XLF04-BATCH005-PARTIAL002-D
+schema: ff6/next-microstep@7
+artifact_id: FF6-XLIFF-XLF04-BATCH005-PARTIAL002-D-REPLAY-REPAIR-001
 visibility: internal
 publish_allowed: false
 generated_by: codex
-generated_at: '2026-07-30'
+generated_at: '2026-08-01'
 mission_id: FF6-PRODUCTION-LIBRARIES-001
 source_checkpoint:
   event_id: FF6-EVENT-000035
   event_hash: 2866d7e70bd193f8aa7b60ca1f92f4f842d1cd470f97984c07f47d88ed2ea97d
   checkpoint_implementation_commit: 591fcfe18808e5195c33570eaa9d334770e90166
   accepted_xliff_implementation_commit: 591fcfe18808e5195c33570eaa9d334770e90166
-  checkpoint_commit: 591fcfe18808e5195c33570eaa9d334770e90166
+  checkpoint_commit: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
+  non_promoting_attempt_commit: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
 task:
   task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
   parent_task_id: TC-FF6-PROGRAM-CAPABILITIES-001
   state: WORK_IN_PROGRESS
   first_unmet_step: XLF-04
-  microstep: XLF-04-BATCH-005-PARTIAL-002-D
+  microstep: XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001
 baseline:
   candidate_count: 1130
   dispositions_verified: 4
@@ -54,34 +55,41 @@ generated_proposals_are_not_authority:
     accepted denominator universe.
 required_skills:
   - test-driven-development
+  - validate-missing-skill-workflow
+  - create-ff-skill
   - sal-pipeline-heal
-  - ingest-spec-sal
   - plan-control
 required_execution:
-  - Revalidate Event 35, immutable implementation commit 591fcfe1, exact source/member/candidate digests, and baseline counts.
+  - Revalidate Event 35, accepted implementation 591fcfe1, non-promoting attempt 2dcb161e, exact source/member/candidate digests, and baseline counts.
   - Register a fresh provider identity; never reuse the prior shift identity, token, lease, or execution manifest.
-  - Create fresh skill manifests bound to this file's digest and exact paths.
-  - Add RED tests for the href-plus-content report, reciprocal completeness, and ownership discrimination.
-  - Add negative controls against generic-validator and incidental-context overmapping.
-  - Add exact SAL proof before accepting a decision.
-  - Do not duplicate the existing obligation row; require both reports where the row claims the full biconditional and preserve all 28 prior rows.
-  - Run focused, tamper, check-mode, three-run, SAL, authority, static, and regression gates.
-  - Commit and push explicit files to GitLab main, replay the commit, append one native event, and refresh this packet.
+  - Read CLEAN-REPLAY-REPAIR.md and create fresh skill manifests bound to this file's digest and exact paths.
+  - Reproduce the 5-of-71 clean-checkout failure with a RED test under Windows-style autocrlf checkout.
+  - Use the governed missing-skill workflow before mutating .gitattributes or shared repository digest machinery.
+  - Select one invariant only: enforced LF tracked proof bytes or a single shared canonical-text digest primitive.
+  - Add negative controls for content tamper, EOL-only drift, mixed digest models, stale receipts, deleted inputs, and foreign-format evidence.
+  - Preserve commit 2dcb161e and all Event 35 accepted rows; rebuild only invalidated descendants.
+  - Run clean detached Windows replay, focused, tamper, check-mode, three-run, SAL, authority, static, transcript, and regression gates.
+  - Only after clean replay passes, commit and push explicit files to GitLab main, append one native event accepting PARTIAL-002-D, derive the next candidate, and refresh this packet.
 acceptance:
   prior_rows_unchanged: 28
   candidate_id_set_unchanged: 1130
-  new_decisions_max: 1
+  accepted_decisions_before_repair: 4
+  attempted_decisions_on_main: 5
+  accepted_decisions_after_clean_replay_max: 5
   new_obligations_max: 0
+  clean_detached_windows_affected_tests: 71
   xlf_04_complete: false
   product_source_effect: none
   promotion_effect: none
 forbidden:
+  - local-only receipt refresh or accepting both raw and normalized hashes
+  - reverting, rewriting, or deleting commit 2dcb161e evidence
   - accepting generated proposals without independent authority reasoning
   - claiming XLIFF 2.0 applicability from XLIFF 2.1-only evidence
   - product source, certification, promotion, release, or gate mutation
   - GitHub push, non-main branch, foreign lease release, or dirty-state cleanup
 fallback:
-  when: XLIFF scope is live-owned or preserved occurrence bytes cannot yet be safely adopted
+  when: XLIFF replay-repair scope is live-owned
   task_id: TC-FF6-UBL-TYPING-001
   microstep: UBL-03-PARTIAL-006-ATTRIBUTES-AND-ATTRIBUTE-GROUPS
   implementation_base: d8c106800d3331b29d8078b326e75b0e05d8c232

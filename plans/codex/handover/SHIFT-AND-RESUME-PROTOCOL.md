@@ -13,13 +13,15 @@ historical_projection: true
 
 > **Current authority overlay: Event 35.** Native head
 > `FF6-EVENT-000035`; current exact work is
-> `XLF-04-BATCH-005-PARTIAL-002-D`, derived from
+> `XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001`, derived from
 > [START-HERE.md](START-HERE.md),
 > [CURRENT-MACHINE-STATE.yaml](CURRENT-MACHINE-STATE.yaml),
 > [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml), and the native FF6 journal.
 > The accepted XLIFF boundary is 28/105 obligations and 4/1,130 dispositions
 > at implementation `591fcfe1`. Event 34 separately proves 6,001 UBL local
-> particle nodes. Event 30-34 material
+> particle nodes. Commit `2dcb161e` is a non-promoting attempt because clean
+> Windows replay found LF/CRLF proof-hash drift; see
+> [CLEAN-REPLAY-REPAIR.md](CLEAN-REPLAY-REPAIR.md). Event 30-34 material
 > below is preserved as recovery history and is non-operative.
 
 ## Invariant

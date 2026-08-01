@@ -19,9 +19,11 @@ historical_projection: true
 > historical and non-operative.
 
 Current native head: `FF6-EVENT-000035`; exact route:
-`XLF-04-BATCH-005-PARTIAL-002-D`; accepted boundary: 28/105 obligations and
+`XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001`; accepted boundary: 28/105 obligations and
 4/1,130 dispositions. The disjoint UBL checkpoint contains 6,001 local
-particle nodes and remains non-promoting.
+particle nodes and remains non-promoting. The XLIFF reciprocal attempt at
+`2dcb161e` also remains non-promoting until the clean-checkout digest defect in
+[CLEAN-REPLAY-REPAIR.md](CLEAN-REPLAY-REPAIR.md) is repaired.
 
 ## Purpose
 

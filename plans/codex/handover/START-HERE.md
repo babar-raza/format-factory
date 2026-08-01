@@ -4,7 +4,7 @@ artifact_type: provider_neutral_handover_entry
 visibility: internal
 publish_allowed: false
 generated_by: codex
-generated_at: 2026-07-30
+generated_at: 2026-08-01
 ---
 
 # FF6 autonomous production program — start here
@@ -19,9 +19,14 @@ The canonical repository is GitLab `origin/main`. Do not use the GitHub
 remote, create a branch, reuse another provider identity, or depend on ignored
 local bytes. The native head is `FF6-EVENT-000035` /
 `2866d7e70bd193f8aa7b60ca1f92f4f842d1cd470f97984c07f47d88ed2ea97d`.
-Its immutable XLIFF implementation is GitLab commit
-`591fcfe18808e5195c33570eaa9d334770e90166`, and the canonical continuation is
-`XLF-04-BATCH-005-PARTIAL-002-D`.
+Its accepted XLIFF implementation remains GitLab commit
+`591fcfe18808e5195c33570eaa9d334770e90166`. GitLab `main` also contains
+non-promoting reciprocal implementation attempt
+`2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17`. A clean detached Windows replay
+rejected that attempt because tracked proof text changed LF/CRLF bytes. The
+canonical continuation is
+`XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001`, described in
+[the clean-replay repair contract](CLEAN-REPLAY-REPAIR.md).
 
 ## Mission
 
@@ -51,16 +56,16 @@ one for another:
 - occurrence:
   `96949f8b0f510d573b4c95640fae3e68175b853410865eaf1460a5eaee4f332a`.
 
-These identify the still-unadjudicated reciprocal report at
-`schematron/rule[11]/report[2]`; they are not the digests of the report already
-accepted by Event 35.
+These identify the reciprocal report at `schematron/rule[11]/report[2]`.
+Commit `2dcb161e` adjudicates it, but Event 35 still treats it as unaccepted
+because committed-checkout replay has not passed.
 
 ## Mandatory resume order
 
 1. Read [AGENTS.md](../../../AGENTS.md), then
    [Claude start](CLAUDE-START.md).
 2. Fetch GitLab and require `HEAD == origin/main`, with
-   `ae31baed8bfeb8a35c4ece8e52283114ee48d860` as an
+   `2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17` as an
    ancestor, before any mutation. The packet commit is necessarily later than
    the control checkpoint.
 3. First validate the committed GitLab checkpoint in a detached worktree:
@@ -80,7 +85,8 @@ accepted by Event 35.
    partial-006. Any unattributed dirty path fails the transfer.
 5. Register a fresh coordination identity. Never reuse the identity, token,
    lease, or execution manifest recorded by an earlier shift.
-6. Read [the exact next microstep](NEXT-MICROSTEP.yaml), create fresh skill
+6. Read [the clean-replay repair contract](CLEAN-REPLAY-REPAIR.md) and
+   [the exact next microstep](NEXT-MICROSTEP.yaml), create fresh skill
    manifests, claim only its exact paths, run the mutation guard, and begin
    with the named RED test.
 7. Before the shift ends: make the bounded increment green, commit explicit
@@ -96,6 +102,7 @@ not change the controller-selected XLIFF task.
 ## Current operational documents
 
 - [Exact Claude commands](CLAUDE-START.md)
+- [Clean-replay root cause and repair contract](CLEAN-REPLAY-REPAIR.md)
 - [Active checkpoint and achieved work](ACTIVE-WORK-CHECKPOINT.md)
 - [Machine-readable state](CURRENT-MACHINE-STATE.yaml)
 - [Checkpoint digest contract](checkpoint.yaml)
@@ -127,6 +134,7 @@ not change the controller-selected XLIFF task.
 - [Accepted XLIFF repair proof](../../../reports/ff6/xliff-core-pairing-repair-run-manifest.yaml)
 - [UBL anonymous-type TDD proof](../../../reports/skills-rff6/skill-transcripts/test-driven-development-ubl-schema-graph-004.json)
 - [Event 35 handover receipt](../../../reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-event-35.json)
+- [Reciprocal implementation attempt](../../../reports/skills-rff6/skill-transcripts/test-driven-development-xliff-xlf04-core-batch-005-partial-002-d.json)
 
 The journal, controller, taskcard, evidence, and Git objects override this
 derived packet if a newer valid event exists. Recompute; never hand-edit a

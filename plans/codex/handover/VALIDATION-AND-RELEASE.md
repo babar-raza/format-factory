@@ -21,6 +21,12 @@ historical_projection: true
 > No release state is implied here. Event 31 remains historical
 > negative-control evidence, not current routing.
 
+Commit `2dcb161e` is an additional mandatory negative control: shared-worktree
+success is insufficient when a clean Windows checkout fails because raw
+proof hashes depend on line-ending conversion. The exact repair route is
+`XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001`; see
+[CLEAN-REPLAY-REPAIR.md](CLEAN-REPLAY-REPAIR.md).
+
 Event 31 is a mandatory machinery negative control: deterministic output,
 passing tests, clean static analysis, and count growth did not override a
 wrong semantic owner, missing reciprocal proof, or unsupported profile claim.

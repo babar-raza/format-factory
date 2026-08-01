@@ -24,9 +24,12 @@ identity and its leased files change.
 > dispositions; the verified Event 34 UBL foundation has
 > 6,001 content-addressed local particle nodes and remains non-promoting.
 > The exact canonical successor is
-> `XLF-04-BATCH-005-PARTIAL-002-D`. Use
+> `XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001`. Commit `2dcb161e`
+> contains the non-promoting reciprocal implementation; clean detached replay
+> exposed LF/CRLF proof-hash drift. Use
 > [CURRENT-MACHINE-STATE.yaml](CURRENT-MACHINE-STATE.yaml) and
-> [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml) for executable state.
+> [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml) for executable state, and read
+> [CLEAN-REPLAY-REPAIR.md](CLEAN-REPLAY-REPAIR.md) before mutation.
 >
 > Event 29-34 routes and counts below are retained only as failure and recovery
 > history. They are non-operative. In particular, `d99fc6bf` remains a useful

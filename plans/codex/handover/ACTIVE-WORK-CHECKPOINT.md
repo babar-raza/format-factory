@@ -3,7 +3,7 @@ artifact_id: FF6-ACTIVE-CHECKPOINT-EVENT-35
 visibility: internal
 publish_allowed: false
 generated_by: codex
-generated_at: 2026-07-30
+generated_at: 2026-08-01
 ---
 
 # Active FF6 checkpoint
@@ -41,6 +41,12 @@ generated_at: 2026-07-30
 
 ## Not achieved
 
+- Commit `2dcb161e` implements the reciprocal skeleton proof and passes the
+  shared-worktree gates, but it is non-promoting: a clean detached Windows
+  replay failed 5/71 affected tests because raw proof hashes change with
+  LF/CRLF checkout conversion. See
+  [CLEAN-REPLAY-REPAIR.md](CLEAN-REPLAY-REPAIR.md).
+
 - XLF-04 is incomplete: 77 obligation IDs and 1,126 candidate dispositions
   remain open.
 - UBL-03 is incomplete: derivation/inheritance, attributes, facets, complete
@@ -60,7 +66,8 @@ generated_at: 2026-07-30
 
 ## Exact continuation
 
-Perform `XLF-04-BATCH-005-PARTIAL-002-D` from
+Perform `XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001` from
 [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml). Re-query coordination first and
-preserve any foreign UBL partial-005 work. Preserve the Event 35 accepted
-XLIFF boundary; keep all completion and promotion flags false.
+read [the repair contract](CLEAN-REPLAY-REPAIR.md) before selecting a skill.
+Preserve the Event 35 accepted XLIFF boundary; keep all completion and
+promotion flags false until clean committed-checkout replay passes.

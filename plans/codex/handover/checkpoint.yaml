@@ -1,16 +1,17 @@
-schema: ff6/provider-neutral-checkpoint@11
-artifact_id: FF6-HANDOVER-CHECKPOINT-EVENT-35
+schema: ff6/provider-neutral-checkpoint@12
+artifact_id: FF6-HANDOVER-CHECKPOINT-REPLAY-REPAIR-001
 visibility: internal
 publish_allowed: false
 generated_by: codex
-generated_at: '2026-07-30'
+generated_at: '2026-08-01'
 source_checkpoint:
   forge: GitLab
   remote: origin
   branch: main
-  repository_checkpoint: ae31baed8bfeb8a35c4ece8e52283114ee48d860
+  repository_checkpoint: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
   implementation_commit: 591fcfe18808e5195c33570eaa9d334770e90166
   accepted_xliff_implementation_commit: 591fcfe18808e5195c33570eaa9d334770e90166
+  latest_non_promoting_xliff_attempt: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
   packet_commit_rule: >-
     The commit containing this packet must descend from repository_checkpoint;
     the packet does not self-reference the hash of its own final commit.
@@ -23,7 +24,14 @@ controller_checkpoint:
   task_state: WORK_IN_PROGRESS
   first_unmet_step: XLF-04
   completed_microstep: XLF-04-BATCH-005-PARTIAL-002-C
-  exact_microstep: XLF-04-BATCH-005-PARTIAL-002-D
+  exact_microstep: XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001
+rejected_xliff_attempt:
+  microstep: XLF-04-BATCH-005-PARTIAL-002-D
+  commit: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
+  shared_worktree_verification: PASS
+  clean_detached_windows_replay: 5_FAILED_66_PASSED
+  root_cause: TRACKED_TEXT_EOL_POLICY_AND_RAW_HASH_MODEL_DISAGREE
+  acceptance_effect: none
 verified_xliff_boundary:
   candidates: 1130
   dispositions_verified: 4
@@ -66,3 +74,5 @@ mandatory_resume_validations:
   - manifest hashes and structured parsing
   - detached clean packet proof plus preservation of any current foreign live UBL paths
   - fresh provider identity, exact leases, manifests, and mutation guard
+  - RED clean-checkout reproduction and one repository-wide proof-text digest invariant
+  - clean detached Windows replay of all 71 affected XLIFF tests before PARTIAL-002-D promotion

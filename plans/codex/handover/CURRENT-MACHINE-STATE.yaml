@@ -1,16 +1,17 @@
-schema: ff6/provider-neutral-machine-state@11
-artifact_id: FF6-CURRENT-MACHINE-STATE-EVENT-35
+schema: ff6/provider-neutral-machine-state@12
+artifact_id: FF6-CURRENT-MACHINE-STATE-REPLAY-REPAIR-001
 visibility: internal
 publish_allowed: false
 generated_by: codex
-generated_at: '2026-07-30'
+generated_at: '2026-08-01'
 repository:
   forge: GitLab
   remote: origin
   branch: main
-  checkpoint_commit: ae31baed8bfeb8a35c4ece8e52283114ee48d860
+  checkpoint_commit: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
   implementation_commit: 591fcfe18808e5195c33570eaa9d334770e90166
   accepted_xliff_implementation_commit: 591fcfe18808e5195c33570eaa9d334770e90166
+  latest_non_promoting_xliff_attempt: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
   head_must_equal_origin_main: true
   github_authorized: false
   other_branches_authorized: false
@@ -28,7 +29,7 @@ controller:
   task_state: WORK_IN_PROGRESS
   first_unmet_step: XLF-04
   completed_microstep: XLF-04-BATCH-005-PARTIAL-002-C
-  exact_microstep: XLF-04-BATCH-005-PARTIAL-002-D
+  exact_microstep: XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001
 program_truth:
   capabilities: 110
   obligations: 672
@@ -43,7 +44,7 @@ program_truth:
     safetensors: UNASSESSED
     ubl: UNASSESSED
 workspace_transfer:
-  status: REMOTE_RECONSTRUCTIBLE_XLIFF_CHECKPOINT_WITH_FOREIGN_UBL_INFLIGHT
+  status: REMOTE_RECONSTRUCTIBLE_WITH_DOCUMENTED_CLEAN_REPLAY_REPAIR
   local_only_required_for_resume: false
   provider_identity_transferable: false
   leases_transferable: false
@@ -74,6 +75,15 @@ xliff:
     requirement_sha256: d36657a907cd8be2ecf38d3fa7a78b3c3720486492cdadd09f4f0f7c25f30e84
     occurrence_sha256: 96949f8b0f510d573b4c95640fae3e68175b853410865eaf1460a5eaee4f332a
     profile: xliff_2.1
+  non_promoting_attempt:
+    microstep: XLF-04-BATCH-005-PARTIAL-002-D
+    commit: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
+    shared_worktree_result: PASS
+    clean_detached_windows_result: 5_FAILED_66_PASSED
+    failure: canonical SAL manifest digest is stale
+    root_cause: TRACKED_TEXT_EOL_POLICY_AND_RAW_HASH_MODEL_DISAGREE
+    existing_gap: FF6-GAP-011/FF6-HO-GAP-003
+    accepted_state_effect: none
 ubl:
   status: WORK_IN_PROGRESS
   completed_steps: [UBL-01, UBL-02]
@@ -117,6 +127,7 @@ other_products:
   nrrd: {source_exists: true, certification: not_certified}
   safetensors: {source_exists: true, certification: not_certified}
 known_limits:
+  - Commit 2dcb161e is non-promoting until clean Windows replay passes after one repository-wide tracked-text digest invariant is enforced.
   - Contracts and obligation compilation precede product deepening.
   - Existing install/oracle results are shallow or stale and non-promoting.
   - Gate 10 and publication authority remain external even after technical certification.

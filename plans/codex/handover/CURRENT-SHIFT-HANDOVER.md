@@ -3,10 +3,27 @@ artifact_id: FF6-SHIFT-HANDOVER-EVENT-35
 visibility: internal
 publish_allowed: false
 generated_by: codex
-generated_at: 2026-07-30
+generated_at: 2026-08-01
 ---
 
 # Outgoing shift record
+
+## 2026-08-01 reciprocal attempt and replay rejection
+
+The latest Codex shift implemented Event 35's requested reciprocal skeleton
+candidate and pushed it to GitLab `main` as `2dcb161e`. Shared-worktree proof
+passed: 71 affected tests, 43 production-program tests, 94 format-contract
+tests with the named stateful deselection, three identical generations,
+predecessor preservation, static checks, SAL verification, and five authority
+matches.
+
+Promotion was then rejected. A clean detached Windows checkout of the exact
+commit produced 5 failures and 66 passes because tracked proof-bearing YAML and
+JSON were materialized with CRLF while receipts bind LF raw hashes. No Event 36
+was appended; Event 35 remains the last accepted native state and 4/1,130
+dispositions remain accepted. The exact continuation is
+`XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001`, not a second semantic
+implementation. See [CLEAN-REPLAY-REPAIR.md](CLEAN-REPLAY-REPAIR.md).
 
 ## Event 35 XLIFF checkpoint
 

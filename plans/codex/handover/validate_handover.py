@@ -42,6 +42,7 @@ INVENTORY_PATH = REPO_ROOT / "reports/ff6/xliff-core-obligation-inventory.yaml"
 OPERATIONAL_DOC_PATHS = (
     "plans/codex/handover/START-HERE.md",
     "plans/codex/handover/CLAUDE-START.md",
+    "plans/codex/handover/CLEAN-REPLAY-REPAIR.md",
     "plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md",
     "plans/codex/handover/CURRENT-MACHINE-STATE.yaml",
     "plans/codex/handover/checkpoint.yaml",
@@ -64,13 +65,19 @@ EXPECTED_EVENT_HASH = (
     "2866d7e70bd193f8aa7b60ca1f92f4f842d1cd470f97984c07f47d88ed2ea97d"
 )
 EXPECTED_SEQUENCE = 35
-EXPECTED_CONTROL = "ae31baed8bfeb8a35c4ece8e52283114ee48d860"
+EXPECTED_CONTROL = "2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17"
 EXPECTED_IMPLEMENTATION = "591fcfe18808e5195c33570eaa9d334770e90166"
 EXPECTED_XLIFF_IMPLEMENTATION = "591fcfe18808e5195c33570eaa9d334770e90166"
+EXPECTED_NON_PROMOTING_ATTEMPT = (
+    "2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17"
+)
 EXPECTED_EVENT_TASK = "TC-FF6-XLIFF-PROFILE-SURFACE-001"
 EXPECTED_TASK = "TC-FF6-XLIFF-PROFILE-SURFACE-001"
 EXPECTED_XLIFF_EVENT_ID = "FF6-EVENT-000035"
 EXPECTED_MICROSTEP = "XLF-04-BATCH-005-PARTIAL-002-D"
+EXPECTED_RESUME_MICROSTEP = (
+    "XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001"
+)
 EXPECTED_CANDIDATE = "XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E"
 EXPECTED_CANDIDATE_CONTENT_SHA256 = (
     "af94362009857b0fdd3d19881cd2c8d1866e4f5a72849ec1edf057baf7e905a1"
@@ -101,6 +108,7 @@ LINK = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
 ALLOWED_DIRTY_PREFIXES = (
     "plans/codex/handover/",
     "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-event-35",
+    "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-replay-repair-001",
 )
 ALLOWED_DIRTY_EXACT = {
     "plans/strategic/ff6/controller-state.yaml",
@@ -278,13 +286,35 @@ def _semantic_errors(
         errors,
         "machine microstep",
         machine.get("controller", {}).get("exact_microstep"),
-        EXPECTED_MICROSTEP,
+        EXPECTED_RESUME_MICROSTEP,
     )
     _expect(
         errors,
         "next microstep",
         next_step.get("task", {}).get("microstep"),
-        EXPECTED_MICROSTEP,
+        EXPECTED_RESUME_MICROSTEP,
+    )
+    _expect(
+        errors,
+        "machine non-promoting attempt",
+        machine.get("repository", {}).get("latest_non_promoting_xliff_attempt"),
+        EXPECTED_NON_PROMOTING_ATTEMPT,
+    )
+    _expect(
+        errors,
+        "checkpoint non-promoting attempt",
+        checkpoint.get("source_checkpoint", {}).get(
+            "latest_non_promoting_xliff_attempt"
+        ),
+        EXPECTED_NON_PROMOTING_ATTEMPT,
+    )
+    _expect(
+        errors,
+        "recovery non-promoting attempt",
+        recovery.get("captured_workspace", {})
+        .get("reciprocal_attempt", {})
+        .get("commit"),
+        EXPECTED_NON_PROMOTING_ATTEMPT,
     )
     _expect(
         errors,
@@ -636,30 +666,36 @@ def _operational_doc_errors(documents: Mapping[str, str]) -> list[str]:
             EXPECTED_CONTROL,
             EXPECTED_IMPLEMENTATION,
             EXPECTED_XLIFF_IMPLEMENTATION,
-            EXPECTED_MICROSTEP,
+            EXPECTED_RESUME_MICROSTEP,
         ),
         "plans/codex/handover/CLAUDE-START.md": (
             EXPECTED_EVENT_ID,
             EXPECTED_CONTROL,
             EXPECTED_IMPLEMENTATION,
             EXPECTED_XLIFF_IMPLEMENTATION,
-            EXPECTED_MICROSTEP,
+            EXPECTED_RESUME_MICROSTEP,
+        ),
+        "plans/codex/handover/CLEAN-REPLAY-REPAIR.md": (
+            EXPECTED_EVENT_ID,
+            EXPECTED_IMPLEMENTATION,
+            EXPECTED_NON_PROMOTING_ATTEMPT,
+            EXPECTED_RESUME_MICROSTEP,
         ),
         "plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md": (
             EXPECTED_EVENT_ID,
-            EXPECTED_MICROSTEP,
+            EXPECTED_RESUME_MICROSTEP,
         ),
         "plans/codex/handover/CURRENT-SHIFT-HANDOVER.md": (
             EXPECTED_EVENT_ID,
-            EXPECTED_MICROSTEP,
+            EXPECTED_RESUME_MICROSTEP,
         ),
         "plans/codex/handover/CURRENT-MACHINE-STATE.yaml": (
             EXPECTED_EVENT_ID,
-            EXPECTED_MICROSTEP,
+            EXPECTED_RESUME_MICROSTEP,
         ),
         "plans/codex/handover/checkpoint.yaml": (
             EXPECTED_EVENT_ID,
-            EXPECTED_MICROSTEP,
+            EXPECTED_RESUME_MICROSTEP,
         ),
         "plans/codex/handover/INFLIGHT-RECOVERY.yaml": (
             EXPECTED_EVENT_ID,
@@ -668,7 +704,7 @@ def _operational_doc_errors(documents: Mapping[str, str]) -> list[str]:
         ),
         "plans/codex/handover/NEXT-MICROSTEP.yaml": (
             EXPECTED_EVENT_ID,
-            EXPECTED_MICROSTEP,
+            EXPECTED_RESUME_MICROSTEP,
             EXPECTED_CANDIDATE,
         ),
     }
@@ -897,7 +933,7 @@ def validate(*, require_clean: bool = False) -> dict[str, Any]:
         "event_id": latest.get("event_id"),
         "event_hash": latest.get("event_hash"),
         "implementation_commit": EXPECTED_IMPLEMENTATION,
-        "next_microstep": EXPECTED_MICROSTEP,
+        "next_microstep": EXPECTED_RESUME_MICROSTEP,
         "next_candidate": EXPECTED_CANDIDATE,
         "manifest_files": len(manifest.get("files", [])),
         "semantic_negative_controls": 8,

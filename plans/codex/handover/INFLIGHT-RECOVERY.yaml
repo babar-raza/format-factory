@@ -1,15 +1,15 @@
-schema: ff6/inflight-recovery@7
-artifact_id: FF6-RECOVERY-EVENT-35-CLEAN-SHARED-CHECKPOINT
+schema: ff6/inflight-recovery@8
+artifact_id: FF6-RECOVERY-EVENT-35-WITH-NONPROMOTING-REPLAY-ATTEMPT
 visibility: internal
 publish_allowed: false
 generated_by: codex
-generated_at: '2026-07-30'
+generated_at: '2026-08-01'
 event:
   event_id: FF6-EVENT-000035
   event_hash: 2866d7e70bd193f8aa7b60ca1f92f4f842d1cd470f97984c07f47d88ed2ea97d
   implementation_commit: 591fcfe18808e5195c33570eaa9d334770e90166
   accepted_xliff_implementation_commit: 591fcfe18808e5195c33570eaa9d334770e90166
-  checkpoint_commit: ae31baed8bfeb8a35c4ece8e52283114ee48d860
+  checkpoint_commit: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
 captured_workspace:
   product_overlay_status: NO_UNCOMMITTED_XLIFF_OVERLAY
   foreign_dirty_paths_at_capture: 0
@@ -24,6 +24,14 @@ captured_workspace:
     implementation_commit: 591fcfe18808e5195c33570eaa9d334770e90166
     paths_accounted_for: 7
     predecessor_rows_unchanged: 27
+  reciprocal_attempt:
+    commit: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
+    local_overlay_required: false
+    shared_worktree_result: PASS
+    clean_detached_windows_result: 5_FAILED_66_PASSED
+    promotion: REJECTED_PENDING_REPLAY_REPAIR
+    root_cause: TRACKED_TEXT_EOL_POLICY_AND_RAW_HASH_MODEL_DISAGREE
+    exact_repair: XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001
   latest_completed_foreign_shift:
     provider_identity: agent-codex-20260730T061956-bac083
     task: TC-FF6-UBL-TYPING-001
@@ -41,13 +49,14 @@ captured_workspace:
   promotion_effect: none
 reconstruction:
   source: GitLab origin/main
-  required_ancestor: ae31baed8bfeb8a35c4ece8e52283114ee48d860
+  required_ancestor: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
   command: >-
     git fetch origin main --prune; git switch main; git pull --ff-only origin main
   validation: >-
     .venv\Scripts\python.exe plans\codex\handover\validate_handover.py
     --require-clean --self-test
 failure_policy:
+  documented_replay_failure: preserve Event 35 accepted boundary and execute CLEAN-REPLAY-REPAIR.md; do not refresh local receipts
   newer_valid_event: recompute packet from newer canonical event
   dirty_leased_path: preserve and coordinate; never clean or restore
   foreign_live_path: preserve, re-query coordination, and continue only disjoint work

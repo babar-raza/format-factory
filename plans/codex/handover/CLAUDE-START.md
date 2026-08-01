@@ -3,7 +3,7 @@ artifact_id: FF6-CLAUDE-START-EVENT-35
 visibility: internal
 publish_allowed: false
 generated_by: codex
-generated_at: 2026-07-30
+generated_at: 2026-08-01
 ---
 
 # Claude exact start sequence
@@ -15,7 +15,7 @@ Set-Location 'C:\Users\prora\OneDrive\Documents\GitHub\format-factory'
 git fetch origin main --prune
 git rev-parse HEAD
 git rev-parse origin/main
-git merge-base --is-ancestor ae31baed8bfeb8a35c4ece8e52283114ee48d860 origin/main
+git merge-base --is-ancestor 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17 origin/main
 .venv\Scripts\python.exe plans\codex\handover\validate_committed_checkpoint.py --ref origin/main
 .venv\Scripts\python.exe -m tools.supervisor.coordination --json status
 git status --short
@@ -23,10 +23,16 @@ git status --short
 
 Expected before work: `HEAD` equals the fetched `origin/main`; the merge-base
 command proves repository checkpoint
-`ae31baed8bfeb8a35c4ece8e52283114ee48d860` is an ancestor; detached validation
-passes; XLIFF implementation
+`2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17` is an ancestor; packet validation
+passes; accepted XLIFF implementation
 `591fcfe18808e5195c33570eaa9d334770e90166` is an ancestor; journal head is `FF6-EVENT-000035` /
 `2866d7e70bd193f8aa7b60ca1f92f4f842d1cd470f97984c07f47d88ed2ea97d`.
+
+Do not expect the XLIFF affected suite to pass in a fresh Windows checkout
+before the repair. Commit `2dcb161e` is intentionally recorded as
+non-promoting after 5/71 tests failed on LF/CRLF-sensitive SAL manifest
+hashes. Read `plans/codex/handover/CLEAN-REPLAY-REPAIR.md` before selecting
+skills or paths.
 
 Then classify the shared worktree:
 
@@ -49,8 +55,9 @@ Then read, in order:
 3. `plans/strategic/ff6/product-goal.yaml`
 4. `plans/strategic/ff6/controller-state.yaml`
 5. `taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md`
-6. `plans/codex/handover/NEXT-MICROSTEP.yaml`
-7. the complete command files for every selected registered skill
+6. `plans/codex/handover/CLEAN-REPLAY-REPAIR.md`
+7. `plans/codex/handover/NEXT-MICROSTEP.yaml`
+8. the complete command files for every selected registered skill
 
 Register a new provider identity:
 
@@ -65,10 +72,12 @@ logical microstep and exact file set, preflight before every write, record
 every write, and use a fresh execution manifest plus mutation authorization.
 Do not release or take over an active foreign lease.
 
-Execute only `XLF-04-BATCH-005-PARTIAL-002-D` unless the live lease check
-shows that lane is owned. The exact candidate is
-`XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E`. Start with a RED control; do not
-accept the generated mappings as authority.
+Execute only `XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001` unless the
+live lease check shows that lane is owned. Start with a clean-checkout RED
+control. The reciprocal semantic implementation already exists at `2dcb161e`;
+do not duplicate it or refresh receipts locally. Existing XLIFF skills do not
+authorize `.gitattributes` or repository-wide digest policy, so route through
+the governed missing-skill workflow before such a mutation.
 
 If XLIFF is live-owned, select only an unleased disjoint obligation after
 re-querying coordination. `UBL-03-PARTIAL-005-DERIVATION-AND-INHERITANCE-EDGES`

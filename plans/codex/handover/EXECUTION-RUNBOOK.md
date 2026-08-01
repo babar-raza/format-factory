@@ -16,7 +16,10 @@ historical_projection: true
 > [CURRENT-MACHINE-STATE.yaml](CURRENT-MACHINE-STATE.yaml), and
 > [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml). The accepted boundary is
 > 28/105 obligations and 4/1,130 dispositions at `591fcfe1`; the exact
-> microstep is `XLF-04-BATCH-005-PARTIAL-002-D`. Event 34 separately proves
+> microstep is `XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001`. Commit
+> `2dcb161e` is non-promoting after clean replay exposed platform-dependent
+> tracked-text hashes; see [CLEAN-REPLAY-REPAIR.md](CLEAN-REPLAY-REPAIR.md).
+> Event 34 separately proves
 > 6,001 UBL local particle nodes. Event 30-34
 > routes below are preserved only as historical recovery examples and are
 > non-operative.
@@ -33,7 +36,7 @@ four independently verified dispositions, and 28/105 source-bound
 obligations. XLF-04 remains first unmet because 1,126 candidate dispositions
 and 77 expected obligation rows remain open. UBL-03 also remains incomplete.
 The active task is `TC-FF6-XLIFF-PROFILE-SURFACE-001`; the exact next
-microstep is `XLF-04-BATCH-005-PARTIAL-002-D`.
+microstep is `XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001`.
 
 The native journal head is `FF6-EVENT-000035`. Event 31 and `d99fc6bf` remain
 mandatory negative controls: mechanically green output did not establish

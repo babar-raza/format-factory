@@ -23,6 +23,13 @@ historical_projection: false
 > [CURRENT-MACHINE-STATE.yaml](CURRENT-MACHINE-STATE.yaml), the native
 > journal, and [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml).
 
+The newest evidence adds a structural weakness: commit `2dcb161e` passes in
+the shared LF worktree but fails 5/71 affected tests in a clean Windows CRLF
+checkout because proof consumers bind raw worktree hashes while the controller
+claims normalized tracked-text identity. The exact next repair is
+`XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001`; full evidence and design
+tradeoffs are in [CLEAN-REPLAY-REPAIR.md](CLEAN-REPLAY-REPAIR.md).
+
 ## Executive truth
 
 The FF6 mission has a durable goal, deterministic contract compiler, locked

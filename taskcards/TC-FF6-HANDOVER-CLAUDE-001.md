@@ -448,3 +448,33 @@ as verified UBL history.
 
 This taskcard, the packet, and the refresh receipt record a transfer
 checkpoint only. They do not certify any product or authorize publication.
+
+## 2026-08-01 clean-replay repair handover
+
+GitLab `main` now contains reciprocal skeleton implementation attempt
+`2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17`. The shared worktree passed 71
+affected tests, 43 production-program tests, 94 format-contract tests with the
+one documented stateful CSV deselection, three deterministic generations,
+predecessor preservation, static checks, SAL verification, five authority
+matches, and zero-warning implementation transcripts.
+
+The attempt is non-promoting. A clean detached Windows checkout failed 5/71
+affected tests at `canonical SAL manifest digest is stale`. The same tracked
+proof files received different raw SHA-256 values after LF/CRLF checkout
+conversion because `.gitattributes` has no EOL rule while SAL proof consumers
+bind raw worktree bytes. This is a live manifestation of
+`FF6-GAP-011/FF6-HO-GAP-003`.
+
+The provider-neutral packet was refreshed without changing the native
+controller. Event 35 remains the last accepted event; accepted XLIFF state
+remains 28/105 obligations, 77 missing, 4/1,130 dispositions, XLF-04
+incomplete, and 0/6 certified.
+
+The exact successor is
+`XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001`. The incoming provider must
+start at `plans/codex/handover/START-HERE.md`, read
+`plans/codex/handover/CLEAN-REPLAY-REPAIR.md`, register a fresh identity, add a
+clean-checkout RED regression, and establish one repository-wide tracked-text
+digest invariant through a registered machinery skill or the governed
+missing-skill workflow. It must preserve `2dcb161e` and may accept
+PARTIAL-002-D only after the committed clean Windows replay passes.
