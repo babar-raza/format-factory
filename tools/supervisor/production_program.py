@@ -20,9 +20,12 @@ import tempfile
 import tomllib
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any, Mapping
 
 import yaml
+
+if TYPE_CHECKING:
+    from tools.requirements_authority.production_graph import ProductionProofGraph
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 STATES = (
@@ -125,6 +128,22 @@ TRANSIENT_TREE_PARTS = {
     "build",
     "dist",
 }
+PROOF_INPUT_CATEGORIES = frozenset(
+    {
+        "authority",
+        "contract",
+        "source",
+        "test",
+        "fixture",
+        "generator",
+        "tool",
+        "dependency_lock",
+        "environment",
+        "public_api",
+        "package",
+        "proof",
+    }
+)
 
 
 def validate_target_registry() -> dict[str, Any]:
@@ -318,6 +337,24 @@ class ExecutedProof:
     executed: bool = True
 
 
+@dataclass(frozen=True)
+class ImpactSelection:
+    """Deterministic comparison of graph-selected and sentinel-observed impact."""
+
+    changed_inputs: tuple[str, ...]
+    changed_categories: tuple[str, ...]
+    selected_nodes: tuple[str, ...]
+    selection_reasons: tuple[tuple[str, tuple[str, ...]], ...]
+    full_sentinel_nodes: tuple[str, ...]
+    full_sentinel_completed: bool
+    full_sentinel_digest: str
+    false_negatives: tuple[str, ...]
+    false_positives: tuple[str, ...]
+    safe_for_selective_verification: bool
+    verification_scope: str
+    digest: str
+
+
 class ProductionProgram:
     def __init__(self, state_dir: Path):
         # Absolute paths are required for reliable atomic replacement on
@@ -339,6 +376,108 @@ class ProductionProgram:
             return TARGETS_BY_PRODUCT[format_id]
         except KeyError as error:
             raise ValueError(f"unknown production product: {format_id}") from error
+
+    @staticmethod
+    def select_proof_impact(
+        graph: ProductionProofGraph,
+        *,
+        baseline_identity_digests: Mapping[str, str],
+        candidate_identity_digests: Mapping[str, str],
+        full_sentinel_nodes: tuple[str, ...],
+        full_sentinel_completed: bool,
+        full_sentinel_digest: str,
+    ) -> ImpactSelection:
+        """Select affected proof descendants and calibrate against a full sentinel."""
+
+        changed_inputs = tuple(
+            sorted(
+                identity
+                for identity in (
+                    baseline_identity_digests.keys()
+                    | candidate_identity_digests.keys()
+                )
+                if baseline_identity_digests.get(identity)
+                != candidate_identity_digests.get(identity)
+            )
+        )
+        changed_categories = tuple(
+            sorted({identity.partition(":")[0] for identity in changed_inputs})
+        )
+        graph_selected = tuple(
+            sorted(graph.invalidated_nodes(candidate_identity_digests))
+        )
+        reason_sets: dict[str, set[str]] = {}
+        for node in graph.store.nodes.values():
+            inputs = node.metadata.get("input_digests", {})
+            if not isinstance(inputs, dict):
+                continue
+            direct_reasons = {
+                str(identity)
+                for identity, recorded in inputs.items()
+                if candidate_identity_digests.get(str(identity)) != recorded
+            }
+            if direct_reasons:
+                reason_sets[node.node_id] = direct_reasons
+        changed = True
+        while changed:
+            changed = False
+            for edge in graph.store.edges:
+                if edge.edge_type != "depends_on":
+                    continue
+                dependency_reasons = reason_sets.get(edge.target_node_id)
+                if not dependency_reasons:
+                    continue
+                dependent_reasons = reason_sets.setdefault(edge.source_node_id, set())
+                prior_size = len(dependent_reasons)
+                dependent_reasons.update(dependency_reasons)
+                changed = changed or len(dependent_reasons) != prior_size
+        sentinel = tuple(sorted(set(full_sentinel_nodes)))
+        false_negatives = tuple(sorted(set(sentinel) - set(graph_selected)))
+        false_positives = tuple(sorted(set(graph_selected) - set(sentinel)))
+        sentinel_digest_valid = len(full_sentinel_digest) == 64 and all(
+            character in "0123456789abcdef" for character in full_sentinel_digest
+        )
+        safe = (
+            full_sentinel_completed
+            and sentinel_digest_valid
+            and not false_negatives
+            and set(changed_categories) <= PROOF_INPUT_CATEGORIES
+        )
+        selected_nodes = graph_selected if safe else tuple(sorted(graph.store.nodes))
+        selection_reasons = tuple(
+            (
+                node_id,
+                tuple(sorted(reason_sets.get(node_id, {"full-sentinel-fallback"}))),
+            )
+            for node_id in selected_nodes
+        )
+        projection = {
+            "changed_inputs": changed_inputs,
+            "changed_categories": changed_categories,
+            "selected_nodes": selected_nodes,
+            "selection_reasons": selection_reasons,
+            "full_sentinel_nodes": sentinel,
+            "full_sentinel_completed": full_sentinel_completed,
+            "full_sentinel_digest": full_sentinel_digest,
+            "false_negatives": false_negatives,
+            "false_positives": false_positives,
+            "safe_for_selective_verification": safe,
+            "verification_scope": "SELECTED" if safe else "FULL",
+        }
+        return ImpactSelection(
+            changed_inputs=changed_inputs,
+            changed_categories=changed_categories,
+            selected_nodes=selected_nodes,
+            selection_reasons=selection_reasons,
+            full_sentinel_nodes=sentinel,
+            full_sentinel_completed=full_sentinel_completed,
+            full_sentinel_digest=full_sentinel_digest,
+            false_negatives=false_negatives,
+            false_positives=false_positives,
+            safe_for_selective_verification=safe,
+            verification_scope="SELECTED" if safe else "FULL",
+            digest=hashlib.sha256(canonical_bytes(projection)).hexdigest(),
+        )
 
     def load(self) -> None:
         if self.state_path.exists():

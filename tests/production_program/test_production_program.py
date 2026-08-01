@@ -447,6 +447,145 @@ def test_changed_input_invalidates_every_dependent() -> None:
     assert {authority.node_id, obligation.node_id, source.node_id} <= invalid
 
 
+def test_proof_impact_selector_returns_stable_dependency_closure() -> None:
+    selector = getattr(ProductionProgram, "select_proof_impact", None)
+    assert selector is not None, "production proof impact selector is missing"
+    categories = (
+        "authority",
+        "contract",
+        "source",
+        "test",
+        "fixture",
+        "generator",
+        "tool",
+        "dependency_lock",
+        "environment",
+        "public_api",
+        "package",
+        "proof",
+    )
+    for category in categories:
+        graph = ProductionProofGraph()
+        identity = f"{category}:ipynb"
+        changed = graph.add_content_node(
+            "ProofInput",
+            identity,
+            {"format_id": "ipynb", "category": category},
+            input_digests={identity: "a" * 64},
+        )
+        dependent = graph.add_content_node(
+            "Certification",
+            f"certification-{category}",
+            {"format_id": "ipynb"},
+        )
+        graph.add_dependency(dependent, changed)
+        baseline = {identity: "a" * 64}
+        candidate = {identity: "b" * 64}
+        expected = tuple(sorted((changed.node_id, dependent.node_id)))
+
+        selections = [
+            selector(
+                graph,
+                baseline_identity_digests=baseline,
+                candidate_identity_digests=candidate,
+                full_sentinel_nodes=expected,
+                full_sentinel_completed=True,
+                full_sentinel_digest="c" * 64,
+            )
+            for _ in range(3)
+        ]
+
+        assert all(
+            selection.safe_for_selective_verification for selection in selections
+        )
+        assert all(
+            selection.verification_scope == "SELECTED" for selection in selections
+        )
+        assert all(selection.selected_nodes == expected for selection in selections)
+        assert all(selection.changed_inputs == (identity,) for selection in selections)
+        assert all(selection.changed_categories == (category,) for selection in selections)
+        for selection in selections:
+            reasons = dict(selection.selection_reasons)
+            assert reasons[changed.node_id] == (identity,)
+            assert reasons[dependent.node_id] == (identity,)
+        assert len({selection.digest for selection in selections}) == 1
+
+    graph = ProductionProofGraph()
+    source = graph.add_content_node(
+        "SourceSymbol",
+        "reader.load",
+        {"format_id": "ipynb"},
+        input_digests={"source:ipynb": "a" * 64},
+    )
+    missed = graph.add_content_node(
+        "ReleaseArtifact",
+        "ipynb-release",
+        {"format_id": "ipynb"},
+    )
+    fallback = selector(
+        graph,
+        baseline_identity_digests={"source:ipynb": "a" * 64},
+        candidate_identity_digests={"source:ipynb": "b" * 64},
+        full_sentinel_nodes=tuple(sorted((source.node_id, missed.node_id))),
+        full_sentinel_completed=True,
+        full_sentinel_digest="c" * 64,
+    )
+    assert fallback.safe_for_selective_verification is False
+    assert fallback.verification_scope == "FULL"
+    assert fallback.false_negatives == (missed.node_id,)
+    assert fallback.selected_nodes == tuple(sorted(graph.store.nodes))
+    assert dict(fallback.selection_reasons)[missed.node_id] == (
+        "full-sentinel-fallback",
+    )
+
+    unknown = ProductionProofGraph()
+    unknown_node = unknown.add_content_node(
+        "ProofInput",
+        "unclassified:ipynb",
+        {"format_id": "ipynb"},
+        input_digests={"unclassified:ipynb": "a" * 64},
+    )
+    unclassified = selector(
+        unknown,
+        baseline_identity_digests={"unclassified:ipynb": "a" * 64},
+        candidate_identity_digests={"unclassified:ipynb": "b" * 64},
+        full_sentinel_nodes=(unknown_node.node_id,),
+        full_sentinel_completed=True,
+        full_sentinel_digest="c" * 64,
+    )
+    assert unclassified.safe_for_selective_verification is False
+    assert unclassified.verification_scope == "FULL"
+
+    sentinel_graph = ProductionProofGraph()
+    sentinel_node = sentinel_graph.add_content_node(
+        "ProofInput",
+        "source:sentinel",
+        {"format_id": "ipynb"},
+        input_digests={"source:sentinel": "a" * 64},
+    )
+    pending = selector(
+        sentinel_graph,
+        baseline_identity_digests={"source:sentinel": "a" * 64},
+        candidate_identity_digests={"source:sentinel": "b" * 64},
+        full_sentinel_nodes=(sentinel_node.node_id,),
+        full_sentinel_completed=False,
+        full_sentinel_digest="",
+    )
+    assert pending.safe_for_selective_verification is False
+    assert pending.verification_scope == "FULL"
+
+    unbound = selector(
+        sentinel_graph,
+        baseline_identity_digests={"source:sentinel": "a" * 64},
+        candidate_identity_digests={"source:sentinel": "b" * 64},
+        full_sentinel_nodes=(sentinel_node.node_id,),
+        full_sentinel_completed=True,
+        full_sentinel_digest="not-a-sha256",
+    )
+    assert unbound.safe_for_selective_verification is False
+    assert unbound.verification_scope == "FULL"
+
+
 def test_manual_promotion_label_cannot_override_live_proof() -> None:
     graph = ProductionProofGraph()
     graph.add_content_node(

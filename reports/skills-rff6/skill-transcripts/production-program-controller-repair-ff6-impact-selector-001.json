@@ -1,0 +1,93 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "production-program-controller-repair-ff6-impact-selector-001",
+  "skill_id": "production-program-controller-repair",
+  "mode": "live",
+  "timestamp": "2026-08-01T17:37:00Z",
+  "inputs": {
+    "task_id": "TC-FF6-ACCEL-CONTROL-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "defect_id": "FF6-ACCEL-A2-PROOF-IMPACT-FALSE-NEGATIVE",
+    "product_id": "_machinery",
+    "contract_format_id": "portfolio",
+    "source_package_id": "none",
+    "target_behavior_description": "Derive stable affected proof descendants and causal reasons from changed input identities, compare them with a conservative full sentinel, and force full verification on any false negative or unclassified input category.",
+    "execution_manifest_id": "sfx-6b393b86badaf674",
+    "authorization_id": "bf60ee1b98305cc5",
+    "coordination_identity": "agent-codex-20260801T163048-5b135a"
+  },
+  "allowed_files": [
+    "tools/supervisor/production_program.py",
+    "tests/production_program/test_production_program.py",
+    "reports/skills-rff6/skill-transcripts/production-program-controller-repair-ff6-impact-selector-001.json"
+  ],
+  "actual_files_changed": [
+    "tools/supervisor/production_program.py",
+    "tests/production_program/test_production_program.py",
+    "reports/skills-rff6/skill-transcripts/production-program-controller-repair-ff6-impact-selector-001.json"
+  ],
+  "tests_run": [
+    "RED 1: selector test failed with production proof impact selector is missing.",
+    "GREEN 1 was discarded before commit because its fallback branch preceded a driving test; the complete selector contract was returned to RED.",
+    "RED 2: complete contract failed because ProductionProgram.select_proof_impact was absent.",
+    "GREEN 2: 12-category dependency closure, deterministic digest, and sentinel fallback passed.",
+    "RED 3: unclassified input incorrectly reported safe selective verification.",
+    "GREEN 3: unclassified input forces FULL verification.",
+    "RED 4: selected nodes lacked stable selection_reasons.",
+    "GREEN 4: direct and transitive nodes carry sorted causal input identities; fallback-only nodes carry full-sentinel-fallback.",
+    "RED 5: selector rejected the new sentinel completion and digest binding inputs because that proof contract was absent.",
+    "GREEN 5: selective safety now requires a completed sentinel and a lowercase SHA-256 sentinel digest.",
+    "tests/production_program/test_production_program.py: 48 passed.",
+    "Affected regression: 146 passed and 1 exact known stateful CSV idempotency test deselected.",
+    "Ruff, strict Mypy with explicit package bases, Pyright 1.1.411, Python bytecode compilation, and git diff --check passed."
+  ],
+  "result": "PASS",
+  "evidence": {
+    "baseline_commit": "1e241b059672a73c0ae026bdbee5484233a63fec",
+    "input_categories": [
+      "authority",
+      "contract",
+      "dependency_lock",
+      "environment",
+      "fixture",
+      "generator",
+      "package",
+      "proof",
+      "public_api",
+      "source",
+      "test",
+      "tool"
+    ],
+    "calibration": {
+      "schema": "ff6/impact-selector-sentinel@1",
+      "category_mutations": 12,
+      "three_runs_per_category": true,
+      "three_run_aggregate_digest": "b3ef2326e83d2a8ef4f5b183239a64170916eba301508f7f23e673d4180b64f6",
+      "observed_false_negatives": 0,
+      "observed_false_positives": 0,
+      "known_dependency_edges_selected": "PASS_12_OF_12",
+      "causal_reasons": "PASS_DIRECT_AND_TRANSITIVE"
+    },
+    "negative_controls": {
+      "sentinel_false_negative": "PASS_FORCES_FULL_GRAPH_SCOPE",
+      "unclassified_input_category": "PASS_FORCES_FULL_GRAPH_SCOPE",
+      "sentinel_not_completed": "PASS_FORCES_FULL_GRAPH_SCOPE",
+      "invalid_sentinel_digest": "PASS_FORCES_FULL_GRAPH_SCOPE"
+    },
+    "implementation": [
+      "ImpactSelection is immutable and content-addressed.",
+      "Changed inputs and categories, selected nodes, reasons, sentinel nodes, false positives, and false negatives are canonically sorted.",
+      "Dependency closure reuses the canonical proof graph invalidation semantics.",
+      "Sentinel completion and its SHA-256 identity are part of the selection digest.",
+      "Selective verification is an optimization only; unsafe comparison returns every graph node as the execution scope."
+    ],
+    "persistent_calibration_location": "This skill receipt is the committed calibration record. reports/ff6/impact-selector-sentinel.json was not written because the active registered skill does not own that report path; A3 must either generate it through a registered evidence projection skill or retain this receipt as the canonical sentinel evidence.",
+    "nonclaims": [
+      "A2 does not execute a repository-wide T4 sentinel across every existing product test; it establishes the selector and its seeded-category calibration contract.",
+      "A2 does not complete Lane A because A3 remains open.",
+      "No product, certification, promotion, release, or gate state changed."
+    ]
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}
