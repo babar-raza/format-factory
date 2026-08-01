@@ -4,10 +4,10 @@ goal_status: ACTIVE
 generated_by: codex
 visibility: internal
 controller_state: CONTRACT
-transition_sequence: 40
+transition_sequence: 41
 last_verified_event:
-  event_id: FF6-EVENT-000040
-  event_hash: c9c7167d447fbe0945c7a65c288f3cece78c64090e09c1ce2d674fdbf9bf2d63
+  event_id: FF6-EVENT-000041
+  event_hash: f6b81a03ef1067b4b4665c606560d4ca248c77c1b4060b3bd9a252170968ddee
 event_journal: plans/strategic/ff6/events.jsonl
 baseline_commit: e4f8f5f086b5e627c07c2ef2d940eda2601a22a8
 digest_policy:
@@ -53,6 +53,45 @@ next_task:
     context and downstream validator surfaces explicitly. Preserve all 31
     accepted rows and all 1,130 candidate IDs. Product source and architecture
     remain blocked until XLF-04 and later contract steps close.
+acceleration_bootstrap:
+  status: SCHEDULED
+  plan_version: 4
+  scheduling_event: FF6-EVENT-000041
+  source_checkpoint_commit: 00357eb2aac2e657ef087a9ea1ca8433f1d06322
+  controller_writer: logical:FF6-CONTROLLER-WRITE
+  integration_writer: logical:FF6-MAINLINE-INTEGRATION
+  integration_authority: GitLab origin/main
+  integration_mode: SINGLE_WRITER_EXPLICIT_PATH_FAST_FORWARD_ONLY
+  max_active_write_lanes: 4
+  lanes:
+    - lane: A
+      task_id: TC-FF6-ACCEL-CONTROL-001
+      state: READY
+      logical_lease: logical:FF6-CONTROL-ACCELERATION
+      first_action: >-
+        Add the missing-required-authority RED test before changing compilation.
+    - lane: B
+      task_id: TC-FF6-XLIFF-SEMANTIC-BATCH-001
+      state: READY
+      logical_lease: logical:FF6-XLIFF-CONTRACT
+      first_action: >-
+        Execute candidate XLF-CAND-CORE-SCHEMATRON-60B596A00F7FA06A as
+        the semantic-batch pilot without pre-accepting generated mappings.
+    - lane: C
+      task_id: TC-FF6-UBL-SCHEMA-GENERATOR-001
+      state: READY
+      logical_lease: logical:FF6-UBL-GENERATOR
+      first_action: Compile UBL attributes and attribute groups with RED/GREEN proof.
+    - lane: D
+      task_id: TC-FF6-COMPACT-READINESS-001
+      state: READY
+      logical_lease: logical:FF6-COMPACT-READINESS
+      first_action: >-
+        Characterize IPYNB and SafeTensors read-only before any source restructuring.
+  truth_boundary: >-
+    This projection schedules bounded work only. The active XLIFF task and
+    candidate I remain incomplete; UBL-03 remains incomplete; all products
+    remain UNASSESSED and technical certification remains 0/6.
 promotion:
   program: UNASSESSED
   ipynb: UNASSESSED
@@ -124,7 +163,7 @@ current_gap_summary:
   production_certifications: 0
 control_plane_compatibility:
   ff6_event_schema: ff6/controller-event@1
-  native_chain_validation: PASS_THROUGH_EVENT_39
+  native_chain_validation: PASS_THROUGH_EVENT_41
   generic_plan_control_doctor: >-
     INCOMPATIBLE_SCHEMA: tools.plan_control expects previous_hash and its own
     event payload; FF6 uses previous_event_hash. This is the already-tracked

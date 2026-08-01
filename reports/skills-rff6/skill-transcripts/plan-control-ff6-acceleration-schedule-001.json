@@ -1,0 +1,66 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "plan-control-ff6-acceleration-schedule-001",
+  "skill_id": "plan-control",
+  "mode": "live",
+  "timestamp": "2026-08-01T16:23:00Z",
+  "inputs": {
+    "task_id": "TC-FF6-ACCEL-BOOTSTRAP-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "operation": "project",
+    "target_paths": [
+      "plans/strategic/ff6/events.jsonl",
+      "plans/strategic/ff6/controller-state.yaml",
+      "reports/skills-rff6/skill-transcripts/plan-control-ff6-acceleration-schedule-001.json"
+    ],
+    "coordination_scope": "Exact Event 41 journal, controller projection, and transcript paths plus exclusive logical FF6 controller and GitLab-main integration writers. Historical stale leases and unrelated open conflicts were preserved.",
+    "acceptance_evidence": "Hash-valid native chain through Event 41, controller/event consistency, four registered READY lane cards, candidate I unchanged, all products UNASSESSED, 0/6 certifications, and 40 focused plan-control tests passing.",
+    "source_checkpoint": "00357eb2aac2e657ef087a9ea1ca8433f1d06322",
+    "execution_manifest": ".local/skills-first/manifests/sfx-058c1849cd4219b0.json",
+    "authorization_id": "5d03585f12e3cdf2",
+    "coordination_identity": "agent-codex-20260801T161005-99d419"
+  },
+  "allowed_files": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "reports/skills-rff6/skill-transcripts/plan-control-ff6-acceleration-schedule-001.json"
+  ],
+  "actual_files_changed": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "reports/skills-rff6/skill-transcripts/plan-control-ff6-acceleration-schedule-001.json"
+  ],
+  "tests_run": [
+    "Native FF6 event-chain replay: PASS for all 41 canonical hashes and predecessor links.",
+    "Controller projection: PASS at sequence 41 and Event 41 hash f6b81a03ef1067b4b4665c606560d4ca248c77c1b4060b3bd9a252170968ddee.",
+    "Truth boundary: active XLIFF task and candidate I preserved; 31/105 obligations, 9/1130 dispositions, UBL-03 incomplete, all products UNASSESSED, 0/6 certifications.",
+    "Acceleration projection: PASS with four unique READY lane taskcards, one controller writer, and one GitLab-main integration writer.",
+    "python -m pytest tests/plan_control -q: 40 passed.",
+    "python -m pytest tests/production_program/test_production_program.py tests/production_program/test_production_skills.py -q: 47 passed.",
+    "git diff --check: PASS."
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "event_id": "FF6-EVENT-000041",
+    "event_hash": "f6b81a03ef1067b4b4665c606560d4ca248c77c1b4060b3bd9a252170968ddee",
+    "events_sha256": "c7dc438be42f333e6c0ff04841f4a63127c1d7ffcff12cfedda2f766ba711e9d",
+    "controller_sha256": "795bd33ea3d2c4f380407c7730eb3b207f8c044a2a260cfad48d235df23cb748",
+    "taskcard_transcript_sha256": "f3f5d554a05ceebb8ab0e819aa3fea913483f5b226bb376d5d9ffae3547b6fe8",
+    "scheduled_taskcards": 4,
+    "active_task": "TC-FF6-XLIFF-PROFILE-SURFACE-001",
+    "active_microstep": "XLF-04-BATCH-005-PARTIAL-002-I",
+    "product_promotion": "none",
+    "production_certifications": "0/6"
+  },
+  "self_challenge": {
+    "taskcards_only_schedule_work": true,
+    "candidate_i_not_preaccepted": true,
+    "product_state_unchanged": true,
+    "controller_and_integration_single_writer": true,
+    "stale_foreign_coordination_state_preserved": true,
+    "human_only_gate_not_touched": true
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

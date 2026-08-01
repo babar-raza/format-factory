@@ -1,0 +1,75 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "create-taskcard-ff6-acceleration-bootstrap-001",
+  "skill_id": "create-taskcard",
+  "mode": "live",
+  "timestamp": "2026-08-01T16:18:00Z",
+  "inputs": {
+    "taskcard_id": "TC-FF6-ACCEL-BOOTSTRAP-001",
+    "title": "Compile four plan-v4 acceleration taskcards",
+    "taskcard_ids": [
+      "TC-FF6-ACCEL-CONTROL-001",
+      "TC-FF6-XLIFF-SEMANTIC-BATCH-001",
+      "TC-FF6-UBL-SCHEMA-GENERATOR-001",
+      "TC-FF6-COMPACT-READINESS-001"
+    ],
+    "goal_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "route_id": "plan_creation",
+    "plan_path": "plans/strategic/autonomous-six-python-production-execution-plan.md",
+    "plan_sha256": "9105796c8b5e3ad39e648bd90c419e513cc4a6d1d49d82551dc3b5cec1f86191",
+    "source_checkpoint": "00357eb2aac2e657ef087a9ea1ca8433f1d06322",
+    "native_event": "FF6-EVENT-000040",
+    "coordination_identity": "agent-codex-20260801T161005-99d419",
+    "execution_manifest": ".local/skills-first/manifests/sfx-4b601a45cdf2ce76.json",
+    "authorization_id": "d67f70a9abc02e51"
+  },
+  "allowed_files": [
+    "taskcards/TC-FF6-ACCEL-CONTROL-001.md",
+    "taskcards/TC-FF6-XLIFF-SEMANTIC-BATCH-001.md",
+    "taskcards/TC-FF6-UBL-SCHEMA-GENERATOR-001.md",
+    "taskcards/TC-FF6-COMPACT-READINESS-001.md",
+    "taskcards/index.yaml",
+    "reports/skills-rff6/skill-transcripts/create-taskcard-ff6-acceleration-bootstrap-001.json"
+  ],
+  "actual_files_changed": [
+    "taskcards/TC-FF6-ACCEL-CONTROL-001.md",
+    "taskcards/TC-FF6-XLIFF-SEMANTIC-BATCH-001.md",
+    "taskcards/TC-FF6-UBL-SCHEMA-GENERATOR-001.md",
+    "taskcards/TC-FF6-COMPACT-READINESS-001.md",
+    "taskcards/index.yaml",
+    "reports/skills-rff6/skill-transcripts/create-taskcard-ff6-acceleration-bootstrap-001.json"
+  ],
+  "tests_run": [
+    "Four targeted front-matter validations: PASS with zero violations.",
+    "Four plan-skill route validations: PASS; every declared skill is active.",
+    "Taskcard/index structural check: PASS; four IDs match filenames and all 19 index IDs are unique.",
+    "git diff --check: PASS.",
+    "Live GitLab baseline: HEAD equals origin/main at 00357eb2aac2e657ef087a9ea1ca8433f1d06322 before mutation.",
+    "Native Event 40 facts preserved: candidate I uncompleted and production certifications 0/6."
+  ],
+  "excluded_attempts": [
+    {
+      "attempt": "tools/governance/validate_taskcard_execution_contract.py on Markdown taskcards",
+      "reason": "The validator accepts whole-document YAML execution contracts rather than Markdown taskcards with YAML front matter; it reported YAML parse failure and was not used as evidence.",
+      "promoting_evidence": false
+    }
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "taskcard_sha256": {
+      "TC-FF6-ACCEL-CONTROL-001": "cb8858f0e1664e161a168a60aae854449ca7d90ceb34da22063588fce439de4d",
+      "TC-FF6-XLIFF-SEMANTIC-BATCH-001": "656048196aa0a322d6e00b7b3478f3385cbc8460d0be0d3348392973dcff2cad",
+      "TC-FF6-UBL-SCHEMA-GENERATOR-001": "8b862155454e2d75155459570f9b765279b1f670e940005405b89536018bc9bd",
+      "TC-FF6-COMPACT-READINESS-001": "ea811d8d67e0bb31fda2d3ac19ce755d01263bbdb01a44e96743640cb2b539c7"
+    },
+    "task_index_sha256": "3d4f6ce7719eb266395d283a2ad27c85bb6354b71994ca24876043b3441bb3f7",
+    "taskcards_created": 4,
+    "lane_count": 4,
+    "product_promotion": "none",
+    "production_certifications": "0/6",
+    "xliff_candidate_i_completed": false
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}
