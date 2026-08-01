@@ -4,10 +4,10 @@ goal_status: ACTIVE
 generated_by: codex
 visibility: internal
 controller_state: CONTRACT
-transition_sequence: 42
+transition_sequence: 43
 last_verified_event:
-  event_id: FF6-EVENT-000042
-  event_hash: 42b943ca7d4cf67492bf1358f3835636219af2bbe5d777328396bdd434c615fe
+  event_id: FF6-EVENT-000043
+  event_hash: e0555b80f0636eb8a2c75ec8cf092fa203c105c845815c39aa9bdc3cdeabf665
 event_journal: plans/strategic/ff6/events.jsonl
 baseline_commit: e4f8f5f086b5e627c07c2ef2d940eda2601a22a8
 digest_policy:
@@ -68,11 +68,15 @@ acceleration_bootstrap:
       task_id: TC-FF6-ACCEL-CONTROL-001
       state: WORK_IN_PROGRESS
       logical_lease: logical:FF6-CONTROL-ACCELERATION
-      semantic_commit: bdcdae83a78cdb2bd9225a847f814469bcd04c23
+      semantic_commits:
+        - bdcdae83a78cdb2bd9225a847f814469bcd04c23
+        - 9ef65ce3d96ed9a8167c5d115356214c1887b11a
       accepted_slices:
         - A1_MISSING_AUTHORITY_FAIL_CLOSED
+        - A2_PROOF_IMPACT_SELECTOR_AND_SENTINEL
       first_action: >-
-        Execute A2 proof-impact selector RED tests and full-sentinel comparison.
+        Execute A3 semantic-batch, scheduler, generated-handover, and
+        integration-lock controls.
     - lane: B
       task_id: TC-FF6-XLIFF-SEMANTIC-BATCH-001
       state: READY
@@ -92,9 +96,9 @@ acceleration_bootstrap:
       first_action: >-
         Characterize IPYNB and SafeTensors read-only before any source restructuring.
   truth_boundary: >-
-    A1 is accepted as control machinery only. A2 and A3 remain incomplete. The
-    active XLIFF candidate I and UBL-03 remain incomplete; five contracts retain
-    legacy validation defects; XLIFF rejects undeclared locked authority
+    A1 and A2 are accepted as control machinery only; A3 remains incomplete.
+    The active XLIFF candidate I and UBL-03 remain incomplete; five contracts
+    retain legacy validation defects; XLIFF rejects undeclared locked authority
     SRC-XLIFF-003; all products remain UNASSESSED and technical certification
     remains 0/6.
 promotion:

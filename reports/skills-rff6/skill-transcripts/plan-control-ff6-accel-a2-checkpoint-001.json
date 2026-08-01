@@ -1,0 +1,64 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "plan-control-ff6-accel-a2-checkpoint-001",
+  "skill_id": "plan-control",
+  "mode": "live",
+  "timestamp": "2026-08-01T17:47:00Z",
+  "inputs": {
+    "task_id": "TC-FF6-ACCEL-CONTROL-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "operation": "project",
+    "target_paths": [
+      "plans/strategic/ff6/events.jsonl",
+      "plans/strategic/ff6/controller-state.yaml",
+      "reports/skills-rff6/skill-transcripts/plan-control-ff6-accel-a2-checkpoint-001.json"
+    ],
+    "coordination_scope": "Exact Event 43 journal, controller projection, and transcript paths under exclusive FF6 controller and GitLab-main integration leases.",
+    "acceptance_evidence": "A2 semantic commit 9ef65ce3 is on GitLab origin/main; 12 categories have three identical calibrated runs with zero seeded false negatives; unsafe conditions force full scope; 146 affected tests and all static checks pass.",
+    "source_checkpoint": "9ef65ce3d96ed9a8167c5d115356214c1887b11a",
+    "execution_manifest": ".local/skills-first/manifests/sfx-8c76b21ff8c0825d.json",
+    "authorization_id": "189429f8840e76a5",
+    "coordination_identity": "agent-codex-20260801T163048-5b135a"
+  },
+  "allowed_files": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "reports/skills-rff6/skill-transcripts/plan-control-ff6-accel-a2-checkpoint-001.json"
+  ],
+  "actual_files_changed": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "reports/skills-rff6/skill-transcripts/plan-control-ff6-accel-a2-checkpoint-001.json"
+  ],
+  "tests_run": [
+    "Native FF6 replay passed all 43 canonical event hashes, sequence identities, and predecessor links.",
+    "Controller projection matches Event 43 and retains all program and product promotion states as UNASSESSED.",
+    "Lane A projects A1 and A2 accepted, A3 open, and no task completion.",
+    "python -m pytest tests/plan_control -q: 40 passed.",
+    "A2 affected regression: 146 passed with 1 exact known stateful CSV idempotency test deselected.",
+    "git diff --check: PASS."
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "event_id": "FF6-EVENT-000043",
+    "event_hash": "e0555b80f0636eb8a2c75ec8cf092fa203c105c845815c39aa9bdc3cdeabf665",
+    "events_sha256": "c26bab23e58a280675ccdb55797a3e6360fa6b96e29ce6acb2f36345de492746",
+    "controller_sha256": "a9e8e3f23b00ee7371fb96beb6ba5cb0e93fbaa992e7e4cbcd541980548cd93e",
+    "semantic_commit": "9ef65ce3d96ed9a8167c5d115356214c1887b11a",
+    "accepted_slice": "A2_PROOF_IMPACT_SELECTOR_AND_SENTINEL",
+    "next_slice": "A3_BATCH_SCHEDULER_HANDOVER_INTEGRATION",
+    "calibration_digest": "b3ef2326e83d2a8ef4f5b183239a64170916eba301508f7f23e673d4180b64f6",
+    "product_promotion": "none",
+    "production_certifications": "0/6"
+  },
+  "self_challenge": {
+    "a2_only_claimed": true,
+    "a3_remains_open": true,
+    "selector_not_treated_as_promotion_proof": true,
+    "product_state_unchanged": true,
+    "human_only_gate_not_touched": true
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}
