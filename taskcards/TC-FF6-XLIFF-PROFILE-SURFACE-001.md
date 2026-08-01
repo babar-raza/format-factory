@@ -740,6 +740,80 @@ The next executor must:
 8. leave XLF-04, product source, certification, promotion, release, and gates
    incomplete.
 
+## Verified reciprocal-skeleton replay checkpoint — Event 36
+
+Native `FF6-EVENT-000036` supersedes the Event 35 resume instruction.
+The accepted proof boundary is immutable GitLab `main` repair commit
+`809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956`; the underlying semantic change
+is separately preserved at
+`2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17`.
+
+Accepted evidence:
+
+- exact candidate `XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E` is bound by
+  content SHA-256
+  `af94362009857b0fdd3d19881cd2c8d1866e4f5a72849ec1edf057baf7e905a1`,
+  requirement SHA-256
+  `d36657a907cd8be2ecf38d3fa7a78b3c3720486492cdadd09f4f0f7c25f30e84`,
+  and occurrence SHA-256
+  `96949f8b0f510d573b4c95640fae3e68175b853410865eaf1460a5eaee4f332a`;
+- decision `XLF-ADJ-CORE-SCHEMATRON-0005`, digest
+  `513cf8e6a882e8c1d903a1672a7cbfa610f39159d766b1d5d1ae1ac90794883e`,
+  accepts only `SAL-XLIFF-CORE-REFERENCE-SKELETON-HREF-001`;
+- the generic validator proposal is rejected as a downstream capability and
+  skeleton hierarchy context is rejected as incidental;
+- both reciprocal XLIFF 2.1 Schematron reports now prove the existing
+  href-versus-child-content biconditional;
+- all 28 predecessor obligation rows are semantically unchanged: production
+  contract coverage remains `28/105`, with `77` missing;
+- verified candidate dispositions advance from `4/1,130` to `5/1,130`, leaving
+  `1,125` independently unverified;
+- the semantic commit alone was non-promoting because clean Windows checkout
+  replay exposed mixed raw-byte identities; repair commit `809cc18c` enforces
+  LF checkout identity for tracked proof-bearing text and explicit non-text
+  treatment for format payloads, with tests across `core.autocrlf=false`,
+  `input`, and `true`;
+- 115 checkout-identity and affected XLIFF tests, 69 production-program tests,
+  and 94 format-contract tests passed; the format-contract run retained the
+  one exact documented stateful CSV deselection;
+- adjudication and inventory check modes, three byte-identical generations,
+  canonical SAL verification, and all five XLIFF authority matches passed.
+
+This checkpoint does not add a new obligation. It accepts one more candidate
+disposition after repairing its cross-checkout proof identity. XLF-04, all
+later contract steps, product source, certification, promotion, release, and
+all gates remain incomplete. Program certification remains `0/6`.
+
+The exact next microstep is `XLF-04-BATCH-005-PARTIAL-002-E`, candidate
+`XLF-CAND-CORE-SCHEMATRON-100732DB0BBED389`, content SHA-256
+`7564733d38472805796896373cbdbe7807510721c9dfbac29e53843862bcf1cf`,
+requirement SHA-256
+`51c4d1ac9834b99f5a029894cc3c179117a7b9b8de50794bed8acd36132ede7d`,
+and occurrence SHA-256
+`903d76dd0cb8472539255ce5075a884460844bc4975a030906ffb793377d3648`.
+The exact pinned occurrence is `schemas/xliff_core_2.1.sch` at
+`schematron/rule[12]/report[1]`; its normalized report says a unit is
+incomplete if it has no segment child.
+
+The next executor must:
+
+1. validate Event 36 and immutable repair commit `809cc18c` before mutation;
+2. independently read the exact XLIFF 2.1 authority occurrence;
+3. treat generated proposals `SAL-XLIFF-CORE-AGENT-VALIDATOR-001`,
+   `SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001`, and
+   `SAL-XLIFF-CORE-HIERARCHY-UNIT-CHILDREN-001` only as proposals;
+4. identify the direct denominator owner from authority semantics, or record a
+   machine-readable gap if no current denominator row is valid;
+5. add a genuine pre-change RED control plus positive, rejection, tamper, and
+   predecessor-preservation tests;
+6. preserve all 28 accepted obligation rows, all 1,130 candidate identities,
+   and the checkout-identity invariant;
+7. replay deterministic, static, authority, SAL, format-contract,
+   production-program, transcript, immutable-checkout, and native-event
+   controls;
+8. leave XLF-04 and every product/release state incomplete unless the complete
+   evidence graph—not this single microstep—proves otherwise.
+
 ## Required execution
 
 ### XLF-01 — Revalidate the clean predecessor

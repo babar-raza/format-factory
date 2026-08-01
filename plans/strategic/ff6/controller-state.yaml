@@ -4,10 +4,10 @@ goal_status: ACTIVE
 generated_by: codex
 visibility: internal
 controller_state: CONTRACT
-transition_sequence: 35
+transition_sequence: 36
 last_verified_event:
-  event_id: FF6-EVENT-000035
-  event_hash: 2866d7e70bd193f8aa7b60ca1f92f4f842d1cd470f97984c07f47d88ed2ea97d
+  event_id: FF6-EVENT-000036
+  event_hash: d4a05e36bbae4d3ab5f05a4968045552f79ae45dd7b38f6ba3bc39840f684924
 event_journal: plans/strategic/ff6/events.jsonl
 baseline_commit: e4f8f5f086b5e627c07c2ef2d940eda2601a22a8
 digest_policy:
@@ -43,16 +43,15 @@ next_task:
   task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
   state: WORK_IN_PROGRESS
   unlock_condition: >-
-    Resume from Event 35 and immutable GitLab commit 591fcfe1 at
-    XLF-04-BATCH-005-PARTIAL-002-D. Revalidate the accepted boundary of 28/105
-    obligations with 77 missing and 4/1,130 accepted dispositions. Adjudicate
-    exact candidate XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E independently:
-    treat generated AGENT-VALIDATOR and REFERENCE-SKELETON-HREF mappings only
-    as proposals, identify the direct owner, account for incidental hierarchy
-    context, and require both skeleton reports where the underlying rule is
-    biconditional. Preserve all 28 accepted rows and all 1,130 candidate IDs.
-    Product source and architecture remain blocked until XLF-04 and later
-    contract steps close.
+    Resume from Event 36 and immutable GitLab commit 809cc18c at
+    XLF-04-BATCH-005-PARTIAL-002-E. Revalidate the accepted boundary of 28/105
+    obligations with 77 missing and 5/1,130 accepted dispositions. Adjudicate
+    exact candidate XLF-CAND-CORE-SCHEMATRON-100732DB0BBED389 independently:
+    treat generated AGENT-VALIDATOR, HIERARCHY-SEGMENT, and
+    HIERARCHY-UNIT-CHILDREN mappings only as proposals, identify the direct
+    owner or record a gap, and reject incidental context explicitly. Preserve
+    all 28 accepted rows and all 1,130 candidate IDs. Product source and
+    architecture remain blocked until XLF-04 and later contract steps close.
 promotion:
   program: UNASSESSED
   ipynb: UNASSESSED
@@ -124,7 +123,7 @@ current_gap_summary:
   production_certifications: 0
 control_plane_compatibility:
   ff6_event_schema: ff6/controller-event@1
-  native_chain_validation: PASS_THROUGH_EVENT_35
+  native_chain_validation: PASS_THROUGH_EVENT_36
   generic_plan_control_doctor: >-
     INCOMPATIBLE_SCHEMA: tools.plan_control expects previous_hash and its own
     event payload; FF6 uses previous_event_hash. This is the already-tracked
@@ -201,8 +200,8 @@ xlf_checkpoint:
   completed_xlf_04_batches: [XLF-04-BATCH-001, XLF-04-BATCH-002, XLF-04-BATCH-003, XLF-04-BATCH-004]
   first_unmet_step: XLF-04
   microstate: RESUMABLE
-  active_microstep: XLF-04-BATCH-005-PARTIAL-002-D
-  checkpoint_source_commit: 591fcfe18808e5195c33570eaa9d334770e90166
+  active_microstep: XLF-04-BATCH-005-PARTIAL-002-E
+  checkpoint_source_commit: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
   implemented_slice:
     - digest_bound_bounded_zip_authority_reader
     - xliff_2_0_2_1_core_module_structural_inventory
@@ -261,6 +260,10 @@ xlf_checkpoint:
     - unproposed_rejected_denominator_accountability
     - cross_profile_prose_authority_binding
     - cumulative_twenty_eight_obligation_real_authority_batch
+    - reciprocal_skeleton_candidate_adjudication_complete
+    - checkout_mode_independent_proof_identity
+    - tracked_proof_text_lf_policy
+    - format_payload_non_text_policy
   non_promoting_attempts:
     - attempt_id: XLF-04-BATCH-005-PARTIAL-002-B
       commit: d99fc6bf3679cd39396afbf5621847e3009ddf31
@@ -289,29 +292,43 @@ xlf_checkpoint:
       selected_candidate_profiles: [xliff_2.1]
       prose_authority_profiles: [xliff_2.0, xliff_2.1]
       decisions: 1
+    - microstep_id: XLF-04-BATCH-005-PARTIAL-002-D-REPLAY-REPAIR-001
+      semantic_microstep_id: XLF-04-BATCH-005-PARTIAL-002-D
+      semantic_commit: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
+      repair_commit: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
+      result: PASS
+      candidate_id: XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E
+      decision_id: XLF-ADJ-CORE-SCHEMATRON-0005
+      decision_sha256: 513cf8e6a882e8c1d903a1672a7cbfa610f39159d766b1d5d1ae1ac90794883e
+      direct_obligation: SAL-XLIFF-CORE-REFERENCE-SKELETON-HREF-001
+      selected_candidate_profiles: [xliff_2.1]
+      prose_authority_profiles: [xliff_2.0, xliff_2.1]
+      decisions: 1
+      obligation_rows_added: 0
+      checkout_identity_modes: [false, input, true]
   remaining_steps: [XLF-04, XLF-05, XLF-06, XLF-07, XLF-08]
   exact_next_action: >-
-    Execute XLF-04-BATCH-005-PARTIAL-002-D from Event 35 and commit 591fcfe1.
+    Execute XLF-04-BATCH-005-PARTIAL-002-E from Event 36 and commit 809cc18c.
     Independently adjudicate candidate
-    XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E, whose exact XLIFF 2.1 report
-    rejects skeleton child content when href is present. Treat generated
-    validator and href mappings only as proposals, identify the direct owner,
-    account for incidental hierarchy context, and require both skeleton
-    reports where the authority rule is biconditional. Preserve all 28
-    accepted rows and keep completeness false.
+    XLF-CAND-CORE-SCHEMATRON-100732DB0BBED389, whose exact XLIFF 2.1 report
+    requires a unit to contain at least one segment child. Treat generated
+    AGENT-VALIDATOR, HIERARCHY-SEGMENT, and HIERARCHY-UNIT-CHILDREN mappings
+    only as proposals, identify the direct denominator owner or record a gap,
+    and explicitly reject incidental context. Preserve all 28 accepted rows
+    and all 1,130 candidate IDs, and keep completeness false.
   source: tools/spec/extract_sal_facts.py
-  source_sha256: 40708a0fd31e1f10df6ce0ae609d9aa672d171007d5c1e1948a651aedf53d018
+  source_sha256: aae0e1b0efa0fc3cbaaba1c523a848a546bc6b149a1475f739126fe49911ce03
   candidate_adjudication_source: tools/spec/xliff_core_candidate_adjudication.py
   candidate_adjudication_source_sha256: 240ca789f93c81e94f32852399ce7ae225377516ee46dbfe2e568347ae00db05
   candidate_binding_source: tools/spec/xliff_core_candidate_binding.py
   candidate_binding_source_sha256: 042c670acefff8d0a6932ea3df7f1582f887f756148dd0bdfc356f69ca56f8b7
   tests: tests/tools/test_extract_sal_facts.py
-  tests_sha256: d1612e6533cff14a6e07b0db580cbbbb969ecd6eb6163d3ed8c369f6b9c873b2
+  tests_sha256: 18e816e33a5525590bca33427085dd41ec91de77a1e62dc56c2c3085cd282618
   candidate_adjudication_tests: tests/tools/test_xliff_core_candidate_adjudication.py
-  candidate_adjudication_tests_sha256: 733cbdb574c6daa2639a8556c820129b002e03171ba54432406b517b5fba885b
+  candidate_adjudication_tests_sha256: bfd7f9d70537af0e294a629cb62b580d0fa15492db9c74a55b3d787d18285108
   candidate_binding_tests: tests/tools/test_extract_sal_facts_candidate_binding.py
   candidate_binding_tests_sha256: 576868da9f490fda3e9ca0913cd9335df8a38746dee347246052384aebe27caf
-  focused_tests: 69 affected tool tests
+  focused_tests: 115 checkout-identity and affected XLIFF tests
   ruff: PASS
   mypy_strict: PASS
   pyright: PASS_ZERO_DIAGNOSTICS_1_1_411
@@ -322,15 +339,15 @@ xlf_checkpoint:
   matrix_unique_ids: 36
   real_authority_replays: 3_identical
   core_obligation_inventory: reports/ff6/xliff-core-obligation-inventory.yaml
-  core_obligation_inventory_sha256: 0eaf2cccc0bd45670e4eb7b880dfaa6fa8e7db4b2da2e2eb8fa3670dec9b349c
+  core_obligation_inventory_sha256: 76f51e51216f1b6b8fb41e24623e806bb63ad9ab15da279f16157ffe7369bf1d
   core_obligation_count: 28
   core_production_accepted_obligation_count: 28
   core_obligation_status: SOURCE_LOCATED_PARTIAL
   core_obligation_verification_status: VERIFIED_PARTIAL
   candidate_adjudication_artifact: reports/sal-verification/xliff-core-candidate-adjudications.yaml
-  candidate_adjudication_sha256: 6d94628a2d70490493156cece2a9e146bd8b90b62f3919645e09d92d860edbd0
-  candidate_dispositions_verified: 4
-  candidate_dispositions_unverified: 1126
+  candidate_adjudication_sha256: 878c12670c5c19889259d6def1439ab106304084fee95d8257819f58879b22d2
+  candidate_dispositions_verified: 5
+  candidate_dispositions_unverified: 1125
   core_covered_categories:
     - agent_processing
     - document_structure
@@ -386,8 +403,8 @@ xlf_checkpoint:
   core_non_modal_prose_census_complete: true
   core_non_modal_prose_disposition_complete: true
   core_non_modal_prose_classification_verified: false
-  core_candidate_dispositions_verified: 4
-  core_candidate_dispositions_unverified: 1126
+  core_candidate_dispositions_verified: 5
+  core_candidate_dispositions_unverified: 1125
   core_candidate_authority_replay_bound: true
   core_normative_obligation_inventory_complete: false
   core_candidate_real_authority_replays: 3_identical
@@ -413,9 +430,13 @@ xlf_checkpoint:
     only the direct skeleton href/content reference owner, rejects the generic
     validator proposal, records hierarchy context as incidental, binds the
     same biconditional prose rule in both stable authorities, and preserves
-    all 27 prior rows. Production acceptance is therefore 28/105 rows, 77
-    missing rows, 4 verified dispositions, and 1,126 unverified dispositions.
-    The reciprocal href-present/content-present report is still unadjudicated.
+    all 27 prior rows. Partial-002-D at semantic commit 2dcb161e adjudicates
+    the reciprocal report and accepts the same direct owner without adding an
+    obligation row. Repair commit 809cc18c makes the proof identity stable
+    under core.autocrlf false, input, and true by enforcing LF for tracked
+    proof text and non-text treatment for format payloads. All 28 prior rows
+    remain unchanged. Production acceptance is therefore 28/105 rows, 77
+    missing rows, 5 verified dispositions, and 1,125 unverified dispositions.
     The denominator remains an open authority census. Complete verified
     classification, module obligations, product behavior, certification, and
     promotion remain open.
