@@ -1,0 +1,45 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "create-taskcard-ff6-plan-throughput-v6-001",
+  "skill_id": "create-taskcard",
+  "mode": "live",
+  "timestamp": "2026-08-01T20:44:24Z",
+  "inputs": {
+    "task_id": "TC-FF6-PLAN-THROUGHPUT-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "taskcard_id": "TC-FF6-PLAN-THROUGHPUT-001",
+    "title": "Harden FF6 Production Throughput",
+    "format_id": null,
+    "execution_manifest": "sfx-0fd4b099d01fb087",
+    "mutation_authorization": "908b9d05cf1d1919"
+  },
+  "allowed_files": [
+    "plans/strategic/autonomous-six-python-production-execution-plan.md",
+    "taskcards/TC-FF6-PLAN-THROUGHPUT-001.md",
+    "reports/skills-rff6/skill-transcripts/create-taskcard-ff6-plan-throughput-v6-001.json"
+  ],
+  "actual_files_changed": [
+    "plans/strategic/autonomous-six-python-production-execution-plan.md",
+    "taskcards/TC-FF6-PLAN-THROUGHPUT-001.md",
+    "reports/skills-rff6/skill-transcripts/create-taskcard-ff6-plan-throughput-v6-001.json"
+  ],
+  "tests_run": [
+    "plan and taskcard front matter parse as YAML",
+    "existing taskcard identity reused with no duplicate index entry",
+    "Event 47 and R3 continuation agree with controller state",
+    "six logical product queues and four-write WIP cap are explicit",
+    "double-buffer, adaptive-batch, and vertical-slice acceptance controls are explicit",
+    "product and promotion state remain unchanged"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "plan_sha256": "ca022f20d2b66680c5736aa9bed33bc4b990bb270fbd6e151cf5b36eef5d1fea",
+    "taskcard_sha256": "fa63c4fe3f94fede9de6b5001acbf613c2ef03e444ff8cd25882ae3a72cdf42d",
+    "task_index_occurrences": 1,
+    "task_state": "complete",
+    "product_promotion_effect": "none"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}
