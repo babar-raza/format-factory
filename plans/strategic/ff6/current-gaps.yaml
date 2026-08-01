@@ -3,7 +3,7 @@ goal_id: FF6-PRODUCTION-LIBRARIES-001
 task_id: TC-FF6-PROGRAM-CAPABILITIES-001
 generated_at: "2026-07-29"
 generated_by: claude
-last_reconciled_by: codex
+last_reconciled_by: codex-event-46
 
 gap_summary:
   critical: 1
@@ -69,16 +69,16 @@ gaps:
 
   - gap_id: FF6-GAP-004
     severity: high
-    format: [ipynb, nrrd, xliff, safetensors, ubl]
+    format: [ipynb, xliff, safetensors, ubl]
     category: install_proof_stale
-    title: Install proof input closures are stale
+    title: Install proof input closures remain stale for four formats
     description: >-
-      The five install-proof entries match current product source but
-      their complete proof-input digests differ from current digests,
-      making the proofs non-promoting.
+      NRRD's installed-wheel proof was regenerated with a current complete
+      input closure at Event 46. The IPYNB, XLIFF, SafeTensors, and UBL proof
+      input digests still differ from current digests and remain non-promoting.
     source_finding: FF6-TRUTH-004
     blocks:
-      - Package publication readiness for all 5 existing formats
+      - Package publication readiness for IPYNB, XLIFF, SafeTensors, and UBL
     resolution: >-
       Regenerate install proofs with current input closures to obtain
       promoting verdicts.
@@ -141,7 +141,7 @@ gaps:
     title: Zero production certifications across all 6 formats
     description: >-
       No format has any certification milestone. All 110 capabilities
-      have release_state PLANNED. All 672 canonical obligations have
+      have release_state PLANNED. All 689 canonical obligations have
       verification_status UNVERIFIED. No product is promoted.
     blocks:
       - Production release gate for all 6 formats

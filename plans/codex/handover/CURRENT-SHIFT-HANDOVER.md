@@ -1,5 +1,5 @@
 ---
-artifact_id: FF6-CURRENT-SHIFT-HANDOVER-EVENT-45
+artifact_id: FF6-CURRENT-SHIFT-HANDOVER-EVENT-46
 artifact_type: provider_shift_handover
 visibility: internal
 publish_allowed: false
@@ -7,7 +7,7 @@ generated_by: codex
 generated_at: 2026-08-01
 ---
 
-# Current shift handover: FF6-EVENT-000045
+# Current shift handover: FF6-EVENT-000046
 
 ## Goal
 
@@ -17,23 +17,20 @@ mission remains active and technical certification is `0`.
 
 ## Accepted control work
 
-Events 42 and 43 accepted A1 fail-closed authority compilation and A2
-content-addressed impact selection. `FF6-EVENT-000045` accepts only the A3
-controller half: deterministic semantic batches and collision-safe lane
-scheduling. Handover generation and stale-value controls are still the current
-work represented by this projection.
+`FF6-EVENT-000046` records transition `NRRD_READINESS_BASELINE_VERIFIED` and binds
+semantic commit `767e7006a19a118e4a16d72db0a15e2f387b44af`. This projection transfers only
+that recorded state; it does not upgrade product, certification, gate, release,
+or publication status.
 
 ## Exact continuation
 
-- accepted event task: `TC-FF6-ACCEL-CONTROL-001`;
+- accepted event task: `TC-FF6-NRRD-READINESS-001`;
 - immediate lane task: `TC-FF6-NRRD-READINESS-001`;
-- source checkpoint: `54f2a12f6d8e7d31f9f7beb6e7b0e9f5c2cb82a7`;
-- control semantic commit: `54f2a12f6d8e7d31f9f7beb6e7b0e9f5c2cb82a7`;
-- action: Execute TC-FF6-NRRD-READINESS-001 R1 from GitLab main. Capture an immutable source-tree and installed-wheel characterization baseline; do not restructure product source or claim certification.
+- source checkpoint: `767e7006a19a118e4a16d72db0a15e2f387b44af`;
+- control semantic commit: `767e7006a19a118e4a16d72db0a15e2f387b44af`;
+- action: Continue TC-FF6-NRRD-READINESS-001 R2 from GitLab main. Complete exact per-obligation classification and proof requirements, then acquire and execute independent Teem/pynrrd corpus evidence; do not restructure product source or claim certification.
 
-The preserved product continuation is `TC-FF6-XLIFF-PROFILE-SURFACE-001` at
-`XLF-04-BATCH-005-PARTIAL-002-I` from semantic commit
-`d95af5aeb248907b4d23457ecd288723fc9c2050`. It is not the immediate control mutation.
+The controller-selected product continuation is the same task, `TC-FF6-NRRD-READINESS-001`, at `R2_EXACT_OBLIGATION_CLASSIFICATION`. Its accepted semantic checkpoint is `767e7006a19a118e4a16d72db0a15e2f387b44af`.
 
 ## Current product truth
 

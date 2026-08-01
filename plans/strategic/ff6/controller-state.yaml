@@ -4,10 +4,10 @@ goal_status: ACTIVE
 generated_by: codex
 visibility: internal
 controller_state: CONTRACT
-transition_sequence: 45
+transition_sequence: 46
 last_verified_event:
-  event_id: FF6-EVENT-000045
-  event_hash: fbd74899787e1c3aa7ce7efcbc4eec2cb098d1ed0ebb78717858baceabf17550
+  event_id: FF6-EVENT-000046
+  event_hash: 6524928fd8c8aa81106e1a5a4058e64bd6359b23501f63e5814bed1d13de6bfe
 event_journal: plans/strategic/ff6/events.jsonl
 baseline_commit: e4f8f5f086b5e627c07c2ef2d940eda2601a22a8
 digest_policy:
@@ -24,35 +24,31 @@ handover_checkpoint:
   start: plans/codex/handover/START-HERE.md
   manifest: plans/codex/handover/manifest.yaml
   checkpoint: plans/codex/handover/checkpoint.yaml
-  packet_base_commit: 54f2a12f6d8e7d31f9f7beb6e7b0e9f5c2cb82a7
+  packet_base_commit: 767e7006a19a118e4a16d72db0a15e2f387b44af
   packet_commit_rule: >-
     The fetched origin/main checkpoint containing this projection must be a
     descendant of packet_base_commit. A packet cannot embed the hash of the
     commit that contains its own final bytes.
   next_taskcard: taskcards/TC-FF6-NRRD-READINESS-001.md
 active_task:
-  task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
+  task_id: TC-FF6-NRRD-READINESS-001
   state: WORK_IN_PROGRESS
   parent_task_id: TC-FF6-PROGRAM-CAPABILITIES-001
   completed_steps:
-    - XLF-01
-    - XLF-02
-    - XLF-03
-  first_unmet_step: XLF-04
+    - R1
+  partial_steps:
+    - R2_AUTHORITY_AND_CONTRACT_REFRESH
+  first_unmet_step: R2_EXACT_OBLIGATION_CLASSIFICATION
 next_task:
-  task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
+  task_id: TC-FF6-NRRD-READINESS-001
   state: WORK_IN_PROGRESS
   unlock_condition: >-
-    Resume from Event 40 and immutable GitLab commit d95af5ae at
-    XLF-04-BATCH-005-PARTIAL-002-I. Revalidate the accepted boundary of 31/105
-    obligations with 74 missing and 9/1,130 accepted dispositions. Adjudicate
-    exact candidate XLF-CAND-CORE-SCHEMATRON-60B596A00F7FA06A independently.
-    Treat all eight generated mappings as unverified proposals; determine the
-    target-side report's direct owner and whether it supplies reciprocal proof
-    for the existing inline-isolation obligation. Reject incidental trigger
-    context and downstream validator surfaces explicitly. Preserve all 31
-    accepted rows and all 1,130 candidate IDs. Product source and architecture
-    remain blocked until XLF-04 and later contract steps close.
+    Continue from Event 46 and immutable GitLab commit 767e7006 at NRRD R2.
+    Classify all 65 canonical obligations against exact source symbols and
+    executed evidence, define positive and negative proof requirements, and
+    retain heuristic reconciliation rows as non-promoting. Then execute R3
+    independent Teem/pynrrd corpus and oracle acquisition. Product source
+    remains read-only until bounded implementation taskcards exist.
 acceleration_bootstrap:
   status: COMPLETE
   plan_version: 4
@@ -66,22 +62,25 @@ acceleration_bootstrap:
   lanes:
     - lane: A
       task_id: TC-FF6-NRRD-READINESS-001
-      state: READY
+      state: WORK_IN_PROGRESS
       logical_lease: logical:FF6-NRRD-READINESS
       semantic_commits:
         - bdcdae83a78cdb2bd9225a847f814469bcd04c23
         - 9ef65ce3d96ed9a8167c5d115356214c1887b11a
         - b772469b5f6fbbcdaae83d2be8b57058c2a45b34
         - 54f2a12f6d8e7d31f9f7beb6e7b0e9f5c2cb82a7
+        - 767e7006a19a118e4a16d72db0a15e2f387b44af
       accepted_slices:
         - A1_MISSING_AUTHORITY_FAIL_CLOSED
         - A2_PROOF_IMPACT_SELECTOR_AND_SENTINEL
         - A3_CONTROLLER_BATCH_AND_SCHEDULER
         - A3_GENERATED_HANDOVER_AND_INTEGRATION_CONTROLS
+        - NRRD_R1_IMMUTABLE_BASELINE_AND_R2_AUTHORITY_REFRESH
       first_action: >-
-        Execute TC-FF6-NRRD-READINESS-001 R1 from GitLab main. Capture an
-        immutable source-tree and installed-wheel characterization baseline;
-        do not restructure product source or claim certification.
+        Continue TC-FF6-NRRD-READINESS-001 R2 from GitLab main. Complete exact
+        per-obligation classification and proof requirements, then acquire and
+        execute independent Teem/pynrrd corpus evidence; do not restructure
+        product source or claim certification.
     - lane: B
       task_id: TC-FF6-XLIFF-SEMANTIC-BATCH-001
       state: READY
@@ -101,11 +100,11 @@ acceleration_bootstrap:
       first_action: >-
         Characterize IPYNB and SafeTensors read-only before any source restructuring.
   truth_boundary: >-
-    Control acceleration A1-A3 is complete and Lane A transfers to NRRD
-    readiness. The active XLIFF candidate I and UBL-03 remain incomplete; five
-    contracts retain legacy validation defects; XLIFF rejects undeclared locked
-    authority SRC-XLIFF-003; all products remain UNASSESSED and technical
-    certification remains 0/6.
+    Control acceleration A1-A3 and NRRD R1 are complete. NRRD R2 has current
+    authority and contract projections but lacks exact per-obligation proof
+    classifications; XLIFF profile work and UBL-03 remain incomplete;
+    OpenRaster source remains absent; all products remain UNASSESSED and
+    technical certification remains 0/6.
 promotion:
   program: UNASSESSED
   ipynb: UNASSESSED
@@ -117,23 +116,23 @@ promotion:
 capability_compilation:
   assessment_status: NEEDS_PROFILE_OR_SURFACE_REPAIR
   total_capabilities: 110
-  total_obligations: 672
+  total_obligations: 689
   canonical_obligations:
     ipynb: 68
     ora: 134
     nrrd: 65
-    xliff: 125
+    xliff: 142
     safetensors: 86
     ubl: 194
-    total: 672
-  canonical_obligation_id_overlap: 672
+    total: 689
+  canonical_obligation_id_overlap: 689
   stable: 101
   optional_adapter: 4
   preview: 4
   excluded: 1
   compiler_subtask: PASS
-  manifest_aggregate_sha256: e199e84e9f7ee0579959db28283ecb89e014077cdd1605fbf0c82aee553d9960
-  three_run_digest: eafd6f8657ed83b73dbd5975046698d24fda6d8fd58c3d6aea962e6b6a85cf7c
+  manifest_aggregate_sha256: eaf9d1e03611243d455b88a9c10d7513feedcb8264f6e3fee26eb8f45f804a62
+  three_run_digest: bb35a77d1de67d7c375750aa560435a3e8278a2513c7ee350c0490e54d18dedc
   authority_artifacts:
     match: 17
     missing: 0
@@ -144,7 +143,7 @@ capability_compilation:
     - FF6-XLIFF-PROFILE-001
     - FF6-UBL-TYPING-001
 authority_closure_checkpoint:
-  status: FAIL_CLOSED_CURRENT_CONTRADICTION
+  status: PASS_LIVE_17_OF_17_FULL_CLEAN_REPLAY_PENDING
   authority_lock_sha256: 5c1ac942018f1e26e0fc0ca7c8284313452d1cb44c04d7e225faad4b21219929
   authority_records: 17
   live_matches: 17
@@ -153,18 +152,14 @@ authority_closure_checkpoint:
   xliff_clean_offline_reconstruction: PASS_5_OF_5
   full_clean_replay_17: NOT_RERUN_AT_WIP_CHECKPOINT
   online_rebuild_cas_bytes: 73206772
-  strict_product_contract_compiles: 5
-  strict_product_contract_rejections: 1
-  strict_rejection:
-    format_id: xliff
-    code: AUTHORITY_LOCK_SOURCE_UNDECLARED
-    reference: SRC-XLIFF-003
-    effect: CONTRACT_DIGEST_AND_PROOF_EMISSION_BLOCKED
+  strict_product_contract_compiles: 6
+  strict_product_contract_rejections: 0
   materializer_focused_tests: 12 passed
   affected_regression: >-
-    NRRD checkpoint: 92 format-contract tests passed with 1 baseline-known
-    stateful CSV idempotency test deselected; 96 affected tests passed; 119
-    authority dependency-closure tests passed
+    Six contract checks and idempotency runs passed; 116 affected
+    contract/compiler tests passed with the one baseline-known stateful CSV
+    test deselected and its outputs restored; 277 NRRD tests and 24 package
+    proof regressions passed.
   ruff: PASS
   mypy: PASS
   pyright: PASS (1.1.411)
@@ -173,22 +168,23 @@ authority_closure_checkpoint:
   materialized_authority_sources: 17
   promotion_effect: none
 current_gap_summary:
-  critical: 2
+  critical: 1
   high: 7
   medium: 3
-  total: 12
-  newly_exposed:
+  total: 11
+  newly_exposed: []
+  resolved_during_event:
     - gap_id: FF6-XLIFF-AUTHORITY-LOCK-SOURCE-UNDECLARED-001
       severity: CRITICAL
-      state: OPEN
-      evidence: AUTHORITY_LOCK_SOURCE_UNDECLARED[SRC-XLIFF-003]
+      state: RESOLVED
+      evidence: SRC-XLIFF-003_DECLARED_HASH_BOUND_AND_STRICTLY_COMPILED
   source_packages_present: 5
   source_packages_absent: 1
   product_contracts_draft: 6
   production_certifications: 0
 control_plane_compatibility:
   ff6_event_schema: ff6/controller-event@1
-  native_chain_validation: PASS_THROUGH_EVENT_45
+  native_chain_validation: PASS_THROUGH_EVENT_46
   generic_plan_control_doctor: >-
     INCOMPATIBLE_SCHEMA: tools.plan_control expects previous_hash and its own
     event payload; FF6 uses previous_event_hash. This is the already-tracked
@@ -199,6 +195,36 @@ invariants:
   - Product promotion is computed from current proof and cannot be edited here.
   - Failure of one format does not stop safe work on the others.
   - Publication authority is external and cannot be bypassed.
+nrrd_checkpoint:
+  status: WORK_IN_PROGRESS
+  accepted_slice: R1_IMMUTABLE_BASELINE_AND_R2_AUTHORITY_REFRESH
+  source_checkpoint_commit: 767e7006a19a118e4a16d72db0a15e2f387b44af
+  completed_steps: [R1]
+  partial_steps: [R2_AUTHORITY_AND_CONTRACT_REFRESH]
+  first_unmet_step: R2_EXACT_OBLIGATION_CLASSIFICATION
+  public_definitions: 40
+  production_namespace_python_files: 17
+  production_namespace_loc: 1290
+  focused_tests: 277 passed
+  contract_capabilities: 21
+  canonical_obligations: 65
+  exact_obligation_classification: INCOMPLETE
+  observed_depth_gaps: 6
+  heuristic_reconciliation_status: NON_PROMOTING
+  installed_package: format-factory-nrrd
+  installed_package_version: 0.2.0.dev0
+  installed_wheel_sha256: caced0c989552415db6db963d821646b15b3aa198b17510389d37927f8b7fea5
+  package_proof_id: PACKAGE-PROOF-AEC9B51D141841330327C084E506E50CFED3EC1D4A0304810AEAAE0A3C8F7964
+  package_proof_input_sha256: c9965832452109632eb4a8fb96fa737d58c780c400192cde556edbec197bf725
+  contract_sha256: f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39
+  reconciliation_sha256: f836b45d35425bcacb0ff77444e017b8e559d9921bedb518c6c64dbb32da99e3
+  remaining_scope:
+    - exact classification and proof requirements for all 65 obligations
+    - immutable independent Teem and pynrrd corpus and oracle evidence
+    - streaming, mmap, detached list/pattern, block-type, and metadata depth
+    - architecture remediation and bounded product implementation taskcards
+    - independent certification and release-candidate evidence
+  promotion_effect: none
 ubl_checkpoint:
   status: WORK_IN_PROGRESS
   detailed_substate: SCHEMA_GRAPH_ANONYMOUS_TYPE_IDENTITY_PARTIAL

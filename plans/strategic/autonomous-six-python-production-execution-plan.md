@@ -30,7 +30,7 @@ skill_ids:
   - build-evidence-bundle
   - post-sprint-audit
   - execution-handoff
-status: HARDENED_READY_FOR_AUTONOMOUS_EXECUTION
+status: HARDENED_AUTONOMOUS_EXECUTION_ACTIVE
 plan_version: 4
 goal_id: FF6-PRODUCTION-LIBRARIES-001
 goal_status: ACTIVE
@@ -46,6 +46,9 @@ baseline_commit_policy: refresh_per_task_from_origin_main
 execution_model: evidence_preserving_parallel_semantic_batches
 maximum_active_lanes: 4
 integration_model: serialized_fast_forward_to_gitlab_main
+last_verified_execution_event: FF6-EVENT-000046
+last_verified_semantic_commit: 767e7006a19a118e4a16d72db0a15e2f387b44af
+current_execution_focus: NRRD_R2_EXACT_OBLIGATION_CLASSIFICATION
 scope:
   - ipynb
   - openraster
@@ -98,19 +101,20 @@ parallel disjoint lanes. It is never obtained by lowering a gate, accepting a
 generated proposal as authority, omitting an obligation, weakening negative
 tests, or treating deferred full verification as final proof.
 
-The verified baseline for this amendment is clean GitLab `origin/main` commit
-`92dcc0571f1d3a9a7331bd458536eb6ff05c02bb`, native controller Event 40,
-controller state `CONTRACT`, six `UNASSESSED` products, and `0/6` production
-certifications. XLIFF remains at 31/105 source-bound Core obligations and
-9/1,130 independently adjudicated candidates; UBL-03 remains incomplete;
-OpenRaster product source remains absent. These facts are inputs, not progress
-claims created by this plan update.
+The immutable design baseline for this amendment remains clean GitLab
+`origin/main` commit `92dcc0571f1d3a9a7331bd458536eb6ff05c02bb` and native
+controller Event 40. Execution has advanced through Event 46 and semantic
+commit `767e7006a19a118e4a16d72db0a15e2f387b44af`: acceleration controls A1-A3
+are executable, the six contracts compile deterministically, the canonical
+denominator is 110 capabilities and 689 obligations, and NRRD R1 is complete.
+This progress does not change the six `UNASSESSED` products or the `0/6`
+certification boundary. NRRD exact per-obligation proof classification,
+XLIFF profile work, UBL-03, and OpenRaster product source remain open.
 
-The next executor must not edit the native controller merely because this plan
-changed. It must create the acceleration taskcards through registered skills,
-validate their non-overlapping scopes, and append a normal hash-chained
-scheduling event. Until that event exists, Event 40 and
-`XLF-04-BATCH-005-PARTIAL-002-I` remain the executable controller authority.
+The executor must update the native controller only through a normal
+hash-chained event after evidence is committed to GitLab `main`. Event 46 is
+the executable authority for the current NRRD R2 continuation; plan prose may
+explain that state but cannot replace it.
 
 ## 1. Purpose, authority, and non-negotiable outcome
 
@@ -1294,13 +1298,14 @@ proof is a regression.
 
 ## 14. Plan acceptance status
 
-Status: **HARDENED_READY_FOR_AUTONOMOUS_EXECUTION**. This means the executor has
+Status: **HARDENED_AUTONOMOUS_EXECUTION_ACTIVE**. This means the executor has
 a durable operational sequence, a bounded definition of comprehensive
 capabilities, professional package and code contracts, taskcard compilation,
 numeric quality gates, failure rules, honest policy blocks, semantic batching,
 four disjoint execution lanes, tiered verification, and serialized mainline
-integration. It does **not** mean the acceleration machinery already exists or
-that any of the six libraries is production-certified or release-ready.
+integration. Acceleration controls A1-A3 are implemented and verified through
+Event 45; Event 46 begins the first product-readiness lane. This does **not**
+mean that any of the six libraries is production-certified or release-ready.
 
 ## 15. Plan hardening assessment
 
@@ -1329,8 +1334,9 @@ product evidence:
   generated-source reproducibility, SemVer, and compatibility controls are
   binding.
 
-The first executor action is therefore not another isolated candidate
-checkpoint or ad hoc feature implementation. It is the Section 11 live-state
-revalidation and governed creation of the four acceleration taskcards. Event 40
-and candidate I remain authoritative until the controller accepts that schedule.
-Only executed taskcard evidence may replace the baseline or promote a library.
+The next executor action is the exact Event 46 continuation: complete NRRD R2
+by classifying every one of its 65 obligations against source and executed
+proof requirements, then run R3 independent Teem/pynrrd corpus and oracle work.
+It must not restructure NRRD product source before R4 emits bounded
+implementation taskcards. Only executed, digest-bound evidence may advance the
+controller or promote a library.

@@ -192,6 +192,47 @@ class ProjectionContext:
         return value if isinstance(value, Mapping) else {}
 
     @property
+    def product_continuation(self) -> Mapping[str, Any]:
+        """Resolve continuation fields from the checkpoint owned by the active task."""
+
+        task = self.product_task
+        task_id = str(task.get("task_id", ""))
+        checkpoint: Mapping[str, Any] = {}
+        checkpoint_name = "active_task"
+        for marker, candidate_name in (
+            ("NRRD", "nrrd_checkpoint"),
+            ("XLIFF", "xlf_checkpoint"),
+            ("UBL", "ubl_checkpoint"),
+        ):
+            if marker in task_id:
+                candidate = self.controller.get(candidate_name, {})
+                if isinstance(candidate, Mapping):
+                    checkpoint = candidate
+                    checkpoint_name = candidate_name
+                break
+
+        semantic_commit = checkpoint.get("source_checkpoint_commit") or checkpoint.get(
+            "checkpoint_source_commit"
+        )
+        if semantic_commit is None:
+            commits = checkpoint.get("checkpoint_source_commits")
+            if isinstance(commits, list) and commits:
+                semantic_commit = commits[-1]
+
+        return {
+            "task_id": task.get("task_id"),
+            "state": task.get("state"),
+            "microstep": checkpoint.get("active_microstep")
+            or checkpoint.get("first_unmet_step")
+            or task.get("first_unmet_step"),
+            "semantic_commit": semantic_commit
+            or self.latest_event.get("semantic_commit"),
+            "action": checkpoint.get("exact_next_action")
+            or self.latest_event.get("exact_next_action"),
+            "checkpoint_name": checkpoint_name,
+        }
+
+    @property
     def xlf(self) -> Mapping[str, Any]:
         value = self.controller.get("xlf_checkpoint", {})
         return value if isinstance(value, Mapping) else {}
@@ -234,9 +275,9 @@ def load_context(source_checkpoint: str | None = None) -> ProjectionContext:
 
 
 def _common(ctx: ProjectionContext) -> dict[str, Any]:
-    xlf = ctx.xlf
     latest = ctx.latest_event
     immediate = ctx.lane_a
+    continuation = ctx.product_continuation
     promotion = ctx.controller.get("promotion", {})
     return {
         "source_checkpoint": ctx.source_checkpoint,
@@ -246,16 +287,18 @@ def _common(ctx: ProjectionContext) -> dict[str, Any]:
         "controller_state": ctx.controller.get("controller_state"),
         "control_task_id": latest.get("task_id"),
         "control_task_state": latest.get("task_state_after"),
+        "control_transition": latest.get("transition"),
         "control_semantic_commit": latest.get("semantic_commit"),
         "control_next_action": latest.get("exact_next_action"),
         "immediate_task_id": immediate.get("task_id"),
         "immediate_task_state": immediate.get("state"),
         "immediate_task_action": immediate.get("first_action"),
-        "product_task_id": ctx.product_task.get("task_id"),
-        "product_task_state": ctx.product_task.get("state"),
-        "product_microstep": xlf.get("active_microstep"),
-        "product_semantic_commit": xlf.get("checkpoint_source_commit"),
-        "product_next_action": xlf.get("exact_next_action"),
+        "product_task_id": continuation.get("task_id"),
+        "product_task_state": continuation.get("state"),
+        "product_microstep": continuation.get("microstep"),
+        "product_semantic_commit": continuation.get("semantic_commit"),
+        "product_next_action": continuation.get("action"),
+        "product_checkpoint_name": continuation.get("checkpoint_name"),
         "certifications": ctx.controller.get("current_gap_summary", {}).get(
             "production_certifications"
         ),
@@ -271,6 +314,29 @@ def render_projection(ctx: ProjectionContext) -> dict[str, bytes]:
     ubl = ctx.ubl
     lane = ctx.lane_a
     event_no = ctx.sequence
+    same_active_task = c["immediate_task_id"] == c["product_task_id"]
+    if same_active_task:
+        continuation_text = (
+            f"The controller-selected product continuation is the same task, "
+            f"`{c['product_task_id']}`, at `{c['product_microstep']}`. Its accepted "
+            f"semantic checkpoint is `{c['product_semantic_commit']}`."
+        )
+        ordering_invariant = (
+            "The active controller task and product continuation are the same task. "
+            "Continuation fields must come from that format's checkpoint; stale "
+            "cross-format microsteps are invalid."
+        )
+    else:
+        continuation_text = (
+            f"The preserved product continuation is `{c['product_task_id']}` at "
+            f"`{c['product_microstep']}`. Its accepted semantic checkpoint is "
+            f"`{c['product_semantic_commit']}`. Controller closure must select it "
+            "before product mutation begins."
+        )
+        ordering_invariant = (
+            "The controller task and preserved product continuation are distinct. "
+            "Controller closure selects the next task; their fields must never be mixed."
+        )
     # The user requested one absolute Windows entry path.  Keep that display
     # value stable across detached replays; it is documentation, not an input
     # used to locate authoritative state.
@@ -301,15 +367,12 @@ documentation, SBOMs, provenance, and extraction-ready repositories.
 
 ## Exact immediate controller work
 
-Run `{lane.get('task_id')}` through the registered
-`refresh-provider-neutral-handover` skill. Current action:
+Run `{lane.get('task_id')}` through the registered skill sequence declared in
+its taskcard. Current action:
 
 > {lane.get('first_action')}
 
-The product lane remains `{c['product_task_id']}` at
-`{c['product_microstep']}`. Its accepted semantic checkpoint is
-`{c['product_semantic_commit']}`. Do not start that product mutation until this
-control slice closes and a fresh controller selection authorizes it.
+{continuation_text}
 
 ## Honest boundary
 
@@ -326,8 +389,8 @@ control slice closes and a fresh controller selection authorizes it.
 
 ## Mandatory resume order
 
-1. Read [AGENTS.md](../../../AGENTS.md) and the active control
-   [taskcard](../../../taskcards/TC-FF6-ACCEL-CONTROL-001.md).
+1. Read [AGENTS.md](../../../AGENTS.md) and the active
+   [taskcard](../../../taskcards/{c['immediate_task_id']}.md).
 2. Fetch only GitLab `origin/main`; require local `HEAD == origin/main` before
    a clean transfer mutation.
 3. Run `python plans/codex/handover/validate_handover.py --self-test --require-clean`.
@@ -356,7 +419,7 @@ control slice closes and a fresh controller selection authorizes it.
 """
 
     machine = {
-        "schema": "ff6/provider-neutral-machine-state@20",
+        "schema": "ff6/provider-neutral-machine-state@21",
         "artifact_id": f"FF6-CURRENT-MACHINE-STATE-EVENT-{event_no}",
         "visibility": "internal",
         "publish_allowed": False,
@@ -384,9 +447,9 @@ control slice closes and a fresh controller selection authorizes it.
             "task_state": c["immediate_task_state"],
             "exact_next_action": c["immediate_task_action"],
         },
-        "product_lane": {
+        "product_continuation": {
             "task_id": c["product_task_id"],
-            "task_state": c["product_task_state"],
+            "state": c["product_task_state"],
             "microstep": c["product_microstep"],
             "semantic_commit": c["product_semantic_commit"],
             "exact_next_action": c["product_next_action"],
@@ -443,7 +506,7 @@ control slice closes and a fresh controller selection authorizes it.
             ),
         },
         "controller_checkpoint": machine["controller"],
-        "product_checkpoint": machine["product_lane"],
+        "product_checkpoint": machine["product_continuation"],
         "truth_boundary": machine["program_truth"],
         "mandatory_resume_action": {
             "task_id": c["immediate_task_id"],
@@ -453,7 +516,7 @@ control slice closes and a fresh controller selection authorizes it.
     }
 
     next_step = {
-        "schema": "ff6/next-microstep@2",
+        "schema": "ff6/next-microstep@3",
         "artifact_id": f"FF6-NEXT-MICROSTEP-EVENT-{event_no}",
         "visibility": "internal",
         "generated_by": "codex",
@@ -464,17 +527,14 @@ control slice closes and a fresh controller selection authorizes it.
             "accepted_event_task_id": c["control_task_id"],
             "action": c["immediate_task_action"],
         },
-        "product_task_after_control_closure": {
+        "product_continuation": {
             "task_id": c["product_task_id"],
             "state": c["product_task_state"],
             "microstep": c["product_microstep"],
             "semantic_commit": c["product_semantic_commit"],
             "action": c["product_next_action"],
         },
-        "ordering_invariant": (
-            "Do not confuse the current controller task with the preserved "
-            "product-lane continuation. Controller closure selects the next task."
-        ),
+        "ordering_invariant": ordering_invariant,
     }
 
     recovery = {
@@ -517,11 +577,10 @@ mission remains active and technical certification is `{c['certifications']}`.
 
 ## Accepted control work
 
-Events 42 and 43 accepted A1 fail-closed authority compilation and A2
-content-addressed impact selection. `{c['event_id']}` accepts only the A3
-controller half: deterministic semantic batches and collision-safe lane
-scheduling. Handover generation and stale-value controls are still the current
-work represented by this projection.
+`{c['event_id']}` records transition `{c['control_transition']}` and binds
+semantic commit `{c['control_semantic_commit']}`. This projection transfers only
+that recorded state; it does not upgrade product, certification, gate, release,
+or publication status.
 
 ## Exact continuation
 
@@ -531,9 +590,7 @@ work represented by this projection.
 - control semantic commit: `{c['control_semantic_commit']}`;
 - action: {lane.get('first_action')}
 
-The preserved product continuation is `{c['product_task_id']}` at
-`{c['product_microstep']}` from semantic commit
-`{c['product_semantic_commit']}`. It is not the immediate control mutation.
+{continuation_text}
 
 ## Current product truth
 
@@ -584,7 +641,8 @@ Immediate task: `{c['immediate_task_id']}`. Immediate action:
 
 > {lane.get('first_action')}
 
-Preserved product lane: `{c['product_task_id']}` / `{c['product_microstep']}`.
+Product continuation: `{c['product_task_id']}` / `{c['product_microstep']}`
+from `{c['product_checkpoint_name']}`.
 Certification remains `{c['certifications']}` and all promotions remain
 `UNASSESSED`.
 """

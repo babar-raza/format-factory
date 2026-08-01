@@ -1,5 +1,5 @@
 ---
-artifact_id: FF6-ACTIVE-WORK-EVENT-45
+artifact_id: FF6-ACTIVE-WORK-EVENT-46
 artifact_type: active_work_checkpoint
 visibility: internal
 publish_allowed: false
@@ -9,12 +9,13 @@ generated_at: 2026-08-01
 
 # Active work checkpoint
 
-Controller head: `FF6-EVENT-000045` / `fbd74899787e1c3aa7ce7efcbc4eec2cb098d1ed0ebb78717858baceabf17550`.
+Controller head: `FF6-EVENT-000046` / `6524928fd8c8aa81106e1a5a4058e64bd6359b23501f63e5814bed1d13de6bfe`.
 
 Immediate task: `TC-FF6-NRRD-READINESS-001`. Immediate action:
 
-> Execute TC-FF6-NRRD-READINESS-001 R1 from GitLab main. Capture an immutable source-tree and installed-wheel characterization baseline; do not restructure product source or claim certification.
+> Continue TC-FF6-NRRD-READINESS-001 R2 from GitLab main. Complete exact per-obligation classification and proof requirements, then acquire and execute independent Teem/pynrrd corpus evidence; do not restructure product source or claim certification.
 
-Preserved product lane: `TC-FF6-XLIFF-PROFILE-SURFACE-001` / `XLF-04-BATCH-005-PARTIAL-002-I`.
+Product continuation: `TC-FF6-NRRD-READINESS-001` / `R2_EXACT_OBLIGATION_CLASSIFICATION`
+from `nrrd_checkpoint`.
 Certification remains `0` and all promotions remain
 `UNASSESSED`.

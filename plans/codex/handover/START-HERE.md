@@ -1,5 +1,5 @@
 ---
-artifact_id: FF6-HANDOVER-START-EVENT-45
+artifact_id: FF6-HANDOVER-START-EVENT-46
 artifact_type: provider_neutral_handover_entry
 visibility: internal
 publish_allowed: false
@@ -16,9 +16,9 @@ C:\Users\prora\OneDrive\Documents\GitHub\format-factory\plans\codex\handover\STA
 ```
 
 GitLab `origin/main` is the only integration authority. The current native
-controller head is `FF6-EVENT-000045` (sequence `45`), hash
-`fbd74899787e1c3aa7ce7efcbc4eec2cb098d1ed0ebb78717858baceabf17550`, derived from source checkpoint
-`54f2a12f6d8e7d31f9f7beb6e7b0e9f5c2cb82a7`. Product certification remains `0`;
+controller head is `FF6-EVENT-000046` (sequence `46`), hash
+`6524928fd8c8aa81106e1a5a4058e64bd6359b23501f63e5814bed1d13de6bfe`, derived from source checkpoint
+`767e7006a19a118e4a16d72db0a15e2f387b44af`. Product certification remains `0`;
 all six promotion states remain `UNASSESSED`.
 
 ## Mission
@@ -31,15 +31,12 @@ documentation, SBOMs, provenance, and extraction-ready repositories.
 
 ## Exact immediate controller work
 
-Run `TC-FF6-NRRD-READINESS-001` through the registered
-`refresh-provider-neutral-handover` skill. Current action:
+Run `TC-FF6-NRRD-READINESS-001` through the registered skill sequence declared in
+its taskcard. Current action:
 
-> Execute TC-FF6-NRRD-READINESS-001 R1 from GitLab main. Capture an immutable source-tree and installed-wheel characterization baseline; do not restructure product source or claim certification.
+> Continue TC-FF6-NRRD-READINESS-001 R2 from GitLab main. Complete exact per-obligation classification and proof requirements, then acquire and execute independent Teem/pynrrd corpus evidence; do not restructure product source or claim certification.
 
-The product lane remains `TC-FF6-XLIFF-PROFILE-SURFACE-001` at
-`XLF-04-BATCH-005-PARTIAL-002-I`. Its accepted semantic checkpoint is
-`d95af5aeb248907b4d23457ecd288723fc9c2050`. Do not start that product mutation until this
-control slice closes and a fresh controller selection authorizes it.
+The controller-selected product continuation is the same task, `TC-FF6-NRRD-READINESS-001`, at `R2_EXACT_OBLIGATION_CLASSIFICATION`. Its accepted semantic checkpoint is `767e7006a19a118e4a16d72db0a15e2f387b44af`.
 
 ## Honest boundary
 
@@ -56,8 +53,8 @@ control slice closes and a fresh controller selection authorizes it.
 
 ## Mandatory resume order
 
-1. Read [AGENTS.md](../../../AGENTS.md) and the active control
-   [taskcard](../../../taskcards/TC-FF6-ACCEL-CONTROL-001.md).
+1. Read [AGENTS.md](../../../AGENTS.md) and the active
+   [taskcard](../../../taskcards/TC-FF6-NRRD-READINESS-001.md).
 2. Fetch only GitLab `origin/main`; require local `HEAD == origin/main` before
    a clean transfer mutation.
 3. Run `python plans/codex/handover/validate_handover.py --self-test --require-clean`.

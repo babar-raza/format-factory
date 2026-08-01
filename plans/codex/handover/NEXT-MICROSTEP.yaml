@@ -1,24 +1,23 @@
-schema: ff6/next-microstep@2
-artifact_id: FF6-NEXT-MICROSTEP-EVENT-45
+schema: ff6/next-microstep@3
+artifact_id: FF6-NEXT-MICROSTEP-EVENT-46
 visibility: internal
 generated_by: codex
 controller_task:
   task_id: TC-FF6-NRRD-READINESS-001
-  state: READY
-  event_id: FF6-EVENT-000045
-  accepted_event_task_id: TC-FF6-ACCEL-CONTROL-001
-  action: Execute TC-FF6-NRRD-READINESS-001 R1 from GitLab main. Capture an immutable source-tree and
-    installed-wheel characterization baseline; do not restructure product source or claim certification.
-product_task_after_control_closure:
-  task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
   state: WORK_IN_PROGRESS
-  microstep: XLF-04-BATCH-005-PARTIAL-002-I
-  semantic_commit: d95af5aeb248907b4d23457ecd288723fc9c2050
-  action: Execute XLF-04-BATCH-005-PARTIAL-002-I from Event 40 and immutable GitLab main commit d95af5ae.
-    Independently adjudicate candidate XLF-CAND-CORE-SCHEMATRON-60B596A00F7FA06A, the XLIFF 2.1 target-side
-    isolated start-code report. Determine whether it supplies reciprocal proof for the existing inline-isolation
-    obligation. Treat all eight generated mappings as unverified proposals, reject incidental context
-    and downstream surfaces, preserve all 31 accepted rows and all 1,130 candidate IDs, and keep completeness
-    false.
-ordering_invariant: Do not confuse the current controller task with the preserved product-lane continuation.
-  Controller closure selects the next task.
+  event_id: FF6-EVENT-000046
+  accepted_event_task_id: TC-FF6-NRRD-READINESS-001
+  action: Continue TC-FF6-NRRD-READINESS-001 R2 from GitLab main. Complete exact per-obligation classification
+    and proof requirements, then acquire and execute independent Teem/pynrrd corpus evidence; do not restructure
+    product source or claim certification.
+product_continuation:
+  task_id: TC-FF6-NRRD-READINESS-001
+  state: WORK_IN_PROGRESS
+  microstep: R2_EXACT_OBLIGATION_CLASSIFICATION
+  semantic_commit: 767e7006a19a118e4a16d72db0a15e2f387b44af
+  action: Continue TC-FF6-NRRD-READINESS-001 at R2 from GitLab main commit 767e7006. Classify every one
+    of the 65 NRRD obligations against exact source symbols and executed evidence, name required positive/negative
+    proof, and retain non-promoting status for heuristic reconciliation rows. Then execute R3 independent
+    Teem/pynrrd corpus and oracle acquisition. Do not mutate product source or claim certification.
+ordering_invariant: The active controller task and product continuation are the same task. Continuation
+  fields must come from that format's checkpoint; stale cross-format microsteps are invalid.

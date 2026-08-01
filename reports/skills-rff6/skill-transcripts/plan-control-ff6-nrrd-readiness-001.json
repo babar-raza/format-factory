@@ -1,0 +1,51 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "plan-control-ff6-nrrd-readiness-001",
+  "skill_id": "plan-control",
+  "mode": "live",
+  "timestamp": "2026-08-01T19:06:00Z",
+  "inputs": {
+    "task_id": "TC-FF6-NRRD-READINESS-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "operation": "project",
+    "target_paths": [
+      "plans/strategic/ff6/events.jsonl",
+      "plans/strategic/ff6/controller-state.yaml",
+      "plans/strategic/ff6/current-gaps.yaml"
+    ],
+    "coordination_scope": "logical:FF6-NRRD-READINESS plus exact-path exclusive-write leases",
+    "acceptance_evidence": "Event 46 chain and controller binding pass with 0/6 certification unchanged",
+    "semantic_commit": "767e7006a19a118e4a16d72db0a15e2f387b44af",
+    "execution_manifest": "sfx-9fb90785bcb16d06"
+  },
+  "allowed_files": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "plans/strategic/ff6/current-gaps.yaml",
+    "reports/skills-rff6/skill-transcripts/plan-control-ff6-nrrd-readiness-001.json"
+  ],
+  "actual_files_changed": [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "plans/strategic/ff6/current-gaps.yaml",
+    "reports/skills-rff6/skill-transcripts/plan-control-ff6-nrrd-readiness-001.json"
+  ],
+  "tests_run": [
+    "native FF6 event chain: PASS through Event 46",
+    "controller/event binding: PASS",
+    "promotion invariant: all six UNASSESSED and 0/6 certified",
+    "capability denominator: 110 capabilities and 689 obligations",
+    "NRRD next action: R2 exact per-obligation classification"
+  ],
+  "result": "PASS",
+  "evidence": {
+    "event_id": "FF6-EVENT-000046",
+    "event_hash": "6524928fd8c8aa81106e1a5a4058e64bd6359b23501f63e5814bed1d13de6bfe",
+    "events_sha256": "8725aa72137674681395f0e7a0a6bb3c9c459a6607fd929b9b1ba51ab025958a",
+    "controller_sha256": "ec44dd6bb5dd00e3277b87bdbf13f6fbe7d74ea148a4b4c906721b0ba5c99f56",
+    "current_gaps_sha256": "5debea2abd53b42c7de80eb7a8769c9f5e7188439146f5b41c531dc2e1192b8d",
+    "product_promotion_effect": "none"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

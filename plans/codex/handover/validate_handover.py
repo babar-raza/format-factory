@@ -46,6 +46,11 @@ INVENTORY_PATH = REPO_ROOT / "reports/ff6/xliff-core-obligation-inventory.yaml"
 CENSUS_PATH = REPO_ROOT / "reports/ff6/xliff-core-authority-candidate-census.yaml"
 LINK = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
+FORMAT_CHECKPOINTS: tuple[tuple[str, str], ...] = (
+    ("NRRD", "nrrd_checkpoint"),
+    ("XLIFF", "xlf_checkpoint"),
+    ("UBL", "ubl_checkpoint"),
+)
 HISTORICAL_REFERENCE_PATHS = (
     "plans/codex/handover/PROVIDER-SHIFT-CONTRACT.md",
     "plans/codex/handover/SHIFT-AND-RESUME-PROTOCOL.md",
@@ -269,6 +274,69 @@ def _git_errors(ctx: ProjectionContext, *, require_clean: bool) -> list[str]:
     return errors
 
 
+def _expected_product_continuation(ctx: ProjectionContext) -> dict[str, Any]:
+    """Independently derive the active product continuation from controller state."""
+
+    task = ctx.product_task
+    task_id = str(task.get("task_id", ""))
+    checkpoint: Mapping[str, Any] = {}
+    checkpoint_name = "active_task"
+    for marker, candidate_name in FORMAT_CHECKPOINTS:
+        if marker in task_id:
+            value = ctx.controller.get(candidate_name, {})
+            if isinstance(value, Mapping):
+                checkpoint = value
+                checkpoint_name = candidate_name
+            break
+
+    microstep = checkpoint.get("active_microstep") or checkpoint.get(
+        "first_unmet_step"
+    )
+    semantic_commit = checkpoint.get("source_checkpoint_commit") or checkpoint.get(
+        "checkpoint_source_commit"
+    )
+    if semantic_commit is None:
+        commits = checkpoint.get("checkpoint_source_commits")
+        if isinstance(commits, list) and commits:
+            semantic_commit = commits[-1]
+    action = checkpoint.get("exact_next_action") or ctx.latest_event.get(
+        "exact_next_action"
+    )
+    return {
+        "task_id": task.get("task_id"),
+        "state": task.get("state"),
+        "microstep": microstep or task.get("first_unmet_step"),
+        "semantic_commit": semantic_commit or ctx.latest_event.get("semantic_commit"),
+        "action": action,
+        "checkpoint_name": checkpoint_name,
+    }
+
+
+def _product_continuation_errors(ctx: ProjectionContext) -> list[str]:
+    rendered = render_projection(ctx)
+    machine = yaml.safe_load(
+        rendered["plans/codex/handover/CURRENT-MACHINE-STATE.yaml"].decode("utf-8")
+    )
+    if not isinstance(machine, Mapping):
+        return ["rendered machine state is not a mapping"]
+    product = machine.get("product_continuation", {})
+    if not isinstance(product, Mapping):
+        return ["rendered product continuation is not a mapping"]
+
+    expected = _expected_product_continuation(ctx)
+    errors: list[str] = []
+    for key in ("task_id", "state", "microstep", "semantic_commit", "exact_next_action"):
+        expected_key = "action" if key == "exact_next_action" else key
+        if product.get(key) != expected.get(expected_key):
+            errors.append(
+                "product continuation mismatch for "
+                f"{key}: rendered={product.get(key)!r}, "
+                f"expected={expected.get(expected_key)!r}, "
+                f"checkpoint={expected['checkpoint_name']}"
+            )
+    return errors
+
+
 def _negative_control_errors(ctx: ProjectionContext) -> list[str]:
     errors: list[str] = []
     rendered = render_projection(ctx)
@@ -310,6 +378,25 @@ def _negative_control_errors(ctx: ProjectionContext) -> list[str]:
     if manifest == build_manifest(ctx):
         errors.append("negative control was not rejected: manifest tamper")
 
+    controller = copy.deepcopy(dict(ctx.controller))
+    selected_checkpoint = _expected_product_continuation(ctx)["checkpoint_name"]
+    inactive_checkpoint = (
+        "ubl_checkpoint" if selected_checkpoint == "xlf_checkpoint" else "xlf_checkpoint"
+    )
+    inactive = controller.get(inactive_checkpoint)
+    if not isinstance(inactive, dict):
+        errors.append("negative control setup failed: inactive format checkpoint")
+    else:
+        if inactive_checkpoint == "xlf_checkpoint":
+            inactive["active_microstep"] = "XLF-STALE-CROSS-FORMAT-CANARY"
+        else:
+            inactive["exact_next_action"] = "UBL stale cross-format canary"
+        inactive_ctx = ProjectionContext(
+            ctx.source_checkpoint, controller, ctx.latest_event, ctx.events
+        )
+        if render_projection(inactive_ctx) != rendered:
+            errors.append("inactive format checkpoint leaked into active continuation")
+
     digests = [deterministic_digest(ctx) for _ in range(3)]
     if len(set(digests)) != 1:
         errors.append("three same-input projections are not deterministic")
@@ -329,6 +416,7 @@ def validate(*, require_clean: bool = False) -> dict[str, Any]:
         *_historical_reference_errors(),
         *_task_errors(ctx),
         *_cross_evidence_errors(ctx),
+        *_product_continuation_errors(ctx),
         *_git_errors(ctx, require_clean=require_clean),
         *_negative_control_errors(ctx),
     ]
@@ -339,10 +427,10 @@ def validate(*, require_clean: bool = False) -> dict[str, Any]:
         "source_checkpoint": ctx.source_checkpoint,
         "controller_task": ctx.latest_event.get("task_id"),
         "product_task": ctx.product_task.get("task_id"),
-        "product_microstep": ctx.xlf.get("active_microstep"),
+        "product_microstep": _expected_product_continuation(ctx).get("microstep"),
         "manifest_files": len(manifest.get("files", [])),
         "deterministic_runs": 3,
-        "stale_value_negative_controls": 5,
+        "stale_value_negative_controls": 6,
         "deterministic_digest": deterministic_digest(ctx),
         "errors": errors,
     }

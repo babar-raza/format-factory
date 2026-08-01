@@ -21,7 +21,7 @@ open_source_allowed: false
 commercial_allowed: false
 goal_id: FF6-PRODUCTION-LIBRARIES-001
 parent_task_id: TC-FF6-PROGRAM-CAPABILITIES-001
-status: READY
+status: WORK_IN_PROGRESS
 lane: A
 skill_ids:
   - test-driven-development
@@ -38,7 +38,7 @@ notes: NRRD production-readiness characterization and executable gap compilation
 # TC-FF6-NRRD-READINESS-001: Establish NRRD Production Readiness
 
 **Phase:** CONTRACT to IMPLEMENTATION_IN_PROGRESS
-**Status:** READY
+**Status:** WORK_IN_PROGRESS
 **Owner:** deterministic FF6 Lane A scheduler
 **Created:** 2026-08-01
 **Last updated:** 2026-08-01
@@ -55,6 +55,27 @@ authority, the 65 canonical obligations, public APIs, existing source/tests,
 security limits, packaging, and external-oracle coverage; then compile bounded
 implementation taskcards in risk order. This task does not call the library
 production-ready and cannot promote it.
+
+## Event 46 execution checkpoint
+
+R1 is complete and the authority/contract portion of R2 is accepted at GitLab
+`main` commit `767e7006a19a118e4a16d72db0a15e2f387b44af`:
+
+- source-tree characterization: 17 production-namespace Python files, 1,290
+  lines, 40 public definitions, and 277 passing NRRD tests;
+- installed-wheel characterization: `format-factory-nrrd` 0.2.0.dev0, wheel
+  SHA-256 `caced0c989552415db6db963d821646b15b3aa198b17510389d37927f8b7fea5`,
+  proof ID `PACKAGE-PROOF-AEC9B51D141841330327C084E506E50CFED3EC1D4A0304810AEAAE0A3C8F7964`;
+- strict NRRD contract: 21 capabilities and 65 obligations, with all six FF6
+  contracts passing check and idempotency;
+- current limitation: the reconciliation report is heuristic and
+  non-promoting. Exact classification and proof requirements for every one of
+  the 65 obligations remain the first unmet R2 work;
+- no product source, promotion, certification, release, or gate state changed.
+
+The exact next action is R2 per-obligation classification, followed by R3
+independent Teem/pynrrd corpus and oracle acquisition. Product source remains
+read-only until R4 compiles bounded implementation taskcards.
 
 ## Locked truth and invariants
 
@@ -156,9 +177,9 @@ boundary.
 
 ## Acceptance criteria
 
-- [ ] Clean source and installed-wheel baselines are captured separately.
-- [ ] Existing working behavior has executable characterization coverage.
-- [ ] NRRD0001-NRRD0005 authority closure passes fail-closed validation.
+- [x] Clean source and installed-wheel baselines are captured separately.
+- [x] Existing working behavior has executable characterization coverage.
+- [x] NRRD0001-NRRD0005 authority closure passes fail-closed validation.
 - [ ] All 65 canonical obligations have exact current classifications and proof
       requirements; no mandatory item is hidden by percentage coverage.
 - [ ] Teem and pynrrd matrices use immutable independent corpus evidence and
