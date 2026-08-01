@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import hashlib
 import importlib.util
+import json
 from copy import deepcopy
 from pathlib import Path
 from types import ModuleType
@@ -46,6 +47,38 @@ SKELETON_REFERENCE_OBLIGATION_ID = (
 SUBFLOW_PAIR_CANDIDATE_IDS = {
     "XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1",
     "XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF",
+}
+UNIT_CHILDREN_CANDIDATE_ID = "XLF-CAND-CORE-SCHEMATRON-100732DB0BBED389"
+UNIT_CHILDREN_OBLIGATION_ID = "SAL-XLIFF-CORE-HIERARCHY-UNIT-CHILDREN-001"
+PREDECESSOR_OBLIGATION_ROW_SHA256 = {
+    "SAL-XLIFF-CORE-AGENT-INLINE-001": "ddc5b5252a5fe492df5f0e59e63e4c3e4552a2c019398ec80a46ed29bd30b6cb",
+    "SAL-XLIFF-CORE-DIRECTION-SOURCE-001": "7e7b18ef8786c8bb667a2486568b6631ccc4ffb52a9f6a63a6032a0beefee9e3",
+    "SAL-XLIFF-CORE-DIRECTION-TARGET-001": "4f68fb809b21fc4c80989b999a32cc46bb75693b360c72754425b02b1796ee38",
+    "SAL-XLIFF-CORE-DOCUMENT-ROOT-001": "44bb0613f18d724c6955f9388fe3bbb8744f95496d2ace7729ce1332f742e025",
+    "SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001": "1b38a23571007e74ba4ee21a373acc0334e015bce0c074aed4595997a6cccea5",
+    "SAL-XLIFF-CORE-EXTENSION-PRESERVE-001": "88c30d2b01ad4735bfd8340771c3bae883144831d03a604c910b218dbb2c01ac",
+    "SAL-XLIFF-CORE-HIERARCHY-UNIT-001": "5aa17b34be039066375efc3b51c2216dcd39b2a2bb5291e9b60cf088e42c3af2",
+    "SAL-XLIFF-CORE-ID-FILE-UNIQUE-001": "87e61f0c11b8acc46f2e24f849c0ee8c014567ff300d54eea536d19a9f34800c",
+    "SAL-XLIFF-CORE-INHERIT-TRANSLATE-001": "9d22ab42d469bfa459f7286859644d2799236a787358c9c19a9ad3f2a3103073",
+    "SAL-XLIFF-CORE-INLINE-PAIRING-001": "a456cfbb5d7f1ccbfe5313a36595ddf1532931f13e373ad0ed5a1b728cc5528a",
+    "SAL-XLIFF-CORE-INLINE-SPANNING-001": "833a4845c8ff08472090d597ea2c4c39fad82269ab08a228e409b1f63a66a8f8",
+    "SAL-XLIFF-CORE-LANGUAGE-SOURCE-001": "3d100ed848b87c9853a5ba57194826435a91e6301fa1e195391148439498370a",
+    "SAL-XLIFF-CORE-LANGUAGE-TARGET-001": "7fc6a924e8058281075db8cb6bc89000090f158685b53f1a504a8c3fbf5ffcfb",
+    "SAL-XLIFF-CORE-REFERENCE-DATAREF-001": "628b40701aebf1b34ed69a6dae35baa18457191e3f871c660e62336a3ccd36ac",
+    "SAL-XLIFF-CORE-REFERENCE-FRAGMENT-INHERIT-001": "d40937d9a723e88d79830dddb91d0aeb22e980d997b9ec7f951bdc43f21cc443",
+    "SAL-XLIFF-CORE-REFERENCE-SKELETON-HREF-001": "4f87767bfab389fdbf5e0631bbe74d69df5d3abb8bd8d96b7d5a40e808ba919b",
+    "SAL-XLIFF-CORE-ROUNDTRIP-SEMANTIC-001": "6e06e28b1c12fe9db0b5525955ba7e9032c6c25fb2f1bb56ff70a2e506057b80",
+    "SAL-XLIFF-CORE-ROUNDTRIP-STRUCTURE-001": "d17e7ec868b7c9c7c999655472057b407cf870eda3199513653593a2d3868313",
+    "SAL-XLIFF-CORE-SECURITY-EXTERNAL-RESOLUTION-001": "9367c2a7a63dab908766a3ee63f2b032ea2cc97b4be2841559a3d719cc06b379",
+    "SAL-XLIFF-CORE-SECURITY-RESOURCE-LIMITS-001": "4d97ec3fe6f6dcae909a972432f187527ee88f18a51810c2ce51ce77b2bf8e67",
+    "SAL-XLIFF-CORE-SECURITY-URI-RISK-001": "65d4c17013bd6d252b9211085c16e6730b18cc51f28ca40533f7a86343ce0f11",
+    "SAL-XLIFF-CORE-SEGMENT-SPLIT-001": "e3194607138388f24c116f942709560063f3d6bc7288a14c6af1becb869db9ec",
+    "SAL-XLIFF-CORE-SOURCE-TARGET-OPTIONAL-001": "79dcb5df5efce4e3f859038d1622dc15826f63dd51d12853ce1daed0f6145763",
+    "SAL-XLIFF-CORE-STATE-SUBSTATE-001": "68376987abc39df60e1072d925244745c01dbdcc9dad8c61322490e292bb994c",
+    "SAL-XLIFF-CORE-TARGET-LANGUAGE-001": "5478bcdf6c028c8397e96c71c93c7a2f5b2e67ea0fe52b0f0517ba4e94bdee7b",
+    "SAL-XLIFF-CORE-TARGET-ORDER-001": "6bcdb78f1326373bb5e018c5f055d807efb1e3429ebf94cb6639169c18438c9d",
+    "SAL-XLIFF-CORE-WHITESPACE-INHERIT-001": "b1cd4b64f53b64cb794a227e04660ad6c100206aa2868ea21bf4546cf231f3af",
+    "SAL-XLIFF-CORE-WRITE-DETERMINISTIC-001": "4844e02a6c3bdf4f50f4674ecfe495c66e0c1c520c12ad1597c4672f9b42ca1b",
 }
 
 
@@ -1320,15 +1353,26 @@ def test_cli_batch_five_compiles_only_reciprocally_adjudicated_pairing_obligatio
 
     assert extractor.main(args) == 0
     inventory = yaml.safe_load(output.read_bytes())
-    assert inventory["obligation_count"] == 28
-    assert inventory["resolved_expected_obligation_count"] == 28
-    assert len(inventory["missing_expected_obligation_ids"]) == 77
+    assert inventory["obligation_count"] == 29
+    assert inventory["resolved_expected_obligation_count"] == 29
+    assert len(inventory["missing_expected_obligation_ids"]) == 76
     assert inventory["complete"] is False
-    assert inventory["adjudication_input"]["decision_count"] == 5
-    assert inventory["adjudication_input"]["verified_disposition_count"] == 5
-    assert inventory["adjudication_input"]["unverified_disposition_count"] == 1125
+    assert inventory["adjudication_input"]["decision_count"] == 6
+    assert inventory["adjudication_input"]["verified_disposition_count"] == 6
+    assert inventory["adjudication_input"]["unverified_disposition_count"] == 1124
 
     rows = {row["obligation_id"]: row for row in inventory["obligations"]}
+    assert set(PREDECESSOR_OBLIGATION_ROW_SHA256) <= set(rows)
+    for obligation_id, expected_sha256 in (
+        PREDECESSOR_OBLIGATION_ROW_SHA256.items()
+    ):
+        canonical = json.dumps(
+            rows[obligation_id],
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=False,
+        ).encode("utf-8")
+        assert hashlib.sha256(canonical).hexdigest() == expected_sha256
     assert INLINE_PC_OBLIGATION_ID not in {
         row["obligation_id"]
         for row in inventory["obligations"]
@@ -1369,6 +1413,23 @@ def test_cli_batch_five_compiles_only_reciprocally_adjudicated_pairing_obligatio
         location["section_id"] == "skeleton"
         and len(location["source_text_sha256"]) == 64
         for location in skeleton["authority_locations"]
+    )
+    unit_children = rows[UNIT_CHILDREN_OBLIGATION_ID]
+    assert unit_children["introduced_in_batch"] == "XLF-04-BATCH-005"
+    assert unit_children["owner"] == "core:hierarchy"
+    assert unit_children["category"] == "hierarchy_cardinality"
+    assert unit_children["stable_profiles"] == ["xliff_2.0", "xliff_2.1"]
+    assert unit_children["adjudication_candidate_ids"] == [
+        UNIT_CHILDREN_CANDIDATE_ID
+    ]
+    assert "at least one segment" in unit_children["normalized_rule"]
+    assert {
+        location["profile"] for location in unit_children["authority_locations"]
+    } == {"xliff_2.0", "xliff_2.1"}
+    assert all(
+        location["section_id"] == "unit"
+        and len(location["source_text_sha256"]) == 64
+        for location in unit_children["authority_locations"]
     )
     assert extractor.main([*args, "--check"]) == 0
 
@@ -1457,6 +1518,46 @@ def test_batch_five_pairing_seed_rejects_one_sided_candidate_proof() -> None:
         if seed["obligation_id"] == INLINE_PAIRING_OBLIGATION_ID
     )
     assert pairing["stable_profiles"] == ["xliff_2.1"]
+
+
+def test_batch_five_unit_children_seed_requires_exact_candidate_proof() -> None:
+    extractor = _load_module()
+    verified = {
+        TARGET_LANGUAGE_OBLIGATION_ID,
+        UNIT_CHILDREN_OBLIGATION_ID,
+    }
+
+    with pytest.raises(
+        extractor.ExtractionError,
+        match="exact Schematron candidate",
+    ):
+        extractor._default_core_obligation_seeds(
+            through_batch="XLF-04-BATCH-005",
+            verified_obligation_ids=verified,
+            adjudication_evidence={
+                "accepted_obligation_candidate_ids": {
+                    UNIT_CHILDREN_OBLIGATION_ID: []
+                }
+            },
+        )
+
+    seeds = extractor._default_core_obligation_seeds(
+        through_batch="XLF-04-BATCH-005",
+        verified_obligation_ids=verified,
+        adjudication_evidence={
+            "accepted_obligation_candidate_ids": {
+                UNIT_CHILDREN_OBLIGATION_ID: [UNIT_CHILDREN_CANDIDATE_ID]
+            }
+        },
+    )
+    unit_children = next(
+        seed
+        for seed in seeds
+        if seed["obligation_id"] == UNIT_CHILDREN_OBLIGATION_ID
+    )
+    assert unit_children["adjudication_candidate_ids"] == [
+        UNIT_CHILDREN_CANDIDATE_ID
+    ]
 
 
 @pytest.mark.parametrize(

@@ -14,19 +14,22 @@ adjudicator_sha256: 240ca789f93c81e94f32852399ce7ae225377516ee46dbfe2e568347ae00
 candidate_census_artifact_id: FF6-XLIFF-CORE-AUTHORITY-CANDIDATE-CENSUS
 denominator_artifact_id: FF6-XLIFF-CORE-OBLIGATION-DENOMINATOR
 candidate_count: 1130
-decision_count: 5
-verified_disposition_count: 5
-unverified_disposition_count: 1125
+decision_count: 6
+verified_disposition_count: 6
+unverified_disposition_count: 1124
 disposition_verification_complete: false
 verified_candidate_ids:
 - XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
 - XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92
+- XLF-CAND-CORE-SCHEMATRON-100732DB0BBED389
 - XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF
 - XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E
 - XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90
 accepted_obligation_candidate_ids:
   SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001:
   - XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90
+  SAL-XLIFF-CORE-HIERARCHY-UNIT-CHILDREN-001:
+  - XLF-CAND-CORE-SCHEMATRON-100732DB0BBED389
   SAL-XLIFF-CORE-INLINE-PAIRING-001:
   - XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
   - XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF
@@ -120,6 +123,44 @@ decisions:
     reason: The skeleton context identifies the element whose content and href are constrained; it establishes
       no parent-child placement or cardinality rule.
   decision_sha256: 86952f46918d01391afc897cc351317cc4586f3e8aed3a0f3764f7ba3205bd68
+- decision_id: XLF-ADJ-CORE-SCHEMATRON-0006
+  candidate_id: XLF-CAND-CORE-SCHEMATRON-100732DB0BBED389
+  candidate_content_sha256: 7564733d38472805796896373cbdbe7807510721c9dfbac29e53843862bcf1cf
+  proposal_sha256: 8ae10a6cb1f11cfef3744ffd25baa47a3af49fdce6753f4c24d97eadcbfc89b2
+  proposed_obligation_ids:
+  - SAL-XLIFF-CORE-AGENT-VALIDATOR-001
+  - SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001
+  - SAL-XLIFF-CORE-HIERARCHY-UNIT-CHILDREN-001
+  authority_occurrences:
+  - profile: xliff_2.1
+    source_id: SRC-XLF-002
+    source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    member: schemas/xliff_core_2.1.sch
+    member_sha256: d4275f2d2574f892624bcd8f83bcc3001c75d623e4eb36896d15d147f16ed7a2
+    location: schematron/rule[12]/report[1]
+    occurrence_sha256: 903d76dd0cb8472539255ce5075a884460844bc4975a030906ffb793377d3648
+  accepted_obligation_ids:
+  - SAL-XLIFF-CORE-HIERARCHY-UNIT-CHILDREN-001
+  unproposed_accepted_obligation_ids: []
+  rejected_obligations:
+  - obligation_id: SAL-XLIFF-CORE-AGENT-VALIDATOR-001
+    reason_code: DOWNSTREAM_CAPABILITY_NOT_DIRECT_SEMANTIC_OWNER
+    reason: A conforming validator enforces this report, but the report directly establishes unit child
+      cardinality.
+  - obligation_id: SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001
+    reason_code: CHILD_SURFACE_NOT_DIRECT_PARENT_CARDINALITY_OWNER
+    reason: The segment element is the required child surface; the report constrains the parent unit and
+      does not establish the complete segment element model.
+  sal_proofs:
+  - fact_id: SAL-XLIFF-00002
+    claim_sha256: e584ca913561965660949a2ffa54acfb160ca97c4ff0ee99c757a4b3a2bf2367
+    fact_proof_sha256: 3d0e2ab2da93511f0c16ef6e58d03de5ddef8c22da4c1d0463163942e7f176cd
+  authority_reason: The exact XLIFF 2.1 Schematron report selects unit elements and reports not(child::xlf:segment),
+    directly requiring at least one segment child. Together with verified SAL-XLIFF-00002 for the stable
+    unit child choice, the direct denominator owner is the unit-children cardinality obligation. The segment
+    proposal is a child surface and generic validator behavior is downstream.
+  outcome: VERIFIED_AUTHORITY_DISPOSITION
+  decision_sha256: 83741ff660cd95f207b19cb5c95e74d170120980432587d25965d9c95fa74646
 - decision_id: XLF-ADJ-CORE-SCHEMATRON-0003
   candidate_id: XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF
   candidate_content_sha256: 246f6e9e4c64fe142760045dbca69070405ae50f552b34387ce8709c3c7226e3
@@ -259,4 +300,4 @@ status: PARTIAL_VERIFIED
 truth_boundary: Only listed content-addressed decisions are verified. Generated candidate proposals remain
   non-promoting, and this partial artifact does not complete XLF-04.
 input_closure_sha256: 66db924b158ca0a85d770c327616185ca35b7b7f21e898056cee5c62972b4219
-decision_set_sha256: 66bf2ae92e9d9fc6c8a58f5e90e7211c29a6fe5ed221288d8ede747af5a16bd3
+decision_set_sha256: 53426b6d88a30c33daa53b24bb125e67366b75605588de6f270088b39e66fa07

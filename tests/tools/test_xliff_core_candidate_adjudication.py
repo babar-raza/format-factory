@@ -58,6 +58,9 @@ SKELETON_RECIPROCAL_CANDIDATE_ID = (
 )
 SKELETON_REFERENCE_ID = "SAL-XLIFF-CORE-REFERENCE-SKELETON-HREF-001"
 SKELETON_HIERARCHY_ID = "SAL-XLIFF-CORE-HIERARCHY-SKELETON-001"
+UNIT_CHILDREN_CANDIDATE_ID = "XLF-CAND-CORE-SCHEMATRON-100732DB0BBED389"
+UNIT_CHILDREN_ID = "SAL-XLIFF-CORE-HIERARCHY-UNIT-CHILDREN-001"
+UNIT_SEGMENT_ID = "SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001"
 REJECTED_PROPOSAL_IDS = {
     "SAL-XLIFF-CORE-AGENT-VALIDATOR-001":
         "DOWNSTREAM_CAPABILITY_NOT_DIRECT_SEMANTIC_OWNER",
@@ -358,10 +361,10 @@ def test_subflow_pair_adjudication_requires_both_reciprocal_decisions() -> None:
             SUBFLOW_PAIR_RECIPROCAL_CANDIDATE_ID,
         ]
     )
-    assert evidence["decision_count"] == 5
-    assert evidence["verified_disposition_count"] == 5
+    assert evidence["decision_count"] == 6
+    assert evidence["verified_disposition_count"] == 6
     assert evidence["unverified_disposition_count"] == (
-        census["candidate_count"] - 5
+        census["candidate_count"] - 6
     )
 
 
@@ -417,6 +420,105 @@ def _skeleton_reciprocal_decision() -> dict[str, Any]:
         "obligation."
     )
     return decision
+
+
+def _unit_children_decision() -> dict[str, Any]:
+    return {
+        "decision_id": "XLF-ADJ-CORE-SCHEMATRON-0006",
+        "candidate_id": UNIT_CHILDREN_CANDIDATE_ID,
+        "accepted_obligation_ids": [UNIT_CHILDREN_ID],
+        "rejected_obligations": [
+            {
+                "obligation_id": "SAL-XLIFF-CORE-AGENT-VALIDATOR-001",
+                "reason_code": (
+                    "DOWNSTREAM_CAPABILITY_NOT_DIRECT_SEMANTIC_OWNER"
+                ),
+                "reason": (
+                    "A conforming validator enforces this report, but the "
+                    "report directly establishes unit child cardinality."
+                ),
+            },
+            {
+                "obligation_id": UNIT_SEGMENT_ID,
+                "reason_code": (
+                    "CHILD_SURFACE_NOT_DIRECT_PARENT_CARDINALITY_OWNER"
+                ),
+                "reason": (
+                    "The segment element is the required child surface; the "
+                    "report constrains the parent unit and does not establish "
+                    "the complete segment element model."
+                ),
+            },
+        ],
+        "sal_fact_ids": ["SAL-XLIFF-00002"],
+        "authority_reason": (
+            "The exact XLIFF 2.1 Schematron report selects unit elements and "
+            "reports not(child::xlf:segment), directly requiring at least "
+            "one segment child. Together with verified SAL-XLIFF-00002 for "
+            "the stable unit child choice, the direct denominator owner is "
+            "the unit-children cardinality obligation. The segment proposal "
+            "is a child surface and generic validator behavior is downstream."
+        ),
+    }
+
+
+def test_unit_segment_minimum_adjudicates_only_parent_cardinality_owner() -> None:
+    module = _load_module()
+    census = _load_yaml(CENSUS_PATH)
+    candidate = next(
+        row
+        for row in census["candidates"]
+        if row["candidate_id"] == UNIT_CHILDREN_CANDIDATE_ID
+    )
+
+    assert candidate["candidate_content_sha256"] == (
+        "7564733d38472805796896373cbdbe7807510721c9dfbac29e53843862bcf1cf"
+    )
+    occurrence = candidate["occurrences"][0]
+    assert occurrence["requirement_sha256"] == (
+        "51c4d1ac9834b99f5a029894cc3c179117a7b9b8de50794bed8acd36132ede7d"
+    )
+    assert occurrence["occurrence_sha256"] == (
+        "903d76dd0cb8472539255ce5075a884460844bc4975a030906ffb793377d3648"
+    )
+    assert json.loads(occurrence["normalized_requirement"]) == {
+        "context": "xlf:unit",
+        "kind": "report",
+        "message": "Incomplete 'unit'; it must have at least one 'segment' child.",
+        "test": "not(child::xlf:segment)",
+    }
+    assert set(candidate["disposition"]["obligation_ids"]) == {
+        "SAL-XLIFF-CORE-AGENT-VALIDATOR-001",
+        UNIT_SEGMENT_ID,
+        UNIT_CHILDREN_ID,
+    }
+
+    decision_source = _load_yaml(DECISIONS_PATH)
+    canonical_decision = next(
+        row
+        for row in decision_source["decisions"]
+        if row["candidate_id"] == UNIT_CHILDREN_CANDIDATE_ID
+    )
+    assert canonical_decision == _unit_children_decision()
+
+    accepted, evidence = module.validated_obligation_ids_from_paths(
+        adjudications_path=ADJUDICATION_PATH,
+        candidate_census_path=CENSUS_PATH,
+        denominator_path=DENOMINATOR_PATH,
+        sal_store_path=SAL_STORE_PATH,
+        sal_manifest_path=SAL_MANIFEST_PATH,
+        sal_receipt_path=SAL_RECEIPT_PATH,
+    )
+    assert UNIT_CHILDREN_ID in accepted
+    assert UNIT_SEGMENT_ID not in accepted
+    assert evidence["accepted_obligation_candidate_ids"][UNIT_CHILDREN_ID] == [
+        UNIT_CHILDREN_CANDIDATE_ID
+    ]
+    assert evidence["decision_count"] == 6
+    assert evidence["verified_disposition_count"] == 6
+    assert evidence["unverified_disposition_count"] == (
+        census["candidate_count"] - 6
+    )
 
 
 def test_skeleton_href_adjudication_records_incidental_unproposed_owner() -> None:
@@ -501,10 +603,10 @@ def test_skeleton_href_adjudication_records_incidental_unproposed_owner() -> Non
     ] == sorted(
         [SKELETON_CANDIDATE_ID, SKELETON_RECIPROCAL_CANDIDATE_ID]
     )
-    assert evidence["decision_count"] == 5
-    assert evidence["verified_disposition_count"] == 5
+    assert evidence["decision_count"] == 6
+    assert evidence["verified_disposition_count"] == 6
     assert evidence["unverified_disposition_count"] == (
-        census["candidate_count"] - 5
+        census["candidate_count"] - 6
     )
 
 
@@ -621,10 +723,10 @@ def test_skeleton_href_obligation_requires_both_reciprocal_reports() -> None:
     ] == sorted(
         [SKELETON_CANDIDATE_ID, SKELETON_RECIPROCAL_CANDIDATE_ID]
     )
-    assert evidence["decision_count"] == 5
-    assert evidence["verified_disposition_count"] == 5
+    assert evidence["decision_count"] == 6
+    assert evidence["verified_disposition_count"] == 6
     assert evidence["unverified_disposition_count"] == (
-        census["candidate_count"] - 5
+        census["candidate_count"] - 6
     )
 
 

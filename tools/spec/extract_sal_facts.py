@@ -3706,6 +3706,12 @@ def _default_core_obligation_seeds(
         "XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92",
         "XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E",
     }
+    batch_five_unit_children_id = (
+        "SAL-XLIFF-CORE-HIERARCHY-UNIT-CHILDREN-001"
+    )
+    batch_five_unit_children_candidate_ids = {
+        "XLF-CAND-CORE-SCHEMATRON-100732DB0BBED389"
+    }
     seeds.append(
         {
             "obligation_id": batch_five_target_language_id,
@@ -3832,6 +3838,49 @@ def _default_core_obligation_seeds(
             ),
         }
     )
+    seeds.append(
+        {
+            "obligation_id": batch_five_unit_children_id,
+            "obligation_basis": "XLIFF_SPECIFICATION",
+            "introduced_in_batch": "XLF-04-BATCH-005",
+            "stable_profiles": ["xliff_2.0", "xliff_2.1"],
+            "owner": "core:hierarchy",
+            "category": "hierarchy_cardinality",
+            "normalized_rule": (
+                "Require every unit to contain one or more segment or "
+                "ignorable children and at least one segment child."
+            ),
+            "requirement_class": "SEMANTIC_CONSTRAINT",
+            "normative_level": "MUST",
+            "authority_locations": locations(
+                "unit",
+                "must contain at least one",
+            ),
+            "adjudication_candidate_ids": sorted(
+                batch_five_unit_children_candidate_ids
+            ),
+            "evidence_requirements": {
+                "positive": [
+                    "accept a unit containing at least one segment child",
+                    "accept additional ignorable children alongside a segment",
+                ],
+                "rejection": [
+                    "reject a unit containing no segment child",
+                    "reject a unit containing only ignorable children",
+                ],
+            },
+            "interpretation_note": (
+                "Independent adjudication XLF-ADJ-CORE-SCHEMATRON-0006 "
+                "binds the exact XLIFF 2.1 report to verified "
+                "SAL-XLIFF-00002. The normative unit constraint is located "
+                "independently in both stable prose authorities; the 2.1 "
+                "Schematron is corroborating executable authority rather "
+                "than the basis for inferring XLIFF 2.0 applicability. The "
+                "segment element is the child surface and generic validator "
+                "behavior is downstream, not a separate direct owner."
+            ),
+        }
+    )
     if not re.fullmatch(r"XLF-04-BATCH-[0-9]{3}", through_batch):
         raise ExtractionError(
             f"invalid default Core through_batch: {through_batch}"
@@ -3908,6 +3957,25 @@ def _default_core_obligation_seeds(
             raise ExtractionError(
                 "XLF-04-BATCH-005 requires both reciprocal Schematron "
                 f"candidates for {batch_five_skeleton_reference_id}"
+            )
+    if maximum_sequence >= 5 and batch_five_unit_children_id in verified_ids:
+        accepted_candidates = (
+            adjudication_evidence or {}
+        ).get("accepted_obligation_candidate_ids", {})
+        unit_children_candidates = (
+            accepted_candidates.get(batch_five_unit_children_id, [])
+            if isinstance(accepted_candidates, Mapping)
+            else []
+        )
+        if not isinstance(unit_children_candidates, Sequence) or isinstance(
+            unit_children_candidates,
+            (str, bytes),
+        ) or not batch_five_unit_children_candidate_ids <= set(
+            map(str, unit_children_candidates)
+        ):
+            raise ExtractionError(
+                "XLF-04-BATCH-005 requires the exact Schematron candidate "
+                f"for {batch_five_unit_children_id}"
             )
     return [
         seed

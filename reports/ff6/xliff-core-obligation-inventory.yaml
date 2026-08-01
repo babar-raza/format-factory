@@ -10,7 +10,7 @@ status: SOURCE_LOCATED_PARTIAL
 stable_profiles:
 - xliff_2.0
 - xliff_2.1
-obligation_count: 28
+obligation_count: 29
 covered_categories:
 - agent_processing
 - document_structure
@@ -40,7 +40,7 @@ remaining_categories:
 - xml_security_resource_limits
 completeness_basis: EXPLICIT_EXPECTED_OBLIGATION_IDS_OPEN_CENSUS
 expected_obligation_count: 105
-resolved_expected_obligation_count: 28
+resolved_expected_obligation_count: 29
 missing_expected_obligation_ids:
 - SAL-XLIFF-CORE-AGENT-EXTRACTOR-001
 - SAL-XLIFF-CORE-AGENT-LOSS-REPORT-001
@@ -67,7 +67,6 @@ missing_expected_obligation_ids:
 - SAL-XLIFF-CORE-HIERARCHY-ORIGINAL-DATA-001
 - SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001
 - SAL-XLIFF-CORE-HIERARCHY-SKELETON-001
-- SAL-XLIFF-CORE-HIERARCHY-UNIT-CHILDREN-001
 - SAL-XLIFF-CORE-ID-DATA-UNIQUE-001
 - SAL-XLIFF-CORE-ID-GROUP-UNIQUE-001
 - SAL-XLIFF-CORE-ID-NOTE-UNIQUE-001
@@ -149,7 +148,6 @@ missing_expected_obligations_by_category:
   - SAL-XLIFF-CORE-HIERARCHY-ORIGINAL-DATA-001
   - SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001
   - SAL-XLIFF-CORE-HIERARCHY-SKELETON-001
-  - SAL-XLIFF-CORE-HIERARCHY-UNIT-CHILDREN-001
   identifiers_references_inheritance:
   - SAL-XLIFF-CORE-ID-DATA-UNIQUE-001
   - SAL-XLIFF-CORE-ID-GROUP-UNIQUE-001
@@ -213,7 +211,7 @@ denominator_status: OPEN_AUTHORITY_CENSUS
 denominator_complete: false
 obligation_basis_counts:
   PRODUCTION_POLICY: 4
-  XLIFF_SPECIFICATION: 24
+  XLIFF_SPECIFICATION: 25
 complete: false
 obligations:
 - obligation_id: SAL-XLIFF-CORE-AGENT-INLINE-001
@@ -496,6 +494,50 @@ obligations:
     - execute a discriminating non-conforming example and verify diagnostics
   interpretation_note: First source-located XLF-04 batch. This identity remains stable while later batches add the uncaptured Core categories and finer rules.
   verification_status: SOURCE_BOUND_UNVERIFIED
+- obligation_id: SAL-XLIFF-CORE-HIERARCHY-UNIT-CHILDREN-001
+  obligation_basis: XLIFF_SPECIFICATION
+  conformance_effect: STANDARD_CONFORMANCE
+  introduced_in_batch: XLF-04-BATCH-005
+  stable_profiles:
+  - xliff_2.0
+  - xliff_2.1
+  owner: core:hierarchy
+  category: hierarchy_cardinality
+  normalized_rule: Require every unit to contain one or more segment or ignorable children and at least one segment child.
+  requirement_class: SEMANTIC_CONSTRAINT
+  normative_level: MUST
+  authority_locations:
+  - profile: xliff_2.0
+    authority_source_id: SRC-XLF-001
+    source_sha256: aaefef5797c2387cfaaa2ca69bfeabe59fa5248535d45d3056b7fad024916055
+    location_kind: prose_paragraph
+    member: xliff-core-v2.0-os.xml
+    member_sha256: 07059d426de1e839540e5e84e0e061c4a6d5ef1a1b7e71ddf75bf5bd11518b73
+    section_id: unit
+    paragraph_index: 3
+    source_anchor: must contain at least one
+    source_text_sha256: d08c6f9e58d6d32625dfaa4c05682aa229c58a8b561ce1eefcc5c34b733c3203
+  - profile: xliff_2.1
+    authority_source_id: SRC-XLF-002
+    source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
+    location_kind: prose_paragraph
+    member: xliff-core-v2.1-os.xml
+    member_sha256: e8c72ec2314e1025f25886cd0ea2b6c10aa2405bd292026383afca2207c44e5b
+    section_id: unit
+    paragraph_index: 3
+    source_anchor: must contain at least one
+    source_text_sha256: d08c6f9e58d6d32625dfaa4c05682aa229c58a8b561ce1eefcc5c34b733c3203
+  evidence_requirements:
+    positive:
+    - accept a unit containing at least one segment child
+    - accept additional ignorable children alongside a segment
+    rejection:
+    - reject a unit containing no segment child
+    - reject a unit containing only ignorable children
+  interpretation_note: Independent adjudication XLF-ADJ-CORE-SCHEMATRON-0006 binds the exact XLIFF 2.1 report to verified SAL-XLIFF-00002. The normative unit constraint is located independently in both stable prose authorities; the 2.1 Schematron is corroborating executable authority rather than the basis for inferring XLIFF 2.0 applicability. The segment element is the child surface and generic validator behavior is downstream, not a separate direct owner.
+  verification_status: SOURCE_BOUND_UNVERIFIED
+  adjudication_candidate_ids:
+  - XLF-CAND-CORE-SCHEMATRON-100732DB0BBED389
 - obligation_id: SAL-XLIFF-CORE-ID-FILE-UNIQUE-001
   obligation_basis: XLIFF_SPECIFICATION
   conformance_effect: STANDARD_CONFORMANCE
@@ -1282,21 +1324,24 @@ obligations:
 truth_boundary: XLIFF specification obligations and production-policy duties are separate authority classes. Neither source binding nor category presence turns the 36 coarse XLF-03 anchors into complete Core semantics, product source, or certification.
 adjudication_input:
   artifact_id: FF6-XLIFF-CORE-CANDIDATE-ADJUDICATIONS
-  artifact_sha256: 878c12670c5c19889259d6def1439ab106304084fee95d8257819f58879b22d2
+  artifact_sha256: 827445fe3d09cd709162531a00fffa4d0021506c38c36f29684257aa6cd85360
   input_closure_sha256: 66db924b158ca0a85d770c327616185ca35b7b7f21e898056cee5c62972b4219
-  decision_set_sha256: 66bf2ae92e9d9fc6c8a58f5e90e7211c29a6fe5ed221288d8ede747af5a16bd3
-  decision_count: 5
-  verified_disposition_count: 5
-  unverified_disposition_count: 1125
+  decision_set_sha256: 53426b6d88a30c33daa53b24bb125e67366b75605588de6f270088b39e66fa07
+  decision_count: 6
+  verified_disposition_count: 6
+  unverified_disposition_count: 1124
   verified_candidate_ids:
   - XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
   - XLF-CAND-CORE-SCHEMATRON-04053F3F140BDD92
+  - XLF-CAND-CORE-SCHEMATRON-100732DB0BBED389
   - XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF
   - XLF-CAND-CORE-SCHEMATRON-8D50B407E90E354E
   - XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90
   accepted_obligation_candidate_ids:
     SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001:
     - XLF-CAND-CORE-SCHEMATRON-B109E9507A685F90
+    SAL-XLIFF-CORE-HIERARCHY-UNIT-CHILDREN-001:
+    - XLF-CAND-CORE-SCHEMATRON-100732DB0BBED389
     SAL-XLIFF-CORE-INLINE-PAIRING-001:
     - XLF-CAND-CORE-SCHEMATRON-00C4A041AF12C8A1
     - XLF-CAND-CORE-SCHEMATRON-4BE479DD3F5875EF
