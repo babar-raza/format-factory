@@ -32,6 +32,21 @@ OBLIGATION_FIELDS = (
     ("performance_requirements", "positive"),
     ("error_behavior", "rejection"),
 )
+AUTHORITY_CLOSURE_FAILURE_CODES = frozenset(
+    {
+        "AUTHORITY_ARTIFACT_DIGEST_MISMATCH",
+        "AUTHORITY_ARTIFACT_MISSING",
+        "AUTHORITY_ARTIFACT_PATH_MISSING",
+        "AUTHORITY_ARTIFACT_PATH_UNSAFE",
+        "AUTHORITY_CLASS_UNSUPPORTED",
+        "AUTHORITY_LEGAL_BLOCKED",
+        "AUTHORITY_LOCK_DECLARATION_MISMATCH",
+        "AUTHORITY_LOCK_MISSING",
+        "AUTHORITY_LOCK_RECORD_MISSING",
+        "AUTHORITY_LOCK_SOURCE_UNDECLARED",
+        "AUTHORITY_NOT_PINNED",
+    }
+)
 
 
 def _canonical(value: Any) -> bytes:
@@ -46,6 +61,26 @@ class ContractIssue:
     severity: str
     message: str
     reference: str = ""
+
+
+class ProductContractCompilationError(ValueError):
+    """A strict contract stopped before a digestible projection existed."""
+
+    def __init__(self, format_id: str, issues: Iterable[ContractIssue]) -> None:
+        ordered = tuple(
+            sorted(issues, key=lambda issue: (issue.severity, issue.code, issue.reference))
+        )
+        if not ordered:
+            raise ValueError("strict compilation error requires at least one issue")
+        self.format_id = format_id
+        self.issues = ordered
+        self.contract_digest: None = None
+        self.compiled_contract: None = None
+        detail = "; ".join(
+            f"{issue.code}[{issue.reference or format_id}]: {issue.message}"
+            for issue in ordered
+        )
+        super().__init__(f"strict ProductContract compilation aborted: {detail}")
 
 
 @dataclass(frozen=True)
@@ -88,12 +123,13 @@ def compile_product_contract(
     authority_root: Path | None = None,
     authority_lock_document: dict[str, Any] | None = None,
     require_authority_lock: bool = False,
+    strict: bool | None = None,
 ) -> CompiledProductContract:
     meta = contract.get("contract_metadata", {})
     format_id = str(meta.get("format_id", "")).lower()
     target_spec_version = str(meta.get("target_spec_version", ""))
-    source_digest = hashlib.sha256(_canonical(contract)).hexdigest()
     issues: list[ContractIssue] = []
+    strict_authority_closure = authority_root is not None if strict is None else strict
     locked_by_id = (
         records_by_id(authority_lock_document)
         if authority_lock_document is not None
@@ -286,6 +322,12 @@ def compile_product_contract(
                 )
             )
 
+    authority_failures = tuple(
+        issue for issue in issues if issue.code in AUTHORITY_CLOSURE_FAILURE_CODES
+    )
+    if strict_authority_closure and authority_failures:
+        raise ProductContractCompilationError(format_id, authority_failures)
+
     obligations: list[dict[str, Any]] = []
     for capability in contract.get("capabilities", []) or []:
         capability_id = str(capability.get("capability_id", ""))
@@ -364,6 +406,7 @@ def compile_product_contract(
 
     obligations.sort(key=lambda item: item["obligation_id"])
     authorities.sort(key=lambda item: str(item["source_id"]))
+    source_digest = hashlib.sha256(_canonical(contract)).hexdigest()
     projection = {
         "format_id": format_id,
         "profile_id": profile_id,
@@ -388,8 +431,18 @@ def compile_product_contract(
     )
 
 
-def load_and_compile(path: Path, *, profile_id: str = "production") -> CompiledProductContract:
+def load_and_compile(
+    path: Path, *, profile_id: str = "production", strict: bool = True
+) -> CompiledProductContract:
     if not path.exists():
+        issue = ContractIssue(
+            "CONTRACT_MISSING",
+            "CRITICAL",
+            f"product contract does not exist: {path.as_posix()}",
+            path.stem,
+        )
+        if strict:
+            raise ProductContractCompilationError(path.stem, (issue,))
         missing = {
             "contract_metadata": {"format_id": path.stem},
             "authoritative_sources": [],
@@ -402,37 +455,33 @@ def load_and_compile(path: Path, *, profile_id: str = "production") -> CompiledP
             **{
                 **compiled.__dict__,
                 "issues": compiled.issues
-                + (
-                    ContractIssue(
-                        "CONTRACT_MISSING",
-                        "CRITICAL",
-                        f"product contract does not exist: {path.as_posix()}",
-                    ),
-                ),
+                + (issue,),
             }
         )
     document = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
     try:
         authority_lock, _ = load_lock(REPO_ROOT)
     except AuthorityLockError as exc:
+        issue = ContractIssue(
+            "AUTHORITY_LOCK_INVALID",
+            "CRITICAL",
+            str(exc),
+            path.stem,
+        )
+        if strict:
+            raise ProductContractCompilationError(path.stem, (issue,)) from exc
         compiled = compile_product_contract(
             document,
             profile_id=profile_id,
             authority_root=REPO_ROOT,
             require_authority_lock=True,
+            strict=False,
         )
         return CompiledProductContract(
             **{
                 **compiled.__dict__,
                 "issues": compiled.issues
-                + (
-                    ContractIssue(
-                        "AUTHORITY_LOCK_INVALID",
-                        "CRITICAL",
-                        str(exc),
-                        path.stem,
-                    ),
-                ),
+                + (issue,),
             }
         )
     return compile_product_contract(
@@ -441,4 +490,5 @@ def load_and_compile(path: Path, *, profile_id: str = "production") -> CompiledP
         authority_root=REPO_ROOT,
         authority_lock_document=authority_lock,
         require_authority_lock=True,
+        strict=strict,
     )

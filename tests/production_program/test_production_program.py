@@ -12,7 +12,10 @@ from types import SimpleNamespace
 import pytest
 import yaml
 
-from tools.format_contract.product_contract import compile_product_contract
+from tools.format_contract.product_contract import (
+    ProductContractCompilationError,
+    compile_product_contract,
+)
 from tools.requirements_authority.production_graph import ProductionProofGraph
 from tools.supervisor.production_program import (
     SAL_STATUS_SCHEMA_GAP_ID,
@@ -38,6 +41,8 @@ def _contract(format_id: str = "ipynb") -> dict:
             {
                 "source_id": f"SRC-{format_id.upper()}-001",
                 "title": "Primary",
+                "organization": "Format Factory test suite",
+                "version": "1.0",
                 "authority_class": "AUTHORITATIVE",
                 "acquisition_status": "ACQUIRED",
                 "content_hash": "a" * 64,
@@ -83,6 +88,60 @@ def _proof_repo(
     ).hexdigest()
     contract_path.write_text(
         yaml.safe_dump(contract, sort_keys=False), encoding="utf-8"
+    )
+    schema_source = (
+        contract_module.REPO_ROOT
+        / "schemas"
+        / "format-contracts"
+        / "authority-lock.schema.json"
+    )
+    schema_target = (
+        repo / "schemas" / "format-contracts" / "authority-lock.schema.json"
+    )
+    schema_target.parent.mkdir(parents=True)
+    schema_target.write_bytes(schema_source.read_bytes())
+    lock_path = repo / "shared" / "format-contracts" / "authority-lock.yaml"
+    lock_path.write_text(
+        yaml.safe_dump(
+            {
+                "schema_version": "1.0",
+                "lock_id": "FF-AUTHORITY-LOCK-001",
+                "sources": [
+                    {
+                        "source_id": "SRC-IPYNB-001",
+                        "format_id": "ipynb",
+                        "title": "Primary",
+                        "organization": "Format Factory test suite",
+                        "version": "1.0",
+                        "authority_class": "AUTHORITATIVE",
+                        "materialized_path": "authorities/ipynb.bin",
+                        "expected_sha256": contract["authoritative_sources"][0][
+                            "content_hash"
+                        ],
+                        "media_type": "application/octet-stream",
+                        "legal": {
+                            "license_id": "MIT",
+                            "redistribution": "ALLOWED",
+                            "use_status": "APPROVED",
+                            "evidence": "test fixture",
+                        },
+                        "limits": {
+                            "max_bytes": 1024,
+                            "timeout_seconds": 1,
+                            "max_redirects": 0,
+                        },
+                        "fetch": {
+                            "kind": "LOCAL_FILE",
+                            "source_path": "authorities/ipynb.bin",
+                        },
+                    }
+                ],
+                "generated_by": "test-suite",
+                "visibility": "internal",
+            },
+            sort_keys=False,
+        ),
+        encoding="utf-8",
     )
     for relative in (
         "tools/supervisor/production_program.py",
@@ -171,7 +230,7 @@ def test_loaded_authority_is_bound_to_repository_artifact_bytes(
     contract_path.write_text(yaml.safe_dump(contract), encoding="utf-8")
     monkeypatch.setattr(contract_module, "REPO_ROOT", tmp_path)
 
-    first = contract_module.load_and_compile(contract_path)
+    first = contract_module.load_and_compile(contract_path, strict=False)
     assert first.authorities[0]["artifact_verified"] is True
     assert first.authorities[0]["artifact_sha256"] == authority["content_hash"]
     assert not {
@@ -184,7 +243,7 @@ def test_loaded_authority_is_bound_to_repository_artifact_bytes(
     }
 
     artifact.write_bytes(b"normative-v2")
-    changed = contract_module.load_and_compile(contract_path)
+    changed = contract_module.load_and_compile(contract_path, strict=False)
     assert changed.digest != first.digest
     assert changed.authorities[0]["acquired"] is False
     assert "AUTHORITY_ARTIFACT_DIGEST_MISMATCH" in {
@@ -204,11 +263,129 @@ def test_loaded_authority_rejects_path_outside_repository(
     contract_path.write_text(yaml.safe_dump(contract), encoding="utf-8")
     monkeypatch.setattr(contract_module, "REPO_ROOT", tmp_path)
 
-    compiled = contract_module.load_and_compile(contract_path)
+    compiled = contract_module.load_and_compile(contract_path, strict=False)
     assert compiled.authorities[0]["acquired"] is False
     assert "AUTHORITY_ARTIFACT_PATH_UNSAFE" in {
         issue.code for issue in compiled.issues
     }
+
+
+def test_strict_compilation_missing_required_authority_aborts_before_contract_digest(
+    tmp_path: Path,
+) -> None:
+    contract = _contract()
+    authority = contract["authoritative_sources"][0]
+    authority["local_path"] = "authorities/missing.bin"
+
+    with pytest.raises(
+        ProductContractCompilationError,
+        match="AUTHORITY_ARTIFACT_MISSING",
+    ) as captured:
+        compile_product_contract(
+            contract,
+            authority_root=tmp_path,
+            run_legacy_validator=False,
+        )
+    assert captured.value.contract_digest is None
+    assert captured.value.compiled_contract is None
+    assert {issue.code for issue in captured.value.issues} == {
+        "AUTHORITY_ARTIFACT_MISSING"
+    }
+
+
+def test_strict_authority_closure_rejects_every_local_artifact_failure(
+    tmp_path: Path,
+) -> None:
+    cases: list[tuple[dict, str]] = []
+
+    missing_path = _contract()
+    cases.append((missing_path, "AUTHORITY_ARTIFACT_PATH_MISSING"))
+
+    unsafe_path = _contract()
+    unsafe_path["authoritative_sources"][0]["local_path"] = "../outside.bin"
+    cases.append((unsafe_path, "AUTHORITY_ARTIFACT_PATH_UNSAFE"))
+
+    non_file = _contract()
+    non_file_path = tmp_path / "authorities" / "directory.bin"
+    non_file_path.mkdir(parents=True)
+    non_file["authoritative_sources"][0]["local_path"] = (
+        "authorities/directory.bin"
+    )
+    cases.append((non_file, "AUTHORITY_ARTIFACT_MISSING"))
+
+    digest_mismatch = _contract()
+    mismatched_path = tmp_path / "authorities" / "mismatch.bin"
+    mismatched_path.parent.mkdir(exist_ok=True)
+    mismatched_path.write_bytes(b"different authority bytes")
+    digest_mismatch["authoritative_sources"][0]["local_path"] = (
+        "authorities/mismatch.bin"
+    )
+    cases.append((digest_mismatch, "AUTHORITY_ARTIFACT_DIGEST_MISMATCH"))
+
+    for contract, expected_code in cases:
+        with pytest.raises(ProductContractCompilationError) as captured:
+            compile_product_contract(
+                contract,
+                authority_root=tmp_path,
+                run_legacy_validator=False,
+            )
+        codes = {issue.code for issue in captured.value.issues}
+        assert expected_code in codes
+        assert captured.value.contract_digest is None
+        assert captured.value.compiled_contract is None
+
+
+def test_strict_loader_rejects_missing_lock_without_compiled_output(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import tools.format_contract.product_contract as contract_module
+
+    contract_path = tmp_path / "shared" / "format-contracts" / "ipynb.yaml"
+    contract_path.parent.mkdir(parents=True)
+    contract_path.write_text(yaml.safe_dump(_contract()), encoding="utf-8")
+    monkeypatch.setattr(contract_module, "REPO_ROOT", tmp_path)
+
+    with pytest.raises(
+        ProductContractCompilationError,
+        match="AUTHORITY_LOCK_INVALID",
+    ) as captured:
+        contract_module.load_and_compile(contract_path)
+    assert captured.value.contract_digest is None
+    assert captured.value.compiled_contract is None
+
+    diagnostic = contract_module.load_and_compile(contract_path, strict=False)
+    assert "AUTHORITY_LOCK_INVALID" in {issue.code for issue in diagnostic.issues}
+    assert diagnostic.ready is False
+
+
+def test_missing_authority_cannot_create_an_executed_proof(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    repo, _source, test_path = _proof_repo(tmp_path, monkeypatch)
+    (repo / "authorities" / "ipynb.bin").unlink()
+    compiled = compile_product_contract(_contract(), run_legacy_validator=False)
+    positive = next(
+        item for item in compiled.obligations if item["kind"] == "positive"
+    )
+    program = ProductionProgram(tmp_path / "state")
+
+    with pytest.raises(
+        ProductContractCompilationError,
+        match="AUTHORITY_ARTIFACT_MISSING",
+    ):
+        program.execute_proof(
+            "ipynb",
+            positive["obligation_id"],
+            polarity="positive",
+            test_paths=[test_path.relative_to(repo).as_posix()],
+            fixture_paths=[],
+            package_paths=[],
+            command=[sys.executable, "-c", "print('must not execute')"],
+        )
+
+    assert program.proofs == {}
+    assert not program.proofs_path.exists()
+    assert not program.state_path.exists()
 
 
 def test_mandatory_capability_without_provenance_fails_closed() -> None:

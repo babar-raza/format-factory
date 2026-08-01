@@ -1,0 +1,71 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-contract-runtime-repair-ff6-missing-authority-001",
+  "skill_id": "product-contract-runtime-repair",
+  "mode": "live",
+  "timestamp": "2026-08-01T17:08:00Z",
+  "inputs": {
+    "task_id": "TC-FF6-ACCEL-CONTROL-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "defect_id": "FF6-ACCEL-A1-MISSING-AUTHORITY-DIGEST",
+    "failing_regression": "tests/production_program/test_production_program.py::test_strict_compilation_missing_required_authority_aborts_before_contract_digest initially failed with DID NOT RAISE ValueError",
+    "expected_invalidation_input": "Any required authority path, authority bytes, declared digest, authority-lock record, or lock declaration mismatch",
+    "target_behavior_description": "Production contract loading validates complete authority closure before canonical digest construction or proof execution. Diagnostic callers must opt into strict=False and remain non-ready.",
+    "execution_manifest_id": "sfx-91e38e5ad88735d3",
+    "authorization_id": "60b401775fb70ff5",
+    "coordination_identity": "agent-codex-20260801T163048-5b135a"
+  },
+  "allowed_files": [
+    "tools/format_contract/product_contract.py",
+    "tests/production_program/test_production_program.py",
+    "reports/skills-rff6/skill-transcripts/product-contract-runtime-repair-ff6-missing-authority-001.json"
+  ],
+  "actual_files_changed": [
+    "tools/format_contract/product_contract.py",
+    "tests/production_program/test_production_program.py",
+    "reports/skills-rff6/skill-transcripts/product-contract-runtime-repair-ff6-missing-authority-001.json"
+  ],
+  "tests_run": [
+    "RED: test_strict_compilation_missing_required_authority_aborts_before_contract_digest failed because no ValueError was raised.",
+    "GREEN: the same focused test passed after the two-phase fail-closed repair.",
+    "Negative controls for missing path, unsafe path, non-file path, digest mismatch, and missing authority lock passed.",
+    "Proof-path negative control passed: missing authority produced no executed proof file and no controller state file.",
+    "tests/production_program/test_production_program.py completed with 45 passing tests.",
+    "Affected regression tier completed with 145 passed and 1 exact known stateful CSV idempotency test deselected.",
+    "Ruff passed for both changed Python files.",
+    "Strict Mypy with explicit package bases and skipped imports passed for tools/format_contract/product_contract.py.",
+    "Pyright 1.1.411 passed both changed Python files with zero errors and warnings.",
+    "Python bytecode compilation and git diff --check passed.",
+    "Three strict portfolio replays produced identical compiled digests or identical typed rejection identities."
+  ],
+  "result": "PASS",
+  "evidence": {
+    "baseline_commit": "4ee34de5d17236e60ff073de2b3098f4be50fb02",
+    "implementation": [
+      "ProductContractCompilationError retains ordered issues but exposes no contract digest or compiled contract.",
+      "Authority validation precedes obligation projection, source digest, and final contract digest.",
+      "load_and_compile is strict by default; strict=False is an explicit non-promoting diagnostic mode.",
+      "ProductionProgram.execute_proof propagates strict authority failure before any proof or state persistence."
+    ],
+    "strict_portfolio_replay": {
+      "ipynb": "COMPILED 5a7e50e6e5a5debb4d8edf71d53e21a1e14f28119a0180def731dd9c930911f1; non-ready LEGACY_CONTRACT_INVALID remains",
+      "ora": "COMPILED 9dc1cea76c9453dc9c9e54e73ed23bf4ef80b83e268172f02a50937cd56400c4; non-ready LEGACY_CONTRACT_INVALID remains",
+      "nrrd": "COMPILED 90b036691a4e2c860ac550fdf788a8e4b09e8c43cf47359b82efd146f583d30a; non-ready LEGACY_CONTRACT_INVALID remains",
+      "xliff": "DETERMINISTIC_REJECTION AUTHORITY_LOCK_SOURCE_UNDECLARED[SRC-XLIFF-003]",
+      "safetensors": "COMPILED e4a885d5741452aeea5bbe5ea9231c672abd7a472e5e929471ab8c98f4b2ffd7; non-ready LEGACY_CONTRACT_INVALID remains",
+      "ubl": "COMPILED 22261a22578cd74c74393cf3e098bb1869567c08000d9b89c52a7366171cfeb1; non-ready LEGACY_CONTRACT_INVALID remains"
+    },
+    "known_gap_exposed": "The XLIFF authority lock contains SRC-XLIFF-003 while the XLIFF contract omits that source. This is a real current contract gap and was not weakened or hidden.",
+    "excluded_attempts": [
+      "The first broad regression command was non-promoting: 144 passed and the pre-existing stateful CSV idempotency test failed after writing three unrelated report projections. Those exact projections were restored from immutable HEAD and separately receipted.",
+      "A strict replay assertion initially referred to a nonexistent CompiledProductContract.valid attribute. No repository state changed; the corrected read-only replay used ready and deterministic outcomes."
+    ],
+    "nonclaims": [
+      "This slice does not make any format contract ready.",
+      "This slice does not resolve the XLIFF authority contradiction or legacy contract validation issues.",
+      "This slice does not certify or promote any library; technical certification remains 0/6."
+    ]
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

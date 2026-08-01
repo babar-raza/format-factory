@@ -1,0 +1,57 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "rollback-and-recovery-ff6-csv-side-effect-001",
+  "skill_id": "rollback-and-recovery",
+  "mode": "live",
+  "timestamp": "2026-08-01T16:43:00Z",
+  "inputs": {
+    "task_id": "TC-FF6-ACCEL-CONTROL-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "rollback_target": "Exactly reports/capability-layer/gap-ledger.json, reports/format-contract-layer/csv-contract-gaps.json, and reports/format-contract-layer/csv-reconciliation.json",
+    "backup_path_or_stash_ref": "Immutable Git commit 4ee34de5d17236e60ff073de2b3098f4be50fb02 and its recorded target blob identities",
+    "before_state_description": "The known stateful CSV idempotency regression wrote three unrelated report projections during a broad A1 regression attempt that otherwise passed 144 tests and failed only tests/format_contract/test_consumption_chain.py::test_full_slice_second_run_is_idempotent.",
+    "after_state_expected": "Each recovered report has the exact Git blob identity recorded at immutable HEAD 4ee34de5d17236e60ff073de2b3098f4be50fb02; the A1 source and test changes remain untouched.",
+    "execution_manifest_id": "sfx-0ea8ee0256576309",
+    "authorization_id": "4256d44b90f632b6",
+    "coordination_identity": "agent-codex-20260801T163048-5b135a"
+  },
+  "allowed_files": [
+    "reports/capability-layer/gap-ledger.json",
+    "reports/format-contract-layer/csv-contract-gaps.json",
+    "reports/format-contract-layer/csv-reconciliation.json",
+    "reports/skills-rff6/skill-transcripts/rollback-and-recovery-ff6-csv-side-effect-001.json"
+  ],
+  "actual_files_changed": [
+    "reports/capability-layer/gap-ledger.json",
+    "reports/format-contract-layer/csv-contract-gaps.json",
+    "reports/format-contract-layer/csv-reconciliation.json",
+    "reports/skills-rff6/skill-transcripts/rollback-and-recovery-ff6-csv-side-effect-001.json"
+  ],
+  "tests_run": [
+    "Captured the exact diff for only the three declared report targets after the failing broad regression attempt.",
+    "Applied the exact reverse Git patch only to the three declared report targets.",
+    "Verified reports/capability-layer/gap-ledger.json has Git blob 6f95cd9af52cdf62e766e501f473627c4133efc3, equal to HEAD.",
+    "Verified reports/format-contract-layer/csv-contract-gaps.json has Git blob d35de70eb0782781341bea8ec7b810455337b370, equal to HEAD.",
+    "Verified reports/format-contract-layer/csv-reconciliation.json has Git blob 79672cd5c6531076e2a6f76ea65c8eb6200197a8, equal to HEAD.",
+    "Verified git status retains only the intended A1 source and test modifications before writing this receipt."
+  ],
+  "result": "PASS",
+  "evidence": {
+    "source_commit": "4ee34de5d17236e60ff073de2b3098f4be50fb02",
+    "failed_non_promoting_command": "python -m pytest tests/production_program/test_production_program.py tests/production_program/test_production_skills.py tests/format_contract -q",
+    "failed_non_promoting_result": "144 passed, 1 failed; the sole failure was the pre-existing stateful CSV idempotency test",
+    "restored_git_blobs": {
+      "reports/capability-layer/gap-ledger.json": "6f95cd9af52cdf62e766e501f473627c4133efc3",
+      "reports/format-contract-layer/csv-contract-gaps.json": "d35de70eb0782781341bea8ec7b810455337b370",
+      "reports/format-contract-layer/csv-reconciliation.json": "79672cd5c6531076e2a6f76ea65c8eb6200197a8"
+    },
+    "post_restore_sha256": {
+      "reports/capability-layer/gap-ledger.json": "4aa3e6bd131d8f624df3bee6ee067cacedccc5db57f85ef7c81e5cc99d537c49",
+      "reports/format-contract-layer/csv-contract-gaps.json": "2456ac7e219c5a7e63ee0bfbdebcef40e7787931632590c33e84ea5ba52d57b6",
+      "reports/format-contract-layer/csv-reconciliation.json": "2fa46fde9a4628192fabe8a132f480a856df9ef99670805ebb7c4925f79eb25e"
+    },
+    "a1_paths_reverted": 0
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}
