@@ -10,7 +10,7 @@ generated_at: 2026-08-01
 # Provider-neutral start commands
 
 Start at [START-HERE.md](START-HERE.md). Verify GitLab `origin/main`, event
-`FF6-EVENT-000046`, and source checkpoint `767e7006a19a118e4a16d72db0a15e2f387b44af`. Run:
+`FF6-EVENT-000046`, and source checkpoint `ec7037dcce8bc465e9e0bf12288c77dc0930dc31`. Run:
 
 ```powershell
 git fetch origin

@@ -26,7 +26,7 @@ or publication status.
 
 - accepted event task: `TC-FF6-NRRD-READINESS-001`;
 - immediate lane task: `TC-FF6-NRRD-READINESS-001`;
-- source checkpoint: `767e7006a19a118e4a16d72db0a15e2f387b44af`;
+- source checkpoint: `ec7037dcce8bc465e9e0bf12288c77dc0930dc31`;
 - control semantic commit: `767e7006a19a118e4a16d72db0a15e2f387b44af`;
 - action: Continue TC-FF6-NRRD-READINESS-001 R2 from GitLab main. Complete exact per-obligation classification and proof requirements, then acquire and execute independent Teem/pynrrd corpus evidence; do not restructure product source or claim certification.
 

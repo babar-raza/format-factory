@@ -18,7 +18,7 @@ C:\Users\prora\OneDrive\Documents\GitHub\format-factory\plans\codex\handover\STA
 GitLab `origin/main` is the only integration authority. The current native
 controller head is `FF6-EVENT-000046` (sequence `46`), hash
 `6524928fd8c8aa81106e1a5a4058e64bd6359b23501f63e5814bed1d13de6bfe`, derived from source checkpoint
-`767e7006a19a118e4a16d72db0a15e2f387b44af`. Product certification remains `0`;
+`ec7037dcce8bc465e9e0bf12288c77dc0930dc31`. Product certification remains `0`;
 all six promotion states remain `UNASSESSED`.
 
 ## Mission

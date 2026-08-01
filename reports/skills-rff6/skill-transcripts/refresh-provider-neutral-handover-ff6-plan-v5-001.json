@@ -1,0 +1,62 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "refresh-provider-neutral-handover-ff6-plan-v5-001",
+  "skill_id": "refresh-provider-neutral-handover",
+  "mode": "live",
+  "timestamp": "2026-08-01T19:57:00Z",
+  "inputs": {
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "source_checkpoint": "ec7037dcce8bc465e9e0bf12288c77dc0930dc31",
+    "canonical_remote": "origin",
+    "canonical_branch": "main",
+    "controller_path": "plans/strategic/ff6/controller-state.yaml",
+    "journal_path": "plans/strategic/ff6/events.jsonl",
+    "current_taskcard": "taskcards/TC-FF6-NRRD-READINESS-001.md",
+    "exact_next_task": "TC-FF6-NRRD-READINESS-001:R2_EXACT_OBLIGATION_CLASSIFICATION",
+    "packet_root": "plans/codex/handover",
+    "execution_manifest": "sfx-adb62f0bafd582b0"
+  },
+  "allowed_files": [
+    "plans/codex/handover/START-HERE.md",
+    "plans/codex/handover/CLAUDE-START.md",
+    "plans/codex/handover/CLEAN-REPLAY-REPAIR.md",
+    "plans/codex/handover/CURRENT-MACHINE-STATE.yaml",
+    "plans/codex/handover/checkpoint.yaml",
+    "plans/codex/handover/CURRENT-SHIFT-HANDOVER.md",
+    "plans/codex/handover/INFLIGHT-RECOVERY.yaml",
+    "plans/codex/handover/manifest.yaml",
+    "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-ff6-plan-v5-001.json"
+  ],
+  "actual_files_changed": [
+    "plans/codex/handover/START-HERE.md",
+    "plans/codex/handover/CLAUDE-START.md",
+    "plans/codex/handover/CLEAN-REPLAY-REPAIR.md",
+    "plans/codex/handover/CURRENT-MACHINE-STATE.yaml",
+    "plans/codex/handover/checkpoint.yaml",
+    "plans/codex/handover/CURRENT-SHIFT-HANDOVER.md",
+    "plans/codex/handover/INFLIGHT-RECOVERY.yaml",
+    "plans/codex/handover/manifest.yaml",
+    "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-ff6-plan-v5-001.json"
+  ],
+  "tests_run": [
+    "pre-refresh check failed with eight stale projection paths as expected",
+    "three post-refresh projection checks produced identical digest 088c95f6734c10236ab8f9800020c4e781ef46403d4af6963681cddad83e8523",
+    "python plans/codex/handover/validate_handover.py --self-test: PASS",
+    "31 manifest files validated",
+    "six stale-value negative controls passed",
+    "controller remains Event 46 and NRRD R2 remains the exact next task"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "source_checkpoint": "ec7037dcce8bc465e9e0bf12288c77dc0930dc31",
+    "projection_sha256": "088c95f6734c10236ab8f9800020c4e781ef46403d4af6963681cddad83e8523",
+    "manifest_sha256": "72579fbf32e099b80b96e7f381c82c491f1fc53603f2d0ab8acfed4609fc9207",
+    "controller_event": "FF6-EVENT-000046",
+    "controller_event_hash": "6524928fd8c8aa81106e1a5a4058e64bd6359b23501f63e5814bed1d13de6bfe",
+    "product_task": "TC-FF6-NRRD-READINESS-001",
+    "product_promotion_effect": "none"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}
