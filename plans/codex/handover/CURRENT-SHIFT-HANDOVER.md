@@ -1,5 +1,5 @@
 ---
-artifact_id: FF6-CURRENT-SHIFT-HANDOVER-EVENT-46
+artifact_id: FF6-CURRENT-SHIFT-HANDOVER-EVENT-47
 artifact_type: provider_shift_handover
 visibility: internal
 publish_allowed: false
@@ -7,7 +7,7 @@ generated_by: codex
 generated_at: 2026-08-01
 ---
 
-# Current shift handover: FF6-EVENT-000046
+# Current shift handover: FF6-EVENT-000047
 
 ## Goal
 
@@ -17,8 +17,8 @@ mission remains active and technical certification is `0`.
 
 ## Accepted control work
 
-`FF6-EVENT-000046` records transition `NRRD_READINESS_BASELINE_VERIFIED` and binds
-semantic commit `767e7006a19a118e4a16d72db0a15e2f387b44af`. This projection transfers only
+`FF6-EVENT-000047` records transition `NRRD_R2_EXACT_CLASSIFICATION_VERIFIED` and binds
+semantic commit `ea118ba39904b54517ba6bc5839c8d4fc36fa050`. This projection transfers only
 that recorded state; it does not upgrade product, certification, gate, release,
 or publication status.
 
@@ -26,11 +26,11 @@ or publication status.
 
 - accepted event task: `TC-FF6-NRRD-READINESS-001`;
 - immediate lane task: `TC-FF6-NRRD-READINESS-001`;
-- source checkpoint: `ec7037dcce8bc465e9e0bf12288c77dc0930dc31`;
-- control semantic commit: `767e7006a19a118e4a16d72db0a15e2f387b44af`;
-- action: Continue TC-FF6-NRRD-READINESS-001 R2 from GitLab main. Complete exact per-obligation classification and proof requirements, then acquire and execute independent Teem/pynrrd corpus evidence; do not restructure product source or claim certification.
+- source checkpoint: `6b775e80a16ce0d020b9df68ab26b2bb76adc232`;
+- control semantic commit: `ea118ba39904b54517ba6bc5839c8d4fc36fa050`;
+- action: Continue TC-FF6-NRRD-READINESS-001 R3 from GitLab main. Acquire and execute immutable independent Teem/pynrrd corpus and oracle evidence, preserve disagreements, and compile selector-bound proof gaps; do not restructure product source or claim certification.
 
-The controller-selected product continuation is the same task, `TC-FF6-NRRD-READINESS-001`, at `R2_EXACT_OBLIGATION_CLASSIFICATION`. Its accepted semantic checkpoint is `767e7006a19a118e4a16d72db0a15e2f387b44af`.
+The controller-selected product continuation is the same task, `TC-FF6-NRRD-READINESS-001`, at `R3_INDEPENDENT_CORPUS_AND_ORACLE_MATRIX`. Its accepted semantic checkpoint is `ea118ba39904b54517ba6bc5839c8d4fc36fa050`.
 
 ## Current product truth
 

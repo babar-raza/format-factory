@@ -1,5 +1,5 @@
 ---
-artifact_id: FF6-HANDOVER-START-EVENT-46
+artifact_id: FF6-HANDOVER-START-EVENT-47
 artifact_type: provider_neutral_handover_entry
 visibility: internal
 publish_allowed: false
@@ -16,9 +16,9 @@ C:\Users\prora\OneDrive\Documents\GitHub\format-factory\plans\codex\handover\STA
 ```
 
 GitLab `origin/main` is the only integration authority. The current native
-controller head is `FF6-EVENT-000046` (sequence `46`), hash
-`6524928fd8c8aa81106e1a5a4058e64bd6359b23501f63e5814bed1d13de6bfe`, derived from source checkpoint
-`ec7037dcce8bc465e9e0bf12288c77dc0930dc31`. Product certification remains `0`;
+controller head is `FF6-EVENT-000047` (sequence `47`), hash
+`d4cc0a0292b9e5ea5d473d38c195ceb7328b85d47f28569da3cb8af64b1a22ff`, derived from source checkpoint
+`6b775e80a16ce0d020b9df68ab26b2bb76adc232`. Product certification remains `0`;
 all six promotion states remain `UNASSESSED`.
 
 ## Mission
@@ -34,9 +34,9 @@ documentation, SBOMs, provenance, and extraction-ready repositories.
 Run `TC-FF6-NRRD-READINESS-001` through the registered skill sequence declared in
 its taskcard. Current action:
 
-> Continue TC-FF6-NRRD-READINESS-001 R2 from GitLab main. Complete exact per-obligation classification and proof requirements, then acquire and execute independent Teem/pynrrd corpus evidence; do not restructure product source or claim certification.
+> Continue TC-FF6-NRRD-READINESS-001 R3 from GitLab main. Acquire and execute immutable independent Teem/pynrrd corpus and oracle evidence, preserve disagreements, and compile selector-bound proof gaps; do not restructure product source or claim certification.
 
-The controller-selected product continuation is the same task, `TC-FF6-NRRD-READINESS-001`, at `R2_EXACT_OBLIGATION_CLASSIFICATION`. Its accepted semantic checkpoint is `767e7006a19a118e4a16d72db0a15e2f387b44af`.
+The controller-selected product continuation is the same task, `TC-FF6-NRRD-READINESS-001`, at `R3_INDEPENDENT_CORPUS_AND_ORACLE_MATRIX`. Its accepted semantic checkpoint is `ea118ba39904b54517ba6bc5839c8d4fc36fa050`.
 
 ## Honest boundary
 

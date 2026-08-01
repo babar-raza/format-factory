@@ -1,23 +1,24 @@
 schema: ff6/next-microstep@3
-artifact_id: FF6-NEXT-MICROSTEP-EVENT-46
+artifact_id: FF6-NEXT-MICROSTEP-EVENT-47
 visibility: internal
 generated_by: codex
 controller_task:
   task_id: TC-FF6-NRRD-READINESS-001
   state: WORK_IN_PROGRESS
-  event_id: FF6-EVENT-000046
+  event_id: FF6-EVENT-000047
   accepted_event_task_id: TC-FF6-NRRD-READINESS-001
-  action: Continue TC-FF6-NRRD-READINESS-001 R2 from GitLab main. Complete exact per-obligation classification
-    and proof requirements, then acquire and execute independent Teem/pynrrd corpus evidence; do not restructure
-    product source or claim certification.
+  action: Continue TC-FF6-NRRD-READINESS-001 R3 from GitLab main. Acquire and execute immutable independent
+    Teem/pynrrd corpus and oracle evidence, preserve disagreements, and compile selector-bound proof gaps;
+    do not restructure product source or claim certification.
 product_continuation:
   task_id: TC-FF6-NRRD-READINESS-001
   state: WORK_IN_PROGRESS
-  microstep: R2_EXACT_OBLIGATION_CLASSIFICATION
-  semantic_commit: 767e7006a19a118e4a16d72db0a15e2f387b44af
-  action: Continue TC-FF6-NRRD-READINESS-001 at R2 from GitLab main commit 767e7006. Classify every one
-    of the 65 NRRD obligations against exact source symbols and executed evidence, name required positive/negative
-    proof, and retain non-promoting status for heuristic reconciliation rows. Then execute R3 independent
-    Teem/pynrrd corpus and oracle acquisition. Do not mutate product source or claim certification.
+  microstep: R3_INDEPENDENT_CORPUS_AND_ORACLE_MATRIX
+  semantic_commit: ea118ba39904b54517ba6bc5839c8d4fc36fa050
+  action: Continue TC-FF6-NRRD-READINESS-001 at R3 from GitLab main commit ea118ba3. Acquire immutable
+    licensed official/Teem/pynrrd corpus inputs, bind digests and tool versions, execute independent read/write
+    differential matrices, preserve contradictions, and derive positive/negative/interoperability proof
+    gaps. Do not mutate NRRD product source until R4 emits bounded implementation taskcards; do not claim
+    certification.
 ordering_invariant: The active controller task and product continuation are the same task. Continuation
   fields must come from that format's checkpoint; stale cross-format microsteps are invalid.

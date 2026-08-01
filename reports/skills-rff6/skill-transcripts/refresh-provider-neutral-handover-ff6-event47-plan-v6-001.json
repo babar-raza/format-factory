@@ -1,0 +1,70 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "refresh-provider-neutral-handover-ff6-event47-plan-v6-001",
+  "skill_id": "refresh-provider-neutral-handover",
+  "mode": "live",
+  "timestamp": "2026-08-01T20:57:58Z",
+  "inputs": {
+    "task_id": "TC-FF6-HANDOVER-CLAUDE-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "source_checkpoint": "6b775e80a16ce0d020b9df68ab26b2bb76adc232",
+    "canonical_remote": "origin",
+    "canonical_branch": "main",
+    "controller_path": "plans/strategic/ff6/controller-state.yaml",
+    "journal_path": "plans/strategic/ff6/events.jsonl",
+    "current_taskcard": "taskcards/TC-FF6-NRRD-READINESS-001.md",
+    "exact_next_task": "TC-FF6-NRRD-READINESS-001:R3_INDEPENDENT_CORPUS_AND_ORACLE_MATRIX",
+    "packet_root": "plans/codex/handover",
+    "execution_manifest": "sfx-97e875925e243c8e",
+    "mutation_authorization": "460a1b6b83710726"
+  },
+  "allowed_files": [
+    "plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md",
+    "plans/codex/handover/CLAUDE-START.md",
+    "plans/codex/handover/CLEAN-REPLAY-REPAIR.md",
+    "plans/codex/handover/CURRENT-MACHINE-STATE.yaml",
+    "plans/codex/handover/CURRENT-SHIFT-HANDOVER.md",
+    "plans/codex/handover/INFLIGHT-RECOVERY.yaml",
+    "plans/codex/handover/NEXT-MICROSTEP.yaml",
+    "plans/codex/handover/START-HERE.md",
+    "plans/codex/handover/checkpoint.yaml",
+    "plans/codex/handover/manifest.yaml",
+    "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-ff6-event47-plan-v6-001.json"
+  ],
+  "actual_files_changed": [
+    "plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md",
+    "plans/codex/handover/CLAUDE-START.md",
+    "plans/codex/handover/CLEAN-REPLAY-REPAIR.md",
+    "plans/codex/handover/CURRENT-MACHINE-STATE.yaml",
+    "plans/codex/handover/CURRENT-SHIFT-HANDOVER.md",
+    "plans/codex/handover/INFLIGHT-RECOVERY.yaml",
+    "plans/codex/handover/NEXT-MICROSTEP.yaml",
+    "plans/codex/handover/START-HERE.md",
+    "plans/codex/handover/checkpoint.yaml",
+    "plans/codex/handover/manifest.yaml",
+    "reports/skills-rff6/skill-transcripts/refresh-provider-neutral-handover-ff6-event47-plan-v6-001.json"
+  ],
+  "tests_run": [
+    "three same-input handover generations produced digest 9b97b52c128741a22d5629666e7a91c7e6cc9f8b46156e371fb9ba1f468ca2eb and the second and third runs changed zero paths",
+    "handover_projection.py --check: PASS",
+    "validate_handover.py --self-test: PASS with six negative controls",
+    "Ruff, strict Mypy, Pyright 1.1.411, and py_compile: PASS"
+  ],
+  "result": "PASS",
+  "evidence": {
+    "event_id": "FF6-EVENT-000047",
+    "event_hash": "d4cc0a0292b9e5ea5d473d38c195ceb7328b85d47f28569da3cb8af64b1a22ff",
+    "deterministic_digest": "9b97b52c128741a22d5629666e7a91c7e6cc9f8b46156e371fb9ba1f468ca2eb",
+    "manifest_sha256": "72c40198b0cd1041b576905ba7aff5dd2af8cf586de99d137ef179b9282a1cd0",
+    "projection_source_sha256": "52daf553c044100a358558797896ed5a26a11b2831d26b964612813a3a6d9cb2",
+    "validator_source_sha256": "cba45c23935cb737ec5faca3929f57289ec8bb3bfca946dc30ccb77a120a749e",
+    "deterministic_runs": 3,
+    "negative_controls": 6,
+    "product_task": "TC-FF6-NRRD-READINESS-001",
+    "product_microstep": "R3_INDEPENDENT_CORPUS_AND_ORACLE_MATRIX",
+    "production_certifications": "0/6",
+    "product_promotion_effect": "none"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

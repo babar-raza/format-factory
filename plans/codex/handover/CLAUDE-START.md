@@ -1,5 +1,5 @@
 ---
-artifact_id: FF6-PROVIDER-START-EVENT-46
+artifact_id: FF6-PROVIDER-START-EVENT-47
 artifact_type: provider_start_commands
 visibility: internal
 publish_allowed: false
@@ -10,7 +10,7 @@ generated_at: 2026-08-01
 # Provider-neutral start commands
 
 Start at [START-HERE.md](START-HERE.md). Verify GitLab `origin/main`, event
-`FF6-EVENT-000046`, and source checkpoint `ec7037dcce8bc465e9e0bf12288c77dc0930dc31`. Run:
+`FF6-EVENT-000047`, and source checkpoint `6b775e80a16ce0d020b9df68ab26b2bb76adc232`. Run:
 
 ```powershell
 git fetch origin

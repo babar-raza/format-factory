@@ -1,5 +1,5 @@
 schema: ff6/provider-neutral-handover-manifest@21
-artifact_id: FF6-HANDOVER-MANIFEST-EVENT-46
+artifact_id: FF6-HANDOVER-MANIFEST-EVENT-47
 visibility: internal
 publish_allowed: false
 generated_by: codex
@@ -8,41 +8,41 @@ canonicalization:
   line_endings: LF
   manifest_self_hash: excluded
 controller:
-  event_id: FF6-EVENT-000046
-  event_hash: 6524928fd8c8aa81106e1a5a4058e64bd6359b23501f63e5814bed1d13de6bfe
-  event_sequence: 46
+  event_id: FF6-EVENT-000047
+  event_hash: d4cc0a0292b9e5ea5d473d38c195ceb7328b85d47f28569da3cb8af64b1a22ff
+  event_sequence: 47
   state: CONTRACT
 source_checkpoint:
   remote: origin
   branch: main
-  checkpoint_commit: ec7037dcce8bc465e9e0bf12288c77dc0930dc31
+  checkpoint_commit: 6b775e80a16ce0d020b9df68ab26b2bb76adc232
 files:
 - path: plans/codex/handover/START-HERE.md
-  sha256: 6c60a9fa1c1d5a3eb1ae3f8ea1db27bdb7804bb92a0e005bf8f5fb093a11ff38
-  canonical_bytes: 3501
+  sha256: 1a269d641de83caff6987b96cec0a70276d1c7a91dad25f36591e1b18eb22918
+  canonical_bytes: 3516
 - path: plans/codex/handover/CLAUDE-START.md
-  sha256: ebc9f2909a0aa5df955f704cbfd6d2602a4fcf3a6ff20bc4a350b6321a2c4fcf
+  sha256: b10f43ff971c6d763d580f59e3f58e26cbe3f81ad05b6f0d7dcdffcd03b31cc0
   canonical_bytes: 801
 - path: plans/codex/handover/CLEAN-REPLAY-REPAIR.md
-  sha256: 38f98390b7a37566636b338068e5a74c04dafe57e7410213d15facc7fe45162e
+  sha256: 8007bb85fbe304a341c4a2d7394c0d4e6b8d920930da8511fba166458d69b4e9
   canonical_bytes: 815
 - path: plans/codex/handover/ACTIVE-WORK-CHECKPOINT.md
-  sha256: 284c686edf3b9655f578576990691e76e7537ad1005ead35c120b646ba82a1e7
-  canonical_bytes: 802
+  sha256: e187b459a032faf620efb9e3f4d59903d185b2de24b5f75af74450bff6ce9693
+  canonical_bytes: 817
 - path: plans/codex/handover/CURRENT-MACHINE-STATE.yaml
-  sha256: dbbc317c8332356e1fc3e35a65f87a7bcd374fecdfbcec872299ffa2ed3b9aea
-  canonical_bytes: 2870
+  sha256: 0c810b18b47caa342ed308e24cb332d613bb57f50d580df706a33c6a48e0898f
+  canonical_bytes: 2923
 - path: plans/codex/handover/checkpoint.yaml
-  sha256: ba10603925c99cd1afdcd84add1157dca5d1d9a50f0262b3d0cada5134246ccd
-  canonical_bytes: 2397
+  sha256: 4dd3c8be3e14d8ca4d86b1dea3ce3cb438319bd987a494da4d97d20ad2f19795
+  canonical_bytes: 2450
 - path: plans/codex/handover/NEXT-MICROSTEP.yaml
-  sha256: 5641580e6b72e4a8aefbeafc5674d6a81862a0feb208dc4be59dac9bb5ef8143
-  canonical_bytes: 1354
+  sha256: fbe7bef91f372250cca7a1ee706b885368032b1fb8c3389f13549484bce01f5e
+  canonical_bytes: 1388
 - path: plans/codex/handover/CURRENT-SHIFT-HANDOVER.md
-  sha256: 3bbfec7d500cc0a93764aee43bfcb13b0d1fb0fb7261eab81ab514fd402b88ff
-  canonical_bytes: 2144
+  sha256: 9d2741eed4cd691e9f9f9fc9209d5cd70c66c1c1a2a32dabc6f06eaf21704364
+  canonical_bytes: 2164
 - path: plans/codex/handover/INFLIGHT-RECOVERY.yaml
-  sha256: 06fc70a431b7852de395691452cf49f6ae441a86979136f0e9837d4a737be5bf
+  sha256: dfe28aa912e04875367e9a3685c1775db2d6e4daf213e5380c9d0c8f6977c121
   canonical_bytes: 751
 - path: plans/codex/handover/handover_projection.py
   sha256: 52daf553c044100a358558797896ed5a26a11b2831d26b964612813a3a6d9cb2
@@ -78,17 +78,17 @@ files:
   sha256: a7683f75ef62c72e88e3c0e4ff14df240fa0f9b80be9b0cf4cdacc96c62811c8
   canonical_bytes: 2700
 - path: plans/strategic/ff6/controller-state.yaml
-  sha256: e0a16bd50dc5a227ce798134d1af27ebbe7897eab754444f8f7575334e18cdec
-  canonical_bytes: 31239
+  sha256: 53d09d3196d0d564236559023d006bfc41e6470246a2ee80aa044f2ff34fe300
+  canonical_bytes: 31901
 - path: plans/strategic/ff6/events.jsonl
-  sha256: f509826d8933bb2fda4afae9b12b8b9704fff9c14b58152ae748463c84e01d88
-  canonical_bytes: 170461
+  sha256: 984096e8ac307fa55702796c3514dcb6fd415345dfc9ccc2c495361282d338fc
+  canonical_bytes: 174278
 - path: taskcards/TC-FF6-ACCEL-CONTROL-001.md
   sha256: 61a7fb1ed8a7392ebbde2276c6b5cff027bac186b559faa33ece95447125059b
   canonical_bytes: 9978
 - path: taskcards/TC-FF6-NRRD-READINESS-001.md
-  sha256: 3496b8349cbf7f5e5eede37de5a1dc744e10662298df80a312731614234fd199
-  canonical_bytes: 10787
+  sha256: ac7d8640b328012d9f00947f30c9f89ceb191b00e2746e4af76fb536d67fa991
+  canonical_bytes: 12201
 - path: taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md
   sha256: 43d5354ce26df4703d93b27b57a4e5011bf57b94a32b0a0f6b1fa864e1b1199e
   canonical_bytes: 69910
