@@ -53,6 +53,16 @@ Accepted XLIFF state is now aligned with materialized evidence:
 - XLF-04 remains incomplete;
 - no product source, certification, promotion, release, or gate changed.
 
+The outgoing Codex shift also completed a non-promoting investigation of the
+next candidate. It reproduced two genuine RED failures, found the direct
+semantic owner, and exposed a deterministic SAL-seeder queue defect. Those
+unaccepted edits were deliberately removed from the shared worktree before
+transfer; their exact assertions, authority conclusion, failure output, and
+repair sequence are preserved in [the outgoing shift record](CURRENT-SHIFT-HANDOVER.md)
+and [the recovery contract](INFLIGHT-RECOVERY.yaml). Claude must resume from
+the clean Event 37 bytes and reproduce that RED boundary under a fresh
+identity. No ignored provider-local manifest or authorization is transferable.
+
 ## Exact next work
 
 The exact next microstep is `XLF-04-BATCH-005-PARTIAL-002-F`, candidate
@@ -67,6 +77,13 @@ decisions. The next executor must read the authority occurrence, decide the
 direct owner or record a gap, explicitly reject incidental trigger context,
 start with a genuine RED test, preserve every predecessor, and append the next
 controller event only after deterministic and immutable proof passes.
+
+The evidence-backed working conclusion is that
+`SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001` is the direct denominator owner.
+It is not accepted state until Claude reproduces the authority check and the
+complete proof ladder. The first implementation task is a fail-closed
+`--candidate-id` selector for `seed_sal_candidates.py`; without it, unrelated
+legacy queue rows can block or contaminate a bounded ingestion rerun.
 
 ## Mandatory resume sequence
 

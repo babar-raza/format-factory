@@ -1,4 +1,4 @@
-schema: ff6/inflight-recovery@11
+schema: ff6/inflight-recovery@12
 artifact_id: FF6-RECOVERY-EVENT-37
 visibility: internal
 publish_allowed: false
@@ -19,6 +19,57 @@ captured_workspace:
   provider_identity_transferable: false
   lease_transferable: false
   execution_manifest_transferable: false
+  paused_attempt:
+    microstep: XLF-04-BATCH-005-PARTIAL-002-F
+    disposition: QUARANTINED_NON_PROMOTING
+    accepted_checkpoint_unchanged: true
+    tracked_paths_returned_to_head:
+      - tests/tools/test_extract_sal_facts.py
+      - tests/tools/test_xliff_core_candidate_adjudication.py
+    ignored_queue_path: .local/supervisor/sal-candidates/xliff.yaml
+    provisional_queue_row_removed: true
+    canonical_paths_written_by_seed: []
+    controller_event_appended: false
+    semantic_commit_created: false
+    provider_local_manifests_transferable: false
+    provider_local_authorizations_transferable: false
+    provider_local_manifest_ids:
+      - sfx-9bcf05deb66548cb
+      - sfx-36ba9ef44913dd71
+      - sfx-09fbbf1f65b5ab4b
+      - sfx-4aa89818dbbe0cf6
+    instruction: ignore or replace these provider-local artifacts; create fresh manifests and authorizations under the new identity
+  reproduced_red:
+    command: >-
+      .venv\\Scripts\\python.exe -m pytest -q
+      tests/tools/test_xliff_core_candidate_adjudication.py::test_source_language_adjudicates_only_document_compatibility_owner
+      tests/tools/test_extract_sal_facts.py::test_batch_five_source_language_seed_requires_exact_candidate_proof
+    result: 2 failed
+    expected_failure_1: canonical decision absent for XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73
+    expected_failure_2: extractor did not fail closed when exact candidate proof was absent
+    candidate_content_sha256: fc6bfe29b9efb1589d19e9f040ca0901bcdd8db4fe0a327760cd043257e41062
+    requirement_sha256: 4d6ff61b0af6ae593955517ebde43ac5bba05e48440a601f05fa91d54df6e464
+    occurrence_sha256: 0102e918c34b6b8147324a33411e35b93d03740b2c1eb4a283e90c00bf3fb7ea
+  authority_adjudication_to_reproduce:
+    direct_owner: SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001
+    reject_generated:
+      SAL-XLIFF-CORE-AGENT-VALIDATOR-001: DOWNSTREAM_CAPABILITY_NOT_DIRECT_SEMANTIC_OWNER
+      SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001: INCIDENTAL_XPATH_CONTEXT_TOKEN
+      SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001: INCIDENTAL_XPATH_CONTEXT_TOKEN
+      SAL-XLIFF-CORE-SOURCE-REQUIRED-001: TRIGGER_DOES_NOT_ESTABLISH_CARDINALITY
+    reject_unproposed:
+      SAL-XLIFF-CORE-LANGUAGE-SOURCE-001: EXPLICIT_MATCH_DOES_NOT_ESTABLISH_INHERITANCE
+    proposed_decision_id: XLF-ADJ-CORE-SCHEMATRON-0007
+    proposed_sal_fact_id: SAL-XLIFF-39A807E74F92A266
+    proposed_queue_candidate_id: XLF-SAL-CAND-CORE-SOURCE-LANGUAGE-COMPATIBILITY-001
+  seeder_failure:
+    command: .venv\\Scripts\\python.exe tools/spec/seed_sal_candidates.py --format-id xliff --added-by TC-FF6-XLIFF-PROFILE-SURFACE-001
+    exit: nonzero_before_write
+    message: new SAL candidate has no acquired source_ids
+    symptom: an unrelated legacy queue claim no longer exactly matches the canonical store and lacks acquired provenance
+    root_cause: full-queue processing couples an exact ingestion to unrelated stale rows
+    forbidden_workaround: do not weaken authority validation or blindly add XLIFF 2.1 provenance to old rows
+    durable_repair: add --candidate-id selection with exact-one match, missing and duplicate rejection, deterministic union semantics, and tests proving unrelated rows are untouched
   reciprocal_semantics:
     commit: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
     status: ACCEPTED_BY_EVENT_36_AFTER_CHECKOUT_IDENTITY_REPAIR
@@ -41,6 +92,7 @@ reconstruction:
   command: git fetch origin main --prune; git switch main; git pull --ff-only origin main
   validation: .venv\Scripts\python.exe plans\codex\handover\validate_handover.py --require-clean --self-test
   local_files_required: []
+  recreate_red_from: NEXT-MICROSTEP.yaml and CURRENT-SHIFT-HANDOVER.md
 failure_policy:
   newer_valid_event: recompute packet from the newer canonical event; never reset GitLab
   dirty_leased_path: preserve and coordinate; never clean, restore, stash, or stage

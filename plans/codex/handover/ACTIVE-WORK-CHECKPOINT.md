@@ -36,6 +36,21 @@ one authority-bound unit-cardinality obligation and accepts the sixth
 candidate disposition. The full denominator, module contracts, product
 behavior, and release proof remain open.
 
+## Quarantined investigation after Event 37
+
+The outgoing shift did not append Event 38. It independently verified the
+selected source-language Schematron occurrence, reproduced the intended two
+test failures, and then discovered that the SAL seeder processes unrelated
+legacy queue rows before it can safely isolate the requested new fact. The
+seeder failed closed before canonical SAL files changed. All tracked RED edits
+and the provisional ignored queue row were returned to the Event 37 baseline.
+
+This is deliberate checkpointing, not lost progress: the exact authority
+decision, fact ID, test names, expected failures, and durable selector repair
+are recorded in `INFLIGHT-RECOVERY.yaml` and `NEXT-MICROSTEP.yaml`. Provider
+identities, leases, mutation authorizations, and execution manifests from the
+paused attempt are obsolete and must not be reused.
+
 ## Portfolio truth
 
 - IPYNB, NRRD, XLIFF, SafeTensors, and UBL contain partial implementations.
@@ -52,6 +67,6 @@ Execute `XLF-04-BATCH-005-PARTIAL-002-F` against
 `XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73` from the Event 37 checkpoint.
 Independently adjudicate the exact XLIFF 2.1 source-`xml:lang` versus root
 `srcLang` Schematron report. Generated mappings are proposals only. Start RED,
-preserve all 29
-accepted rows and all 1,130 candidate IDs, prove the bounded change in an
+repair bounded SAL candidate selection without weakening provenance, preserve
+all 29 accepted rows and all 1,130 candidate IDs, prove the bounded change in an
 immutable checkout, and append the next event only after the evidence passes.

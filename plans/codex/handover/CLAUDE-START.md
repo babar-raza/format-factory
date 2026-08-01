@@ -82,6 +82,44 @@ Before mutation, reconfirm:
   XLIFF 2.1 Core Schematron member;
 - checkout identity and all predecessor proof hashes.
 
+The prior shift independently inspected the authority and reached this
+non-promoting conclusion, which Claude must reproduce before adopting it:
+
+- accept only `SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001` as the direct
+  semantic owner;
+- reject `AGENT-VALIDATOR` as a downstream capability;
+- reject `HIERARCHY-IGNORABLE` and `HIERARCHY-SEGMENT` as trigger context;
+- reject `SOURCE-REQUIRED` because an existing source only triggers the rule
+  and proves no presence/cardinality requirement;
+- additionally reject the nearby unproposed
+  `SAL-XLIFF-CORE-LANGUAGE-SOURCE-001`, because omitted-value inheritance is a
+  distinct obligation from explicit language compatibility.
+
+The prior RED run selected deterministic proposed fact ID
+`SAL-XLIFF-39A807E74F92A266` and failed exactly two focused tests:
+
+```powershell
+.venv\Scripts\python.exe -m pytest -q `
+  tests/tools/test_xliff_core_candidate_adjudication.py::test_source_language_adjudicates_only_document_compatibility_owner `
+  tests/tools/test_extract_sal_facts.py::test_batch_five_source_language_seed_requires_exact_candidate_proof
+```
+
+Expected RED causes are: the canonical decision list is empty, and the
+extractor does not yet fail closed when the exact candidate proof is absent.
+The tracked RED edits were quarantined and reverted before transfer, so Claude
+must recreate them with `test-driven-development` under fresh leases.
+
+Do not seed the full legacy queue. The registered seeder currently fails with
+`new SAL candidate has no acquired source_ids` because an unrelated historical
+candidate no longer matches the canonical store exactly and lacks provenance.
+Repair this structurally through `ingest-spec-sal`: add a deterministic
+`--candidate-id` selector, require exactly one matching queue row, retain all
+authority validation, reject missing/duplicate IDs, and prove that unrelated
+rows are neither validated nor written. Add
+`candidate_id: XLF-SAL-CAND-CORE-SOURCE-LANGUAGE-COMPATIBILITY-001` to the new
+queue row and invoke only that row. Never weaken the source-ID check or patch
+legacy rows merely to make this run pass.
+
 Execution order is RED test, independent authority adjudication, SAL/proof
 repair if required, deterministic artifact compilation, complete focused and
 regression validation, immutable checkout replay, then native controller

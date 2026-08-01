@@ -21,7 +21,7 @@ task:
   state: WORK_IN_PROGRESS
   first_unmet_step: XLF-04
   microstep: XLF-04-BATCH-005-PARTIAL-002-F
-  microstep_state: READY
+  microstep_state: READY_WITH_REPRODUCED_RED
 accepted_baseline:
   candidate_count: 1130
   dispositions_verified: 6
@@ -55,6 +55,34 @@ generated_proposals_only:
   - SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001
   - SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001
   - SAL-XLIFF-CORE-SOURCE-REQUIRED-001
+prior_non_promoting_investigation:
+  accepted_state_effect: none
+  authority_conclusion_to_reproduce: SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001
+  proposed_decision_id: XLF-ADJ-CORE-SCHEMATRON-0007
+  proposed_sal_fact_id: SAL-XLIFF-39A807E74F92A266
+  proposed_queue_candidate_id: XLF-SAL-CAND-CORE-SOURCE-LANGUAGE-COMPATIBILITY-001
+  explicit_unproposed_rejection: SAL-XLIFF-CORE-LANGUAGE-SOURCE-001
+  red_tests:
+    - tests/tools/test_xliff_core_candidate_adjudication.py::test_source_language_adjudicates_only_document_compatibility_owner
+    - tests/tools/test_extract_sal_facts.py::test_batch_five_source_language_seed_requires_exact_candidate_proof
+  observed_red_result: exactly two expected failures
+  failed_seed_message: new SAL candidate has no acquired source_ids
+  failed_seed_writes: []
+  tracked_edits_present_at_transfer: false
+  root_cause: the seeder processes the complete mutable queue, so unrelated stale rows can block a selected bounded ingestion
+  first_repair:
+    tool: tools/spec/seed_sal_candidates.py
+    interface: --candidate-id
+    semantics:
+      - select exactly one stable candidate ID
+      - reject a missing or duplicate ID
+      - retain source-id and digest validation
+      - leave unrelated queue rows unvalidated and unwritten
+      - preserve deterministic union and idempotency
+    forbidden_shortcuts:
+      - weakening acquired-source validation
+      - adding guessed provenance to legacy candidates
+      - deleting or rewriting unrelated queue history
 required_skills:
   - test-driven-development
   - ingest-spec-sal
@@ -65,6 +93,9 @@ required_execution:
   - Read the exact pinned Schematron occurrence independently; generated mappings are proposals, never conclusions.
   - Determine whether the report directly owns DOCUMENT-SOURCE-LANGUAGE, SOURCE-REQUIRED, another exact denominator row, or no valid current row. Treat segment and ignorable names as trigger context unless exact authority proves otherwise; record a machine-readable gap rather than force a mapping.
   - Start with a genuine pre-change RED test that fails for the intended semantic and proof boundary.
+  - Recreate the two named RED tests from the tracked recovery contract; do not reuse provider-local ignored manifests or authorizations.
+  - Add focused RED tests for exact candidate selection, missing and duplicate IDs, unrelated-row isolation, and idempotent union behavior; then implement --candidate-id through ingest-spec-sal.
+  - Seed only candidate XLF-SAL-CAND-CORE-SOURCE-LANGUAGE-COMPATIBILITY-001 and prove the selected row retains SRC-XLF-002 and its pinned digest.
   - Account for every proposed and materially implicated obligation with explicit accepted or rejected reasoning.
   - Bind the exact candidate, occurrence, authority, SAL proof, decision, and any compiled obligation through content digests.
   - Preserve semantic equality of all 29 accepted predecessor rows and identity of all 1130 candidates.
@@ -86,6 +117,7 @@ forbidden:
   - weakening checkout identity, content-addressing, tamper rejection, or predecessor equality
   - product source, gate, promotion, release, or certification mutation
   - GitHub push, non-main branch, broad staging, foreign lease release, or dirty-state cleanup
+  - using the prior Codex provider identity, leases, mutation authorizations, or ignored execution manifests
 fallback:
   when: controller or XLIFF evidence paths are live-owned
   action: continue read-only verification or select the highest-severity disjoint unleased task from the live deterministic queue

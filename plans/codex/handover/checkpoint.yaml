@@ -23,7 +23,7 @@ controller_checkpoint:
   first_unmet_step: XLF-04
   completed_microstep: XLF-04-BATCH-005-PARTIAL-002-E
   exact_microstep: XLF-04-BATCH-005-PARTIAL-002-F
-  exact_microstep_state: READY
+  exact_microstep_state: READY_WITH_REPRODUCED_RED
 accepted_xliff_boundary:
   candidates: 1130
   dispositions_verified: 6
@@ -32,6 +32,17 @@ accepted_xliff_boundary:
   source_bound_rows: 29
   missing_source_bound_rows: 76
   complete: false
+paused_attempt_boundary:
+  accepted_state_effect: none
+  controller_event_appended: false
+  semantic_commit_created: false
+  canonical_sal_write_occurred: false
+  tracked_workspace_restored_to_event_37: true
+  authority_conclusion_to_reproduce: SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001
+  proposed_sal_fact_id: SAL-XLIFF-39A807E74F92A266
+  red_tests_reproduced: 2
+  seeder_failure: new SAL candidate has no acquired source_ids
+  required_first_repair: add deterministic fail-closed candidate-id selection before bounded SAL ingestion
 proof_checkpoint:
   clean_checkout_affected_tests: 117
   affected_tool_tests: 73
