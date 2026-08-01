@@ -11,16 +11,16 @@ historical_projection: true
 
 # State Machine and Taskcard Execution Protocol
 
-> **Current authority overlay: Event 37.** Preserve the durable state-machine
+> **Current authority overlay: Event 38.** Preserve the durable state-machine
 > concepts in this file, but select current work only from
 > [START-HERE.md](START-HERE.md), the native FF6 journal, controller, active
 > taskcard, [CURRENT-MACHINE-STATE.yaml](CURRENT-MACHINE-STATE.yaml), and
 > [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml). Event 29-31 examples below are
 > historical and non-operative.
 
-Current native head: `FF6-EVENT-000037`; exact route:
-`XLF-04-BATCH-005-PARTIAL-002-F`; accepted boundary: 29/105 obligations and
-6/1,130 dispositions. The disjoint UBL checkpoint contains 6,001 local
+Current native head: `FF6-EVENT-000038`; exact route:
+`XLF-04-BATCH-005-PARTIAL-002-G`; accepted boundary: 30/105 obligations and
+7/1,130 dispositions. The disjoint UBL checkpoint contains 6,001 local
 particle nodes and remains non-promoting. The reciprocal XLIFF disposition at
 `2dcb161e` is accepted only through checkout repair `809cc18c` and Event 36;
 see [CLEAN-REPLAY-REPAIR.md](CLEAN-REPLAY-REPAIR.md).
@@ -311,10 +311,10 @@ IDs and all 1,130 candidates. Keep `complete=false` while the 105-ID authority
 census is open, 79 source-bound rows remain missing, or any of the 1,129
 remaining dispositions is unverified.
 
-## Current authority overlay: Event 37
+## Current authority overlay: Event 38
 
-`FF6-EVENT-000037` is the current native head. The selected task remains
-XLIFF, with exact microstep `XLF-04-BATCH-005-PARTIAL-002-F`, 29/105 accepted
-obligations, and 6/1,130 verified dispositions. UBL retains 6,001 particle
+`FF6-EVENT-000038` is the current native head. The selected task remains
+XLIFF, with exact microstep `XLF-04-BATCH-005-PARTIAL-002-G`, 30/105 accepted
+obligations, and 7/1,130 verified dispositions. UBL retains 6,001 particle
 nodes, stable anonymous-type identities, and 1,178 derivation edges, but
 UBL-03 is incomplete. Certification remains 0/6.

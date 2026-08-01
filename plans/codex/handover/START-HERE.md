@@ -1,5 +1,5 @@
 ---
-artifact_id: FF6-HANDOVER-START-41BFAEF
+artifact_id: FF6-HANDOVER-START-EVENT-38
 artifact_type: provider_neutral_handover_entry
 visibility: internal
 publish_allowed: false
@@ -9,124 +9,127 @@ generated_at: 2026-08-01
 
 # FF6 production program: start here
 
-This is the single entry point for every Claude or Codex shift:
+This is the only entry point for a new Claude or Codex shift:
 
 ```text
 C:\Users\prora\OneDrive\Documents\GitHub\format-factory\plans\codex\handover\START-HERE.md
 ```
 
-The canonical repository is GitLab `origin/main`. The native controller
-checkpoint is `6fca743ca55a8c221e63954b4c8a371b73e2246d`. Do not use GitHub,
-create another branch, reuse a prior provider identity, or depend on ignored
-local files. A newer valid GitLab event supersedes this packet; it must be
-validated and projected forward, never reset.
+The canonical forge is GitLab, remote `origin`, branch `main`. The current
+handover source checkpoint is
+`d1f8b3229bf3be32675e047b1469259ad7375500`; the accepted semantic commit is
+`3fc939ad70ec6caac9e0699041076e02de00c5d2`. Both are ancestors of GitLab
+`origin/main` at packet generation. Never use GitHub, create a branch, inherit
+another provider's identity or leases, or rely on ignored local state.
 
-## Mission and honest status
+## Mission and honest state
 
 Build six independently publishable, production-grade Python libraries for
-Jupyter Notebook, OpenRaster, NRRD, XLIFF, SafeTensors, and OASIS UBL. Each
-library must expose a professional typed API, preserve supported unknown data,
-fail closed on unsafe input, prove independent interoperability, pass installed
-wheel matrices on Python 3.11–3.14 and all three desktop OS families, and emit
-reproducible release artifacts with SBOM, provenance, signature, documentation,
-and vulnerability evidence.
+Jupyter Notebook, OpenRaster, NRRD, XLIFF, SafeTensors, and OASIS UBL. The
+target includes broad format-specific developer capabilities, professional
+typed APIs and package structure, safe parsing and writing, preservation,
+independent interoperability, installed-wheel matrices on Python 3.11-3.14,
+security and resource controls, reproducible builds, SBOMs, provenance,
+signatures, documentation, and release evidence.
 
-Current authority is `FF6-EVENT-000037`, hash
-`09a3ae3d4521afc5c6c6c937d667c2246a8ad1fbae6ffb8af04a5b32e0e2b2b6`,
-in controller state `CONTRACT`. All six products remain `UNASSESSED`; the
-program is `0/6` certified. OpenRaster source is absent. The other five source
-packages are partial and pre-production. Source presence, generated contracts,
-or passing focused tests are not certification.
+Current native authority is `FF6-EVENT-000038`, hash
+`13db4cceafcefb86d9c964d7c3e20e7d63092977faf50002ef0c88ea4f6b5603`,
+in controller state `CONTRACT`. Every product remains `UNASSESSED`; technical
+certification is `0/6`. OpenRaster product source is absent. The other five
+packages are partial, profile-limited, and pre-production. No source presence,
+contract row, focused test, generated model, or handover document is a product
+certification.
 
-Event 37 accepts XLIFF microstep `XLF-04-BATCH-005-PARTIAL-002-E` at semantic
-commit `1b758c2e05856552169de098d8719a82f425a1c2`. The earlier reciprocal-skeleton
-semantic commit `2dcb161e` and checkout-identity repair `809cc18c` remain
-preserved in history; current controller acceptance is
-`6fca743ca55a8c221e63954b4c8a371b73e2246d`.
+Event 38 accepts exactly one additional XLIFF 2.1 Core obligation and candidate
+disposition:
 
-Accepted XLIFF state is now aligned with materialized evidence:
+- 7 of 1,130 candidates are independently dispositioned; 1,123 remain open;
+- 30 of 105 expected Core obligations are source-bound; 75 remain missing;
+- XLF-04 and XLF-05 through XLF-08 remain incomplete;
+- XLIFF 2.0 is excluded from the accepted source-language compatibility rule
+  because the pinned 2.0 authority does not contain that constraint;
+- product source, package proof, certification, promotion, release, and every
+  gate remain unchanged.
 
-- 6 of 1,130 candidate dispositions independently verified;
-- 1,124 dispositions still unverified;
-- 29 of 105 obligations resolved;
-- 76 obligations still missing;
-- XLF-04 remains incomplete;
-- no product source, certification, promotion, release, or gate changed.
-
-The outgoing Codex shift also completed a non-promoting investigation of the
-next candidate. It reproduced two genuine RED failures, found the direct
-semantic owner, and exposed a deterministic SAL-seeder queue defect. Those
-unaccepted edits were deliberately removed from the shared worktree before
-transfer; their exact assertions, authority conclusion, failure output, and
-repair sequence are preserved in [the outgoing shift record](CURRENT-SHIFT-HANDOVER.md)
-and [the recovery contract](INFLIGHT-RECOVERY.yaml). Claude must resume from
-the clean Event 37 bytes and reproduce that RED boundary under a fresh
-identity. No ignored provider-local manifest or authorization is transferable.
+The outgoing shift also repaired bounded SAL candidate seeding. Exact-ID mode
+now fails closed for missing or duplicate IDs, isolates unrelated invalid queue
+rows, scopes merge work, restores canonical stores after failure, preserves
+existing bytes, and replays idempotently. This repair is machinery evidence for
+the accepted microstep; it is not general certification of every generator.
 
 ## Exact next work
 
-The exact next microstep is `XLF-04-BATCH-005-PARTIAL-002-F`, candidate
-`XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73`. It is the XLIFF 2.1 Schematron
-report at `schemas/xliff_core_2.1.sch`,
-`schematron/rule[13]/report[1]`, comparing source `xml:lang` with root
-`srcLang`.
+Execute `XLF-04-BATCH-005-PARTIAL-002-G` under
+`TC-FF6-XLIFF-PROFILE-SURFACE-001`.
 
-Generated proposals for `AGENT-VALIDATOR`, `DOCUMENT-SOURCE-LANGUAGE`,
-`HIERARCHY-IGNORABLE`, `HIERARCHY-SEGMENT`, and `SOURCE-REQUIRED` are not
-decisions. The next executor must read the authority occurrence, decide the
-direct owner or record a gap, explicitly reject incidental trigger context,
-start with a genuine RED test, preserve every predecessor, and append the next
-controller event only after deterministic and immutable proof passes.
+The exact candidate is
+`XLF-CAND-CORE-SCHEMATRON-5D563A565DC6DCFE`, the XLIFF 2.1 report in
+`schemas/xliff_core_2.1.sch` at `schematron/rule[14]/report[1]`. It compares
+target `xml:lang` with root `trgLang`.
 
-The evidence-backed working conclusion is that
-`SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001` is the direct denominator owner.
-It is not accepted state until Claude reproduces the authority check and the
-complete proof ladder. The first implementation task is a fail-closed
-`--candidate-id` selector for `seed_sal_candidates.py`; without it, unrelated
-legacy queue rows can block or contaminate a bounded ingestion rerun.
+Generated proposals are hypotheses only:
+
+- `SAL-XLIFF-CORE-AGENT-VALIDATOR-001`
+- `SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001`
+- `SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001`
+- `SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001`
+- `SAL-XLIFF-CORE-SOURCE-TARGET-OPTIONAL-001`
+
+Independently determine whether an existing denominator obligation directly
+owns target-language compatibility or whether authority requires a new
+denominator row. Explicitly reject validator behavior and XPath trigger context
+that are not the direct semantic obligation. Never choose a mapping to increase
+coverage.
 
 ## Mandatory resume sequence
 
 1. Read [AGENTS.md](../../../AGENTS.md) and [Claude start](CLAUDE-START.md).
-2. Fetch GitLab; validate that `6fca743c` is an ancestor of `origin/main`.
-3. Run the committed-checkpoint validator before registering work.
-4. Query coordination; preserve every foreign-owned or unexplained path.
-5. Register a fresh provider identity and obtain fresh scoped leases.
-6. Read the operational documents below in order.
-7. Execute only [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml) through the named
-   skills and evidence gates.
-8. Commit explicit reviewed paths to GitLab `main`, replay the immutable
-   commit, refresh this packet from the new native head, validate it, and
-   release only the current shift's leases.
+2. Fetch GitLab and prove `d1f8b322` and `3fc939ad` are ancestors of
+   `origin/main`.
+3. Validate the committed packet before claiming work.
+4. Query the off-repo coordination plane; preserve all foreign and unexplained
+   state.
+5. Register a fresh identity. Do not reuse the outgoing identity, token,
+   leases, manifests, or authorizations recorded in this packet.
+6. Claim exact files and run the repository mutation guard with the registered
+   skills.
+7. Execute only [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml), beginning with a
+   genuine pre-change RED test.
+8. Commit explicit reviewed files to GitLab `main`, replay from the immutable
+   commit, append the next native event only after proof passes, refresh this
+   packet, and release only the new shift's leases.
 
-If a required path is live-owned, continue with safe read-only verification or
-a deterministic disjoint task. Never seize live work or edit status to pretend
-completion.
+If a required path is live-owned, continue read-only verification or select a
+deterministic disjoint task. Never seize a live lease, discard dirty state, or
+edit readiness labels to simulate progress.
 
-## Operational documents
+## Packet map
+
+Operational state, in order:
 
 1. [Exact Claude commands](CLAUDE-START.md)
-2. [Repair history and accepted boundary](CLEAN-REPLAY-REPAIR.md)
-3. [Active checkpoint](ACTIVE-WORK-CHECKPOINT.md)
-4. [Machine-readable state](CURRENT-MACHINE-STATE.yaml)
-5. [Checkpoint contract](checkpoint.yaml)
-6. [Exact next microstep](NEXT-MICROSTEP.yaml)
-7. [Outgoing shift record](CURRENT-SHIFT-HANDOVER.md)
-8. [Recovery contract](INFLIGHT-RECOVERY.yaml)
-9. [Symptoms, causes, and durable design](CURRENT-STATE-AND-ROOT-CAUSES.md)
+2. [Active work checkpoint](ACTIVE-WORK-CHECKPOINT.md)
+3. [Machine-readable state](CURRENT-MACHINE-STATE.yaml)
+4. [Checkpoint contract](checkpoint.yaml)
+5. [Exact next microstep](NEXT-MICROSTEP.yaml)
+6. [Outgoing shift evidence](CURRENT-SHIFT-HANDOVER.md)
+7. [Recovery and reconstruction](INFLIGHT-RECOVERY.yaml)
+8. [Checkout repair history](CLEAN-REPLAY-REPAIR.md)
+9. [Symptoms, causes, weaknesses, and durable design](CURRENT-STATE-AND-ROOT-CAUSES.md)
 10. [Packet manifest](manifest.yaml)
 
-Durable protocols:
+Execution controls:
 
 - [Provider shift contract](PROVIDER-SHIFT-CONTRACT.md)
 - [Shift and resume protocol](SHIFT-AND-RESUME-PROTOCOL.md)
 - [Execution runbook](EXECUTION-RUNBOOK.md)
-- [State-machine and taskcard protocol](STATE-MACHINE-AND-TASKCARD-PROTOCOL.md)
-- [Validation and release rules](VALIDATION-AND-RELEASE.md)
+- [State machine and taskcards](STATE-MACHINE-AND-TASKCARD-PROTOCOL.md)
+- [Validation and release](VALIDATION-AND-RELEASE.md)
+- [Parallel UBL checkpoint](PARALLEL-UBL-CHECKPOINT.yaml)
 
-## Non-negotiable truth boundary
+## Truth boundary
 
-Event 37 proves one unit-cardinality obligation and candidate disposition. It
-does not complete a contract, implement a library capability, certify any
-format, pass Gate 10, or authorize publication. Those claims remain false
-until their complete proof graphs close.
+Event 38 proves one XLIFF source-language compatibility obligation, one
+candidate disposition, and the bounded seeder repair needed to reproduce that
+evidence. It does not complete XLF-04, implement a production library, certify
+any format, satisfy Gate 10, or authorize publication.

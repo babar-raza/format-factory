@@ -478,3 +478,44 @@ clean-checkout RED regression, and establish one repository-wide tracked-text
 digest invariant through a registered machinery skill or the governed
 missing-skill workflow. It must preserve `2dcb161e` and may accept
 PARTIAL-002-D only after the committed clean Windows replay passes.
+
+## Event-38 cross-provider checkpoint refresh
+
+This refresh supersedes every earlier operational resume paragraph while
+retaining them as audit history.
+
+- Accepted XLIFF semantic commit:
+  `3fc939ad70ec6caac9e0699041076e02de00c5d2`.
+- Accepted controller checkpoint:
+  `d1f8b3229bf3be32675e047b1469259ad7375500`.
+- Native authority: `FF6-EVENT-000038` /
+  `13db4cceafcefb86d9c964d7c3e20e7d63092977faf50002ef0c88ea4f6b5603`.
+- Accepted XLIFF boundary: 7/1,130 independently verified candidate
+  dispositions and 30/105 source-bound Core obligations; 1,123 dispositions
+  and 75 obligations remain open.
+- The semantic slice accepts only the XLIFF 2.1 source-language compatibility
+  owner, excludes XLIFF 2.0, and includes a tested transactional exact-ID SAL
+  seeding repair.
+- Ninety affected tests passed in the shared worktree and immutable detached
+  checkout; 69 production-program and 94 format-contract tests passed with the
+  one exact baseline-known stateful CSV deselection.
+- All 32 XLIFF SAL facts, five authority locks, four deterministic artifact
+  checks, Ruff, strict Mypy, Pyright 1.1.411, py_compile, semantic transcripts,
+  and native plan-control tests passed.
+- Product source, certification, promotion, release, and gates did not change.
+  Every product remains `UNASSESSED`; certification remains `0/6`.
+
+The exact successor is `XLF-04-BATCH-005-PARTIAL-002-G`, candidate
+`XLF-CAND-CORE-SCHEMATRON-5D563A565DC6DCFE`. The incoming provider starts from
+`plans/codex/handover/START-HERE.md`, validates fetched GitLab `origin/main`,
+registers a fresh coordination identity, obtains new leases and mutation
+authorizations, and independently adjudicates target `xml:lang` versus root
+`trgLang`. It must preserve all 30 predecessor rows and all 1,130 candidate
+identities. Source-language symmetry and generated proposals are context, not
+proof.
+
+The outgoing provider identity, token, leases, local execution manifests, and
+mutation authorizations are deliberately not transferable. A shift is complete
+only after the refreshed packet is validated, committed, pushed to GitLab
+`main`, remote equality is proved, and the outgoing provider releases only its
+own leases.

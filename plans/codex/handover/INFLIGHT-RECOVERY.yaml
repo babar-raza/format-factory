@@ -1,75 +1,25 @@
-schema: ff6/inflight-recovery@12
-artifact_id: FF6-RECOVERY-EVENT-37
+schema: ff6/inflight-recovery@13
+artifact_id: FF6-RECOVERY-EVENT-38
 visibility: internal
 publish_allowed: false
 generated_by: codex
 generated_at: '2026-08-01'
 event:
-  event_id: FF6-EVENT-000037
-  event_hash: 09a3ae3d4521afc5c6c6c937d667c2246a8ad1fbae6ffb8af04a5b32e0e2b2b6
-  semantic_commit: 1b758c2e05856552169de098d8719a82f425a1c2
+  event_id: FF6-EVENT-000038
+  event_hash: 13db4cceafcefb86d9c964d7c3e20e7d63092977faf50002ef0c88ea4f6b5603
+  semantic_commit: 3fc939ad70ec6caac9e0699041076e02de00c5d2
   checkout_identity_repair_commit: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
-  checkpoint_commit: 6fca743ca55a8c221e63954b4c8a371b73e2246d
+  checkpoint_commit: d1f8b3229bf3be32675e047b1469259ad7375500
 captured_workspace:
   product_overlay_status: NO_UNCOMMITTED_XLIFF_OVERLAY
   handover_overlay_status: PACKET_REFRESH_IN_PROGRESS_UNTIL_HANDOVER_COMMIT
-  unexplained_paths: 0
+  unexplained_paths_in_current_task_scope: 0
   local_only_required_for_resume: false
   recovery_archive_required: false
   provider_identity_transferable: false
   lease_transferable: false
   execution_manifest_transferable: false
-  paused_attempt:
-    microstep: XLF-04-BATCH-005-PARTIAL-002-F
-    disposition: QUARANTINED_NON_PROMOTING
-    accepted_checkpoint_unchanged: true
-    tracked_paths_returned_to_head:
-      - tests/tools/test_extract_sal_facts.py
-      - tests/tools/test_xliff_core_candidate_adjudication.py
-    ignored_queue_path: .local/supervisor/sal-candidates/xliff.yaml
-    provisional_queue_row_removed: true
-    canonical_paths_written_by_seed: []
-    controller_event_appended: false
-    semantic_commit_created: false
-    provider_local_manifests_transferable: false
-    provider_local_authorizations_transferable: false
-    provider_local_manifest_ids:
-      - sfx-9bcf05deb66548cb
-      - sfx-36ba9ef44913dd71
-      - sfx-09fbbf1f65b5ab4b
-      - sfx-4aa89818dbbe0cf6
-    instruction: ignore or replace these provider-local artifacts; create fresh manifests and authorizations under the new identity
-  reproduced_red:
-    command: >-
-      .venv\\Scripts\\python.exe -m pytest -q
-      tests/tools/test_xliff_core_candidate_adjudication.py::test_source_language_adjudicates_only_document_compatibility_owner
-      tests/tools/test_extract_sal_facts.py::test_batch_five_source_language_seed_requires_exact_candidate_proof
-    result: 2 failed
-    expected_failure_1: canonical decision absent for XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73
-    expected_failure_2: extractor did not fail closed when exact candidate proof was absent
-    candidate_content_sha256: fc6bfe29b9efb1589d19e9f040ca0901bcdd8db4fe0a327760cd043257e41062
-    requirement_sha256: 4d6ff61b0af6ae593955517ebde43ac5bba05e48440a601f05fa91d54df6e464
-    occurrence_sha256: 0102e918c34b6b8147324a33411e35b93d03740b2c1eb4a283e90c00bf3fb7ea
-  authority_adjudication_to_reproduce:
-    direct_owner: SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001
-    reject_generated:
-      SAL-XLIFF-CORE-AGENT-VALIDATOR-001: DOWNSTREAM_CAPABILITY_NOT_DIRECT_SEMANTIC_OWNER
-      SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001: INCIDENTAL_XPATH_CONTEXT_TOKEN
-      SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001: INCIDENTAL_XPATH_CONTEXT_TOKEN
-      SAL-XLIFF-CORE-SOURCE-REQUIRED-001: TRIGGER_DOES_NOT_ESTABLISH_CARDINALITY
-    reject_unproposed:
-      SAL-XLIFF-CORE-LANGUAGE-SOURCE-001: EXPLICIT_MATCH_DOES_NOT_ESTABLISH_INHERITANCE
-    proposed_decision_id: XLF-ADJ-CORE-SCHEMATRON-0007
-    proposed_sal_fact_id: SAL-XLIFF-39A807E74F92A266
-    proposed_queue_candidate_id: XLF-SAL-CAND-CORE-SOURCE-LANGUAGE-COMPATIBILITY-001
-  seeder_failure:
-    command: .venv\\Scripts\\python.exe tools/spec/seed_sal_candidates.py --format-id xliff --added-by TC-FF6-XLIFF-PROFILE-SURFACE-001
-    exit: nonzero_before_write
-    message: new SAL candidate has no acquired source_ids
-    symptom: an unrelated legacy queue claim no longer exactly matches the canonical store and lacks acquired provenance
-    root_cause: full-queue processing couples an exact ingestion to unrelated stale rows
-    forbidden_workaround: do not weaken authority validation or blindly add XLIFF 2.1 provenance to old rows
-    durable_repair: add --candidate-id selection with exact-one match, missing and duplicate rejection, deterministic union semantics, and tests proving unrelated rows are untouched
+  mutation_authorization_transferable: false
   reciprocal_semantics:
     commit: 2dcb161ed8e53bfc55e5be81374f5f7ddea3bb17
     status: ACCEPTED_BY_EVENT_36_AFTER_CHECKOUT_IDENTITY_REPAIR
@@ -78,26 +28,58 @@ captured_workspace:
     pushed_to_gitlab_main: true
     immutable_replay: PASS_115_AFTER_DIGEST_VERIFIED_CAS_HYDRATION
     native_event_appended: true
-    event_id: FF6-EVENT-000037
-  current_unit_cardinality_semantics:
+    accepted_event_id: FF6-EVENT-000036
+  unit_cardinality_semantics:
     commit: 1b758c2e05856552169de098d8719a82f425a1c2
     immutable_replay: PASS_117_AFTER_DIGEST_VERIFIED_CAS_HYDRATION
-    affected_tool_tests: PASS_73
+    accepted_event_id: FF6-EVENT-000037
+  source_language_semantics:
+    commit: 3fc939ad70ec6caac9e0699041076e02de00c5d2
+    immutable_replay: PASS_90
+    affected_tool_tests: PASS_90
+    decision_id: XLF-ADJ-CORE-SCHEMATRON-0007
+    sal_fact_id: SAL-XLIFF-39A807E74F92A266
+    direct_owner: SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001
+    accepted_profiles: [xliff_2.1]
     native_event_appended: true
-    event_id: FF6-EVENT-000037
+    accepted_event_id: FF6-EVENT-000038
+  seeder_repair:
+    source_commit: 3fc939ad70ec6caac9e0699041076e02de00c5d2
+    selected_candidate_interface: --candidate-id
+    exact_one_selection: PASS
+    missing_selection: REJECTED
+    duplicate_selection: REJECTED
+    unrelated_invalid_rows: ISOLATED
+    qname_allocation_across_hashed_ids: PASS
+    merge_scope: xliff
+    transactional_restore_on_failure: PASS
+    existing_store_bytes_preserved: PASS
+    selected_rerun_idempotency: PASS
+  current_foreign_work:
+    observed_path: null
+    status: none_in_current_task_scope_at_packet_start
   promotion_effect: none
 reconstruction:
   source: GitLab origin/main
-  required_ancestor: 6fca743ca55a8c221e63954b4c8a371b73e2246d
-  command: git fetch origin main --prune; git switch main; git pull --ff-only origin main
+  required_ancestor: d1f8b3229bf3be32675e047b1469259ad7375500
+  semantic_ancestor: 3fc939ad70ec6caac9e0699041076e02de00c5d2
+  command: git fetch origin; git switch main; git pull --ff-only origin main
   validation: .venv\Scripts\python.exe plans\codex\handover\validate_handover.py --require-clean --self-test
   local_files_required: []
-  recreate_red_from: NEXT-MICROSTEP.yaml and CURRENT-SHIFT-HANDOVER.md
+  next_work_source: NEXT-MICROSTEP.yaml
+coordination_truth:
+  source: machine-local SQLite coordination plane
+  snapshot_is_advisory_after_packet_generation: true
+  incoming_provider_must_requery: true
+  pre_existing_open_conflicts_observed: 17
+  conflicts_in_current_handover_or_xliff_semantic_paths: 0
+  foreign_conflicts_may_not_be_resolved_by_incoming_shift: true
 failure_policy:
   newer_valid_event: recompute packet from the newer canonical event; never reset GitLab
   dirty_leased_path: preserve and coordinate; never clean, restore, stash, or stage
   unexplained_dirty_path: preserve, attribute, and fail transfer
-  accepted_materialized_mismatch: invalidate the packet and rebuild from the native journal and committed artifacts
+  accepted_materialized_mismatch: invalidate the packet and rebuild from native journal and committed artifacts
   missing_remote_commit: stop promotion and verify GitLab remote state
   missing_authority_cache: hydrate only digest-pinned CAS artifacts; never synthesize or weaken the check
+  oracle_contradiction: record the contradiction and add a discriminating test; never choose the convenient answer
   validator_failure: repair evidence or packet; never weaken the invariant

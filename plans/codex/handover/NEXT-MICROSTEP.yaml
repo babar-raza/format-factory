@@ -1,5 +1,5 @@
-schema: ff6/next-microstep@10
-artifact_id: FF6-XLIFF-XLF04-BATCH005-PARTIAL002-F
+schema: ff6/next-microstep@11
+artifact_id: FF6-XLIFF-XLF04-BATCH005-PARTIAL002-G
 visibility: internal
 publish_allowed: false
 generated_by: codex
@@ -9,116 +9,84 @@ source_checkpoint:
   forge: GitLab
   remote: origin
   branch: main
-  packet_base_commit: 6fca743ca55a8c221e63954b4c8a371b73e2246d
-  event_id: FF6-EVENT-000037
-  event_hash: 09a3ae3d4521afc5c6c6c937d667c2246a8ad1fbae6ffb8af04a5b32e0e2b2b6
-  semantic_commit: 1b758c2e05856552169de098d8719a82f425a1c2
+  packet_base_commit: d1f8b3229bf3be32675e047b1469259ad7375500
+  event_id: FF6-EVENT-000038
+  event_hash: 13db4cceafcefb86d9c964d7c3e20e7d63092977faf50002ef0c88ea4f6b5603
+  semantic_commit: 3fc939ad70ec6caac9e0699041076e02de00c5d2
   checkout_identity_repair_commit: 809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956
-  controller_checkpoint_commit: 6fca743ca55a8c221e63954b4c8a371b73e2246d
+  controller_checkpoint_commit: d1f8b3229bf3be32675e047b1469259ad7375500
 task:
   task_id: TC-FF6-XLIFF-PROFILE-SURFACE-001
   parent_task_id: TC-FF6-PROGRAM-CAPABILITIES-001
   state: WORK_IN_PROGRESS
   first_unmet_step: XLF-04
-  microstep: XLF-04-BATCH-005-PARTIAL-002-F
-  microstep_state: READY_WITH_REPRODUCED_RED
+  microstep: XLF-04-BATCH-005-PARTIAL-002-G
+  microstep_state: READY_FOR_RED
 accepted_baseline:
   candidate_count: 1130
-  dispositions_verified: 6
-  dispositions_unverified: 1124
+  dispositions_verified: 7
+  dispositions_unverified: 1123
   expected_obligations: 105
-  source_bound_obligations: 29
-  missing_obligations: 76
+  source_bound_obligations: 30
+  missing_obligations: 75
   xlf_04_complete: false
-  adjudication_sha256: 827445fe3d09cd709162531a00fffa4d0021506c38c36f29684257aa6cd85360
-  inventory_sha256: 6822db27244bea08f1bae14cd9b8ccf778e0719d1323e9a49e7c4574f0351dcc
+  adjudication_sha256: 61f17b6449ae1ea6b5a95c892afc075b48aa7b9a100be2d6e8168b8794baeb32
+  inventory_sha256: 483767b208b75b880804288a6f56ed3758b05d46d4ef872bc0bcb6e4d083e1ba
 selected_candidate:
-  candidate_id: XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73
+  candidate_id: XLF-CAND-CORE-SCHEMATRON-5D563A565DC6DCFE
   candidate_class: SCHEMATRON_REPORT
   profile: xliff_2.1
   source_id: SRC-XLF-002
   source_sha256: 73efc952aed29a31e8a6af1f985224d49c7bb67e6691fec8c2c994aa3d3d1751
   member: schemas/xliff_core_2.1.sch
   member_sha256: d4275f2d2574f892624bcd8f83bcc3001c75d623e4eb36896d15d147f16ed7a2
-  location: schematron/rule[13]/report[1]
-  candidate_content_sha256: fc6bfe29b9efb1589d19e9f040ca0901bcdd8db4fe0a327760cd043257e41062
-  requirement_sha256: 4d6ff61b0af6ae593955517ebde43ac5bba05e48440a601f05fa91d54df6e464
-  occurrence_sha256: 0102e918c34b6b8147324a33411e35b93d03740b2c1eb4a283e90c00bf3fb7ea
+  location: schematron/rule[14]/report[1]
+  candidate_content_sha256: 2f48f02786ace40f8e45306a2622fb031a0650a1004e6d4b316f3dd5ec44ee4d
+  requirement_sha256: 85279eddf8546a96b332e7a7b5388cb4639d886f2a6a0f7168048ec3e7e483ec
+  occurrence_sha256: 639468d347a85cb3843f43bba0d0bdc9065beda22aee96021cb10f37374137fe
   normalized_requirement: >-
-    {"context":"xlf:source[@xml:lang][parent::xlf:segment | parent::xlf:ignorable]",
-    "kind":"report","message":"'xml:lang' attribute of the 'source' element
-    and 'srcLang' attribute of the 'xliff' are not matching.",
-    "test":"not(lang($srcLang))"}
+    {"context":"xlf:target[@xml:lang][parent::xlf:segment | parent::xlf:ignorable]","kind":"report","message":"'xml:lang' attribute of the 'target' element and 'trgLang' attribute of the 'xliff' are not matching.","test":"not(lang($trgLang))"}
 generated_proposals_only:
   - SAL-XLIFF-CORE-AGENT-VALIDATOR-001
-  - SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001
+  - SAL-XLIFF-CORE-DOCUMENT-TARGET-LANGUAGE-001
   - SAL-XLIFF-CORE-HIERARCHY-IGNORABLE-001
   - SAL-XLIFF-CORE-HIERARCHY-SEGMENT-001
-  - SAL-XLIFF-CORE-SOURCE-REQUIRED-001
-prior_non_promoting_investigation:
-  accepted_state_effect: none
-  authority_conclusion_to_reproduce: SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001
-  proposed_decision_id: XLF-ADJ-CORE-SCHEMATRON-0007
-  proposed_sal_fact_id: SAL-XLIFF-39A807E74F92A266
-  proposed_queue_candidate_id: XLF-SAL-CAND-CORE-SOURCE-LANGUAGE-COMPATIBILITY-001
-  explicit_unproposed_rejection: SAL-XLIFF-CORE-LANGUAGE-SOURCE-001
-  red_tests:
-    - tests/tools/test_xliff_core_candidate_adjudication.py::test_source_language_adjudicates_only_document_compatibility_owner
-    - tests/tools/test_extract_sal_facts.py::test_batch_five_source_language_seed_requires_exact_candidate_proof
-  observed_red_result: exactly two expected failures
-  failed_seed_message: new SAL candidate has no acquired source_ids
-  failed_seed_writes: []
-  tracked_edits_present_at_transfer: false
-  root_cause: the seeder processes the complete mutable queue, so unrelated stale rows can block a selected bounded ingestion
-  first_repair:
-    tool: tools/spec/seed_sal_candidates.py
-    interface: --candidate-id
-    semantics:
-      - select exactly one stable candidate ID
-      - reject a missing or duplicate ID
-      - retain source-id and digest validation
-      - leave unrelated queue rows unvalidated and unwritten
-      - preserve deterministic union and idempotency
-    forbidden_shortcuts:
-      - weakening acquired-source validation
-      - adding guessed provenance to legacy candidates
-      - deleting or rewriting unrelated queue history
+  - SAL-XLIFF-CORE-SOURCE-TARGET-OPTIONAL-001
 required_skills:
   - test-driven-development
   - ingest-spec-sal
   - sal-pipeline-heal
   - plan-control
 required_execution:
-  - Validate Event 37, packet-base commit 6fca743c, semantic commit 1b758c2e, candidate identity, and accepted counts before mutation.
-  - Read the exact pinned Schematron occurrence independently; generated mappings are proposals, never conclusions.
-  - Determine whether the report directly owns DOCUMENT-SOURCE-LANGUAGE, SOURCE-REQUIRED, another exact denominator row, or no valid current row. Treat segment and ignorable names as trigger context unless exact authority proves otherwise; record a machine-readable gap rather than force a mapping.
-  - Start with a genuine pre-change RED test that fails for the intended semantic and proof boundary.
-  - Recreate the two named RED tests from the tracked recovery contract; do not reuse provider-local ignored manifests or authorizations.
-  - Add focused RED tests for exact candidate selection, missing and duplicate IDs, unrelated-row isolation, and idempotent union behavior; then implement --candidate-id through ingest-spec-sal.
-  - Seed only candidate XLF-SAL-CAND-CORE-SOURCE-LANGUAGE-COMPATIBILITY-001 and prove the selected row retains SRC-XLF-002 and its pinned digest.
-  - Account for every proposed and materially implicated obligation with explicit accepted or rejected reasoning.
-  - Bind the exact candidate, occurrence, authority, SAL proof, decision, and any compiled obligation through content digests.
-  - Preserve semantic equality of all 29 accepted predecessor rows and identity of all 1130 candidates.
-  - Run focused positive/rejection/tamper tests, three deterministic generations, static checks, SAL verification, five-authority audit, format-contract and production-program regressions, transcript validation, immutable checkout replay, and native event-chain validation.
-  - Commit explicit leased files to GitLab main, append the next native event only after proof passes, refresh this packet, and release only the current shift leases.
+  - Validate Event 38, packet-base commit d1f8b322, semantic commit 3fc939ad, candidate identity, accepted counts, and current artifact digests before mutation.
+  - Read the exact pinned XLIFF 2.1 Schematron occurrence and relevant Core prose independently; generated mappings are proposals, never conclusions.
+  - Add a genuine pre-change RED test for the direct semantic owner and exact proof binding.
+  - Determine whether target-language compatibility is owned by an existing denominator obligation, requires a new exact obligation, or cannot yet be mapped. Do not infer the result only from the preceding source-language rule.
+  - Account for every generated proposal and materially implicated obligation with evidence-bound acceptance or rejection reasoning.
+  - Treat segment and ignorable names as trigger context and validator behavior as downstream unless exact authority proves otherwise.
+  - If a new fact is required, seed only the exact selected candidate through fail-closed --candidate-id mode; prove missing, duplicate, unrelated-row, transactional-restore, QName, and idempotency controls remain intact.
+  - Bind candidate, occurrence, authority, fact, decision, and compiled obligation through role-specific content digests.
+  - Preserve semantic equality of all 30 accepted predecessor rows and identity of all 1130 candidate records.
+  - Run positive, rejection, tamper, profile, deterministic, static, SAL, authority, format-contract, production-program, transcript, immutable-checkout, and native-event controls.
+  - Commit explicit leased semantic files to GitLab main; append the next native event only after immutable proof passes; then refresh this packet.
 acceptance:
-  prior_dispositions_verified: 6
+  prior_dispositions_verified: 7
   expected_new_candidate_dispositions: 1
   obligation_delta: evidence_derived_not_predeclared
-  predecessor_rows_preserved: 29
+  predecessor_rows_preserved: 30
   candidate_ids_preserved: 1130
   xlf_04_complete: false
   product_source_effect: none
   promotion_effect: none
   production_certification_effect: none
 forbidden:
-  - accepting any generated proposal without independent authority adjudication
-  - inventing or selecting an obligation merely to increase coverage
-  - weakening checkout identity, content-addressing, tamper rejection, or predecessor equality
+  - accepting generated proposals or source-language symmetry without independent authority adjudication
+  - inventing or selecting an obligation to increase coverage
+  - weakening checkout identity, content addressing, selected seeding, tamper rejection, or predecessor equality
   - product source, gate, promotion, release, or certification mutation
   - GitHub push, non-main branch, broad staging, foreign lease release, or dirty-state cleanup
-  - using the prior Codex provider identity, leases, mutation authorizations, or ignored execution manifests
+  - reusing a prior provider identity, token, lease, execution manifest, or mutation authorization
 fallback:
-  when: controller or XLIFF evidence paths are live-owned
-  action: continue read-only verification or select the highest-severity disjoint unleased task from the live deterministic queue
+  when: required XLIFF paths are live-owned
+  action: continue read-only verification or select the highest-severity disjoint unleased task from the deterministic queue
   invariant: fallback work cannot claim this candidate or append its controller event

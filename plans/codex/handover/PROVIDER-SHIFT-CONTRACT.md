@@ -18,15 +18,15 @@ The goal, phase order, task semantics, evidence standard, and terminal
 condition do not change when the provider changes. Only the current executor
 identity and its leased files change.
 
-> **Current authority overlay: Event 37.** The native head is
-> `FF6-EVENT-000037`; XLIFF is at 29/105 source-bound obligations and
-> 6/1,130 independently verified dispositions. Current semantic commit
-> `1b758c2e`, historical checkout repair `809cc18c`, and controller acceptance
-> `6fca743c` are all
+> **Current authority overlay: Event 38.** The native head is
+> `FF6-EVENT-000038`; XLIFF is at 30/105 source-bound obligations and
+> 7/1,130 independently verified dispositions. Current semantic commit
+> `3fc939ad`, historical checkout repair `809cc18c`, and controller acceptance
+> `d1f8b322` are all
 > immutable GitLab ancestors. The verified UBL foundation has
 > 6,001 content-addressed local particle nodes and remains non-promoting.
 > The exact canonical successor is
-> `XLF-04-BATCH-005-PARTIAL-002-F`. Use
+> `XLF-04-BATCH-005-PARTIAL-002-G`. Use
 > [CURRENT-MACHINE-STATE.yaml](CURRENT-MACHINE-STATE.yaml) and
 > [NEXT-MICROSTEP.yaml](NEXT-MICROSTEP.yaml) for executable state, and read
 > [CLEAN-REPLAY-REPAIR.md](CLEAN-REPLAY-REPAIR.md) before mutation.
@@ -89,8 +89,8 @@ Every shift records three independent state axes:
 
 | Axis | Question | Current answer |
 |---|---|---|
-| Mission state | What does the native journal authorize next? | `CONTRACT`, `FF6-EVENT-000037`, XLIFF `XLF-04-BATCH-005-PARTIAL-002-F`; UBL partial-006 remains a disjoint fallback only |
-| Immutable evidence state | What committed work can be replayed? | Event 37 accepts XLIFF at 29/105 obligations and 6/1,130 dispositions at semantic commit `1b758c2e`; UBL retains 6,001 particle nodes and 1,178 derivation edges; Event 31 remains a rejected-attempt negative control |
+| Mission state | What does the native journal authorize next? | `CONTRACT`, `FF6-EVENT-000038`, XLIFF `XLF-04-BATCH-005-PARTIAL-002-G`; UBL partial-006 remains a disjoint fallback only |
+| Immutable evidence state | What committed work can be replayed? | Event 38 accepts XLIFF at 30/105 obligations and 7/1,130 dispositions at semantic commit `3fc939ad`; UBL retains 6,001 particle nodes and 1,178 derivation edges; Event 31 remains a rejected-attempt negative control |
 | Workspace transfer state | Which current local bytes can the incoming executor own? | Seven attributed XLIFF occurrence paths are preserved outside the checkpoint and require governed takeover plus independent replay; all accepted proof is reconstructible from GitLab `origin/main` |
 
 An immutable evidence commit without a journal transition is not a task-state
@@ -451,11 +451,11 @@ batch. Content hashes alone are not accepted as semantic currency proof.
 - [Canonical execution plan](../../strategic/autonomous-six-python-production-execution-plan.md)
 - [Canonical product goal](../../strategic/ff6/product-goal.yaml)
 
-## Current authority overlay: Event 37
+## Current authority overlay: Event 38
 
-`FF6-EVENT-000037` is the current native head. The selected task remains
-XLIFF, with exact microstep `XLF-04-BATCH-005-PARTIAL-002-F`, 29/105 accepted
-obligations, and 6/1,130 verified dispositions. UBL retains 6,001 particle
+`FF6-EVENT-000038` is the current native head. The selected task remains
+XLIFF, with exact microstep `XLF-04-BATCH-005-PARTIAL-002-G`, 30/105 accepted
+obligations, and 7/1,130 verified dispositions. UBL retains 6,001 particle
 nodes, stable anonymous-type identities, and 1,178 derivation edges, but
 UBL-03 is incomplete. Every product remains `UNASSESSED`; certification is
 0/6.

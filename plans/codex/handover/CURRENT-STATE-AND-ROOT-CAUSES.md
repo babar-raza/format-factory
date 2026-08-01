@@ -14,12 +14,12 @@ historical_projection: false
 ## 2026-08-01 verified live overlay
 
 GitLab `origin/main` is verified through controller checkpoint
-`6fca743ca55a8c221e63954b4c8a371b73e2246d`. Native authority is
-`FF6-EVENT-000037`; accepted and materialized XLIFF evidence now agree at 6
-verified and 1,124 open dispositions. Obligation coverage remains 29/105 with
-76 missing. The exact next task is
-`XLF-04-BATCH-005-PARTIAL-002-F`, an independent authority-adjudication
-microstep for `XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73`.
+`d1f8b3229bf3be32675e047b1469259ad7375500`. Native authority is
+`FF6-EVENT-000038`; accepted and materialized XLIFF evidence agree at 7
+verified and 1,123 open dispositions. Obligation coverage is 30/105 with 75
+missing. The exact next task is `XLF-04-BATCH-005-PARTIAL-002-G`, an
+independent authority-adjudication microstep for
+`XLF-CAND-CORE-SCHEMATRON-5D563A565DC6DCFE`.
 
 The deeper replay investigation found that the visible stale-manifest error
 was caused by workstation-dependent byte identity: mixed CRLF/LF manifest
@@ -32,25 +32,28 @@ tests, 69 production-program tests, and 94 format-contract tests with one exact
 known stateful deselection. This closes the bounded replay defect but does not
 certify a library.
 
-Semantic commit `1b758c2e` then independently adjudicates the unit-cardinality
-report, adds one direct authority-bound obligation, and passes 73 affected
-tests plus a 117-test immutable-checkout replay. Event 37 projects that result
-without changing any product or promotion state.
+Semantic commit `1b758c2e` independently adjudicates the unit-cardinality
+report. Semantic commit `3fc939ad` then independently adjudicates the XLIFF
+2.1 source-language compatibility report, repairs bounded SAL candidate
+selection transactionally, and passes 90 affected tests both locally and from
+an immutable checkout. Event 38 projects that result without changing any
+product or promotion state.
 
 The production-level lesson is that repeatability cannot be achieved by
 refreshing a receipt in the current workspace. Durable state requires one
 authority graph, explicit input identity, immutable replay before acceptance,
-separate accepted/materialized projections, and a transactional event that
-makes their transition auditable. Event 36 closes the former split without
-erasing why it existed or weakening proof identity; Event 37 advances only the
-next independently proven semantic obligation.
+separate accepted/materialized projections, bounded transactional mutation,
+and a hash-chained event that makes each transition auditable. Events 36-38
+advance only independently proven semantic obligations and retain prior
+failures as negative controls.
 
-> **Current authority overlay: Event 37.** Native head
-> `FF6-EVENT-000037`. Event 31 remains the negative
+> **Current authority overlay: Event 38.** Native head
+> `FF6-EVENT-000038`. Event 31 remains the negative
 > control proving that deterministic mechanical evidence can encode the wrong
 > semantic owner and profile. Event 36 accepts the repaired reciprocal XLIFF
 > skeleton checkpoint at 28/105 obligations and 5/1,130 dispositions; Event 37
-> accepts the unit-cardinality checkpoint at 29/105 and 6/1,130. Event 34
+> accepts unit cardinality at 29/105 and 6/1,130; Event 38 accepts the XLIFF
+> 2.1 source-language compatibility boundary at 30/105 and 7/1,130. Event 34
 > separately binds 6,001 UBL local particle nodes without changing promotion.
 > This file explains causes and redesign
 > direction; executable state comes only from
@@ -528,16 +531,16 @@ product source trees are unchanged from the baseline snapshot but no current
 production certification binds their complete package/environment closure.
 Confidence is low that the 672-obligation denominator is final until XLIFF and
 UBL repairs pass. XLIFF 2.0/2.1 candidate coverage is deeper and
-source-authentic, but only 6 of 1,130 candidate dispositions are independently
-verified, 76 expected IDs lack source-bound rows, and module ownership is still
-open. Events 30 through 37 prove a durable adjudication mechanism and six
+source-authentic, but only 7 of 1,130 candidate dispositions are independently
+verified, 75 expected IDs lack source-bound rows, and module ownership is still
+open. Events 30 through 38 prove a durable adjudication mechanism and seven
 bounded decisions, not broad XLIFF semantic coverage. No stronger claim is
 justified.
 
-## Current authority overlay: Event 37
+## Current authority overlay: Event 38
 
-`FF6-EVENT-000037` is the current native head. The selected task remains
-XLIFF, with exact microstep `XLF-04-BATCH-005-PARTIAL-002-F`, 29/105 accepted
-obligations, and 6/1,130 verified dispositions. UBL retains 6,001 particle
+`FF6-EVENT-000038` is the current native head. The selected task remains
+XLIFF, with exact microstep `XLF-04-BATCH-005-PARTIAL-002-G`, 30/105 accepted
+obligations, and 7/1,130 verified dispositions. UBL retains 6,001 particle
 nodes, stable anonymous-type identities, and 1,178 derivation edges, but
 UBL-03 is incomplete. Certification remains 0/6.

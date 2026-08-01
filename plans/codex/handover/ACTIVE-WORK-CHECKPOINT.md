@@ -1,72 +1,59 @@
 ---
-artifact_id: FF6-ACTIVE-CHECKPOINT-EVENT-37
+artifact_id: FF6-ACTIVE-WORK-CHECKPOINT-EVENT-38
+artifact_type: active_work_checkpoint
 visibility: internal
 publish_allowed: false
 generated_by: codex
 generated_at: 2026-08-01
 ---
 
-# Active FF6 checkpoint
+# Active work checkpoint: Event 38
 
-## Clean resumable boundary
+## Immutable accepted boundary
 
-- GitLab controller checkpoint: `6fca743ca55a8c221e63954b4c8a371b73e2246d`.
-- Native controller: `FF6-EVENT-000037` /
-  `09a3ae3d4521afc5c6c6c937d667c2246a8ad1fbae6ffb8af04a5b32e0e2b2b6`.
-- XLIFF semantic commit: `1b758c2e05856552169de098d8719a82f425a1c2`.
-- Checkout-identity repair: `809cc18cc6e62ae19f6ea5c11ed41ab9a7ec5956`.
-- Event 37 controller acceptance: `6fca743ca55a8c221e63954b4c8a371b73e2246d`.
-- Program state: `CONTRACT`; certifications: `0/6`; every promotion is
-  `UNASSESSED`.
+- GitLab control checkpoint: `d1f8b3229bf3be32675e047b1469259ad7375500`
+- XLIFF semantic commit: `3fc939ad70ec6caac9e0699041076e02de00c5d2`
+- Native event: `FF6-EVENT-000038`
+- Event hash: `13db4cceafcefb86d9c964d7c3e20e7d63092977faf50002ef0c88ea4f6b5603`
+- Controller state: `CONTRACT`
+- Active task: `TC-FF6-XLIFF-PROFILE-SURFACE-001`
+- Task state: `WORK_IN_PROGRESS`
+- First unmet task step: `XLF-04`
+- Completed microstep: `XLF-04-BATCH-005-PARTIAL-002-F`
+- Exact next microstep: `XLF-04-BATCH-005-PARTIAL-002-G`
 
-## Accepted XLIFF state
+## What the outgoing shift achieved
 
-| Measure | Event 37 |
-|---|---:|
-| authority candidates | 1,130 |
-| independently verified dispositions | 6 |
-| unverified dispositions | 1,124 |
-| expected obligations | 105 |
-| resolved obligations | 29 |
-| missing obligations | 76 |
-| XLF-04 complete | false |
+The accepted slice independently bound the XLIFF 2.1 source `xml:lang` versus
+root `srcLang` compatibility report and corroborating prose. It accepted only
+`SAL-XLIFF-CORE-DOCUMENT-SOURCE-LANGUAGE-001`, rejected downstream and
+incidental mappings, rejected a cardinality overclaim, rejected omitted-value
+inheritance as a separate unproved behavior, and explicitly excluded XLIFF 2.0.
 
-The accepted controller and materialized evidence are aligned. Event 37 adds
-one authority-bound unit-cardinality obligation and accepts the sixth
-candidate disposition. The full denominator, module contracts, product
-behavior, and release proof remain open.
+It also repaired selected SAL seeding with exact-ID fail-closed selection,
+transactional restore, scoped merge, QName collision protection, and
+byte-idempotency. The repair and semantic slice passed 90 affected tests in the
+shared worktree and immutable detached checkout, 69 production-program tests,
+94 format-contract tests with one named baseline deselection, all 32 XLIFF SAL
+facts, five authority locks, and static checks including Pyright.
 
-## Quarantined investigation after Event 37
+Accepted counts are 7/1,130 dispositions and 30/105 source-bound obligations.
+This is partial contract evidence only.
 
-The outgoing shift did not append Event 38. It independently verified the
-selected source-language Schematron occurrence, reproduced the intended two
-test failures, and then discovered that the SAL seeder processes unrelated
-legacy queue rows before it can safely isolate the requested new fact. The
-seeder failed closed before canonical SAL files changed. All tracked RED edits
-and the provisional ignored queue row were returned to the Event 37 baseline.
+## Exact successor
 
-This is deliberate checkpointing, not lost progress: the exact authority
-decision, fact ID, test names, expected failures, and durable selector repair
-are recorded in `INFLIGHT-RECOVERY.yaml` and `NEXT-MICROSTEP.yaml`. Provider
-identities, leases, mutation authorizations, and execution manifests from the
-paused attempt are obsolete and must not be reused.
+Adjudicate `XLF-CAND-CORE-SCHEMATRON-5D563A565DC6DCFE` at XLIFF 2.1
+`schematron/rule[14]/report[1]`, which compares target `xml:lang` with root
+`trgLang`. Determine the direct compatibility owner or expand the denominator
+only if primary authority proves a distinct obligation. Preserve all 30 rows
+and all 1,130 candidate identities.
 
-## Portfolio truth
+## Transfer status
 
-- IPYNB, NRRD, XLIFF, SafeTensors, and UBL contain partial implementations.
-- OpenRaster product source is absent.
-- None of the six has complete mandatory obligation proof, independent
-  interoperability, security/resource controls, installed-wheel matrices, or
-  reproducible release certification.
-- UBL has verified partial schema-graph work through derivation edges; UBL-03
-  remains incomplete.
+The tracked semantic and control state is reconstructible from GitLab. No
+uncommitted product overlay is part of this handover. Provider identities,
+tokens, leases, execution manifests, and mutation authorizations do not
+transfer. The outgoing identity remains live only while the handover packet is
+being sealed and must be released after remote verification.
 
-## Exact continuation
-
-Execute `XLF-04-BATCH-005-PARTIAL-002-F` against
-`XLF-CAND-CORE-SCHEMATRON-B0961B8D3678CA73` from the Event 37 checkpoint.
-Independently adjudicate the exact XLIFF 2.1 source-`xml:lang` versus root
-`srcLang` Schematron report. Generated mappings are proposals only. Start RED,
-repair bounded SAL candidate selection without weakening provenance, preserve
-all 29 accepted rows and all 1,130 candidate IDs, prove the bounded change in an
-immutable checkout, and append the next event only after the evidence passes.
+All six products remain `UNASSESSED`; certification remains `0/6`.
