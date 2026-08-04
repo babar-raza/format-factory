@@ -2,17 +2,32 @@
   "format_id": "ubl",
   "contract_id": "FC-UBL-V1",
   "contract_input_digests": {
-    "fact_categories_sha256": "27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468",
+    "authority_lock_impl_sha256": "3295565e37b8a5ff47a6e05aa8b49b70bb8574171bbe2e7ba9362f344e20012c",
+    "authority_lock_schema_sha256": "a8b860f4bef1ceae1b9dd6348c29cc99b35f2bde2dca032217398bddb061f913",
+    "authority_lock_sha256": "5c1ac942018f1e26e0fc0ca7c8284313452d1cb44c04d7e225faad4b21219929",
+    "authority_materializer_sha256": "b730b8f700aec1460fcd48ef2e849e7e1b2798f7849de8c37c5c15943c204f58",
+    "authority_runtime_sha256": "a24f0834bc99cc2758e2b70201ce1d28039c11a057688f95f5a1f6c29ea23a15",
+    "authority_src_ubl_001_sha256": "aa89ecb356d2a0c03493c3de5ab22d86819dbb391fde8c23c0c6f9c9ab21db4f",
+    "authority_src_ubl_002_sha256": "87f7be815ef36b18f1db5dd8d09f8ac0b2b4877b2da0a78a537cdea8082e8fa2",
+    "authority_src_ubl_003_sha256": "07d380f7d0b3bb973f4ca223946a4fff5f1e116f98548d036a2322483dc1fa4c",
+    "canonical_io_impl_sha256": "aca19b1319bf7304d5136fd6c9d729cb50b22d8a23a17ca9314fdb0c58cc164d",
+    "contract_compiler_impl_sha256": "e98ad15504ab1d338f114e21c9909b2eb5af9699961c0621da964bb59403dc67",
+    "contract_stores_impl_sha256": "cd120c7990a37b0f913a2b59e81ab28fdf7b3d50897e38d78cb20fc9e0823f7a",
+    "fact_categories_sha256": "aedd4c838073695752c724e8f53fd189f58653ca22e01b88f5932ebe9fe376bc",
     "family_pack_sha256": "6d0b519714dab6f50c35c67bbd11db29ccdba6e77d9a3ab4d2bcad2929ac4646",
+    "format_contract_schema_sha256": "4eb5cae2d69d0831291646f3cf21e5d019d6b0de2904a745b712cf5fa6c37da9",
+    "product_requirements_sha256": "07d380f7d0b3bb973f4ca223946a4fff5f1e116f98548d036a2322483dc1fa4c",
     "qname_registry_sha256": "9ca85535d450af64bab3f26811be019bdebbd2701041ff291c043d096af87fb6",
-    "research_sha256": "d6eb27174fb2b1c67fce6de254baf41e471c4ff9abd0e52b8df9f05da1fe5fcb",
-    "sal_facts_sha256": "8814fd9b67c33e142063077aa6e1e71493046c89033cad2788d190e8804a3a77",
-    "shared_contract_sha256": "ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494"
+    "research_intake_impl_sha256": "4c7d3bfd69e7e5a74a9db2483d25b062e11cfdcb6609637b0343dfa8d3cd0579",
+    "research_sha256": "7a076fc9ad6175159081fa0836f028213930879c2f50f906221c8bb3f85b4ebe",
+    "sal_facts_sha256": "0de10d403fead08373c7a3e137ea3b7a84090b2adf24787bf066dc1dc24a3103",
+    "shared_contract_sha256": "ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494",
+    "source_researcher_impl_sha256": "4367e7591a368bcbc6a01199a7eb6da0f569ccc5c706d6650cdd96db0b7083a3"
   },
   "product_source_present": true,
-  "function_count": 60,
-  "class_count": 13,
-  "test_file_count": 17,
+  "function_count": 96,
+  "class_count": 103,
+  "test_file_count": 19,
   "oracle_status": null,
   "capabilities": [
     {
@@ -21,41 +36,35 @@
       "level": "SHOULD",
       "depth_required": 6,
       "observed_status": "TESTED",
-      "observed_depth": 3,
-      "gap_depth": 3,
+      "observed_depth": 5,
+      "gap_depth": 1,
       "product_symbols": [
-        "__init__",
-        "__repr__",
-        "_get_ubl_type",
-        "_parse_contact",
-        "_parse_credit_note",
-        "_parse_endpoint_id",
-        "_parse_invoice",
-        "_parse_invoice_like",
         "_parse_monetary_total",
-        "_parse_order",
-        "_parse_party",
-        "_parse_party_legal_entity",
         "_parse_party_tax_scheme",
-        "_parse_postal_address",
         "_parse_tax_subtotal",
         "_parse_tax_total",
-        "_read_source",
-        "_text",
-        "_to_float",
-        "_write_contact"
+        "_write_monetary_total",
+        "_write_party_tax_scheme",
+        "_write_tax_total",
+        "amount",
+        "check_tax_consistency",
+        "monetary_total",
+        "roundtrip",
+        "tax_total",
+        "ubl_document_type_summary",
+        "ubl_total_line_count"
       ],
       "test_files": [
-        "tests/python/fods/test_public_api.py",
-        "tests/python/fods/test_r58_fods_public_api.py",
-        "tests/python/fodt/test_r58_fodt_public_api.py",
-        "tests/python/test_pige_public_api_smoke.py",
-        "tests/python/test_public_api_smoke_phase2.py",
         "tests/python/ubl/test_ubl_analytics.py",
         "tests/python/ubl/test_ubl_analytics_coverage.py",
         "tests/python/ubl/test_ubl_codec.py",
         "tests/python/ubl/test_ubl_compat.py",
-        "tests/python/ubl/test_ubl_document_mutation.py"
+        "tests/python/ubl/test_ubl_document_mutation.py",
+        "tests/python/ubl/test_ubl_feature_completeness.py",
+        "tests/python/ubl/test_ubl_parser_fields.py",
+        "tests/python/ubl/test_ubl_roundtrip.py",
+        "tests/python/ubl/test_ubl_smoke.py",
+        "tests/python/ubl/test_ubl_to_csv.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -73,19 +82,12 @@
       "observed_depth": 5,
       "gap_depth": 0,
       "product_symbols": [
-        "check_tax_consistency"
+        "check_tax_consistency",
+        "validate"
       ],
       "test_files": [
-        "tests/python/fods/test_public_api.py",
-        "tests/python/fods/test_r58_fods_public_api.py",
-        "tests/python/fodt/test_r58_fodt_public_api.py",
-        "tests/python/test_pige_public_api_smoke.py",
-        "tests/python/test_public_api_smoke_phase2.py",
-        "tests/python/ubl/test_ubl_analytics.py",
-        "tests/python/ubl/test_ubl_analytics_coverage.py",
-        "tests/python/ubl/test_ubl_codec.py",
-        "tests/python/ubl/test_ubl_compat.py",
-        "tests/python/ubl/test_ubl_document_mutation.py"
+        "tests/python/ubl/test_ubl_feature_completeness.py",
+        "tests/skills/test_public_spec_governance.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -103,31 +105,34 @@
       "observed_depth": 4,
       "gap_depth": 0,
       "product_symbols": [
+        "ApplicationResponse",
+        "AttachedDocument",
+        "AwardedNotification",
+        "BillOfLading",
+        "BusinessCard",
+        "CallForTenders",
+        "Catalogue",
+        "CatalogueDeletion",
+        "CatalogueItemSpecificationUpdate",
+        "CataloguePricingUpdate",
+        "CatalogueRequest",
+        "CertificateOfOrigin",
+        "CommonTransportationReport",
+        "ContractAwardNotice",
+        "ContractNotice",
         "CreditNote",
-        "Invoice",
-        "LineItem",
-        "Order",
-        "UblCreditNote",
-        "UblDocument",
-        "UblError",
-        "UblInvoice",
-        "UblLineItem",
-        "UblOrder",
-        "UblParseError",
-        "UblTaxInconsistencyWarning",
-        "UblWriteError"
+        "DebitNote",
+        "DespatchAdvice",
+        "DigitalAgreement",
+        "DigitalCapability"
       ],
       "test_files": [
-        "tests/python/fods/test_public_api.py",
-        "tests/python/fods/test_r58_fods_public_api.py",
-        "tests/python/fodt/test_r58_fodt_public_api.py",
-        "tests/python/test_pige_public_api_smoke.py",
-        "tests/python/test_public_api_smoke_phase2.py",
-        "tests/python/ubl/test_ubl_analytics.py",
         "tests/python/ubl/test_ubl_analytics_coverage.py",
-        "tests/python/ubl/test_ubl_codec.py",
         "tests/python/ubl/test_ubl_compat.py",
-        "tests/python/ubl/test_ubl_document_mutation.py"
+        "tests/python/ubl/test_ubl_document_mutation.py",
+        "tests/python/ubl/test_ubl_feature_completeness.py",
+        "tests/python/ubl/test_ubl_roundtrip.py",
+        "tests/python/ubl/test_ubl_smoke.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -173,19 +178,15 @@
       "observed_depth": 2,
       "gap_depth": 0,
       "product_symbols": [
-        "roundtrip"
+        "roundtrip",
+        "signature_preserved"
       ],
       "test_files": [
-        "tests/python/fods/test_public_api.py",
-        "tests/python/fods/test_r58_fods_public_api.py",
-        "tests/python/fodt/test_r58_fodt_public_api.py",
-        "tests/python/test_pige_public_api_smoke.py",
-        "tests/python/test_public_api_smoke_phase2.py",
-        "tests/python/ubl/test_ubl_analytics.py",
         "tests/python/ubl/test_ubl_analytics_coverage.py",
         "tests/python/ubl/test_ubl_codec.py",
-        "tests/python/ubl/test_ubl_compat.py",
-        "tests/python/ubl/test_ubl_document_mutation.py"
+        "tests/python/ubl/test_ubl_document_mutation.py",
+        "tests/python/ubl/test_ubl_feature_completeness.py",
+        "tests/python/ubl/test_ubl_roundtrip.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -203,20 +204,21 @@
       "observed_depth": 4,
       "gap_depth": 0,
       "product_symbols": [
+        "load",
         "load_ubl",
+        "loads",
         "write_ubl"
       ],
       "test_files": [
-        "tests/python/fods/test_public_api.py",
-        "tests/python/fods/test_r58_fods_public_api.py",
-        "tests/python/fodt/test_r58_fodt_public_api.py",
-        "tests/python/test_pige_public_api_smoke.py",
-        "tests/python/test_public_api_smoke_phase2.py",
-        "tests/python/ubl/test_ubl_analytics.py",
         "tests/python/ubl/test_ubl_analytics_coverage.py",
         "tests/python/ubl/test_ubl_codec.py",
         "tests/python/ubl/test_ubl_compat.py",
-        "tests/python/ubl/test_ubl_document_mutation.py"
+        "tests/python/ubl/test_ubl_document_mutation.py",
+        "tests/python/ubl/test_ubl_feature_completeness.py",
+        "tests/python/ubl/test_ubl_parser_fields.py",
+        "tests/python/ubl/test_ubl_roundtrip.py",
+        "tests/tools/test_compile_ubl_schema_graph.py",
+        "tests/tools/test_ubl_schema_graph.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -234,31 +236,34 @@
       "observed_depth": 3,
       "gap_depth": 0,
       "product_symbols": [
+        "ApplicationResponse",
+        "AttachedDocument",
+        "AwardedNotification",
+        "BillOfLading",
+        "BusinessCard",
+        "CallForTenders",
+        "Catalogue",
+        "CatalogueDeletion",
+        "CatalogueItemSpecificationUpdate",
+        "CataloguePricingUpdate",
+        "CatalogueRequest",
+        "CertificateOfOrigin",
+        "CommonTransportationReport",
+        "ContractAwardNotice",
+        "ContractNotice",
         "CreditNote",
-        "Invoice",
-        "LineItem",
-        "Order",
-        "UblCreditNote",
-        "UblDocument",
-        "UblError",
-        "UblInvoice",
-        "UblLineItem",
-        "UblOrder",
-        "UblParseError",
-        "UblTaxInconsistencyWarning",
-        "UblWriteError"
+        "DebitNote",
+        "DespatchAdvice",
+        "DigitalAgreement",
+        "DigitalCapability"
       ],
       "test_files": [
-        "tests/python/fods/test_public_api.py",
-        "tests/python/fods/test_r58_fods_public_api.py",
-        "tests/python/fodt/test_r58_fodt_public_api.py",
-        "tests/python/test_pige_public_api_smoke.py",
-        "tests/python/test_public_api_smoke_phase2.py",
-        "tests/python/ubl/test_ubl_analytics.py",
         "tests/python/ubl/test_ubl_analytics_coverage.py",
-        "tests/python/ubl/test_ubl_codec.py",
         "tests/python/ubl/test_ubl_compat.py",
-        "tests/python/ubl/test_ubl_document_mutation.py"
+        "tests/python/ubl/test_ubl_document_mutation.py",
+        "tests/python/ubl/test_ubl_feature_completeness.py",
+        "tests/python/ubl/test_ubl_roundtrip.py",
+        "tests/python/ubl/test_ubl_smoke.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -277,20 +282,23 @@
       "gap_depth": 0,
       "product_symbols": [
         "from_file",
+        "load",
         "load_ubl",
+        "loads",
+        "probe",
         "probe_ubl"
       ],
       "test_files": [
-        "tests/python/fods/test_public_api.py",
-        "tests/python/fods/test_r58_fods_public_api.py",
-        "tests/python/fodt/test_r58_fodt_public_api.py",
-        "tests/python/test_pige_public_api_smoke.py",
-        "tests/python/test_public_api_smoke_phase2.py",
-        "tests/python/ubl/test_ubl_analytics.py",
         "tests/python/ubl/test_ubl_analytics_coverage.py",
         "tests/python/ubl/test_ubl_codec.py",
         "tests/python/ubl/test_ubl_compat.py",
-        "tests/python/ubl/test_ubl_document_mutation.py"
+        "tests/python/ubl/test_ubl_document_mutation.py",
+        "tests/python/ubl/test_ubl_feature_completeness.py",
+        "tests/python/ubl/test_ubl_parser_fields.py",
+        "tests/python/ubl/test_ubl_roundtrip.py",
+        "tests/python/ubl/test_ubl_smoke.py",
+        "tests/tools/test_compile_ubl_schema_graph.py",
+        "tests/tools/test_ubl_schema_graph.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -308,19 +316,15 @@
       "observed_depth": 3,
       "gap_depth": 1,
       "product_symbols": [
-        "roundtrip"
+        "roundtrip",
+        "signature_preserved"
       ],
       "test_files": [
-        "tests/python/fods/test_public_api.py",
-        "tests/python/fods/test_r58_fods_public_api.py",
-        "tests/python/fodt/test_r58_fodt_public_api.py",
-        "tests/python/test_pige_public_api_smoke.py",
-        "tests/python/test_public_api_smoke_phase2.py",
-        "tests/python/ubl/test_ubl_analytics.py",
         "tests/python/ubl/test_ubl_analytics_coverage.py",
         "tests/python/ubl/test_ubl_codec.py",
-        "tests/python/ubl/test_ubl_compat.py",
-        "tests/python/ubl/test_ubl_document_mutation.py"
+        "tests/python/ubl/test_ubl_document_mutation.py",
+        "tests/python/ubl/test_ubl_feature_completeness.py",
+        "tests/python/ubl/test_ubl_roundtrip.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -338,19 +342,12 @@
       "observed_depth": 5,
       "gap_depth": 0,
       "product_symbols": [
-        "check_tax_consistency"
+        "check_tax_consistency",
+        "validate"
       ],
       "test_files": [
-        "tests/python/fods/test_public_api.py",
-        "tests/python/fods/test_r58_fods_public_api.py",
-        "tests/python/fodt/test_r58_fodt_public_api.py",
-        "tests/python/test_pige_public_api_smoke.py",
-        "tests/python/test_public_api_smoke_phase2.py",
-        "tests/python/ubl/test_ubl_analytics.py",
-        "tests/python/ubl/test_ubl_analytics_coverage.py",
-        "tests/python/ubl/test_ubl_codec.py",
-        "tests/python/ubl/test_ubl_compat.py",
-        "tests/python/ubl/test_ubl_document_mutation.py"
+        "tests/python/ubl/test_ubl_feature_completeness.py",
+        "tests/skills/test_public_spec_governance.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -371,16 +368,8 @@
         "get_line_count"
       ],
       "test_files": [
-        "tests/python/fods/test_public_api.py",
-        "tests/python/fods/test_r58_fods_public_api.py",
-        "tests/python/fodt/test_r58_fodt_public_api.py",
-        "tests/python/test_pige_public_api_smoke.py",
-        "tests/python/test_public_api_smoke_phase2.py",
-        "tests/python/ubl/test_ubl_analytics.py",
         "tests/python/ubl/test_ubl_analytics_coverage.py",
-        "tests/python/ubl/test_ubl_codec.py",
-        "tests/python/ubl/test_ubl_compat.py",
-        "tests/python/ubl/test_ubl_document_mutation.py"
+        "tests/python/ubl/test_ubl_codec.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -398,19 +387,12 @@
       "observed_depth": 5,
       "gap_depth": 0,
       "product_symbols": [
-        "check_tax_consistency"
+        "check_tax_consistency",
+        "validate"
       ],
       "test_files": [
-        "tests/python/fods/test_public_api.py",
-        "tests/python/fods/test_r58_fods_public_api.py",
-        "tests/python/fodt/test_r58_fodt_public_api.py",
-        "tests/python/test_pige_public_api_smoke.py",
-        "tests/python/test_public_api_smoke_phase2.py",
-        "tests/python/ubl/test_ubl_analytics.py",
-        "tests/python/ubl/test_ubl_analytics_coverage.py",
-        "tests/python/ubl/test_ubl_codec.py",
-        "tests/python/ubl/test_ubl_compat.py",
-        "tests/python/ubl/test_ubl_document_mutation.py"
+        "tests/python/ubl/test_ubl_feature_completeness.py",
+        "tests/skills/test_public_spec_governance.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -424,10 +406,14 @@
       "category": "security",
       "level": "MUST",
       "depth_required": 5,
-      "observed_status": "NOT_STARTED",
-      "observed_depth": 0,
-      "gap_depth": 5,
-      "product_symbols": [],
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 2,
+      "product_symbols": [
+        "_enforce_tree_limits",
+        "_reject_unsafe_declarations",
+        "effective_limits"
+      ],
       "test_files": [
         "tests/python/fods/test_public_api.py",
         "tests/python/fods/test_r58_fods_public_api.py",
@@ -456,19 +442,15 @@
       "observed_depth": 3,
       "gap_depth": 1,
       "product_symbols": [
-        "roundtrip"
+        "roundtrip",
+        "signature_preserved"
       ],
       "test_files": [
-        "tests/python/fods/test_public_api.py",
-        "tests/python/fods/test_r58_fods_public_api.py",
-        "tests/python/fodt/test_r58_fodt_public_api.py",
-        "tests/python/test_pige_public_api_smoke.py",
-        "tests/python/test_public_api_smoke_phase2.py",
-        "tests/python/ubl/test_ubl_analytics.py",
         "tests/python/ubl/test_ubl_analytics_coverage.py",
         "tests/python/ubl/test_ubl_codec.py",
-        "tests/python/ubl/test_ubl_compat.py",
-        "tests/python/ubl/test_ubl_document_mutation.py"
+        "tests/python/ubl/test_ubl_document_mutation.py",
+        "tests/python/ubl/test_ubl_feature_completeness.py",
+        "tests/python/ubl/test_ubl_roundtrip.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -514,19 +496,12 @@
       "observed_depth": 5,
       "gap_depth": 0,
       "product_symbols": [
-        "check_tax_consistency"
+        "check_tax_consistency",
+        "validate"
       ],
       "test_files": [
-        "tests/python/fods/test_public_api.py",
-        "tests/python/fods/test_r58_fods_public_api.py",
-        "tests/python/fodt/test_r58_fodt_public_api.py",
-        "tests/python/test_pige_public_api_smoke.py",
-        "tests/python/test_public_api_smoke_phase2.py",
-        "tests/python/ubl/test_ubl_analytics.py",
-        "tests/python/ubl/test_ubl_analytics_coverage.py",
-        "tests/python/ubl/test_ubl_codec.py",
-        "tests/python/ubl/test_ubl_compat.py",
-        "tests/python/ubl/test_ubl_document_mutation.py"
+        "tests/python/ubl/test_ubl_feature_completeness.py",
+        "tests/skills/test_public_spec_governance.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -544,31 +519,34 @@
       "observed_depth": 4,
       "gap_depth": 0,
       "product_symbols": [
+        "ApplicationResponse",
+        "AttachedDocument",
+        "AwardedNotification",
+        "BillOfLading",
+        "BusinessCard",
+        "CallForTenders",
+        "Catalogue",
+        "CatalogueDeletion",
+        "CatalogueItemSpecificationUpdate",
+        "CataloguePricingUpdate",
+        "CatalogueRequest",
+        "CertificateOfOrigin",
+        "CommonTransportationReport",
+        "ContractAwardNotice",
+        "ContractNotice",
         "CreditNote",
-        "Invoice",
-        "LineItem",
-        "Order",
-        "UblCreditNote",
-        "UblDocument",
-        "UblError",
-        "UblInvoice",
-        "UblLineItem",
-        "UblOrder",
-        "UblParseError",
-        "UblTaxInconsistencyWarning",
-        "UblWriteError"
+        "DebitNote",
+        "DespatchAdvice",
+        "DigitalAgreement",
+        "DigitalCapability"
       ],
       "test_files": [
-        "tests/python/fods/test_public_api.py",
-        "tests/python/fods/test_r58_fods_public_api.py",
-        "tests/python/fodt/test_r58_fodt_public_api.py",
-        "tests/python/test_pige_public_api_smoke.py",
-        "tests/python/test_public_api_smoke_phase2.py",
-        "tests/python/ubl/test_ubl_analytics.py",
         "tests/python/ubl/test_ubl_analytics_coverage.py",
-        "tests/python/ubl/test_ubl_codec.py",
         "tests/python/ubl/test_ubl_compat.py",
-        "tests/python/ubl/test_ubl_document_mutation.py"
+        "tests/python/ubl/test_ubl_document_mutation.py",
+        "tests/python/ubl/test_ubl_feature_completeness.py",
+        "tests/python/ubl/test_ubl_roundtrip.py",
+        "tests/python/ubl/test_ubl_smoke.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -586,19 +564,16 @@
       "observed_depth": 4,
       "gap_depth": 0,
       "product_symbols": [
+        "dump",
+        "dumps",
         "write_ubl"
       ],
       "test_files": [
-        "tests/python/fods/test_public_api.py",
-        "tests/python/fods/test_r58_fods_public_api.py",
-        "tests/python/fodt/test_r58_fodt_public_api.py",
-        "tests/python/test_pige_public_api_smoke.py",
-        "tests/python/test_public_api_smoke_phase2.py",
-        "tests/python/ubl/test_ubl_analytics.py",
-        "tests/python/ubl/test_ubl_analytics_coverage.py",
         "tests/python/ubl/test_ubl_codec.py",
-        "tests/python/ubl/test_ubl_compat.py",
-        "tests/python/ubl/test_ubl_document_mutation.py"
+        "tests/python/ubl/test_ubl_document_mutation.py",
+        "tests/python/ubl/test_ubl_feature_completeness.py",
+        "tests/python/ubl/test_ubl_roundtrip.py",
+        "tests/skills/test_public_spec_readiness_scorer.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -612,9 +587,9 @@
     "total": 18,
     "with_gap": 6,
     "by_status": {
-      "NOT_STARTED": 3,
+      "NOT_STARTED": 2,
       "IMPLEMENTED_UNPROVEN": 0,
-      "TESTED": 15,
+      "TESTED": 16,
       "ORACLE_PROVEN": 0
     }
   }

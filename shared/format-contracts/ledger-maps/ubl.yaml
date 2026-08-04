@@ -1,0 +1,110 @@
+schema: ff6/ledger-map@1
+format_id: ubl
+visibility: internal
+generated_by: claude
+generated_at: '2026-08-04'
+basis: >-
+  UBL has exactly ONE test file importing format_factory.ubl
+  (test_production_namespace.py, 12 test functions). The other ten import the
+  deprecated ubl.* shadow package and cannot supply selectors under
+  forbidden_progress_claims. Its tests were read and assigned to capabilities by
+  what they actually exercise. One of them is parametrized across all 91 UBL
+  document roots, so its real assertion count is far higher than the function
+  count suggests -- it is the strongest single shipped-namespace file of the
+  four formats ledgered so far.
+notes: >-
+  Six capabilities are mapped with NO tests because no shipped-namespace test
+  exercises them: UBL-VALUES-001 (19 obligations), UBL-REF-001 (17),
+  UBL-CODELIST-001 (10), UBL-CALC-001 (7), UBL-QUERY-001 (2) and
+  UBL-UPGRADE-001 (2) -- 57 obligations, the largest unevidenced block in the
+  program. UBL-VALUES-001 and UBL-REF-001 together are 36 of those and concern
+  typed value semantics and document cross-references, which are core rather
+  than peripheral. They are listed explicitly so the builder records them
+  `missing` with a reason rather than silently shrinking the denominator, and
+  each deserves investigation into whether the behavior is untested or absent.
+
+execution_evidence:
+  path: reports/skills-rff6/skill-transcripts/build-evidence-ledger-ubl-001.json
+  result: PASS
+  truth_boundary: >-
+    Suite-level and NON-PROMOTING. The ubl suite is 334 passed with no failures,
+    but that figure is dominated by the ten shadow-package files; only
+    test_production_namespace.py exercises the shipped namespace. Binds no
+    individual selector outcome to an obligation, so nothing here is
+    verification; every obligation is recorded `partial` at most.
+
+capabilities:
+  UBL-PARSE-001:
+    modules: [codec/reader/reader.py]
+    tests: [test_production_namespace.py]
+
+  UBL-MODEL-001:
+    modules: [model/document.py, model/root_types.py]
+    tests: [test_production_namespace.py]
+
+  UBL-DOCTYPES-001:
+    modules: [_generated/root_catalog.py, model/root_types.py]
+    tests: [test_production_namespace.py]
+
+  UBL-EXT-001:
+    modules: [model/document.py]
+    tests: [test_production_namespace.py]
+
+  UBL-PRESERVE-001:
+    modules: [codec/writer/writer.py, model/document.py]
+    tests: [test_production_namespace.py]
+
+  UBL-SEC-001:
+    modules: [security/limits.py, codec/reader/reader.py]
+    tests: [test_production_namespace.py]
+
+  UBL-VALIDATE-001:
+    modules: [validation/validator.py]
+    tests: [test_production_namespace.py]
+
+  UBL-PROFILE-001:
+    modules: [validation/validator.py]
+    tests: [test_production_namespace.py]
+
+  UBL-LIFECYCLE-001:
+    modules: [codec/reader/reader.py, codec/writer/writer.py]
+    tests: [test_production_namespace.py]
+
+  UBL-WRITE-001:
+    modules: [codec/writer/writer.py]
+    tests: [test_production_namespace.py]
+
+  UBL-EDIT-001:
+    modules: [model/document.py]
+    tests: [test_production_namespace.py]
+
+  UBL-SIGN-001:
+    modules: [model/document.py, validation/validator.py]
+    tests: [test_production_namespace.py]
+
+  # No shipped-namespace test exercises these six. Listed with empty `tests` so
+  # they are recorded `missing` with a reason rather than omitted. Together they
+  # are 57 obligations, the largest unevidenced block in the program.
+  UBL-VALUES-001:
+    modules: [model/root_types.py]
+    tests: []
+
+  UBL-REF-001:
+    modules: [model/document.py]
+    tests: []
+
+  UBL-CODELIST-001:
+    modules: [validation/validator.py]
+    tests: []
+
+  UBL-CALC-001:
+    modules: [validation/validator.py]
+    tests: []
+
+  UBL-QUERY-001:
+    modules: [model/document.py]
+    tests: []
+
+  UBL-UPGRADE-001:
+    modules: [codec/reader/reader.py]
+    tests: []

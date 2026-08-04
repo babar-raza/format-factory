@@ -1,0 +1,51 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "build-evidence-ledger-ubl-001",
+  "skill_id": "build-obligation-register",
+  "mode": "live",
+  "timestamp": "2026-08-04T20:45:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "PER_FORMAT_EVIDENCE_LEDGERS",
+    "task_kind": "evidence",
+    "root_cause": "GAP-020: ubl had no implementation-evidence ledger. Its 194 obligations -- the largest register in the program -- had never been classified against source symbols or test selectors.",
+    "acceptance_evidence": "reports/format-contract-layer/ubl-obligation-reconciliation.json",
+    "regression_tier": "full ubl package suite (tests/python/ubl)"
+  },
+  "execution_steps": [
+    "1. Read the register: 194 obligations across 18 capabilities.",
+    "2. Confirmed the GAP-018 measurement: exactly ONE of ubl's 11 test files imports format_factory.ubl. The other ten import the deprecated ubl.* shadow package and cannot supply selectors.",
+    "3. Read that file (test_production_namespace.py, 12 test functions, one parametrized across all 91 document roots) and assigned its tests to capabilities by what they exercise.",
+    "4. Six capabilities have no shipped-namespace test at all: UBL-VALUES-001 (19 obligations), UBL-REF-001 (17), UBL-CODELIST-001 (10), UBL-CALC-001 (7), UBL-QUERY-001 (2), UBL-UPGRADE-001 (2) -- 57 obligations. Mapped with empty tests so they are recorded missing WITH a reason rather than omitted.",
+    "5. Ran the full suite: 334 passed, no failures, so the declared result is a clean PASS.",
+    "6. Built the ledger and ran the proof-requirement audit."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/ledger-maps/ubl.yaml",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/ledger-maps/ubl.yaml",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/python.exe -m pytest tests/python/ubl -q  # 334 passed",
+    "python -m tools.ff6.build_evidence_ledger --format-id ubl",
+    "python -m tools.ff6.audit_proof_requirements --format-id ubl"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "certification_state": "0/6",
+    "obligations_ledgered": 194,
+    "shipped_namespace_test_files": 1,
+    "shadow_only_test_files": 10,
+    "suite_truth": "334 passed with no failures. As with xliff, that figure is dominated by the ten shadow-package files. The single shipped-namespace file contributes 12 test functions, though one is parametrized across all 91 UBL document roots, so its real assertion count is substantially higher than 12 -- it is the strongest single shipped-namespace file of the four formats examined so far.",
+    "obligations_moved": 0,
+    "obligations_moved_note": "Zero. Mapping is not proving.",
+    "ubl_remains": "UNASSESSED"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
