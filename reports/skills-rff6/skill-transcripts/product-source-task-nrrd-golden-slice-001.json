@@ -1,0 +1,74 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-golden-slice-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-04T08:30:00Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC-FF6-NRRD-GOLDEN-SLICE-001",
+    "task_kind": "defect",
+    "root_cause": "payload.py's _endian_prefix() silently defaulted to native byte order ('=') when the NRRD header omitted 'endian' for a multi-byte scalar type, instead of raising -- violating SAL-NRRD-OBL-644276A28216DFC0 (require endian for raw multi-byte scalar payloads) and SAL-NRRD-OBL-5FAF36D205C887AD (enforce endian declaration for exposed multi-byte elements).",
+    "planned_paths": [
+      "src/python/nrrd/src/format_factory/nrrd/codec/payload.py",
+      "tests/python/nrrd/test_golden_raw_scalar_slice.py"
+    ],
+    "input_digests": {
+      "baseline_commit": "0fa7b2bde542e71fc4b668fc2c317d81937f1e50",
+      "taskcard_id": "TC-FF6-NRRD-GOLDEN-SLICE-001",
+      "obligations": [
+        "SAL-NRRD-OBL-644276A28216DFC0",
+        "SAL-NRRD-OBL-5FAF36D205C887AD",
+        "SAL-NRRD-OBL-9C262130232DCD09"
+      ]
+    },
+    "acceptance_evidence": ".local/run-records/ff6/TC-FF6-NRRD-GOLDEN-SLICE-001/candidate.json",
+    "regression_tier": "full NRRD package suite (tests/python/nrrd)"
+  },
+  "execution_steps": [
+    "1. Resolved product paths via taskcard-bound authorization (product_action_guard.is_path_authorized_for_task against the live TC-FF6-NRRD-GOLDEN-SLICE-001 taskcard's 'Exact writable product paths' section).",
+    "2. Wrote tests/python/nrrd/test_golden_raw_scalar_slice.py (28 tests) covering all 7 RED scenarios the taskcard specifies; reproduced 5 genuinely RED failures against the unmodified baseline (5 tests expecting NrrdParseError on missing endian, DID NOT RAISE).",
+    "3. Applied the coherent, minimal fix in codec/payload.py's _endian_prefix(): raise NrrdParseError instead of silently defaulting to native byte order when endian is absent for a multi-byte type. Did not touch reader.py/writer.py/validator.py -- no RED scenario required it (writer.py already threads header.get('endian') straight through to the same function).",
+    "4. Ran the smallest relevant verification (the new test file: 28 passed, 1 skipped) followed by the declared full-package regression tier (tests/python/nrrd: 305 passed, 1 skipped, 0 regressions vs the 277-test baseline) and ruff (clean).",
+    "5. Built format-factory-core and format-factory-nrrd wheels; created an isolated venv outside the source tree; installed the fresh wheels; confirmed format_factory.nrrd resolves from that env's site-packages, not the repo.",
+    "6. Gathered independent oracle evidence in two isolated environments: pynrrd (PyPI reference, installed in the wheel-install venv) bidirectional interop, 6/6 pass; and real Teem (unu) 1.12.0, obtained via WSL2 Ubuntu-22.04 (apt-get download + dpkg-deb -x, no root required), 5/5 pass including a byte-level unu cksum/diff cross-check independent of any Python tooling.",
+    "7. Spawned an independent validator (a separate agent invocation with no access to this implementation's reasoning) to review the diff, re-run the tests, and independently reproduce the pynrrd evidence: verdict ACCEPT_WITH_NOTES.",
+    "8. Recorded exact commands, digests, and the candidate record at .local/run-records/ff6/TC-FF6-NRRD-GOLDEN-SLICE-001/candidate.json (not committed -- .local/ is gitignored; this transcript is the committed governance record)."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/payload.py",
+    "tests/python/nrrd/test_golden_raw_scalar_slice.py",
+    "taskcards/TC-FF6-NRRD-GOLDEN-SLICE-001.md",
+    "taskcards/index.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/payload.py",
+    "tests/python/nrrd/test_golden_raw_scalar_slice.py",
+    "taskcards/TC-FF6-NRRD-GOLDEN-SLICE-001.md",
+    "taskcards/index.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/python.exe -m pytest tests/python/nrrd/test_golden_raw_scalar_slice.py -v -- 28 passed, 1 skipped",
+    ".venv/Scripts/python.exe -m pytest tests/python/nrrd -q -- 305 passed, 1 skipped, 0 regressions",
+    ".venv/Scripts/python.exe -m ruff check src/python/nrrd/src/format_factory/nrrd tests/python/nrrd/test_golden_raw_scalar_slice.py -- All checks passed",
+    ".venv/Scripts/python.exe -m mypy src/python/nrrd/src/format_factory/nrrd -- Success: no issues found in 17 source files",
+    "pyright (npx) src/python/nrrd/src/format_factory/nrrd -- 0 errors, 0 warnings",
+    "installed-env pytest-equivalent: independent_evidence.py (pynrrd) -- 6/6 pass",
+    "WSL unu (Teem 1.12.0) bidirectional evidence -- 5/5 pass, cksum/diff cross-check: 'nrrds are the same'"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 3,
+    "obligations_total_for_format": 65,
+    "nrrd_remains": "UNASSESSED",
+    "validator_identity": "claude-subagent a8ea873a6f4b6e5e1 (independent Agent invocation)",
+    "validator_verdict": "ACCEPT_WITH_NOTES",
+    "candidate_record": ".local/run-records/ff6/TC-FF6-NRRD-GOLDEN-SLICE-001/candidate.json"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

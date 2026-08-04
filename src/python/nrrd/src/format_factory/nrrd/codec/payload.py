@@ -106,7 +106,10 @@ def _endian_prefix(endian: str | None, item_size: int) -> str:
         return ">"
     if normalized:
         raise NrrdParseError(f"invalid endian value: {endian!r}")
-    return "="
+    raise NrrdParseError(
+        "endian is required for multi-byte NRRD scalar types "
+        f"(item size {item_size}); declare 'endian: little' or 'endian: big'"
+    )
 
 
 def decode_binary(
