@@ -645,6 +645,30 @@ structural_gaps_20260804:
       verify the owning process is genuinely gone (the lease record already
       carries `pid` and `worktree_path`). Resolve this BEFORE GAP-015's
       automated reclaim ships, so automation cannot reclaim a live agent's work.
+  - id: GAP-017
+    finding: >
+      Quantified instance of GAP-002 for IPYNB. 12 of the 30 IPYNB test files
+      import ONLY the deprecated `ipynb.*` shadow package, not the shipped
+      format_factory.ipynb namespace. Six capabilities are covered solely by
+      those files, so 15 of 68 IPYNB obligations have NO legitimate evidence:
+      IPYNB-OUTPUT-001 (7), IPYNB-CELLNAME-001 (2), IPYNB-CELLNAMEUNIQUE-001
+      (2), IPYNB-ID-001 (2), IPYNB-EXPORT-001 (1), IPYNB-WRITE-001 (1).
+      Worse, the two packages BEHAVE DIFFERENTLY: the obligation for
+      IPYNB-ID-001 requires ids be generated "only via explicit upgrade with a
+      rewrite map", which the shipped namespace satisfies and the shadow
+      package violates by silently auto-assigning on load. Citing the shadow
+      tests as evidence would have certified the wrong behavior.
+    severity: HIGH
+    status: OPEN
+    owner: unassigned — IPYNB shadow-package retirement lane
+    remediation: >
+      Either port the 12 shadow-only test files onto format_factory.ipynb, or
+      retire them and write shipped-namespace equivalents for the six
+      uncovered capabilities. Until then those 15 obligations must stay
+      `missing` and IPYNB cannot approach certification. The ledger generator
+      now filters test files by whether they import format_factory, so the
+      claim cannot silently reappear. Check the other five formats for the same
+      shape before trusting any of their coverage numbers.
   - id: GAP-013
     finding: >
       A fourth copy of the literal encoding set {"ascii","text","txt"} remains
