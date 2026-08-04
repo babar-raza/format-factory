@@ -359,7 +359,7 @@ obligations:
     - Selector-bound negative cases are not yet identified for this obligation.
 - obligation_id: SAL-IPYNB-OBL-2558D9E311DA3594
   capability_id: IPYNB-OUTPUT-001
-  status: missing
+  status: partial
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/model/output.py::get_output_representation
   - src/python/ipynb/src/format_factory/ipynb/model/output.py::add_output_representation
@@ -368,7 +368,10 @@ obligations:
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
-  positive_test_selectors: []
+  positive_test_selectors:
+  - tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_survives_roundtrip_intact
+  - tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_is_recognized_as_its_own_kind
+  - tests/python/ipynb/test_obligation_output_mime_matrix.py::test_all_four_types_coexist_in_one_cell_in_order
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -378,10 +381,6 @@ obligations:
   - 'Not yet audited against this obligation''s declared proof requirements: MIME-bundle matrix round-trips
     including vendor types and binary payloads.; MIME matrix fixtures per output type with byte-exact
     payload verification.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. The only test files for this capability (test_ipynb_output_mime_api.py)
-    import the deprecated `ipynb.*` shadow package, not format_factory.ipynb. Under forbidden_progress_claims
-    that cannot count as coverage of the shipped namespace, so this obligation currently has no valid
-    positive evidence.
   proof_requirements:
     positive:
     - MIME-bundle matrix round-trips including vendor types and binary payloads.
@@ -699,7 +698,7 @@ obligations:
     - Selector-bound negative cases are not yet identified for this obligation.
 - obligation_id: SAL-IPYNB-OBL-679A623D14CBF763
   capability_id: IPYNB-OUTPUT-001
-  status: missing
+  status: partial
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/model/output.py::get_output_representation
   - src/python/ipynb/src/format_factory/ipynb/model/output.py::add_output_representation
@@ -708,7 +707,10 @@ obligations:
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
-  positive_test_selectors: []
+  positive_test_selectors:
+  - tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_survives_roundtrip_intact
+  - tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_is_recognized_as_its_own_kind
+  - tests/python/ipynb/test_obligation_output_mime_matrix.py::test_all_four_types_coexist_in_one_cell_in_order
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -718,10 +720,6 @@ obligations:
   - 'Not yet audited against this obligation''s declared proof requirements: MIME-bundle matrix round-trips
     including vendor types and binary payloads.; MIME matrix fixtures per output type with byte-exact
     payload verification.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. The only test files for this capability (test_ipynb_output_mime_api.py)
-    import the deprecated `ipynb.*` shadow package, not format_factory.ipynb. Under forbidden_progress_claims
-    that cannot count as coverage of the shipped namespace, so this obligation currently has no valid
-    positive evidence.
   proof_requirements:
     positive:
     - MIME-bundle matrix round-trips including vendor types and binary payloads.
@@ -842,7 +840,7 @@ obligations:
     - Selector-bound negative cases are not yet identified for this obligation.
 - obligation_id: SAL-IPYNB-OBL-77C54BA16B30D129
   capability_id: IPYNB-OUTPUT-001
-  status: missing
+  status: partial
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/model/output.py::get_output_representation
   - src/python/ipynb/src/format_factory/ipynb/model/output.py::add_output_representation
@@ -851,7 +849,10 @@ obligations:
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
-  positive_test_selectors: []
+  positive_test_selectors:
+  - tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_survives_roundtrip_intact
+  - tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_is_recognized_as_its_own_kind
+  - tests/python/ipynb/test_obligation_output_mime_matrix.py::test_all_four_types_coexist_in_one_cell_in_order
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -861,10 +862,6 @@ obligations:
   - 'Not yet audited against this obligation''s declared proof requirements: MIME-bundle matrix round-trips
     including vendor types and binary payloads.; MIME matrix fixtures per output type with byte-exact
     payload verification.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. The only test files for this capability (test_ipynb_output_mime_api.py)
-    import the deprecated `ipynb.*` shadow package, not format_factory.ipynb. Under forbidden_progress_claims
-    that cannot count as coverage of the shipped namespace, so this obligation currently has no valid
-    positive evidence.
   proof_requirements:
     positive:
     - MIME-bundle matrix round-trips including vendor types and binary payloads.
@@ -1232,7 +1229,7 @@ obligations:
     - Selector-bound negative cases are not yet identified for this obligation.
 - obligation_id: SAL-IPYNB-OBL-B2FA0BFF8CA07D78
   capability_id: IPYNB-OUTPUT-001
-  status: missing
+  status: partial
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/model/output.py::get_output_representation
   - src/python/ipynb/src/format_factory/ipynb/model/output.py::add_output_representation
@@ -1241,7 +1238,10 @@ obligations:
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
-  positive_test_selectors: []
+  positive_test_selectors:
+  - tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_survives_roundtrip_intact
+  - tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_is_recognized_as_its_own_kind
+  - tests/python/ipynb/test_obligation_output_mime_matrix.py::test_all_four_types_coexist_in_one_cell_in_order
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -1251,10 +1251,6 @@ obligations:
   - 'Not yet audited against this obligation''s declared proof requirements: MIME-bundle matrix round-trips
     including vendor types and binary payloads.; MIME matrix fixtures per output type with byte-exact
     payload verification.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. The only test files for this capability (test_ipynb_output_mime_api.py)
-    import the deprecated `ipynb.*` shadow package, not format_factory.ipynb. Under forbidden_progress_claims
-    that cannot count as coverage of the shipped namespace, so this obligation currently has no valid
-    positive evidence.
   proof_requirements:
     positive:
     - MIME-bundle matrix round-trips including vendor types and binary payloads.
@@ -1263,7 +1259,7 @@ obligations:
     - Selector-bound negative cases are not yet identified for this obligation.
 - obligation_id: SAL-IPYNB-OBL-B3EFD046C72D3E4B
   capability_id: IPYNB-OUTPUT-001
-  status: missing
+  status: partial
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/model/output.py::get_output_representation
   - src/python/ipynb/src/format_factory/ipynb/model/output.py::add_output_representation
@@ -1272,7 +1268,10 @@ obligations:
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
-  positive_test_selectors: []
+  positive_test_selectors:
+  - tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_survives_roundtrip_intact
+  - tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_is_recognized_as_its_own_kind
+  - tests/python/ipynb/test_obligation_output_mime_matrix.py::test_all_four_types_coexist_in_one_cell_in_order
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -1282,10 +1281,6 @@ obligations:
   - 'Not yet audited against this obligation''s declared proof requirements: MIME-bundle matrix round-trips
     including vendor types and binary payloads.; MIME matrix fixtures per output type with byte-exact
     payload verification.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. The only test files for this capability (test_ipynb_output_mime_api.py)
-    import the deprecated `ipynb.*` shadow package, not format_factory.ipynb. Under forbidden_progress_claims
-    that cannot count as coverage of the shipped namespace, so this obligation currently has no valid
-    positive evidence.
   proof_requirements:
     positive:
     - MIME-bundle matrix round-trips including vendor types and binary payloads.
@@ -1318,7 +1313,7 @@ obligations:
     - Selector-bound negative cases are not yet identified for this obligation.
 - obligation_id: SAL-IPYNB-OBL-BBE5B3445AD56F9C
   capability_id: IPYNB-OUTPUT-001
-  status: missing
+  status: partial
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/model/output.py::get_output_representation
   - src/python/ipynb/src/format_factory/ipynb/model/output.py::add_output_representation
@@ -1327,7 +1322,10 @@ obligations:
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
-  positive_test_selectors: []
+  positive_test_selectors:
+  - tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_survives_roundtrip_intact
+  - tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_is_recognized_as_its_own_kind
+  - tests/python/ipynb/test_obligation_output_mime_matrix.py::test_all_four_types_coexist_in_one_cell_in_order
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -1337,10 +1335,6 @@ obligations:
   - 'Not yet audited against this obligation''s declared proof requirements: MIME-bundle matrix round-trips
     including vendor types and binary payloads.; MIME matrix fixtures per output type with byte-exact
     payload verification.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. The only test files for this capability (test_ipynb_output_mime_api.py)
-    import the deprecated `ipynb.*` shadow package, not format_factory.ipynb. Under forbidden_progress_claims
-    that cannot count as coverage of the shipped namespace, so this obligation currently has no valid
-    positive evidence.
   proof_requirements:
     positive:
     - MIME-bundle matrix round-trips including vendor types and binary payloads.
@@ -1549,7 +1543,7 @@ obligations:
     - Selector-bound negative cases are not yet identified for this obligation.
 - obligation_id: SAL-IPYNB-OBL-CDB7DEE07F2275F7
   capability_id: IPYNB-OUTPUT-001
-  status: missing
+  status: partial
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/model/output.py::get_output_representation
   - src/python/ipynb/src/format_factory/ipynb/model/output.py::add_output_representation
@@ -1558,7 +1552,10 @@ obligations:
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
-  positive_test_selectors: []
+  positive_test_selectors:
+  - tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_survives_roundtrip_intact
+  - tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_is_recognized_as_its_own_kind
+  - tests/python/ipynb/test_obligation_output_mime_matrix.py::test_all_four_types_coexist_in_one_cell_in_order
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -1568,10 +1565,6 @@ obligations:
   - 'Not yet audited against this obligation''s declared proof requirements: MIME-bundle matrix round-trips
     including vendor types and binary payloads.; MIME matrix fixtures per output type with byte-exact
     payload verification.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. The only test files for this capability (test_ipynb_output_mime_api.py)
-    import the deprecated `ipynb.*` shadow package, not format_factory.ipynb. Under forbidden_progress_claims
-    that cannot count as coverage of the shipped namespace, so this obligation currently has no valid
-    positive evidence.
   proof_requirements:
     positive:
     - MIME-bundle matrix round-trips including vendor types and binary payloads.
