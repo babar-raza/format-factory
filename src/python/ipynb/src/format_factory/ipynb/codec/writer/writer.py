@@ -127,19 +127,30 @@ def dumps(
     document: IpynbDocument | Mapping[str, Any],
     *,
     profile: str | None = None,
+    indent: int | None = 1,
 ) -> str:
-    """Serialize a notebook with stable ordering and whitespace.
+    """Serialize a notebook with stable ordering and configurable whitespace.
 
     The default production profile writes nbformat 4.5.  ``profile="declared"``
     is a preservation-only path that retains a loaded nbformat 4.x version,
     including unknown future-minor constructs, without claiming support for
     that future version.
+
+    ``indent`` selects the formatting only: ``1`` (the nbformat convention and
+    this function's default, so output is unchanged unless asked), any other
+    integer for that many spaces, or ``None`` for compact single-line output.
+
+    Key ordering is deliberately NOT configurable. SAL-IPYNB-OBL-FCCD0E0C asks
+    for "configurable formatting AND canonical key ordering" -- two different
+    properties in one sentence. Exposing ``sort_keys`` would let a caller emit
+    non-canonical output and break the byte-determinism the same obligation
+    requires, so ordering stays fixed.
     """
     try:
         result = json.dumps(
             _normalized(document, profile=profile),
             ensure_ascii=False,
-            indent=1,
+            indent=indent,
             sort_keys=True,
             allow_nan=False,
         )
@@ -156,8 +167,10 @@ def dump(
     destination: Destination,
     *,
     profile: str | None = None,
+    indent: int | None = 1,
 ) -> None:
-    text = dumps(document, profile=profile) + "\n"
+    """Write a notebook as UTF-8 JSON. See :func:`dumps` for ``indent``."""
+    text = dumps(document, profile=profile, indent=indent) + "\n"
     if hasattr(destination, "write"):
         try:
             written = destination.write(text)

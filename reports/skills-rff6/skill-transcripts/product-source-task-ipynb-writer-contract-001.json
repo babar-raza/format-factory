@@ -1,0 +1,65 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-writer-contract-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-04T21:10:00Z",
+  "inputs": {
+    "format_id": "ipynb",
+    "task_id": "TC-FF6-IPYNB-WRITER-CONTRACT-001",
+    "task_kind": "defect",
+    "root_cause": "SAL-IPYNB-OBL-FCCD0E0C (MUST) requires the writer to produce valid UTF-8 JSON with CONFIGURABLE FORMATTING and canonical key ordering. Five of its six clauses were implemented; configurable formatting was not. indent=1 was hardcoded at writer.py:142 and :185 and neither dumps() nor dump() exposed any formatting parameter.",
+    "planned_paths": [
+      "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py",
+      "tests/python/ipynb/test_obligation_writer_contract.py"
+    ],
+    "input_digests": {"baseline_commit": "2789b8a1", "obligations": ["SAL-IPYNB-OBL-FCCD0E0C", "SAL-IPYNB-OBL-35A6381D"]},
+    "acceptance_evidence": "taskcards/TC-FF6-IPYNB-WRITER-CONTRACT-001.md",
+    "regression_tier": "full IPYNB package suite (tests/python/ipynb)"
+  },
+  "execution_steps": [
+    "1. Read the obligation clause by clause rather than as a whole, and measured each against behavior. Five clauses were already satisfied: valid UTF-8 JSON (ensure_ascii=False, verified by writing non-ASCII and finding real UTF-8 bytes rather than escapes), canonical key ordering, never reordering cells or outputs, retaining unknown fields, and byte-exact binary MIME payloads. Only 'configurable formatting' was absent.",
+    "2. Wrote tests/python/ipynb/test_obligation_writer_contract.py first, taking the declared proof literally: 'Determinism byte-compare' became repeated-write and two-pass byte equality at every indent setting, and 'binary-payload integrity fixtures' became a 2KB binary blob base64-decoded back to the original bytes at every indent setting.",
+    "3. Captured RED at 56 failed / 1 passed.",
+    "4. Added indent to dumps() and dump(), defaulting to 1 so existing output is byte-identical.",
+    "5. Deliberately did NOT expose sort_keys, and added a test asserting it is absent from both signatures. The obligation says 'configurable formatting AND canonical key ordering' -- two properties in one sentence. A caller able to disable ordering could emit output violating the same obligation's determinism requirement.",
+    "6. Two rounds of my own test errors, both corrected against real behavior rather than by weakening assertions: my fixture's kernelspec lacked display_name, which the schema requires; and dump() deliberately terminates the file with a newline that dumps() does not add.",
+    "7. Made the cell-order fixture adversarial: cell ids are reverse-alphabetical, so a writer that sorted them would fail rather than pass by luck.",
+    "8. Assessed IPYNB-EXPORT-001 (SHOULD) and deliberately did NOT implement it -- see evidence.export_capability_decision."
+  ],
+  "allowed_files": [
+    "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py",
+    "tests/python/ipynb/test_obligation_writer_contract.py",
+    "taskcards/TC-FF6-IPYNB-WRITER-CONTRACT-001.md",
+    "taskcards/index.yaml",
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py",
+    "tests/python/ipynb/test_obligation_writer_contract.py",
+    "taskcards/TC-FF6-IPYNB-WRITER-CONTRACT-001.md",
+    "taskcards/index.yaml",
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/python.exe -m pytest tests/python/ipynb/test_obligation_writer_contract.py -q  # RED 56 failed/1 passed -> 57 passed",
+    ".venv/Scripts/python.exe -m pytest tests/python/ipynb -q  # 577 passed, 3 known editable-install failures (was 520 passed)",
+    ".venv/Scripts/python.exe -m ruff check src/python/ipynb tests/python/ipynb/test_obligation_writer_contract.py  # All checks passed",
+    ".venv/Scripts/python.exe -m mypy src/python/ipynb/src/format_factory/ipynb  # no issues in 29 source files"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "certification_state": "0/6",
+    "api_change": "dumps(document, *, profile=None, indent=1) and dump(document, destination, *, profile=None, indent=1). Additive and backward compatible; default output byte-identical, asserted by test_default_output_is_unchanged.",
+    "deliberately_not_exposed": "sort_keys. Canonical ordering is non-negotiable and a test asserts the parameter is absent from both signatures.",
+    "export_capability_decision": "IPYNB-EXPORT-001 (SHOULD) is entirely unimplemented -- adapters/__init__.py holds only a docstring. NOT implemented here: designing an exporter adapter surface needs a decided contract for what an ancillary resource is, how collection is reported and how adapters register. Inventing that to close a checkbox would be the speculative generalization the directive's principles forbid. Recorded as `missing` with that reason in the ledger. Its second clause, keeping exporter concerns out of the core parser, is already satisfied: the core has no notebook-framework dependency.",
+    "obligations_without_valid_evidence": "2 -> 1",
+    "obligations_moved": 0,
+    "obligations_moved_note": "Zero toward implemented. IPYNB-WRITE-001 now has real behavior and real evidence but its full proof_requirement audit is not complete, so it stays partial.",
+    "ipynb_remains": "UNASSESSED"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

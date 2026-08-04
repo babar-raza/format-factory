@@ -1166,6 +1166,12 @@ obligations:
     import the deprecated `ipynb.*` shadow package, not format_factory.ipynb. Under forbidden_progress_claims
     that cannot count as coverage of the shipped namespace, so this obligation currently has no valid
     positive evidence.
+  - 'CAPABILITY NOT IMPLEMENTED. adapters/__init__.py contains only a docstring: there is no exporter
+    adapter interface and no ancillary-resource collection. This is SHOULD, not MUST, and designing the
+    adapter surface is a product-design task needing a decided contract for what an ancillary resource
+    is and how adapters register -- inventing one to close a checkbox would be the speculative generalization
+    the directive forbids. The clause ''keep exporter-specific preprocessors and resources outside the
+    core parser'' IS already satisfied: the core has no notebook-framework dependency.'
   proof_requirements:
     positive:
     - Exporter adapter contract test with ancillary-resource collection.
@@ -1643,13 +1649,16 @@ obligations:
     - Selector-bound negative cases are not yet identified for this obligation.
 - obligation_id: SAL-IPYNB-OBL-E72B508EFCCD0E0C
   capability_id: IPYNB-WRITE-001
-  status: missing
+  status: partial
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dumps
   - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dump
   - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::write_ipynb
   - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::get_cell_count
-  positive_test_selectors: []
+  positive_test_selectors:
+  - tests/python/ipynb/test_obligation_writer_contract.py::test_default_output_is_unchanged
+  - tests/python/ipynb/test_obligation_writer_contract.py::test_indent_controls_the_indentation_width
+  - tests/python/ipynb/test_obligation_writer_contract.py::test_indent_none_produces_compact_output
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -1658,10 +1667,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Determinism byte-compare;
     binary-payload integrity fixtures.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. The only test files for this capability (test_ipynb_codec.py)
-    import the deprecated `ipynb.*` shadow package, not format_factory.ipynb. Under forbidden_progress_claims
-    that cannot count as coverage of the shipped namespace, so this obligation currently has no valid
-    positive evidence.
   proof_requirements:
     positive:
     - Determinism byte-compare; binary-payload integrity fixtures.
