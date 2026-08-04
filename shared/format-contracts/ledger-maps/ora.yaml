@@ -1,0 +1,110 @@
+schema: ff6/ledger-map@1
+format_id: ora
+visibility: internal
+generated_by: claude
+generated_at: '2026-08-04'
+basis: >-
+  OpenRaster has NO implementation. There is no src/python/ora or
+  src/python/openraster directory, no tests/python/ora directory, and no
+  openraster entry in the package matrix. openraster_source_present: false in
+  the verified planning baseline is still accurate.
+notes: >-
+  Every capability is therefore declared with no modules and no tests, so all
+  134 obligations are recorded `missing`. This is deliberate: inventing a
+  mapping to make the ledger look populated would be exactly the fabrication
+  the evidence process exists to prevent. Recording them explicitly keeps 134
+  obligations inside the denominator instead of absent from it.
+
+  This is a build-from-nothing lane, not a verify-then-certify lane. The
+  directive's execution_model -- characterize existing source, repair defects,
+  create new source only for genuinely missing capabilities -- assumes source
+  exists. For ora, every capability is genuinely missing.
+
+execution_evidence:
+  path: reports/skills-rff6/skill-transcripts/build-evidence-ledger-ora-001.json
+  result: NO_IMPLEMENTATION_PRESENT
+  truth_boundary: >-
+    There is no suite to run and no source to inspect. The declared result
+    states that plainly rather than borrowing another format's PASS. Every
+    obligation is `missing`; none is partial, and none could be.
+
+capabilities:
+  ORA-ASSET-001:
+    modules: []
+    tests: []
+
+  ORA-BASELINEASSET-001:
+    modules: []
+    tests: []
+
+  ORA-COMPOSITE-001:
+    modules: []
+    tests: []
+
+  ORA-CONTAINER-001:
+    modules: []
+    tests: []
+
+  ORA-DOCUMENT-001:
+    modules: []
+    tests: []
+
+  ORA-EDIT-001:
+    modules: []
+    tests: []
+
+  ORA-GROUP-001:
+    modules: []
+    tests: []
+
+  ORA-ISOLATION-001:
+    modules: []
+    tests: []
+
+  ORA-LAYER-001:
+    modules: []
+    tests: []
+
+  ORA-LIFECYCLE-001:
+    modules: []
+    tests: []
+
+  ORA-MASK-001:
+    modules: []
+    tests: []
+
+  ORA-MIMETYPE-001:
+    modules: []
+    tests: []
+
+  ORA-PRESERVE-001:
+    modules: []
+    tests: []
+
+  ORA-RENDER-001:
+    modules: []
+    tests: []
+
+  ORA-RESOLUTION-001:
+    modules: []
+    tests: []
+
+  ORA-SEC-001:
+    modules: []
+    tests: []
+
+  ORA-STACK-001:
+    modules: []
+    tests: []
+
+  ORA-STREAM-001:
+    modules: []
+    tests: []
+
+  ORA-VALIDATE-001:
+    modules: []
+    tests: []
+
+  ORA-WRITE-001:
+    modules: []
+    tests: []

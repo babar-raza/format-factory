@@ -1,0 +1,54 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "build-evidence-ledger-ora-001",
+  "skill_id": "build-obligation-register",
+  "mode": "live",
+  "timestamp": "2026-08-04T20:55:00Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "PER_FORMAT_EVIDENCE_LEDGERS",
+    "task_kind": "evidence",
+    "root_cause": "GAP-020: ora had no implementation-evidence ledger. Investigating why produced a stronger finding than expected -- it has no implementation either.",
+    "acceptance_evidence": "shared/format-contracts/implementation-evidence/ora.yaml",
+    "regression_tier": "none available -- there is no ora test suite"
+  },
+  "execution_steps": [
+    "1. Read the register: 134 obligations across 20 capabilities.",
+    "2. Checked for source: there is no src/python/ora or src/python/openraster directory. The 29 sibling format directories all exist; this one does not.",
+    "3. Checked for tests: there is no tests/python/ora directory.",
+    "4. Checked packaging: no openraster entry in packaging/python/package-matrix.yaml.",
+    "5. Concluded that openraster_source_present: false in the verified planning baseline is still accurate, and that this is the only one of the six formats with nothing at all -- not thin coverage, not shadow-package coverage, but no implementation.",
+    "6. Built the ledger with every capability declaring no modules and no tests, so all 134 obligations are recorded `missing` with the reason. Deliberately did NOT invent a mapping to make the ledger look populated."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/ledger-maps/ora.yaml",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/ledger-maps/ora.yaml",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "tests_run": [
+    "ls src/python/ | grep -i 'ora|openraster'  # no match",
+    "ls tests/python/ | grep -i 'ora|openraster'  # no match",
+    "python -m tools.ff6.build_evidence_ledger --format-id ora"
+  ],
+  "ledger_entry_id": null,
+  "result": "NO_IMPLEMENTATION_PRESENT",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "certification_state": "0/6",
+    "obligations_ledgered": 134,
+    "obligations_missing": 134,
+    "source_present": false,
+    "tests_present": false,
+    "packaging_entry_present": false,
+    "finding": "OpenRaster is not an under-tested format; it is an unstarted one. All 134 obligations are missing because there is nothing to map them to. The other five formats each have real source of some quality; this one has none.",
+    "why_a_ledger_at_all": "Recording 134 explicit missing obligations makes ora countable and auditable alongside the others, and states the position in the same schema every other format uses. Leaving it absent would let 134 obligations sit outside the denominator, which is exactly the silent-shrinking the ledger process exists to prevent.",
+    "scale_note": "134 obligations is roughly the size of nrrd (65) and safetensors (86) combined. The mission's stated goal includes format-factory-openraster as a deliverable distribution, so this is a build-from-nothing lane, not a verify-then-certify lane -- the directive's execution_model does not apply to it.",
+    "obligations_moved": 0,
+    "ora_remains": "UNASSESSED"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

@@ -645,6 +645,27 @@ structural_gaps_20260804:
       verify the owning process is genuinely gone (the lease record already
       carries `pid` and `worktree_path`). Resolve this BEFORE GAP-015's
       automated reclaim ships, so automation cannot reclaim a live agent's work.
+  - id: GAP-021
+    finding: >
+      OpenRaster has NO implementation. Not thin coverage, not shadow-package
+      coverage -- nothing. There is no src/python/ora or src/python/openraster
+      directory (all 29 sibling format directories exist), no tests/python/ora
+      directory, and no openraster entry in packaging/python/package-matrix.yaml.
+      Its 134 obligations across 20 capabilities are all recorded `missing`
+      because there is nothing to map them to.
+    severity: HIGH
+    status: OPEN
+    owner: unassigned — build-from-nothing lane
+    remediation: >
+      This is a build lane, not a verify-then-certify lane, and the directive's
+      execution_model does not apply to it: "characterize existing source,
+      repair defects, create new source only for genuinely missing capabilities"
+      assumes source exists. For ora every capability is genuinely missing. 134
+      obligations is roughly nrrd (65) and safetensors (86) combined, so this is
+      the single largest piece of remaining product work in the program, and
+      format-factory-openraster is a named deliverable distribution in the goal
+      record. Sequence it explicitly rather than letting it sit behind the five
+      formats that at least have code.
   - id: GAP-020
     finding: >
       Only TWO of the six formats have an implementation-evidence ledger at all.
@@ -657,8 +678,16 @@ structural_gaps_20260804:
       and neither can the proof-requirement audit: it exits with "not found" for
       all four.
     severity: HIGH
-    status: OPEN
-    owner: unassigned
+    status: FIXED
+    owner: claude (2026-08-04)
+    resolution: >-
+      All six formats now have a ledger; the full 689-obligation universe is
+      measurable for the first time. safetensors 86 (86 partial), xliff 142 (116
+      partial / 26 missing), ubl 194 (137 partial / 57 missing), ora 134 (all
+      missing, see GAP-021). Totals across the program: 444 partial, 224
+      missing, 18 implemented, 3 preservation-only. Nothing was promoted -- the
+      point of the exercise was to make the position countable, and it is worse
+      than it looked, which is the honest direction.
     remediation: >
       Author an implementation-evidence ledger per format, as was done for
       ipynb, mapping each obligation to real source symbols and real
