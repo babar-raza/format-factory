@@ -47,9 +47,16 @@ capabilities:
     modules: [model/document.py]
     tests: [test_obligation_typed_model.py]
 
+  # Two clauses, split verdict. "Never execute during load/validate/diff/save"
+  # is satisfied and now proven by audit hook. The opt-in execution adapter with
+  # kernel selection, timeouts and error policy does NOT exist, so the timeout,
+  # kernel-failure and partial-output cases the requirement also names cannot be
+  # written against anything. `partial` is the accurate status.
   IPYNB-EXEC-001:
-    modules: [model/document.py]
-    tests: [test_obligation_typed_model.py]
+    modules: [codec/reader/reader.py, validation/validator.py]
+    tests:
+      - test_obligation_core_path_no_execution.py
+      - test_obligation_typed_model.py
 
   IPYNB-OUTPUT-001:
     modules: [model/output.py, model/document.py]
@@ -119,9 +126,13 @@ capabilities:
     modules: [model/diff.py]
     tests: [test_obligation_structure_diff.py]
 
+  # No merge implementation exists. model/diff.py provides diff and patch only:
+  # no merge, no conflict detection, no conflict report. It was mapped here
+  # because the module EXISTS, which GAP-022 establishes is not evidence that it
+  # implements the obligation. Absent, not untested.
   IPYNB-MERGE-001:
-    modules: [model/diff.py]
-    tests: [test_obligation_structure_diff.py]
+    modules: []
+    tests: []
 
   IPYNB-EDIT-001:
     modules: [model/editor.py]

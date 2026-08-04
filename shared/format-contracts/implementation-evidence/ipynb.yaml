@@ -43,25 +43,16 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-03A1429F7B7AF3E1
   capability_id: IPYNB-MERGE-001
-  status: partial
-  source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/model/diff.py::CellField
-  - src/python/ipynb/src/format_factory/ipynb/model/diff.py::PatchPreconditionError
-  - src/python/ipynb/src/format_factory/ipynb/model/diff.py::DiffPolicy
-  - src/python/ipynb/src/format_factory/ipynb/model/diff.py::FieldChange
-  positive_test_selectors:
-  - tests/python/ipynb/test_obligation_structure_diff.py::test_diff_tracks_move_and_each_semantic_cell_field
-  - tests/python/ipynb/test_obligation_structure_diff.py::test_ignore_policy_suppresses_only_declared_transient_changes
-  - tests/python/ipynb/test_obligation_structure_diff.py::test_patch_is_atomic_machine_applicable_and_rejects_stale_base
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
   negative_test_selectors: []
-  execution_evidence_ids:
-  - IPYNB-BASELINE-SUITE
-  implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  execution_evidence_ids: []
+  implemented_behavior: []
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Conflict-matrix fixtures
     (move/edit, delete/edit, output, metadata).'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Conflict-matrix fixtures (move/edit, delete/edit, output, metadata).
@@ -620,11 +611,17 @@ obligations:
   capability_id: IPYNB-EXEC-001
   status: partial
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
+  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::ensure_cell_id
+  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads
+  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load
+  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load_ipynb
+  - src/python/ipynb/src/format_factory/ipynb/validation/validator.py::validate
+  - src/python/ipynb/src/format_factory/ipynb/validation/validator.py::validate_notebook_schema
+  - src/python/ipynb/src/format_factory/ipynb/validation/validator.py::validate_notebook
   positive_test_selectors:
+  - tests/python/ipynb/test_obligation_core_path_no_execution.py::test_the_audit_hook_actually_detects_execution
+  - tests/python/ipynb/test_obligation_core_path_no_execution.py::test_load_never_executes_cell_source
+  - tests/python/ipynb/test_obligation_core_path_no_execution.py::test_validate_never_executes_cell_source
   - tests/python/ipynb/test_obligation_typed_model.py::test_typed_cells_outputs_and_logical_sources_preserve_raw_form
   - tests/python/ipynb/test_obligation_typed_model.py::test_typed_search_avoids_raw_dictionary_access
   negative_test_selectors: []
