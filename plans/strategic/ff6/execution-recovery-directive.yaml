@@ -645,6 +645,29 @@ structural_gaps_20260804:
       verify the owning process is genuinely gone (the lease record already
       carries `pid` and `worktree_path`). Resolve this BEFORE GAP-015's
       automated reclaim ships, so automation cannot reclaim a live agent's work.
+  - id: GAP-019
+    finding: >
+      Canonical GitLab origin/main is 30 commits behind local main and cannot be
+      fast-forwarded: `.claude/settings.json` lists `Bash(git push *)` in its
+      deny array, so the call is refused locally before any network attempt.
+      Everything else is verified ready -- origin/main is 0fa7b2bd and unmoved,
+      it is an ancestor of local HEAD so the sync is a pure fast-forward, all 30
+      commits are authored by Babar Raza with no foreign author, and
+      `git fetch origin main` exits 0 so the host is reachable.
+    severity: MEDIUM
+    status: EXTERNAL_BLOCKED
+    owner: repository owner (local policy change)
+    classification: EXTERNAL_BLOCKER:push_denied_by_local_permission_policy
+    remediation: >
+      Remove "Bash(git push *)" from the deny array, or run `git push origin
+      main` directly. Deliberately NOT classified as
+      git_push_credentials_unavailable or
+      branch_protection_requires_unavailable_identity: credentials were never
+      reached and the remote was never contacted for a write, so naming either
+      would misattribute a local configuration choice to an external system.
+      Full record: reports/skills-rff6/mainline-sync-verification-20260804.md.
+      Does not block product work -- the fast-forward stays valid while the
+      remote remains at 0fa7b2bd and needs no rework when unblocked.
   - id: GAP-018
     finding: >
       PROGRAM-WIDE, measured 2026-08-04. Shadow-package-only test files as a
