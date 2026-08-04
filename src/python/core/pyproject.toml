@@ -22,6 +22,13 @@ classifiers = [
   "Typing :: Typed",
 ]
 
+# core had no optional-dependencies at all, so even pytest was undeclared for
+# tests/python/core. Found by the same audit that caught two omissions in ipynb
+# and one in safetensors. core stays dependency-free at runtime -- this group is
+# test-only and must not grow runtime requirements.
+[project.optional-dependencies]
+test = ["pytest>=8.3", "hypothesis>=6.100"]
+
 [project.urls]
 Homepage = "https://github.com/format-factory/format-factory"
 Repository = "https://github.com/format-factory/format-factory"

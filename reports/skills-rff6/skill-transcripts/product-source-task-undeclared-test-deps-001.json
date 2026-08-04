@@ -1,0 +1,40 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-undeclared-test-deps-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-04T20:10:00Z",
+  "inputs": {
+    "format_id": "multi",
+    "task_id": "IPYNB_PROOF_REQUIREMENT_AUDIT",
+    "task_kind": "defect",
+    "root_cause": "Test-only third-party imports were not declared in package test extras. The shared dev venv happens to provide them, so the omission is invisible there; in a clean install the import fails at COLLECTION, which silently removes the whole test file from the run instead of failing loudly. Found twice in ipynb (nbformat, pyyaml), then swept across all six packages.",
+    "planned_paths": ["src/python/safetensors/pyproject.toml", "src/python/core/pyproject.toml"],
+    "acceptance_evidence": ".local/run-records/ff6/IPYNB-WHEEL-PROOF/wheel-proof.json",
+    "regression_tier": "core and safetensors package suites"
+  },
+  "execution_steps": [
+    "1. Wrote an AST sweep comparing every third-party import across each format's tests against that package's declared dependencies and test extras.",
+    "2. Separated signal from noise: the format-named hits (ipynb, nrrd, safetensors, ubl, xliff) are the known GAP-002 legacy shadow packages, not dependency gaps, and the ipynb 'yaml' hit was my own scan conflating module name with distribution name (pyyaml provides yaml).",
+    "3. Confirmed two genuine gaps: safetensors' test extra lacked pyyaml although test_safetensors_compat.py imports it, and core had NO optional-dependencies section at all, so even pytest was undeclared for tests/python/core.",
+    "4. Declared both, keeping each strictly test-only so no runtime requirement grows. core in particular stays dependency-free at runtime.",
+    "5. Re-ran both suites: core passes; safetensors is unchanged at its known 4 GAP-002 shadow-package failures, so nothing regressed."
+  ],
+  "allowed_files": ["src/python/safetensors/pyproject.toml", "src/python/core/pyproject.toml"],
+  "actual_files_changed": ["src/python/safetensors/pyproject.toml", "src/python/core/pyproject.toml"],
+  "tests_run": [
+    ".venv/Scripts/python.exe -m pytest tests/python/core tests/python/safetensors -q -- 422 passed, 1 skipped, 4 known GAP-002 failures (unchanged)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "certification_state": "0/6",
+    "gaps_found": 4,
+    "gaps_detail": "ipynb: nbformat + pyyaml (fixed earlier); safetensors: pyyaml; core: entire test extra absent",
+    "obligations_moved": 0,
+    "known_residual": "The format-named undeclared imports are GAP-002 legacy shadow packages and are NOT addressed here; retiring or migrating those tests remains open and unowned."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

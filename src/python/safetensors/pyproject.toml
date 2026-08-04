@@ -25,7 +25,12 @@ classifiers = [
 [project.optional-dependencies]
 numpy = ["numpy>=1.26"]
 torch = ["torch>=2.2"]
-test = ["pytest>=8.3", "hypothesis>=6.100"]
+# pyyaml is imported by test_safetensors_compat.py and was undeclared. Found by
+# the same audit that caught two such omissions in ipynb: the shared dev venv
+# happens to provide it, so the gap only appears in a clean install, where the
+# import fails at COLLECTION and silently takes the whole test file out of the
+# run rather than failing loudly.
+test = ["pytest>=8.3", "hypothesis>=6.100", "pyyaml>=6.0"]
 
 [project.scripts]
 ff-safetensors = "format_factory.safetensors.cli:main"
