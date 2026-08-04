@@ -4,10 +4,10 @@ goal_status: ACTIVE
 generated_by: codex
 visibility: internal
 controller_state: CONTRACT
-transition_sequence: 47
+transition_sequence: 50
 last_verified_event:
-  event_id: FF6-EVENT-000047
-  event_hash: d4cc0a0292b9e5ea5d473d38c195ceb7328b85d47f28569da3cb8af64b1a22ff
+  event_id: FF6-EVENT-000050
+  event_hash: 3896620f571c33f32d9f4ab757e31d95bafc54e0f8b8335cd075bbc89e31f274
 event_journal: plans/strategic/ff6/events.jsonl
 baseline_commit: e4f8f5f086b5e627c07c2ef2d940eda2601a22a8
 digest_policy:
@@ -31,24 +31,30 @@ handover_checkpoint:
     commit that contains its own final bytes.
   next_taskcard: taskcards/TC-FF6-NRRD-READINESS-001.md
 active_task:
-  task_id: TC-FF6-NRRD-READINESS-001
-  state: WORK_IN_PROGRESS
-  parent_task_id: TC-FF6-PROGRAM-CAPABILITIES-001
-  completed_steps:
-    - R1
-    - R2
+  task_id: STAGE_4_EXTRACT_ONLY_PROVEN_SHARED_MACHINERY
+  state: READY
+  parent_task_id: TC-FF6-EXECUTION-RECOVERY-001
+  entered_via: >-
+    Both Stage 2 and Stage 3 reference slices are accepted (Events 48 and 49),
+    satisfying the directive's transition requirement. The interim
+    TC-FF6-NRRD-ASCII-ENDIAN-001 correction (Event 50) closed a proof gap in the
+    Stage 2 slice before the stage advanced.
+  completed_steps: []
   partial_steps: []
-  first_unmet_step: R3_INDEPENDENT_CORPUS_AND_ORACLE_MATRIX
+  first_unmet_step: TWO_ARCHETYPE_COMPARISON_FOR_GAP_010
 next_task:
-  task_id: TC-FF6-NRRD-READINESS-001
-  state: WORK_IN_PROGRESS
+  task_id: STAGE_4_EXTRACT_ONLY_PROVEN_SHARED_MACHINERY
+  state: READY
   unlock_condition: >-
-    Continue from Event 47 and immutable GitLab commit ea118ba3 at NRRD R3.
-    Acquire immutable licensed official, Teem, and pynrrd corpus inputs; bind
-    their digests and tool versions; execute independent read/write
-    differential matrices; preserve contradictions; and derive exact positive,
-    negative, preservation, and interoperability proof gaps. Product source
-    remains read-only until R4 emits bounded implementation taskcards.
+    Continue from Event 50 and commit d0a3919e. Compare the two accepted
+    archetypes' overflow-checked shape/size arithmetic (directive GAP-010: NRRD
+    uses configurable ResourceLimits, SafeTensors hardcodes _MAX_U64 -- the same
+    logical check, already implemented twice and already behaviorally
+    different). Either extract it into format_factory.core with both archetype
+    regressions green, or record with evidence that extraction is unnecessary.
+    Extract nothing that a second proven need has not demonstrated. Product
+    source in both archetypes is writable for this comparison; no other format
+    is in scope and no certification may be claimed.
 acceleration_bootstrap:
   status: COMPLETE
   plan_version: 4
@@ -187,7 +193,14 @@ current_gap_summary:
   production_certifications: 0
 control_plane_compatibility:
   ff6_event_schema: ff6/controller-event@1
-  native_chain_validation: PASS_THROUGH_EVENT_47
+  native_chain_validation: PASS_THROUGH_EVENT_50
+  chain_writer: >-
+    tools/ff6/controller_events.py (added at Event 50, 28 tests). Closes
+    directive GAP-007: the journal previously had no writer, so appending was
+    hand-editing a sha256 chain. The writer validates the whole chain before
+    appending, refuses to append onto a broken chain, derives every chain field
+    itself, and verifies a claimed semantic_commit actually exists.
+    `python -m tools.ff6.controller_events verify` re-checks the chain on demand.
   generic_plan_control_doctor: >-
     INCOMPATIBLE_SCHEMA: tools.plan_control expects previous_hash and its own
     event payload; FF6 uses previous_event_hash. This is the already-tracked
@@ -200,29 +213,56 @@ invariants:
   - Publication authority is external and cannot be bypassed.
 nrrd_checkpoint:
   status: WORK_IN_PROGRESS
-  accepted_slice: R2_EXACT_OBLIGATION_CLASSIFICATION
-  source_checkpoint_commit: ea118ba39904b54517ba6bc5839c8d4fc36fa050
-  completed_steps: [R1, R2]
-  partial_steps: []
+  accepted_slice: GOLDEN_SLICE_AND_ENDIAN_ENCODING_SCOPE_CORRECTION
+  source_checkpoint_commit: d0a3919e
+  completed_steps: [R1, R2, GOLDEN_SLICE, ASCII_ENDIAN_SCOPE_CORRECTION]
+  partial_steps: [R3_INDEPENDENT_CORPUS_AND_ORACLE_MATRIX]
   first_unmet_step: R3_INDEPENDENT_CORPUS_AND_ORACLE_MATRIX
+  r3_partial_note: >-
+    Teem 1.12.0 and pynrrd are both obtained and were used bidirectionally for
+    the endian obligations (Events 48 and 50), so R3 is no longer OPEN. It is
+    not COMPLETE either: a full immutable licensed corpus with bound digests and
+    a whole-format read/write differential matrix is still outstanding. Only the
+    endian and raw-scalar-payload surface has independent oracle coverage.
   public_definitions: 40
   production_namespace_python_files: 17
-  production_namespace_loc: 1290
-  focused_tests: 277 passed
+  production_namespace_loc: 1329
+  focused_tests: 347 passed, 1 skipped
+  focused_tests_previous: 277 passed
   contract_capabilities: 21
   canonical_obligations: 65
   exact_obligation_classification: COMPLETE_NON_PROMOTING
   classifications:
+    implemented: 19
+    partial: 37
+    missing: 6
+    preservation_only: 3
+  classifications_previous:
     implemented: 17
     partial: 39
     missing: 6
     preservation_only: 3
-  unresolved_obligations: 48
-  exact_reconciliation_sha256: f0e05101e78c3836452f9a5a4a826af9443f0190a97cf6657f60cf2b98b81395
-  implementation_evidence_sha256: ade5521116fe0dc6f2c823d7a8bb9dfd1a5e2ee137300c6796983f22e83fdf2a
+  unresolved_obligations: 46
+  unresolved_obligations_previous: 48
+  obligations_moved_at_event_50:
+    - {obligation_id: SAL-NRRD-OBL-644276A28216DFC0, from: partial, to: implemented}
+    - {obligation_id: SAL-NRRD-OBL-5FAF36D205C887AD, from: partial, to: implemented}
+  exact_reconciliation_sha256: 8008f05c0b4f0bb89950c99a3155388acbfc8cb29e888123dc37d944b7d99854
+  exact_reconciliation_determinism: PASS_3_IDENTICAL_RUNS
+  implementation_evidence_sha256: 889b1963947262ef8906f0148e21fefcf42b8d771940a721a99fd1eb41cdc540
   implementation_evidence_schema_sha256: 2eef87038032303817655ef60567d972d9c4c73f26d633819ec8aab751473149
-  exact_execution_evidence_granularity: SUITE_LEVEL_SUPPORTING_NON_PROMOTING
-  independent_teem_pynrrd_oracle: OPEN_R3
+  exact_execution_evidence_granularity: >-
+    MIXED: SELECTOR_LEVEL for the two endian obligations promoted at Event 50
+    (evidence_id NRRD-ENDIAN-SELECTOR-PROOF names exact test node ids);
+    SUITE_LEVEL_SUPPORTING_NON_PROMOTING for the remaining 63.
+  independent_teem_pynrrd_oracle: OBTAINED_BIDIRECTIONAL_SCOPED_TO_ENDIAN_AND_RAW_SCALAR_PAYLOAD
+  interop_defect_found_and_fixed: >-
+    Event 50: the candidate rejected `encoding: ascii` multi-byte payloads with
+    no `endian` field, which Teem accepts. Found by auditing whether Event 48's
+    obligation had met its own stated by-type-AND-encoding proof requirement --
+    it had not; only the type dimension was tested. Recorded because it shows a
+    classification can be recorded as met while half its proof requirement is
+    untested.
   observed_depth_gaps: 6
   heuristic_reconciliation_status: NON_PROMOTING
   installed_package: format-factory-nrrd
@@ -233,8 +273,45 @@ nrrd_checkpoint:
   contract_sha256: f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39
   reconciliation_sha256: f836b45d35425bcacb0ff77444e017b8e559d9921bedb518c6c64dbb32da99e3
   remaining_scope:
-    - immutable independent Teem and pynrrd corpus and oracle evidence
+    - full immutable independent Teem and pynrrd corpus with bound digests and a
+      whole-format read/write differential matrix (the endian and raw-scalar
+      surface is covered; the rest is not)
     - streaming, mmap, detached list/pattern, block-type, and metadata depth
+    - architecture remediation and bounded product implementation taskcards
+    - independent certification and release-candidate evidence
+  promotion_effect: none
+safetensors_checkpoint:
+  status: WORK_IN_PROGRESS
+  accepted_slice: REFERENCE_SLICE_HEADER_LAYOUT_WRITER_AND_LAZY_ACCESS
+  source_checkpoint_commit: 028b6db41c0bcd822bc826a37db35b13c4762d90
+  established_by_event: FF6-EVENT-000049
+  completed_steps: [REFERENCE_SLICE]
+  partial_steps: []
+  first_unmet_step: REMAINING_OBLIGATION_COVERAGE
+  canonical_obligations: 86
+  obligations_with_selector_bound_proof: 8
+  obligations_remaining: 78
+  obligation_transition_at_event_49: implemented_unverified -> implemented_verified
+  product_source_changed: false
+  product_source_change_note: >-
+    All eight obligations were already implemented before the slice. This
+    checkpoint records obligation-bound proof plus an environment-isolation fix,
+    NOT new implementation -- do not read the accepted slice as newly built code.
+  focused_tests: 25 passed
+  package_tests_shared_venv: 385 passed, 1 skipped, 4 known failures
+  package_tests_shared_venv_failure_cause: >-
+    The deprecated legacy shadow package `safetensors.safetensors_codec` collides
+    with the official `safetensors` distribution name, so the 4 official-interop
+    tests cannot resolve both in one environment. Not a product defect, but it is
+    a real and still-open packaging gap (directive GAP-002) and these 4 are NOT
+    counted as passing.
+  official_interop_isolated_venv: PASS_4_OF_4
+  independent_oracle: official safetensors 0.8.0 PyPI package, bidirectional
+  independent_validator_verdict: ACCEPT_WITH_NOTES
+  remaining_scope:
+    - selector-bound proof for the other 78 obligations
+    - retire or migrate the legacy shadow-package tests so official interop runs
+      in the default environment (GAP-002)
     - architecture remediation and bounded product implementation taskcards
     - independent certification and release-candidate evidence
   promotion_effect: none

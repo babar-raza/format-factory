@@ -6,8 +6,19 @@ amended_by: claude
 amended_at: "2026-08-04"
 amendment_basis: independent-production-assessment-20260804
 visibility: internal
-status: STAGE_1_COMPLETE
+status: STAGE_4_READY
 execution_started: true
+
+# Stage progress (2026-08-04). Stage 2 and Stage 3 both accepted and committed;
+# the controller journal advanced 47 -> 50 through a real writer rather than by
+# hand. Recorded here so `status` is not the only place stage truth lives.
+stage_progress:
+  stage_1: ACCEPTED  # TC-FF6-EXECUTION-RECOVERY-001, see stage_1_evidence
+  stage_2: ACCEPTED  # TC-FF6-NRRD-GOLDEN-SLICE-001, commit a16705ed, FF6-EVENT-000048
+  stage_3: ACCEPTED  # TC-FF6-SAFETENSORS-REFERENCE-SLICE-001, commit 028b6db4, FF6-EVENT-000049
+  stage_2_correction: ACCEPTED  # TC-FF6-NRRD-ASCII-ENDIAN-001, commit d0a3919e, FF6-EVENT-000050
+  stage_4: READY
+  controller_head: FF6-EVENT-000050
 
 # Hardening amendment (2026-08-04, per user-directed independent review — see
 # amendment_basis). Supersedes route/sequencing decisions only; does not
@@ -130,13 +141,31 @@ ordered_taskcards:
     status: ACCEPTED
   - taskcard_id: TC-FF6-NRRD-GOLDEN-SLICE-001
     stage: STAGE_2_NRRD_GOLDEN_SLICE
-    status: READY
+    status: ACCEPTED
+    semantic_commit: a16705ed2499f878f71f36260d11c48d55000c93
+    controller_event: FF6-EVENT-000048
   - taskcard_id: TC-FF6-SAFETENSORS-REFERENCE-SLICE-001
     stage: STAGE_3_SAFETENSORS_REFERENCE_SLICE
-    status: READY
+    status: ACCEPTED
+    semantic_commit: 028b6db41c0bcd822bc826a37db35b13c4762d90
+    controller_event: FF6-EVENT-000049
     # was BLOCKED_BY_NRRD_ACCEPTANCE — reclassified READY under the
     # concurrent-stage-2/3 hardening amendment (2026-08-04); does not depend
-    # on NRRD's outcome, only on Stage 1's own acceptance.
+    # on NRRD's outcome, only on Stage 1's own acceptance. The concurrency
+    # decision held: the two slices were executed and accepted independently.
+  - taskcard_id: TC-FF6-NRRD-ASCII-ENDIAN-001
+    stage: STAGE_2_NRRD_GOLDEN_SLICE  # correction to the Stage 2 slice, not a new stage
+    status: ACCEPTED
+    semantic_commit: d0a3919e
+    controller_event: FF6-EVENT-000050
+    basis: >-
+      Not planned work. Found by auditing whether Stage 2's obligation
+      SAL-NRRD-OBL-644276A28216DFC0 had actually met its own stated proof
+      requirement (an endian-required matrix "by type AND encoding"). It had
+      not — every endian test in the slice used `encoding: raw`. Exercising the
+      encoding dimension revealed that the guard also fired for the textual
+      encodings, which the governing SAL fact and Teem both say it must not.
+      See proof_requirement_audit_lesson below.
 
 work_in_progress:
   initial_product_writers: 2
@@ -448,14 +477,25 @@ structural_gaps_20260804:
       complete; the controller will stay silently frozen at Event 47
       indefinitely unless a specific mechanism is assigned.
     severity: MEDIUM
-    status: OPEN
-    owner: whichever agent accepts TC-FF6-NRRD-GOLDEN-SLICE-001 or
-      TC-FF6-SAFETENSORS-REFERENCE-SLICE-001 first
+    status: FIXED
+    owner: claude (2026-08-04)
     remediation: >
-      Added as an explicit new acceptance-criteria line on both product
-      taskcards (see their "Controller event advancement" section, added
-      2026-08-04): accepted integration MUST append a real FF6 event, not
-      merely update the taskcard/directive layer as Stage 1 did.
+      FIXED with a mechanism, not an assignment. Assigning the duty to
+      "whichever agent gets there first" left hand-editing a sha256 hash chain
+      as the de-facto mechanism, which is how a ledger silently corrupts.
+      tools/ff6/controller_events.py (commit 717a5241, 28 tests) is now that
+      mechanism: it validates the entire chain before appending, refuses to
+      append onto an already-broken chain, derives every chain field itself
+      (sequence, event_id, previous_event_hash, event_hash) so a caller cannot
+      get them wrong, verifies that a claimed semantic_commit actually resolves
+      to a commit, preserves existing journal bytes exactly, and writes
+      atomically. `python -m tools.ff6.controller_events verify` re-checks the
+      chain on demand. A drift-guard test asserts the second, independently
+      written copy of the hash rule in
+      plans/codex/handover/handover_projection.py still agrees on every real
+      event, so the GAP-003 multiple-copies failure mode cannot repeat here
+      undetected. The controller advanced 47 -> 50 through this writer; the
+      journal diff is exactly three appended lines.
   - id: GAP-008
     finding: >
       Of ~358 validator-instance results, only 50 set blocks_sprint=True;
@@ -524,6 +564,22 @@ structural_gaps_20260804:
     remediation: Pin default_model in tools/llm/endpoints.yaml to an
       explicit dated model ID; stamp the resolved model into every
       persisted LLM-backend result record. Not a Stage 2/3 blocker.
+  - id: GAP-013
+    finding: >
+      A fourth copy of the literal encoding set {"ascii","text","txt"} remains
+      at src/python/nrrd/src/format_factory/nrrd/validation/validator.py:55.
+      The other three call sites were folded onto the shared
+      payload.TEXTUAL_ENCODINGS constant at Event 50; validator.py was left
+      untouched because it is not in TC-FF6-NRRD-ASCII-ENDIAN-001's declared
+      writable paths.
+    severity: LOW
+    status: OPEN
+    owner: next NRRD taskcard that legitimately owns validator.py
+    remediation: >
+      Fold the last copy onto the shared constant. Recorded rather than done so
+      that respecting the taskcard's declared path boundary does not quietly
+      lose the follow-up. This is the same drift shape as GAP-003, caught early
+      and at much smaller scale.
   - id: GAP-012
     finding: >
       Dependencies are floor-only (>=, no ceiling) repo-wide with no
@@ -535,6 +591,47 @@ structural_gaps_20260804:
     remediation: Out of scope for Stage 2/3. Flag for a future packaging
       lane; consider a lockfile or pinned upper bounds before any FF6
       format's Gate 11 preparation.
+
+# Lesson recorded 2026-08-04 after Event 50. Binding for the rest of this
+# mission: it changes what "an obligation is proven" is allowed to mean.
+proof_requirement_audit_lesson:
+  what_happened: >
+    TC-FF6-NRRD-GOLDEN-SLICE-001 was accepted with 28 tests, two independent
+    oracles (pynrrd and Teem), an isolated installed-wheel proof, and an
+    independent validator's ACCEPT_WITH_NOTES verdict. It still shipped an
+    interoperability defect. Its obligation SAL-NRRD-OBL-644276A28216DFC0
+    states a proof requirement of an "endian-required matrix by type AND
+    encoding"; every endian test in the slice used `encoding: raw`, so only the
+    type dimension was ever exercised. The untested dimension is exactly where
+    the defect was: the new guard also fired for the textual encodings, causing
+    the library to reject files Teem reads.
+  why_the_existing_checks_missed_it: >
+    Every check was real, and none of them compared the tests actually written
+    against the proof requirement the obligation itself declares. Test count,
+    suite pass, oracle agreement, and validator review all measure the quality
+    of the work that WAS done; none measures whether the work covers what was
+    asked. The independent validator reviewed the diff and re-ran the evidence,
+    which cannot surface an absent dimension either.
+  binding_rule: >
+    Before an obligation may move to `implemented`, its declared
+    proof_requirements.positive and proof_requirements.negative must be read
+    literally and each named dimension mapped to at least one real test
+    selector. Where a requirement names a matrix over two axes, both axes must
+    be exercised. A requirement that cannot be met is recorded as remaining
+    missing_behavior and the obligation stays `partial` -- narrowing the
+    missing_behavior text is a legitimate outcome, clearing it without proof is
+    not. Also verify that no relevant negative case is `pytest.skip`-ed: the
+    golden slice's "empty endian value" case was skipped, so that negative
+    proof had never actually been taken while appearing in the selector list.
+  applies_to: all six FF6 formats, retroactively
+  retroactive_action_required: >
+    The 17 NRRD obligations already classified `implemented` before Event 50,
+    and the 8 SafeTensors obligations promoted at Event 49, were classified
+    without this check. They are not assumed wrong, but they are not assumed
+    right either -- each must be re-audited against its own declared
+    proof_requirements before any certification claim depends on it. This is
+    tracked as a live obligation on the per-format certification-readiness gate,
+    not as a completed action.
 
 # Candidate future capabilities inspired by studying an independent reference
 # library while gathering oracle evidence — NOT obligations, NOT implemented,
