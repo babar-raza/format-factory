@@ -13,6 +13,7 @@ from ...model import NrrdDocument
 from ...security import effective_limits
 from ..payload import (
     SUPPORTED_ENCODINGS,
+    TEXTUAL_ENCODINGS,
     encode_binary,
     encode_encoding,
     is_block_type,
@@ -88,16 +89,24 @@ def dumps(
         )
     except NrrdParseError as exc:
         raise NrrdWriteError(str(exc)) from exc
-    if block_size is not None and value.encoding in {"ascii", "text", "txt"}:
+    if block_size is not None and value.encoding in TEXTUAL_ENCODINGS:
         raise NrrdWriteError("block type is not valid with ASCII encoding")
-    binary = encode_binary(
-        value.nrrd_type,
-        value.sizes,
-        value.array,
-        endian=value.header.get("endian"),
-        limits=active_limits,
-        block_size=block_size,
-    )
+    try:
+        binary = encode_binary(
+            value.nrrd_type,
+            value.sizes,
+            value.array,
+            endian=value.header.get("endian"),
+            limits=active_limits,
+            block_size=block_size,
+            # A textual payload exposes no byte order, so writing one must not
+            # demand a declared `endian` (TC-FF6-NRRD-ASCII-ENDIAN-001).
+            require_endian=value.encoding not in TEXTUAL_ENCODINGS,
+        )
+    except NrrdParseError as exc:
+        # Reached via header-derived checks such as the endian guard. Failing to
+        # produce output is a write failure, whichever helper detected it.
+        raise NrrdWriteError(str(exc)) from exc
     payload = encode_encoding(
         binary, value.array, value.encoding, limits=active_limits
     )

@@ -2,6 +2,14 @@
   "contract_id": "FC-NRRD-V1",
   "execution_evidence": [
     {
+      "evidence_id": "NRRD-ENDIAN-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-ascii-endian-001.json",
+      "sha256": "60a99a5918aff5911cec49c6ecb8ca17e2d2284e8e513697a17e12a0f06e20c2",
+      "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS: it names the exact test files and per-selector outcomes for the endian obligations, and is backed by bidirectional evidence from Teem 1.12.0, a genuinely independent C reference implementation that shares no code with format_factory. Covers TC-FF6-NRRD-GOLDEN-SLICE-001 (raw scalar payload guards) and TC-FF6-NRRD-ASCII-ENDIAN-001 (endian/encoding scoping) only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "NRRD-R1-SOURCE-TESTS",
       "expected_result": "PASS",
       "granularity": "suite",
@@ -13,7 +21,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "ade5521116fe0dc6f2c823d7a8bb9dfd1a5e2ee137300c6796983f22e83fdf2a",
+    "implementation_evidence": "889b1963947262ef8906f0148e21fefcf42b8d771940a721a99fd1eb41cdc540",
     "implementation_evidence_schema": "2eef87038032303817655ef60567d972d9c4c73f26d633819ec8aab751473149",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -793,18 +801,28 @@
     {
       "capability_id": "NRRD-SHAPE-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-ENDIAN-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Explicit little/big endian is honored and opaque blocks bypass scalar byte-order conversion."
+        "Explicit little/big endian is honored on read and write, opaque blocks bypass scalar byte-order conversion, and the declaration is required exactly for the encodings that expose byte order (raw/gzip/gz/bzip2/bz2/hex) and not for the textual encodings (ascii/text/txt), matching Teem 1.12.0 in both directions."
       ],
-      "missing_behavior": [
-        "Endian is not required when multi-byte raw data omits it; host-default behavior is silently used."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_ascii_encoding_endian.py::test_byte_order_exposing_encoding_still_requires_endian",
+        "tests/python/nrrd/test_ascii_encoding_endian.py::test_write_requires_endian_for_every_byte_order_exposing_encoding",
+        "tests/python/nrrd/test_golden_raw_scalar_slice.py::test_invalid_endian_token_is_rejected",
+        "tests/python/nrrd/test_ascii_encoding_endian.py::test_invalid_endian_on_binary_write_raises_write_error",
+        "tests/python/nrrd/test_ascii_encoding_endian.py::test_explicitly_empty_endian_value_is_rejected_as_malformed"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-NRRD-OBL-5FAF36D205C887AD",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_big_endian_decode_and_default_profile"
+        "tests/python/nrrd/test_golden_raw_scalar_slice.py::test_little_and_big_endian_fixtures_decode_to_identical_logical_values",
+        "tests/python/nrrd/test_golden_raw_scalar_slice.py::test_writer_emits_declared_byte_order",
+        "tests/python/nrrd/test_golden_raw_scalar_slice.py::test_writer_roundtrip_preserves_logical_values_across_endian_conversion",
+        "tests/python/nrrd/test_golden_raw_scalar_slice.py::test_opaque_block_type_never_requires_endian_and_is_not_byte_swapped",
+        "tests/python/nrrd/test_ascii_encoding_endian.py::test_byte_order_exposing_encoding_accepts_declared_endian",
+        "tests/python/nrrd/test_ascii_encoding_endian.py::test_declared_endian_on_textual_encoding_is_preserved"
       ],
       "proof_requirements": {
         "negative": [
@@ -814,13 +832,15 @@
           "Read/write byte-order matrix including block."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::_endian_prefix",
         "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::decode_binary",
-        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::encode_binary"
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::encode_binary",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_load",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dumps"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-SHAPE-001",
@@ -856,18 +876,29 @@
     {
       "capability_id": "NRRD-SHAPE-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-ENDIAN-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "When present, endian accepts little/big and controls multi-byte raw decoding."
+        "The endian-required matrix is closed over both dimensions the obligation names: by type (uint8 through int64/double, one-byte types exempt) and by encoding (required for raw/gzip/gz/bzip2/bz2/hex, not required for ascii/text/txt), enforced identically on read and on write. Only little/big are accepted; any other token, including an explicitly empty value, fails closed."
       ],
-      "missing_behavior": [
-        "Required-field enforcement for multi-byte byte-order-exposing encodings is absent."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_ascii_encoding_endian.py::test_byte_order_exposing_encoding_still_requires_endian",
+        "tests/python/nrrd/test_ascii_encoding_endian.py::test_write_requires_endian_for_every_byte_order_exposing_encoding",
+        "tests/python/nrrd/test_golden_raw_scalar_slice.py::test_invalid_endian_token_is_rejected",
+        "tests/python/nrrd/test_ascii_encoding_endian.py::test_invalid_endian_on_binary_write_raises_write_error",
+        "tests/python/nrrd/test_ascii_encoding_endian.py::test_explicitly_empty_endian_value_is_rejected_as_malformed"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-NRRD-OBL-644276A28216DFC0",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_big_endian_decode_and_default_profile"
+        "tests/python/nrrd/test_golden_raw_scalar_slice.py::test_every_multibyte_type_requires_endian",
+        "tests/python/nrrd/test_ascii_encoding_endian.py::test_byte_order_exposing_encoding_still_requires_endian",
+        "tests/python/nrrd/test_ascii_encoding_endian.py::test_write_requires_endian_for_every_byte_order_exposing_encoding",
+        "tests/python/nrrd/test_ascii_encoding_endian.py::test_textual_encoding_reads_without_endian",
+        "tests/python/nrrd/test_ascii_encoding_endian.py::test_every_multibyte_type_reads_as_text_without_endian",
+        "tests/python/nrrd/test_ascii_encoding_endian.py::test_write_needs_no_endian_for_textual_encoding",
+        "tests/python/nrrd/test_ascii_encoding_endian.py::test_one_byte_type_needs_no_endian_in_any_encoding"
       ],
       "proof_requirements": {
         "negative": [
@@ -877,13 +908,15 @@
           "Endian-required matrix by type and encoding."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::_endian_prefix",
         "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::decode_binary",
-        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::encode_binary"
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::encode_binary",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_load",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dumps"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-KEYVALUE-001",
@@ -1318,20 +1351,28 @@
     {
       "capability_id": "NRRD-VALIDATE-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-ENDIAN-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Declared byte size is checked before scalar unpack/allocation and decompression output/ratio is bounded."
+        "Declared byte size is checked before scalar unpack/allocation; decompression output size and compression ratio are bounded; a hostile declared shape is refused within a measured memory and time envelope; overflow-equivalent size products and negative dimensions fail before allocation."
       ],
       "missing_behavior": [
-        "Compressed data is decompressed before comparison to declared exact size; cheap-failure and bomb coverage are incomplete."
+        "Compressed payloads are still decompressed (within the bounded envelope) before comparison against the declared exact size, rather than being rejected from the header arithmetic alone.",
+        "Trailing-data policy after a complete payload is not asserted."
       ],
       "negative_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_resource_limits_are_caller_configurable"
+        "tests/python/nrrd/test_golden_raw_scalar_slice.py::test_negative_dimension_rejected_before_allocation",
+        "tests/python/nrrd/test_golden_raw_scalar_slice.py::test_shape_multiplication_overflow_is_rejected_before_allocation",
+        "tests/python/nrrd/test_golden_raw_scalar_slice.py::test_truncated_payload_rejected_for_raw_encoding",
+        "tests/python/nrrd/test_golden_raw_scalar_slice.py::test_decompressed_size_limit_enforced_for_gzip",
+        "tests/python/nrrd/test_golden_raw_scalar_slice.py::test_compression_ratio_limit_enforced",
+        "tests/python/nrrd/test_golden_raw_scalar_slice.py::test_hostile_declared_shape_rejected_within_bounded_memory_and_time"
       ],
       "obligation_id": "SAL-NRRD-OBL-9C262130232DCD09",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_validation_reports_declared_payload_byte_mismatch"
+        "tests/python/nrrd/test_production_namespace.py::test_validation_reports_declared_payload_byte_mismatch",
+        "tests/python/nrrd/test_golden_raw_scalar_slice.py::test_declared_byte_count_mismatch_is_rejected"
       ],
       "proof_requirements": {
         "negative": [
@@ -2058,13 +2099,16 @@
   "promotion_effect": "none",
   "proof_strength": "supporting_nonpromoting",
   "referenced_input_digests": {
+    "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-ascii-endian-001.json": "60a99a5918aff5911cec49c6ecb8ca17e2d2284e8e513697a17e12a0f06e20c2",
     "reports/skills-rff6/skill-transcripts/reconcile-contract-capabilities-nrrd-readiness-001.json": "4675509f009d4b78181543769a6e18dd8292afb65b0624bd347a5b6ccdab2869",
-    "src/python/nrrd/src/format_factory/nrrd/codec/payload.py": "d1d1e95fd49be4415a0d796258ed5cdb8fdbd329a6191238e667fcef2badefb0",
-    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "73c43d22c696e2c8c3f8f0cfb7fcf1806bf3bc6933510e74e1acf4516b85da9f",
-    "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py": "0fadfa1ffff5921964f27e77184215b1ecc4f0337d0764a7555af125608ae08e",
+    "src/python/nrrd/src/format_factory/nrrd/codec/payload.py": "b8535d218acd53550ba13db1544f8158ab3d8428933b05281e5824e9f89aba69",
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "29e71387795de3be5faf239d3a7b0662d21c47817b478ade361f01b48cd884ae",
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py": "fd13125d65da768afed08150e3087c3883ee47411d98d561b47c410d56428195",
     "src/python/nrrd/src/format_factory/nrrd/model/document.py": "da9b7aaec60597d8951766cc13c24012ce1dd56d43e5930f07817bb0e5e9d1e1",
     "src/python/nrrd/src/format_factory/nrrd/security/limits.py": "61960ec909fda7e5b9accf4934948291467bb5e8ce4ce584ec6e6ee12e60e844",
     "src/python/nrrd/src/format_factory/nrrd/validation/validator.py": "4998f59098ae60a928e3b6b5049a7843300efd24f2b19a59d8477f914c41bd98",
+    "tests/python/nrrd/test_ascii_encoding_endian.py": "70aaff339ed8a91183ead5c3b87164d5d1542c393746125c95fb63e5f3f17c04",
+    "tests/python/nrrd/test_golden_raw_scalar_slice.py": "b818dd89a20229421b46b4cbb8aa19dc3449ee197d45552469069cfb10d76513",
     "tests/python/nrrd/test_nrrd_feature_completeness.py": "23c20da810071461f5ed3f4575ba35e021ebaf3745b8ecbf489d519ec98c57d5",
     "tests/python/nrrd/test_obligation_detached_forms_production.py": "0ea4f16a7602ef7ea83a4c69dead3d3204c291c30a71747696a92a97ecc2a2d8",
     "tests/python/nrrd/test_obligation_metadata_production.py": "5c928de8b704e53560d8e845bd02f33a549a61f3c8d3c5ef492c9dee1ceebd40",
@@ -2074,13 +2118,13 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 17,
+      "implemented": 19,
       "missing": 6,
-      "partial": 39,
+      "partial": 37,
       "preservation_only": 3
     },
     "total": 65,
-    "unresolved": 48
+    "unresolved": 46
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

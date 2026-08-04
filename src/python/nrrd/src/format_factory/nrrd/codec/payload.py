@@ -36,6 +36,22 @@ SUPPORTED_ENCODINGS = frozenset(
     {"raw", "ascii", "text", "txt", "hex", "gzip", "gz", "bzip2", "bz2"}
 )
 
+#: Encodings whose payload is decimal text. These expose no element byte order,
+#: so SAL-NRRD-00014 ("endian is required whenever the encoding exposes byte
+#: order") does not apply to them -- Teem reads such files with no `endian`
+#: field, and so must we (TC-FF6-NRRD-ASCII-ENDIAN-001).
+TEXTUAL_ENCODINGS = frozenset({"ascii", "text", "txt"})
+
+#: Encodings that preserve the byte-level element representation, and therefore
+#: do require a declared `endian` for multi-byte types.
+BYTE_ORDER_EXPOSING_ENCODINGS = SUPPORTED_ENCODINGS - TEXTUAL_ENCODINGS
+
+#: Byte order used when normalizing a textual payload into the document's
+#: derived binary buffer. The on-disk text carries no byte order, so this choice
+#: is not observable in output; it is fixed so the derived buffer is
+#: deterministic across platforms.
+_TEXTUAL_INTERNAL_BYTE_ORDER = "<"
+
 
 def is_block_type(type_name: str) -> bool:
     """Return whether a declared NRRD type stores opaque fixed-size blocks."""
@@ -96,7 +112,9 @@ def expected_binary_size(
     return expected
 
 
-def _endian_prefix(endian: str | None, item_size: int) -> str:
+def _endian_prefix(
+    endian: str | None, item_size: int, *, required: bool = True
+) -> str:
     if item_size == 1:
         return "="
     normalized = (endian or "").strip().lower()
@@ -106,6 +124,8 @@ def _endian_prefix(endian: str | None, item_size: int) -> str:
         return ">"
     if normalized:
         raise NrrdParseError(f"invalid endian value: {endian!r}")
+    if not required:
+        return _TEXTUAL_INTERNAL_BYTE_ORDER
     raise NrrdParseError(
         "endian is required for multi-byte NRRD scalar types "
         f"(item size {item_size}); declare 'endian: little' or 'endian: big'"
@@ -120,6 +140,7 @@ def decode_binary(
     endian: str | None,
     limits: ResourceLimits,
     block_size: int | None = None,
+    require_endian: bool = True,
 ) -> list[Any]:
     count = checked_element_count(sizes, limits)
     expected = expected_binary_size(
@@ -133,8 +154,9 @@ def decode_binary(
         width = parse_block_size(block_size)
         return [payload[index : index + width] for index in range(0, expected, width)]
     fmt, item_size = dtype_info(type_name)
+    prefix = _endian_prefix(endian, item_size, required=require_endian)
     try:
-        return list(struct.unpack(f"{_endian_prefix(endian, item_size)}{count}{fmt}", payload))
+        return list(struct.unpack(f"{prefix}{count}{fmt}", payload))
     except struct.error as exc:
         raise NrrdParseError(f"cannot decode NRRD payload: {exc}") from exc
 
@@ -147,6 +169,7 @@ def encode_binary(
     endian: str | None,
     limits: ResourceLimits,
     block_size: int | None = None,
+    require_endian: bool = True,
 ) -> bytes:
     count = checked_element_count(sizes, limits)
     if len(values) != count:
@@ -171,10 +194,9 @@ def encode_binary(
         limits.enforce("max_output_bytes", len(result))
         return result
     fmt, item_size = dtype_info(type_name)
+    prefix = _endian_prefix(endian, item_size, required=require_endian)
     try:
-        result = struct.pack(
-            f"{_endian_prefix(endian, item_size)}{count}{fmt}", *values
-        )
+        result = struct.pack(f"{prefix}{count}{fmt}", *values)
     except (OverflowError, struct.error, TypeError) as exc:
         raise NrrdWriteError(f"cannot encode NRRD values: {exc}") from exc
     limits.enforce("max_output_bytes", len(result))

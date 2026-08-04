@@ -13,6 +13,7 @@ from ...model import NrrdDocument
 from ...security import effective_limits
 from ..payload import (
     SUPPORTED_ENCODINGS,
+    TEXTUAL_ENCODINGS,
     decode_ascii,
     decode_binary,
     decode_encoding,
@@ -253,7 +254,7 @@ def _load(source: BinarySource, *, limits: ResourceLimits, recovery_actions: tup
         if is_block_type(header["type"])
         else None
     )
-    if block_size is not None and encoding in {"ascii", "text", "txt"}:
+    if block_size is not None and encoding in TEXTUAL_ENCODINGS:
         raise NrrdParseError("block type is not valid with ASCII encoding")
     payload = (
         _safe_detached_payload(
@@ -273,8 +274,11 @@ def _load(source: BinarySource, *, limits: ResourceLimits, recovery_actions: tup
             raise NrrdParseError("byte skip -1 payload is truncated")
         payload = payload[-expected:]
 
-    if encoding in {"ascii", "text", "txt"}:
+    if encoding in TEXTUAL_ENCODINGS:
         array = decode_ascii(header["type"], sizes, payload, limits=limits)
+        # The values came from text, so the file exposes no byte order. This
+        # re-encode only builds the document's derived binary buffer, so a
+        # declared `endian` is honored when present but never demanded.
         binary = encode_binary(
             header["type"],
             sizes,
@@ -282,6 +286,7 @@ def _load(source: BinarySource, *, limits: ResourceLimits, recovery_actions: tup
             endian=header.get("endian"),
             limits=limits,
             block_size=block_size,
+            require_endian=False,
         )
     else:
         binary = decode_encoding(payload, encoding, limits=limits)

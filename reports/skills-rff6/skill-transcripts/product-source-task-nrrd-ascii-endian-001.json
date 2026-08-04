@@ -1,0 +1,83 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-ascii-endian-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-04T11:20:00Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC-FF6-NRRD-ASCII-ENDIAN-001",
+    "task_kind": "defect",
+    "root_cause": "The `endian` requirement introduced by TC-FF6-NRRD-GOLDEN-SLICE-001 was enforced in _endian_prefix(), a helper that sees only the element type and never the encoding. SAL-NRRD-00014 scopes the requirement to encodings that expose byte order, so the guard fired for the textual encodings (ascii/text/txt) as well, where the payload is decimal text and no byte order exists. Both directions were affected: the reader re-encodes ASCII values into the document's derived binary buffer via encode_binary(), and the writer always encodes to binary before applying the output encoding.",
+    "planned_paths": [
+      "src/python/nrrd/src/format_factory/nrrd/codec/payload.py",
+      "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+      "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py",
+      "tests/python/nrrd/test_ascii_encoding_endian.py"
+    ],
+    "input_digests": {
+      "baseline_commit": "028b6db41c0bcd822bc826a37db35b13c4762d90",
+      "taskcard_id": "TC-FF6-NRRD-ASCII-ENDIAN-001",
+      "governing_fact": "SAL-NRRD-00014",
+      "obligations": [
+        "SAL-NRRD-OBL-644276A28216DFC0",
+        "SAL-NRRD-OBL-5FAF36D205C887AD"
+      ]
+    },
+    "acceptance_evidence": ".local/run-records/ff6/TC-FF6-NRRD-ASCII-ENDIAN-001/teem_independent_evidence.json",
+    "regression_tier": "full NRRD package suite (tests/python/nrrd)"
+  },
+  "execution_steps": [
+    "1. Found the defect while checking whether TC-FF6-NRRD-GOLDEN-SLICE-001's obligation SAL-NRRD-OBL-644276A28216DFC0 had actually met its stated proof requirement, an 'endian-required matrix by type AND encoding'. Every endian test in the golden slice uses `encoding: raw`, so the encoding dimension was unproven.",
+    "2. Probed the encoding dimension directly: raw, gzip, bzip2, hex and ascii all rejected a missing `endian` for a multi-byte type. Read SAL-NRRD-00014, which scopes the requirement to encodings that expose byte order -- ascii does not.",
+    "3. Confirmed against the independent reference implementation (Teem 1.12.0 `unu`, via WSL2, no root): Teem ACCEPTS ascii+multi-byte with no endian and REJECTS raw+multi-byte with no endian. We rejected a file Teem reads, which is an interoperability defect rather than a stricter-but-safe choice.",
+    "4. Created taskcard TC-FF6-NRRD-ASCII-ENDIAN-001 declaring the exact writable paths before touching product source.",
+    "5. Wrote tests/python/nrrd/test_ascii_encoding_endian.py covering all 8 declared RED scenarios; captured a genuine RED baseline of 13 failed / 18 passed (the 18 are the byte-order-exposing regression guards, expected green throughout).",
+    "6. Fixed by scoping the requirement to the encoding: added TEXTUAL_ENCODINGS / BYTE_ORDER_EXPOSING_ENCODINGS constants and a require_endian parameter threaded through decode_binary/encode_binary; reader passes require_endian=False on the textual branch; writer passes it based on the output encoding and translates the header-derived NrrdParseError into NrrdWriteError so a failed write surfaces as a write error.",
+    "7. Extended the proof after the first GREEN: added the write-side by-encoding matrix (the write half had been proven for `raw` only) and a real explicitly-empty-endian case (the golden slice's parametrized version SKIPS the empty value, so that negative proof had never actually been taken). Verified against Teem that an empty field value is rejected by the reference implementation too, then asserted the verified behavior rather than the behavior initially assumed.",
+    "8. Gathered bidirectional Teem evidence: `unu` reads our endian-less ASCII output with exact values, and we read a Teem-authored ASCII file (`encoding: ASCII`, no endian field) that the pre-fix reader would have rejected."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/payload.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py",
+    "tests/python/nrrd/test_ascii_encoding_endian.py",
+    "taskcards/TC-FF6-NRRD-ASCII-ENDIAN-001.md",
+    "taskcards/index.yaml",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/payload.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py",
+    "tests/python/nrrd/test_ascii_encoding_endian.py",
+    "taskcards/TC-FF6-NRRD-ASCII-ENDIAN-001.md",
+    "taskcards/index.yaml",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/python.exe -m pytest tests/python/nrrd/test_ascii_encoding_endian.py -q -- RED baseline: 13 failed, 18 passed",
+    ".venv/Scripts/python.exe -m pytest tests/python/nrrd/test_ascii_encoding_endian.py -q -- after fix: 42 passed",
+    ".venv/Scripts/python.exe -m pytest tests/python/nrrd -q -- 347 passed, 1 skipped (baseline at 028b6db4 was 305 passed, 1 skipped; +42 new tests, 0 regressions)",
+    ".venv/Scripts/python.exe -m ruff check src/python/nrrd/src/format_factory/nrrd tests/python/nrrd/test_ascii_encoding_endian.py -- All checks passed",
+    ".venv/Scripts/python.exe -m mypy src/python/nrrd/src/format_factory/nrrd -- Success: no issues found in 17 source files",
+    "npx pyright@1.1.411 src/python/nrrd/src/format_factory/nrrd -- 0 errors, 0 warnings",
+    "WSL Teem 1.12.0 unu bidirectional ASCII evidence -- both directions PASS"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 2,
+    "obligations_total_for_format": 65,
+    "nrrd_remains": "UNASSESSED",
+    "oracle": "Teem 1.12.0 (unu) -- independent C reference implementation, not derived from format_factory",
+    "interop_defect_class": "we rejected input the reference implementation accepts",
+    "candidate_record": ".local/run-records/ff6/TC-FF6-NRRD-ASCII-ENDIAN-001/teem_independent_evidence.json",
+    "known_residual": "One further copy of the {ascii,text,txt} literal remains at validation/validator.py:55; validator.py is not in this taskcard's declared writable paths, so it was deliberately left untouched rather than silently expanding scope."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
