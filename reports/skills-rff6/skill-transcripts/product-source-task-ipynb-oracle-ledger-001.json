@@ -1,0 +1,69 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-oracle-ledger-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-04T19:00:00Z",
+  "inputs": {
+    "format_id": "ipynb",
+    "task_id": "IPYNB_IMPLEMENTATION_EVIDENCE_LEDGER",
+    "task_kind": "defect",
+    "root_cause": "The official Jupyter `nbformat` package -- IPYNB's independent oracle -- was never declared in src/python/ipynb/pyproject.toml's test extra, although nine obligation test files import it. In any fresh environment those nine files failed at COLLECTION with ModuleNotFoundError, so `pytest tests/python/ipynb` aborted with 9 collection errors rather than running. The capability reconciler simultaneously reported those capabilities as TESTED, because TESTED is satisfied by a test file existing. The result was that IPYNB's strongest evidence -- its independent-reference tests -- was dead and reported as coverage at the same time.",
+    "planned_paths": [
+      "src/python/ipynb/pyproject.toml",
+      "shared/format-contracts/implementation-evidence/ipynb.yaml",
+      "schemas/format-contracts/implementation-evidence.schema.json"
+    ],
+    "input_digests": {
+      "baseline_commit": "d7580952",
+      "controller_event": "FF6-EVENT-000052",
+      "obligations_total": 68
+    },
+    "acceptance_evidence": "reports/format-contract-layer/ipynb-reconciliation.json",
+    "regression_tier": "full IPYNB package suite (tests/python/ipynb)"
+  },
+  "execution_steps": [
+    "1. Read the IPYNB obligation register (68 obligations across 25 capabilities) and the product tree, and built verified inventories by AST scan: 326 public symbols across 19 source modules, 344 tests across 30 test files.",
+    "2. Checked the Event 52 capability baseline's claim that IPYNB-CLEAN-001, IPYNB-MERGE-001 and IPYNB-UPGRADE-001 were NOT_STARTED. They are not: cleanup() with CleanupPolicy/ChangeReport, model/diff.py and model/lifecycle.py all exist with corresponding tests. Recorded as a capability-to-symbol mapping artifact that the exact ledger supersedes, rather than propagating it.",
+    "3. Generated shared/format-contracts/implementation-evidence/ipynb.yaml with one entry per obligation, mapping only symbols and selectors read out of the real tree. The reconciler fails closed on a symbol that does not exist, which is the correctness check on the mapping.",
+    "4. Set every obligation to `partial`, uniformly and deliberately: implementation exists for all 68 and none has been audited against its own declared proof_requirements. Claiming `implemented` before that audit is what proof_requirement_audit_lesson forbids.",
+    "5. Hit a schema violation: generated_by was pinned to const:'codex'. Widened it to an enum of known generators rather than mislabelling authorship -- the repository is explicitly multi-agent and its own FF6 controller events carry agent:'claude'. Provenance stays constrained and auditable; it just has to be true.",
+    "6. Ran the IPYNB suite and found it did not run at all: 9 collection errors, all ModuleNotFoundError: No module named 'nbformat'.",
+    "7. Installed nbformat 5.10.4 and re-ran: 337 passed, 50 failed. The 50 failures were not introduced -- they were previously invisible because the files never loaded.",
+    "8. Declared nbformat>=5.10 in the ipynb test extra so a fresh checkout cannot silently lose the oracle again, keeping it test-only so the shipped package does not require it."
+  ],
+  "allowed_files": [
+    "src/python/ipynb/pyproject.toml",
+    "shared/format-contracts/implementation-evidence/ipynb.yaml",
+    "schemas/format-contracts/implementation-evidence.schema.json",
+    "plans/strategic/ff6/controller-state.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ipynb/pyproject.toml",
+    "shared/format-contracts/implementation-evidence/ipynb.yaml",
+    "schemas/format-contracts/implementation-evidence.schema.json"
+  ],
+  "tests_run": [
+    ".venv/Scripts/python.exe -m pytest tests/python/ipynb -q  # BEFORE: 9 collection errors, suite did not run",
+    ".venv/Scripts/python.exe -m pip install nbformat  # nbformat 5.10.4",
+    ".venv/Scripts/python.exe -m pytest tests/python/ipynb -q  # AFTER: 337 passed, 50 failed",
+    "python tools/format_contract/contract_reconciler.py --format-id ipynb  # 25 capabilities baseline"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_moved_note": "Zero. Every obligation is recorded `partial`; mapping obligations to symbols is not proving them.",
+    "ipynb_remains": "UNASSESSED",
+    "oracle": "nbformat 5.10.4 (official Jupyter reference implementation)",
+    "oracle_status_change": "ABSENT -> INSTALLED_AND_DECLARED",
+    "suite_status_change": "9 collection errors (did not run) -> 337 passed, 50 failed",
+    "newly_visible_failures": 50,
+    "failure_distribution": "version_conversion 10, cell_editor 10, official_schema_validation 9, corpus_integrity 5, production_namespace 3, attachment_management 3, nbformat_core 2, metadata_adapters 2, attachments 2, validation_profiles 1, trust_notary 1, lifecycle_modes 1, forward_compatibility 1",
+    "known_residual": "The 50 failures are the real IPYNB work queue and are not fixed here. The exact-obligation reconciler still cannot run for IPYNB because its execution-evidence entry needs a transcript whose recorded result matches reality, and the suite is not green."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

@@ -33,7 +33,12 @@ dependencies = [
 
 [project.optional-dependencies]
 reference = ["nbformat==5.10.4"]
-test = ["pytest>=8.3", "hypothesis>=6.100"]
+# nbformat is the official Jupyter reference implementation and is this format's
+# independent oracle. Nine obligation test files import it. It was previously
+# undeclared, so a fresh environment lost all nine to collection errors while the
+# capability reconciler still counted them as "TESTED" because the files existed.
+# It is a test-only dependency: the shipped package must not require it.
+test = ["pytest>=8.3", "hypothesis>=6.100", "nbformat>=5.10"]
 
 [project.urls]
 Homepage = "https://github.com/format-factory/format-factory"

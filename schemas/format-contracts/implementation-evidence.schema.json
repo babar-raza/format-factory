@@ -16,7 +16,10 @@
     "schema": {"const": "format-contracts/implementation-evidence@1"},
     "format_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$"},
     "visibility": {"const": "generated"},
-    "generated_by": {"const": "codex"},
+    "generated_by": {
+      "enum": ["codex", "claude"],
+      "$comment": "Was const:'codex'. Widened 2026-08-04 while authoring the IPYNB ledger: this repository is explicitly multi-agent (FF6 controller events carry agent:'claude' and agent:'codex'; the execution directive carries amended_by:'claude'), so pinning provenance to one agent forced any other author to either mislabel its own output or be locked out. Still an enum, not free text -- provenance stays constrained and auditable; it just has to be true."
+    },
     "execution_evidence": {
       "type": "array",
       "items": {
