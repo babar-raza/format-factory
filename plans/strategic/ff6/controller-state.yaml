@@ -4,10 +4,10 @@ goal_status: ACTIVE
 generated_by: codex
 visibility: internal
 controller_state: CONTRACT
-transition_sequence: 51
+transition_sequence: 52
 last_verified_event:
-  event_id: FF6-EVENT-000051
-  event_hash: 7420b79e059c4c1d002d6fa6b793770ab26cf6dfe37a9dc611c454da042c2d21
+  event_id: FF6-EVENT-000052
+  event_hash: a4ec3bb123048f9915bb08475d222540ab6ede0edb724851671a6094750ce0fb
 event_journal: plans/strategic/ff6/events.jsonl
 baseline_commit: e4f8f5f086b5e627c07c2ef2d940eda2601a22a8
 digest_policy:
@@ -61,18 +61,33 @@ stage_4_record:
     proves nothing new about either format's conformance; a refactor that moved
     obligations would be a red flag.
 next_task:
-  task_id: IPYNB_VERTICAL_SLICES
+  task_id: IPYNB_IMPLEMENTATION_EVIDENCE_LEDGER
   state: READY
   unlock_condition: >-
-    Continue from Event 51 and commit 34732466. IPYNB carries 68 canonical
-    obligations and roughly 7,200 LOC already present, so the critical path is
-    verifying and certifying existing behavior against obligations rather than
-    writing from a blank slate (execution_model: verify_then_certify). Before
-    any IPYNB obligation may move to `implemented`, apply
-    proof_requirement_audit_lesson from the directive: read that obligation's
-    declared proof_requirements literally and map every named dimension to a
-    real test selector, and treat any pytest.skip-ed negative case as unproven.
-    Do not claim certification for any format.
+    Continue from Event 52 and commit 8dc1f7f4. The IPYNB capability baseline is
+    established; the exact blocker is that
+    shared/format-contracts/implementation-evidence/ipynb.yaml does not exist,
+    which is why the reconciler's --exact-obligations mode has never run for this
+    format and why its 68 obligations are unclassified.
+
+    Author that ledger: one entry per obligation with real source symbols, real
+    positive/negative test selectors, and honest missing_behavior. Then run
+    `python tools/format_contract/contract_reconciler.py --format-id ipynb
+    --exact-obligations --obligation-register plans/strategic/ff6/obligations/ipynb.yaml
+    --implementation-evidence shared/format-contracts/implementation-evidence/ipynb.yaml`.
+    Model the file on the NRRD ledger, which is the only existing example.
+
+    Two binding constraints. First, proof_requirement_audit_lesson: an obligation
+    may reach `implemented` only when every dimension its declared
+    proof_requirements names maps to a real selector, and a pytest.skip-ed
+    negative case counts as unproven. Second, the 22 capabilities currently
+    marked TESTED carry no obligation-bound proof and no oracle proof -- do not
+    treat that status as evidence.
+
+    In parallel, acquire the official Jupyter `nbformat` package as the
+    independent oracle. IPYNB has none, so zero capabilities are ORACLE_PROVEN
+    and no IPYNB verification claim is permissible until it exists. Do not claim
+    certification for any format.
 acceleration_bootstrap:
   status: COMPLETE
   plan_version: 4
