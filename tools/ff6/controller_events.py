@@ -20,6 +20,17 @@ every chain field itself (``sequence``, ``event_id``, ``previous_event_hash``,
 ``semantic_commit`` / ``source_checkpoint_commit`` name real commits in this
 repository before the event is allowed to claim them.
 
+Authoring event bodies
+----------------------
+Write the JSON body with a file-writing tool, or a heredoc whose delimiter is
+quoted (``<<'JSON'``). Never an unquoted shell heredoc: the shell performs
+command substitution on backticks and expands dollar signs *before* the file is
+written, silently deleting those words. The damage is invisible to every check
+here, because what lands is still valid JSON that hashes and chains correctly --
+only the prose is missing words. This happened to FF6-EVENT-000057 and had to be
+repaired by appending FF6-EVENT-000058, since an append-only chain cannot be
+edited in place.
+
 Canonical hash algorithm
 ------------------------
 ``event_hash`` is sha256 over the event's JSON body with ``event_hash`` itself
