@@ -5,11 +5,11 @@ generated_by: claude
 execution_evidence:
 - evidence_id: ORA-BASELINE-SUITE
   path: reports/skills-rff6/skill-transcripts/build-evidence-ledger-ora-001.json
-  expected_result: NO_IMPLEMENTATION_PRESENT
+  expected_result: PARTIAL_IMPLEMENTATION_PRESENT
   granularity: suite
-  truth_boundary: There is no suite to run and no source to inspect. The declared result states that plainly
-    rather than borrowing another format's PASS. Every obligation is `missing`; none is partial, and none
-    could be.
+  truth_boundary: 86 tests pass against the four mapped capabilities, written RED before the source existed.
+    The other 16 capabilities have no source and no suite; their obligations stay `missing` rather than
+    borrowing this result.
 obligations:
 - obligation_id: SAL-ORA-OBL-022F37EEA74EC1BB
   capability_id: ORA-EDIT-001
@@ -66,16 +66,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-047E5523BB0D85D5
   capability_id: ORA-STACK-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraText
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_minimal_document_parses
+  - tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required
+  - tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Deep nesting, mixed-child
     ordering, root-attribute rejection, and reorder round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Deep nesting, mixed-child ordering, root-attribute rejection, and reorder round trips.
@@ -275,16 +286,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-12247F430B50BEF0
   capability_id: ORA-CONTAINER-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  - src/python/ora/src/format_factory/ora/errors.py::OraError
+  - src/python/ora/src/format_factory/ora/errors.py::OraArchiveError
+  - src/python/ora/src/format_factory/ora/errors.py::OraValidationError
+  - src/python/ora/src/format_factory/ora/errors.py::OraLimitError
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Valid and hostile archive
     matrices cover member naming, compression, duplicates, traversal, truncation, and expansion limits.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Valid and hostile archive matrices cover member naming, compression, duplicates, traversal, truncation,
@@ -346,16 +367,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-1BCC64FF1DFE8AE5
   capability_id: ORA-STACK-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraText
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_minimal_document_parses
+  - tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required
+  - tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Deep nesting, mixed-child
     ordering, root-attribute rejection, and reorder round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Deep nesting, mixed-child ordering, root-attribute rejection, and reorder round trips.
@@ -453,16 +485,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-23D0207100C46AD9
   capability_id: ORA-STACK-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraText
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_minimal_document_parses
+  - tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required
+  - tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Deep nesting, mixed-child
     ordering, root-attribute rejection, and reorder round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Deep nesting, mixed-child ordering, root-attribute rejection, and reorder round trips.
@@ -575,16 +618,22 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-2F587C16337355AD
   capability_id: ORA-MIMETYPE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: One negative fixture independently
     varies each sentinel invariant.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - One negative fixture independently varies each sentinel invariant.
@@ -628,16 +677,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-329D93743655752D
   capability_id: ORA-STACK-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraText
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_minimal_document_parses
+  - tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required
+  - tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Deep nesting, mixed-child
     ordering, root-attribute rejection, and reorder round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Deep nesting, mixed-child ordering, root-attribute rejection, and reorder round trips.
@@ -662,16 +722,24 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-349C38CC0AFF836B
   capability_id: ORA-DOCUMENT-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/document.py::OraDocument
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_minimal_document_parses
+  - tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required
+  - tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Root/canvas/profile boundary
     and overflow matrices; model construction without I/O.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Root/canvas/profile boundary and overflow matrices; model construction without I/O.
@@ -1030,16 +1098,22 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-55DE1B78BE5C2722
   capability_id: ORA-MIMETYPE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: One negative fixture independently
     varies each sentinel invariant.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - One negative fixture independently varies each sentinel invariant.
@@ -1047,16 +1121,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-587789B06338BF94
   capability_id: ORA-CONTAINER-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  - src/python/ora/src/format_factory/ora/errors.py::OraError
+  - src/python/ora/src/format_factory/ora/errors.py::OraArchiveError
+  - src/python/ora/src/format_factory/ora/errors.py::OraValidationError
+  - src/python/ora/src/format_factory/ora/errors.py::OraLimitError
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Valid and hostile archive
     matrices cover member naming, compression, duplicates, traversal, truncation, and expansion limits.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Valid and hostile archive matrices cover member naming, compression, duplicates, traversal, truncation,
@@ -1065,16 +1149,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-5F86B60E46B035A9
   capability_id: ORA-CONTAINER-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  - src/python/ora/src/format_factory/ora/errors.py::OraError
+  - src/python/ora/src/format_factory/ora/errors.py::OraArchiveError
+  - src/python/ora/src/format_factory/ora/errors.py::OraValidationError
+  - src/python/ora/src/format_factory/ora/errors.py::OraLimitError
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Valid and hostile archive
     matrices cover member naming, compression, duplicates, traversal, truncation, and expansion limits.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Valid and hostile archive matrices cover member naming, compression, duplicates, traversal, truncation,
@@ -1119,16 +1213,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-6078C4F67F33C8E4
   capability_id: ORA-STACK-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraText
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_minimal_document_parses
+  - tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required
+  - tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Deep nesting, mixed-child
     ordering, root-attribute rejection, and reorder round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Deep nesting, mixed-child ordering, root-attribute rejection, and reorder round trips.
@@ -1154,16 +1259,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-6491749388BB6731
   capability_id: ORA-CONTAINER-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  - src/python/ora/src/format_factory/ora/errors.py::OraError
+  - src/python/ora/src/format_factory/ora/errors.py::OraArchiveError
+  - src/python/ora/src/format_factory/ora/errors.py::OraValidationError
+  - src/python/ora/src/format_factory/ora/errors.py::OraLimitError
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Valid and hostile archive
     matrices cover member naming, compression, duplicates, traversal, truncation, and expansion limits.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Valid and hostile archive matrices cover member naming, compression, duplicates, traversal, truncation,
@@ -1243,16 +1358,22 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-6F8C875E6EA535C4
   capability_id: ORA-MIMETYPE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: One negative fixture independently
     varies each sentinel invariant.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - One negative fixture independently varies each sentinel invariant.
@@ -1312,16 +1433,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-79E99C47667CE16E
   capability_id: ORA-CONTAINER-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  - src/python/ora/src/format_factory/ora/errors.py::OraError
+  - src/python/ora/src/format_factory/ora/errors.py::OraArchiveError
+  - src/python/ora/src/format_factory/ora/errors.py::OraValidationError
+  - src/python/ora/src/format_factory/ora/errors.py::OraLimitError
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Valid and hostile archive
     matrices cover member naming, compression, duplicates, traversal, truncation, and expansion limits.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Valid and hostile archive matrices cover member naming, compression, duplicates, traversal, truncation,
@@ -1330,16 +1461,24 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-7ABBF1F9FDF34B2E
   capability_id: ORA-DOCUMENT-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/document.py::OraDocument
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_minimal_document_parses
+  - tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required
+  - tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Root/canvas/profile boundary
     and overflow matrices; model construction without I/O.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Root/canvas/profile boundary and overflow matrices; model construction without I/O.
@@ -1485,16 +1624,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-9007B671A8FCFF7D
   capability_id: ORA-STACK-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraText
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_minimal_document_parses
+  - tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required
+  - tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Deep nesting, mixed-child
     ordering, root-attribute rejection, and reorder round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Deep nesting, mixed-child ordering, root-attribute rejection, and reorder round trips.
@@ -1502,16 +1652,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-930CACD129A5CC40
   capability_id: ORA-STACK-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraText
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_minimal_document_parses
+  - tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required
+  - tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Deep nesting, mixed-child
     ordering, root-attribute rejection, and reorder round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Deep nesting, mixed-child ordering, root-attribute rejection, and reorder round trips.
@@ -1640,16 +1801,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-9AA35CB2D4A8868E
   capability_id: ORA-CONTAINER-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  - src/python/ora/src/format_factory/ora/errors.py::OraError
+  - src/python/ora/src/format_factory/ora/errors.py::OraArchiveError
+  - src/python/ora/src/format_factory/ora/errors.py::OraValidationError
+  - src/python/ora/src/format_factory/ora/errors.py::OraLimitError
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Valid and hostile archive
     matrices cover member naming, compression, duplicates, traversal, truncation, and expansion limits.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Valid and hostile archive matrices cover member naming, compression, duplicates, traversal, truncation,
@@ -1658,16 +1829,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-9B4C91C0E07B379E
   capability_id: ORA-CONTAINER-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  - src/python/ora/src/format_factory/ora/errors.py::OraError
+  - src/python/ora/src/format_factory/ora/errors.py::OraArchiveError
+  - src/python/ora/src/format_factory/ora/errors.py::OraValidationError
+  - src/python/ora/src/format_factory/ora/errors.py::OraLimitError
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Valid and hostile archive
     matrices cover member naming, compression, duplicates, traversal, truncation, and expansion limits.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Valid and hostile archive matrices cover member naming, compression, duplicates, traversal, truncation,
@@ -1729,16 +1910,22 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-A24565BEF82FCD78
   capability_id: ORA-MIMETYPE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: One negative fixture independently
     varies each sentinel invariant.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - One negative fixture independently varies each sentinel invariant.
@@ -1764,16 +1951,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-A9ED959901671553
   capability_id: ORA-STACK-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraText
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_minimal_document_parses
+  - tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required
+  - tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Deep nesting, mixed-child
     ordering, root-attribute rejection, and reorder round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Deep nesting, mixed-child ordering, root-attribute rejection, and reorder round trips.
@@ -1868,16 +2066,24 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-B4D2F9B31528BCA0
   capability_id: ORA-DOCUMENT-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/document.py::OraDocument
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_minimal_document_parses
+  - tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required
+  - tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Root/canvas/profile boundary
     and overflow matrices; model construction without I/O.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Root/canvas/profile boundary and overflow matrices; model construction without I/O.
@@ -1885,16 +2091,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-B7B7362D7DBCA9A2
   capability_id: ORA-CONTAINER-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  - src/python/ora/src/format_factory/ora/errors.py::OraError
+  - src/python/ora/src/format_factory/ora/errors.py::OraArchiveError
+  - src/python/ora/src/format_factory/ora/errors.py::OraValidationError
+  - src/python/ora/src/format_factory/ora/errors.py::OraLimitError
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Valid and hostile archive
     matrices cover member naming, compression, duplicates, traversal, truncation, and expansion limits.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Valid and hostile archive matrices cover member naming, compression, duplicates, traversal, truncation,
@@ -1938,16 +2154,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-BFEC595E47C33BE7
   capability_id: ORA-STACK-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraText
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_minimal_document_parses
+  - tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required
+  - tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Deep nesting, mixed-child
     ordering, root-attribute rejection, and reorder round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Deep nesting, mixed-child ordering, root-attribute rejection, and reorder round trips.
@@ -1990,16 +2217,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-D4098FD6A2610B3F
   capability_id: ORA-STACK-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraText
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_minimal_document_parses
+  - tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required
+  - tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Deep nesting, mixed-child
     ordering, root-attribute rejection, and reorder round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Deep nesting, mixed-child ordering, root-attribute rejection, and reorder round trips.
@@ -2007,16 +2245,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-D430DAB9BD55A80C
   capability_id: ORA-STACK-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraText
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_minimal_document_parses
+  - tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required
+  - tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Deep nesting, mixed-child
     ordering, root-attribute rejection, and reorder round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Deep nesting, mixed-child ordering, root-attribute rejection, and reorder round trips.
@@ -2042,16 +2291,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-D76D780D4D9DA699
   capability_id: ORA-STACK-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraText
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_minimal_document_parses
+  - tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required
+  - tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Deep nesting, mixed-child
     ordering, root-attribute rejection, and reorder round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Deep nesting, mixed-child ordering, root-attribute rejection, and reorder round trips.
@@ -2093,16 +2353,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-E371B8F2C428AB4C
   capability_id: ORA-STACK-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraText
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_minimal_document_parses
+  - tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required
+  - tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Deep nesting, mixed-child
     ordering, root-attribute rejection, and reorder round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Deep nesting, mixed-child ordering, root-attribute rejection, and reorder round trips.
@@ -2234,16 +2505,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-F6424763BCEC7266
   capability_id: ORA-STACK-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraText
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_minimal_document_parses
+  - tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required
+  - tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Deep nesting, mixed-child
     ordering, root-attribute rejection, and reorder round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Deep nesting, mixed-child ordering, root-attribute rejection, and reorder round trips.

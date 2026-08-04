@@ -4,29 +4,30 @@ visibility: internal
 generated_by: claude
 generated_at: '2026-08-04'
 basis: >-
-  OpenRaster has NO implementation. There is no src/python/ora or
-  src/python/openraster directory, no tests/python/ora directory, and no
-  openraster entry in the package matrix. openraster_source_present: false in
-  the verified planning baseline is still accurate.
+  OpenRaster had NO implementation until 2026-08-04, when its first source was
+  written: src/python/ora/ with the archive container, media-type sentinel,
+  layer-tree model and stack.xml parser. The rest of the format is still
+  unbuilt, so most capabilities remain unmapped.
 notes: >-
-  Every capability is therefore declared with no modules and no tests, so all
-  134 obligations are recorded `missing`. This is deliberate: inventing a
-  mapping to make the ledger look populated would be exactly the fabrication
-  the evidence process exists to prevent. Recording them explicitly keeps 134
-  obligations inside the denominator instead of absent from it.
+  Capabilities with no modules and no tests are recorded `missing`, which is
+  deliberate: inventing a mapping to make the ledger look populated would be
+  exactly the fabrication the evidence process exists to prevent. Recording
+  them explicitly keeps all 134 obligations inside the denominator.
 
-  This is a build-from-nothing lane, not a verify-then-certify lane. The
-  directive's execution_model -- characterize existing source, repair defects,
-  create new source only for genuinely missing capabilities -- assumes source
-  exists. For ora, every capability is genuinely missing.
+  Four capabilities are now mapped to real source that was read, not merely
+  assumed to exist (the GAP-022 rule). Mapping them does not assert they are
+  complete -- ORA-STACK-001's model is built and its rendering is not -- only
+  that implementing behaviour and tests exist for the reconciler to grade.
+
+  This remains a build-from-nothing lane. 16 of 20 capabilities have no source.
 
 execution_evidence:
   path: reports/skills-rff6/skill-transcripts/build-evidence-ledger-ora-001.json
-  result: NO_IMPLEMENTATION_PRESENT
+  result: PARTIAL_IMPLEMENTATION_PRESENT
   truth_boundary: >-
-    There is no suite to run and no source to inspect. The declared result
-    states that plainly rather than borrowing another format's PASS. Every
-    obligation is `missing`; none is partial, and none could be.
+    86 tests pass against the four mapped capabilities, written RED before the
+    source existed. The other 16 capabilities have no source and no suite; their
+    obligations stay `missing` rather than borrowing this result.
 
 capabilities:
   ORA-ASSET-001:
@@ -42,12 +43,18 @@ capabilities:
     tests: []
 
   ORA-CONTAINER-001:
-    modules: []
-    tests: []
+    modules:
+    - codec/container.py
+    - errors.py
+    tests:
+    - test_obligation_container_and_mimetype.py
 
   ORA-DOCUMENT-001:
-    modules: []
-    tests: []
+    modules:
+    - model/document.py
+    - codec/stack_xml.py
+    tests:
+    - test_obligation_stack_and_document.py
 
   ORA-EDIT-001:
     modules: []
@@ -74,8 +81,10 @@ capabilities:
     tests: []
 
   ORA-MIMETYPE-001:
-    modules: []
-    tests: []
+    modules:
+    - codec/container.py
+    tests:
+    - test_obligation_container_and_mimetype.py
 
   ORA-PRESERVE-001:
     modules: []
@@ -94,8 +103,11 @@ capabilities:
     tests: []
 
   ORA-STACK-001:
-    modules: []
-    tests: []
+    modules:
+    - model/stack.py
+    - codec/stack_xml.py
+    tests:
+    - test_obligation_stack_and_document.py
 
   ORA-STREAM-001:
     modules: []
