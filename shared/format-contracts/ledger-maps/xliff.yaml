@@ -23,6 +23,22 @@ execution_evidence:
   path: reports/skills-rff6/skill-transcripts/build-evidence-ledger-xliff-001.json
   result: PASS
   truth_boundary: >-
+    SOURCE READ 2026-08-04 under the GAP-022 rule. Unlike ubl, xliff's CORE is
+    genuine work: segmentation.py (217 LOC) implements split_segment,
+    join_segments, SegmentMapping, spanning-code closure checks and fresh-id
+    enforcement; inline.py, text_editing.py and the reader/writer are real. Those
+    `partial` entries are defensible pending audit.
+
+    Its MODULE layer is entirely absent. XLIFF 2.1 defines eight modules
+    (Translation Candidates, Glossary, Format Style, Metadata, Resource Data,
+    Change Tracking, Size and Length Restriction, Validation) and NONE of their
+    namespaces appears anywhere in the package -- the only `matches` hits are a
+    local variable in segmentation.py. XLIFF-MODULE-001's 18 obligations are
+    absent, not untested, which the ledger already records as `missing`.
+    validation/validator.py also performs no schema validation, so the
+    schema-validation clauses inside XLIFF-VALIDATE-001's `partial` entries are
+    overstated and need per-obligation correction.
+
     Suite-level and NON-PROMOTING. The xliff suite is 193 passed with no
     failures, but that number is dominated by the ten shadow-package files; the
     single shipped-namespace file contributes 15 tests. A green suite here says
