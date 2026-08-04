@@ -1,0 +1,84 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-shared-checked-arithmetic-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-04T12:40:00Z",
+  "inputs": {
+    "format_id": "core",
+    "task_id": "TC-FF6-SHARED-CHECKED-ARITHMETIC-001",
+    "task_kind": "refactor",
+    "root_cause": "Directive GAP-010: NRRD and SafeTensors each hand-roll an overflow-checked shape/size multiply, and had already diverged on the technique (NRRD checked the running product after each multiply, SafeTensors before). STAGE_4_EXTRACT_ONLY_PROVEN_SHARED_MACHINERY pre-registered this pair as the two-archetype proof of repeated need.",
+    "planned_paths": [
+      "src/python/core/src/format_factory/core/arithmetic.py",
+      "src/python/core/src/format_factory/core/__init__.py",
+      "src/python/nrrd/src/format_factory/nrrd/codec/payload.py",
+      "src/python/safetensors/src/format_factory/safetensors/model/document.py",
+      "tests/python/core/test_checked_arithmetic.py"
+    ],
+    "input_digests": {
+      "baseline_commit": "e2bfdda1",
+      "taskcard_id": "TC-FF6-SHARED-CHECKED-ARITHMETIC-001",
+      "directive_gap": "GAP-010"
+    },
+    "acceptance_evidence": "taskcards/TC-FF6-SHARED-CHECKED-ARITHMETIC-001.md",
+    "regression_tier": "core + both archetype package suites (tests/python/core, tests/python/nrrd, tests/python/safetensors)"
+  },
+  "execution_steps": [
+    "1. Read both implementations in full before deciding anything, and tabulated the differences in the taskcard. Found GAP-010's framing too broad: the ceiling means different things (configurable memory budget vs u64 representational limit), zero is valid in SafeTensors and invalid in NRRD, arity limits exist in one and not the other, and each format has a published exception contract. Only the bounded multiply itself is genuinely shared.",
+    "2. Decided to extract narrowly -- checked_product(values, ceiling, label) in format_factory.core -- and leave every policy decision in each format. A shared function taking flags for zero-validity and error type would abstract over coincidence, not a shared idea.",
+    "3. Adopted check-before-multiply, the stricter of the two existing techniques, so no intermediate larger than the ceiling is ever formed.",
+    "4. Caught a correctness bug in my own first draft: short-circuiting on a zero factor meant checked_product([0, -5]) returned 0 instead of rejecting the negative factor. Rewrote to validate every factor and return 0 at the end.",
+    "5. Wired NRRD, keeping its NrrdParseError/ResourceLimitError contract and its exact messages; NRRD suite stayed at 347 passed.",
+    "6. Wired SafeTensors and broke it: 4 tests in test_obligation_integer_overflow.py assert exact ValueError message strings, and re-raising ValueError(str(exc)) preserved the type but not the wording. Added context['reason'] (factor_exceeds_ceiling / product_exceeds_ceiling) so each caller maps back to its own published message. An extraction that changes observable behavior is a regression, not a refactor.",
+    "7. tests/python/core/test_package_contract.py blocked the new module because core pins its exact module set. Updated the assertion deliberately, with the reason recorded in its docstring, rather than treating the guard as an obstacle -- extending core's responsibilities should not happen silently.",
+    "8. Wrote 24 tests covering ordinary products, inclusive-ceiling boundaries, zero semantics, the check-before-multiply property (via a 10**400 factor that would be astronomically expensive to materialize), reason distinguishability, caller-bug ValueError cases, and direct assertions that neither archetype's public exception contract changed."
+  ],
+  "allowed_files": [
+    "src/python/core/src/format_factory/core/arithmetic.py",
+    "src/python/core/src/format_factory/core/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/payload.py",
+    "src/python/safetensors/src/format_factory/safetensors/model/document.py",
+    "tests/python/core/test_checked_arithmetic.py",
+    "tests/python/core/test_package_contract.py",
+    "taskcards/TC-FF6-SHARED-CHECKED-ARITHMETIC-001.md",
+    "taskcards/index.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/core/src/format_factory/core/arithmetic.py",
+    "src/python/core/src/format_factory/core/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/payload.py",
+    "src/python/safetensors/src/format_factory/safetensors/model/document.py",
+    "tests/python/core/test_checked_arithmetic.py",
+    "tests/python/core/test_package_contract.py",
+    "taskcards/TC-FF6-SHARED-CHECKED-ARITHMETIC-001.md",
+    "taskcards/index.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/python.exe -m pytest tests/python/core/test_checked_arithmetic.py -q -- 24 passed",
+    ".venv/Scripts/python.exe -m pytest tests/python/core -q -- 13 passed (package contract included)",
+    ".venv/Scripts/python.exe -m pytest tests/python/nrrd -q -- 347 passed, 1 skipped (unchanged from baseline)",
+    ".venv/Scripts/python.exe -m pytest tests/python/safetensors -q -- 385 passed, 1 skipped, 4 pre-existing GAP-002 shadow-package failures (identical to baseline, no new failures)",
+    ".venv/Scripts/python.exe -m ruff check src/python/core src/python/nrrd src/python/safetensors tests/python/core -- All checks passed",
+    ".venv/Scripts/python.exe -m mypy (core + nrrd + safetensors) -- Success: no issues found in 45 source files",
+    "npx pyright@1.1.411 (core + nrrd + safetensors) -- 0 errors, 0 warnings"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "FF6-EVENT-000051",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_moved_note": "None. This is an internal extraction with no observable behavior change, so no obligation may move on its strength. Recorded explicitly because a refactor that moved obligations would be a red flag.",
+    "gap_010_status": "FIXED",
+    "duplication_removed": "one bounded-multiply loop in each of two packages, replaced by one tested primitive",
+    "behavior_change": "none observable -- both archetypes' exception types AND messages are unchanged, proven by their suites passing unmodified",
+    "guards_that_caught_my_own_errors": [
+      "tests/python/core/test_package_contract.py blocked the undeclared core module addition",
+      "tests/python/safetensors/test_obligation_integer_overflow.py caught the silent error-message change"
+    ]
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

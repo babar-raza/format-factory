@@ -4,6 +4,7 @@ visibility: generated
 generated_by: codex
 """
 
+from .arithmetic import CheckedArithmeticError, checked_product
 from .diagnostics import Diagnostic, Severity, SourceLocation, ValidationReport
 from .errors import (
     FormatFactoryError,
@@ -30,6 +31,7 @@ __all__ = [
     "DEFAULT_LIMITS",
     "BinaryDestination",
     "BinarySource",
+    "CheckedArithmeticError",
     "Diagnostic",
     "FormatFactoryError",
     "FormatParseError",
@@ -48,6 +50,7 @@ __all__ = [
     "ValidationReport",
     "WritableBinary",
     "WritableText",
+    "checked_product",
 ]
 
 __version__ = "0.1.0.dev0"

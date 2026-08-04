@@ -25,11 +25,27 @@ def test_core_has_no_format_or_agent_dependencies() -> None:
 
 
 def test_core_exports_only_approved_responsibilities() -> None:
+    """core's module set is a governed boundary, not an accident.
+
+    `arithmetic` was added under TC-FF6-SHARED-CHECKED-ARITHMETIC-001 after two
+    independent product archetypes (NRRD, SafeTensors) were each found to
+    hand-roll the same bounded multiply and to have already diverged on it
+    (directive GAP-010). Extending this set is a deliberate act: anything added
+    here must be machinery two formats have *proven* they repeat, not machinery
+    one format might someday want.
+    """
     modules = {
         path.stem
         for path in (PACKAGE / "src" / "format_factory" / "core").glob("*.py")
     }
-    assert modules == {"__init__", "diagnostics", "errors", "limits", "protocols"}
+    assert modules == {
+        "__init__",
+        "arithmetic",
+        "diagnostics",
+        "errors",
+        "limits",
+        "protocols",
+    }
 
 
 def test_build_backend_is_exactly_pinned_and_hash_locked() -> None:

@@ -8,6 +8,8 @@ from enum import StrEnum
 from types import MappingProxyType
 from typing import Any
 
+from format_factory.core import CheckedArithmeticError, checked_product
+
 from ..errors import SafeTensorsError
 
 _MAX_U64 = (1 << 64) - 1
@@ -87,14 +89,21 @@ class TensorDescriptor:
         object.__setattr__(self, "unknown_fields", MappingProxyType(dict(self.unknown_fields)))
 
     def _checked_element_count(self) -> int:
-        total = 1
-        for dim in self.shape:
-            if dim > _MAX_U64:
-                raise ValueError("shape dimension exceeds unsigned 64-bit size")
-            if dim and total > _MAX_U64 // dim:
-                raise ValueError("shape element count overflows unsigned 64-bit size")
-            total *= dim
-        return total
+        try:
+            return checked_product(
+                self.shape, ceiling=_MAX_U64, label="shape element count"
+            )
+        except CheckedArithmeticError as exc:
+            # Preserve this package's published error type AND its exact
+            # messages: shape validation surfaces as ValueError from
+            # __post_init__, and callers/tests match on these strings.
+            if exc.context.get("reason") == "factor_exceeds_ceiling":
+                raise ValueError(
+                    "shape dimension exceeds unsigned 64-bit size"
+                ) from exc
+            raise ValueError(
+                "shape element count overflows unsigned 64-bit size"
+            ) from exc
 
     @property
     def element_count(self) -> int:

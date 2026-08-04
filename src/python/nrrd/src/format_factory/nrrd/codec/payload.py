@@ -9,7 +9,12 @@ import struct
 import zlib
 from typing import Any, Final
 
-from format_factory.core import ResourceLimitError, ResourceLimits
+from format_factory.core import (
+    CheckedArithmeticError,
+    ResourceLimitError,
+    ResourceLimits,
+    checked_product,
+)
 
 from ..errors import NrrdParseError, NrrdWriteError
 
@@ -85,14 +90,23 @@ def checked_element_count(sizes: list[int], limits: ResourceLimits) -> int:
         raise NrrdParseError("sizes must contain at least one axis")
     if len(sizes) > limits.max_entries:
         raise ResourceLimitError("NRRD dimension exceeds max_entries")
-    result = 1
     for size in sizes:
+        # NRRD axis sizes must be positive; zero is valid in some other formats,
+        # so this stays here rather than moving into the shared primitive.
         if size <= 0:
             raise NrrdParseError("NRRD axis sizes must be positive")
-        result *= size
-        if result > limits.max_decompressed_bytes:
-            raise ResourceLimitError("NRRD element count exceeds resource limits")
-    return result
+    try:
+        return checked_product(
+            sizes,
+            ceiling=limits.max_decompressed_bytes,
+            label="NRRD element count",
+        )
+    except CheckedArithmeticError as exc:
+        # Preserve this package's published error type; the shared primitive
+        # carries no opinion about which exception a format exposes.
+        raise ResourceLimitError(
+            "NRRD element count exceeds resource limits", context=exc.context
+        ) from exc
 
 
 def expected_binary_size(
