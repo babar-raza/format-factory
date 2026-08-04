@@ -21,8 +21,8 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "889b1963947262ef8906f0148e21fefcf42b8d771940a721a99fd1eb41cdc540",
-    "implementation_evidence_schema": "2eef87038032303817655ef60567d972d9c4c73f26d633819ec8aab751473149",
+    "implementation_evidence": "d05bf00193dbad8afbf2d5a399f9b0922a3044b1a4b67aa157c09992d81215cb",
+    "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
   },
@@ -1731,7 +1731,9 @@
       "implemented_behavior": [
         "Line skip is applied before byte skip; positive skips and raw byte-skip -1 are implemented."
       ],
-      "missing_behavior": [],
+      "missing_behavior": [
+        "SHADOW-PACKAGE EVIDENCE ONLY. Both selectors live in tests/python/nrrd/test_nrrd_feature_completeness.py, which imports the deprecated `nrrd.*` shadow package (from nrrd.exceptions, nrrd.models, nrrd.nrrd_codec) rather than format_factory.nrrd. forbidden_progress_claims bars counting that as coverage of the shipped namespace, so this obligation was invalidly marked implemented. Demoted to partial by the proof-requirement audit (GAP-018). The tests themselves exist and pass; they simply prove it for a package we do not ship."
+      ],
       "negative_test_selectors": [
         "tests/python/nrrd/test_nrrd_feature_completeness.py::TestLineAndByteSkip::test_byte_skip_negative_one_skips_to_expected_tail_size"
       ],
@@ -1747,13 +1749,13 @@
           "Attached/detached skip matrix across eligible encodings."
         ]
       },
-      "proof_status": "SUPPORTED_NONPROMOTING",
+      "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_safe_detached_payload",
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_apply_skips",
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_load"
       ],
-      "status": "implemented"
+      "status": "partial"
     },
     {
       "capability_id": "NRRD-TYPES-001",
@@ -2101,7 +2103,7 @@
   "referenced_input_digests": {
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-ascii-endian-001.json": "60a99a5918aff5911cec49c6ecb8ca17e2d2284e8e513697a17e12a0f06e20c2",
     "reports/skills-rff6/skill-transcripts/reconcile-contract-capabilities-nrrd-readiness-001.json": "4675509f009d4b78181543769a6e18dd8292afb65b0624bd347a5b6ccdab2869",
-    "src/python/nrrd/src/format_factory/nrrd/codec/payload.py": "b8535d218acd53550ba13db1544f8158ab3d8428933b05281e5824e9f89aba69",
+    "src/python/nrrd/src/format_factory/nrrd/codec/payload.py": "1082dd49e148afdf69fecd6b9225f38f0cf7db4914e569d51aff1adece3fd172",
     "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "29e71387795de3be5faf239d3a7b0662d21c47817b478ade361f01b48cd884ae",
     "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py": "fd13125d65da768afed08150e3087c3883ee47411d98d561b47c410d56428195",
     "src/python/nrrd/src/format_factory/nrrd/model/document.py": "da9b7aaec60597d8951766cc13c24012ce1dd56d43e5930f07817bb0e5e9d1e1",
@@ -2118,13 +2120,13 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 19,
+      "implemented": 18,
       "missing": 6,
-      "partial": 37,
+      "partial": 38,
       "preservation_only": 3
     },
     "total": 65,
-    "unresolved": 46
+    "unresolved": 47
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
