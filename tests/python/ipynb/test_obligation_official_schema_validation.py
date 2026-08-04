@@ -20,6 +20,7 @@ from format_factory.ipynb import (
 from format_factory.ipynb.validation.schema import (
     SCHEMA_DIGESTS,
     SCHEMA_SOURCE_VERSION,
+    canonical_schema_digest,
 )
 
 Notebook = dict[str, Any]
@@ -187,6 +188,17 @@ def test_mapping_validation_is_bounded_before_schema_recursion() -> None:
 
 
 def test_vendored_schema_bundle_has_pinned_exact_digests() -> None:
+    """The vendored bundle must be the pinned official content.
+
+    Compares the CANONICAL digest (line endings normalized to LF), not the raw
+    byte digest this originally asserted. The raw comparison encoded a
+    platform dependency rather than an integrity property: on a Windows
+    checkout git rewrites LF to CRLF, so every vendored schema mismatched and
+    none would load, while the identical source passed on Linux. See
+    TC-FF6-IPYNB-SCHEMA-DIGEST-001. Content integrity is unchanged -- any
+    difference beyond line endings still fails, as
+    test_obligation_schema_digest_encoding.py asserts directly.
+    """
     assert SCHEMA_SOURCE_VERSION == "nbformat-5.10.4"
     root = resources.files("format_factory.ipynb.validation").joinpath(
         "schemas"
@@ -196,4 +208,4 @@ def test_vendored_schema_bundle_has_pinned_exact_digests() -> None:
         payload = root.joinpath(
             f"nbformat.v4.{minor}.schema.json"
         ).read_bytes()
-        assert hashlib.sha256(payload).hexdigest() == expected
+        assert canonical_schema_digest(payload) == expected

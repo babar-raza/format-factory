@@ -66,3 +66,11 @@ oracle/formats/**/fixtures/** -text !eol
 *.dll -text !eol
 *.so -text !eol
 *.dylib -text !eol
+
+# Vendored official nbformat JSON Schemas (TC-FF6-IPYNB-SCHEMA-DIGEST-001).
+# These are byte-compared against digests pinned from the upstream nbformat
+# release, so their line endings must not vary by checkout platform. The loader
+# canonicalizes CRLF->LF before hashing and is the primary defence; this rule
+# keeps the working tree and any wheel built from it byte-stable so the drift
+# does not silently reappear.
+src/python/ipynb/src/format_factory/ipynb/validation/schemas/*.json text eol=lf

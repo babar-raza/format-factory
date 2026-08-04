@@ -1,0 +1,70 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-schema-digest-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-04T19:30:00Z",
+  "inputs": {
+    "format_id": "ipynb",
+    "task_id": "TC-FF6-IPYNB-SCHEMA-DIGEST-001",
+    "task_kind": "defect",
+    "root_cause": "validation/schema.py::_schema() verified each vendored official nbformat schema by hashing its RAW bytes against a pinned digest. Raw bytes are platform-dependent: on a Windows checkout git rewrites LF to CRLF, so all six schemas mismatched their pins and none would load, making every schema-validated operation raise IPYNB_SCHEMA_ARTIFACT. The identical source passed on Linux. The guard was asserting 'was this checked out on the same OS as the machine that computed the pin' rather than 'is this the official content'.",
+    "planned_paths": [
+      "src/python/ipynb/src/format_factory/ipynb/validation/schema.py",
+      "tests/python/ipynb/test_obligation_schema_digest_encoding.py",
+      "tests/python/ipynb/test_obligation_official_schema_validation.py"
+    ],
+    "input_digests": {
+      "baseline_commit": "ecd6085e",
+      "oracle": "nbformat 5.10.4",
+      "ipynb_suite_baseline": "337 passed, 50 failed"
+    },
+    "acceptance_evidence": "taskcards/TC-FF6-IPYNB-SCHEMA-DIGEST-001.md",
+    "regression_tier": "full IPYNB package suite (tests/python/ipynb)"
+  },
+  "execution_steps": [
+    "1. Traced the 9 official-schema-validation failures to a single diagnostic, IPYNB_SCHEMA_ARTIFACT, raised by the digest guard rather than by any validation logic.",
+    "2. Established that the pinned SCHEMA_DIGESTS constants are CORRECT: all six match nbformat 5.10.4's own schema files byte for byte. The pins were never the problem.",
+    "3. Established that the vendored copies are semantically identical to the official ones (json.load equality for all six), so no content was wrong either.",
+    "4. Tested the platform hypothesis directly: all six vendored files are byte-identical to official AFTER CRLF->LF normalization, and all six contain CRLF. That isolates the defect to the hashing being encoding-sensitive, and shows the library is broken on Windows and fine on Linux.",
+    "5. Wrote tests/python/ipynb/test_obligation_schema_digest_encoding.py FIRST; captured it RED (ImportError: canonical_schema_digest does not exist).",
+    "6. Added canonical_schema_digest(), normalizing CRLF and lone CR to LF before hashing, matching the repository's own declared digest_policy.tracked_text_canonicalization: CRLF_TO_LF, and used it in _schema(). Canonicalization is deliberately limited to line endings so the guard still detects any real content change.",
+    "7. Verified the guard was not weakened: explicit tests assert that a changed key and even an extra space inside a JSON string still fail the digest. Relaxing the check into uselessness would have passed every encoding test, so this is the test that matters.",
+    "8. Updated test_vendored_schema_bundle_has_pinned_exact_digests, which asserted the raw-byte digest and therefore encoded the defect itself, to assert the canonical digest with the reason recorded in its docstring."
+  ],
+  "allowed_files": [
+    "src/python/ipynb/src/format_factory/ipynb/validation/schema.py",
+    "tests/python/ipynb/test_obligation_schema_digest_encoding.py",
+    "tests/python/ipynb/test_obligation_official_schema_validation.py",
+    "taskcards/TC-FF6-IPYNB-SCHEMA-DIGEST-001.md",
+    "taskcards/index.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ipynb/src/format_factory/ipynb/validation/schema.py",
+    "tests/python/ipynb/test_obligation_schema_digest_encoding.py",
+    "tests/python/ipynb/test_obligation_official_schema_validation.py",
+    "taskcards/TC-FF6-IPYNB-SCHEMA-DIGEST-001.md",
+    "taskcards/index.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/python.exe -m pytest tests/python/ipynb/test_obligation_schema_digest_encoding.py -q  # RED: ImportError, then 37 passed",
+    ".venv/Scripts/python.exe -m pytest tests/python/ipynb -q  # 337 passed/50 failed -> 421 passed/3 failed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "certification_state": "0/6",
+    "defect_class": "cross-platform correctness -- all schema validation failed on Windows and passed on Linux",
+    "failures_resolved": 47,
+    "suite_change": "337 passed, 50 failed -> 421 passed, 3 failed",
+    "single_root_cause_share": "47 of the 50 visible failures traced to this one encoding-sensitive hash",
+    "guard_strength_preserved": "canonicalization covers line endings only; tests assert that a changed key and an extra space inside a string still fail the digest",
+    "obligations_moved": 0,
+    "obligations_moved_note": "Zero. The obligations remain `partial` pending the proof_requirement audit; fixing a defect they did not name does not promote them.",
+    "known_residual": "3 failures remain, all asserting that format_factory.ipynb resolves from an INSTALLED location rather than the repo tree (test_implicit_namespace_has_no_parent_init and two *_uses_installed_production_namespace). These are the same environment class as directive GAP-002 (editable/stale installs), not product defects, and are not fixed here.",
+    "ipynb_remains": "UNASSESSED"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

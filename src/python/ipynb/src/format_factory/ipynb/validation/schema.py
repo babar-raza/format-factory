@@ -31,6 +31,27 @@ class SchemaArtifactError(RuntimeError):
     """Raised when a vendored schema is absent, changed, or invalid."""
 
 
+def canonical_schema_digest(payload: bytes) -> str:
+    """SHA-256 of ``payload`` with line endings canonicalized to LF.
+
+    The integrity guard must answer "is this the official schema content", not
+    "was this file checked out on the same operating system as the one that
+    computed the pin". Hashing raw bytes conflated the two: on a Windows
+    checkout git rewrites LF to CRLF, so every vendored schema mismatched its
+    pinned digest and none would load, breaking every schema-validated
+    operation on that platform while the identical source passed on Linux.
+
+    Canonicalization is deliberately limited to line endings (CRLF and lone CR
+    to LF), matching this repository's declared
+    ``digest_policy.tracked_text_canonicalization: CRLF_TO_LF``. Any other
+    difference -- a changed key, a changed value, even an extra space inside a
+    string -- still changes the digest, so the guard keeps its real purpose.
+    """
+    return hashlib.sha256(
+        payload.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    ).hexdigest()
+
+
 def _resource_name(minor: int) -> str:
     if minor not in SCHEMA_DIGESTS:
         raise ValueError("schema minor must be between 0 and 5")
@@ -48,7 +69,7 @@ def _schema(minor: int) -> dict[str, Any]:
         )
     except (FileNotFoundError, OSError) as exc:
         raise SchemaArtifactError(f"official schema resource {name} is missing") from exc
-    actual = hashlib.sha256(payload).hexdigest()
+    actual = canonical_schema_digest(payload)
     expected = SCHEMA_DIGESTS[minor]
     if actual != expected:
         raise SchemaArtifactError(
@@ -221,5 +242,6 @@ __all__ = [
     "SCHEMA_DIGESTS",
     "SCHEMA_SOURCE_VERSION",
     "SchemaArtifactError",
+    "canonical_schema_digest",
     "schema_diagnostics",
 ]
