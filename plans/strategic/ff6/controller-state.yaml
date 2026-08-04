@@ -4,10 +4,10 @@ goal_status: ACTIVE
 generated_by: codex
 visibility: internal
 controller_state: CONTRACT
-transition_sequence: 50
+transition_sequence: 51
 last_verified_event:
-  event_id: FF6-EVENT-000050
-  event_hash: 3896620f571c33f32d9f4ab757e31d95bafc54e0f8b8335cd075bbc89e31f274
+  event_id: FF6-EVENT-000051
+  event_hash: 7420b79e059c4c1d002d6fa6b793770ab26cf6dfe37a9dc611c454da042c2d21
 event_journal: plans/strategic/ff6/events.jsonl
 baseline_commit: e4f8f5f086b5e627c07c2ef2d940eda2601a22a8
 digest_policy:
@@ -31,30 +31,48 @@ handover_checkpoint:
     commit that contains its own final bytes.
   next_taskcard: taskcards/TC-FF6-NRRD-READINESS-001.md
 active_task:
-  task_id: STAGE_4_EXTRACT_ONLY_PROVEN_SHARED_MACHINERY
+  task_id: IPYNB_VERTICAL_SLICES
   state: READY
   parent_task_id: TC-FF6-EXECUTION-RECOVERY-001
   entered_via: >-
-    Both Stage 2 and Stage 3 reference slices are accepted (Events 48 and 49),
-    satisfying the directive's transition requirement. The interim
-    TC-FF6-NRRD-ASCII-ENDIAN-001 correction (Event 50) closed a proof gap in the
-    Stage 2 slice before the stage advanced.
+    Stage 4 completed at Event 51. Stages 2 and 3 were accepted at Events 48 and
+    49; the interim TC-FF6-NRRD-ASCII-ENDIAN-001 correction (Event 50) closed a
+    proof gap in the Stage 2 slice; Stage 4 extracted the one genuinely repeated
+    piece of machinery the two archetypes proved (GAP-010) and nothing more.
   completed_steps: []
   partial_steps: []
-  first_unmet_step: TWO_ARCHETYPE_COMPARISON_FOR_GAP_010
+  first_unmet_step: IPYNB_OBLIGATION_SELECTION_AND_PROOF_REQUIREMENT_AUDIT
+stage_4_record:
+  status: COMPLETE
+  event: FF6-EVENT-000051
+  taskcard: TC-FF6-SHARED-CHECKED-ARITHMETIC-001
+  semantic_commit: 34732466
+  extracted: format_factory.core.checked_product + CheckedArithmeticError
+  extracted_scope_note: >-
+    Narrow by design. GAP-010 described the duplication as "overflow-checked
+    shape/size arithmetic"; reading both archetypes showed that framing is too
+    broad. Ceiling semantics, zero-dimension validity, arity limits and public
+    exception contracts all differ CORRECTLY between NRRD and SafeTensors and
+    were left in each format. Only the bounded multiply itself was shared.
+  observable_behavior_change: none
+  obligations_moved: 0
+  obligations_moved_note: >-
+    Deliberately zero. An internal extraction with no observable behavior change
+    proves nothing new about either format's conformance; a refactor that moved
+    obligations would be a red flag.
 next_task:
-  task_id: STAGE_4_EXTRACT_ONLY_PROVEN_SHARED_MACHINERY
+  task_id: IPYNB_VERTICAL_SLICES
   state: READY
   unlock_condition: >-
-    Continue from Event 50 and commit d0a3919e. Compare the two accepted
-    archetypes' overflow-checked shape/size arithmetic (directive GAP-010: NRRD
-    uses configurable ResourceLimits, SafeTensors hardcodes _MAX_U64 -- the same
-    logical check, already implemented twice and already behaviorally
-    different). Either extract it into format_factory.core with both archetype
-    regressions green, or record with evidence that extraction is unnecessary.
-    Extract nothing that a second proven need has not demonstrated. Product
-    source in both archetypes is writable for this comparison; no other format
-    is in scope and no certification may be claimed.
+    Continue from Event 51 and commit 34732466. IPYNB carries 68 canonical
+    obligations and roughly 7,200 LOC already present, so the critical path is
+    verifying and certifying existing behavior against obligations rather than
+    writing from a blank slate (execution_model: verify_then_certify). Before
+    any IPYNB obligation may move to `implemented`, apply
+    proof_requirement_audit_lesson from the directive: read that obligation's
+    declared proof_requirements literally and map every named dimension to a
+    real test selector, and treat any pytest.skip-ed negative case as unproven.
+    Do not claim certification for any format.
 acceleration_bootstrap:
   status: COMPLETE
   plan_version: 4

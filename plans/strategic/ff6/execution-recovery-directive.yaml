@@ -6,7 +6,7 @@ amended_by: claude
 amended_at: "2026-08-04"
 amendment_basis: independent-production-assessment-20260804
 visibility: internal
-status: STAGE_4_READY
+status: IPYNB_VERTICAL_SLICES_READY
 execution_started: true
 
 # Stage progress (2026-08-04). Stage 2 and Stage 3 both accepted and committed;
@@ -17,8 +17,9 @@ stage_progress:
   stage_2: ACCEPTED  # TC-FF6-NRRD-GOLDEN-SLICE-001, commit a16705ed, FF6-EVENT-000048
   stage_3: ACCEPTED  # TC-FF6-SAFETENSORS-REFERENCE-SLICE-001, commit 028b6db4, FF6-EVENT-000049
   stage_2_correction: ACCEPTED  # TC-FF6-NRRD-ASCII-ENDIAN-001, commit d0a3919e, FF6-EVENT-000050
-  stage_4: READY
-  controller_head: FF6-EVENT-000050
+  stage_4: ACCEPTED  # TC-FF6-SHARED-CHECKED-ARITHMETIC-001, commit 34732466, FF6-EVENT-000051
+  ipynb_vertical_slices: READY
+  controller_head: FF6-EVENT-000051
 
 # Hardening amendment (2026-08-04, per user-directed independent review — see
 # amendment_basis). Supersedes route/sequencing decisions only; does not
@@ -153,6 +154,16 @@ ordered_taskcards:
     # concurrent-stage-2/3 hardening amendment (2026-08-04); does not depend
     # on NRRD's outcome, only on Stage 1's own acceptance. The concurrency
     # decision held: the two slices were executed and accepted independently.
+  - taskcard_id: TC-FF6-SHARED-CHECKED-ARITHMETIC-001
+    stage: STAGE_4_EXTRACT_ONLY_PROVEN_SHARED_MACHINERY
+    status: ACCEPTED
+    semantic_commit: 34732466
+    controller_event: FF6-EVENT-000051
+    basis: >-
+      Resolves GAP-010 using the two accepted archetypes as the pre-registered
+      proof of repeated need. Extracted only the bounded multiply itself; the
+      surrounding policy differences between NRRD and SafeTensors are correct
+      and were deliberately left in place.
   - taskcard_id: TC-FF6-NRRD-ASCII-ENDIAN-001
     stage: STAGE_2_NRRD_GOLDEN_SLICE  # correction to the Stage 2 slice, not a new stage
     status: ACCEPTED
@@ -542,14 +553,25 @@ structural_gaps_20260804:
       ResourceLimits; SafeTensors hardcodes _MAX_U64) — same logical check,
       already implemented twice, already behaviorally different.
     severity: LOW
-    status: OPEN — legitimate Stage 4 candidate
-    owner: whichever agent executes
-      STAGE_4_EXTRACT_ONLY_PROVEN_SHARED_MACHINERY
+    status: FIXED
+    owner: claude (2026-08-04, TC-FF6-SHARED-CHECKED-ARITHMETIC-001)
     remediation: >
-      This is exactly the "two archetype comparison identifies actual
-      repeated machinery" trigger the plan's existing Stage 4 already
-      anticipates (see state_machine transitions). Do not extract early;
-      extract when Stage 4 is reached, using this pair as the proof.
+      FIXED at Stage 4, and the finding's framing was corrected in the process.
+      "Overflow-checked shape/size arithmetic" turned out to be too broad a
+      description of what is shared. Reading both archetypes showed that the
+      ceiling means different things (NRRD a configurable memory budget,
+      SafeTensors a u64 representational limit), a zero dimension is valid in
+      SafeTensors and invalid in NRRD, only NRRD applies an arity limit, and
+      each package has a published exception contract its callers depend on.
+      Those differences are correct and were deliberately NOT unified -- a
+      shared function taking flags for all of them would abstract over
+      coincidence rather than over a shared idea. Only the bounded multiply
+      itself was extracted, as format_factory.core.checked_product, adopting
+      check-before-multiply (the stricter of the two techniques the archetypes
+      had diverged onto). Both archetypes' exception types AND messages are
+      unchanged, proven by their suites passing unmodified. No obligation moved:
+      an internal extraction with no observable behavior change proves nothing
+      new about conformance.
   - id: GAP-011
     finding: >
       LLM-backend calls (tools/supervisor/backends/llm_api_backend.py) fall
