@@ -1,0 +1,74 @@
+{
+  "target": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\mutation-lab\\ipynb\\src\\python\\ipynb\\src\\format_factory\\ipynb\\model\\diff.py",
+  "test_dir": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\mutation-lab\\ipynb\\tests\\python\\ipynb",
+  "baseline_green": true,
+  "deselected": [
+    "tests/python/ipynb/test_obligation_attachments.py::test_attachment_proof_uses_installed_production_namespace",
+    "tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace",
+    "tests/python/ipynb/test_production_namespace.py::test_implicit_namespace_has_no_parent_init"
+  ],
+  "total_mutations": 25,
+  "killed": 17,
+  "survived": 8,
+  "errors": 0,
+  "kill_rate_pct": 68.0,
+  "verdict": "NEEDS_HARDENING",
+  "survivors": [
+    {
+      "type": "swap_bool",
+      "line": 63,
+      "original": "True",
+      "mutated": "False",
+      "status": "survived"
+    },
+    {
+      "type": "swap_bool",
+      "line": 77,
+      "original": "True",
+      "mutated": "False",
+      "status": "survived"
+    },
+    {
+      "type": "return_none",
+      "line": 98,
+      "original": "return <value>",
+      "mutated": "return None",
+      "status": "survived"
+    },
+    {
+      "type": "return_none",
+      "line": 422,
+      "original": "return <value>",
+      "mutated": "return None",
+      "status": "survived"
+    },
+    {
+      "type": "swap_bool",
+      "line": 30,
+      "original": "True",
+      "mutated": "False",
+      "status": "survived"
+    },
+    {
+      "type": "swap_bool",
+      "line": 71,
+      "original": "True",
+      "mutated": "False",
+      "status": "survived"
+    },
+    {
+      "type": "swap_bool",
+      "line": 143,
+      "original": "True",
+      "mutated": "False",
+      "status": "survived"
+    },
+    {
+      "type": "negate_comparison",
+      "line": 370,
+      "original": "Compare(left=Name(id='key', ctx=Load()), ops=[NotEq()], comparators=[Constant(value='metadata')])",
+      "mutated": "Compare(left=Name(id='key', ctx=Load()), ops=[Eq()], comparators=[Constant(value='metadata')])",
+      "status": "survived"
+    }
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "target": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\mutation-lab\\ipynb\\src\\python\\ipynb\\src\\format_factory\\ipynb\\model\\document.py",
+  "test_dir": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\mutation-lab\\ipynb\\tests\\python\\ipynb",
+  "baseline_green": true,
+  "deselected": [
+    "tests/python/ipynb/test_obligation_attachments.py::test_attachment_proof_uses_installed_production_namespace",
+    "tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace",
+    "tests/python/ipynb/test_production_namespace.py::test_implicit_namespace_has_no_parent_init"
+  ],
+  "total_mutations": 25,
+  "killed": 10,
+  "survived": 15,
+  "errors": 0,
+  "kill_rate_pct": 40.0,
+  "verdict": "NEEDS_HARDENING",
+  "survivors": [
+    {
+      "type": "return_none",
+      "line": 63,
+      "original": "return <value>",
+      "mutated": "return None",
+      "status": "survived"
+    },
+    {
+      "type": "return_none",
+      "line": 75,
+      "original": "return <value>",
+      "mutated": "return None",
+      "status": "survived"
+    },
+    {
+      "type": "return_none",
+      "line": 90,
+      "original": "return <value>",
+      "mutated": "return None",
+      "status": "survived"
+    },
+    {
+      "type": "return_none",
+      "line": 140,
+      "original": "return <value>",
+      "mutated": "return None",
+      "status": "survived"
+    },
+    {
+      "type": "return_none",
+      "line": 152,
+      "original": "return <value>",
+      "mutated": "return None",
+      "status": "survived"
+    },
+    {
+      "type": "return_none",
+      "line": 290,
+      "original": "return <value>",
+      "mutated": "return None",
+      "status": "survived"
+    },
+    {
+      "type": "return_none",
+      "line": 302,
+      "original": "return <value>",
+      "mutated": "return None",
+      "status": "survived"
+    },
+    {
+      "type": "return_none",
+      "line": 354,
+      "original": "return <value>",
+      "mutated": "return None",
+      "status": "survived"
+    },
+    {
+      "type": "return_none",
+      "line": 375,
+      "original": "return <value>",
+      "mutated": "return None",
+      "status": "survived"
+    },
+    {
+      "type": "return_none",
+      "line": 114,
+      "original": "return <value>",
+      "mutated": "return None",
+      "status": "survived"
+    },
+    {
+      "type": "return_none",
+      "line": 161,
+      "original": "return <value>",
+      "mutated": "return None",
+      "status": "survived"
+    },
+    {
+      "type": "negate_comparison",
+      "line": 343,
+      "original": "Compare(left=Name(id='cell_type', ctx=Load()), ops=[Eq()], comparators=[Constant(value='code')])",
+      "mutated": "Compare(left=Name(id='cell_type', ctx=Load()), ops=[NotEq()], comparators=[Constant(value='code')])",
+      "status": "survived"
+    },
+    {
+      "type": "off_by_one",
+      "line": 251,
+      "original": "0",
+      "mutated": "1",
+      "status": "survived"
+    },
+    {
+      "type": "off_by_one",
+      "line": 255,
+      "original": "0",
+      "mutated": "-1",
+      "status": "survived"
+    },
+    {
+      "type": "negate_comparison",
+      "line": 302,
+      "original": "Compare(left=Call(func=Attribute(value=Name(id='cell', ctx=Load()), attr='get', ctx=Load()), args=[Constant(value='cell_type')]), ops=[Eq()], comparators=[Constant(value='raw')])",
+      "mutated": "Compare(left=Call(func=Attribute(value=Name(id='cell', ctx=Load()), attr='get', ctx=Load()), args=[Constant(value='cell_type')]), ops=[NotEq()], comparators=[Constant(value='raw')])",
+      "status": "survived"
+    }
+  ]
+}

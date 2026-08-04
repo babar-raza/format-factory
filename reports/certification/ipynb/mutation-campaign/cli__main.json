@@ -1,0 +1,144 @@
+{
+  "target": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\mutation-lab\\ipynb\\src\\python\\ipynb\\src\\format_factory\\ipynb\\cli\\main.py",
+  "test_dir": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\mutation-lab\\ipynb\\tests\\python\\ipynb",
+  "baseline_green": true,
+  "deselected": [
+    "tests/python/ipynb/test_obligation_attachments.py::test_attachment_proof_uses_installed_production_namespace",
+    "tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace",
+    "tests/python/ipynb/test_production_namespace.py::test_implicit_namespace_has_no_parent_init"
+  ],
+  "total_mutations": 18,
+  "killed": 0,
+  "survived": 18,
+  "errors": 0,
+  "kill_rate_pct": 0.0,
+  "verdict": "NEEDS_HARDENING",
+  "survivors": [
+    {
+      "type": "return_none",
+      "line": 50,
+      "original": "return <value>",
+      "mutated": "return None",
+      "status": "survived"
+    },
+    {
+      "type": "negate_comparison",
+      "line": 20,
+      "original": "Compare(left=Attribute(value=Name(id='args', ctx=Load()), attr='command', ctx=Load()), ops=[Eq()], comparators=[Constant(value='probe')])",
+      "mutated": "Compare(left=Attribute(value=Name(id='args', ctx=Load()), attr='command', ctx=Load()), ops=[NotEq()], comparators=[Constant(value='probe')])",
+      "status": "survived"
+    },
+    {
+      "type": "return_none",
+      "line": 23,
+      "original": "return <value>",
+      "mutated": "return None",
+      "status": "survived"
+    },
+    {
+      "type": "negate_comparison",
+      "line": 24,
+      "original": "Compare(left=Attribute(value=Name(id='args', ctx=Load()), attr='command', ctx=Load()), ops=[Eq()], comparators=[Constant(value='validate')])",
+      "mutated": "Compare(left=Attribute(value=Name(id='args', ctx=Load()), attr='command', ctx=Load()), ops=[NotEq()], comparators=[Constant(value='validate')])",
+      "status": "survived"
+    },
+    {
+      "type": "return_none",
+      "line": 38,
+      "original": "return <value>",
+      "mutated": "return None",
+      "status": "survived"
+    },
+    {
+      "type": "off_by_one",
+      "line": 50,
+      "original": "0",
+      "mutated": "1",
+      "status": "survived"
+    },
+    {
+      "type": "off_by_one",
+      "line": 50,
+      "original": "0",
+      "mutated": "-1",
+      "status": "survived"
+    },
+    {
+      "type": "swap_bool",
+      "line": 14,
+      "original": "True",
+      "mutated": "False",
+      "status": "survived"
+    },
+    {
+      "type": "off_by_one",
+      "line": 23,
+      "original": "0",
+      "mutated": "1",
+      "status": "survived"
+    },
+    {
+      "type": "off_by_one",
+      "line": 23,
+      "original": "0",
+      "mutated": "-1",
+      "status": "survived"
+    },
+    {
+      "type": "off_by_one",
+      "line": 23,
+      "original": "1",
+      "mutated": "2",
+      "status": "survived"
+    },
+    {
+      "type": "off_by_one",
+      "line": 23,
+      "original": "1",
+      "mutated": "0",
+      "status": "survived"
+    },
+    {
+      "type": "off_by_one",
+      "line": 38,
+      "original": "0",
+      "mutated": "1",
+      "status": "survived"
+    },
+    {
+      "type": "off_by_one",
+      "line": 38,
+      "original": "0",
+      "mutated": "-1",
+      "status": "survived"
+    },
+    {
+      "type": "off_by_one",
+      "line": 38,
+      "original": "1",
+      "mutated": "2",
+      "status": "survived"
+    },
+    {
+      "type": "off_by_one",
+      "line": 38,
+      "original": "1",
+      "mutated": "0",
+      "status": "survived"
+    },
+    {
+      "type": "swap_bool",
+      "line": 47,
+      "original": "True",
+      "mutated": "False",
+      "status": "survived"
+    },
+    {
+      "type": "swap_bool",
+      "line": 35,
+      "original": "True",
+      "mutated": "False",
+      "status": "survived"
+    }
+  ]
+}

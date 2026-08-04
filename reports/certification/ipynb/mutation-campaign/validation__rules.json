@@ -1,0 +1,81 @@
+{
+  "target": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\mutation-lab\\ipynb\\src\\python\\ipynb\\src\\format_factory\\ipynb\\validation\\rules.py",
+  "test_dir": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\mutation-lab\\ipynb\\tests\\python\\ipynb",
+  "baseline_green": true,
+  "deselected": [
+    "tests/python/ipynb/test_obligation_attachments.py::test_attachment_proof_uses_installed_production_namespace",
+    "tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace",
+    "tests/python/ipynb/test_production_namespace.py::test_implicit_namespace_has_no_parent_init"
+  ],
+  "total_mutations": 25,
+  "killed": 16,
+  "survived": 9,
+  "errors": 0,
+  "kill_rate_pct": 64.0,
+  "verdict": "NEEDS_HARDENING",
+  "survivors": [
+    {
+      "type": "return_none",
+      "line": 208,
+      "original": "return <value>",
+      "mutated": "return None",
+      "status": "survived"
+    },
+    {
+      "type": "swap_bool",
+      "line": 208,
+      "original": "False",
+      "mutated": "True",
+      "status": "survived"
+    },
+    {
+      "type": "swap_bool",
+      "line": 22,
+      "original": "True",
+      "mutated": "False",
+      "status": "survived"
+    },
+    {
+      "type": "off_by_one",
+      "line": 94,
+      "original": "4",
+      "mutated": "5",
+      "status": "survived"
+    },
+    {
+      "type": "negate_comparison",
+      "line": 34,
+      "original": "Compare(left=Name(id='declared', ctx=Load()), ops=[IsNot()], comparators=[Constant(value=None)])",
+      "mutated": "Compare(left=Name(id='declared', ctx=Load()), ops=[Is()], comparators=[Constant(value=None)])",
+      "status": "survived"
+    },
+    {
+      "type": "negate_comparison",
+      "line": 45,
+      "original": "Compare(left=Name(id='declared', ctx=Load()), ops=[IsNot()], comparators=[Constant(value=None)])",
+      "mutated": "Compare(left=Name(id='declared', ctx=Load()), ops=[Is()], comparators=[Constant(value=None)])",
+      "status": "survived"
+    },
+    {
+      "type": "off_by_one",
+      "line": 90,
+      "original": "5",
+      "mutated": "6",
+      "status": "survived"
+    },
+    {
+      "type": "off_by_one",
+      "line": 34,
+      "original": "5",
+      "mutated": "6",
+      "status": "survived"
+    },
+    {
+      "type": "off_by_one",
+      "line": 90,
+      "original": "0",
+      "mutated": "1",
+      "status": "survived"
+    }
+  ]
+}

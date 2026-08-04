@@ -1,0 +1,109 @@
+{
+  "target": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\mutation-lab\\ipynb\\src\\python\\ipynb\\src\\format_factory\\ipynb\\analytics\\notebook.py",
+  "test_dir": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\mutation-lab\\ipynb\\tests\\python\\ipynb",
+  "baseline_green": true,
+  "deselected": [
+    "tests/python/ipynb/test_obligation_attachments.py::test_attachment_proof_uses_installed_production_namespace",
+    "tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace",
+    "tests/python/ipynb/test_production_namespace.py::test_implicit_namespace_has_no_parent_init"
+  ],
+  "total_mutations": 13,
+  "killed": 0,
+  "survived": 13,
+  "errors": 0,
+  "kill_rate_pct": 0.0,
+  "verdict": "NEEDS_HARDENING",
+  "survivors": [
+    {
+      "type": "return_none",
+      "line": 12,
+      "original": "return <value>",
+      "mutated": "return None",
+      "status": "survived"
+    },
+    {
+      "type": "return_none",
+      "line": 19,
+      "original": "return <value>",
+      "mutated": "return None",
+      "status": "survived"
+    },
+    {
+      "type": "return_none",
+      "line": 40,
+      "original": "return <value>",
+      "mutated": "return None",
+      "status": "survived"
+    },
+    {
+      "type": "return_none",
+      "line": 44,
+      "original": "return <value>",
+      "mutated": "return None",
+      "status": "survived"
+    },
+    {
+      "type": "return_none",
+      "line": 59,
+      "original": "return <value>",
+      "mutated": "return None",
+      "status": "survived"
+    },
+    {
+      "type": "negate_comparison",
+      "line": 44,
+      "original": "Compare(left=Call(func=Attribute(value=Call(func=Name(id='ipynb_output_type_histogram', ctx=Load()), args=[Name(id='value', ctx=Load())]), attr='get', ctx=Load()), args=[Constant(value='error'), Constant(value=0)]), ops=[Gt()], comparators=[Constant(value=0)])",
+      "mutated": "Compare(left=Call(func=Attribute(value=Call(func=Name(id='ipynb_output_type_histogram', ctx=Load()), args=[Name(id='value', ctx=Load())]), attr='get', ctx=Load()), args=[Constant(value='error'), Constant(value=0)]), ops=[LtE()], comparators=[Constant(value=0)])",
+      "status": "survived"
+    },
+    {
+      "type": "return_none",
+      "line": 54,
+      "original": "return <value>",
+      "mutated": "return None",
+      "status": "survived"
+    },
+    {
+      "type": "off_by_one",
+      "line": 44,
+      "original": "0",
+      "mutated": "1",
+      "status": "survived"
+    },
+    {
+      "type": "off_by_one",
+      "line": 44,
+      "original": "0",
+      "mutated": "-1",
+      "status": "survived"
+    },
+    {
+      "type": "off_by_one",
+      "line": 44,
+      "original": "0",
+      "mutated": "1",
+      "status": "survived"
+    },
+    {
+      "type": "off_by_one",
+      "line": 44,
+      "original": "0",
+      "mutated": "-1",
+      "status": "survived"
+    },
+    {
+      "type": "off_by_one",
+      "line": 39,
+      "original": "1",
+      "mutated": "2",
+      "status": "survived"
+    },
+    {
+      "type": "off_by_one",
+      "line": 39,
+      "original": "1",
+      "mutated": "0",
+      "status": "survived"
+    }
+  ]
+}

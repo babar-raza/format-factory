@@ -1,0 +1,1727 @@
+{
+  "package": "ipynb",
+  "modules_discovered": 29,
+  "modules_scored": 18,
+  "modules_timed_out": 0,
+  "modules_tester_failed": 0,
+  "mutations_tested": 387,
+  "killed": 197,
+  "survived": 190,
+  "kill_rate_pct": 50.9,
+  "wall_seconds": 1447.9,
+  "modules": [
+    {
+      "module": "__init__.py",
+      "status": "ok",
+      "seconds": 4.1,
+      "total_mutations": 0,
+      "killed": 0,
+      "survived": 0,
+      "errors": 0,
+      "kill_rate_pct": 0,
+      "verdict": "NEEDS_HARDENING",
+      "survivors": []
+    },
+    {
+      "module": "adapters/__init__.py",
+      "status": "ok",
+      "seconds": 4.5,
+      "total_mutations": 0,
+      "killed": 0,
+      "survived": 0,
+      "errors": 0,
+      "kill_rate_pct": 0,
+      "verdict": "NEEDS_HARDENING",
+      "survivors": []
+    },
+    {
+      "module": "analytics/__init__.py",
+      "status": "ok",
+      "seconds": 4.1,
+      "total_mutations": 0,
+      "killed": 0,
+      "survived": 0,
+      "errors": 0,
+      "kill_rate_pct": 0,
+      "verdict": "NEEDS_HARDENING",
+      "survivors": []
+    },
+    {
+      "module": "analytics/notebook.py",
+      "status": "ok",
+      "seconds": 57.1,
+      "total_mutations": 13,
+      "killed": 0,
+      "survived": 13,
+      "errors": 0,
+      "kill_rate_pct": 0.0,
+      "verdict": "NEEDS_HARDENING",
+      "survivors": [
+        {
+          "type": "return_none",
+          "line": 12,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 19,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 40,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 44,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 59,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "negate_comparison",
+          "line": 44,
+          "original": "Compare(left=Call(func=Attribute(value=Call(func=Name(id='ipynb_output_type_histogram', ctx=Load()), args=[Name(id='value', ctx=Load())]), attr='get', ctx=Load()), args=[Constant(value='error'), Constant(value=0)]), ops=[Gt()], comparators=[Constant(value=0)])",
+          "mutated": "Compare(left=Call(func=Attribute(value=Call(func=Name(id='ipynb_output_type_histogram', ctx=Load()), args=[Name(id='value', ctx=Load())]), attr='get', ctx=Load()), args=[Constant(value='error'), Constant(value=0)]), ops=[LtE()], comparators=[Constant(value=0)])",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 54,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 44,
+          "original": "0",
+          "mutated": "1",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 44,
+          "original": "0",
+          "mutated": "-1",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 44,
+          "original": "0",
+          "mutated": "1",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 44,
+          "original": "0",
+          "mutated": "-1",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 39,
+          "original": "1",
+          "mutated": "2",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 39,
+          "original": "1",
+          "mutated": "0",
+          "status": "survived"
+        }
+      ]
+    },
+    {
+      "module": "cli/__init__.py",
+      "status": "ok",
+      "seconds": 3.9,
+      "total_mutations": 0,
+      "killed": 0,
+      "survived": 0,
+      "errors": 0,
+      "kill_rate_pct": 0,
+      "verdict": "NEEDS_HARDENING",
+      "survivors": []
+    },
+    {
+      "module": "cli/main.py",
+      "status": "ok",
+      "seconds": 74.3,
+      "total_mutations": 18,
+      "killed": 0,
+      "survived": 18,
+      "errors": 0,
+      "kill_rate_pct": 0.0,
+      "verdict": "NEEDS_HARDENING",
+      "survivors": [
+        {
+          "type": "return_none",
+          "line": 50,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "negate_comparison",
+          "line": 20,
+          "original": "Compare(left=Attribute(value=Name(id='args', ctx=Load()), attr='command', ctx=Load()), ops=[Eq()], comparators=[Constant(value='probe')])",
+          "mutated": "Compare(left=Attribute(value=Name(id='args', ctx=Load()), attr='command', ctx=Load()), ops=[NotEq()], comparators=[Constant(value='probe')])",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 23,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "negate_comparison",
+          "line": 24,
+          "original": "Compare(left=Attribute(value=Name(id='args', ctx=Load()), attr='command', ctx=Load()), ops=[Eq()], comparators=[Constant(value='validate')])",
+          "mutated": "Compare(left=Attribute(value=Name(id='args', ctx=Load()), attr='command', ctx=Load()), ops=[NotEq()], comparators=[Constant(value='validate')])",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 38,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 50,
+          "original": "0",
+          "mutated": "1",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 50,
+          "original": "0",
+          "mutated": "-1",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 14,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 23,
+          "original": "0",
+          "mutated": "1",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 23,
+          "original": "0",
+          "mutated": "-1",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 23,
+          "original": "1",
+          "mutated": "2",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 23,
+          "original": "1",
+          "mutated": "0",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 38,
+          "original": "0",
+          "mutated": "1",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 38,
+          "original": "0",
+          "mutated": "-1",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 38,
+          "original": "1",
+          "mutated": "2",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 38,
+          "original": "1",
+          "mutated": "0",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 47,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 35,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        }
+      ]
+    },
+    {
+      "module": "codec/__init__.py",
+      "status": "ok",
+      "seconds": 3.8,
+      "total_mutations": 0,
+      "killed": 0,
+      "survived": 0,
+      "errors": 0,
+      "kill_rate_pct": 0,
+      "verdict": "NEEDS_HARDENING",
+      "survivors": []
+    },
+    {
+      "module": "codec/reader/__init__.py",
+      "status": "ok",
+      "seconds": 3.7,
+      "total_mutations": 0,
+      "killed": 0,
+      "survived": 0,
+      "errors": 0,
+      "kill_rate_pct": 0,
+      "verdict": "NEEDS_HARDENING",
+      "survivors": []
+    },
+    {
+      "module": "codec/reader/reader.py",
+      "status": "ok",
+      "seconds": 85.3,
+      "total_mutations": 25,
+      "killed": 15,
+      "survived": 10,
+      "errors": 0,
+      "kill_rate_pct": 60.0,
+      "verdict": "NEEDS_HARDENING",
+      "survivors": [
+        {
+          "type": "return_none",
+          "line": 41,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 75,
+          "original": "0",
+          "mutated": "1",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 34,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 81,
+          "original": "1",
+          "mutated": "2",
+          "status": "survived"
+        },
+        {
+          "type": "negate_comparison",
+          "line": 89,
+          "original": "Compare(left=Name(id='cell_id', ctx=Load()), ops=[In()], comparators=[Name(id='used_ids', ctx=Load())])",
+          "mutated": "Compare(left=Name(id='cell_id', ctx=Load()), ops=[NotIn()], comparators=[Name(id='used_ids', ctx=Load())])",
+          "status": "survived"
+        },
+        {
+          "type": "negate_comparison",
+          "line": 312,
+          "original": "Compare(left=Constant(value='metadata'), ops=[NotIn()], comparators=[Name(id='cell', ctx=Load())])",
+          "mutated": "Compare(left=Constant(value='metadata'), ops=[In()], comparators=[Name(id='cell', ctx=Load())])",
+          "status": "survived"
+        },
+        {
+          "type": "negate_comparison",
+          "line": 325,
+          "original": "Compare(left=Constant(value='source'), ops=[NotIn()], comparators=[Name(id='cell', ctx=Load())])",
+          "mutated": "Compare(left=Constant(value='source'), ops=[In()], comparators=[Name(id='cell', ctx=Load())])",
+          "status": "survived"
+        },
+        {
+          "type": "negate_comparison",
+          "line": 341,
+          "original": "Compare(left=Name(id='cell_type', ctx=Load()), ops=[Eq()], comparators=[Constant(value='code')])",
+          "mutated": "Compare(left=Name(id='cell_type', ctx=Load()), ops=[NotEq()], comparators=[Constant(value='code')])",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 78,
+          "original": "16",
+          "mutated": "17",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 159,
+          "original": "0",
+          "mutated": "-1",
+          "status": "survived"
+        }
+      ]
+    },
+    {
+      "module": "codec/writer/__init__.py",
+      "status": "ok",
+      "seconds": 4.2,
+      "total_mutations": 0,
+      "killed": 0,
+      "survived": 0,
+      "errors": 0,
+      "kill_rate_pct": 0,
+      "verdict": "NEEDS_HARDENING",
+      "survivors": []
+    },
+    {
+      "module": "codec/writer/writer.py",
+      "status": "ok",
+      "seconds": 88.0,
+      "total_mutations": 25,
+      "killed": 12,
+      "survived": 13,
+      "errors": 0,
+      "kill_rate_pct": 48.0,
+      "verdict": "NEEDS_HARDENING",
+      "survivors": [
+        {
+          "type": "return_none",
+          "line": 123,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 207,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 217,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 237,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 101,
+          "original": "4",
+          "mutated": "3",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 102,
+          "original": "5",
+          "mutated": "4",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 170,
+          "original": "1",
+          "mutated": "0",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 52,
+          "original": "1",
+          "mutated": "2",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 244,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 84,
+          "original": "0",
+          "mutated": "1",
+          "status": "survived"
+        },
+        {
+          "type": "negate_comparison",
+          "line": 179,
+          "original": "Compare(left=Name(id='written', ctx=Load()), ops=[IsNot()], comparators=[Constant(value=None)])",
+          "mutated": "Compare(left=Name(id='written', ctx=Load()), ops=[Is()], comparators=[Constant(value=None)])",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 198,
+          "original": "1",
+          "mutated": "2",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 199,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        }
+      ]
+    },
+    {
+      "module": "errors.py",
+      "status": "ok",
+      "seconds": 3.8,
+      "total_mutations": 0,
+      "killed": 0,
+      "survived": 0,
+      "errors": 0,
+      "kill_rate_pct": 0,
+      "verdict": "NEEDS_HARDENING",
+      "survivors": []
+    },
+    {
+      "module": "model/__init__.py",
+      "status": "ok",
+      "seconds": 4.2,
+      "total_mutations": 0,
+      "killed": 0,
+      "survived": 0,
+      "errors": 0,
+      "kill_rate_pct": 0,
+      "verdict": "NEEDS_HARDENING",
+      "survivors": []
+    },
+    {
+      "module": "model/attachments.py",
+      "status": "ok",
+      "seconds": 90.0,
+      "total_mutations": 25,
+      "killed": 13,
+      "survived": 12,
+      "errors": 0,
+      "kill_rate_pct": 52.0,
+      "verdict": "NEEDS_HARDENING",
+      "survivors": [
+        {
+          "type": "return_none",
+          "line": 57,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 51,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 120,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 127,
+          "original": "0",
+          "mutated": "-1",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 22,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        },
+        {
+          "type": "negate_comparison",
+          "line": 48,
+          "original": "Compare(left=Name(id='value', ctx=Load()), ops=[Is()], comparators=[Constant(value=None)])",
+          "mutated": "Compare(left=Name(id='value', ctx=Load()), ops=[IsNot()], comparators=[Constant(value=None)])",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 114,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 119,
+          "original": "0",
+          "mutated": "1",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 120,
+          "original": "0",
+          "mutated": "-1",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 264,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 204,
+          "original": "0",
+          "mutated": "-1",
+          "status": "survived"
+        },
+        {
+          "type": "negate_comparison",
+          "line": 261,
+          "original": "Compare(left=Name(id='new_name', ctx=Load()), ops=[NotEq()], comparators=[Name(id='old_name', ctx=Load())])",
+          "mutated": "Compare(left=Name(id='new_name', ctx=Load()), ops=[Eq()], comparators=[Name(id='old_name', ctx=Load())])",
+          "status": "survived"
+        }
+      ]
+    },
+    {
+      "module": "model/cleanup.py",
+      "status": "ok",
+      "seconds": 74.3,
+      "total_mutations": 21,
+      "killed": 14,
+      "survived": 7,
+      "errors": 0,
+      "kill_rate_pct": 66.7,
+      "verdict": "NEEDS_HARDENING",
+      "survivors": [
+        {
+          "type": "return_none",
+          "line": 62,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 12,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 12,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 36,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 36,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 50,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 50,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        }
+      ]
+    },
+    {
+      "module": "model/diff.py",
+      "status": "ok",
+      "seconds": 122.5,
+      "total_mutations": 25,
+      "killed": 17,
+      "survived": 8,
+      "errors": 0,
+      "kill_rate_pct": 68.0,
+      "verdict": "NEEDS_HARDENING",
+      "survivors": [
+        {
+          "type": "swap_bool",
+          "line": 63,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 77,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 98,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 422,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 30,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 71,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 143,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        },
+        {
+          "type": "negate_comparison",
+          "line": 370,
+          "original": "Compare(left=Name(id='key', ctx=Load()), ops=[NotEq()], comparators=[Constant(value='metadata')])",
+          "mutated": "Compare(left=Name(id='key', ctx=Load()), ops=[Eq()], comparators=[Constant(value='metadata')])",
+          "status": "survived"
+        }
+      ]
+    },
+    {
+      "module": "model/document.py",
+      "status": "ok",
+      "seconds": 95.5,
+      "total_mutations": 25,
+      "killed": 10,
+      "survived": 15,
+      "errors": 0,
+      "kill_rate_pct": 40.0,
+      "verdict": "NEEDS_HARDENING",
+      "survivors": [
+        {
+          "type": "return_none",
+          "line": 63,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 75,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 90,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 140,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 152,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 290,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 302,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 354,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 375,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 114,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 161,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "negate_comparison",
+          "line": 343,
+          "original": "Compare(left=Name(id='cell_type', ctx=Load()), ops=[Eq()], comparators=[Constant(value='code')])",
+          "mutated": "Compare(left=Name(id='cell_type', ctx=Load()), ops=[NotEq()], comparators=[Constant(value='code')])",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 251,
+          "original": "0",
+          "mutated": "1",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 255,
+          "original": "0",
+          "mutated": "-1",
+          "status": "survived"
+        },
+        {
+          "type": "negate_comparison",
+          "line": 302,
+          "original": "Compare(left=Call(func=Attribute(value=Name(id='cell', ctx=Load()), attr='get', ctx=Load()), args=[Constant(value='cell_type')]), ops=[Eq()], comparators=[Constant(value='raw')])",
+          "mutated": "Compare(left=Call(func=Attribute(value=Name(id='cell', ctx=Load()), attr='get', ctx=Load()), args=[Constant(value='cell_type')]), ops=[NotEq()], comparators=[Constant(value='raw')])",
+          "status": "survived"
+        }
+      ]
+    },
+    {
+      "module": "model/editor.py",
+      "status": "ok",
+      "seconds": 76.8,
+      "total_mutations": 25,
+      "killed": 16,
+      "survived": 9,
+      "errors": 0,
+      "kill_rate_pct": 64.0,
+      "verdict": "NEEDS_HARDENING",
+      "survivors": [
+        {
+          "type": "return_none",
+          "line": 115,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 26,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 70,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        },
+        {
+          "type": "negate_comparison",
+          "line": 133,
+          "original": "Compare(left=Call(func=Attribute(value=Name(id='cell', ctx=Load()), attr='get', ctx=Load()), args=[Constant(value='cell_type')]), ops=[NotEq()], comparators=[Attribute(value=Name(id='query', ctx=Load()), attr='cell_type', ctx=Load())])",
+          "mutated": "Compare(left=Call(func=Attribute(value=Name(id='cell', ctx=Load()), attr='get', ctx=Load()), args=[Constant(value='cell_type')]), ops=[Eq()], comparators=[Attribute(value=Name(id='query', ctx=Load()), attr='cell_type', ctx=Load())])",
+          "status": "survived"
+        },
+        {
+          "type": "negate_comparison",
+          "line": 165,
+          "original": "Compare(left=Name(id='notebook_minor', ctx=Load()), ops=[LtE()], comparators=[Constant(value=5)])",
+          "mutated": "Compare(left=Name(id='notebook_minor', ctx=Load()), ops=[Gt()], comparators=[Constant(value=5)])",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 201,
+          "original": "1",
+          "mutated": "0",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 334,
+          "original": "False",
+          "mutated": "True",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 236,
+          "original": "0",
+          "mutated": "-1",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 346,
+          "original": "False",
+          "mutated": "True",
+          "status": "survived"
+        }
+      ]
+    },
+    {
+      "module": "model/lifecycle.py",
+      "status": "ok",
+      "seconds": 89.1,
+      "total_mutations": 25,
+      "killed": 17,
+      "survived": 8,
+      "errors": 0,
+      "kill_rate_pct": 68.0,
+      "verdict": "NEEDS_HARDENING",
+      "survivors": [
+        {
+          "type": "swap_bool",
+          "line": 36,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 62,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 81,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 166,
+          "original": "0",
+          "mutated": "1",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 270,
+          "original": "2",
+          "mutated": "3",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 350,
+          "original": "0",
+          "mutated": "-1",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 420,
+          "original": "0",
+          "mutated": "1",
+          "status": "survived"
+        },
+        {
+          "type": "negate_comparison",
+          "line": 514,
+          "original": "Compare(left=Call(func=Attribute(value=Name(id='CELL_ID_PATTERN', ctx=Load()), attr='fullmatch', ctx=Load()), args=[Name(id='old_id', ctx=Load())]), ops=[IsNot()], comparators=[Constant(value=None)])",
+          "mutated": "Compare(left=Call(func=Attribute(value=Name(id='CELL_ID_PATTERN', ctx=Load()), attr='fullmatch', ctx=Load()), args=[Name(id='old_id', ctx=Load())]), ops=[Is()], comparators=[Constant(value=None)])",
+          "status": "survived"
+        }
+      ]
+    },
+    {
+      "module": "model/metadata.py",
+      "status": "ok",
+      "seconds": 84.9,
+      "total_mutations": 25,
+      "killed": 14,
+      "survived": 11,
+      "errors": 0,
+      "kill_rate_pct": 56.0,
+      "verdict": "NEEDS_HARDENING",
+      "survivors": [
+        {
+          "type": "return_none",
+          "line": 43,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 137,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 174,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 182,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 215,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 302,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 56,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 84,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 140,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 161,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 206,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        }
+      ]
+    },
+    {
+      "module": "model/output.py",
+      "status": "ok",
+      "seconds": 14.9,
+      "total_mutations": 3,
+      "killed": 0,
+      "survived": 3,
+      "errors": 0,
+      "kill_rate_pct": 0.0,
+      "verdict": "NEEDS_HARDENING",
+      "survivors": [
+        {
+          "type": "return_none",
+          "line": 11,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 18,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 22,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        }
+      ]
+    },
+    {
+      "module": "security/__init__.py",
+      "status": "ok",
+      "seconds": 4.1,
+      "total_mutations": 0,
+      "killed": 0,
+      "survived": 0,
+      "errors": 0,
+      "kill_rate_pct": 0,
+      "verdict": "NEEDS_HARDENING",
+      "survivors": []
+    },
+    {
+      "module": "security/limits.py",
+      "status": "ok",
+      "seconds": 94.0,
+      "total_mutations": 25,
+      "killed": 3,
+      "survived": 22,
+      "errors": 0,
+      "kill_rate_pct": 12.0,
+      "verdict": "NEEDS_HARDENING",
+      "survivors": [
+        {
+          "type": "off_by_one",
+          "line": 32,
+          "original": "0",
+          "mutated": "1",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 32,
+          "original": "0",
+          "mutated": "-1",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 33,
+          "original": "0",
+          "mutated": "1",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 33,
+          "original": "0",
+          "mutated": "-1",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 11,
+          "original": "64",
+          "mutated": "65",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 11,
+          "original": "64",
+          "mutated": "63",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 21,
+          "original": "0",
+          "mutated": "1",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 21,
+          "original": "0",
+          "mutated": "-1",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 10,
+          "original": "1024",
+          "mutated": "1025",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 10,
+          "original": "1024",
+          "mutated": "1023",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 21,
+          "original": "64",
+          "mutated": "65",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 21,
+          "original": "64",
+          "mutated": "63",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 21,
+          "original": "1024",
+          "mutated": "1025",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 21,
+          "original": "1024",
+          "mutated": "1023",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 31,
+          "original": "0",
+          "mutated": "1",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 31,
+          "original": "0",
+          "mutated": "-1",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 10,
+          "original": "64",
+          "mutated": "65",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 10,
+          "original": "64",
+          "mutated": "63",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 10,
+          "original": "1024",
+          "mutated": "1025",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 10,
+          "original": "1024",
+          "mutated": "1023",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 43,
+          "original": "1",
+          "mutated": "2",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 47,
+          "original": "1",
+          "mutated": "2",
+          "status": "survived"
+        }
+      ]
+    },
+    {
+      "module": "security/sanitizer.py",
+      "status": "ok",
+      "seconds": 92.6,
+      "total_mutations": 25,
+      "killed": 12,
+      "survived": 13,
+      "errors": 0,
+      "kill_rate_pct": 48.0,
+      "verdict": "NEEDS_HARDENING",
+      "survivors": [
+        {
+          "type": "return_none",
+          "line": 268,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 238,
+          "original": "0",
+          "mutated": "1",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 239,
+          "original": "0",
+          "mutated": "-1",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 267,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 118,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 130,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 169,
+          "original": "0",
+          "mutated": "-1",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 235,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        },
+        {
+          "type": "negate_comparison",
+          "line": 193,
+          "original": "Compare(left=Name(id='name', ctx=Load()), ops=[Eq()], comparators=[Constant(value='style')])",
+          "mutated": "Compare(left=Name(id='name', ctx=Load()), ops=[NotEq()], comparators=[Constant(value='style')])",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 312,
+          "original": "1",
+          "mutated": "0",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 318,
+          "original": "1",
+          "mutated": "2",
+          "status": "survived"
+        },
+        {
+          "type": "negate_comparison",
+          "line": 201,
+          "original": "Compare(left=Name(id='name', ctx=Load()), ops=[Eq()], comparators=[Constant(value='srcset')])",
+          "mutated": "Compare(left=Name(id='name', ctx=Load()), ops=[NotEq()], comparators=[Constant(value='srcset')])",
+          "status": "survived"
+        },
+        {
+          "type": "negate_comparison",
+          "line": 206,
+          "original": "Compare(left=Name(id='name', ctx=Load()), ops=[Eq()], comparators=[Constant(value='srcset')])",
+          "mutated": "Compare(left=Name(id='name', ctx=Load()), ops=[NotEq()], comparators=[Constant(value='srcset')])",
+          "status": "survived"
+        }
+      ]
+    },
+    {
+      "module": "security/trust.py",
+      "status": "ok",
+      "seconds": 92.4,
+      "total_mutations": 25,
+      "killed": 13,
+      "survived": 12,
+      "errors": 0,
+      "kill_rate_pct": 52.0,
+      "verdict": "NEEDS_HARDENING",
+      "survivors": [
+        {
+          "type": "off_by_one",
+          "line": 164,
+          "original": "0",
+          "mutated": "1",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 165,
+          "original": "0",
+          "mutated": "1",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 71,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 79,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 100,
+          "original": "65535",
+          "mutated": "65534",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 145,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 152,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 163,
+          "original": "0",
+          "mutated": "1",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 104,
+          "original": "0",
+          "mutated": "-1",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 221,
+          "original": "32",
+          "mutated": "33",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 187,
+          "original": "1",
+          "mutated": "2",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 197,
+          "original": "1",
+          "mutated": "2",
+          "status": "survived"
+        }
+      ]
+    },
+    {
+      "module": "validation/__init__.py",
+      "status": "ok",
+      "seconds": 4.1,
+      "total_mutations": 0,
+      "killed": 0,
+      "survived": 0,
+      "errors": 0,
+      "kill_rate_pct": 0,
+      "verdict": "NEEDS_HARDENING",
+      "survivors": []
+    },
+    {
+      "module": "validation/rules.py",
+      "status": "ok",
+      "seconds": 74.4,
+      "total_mutations": 25,
+      "killed": 16,
+      "survived": 9,
+      "errors": 0,
+      "kill_rate_pct": 64.0,
+      "verdict": "NEEDS_HARDENING",
+      "survivors": [
+        {
+          "type": "return_none",
+          "line": 208,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 208,
+          "original": "False",
+          "mutated": "True",
+          "status": "survived"
+        },
+        {
+          "type": "swap_bool",
+          "line": 22,
+          "original": "True",
+          "mutated": "False",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 94,
+          "original": "4",
+          "mutated": "5",
+          "status": "survived"
+        },
+        {
+          "type": "negate_comparison",
+          "line": 34,
+          "original": "Compare(left=Name(id='declared', ctx=Load()), ops=[IsNot()], comparators=[Constant(value=None)])",
+          "mutated": "Compare(left=Name(id='declared', ctx=Load()), ops=[Is()], comparators=[Constant(value=None)])",
+          "status": "survived"
+        },
+        {
+          "type": "negate_comparison",
+          "line": 45,
+          "original": "Compare(left=Name(id='declared', ctx=Load()), ops=[IsNot()], comparators=[Constant(value=None)])",
+          "mutated": "Compare(left=Name(id='declared', ctx=Load()), ops=[Is()], comparators=[Constant(value=None)])",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 90,
+          "original": "5",
+          "mutated": "6",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 34,
+          "original": "5",
+          "mutated": "6",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 90,
+          "original": "0",
+          "mutated": "1",
+          "status": "survived"
+        }
+      ]
+    },
+    {
+      "module": "validation/schema.py",
+      "status": "ok",
+      "seconds": 71.9,
+      "total_mutations": 25,
+      "killed": 21,
+      "survived": 4,
+      "errors": 0,
+      "kill_rate_pct": 84.0,
+      "verdict": "STRONG",
+      "survivors": [
+        {
+          "type": "return_none",
+          "line": 173,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 61,
+          "original": "6",
+          "mutated": "7",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 92,
+          "original": "6",
+          "mutated": "7",
+          "status": "survived"
+        },
+        {
+          "type": "off_by_one",
+          "line": 140,
+          "original": "0",
+          "mutated": "-1",
+          "status": "survived"
+        }
+      ]
+    },
+    {
+      "module": "validation/validator.py",
+      "status": "ok",
+      "seconds": 25.3,
+      "total_mutations": 7,
+      "killed": 4,
+      "survived": 3,
+      "errors": 0,
+      "kill_rate_pct": 57.1,
+      "verdict": "NEEDS_HARDENING",
+      "survivors": [
+        {
+          "type": "return_none",
+          "line": 41,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 78,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        },
+        {
+          "type": "return_none",
+          "line": 66,
+          "original": "return <value>",
+          "mutated": "return None",
+          "status": "survived"
+        }
+      ]
+    }
+  ],
+  "deselected": [
+    "tests/python/ipynb/test_obligation_attachments.py::test_attachment_proof_uses_installed_production_namespace",
+    "tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace",
+    "tests/python/ipynb/test_production_namespace.py::test_implicit_namespace_has_no_parent_init"
+  ],
+  "isolation_control": {
+    "isolated": true,
+    "lab_suite_passes_clean": true,
+    "lab_suite_fails_when_lab_source_is_broken": true,
+    "live_tree_byte_identical_after_probe": true,
+    "reason": null,
+    "deselected": [
+      "tests/python/ipynb/test_obligation_attachments.py::test_attachment_proof_uses_installed_production_namespace",
+      "tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace",
+      "tests/python/ipynb/test_production_namespace.py::test_implicit_namespace_has_no_parent_init"
+    ]
+  }
+}
