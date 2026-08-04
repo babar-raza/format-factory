@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools==80.9.0"]
+build-backend = "_build_backend"
+backend-path = ["."]
+
+[project]
+name = "format-factory-ora"
+version = "0.1.0.dev0"
+description = "Bounded OpenRaster layered raster archive reader, model, validator, and writer"
+license = "Apache-2.0"
+requires-python = ">=3.11"
+
+readme = "README.md"
+authors = [
+    {name = "Format Factory", email = "formatfactory@aspose.com"},
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Typing :: Typed",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+    "format-factory-core==0.1.0.dev0",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8.3", "hypothesis>=6.100"]
+
+[project.urls]
+Homepage = "https://github.com/format-factory/format-factory"
+Repository = "https://github.com/format-factory/format-factory"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["format_factory.ora*"]

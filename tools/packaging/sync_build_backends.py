@@ -31,8 +31,8 @@ TEMPLATE = REPO_ROOT / "tools" / "packaging" / "reproducible_build_backend.py.te
 BACKEND_FILENAME = "_build_backend.py"
 
 # The FF6 production libraries plus the shared core they all depend on.
-# OpenRaster has no source tree yet (GAP-021) and so has no distribution.
-MANAGED_PACKAGES = ("core", "ipynb", "nrrd", "safetensors", "ubl", "xliff")
+# `ora` joined on 2026-08-04 when its first source was written (GAP-021).
+MANAGED_PACKAGES = ("core", "ipynb", "nrrd", "ora", "safetensors", "ubl", "xliff")
 
 PYPROJECT_BUILD_SYSTEM = """[build-system]
 requires = ["setuptools==80.9.0"]
