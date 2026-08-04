@@ -4,10 +4,10 @@ goal_status: ACTIVE
 generated_by: codex
 visibility: internal
 controller_state: CONTRACT
-transition_sequence: 55
+transition_sequence: 56
 last_verified_event:
-  event_id: FF6-EVENT-000055
-  event_hash: c6e57ace50124ab7eadaad5587095b1c0a5c345b15cfdd4ca0092031cbd036fd
+  event_id: FF6-EVENT-000056
+  event_hash: f3b6fc69cf35f55c2188118f2af4387e2282915278dc4dee80e3a459d6b0f16c
 event_journal: plans/strategic/ff6/events.jsonl
 baseline_commit: e4f8f5f086b5e627c07c2ef2d940eda2601a22a8
 digest_policy:
@@ -61,28 +61,28 @@ stage_4_record:
     proves nothing new about either format's conformance; a refactor that moved
     obligations would be a red flag.
 next_task:
-  task_id: IPYNB_PROOF_REQUIREMENT_AUDIT
+  task_id: IPYNB_SHIPPED_NAMESPACE_COVERAGE
   state: READY
   unlock_condition: >-
-    Continue from Event 53 and commit 38367145. IPYNB now has an independent
-    oracle (nbformat 5.10.4, installed AND declared in the test extra), a suite
-    that actually runs (421 passed, 3 failed, from a state where it aborted with
-    9 collection errors), an obligation-to-symbol ledger covering all 68
-    obligations, and one real cross-platform defect fixed.
+    Continue from Event 56. GAP-018 changed the program's picture: shadow-package
+    tests dominate the estate everywhere, not just NRRD -- ubl 91%, xliff 91%,
+    nrrd 54%, ipynb 39%, safetensors 32%, with no file importing both, so this is
+    not a migration in progress. Every pre-existing coverage figure for these five
+    formats is unverified until re-measured against the shipped namespace.
 
-    Two tracks. (1) Build format-factory-core and format-factory-ipynb wheels
-    into an isolated venv and re-run the 3 residual namespace tests there. They
-    assert resolution from an INSTALLED location and cannot pass in the editable
-    dev venv by construction -- the same shape as SafeTensors' official-interop
-    failures. That run doubles as the mission's required installed-wheel proof
-    for IPYNB, which has NOT been done.
+    Immediate IPYNB work: write shipped-namespace tests for the six capabilities
+    that currently have NO valid evidence (GAP-017) -- IPYNB-OUTPUT-001 (7
+    obligations), IPYNB-CELLNAME-001 (2), IPYNB-CELLNAMEUNIQUE-001 (2),
+    IPYNB-ID-001 (2), IPYNB-EXPORT-001 (1), IPYNB-WRITE-001 (1). Write them
+    against format_factory.ipynb, derive assertions from each obligation's
+    rule_text and required_tests, and regenerate the ledger so those 15
+    obligations can leave `missing` on real evidence.
 
-    (2) Begin the proof_requirement audit. For each of the 68 mapped
-    obligations, read its declared proof_requirements literally, map every named
-    dimension to a real selector, treat any pytest.skip-ed negative case as
-    unproven, and only then move status off `partial`. All 68 are currently
-    `partial` because implementation exists for every one and none has been
-    audited -- mapping is not proving.
+    Do not port shadow tests by find-and-replace. The packages genuinely differ:
+    for IPYNB-ID-001 the shipped namespace generates ids only via explicit
+    upgrade, as the obligation requires, while the shadow package auto-assigns on
+    load, which it forbids. A mechanical port would carry the wrong expectations
+    across.
 
     Do not claim certification for any format.
 acceleration_bootstrap:
