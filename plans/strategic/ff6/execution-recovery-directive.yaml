@@ -356,6 +356,53 @@ forbidden_progress_claims:
   - test coverage claimed for a legacy/deprecated shadow package counted as
     coverage of the shipped format_factory.{format} namespace
 
+# Source-reading sweep completed 2026-08-04 under the GAP-022 rule. Every
+# format's implementation was read directly rather than inferred from its
+# ledger, because nothing mechanical catches a present-but-hollow module.
+# Recorded here as a program-level finding rather than a gap, since two of the
+# five formats with source came back clean -- the first positive result of the
+# measurement effort.
+implementation_depth_sweep_20260804:
+  method: >-
+    Read each package's module layout, checked whether the components its
+    obligations name actually appear in source, and scanned for self-declared
+    stubs or open obligations.
+  findings:
+    ipynb: >-
+      6,054 LOC. Substantial and real. Three defects found and fixed today by
+      auditing obligations against declared proof requirements, which is the
+      behavior of a format worth auditing.
+    nrrd: >-
+      1,343 LOC, well distributed -- reader 317, payload 305, model 224,
+      writer 139, validator 94. No stub concentration, no self-declared gaps.
+      Its `partial` classifications are defensible pending audit.
+    safetensors: >-
+      1,418 LOC, well distributed -- reader 442, model 296, validator 105,
+      sharded_index 101, real numpy and torch adapters. No stub concentration,
+      no self-declared gaps. Its `partial` classifications are defensible
+      pending audit.
+    xliff: >-
+      1,556 LOC. Core is genuine (segmentation split/join with spanning-code
+      closure, inline model, text editing, 300-line reader). Module layer
+      entirely absent: none of XLIFF 2.1's eight module namespaces appears
+      anywhere. Validator does no schema validation.
+    ubl: >-
+      1,480 LOC but hollow. root_types.py is 652 of it as 91 five-line
+      ROOT_NAME stubs; no typed value components exist at all; validator.py
+      declares its own core obligation open. See GAP-022.
+    ora: >-
+      0 LOC. No source, no tests, no packaging entry. See GAP-021.
+  stub_marker_scan: >-
+    Only ubl declares an open obligation in source
+    (validation/validator.py:29). ipynb, nrrd, safetensors and xliff carry
+    zero stub, TODO or NotImplementedError markers, consistent with the
+    repository's zero-stub rule.
+  program_shape: >-
+    Verify-then-certify genuinely fits ipynb, nrrd and safetensors. It fits
+    xliff's core but not its modules. It does not fit ubl or ora at all.
+    Roughly 350 of the 689 obligations are build work rather than verification
+    work, which the directive's single execution_model does not express.
+
 structural_gaps_20260804:
   # Independent production review (2026-08-04), 7 parallel evidence-based
   # investigation lanes, synthesized here. Full narrative with file:line
