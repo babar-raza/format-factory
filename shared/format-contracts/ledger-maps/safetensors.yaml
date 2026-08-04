@@ -1,0 +1,95 @@
+schema: ff6/ledger-map@1
+format_id: safetensors
+visibility: internal
+generated_by: claude
+generated_at: '2026-08-04'
+basis: >-
+  Capability-to-module assignment is human judgement about what implements what,
+  so it is recorded here for review rather than buried in the generator. Modules
+  were chosen by reading each one's responsibility; test files were chosen from
+  the 17 that import format_factory.safetensors. The generator verifies every
+  mapped module and test file exists and re-checks the namespace filter, so a
+  wrong entry here fails loudly rather than producing a plausible-looking ledger.
+notes: >-
+  SAFETENSORS-ADAPTER-001 maps to the numpy and torch adapters, which are
+  optional extras. Their tests are included because they exercise the shipped
+  namespace; whether the obligations they carry are satisfiable without the
+  optional dependency installed is a question for the proof-requirement audit,
+  not for this mapping.
+
+execution_evidence:
+  path: reports/skills-rff6/skill-transcripts/build-evidence-ledger-safetensors-001.json
+  result: PASS_WITH_KNOWN_ENVIRONMENT_FAILURES
+  truth_boundary: >-
+    Suite-level and NON-PROMOTING. Records that the mapped shipped-namespace
+    suites run and that the mapped source symbols exist. The declared result is
+    deliberately not PASS: 4 of the 390 tests fail in the shared dev venv on the
+    known GAP-002 shadow-package name collision, and pass only in an isolated
+    wheel-install environment. They are not counted as passing. This binds no
+    individual selector outcome to an obligation, so nothing here is
+    verification; every obligation is recorded `partial` at most.
+
+capabilities:
+  SAFETENSORS-HEADER-001:
+    modules: [codec/reader/reader.py]
+    tests:
+      - test_obligation_header_whitespace.py
+      - test_obligation_invalid_headers.py
+      - test_obligation_prefix_encoding.py
+
+  SAFETENSORS-MODEL-001:
+    modules: [model/document.py]
+    tests:
+      - test_obligation_tensor_regions.py
+      - test_obligation_integer_overflow.py
+
+  SAFETENSORS-PAYLOAD-001:
+    modules: [codec/reader/reader.py, model/document.py]
+    tests:
+      - test_obligation_offset_layout.py
+      - test_obligation_tensor_regions.py
+
+  SAFETENSORS-PRESERVE-001:
+    modules: [codec/writer/writer.py, model/document.py]
+    tests:
+      - test_obligation_lifecycle_modes.py
+      - test_reference_header_layout_lazy_slice.py
+
+  SAFETENSORS-VALIDATE-001:
+    modules: [validation/validator.py]
+    tests:
+      - test_obligation_validation_contract.py
+      - test_obligation_invalid_headers.py
+
+  SAFETENSORS-ADAPTER-001:
+    modules: [adapters/numpy.py, adapters/torch.py]
+    tests:
+      - test_obligation_optional_adapters.py
+      - test_obligation_real_torch_adapter.py
+
+  SAFETENSORS-WRITE-001:
+    modules: [codec/writer/writer.py]
+    tests:
+      - test_obligation_writer_matrix.py
+
+  SAFETENSORS-LIFECYCLE-001:
+    modules: [codec/reader/reader.py, codec/writer/writer.py]
+    tests:
+      - test_obligation_lifecycle_modes.py
+
+  SAFETENSORS-LAZY-001:
+    modules: [codec/reader/reader.py]
+    tests:
+      - test_lazy_io.py
+      - test_reference_header_layout_lazy_slice.py
+
+  SAFETENSORS-INTEROP-001:
+    modules: [codec/reader/reader.py, codec/writer/writer.py]
+    tests:
+      - test_obligation_bidirectional_interop.py
+      - test_official_interop.py
+
+  SAFETENSORS-SHARD-001:
+    modules: [codec/sharded_index.py, model/sharded.py]
+    tests:
+      - test_obligation_sharded_index.py

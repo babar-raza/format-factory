@@ -1,0 +1,2476 @@
+schema: format-contracts/implementation-evidence@1
+format_id: safetensors
+visibility: generated
+generated_by: claude
+execution_evidence:
+- evidence_id: SAFETENSORS-BASELINE-SUITE
+  path: reports/skills-rff6/skill-transcripts/build-evidence-ledger-safetensors-001.json
+  expected_result: PASS_WITH_KNOWN_ENVIRONMENT_FAILURES
+  granularity: suite
+  truth_boundary: 'Suite-level and NON-PROMOTING. Records that the mapped shipped-namespace suites run
+    and that the mapped source symbols exist. The declared result is deliberately not PASS: 4 of the 390
+    tests fail in the shared dev venv on the known GAP-002 shadow-package name collision, and pass only
+    in an isolated wheel-install environment. They are not counted as passing. This binds no individual
+    selector outcome to an obligation, so nothing here is verification; every obligation is recorded `partial`
+    at most.'
+obligations:
+- obligation_id: SAL-SAFETENSORS-OBL-00A5D5CAF3AEF4AD
+  capability_id: SAFETENSORS-PRESERVE-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps
+  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_path_stream_and_bytes_lifecycle
+  - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_strict_preservation_and_excluded_recovery_modes
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_exact_eight_byte_length_prefix_and_utf8_json_header
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_truncated_prefix_is_rejected
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_declared_header_length_beyond_file_is_rejected
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Unknown descriptor fields,
+    metadata absence, empty metadata, and string-map round trips.'
+  proof_requirements:
+    positive:
+    - Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-02473EA0687C68C6
+  capability_id: SAFETENSORS-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Complete dtype inventory
+    plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned sub-byte cases.'
+  proof_requirements:
+    positive:
+    - Complete dtype inventory plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned
+      sub-byte cases.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-058466FF549B062E
+  capability_id: SAFETENSORS-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Complete dtype inventory
+    plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned sub-byte cases.'
+  proof_requirements:
+    positive:
+    - Complete dtype inventory plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned
+      sub-byte cases.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-099EBDB35E9C3CB6
+  capability_id: SAFETENSORS-PAYLOAD-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_offset_layout.py::test_contiguous_non_overlapping_offsets_are_accepted
+  - tests/python/safetensors/test_obligation_offset_layout.py::test_gap_and_overlap_are_rejected
+  - tests/python/safetensors/test_obligation_offset_layout.py::test_unindexed_trailing_bytes_are_rejected
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Coverage, ordering, overlap,
+    hole, truncation, trailing-byte, size-equation, and region-boundary matrices.'
+  proof_requirements:
+    positive:
+    - Coverage, ordering, overlap, hole, truncation, trailing-byte, size-equation, and region-boundary
+      matrices.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-0C953736CF0A664C
+  capability_id: SAFETENSORS-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Complete dtype inventory
+    plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned sub-byte cases.'
+  proof_requirements:
+    positive:
+    - Complete dtype inventory plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned
+      sub-byte cases.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-0DEA50E8E2B34729
+  capability_id: SAFETENSORS-HEADER-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_header_whitespace.py::test_whitespace_padded_header_roundtrips_semantically
+  - tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_exact_eight_byte_little_endian_prefix_is_accepted
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_big_endian_prefix_is_not_misinterpreted_as_little_endian
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_prefix_shorter_than_eight_bytes_is_rejected
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Prefix endian/extent, whitespace
+    padding, duplicate-key, UTF-8, JSON, metadata-type, truncation, and header-limit vectors.'
+  proof_requirements:
+    positive:
+    - Prefix endian/extent, whitespace padding, duplicate-key, UTF-8, JSON, metadata-type, truncation,
+      and header-limit vectors.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-1182706F1A2BBB3A
+  capability_id: SAFETENSORS-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Complete dtype inventory
+    plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned sub-byte cases.'
+  proof_requirements:
+    positive:
+    - Complete dtype inventory plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned
+      sub-byte cases.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-12CE1029701DCBC7
+  capability_id: SAFETENSORS-HEADER-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_header_whitespace.py::test_whitespace_padded_header_roundtrips_semantically
+  - tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_exact_eight_byte_little_endian_prefix_is_accepted
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_big_endian_prefix_is_not_misinterpreted_as_little_endian
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_prefix_shorter_than_eight_bytes_is_rejected
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Prefix endian/extent, whitespace
+    padding, duplicate-key, UTF-8, JSON, metadata-type, truncation, and header-limit vectors.'
+  proof_requirements:
+    positive:
+    - Prefix endian/extent, whitespace padding, duplicate-key, UTF-8, JSON, metadata-type, truncation,
+      and header-limit vectors.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-1BF9DF98F6727A2F
+  capability_id: SAFETENSORS-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Complete dtype inventory
+    plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned sub-byte cases.'
+  proof_requirements:
+    positive:
+    - Complete dtype inventory plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned
+      sub-byte cases.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-1FCACA122285E0E0
+  capability_id: SAFETENSORS-VALIDATE-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/validation/validator.py::validate
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_validation_contract.py::test_raw_validation_uses_rule_specific_stable_codes
+  - tests/python/safetensors/test_obligation_validation_contract.py::test_resource_limits_have_stable_code_and_machine_readable_context
+  - tests/python/safetensors/test_obligation_validation_contract.py::test_tensor_rank_uses_the_configurable_nesting_limit
+  - tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: One negative vector per rule
+    plus property, mutation, fuzz, and resource-exhaustion suites.'
+  proof_requirements:
+    positive:
+    - One negative vector per rule plus property, mutation, fuzz, and resource-exhaustion suites.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-238D57F52B18998B
+  capability_id: SAFETENSORS-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Complete dtype inventory
+    plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned sub-byte cases.'
+  proof_requirements:
+    positive:
+    - Complete dtype inventory plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned
+      sub-byte cases.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-269BD11F3B41735C
+  capability_id: SAFETENSORS-ADAPTER-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/adapters/numpy.py::to_numpy
+  - src/python/safetensors/src/format_factory/safetensors/adapters/torch.py::to_torch
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_optional_adapters.py::test_base_and_adapter_imports_do_not_load_optional_frameworks
+  - tests/python/safetensors/test_obligation_optional_adapters.py::test_numpy_adapter_discloses_read_only_zero_copy_and_safe_copy
+  - tests/python/safetensors/test_obligation_optional_adapters.py::test_numpy_adapter_rejects_non_native_dtype_without_reinterpretation
+  - tests/python/safetensors/test_obligation_real_torch_adapter.py::test_real_torch_exposes_every_declared_exact_adapter_dtype
+  - tests/python/safetensors/test_obligation_real_torch_adapter.py::test_real_torch_tensor_owns_a_safe_mutable_copy
+  - tests/python/safetensors/test_obligation_real_torch_adapter.py::test_real_torch_rejects_unsafe_zero_copy
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Dependency-absent imports,
+    minimum/latest adapter versions, dtype matrix, copy/zero-copy disclosure, and device behavior.'
+  proof_requirements:
+    positive:
+    - Dependency-absent imports, minimum/latest adapter versions, dtype matrix, copy/zero-copy disclosure,
+      and device behavior.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-2BEDF25E099DDA3C
+  capability_id: SAFETENSORS-PAYLOAD-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_offset_layout.py::test_contiguous_non_overlapping_offsets_are_accepted
+  - tests/python/safetensors/test_obligation_offset_layout.py::test_gap_and_overlap_are_rejected
+  - tests/python/safetensors/test_obligation_offset_layout.py::test_unindexed_trailing_bytes_are_rejected
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Coverage, ordering, overlap,
+    hole, truncation, trailing-byte, size-equation, and region-boundary matrices.'
+  proof_requirements:
+    positive:
+    - Coverage, ordering, overlap, hole, truncation, trailing-byte, size-equation, and region-boundary
+      matrices.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-2C3E746A105E83B2
+  capability_id: SAFETENSORS-PAYLOAD-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_offset_layout.py::test_contiguous_non_overlapping_offsets_are_accepted
+  - tests/python/safetensors/test_obligation_offset_layout.py::test_gap_and_overlap_are_rejected
+  - tests/python/safetensors/test_obligation_offset_layout.py::test_unindexed_trailing_bytes_are_rejected
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Coverage, ordering, overlap,
+    hole, truncation, trailing-byte, size-equation, and region-boundary matrices.'
+  proof_requirements:
+    positive:
+    - Coverage, ordering, overlap, hole, truncation, trailing-byte, size-equation, and region-boundary
+      matrices.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-2C467A52ABF9B0B1
+  capability_id: SAFETENSORS-WRITE-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps
+  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_writer_matrix.py::test_every_dtype_writes_deterministically_and_roundtrips
+  - tests/python/safetensors/test_obligation_writer_matrix.py::test_scalar_and_empty_tensor_writes_preserve_semantics
+  - tests/python/safetensors/test_obligation_writer_matrix.py::test_metadata_output_is_deterministic
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Repeated byte comparison,
+    every dtype, metadata, scalar/empty/sub-byte, and official-reader acceptance.'
+  proof_requirements:
+    positive:
+    - Repeated byte comparison, every dtype, metadata, scalar/empty/sub-byte, and official-reader acceptance.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-2E14EAEFAB630C7F
+  capability_id: SAFETENSORS-PRESERVE-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps
+  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_path_stream_and_bytes_lifecycle
+  - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_strict_preservation_and_excluded_recovery_modes
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_exact_eight_byte_length_prefix_and_utf8_json_header
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_truncated_prefix_is_rejected
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_declared_header_length_beyond_file_is_rejected
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Unknown descriptor fields,
+    metadata absence, empty metadata, and string-map round trips.'
+  proof_requirements:
+    positive:
+    - Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-3158D0EBF275EADC
+  capability_id: SAFETENSORS-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Complete dtype inventory
+    plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned sub-byte cases.'
+  proof_requirements:
+    positive:
+    - Complete dtype inventory plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned
+      sub-byte cases.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-31F35E7DB9250F72
+  capability_id: SAFETENSORS-PRESERVE-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps
+  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_path_stream_and_bytes_lifecycle
+  - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_strict_preservation_and_excluded_recovery_modes
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_exact_eight_byte_length_prefix_and_utf8_json_header
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_truncated_prefix_is_rejected
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_declared_header_length_beyond_file_is_rejected
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Unknown descriptor fields,
+    metadata absence, empty metadata, and string-map round trips.'
+  proof_requirements:
+    positive:
+    - Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-377A9F5A17518F30
+  capability_id: SAFETENSORS-HEADER-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_header_whitespace.py::test_whitespace_padded_header_roundtrips_semantically
+  - tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_exact_eight_byte_little_endian_prefix_is_accepted
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_big_endian_prefix_is_not_misinterpreted_as_little_endian
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_prefix_shorter_than_eight_bytes_is_rejected
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Prefix endian/extent, whitespace
+    padding, duplicate-key, UTF-8, JSON, metadata-type, truncation, and header-limit vectors.'
+  proof_requirements:
+    positive:
+    - Prefix endian/extent, whitespace padding, duplicate-key, UTF-8, JSON, metadata-type, truncation,
+      and header-limit vectors.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-3D1240179879C5E9
+  capability_id: SAFETENSORS-HEADER-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_header_whitespace.py::test_whitespace_padded_header_roundtrips_semantically
+  - tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_exact_eight_byte_little_endian_prefix_is_accepted
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_big_endian_prefix_is_not_misinterpreted_as_little_endian
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_prefix_shorter_than_eight_bytes_is_rejected
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Prefix endian/extent, whitespace
+    padding, duplicate-key, UTF-8, JSON, metadata-type, truncation, and header-limit vectors.'
+  proof_requirements:
+    positive:
+    - Prefix endian/extent, whitespace padding, duplicate-key, UTF-8, JSON, metadata-type, truncation,
+      and header-limit vectors.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-436F4DDBF119437E
+  capability_id: SAFETENSORS-PAYLOAD-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_offset_layout.py::test_contiguous_non_overlapping_offsets_are_accepted
+  - tests/python/safetensors/test_obligation_offset_layout.py::test_gap_and_overlap_are_rejected
+  - tests/python/safetensors/test_obligation_offset_layout.py::test_unindexed_trailing_bytes_are_rejected
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Coverage, ordering, overlap,
+    hole, truncation, trailing-byte, size-equation, and region-boundary matrices.'
+  proof_requirements:
+    positive:
+    - Coverage, ordering, overlap, hole, truncation, trailing-byte, size-equation, and region-boundary
+      matrices.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-476F8E85C6A97D63
+  capability_id: SAFETENSORS-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Complete dtype inventory
+    plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned sub-byte cases.'
+  proof_requirements:
+    positive:
+    - Complete dtype inventory plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned
+      sub-byte cases.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-492410BC838B4612
+  capability_id: SAFETENSORS-ADAPTER-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/adapters/numpy.py::to_numpy
+  - src/python/safetensors/src/format_factory/safetensors/adapters/torch.py::to_torch
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_optional_adapters.py::test_base_and_adapter_imports_do_not_load_optional_frameworks
+  - tests/python/safetensors/test_obligation_optional_adapters.py::test_numpy_adapter_discloses_read_only_zero_copy_and_safe_copy
+  - tests/python/safetensors/test_obligation_optional_adapters.py::test_numpy_adapter_rejects_non_native_dtype_without_reinterpretation
+  - tests/python/safetensors/test_obligation_real_torch_adapter.py::test_real_torch_exposes_every_declared_exact_adapter_dtype
+  - tests/python/safetensors/test_obligation_real_torch_adapter.py::test_real_torch_tensor_owns_a_safe_mutable_copy
+  - tests/python/safetensors/test_obligation_real_torch_adapter.py::test_real_torch_rejects_unsafe_zero_copy
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Dependency-absent imports,
+    minimum/latest adapter versions, dtype matrix, copy/zero-copy disclosure, and device behavior.'
+  proof_requirements:
+    positive:
+    - Dependency-absent imports, minimum/latest adapter versions, dtype matrix, copy/zero-copy disclosure,
+      and device behavior.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-4C8D62AC5DDF2A12
+  capability_id: SAFETENSORS-PAYLOAD-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_offset_layout.py::test_contiguous_non_overlapping_offsets_are_accepted
+  - tests/python/safetensors/test_obligation_offset_layout.py::test_gap_and_overlap_are_rejected
+  - tests/python/safetensors/test_obligation_offset_layout.py::test_unindexed_trailing_bytes_are_rejected
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Coverage, ordering, overlap,
+    hole, truncation, trailing-byte, size-equation, and region-boundary matrices.'
+  proof_requirements:
+    positive:
+    - Coverage, ordering, overlap, hole, truncation, trailing-byte, size-equation, and region-boundary
+      matrices.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-52673B6F1B81CF00
+  capability_id: SAFETENSORS-HEADER-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_header_whitespace.py::test_whitespace_padded_header_roundtrips_semantically
+  - tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_exact_eight_byte_little_endian_prefix_is_accepted
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_big_endian_prefix_is_not_misinterpreted_as_little_endian
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_prefix_shorter_than_eight_bytes_is_rejected
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Prefix endian/extent, whitespace
+    padding, duplicate-key, UTF-8, JSON, metadata-type, truncation, and header-limit vectors.'
+  proof_requirements:
+    positive:
+    - Prefix endian/extent, whitespace padding, duplicate-key, UTF-8, JSON, metadata-type, truncation,
+      and header-limit vectors.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-539FA05A327BD8DC
+  capability_id: SAFETENSORS-ADAPTER-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/adapters/numpy.py::to_numpy
+  - src/python/safetensors/src/format_factory/safetensors/adapters/torch.py::to_torch
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_optional_adapters.py::test_base_and_adapter_imports_do_not_load_optional_frameworks
+  - tests/python/safetensors/test_obligation_optional_adapters.py::test_numpy_adapter_discloses_read_only_zero_copy_and_safe_copy
+  - tests/python/safetensors/test_obligation_optional_adapters.py::test_numpy_adapter_rejects_non_native_dtype_without_reinterpretation
+  - tests/python/safetensors/test_obligation_real_torch_adapter.py::test_real_torch_exposes_every_declared_exact_adapter_dtype
+  - tests/python/safetensors/test_obligation_real_torch_adapter.py::test_real_torch_tensor_owns_a_safe_mutable_copy
+  - tests/python/safetensors/test_obligation_real_torch_adapter.py::test_real_torch_rejects_unsafe_zero_copy
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Dependency-absent imports,
+    minimum/latest adapter versions, dtype matrix, copy/zero-copy disclosure, and device behavior.'
+  proof_requirements:
+    positive:
+    - Dependency-absent imports, minimum/latest adapter versions, dtype matrix, copy/zero-copy disclosure,
+      and device behavior.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-54D64568BF06E6D4
+  capability_id: SAFETENSORS-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Complete dtype inventory
+    plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned sub-byte cases.'
+  proof_requirements:
+    positive:
+    - Complete dtype inventory plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned
+      sub-byte cases.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-56F8EB4984CEBAE8
+  capability_id: SAFETENSORS-VALIDATE-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/validation/validator.py::validate
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_validation_contract.py::test_raw_validation_uses_rule_specific_stable_codes
+  - tests/python/safetensors/test_obligation_validation_contract.py::test_resource_limits_have_stable_code_and_machine_readable_context
+  - tests/python/safetensors/test_obligation_validation_contract.py::test_tensor_rank_uses_the_configurable_nesting_limit
+  - tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: One negative vector per rule
+    plus property, mutation, fuzz, and resource-exhaustion suites.'
+  proof_requirements:
+    positive:
+    - One negative vector per rule plus property, mutation, fuzz, and resource-exhaustion suites.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-57BEF696D1D86E05
+  capability_id: SAFETENSORS-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Complete dtype inventory
+    plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned sub-byte cases.'
+  proof_requirements:
+    positive:
+    - Complete dtype inventory plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned
+      sub-byte cases.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-59F9F25F677A2C4F
+  capability_id: SAFETENSORS-LIFECYCLE-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
+  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps
+  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_path_stream_and_bytes_lifecycle
+  - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_strict_preservation_and_excluded_recovery_modes
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Lifecycle source matrix,
+    strict rejection, preservation, and deterministic serialization tests.'
+  proof_requirements:
+    positive:
+    - Lifecycle source matrix, strict rejection, preservation, and deterministic serialization tests.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-5FB6E64039178B98
+  capability_id: SAFETENSORS-PRESERVE-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps
+  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_path_stream_and_bytes_lifecycle
+  - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_strict_preservation_and_excluded_recovery_modes
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_exact_eight_byte_length_prefix_and_utf8_json_header
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_truncated_prefix_is_rejected
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_declared_header_length_beyond_file_is_rejected
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Unknown descriptor fields,
+    metadata absence, empty metadata, and string-map round trips.'
+  proof_requirements:
+    positive:
+    - Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-66D01DDAA7F0CB22
+  capability_id: SAFETENSORS-PAYLOAD-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_offset_layout.py::test_contiguous_non_overlapping_offsets_are_accepted
+  - tests/python/safetensors/test_obligation_offset_layout.py::test_gap_and_overlap_are_rejected
+  - tests/python/safetensors/test_obligation_offset_layout.py::test_unindexed_trailing_bytes_are_rejected
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Coverage, ordering, overlap,
+    hole, truncation, trailing-byte, size-equation, and region-boundary matrices.'
+  proof_requirements:
+    positive:
+    - Coverage, ordering, overlap, hole, truncation, trailing-byte, size-equation, and region-boundary
+      matrices.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-68C71825357C7F97
+  capability_id: SAFETENSORS-ADAPTER-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/adapters/numpy.py::to_numpy
+  - src/python/safetensors/src/format_factory/safetensors/adapters/torch.py::to_torch
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_optional_adapters.py::test_base_and_adapter_imports_do_not_load_optional_frameworks
+  - tests/python/safetensors/test_obligation_optional_adapters.py::test_numpy_adapter_discloses_read_only_zero_copy_and_safe_copy
+  - tests/python/safetensors/test_obligation_optional_adapters.py::test_numpy_adapter_rejects_non_native_dtype_without_reinterpretation
+  - tests/python/safetensors/test_obligation_real_torch_adapter.py::test_real_torch_exposes_every_declared_exact_adapter_dtype
+  - tests/python/safetensors/test_obligation_real_torch_adapter.py::test_real_torch_tensor_owns_a_safe_mutable_copy
+  - tests/python/safetensors/test_obligation_real_torch_adapter.py::test_real_torch_rejects_unsafe_zero_copy
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Dependency-absent imports,
+    minimum/latest adapter versions, dtype matrix, copy/zero-copy disclosure, and device behavior.'
+  proof_requirements:
+    positive:
+    - Dependency-absent imports, minimum/latest adapter versions, dtype matrix, copy/zero-copy disclosure,
+      and device behavior.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-68FB56B17DC9BECC
+  capability_id: SAFETENSORS-PRESERVE-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps
+  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_path_stream_and_bytes_lifecycle
+  - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_strict_preservation_and_excluded_recovery_modes
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_exact_eight_byte_length_prefix_and_utf8_json_header
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_truncated_prefix_is_rejected
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_declared_header_length_beyond_file_is_rejected
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Unknown descriptor fields,
+    metadata absence, empty metadata, and string-map round trips.'
+  proof_requirements:
+    positive:
+    - Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-695A339CFF62830F
+  capability_id: SAFETENSORS-LIFECYCLE-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
+  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps
+  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_path_stream_and_bytes_lifecycle
+  - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_strict_preservation_and_excluded_recovery_modes
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Lifecycle source matrix,
+    strict rejection, preservation, and deterministic serialization tests.'
+  proof_requirements:
+    positive:
+    - Lifecycle source matrix, strict rejection, preservation, and deterministic serialization tests.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-6BCDC6A324566A32
+  capability_id: SAFETENSORS-PAYLOAD-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_offset_layout.py::test_contiguous_non_overlapping_offsets_are_accepted
+  - tests/python/safetensors/test_obligation_offset_layout.py::test_gap_and_overlap_are_rejected
+  - tests/python/safetensors/test_obligation_offset_layout.py::test_unindexed_trailing_bytes_are_rejected
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Coverage, ordering, overlap,
+    hole, truncation, trailing-byte, size-equation, and region-boundary matrices.'
+  proof_requirements:
+    positive:
+    - Coverage, ordering, overlap, hole, truncation, trailing-byte, size-equation, and region-boundary
+      matrices.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-6C316AF2B857D4A8
+  capability_id: SAFETENSORS-VALIDATE-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/validation/validator.py::validate
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_validation_contract.py::test_raw_validation_uses_rule_specific_stable_codes
+  - tests/python/safetensors/test_obligation_validation_contract.py::test_resource_limits_have_stable_code_and_machine_readable_context
+  - tests/python/safetensors/test_obligation_validation_contract.py::test_tensor_rank_uses_the_configurable_nesting_limit
+  - tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: One negative vector per rule
+    plus property, mutation, fuzz, and resource-exhaustion suites.'
+  proof_requirements:
+    positive:
+    - One negative vector per rule plus property, mutation, fuzz, and resource-exhaustion suites.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-6EFF7A75CBD532C3
+  capability_id: SAFETENSORS-HEADER-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_header_whitespace.py::test_whitespace_padded_header_roundtrips_semantically
+  - tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_exact_eight_byte_little_endian_prefix_is_accepted
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_big_endian_prefix_is_not_misinterpreted_as_little_endian
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_prefix_shorter_than_eight_bytes_is_rejected
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Prefix endian/extent, whitespace
+    padding, duplicate-key, UTF-8, JSON, metadata-type, truncation, and header-limit vectors.'
+  proof_requirements:
+    positive:
+    - Prefix endian/extent, whitespace padding, duplicate-key, UTF-8, JSON, metadata-type, truncation,
+      and header-limit vectors.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-6F8E3A1A4D0E31DC
+  capability_id: SAFETENSORS-ADAPTER-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/adapters/numpy.py::to_numpy
+  - src/python/safetensors/src/format_factory/safetensors/adapters/torch.py::to_torch
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_optional_adapters.py::test_base_and_adapter_imports_do_not_load_optional_frameworks
+  - tests/python/safetensors/test_obligation_optional_adapters.py::test_numpy_adapter_discloses_read_only_zero_copy_and_safe_copy
+  - tests/python/safetensors/test_obligation_optional_adapters.py::test_numpy_adapter_rejects_non_native_dtype_without_reinterpretation
+  - tests/python/safetensors/test_obligation_real_torch_adapter.py::test_real_torch_exposes_every_declared_exact_adapter_dtype
+  - tests/python/safetensors/test_obligation_real_torch_adapter.py::test_real_torch_tensor_owns_a_safe_mutable_copy
+  - tests/python/safetensors/test_obligation_real_torch_adapter.py::test_real_torch_rejects_unsafe_zero_copy
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Dependency-absent imports,
+    minimum/latest adapter versions, dtype matrix, copy/zero-copy disclosure, and device behavior.'
+  proof_requirements:
+    positive:
+    - Dependency-absent imports, minimum/latest adapter versions, dtype matrix, copy/zero-copy disclosure,
+      and device behavior.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-702CE38C3249FB41
+  capability_id: SAFETENSORS-HEADER-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_header_whitespace.py::test_whitespace_padded_header_roundtrips_semantically
+  - tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_exact_eight_byte_little_endian_prefix_is_accepted
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_big_endian_prefix_is_not_misinterpreted_as_little_endian
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_prefix_shorter_than_eight_bytes_is_rejected
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Prefix endian/extent, whitespace
+    padding, duplicate-key, UTF-8, JSON, metadata-type, truncation, and header-limit vectors.'
+  proof_requirements:
+    positive:
+    - Prefix endian/extent, whitespace padding, duplicate-key, UTF-8, JSON, metadata-type, truncation,
+      and header-limit vectors.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-717B53921D2F9C6B
+  capability_id: SAFETENSORS-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Complete dtype inventory
+    plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned sub-byte cases.'
+  proof_requirements:
+    positive:
+    - Complete dtype inventory plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned
+      sub-byte cases.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-729FF2579C46ACAE
+  capability_id: SAFETENSORS-VALIDATE-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/validation/validator.py::validate
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_validation_contract.py::test_raw_validation_uses_rule_specific_stable_codes
+  - tests/python/safetensors/test_obligation_validation_contract.py::test_resource_limits_have_stable_code_and_machine_readable_context
+  - tests/python/safetensors/test_obligation_validation_contract.py::test_tensor_rank_uses_the_configurable_nesting_limit
+  - tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: One negative vector per rule
+    plus property, mutation, fuzz, and resource-exhaustion suites.'
+  proof_requirements:
+    positive:
+    - One negative vector per rule plus property, mutation, fuzz, and resource-exhaustion suites.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-787A6A731624D4C5
+  capability_id: SAFETENSORS-VALIDATE-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/validation/validator.py::validate
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_validation_contract.py::test_raw_validation_uses_rule_specific_stable_codes
+  - tests/python/safetensors/test_obligation_validation_contract.py::test_resource_limits_have_stable_code_and_machine_readable_context
+  - tests/python/safetensors/test_obligation_validation_contract.py::test_tensor_rank_uses_the_configurable_nesting_limit
+  - tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: One negative vector per rule
+    plus property, mutation, fuzz, and resource-exhaustion suites.'
+  proof_requirements:
+    positive:
+    - One negative vector per rule plus property, mutation, fuzz, and resource-exhaustion suites.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-7B0DE161B50E285E
+  capability_id: SAFETENSORS-VALIDATE-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/validation/validator.py::validate
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_validation_contract.py::test_raw_validation_uses_rule_specific_stable_codes
+  - tests/python/safetensors/test_obligation_validation_contract.py::test_resource_limits_have_stable_code_and_machine_readable_context
+  - tests/python/safetensors/test_obligation_validation_contract.py::test_tensor_rank_uses_the_configurable_nesting_limit
+  - tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: One negative vector per rule
+    plus property, mutation, fuzz, and resource-exhaustion suites.'
+  proof_requirements:
+    positive:
+    - One negative vector per rule plus property, mutation, fuzz, and resource-exhaustion suites.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-7EFB92583F4E57E1
+  capability_id: SAFETENSORS-ADAPTER-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/adapters/numpy.py::to_numpy
+  - src/python/safetensors/src/format_factory/safetensors/adapters/torch.py::to_torch
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_optional_adapters.py::test_base_and_adapter_imports_do_not_load_optional_frameworks
+  - tests/python/safetensors/test_obligation_optional_adapters.py::test_numpy_adapter_discloses_read_only_zero_copy_and_safe_copy
+  - tests/python/safetensors/test_obligation_optional_adapters.py::test_numpy_adapter_rejects_non_native_dtype_without_reinterpretation
+  - tests/python/safetensors/test_obligation_real_torch_adapter.py::test_real_torch_exposes_every_declared_exact_adapter_dtype
+  - tests/python/safetensors/test_obligation_real_torch_adapter.py::test_real_torch_tensor_owns_a_safe_mutable_copy
+  - tests/python/safetensors/test_obligation_real_torch_adapter.py::test_real_torch_rejects_unsafe_zero_copy
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Dependency-absent imports,
+    minimum/latest adapter versions, dtype matrix, copy/zero-copy disclosure, and device behavior.'
+  proof_requirements:
+    positive:
+    - Dependency-absent imports, minimum/latest adapter versions, dtype matrix, copy/zero-copy disclosure,
+      and device behavior.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-7F8217AD87965DB6
+  capability_id: SAFETENSORS-ADAPTER-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/adapters/numpy.py::to_numpy
+  - src/python/safetensors/src/format_factory/safetensors/adapters/torch.py::to_torch
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_optional_adapters.py::test_base_and_adapter_imports_do_not_load_optional_frameworks
+  - tests/python/safetensors/test_obligation_optional_adapters.py::test_numpy_adapter_discloses_read_only_zero_copy_and_safe_copy
+  - tests/python/safetensors/test_obligation_optional_adapters.py::test_numpy_adapter_rejects_non_native_dtype_without_reinterpretation
+  - tests/python/safetensors/test_obligation_real_torch_adapter.py::test_real_torch_exposes_every_declared_exact_adapter_dtype
+  - tests/python/safetensors/test_obligation_real_torch_adapter.py::test_real_torch_tensor_owns_a_safe_mutable_copy
+  - tests/python/safetensors/test_obligation_real_torch_adapter.py::test_real_torch_rejects_unsafe_zero_copy
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Dependency-absent imports,
+    minimum/latest adapter versions, dtype matrix, copy/zero-copy disclosure, and device behavior.'
+  proof_requirements:
+    positive:
+    - Dependency-absent imports, minimum/latest adapter versions, dtype matrix, copy/zero-copy disclosure,
+      and device behavior.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-82F023366D266472
+  capability_id: SAFETENSORS-ADAPTER-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/adapters/numpy.py::to_numpy
+  - src/python/safetensors/src/format_factory/safetensors/adapters/torch.py::to_torch
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_optional_adapters.py::test_base_and_adapter_imports_do_not_load_optional_frameworks
+  - tests/python/safetensors/test_obligation_optional_adapters.py::test_numpy_adapter_discloses_read_only_zero_copy_and_safe_copy
+  - tests/python/safetensors/test_obligation_optional_adapters.py::test_numpy_adapter_rejects_non_native_dtype_without_reinterpretation
+  - tests/python/safetensors/test_obligation_real_torch_adapter.py::test_real_torch_exposes_every_declared_exact_adapter_dtype
+  - tests/python/safetensors/test_obligation_real_torch_adapter.py::test_real_torch_tensor_owns_a_safe_mutable_copy
+  - tests/python/safetensors/test_obligation_real_torch_adapter.py::test_real_torch_rejects_unsafe_zero_copy
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Dependency-absent imports,
+    minimum/latest adapter versions, dtype matrix, copy/zero-copy disclosure, and device behavior.'
+  proof_requirements:
+    positive:
+    - Dependency-absent imports, minimum/latest adapter versions, dtype matrix, copy/zero-copy disclosure,
+      and device behavior.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-8329025ECE9B09AC
+  capability_id: SAFETENSORS-VALIDATE-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/validation/validator.py::validate
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_validation_contract.py::test_raw_validation_uses_rule_specific_stable_codes
+  - tests/python/safetensors/test_obligation_validation_contract.py::test_resource_limits_have_stable_code_and_machine_readable_context
+  - tests/python/safetensors/test_obligation_validation_contract.py::test_tensor_rank_uses_the_configurable_nesting_limit
+  - tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: One negative vector per rule
+    plus property, mutation, fuzz, and resource-exhaustion suites.'
+  proof_requirements:
+    positive:
+    - One negative vector per rule plus property, mutation, fuzz, and resource-exhaustion suites.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-833E2C047D1E5C91
+  capability_id: SAFETENSORS-HEADER-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_header_whitespace.py::test_whitespace_padded_header_roundtrips_semantically
+  - tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_exact_eight_byte_little_endian_prefix_is_accepted
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_big_endian_prefix_is_not_misinterpreted_as_little_endian
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_prefix_shorter_than_eight_bytes_is_rejected
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Prefix endian/extent, whitespace
+    padding, duplicate-key, UTF-8, JSON, metadata-type, truncation, and header-limit vectors.'
+  proof_requirements:
+    positive:
+    - Prefix endian/extent, whitespace padding, duplicate-key, UTF-8, JSON, metadata-type, truncation,
+      and header-limit vectors.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-83A3FF76296963EE
+  capability_id: SAFETENSORS-VALIDATE-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/validation/validator.py::validate
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_validation_contract.py::test_raw_validation_uses_rule_specific_stable_codes
+  - tests/python/safetensors/test_obligation_validation_contract.py::test_resource_limits_have_stable_code_and_machine_readable_context
+  - tests/python/safetensors/test_obligation_validation_contract.py::test_tensor_rank_uses_the_configurable_nesting_limit
+  - tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: One negative vector per rule
+    plus property, mutation, fuzz, and resource-exhaustion suites.'
+  proof_requirements:
+    positive:
+    - One negative vector per rule plus property, mutation, fuzz, and resource-exhaustion suites.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-879767CA53697049
+  capability_id: SAFETENSORS-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Complete dtype inventory
+    plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned sub-byte cases.'
+  proof_requirements:
+    positive:
+    - Complete dtype inventory plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned
+      sub-byte cases.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-909DA5B5108BBCF6
+  capability_id: SAFETENSORS-LAZY-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
+  positive_test_selectors:
+  - tests/python/safetensors/test_lazy_io.py::test_header_only_and_mapped_region_access_stay_bounded
+  - tests/python/safetensors/test_lazy_io.py::test_stream_buffering_is_disclosed_and_header_only_requires_seek
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_exact_eight_byte_length_prefix_and_utf8_json_header
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_truncated_prefix_is_rejected
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_declared_header_length_beyond_file_is_rejected
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Bounded-memory large-file,
+    header-read-count, mapped-region, stream-buffer disclosure, and view-lifetime tests.'
+  proof_requirements:
+    positive:
+    - Bounded-memory large-file, header-read-count, mapped-region, stream-buffer disclosure, and view-lifetime
+      tests.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-9229B611B9CCD5F8
+  capability_id: SAFETENSORS-INTEROP-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
+  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps
+  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_bidirectional_interop.py::test_official_writer_is_readable_by_factory
+  - tests/python/safetensors/test_obligation_bidirectional_interop.py::test_factory_writer_is_readable_by_official_implementation
+  - tests/python/safetensors/test_obligation_bidirectional_interop.py::test_official_and_factory_distributions_coinstall_without_collision
+  - tests/python/safetensors/test_official_interop.py::test_preservation_roundtrip_is_officially_readable
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Official corpus, bidirectional
+    writer vectors, contradiction cases, and installed co-import proof.'
+  proof_requirements:
+    positive:
+    - Official corpus, bidirectional writer vectors, contradiction cases, and installed co-import proof.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-9511E7A64BBE4BE0
+  capability_id: SAFETENSORS-PRESERVE-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps
+  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_path_stream_and_bytes_lifecycle
+  - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_strict_preservation_and_excluded_recovery_modes
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_exact_eight_byte_length_prefix_and_utf8_json_header
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_truncated_prefix_is_rejected
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_declared_header_length_beyond_file_is_rejected
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Unknown descriptor fields,
+    metadata absence, empty metadata, and string-map round trips.'
+  proof_requirements:
+    positive:
+    - Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-991021FCD2FCB37C
+  capability_id: SAFETENSORS-LAZY-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
+  positive_test_selectors:
+  - tests/python/safetensors/test_lazy_io.py::test_header_only_and_mapped_region_access_stay_bounded
+  - tests/python/safetensors/test_lazy_io.py::test_stream_buffering_is_disclosed_and_header_only_requires_seek
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_exact_eight_byte_length_prefix_and_utf8_json_header
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_truncated_prefix_is_rejected
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_declared_header_length_beyond_file_is_rejected
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Bounded-memory large-file,
+    header-read-count, mapped-region, stream-buffer disclosure, and view-lifetime tests.'
+  proof_requirements:
+    positive:
+    - Bounded-memory large-file, header-read-count, mapped-region, stream-buffer disclosure, and view-lifetime
+      tests.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-9A7AD28704D016B4
+  capability_id: SAFETENSORS-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Complete dtype inventory
+    plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned sub-byte cases.'
+  proof_requirements:
+    positive:
+    - Complete dtype inventory plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned
+      sub-byte cases.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-9CF19F5696BDD425
+  capability_id: SAFETENSORS-PAYLOAD-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_offset_layout.py::test_contiguous_non_overlapping_offsets_are_accepted
+  - tests/python/safetensors/test_obligation_offset_layout.py::test_gap_and_overlap_are_rejected
+  - tests/python/safetensors/test_obligation_offset_layout.py::test_unindexed_trailing_bytes_are_rejected
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Coverage, ordering, overlap,
+    hole, truncation, trailing-byte, size-equation, and region-boundary matrices.'
+  proof_requirements:
+    positive:
+    - Coverage, ordering, overlap, hole, truncation, trailing-byte, size-equation, and region-boundary
+      matrices.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-A24607D0821DF986
+  capability_id: SAFETENSORS-PAYLOAD-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_offset_layout.py::test_contiguous_non_overlapping_offsets_are_accepted
+  - tests/python/safetensors/test_obligation_offset_layout.py::test_gap_and_overlap_are_rejected
+  - tests/python/safetensors/test_obligation_offset_layout.py::test_unindexed_trailing_bytes_are_rejected
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Coverage, ordering, overlap,
+    hole, truncation, trailing-byte, size-equation, and region-boundary matrices.'
+  proof_requirements:
+    positive:
+    - Coverage, ordering, overlap, hole, truncation, trailing-byte, size-equation, and region-boundary
+      matrices.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-A280947F505D3CB0
+  capability_id: SAFETENSORS-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Complete dtype inventory
+    plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned sub-byte cases.'
+  proof_requirements:
+    positive:
+    - Complete dtype inventory plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned
+      sub-byte cases.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-A91A04F261997A05
+  capability_id: SAFETENSORS-PAYLOAD-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_offset_layout.py::test_contiguous_non_overlapping_offsets_are_accepted
+  - tests/python/safetensors/test_obligation_offset_layout.py::test_gap_and_overlap_are_rejected
+  - tests/python/safetensors/test_obligation_offset_layout.py::test_unindexed_trailing_bytes_are_rejected
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Coverage, ordering, overlap,
+    hole, truncation, trailing-byte, size-equation, and region-boundary matrices.'
+  proof_requirements:
+    positive:
+    - Coverage, ordering, overlap, hole, truncation, trailing-byte, size-equation, and region-boundary
+      matrices.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-B68C9D6BA2E9CD7A
+  capability_id: SAFETENSORS-HEADER-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_header_whitespace.py::test_whitespace_padded_header_roundtrips_semantically
+  - tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_exact_eight_byte_little_endian_prefix_is_accepted
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_big_endian_prefix_is_not_misinterpreted_as_little_endian
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_prefix_shorter_than_eight_bytes_is_rejected
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Prefix endian/extent, whitespace
+    padding, duplicate-key, UTF-8, JSON, metadata-type, truncation, and header-limit vectors.'
+  proof_requirements:
+    positive:
+    - Prefix endian/extent, whitespace padding, duplicate-key, UTF-8, JSON, metadata-type, truncation,
+      and header-limit vectors.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-B7B6BB84ACC683E2
+  capability_id: SAFETENSORS-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Complete dtype inventory
+    plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned sub-byte cases.'
+  proof_requirements:
+    positive:
+    - Complete dtype inventory plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned
+      sub-byte cases.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-BD58FA05B8FF8819
+  capability_id: SAFETENSORS-VALIDATE-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/validation/validator.py::validate
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_validation_contract.py::test_raw_validation_uses_rule_specific_stable_codes
+  - tests/python/safetensors/test_obligation_validation_contract.py::test_resource_limits_have_stable_code_and_machine_readable_context
+  - tests/python/safetensors/test_obligation_validation_contract.py::test_tensor_rank_uses_the_configurable_nesting_limit
+  - tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: One negative vector per rule
+    plus property, mutation, fuzz, and resource-exhaustion suites.'
+  proof_requirements:
+    positive:
+    - One negative vector per rule plus property, mutation, fuzz, and resource-exhaustion suites.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-BE8662FE1EBACCB0
+  capability_id: SAFETENSORS-HEADER-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_header_whitespace.py::test_whitespace_padded_header_roundtrips_semantically
+  - tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_exact_eight_byte_little_endian_prefix_is_accepted
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_big_endian_prefix_is_not_misinterpreted_as_little_endian
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_prefix_shorter_than_eight_bytes_is_rejected
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Prefix endian/extent, whitespace
+    padding, duplicate-key, UTF-8, JSON, metadata-type, truncation, and header-limit vectors.'
+  proof_requirements:
+    positive:
+    - Prefix endian/extent, whitespace padding, duplicate-key, UTF-8, JSON, metadata-type, truncation,
+      and header-limit vectors.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-BFB10323DC7F7E9A
+  capability_id: SAFETENSORS-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Complete dtype inventory
+    plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned sub-byte cases.'
+  proof_requirements:
+    positive:
+    - Complete dtype inventory plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned
+      sub-byte cases.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-C1BA887FF2B1D343
+  capability_id: SAFETENSORS-ADAPTER-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/adapters/numpy.py::to_numpy
+  - src/python/safetensors/src/format_factory/safetensors/adapters/torch.py::to_torch
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_optional_adapters.py::test_base_and_adapter_imports_do_not_load_optional_frameworks
+  - tests/python/safetensors/test_obligation_optional_adapters.py::test_numpy_adapter_discloses_read_only_zero_copy_and_safe_copy
+  - tests/python/safetensors/test_obligation_optional_adapters.py::test_numpy_adapter_rejects_non_native_dtype_without_reinterpretation
+  - tests/python/safetensors/test_obligation_real_torch_adapter.py::test_real_torch_exposes_every_declared_exact_adapter_dtype
+  - tests/python/safetensors/test_obligation_real_torch_adapter.py::test_real_torch_tensor_owns_a_safe_mutable_copy
+  - tests/python/safetensors/test_obligation_real_torch_adapter.py::test_real_torch_rejects_unsafe_zero_copy
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Dependency-absent imports,
+    minimum/latest adapter versions, dtype matrix, copy/zero-copy disclosure, and device behavior.'
+  proof_requirements:
+    positive:
+    - Dependency-absent imports, minimum/latest adapter versions, dtype matrix, copy/zero-copy disclosure,
+      and device behavior.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-C96A42319B4CB72E
+  capability_id: SAFETENSORS-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Complete dtype inventory
+    plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned sub-byte cases.'
+  proof_requirements:
+    positive:
+    - Complete dtype inventory plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned
+      sub-byte cases.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-CA504A3E6B5CB9D7
+  capability_id: SAFETENSORS-VALIDATE-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/validation/validator.py::validate
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_validation_contract.py::test_raw_validation_uses_rule_specific_stable_codes
+  - tests/python/safetensors/test_obligation_validation_contract.py::test_resource_limits_have_stable_code_and_machine_readable_context
+  - tests/python/safetensors/test_obligation_validation_contract.py::test_tensor_rank_uses_the_configurable_nesting_limit
+  - tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: One negative vector per rule
+    plus property, mutation, fuzz, and resource-exhaustion suites.'
+  proof_requirements:
+    positive:
+    - One negative vector per rule plus property, mutation, fuzz, and resource-exhaustion suites.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-CDE64072C971930F
+  capability_id: SAFETENSORS-HEADER-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_header_whitespace.py::test_whitespace_padded_header_roundtrips_semantically
+  - tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_exact_eight_byte_little_endian_prefix_is_accepted
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_big_endian_prefix_is_not_misinterpreted_as_little_endian
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_prefix_shorter_than_eight_bytes_is_rejected
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Prefix endian/extent, whitespace
+    padding, duplicate-key, UTF-8, JSON, metadata-type, truncation, and header-limit vectors.'
+  proof_requirements:
+    positive:
+    - Prefix endian/extent, whitespace padding, duplicate-key, UTF-8, JSON, metadata-type, truncation,
+      and header-limit vectors.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-D549F06143FE4492
+  capability_id: SAFETENSORS-SHARD-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/sharded_index.py::loads_index
+  - src/python/safetensors/src/format_factory/safetensors/codec/sharded_index.py::load_index
+  - src/python/safetensors/src/format_factory/safetensors/codec/sharded_index.py::dumps_index
+  - src/python/safetensors/src/format_factory/safetensors/codec/sharded_index.py::dump_index
+  - src/python/safetensors/src/format_factory/safetensors/model/sharded.py::SafeTensorsShardIndex
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_sharded_index.py::test_sharded_index_is_deterministic_and_resolves_tensors
+  - tests/python/safetensors/test_obligation_sharded_index.py::test_shard_references_are_root_confined
+  - tests/python/safetensors/test_obligation_sharded_index.py::test_duplicate_tensor_mapping_is_rejected
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Official index examples,
+    multi-shard resolution, duplicate/missing tensor, traversal, and deterministic index writing.'
+  proof_requirements:
+    positive:
+    - Official index examples, multi-shard resolution, duplicate/missing tensor, traversal, and deterministic
+      index writing.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-D5F5AD460F3EC27D
+  capability_id: SAFETENSORS-PRESERVE-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps
+  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_path_stream_and_bytes_lifecycle
+  - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_strict_preservation_and_excluded_recovery_modes
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_exact_eight_byte_length_prefix_and_utf8_json_header
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_truncated_prefix_is_rejected
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_declared_header_length_beyond_file_is_rejected
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Unknown descriptor fields,
+    metadata absence, empty metadata, and string-map round trips.'
+  proof_requirements:
+    positive:
+    - Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-DA2E4F674AAAAAFC
+  capability_id: SAFETENSORS-ADAPTER-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/adapters/numpy.py::to_numpy
+  - src/python/safetensors/src/format_factory/safetensors/adapters/torch.py::to_torch
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_optional_adapters.py::test_base_and_adapter_imports_do_not_load_optional_frameworks
+  - tests/python/safetensors/test_obligation_optional_adapters.py::test_numpy_adapter_discloses_read_only_zero_copy_and_safe_copy
+  - tests/python/safetensors/test_obligation_optional_adapters.py::test_numpy_adapter_rejects_non_native_dtype_without_reinterpretation
+  - tests/python/safetensors/test_obligation_real_torch_adapter.py::test_real_torch_exposes_every_declared_exact_adapter_dtype
+  - tests/python/safetensors/test_obligation_real_torch_adapter.py::test_real_torch_tensor_owns_a_safe_mutable_copy
+  - tests/python/safetensors/test_obligation_real_torch_adapter.py::test_real_torch_rejects_unsafe_zero_copy
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Dependency-absent imports,
+    minimum/latest adapter versions, dtype matrix, copy/zero-copy disclosure, and device behavior.'
+  proof_requirements:
+    positive:
+    - Dependency-absent imports, minimum/latest adapter versions, dtype matrix, copy/zero-copy disclosure,
+      and device behavior.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-DF77BBEA64365A5F
+  capability_id: SAFETENSORS-PRESERVE-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps
+  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_path_stream_and_bytes_lifecycle
+  - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_strict_preservation_and_excluded_recovery_modes
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_exact_eight_byte_length_prefix_and_utf8_json_header
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_truncated_prefix_is_rejected
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_declared_header_length_beyond_file_is_rejected
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Unknown descriptor fields,
+    metadata absence, empty metadata, and string-map round trips.'
+  proof_requirements:
+    positive:
+    - Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-E2162E342C223666
+  capability_id: SAFETENSORS-HEADER-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_header_whitespace.py::test_whitespace_padded_header_roundtrips_semantically
+  - tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_exact_eight_byte_little_endian_prefix_is_accepted
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_big_endian_prefix_is_not_misinterpreted_as_little_endian
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_prefix_shorter_than_eight_bytes_is_rejected
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Prefix endian/extent, whitespace
+    padding, duplicate-key, UTF-8, JSON, metadata-type, truncation, and header-limit vectors.'
+  proof_requirements:
+    positive:
+    - Prefix endian/extent, whitespace padding, duplicate-key, UTF-8, JSON, metadata-type, truncation,
+      and header-limit vectors.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-E660EF82CD4D2393
+  capability_id: SAFETENSORS-HEADER-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_header_whitespace.py::test_whitespace_padded_header_roundtrips_semantically
+  - tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_exact_eight_byte_little_endian_prefix_is_accepted
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_big_endian_prefix_is_not_misinterpreted_as_little_endian
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_prefix_shorter_than_eight_bytes_is_rejected
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Prefix endian/extent, whitespace
+    padding, duplicate-key, UTF-8, JSON, metadata-type, truncation, and header-limit vectors.'
+  proof_requirements:
+    positive:
+    - Prefix endian/extent, whitespace padding, duplicate-key, UTF-8, JSON, metadata-type, truncation,
+      and header-limit vectors.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-E673E1E80392B008
+  capability_id: SAFETENSORS-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Complete dtype inventory
+    plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned sub-byte cases.'
+  proof_requirements:
+    positive:
+    - Complete dtype inventory plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned
+      sub-byte cases.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-E6746D33069218B9
+  capability_id: SAFETENSORS-HEADER-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_header_whitespace.py::test_whitespace_padded_header_roundtrips_semantically
+  - tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_exact_eight_byte_little_endian_prefix_is_accepted
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_big_endian_prefix_is_not_misinterpreted_as_little_endian
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_prefix_shorter_than_eight_bytes_is_rejected
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Prefix endian/extent, whitespace
+    padding, duplicate-key, UTF-8, JSON, metadata-type, truncation, and header-limit vectors.'
+  proof_requirements:
+    positive:
+    - Prefix endian/extent, whitespace padding, duplicate-key, UTF-8, JSON, metadata-type, truncation,
+      and header-limit vectors.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-E721B01179EDA764
+  capability_id: SAFETENSORS-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Complete dtype inventory
+    plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned sub-byte cases.'
+  proof_requirements:
+    positive:
+    - Complete dtype inventory plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned
+      sub-byte cases.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-E9EEC89DC82233A8
+  capability_id: SAFETENSORS-PRESERVE-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps
+  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_path_stream_and_bytes_lifecycle
+  - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_strict_preservation_and_excluded_recovery_modes
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_exact_eight_byte_length_prefix_and_utf8_json_header
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_truncated_prefix_is_rejected
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_declared_header_length_beyond_file_is_rejected
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Unknown descriptor fields,
+    metadata absence, empty metadata, and string-map round trips.'
+  proof_requirements:
+    positive:
+    - Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-ED74F75166FC6AFF
+  capability_id: SAFETENSORS-HEADER-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_header_whitespace.py::test_whitespace_padded_header_roundtrips_semantically
+  - tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_exact_eight_byte_little_endian_prefix_is_accepted
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_big_endian_prefix_is_not_misinterpreted_as_little_endian
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_prefix_shorter_than_eight_bytes_is_rejected
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Prefix endian/extent, whitespace
+    padding, duplicate-key, UTF-8, JSON, metadata-type, truncation, and header-limit vectors.'
+  proof_requirements:
+    positive:
+    - Prefix endian/extent, whitespace padding, duplicate-key, UTF-8, JSON, metadata-type, truncation,
+      and header-limit vectors.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-EF61013542A38DE7
+  capability_id: SAFETENSORS-PRESERVE-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps
+  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_path_stream_and_bytes_lifecycle
+  - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_strict_preservation_and_excluded_recovery_modes
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_exact_eight_byte_length_prefix_and_utf8_json_header
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_truncated_prefix_is_rejected
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_declared_header_length_beyond_file_is_rejected
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Unknown descriptor fields,
+    metadata absence, empty metadata, and string-map round trips.'
+  proof_requirements:
+    positive:
+    - Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-F0DCFF6F75B9402D
+  capability_id: SAFETENSORS-PRESERVE-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps
+  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_path_stream_and_bytes_lifecycle
+  - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_strict_preservation_and_excluded_recovery_modes
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_exact_eight_byte_length_prefix_and_utf8_json_header
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_truncated_prefix_is_rejected
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_declared_header_length_beyond_file_is_rejected
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Unknown descriptor fields,
+    metadata absence, empty metadata, and string-map round trips.'
+  proof_requirements:
+    positive:
+    - Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-F647B3699F404995
+  capability_id: SAFETENSORS-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow
+  - tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Complete dtype inventory
+    plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned sub-byte cases.'
+  proof_requirements:
+    positive:
+    - Complete dtype inventory plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned
+      sub-byte cases.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-F9966564B791F01F
+  capability_id: SAFETENSORS-PRESERVE-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps
+  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_path_stream_and_bytes_lifecycle
+  - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_strict_preservation_and_excluded_recovery_modes
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_exact_eight_byte_length_prefix_and_utf8_json_header
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_truncated_prefix_is_rejected
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_declared_header_length_beyond_file_is_rejected
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Unknown descriptor fields,
+    metadata absence, empty metadata, and string-map round trips.'
+  proof_requirements:
+    positive:
+    - Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-FBD83322E179A8EA
+  capability_id: SAFETENSORS-PAYLOAD-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_offset_layout.py::test_contiguous_non_overlapping_offsets_are_accepted
+  - tests/python/safetensors/test_obligation_offset_layout.py::test_gap_and_overlap_are_rejected
+  - tests/python/safetensors/test_obligation_offset_layout.py::test_unindexed_trailing_bytes_are_rejected
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Coverage, ordering, overlap,
+    hole, truncation, trailing-byte, size-equation, and region-boundary matrices.'
+  proof_requirements:
+    positive:
+    - Coverage, ordering, overlap, hole, truncation, trailing-byte, size-equation, and region-boundary
+      matrices.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-SAFETENSORS-OBL-FDDD4B0E4F1CD81F
+  capability_id: SAFETENSORS-HEADER-001
+  status: partial
+  source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
+  positive_test_selectors:
+  - tests/python/safetensors/test_obligation_header_whitespace.py::test_whitespace_padded_header_roundtrips_semantically
+  - tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_exact_eight_byte_little_endian_prefix_is_accepted
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_big_endian_prefix_is_not_misinterpreted_as_little_endian
+  - tests/python/safetensors/test_obligation_prefix_encoding.py::test_prefix_shorter_than_eight_bytes_is_rejected
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - SAFETENSORS-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Prefix endian/extent, whitespace
+    padding, duplicate-key, UTF-8, JSON, metadata-type, truncation, and header-limit vectors.'
+  proof_requirements:
+    positive:
+    - Prefix endian/extent, whitespace padding, duplicate-key, UTF-8, JSON, metadata-type, truncation,
+      and header-limit vectors.
+    negative:
+    - Selector-bound negative cases are not yet identified.

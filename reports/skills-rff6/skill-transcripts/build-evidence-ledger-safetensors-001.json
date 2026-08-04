@@ -1,0 +1,52 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "build-evidence-ledger-safetensors-001",
+  "skill_id": "build-obligation-register",
+  "mode": "live",
+  "timestamp": "2026-08-04T20:25:00Z",
+  "inputs": {
+    "format_id": "safetensors",
+    "task_id": "PER_FORMAT_EVIDENCE_LEDGERS",
+    "task_kind": "evidence",
+    "root_cause": "GAP-020: only ipynb and nrrd had an implementation-evidence ledger. safetensors' 86 obligations had never been classified against source symbols or test selectors, so neither the exact-obligation reconciler nor the proof-requirement audit could run for it.",
+    "acceptance_evidence": "reports/format-contract-layer/safetensors-obligation-reconciliation.json",
+    "regression_tier": "full safetensors package suite (tests/python/safetensors)"
+  },
+  "execution_steps": [
+    "1. Generalized the one-off IPYNB generator into tools/ff6/build_evidence_ledger.py, warranted by the directive's 'at least two accepted format slices prove a repeated need' rule -- four formats need identical work.",
+    "2. Put the capability-to-module mapping in a reviewable data file (shared/format-contracts/ledger-maps/safetensors.yaml) rather than in the script, since it is human judgement about what implements what.",
+    "3. Built the ledger with the GAP-018 shipped-namespace filter applied from the start: only the 17 test files importing format_factory.safetensors may supply selectors.",
+    "4. Result: 86 obligations, all partial, 0 missing -- every capability mapped to at least one shipped-namespace test file, a better starting position than IPYNB had.",
+    "5. Ran the proof-requirement audit: 35 mechanically clean, 51 with dimension shortfalls, and no shadow, skipped, or missing-test findings.",
+    "6. Recorded the suite result honestly rather than as a clean PASS -- see result and evidence.suite_truth below."
+  ],
+  "allowed_files": [
+    "tools/ff6/build_evidence_ledger.py",
+    "shared/format-contracts/ledger-maps/safetensors.yaml",
+    "shared/format-contracts/implementation-evidence/safetensors.yaml"
+  ],
+  "actual_files_changed": [
+    "tools/ff6/build_evidence_ledger.py",
+    "shared/format-contracts/ledger-maps/safetensors.yaml",
+    "shared/format-contracts/implementation-evidence/safetensors.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/python.exe -m pytest tests/python/safetensors -q  # 385 passed, 4 failed, 1 skipped",
+    "python -m tools.ff6.build_evidence_ledger --format-id safetensors  # 86 obligations, 86 partial, 0 missing",
+    "python -m tools.ff6.audit_proof_requirements --format-id safetensors  # 35 clean, 51 dimension shortfalls"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS_WITH_KNOWN_ENVIRONMENT_FAILURES",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "certification_state": "0/6",
+    "obligations_ledgered": 86,
+    "status_distribution": "86 partial, 0 missing",
+    "suite_truth": "385 passed, 4 failed, 1 skipped in the shared dev venv. The 4 failures are the known GAP-002 shadow-package name collision: the deprecated safetensors.safetensors_codec package collides with the official safetensors distribution, so the official-interop tests cannot resolve both in one environment. They pass in an isolated wheel-install venv. They are NOT counted as passing here, and the declared result says so rather than claiming PASS.",
+    "obligations_moved": 0,
+    "obligations_moved_note": "Zero. Mapping obligations to symbols and selectors is not proving them. Every entry is partial at most, and none has completed its proof-requirement audit.",
+    "safetensors_remains": "UNASSESSED"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
