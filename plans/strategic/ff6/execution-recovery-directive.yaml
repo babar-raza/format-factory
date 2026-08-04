@@ -645,6 +645,41 @@ structural_gaps_20260804:
       verify the owning process is genuinely gone (the lease record already
       carries `pid` and `worktree_path`). Resolve this BEFORE GAP-015's
       automated reclaim ships, so automation cannot reclaim a live agent's work.
+  - id: GAP-018
+    finding: >
+      PROGRAM-WIDE, measured 2026-08-04. Shadow-package-only test files as a
+      share of each format's suite:
+        ubl          10 of 11 files   91%   (1 shipped-namespace file)
+        xliff        10 of 11 files   91%   (1 shipped-namespace file)
+        nrrd          7 of 13 files   54%
+        ipynb        12 of 31 files   39%
+        safetensors   8 of 25 files   32%
+      Not one file in any of the five imports both, so there is no partial
+      migration in progress -- each file targets one package or the other.
+      GAP-002 recorded this qualitatively for NRRD; it is in fact the dominant
+      shape of the test estate. For UBL and XLIFF, essentially the entire suite
+      exercises a package that is NOT shipped, so their coverage numbers say
+      almost nothing about the product that would be released.
+    severity: HIGH
+    status: OPEN
+    owner: unassigned — program-wide shadow-package retirement lane
+    remediation: >
+      Treat every pre-existing coverage figure for these five formats as
+      unverified until each suite is re-measured against the shipped
+      format_factory.{format} namespace only. Port or replace shadow-only
+      files per format, starting with UBL and XLIFF where the gap is near
+      total. Until then no format may approach certification on the strength
+      of its suite size, and any claim of the form "N tests pass" must state
+      which namespace those tests import. IPYNB's ledger already applies this
+      filter (GAP-017); the same filter must be applied wherever obligation
+      evidence is compiled.
+    why_it_matters_beyond_bookkeeping: >
+      The packages can behave differently exactly where an obligation is
+      decided. For IPYNB-ID-001 the shipped namespace generates ids only via
+      explicit upgrade, as the obligation requires, while the shadow package
+      auto-assigns them on load, which the obligation forbids. Shadow coverage
+      is therefore not merely weaker evidence -- it can certify the opposite of
+      the required behavior.
   - id: GAP-017
     finding: >
       Quantified instance of GAP-002 for IPYNB. 12 of the 30 IPYNB test files
