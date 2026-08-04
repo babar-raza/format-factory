@@ -1,6 +1,7 @@
 """
 Format Factory — Product Action Guard
 Sprint: FORMAT-FACTORY-AUTONOMOUS-SYSTEM-ACCEPTANCE-PERSISTENT-PRODUCT-LOOP-001
+Extended: TC-FF6-EXECUTION-RECOVERY-001 (taskcard-bound authorization, C1)
 
 Guards the orchestrator from executing forbidden product actions.
 Classifies product gaps and ensures pilot actions are safe (read-only).
@@ -8,24 +9,19 @@ Classifies product gaps and ensures pilot actions are safe (read-only).
 from __future__ import annotations
 
 import json
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any, Dict, List, Optional
+
+from tools.supervisor.forbidden_actions import TRUE_EXTERNAL_GATE_ACTION_TYPES
 
 _here = Path(__file__).resolve().parent
 _repo_root = _here.parent.parent
 
-# Actions absolutely forbidden regardless of context
-FORBIDDEN_ACTION_TYPES = frozenset({
-    "GIT_PUSH",
-    "GIT_COMMIT",
-    "GIT_RESET",
-    "GIT_CLEAN",
-    "GIT_STASH",
-    "GATE_8_APPROVAL",
-    "GATE_11_APPROVAL",
-    "PACKAGE_PUBLISH",
-    "MCP_ACTIVATE",
-    "MUTATE_POC_TARGETS",
+# Actions absolutely forbidden regardless of context: the canonical
+# true-external-gate set, extended with this module's own product-mutation
+# path types (not part of the canonical set — these are guard-specific, not
+# a second copy of the external-gate list).
+FORBIDDEN_ACTION_TYPES = TRUE_EXTERNAL_GATE_ACTION_TYPES | frozenset({
     "MUTATE_PRODUCT_SOURCE",
     "WRITE_TO_SRC",
     "WRITE_TO_TESTS_NET",
@@ -77,6 +73,183 @@ ALLOWED_PRODUCT_SOURCE_PATCH_PATHS = [
     "src/python/ppm/",
 ]
 
+# The six FF6 product roots a live taskcard is permitted to declare ownership
+# over (TC-FF6-EXECUTION-RECOVERY-001, design C1). A taskcard may authorize
+# any exact path under these roots; it may never authorize a path outside them.
+FF6_GOVERNED_PRODUCT_ROOTS = [
+    "src/python/ipynb/",
+    "src/python/openraster/",
+    "src/python/nrrd/",
+    "src/python/xliff/",
+    "src/python/safetensors/",
+    "src/python/ubl/",
+    "tests/python/ipynb/",
+    "tests/python/openraster/",
+    "tests/python/nrrd/",
+    "tests/python/xliff/",
+    "tests/python/safetensors/",
+    "tests/python/ubl/",
+]
+
+# Roots a taskcard's "Exact writable paths" section can never authorize, even
+# if it declares them explicitly. Controller, registry, promotion, release,
+# and governance state remain fail-closed regardless of taskcard content.
+ALWAYS_FORBIDDEN_TASKCARD_ROOTS = [
+    "plans/strategic/ff6/events.jsonl",
+    "plans/strategic/ff6/controller-state.yaml",
+    "registry/",
+    "AGENTS.md",
+    "GOVERNANCE.md",
+    "poc-targets.yaml",
+    ".git/",
+]
+
+# Taskcard statuses that must never authorize a write (task is closed/expired).
+_TASKCARD_TERMINAL_STATUSES = {"CLOSED", "SUPERSEDED", "CANCELLED", "TERMINAL_CLOSED"}
+
+
+class TaskAuthorizationError(Exception):
+    """Raised when a taskcard cannot authorize the requested path."""
+
+
+def _default_taskcards_dir() -> Path:
+    return _repo_root / "taskcards"
+
+
+def _parse_frontmatter_status(text: str) -> Optional[str]:
+    if not text.startswith("---"):
+        return None
+    end = text.find("\n---", 3)
+    if end == -1:
+        return None
+    for line in text[3:end].splitlines():
+        stripped = line.strip()
+        if stripped.startswith("status:"):
+            return stripped.split(":", 1)[1].strip()
+    return None
+
+
+def _extract_section(text: str, heading: str) -> Optional[str]:
+    idx = text.find(heading)
+    if idx == -1:
+        return None
+    rest = text[idx + len(heading):]
+    next_idx = rest.find("\n## ")
+    return rest[:next_idx] if next_idx != -1 else rest
+
+
+def _extract_backtick_paths(section_body: str) -> List[str]:
+    paths: List[str] = []
+    for line in section_body.splitlines():
+        stripped = line.strip()
+        if not stripped.startswith("-"):
+            continue
+        entry = stripped.lstrip("-").strip()
+        while entry.startswith("`"):
+            end_tick = entry.find("`", 1)
+            if end_tick == -1:
+                break
+            paths.append(entry[1:end_tick])
+            entry = entry[end_tick + 1:].lstrip()
+            if entry.startswith(","):
+                entry = entry[1:].lstrip()
+            else:
+                break
+    return paths
+
+
+def _normalize_declared_path(raw: str) -> Optional[str]:
+    """Reject traversal/absolute entries. Return a normalized repo-relative
+    path (directory entries keep a trailing '/')."""
+    if not raw:
+        return None
+    posix_raw = raw.replace("\\", "/")
+    if ".." in PurePosixPath(posix_raw).parts:
+        return None
+    p = PurePosixPath(posix_raw)
+    if p.is_absolute():
+        return None
+    normalized = str(p)
+    if posix_raw.endswith("/"):
+        normalized += "/"
+    return normalized
+
+
+def load_taskcard_authorized_paths(
+    task_id: str,
+    taskcards_dir: Optional[Path] = None,
+) -> List[str]:
+    """Parse a taskcard's '## Exact writable paths' section into normalized,
+    repo-root-relative path prefixes it may mutate.
+
+    Raises TaskAuthorizationError if the taskcard is missing, has no such
+    section, or is closed/superseded/cancelled.
+    """
+    taskcards_dir = taskcards_dir or _default_taskcards_dir()
+    card_path = taskcards_dir / f"{task_id}.md"
+    if not card_path.exists():
+        raise TaskAuthorizationError(f"taskcard not found: {task_id}")
+
+    text = card_path.read_text(encoding="utf-8")
+    status = _parse_frontmatter_status(text)
+    if status in _TASKCARD_TERMINAL_STATUSES:
+        raise TaskAuthorizationError(f"taskcard {task_id} is {status}; cannot authorize writes")
+
+    # Observed taskcard convention is inconsistent in practice: control-repair
+    # taskcards head this section "## Exact writable paths" while product
+    # taskcards (e.g. TC-FF6-NRRD-GOLDEN-SLICE-001) head it "## Exact
+    # writable product paths". Accept either rather than silently
+    # authorizing nothing for a well-formed taskcard.
+    section = _extract_section(text, "## Exact writable paths")
+    if section is None:
+        section = _extract_section(text, "## Exact writable product paths")
+    if section is None:
+        raise TaskAuthorizationError(
+            f"taskcard {task_id} has no 'Exact writable paths' / "
+            "'Exact writable product paths' section"
+        )
+
+    declared = _extract_backtick_paths(section)
+    normalized: List[str] = []
+    for raw in declared:
+        norm = _normalize_declared_path(raw)
+        if norm is not None:
+            normalized.append(norm)
+    return normalized
+
+
+def is_path_authorized_for_task(
+    target_path: str,
+    task_id: str,
+    taskcards_dir: Optional[Path] = None,
+) -> bool:
+    """True iff `target_path` is inside FF6_GOVERNED_PRODUCT_ROOTS, is not in
+    ALWAYS_FORBIDDEN_TASKCARD_ROOTS, and is explicitly declared (exact match
+    or under a declared directory prefix) by the live, non-terminal taskcard
+    `task_id`."""
+    norm_target = (target_path or "").replace("\\", "/")
+    if not norm_target:
+        return False
+
+    for forbidden in ALWAYS_FORBIDDEN_TASKCARD_ROOTS:
+        if norm_target == forbidden or norm_target.startswith(forbidden):
+            return False
+
+    if not any(norm_target.startswith(root) for root in FF6_GOVERNED_PRODUCT_ROOTS):
+        return False
+
+    try:
+        authorized = load_taskcard_authorized_paths(task_id, taskcards_dir)
+    except TaskAuthorizationError:
+        return False
+
+    for allowed in authorized:
+        if allowed == norm_target:
+            return True
+        if allowed.endswith("/") and norm_target.startswith(allowed):
+            return True
+    return False
+
 
 class GuardViolation(Exception):
     """Raised when an action violates product safety rules."""
@@ -84,6 +257,28 @@ class GuardViolation(Exception):
         self.action_type = action_type
         self.reason = reason
         super().__init__(f"GUARD_VIOLATION [{action_type}]: {reason}")
+
+
+def _authorize_patch_target(target: str, task_id: Optional[str], action_type: str) -> None:
+    """Raise GuardViolation unless `target` is an authorized
+    PRODUCT_SOURCE_PATCH_BOUNDED write target. Shared by the primary target
+    and every also_modify secondary target so neither can bypass the other."""
+    if not target:
+        raise GuardViolation(action_type, "PRODUCT_SOURCE_PATCH_BOUNDED requires target_path")
+
+    allowed = False
+    if task_id:
+        allowed = is_path_authorized_for_task(target, task_id)
+    if not allowed:
+        allowed = any(target.startswith(p) for p in ALLOWED_PRODUCT_SOURCE_PATCH_PATHS)
+    if not allowed:
+        raise GuardViolation(
+            action_type,
+            f"target_path '{target}' not authorized (no taskcard grant, not in "
+            "ALLOWED_PRODUCT_SOURCE_PATCH_PATHS)"
+        )
+    if target.startswith("src/net/"):
+        raise GuardViolation(action_type, "src/net/ is forbidden for bounded product patches")
 
 
 def is_action_safe(action: Dict[str, Any]) -> bool:
@@ -122,20 +317,13 @@ def check_action(action: Dict[str, Any]) -> None:
                             f"target_path '{target_path}' is in forbidden write path '{forbidden}'"
                         )
 
-    # PRODUCT_SOURCE_PATCH_BOUNDED: target must be in allowed FOSS Python paths
+    # PRODUCT_SOURCE_PATCH_BOUNDED: target must be authorized either by a live
+    # taskcard's exact-path declaration (task_id present, C1) or by the
+    # legacy hard-coded FOSS Python allowlist (no task_id — backward compat).
     if action_type in BOUNDED_PRODUCT_SOURCE_ACTIONS:
         target = target_path or action.get("target", "")
-        if not target:
-            raise GuardViolation(action_type, "PRODUCT_SOURCE_PATCH_BOUNDED requires target_path")
-        allowed = any(target.startswith(p) for p in ALLOWED_PRODUCT_SOURCE_PATCH_PATHS)
-        if not allowed:
-            raise GuardViolation(
-                action_type,
-                f"target_path '{target}' not in ALLOWED_PRODUCT_SOURCE_PATCH_PATHS"
-            )
-        # Must not target src/net/
-        if target.startswith("src/net/"):
-            raise GuardViolation(action_type, "src/net/ is forbidden for bounded product patches")
+        task_id = action.get("task_id")
+        _authorize_patch_target(target, task_id, action_type)
 
     external_gate = action.get("external_gate", False)
     if external_gate:
@@ -410,10 +598,14 @@ def run_product_source_patch_bounded(
                 "product_source_mutated": False,
             }
 
-        # Apply also_modify patches
+        # Apply also_modify patches. Each secondary target must clear the same
+        # authorization as the primary target — also_modify is not a path-
+        # validation bypass (TC-FF6-EXECUTION-RECOVERY-001, defect 4).
         also_modified = []
         for mod in also_modify:
-            mod_path = _repo_root / mod.get("target_path", "")
+            mod_target_str = mod.get("target_path", "")
+            _authorize_patch_target(mod_target_str, action.get("task_id"), action_type)
+            mod_path = _repo_root / mod_target_str
             if mod_path.exists():
                 mod_orig = mod_path.read_text(encoding="utf-8")
                 mod_patch_type = mod.get("patch_type", "add_export")

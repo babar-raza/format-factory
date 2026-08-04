@@ -7,6 +7,76 @@
 **Last updated:** 2026-07-10 (v8.0: PQLM-001 Phase 4 closure — TC-PQLM-026/027/028/029 CLOSED, commit 2102bd63; GOV-WINDOW-FIX-001 — V105/V106 detection windows extended 300→500/400→600, commit 6bc5ad75; 4 governance-masked methods restored; 4233 .NET + 876 Python xcf tests pass)
 **Last verified:** 2026-06-24
 
+## Section 111 - FF6 Execution-Recovery Directive (STAGE_1_COMPLETE, 2026-08-04)
+
+**Mission:** `FF6-PRODUCTION-LIBRARIES-001`
+
+**Directive:** `plans/strategic/ff6/execution-recovery-directive.yaml`
+
+**Strategic plan:** `plans/strategic/autonomous-six-python-production-execution-plan.md`, version 7, recovery revision 1
+
+**Current state:** `STAGE_1_COMPLETE` (was `PLAN_PACKAGED_FOR_INDEPENDENT_REVIEW` as of 2026-08-03)
+
+**Product truth:** six `UNASSESSED`; `0/6` technically certified (unchanged — no product source was touched by the Stage 1 control repair)
+
+**Last accepted native event:** `FF6-EVENT-000047` (unchanged — the native FF6 controller was not touched; it does not yet know Stage 1 is accepted. `TC-FF6-NRRD-GOLDEN-SLICE-001`/`TC-FF6-SAFETENSORS-REFERENCE-SLICE-001` acceptance is what must append Event 48)
+
+**2026-08-04 amendment (Stage 1 control repair, ACCEPTED):** `TC-FF6-EXECUTION-RECOVERY-001` fixed the four proven control defects (taskcard-bound path authorization, atomic queue claim, UNTIL_BLOCKED continuation, also_modify bypass) with RED-to-GREEN evidence — see `.local/evidences/ff6-stage1-control-repair-20260804/`. `TC-FF6-NRRD-GOLDEN-SLICE-001` and `TC-FF6-SAFETENSORS-REFERENCE-SLICE-001` are both `READY` and concurrently enterable (their source/test trees are disjoint; the plan already provisions 2 product writers — see `execution-recovery-directive.yaml`'s amended `state_machine`). A same-day independent review also found and fixed a dev-environment defect that would otherwise have silently blocked both: the `.venv` held stale pre-namespace-migration editable installs of `format-factory-core` and all six FF6 packages (`import format_factory` failed entirely). Reinstalled; `format_factory.{nrrd,safetensors,ipynb,xliff,ubl}` all import correctly and their existing test suites pass (277 nrrd, 637+ safetensors). Full findings: `reports/skills-rff6/plan-hardening/` (2026-08-04 independent production review).
+
+The operator identified a throughput failure in the version-7 route: a broad
+six-lane supervisor, exhaustive readiness reports, and full-tree
+classification had become prerequisites to tangible format delivery. The
+recovery amendment keeps the complete production goal and proof gates but
+changes the execution order to minimal demonstrated control repair followed by
+small, independently verified product slices.
+
+### Symptoms, root causes, and structural weakness
+
+| Class | Evidence-backed finding | Durable response |
+|---|---|---|
+| Symptom | Product state remains 0/6 while planning/control artifacts continue to grow. | Count only executed obligation movement, independent evidence, and installed-wheel candidates as progress. |
+| Symptom | NRRD Event 47 points to more full R3 preparation before source work despite 48 exact unresolved obligations. | Acquire only slice-required Teem/pynrrd evidence and start the three-obligation NRRD golden slice immediately after the control unblock. |
+| Root cause | Product source authorization is hard-coded rather than derived from the live taskcard's exact owned paths. | Implement taskcard-bound path authorization with unrelated/global paths still fail-closed. |
+| Root cause | Queue/continuation state is not an atomic mission/attempt-scoped claim system and default cycle behavior can stop useful work. | Minimal SQLite/WAL queue, immutable attempts, idempotency, leases/heartbeats, and run-until-blocked continuation. |
+| Structural weakness | Version 7 designed a general six-lane runtime before two product archetypes proved which abstractions are shared. | Defer the full supervisor; extract shared machinery only after accepted NRRD and SafeTensors slices. |
+| Structural weakness | Full classification, handover refresh, and broad verification can recur after every small edit. | Slice-based evidence cadence; broad matrices only at milestones and release-candidate boundaries. |
+
+### Exact continuation
+
+1. ~~Review the validated execution-recovery ZIP.~~ DONE 2026-08-03.
+2. ~~Execute `TC-FF6-EXECUTION-RECOVERY-001`.~~ DONE 2026-08-04 — Stage 1
+   ACCEPTED; it unlocked and both `TC-FF6-NRRD-GOLDEN-SLICE-001` and
+   `TC-FF6-SAFETENSORS-REFERENCE-SLICE-001` are selectable (`READY`).
+3. **Next:** execute and independently validate the NRRD golden slice for
+   `SAL-NRRD-OBL-5FAF36D205C887AD`,
+   `SAL-NRRD-OBL-644276A28216DFC0`, and
+   `SAL-NRRD-OBL-9C262130232DCD09`. May run concurrently with step 4 (2026-08-04
+   amendment — see Section 111 header).
+4. **Next, concurrent with step 3:** execute and independently validate
+   `TC-FF6-SAFETENSORS-REFERENCE-SLICE-001`.
+5. Generalize only control behavior demonstrated by both slices, then continue
+   IPYNB, XLIFF, UBL, and OpenRaster vertical slices to per-format technical
+   certification.
+
+Initial WIP is two product writers, one read-only preparation worker, one
+independent validator, and one serialized integrator. Increase to three product
+writers only after two disjoint batches integrate cleanly. Do not target four.
+The executor runs until a true external/unsafe/specification or repeated-root-
+cause blocker; a routine three-cycle or confirmation stop is prohibited.
+
+### Explicit non-claims
+
+- The 2026-08-04 Stage 1 amendment does not append Event 48, change controller
+  state, modify product source/tests, certify a format, commit, or push. It
+  DOES implement and accept Stage 1 itself (control-machinery repair only —
+  see the amendment note in the section header) and DOES reinstall the local
+  dev `.venv` (environment state, not product source, not committed/tracked).
+- The denominator remains 110 capabilities and 689 obligations.
+- NRRD remains 17 implemented, 39 partial, 6 missing, and 3
+  preservation-only; OpenRaster source remains absent.
+- Historical `TC-FF6-SUPERVISOR-*` cards are superseded for routing, not
+  completed, and their proposed runtime is not evidence.
+
 **Closeout amendment:** 2026-07-23 — FF-PLAN-CONTROL-001 final status is recorded in Section 110; all prior master-plan history remains in place.
 
 ## Section 110 — FF-PLAN-CONTROL-001: Concurrent-Safe Plan Control and Backlog Recovery (CLOSED 2026-07-23)

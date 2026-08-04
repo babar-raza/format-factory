@@ -21,8 +21,8 @@ open_source_allowed: false
 commercial_allowed: false
 goal_id: FF6-PRODUCTION-LIBRARIES-001
 parent_task_id: TC-FF6-PROGRAM-CAPABILITIES-001
-status: READY
-lane: D
+status: SUPERSEDED
+lane: HISTORICAL
 skill_ids:
   - build-product-context
   - inventory-format-dom
@@ -30,20 +30,33 @@ skill_ids:
   - validate-product-code-ledger
   - plan-control
 release_blockers: []
-notes: Read-only characterization of IPYNB and SafeTensors before any restructuring.
+notes: Superseded without execution by separate IPYNB and SafeTensors readiness cards in plan version 7.
 ---
 
 # TC-FF6-COMPACT-READINESS-001: IPYNB and SafeTensors Production Readiness Characterization
 
 **Phase:** SNAPSHOT / architecture preparation
-**Status:** READY
-**Owner:** deterministic FF6 Lane D scheduler
+**Status:** SUPERSEDED (not executed)
+**Owner:** historical version-6 queue record
 **Created:** 2026-08-01
 **Last updated:** 2026-08-01
 **Blocking:** safe residual implementation task compilation for two compact formats
 **Blocked by:** none for read-only characterization
 **Format:** ipynb, safetensors
 **Gate:** no source mutation or promotion
+
+## Supersession record
+
+This combined card is retained for audit history but must not be scheduled.
+Plan version 7 separates it into:
+
+- `TC-FF6-IPYNB-READINESS-001`; and
+- `TC-FF6-SAFETENSORS-READINESS-001`.
+
+No obligation, evidence, or product progress was credited by this
+supersession. The successor cards keep independent baselines, oracles, package
+proof, gaps, and controller routes so a failure in one format cannot block or
+contaminate the other.
 
 ## Objective
 

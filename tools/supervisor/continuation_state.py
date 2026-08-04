@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Any, Dict, Optional
 
 from atomic_io import atomic_write_json
+from tools.supervisor.forbidden_actions import TRUE_EXTERNAL_GATE_ACTION_TYPES
 
 # Repo root detection
 _here = Path(__file__).resolve().parent       # tools/supervisor/
@@ -262,12 +263,7 @@ def save_next_action(action: Dict[str, Any], path: Optional[str] = None) -> None
 def is_action_safe(action: Dict[str, Any]) -> tuple[bool, str]:
     """Return (safe, reason). Checks action_type and content for forbidden patterns."""
     action_type = action.get("action_type", "")
-    forbidden_types = {
-        "GIT_PUSH", "GIT_COMMIT", "GIT_RESET", "GIT_CLEAN", "GIT_STASH",
-        "GATE_8_APPROVAL", "GATE_11_APPROVAL", "PACKAGE_PUBLISH",
-        "MCP_ACTIVATE", "MUTATE_POC_TARGETS",
-    }
-    if action_type in forbidden_types:
+    if action_type in TRUE_EXTERNAL_GATE_ACTION_TYPES:
         return False, f"Forbidden action_type: {action_type}"
     if action.get("external_gate") is True:
         return False, "external_gate=true requires human intervention"

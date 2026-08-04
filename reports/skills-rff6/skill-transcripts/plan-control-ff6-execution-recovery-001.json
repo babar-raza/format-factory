@@ -1,0 +1,56 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "plan-control-ff6-execution-recovery-001",
+  "skill_id": "plan-control",
+  "mode": "live",
+  "timestamp": "2026-08-03T04:08:20Z",
+  "inputs": {
+    "task_id": "TC-FF6-EXECUTION-RECOVERY-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "operation": "record a plan-only execution-route amendment without changing executable controller state",
+    "target_paths": [
+      "plans/master-plan.md",
+      "plans/strategic/autonomous-six-python-production-execution-plan.md",
+      "plans/strategic/ff6/execution-recovery-directive.yaml"
+    ],
+    "coordination_scope": "logical:FF6-EXECUTION-RECOVERY-PLAN",
+    "acceptance_evidence": [
+      "Event 47 remains the final native FF6 event",
+      "controller-state.yaml and events.jsonl unchanged",
+      "product source/tests unchanged",
+      "0/6 certification preserved"
+    ],
+    "event_head": "FF6-EVENT-000047",
+    "requested_transition": "planning_route_only"
+  },
+  "allowed_files": [
+    "plans/master-plan.md",
+    "plans/strategic/autonomous-six-python-production-execution-plan.md",
+    "plans/strategic/ff6/execution-recovery-directive.yaml",
+    "reports/skills-rff6/skill-transcripts/plan-control-ff6-execution-recovery-001.json"
+  ],
+  "actual_files_changed": [
+    "plans/master-plan.md",
+    "plans/strategic/autonomous-six-python-production-execution-plan.md",
+    "plans/strategic/ff6/execution-recovery-directive.yaml",
+    "reports/skills-rff6/skill-transcripts/plan-control-ff6-execution-recovery-001.json"
+  ],
+  "tests_run": [
+    "CURRENT_STATE_CONSISTENCY: PASS",
+    "git diff confirms plans/strategic/ff6/events.jsonl unchanged",
+    "git diff confirms plans/strategic/ff6/controller-state.yaml unchanged",
+    "git status confirms src and tests unchanged"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "event_appended": false,
+    "reason": "No accepted implementation, product proof, integration, or executable controller transition occurred",
+    "executable_authority_before_review": "FF6-EVENT-000047",
+    "planned_state": "PLAN_PACKAGED_FOR_INDEPENDENT_REVIEW",
+    "product_promotion_effect": "none",
+    "commit_or_push_effect": "none"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

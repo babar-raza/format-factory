@@ -1,6 +1,7 @@
 """
 Format Factory â€” Autonomous Orchestrator
 Sprint: FORMAT-FACTORY-AUTONOMOUS-ORCHESTRATOR-PERSISTENT-CONTINUATION-001
+Extended: TC-FF6-EXECUTION-RECOVERY-001 (real UNTIL_BLOCKED continuation, C3)
 
 Persistent/restartable orchestrator. Reads machine-readable continuation state,
 executes next actions via next_action_runner, generates subsequent actions,
@@ -11,10 +12,10 @@ Usage:
 
 Modes:
   --once                Run exactly one cycle then stop
-  --max-cycles N        Run at most N cycles (default: 3)
-  --watch               Run in watch mode (not implemented â€” blocks on external gate)
-  --interval-seconds N  Seconds between cycles in watch mode (default: 10)
-  --stop-after-idle N   Stop if N consecutive cycles had no runnable action (default: 1)
+  --max-cycles N        Run at most N cycles, then stop (resumable). Omit for
+                         the default UNTIL_BLOCKED mode: run until route()
+                         reports a genuine stop condition (blocked, repeated
+                         failure, or lock held) — no implicit cycle cap.
 
 Backends:
   --backend auto        Select best available backend (default)
@@ -28,6 +29,15 @@ Other:
   --sprint-id ID        Sprint ID for generated actions
   --write-root PATH     Allowed write root (repeatable)
   --json                Output final state as JSON
+
+Removed (TC-FF6-EXECUTION-RECOVERY-001, C3): --watch, --interval-seconds, and
+--stop-after-idle were declared but never implemented (--watch had no polling
+loop; --stop-after-idle was accepted and stored but never read). Per the
+taskcard's "make continuation interfaces observable and tested, or remove
+unused interfaces" rule, they were removed rather than left as dead surface.
+UNTIL_BLOCKED — the new default — supersedes their intended purpose: the
+loop already stops precisely when route() determines there is no safe next
+action, without needing a separate idle counter.
 """
 from __future__ import annotations
 
@@ -72,6 +82,7 @@ from tools.supervisor.next_action_runner import run_action
 from tools.supervisor.action_queue import (
     QUEUE_PATH,
     dequeue_next,
+    enqueue_front,
     mark_done as queue_mark_done,
     mark_failed as queue_mark_failed,
 )
@@ -202,18 +213,18 @@ class AutonomousOrchestrator:
 
     def __init__(
         self,
-        max_cycles: int = 3,
+        max_cycles: Optional[int] = None,
         backend: str = "auto",
         dry_run: bool = False,
         resume: bool = False,
         sprint_id: str = DEFAULT_SPRINT_ID,
         write_roots: Optional[List[str]] = None,
         seed_action_path: Optional[str] = None,
-        interval_seconds: int = 10,
-        stop_after_idle: int = 1,
         queue_first: bool = False,
         stream_filter: Optional[str] = None,
     ):
+        # C3: max_cycles=None is the default UNTIL_BLOCKED mode — no implicit
+        # cycle cap. Pass an explicit int to bound a single resumable run.
         self.max_cycles = max_cycles
         self.backend = backend
         self.dry_run = dry_run
@@ -221,8 +232,6 @@ class AutonomousOrchestrator:
         self.sprint_id = sprint_id
         self.write_roots = write_roots or DEFAULT_WRITE_ROOTS
         self.seed_action_path = seed_action_path
-        self.interval_seconds = interval_seconds
-        self.stop_after_idle = stop_after_idle
         self.queue_first = queue_first
         self.stream_filter = stream_filter  # TC-P2-007: "machinery" | "product" | "all" | None
         self.run_id = str(uuid.uuid4())[:8]
@@ -321,7 +330,6 @@ class AutonomousOrchestrator:
                         # Re-queue with wrong-track annotation (not consumed); item is preserved
                         q_item["_wrong_track_rejected"] = True
                         q_item["_rejected_by_stream"] = self.stream_filter
-                        from action_queue import enqueue_front
                         enqueue_front(q_item)
                         return None  # Skip this item; cycle will go idle
                 self._current_queue_item = q_item
@@ -411,7 +419,12 @@ class AutonomousOrchestrator:
 
         try:
             cycle_index = self._init_state()
-            actual_max = 1 if once else self.max_cycles
+            if once:
+                actual_max = 1
+            elif self.max_cycles is not None:
+                actual_max = self.max_cycles
+            else:
+                actual_max = sys.maxsize  # UNTIL_BLOCKED: no implicit cycle cap
 
             # Ensure seed action exists
             next_action_path = self._resolve_seed_action(cycle_index)
@@ -455,10 +468,11 @@ class AutonomousOrchestrator:
                 # Update queue item status based on result
                 if self._current_queue_item is not None:
                     qid = self._current_queue_item.get("action_id")
-                    if result.get("status") in {"SUCCESS", "DRY_RUN"}:
-                        queue_mark_done(qid, result_path=result.get("result_path"))
-                    else:
-                        queue_mark_failed(qid, error=str(result.get("errors", result.get("status", "FAILED"))))
+                    if qid is not None:
+                        if result.get("status") in {"SUCCESS", "DRY_RUN"}:
+                            queue_mark_done(qid, result_path=result.get("result_path"))
+                        else:
+                            queue_mark_failed(qid, error=str(result.get("errors", result.get("status", "FAILED"))))
                     self._current_queue_item = None
 
                 if result.get("status") not in {"SUCCESS", "DRY_RUN"}:
@@ -594,16 +608,15 @@ def _build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(description="Format Factory Autonomous Orchestrator")
     grp = p.add_mutually_exclusive_group()
     grp.add_argument("--once", action="store_true", help="Run exactly one cycle")
-    grp.add_argument("--max-cycles", type=int, default=3, metavar="N", help="Max cycles (default: 3)")
-    grp.add_argument("--watch", action="store_true", help="Watch mode (stop at external gate)")
+    grp.add_argument("--max-cycles", type=int, default=None, metavar="N",
+                     help="Run at most N cycles, then stop (resumable). Default: unbounded "
+                          "(UNTIL_BLOCKED) — run until route() reports a genuine stop condition.")
     p.add_argument("--backend", choices=["auto", "local", "llm-api"], default="auto")
     p.add_argument("--dry-run", action="store_true")
     p.add_argument("--resume", action="store_true", help="Resume from orchestrator-state.json")
     p.add_argument("--seed-action", metavar="PATH", help="Path to seed next-action.json")
     p.add_argument("--sprint-id", default=DEFAULT_SPRINT_ID)
     p.add_argument("--write-root", action="append", dest="write_roots", metavar="PATH")
-    p.add_argument("--interval-seconds", type=int, default=10)
-    p.add_argument("--stop-after-idle", type=int, default=1)
     p.add_argument("--queue-first", action="store_true", dest="queue_first",
                    help="Dequeue from action-queue.jsonl before generating synthetic actions")
     p.add_argument("--stream", type=str, choices=["machinery", "product", "all"], default=None,
@@ -632,8 +645,6 @@ def main(argv: Optional[List[str]] = None) -> int:
         sprint_id=args.sprint_id,
         write_roots=args.write_roots or DEFAULT_WRITE_ROOTS,
         seed_action_path=args.seed_action,
-        interval_seconds=args.interval_seconds,
-        stop_after_idle=args.stop_after_idle,
         queue_first=args.queue_first,
         stream_filter=args.stream_filter,  # TC-P2-007
     )

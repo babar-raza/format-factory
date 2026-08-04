@@ -21,7 +21,7 @@ open_source_allowed: false
 commercial_allowed: false
 goal_id: FF6-PRODUCTION-LIBRARIES-001
 parent_task_id: TC-FF6-PROGRAM-CAPABILITIES-001
-status: WORK_IN_PROGRESS
+status: NARROWED_TO_SLICE_SUPPORT_PENDING_REVIEW
 lane: A
 skill_ids:
   - test-driven-development
@@ -32,13 +32,13 @@ skill_ids:
   - package-install-proof
   - plan-control
 release_blockers: []
-notes: NRRD production-readiness characterization and executable gap compilation; no optimistic certification.
+notes: Event-47 work is preserved; recovery revision narrows R3 to inputs required by the golden slice and removes full R3/R4 as a source-mutation prerequisite.
 ---
 
 # TC-FF6-NRRD-READINESS-001: Establish NRRD Production Readiness
 
 **Phase:** CONTRACT to IMPLEMENTATION_IN_PROGRESS
-**Status:** WORK_IN_PROGRESS
+**Status:** NARROWED_TO_SLICE_SUPPORT_PENDING_REVIEW
 **Owner:** deterministic FF6 Lane A scheduler
 **Created:** 2026-08-01
 **Last updated:** 2026-08-02
@@ -46,6 +46,17 @@ notes: NRRD production-readiness characterization and executable gap compilation
 **Blocked by:** none for read-only characterization and contract reconciliation
 **Format:** nrrd
 **Gate:** no gate transition; certification remains evidence-computed
+
+**Capability inspiration backlog (added 2026-08-04):** while gathering
+independent oracle evidence for TC-FF6-NRRD-GOLDEN-SLICE-001, pynrrd's API
+surfaced four capabilities format_factory.nrrd doesn't yet have — a numpy
+adapter, writer compression-level control, detached-header write
+convenience, and typed custom-field parsing — each verified against current
+source, not assumed. Logged as a non-binding backlog, not a taskcard, in
+`plans/strategic/ff6/execution-recovery-directive.yaml`'s
+`capability_inspiration_backlog` section. When NRRD readiness work resumes
+beyond the golden slice, run each idea through the normal obligation/
+capability process there before any implementation.
 
 ## Objective
 
@@ -97,11 +108,12 @@ R2 exact obligation classification is complete at GitLab `main` semantic commit
   not selector-bound independent interoperability proof and has no promotion
   effect.
 
-The exact next action is R3: acquire immutable licensed official, Teem, and
-pynrrd corpus inputs; bind source/tool/environment digests; execute independent
-read and write differential matrices; preserve contradictions; and compile the
-positive, negative, preservation, interoperability, security, and performance
-gaps that R4 will turn into bounded product taskcards.
+Event 47 still records R3 as the accepted continuation until the recovery plan
+is reviewed and a later execution transition is validly recorded. Under the
+2026-08-03 recovery route, R3 is narrowed to the immutable official, Teem, and
+pynrrd inputs required by `TC-FF6-NRRD-GOLDEN-SLICE-001`. A complete 65-row
+oracle matrix and full-tree architecture classification remain certification
+backlog; they are no longer prerequisites to the first bounded source slice.
 
 ## Locked truth and invariants
 
@@ -127,10 +139,10 @@ gaps that R4 will turn into bounded product taskcards.
 - Bounded NRRD follow-on taskcards and their `taskcards/index.yaml` entries.
 - Skill transcripts and run/proof records under the FF6 task identity.
 
-The existing `src/python/nrrd/**` and `tests/python/nrrd/**` trees are read-only
-for R1-R4. Any source mutation requires a separate generated implementation
-taskcard with an exact path allowlist, obligation IDs, RED tests, and rollback
-boundary.
+This readiness card cannot mutate `src/python/nrrd/**` or
+`tests/python/nrrd/**`. `TC-FF6-NRRD-GOLDEN-SLICE-001` is the separate exact
+implementation authority after Stage 1 passes; it may mutate only its declared
+paths, obligations, and RED tests.
 
 ## Ordered task slices
 
@@ -159,18 +171,19 @@ boundary.
    comments/key-values; header preservation; streaming/mmap; path, allocation,
    overflow, truncation, decompression, and payload-size defenses.
 
-### R3 - independent corpus and oracle matrix
+### R3 - slice-required independent corpus and oracle inputs
 
-8. Inventory official, Teem-produced, pynrrd-produced, and independently
-   licensed corpus items by digest and legal status. Synthetic fixtures may
-   test invariants but cannot be the only interoperability evidence.
-9. Execute read and write differential tests against Teem and pynrrd. Record
-   contradictions without selecting whichever result improves coverage.
-10. Establish positive, negative, preservation, semantic-roundtrip, property,
-    metamorphic, fuzz, mutation, security/resource, and performance evidence
-    required for every obligation class.
+8. Acquire and hash the smallest licensed official/Teem/pynrrd corpus that
+   discriminates multi-byte raw endian behavior and hostile declared-size
+   handling for the three golden-slice obligations. Synthetic fixtures may
+   supplement but cannot be the only interoperability evidence.
+9. Record tool versions, commands, exit codes, source/license/digest, and any
+   Teem/pynrrd contradiction. Do not execute the complete format matrix here.
+10. Hand these immutable inputs to `TC-FF6-NRRD-GOLDEN-SLICE-001` and stop
+    readiness-report expansion until the slice produces a real implementation
+    result.
 
-### R4 - architecture and production batch compilation
+### R4 - deferred certification backlog, not first-slice prerequisite
 
 11. Map the current package into professional layers: `model/`,
     `codec/reader/`, `codec/writer/`, `validation/`, `security/`, `adapters/`,
@@ -208,14 +221,16 @@ boundary.
 - [x] NRRD0001-NRRD0005 authority closure passes fail-closed validation.
 - [x] All 65 canonical obligations have exact current classifications and proof
       requirements; no mandatory item is hidden by percentage coverage.
-- [ ] Teem and pynrrd matrices use immutable independent corpus evidence and
-      preserve contradictions explicitly.
-- [ ] Architecture/API/security/package gaps are root-caused and prioritized.
+- [ ] Slice-required Teem and pynrrd inputs are immutable, licensed, and bind
+      the exact golden-slice oracle commands.
+- [ ] Full architecture/API/security/package classification is deferred to
+      evidence-triggered vertical slices and certification milestones.
 - [ ] Three same-input readiness generations are byte-identical.
 - [ ] Stale source/test/fixture/authority/tool/lock/environment/package inputs
       invalidate the correct descendants.
-- [ ] Executable production implementation taskcards cover every open mandatory
-      obligation and name exact RED tests and owned paths.
+- [x] The first executable implementation taskcard names exact obligations,
+      RED tests, owned paths, and rollback; later mandatory work remains in the
+      current gap projection and is not represented as closed.
 - [ ] Focused, regression, static, installed-wheel, receipt, event-chain, and
       detached checks pass.
 - [ ] NRRD remains non-certified and `UNASSESSED` unless a later independent
@@ -229,8 +244,9 @@ boundary.
   analysis; they create explicit oracle tasks and the lane continues safely.
 - After three materially different failed repairs of one root cause, mark only
   that obligation technically blocked and release the lane slot.
-- Successful closure selects the highest-risk NRRD implementation batch. It
-  does not self-approve certification or release.
+- Successful slice-input acquisition transfers directly to
+  `TC-FF6-NRRD-GOLDEN-SLICE-001`. It does not self-approve certification or
+  release.
 
 ## Evidence required
 

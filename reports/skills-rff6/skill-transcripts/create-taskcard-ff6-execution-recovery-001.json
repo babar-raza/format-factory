@@ -1,0 +1,68 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "create-taskcard-ff6-execution-recovery-001",
+  "skill_id": "create-taskcard",
+  "mode": "live",
+  "timestamp": "2026-08-03T04:08:20Z",
+  "inputs": {
+    "task_id": "TC-FF6-EXECUTION-RECOVERY-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "execution_manifest": "sfx-81c4b52a6a772e33",
+    "plan_version": 7,
+    "recovery_directive_revision": 1,
+    "operation": "replace the supervisor-first route with a minimal-control-then-product route and package it without execution"
+  },
+  "allowed_files": [
+    "plans/master-plan.md",
+    "plans/strategic/autonomous-six-python-production-execution-plan.md",
+    "plans/strategic/ff6/execution-recovery-directive.yaml",
+    "taskcards/index.yaml",
+    "taskcards/TC-FF6-NRRD-READINESS-001.md",
+    "taskcards/TC-FF6-SAFETENSORS-READINESS-001.md",
+    "taskcards/TC-FF6-IPYNB-READINESS-001.md",
+    "taskcards/TC-FF6-OPENRASTER-READINESS-001.md",
+    "taskcards/TC-FF6-SUPERVISOR-PLAN-REVIEW-001.md",
+    "taskcards/TC-FF6-SUPERVISOR-RUNTIME-001.md",
+    "taskcards/TC-FF6-EXECUTION-RECOVERY-001.md",
+    "taskcards/TC-FF6-NRRD-GOLDEN-SLICE-001.md",
+    "taskcards/TC-FF6-SAFETENSORS-REFERENCE-SLICE-001.md",
+    "reports/skills-rff6/plan-hardening/ff6-execution-recovery-20260803.md",
+    "reports/skills-rff6/skill-transcripts/create-taskcard-ff6-execution-recovery-001.json"
+  ],
+  "actual_files_changed": [
+    "plans/master-plan.md",
+    "plans/strategic/autonomous-six-python-production-execution-plan.md",
+    "plans/strategic/ff6/execution-recovery-directive.yaml",
+    "taskcards/index.yaml",
+    "taskcards/TC-FF6-NRRD-READINESS-001.md",
+    "taskcards/TC-FF6-SAFETENSORS-READINESS-001.md",
+    "taskcards/TC-FF6-IPYNB-READINESS-001.md",
+    "taskcards/TC-FF6-OPENRASTER-READINESS-001.md",
+    "taskcards/TC-FF6-SUPERVISOR-PLAN-REVIEW-001.md",
+    "taskcards/TC-FF6-SUPERVISOR-RUNTIME-001.md",
+    "taskcards/TC-FF6-EXECUTION-RECOVERY-001.md",
+    "taskcards/TC-FF6-NRRD-GOLDEN-SLICE-001.md",
+    "taskcards/TC-FF6-SAFETENSORS-REFERENCE-SLICE-001.md",
+    "reports/skills-rff6/plan-hardening/ff6-execution-recovery-20260803.md",
+    "reports/skills-rff6/skill-transcripts/create-taskcard-ff6-execution-recovery-001.json"
+  ],
+  "tests_run": [
+    "YAML parsed for the machine directive and taskcard index",
+    "YAML front matter parsed for the strategic plan and all affected taskcards",
+    "taskcard IDs are unique and all affected FF6 cards resolve in taskcards/index.yaml",
+    "git diff --check after whitespace repair",
+    "CURRENT_STATE_CONSISTENCY: PASS"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "execution_started": false,
+    "first_execution_task_after_review": "TC-FF6-EXECUTION-RECOVERY-001",
+    "first_product_task": "TC-FF6-NRRD-GOLDEN-SLICE-001"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

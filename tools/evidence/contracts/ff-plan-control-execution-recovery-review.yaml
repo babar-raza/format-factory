@@ -1,0 +1,122 @@
+contract_id: FF-PLAN-CONTROL-EXECUTION-RECOVERY-REVIEW-001
+version: "1.0"
+description: >-
+  Targeted independent-review inventory for the FF6 execution-recovery route.
+  It packages updated plans/taskcards, immutable current control/product truth,
+  relevant runtime/source evidence, governance, and validation metadata. It is
+  not product, controller, gate, or runtime activation evidence.
+bundle_kind: independent_plan_review
+require_clean_git: false
+allow_preexisting_planning_changes: true
+forbidden_patterns:
+  - .git/**
+  - .env
+  - .local/**/coordination.db
+  - .local/**/coordination.db-*
+  - '**/__pycache__/**'
+  - '**/*.pyc'
+  - '**/node_modules/**'
+required_repo_files:
+  - AGENTS.md
+  - GOVERNANCE.md
+  - docs/governance/codex-adapter.md
+  - docs/governance/skill-only-policy.yaml
+  - docs/planning-methodology.md
+  - docs/plan-hardening-checklist.md
+  - docs/spec-to-feature-correction-plan-summary.md
+  - .claude/commands/plan-hardening.md
+  - .claude/commands/create-taskcard.md
+  - .claude/commands/plan-control.md
+  - .claude/commands/build-evidence-bundle.md
+  - plans/master-plan.md
+  - plans/strategic/autonomous-six-python-production-execution-plan.md
+  - plans/strategic/ff6/execution-recovery-directive.yaml
+  - plans/strategic/ff6/product-goal.yaml
+  - plans/strategic/ff6/controller-state.yaml
+  - plans/strategic/ff6/events.jsonl
+  - plans/strategic/ff6/current-state.yaml
+  - plans/strategic/ff6/current-gaps.yaml
+  - plans/strategic/ff6/capability-manifest.json
+  - plans/strategic/ff6/capability-coverage.yaml
+  - plans/strategic/ff6/capabilities/ipynb.yaml
+  - plans/strategic/ff6/capabilities/ora.yaml
+  - plans/strategic/ff6/capabilities/nrrd.yaml
+  - plans/strategic/ff6/capabilities/xliff.yaml
+  - plans/strategic/ff6/capabilities/safetensors.yaml
+  - plans/strategic/ff6/capabilities/ubl.yaml
+  - plans/strategic/ff6/obligations/ipynb.yaml
+  - plans/strategic/ff6/obligations/ora.yaml
+  - plans/strategic/ff6/obligations/nrrd.yaml
+  - plans/strategic/ff6/obligations/xliff.yaml
+  - plans/strategic/ff6/obligations/safetensors.yaml
+  - plans/strategic/ff6/obligations/ubl.yaml
+  - plans/codex/handover/START-HERE.md
+  - plans/codex/handover/CURRENT-MACHINE-STATE.yaml
+  - plans/codex/handover/NEXT-MICROSTEP.yaml
+  - plans/codex/handover/checkpoint.yaml
+  - taskcards/index.yaml
+  - taskcards/TC-FF6-NRRD-READINESS-001.md
+  - taskcards/TC-FF6-SAFETENSORS-READINESS-001.md
+  - taskcards/TC-FF6-IPYNB-READINESS-001.md
+  - taskcards/TC-FF6-OPENRASTER-READINESS-001.md
+  - taskcards/TC-FF6-XLIFF-SEMANTIC-BATCH-001.md
+  - taskcards/TC-FF6-UBL-SCHEMA-GENERATOR-001.md
+  - taskcards/TC-FF6-SUPERVISOR-PLAN-REVIEW-001.md
+  - taskcards/TC-FF6-SUPERVISOR-RUNTIME-001.md
+  - taskcards/TC-FF6-EXECUTION-RECOVERY-001.md
+  - taskcards/TC-FF6-NRRD-GOLDEN-SLICE-001.md
+  - taskcards/TC-FF6-SAFETENSORS-REFERENCE-SLICE-001.md
+  - reports/skills-rff6/plan-hardening/ff6-execution-recovery-20260803.md
+  - reports/skills-rff6/skill-transcripts/create-taskcard-ff6-execution-recovery-001.json
+  - reports/skills-rff6/skill-transcripts/plan-control-ff6-execution-recovery-001.json
+  - reports/skills-rff6/skill-transcripts/build-evidence-bundle-ff6-execution-recovery-001.json
+  - tools/supervisor/product_action_guard.py
+  - tools/supervisor/action_queue.py
+  - tools/supervisor/autonomous_orchestrator.py
+  - tools/supervisor/continuation_state.py
+  - tools/plan_control/projections.py
+  - tests/supervisor/test_product_source_action_guard.py
+  - tests/supervisor/test_action_queue.py
+  - tests/supervisor/test_autonomous_orchestrator.py
+  - tests/supervisor/test_continuation_state.py
+  - tests/plan_control/test_concurrency_hardening.py
+  - src/python/nrrd/src/format_factory/nrrd/codec/payload.py
+  - src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py
+  - src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py
+  - src/python/nrrd/src/format_factory/nrrd/validation/validator.py
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py
+  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py
+  - src/python/safetensors/src/format_factory/safetensors/validation/validator.py
+  - tools/evidence/contracts/ff-plan-control-execution-recovery-review.yaml
+required_metadata_files:
+  - operator-directive.md
+  - git-head.txt
+  - git-remotes.txt
+  - git-status.txt
+  - git-diff-stat.txt
+  - git-diff-check.txt
+  - changed-files.txt
+  - current-state-consistency.txt
+  - controller-immutability.txt
+  - product-immutability.txt
+  - yaml-frontmatter-validation.txt
+  - taskcard-index-validation.txt
+  - capability-obligation-truth.txt
+  - source-findings.txt
+  - coordination-summary.txt
+  - plan-hardening-score.md
+  - independent-review-instructions.md
+  - no-execution-assertion.txt
+  - package-inventory.txt
+  - package-hashes.sha256
+  - package-validation.txt
+minimum_repo_files: 70
+minimum_metadata_files: 20
+required_assertions:
+  certified_products: 0
+  event_head: FF6-EVENT-000047
+  execution_started: false
+  controller_files_changed: false
+  product_files_changed: false
+  commit_or_push_performed: false

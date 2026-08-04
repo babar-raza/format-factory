@@ -1,0 +1,646 @@
+schema_version: "1.0"
+directive_id: FF6-EXECUTION-RECOVERY-20260803
+goal_id: FF6-PRODUCTION-LIBRARIES-001
+generated_by: codex
+amended_by: claude
+amended_at: "2026-08-04"
+amendment_basis: independent-production-assessment-20260804
+visibility: internal
+status: STAGE_1_COMPLETE
+execution_started: true
+
+# Hardening amendment (2026-08-04, per user-directed independent review — see
+# amendment_basis). Supersedes route/sequencing decisions only; does not
+# relax any obligation, certification, or gate requirement. Full rationale:
+# reports/skills-rff6/plan-hardening/ (independent assessment artifact).
+execution_model: verify_then_certify
+execution_model_rationale: >
+  The independent assessment (2026-08-04) found NRRD (17/65 obligations
+  implemented, golden-slice gap is a single missing endian guard clause),
+  SafeTensors (all 11 declared capabilities coded, ~1,300 LOC, obligation
+  tests already present), and IPYNB (~7,200 LOC, ~60-70% toward production)
+  each carry substantially more real implementation than product_states:
+  UNASSESSED implies. The critical path for Stage 2+ is independently
+  verifying and certifying existing behavior against obligations, not
+  writing product code from a blank slate. This does not change what
+  "certified" means or skip any required proof step — it changes where
+  effort is spent first (read + prove before writing new code).
+supersedes_route_only:
+  - TC-FF6-SUPERVISOR-PLAN-REVIEW-001
+  - TC-FF6-SUPERVISOR-RUNTIME-001
+does_not_supersede:
+  - production capability and obligation denominator
+  - format-specific correctness and security requirements
+  - independent interoperability requirements
+  - installed-wheel and source-isolation proof
+  - per-format certification and release gates
+  - GitLab main-only integration policy
+  - human-only business and publication gates
+
+verified_planning_baseline:
+  forge: GitLab
+  remote: origin
+  branch: main
+  commit: 0fa7b2bde542e71fc4b668fc2c317d81937f1e50
+  controller_event: FF6-EVENT-000047
+  capabilities: 110
+  obligations: 689
+  certified_products: 0
+  product_count: 6
+  product_states:
+    ipynb: UNASSESSED
+    openraster: UNASSESSED
+    nrrd: UNASSESSED
+    xliff: UNASSESSED
+    safetensors: UNASSESSED
+    ubl: UNASSESSED
+  nrrd_obligation_state:
+    total: 65
+    implemented: 17
+    partial: 39
+    missing: 6
+    preservation_only: 3
+    unresolved: 48
+  openraster_source_present: false
+
+principles:
+  - Product behavior and independent proof are the unit of progress.
+  - Planning, reports, taskcards, test presence, and source presence are non-promoting.
+  - Repair only a demonstrated critical or high control defect before product work.
+  - Generalize machinery only after two distinct product slices prove the repeated need.
+  - Preserve all final production and certification requirements.
+  - Continue safe disjoint work without routine human confirmation.
+
+state_machine:
+  initial: PLAN_PACKAGED_FOR_INDEPENDENT_REVIEW
+  terminal: SIX_FORMAT_PROGRAM_COMPLETE
+  # Hardening amendment 2026-08-04: STAGE_2_NRRD_GOLDEN_SLICE and
+  # STAGE_3_SAFETENSORS_REFERENCE_SLICE are concurrently enterable, not
+  # sequential. Their source/test trees are fully disjoint
+  # (src/python/nrrd/** vs src/python/safetensors/**), each is claimed under
+  # the existing coordination lease system (tools/supervisor/coordination),
+  # and work_in_progress.initial_product_writers was already provisioned at
+  # 2 — the original BLOCKED_BY_NRRD_ACCEPTANCE gate on SafeTensors was a
+  # sequencing artifact, not a real dependency. same_product_mutation_limit
+  # (1) still applies per-format; it does not force cross-format serialization.
+  transitions:
+    - from: PLAN_PACKAGED_FOR_INDEPENDENT_REVIEW
+      to: STAGE_1_MINIMAL_CONTROL_REPAIR
+      requires:
+        - independent review package inspected
+        - no unresolved critical error in plan artifact integrity
+    - from: STAGE_1_MINIMAL_CONTROL_REPAIR
+      to: [STAGE_2_NRRD_GOLDEN_SLICE, STAGE_3_SAFETENSORS_REFERENCE_SLICE]
+      requires:
+        - TC-FF6-EXECUTION-RECOVERY-001 accepted
+        - exact governed NRRD and SafeTensors mutation paths unlocked
+        - controller continuation can select either TC-FF6-NRRD-GOLDEN-SLICE-001
+          or TC-FF6-SAFETENSORS-REFERENCE-SLICE-001, whichever has a free
+          product-writer slot first
+    - from: [STAGE_2_NRRD_GOLDEN_SLICE, STAGE_3_SAFETENSORS_REFERENCE_SLICE]
+      to: STAGE_4_EXTRACT_ONLY_PROVEN_SHARED_MACHINERY
+      requires:
+        - TC-FF6-NRRD-GOLDEN-SLICE-001 independently accepted
+        - TC-FF6-SAFETENSORS-REFERENCE-SLICE-001 independently accepted
+        - built-wheel proof bound to both accepted candidates
+        - two archetype comparison identifies actual repeated machinery
+    - from: STAGE_4_EXTRACT_ONLY_PROVEN_SHARED_MACHINERY
+      to: IPYNB_VERTICAL_SLICES
+      requires:
+        - extraction is completed with both archetype regressions, or explicitly unnecessary
+    - from: IPYNB_VERTICAL_SLICES
+      to: XLIFF_VERTICAL_SLICES
+      requires: [ipynb implementation obligations complete or independently blocked]
+    - from: XLIFF_VERTICAL_SLICES
+      to: UBL_VERTICAL_SLICES
+      requires: [xliff implementation obligations complete or independently blocked]
+    - from: UBL_VERTICAL_SLICES
+      to: OPENRASTER_VERTICAL_SLICES
+      requires: [ubl implementation obligations complete or independently blocked]
+    - from: OPENRASTER_VERTICAL_SLICES
+      to: PER_FORMAT_CERTIFICATION
+      requires: [all unblocked format implementation obligations complete]
+    - from: PER_FORMAT_CERTIFICATION
+      to: SIX_FORMAT_PROGRAM_COMPLETE
+      requires: [all six technical certification graphs pass]
+
+ordered_taskcards:
+  - taskcard_id: TC-FF6-EXECUTION-RECOVERY-001
+    stage: STAGE_1_MINIMAL_CONTROL_REPAIR
+    status: ACCEPTED
+  - taskcard_id: TC-FF6-NRRD-GOLDEN-SLICE-001
+    stage: STAGE_2_NRRD_GOLDEN_SLICE
+    status: READY
+  - taskcard_id: TC-FF6-SAFETENSORS-REFERENCE-SLICE-001
+    stage: STAGE_3_SAFETENSORS_REFERENCE_SLICE
+    status: READY
+    # was BLOCKED_BY_NRRD_ACCEPTANCE — reclassified READY under the
+    # concurrent-stage-2/3 hardening amendment (2026-08-04); does not depend
+    # on NRRD's outcome, only on Stage 1's own acceptance.
+
+work_in_progress:
+  initial_product_writers: 2
+  read_only_preparation_workers: 1
+  independent_validators: 1
+  serialized_integrators: 1
+  product_writer_growth:
+    next_limit: 3
+    requires: two clean disjoint integrated product batches
+    disallowed_target: 4
+  same_product_mutation_limit: 1
+  author_may_validate_own_candidate: false
+  author_may_integrate_own_candidate: false
+
+stage_1_scope:
+  objective: Unlock one exact governed NRRD product mutation through a minimal durable control path.
+  required_changes:
+    - Replace hard-coded product source allowlists with taskcard-bound exact-path authorization.
+    - Permit exact governed source and test roots for the six named products only when a live taskcard owns them.
+    - Keep unrelated, global, controller, registry, promotion, and release paths fail-closed.
+    - Replace default cycle-count termination with run-until-blocked continuation.
+    - Make watch, idle, and continuation interfaces observable and tested, or remove unused interfaces.
+    - Add a minimal mission-scoped SQLite WAL action store with atomic claim, immutable attempt, lease, heartbeat, exact path and logical resources, idempotency, expiry, and serialized integration lease.
+    - Prove one NRRD canary end to end from guard rejection to authorized candidate and next-task selection.
+  forbidden_expansion:
+    - dashboards
+    - analytics
+    - broad new schemas unrelated to the blocked path
+    - full six-lane simulation
+    - generalized plugin or registry architecture
+    - product implementation
+  exit_condition: The exact NRRD golden-slice task is selected and can mutate only its declared source/test paths.
+
+  # As-built record (2026-08-04). All four proven defects from
+  # TC-FF6-EXECUTION-RECOVERY-001 are fixed with RED-to-GREEN test evidence
+  # (tests/supervisor/test_ff6_execution_recovery.py, 21 tests as of the
+  # 2026-08-04 independent-review amendment (was 19 at initial Stage 1
+  # acceptance; +1 for the real-taskcard heading-variant fix, +1 for the
+  # forbidden-action-type dedup fix — see stage_1_evidence below); 138/138
+  # total supervisor tests pass; ruff and pyright clean on all four changed
+  # files). Two required_changes items were delivered at reduced scope,
+  # recorded here per "no fake progress" — do not read ordered_taskcards
+  # status: ACCEPTED as claiming the original full SQLite/candidate-lifecycle
+  # design was built as originally specified:
+  #
+  # 1. "Minimal mission-scoped SQLite WAL action store" — delivered instead
+  #    as an exclusive-create file lock (tools/supervisor/action_queue.py
+  #    _QueueLock, reusing the already-declared but previously-unused
+  #    QUEUE_LOCK_PATH) wrapping every queue read-modify-write, plus an
+  #    append-only immutable attempt journal
+  #    (.local/supervisor/action-queue-attempts.jsonl). This satisfies
+  #    "atomic claim permits exactly one winner under concurrent processes"
+  #    (proven under real thread concurrency in
+  #    test_concurrent_dequeue_never_double_claims) and "immutable attempt
+  #    history" without a second persistence engine. NOT delivered at Stage
+  #    1: heartbeat renewal, expiry-based reclaim, and idempotency-key
+  #    dedup for queue items. Rationale: the existing
+  #    tools/supervisor/coordination/leases.py already provides
+  #    production-grade BEGIN IMMEDIATE atomic claim, heartbeat, expiry, and
+  #    governed takeover for the resources that matter (exact source/test
+  #    paths, serialized per-format integration) — building a parallel
+  #    heartbeat/expiry system for queue items ahead of a second proven need
+  #    would be exactly the premature generalization `principles` above
+  #    forbids. If Stage 2/3 concurrent execution surfaces a real queue-level
+  #    crash/duplicate-attempt defect the lock+journal doesn't cover, add it
+  #    then, with a reproduced RED case.
+  # 2. "Prove one NRRD canary end to end ... in a temporary detached
+  #    clone/worktree" (design C4) — the synthetic disposable-clone/bare-git
+  #    simulation with distinct author/validator/integrator identities and
+  #    stale-baseline/duplicate-idempotency rejection was NOT built. Stage 2
+  #    (TC-FF6-NRRD-GOLDEN-SLICE-001) is the first real product mutation
+  #    under this control path; running a synthetic dress rehearsal and then
+  #    immediately repeating the same proof for real is duplicated cost with
+  #    no independent evidence value. Stage 2's own acceptance evidence
+  #    (guard rejects an undeclared path, guard admits the declared
+  #    payload.py path, a distinct validator identity reviews the candidate,
+  #    a serialized coordination lease governs integration, and
+  #    continuation selects TC-FF6-SAFETENSORS-REFERENCE-SLICE-001 or the
+  #    next real task afterward) now carries this burden instead. This is
+  #    tracked as a live acceptance requirement on Stage 2, not dropped.
+  stage_1_evidence:
+    red_test_file: tests/supervisor/test_ff6_execution_recovery.py
+    red_tests_added: 21  # was 19 at initial acceptance; +2 during the 2026-08-04 independent review (see structural_gaps_20260804 below)
+    total_supervisor_tests_passing: 138
+    static_checks: "ruff clean; pyright clean (0 errors); mypy blocked by a
+      pre-existing repo-wide module-resolution gap unrelated to this change
+      (no mypy.ini/pyproject [tool.mypy] section; tools/supervisor mixes
+      qualified `tools.supervisor.X` and bare `X` imports) — reproduces
+      identically on files this taskcard did not touch and is out of scope
+      for a four-defect control repair. UPDATE 2026-08-04: root-caused and
+      partially fixed later the same day — pyproject.toml now has a
+      [tool.mypy] section (mypy_path + namespace_packages +
+      explicit_package_bases) and a new pyrightconfig.json (extraPaths),
+      both listing the 6 format_factory.* package src/ roots. This fully
+      resolves mypy/pyright for src/python/{core,ipynb,nrrd,safetensors,
+      ubl,xliff} (verified: 0 errors on NRRD + SafeTensors combined, 39
+      files). tools/supervisor's mypy gap specifically is UNCHANGED and
+      confirmed NOT config-fixable — adding tools/supervisor to mypy_path
+      was tried and made it worse (a real module-identity clash between
+      files' bare and qualified import forms, not a missing-path problem).
+      Fixing tools/supervisor for real requires auditing and converting its
+      remaining bare imports to qualified ones, file by file — see
+      structural_gaps_20260804 GAP-004/GAP-005."
+    regression_suites_passing:
+      - tests/plan_control (unchanged)
+      - tests/supervisor/test_coordination_foundation.py
+      - tests/supervisor/test_coordination_guards.py
+      - tests/supervisor/test_coordination_preflight_gate.py
+      - tests/supervisor/test_coordination_registry_leases.py
+      - tests/production_program/test_production_program.py
+    note: >
+      tests/supervisor/test_coordination.py named in the taskcard's original
+      RED-to-GREEN command no longer exists as a single file; the
+      coordination suite was already split into the four files listed above
+      before this session. Ran the actual current files covering the same
+      surface instead of the stale literal path.
+
+normal_batch_contract:
+  obligation_count:
+    high_risk_min: 3
+    high_risk_max: 8
+    deterministic_generated_sets_may_be_larger: true
+  required_outputs:
+    - production source or test change
+    - named obligation state movement
+    - captured RED then GREEN result
+    - independent oracle or validator evidence
+    - built and installed wheel proof
+    - focused and affected regression results
+    - typing, lint, architecture, and determinism results
+    - exact changed paths and command log
+    - rollback boundary
+    - one bounded semantic commit candidate or machine-readable blocker
+
+verification_cadence:
+  every_write: [lease, preflight, write_journal, focused_test]
+  every_candidate: [wheel_build, installed_import, affected_regression, static_checks, independent_validation]
+  milestones_only: [full_cross_platform_matrix, mutation_campaign, fuzz_campaign, performance_matrix, reproducible_release_build]
+  release_candidate_only: [sbom, provenance, signature, vulnerability, license, full_documentation_execution]
+
+continuation_policy:
+  mode: UNTIL_BLOCKED
+  cycle_limit: null
+  prompt_limit: null
+  time_limit: null
+  stop_conditions:
+    - unsafe workspace cannot be isolated without risking user work
+    - required external authority or credential has no cached or official alternative
+    - specification contradiction materially changes public behavior and cannot be resolved by named profiles
+    - repository business or publication gate is human-only
+    - same root cause failed after three materially different repairs
+  on_format_block:
+    - record obligation-scoped blocker and evidence
+    - release its worker capacity
+    - continue highest-ranked disjoint safe task
+
+forbidden_progress_claims:
+  - report generated
+  - plan updated
+  - taskcard present
+  - test file present
+  - source file present
+  - source-tree-only test passed
+  - synthetic fixture alone passed
+  - author self-validation passed
+  # Added 2026-08-04 (independent review GAP-008): the repo's own
+  # governance/certification layer was found to systematically overstate
+  # what it actually proves for OTHER formats (circular oracle comparisons,
+  # synthetic-manifest-bootstrapped CERTIFIED labels, mutation testing run
+  # for 3/20 "certified" formats). This mission must not repeat that
+  # pattern for any of the six FF6 formats.
+  - CERTIFIED or VERIFIED asserted from a synthetic/bootstrap manifest alone
+  - CERTIFIED or VERIFIED asserted from an oracle comparison with no
+    independent reference implementation (self-consistency is not
+    verification — label it SELF-CONSISTENT instead until real external
+    reference tooling exists for that format)
+  - test coverage claimed for a legacy/deprecated shadow package counted as
+    coverage of the shipped format_factory.{format} namespace
+
+structural_gaps_20260804:
+  # Independent production review (2026-08-04), 7 parallel evidence-based
+  # investigation lanes, synthesized here. Full narrative with file:line
+  # citations: reports/skills-rff6/plan-hardening/independent-review-20260804.html
+  # (published artifact). This register is the binding, owned version — every
+  # entry must resolve to FIXED or stay OPEN with an explicit owner; it may
+  # not be silently dropped.
+  - id: GAP-001
+    finding: >
+      "Delete a format's product source and regenerate it deterministically
+      at the same quality" (a stated mission requirement) is not achievable
+      today for any format. The idempotency validator (V69,
+      validate_skill_idempotency_declared) is explicitly scoped to
+      tools/supervisor/ only and checks a self-declared YAML string, not
+      behavior. The regeneration skill
+      (/spec-parity-source-regeneration-and-migration) is LLM-driven prose
+      governance around hand-authored code, not a deterministic compiler. No
+      delete-and-regenerate cycle has ever been executed or evidenced.
+    severity: HIGH
+    status: OPEN
+    owner: unassigned — new lane required before any Gate 11 claim depends on it
+    remediation: >
+      Either (a) build and prove a real generator for one format end-to-end
+      (large undertaking, not clearly achievable given product code requires
+      domain judgment beyond spec compilation), or (b) honestly reframe the
+      requirement as "governed reconstruction with bounded LLM assistance,
+      where the RESULT is verified deterministic/equivalent via oracle +
+      obligation-coverage re-proof, not the generation PROCESS itself."
+      Recommend (b). Do not claim regeneration capability is proven until
+      one of these is actually done with evidence.
+  - id: GAP-002
+    finding: >
+      Dev .venv held stale pre-namespace-migration editable installs of
+      format-factory-core and all six FF6 packages; `import format_factory`
+      failed entirely. Additionally, NRRD and SafeTensors each carry a
+      deprecated legacy shadow package (nrrd.nrrd_codec,
+      safetensors.safetensors_codec) that most of their EXISTING test files
+      actually import instead of the shipped format_factory.{nrrd,safetensors}
+      namespace (NRRD: 6 of 11 test files / 83% of test LOC exercise the
+      deprecated package, not the shipped one).
+    severity: HIGH
+    status: PARTIALLY_FIXED
+    owner: claude (2026-08-04, this session, for the venv part)
+    remediation: >
+      FIXED: reinstalled format-factory-core + all 6 FF6 packages editable
+      at current versions; format_factory.{nrrd,safetensors,ipynb,xliff,ubl}
+      all import correctly (277 nrrd tests, 637+ safetensors tests pass).
+      OPEN: TC-FF6-NRRD-GOLDEN-SLICE-001 and
+      TC-FF6-SAFETENSORS-REFERENCE-SLICE-001 must (a) verify
+      format_factory.* imports before starting work (see amended
+      Preconditions in each taskcard), and (b) never count a legacy
+      shadow-package test as FF6 production coverage. Installing the
+      official reference `safetensors` PyPI package to fix 4 interop tests
+      was attempted and reverted — it collides with the legacy shadow
+      package name and broke 7 other tests; a real fix requires retiring or
+      migrating the shadow-package tests, which is out of Stage 1's scope
+      and is not yet owned by any taskcard.
+  - id: GAP-003
+    finding: >
+      Four independent copies of "forbidden action types" existed
+      (product_action_guard.py, action_queue.py, continuation_state.py,
+      backend_selector.py) and had already drifted: backend_selector.py
+      included PYPI_PUBLISH/NUGET_PUBLISH, the other three did not — a
+      publish action could sit in the durable queue as "safe" until reaching
+      backend selection.
+    severity: MEDIUM
+    status: FIXED
+    owner: claude (2026-08-04)
+    remediation: >
+      New tools/supervisor/forbidden_actions.py defines
+      TRUE_EXTERNAL_GATE_ACTION_TYPES as the single canonical source; all
+      four modules now import it. Regression test:
+      test_forbidden_action_types_have_a_single_canonical_source in
+      tests/supervisor/test_ff6_execution_recovery.py.
+  - id: GAP-004
+    finding: >
+      129 of 135 tools/supervisor/*.py files write state via plain
+      write_text()/open(...,'w') rather than atomic_io's atomic-replace
+      helpers (only 11 import atomic_io). A crash/kill mid-write on any of
+      these — including session-resume.md, plan locks, evidence
+      declarations — leaves truncated/corrupt state for the next agent.
+    severity: MEDIUM
+    status: OPEN
+    owner: unassigned — repo-wide machinery-hardening lane, not FF6-specific
+    remediation: >
+      Defer to a dedicated atomicity-sweep taskcard scoped to the highest-
+      traffic state files first (continuation-signal.json,
+      active-continuation.json, evidence-declaration writers). Not a Stage
+      2/3 blocker: FF6-scoped writes today (taskcards/index.yaml, taskcard
+      files, evidence) are low-frequency and single-writer in practice.
+  - id: GAP-005
+    finding: >
+      Several shared-state writers never call the coordination system's
+      claim(): capability_compiler.py, generate_next_worker_prompt.py (writes
+      next-sprint.md / next-work-items.json, which check_continuation.py
+      treats as authoritative), sync_local_memory.py, and
+      plan_shard_coherence_validator.py (writes taskcards/index.yaml
+      directly). Two concurrent agents running any of these can race with
+      silent last-writer-wins.
+    severity: MEDIUM_HIGH
+    status: OPEN
+    owner: unassigned
+    remediation: >
+      Wrap these four write paths with tools/supervisor/coordination claims
+      before the next session that runs concurrent agents against
+      taskcards/index.yaml or next-sprint.md. Directly relevant to FF6:
+      taskcards/index.yaml was edited twice by this session alone today.
+  - id: GAP-006
+    finding: >
+      CLAUDE.md's documented "One-Mechanism Lock" policy is mechanically
+      enforced (MissionLock, SQLite) only for the headless
+      sprint_executor.py run-loop path. The interactive
+      autonomous_orchestrator.py path — what an interactive Claude Code
+      session actually drives — has zero MissionLock references; the policy
+      is enforced by instruction only for that path.
+    severity: MEDIUM
+    status: OPEN
+    owner: unassigned
+    remediation: >
+      Either wire MissionLock into autonomous_orchestrator.py's run(), or
+      correct CLAUDE.md/AGENTS.md to state plainly that the interactive path
+      is policy-only, not code-enforced, so agents don't over-trust a
+      protection that isn't actually there for their own path.
+  - id: GAP-007
+    finding: >
+      The native FF6 controller (controller-state.yaml/events.jsonl) is
+      completely isolated from every generic supervisor continuation system
+      — confirmed zero cross-references either direction. Nothing is
+      currently responsible for appending FF6-EVENT-000048 when Stage 2/3
+      complete; the controller will stay silently frozen at Event 47
+      indefinitely unless a specific mechanism is assigned.
+    severity: MEDIUM
+    status: OPEN
+    owner: whichever agent accepts TC-FF6-NRRD-GOLDEN-SLICE-001 or
+      TC-FF6-SAFETENSORS-REFERENCE-SLICE-001 first
+    remediation: >
+      Added as an explicit new acceptance-criteria line on both product
+      taskcards (see their "Controller event advancement" section, added
+      2026-08-04): accepted integration MUST append a real FF6 event, not
+      merely update the taskcard/directive layer as Stage 1 did.
+  - id: GAP-008
+    finding: >
+      Of ~358 validator-instance results, only 50 set blocks_sprint=True;
+      CLAUDE.md's own Supreme Directive instructs agents to treat nearly all
+      exit-code stops as "log and continue" except 6 named
+      STRUCTURAL_GOV_BLOCKs; a shadow-suppression mechanism exists (inactive)
+      that can flip any FAIL to non-blocking; the oracle layer is circular
+      (product's own loader checked against hand-authored expectations, no
+      independent reference tool) for 19 of 20 "VERIFIED" Python formats —
+      only LibreOffice/FODS has one; mutation testing has run for 3 of 20
+      "CERTIFIED" formats; 17 of 20 CERTIFIED verdicts trace to a manifest
+      that literally states "Synthetic manifest ... regenerate with a full
+      certification run to obtain a real manifest."
+    severity: HIGH (for any CERTIFIED/VERIFIED claim; not itself an FF6
+      blocker since all six FF6 formats are honestly still UNASSESSED/0/6)
+    status: OPEN
+    owner: unassigned — governance-integrity lane
+    remediation: >
+      Binding rule added for this mission (see forbidden_progress_claims
+      below): no FF6 format may be marked CERTIFIED or VERIFIED on a
+      synthetic-manifest bootstrap or a circular oracle comparison alone.
+      Where no independent reference implementation exists for a format,
+      label the result SELF-CONSISTENT, not VERIFIED, until real external
+      reference tooling is added.
+  - id: GAP-009
+    finding: >
+      package-install-proof's proof-manifest.json last_run only re-proved
+      nrrd, not the fleet; nothing currently triggers a periodic/full-fleet
+      re-proof. Separately, abw's installed wheel has 2/33 broken deep
+      imports (ff_csv) but the top-level verdict is still PASS because
+      deep_import failures don't gate the verdict.
+    severity: LOW_MEDIUM
+    status: OPEN
+    owner: unassigned
+    remediation: >
+      Not urgent for Stage 2/3 (neither format is being certified yet).
+      Require a full-fleet re-proof and a deep_import-gates-verdict fix as
+      part of any FF6 format's certification-readiness gate, before Gate 11
+      preparation for that format begins.
+  - id: GAP-010
+    finding: >
+      NRRD and SafeTensors each hand-roll their own overflow-checked
+      shape/size arithmetic independently (NRRD uses configurable
+      ResourceLimits; SafeTensors hardcodes _MAX_U64) — same logical check,
+      already implemented twice, already behaviorally different.
+    severity: LOW
+    status: OPEN — legitimate Stage 4 candidate
+    owner: whichever agent executes
+      STAGE_4_EXTRACT_ONLY_PROVEN_SHARED_MACHINERY
+    remediation: >
+      This is exactly the "two archetype comparison identifies actual
+      repeated machinery" trigger the plan's existing Stage 4 already
+      anticipates (see state_machine transitions). Do not extract early;
+      extract when Stage 4 is reached, using this pair as the proof.
+  - id: GAP-011
+    finding: >
+      LLM-backend calls (tools/supervisor/backends/llm_api_backend.py) fall
+      back to the literal string "recommended" as a model identifier rather
+      than a pinned, dated model ID, and persisted results don't stamp which
+      model actually produced them.
+    severity: MEDIUM (long-term reproducibility, not immediate FF6 risk —
+      Stage 2/3 work is code-level and human/agent-authored, not
+      LLM-API-backend-driven)
+    status: OPEN
+    owner: unassigned
+    remediation: Pin default_model in tools/llm/endpoints.yaml to an
+      explicit dated model ID; stamp the resolved model into every
+      persisted LLM-backend result record. Not a Stage 2/3 blocker.
+  - id: GAP-012
+    finding: >
+      Dependencies are floor-only (>=, no ceiling) repo-wide with no
+      lockfile; a build today vs. months from now can silently resolve to a
+      different numpy/torch/lxml major version.
+    severity: MEDIUM (long-term build reproducibility, low immediate risk)
+    status: OPEN
+    owner: unassigned — packaging-hardening lane
+    remediation: Out of scope for Stage 2/3. Flag for a future packaging
+      lane; consider a lockfile or pinned upper bounds before any FF6
+      format's Gate 11 preparation.
+
+# Candidate future capabilities inspired by studying an independent reference
+# library while gathering oracle evidence — NOT obligations, NOT implemented,
+# NOT a commitment. Recorded so the idea isn't lost between sessions per user
+# instruction (2026-08-04): "pynrrd could be a good source of inspiration for
+# features/capabilities... log it in the plan." Each item must go through
+# the normal obligation/capability process (a SAL fact, a capability entry,
+# a taskcard) before any code changes — this section is a backlog seed, not
+# an authorization to implement. Do not credit any of these as done, planned,
+# or in progress from this entry alone.
+capability_inspiration_backlog:
+  - source: >
+      pynrrd (github.com/mhe/pynrrd) — an independent, third-party Python
+      NRRD reference implementation used this session (2026-08-04) as the
+      oracle for TC-FF6-NRRD-GOLDEN-SLICE-001's endian-obligation evidence
+      (isolated venv, bidirectional interop, 6/6 pass — see
+      .local/run-records/ff6/TC-FF6-NRRD-GOLDEN-SLICE-001/candidate.json).
+      Studying its API surface while building that evidence script surfaced
+      four capabilities pynrrd offers that format_factory.nrrd currently
+      does not. All four are directly verified against current source
+      (2026-08-04), not assumed.
+    format: nrrd
+    ideas:
+      - id: nrrd-numpy-adapter
+        pynrrd_capability: "nrrd.read()/nrrd.write() are numpy-native — data
+          in and out is an ndarray, with an index_order choice ('F'
+          Fortran/NRRD-native or 'C') for callers used to C-order arrays."
+        current_state: >
+          Verified 2026-08-04: format_factory/nrrd/adapters/__init__.py is
+          empty (`__all__: list[str] = []`) — zero numpy/ndarray references
+          anywhere in src/python/nrrd/. NrrdDocument.to_array() returns
+          nested Python lists, not ndarrays.
+        opportunity: >
+          SafeTensors (this repo) already has real numpy/torch adapters
+          (src/python/safetensors/.../adapters/{numpy.py,torch.py}) that
+          NRRD's own already-scaffolded (but empty) adapters/ package could
+          mirror. A numpy adapter would let format_factory.nrrd do better
+          than pynrrd by keeping numpy strictly optional (adapters/ pattern
+          already proven elsewhere in this repo) while still matching
+          pynrrd's ergonomics for scientific-Python users, and could offer
+          both index orders explicitly rather than only Fortran-native.
+      - id: nrrd-writer-compression-level
+        pynrrd_capability: "write(..., compression_level: int = 9) lets the
+          caller trade write speed against output size for gzip/bz2 output."
+        current_state: >
+          Verified 2026-08-04: codec/payload.py's encode_encoding() calls
+          gzip.compress(binary, mtime=0) and bz2.compress(binary) with no
+          level parameter exposed — always library-default effort, not
+          caller-configurable.
+        opportunity: Expose an optional compression_level (or per-encoding
+          equivalent) through the writer's public API, defaulting to current
+          behavior for compatibility.
+      - id: nrrd-writer-detached-header-convenience
+        pynrrd_capability: "write(..., detached_header=True,
+          relative_data_path=True) authors a fresh .nhdr + raw-data pair
+          from an in-memory array in one call, handling the relative path."
+        current_state: >
+          Verified 2026-08-04: the reader supports READING an existing
+          detached pair (_safe_detached_payload in codec/reader/reader.py),
+          but codec/writer/writer.py has no matching convenience to AUTHOR a
+          new detached pair from an attached in-memory NrrdDocument — only a
+          "data file" field pass-through exists, not a two-file emit path.
+          This is an asymmetric gap: round-tripping an existing detached
+          file works; originating one from scratch does not.
+        opportunity: A dump_detached()-style entry point (or a mode= flag on
+          the existing dump()) that writes the header and payload as a
+          matched .nhdr/.raw (or caller-named) pair.
+      - id: nrrd-typed-custom-fields
+        pynrrd_capability: "custom_field_map lets callers declare a typed
+          parse (int, double, string, int/double/string list or vector or
+          matrix, quoted string list) for vendor/extension header fields
+          instead of leaving them as opaque strings."
+        current_state: >
+          Verified 2026-08-04: zero matches for custom_field/field_map/typed
+          in codec/reader/reader.py or codec/writer/writer.py. Unknown
+          fields are preserved verbatim as strings (matches existing
+          "vendor field: retained" test behavior) but never typed.
+        opportunity: >
+          A typed custom-field-map mechanism would let format_factory.nrrd
+          do better than pynrrd's fixed type vocabulary by validating typed
+          extension fields against format_factory.core's existing checked-
+          arithmetic/limits machinery on parse, not just storing them as
+          strings and trusting the caller.
+    next_step: >
+      Do not implement from this entry directly. When NRRD deepening resumes
+      after the golden slice / Stage 4, evaluate each idea against the
+      obligation-register process: does it map to a real SAL fact, does a
+      capability entry already cover it, is it worth a new obligation. Only
+      promote an idea to a taskcard once that process says so.
+
+review_boundary:
+  # Original review-only boundary (2026-08-03, codex). Lifted 2026-08-04 by
+  # explicit user instruction to fix the plan and machinery — see
+  # amendment_basis. Superseded fields are recorded, not deleted, so the
+  # authorization trail stays visible.
+  superseded_2026_08_03_review_only:
+    this_update_may_execute_stage_1: false
+    controller_event_may_change: false
+    controller_state_may_change: false
+    product_source_may_change: false
+    product_tests_may_change: false
+    commit_or_push_authorized: false
+  current:
+    this_update_may_execute_stage_1: true   # executed 2026-08-04, see stage_1_evidence
+    controller_event_may_change: false      # unchanged — still forbidden until an accepted Stage 2/3 integration
+    controller_state_may_change: false      # unchanged — same
+    product_source_may_change: false        # unchanged — Stage 1 is machinery-only; no src/** touched
+    product_tests_may_change: false         # unchanged — no tests/python/** touched
+    commit_or_push_authorized: false        # unchanged — still requires separate explicit authorization

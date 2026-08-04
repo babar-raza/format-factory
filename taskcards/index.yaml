@@ -92,12 +92,12 @@ taskcards:
     created: 2026-08-01
   - id: TC-FF6-COMPACT-READINESS-001
     title: Characterize IPYNB and SafeTensors production readiness
-    status: ready
+    status: superseded
     format: null
     created: 2026-08-01
   - id: TC-FF6-NRRD-READINESS-001
     title: Establish NRRD production readiness
-    status: work_in_progress
+    status: narrowed_to_slice_support_pending_review
     format: nrrd
     created: 2026-08-01
   - id: TC-FF6-PLAN-THROUGHPUT-001
@@ -105,3 +105,43 @@ taskcards:
     status: complete
     format: null
     created: 2026-08-02
+  - id: TC-FF6-SUPERVISOR-RUNTIME-001
+    title: Implement the transactional six-lane supervisor
+    status: superseded_by_execution_recovery_directive
+    format: null
+    created: 2026-08-02
+  - id: TC-FF6-SUPERVISOR-PLAN-REVIEW-001
+    title: Independently challenge FF6 plan version 7
+    status: superseded_by_operator_recovery_directive
+    format: null
+    created: 2026-08-02
+  - id: TC-FF6-IPYNB-READINESS-001
+    title: Establish IPYNB production readiness truth
+    status: deferred_after_reference_slices
+    format: ipynb
+    created: 2026-08-02
+  - id: TC-FF6-SAFETENSORS-READINESS-001
+    title: Establish SafeTensors production readiness truth
+    status: superseded_by_reference_slice_pending_review
+    format: safetensors
+    created: 2026-08-02
+  - id: TC-FF6-OPENRASTER-READINESS-001
+    title: Prepare OpenRaster production implementation
+    status: deferred_with_capped_preparation
+    format: ora
+    created: 2026-08-02
+  - id: TC-FF6-EXECUTION-RECOVERY-001
+    title: Unlock the first governed product slice
+    status: accepted
+    format: null
+    created: 2026-08-03
+  - id: TC-FF6-NRRD-GOLDEN-SLICE-001
+    title: Implement NRRD raw scalar payload integrity
+    status: candidate_accepted_awaiting_commit_authorization
+    format: nrrd
+    created: 2026-08-03
+  - id: TC-FF6-SAFETENSORS-REFERENCE-SLICE-001
+    title: Implement SafeTensors header, layout, writer, and lazy access
+    status: candidate_accepted_awaiting_commit_authorization
+    format: safetensors
+    created: 2026-08-03

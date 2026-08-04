@@ -1,0 +1,48 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "build-evidence-bundle-ff6-supervisor-plan-v7",
+  "skill_id": "build-evidence-bundle",
+  "mode": "live",
+  "timestamp": "2026-08-02T16:42:04Z",
+  "inputs": {
+    "task_id": "TC-FF6-SUPERVISOR-PLAN-REVIEW-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "run_id": "ff6-six-lane-supervisor-plan-review-20260802",
+    "execution_manifest": "sfx-d92882e4ea304e87",
+    "contract": "tools/evidence/contracts/ff-plan-control-six-lane-supervisor-review.yaml"
+  },
+  "allowed_files": [
+    "tools/evidence/contracts/ff-plan-control-six-lane-supervisor-review.yaml",
+    "reports/skills-rff6/skill-transcripts/build-evidence-bundle-ff6-supervisor-plan-v7.json",
+    ".local/evidences/ff6-six-lane-supervisor-plan-review-20260802",
+    ".local/evidences/ff6-six-lane-supervisor-plan-review-20260802/bundle-metadata",
+    ".local/supervisor/reviews/ff6-six-lane-supervisor-plan-review-20260802/declaration-review-package.zip"
+  ],
+  "actual_files_changed": [
+    "tools/evidence/contracts/ff-plan-control-six-lane-supervisor-review.yaml",
+    "reports/skills-rff6/skill-transcripts/build-evidence-bundle-ff6-supervisor-plan-v7.json",
+    ".local/evidences/ff6-six-lane-supervisor-plan-review-20260802/bundle-metadata",
+    ".local/supervisor/reviews/ff6-six-lane-supervisor-plan-review-20260802/declaration-review-package.zip"
+  ],
+  "tests_run": [
+    "canonical builder auto-proof",
+    "canonical evidence bundle validator",
+    "required repo and metadata inventory",
+    "SHA-256 and ZIP member inspection"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "bundle_kind": "independent_plan_review",
+    "runtime_activation_effect": "none",
+    "declaration_validation": "PASS_WITH_RECORDED_ADVISORIES",
+    "bundle_build": "SUCCESS_ALL_ARTIFACTS_INCLUDED",
+    "bundle_sha256_record": "printed_and_recorded_externally_after_final_immutable_build",
+    "declared_files_packaged": 88,
+    "missing_artifacts": 0,
+    "zip_integrity": "PASS_NO_CORRUPTION_TRAVERSAL_OR_DUPLICATES"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

@@ -30,8 +30,11 @@ skill_ids:
   - build-evidence-bundle
   - post-sprint-audit
   - execution-handoff
-status: HARDENED_AUTONOMOUS_EXECUTION_ACTIVE
-plan_version: 6
+status: STAGE_1_COMPLETE
+plan_version: 7
+recovery_directive_revision: 2
+recovery_directive_date: 2026-08-04
+recovery_directive_revision_1_date: 2026-08-03
 goal_id: FF6-PRODUCTION-LIBRARIES-001
 goal_status: ACTIVE
 quality_target: production_ready
@@ -41,16 +44,21 @@ canonical_remote: origin
 canonical_branch: main
 execution_branch: main
 baseline_ref: origin/main
-baseline_commit: 2ec206edc0104e5f64441c6d043f8d9cd5186fd8
+baseline_commit: 0fa7b2bde542e71fc4b668fc2c317d81937f1e50
 baseline_commit_policy: refresh_per_task_from_origin_main
-execution_model: six_product_pull_queues_double_buffered_vertical_slices
+execution_model: minimal_control_repair_then_proven_vertical_slices
 logical_product_queues: 6
-maximum_active_lanes: 4
-maximum_active_write_lanes: 4
-integration_model: serialized_fast_forward_to_gitlab_main
+maximum_persistent_lanes: 6
+maximum_active_read_only_jobs: 6
+maximum_active_mutation_packages: 2
+maximum_active_write_lanes: 2
+maximum_active_shared_tool_writers: 1
+maximum_active_controller_writers: 1
+maximum_active_integration_writers: 1
+integration_model: detached_candidate_replay_serialized_fast_forward_to_gitlab_main
 last_verified_execution_event: FF6-EVENT-000047
 last_verified_semantic_commit: ea118ba39904b54517ba6bc5839c8d4fc36fa050
-current_execution_focus: NRRD_R3_INDEPENDENT_CORPUS_AND_ORACLE_MATRIX
+current_execution_focus: STAGE_2_AND_STAGE_3_CONCURRENT_READY
 scope:
   - ipynb
   - openraster
@@ -61,6 +69,130 @@ scope:
 ---
 
 # Autonomous Production Execution Plan: Six Python Format Libraries
+
+## 0.0 Binding execution-recovery amendment, 2026-08-03 (superseded in part 2026-08-04)
+
+This amendment changes the route to the unchanged production goal. It does not
+create a new strategic-plan version and it does not weaken any format,
+security, interoperability, packaging, proof, certification, or release
+criterion later in this document. The machine-readable authority for this
+route is `plans/strategic/ff6/execution-recovery-directive.yaml`.
+
+**2026-08-04 status (revision 2):** Stage 1 (`TC-FF6-EXECUTION-RECOVERY-001`)
+is ACCEPTED — see `execution-recovery-directive.yaml`'s `stage_1_scope.stage_1_evidence`
+and `.local/evidences/ff6-stage1-control-repair-20260804/`. Stage 2
+(`TC-FF6-NRRD-GOLDEN-SLICE-001`) and Stage 3
+(`TC-FF6-SAFETENSORS-REFERENCE-SLICE-001`) are `READY` and, per an
+independent-review hardening amendment the same day, are **concurrently
+enterable** rather than strictly sequential — their source/test trees are
+disjoint and `maximum_active_write_lanes: 2` (line 53) already provisions
+this. The state-machine text and diagram immediately below predate that
+amendment and still describe strict sequencing; treat the directive YAML's
+`state_machine.transitions` as authoritative where the two disagree.
+
+The recovery directive takes precedence over version-7 text that requires a
+complete six-lane supervisor, full source-tree classification, exhaustive
+readiness reporting, or complete corpus/oracle closure before the first
+bounded product implementation slice. Those activities remain required when
+their dependency becomes real; they are no longer allowed to consume the
+critical path speculatively.
+
+### Verified starting truth
+
+- GitLab `origin/main` and local `main` resolve to
+  `0fa7b2bde542e71fc4b668fc2c317d81937f1e50` at planning time.
+- Native FF6 Event 47 remains the last accepted execution transition. This
+  planning amendment does not append Event 48, change controller state, or
+  claim accepted product work.
+- The denominator remains 110 capabilities and 689 canonical obligations.
+- All six products remain `UNASSESSED`; technical certification remains
+  `0/6`.
+- NRRD remains 17 implemented, 39 partial, 6 missing, and 3
+  preservation-only, with 48 unresolved obligations.
+- OpenRaster source is absent. IPYNB, NRRD, XLIFF, SafeTensors, and UBL source
+  exists but is not thereby production-ready.
+
+### Recovery state machine
+
+```text
+PLAN_PACKAGED_FOR_INDEPENDENT_REVIEW
+-> STAGE_1_MINIMAL_CONTROL_REPAIR
+-> STAGE_2_NRRD_GOLDEN_SLICE
+-> STAGE_3_SAFETENSORS_REFERENCE_SLICE
+-> STAGE_4_EXTRACT_ONLY_PROVEN_SHARED_MACHINERY
+-> IPYNB_VERTICAL_SLICES
+-> XLIFF_VERTICAL_SLICES
+-> UBL_VERTICAL_SLICES
+-> OPENRASTER_VERTICAL_SLICES
+-> PER_FORMAT_CERTIFICATION
+-> SIX_FORMAT_PROGRAM_COMPLETE
+```
+
+**Superseded 2026-08-04:** the diagram above is strictly sequential
+(`STAGE_2 -> STAGE_3`); the directive's `state_machine.transitions` now
+allows `STAGE_1_MINIMAL_CONTROL_REPAIR -> [STAGE_2_NRRD_GOLDEN_SLICE,
+STAGE_3_SAFETENSORS_REFERENCE_SLICE]` concurrently, converging on
+`STAGE_4_EXTRACT_ONLY_PROVEN_SHARED_MACHINERY` only once BOTH are
+independently accepted. See "0.0" above for the current status. The line
+below is retained for the historical record of what was true on 2026-08-03.
+
+~~The current state is `PLAN_PACKAGED_FOR_INDEPENDENT_REVIEW`, not Stage 1.~~
+(2026-08-03 truth, superseded — current state is `STAGE_1_COMPLETE`, Stage 2
+and Stage 3 both `READY`.) Execution begins only after the review ZIP
+requested by the operator has been produced and inspected. Once execution
+begins, the executor continues without routine confirmation until a true
+stop condition in the machine-readable directive is reached.
+
+### Locked first three execution packages
+
+1. `TC-FF6-EXECUTION-RECOVERY-001`: repair only the control defects that block
+   an exact governed NRRD product mutation. Replace the hard-coded product
+   source allowlist with taskcard-bound exact-path authorization; make the
+   action queue transactional and attempt-scoped; implement real
+   until-blocked continuation; either wire watch/idle/continuation interfaces
+   to observable behavior or remove the unused contract; and prove one
+   end-to-end NRRD canary through guard, worker, independent validation,
+   serialized integration candidate, and continuation selection. This package
+   may not build a general six-lane simulator or dashboard.
+2. `TC-FF6-NRRD-GOLDEN-SLICE-001`: close the three named raw scalar payload
+   integrity obligations with RED-to-GREEN behavior, Teem/pynrrd evidence,
+   installed-wheel proof, typed/static/architecture checks, and one bounded
+   semantic commit candidate.
+3. `TC-FF6-SAFETENSORS-REFERENCE-SLICE-001`: apply the same proven batch
+   contract to a distinct binary/mmap archetype, including exact prefix/header
+   parsing, overflow/layout validation, deterministic writing, and lazy mapped
+   access evidence against the pinned official implementation.
+
+Only after both product slices are independently accepted may shared
+machinery be generalized. Generalization must be extracted from the two
+observed workflows, retain their regression suites, and demonstrate lower
+duplication or risk. It cannot be justified by anticipated future use.
+
+### Work-in-progress and roles
+
+- Initial capacity is two disjoint product writers, one read-only preparation
+  worker, one independent validator, and one serialized integrator.
+- A candidate author cannot validate or integrate the same candidate.
+- Increase product writers from two to three only after two disjoint product
+  batches integrate cleanly with no overlap, stale-baseline replay, rollback,
+  or unexplained mutation. Four product writers are not a target of this
+  recovery program.
+- The queue runs until blocked. A default three-cycle/prompt/time stop is
+  prohibited. Three materially different failed repairs apply only to the same
+  root cause and obligation; they do not stop unrelated work.
+- No taskcard or commit is created per obligation. A normal batch groups a
+  coherent 3-8 high-risk obligations, or a larger deterministic generated
+  unit, and produces one evidence-backed semantic candidate.
+
+### Stop and non-claim rules
+
+Stop only for an unsafe workspace that cannot be isolated, missing external
+authority/credentials that no cached or official alternative can satisfy, an
+unresolved specification contradiction that changes public behavior, a
+repository business gate that agents may not execute, or three materially
+different failures of the same root cause. Record the blocked obligation and
+continue every disjoint safe route. Planning reports, taskcard presence, test
+names, source presence, and review ZIPs never count as product progress.
 
 ## 0. Canonical GitLab mainline execution policy
 
@@ -87,10 +219,12 @@ fallback for this mission.
 
 ### 0.1 Binding acceleration amendment and precedence
 
-Plan version 6 retains the version-5 pull system and replaces its fixed
-four-lane role assignment with six persistent product queues under a four-write
-work-in-progress cap. Sections 0.1, 0.2, 0.3, 5.2, 5.5, 5.6, 7.1, 7.2, 8.4,
-11, 11.2, and 12.4 are binding acceleration controls. Where older wave prose
+Plan version 7 retains the version-6 pull system and records a proposed
+six-lane supervisor design. The 2026-08-03 recovery amendment defers that full
+design and replaces its supervisor-first activation route with the bounded
+three-package sequence above. Sections 0.2, 0.3, 5.2, 5.6, 7.1, 8.4, 11.2,
+and 12.4 remain binding quality controls where they do not conflict with the
+recovery directive. Where older wave prose
 implies that every format waits for another
 format, every authority occurrence receives its own full checkpoint, every
 task builds a wheel, or every accepted microstep rewrites the complete handover
@@ -104,8 +238,8 @@ parallel disjoint lanes. It is never obtained by lowering a gate, accepting a
 generated proposal as authority, omitting an obligation, weakening negative
 tests, or treating deferred full verification as final proof.
 
-The immutable planning baseline for version 6 is clean GitLab `origin/main`
-commit `2ec206edc0104e5f64441c6d043f8d9cd5186fd8` and native controller Event 47.
+The independently reviewable planning snapshot for version 7 is clean GitLab
+`origin/main` commit `0fa7b2bde542e71fc4b668fc2c317d81937f1e50` and native controller Event 47.
 The accepted semantic product/control checkpoint remains
 `ea118ba39904b54517ba6bc5839c8d4fc36fa050`: acceleration controls A1-A3 are
 executable, the six contracts compile deterministically, the canonical
@@ -121,6 +255,13 @@ hash-chained event after evidence is committed to GitLab `main`. Event 46 is
 superseded by Event 47, which is the executable authority for the current NRRD
 R3 continuation; plan prose may
 explain that state but cannot replace it.
+
+Version 7 is a historical target control design, not evidence that the target
+supervisor exists or should be built now. `TC-FF6-SUPERVISOR-RUNTIME-001` is
+superseded for the current route. The existing pull queue remains the fallback
+until `TC-FF6-EXECUTION-RECOVERY-001` proves the minimum transactional path.
+Current product truth remains six `UNASSESSED` products and `0/6` technically
+certified.
 
 ### 0.2 Version-5 product-throughput amendment
 
@@ -185,12 +326,13 @@ changing evidence or release criteria.
 
 The following controls are binding:
 
-1. **Six logical product queues, four active writes.** IPYNB, OpenRaster, NRRD,
+1. **Six logical product queues, two active writes during recovery.** IPYNB, OpenRaster, NRRD,
    XLIFF, SafeTensors, and UBL each retain an independent queue, proof
-   transaction, verification kit, and successor state. At most four canonical
-   mutation packages may be active at once. Available executors pull the four
+   transaction, verification kit, and successor state. Recovery starts with at
+   most two canonical product mutation packages. Available executors pull the
    highest-ranked non-overlapping packages; one executor rotates among the same
-   queues without waiting for more workers.
+   queues without waiting for more workers. Capacity may become three only
+   after two clean disjoint integrations; four is a superseded version-6 target.
 2. **Double-buffer each unblocked product.** A product with an active write
    package also has at most one `READY` successor and one read-only `PREPARED`
    successor. Authority, corpus, oracle, RED-test, and environment work for the
@@ -207,7 +349,9 @@ The following controls are binding:
    classification work may process a complete namespace, schema layer, or
    canonical set. Stable repeated product rules normally group 8-20 obligations.
    New parser state transitions, security boundaries, compatibility changes,
-   and ambiguous authority start at 1-5. A batch grows only after two accepted
+   and ambiguous authority normally start at 3-8 coherent obligations; a
+   smaller set is allowed only when the semantic unit itself has fewer than
+   three obligations. A batch grows only after two accepted
    predecessor batches with the same invariant and no split/rollback; any
    exception or rollback halves the next batch and creates a new stable group.
 5. **Schedule long-lead verification first.** Licensed corpus acquisition,
@@ -236,6 +380,165 @@ The following controls are binding:
    result into promotion evidence. Deterministic validators, external
    implementations, installed-package tests, and independent certification
    remain required exactly as before.
+
+### 0.4 Version-7 six-lane supervisor architecture
+
+#### 0.4.1 Why a supervisor is required
+
+The repository has working coordination primitives, a production-program
+controller, an append-only FF6 journal, and product queues. It does **not** yet
+have a portfolio runtime that can safely dispatch, monitor, verify, and
+integrate six persistent lanes. Running six copies of the present autonomous
+orchestrator would multiply global-state and integration races rather than
+provide controlled parallelism:
+
+- the current autonomous orchestrator uses a singleton process lock and a
+  sequential execution cycle;
+- continuation and action-queue state is global rather than namespaced by
+  mission, lane, task, and attempt;
+- the current JSONL action queue is rewritten as a whole and is not an atomic
+  multi-consumer claim store;
+- queue priority does not model lane identity, path/logical overlap,
+  downstream unlock, runtime capacity, integration pressure, or fairness;
+- product-action allowlists do not include these six product roots; and
+- the bounded LLM backend is a connectivity probe, not a production code
+  executor and never supplies independent proof.
+
+These are structural weaknesses. Prompt changes, additional loop processes, or
+manual lane labels cannot repair them.
+
+#### 0.4.2 One supervisor, six persistent lanes
+
+The target runtime has one FF6 portfolio supervisor and exactly six persistent
+named product lanes: `ipynb`, `openraster`, `nrrd`, `xliff`, `safetensors`, and
+`ubl`. A persistent lane is a schedulable lifecycle and state namespace; it is
+not a promise of a continuously running worker.
+
+Capacity is explicit and fail-closed:
+
+| Resource | Capacity | Rule |
+|---|---:|---|
+| Persistent product lanes | 6 | One queue and successor state per selected format. |
+| Immutable read/oracle/preparation jobs | 6 | Inputs must be pinned and outputs content-addressed. |
+| Product mutation packages | 4 | At most one active mutation package per product. |
+| Shared-tool mutation packages | 1 | Product lanes cannot write shared machinery. |
+| Controller writer | 1 | Only the supervisor integration transaction may append accepted state. |
+| GitLab `main` integrator | 1 | Candidates never push or update controller state directly. |
+
+The four-mutation ceiling is an initial safety limit, not a throughput target.
+The supervisor may lower it after conflict, memory, I/O, test saturation, or
+integration-pressure evidence. Raising it requires a separate evidence-backed
+controller change and cannot exceed one mutation package per product.
+
+#### 0.4.3 Supervisor and lane state machines
+
+The supervisor executes only these journaled transitions:
+
+```text
+RECOVER
+→ RECONCILE
+→ COMPILE_READY_QUEUE
+→ DISPATCH
+→ MONITOR
+→ COLLECT_CANDIDATE
+→ INDEPENDENT_VERIFY
+→ INTEGRATE
+→ CHECKPOINT
+→ REPEAT
+```
+
+Every product lane executes only these transitions:
+
+```text
+PREPARED → READY → CLAIMED → RUNNING → CANDIDATE_READY
+         → VERIFYING → VERIFIED_CANDIDATE → INTEGRATING → ACCEPTED
+```
+
+Failure transitions are `REWORK`, `BLOCKED`, and `INVALIDATED`. They record the
+failed obligation, exact input closure, failure class, attempt counter, retry
+policy, and successor task. A lane cannot skip a state, and a process restart
+reconstructs state from committed events plus the runtime transaction log.
+
+#### 0.4.4 Transactional scheduling state
+
+Runtime claims use a mission-scoped SQLite database in WAL mode beside, but not
+inside, the Git worktree. The database is rebuildable from committed taskcards,
+FF6 events, proof nodes, and Git state; it is never product evidence by itself.
+Each work item records at minimum:
+
+- mission, lane, taskcard, attempt, and immutable baseline commit;
+- authority, contract, obligation-set, source, test, fixture, lock, tool, and
+  environment closure digests;
+- exact writable paths and logical resources;
+- priority components and deterministic tie-break explanation;
+- worker identity, lease IDs, heartbeat, claim transaction, and expiry;
+- candidate digest, author identity, validator identity, validation result;
+- integration baseline/result commit, controller event, and idempotency key.
+
+Ready-item claim is one atomic transaction. A claim succeeds only if capacity
+exists and no live path, logical-resource, product, shared-tool, controller, or
+integration conflict exists. File leases remain enforced by the existing
+coordination plane; the scheduler does not replace them. Whole-file JSONL
+rewrite is forbidden for concurrent runtime claims.
+
+Priority is deterministic: severity, safety/data-loss impact, mandatory
+read/write closure, downstream unlock count, integration readiness, age, then
+stable task ID. Fairness aging prevents an unblocked lane from starving, but
+never outranks a critical security or data-loss obligation. When two verified
+candidates await integration, overlapping writes pause until the queue drains;
+disjoint immutable preparation may continue.
+
+#### 0.4.5 Candidate and integration protocol
+
+Every mutation worker operates in a detached worktree pinned to the recorded
+`origin/main` commit. It creates no branch and never pushes. A successful lane
+emits an immutable candidate bundle containing:
+
+- baseline and candidate tree/patch digests plus an explicit changed-path list;
+- complete execution manifest, leases, commands, exit codes, and environment;
+- affected obligation/proof nodes and invalidation prediction;
+- focused and required regression results;
+- author receipt and a negative assertion that controller, promotion, and
+  release state were not changed.
+
+An independently identified validator, different from the candidate author,
+replays the candidate from its pinned baseline and produces a validation
+receipt. The single integrator then refreshes `origin/main`, applies or replays
+the verified bounded change onto the latest mainline, reruns invalidated proof,
+commits and fast-forwards directly to GitLab `main`, and only then submits the
+closure candidate for a hash-chained FF6 controller event. A stale candidate is
+revalidated; it is never force-pushed or treated as accepted by age.
+
+Product lanes may not modify the controller journal, handover projections,
+global artifact index, global gap ledger, package matrix, shared registries,
+shared aliases, shared generators, or common machinery. Those are separate
+service packages with their own single-writer taskcards and validation.
+
+#### 0.4.6 Deferred full-supervisor activation gate and safe fallback
+
+This full supervisor is not on the current critical path. It may be reconsidered
+only after the NRRD and SafeTensors reference slices are independently accepted
+and Stage 4 demonstrates that their repeated coordination behavior warrants a
+shared runtime. If reconsidered, it still requires a new bounded taskcard,
+independent review, and a native event binding runtime/tool/test digests. The
+historical target proof included:
+
+1. atomic claim, crash recovery, expiry/takeover, and idempotent replay tests;
+2. six-lane simulation with four disjoint writers and one integrator;
+3. forced path/logical conflicts and shared-state mutation rejection;
+4. candidate-author/validator identity separation;
+5. integration backpressure and stale-baseline replay;
+6. three same-input deterministic controller/projection reruns;
+7. detached installed-wheel import isolation and no retained branch/worktree;
+8. a full negative-control suite proving manual status, stale proof, or queue
+   edits cannot promote a product.
+
+Until the review package is accepted, Event 47 remains executable authority.
+After review, the exact continuation is
+`TC-FF6-EXECUTION-RECOVERY-001`, immediately followed by the NRRD golden slice.
+No more than two product mutations may run initially. Independent review may
+strengthen controls but may not reintroduce speculative supervisor work ahead
+of the NRRD slice, weaken product gates, or manufacture completion.
 
 ## 1. Purpose, authority, and non-negotiable outcome
 
@@ -396,8 +699,8 @@ namespace test passes. One strong library cannot compensate for a shallow one.
 ## 3. Baseline and truth-recovery contract
 
 The baseline below is the verified Event-47 controller checkpoint on 2026-08-02.
-It is current only for planning commit
-`2ec206edc0104e5f64441c6d043f8d9cd5186fd8` and accepted semantic commit
+The version-7 planning snapshot is based on clean `origin/main`
+`0fa7b2bde542e71fc4b668fc2c317d81937f1e50`; the accepted semantic commit is
 `ea118ba39904b54517ba6bc5839c8d4fc36fa050`. Every task captures fetched
 `origin/main` and recomputes contracts, capabilities, gaps, source/API
 inventory, installed-package proof, and invalidation state before selection.
@@ -406,11 +709,12 @@ inventory, installed-package proof, and invalidation state before selection.
 
 | Item | Status | Required treatment |
 |---|---|---|
-| GitLab mainline planning snapshot | `origin/main` at `2ec206edc0104e5f64441c6d043f8d9cd5186fd8` | Verified clean checkpoint input only; capture a fresh task baseline before every mutation. |
+| GitLab mainline planning snapshot | `origin/main` at `0fa7b2bde542e71fc4b668fc2c317d81937f1e50` | Verified clean checkpoint input only; capture a fresh task baseline before every mutation. |
 | Production controller | Event 47, `CONTRACT`, NRRD R3 active | Native journal and controller are executable authority; this plan cannot complete or reorder that task without a validated event. |
+| Six-lane supervisor runtime | Design proposed by version 7; not implemented or activated | Complete `TC-FF6-SUPERVISOR-RUNTIME-001`, independent review, negative controls, and a native activation event before using the target runtime. |
 | Existing plans/statuses | Historical input only | Revalidate every claim against the canonical proof graph. |
 | Shared root worktree | Clean at amendment baseline; concurrency may change it | Preserve unexplained later changes; never clean, stash, reset, restore, or broadly stage them. |
-| Product queues | NRRD R3 `WORK_IN_PROGRESS`; XLIFF semantic batch, UBL schema generator, and compact readiness `READY`; OpenRaster preparation is schedulable | Pull up to four highest-ranked non-overlapping writes; maintain all six logical queues without waiting for simultaneous writers. |
+| Product queues | NRRD R3 `WORK_IN_PROGRESS`; XLIFF semantic batch and UBL schema generator `READY`; separate IPYNB, SafeTensors, and OpenRaster readiness cards prepared by version 7 but not controller-routed | Event 47 remains executable authority. Use the safe version-6 pull behavior until a later event validates any route change. |
 
 The tracked, still non-promoting SafeTensors checkpoint remains historical
 input and consists of:
@@ -489,7 +793,7 @@ The prior system's inconsistency was structural, not a missing test or prompt:
 | Old gaps keep being scheduled | Append-only history is treated as current queue | Materialize a current-state projection keyed by obligation/format. |
 | Promotion is editable | Promotion is stored as a label | Derive promotion from live proof; invalidate descendants automatically. |
 | Contract work advances too slowly | A single authority occurrence is treated as a full sprint, checkpoint, replay, handover refresh, and event | Group semantically equivalent occurrences, retain per-occurrence decisions, and accept or roll back one evidence-bound semantic batch. |
-| One difficult format stalls the portfolio | Program state is interpreted as one global phase rather than six product lifecycles plus shared prerequisites | Schedule up to four disjoint lanes and compute readiness independently per product. |
+| One difficult format stalls the portfolio | Program state is interpreted as one global phase rather than six product lifecycles plus shared prerequisites | Schedule up to two disjoint product writers during recovery and compute readiness independently per product. |
 | Verification cost dominates semantic work | Release-shaped regression and detached replay are repeated after changes that cannot affect packages or unrelated formats | Select tests from the proof dependency graph and run full sentinel/release tiers at explicit checkpoints. |
 | Handover projections become work products | The same controller facts are manually repeated across many Markdown and YAML files after every microstep | Generate four operational handover files from canonical state only at shift or transition checkpoints. |
 | Existing code does not shorten delivery | Source presence is not mapped mechanically to obligations, public symbols, and executed behavior | Characterize once, classify `KEEP/REPAIR/REPLACE/REMOVE`, and generate implementation tasks only for the residual gap. |
@@ -602,24 +906,25 @@ taskcard. Committed continuation state is materialized under
 `plans/programs/ff6/` and `taskcards/ff6/`; local evidence is referenced by
 digest and never confused with committed product proof.
 
-### 5.5 Six product queues, four-write WIP cap, and serialized integration
+### 5.5 Six product queues, recovery WIP cap, and serialized integration
 
 The controller maintains six independent product lifecycles. Queue identity is
-per format and never moves between formats; the four-slot cap applies only to
-simultaneous canonical mutation packages whose leases, proof transactions,
-generated outputs, and taskcard allowlists do not overlap:
+per format and never moves between formats. During recovery the two-slot cap
+applies only to simultaneous canonical mutation packages whose leases, proof
+transactions, generated outputs, and taskcard allowlists do not overlap. A
+third slot requires the two-clean-batch gate in Section 0.0:
 
 | Product queue | Current critical path | Exclusive authority |
 |---|---|---|
-| NRRD | R3 immutable Teem/pynrrd corpus and differential matrix, then risk-ranked R4 vertical slices | NRRD authority/corpus/oracle/report paths; product paths only after R4 taskcard compilation |
+| NRRD | slice-required Teem/pynrrd inputs, then `TC-FF6-NRRD-GOLDEN-SLICE-001` | exact readiness inputs and the golden card's five optional/exact source plus one test path; other NRRD paths remain closed |
 | XLIFF | Core denominator adjudication, 2.0/2.1 module obligations, processing semantics, then vertical implementation slices | XLIFF authority/contract/report/test/product paths named by the claimed package |
 | UBL | attributes/groups/wildcards/substitutions/facets, reproducible schema graph and generated typed surface for all 91 roots | UBL schema/generator/report/test/product paths named by the claimed package |
-| IPYNB | independent readiness, official `nbformat` differential kit, version conversion and stable API slices | IPYNB-only source/test/corpus/package paths plus explicitly leased shared core |
-| SafeTensors | independent readiness, upstream differential kit, layout/security and lazy-access slices | SafeTensors-only source/test/corpus/package paths plus explicitly leased shared core |
-| OpenRaster | authority/legal/two-application corpus and policy preparation; source only when live prerequisites permit | OpenRaster preparation paths; product source remains policy-gated |
+| IPYNB | first security/data-loss/mandatory vertical slice after both reference archetypes | only the selected slice's exact source/test/corpus/package paths |
+| SafeTensors | `TC-FF6-SAFETENSORS-REFERENCE-SLICE-001` after NRRD acceptance | exact reader/writer/model/validator/optional-limits and one test path named by the card |
+| OpenRaster | capped first-slice authority/legal/corpus/threat preparation; source only when the exact live prerequisite passes | first secure archive/model preparation paths; product source remains policy-gated |
 
 Shared controller, proof, or generator work is an on-demand service package, not
-a permanent product slot. It consumes one of the four write slots only when a
+a permanent product slot. It consumes capacity only when a
 current critical/high control defect blocks safe product work or could create a
 false result. A blocked product releases its active slot immediately while its
 queue and evidence remain intact. Ready work in another product never waits for
@@ -886,15 +1191,16 @@ implementation, independent verification, installed-package certification, and
 extraction task families. Work may run in isolated detached worktrees, but
 successful reviewed taskcards integrate serially to GitLab `main`.
 
-### 7.1 Acceleration bootstrap and wave reinterpretation
+### 7.1 Historical acceleration bootstrap and current wave reinterpretation
 
 The numbered waves are dependency groups, not portfolio-wide barriers. A
 format advances when its own prerequisite proof is current even if another
 format remains in an earlier wave. Shared machinery and package-chassis changes
 still block only their actual proof descendants.
 
-At the first execution after this amendment, compile these acceleration cards
-without marking the Event-40 XLIFF task complete:
+The following version-5/6 acceleration cards are retained as historical design
+and completed predecessor context. They must not be regenerated or scheduled
+ahead of the Section-0.0 recovery state machine:
 
 1. `TC-FF6-ACCEL-CONTROL-001`: repair immediate authority fail-closed behavior;
    implement proof-impact selection, semantic-batch manifests, generated
@@ -907,10 +1213,9 @@ without marking the Event-40 XLIFF task complete:
 3. `TC-FF6-UBL-SCHEMA-GENERATOR-001`: continue UBL-03 at attributes and
    attribute groups, then groups/wildcards/substitutions/facets, under one
    reproducible schema-graph lane.
-4. `TC-FF6-COMPACT-READINESS-001`: independently characterize IPYNB and
-   SafeTensors source, APIs, tests, installed packages, and obligation gaps;
-   emit `KEEP`, `REPAIR`, `REPLACE`, or `REMOVE` decisions before source
-   restructuring.
+4. `TC-FF6-COMPACT-READINESS-001`: superseded without execution. Its
+   whole-product `KEEP/REPAIR/REPLACE/REMOVE` requirement is not a prerequisite
+   to the SafeTensors or IPYNB vertical slices.
 
 The acceleration bootstrap exits only when:
 
@@ -947,16 +1252,13 @@ interleaving from leases and readiness.
    It is exact and conservative but non-promoting: 17 obligations are
    implemented, 39 partial, 6 missing, and 3 preservation-only. Do not replay or
    rewrite it unless an input digest invalidates it.
-2. Execute R3 now that profile/tool identities are known: acquire
-   license-recorded Teem and pynrrd corpora, create pinned isolated oracle
-   environments, and run the read/write/contradiction matrix against committed
-   inputs. Acquisition and execution are separate proof nodes so a transient
-   download does not discard validated local classification work.
-3. Double-buffer R4 while R3 runs: draft vertical implementation cards from the
-   48 unresolved rows, but keep them `PREPARED` until R3 evidence finalizes their
-   proof requirements. Apply the Section 0.3 adaptive batch bands, then start the
-   highest security/data-loss or mandatory read/write package immediately after
-   its RED controls, exact paths, and R3 inputs are ready.
+2. Acquire only the license-recorded Teem and pynrrd inputs that discriminate
+   the three golden-slice rules; bind their isolated oracle environments and
+   commands. Preserve acquisition and execution as separate proof nodes.
+3. After Stage 1, execute `TC-FF6-NRRD-GOLDEN-SLICE-001` immediately. The full
+   read/write/contradiction matrix and remaining 45 unresolved rows stay in the
+   current gap projection for later vertical slices/certification and do not
+   block this first product batch.
 
 #### XLIFF queue: contract and module closure
 
@@ -981,9 +1283,9 @@ interleaving from leases and readiness.
 
 #### IPYNB and SafeTensors queues: independent compact-product readiness
 
-1. Characterize IPYNB and SafeTensors in one read-only inventory package with
-   separate per-product digests and `KEEP/REPAIR/REPLACE/REMOVE` decisions.
-2. Pre-build their official/reference oracle environments and installed-wheel
+1. Do not run a combined or whole-product inventory. Execute the bounded
+   SafeTensors reference slice after NRRD, then select one IPYNB vertical slice.
+2. Pre-build only their slice-required official/reference oracle environments and installed-wheel
    matrices while residual implementation cards are compiled.
 3. Split `TC-FF6-COMPACT-READINESS-001` into one IPYNB child queue and one
    SafeTensors child queue before either product mutation. Each child has its
@@ -1334,49 +1636,52 @@ to recover. Failure handling is deterministic:
 - repeated same root cause after three materially different repairs: mark that
   obligation technically blocked, retain proof, and continue other formats.
 
-## 11. Concrete first task queue
+## 11. Concrete first task queue after execution-recovery review
 
-The version-6 queue starts from Event 47. The acceleration bootstrap, control
-repair, and NRRD R1-R2 are already complete and must not be repeated. Pull work in this
-order, subject to live leases and the deterministic priority rule:
+The capability/authority compiler, acceleration bootstrap, and NRRD R1-R2 are
+already complete and must not be repeated absent verified input drift. Execute
+the following order after the recovery ZIP has been reviewed:
 
 1. Revalidate Event 47, `origin/main`, the capability-manifest aggregate digest,
    110 capabilities, the six obligation totals summing to 689, current leases,
    source presence, and `0/6` certification. Reconcile any difference before a
    proof-producing write; do not regenerate current inputs merely because they
    were produced by another provider.
-2. Continue `TC-FF6-NRRD-READINESS-001` at R3. Acquire immutable licensed
-   official, Teem, and pynrrd corpus inputs; execute read/write differential and
-   contradiction matrices; and double-buffer draft R4 vertical slices from the
-   48 unresolved R2 rows without mutating product source early.
-3. Keep `TC-FF6-XLIFF-SEMANTIC-BATCH-001`,
-   `TC-FF6-UBL-SCHEMA-GENERATOR-001`, and
-   `TC-FF6-COMPACT-READINESS-001` ready. Complete the compact read-only inventory,
-   then immediately compile separate IPYNB and SafeTensors readiness successors.
-   Any available executor claims the highest-ranked non-overlapping product
-   package; a single executor rotates among queues at accepted batch boundaries.
-4. Use the next free preparation capacity for OpenRaster authority/profile,
-   legal corpus, two-application interoperability, architecture, and RED-test
-   preparation. Respect its live source-creation policy gate while ensuring the
-   non-source kit is ready before the gate can become the critical path.
-5. While implementation/code review occupies a write slot, run already-ready
+2. Execute `TC-FF6-EXECUTION-RECOVERY-001`. First reproduce the exact blocked
+   NRRD source mutation, then repair only the authorization, transactional
+   queue, continuation, and candidate-validation path needed to make it pass.
+   Stage 1 is incomplete unless it selects the NRRD golden slice next.
+3. Execute `TC-FF6-NRRD-GOLDEN-SLICE-001`. Acquire only the immutable Teem and
+   pynrrd inputs required by its three obligations, drive exact RED tests to
+   GREEN, rebuild and install the wheel, obtain independent validation, and
+   integrate one bounded candidate.
+4. Execute `TC-FF6-SAFETENSORS-REFERENCE-SLICE-001` through the same observed
+   lifecycle. Do not begin with a full source classification or all-86
+   obligation report.
+5. While implementation/code review occupies a write slot, run only
+   slice-required
    read-only corpus acquisition validation, external-tool environment builds,
    or committed-input oracle jobs in isolated environments. Never run a proof
    job against uncommitted mutable source.
-6. When NRRD R3 closes, finalize and start the highest-risk R4 vertical slice
-   immediately. For every active product, maintain at most one `READY` successor
-   and one `PREPARED` successor. Keep portfolio ready depth at
-   `min(4, unblocked_product_count)`; compile missing product taskcards before
+6. After the two accepted reference slices, execute Stage 4 only if evidence
+   identifies repeated machinery worth extracting. Then select IPYNB, XLIFF,
+   UBL, and OpenRaster vertical slices in that order, unless a higher security
+   or data-loss obligation deterministically outranks them. Maintain at most
+   one `READY` and one `PREPARED` successor per active product. Keep ready depth
+   at `min(2, unblocked_product_count)` initially; compile product work before
    optional reports, dashboards, convenience exports, or control layers.
 7. Apply adaptive batch sizing: complete deterministic schema/classification
-   sets, 8-20 stable repeated obligations, and 1-5 high-risk parser/security or
+   sets, 8-20 stable repeated obligations, and 3-8 high-risk parser/security or
    ambiguous-authority obligations. Grow only after two clean predecessor
    batches; halve after an exception, split, or rollback.
 8. Integrate accepted semantic commits through the single GitLab-main writer.
    Refresh the controller/handover only when the accepted batch changes the
    route or transition. Resume the next ready package immediately after the
    remote SHA is verified.
-9. Promote each product independently only from its current proof graph. The
+9. Do not refresh the full handover, certification matrix, or broad status
+   portfolio after routine edits. Refresh them only at accepted milestone,
+   invalidation, provider-shift, release-candidate, or true-blocker boundaries.
+10. Promote each product independently only from its current proof graph. The
    aggregate program remains incomplete until all six release-candidate gates
    pass.
 
@@ -1597,7 +1902,7 @@ proof is a regression.
 | Double buffering | a successor is prepared against a baseline invalidated by current integration | allow only one READY and one PREPARED successor; refresh baseline and invalidation closure after integration before readiness |
 | Adaptive batches | throughput pressure grows a batch beyond safe rollback or semantic boundaries | risk bands, two-clean-predecessor growth rule, automatic halving after split/rollback/contradiction |
 | Verification-kit caching | cached environment or corpus is mistaken for an executed current verdict | bind complete kit inputs, reuse bytes only, rerun result nodes for changed proof closure |
-| Single-executor operation | four active slots are mistaken for a four-worker prerequisite | pull one ready package, rotate among six product queues at batch boundaries, and keep concurrency optional |
+| Single-executor operation | configured WIP slots are mistaken for a simultaneous-worker prerequisite | pull one ready package, rotate among six product queues at batch boundaries, and keep concurrency optional |
 | Integration backlog | many accepted candidates drift from current main before integration | deterministic commit train, queue-pressure drain rule, affected-closure replay, serialized fast-forward writer |
 | Late oracle/corpus setup | implementation finishes before independent verification can start | pre-stage licensed corpora, pinned external tools, dependency locks, and platform kits as soon as profiles stabilize |
 
@@ -1628,25 +1933,33 @@ proof is a regression.
 
 ## 14. Plan acceptance status
 
-Status: **HARDENED_AUTONOMOUS_EXECUTION_ACTIVE**. This means the executor has
+Status: **STAGE_1_COMPLETE** (2026-08-04; was `EXECUTION_RECOVERY_READY_NOT_STARTED`
+as of 2026-08-03). Stage 1 (`TC-FF6-EXECUTION-RECOVERY-001`) is ACCEPTED with
+RED-to-GREEN evidence; `TC-FF6-NRRD-GOLDEN-SLICE-001` and
+`TC-FF6-SAFETENSORS-REFERENCE-SLICE-001` are `READY` and concurrently
+enterable (see "0.0" above). Product slices and the native controller
+transition (Event 48) have not started — those remain Stage 2/3's job. The
+repository already has
 a durable operational sequence, a bounded definition of comprehensive
 capabilities, professional package and code contracts, taskcard compilation,
 numeric quality gates, failure rules, honest policy blocks, semantic batching,
-six logical product queues under a four-write WIP cap, double-buffered
+six logical product queues under a two-write recovery WIP cap, bounded
 successors, adaptive risk-bounded batches, vertical capability slices,
 product-first pull scheduling, pre-staged content-addressed verification kits,
 tiered verification, commit trains, and serialized mainline integration.
 Acceleration controls A1-A3 are implemented and verified through Event 45;
-Event 47 records NRRD R2 completion; version 6 improves flow without changing
-controller promotion or product state.
+Event 47 records NRRD R2 completion. Recovery revision 1 supersedes the full
+transactional supervisor as the near-term route. The next execution package is
+the minimal control unblock, then NRRD and SafeTensors product slices.
 This does **not** mean that any of the six libraries is production-certified or
 release-ready.
 
 ## 15. Plan hardening assessment
 
-This version passes the repository plan-hardening checklist at the plan-design
-level (22/22 items). That is a statement about executable planning quality, not
-product evidence:
+This version is assessed at 22/22 against the repository plan-hardening
+checklist at the plan-design level, with the detailed mapping in
+`reports/skills-rff6/plan-hardening/ff6-six-lane-supervisor-v7.md`. Independent
+review may reject that assessment. It is not product or runtime evidence:
 
 - **Goals and outcomes:** one immutable six-library production goal, explicit
   non-claims, format breadth floors, and measurable program completion.
@@ -1654,8 +1967,10 @@ product evidence:
   are classified; no mandatory behavior can disappear into a percentage or
   prose deferral.
 - **Execution clarity:** the controller, completed acceleration bootstrap,
-  deterministic semantic-batch taskcards, Event-47 pull queue, six independent
-  product lifecycles, four-write WIP cap, double-buffered successors, adaptive
+  deterministic semantic-batch taskcards, Event-47 safe fallback, six independent
+  product lifecycles, two-write recovery WIP cap, minimal transactional action
+  path,
+  candidate validation and serialized integration, double-buffered successors, adaptive
   batch rules, work-package readiness contract, state transitions, generated
   handover boundary, and serialized commit train remove reliance on agent
   memory, simultaneous-worker assumptions, or broad wave interpretation.

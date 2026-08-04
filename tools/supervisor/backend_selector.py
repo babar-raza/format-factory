@@ -19,14 +19,13 @@ if str(_repo_root) not in sys.path:
     sys.path.insert(0, str(_repo_root))
 
 from tools.supervisor.execution_backend import BackendStatus, BackendType, ExecutionBackend
+from tools.supervisor.forbidden_actions import TRUE_EXTERNAL_GATE_ACTION_TYPES
 
-# Forbidden action types that the selector must refuse to execute
-FORBIDDEN_ACTION_TYPES = {
-    "GIT_PUSH", "GIT_COMMIT", "GIT_RESET", "GIT_STASH", "GIT_CLEAN",
-    "GATE_8_APPROVAL", "GATE_11_APPROVAL",
-    "PACKAGE_PUBLISH", "PYPI_PUBLISH", "NUGET_PUBLISH",
-    "MCP_ACTIVATE", "MUTATE_POC_TARGETS",
-}
+# Forbidden action types that the selector must refuse to execute.
+# This was the widest of four independently-drifted copies (see
+# tools/supervisor/forbidden_actions.py); it is now the canonical source,
+# imported here rather than redefined.
+FORBIDDEN_ACTION_TYPES = TRUE_EXTERNAL_GATE_ACTION_TYPES
 
 
 class BackendSelectionTrace:

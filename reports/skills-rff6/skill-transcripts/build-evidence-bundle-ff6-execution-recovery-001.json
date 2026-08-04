@@ -1,0 +1,50 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "build-evidence-bundle-ff6-execution-recovery-001",
+  "skill_id": "build-evidence-bundle",
+  "mode": "live",
+  "timestamp": "2026-08-03T04:13:29Z",
+  "inputs": {
+    "task_id": "TC-FF6-EXECUTION-RECOVERY-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "run_id": "ff6-execution-recovery-plan-20260803",
+    "execution_manifest": "sfx-2c50f47e0dc7715b",
+    "contract": "tools/evidence/contracts/ff-plan-control-execution-recovery-review.yaml"
+  },
+  "allowed_files": [
+    "tools/evidence/contracts/ff-plan-control-execution-recovery-review.yaml",
+    "reports/skills-rff6/skill-transcripts/build-evidence-bundle-ff6-execution-recovery-001.json",
+    ".local/evidences/ff6-execution-recovery-plan-20260803",
+    ".local/supervisor/materialized/ff6-execution-recovery-plan-20260803",
+    ".local/supervisor/reviews/ff6-execution-recovery-plan-20260803/declaration-review-package.zip"
+  ],
+  "actual_files_changed": [
+    "tools/evidence/contracts/ff-plan-control-execution-recovery-review.yaml",
+    "reports/skills-rff6/skill-transcripts/build-evidence-bundle-ff6-execution-recovery-001.json",
+    ".local/evidences/ff6-execution-recovery-plan-20260803",
+    ".local/supervisor/materialized/ff6-execution-recovery-plan-20260803",
+    ".local/supervisor/reviews/ff6-execution-recovery-plan-20260803/declaration-review-package.zip"
+  ],
+  "tests_run": [
+    "targeted required-file inventory: 72 repository files and 21 metadata files, 0 missing",
+    "declaration review-package build: SUCCESS, all artifacts included",
+    "ZIP CRC, duplicate-member, path-traversal, required-member, and embedded SHA-256 validation: PASS"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "bundle_kind": "independent_plan_review",
+    "runtime_activation_effect": "none",
+    "execution_started": false,
+    "certification_state": "0/6",
+    "declared_repo_files": 72,
+    "declared_metadata_files": 21,
+    "missing_artifacts": 0,
+    "zip_integrity": "PASS_NO_CORRUPTION_DUPLICATES_OR_TRAVERSAL",
+    "embedded_file_hashes": "PASS",
+    "final_zip_sha256_record": "reported after final immutable rebuild to avoid a self-referential archive hash"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}

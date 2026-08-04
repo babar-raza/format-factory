@@ -1,0 +1,142 @@
+contract_id: FF-PLAN-CONTROL-SIX-LANE-SUPERVISOR-REVIEW-001
+version: "1.0"
+description: >-
+  Independent-review bundle for FF6 plan version 7. Contains the current
+  canonical plan/control/product-goal state, complete current capability and
+  obligation projections, all FF6 taskcards, current provider-neutral handover,
+  governance/skill contracts, and source evidence needed to challenge the
+  proposed six-lane supervisor. It is not product or runtime certification.
+current_state_authority: bundle-metadata
+required_top_level_folders:
+  - repo
+  - bundle-metadata
+forbidden_patterns:
+  - ".git/**"
+  - ".env"
+  - ".local/**"
+  - "**/ocal/**"
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/*.sqlite"
+  - "**/*.db"
+  - "**/node_modules/**"
+require_clean_git: false
+emergency_blocker_bundle: true
+normal_pass_min_metadata: 25
+min_metadata_count: 25
+required_repo_files:
+  - AGENTS.md
+  - GOVERNANCE.md
+  - docs/governance/codex-adapter.md
+  - docs/governance/skill-only-policy.yaml
+  - docs/plan-hardening-checklist.md
+  - docs/planning-methodology.md
+  - .claude/commands/plan-hardening.md
+  - .claude/commands/create-taskcard.md
+  - .claude/commands/plan-control.md
+  - .claude/commands/refresh-provider-neutral-handover.md
+  - .claude/commands/build-evidence-bundle.md
+  - plans/master-plan.md
+  - plans/strategic/autonomous-six-python-production-execution-plan.md
+  - plans/strategic/ff6/product-goal.yaml
+  - plans/strategic/ff6/controller-state.yaml
+  - plans/strategic/ff6/events.jsonl
+  - plans/strategic/ff6/current-state.yaml
+  - plans/strategic/ff6/current-gaps.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - plans/strategic/ff6/capability-taxonomy.yaml
+  - plans/strategic/ff6/capability-manifest.json
+  - plans/strategic/ff6/capability-coverage.yaml
+  - plans/strategic/ff6/capabilities/ipynb.yaml
+  - plans/strategic/ff6/capabilities/ora.yaml
+  - plans/strategic/ff6/capabilities/nrrd.yaml
+  - plans/strategic/ff6/capabilities/xliff.yaml
+  - plans/strategic/ff6/capabilities/safetensors.yaml
+  - plans/strategic/ff6/capabilities/ubl.yaml
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-enrichments/ora.yaml
+  - plans/strategic/ff6/capability-enrichments/nrrd.yaml
+  - plans/strategic/ff6/capability-enrichments/xliff.yaml
+  - plans/strategic/ff6/capability-enrichments/safetensors.yaml
+  - plans/strategic/ff6/capability-enrichments/ubl.yaml
+  - plans/strategic/ff6/obligations/ipynb.yaml
+  - plans/strategic/ff6/obligations/ora.yaml
+  - plans/strategic/ff6/obligations/nrrd.yaml
+  - plans/strategic/ff6/obligations/xliff.yaml
+  - plans/strategic/ff6/obligations/safetensors.yaml
+  - plans/strategic/ff6/obligations/ubl.yaml
+  - plans/codex/handover/START-HERE.md
+  - plans/codex/handover/CURRENT-MACHINE-STATE.yaml
+  - plans/codex/handover/CURRENT-SHIFT-HANDOVER.md
+  - plans/codex/handover/NEXT-MICROSTEP.yaml
+  - plans/codex/handover/checkpoint.yaml
+  - plans/codex/handover/manifest.yaml
+  - plans/codex/handover/EXECUTION-RUNBOOK.md
+  - plans/codex/handover/PROVIDER-SHIFT-CONTRACT.md
+  - plans/codex/handover/SHIFT-AND-RESUME-PROTOCOL.md
+  - plans/codex/handover/STATE-MACHINE-AND-TASKCARD-PROTOCOL.md
+  - plans/codex/handover/VALIDATION-AND-RELEASE.md
+  - taskcards/index.yaml
+  - taskcards/TC-FF6-PROGRAM-TRUTH-001.md
+  - taskcards/TC-FF6-PROGRAM-CAPABILITIES-001.md
+  - taskcards/TC-FF6-HANDOVER-CLAUDE-001.md
+  - taskcards/TC-FF6-CAPABILITY-COMPILER-001.md
+  - taskcards/TC-FF6-AUTHORITY-CLOSURE-001.md
+  - taskcards/TC-FF6-ORA-PROFILE-SURFACE-001.md
+  - taskcards/TC-FF6-IPYNB-PROFILE-SURFACE-001.md
+  - taskcards/TC-FF6-NRRD-PROFILE-SURFACE-001.md
+  - taskcards/TC-FF6-XLIFF-PROFILE-SURFACE-001.md
+  - taskcards/TC-FF6-UBL-TYPING-001.md
+  - taskcards/TC-FF6-ACCEL-CONTROL-001.md
+  - taskcards/TC-FF6-XLIFF-SEMANTIC-BATCH-001.md
+  - taskcards/TC-FF6-UBL-SCHEMA-GENERATOR-001.md
+  - taskcards/TC-FF6-COMPACT-READINESS-001.md
+  - taskcards/TC-FF6-NRRD-READINESS-001.md
+  - taskcards/TC-FF6-PLAN-THROUGHPUT-001.md
+  - taskcards/TC-FF6-IPYNB-READINESS-001.md
+  - taskcards/TC-FF6-SAFETENSORS-READINESS-001.md
+  - taskcards/TC-FF6-OPENRASTER-READINESS-001.md
+  - taskcards/TC-FF6-SUPERVISOR-RUNTIME-001.md
+  - taskcards/TC-FF6-SUPERVISOR-PLAN-REVIEW-001.md
+  - reports/skills-rff6/plan-hardening/ff6-six-lane-supervisor-v7.md
+  - reports/skills-rff6/skill-transcripts/create-taskcard-ff6-supervisor-plan-v7.json
+  - reports/skills-rff6/skill-transcripts/plan-control-ff6-supervisor-plan-v7.json
+  - reports/skills-rff6/skill-transcripts/build-evidence-bundle-ff6-supervisor-plan-v7.json
+  - tools/supervisor/autonomous_orchestrator.py
+  - tools/supervisor/continuation_state.py
+  - tools/supervisor/action_queue.py
+  - tools/supervisor/product_action_guard.py
+  - tools/supervisor/llm_backend_config.py
+  - tools/plan_control/projections.py
+  - tools/supervisor/coordination/verbs.py
+  - tests/supervisor/test_autonomous_orchestrator.py
+  - tests/plan_control/test_concurrency_hardening.py
+  - tests/supervisor/test_coordination_foundation.py
+  - tools/evidence/contracts/ff-plan-control-six-lane-supervisor-review.yaml
+required_metadata_files:
+  - git-head.txt
+  - git-log.txt
+  - git-status-final.txt
+  - git-diff-stat.txt
+  - git-diff-check.txt
+  - changed-files.txt
+  - bundle-manifest.yaml
+  - sprint-summary.md
+  - current-state-consistency.txt
+  - plan-hardening-score.md
+  - investigation-findings.md
+  - independent-review-instructions.md
+  - controller-event-head.txt
+  - capability-obligation-truth.txt
+  - coordination-status.txt
+  - coordination-doctor.json
+  - skill-routing.txt
+  - taskcard-validation.txt
+  - yaml-json-validation.txt
+  - focused-regression-tests.txt
+  - source-evidence-locations.txt
+  - forbidden-path-assertion.txt
+  - no-product-state-transition.txt
+  - security-scan.txt
+  - self-challenge.md
+  - final-verdict.md

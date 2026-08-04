@@ -1,0 +1,49 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "plan-control-ff6-supervisor-plan-v7",
+  "skill_id": "plan-control",
+  "mode": "live",
+  "timestamp": "2026-08-02T16:39:00Z",
+  "inputs": {
+    "task_id": "TC-FF6-SUPERVISOR-PLAN-REVIEW-001",
+    "mission_id": "FF6-PRODUCTION-LIBRARIES-001",
+    "operation": "record a plan-only design revision without changing executable controller state",
+    "target_paths": [
+      "plans/strategic/autonomous-six-python-production-execution-plan.md"
+    ],
+    "coordination_scope": "logical:FF6-SUPERVISOR-PLAN-REVIEW",
+    "acceptance_evidence": [
+      "Event 47 unchanged",
+      "current-state consistency PASS",
+      "46 focused regressions PASS",
+      "0/6 certification preserved"
+    ],
+    "event_head": "FF6-EVENT-000047",
+    "requested_transition": "planning_design_only"
+  },
+  "allowed_files": [
+    "plans/strategic/autonomous-six-python-production-execution-plan.md",
+    "reports/skills-rff6/skill-transcripts/plan-control-ff6-supervisor-plan-v7.json"
+  ],
+  "actual_files_changed": [
+    "plans/strategic/autonomous-six-python-production-execution-plan.md",
+    "reports/skills-rff6/skill-transcripts/plan-control-ff6-supervisor-plan-v7.json"
+  ],
+  "tests_run": [
+    "current-state consistency PASS",
+    "Event 47 remains the final native FF6 event",
+    "controller-state.yaml and events.jsonl unchanged",
+    "plan explicitly preserves version-6 fallback until activation proof"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "event_appended": false,
+    "reason": "No product route, controller transition, or accepted implementation changed",
+    "executable_authority": "FF6-EVENT-000047",
+    "exact_next_product_action": "NRRD_R3_INDEPENDENT_CORPUS_AND_ORACLE_MATRIX",
+    "product_promotion_effect": "none"
+  },
+  "generated_by": "codex",
+  "visibility": "generated"
+}
