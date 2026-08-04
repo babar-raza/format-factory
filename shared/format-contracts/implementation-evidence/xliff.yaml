@@ -1,0 +1,3405 @@
+schema: format-contracts/implementation-evidence@1
+format_id: xliff
+visibility: generated
+generated_by: claude
+execution_evidence:
+- evidence_id: XLIFF-BASELINE-SUITE
+  path: reports/skills-rff6/skill-transcripts/build-evidence-ledger-xliff-001.json
+  expected_result: PASS
+  granularity: suite
+  truth_boundary: Suite-level and NON-PROMOTING. The xliff suite is 193 passed with no failures, but that
+    number is dominated by the ten shadow-package files; the single shipped-namespace file contributes
+    15 tests. A green suite here says very little about the package that would be released. Binds no individual
+    selector outcome to an obligation, so nothing here is verification; every obligation is recorded `partial`
+    at most.
+obligations:
+- obligation_id: SAL-XLIFF-OBL-009F2EB91831B248
+  capability_id: XLIFF-SEC-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/security/limits.py::effective_limits
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Each security_limits baseline
+    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  proof_requirements:
+    positive:
+    - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
+      test proving refusal with diagnostics.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-05547046CBCB57F7
+  capability_id: XLIFF-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Note
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Segment
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Unit
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Nested-structure fixtures
+    verify order, inheritance, and ID preservation after round trip.'
+  proof_requirements:
+    positive:
+    - Nested-structure fixtures verify order, inheritance, and ID preservation after round trip.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-05C85D6ED1E486EF
+  capability_id: XLIFF-MODULE-001
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
+  negative_test_selectors: []
+  execution_evidence_ids: []
+  implemented_behavior: []
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
+    coverage manifest matches behavior.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
+  proof_requirements:
+    positive:
+    - Per-module round-trip fixtures; coverage manifest matches behavior.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-06483C363273E614
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-078DE5F17834C232
+  capability_id: XLIFF-MODULE-001
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
+  negative_test_selectors: []
+  execution_evidence_ids: []
+  implemented_behavior: []
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
+    coverage manifest matches behavior.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
+  proof_requirements:
+    positive:
+    - Per-module round-trip fixtures; coverage manifest matches behavior.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-07A1F5F6A9B3A95F
+  capability_id: XLIFF-VALIDATE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Positive/negative fixtures
+    per layer and scope; diagnostics carry paths and codes.; Core element matrix and module matrix fixtures
+    with per-layer diagnostics assertions.'
+  proof_requirements:
+    positive:
+    - Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.
+    - Core element matrix and module matrix fixtures with per-layer diagnostics assertions.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-087892B36F8591FF
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-0ACBD19A4F183811
+  capability_id: XLIFF-VALIDATE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Positive/negative fixtures
+    per layer and scope; diagnostics carry paths and codes.; Core element matrix and module matrix fixtures
+    with per-layer diagnostics assertions.'
+  proof_requirements:
+    positive:
+    - Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.
+    - Core element matrix and module matrix fixtures with per-layer diagnostics assertions.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-0C477B7B6441FE75
+  capability_id: XLIFF-LIFECYCLE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps
+  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
+    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  proof_requirements:
+    positive:
+    - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative
+      test proving refusal with diagnostics.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-0CC8F5642F766D78
+  capability_id: XLIFF-LIFECYCLE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps
+  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
+    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  proof_requirements:
+    positive:
+    - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative
+      test proving refusal with diagnostics.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-0E27D8074CB0A72C
+  capability_id: XLIFF-VALIDATE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Positive/negative fixtures
+    per layer and scope; diagnostics carry paths and codes.; Core element matrix and module matrix fixtures
+    with per-layer diagnostics assertions.'
+  proof_requirements:
+    positive:
+    - Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.
+    - Core element matrix and module matrix fixtures with per-layer diagnostics assertions.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-0F4BED4809335F28
+  capability_id: XLIFF-MODULE-001
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
+  negative_test_selectors: []
+  execution_evidence_ids: []
+  implemented_behavior: []
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
+    coverage manifest matches behavior.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
+  proof_requirements:
+    positive:
+    - Per-module round-trip fixtures; coverage manifest matches behavior.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-1097A25E15901A47
+  capability_id: XLIFF-INLINE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/inline.py::InlineElement
+  - src/python/xliff/src/format_factory/xliff/model/inline.py::flatten_inline_content
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Paired-code corruption attempts
+    (orphan, cross, duplicate) refused/diagnosed; token round trip preserves original data.'
+  proof_requirements:
+    positive:
+    - Paired-code corruption attempts (orphan, cross, duplicate) refused/diagnosed; token round trip preserves
+      original data.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-112C4F88A16C0E1E
+  capability_id: XLIFF-INLINE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/inline.py::InlineElement
+  - src/python/xliff/src/format_factory/xliff/model/inline.py::flatten_inline_content
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Paired-code corruption attempts
+    (orphan, cross, duplicate) refused/diagnosed; token round trip preserves original data.'
+  proof_requirements:
+    positive:
+    - Paired-code corruption attempts (orphan, cross, duplicate) refused/diagnosed; token round trip preserves
+      original data.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-130340BC212989D5
+  capability_id: XLIFF-SEC-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/security/limits.py::effective_limits
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Each security_limits baseline
+    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  proof_requirements:
+    positive:
+    - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
+      test proving refusal with diagnostics.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-1405C2E94EEF25E6
+  capability_id: XLIFF-MODULE-001
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
+  negative_test_selectors: []
+  execution_evidence_ids: []
+  implemented_behavior: []
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
+    coverage manifest matches behavior.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
+  proof_requirements:
+    positive:
+    - Per-module round-trip fixtures; coverage manifest matches behavior.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-191B67AD2A05CA4E
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-194616F7A49381E8
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-194AC86AD7F54920
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-1FE4640A3CD2FDAD
+  capability_id: XLIFF-WRITE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps
+  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Lossless round-trip of extension-rich
+    fixtures; determinism byte-compare.'
+  proof_requirements:
+    positive:
+    - Lossless round-trip of extension-rich fixtures; determinism byte-compare.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-1FF54C0CDEC82951
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-20D653BB993E2687
+  capability_id: XLIFF-VALIDATE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Positive/negative fixtures
+    per layer and scope; diagnostics carry paths and codes.; Core element matrix and module matrix fixtures
+    with per-layer diagnostics assertions.'
+  proof_requirements:
+    positive:
+    - Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.
+    - Core element matrix and module matrix fixtures with per-layer diagnostics assertions.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-2104606D91AD8051
+  capability_id: XLIFF-MODULE-001
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
+  negative_test_selectors: []
+  execution_evidence_ids: []
+  implemented_behavior: []
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
+    coverage manifest matches behavior.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
+  proof_requirements:
+    positive:
+    - Per-module round-trip fixtures; coverage manifest matches behavior.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-21B94445F4216B94
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-22D7FF9A90E032F8
+  capability_id: XLIFF-SEC-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/security/limits.py::effective_limits
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Each security_limits baseline
+    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  proof_requirements:
+    positive:
+    - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
+      test proving refusal with diagnostics.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-234A057EBC798099
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-251C3608521B6A97
+  capability_id: XLIFF-MODULE-001
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
+  negative_test_selectors: []
+  execution_evidence_ids: []
+  implemented_behavior: []
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
+    coverage manifest matches behavior.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
+  proof_requirements:
+    positive:
+    - Per-module round-trip fixtures; coverage manifest matches behavior.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-25A6AEE1EE8FA679
+  capability_id: XLIFF-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Note
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Segment
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Unit
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Nested-structure fixtures
+    verify order, inheritance, and ID preservation after round trip.'
+  proof_requirements:
+    positive:
+    - Nested-structure fixtures verify order, inheritance, and ID preservation after round trip.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-2602F9167F95464B
+  capability_id: XLIFF-TEXT-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::text_slots
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::replace_text_slots
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::copy_source_to_target
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Target-from-source creation
+    under each code-copy policy; whitespace/language preservation fixtures.'
+  proof_requirements:
+    positive:
+    - Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-2D08D42095E5EFD9
+  capability_id: XLIFF-VALIDATE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Positive/negative fixtures
+    per layer and scope; diagnostics carry paths and codes.; Core element matrix and module matrix fixtures
+    with per-layer diagnostics assertions.'
+  proof_requirements:
+    positive:
+    - Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.
+    - Core element matrix and module matrix fixtures with per-layer diagnostics assertions.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-2F91536E68D9FA7E
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-3059D36881034046
+  capability_id: XLIFF-VALIDATE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Positive/negative fixtures
+    per layer and scope; diagnostics carry paths and codes.; Core element matrix and module matrix fixtures
+    with per-layer diagnostics assertions.'
+  proof_requirements:
+    positive:
+    - Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.
+    - Core element matrix and module matrix fixtures with per-layer diagnostics assertions.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-30C00B0420087A37
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-3542C2C04BA1B521
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-3647C8CF8DA89EA9
+  capability_id: XLIFF-SEC-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/security/limits.py::effective_limits
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Each security_limits baseline
+    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  proof_requirements:
+    positive:
+    - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
+      test proving refusal with diagnostics.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-378A1E5A93B9F0E1
+  capability_id: XLIFF-INLINE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/inline.py::InlineElement
+  - src/python/xliff/src/format_factory/xliff/model/inline.py::flatten_inline_content
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Paired-code corruption attempts
+    (orphan, cross, duplicate) refused/diagnosed; token round trip preserves original data.'
+  proof_requirements:
+    positive:
+    - Paired-code corruption attempts (orphan, cross, duplicate) refused/diagnosed; token round trip preserves
+      original data.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-3901EF20FB3A778F
+  capability_id: XLIFF-LIFECYCLE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps
+  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
+    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  proof_requirements:
+    positive:
+    - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative
+      test proving refusal with diagnostics.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-39B22C28CEE813EC
+  capability_id: XLIFF-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Note
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Segment
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Unit
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Nested-structure fixtures
+    verify order, inheritance, and ID preservation after round trip.'
+  proof_requirements:
+    positive:
+    - Nested-structure fixtures verify order, inheritance, and ID preservation after round trip.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-3A70AA27631A594D
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-3B805BEF996C1B70
+  capability_id: XLIFF-SEG-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::SegmentMapping
+  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::split_segment
+  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::join_segments
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Split/join fixtures verify
+    code validity and mapping-report accuracy.'
+  proof_requirements:
+    positive:
+    - Split/join fixtures verify code validity and mapping-report accuracy.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-3C4EB05F176E240D
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-420141532D90D385
+  capability_id: XLIFF-SEG-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::SegmentMapping
+  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::split_segment
+  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::join_segments
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Split/join fixtures verify
+    code validity and mapping-report accuracy.'
+  proof_requirements:
+    positive:
+    - Split/join fixtures verify code validity and mapping-report accuracy.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-43570A6F4917147B
+  capability_id: XLIFF-VALIDATE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Positive/negative fixtures
+    per layer and scope; diagnostics carry paths and codes.; Core element matrix and module matrix fixtures
+    with per-layer diagnostics assertions.'
+  proof_requirements:
+    positive:
+    - Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.
+    - Core element matrix and module matrix fixtures with per-layer diagnostics assertions.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-44186566A8BE9B26
+  capability_id: XLIFF-NOTE-001
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
+  negative_test_selectors: []
+  execution_evidence_ids: []
+  implemented_behavior: []
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Overlapping-annotation fixtures
+    round-trip; marker pairing validated.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
+  proof_requirements:
+    positive:
+    - Overlapping-annotation fixtures round-trip; marker pairing validated.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-441E7C6F7C341B12
+  capability_id: XLIFF-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Note
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Segment
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Unit
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Nested-structure fixtures
+    verify order, inheritance, and ID preservation after round trip.'
+  proof_requirements:
+    positive:
+    - Nested-structure fixtures verify order, inheritance, and ID preservation after round trip.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-44634C4175D505D0
+  capability_id: XLIFF-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Note
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Segment
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Unit
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Nested-structure fixtures
+    verify order, inheritance, and ID preservation after round trip.'
+  proof_requirements:
+    positive:
+    - Nested-structure fixtures verify order, inheritance, and ID preservation after round trip.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-452A66EC673B7518
+  capability_id: XLIFF-INLINE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/inline.py::InlineElement
+  - src/python/xliff/src/format_factory/xliff/model/inline.py::flatten_inline_content
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Paired-code corruption attempts
+    (orphan, cross, duplicate) refused/diagnosed; token round trip preserves original data.'
+  proof_requirements:
+    positive:
+    - Paired-code corruption attempts (orphan, cross, duplicate) refused/diagnosed; token round trip preserves
+      original data.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-4847555DF5FC018E
+  capability_id: XLIFF-LIFECYCLE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps
+  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
+    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  proof_requirements:
+    positive:
+    - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative
+      test proving refusal with diagnostics.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-489B7755DF76C218
+  capability_id: XLIFF-WRITE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps
+  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Lossless round-trip of extension-rich
+    fixtures; determinism byte-compare.'
+  proof_requirements:
+    positive:
+    - Lossless round-trip of extension-rich fixtures; determinism byte-compare.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-489D80AD89F6B68E
+  capability_id: XLIFF-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Note
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Segment
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Unit
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Nested-structure fixtures
+    verify order, inheritance, and ID preservation after round trip.'
+  proof_requirements:
+    positive:
+    - Nested-structure fixtures verify order, inheritance, and ID preservation after round trip.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-49484112588B088B
+  capability_id: XLIFF-SEG-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::SegmentMapping
+  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::split_segment
+  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::join_segments
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Split/join fixtures verify
+    code validity and mapping-report accuracy.'
+  proof_requirements:
+    positive:
+    - Split/join fixtures verify code validity and mapping-report accuracy.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-4CBBC3E46D3F6FD5
+  capability_id: XLIFF-MODULE-001
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
+  negative_test_selectors: []
+  execution_evidence_ids: []
+  implemented_behavior: []
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
+    coverage manifest matches behavior.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
+  proof_requirements:
+    positive:
+    - Per-module round-trip fixtures; coverage manifest matches behavior.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-4CDD66101DC1EEB9
+  capability_id: XLIFF-MODULE-001
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
+  negative_test_selectors: []
+  execution_evidence_ids: []
+  implemented_behavior: []
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
+    coverage manifest matches behavior.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
+  proof_requirements:
+    positive:
+    - Per-module round-trip fixtures; coverage manifest matches behavior.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-4F9A3D539840CB12
+  capability_id: XLIFF-MERGE-001
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
+  negative_test_selectors: []
+  execution_evidence_ids: []
+  implemented_behavior: []
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Merge with intact and drifted
+    sources; drift refused with report.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
+  proof_requirements:
+    positive:
+    - Merge with intact and drifted sources; drift refused with report.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-5028A9F2822CA945
+  capability_id: XLIFF-PRESERVE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps
+  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump
+  - src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Note
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Segment
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Unit
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Each preservation baseline
+    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  proof_requirements:
+    positive:
+    - Each preservation baseline behavior has a focused positive test and, where refusable, a negative
+      test proving refusal with diagnostics.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-51C619B4441B8CC8
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-5450B2DB4BF7B672
+  capability_id: XLIFF-MODULE-001
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
+  negative_test_selectors: []
+  execution_evidence_ids: []
+  implemented_behavior: []
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
+    coverage manifest matches behavior.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
+  proof_requirements:
+    positive:
+    - Per-module round-trip fixtures; coverage manifest matches behavior.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-56B240550D37E1BA
+  capability_id: XLIFF-MODULE-001
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
+  negative_test_selectors: []
+  execution_evidence_ids: []
+  implemented_behavior: []
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
+    coverage manifest matches behavior.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
+  proof_requirements:
+    positive:
+    - Per-module round-trip fixtures; coverage manifest matches behavior.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-57668EDF714BE172
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-59F6650110AB14C0
+  capability_id: XLIFF-INLINE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/inline.py::InlineElement
+  - src/python/xliff/src/format_factory/xliff/model/inline.py::flatten_inline_content
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Paired-code corruption attempts
+    (orphan, cross, duplicate) refused/diagnosed; token round trip preserves original data.'
+  proof_requirements:
+    positive:
+    - Paired-code corruption attempts (orphan, cross, duplicate) refused/diagnosed; token round trip preserves
+      original data.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-5B4DF04385350948
+  capability_id: XLIFF-QA-001
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
+  negative_test_selectors: []
+  execution_evidence_ids: []
+  implemented_behavior: []
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: QA fixtures per check; separation
+    from conformance results asserted.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
+  proof_requirements:
+    positive:
+    - QA fixtures per check; separation from conformance results asserted.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-5BB18B34B798FCC4
+  capability_id: XLIFF-SEG-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::SegmentMapping
+  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::split_segment
+  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::join_segments
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Split/join fixtures verify
+    code validity and mapping-report accuracy.'
+  proof_requirements:
+    positive:
+    - Split/join fixtures verify code validity and mapping-report accuracy.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-612349C06EB3E809
+  capability_id: XLIFF-PRESERVE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps
+  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump
+  - src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Note
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Segment
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Unit
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Each preservation baseline
+    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  proof_requirements:
+    positive:
+    - Each preservation baseline behavior has a focused positive test and, where refusable, a negative
+      test proving refusal with diagnostics.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-6216215A0A7D5A20
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-65BD1FDA110AD94A
+  capability_id: XLIFF-TEXT-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::text_slots
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::replace_text_slots
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::copy_source_to_target
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Target-from-source creation
+    under each code-copy policy; whitespace/language preservation fixtures.'
+  proof_requirements:
+    positive:
+    - Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-67ED3618EE6C709A
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-6808B6BB958F8A9B
+  capability_id: XLIFF-SEG-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::SegmentMapping
+  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::split_segment
+  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::join_segments
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Split/join fixtures verify
+    code validity and mapping-report accuracy.'
+  proof_requirements:
+    positive:
+    - Split/join fixtures verify code validity and mapping-report accuracy.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-6B5E0355D5E6E57A
+  capability_id: XLIFF-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Note
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Segment
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Unit
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Nested-structure fixtures
+    verify order, inheritance, and ID preservation after round trip.'
+  proof_requirements:
+    positive:
+    - Nested-structure fixtures verify order, inheritance, and ID preservation after round trip.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-6C1F7F44A337674B
+  capability_id: XLIFF-MERGE-001
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
+  negative_test_selectors: []
+  execution_evidence_ids: []
+  implemented_behavior: []
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Merge with intact and drifted
+    sources; drift refused with report.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
+  proof_requirements:
+    positive:
+    - Merge with intact and drifted sources; drift refused with report.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-6F58FAA98D63DCE0
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-6FE48E3DF2354994
+  capability_id: XLIFF-TEXT-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::text_slots
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::replace_text_slots
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::copy_source_to_target
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Target-from-source creation
+    under each code-copy policy; whitespace/language preservation fixtures.'
+  proof_requirements:
+    positive:
+    - Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-725053FB0A47E78D
+  capability_id: XLIFF-MODULE-001
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
+  negative_test_selectors: []
+  execution_evidence_ids: []
+  implemented_behavior: []
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
+    coverage manifest matches behavior.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
+  proof_requirements:
+    positive:
+    - Per-module round-trip fixtures; coverage manifest matches behavior.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-72732CB4C19EDD8B
+  capability_id: XLIFF-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Note
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Segment
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Unit
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Nested-structure fixtures
+    verify order, inheritance, and ID preservation after round trip.'
+  proof_requirements:
+    positive:
+    - Nested-structure fixtures verify order, inheritance, and ID preservation after round trip.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-72895F34A373C243
+  capability_id: XLIFF-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Note
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Segment
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Unit
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Nested-structure fixtures
+    verify order, inheritance, and ID preservation after round trip.'
+  proof_requirements:
+    positive:
+    - Nested-structure fixtures verify order, inheritance, and ID preservation after round trip.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-733068E3157678E7
+  capability_id: XLIFF-MODULE-001
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
+  negative_test_selectors: []
+  execution_evidence_ids: []
+  implemented_behavior: []
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
+    coverage manifest matches behavior.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
+  proof_requirements:
+    positive:
+    - Per-module round-trip fixtures; coverage manifest matches behavior.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-73868B0E3F5A4C22
+  capability_id: XLIFF-TEXT-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::text_slots
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::replace_text_slots
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::copy_source_to_target
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Target-from-source creation
+    under each code-copy policy; whitespace/language preservation fixtures.'
+  proof_requirements:
+    positive:
+    - Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-7508113EBF7E4457
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-7764F24576A4DC32
+  capability_id: XLIFF-QA-001
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
+  negative_test_selectors: []
+  execution_evidence_ids: []
+  implemented_behavior: []
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: QA fixtures per check; separation
+    from conformance results asserted.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
+  proof_requirements:
+    positive:
+    - QA fixtures per check; separation from conformance results asserted.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-7CC73B48A2DDD6E2
+  capability_id: XLIFF-LIFECYCLE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps
+  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
+    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  proof_requirements:
+    positive:
+    - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative
+      test proving refusal with diagnostics.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-7CED833579FE91A4
+  capability_id: XLIFF-TEXT-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::text_slots
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::replace_text_slots
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::copy_source_to_target
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Target-from-source creation
+    under each code-copy policy; whitespace/language preservation fixtures.'
+  proof_requirements:
+    positive:
+    - Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-7DA078717EA60881
+  capability_id: XLIFF-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Note
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Segment
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Unit
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Nested-structure fixtures
+    verify order, inheritance, and ID preservation after round trip.'
+  proof_requirements:
+    positive:
+    - Nested-structure fixtures verify order, inheritance, and ID preservation after round trip.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-7E36DEBEB4162BA3
+  capability_id: XLIFF-TEXT-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::text_slots
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::replace_text_slots
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::copy_source_to_target
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Target-from-source creation
+    under each code-copy policy; whitespace/language preservation fixtures.'
+  proof_requirements:
+    positive:
+    - Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-7ECA9CEDFF1B2B42
+  capability_id: XLIFF-VALIDATE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Positive/negative fixtures
+    per layer and scope; diagnostics carry paths and codes.; Core element matrix and module matrix fixtures
+    with per-layer diagnostics assertions.'
+  proof_requirements:
+    positive:
+    - Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.
+    - Core element matrix and module matrix fixtures with per-layer diagnostics assertions.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-856D00DE735B6951
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-867500AA0AC3D2C1
+  capability_id: XLIFF-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Note
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Segment
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Unit
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Nested-structure fixtures
+    verify order, inheritance, and ID preservation after round trip.'
+  proof_requirements:
+    positive:
+    - Nested-structure fixtures verify order, inheritance, and ID preservation after round trip.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-89C4966EE4D2E9A9
+  capability_id: XLIFF-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Note
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Segment
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Unit
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Nested-structure fixtures
+    verify order, inheritance, and ID preservation after round trip.'
+  proof_requirements:
+    positive:
+    - Nested-structure fixtures verify order, inheritance, and ID preservation after round trip.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-8CD918D3D6C70981
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-8FC79A65912785AF
+  capability_id: XLIFF-TEXT-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::text_slots
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::replace_text_slots
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::copy_source_to_target
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Target-from-source creation
+    under each code-copy policy; whitespace/language preservation fixtures.'
+  proof_requirements:
+    positive:
+    - Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-90EFD3BBDD9D1EC7
+  capability_id: XLIFF-SEG-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::SegmentMapping
+  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::split_segment
+  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::join_segments
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Split/join fixtures verify
+    code validity and mapping-report accuracy.'
+  proof_requirements:
+    positive:
+    - Split/join fixtures verify code validity and mapping-report accuracy.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-91FEB76442382843
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-95E74FFC0501843B
+  capability_id: XLIFF-STATE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
+  - src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Note
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Segment
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Unit
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Transition-policy fixtures
+    (legal and illegal transitions).'
+  proof_requirements:
+    positive:
+    - Transition-policy fixtures (legal and illegal transitions).
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-9795E0B80A36DEBB
+  capability_id: XLIFF-MODULE-001
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
+  negative_test_selectors: []
+  execution_evidence_ids: []
+  implemented_behavior: []
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
+    coverage manifest matches behavior.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
+  proof_requirements:
+    positive:
+    - Per-module round-trip fixtures; coverage manifest matches behavior.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-98F31DD5B2444B6F
+  capability_id: XLIFF-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Note
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Segment
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Unit
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Nested-structure fixtures
+    verify order, inheritance, and ID preservation after round trip.'
+  proof_requirements:
+    positive:
+    - Nested-structure fixtures verify order, inheritance, and ID preservation after round trip.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-9A24FE03004035AC
+  capability_id: XLIFF-VALIDATE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Positive/negative fixtures
+    per layer and scope; diagnostics carry paths and codes.; Core element matrix and module matrix fixtures
+    with per-layer diagnostics assertions.'
+  proof_requirements:
+    positive:
+    - Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.
+    - Core element matrix and module matrix fixtures with per-layer diagnostics assertions.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-9B0DC026A5B8E587
+  capability_id: XLIFF-TEXT-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::text_slots
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::replace_text_slots
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::copy_source_to_target
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Target-from-source creation
+    under each code-copy policy; whitespace/language preservation fixtures.'
+  proof_requirements:
+    positive:
+    - Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-9F2D0EECD6AFC125
+  capability_id: XLIFF-TEXT-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::text_slots
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::replace_text_slots
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::copy_source_to_target
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Target-from-source creation
+    under each code-copy policy; whitespace/language preservation fixtures.'
+  proof_requirements:
+    positive:
+    - Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-A062E07DF7D59EBB
+  capability_id: XLIFF-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Note
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Segment
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Unit
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Nested-structure fixtures
+    verify order, inheritance, and ID preservation after round trip.'
+  proof_requirements:
+    positive:
+    - Nested-structure fixtures verify order, inheritance, and ID preservation after round trip.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-A4C4AAF3B757A07B
+  capability_id: XLIFF-TEXT-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::text_slots
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::replace_text_slots
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::copy_source_to_target
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Target-from-source creation
+    under each code-copy policy; whitespace/language preservation fixtures.'
+  proof_requirements:
+    positive:
+    - Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-A8BDC1BEFD51DF8A
+  capability_id: XLIFF-LIFECYCLE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps
+  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
+    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  proof_requirements:
+    positive:
+    - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative
+      test proving refusal with diagnostics.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-A9AF9198E92EA6F9
+  capability_id: XLIFF-PRESERVE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps
+  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump
+  - src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Note
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Segment
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Unit
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Each preservation baseline
+    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  proof_requirements:
+    positive:
+    - Each preservation baseline behavior has a focused positive test and, where refusable, a negative
+      test proving refusal with diagnostics.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-AD191413B05A60ED
+  capability_id: XLIFF-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Note
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Segment
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Unit
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Nested-structure fixtures
+    verify order, inheritance, and ID preservation after round trip.'
+  proof_requirements:
+    positive:
+    - Nested-structure fixtures verify order, inheritance, and ID preservation after round trip.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-AE50FBBF3AFEC48A
+  capability_id: XLIFF-INLINE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/inline.py::InlineElement
+  - src/python/xliff/src/format_factory/xliff/model/inline.py::flatten_inline_content
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Paired-code corruption attempts
+    (orphan, cross, duplicate) refused/diagnosed; token round trip preserves original data.'
+  proof_requirements:
+    positive:
+    - Paired-code corruption attempts (orphan, cross, duplicate) refused/diagnosed; token round trip preserves
+      original data.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-AF86B77156C7C1E2
+  capability_id: XLIFF-STATE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
+  - src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Note
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Segment
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Unit
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Transition-policy fixtures
+    (legal and illegal transitions).'
+  proof_requirements:
+    positive:
+    - Transition-policy fixtures (legal and illegal transitions).
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-B2E26CC031AF32ED
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-B3D1B1A5CBD86240
+  capability_id: XLIFF-NOTE-001
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
+  negative_test_selectors: []
+  execution_evidence_ids: []
+  implemented_behavior: []
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Overlapping-annotation fixtures
+    round-trip; marker pairing validated.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
+  proof_requirements:
+    positive:
+    - Overlapping-annotation fixtures round-trip; marker pairing validated.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-B8938A5BDAE6104E
+  capability_id: XLIFF-VALIDATE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Positive/negative fixtures
+    per layer and scope; diagnostics carry paths and codes.; Core element matrix and module matrix fixtures
+    with per-layer diagnostics assertions.'
+  proof_requirements:
+    positive:
+    - Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.
+    - Core element matrix and module matrix fixtures with per-layer diagnostics assertions.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-B8C7FD041A1F7450
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-B90CB93CF07C9917
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-BF29D4CDCFB61497
+  capability_id: XLIFF-MODULE-001
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
+  negative_test_selectors: []
+  execution_evidence_ids: []
+  implemented_behavior: []
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
+    coverage manifest matches behavior.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
+  proof_requirements:
+    positive:
+    - Per-module round-trip fixtures; coverage manifest matches behavior.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-BF7C86F8AFED34D6
+  capability_id: XLIFF-VALIDATE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Positive/negative fixtures
+    per layer and scope; diagnostics carry paths and codes.; Core element matrix and module matrix fixtures
+    with per-layer diagnostics assertions.'
+  proof_requirements:
+    positive:
+    - Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.
+    - Core element matrix and module matrix fixtures with per-layer diagnostics assertions.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-C1BB9934B09B3B70
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-C5906B426F26A9CC
+  capability_id: XLIFF-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Note
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Segment
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Unit
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Nested-structure fixtures
+    verify order, inheritance, and ID preservation after round trip.'
+  proof_requirements:
+    positive:
+    - Nested-structure fixtures verify order, inheritance, and ID preservation after round trip.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-C632C43201760C05
+  capability_id: XLIFF-INLINE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/inline.py::InlineElement
+  - src/python/xliff/src/format_factory/xliff/model/inline.py::flatten_inline_content
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Paired-code corruption attempts
+    (orphan, cross, duplicate) refused/diagnosed; token round trip preserves original data.'
+  proof_requirements:
+    positive:
+    - Paired-code corruption attempts (orphan, cross, duplicate) refused/diagnosed; token round trip preserves
+      original data.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-C6C67E6C253C9EAB
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-C788B2558FFB2D9C
+  capability_id: XLIFF-INLINE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/inline.py::InlineElement
+  - src/python/xliff/src/format_factory/xliff/model/inline.py::flatten_inline_content
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Paired-code corruption attempts
+    (orphan, cross, duplicate) refused/diagnosed; token round trip preserves original data.'
+  proof_requirements:
+    positive:
+    - Paired-code corruption attempts (orphan, cross, duplicate) refused/diagnosed; token round trip preserves
+      original data.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-C96F6CB613A6F95D
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-CBB9181BAE7226EA
+  capability_id: XLIFF-VALIDATE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Positive/negative fixtures
+    per layer and scope; diagnostics carry paths and codes.; Core element matrix and module matrix fixtures
+    with per-layer diagnostics assertions.'
+  proof_requirements:
+    positive:
+    - Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.
+    - Core element matrix and module matrix fixtures with per-layer diagnostics assertions.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-CC8F94A8623CA191
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-CF05EFE9DC2D7502
+  capability_id: XLIFF-MODULE-001
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
+  negative_test_selectors: []
+  execution_evidence_ids: []
+  implemented_behavior: []
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
+    coverage manifest matches behavior.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
+  proof_requirements:
+    positive:
+    - Per-module round-trip fixtures; coverage manifest matches behavior.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-CF6EB3C804324A1C
+  capability_id: XLIFF-NOTE-001
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
+  negative_test_selectors: []
+  execution_evidence_ids: []
+  implemented_behavior: []
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Overlapping-annotation fixtures
+    round-trip; marker pairing validated.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
+  proof_requirements:
+    positive:
+    - Overlapping-annotation fixtures round-trip; marker pairing validated.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-D16EDB479826DAB5
+  capability_id: XLIFF-SEG-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::SegmentMapping
+  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::split_segment
+  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::join_segments
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Split/join fixtures verify
+    code validity and mapping-report accuracy.'
+  proof_requirements:
+    positive:
+    - Split/join fixtures verify code validity and mapping-report accuracy.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-D1E0B4FE10EAE4E3
+  capability_id: XLIFF-MODULE-001
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
+  negative_test_selectors: []
+  execution_evidence_ids: []
+  implemented_behavior: []
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
+    coverage manifest matches behavior.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
+  proof_requirements:
+    positive:
+    - Per-module round-trip fixtures; coverage manifest matches behavior.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-D2BB0F0D8018D601
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-D8645A5568961940
+  capability_id: XLIFF-MODULE-001
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
+  negative_test_selectors: []
+  execution_evidence_ids: []
+  implemented_behavior: []
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
+    coverage manifest matches behavior.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
+  proof_requirements:
+    positive:
+    - Per-module round-trip fixtures; coverage manifest matches behavior.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-D8C6CC9733716C74
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-DA68F5DEF1A61582
+  capability_id: XLIFF-NOTE-001
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
+  negative_test_selectors: []
+  execution_evidence_ids: []
+  implemented_behavior: []
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Overlapping-annotation fixtures
+    round-trip; marker pairing validated.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
+  proof_requirements:
+    positive:
+    - Overlapping-annotation fixtures round-trip; marker pairing validated.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-DA738080DC614E67
+  capability_id: XLIFF-VALIDATE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Positive/negative fixtures
+    per layer and scope; diagnostics carry paths and codes.; Core element matrix and module matrix fixtures
+    with per-layer diagnostics assertions.'
+  proof_requirements:
+    positive:
+    - Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.
+    - Core element matrix and module matrix fixtures with per-layer diagnostics assertions.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-E196265BC02520A3
+  capability_id: XLIFF-VALIDATE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Positive/negative fixtures
+    per layer and scope; diagnostics carry paths and codes.; Core element matrix and module matrix fixtures
+    with per-layer diagnostics assertions.'
+  proof_requirements:
+    positive:
+    - Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.
+    - Core element matrix and module matrix fixtures with per-layer diagnostics assertions.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-E1BDD2E8A5F0F84B
+  capability_id: XLIFF-TEXT-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::text_slots
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::replace_text_slots
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::copy_source_to_target
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Target-from-source creation
+    under each code-copy policy; whitespace/language preservation fixtures.'
+  proof_requirements:
+    positive:
+    - Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-E3F1C46FFD77CD5B
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-E428FA846AA270C8
+  capability_id: XLIFF-TEXT-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::text_slots
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::replace_text_slots
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::copy_source_to_target
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Target-from-source creation
+    under each code-copy policy; whitespace/language preservation fixtures.'
+  proof_requirements:
+    positive:
+    - Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-E8055B0103E9E5CD
+  capability_id: XLIFF-TEXT-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::text_slots
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::replace_text_slots
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::copy_source_to_target
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Target-from-source creation
+    under each code-copy policy; whitespace/language preservation fixtures.'
+  proof_requirements:
+    positive:
+    - Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-E90A3420AFA03CC2
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-EC188D4F6DD138A0
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-ECC84F12FA1BCBCC
+  capability_id: XLIFF-TEXT-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::text_slots
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::replace_text_slots
+  - src/python/xliff/src/format_factory/xliff/model/text_editing.py::copy_source_to_target
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Target-from-source creation
+    under each code-copy policy; whitespace/language preservation fixtures.'
+  proof_requirements:
+    positive:
+    - Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-EEA9C58A385F7C96
+  capability_id: XLIFF-MODULE-001
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
+  negative_test_selectors: []
+  execution_evidence_ids: []
+  implemented_behavior: []
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
+    coverage manifest matches behavior.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
+  proof_requirements:
+    positive:
+    - Per-module round-trip fixtures; coverage manifest matches behavior.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-F20C2CA429BA381B
+  capability_id: XLIFF-INLINE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/inline.py::InlineElement
+  - src/python/xliff/src/format_factory/xliff/model/inline.py::flatten_inline_content
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Paired-code corruption attempts
+    (orphan, cross, duplicate) refused/diagnosed; token round trip preserves original data.'
+  proof_requirements:
+    positive:
+    - Paired-code corruption attempts (orphan, cross, duplicate) refused/diagnosed; token round trip preserves
+      original data.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-F32E0F48ABC2675D
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-F441AFCBA027FDAB
+  capability_id: XLIFF-MODEL-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Note
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Segment
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Unit
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Nested-structure fixtures
+    verify order, inheritance, and ID preservation after round trip.'
+  proof_requirements:
+    positive:
+    - Nested-structure fixtures verify order, inheritance, and ID preservation after round trip.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-F5619E33106888AC
+  capability_id: XLIFF-PARSE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
+    fixtures per supported version; legacy-version refusal fixture.'
+  proof_requirements:
+    positive:
+    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-F920057AE26D1B4F
+  capability_id: XLIFF-PRESERVE-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps
+  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump
+  - src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Note
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Segment
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Unit
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Each preservation baseline
+    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  proof_requirements:
+    positive:
+    - Each preservation baseline behavior has a focused positive test and, where refusable, a negative
+      test proving refusal with diagnostics.
+    negative:
+    - Selector-bound negative cases are not yet identified.
+- obligation_id: SAL-XLIFF-OBL-FE51662AAD65CDB3
+  capability_id: XLIFF-SEC-001
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/security/limits.py::effective_limits
+  positive_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  negative_test_selectors: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
+  missing_behavior:
+  - 'Not yet audited against this obligation''s declared proof requirements: Each security_limits baseline
+    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  proof_requirements:
+    positive:
+    - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
+      test proving refusal with diagnostics.
+    negative:
+    - Selector-bound negative cases are not yet identified.

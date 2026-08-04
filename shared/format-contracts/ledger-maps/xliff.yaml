@@ -1,0 +1,94 @@
+schema: ff6/ledger-map@1
+format_id: xliff
+visibility: internal
+generated_by: claude
+generated_at: '2026-08-04'
+basis: >-
+  XLIFF has exactly ONE test file that imports format_factory.xliff
+  (test_production_namespace.py, 15 tests). The other ten import the deprecated
+  xliff.* shadow package and cannot supply selectors under
+  forbidden_progress_claims. Its 15 tests were read and assigned to capabilities
+  by what they actually exercise, not by name similarity.
+notes: >-
+  Four capabilities are mapped with NO tests, because no shipped-namespace test
+  exercises them: XLIFF-MODULE-001 (18 obligations), XLIFF-NOTE-001 (4),
+  XLIFF-MERGE-001 (2) and XLIFF-QA-001 (2). They are listed explicitly rather
+  than omitted, so the builder records them `missing` with a reason instead of
+  silently shrinking the denominator. XLIFF-MODULE-001 in particular has no
+  visible module implementation in model/document.py -- only ExtensionNode for
+  unknown-namespace preservation -- so its 18 obligations are the largest single
+  block of unevidenced XLIFF work and deserve their own investigation.
+
+execution_evidence:
+  path: reports/skills-rff6/skill-transcripts/build-evidence-ledger-xliff-001.json
+  result: PASS
+  truth_boundary: >-
+    Suite-level and NON-PROMOTING. The xliff suite is 193 passed with no
+    failures, but that number is dominated by the ten shadow-package files; the
+    single shipped-namespace file contributes 15 tests. A green suite here says
+    very little about the package that would be released. Binds no individual
+    selector outcome to an obligation, so nothing here is verification; every
+    obligation is recorded `partial` at most.
+
+capabilities:
+  XLIFF-PARSE-001:
+    modules: [codec/reader/reader.py]
+    tests: [test_production_namespace.py]
+
+  XLIFF-MODEL-001:
+    modules: [model/document.py]
+    tests: [test_production_namespace.py]
+
+  XLIFF-INLINE-001:
+    modules: [model/inline.py]
+    tests: [test_production_namespace.py]
+
+  XLIFF-TEXT-001:
+    modules: [model/text_editing.py]
+    tests: [test_production_namespace.py]
+
+  XLIFF-SEG-001:
+    modules: [model/segmentation.py]
+    tests: [test_production_namespace.py]
+
+  XLIFF-VALIDATE-001:
+    modules: [validation/validator.py]
+    tests: [test_production_namespace.py]
+
+  XLIFF-SEC-001:
+    modules: [security/limits.py]
+    tests: [test_production_namespace.py]
+
+  XLIFF-LIFECYCLE-001:
+    modules: [codec/reader/reader.py, codec/writer/writer.py]
+    tests: [test_production_namespace.py]
+
+  XLIFF-WRITE-001:
+    modules: [codec/writer/writer.py]
+    tests: [test_production_namespace.py]
+
+  XLIFF-PRESERVE-001:
+    modules: [codec/writer/writer.py, model/document.py]
+    tests: [test_production_namespace.py]
+
+  XLIFF-STATE-001:
+    modules: [validation/validator.py, model/document.py]
+    tests: [test_production_namespace.py]
+
+  # No shipped-namespace test exercises these four. Listed with empty `tests`
+  # so they are recorded `missing` with a reason rather than omitted.
+  XLIFF-MODULE-001:
+    modules: [model/document.py]
+    tests: []
+
+  XLIFF-NOTE-001:
+    modules: [model/document.py]
+    tests: []
+
+  XLIFF-MERGE-001:
+    modules: [model/document.py]
+    tests: []
+
+  XLIFF-QA-001:
+    modules: [validation/validator.py]
+    tests: []

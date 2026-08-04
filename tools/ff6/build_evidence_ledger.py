@@ -198,19 +198,36 @@ def build(format_id: str, *, dry_run: bool = False) -> dict[str, Any]:
                 + "): they exercise the deprecated package, not the shipped one."
             )
 
+        # `missing` means no implementation EVIDENCE, and the schema enforces
+        # that literally: no source symbols, no selectors, no execution ids.
+        # Source that exists but is untested by the shipped namespace is not
+        # evidence, so it is not cited here -- the mapped modules stay recorded
+        # in the ledger map, which is where the reader will look for them.
+        has_evidence = bool(valid)
         entries.append(
             {
                 "obligation_id": obligation["obligation_id"],
                 "capability_id": capability,
-                "status": "partial" if valid else "missing",
-                "source_symbols": symbols,
+                "status": "partial" if has_evidence else "missing",
+                "source_symbols": symbols if has_evidence else [],
                 "positive_test_selectors": selectors,
                 "negative_test_selectors": [],
-                "execution_evidence_ids": [f"{format_id.upper()}-BASELINE-SUITE"],
-                "implemented_behavior": [
-                    "Production source implementing this capability exists at the "
-                    "mapped symbols and the mapped shipped-namespace suite passes."
-                ],
+                "execution_evidence_ids": (
+                    [f"{format_id.upper()}-BASELINE-SUITE"] if has_evidence else []
+                ),
+                # A `missing` obligation must not claim implemented behavior --
+                # the reconciler rejects that, correctly: saying "source exists
+                # and the suite passes" about something with no valid evidence
+                # is the overclaim the status exists to prevent.
+                "implemented_behavior": (
+                    [
+                        "Production source implementing this capability exists at "
+                        "the mapped symbols and the mapped shipped-namespace suite "
+                        "passes."
+                    ]
+                    if has_evidence
+                    else []
+                ),
                 "missing_behavior": missing,
                 "proof_requirements": {
                     "positive": required or ["Derive from rule_text during the audit."],

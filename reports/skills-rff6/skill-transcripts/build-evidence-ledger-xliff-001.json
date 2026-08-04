@@ -1,0 +1,51 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "build-evidence-ledger-xliff-001",
+  "skill_id": "build-obligation-register",
+  "mode": "live",
+  "timestamp": "2026-08-04T20:35:00Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "PER_FORMAT_EVIDENCE_LEDGERS",
+    "task_kind": "evidence",
+    "root_cause": "GAP-020: xliff had no implementation-evidence ledger, so its 142 obligations had never been classified against source symbols or test selectors and neither the exact-obligation reconciler nor the proof-requirement audit could run for it.",
+    "acceptance_evidence": "reports/format-contract-layer/xliff-obligation-reconciliation.json",
+    "regression_tier": "full xliff package suite (tests/python/xliff)"
+  },
+  "execution_steps": [
+    "1. Read the register: 142 obligations across 15 capabilities.",
+    "2. Applied the GAP-018 namespace filter and confirmed the measurement: exactly ONE of xliff's 11 test files imports format_factory.xliff. The other ten import the deprecated xliff.* shadow package and cannot supply selectors.",
+    "3. Read that one file (test_production_namespace.py, 15 tests, 343 lines) and mapped its tests to capabilities by what they actually exercise, not by name similarity.",
+    "4. Four capabilities have no shipped-namespace test at all -- XLIFF-MODULE-001 (18 obligations), XLIFF-NOTE-001 (4), XLIFF-MERGE-001 (2), XLIFF-QA-001 (2). They are mapped with no tests so the builder records them `missing` with the reason, rather than being omitted.",
+    "5. Ran the full suite: 193 passed, no failures, so the declared result is a clean PASS -- unlike safetensors, xliff has no known environment failures.",
+    "6. Built the ledger and ran the proof-requirement audit over it."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/ledger-maps/xliff.yaml",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/ledger-maps/xliff.yaml",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/python.exe -m pytest tests/python/xliff -q  # 193 passed",
+    "python -m tools.ff6.build_evidence_ledger --format-id xliff",
+    "python -m tools.ff6.audit_proof_requirements --format-id xliff"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "certification_state": "0/6",
+    "obligations_ledgered": 142,
+    "shipped_namespace_test_files": 1,
+    "shadow_only_test_files": 10,
+    "suite_truth": "193 passed with no failures. That number is however dominated by the ten shadow-package files: the single shipped-namespace file contributes 15 tests. A green suite here says very little about the package that would be released, which is precisely what GAP-018 predicted.",
+    "obligations_moved": 0,
+    "obligations_moved_note": "Zero. Mapping is not proving. Every entry is partial at most and none has completed its proof-requirement audit.",
+    "xliff_remains": "UNASSESSED"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
