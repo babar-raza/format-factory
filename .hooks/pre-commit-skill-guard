@@ -1,7 +1,23 @@
-#!/usr/bin/env python3
-"""
+#!/bin/sh
+''''exec "$(command -v python3 || command -v python)" "$0" "$@" # '
 pre-commit-skill-guard — Format Factory governance hook (EP-007)
 Fires before any commit touching src/ paths.
+
+Interpreter resolution (2026-08-04): line 2 is a POSIX-sh/Python polyglot
+replacing `#!/usr/bin/env python3`. sh removes the empty quotes, leaving an
+`exec` that resolves python3 or falls back to python; Python reads the same
+line as the opening of this very docstring, so it stays a single leading
+string literal and `from __future__ import annotations` remains the first
+statement.
+
+This matters for unattended runs. Failing closed is correct, but on a machine
+where only `python` exists -- common on Windows/Git-Bash, where nothing puts
+`python3` on PATH -- `env` could not launch the interpreter at all, so EVERY
+commit died with `/usr/bin/env: 'python3': No such file or directory`. An
+autonomous loop hitting that stalls permanently at its first commit, and the
+failure reads like a governance block when it is really a missing interpreter
+alias. Resolving the interpreter here keeps the guard enforcing rather than
+merely obstructing.
 
 Installation: python tools/governance/install_hooks.py
 Manual install: ln -sf ../../.hooks/pre-commit-skill-guard .git/hooks/pre-commit
@@ -10,7 +26,7 @@ Exit codes:
   0 — commit allowed (no src/ changes, or governed transcript found)
   1 — BLOCKED: ungoverned src/ mutation detected
   2 — CONFIG_ERROR: hook misconfigured
-"""
+'''
 
 from __future__ import annotations
 
