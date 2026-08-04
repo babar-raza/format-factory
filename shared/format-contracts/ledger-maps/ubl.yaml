@@ -27,6 +27,18 @@ execution_evidence:
   path: reports/skills-rff6/skill-transcripts/build-evidence-ledger-ubl-001.json
   result: PASS
   truth_boundary: >-
+    OVERSTATED -- READ GAP-022 BEFORE TRUSTING ANY `partial` HERE. The whole ubl
+    package is 1,480 LOC, of which model/root_types.py is 652 comprising 91
+    five-line stubs that carry only a ROOT_NAME constant. Searching the package
+    for the typed value components its obligations name -- AmountType,
+    currencyID, CodeType, listID, LegalMonetaryTotal, TaxTotal, InvoiceLine --
+    returns nothing, and validator.py states that full schema and cardinality
+    validation remains a mandatory open obligation. A large share of the 137
+    `partial` entries below therefore assert implemented behavior that does not
+    exist. They were produced by mapping capabilities to modules that EXIST; the
+    builder cannot check that a module IMPLEMENTS its obligation. Correcting
+    them needs per-obligation judgement, not a wholesale demotion.
+
     Suite-level and NON-PROMOTING. The ubl suite is 334 passed with no failures,
     but that figure is dominated by the ten shadow-package files; only
     test_production_namespace.py exercises the shipped namespace. Binds no

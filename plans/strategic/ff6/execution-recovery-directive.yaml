@@ -645,6 +645,50 @@ structural_gaps_20260804:
       verify the owning process is genuinely gone (the lease record already
       carries `pid` and `worktree_path`). Resolve this BEFORE GAP-015's
       automated reclaim ships, so automation cannot reclaim a live agent's work.
+  - id: GAP-022
+    finding: >
+      UBL is a generic XML wrapper, not a UBL library, and its ledger's
+      `partial` classifications are consequently OVERSTATED -- including by me,
+      at Event 63. Measured 2026-08-04: the whole package is 1,480 LOC across 19
+      files, of which model/root_types.py is 652 (44%) and consists of 91
+      near-identical five-line stubs of the form
+      `class Order(UblDocument): ROOT_NAME = "Order"`. model/document.py is 113
+      LOC and provides XmlNode (generic qname/attributes/text/children/tail
+      preservation) plus UblDocument (root-name validation). There is nothing
+      else. For comparison ipynb is roughly 7,200 LOC for 68 obligations; ubl is
+      1,480 for 194.
+
+      Searching the entire package for the typed value components its
+      obligations name returns NOTHING: no AmountType, no currencyID, no
+      CodeType, no listID, no LegalMonetaryTotal, no TaxTotal, no InvoiceLine.
+      UBL-MODEL-001's 35 MUST obligations require cbc:ID with schemeID,
+      AmountType with currencyID, QuantityType with unitCode, cac:Item,
+      cac:ExternalReference, cbc:EmbeddedDocumentBinaryObject and W3C XSD
+      schema validation. None of it exists. validation/validator.py line 29
+      states the position itself: "Full schema and cardinality validation
+      remains a mandatory open obligation."
+    severity: HIGH
+    status: OPEN
+    owner: unassigned — ubl product lane
+    remediation: >
+      Two things, in order. First, correct the ledger: a large share of ubl's
+      137 `partial` obligations are `missing`, because `partial` asserts
+      implemented behavior and the behavior is absent. This needs per-obligation
+      judgement rather than a wholesale demotion, which would be an overclaim in
+      the opposite direction. Second, treat ubl as much closer to the ora
+      build-from-nothing lane than its 1,480 LOC suggests -- what exists is a
+      competent generic XML preservation layer, which is real and worth keeping,
+      but it is the substrate for a UBL library rather than one.
+    method_lesson: >
+      This was MY error and it is worth naming precisely. The ledger builder maps
+      capabilities to modules and verifies those modules EXIST; it cannot verify
+      they IMPLEMENT the obligation. I mapped UBL-MODEL-001 to model/document.py
+      and root_types.py, both of which exist, and the builder correctly emitted
+      `partial` -- for behavior that is not there. Existence of a mapped module
+      is not evidence of implementation, and the builder's output must not be
+      read as if it were. The proof-requirement audit catches missing selectors;
+      nothing mechanical catches a module that is present but hollow. Only
+      reading the source does.
   - id: GAP-021
     finding: >
       OpenRaster has NO implementation. Not thin coverage, not shadow-package
