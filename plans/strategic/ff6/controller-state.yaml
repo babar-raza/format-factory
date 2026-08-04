@@ -4,10 +4,10 @@ goal_status: ACTIVE
 generated_by: codex
 visibility: internal
 controller_state: CONTRACT
-transition_sequence: 54
+transition_sequence: 55
 last_verified_event:
-  event_id: FF6-EVENT-000054
-  event_hash: d23bcc07028c65ce0d7e7951dcd2262dc39a592a5d8d843a1e56138779c3fb65
+  event_id: FF6-EVENT-000055
+  event_hash: c6e57ace50124ab7eadaad5587095b1c0a5c345b15cfdd4ca0092031cbd036fd
 event_journal: plans/strategic/ff6/events.jsonl
 baseline_commit: e4f8f5f086b5e627c07c2ef2d940eda2601a22a8
 digest_policy:
@@ -318,7 +318,20 @@ ipynb_checkpoint:
   completed_steps: [CAPABILITY_RECONCILIATION_BASELINE]
   first_unmet_step: EXACT_OBLIGATION_CLASSIFICATION
   canonical_obligations: 68
-  exact_obligation_classification: NOT_STARTED
+  exact_obligation_classification: LEDGER_AUTHORED_AUDIT_PENDING
+  ledger: shared/format-contracts/implementation-evidence/ipynb.yaml
+  ledger_status_distribution: {partial: 53, missing: 15}
+  obligations_without_valid_evidence: 15
+  shadow_package_evidence_gap: >-
+    GAP-017. 12 of 30 IPYNB test files import ONLY the deprecated `ipynb.*`
+    shadow package. Six capabilities are covered solely by those files, so 15 of
+    68 obligations have no legitimate evidence: IPYNB-OUTPUT-001 (7),
+    IPYNB-CELLNAME-001 (2), IPYNB-CELLNAMEUNIQUE-001 (2), IPYNB-ID-001 (2),
+    IPYNB-EXPORT-001 (1), IPYNB-WRITE-001 (1). The packages behave differently
+    where the obligation is decided -- IPYNB-ID-001 requires ids only via
+    explicit upgrade, which the shipped namespace satisfies and the shadow
+    package violates -- so citing shadow tests would have certified the wrong
+    behavior. Must be resolved before the per-obligation audit can proceed.
   exact_obligation_blocker: >-
     There is no shared/format-contracts/implementation-evidence/ipynb.yaml, and
     the reconciler's --exact-obligations mode requires one. That absence is
