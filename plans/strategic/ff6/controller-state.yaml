@@ -4,10 +4,10 @@ goal_status: ACTIVE
 generated_by: codex
 visibility: internal
 controller_state: CONTRACT
-transition_sequence: 53
+transition_sequence: 54
 last_verified_event:
-  event_id: FF6-EVENT-000053
-  event_hash: 7a4f7ef32123bb0713aba8d90dd741a1d6a49d8f4a0d43df2598c51310101c53
+  event_id: FF6-EVENT-000054
+  event_hash: d23bcc07028c65ce0d7e7951dcd2262dc39a592a5d8d843a1e56138779c3fb65
 event_journal: plans/strategic/ff6/events.jsonl
 baseline_commit: e4f8f5f086b5e627c07c2ef2d940eda2601a22a8
 digest_policy:
@@ -361,7 +361,17 @@ ipynb_checkpoint:
     editable .pth install, so they cannot pass there by construction. Same
     environment class as GAP-002 and as SafeTensors' 4 official-interop
     failures. NOT counted as passing.
-  installed_wheel_proof: NOT_RUN
+  installed_wheel_proof: PASS_424_OF_424
+  installed_wheel_proof_record: .local/run-records/ff6/IPYNB-WHEEL-PROOF/wheel-proof.json
+  installed_wheel_proof_note: >-
+    Wheels built and installed --no-index --no-deps into an isolated venv;
+    find_spec confirmed resolution from site-packages before the suite ran.
+    All 3 residual dev-venv failures pass there, so they are an editable-install
+    artifact rather than a product defect. The proof also found a second
+    undeclared test dependency (pyyaml, alongside nbformat) that silently killed
+    a test file at collection in a clean environment -- a defect the shared dev
+    venv can never surface. Both are now declared.
+  residual_failures_resolved: true
   truth_boundary: >-
     "TESTED: 22" means a test file exercising the capability exists. It is NOT
     obligation-bound proof, NOT oracle proof, and NOT certification. The 22 are
