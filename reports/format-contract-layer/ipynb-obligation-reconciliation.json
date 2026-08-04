@@ -1,0 +1,2493 @@
+{
+  "contract_id": "FC-IPYNB-V1",
+  "execution_evidence": [
+    {
+      "evidence_id": "IPYNB-BASELINE-SUITE",
+      "expected_result": "PASS_WITH_KNOWN_EDITABLE_INSTALL_FAILURES",
+      "granularity": "suite",
+      "path": "reports/skills-rff6/skill-transcripts/build-evidence-ledger-ipynb-001.json",
+      "sha256": "9489d414aaef351c0ca631db2e7cf3abd9c09411a76cc4164246f53608cc5c35",
+      "truth_boundary": "Suite-level and NON-PROMOTING. 577 passed, 3 failed in the shared dev venv. The 3 assert that format_factory.ipynb resolves from an INSTALLED location; every dev-venv package is an editable .pth install so they cannot pass there by construction, and all 3 pass against built wheels (424/424 isolated, Event 54). They are not counted as passing. Binds no individual selector outcome to an obligation, so nothing here is verification; every obligation is recorded `partial` at most."
+    }
+  ],
+  "format_id": "ipynb",
+  "input_digests": {
+    "compiled_contract": "070e7486feb32cb69e64bf9bb040bb47e4671f0034835d78d081c39ae2c05903",
+    "implementation_evidence": "97fabdaee2516d9576efdb7c84eb55cce46983b225c7d4f5aa719df67cdd6fd6",
+    "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
+    "obligation_register": "04340fa8bde6468fa648cb60fce3d50876a39c187d5b9ad3b0329fe0a29850a8",
+    "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
+  },
+  "obligations": [
+    {
+      "capability_id": "IPYNB-ATTACH-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Orphan and missing-target fixtures produce diagnostics."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-02A00C213D2B0190",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_attachments.py::test_attachment_mapping_and_references_roundtrip_with_official_oracle",
+        "tests/python/ipynb/test_obligation_attachments.py::test_attachment_proof_uses_installed_production_namespace",
+        "tests/python/ipynb/test_obligation_attachment_management.py::test_add_resolves_missing_reference_and_preserves_unknown_metadata",
+        "tests/python/ipynb/test_obligation_attachment_management.py::test_add_rejects_invalid_cells_bundles_and_accidental_replacement",
+        "tests/python/ipynb/test_obligation_attachment_management.py::test_rename_rewrites_encoded_references_and_preserves_source_shape"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Orphan and missing-target fixtures produce diagnostics."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/attachments.py::AttachmentReferencePolicy",
+        "src/python/ipynb/src/format_factory/ipynb/model/attachments.py::AttachmentChange",
+        "src/python/ipynb/src/format_factory/ipynb/model/attachments.py::AttachmentReport",
+        "src/python/ipynb/src/format_factory/ipynb/model/attachments.py::AttachmentManager"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-MERGE-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Conflict-matrix fixtures (move/edit, delete/edit, output, metadata)."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-03A1429F7B7AF3E1",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_structure_diff.py::test_diff_tracks_move_and_each_semantic_cell_field",
+        "tests/python/ipynb/test_obligation_structure_diff.py::test_ignore_policy_suppresses_only_declared_transient_changes",
+        "tests/python/ipynb/test_obligation_structure_diff.py::test_patch_is_atomic_machine_applicable_and_rejects_stale_base"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Conflict-matrix fixtures (move/edit, delete/edit, output, metadata)."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/diff.py::CellField",
+        "src/python/ipynb/src/format_factory/ipynb/model/diff.py::PatchPreconditionError",
+        "src/python/ipynb/src/format_factory/ipynb/model/diff.py::DiffPolicy",
+        "src/python/ipynb/src/format_factory/ipynb/model/diff.py::FieldChange"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-PARSE-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-06EFB1D8AC058AC6",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_nbformat_core.py::test_complete_core_vector_validates_and_roundtrips_without_execution",
+        "tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::ensure_cell_id",
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads",
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load",
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load_ipynb"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-CELLNAME-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Present non-empty names pass and empty names fail in every supported profile."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-0ADDA3341B91C271",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_are_rejected_from_4_2_onward",
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_remain_allowed_before_4_2",
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_distinct_names_pass_in_every_profile"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Present non-empty names pass and empty names fail in every supported profile."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell",
+        "src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellEditOperation",
+        "src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellQuery",
+        "src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellEdit",
+        "src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellEditReport"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-VALIDATE-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Both validation modes on fixtures per schema construct; unknown-field separation asserted."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-0CDD583308EC81F1",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_validation_profiles.py::test_future_declared_profile_is_valid_with_separate_forward_warnings",
+        "tests/python/ipynb/test_obligation_validation_profiles.py::test_attachment_reference_integrity_and_mime_bundles",
+        "tests/python/ipynb/test_obligation_validation_profiles.py::test_malformed_cells_outputs_tags_and_mime_bundles_have_exact_diagnostics",
+        "tests/python/ipynb/test_obligation_official_schema_validation.py::test_factory_rejects_every_official_schema_rejection",
+        "tests/python/ipynb/test_obligation_official_schema_validation.py::test_exact_supported_minor_schema_accepts_valid_document",
+        "tests/python/ipynb/test_obligation_official_schema_validation.py::test_schema_diagnostics_expose_stable_codes_and_precise_paths"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Both validation modes on fixtures per schema construct; unknown-field separation asserted."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/validation/validator.py::validate",
+        "src/python/ipynb/src/format_factory/ipynb/validation/validator.py::validate_notebook_schema",
+        "src/python/ipynb/src/format_factory/ipynb/validation/validator.py::validate_notebook",
+        "src/python/ipynb/src/format_factory/ipynb/validation/rules.py::SelectedProfile",
+        "src/python/ipynb/src/format_factory/ipynb/validation/rules.py::diagnostic",
+        "src/python/ipynb/src/format_factory/ipynb/validation/rules.py::select_profile",
+        "src/python/ipynb/src/format_factory/ipynb/validation/rules.py::validate_model"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-PARSE-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-121BE1F7FB462D30",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_nbformat_core.py::test_complete_core_vector_validates_and_roundtrips_without_execution",
+        "tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::ensure_cell_id",
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads",
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load",
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load_ipynb"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-META-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Unknown-metadata round trip; typed adapter reads on real fixtures."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-13F3815D0E5C95E6",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_real_fixture_kernelspec_adapter_is_exact_and_non_mutating",
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_notebook_metadata_typed_fields_preserve_unknown_namespaces",
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_and_output_adapters_cover_common_namespaces"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Unknown-metadata round trip; typed adapter reads on real fixtures."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::MetadataShapeError",
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::KernelSpecMetadata",
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::LanguageInfoMetadata",
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::SlideshowMetadata"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-SEC-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-14DF9ED57CF9FC2E",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_security_limits.py::test_total_element_count_is_bounded",
+        "tests/python/ipynb/test_obligation_security_limits.py::test_nesting_depth_is_bounded_without_recursive_walker_failure",
+        "tests/python/ipynb/test_obligation_security_limits.py::test_json_recursion_failure_is_a_deterministic_parse_error"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/security/limits.py::effective_limits",
+        "src/python/ipynb/src/format_factory/ipynb/security/limits.py::enforce_structure"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-SEC-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-14E091F2690EE701",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_security_limits.py::test_total_element_count_is_bounded",
+        "tests/python/ipynb/test_obligation_security_limits.py::test_nesting_depth_is_bounded_without_recursive_walker_failure",
+        "tests/python/ipynb/test_obligation_security_limits.py::test_json_recursion_failure_is_a_deterministic_parse_error"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/security/limits.py::effective_limits",
+        "src/python/ipynb/src/format_factory/ipynb/security/limits.py::enforce_structure"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-DOCMETA-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Title and multi-author fixtures round-trip for every applicable profile, including additional author properties."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-1805FD97C77EDC3D",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_real_fixture_kernelspec_adapter_is_exact_and_non_mutating",
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_notebook_metadata_typed_fields_preserve_unknown_namespaces",
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_and_output_adapters_cover_common_namespaces"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Title and multi-author fixtures round-trip for every applicable profile, including additional author properties."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::MetadataShapeError",
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::KernelSpecMetadata",
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::LanguageInfoMetadata",
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::SlideshowMetadata"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-LIFECYCLE-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-1CEEABB4EB56C405",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_preservation_mode_does_not_synthesize_absent_values_or_ids",
+        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_strict_mode_rejects_incomplete_current_document_with_diagnostic",
+        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_recovery_mode_is_deterministic_and_reports_every_synthesized_value"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::NotebookVersion",
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::RecoveryAction",
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionAction",
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionDisposition"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-VALIDATE-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Both validation modes on fixtures per schema construct; unknown-field separation asserted."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-1F8C3D9742EBC830",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_validation_profiles.py::test_future_declared_profile_is_valid_with_separate_forward_warnings",
+        "tests/python/ipynb/test_obligation_validation_profiles.py::test_attachment_reference_integrity_and_mime_bundles",
+        "tests/python/ipynb/test_obligation_validation_profiles.py::test_malformed_cells_outputs_tags_and_mime_bundles_have_exact_diagnostics",
+        "tests/python/ipynb/test_obligation_official_schema_validation.py::test_factory_rejects_every_official_schema_rejection",
+        "tests/python/ipynb/test_obligation_official_schema_validation.py::test_exact_supported_minor_schema_accepts_valid_document",
+        "tests/python/ipynb/test_obligation_official_schema_validation.py::test_schema_diagnostics_expose_stable_codes_and_precise_paths"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Both validation modes on fixtures per schema construct; unknown-field separation asserted."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/validation/validator.py::validate",
+        "src/python/ipynb/src/format_factory/ipynb/validation/validator.py::validate_notebook_schema",
+        "src/python/ipynb/src/format_factory/ipynb/validation/validator.py::validate_notebook",
+        "src/python/ipynb/src/format_factory/ipynb/validation/rules.py::SelectedProfile",
+        "src/python/ipynb/src/format_factory/ipynb/validation/rules.py::diagnostic",
+        "src/python/ipynb/src/format_factory/ipynb/validation/rules.py::select_profile",
+        "src/python/ipynb/src/format_factory/ipynb/validation/rules.py::validate_model"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-CELLNAMEUNIQUE-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Duplicate-name fixtures fail the semantic check while distinct and absent names pass."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-1FA16EB9033A30BD",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_are_rejected_from_4_2_onward",
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_remain_allowed_before_4_2",
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_distinct_names_pass_in_every_profile"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Duplicate-name fixtures fail the semantic check while distinct and absent names pass."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/validation/rules.py::SelectedProfile",
+        "src/python/ipynb/src/format_factory/ipynb/validation/rules.py::diagnostic",
+        "src/python/ipynb/src/format_factory/ipynb/validation/rules.py::select_profile",
+        "src/python/ipynb/src/format_factory/ipynb/validation/rules.py::validate_model"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-OUTPUT-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: MIME-bundle matrix round-trips including vendor types and binary payloads.; MIME matrix fixtures per output type with byte-exact payload verification."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-2558D9E311DA3594",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_survives_roundtrip_intact",
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_is_recognized_as_its_own_kind",
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_all_four_types_coexist_in_one_cell_in_order"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "MIME-bundle matrix round-trips including vendor types and binary payloads.",
+          "MIME matrix fixtures per output type with byte-exact payload verification."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/output.py::get_output_representation",
+        "src/python/ipynb/src/format_factory/ipynb/model/output.py::add_output_representation",
+        "src/python/ipynb/src/format_factory/ipynb/model/output.py::remove_output_mime_type",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-PARSE-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-2B44543CA510ED94",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_nbformat_core.py::test_complete_core_vector_validates_and_roundtrips_without_execution",
+        "tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::ensure_cell_id",
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads",
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load",
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load_ipynb"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-META-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Unknown-metadata round trip; typed adapter reads on real fixtures."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-346FB023299D218E",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_real_fixture_kernelspec_adapter_is_exact_and_non_mutating",
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_notebook_metadata_typed_fields_preserve_unknown_namespaces",
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_and_output_adapters_cover_common_namespaces"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Unknown-metadata round trip; typed adapter reads on real fixtures."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::MetadataShapeError",
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::KernelSpecMetadata",
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::LanguageInfoMetadata",
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::SlideshowMetadata"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-ATTACH-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Orphan and missing-target fixtures produce diagnostics."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-356297A15A50C85B",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_attachments.py::test_attachment_mapping_and_references_roundtrip_with_official_oracle",
+        "tests/python/ipynb/test_obligation_attachments.py::test_attachment_proof_uses_installed_production_namespace",
+        "tests/python/ipynb/test_obligation_attachment_management.py::test_add_resolves_missing_reference_and_preserves_unknown_metadata",
+        "tests/python/ipynb/test_obligation_attachment_management.py::test_add_rejects_invalid_cells_bundles_and_accidental_replacement",
+        "tests/python/ipynb/test_obligation_attachment_management.py::test_rename_rewrites_encoded_references_and_preserves_source_shape"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Orphan and missing-target fixtures produce diagnostics."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/attachments.py::AttachmentReferencePolicy",
+        "src/python/ipynb/src/format_factory/ipynb/model/attachments.py::AttachmentChange",
+        "src/python/ipynb/src/format_factory/ipynb/model/attachments.py::AttachmentReport",
+        "src/python/ipynb/src/format_factory/ipynb/model/attachments.py::AttachmentManager"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-MODEL-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Typed access per cell type; unknown-cell-type preservation fixture."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-3B3B7588125383AB",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_typed_model.py::test_typed_cells_outputs_and_logical_sources_preserve_raw_form",
+        "tests/python/ipynb/test_obligation_typed_model.py::test_typed_search_avoids_raw_dictionary_access"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Typed access per cell type; unknown-cell-type preservation fixture."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-MODEL-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Typed access per cell type; unknown-cell-type preservation fixture."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-3FA9A87DE3411DC4",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_typed_model.py::test_typed_cells_outputs_and_logical_sources_preserve_raw_form",
+        "tests/python/ipynb/test_obligation_typed_model.py::test_typed_search_avoids_raw_dictionary_access"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Typed access per cell type; unknown-cell-type preservation fixture."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-META-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Unknown-metadata round trip; typed adapter reads on real fixtures."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-4471354A239702DB",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_real_fixture_kernelspec_adapter_is_exact_and_non_mutating",
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_notebook_metadata_typed_fields_preserve_unknown_namespaces",
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_and_output_adapters_cover_common_namespaces"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Unknown-metadata round trip; typed adapter reads on real fixtures."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::MetadataShapeError",
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::KernelSpecMetadata",
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::LanguageInfoMetadata",
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::SlideshowMetadata"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-ATTACH-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Orphan and missing-target fixtures produce diagnostics."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-44E62E9AB8ECC2E3",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_attachments.py::test_attachment_mapping_and_references_roundtrip_with_official_oracle",
+        "tests/python/ipynb/test_obligation_attachments.py::test_attachment_proof_uses_installed_production_namespace",
+        "tests/python/ipynb/test_obligation_attachment_management.py::test_add_resolves_missing_reference_and_preserves_unknown_metadata",
+        "tests/python/ipynb/test_obligation_attachment_management.py::test_add_rejects_invalid_cells_bundles_and_accidental_replacement",
+        "tests/python/ipynb/test_obligation_attachment_management.py::test_rename_rewrites_encoded_references_and_preserves_source_shape"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Orphan and missing-target fixtures produce diagnostics."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/attachments.py::AttachmentReferencePolicy",
+        "src/python/ipynb/src/format_factory/ipynb/model/attachments.py::AttachmentChange",
+        "src/python/ipynb/src/format_factory/ipynb/model/attachments.py::AttachmentReport",
+        "src/python/ipynb/src/format_factory/ipynb/model/attachments.py::AttachmentManager"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-SANITIZE-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Hostile active-content fixtures per mode; lossless mode leaves content intact and reported."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-499CD4389B386A40",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_sanitization.py::test_lossless_mode_reports_without_mutating_or_marking",
+        "tests/python/ipynb/test_obligation_sanitization.py::test_remove_mode_drops_only_the_unsafe_renderable_payloads",
+        "tests/python/ipynb/test_obligation_sanitization.py::test_quarantine_mode_moves_payloads_out_of_renderable_locations"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Hostile active-content fixtures per mode; lossless mode leaves content intact and reported."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/security/sanitizer.py::SanitizationMode",
+        "src/python/ipynb/src/format_factory/ipynb/security/sanitizer.py::SanitizationPolicy",
+        "src/python/ipynb/src/format_factory/ipynb/security/sanitizer.py::SanitizationFinding",
+        "src/python/ipynb/src/format_factory/ipynb/security/sanitizer.py::SanitizationReport"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-EXEC-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Isolated-environment execution tests covering timeout, kernel failure, and partial output; core-path no-execution proof."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-63250AAB7522792F",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_typed_model.py::test_typed_cells_outputs_and_logical_sources_preserve_raw_form",
+        "tests/python/ipynb/test_obligation_typed_model.py::test_typed_search_avoids_raw_dictionary_access"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Isolated-environment execution tests covering timeout, kernel failure, and partial output; core-path no-execution proof."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-PRESERVE-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-6401915AE1FC1ECF",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_corpus_integrity.py::test_active_valid_corpus_is_digest_bound_and_strictly_valid",
+        "tests/python/ipynb/test_obligation_corpus_integrity.py::test_quarantined_bytes_are_retained_and_fail_the_declared_minor_schema",
+        "tests/python/ipynb/test_obligation_corpus_integrity.py::test_reference_normalization_cannot_relabel_original_bytes_valid"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dumps",
+        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dump",
+        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::write_ipynb",
+        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::get_cell_count",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-LIFECYCLE-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-650D957D94A33790",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_preservation_mode_does_not_synthesize_absent_values_or_ids",
+        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_strict_mode_rejects_incomplete_current_document_with_diagnostic",
+        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_recovery_mode_is_deterministic_and_reports_every_synthesized_value"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::NotebookVersion",
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::RecoveryAction",
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionAction",
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionDisposition"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-DIFF-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Move-detection fixtures; ignore-policy matrix; patch precondition failures."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-6790961797EE55CD",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_structure_diff.py::test_diff_tracks_move_and_each_semantic_cell_field",
+        "tests/python/ipynb/test_obligation_structure_diff.py::test_ignore_policy_suppresses_only_declared_transient_changes",
+        "tests/python/ipynb/test_obligation_structure_diff.py::test_patch_is_atomic_machine_applicable_and_rejects_stale_base"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Move-detection fixtures; ignore-policy matrix; patch precondition failures."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/diff.py::CellField",
+        "src/python/ipynb/src/format_factory/ipynb/model/diff.py::PatchPreconditionError",
+        "src/python/ipynb/src/format_factory/ipynb/model/diff.py::DiffPolicy",
+        "src/python/ipynb/src/format_factory/ipynb/model/diff.py::FieldChange"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-OUTPUT-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: MIME-bundle matrix round-trips including vendor types and binary payloads.; MIME matrix fixtures per output type with byte-exact payload verification."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-679A623D14CBF763",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_survives_roundtrip_intact",
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_is_recognized_as_its_own_kind",
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_all_four_types_coexist_in_one_cell_in_order"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "MIME-bundle matrix round-trips including vendor types and binary payloads.",
+          "MIME matrix fixtures per output type with byte-exact payload verification."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/output.py::get_output_representation",
+        "src/python/ipynb/src/format_factory/ipynb/model/output.py::add_output_representation",
+        "src/python/ipynb/src/format_factory/ipynb/model/output.py::remove_output_mime_type",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-PRESERVE-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-6D98E9BE6A406DC3",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_corpus_integrity.py::test_active_valid_corpus_is_digest_bound_and_strictly_valid",
+        "tests/python/ipynb/test_obligation_corpus_integrity.py::test_quarantined_bytes_are_retained_and_fail_the_declared_minor_schema",
+        "tests/python/ipynb/test_obligation_corpus_integrity.py::test_reference_normalization_cannot_relabel_original_bytes_valid"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dumps",
+        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dump",
+        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::write_ipynb",
+        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::get_cell_count",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-PARSE-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-6DCE21F7DD6D971B",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_nbformat_core.py::test_complete_core_vector_validates_and_roundtrips_without_execution",
+        "tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::ensure_cell_id",
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads",
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load",
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load_ipynb"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-ID-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Duplicate/invalid ID negatives; upgrade fixture verifies mapping."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-6F4551856EC21F7B",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_are_rejected_from_4_2_onward",
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_remain_allowed_before_4_2",
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_distinct_names_pass_in_every_profile"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Duplicate/invalid ID negatives; upgrade fixture verifies mapping."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-PRESERVE-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-733D902E103E53BD",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_corpus_integrity.py::test_active_valid_corpus_is_digest_bound_and_strictly_valid",
+        "tests/python/ipynb/test_obligation_corpus_integrity.py::test_quarantined_bytes_are_retained_and_fail_the_declared_minor_schema",
+        "tests/python/ipynb/test_obligation_corpus_integrity.py::test_reference_normalization_cannot_relabel_original_bytes_valid"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dumps",
+        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dump",
+        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::write_ipynb",
+        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::get_cell_count",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-OUTPUT-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: MIME-bundle matrix round-trips including vendor types and binary payloads.; MIME matrix fixtures per output type with byte-exact payload verification."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-77C54BA16B30D129",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_survives_roundtrip_intact",
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_is_recognized_as_its_own_kind",
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_all_four_types_coexist_in_one_cell_in_order"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "MIME-bundle matrix round-trips including vendor types and binary payloads.",
+          "MIME matrix fixtures per output type with byte-exact payload verification."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/output.py::get_output_representation",
+        "src/python/ipynb/src/format_factory/ipynb/model/output.py::add_output_representation",
+        "src/python/ipynb/src/format_factory/ipynb/model/output.py::remove_output_mime_type",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-DIFF-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Move-detection fixtures; ignore-policy matrix; patch precondition failures."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-7B453CA0FD8BCD5D",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_structure_diff.py::test_diff_tracks_move_and_each_semantic_cell_field",
+        "tests/python/ipynb/test_obligation_structure_diff.py::test_ignore_policy_suppresses_only_declared_transient_changes",
+        "tests/python/ipynb/test_obligation_structure_diff.py::test_patch_is_atomic_machine_applicable_and_rejects_stale_base"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Move-detection fixtures; ignore-policy matrix; patch precondition failures."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/diff.py::CellField",
+        "src/python/ipynb/src/format_factory/ipynb/model/diff.py::PatchPreconditionError",
+        "src/python/ipynb/src/format_factory/ipynb/model/diff.py::DiffPolicy",
+        "src/python/ipynb/src/format_factory/ipynb/model/diff.py::FieldChange"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-TRUST-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Edit-invalidates-trust fixture; notary plug-in contract test."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-80272AC687E3FBED",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_trust_notary.py::test_signature_matches_the_pinned_official_nbformat_notary",
+        "tests/python/ipynb/test_obligation_trust_notary.py::test_content_edit_invalidates_trust_without_affecting_validity",
+        "tests/python/ipynb/test_obligation_trust_notary.py::test_reverting_exact_content_restores_content_addressed_trust"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Edit-invalidates-trust fixture; notary plug-in contract test."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/security/trust.py::SignatureStore",
+        "src/python/ipynb/src/format_factory/ipynb/security/trust.py::TrustNotary",
+        "src/python/ipynb/src/format_factory/ipynb/security/trust.py::TrustStatus",
+        "src/python/ipynb/src/format_factory/ipynb/security/trust.py::TrustRecord"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-ID-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Duplicate/invalid ID negatives; upgrade fixture verifies mapping."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-83A15CABF90C4B84",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_are_rejected_from_4_2_onward",
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_remain_allowed_before_4_2",
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_distinct_names_pass_in_every_profile"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Duplicate/invalid ID negatives; upgrade fixture verifies mapping."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-EXECMETA-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Four standard timing keys, additional string keys, and non-string negatives are covered."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-8546D71A9E3916E7",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_real_fixture_kernelspec_adapter_is_exact_and_non_mutating",
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_notebook_metadata_typed_fields_preserve_unknown_namespaces",
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_and_output_adapters_cover_common_namespaces"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Four standard timing keys, additional string keys, and non-string negatives are covered."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::MetadataShapeError",
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::KernelSpecMetadata",
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::LanguageInfoMetadata",
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::SlideshowMetadata"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-HIDDEN-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Visibility metadata fixtures cover all cell types, boolean validation, and unknown Jupyter fields."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-8998C2CB8626FA68",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_real_fixture_kernelspec_adapter_is_exact_and_non_mutating",
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_notebook_metadata_typed_fields_preserve_unknown_namespaces",
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_and_output_adapters_cover_common_namespaces"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Visibility metadata fixtures cover all cell types, boolean validation, and unknown Jupyter fields."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::MetadataShapeError",
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::KernelSpecMetadata",
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::LanguageInfoMetadata",
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::SlideshowMetadata"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-SEC-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-9544ABFA3D62EC79",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_security_limits.py::test_total_element_count_is_bounded",
+        "tests/python/ipynb/test_obligation_security_limits.py::test_nesting_depth_is_bounded_without_recursive_walker_failure",
+        "tests/python/ipynb/test_obligation_security_limits.py::test_json_recursion_failure_is_a_deterministic_parse_error"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/security/limits.py::effective_limits",
+        "src/python/ipynb/src/format_factory/ipynb/security/limits.py::enforce_structure"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-HIDDEN-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Visibility metadata fixtures cover all cell types, boolean validation, and unknown Jupyter fields."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-959B89100C121E14",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_real_fixture_kernelspec_adapter_is_exact_and_non_mutating",
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_notebook_metadata_typed_fields_preserve_unknown_namespaces",
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_and_output_adapters_cover_common_namespaces"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Visibility metadata fixtures cover all cell types, boolean validation, and unknown Jupyter fields."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::MetadataShapeError",
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::KernelSpecMetadata",
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::LanguageInfoMetadata",
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::SlideshowMetadata"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-PRESERVE-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-99A77B35A2B0E5E8",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_corpus_integrity.py::test_active_valid_corpus_is_digest_bound_and_strictly_valid",
+        "tests/python/ipynb/test_obligation_corpus_integrity.py::test_quarantined_bytes_are_retained_and_fail_the_declared_minor_schema",
+        "tests/python/ipynb/test_obligation_corpus_integrity.py::test_reference_normalization_cannot_relabel_original_bytes_valid"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dumps",
+        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dump",
+        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::write_ipynb",
+        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::get_cell_count",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-PARSE-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-9A6A2B857F357379",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_nbformat_core.py::test_complete_core_vector_validates_and_roundtrips_without_execution",
+        "tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::ensure_cell_id",
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads",
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load",
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load_ipynb"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-MODEL-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Typed access per cell type; unknown-cell-type preservation fixture."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-A416086282D30BB9",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_typed_model.py::test_typed_cells_outputs_and_logical_sources_preserve_raw_form",
+        "tests/python/ipynb/test_obligation_typed_model.py::test_typed_search_avoids_raw_dictionary_access"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Typed access per cell type; unknown-cell-type preservation fixture."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-PARSE-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-A87B92BEB23E3B35",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_nbformat_core.py::test_complete_core_vector_validates_and_roundtrips_without_execution",
+        "tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::ensure_cell_id",
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads",
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load",
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load_ipynb"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-EXPORT-001",
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Exporter adapter contract test with ancillary-resource collection.",
+        "NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-AABAEFD635A6381D",
+      "positive_test_selectors": [],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Exporter adapter contract test with ancillary-resource collection."
+        ]
+      },
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
+    },
+    {
+      "capability_id": "IPYNB-UPGRADE-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Fixtures at each supported older version upgrade with ledger assertions; downgrade-loss reporting fixture."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-AC36F06FBB685FE8",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_version_conversion.py::test_downgrade_plan_reports_loss_and_preserved_extensions",
+        "tests/python/ipynb/test_obligation_version_conversion.py::test_lossy_downgrade_requires_explicit_acceptance",
+        "tests/python/ipynb/test_obligation_version_conversion.py::test_accepted_downgrade_is_valid_for_every_supported_older_minor"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Fixtures at each supported older version upgrade with ledger assertions; downgrade-loss reporting fixture."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::NotebookVersion",
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::RecoveryAction",
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionAction",
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionDisposition"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-CELLNAMEUNIQUE-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Duplicate-name fixtures fail the semantic check while distinct and absent names pass."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-B227B25AB9838FFD",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_are_rejected_from_4_2_onward",
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_remain_allowed_before_4_2",
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_distinct_names_pass_in_every_profile"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Duplicate-name fixtures fail the semantic check while distinct and absent names pass."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/validation/rules.py::SelectedProfile",
+        "src/python/ipynb/src/format_factory/ipynb/validation/rules.py::diagnostic",
+        "src/python/ipynb/src/format_factory/ipynb/validation/rules.py::select_profile",
+        "src/python/ipynb/src/format_factory/ipynb/validation/rules.py::validate_model"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-OUTPUT-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: MIME-bundle matrix round-trips including vendor types and binary payloads.; MIME matrix fixtures per output type with byte-exact payload verification."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-B2FA0BFF8CA07D78",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_survives_roundtrip_intact",
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_is_recognized_as_its_own_kind",
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_all_four_types_coexist_in_one_cell_in_order"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "MIME-bundle matrix round-trips including vendor types and binary payloads.",
+          "MIME matrix fixtures per output type with byte-exact payload verification."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/output.py::get_output_representation",
+        "src/python/ipynb/src/format_factory/ipynb/model/output.py::add_output_representation",
+        "src/python/ipynb/src/format_factory/ipynb/model/output.py::remove_output_mime_type",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-OUTPUT-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: MIME-bundle matrix round-trips including vendor types and binary payloads.; MIME matrix fixtures per output type with byte-exact payload verification."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-B3EFD046C72D3E4B",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_survives_roundtrip_intact",
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_is_recognized_as_its_own_kind",
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_all_four_types_coexist_in_one_cell_in_order"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "MIME-bundle matrix round-trips including vendor types and binary payloads.",
+          "MIME matrix fixtures per output type with byte-exact payload verification."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/output.py::get_output_representation",
+        "src/python/ipynb/src/format_factory/ipynb/model/output.py::add_output_representation",
+        "src/python/ipynb/src/format_factory/ipynb/model/output.py::remove_output_mime_type",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-CLEAN-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Dry-run report matches actual mutation; selective clearing fixtures."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-BB3A2A8AA8E143B3",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_cleanup.py::test_dry_run_report_equals_actual_selective_cleanup_and_does_not_mutate",
+        "tests/python/ipynb/test_obligation_cleanup.py::test_default_cleanup_clears_all_outputs_and_counts_but_not_metadata"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Dry-run report matches actual mutation; selective clearing fixtures."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/cleanup.py::CleanupPolicy",
+        "src/python/ipynb/src/format_factory/ipynb/model/cleanup.py::Change",
+        "src/python/ipynb/src/format_factory/ipynb/model/cleanup.py::ChangeReport",
+        "src/python/ipynb/src/format_factory/ipynb/model/cleanup.py::cleanup"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-OUTPUT-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: MIME-bundle matrix round-trips including vendor types and binary payloads.; MIME matrix fixtures per output type with byte-exact payload verification."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-BBE5B3445AD56F9C",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_survives_roundtrip_intact",
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_is_recognized_as_its_own_kind",
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_all_four_types_coexist_in_one_cell_in_order"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "MIME-bundle matrix round-trips including vendor types and binary payloads.",
+          "MIME matrix fixtures per output type with byte-exact payload verification."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/output.py::get_output_representation",
+        "src/python/ipynb/src/format_factory/ipynb/model/output.py::add_output_representation",
+        "src/python/ipynb/src/format_factory/ipynb/model/output.py::remove_output_mime_type",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-EDIT-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Each mutation class save-reload-verifies with IDs stable."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-BD6E7B4AA7C7E06C",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_cell_editor.py::test_insert_move_replace_remove_are_stable_id_operations",
+        "tests/python/ipynb/test_obligation_cell_editor.py::test_copy_uses_deterministic_unique_ids_and_deep_copies",
+        "tests/python/ipynb/test_obligation_cell_editor.py::test_search_combines_id_type_tag_metadata_and_source_criteria"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Each mutation class save-reload-verifies with IDs stable."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellEditOperation",
+        "src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellQuery",
+        "src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellEdit",
+        "src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellEditReport"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-DOCMETA-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Title and multi-author fixtures round-trip for every applicable profile, including additional author properties."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-C2890074D83A8170",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_real_fixture_kernelspec_adapter_is_exact_and_non_mutating",
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_notebook_metadata_typed_fields_preserve_unknown_namespaces",
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_and_output_adapters_cover_common_namespaces"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Title and multi-author fixtures round-trip for every applicable profile, including additional author properties."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::MetadataShapeError",
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::KernelSpecMetadata",
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::LanguageInfoMetadata",
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::SlideshowMetadata"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-EXECMETA-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Four standard timing keys, additional string keys, and non-string negatives are covered."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-C3762C24648B1210",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_real_fixture_kernelspec_adapter_is_exact_and_non_mutating",
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_notebook_metadata_typed_fields_preserve_unknown_namespaces",
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_and_output_adapters_cover_common_namespaces"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Four standard timing keys, additional string keys, and non-string negatives are covered."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::MetadataShapeError",
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::KernelSpecMetadata",
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::LanguageInfoMetadata",
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::SlideshowMetadata"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-UPGRADE-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Fixtures at each supported older version upgrade with ledger assertions; downgrade-loss reporting fixture."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-C599FB180ACF8D49",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_version_conversion.py::test_downgrade_plan_reports_loss_and_preserved_extensions",
+        "tests/python/ipynb/test_obligation_version_conversion.py::test_lossy_downgrade_requires_explicit_acceptance",
+        "tests/python/ipynb/test_obligation_version_conversion.py::test_accepted_downgrade_is_valid_for_every_supported_older_minor"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Fixtures at each supported older version upgrade with ledger assertions; downgrade-loss reporting fixture."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::NotebookVersion",
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::RecoveryAction",
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionAction",
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionDisposition"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-SEC-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-C5EFBC1F7327CCE7",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_security_limits.py::test_total_element_count_is_bounded",
+        "tests/python/ipynb/test_obligation_security_limits.py::test_nesting_depth_is_bounded_without_recursive_walker_failure",
+        "tests/python/ipynb/test_obligation_security_limits.py::test_json_recursion_failure_is_a_deterministic_parse_error"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/security/limits.py::effective_limits",
+        "src/python/ipynb/src/format_factory/ipynb/security/limits.py::enforce_structure"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-LIFECYCLE-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-C62F62D99CDA6EAF",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_preservation_mode_does_not_synthesize_absent_values_or_ids",
+        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_strict_mode_rejects_incomplete_current_document_with_diagnostic",
+        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_recovery_mode_is_deterministic_and_reports_every_synthesized_value"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::NotebookVersion",
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::RecoveryAction",
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionAction",
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionDisposition"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-CLEAN-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Dry-run report matches actual mutation; selective clearing fixtures."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-C7460C113E33FAE7",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_cleanup.py::test_dry_run_report_equals_actual_selective_cleanup_and_does_not_mutate",
+        "tests/python/ipynb/test_obligation_cleanup.py::test_default_cleanup_clears_all_outputs_and_counts_but_not_metadata"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Dry-run report matches actual mutation; selective clearing fixtures."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/cleanup.py::CleanupPolicy",
+        "src/python/ipynb/src/format_factory/ipynb/model/cleanup.py::Change",
+        "src/python/ipynb/src/format_factory/ipynb/model/cleanup.py::ChangeReport",
+        "src/python/ipynb/src/format_factory/ipynb/model/cleanup.py::cleanup"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-MODEL-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Typed access per cell type; unknown-cell-type preservation fixture."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-CA94E60DA1A97571",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_typed_model.py::test_typed_cells_outputs_and_logical_sources_preserve_raw_form",
+        "tests/python/ipynb/test_obligation_typed_model.py::test_typed_search_avoids_raw_dictionary_access"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Typed access per cell type; unknown-cell-type preservation fixture."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-OUTPUT-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: MIME-bundle matrix round-trips including vendor types and binary payloads.; MIME matrix fixtures per output type with byte-exact payload verification."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-CDB7DEE07F2275F7",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_survives_roundtrip_intact",
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_is_recognized_as_its_own_kind",
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_all_four_types_coexist_in_one_cell_in_order"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "MIME-bundle matrix round-trips including vendor types and binary payloads.",
+          "MIME matrix fixtures per output type with byte-exact payload verification."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/output.py::get_output_representation",
+        "src/python/ipynb/src/format_factory/ipynb/model/output.py::add_output_representation",
+        "src/python/ipynb/src/format_factory/ipynb/model/output.py::remove_output_mime_type",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-TRUST-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Edit-invalidates-trust fixture; notary plug-in contract test."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-D9ECFCF32654F42A",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_trust_notary.py::test_signature_matches_the_pinned_official_nbformat_notary",
+        "tests/python/ipynb/test_obligation_trust_notary.py::test_content_edit_invalidates_trust_without_affecting_validity",
+        "tests/python/ipynb/test_obligation_trust_notary.py::test_reverting_exact_content_restores_content_addressed_trust"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Edit-invalidates-trust fixture; notary plug-in contract test."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/security/trust.py::SignatureStore",
+        "src/python/ipynb/src/format_factory/ipynb/security/trust.py::TrustNotary",
+        "src/python/ipynb/src/format_factory/ipynb/security/trust.py::TrustStatus",
+        "src/python/ipynb/src/format_factory/ipynb/security/trust.py::TrustRecord"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-SEC-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-DB823E1426D979E1",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_security_limits.py::test_total_element_count_is_bounded",
+        "tests/python/ipynb/test_obligation_security_limits.py::test_nesting_depth_is_bounded_without_recursive_walker_failure",
+        "tests/python/ipynb/test_obligation_security_limits.py::test_json_recursion_failure_is_a_deterministic_parse_error"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/security/limits.py::effective_limits",
+        "src/python/ipynb/src/format_factory/ipynb/security/limits.py::enforce_structure"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-LIFECYCLE-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-DD20FA864FE34971",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_preservation_mode_does_not_synthesize_absent_values_or_ids",
+        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_strict_mode_rejects_incomplete_current_document_with_diagnostic",
+        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_recovery_mode_is_deterministic_and_reports_every_synthesized_value"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::NotebookVersion",
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::RecoveryAction",
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionAction",
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionDisposition"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-WRITE-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Determinism byte-compare; binary-payload integrity fixtures."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-E72B508EFCCD0E0C",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_writer_contract.py::test_default_output_is_unchanged",
+        "tests/python/ipynb/test_obligation_writer_contract.py::test_indent_controls_the_indentation_width",
+        "tests/python/ipynb/test_obligation_writer_contract.py::test_indent_none_produces_compact_output"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Determinism byte-compare; binary-payload integrity fixtures."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dumps",
+        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dump",
+        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::write_ipynb",
+        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::get_cell_count"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-CELLNAME-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Present non-empty names pass and empty names fail in every supported profile."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-E9E64A65284001E4",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_are_rejected_from_4_2_onward",
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_remain_allowed_before_4_2",
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_distinct_names_pass_in_every_profile"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Present non-empty names pass and empty names fail in every supported profile."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell",
+        "src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellEditOperation",
+        "src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellQuery",
+        "src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellEdit",
+        "src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellEditReport"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-SANITIZE-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Hostile active-content fixtures per mode; lossless mode leaves content intact and reported."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-F581800E69395375",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_sanitization.py::test_lossless_mode_reports_without_mutating_or_marking",
+        "tests/python/ipynb/test_obligation_sanitization.py::test_remove_mode_drops_only_the_unsafe_renderable_payloads",
+        "tests/python/ipynb/test_obligation_sanitization.py::test_quarantine_mode_moves_payloads_out_of_renderable_locations"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Hostile active-content fixtures per mode; lossless mode leaves content intact and reported."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/security/sanitizer.py::SanitizationMode",
+        "src/python/ipynb/src/format_factory/ipynb/security/sanitizer.py::SanitizationPolicy",
+        "src/python/ipynb/src/format_factory/ipynb/security/sanitizer.py::SanitizationFinding",
+        "src/python/ipynb/src/format_factory/ipynb/security/sanitizer.py::SanitizationReport"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-LIFECYCLE-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-F6811E708E96AF83",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_preservation_mode_does_not_synthesize_absent_values_or_ids",
+        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_strict_mode_rejects_incomplete_current_document_with_diagnostic",
+        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_recovery_mode_is_deterministic_and_reports_every_synthesized_value"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::NotebookVersion",
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::RecoveryAction",
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionAction",
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionDisposition"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-VALIDATE-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Both validation modes on fixtures per schema construct; unknown-field separation asserted."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-FE413358B1144149",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_validation_profiles.py::test_future_declared_profile_is_valid_with_separate_forward_warnings",
+        "tests/python/ipynb/test_obligation_validation_profiles.py::test_attachment_reference_integrity_and_mime_bundles",
+        "tests/python/ipynb/test_obligation_validation_profiles.py::test_malformed_cells_outputs_tags_and_mime_bundles_have_exact_diagnostics",
+        "tests/python/ipynb/test_obligation_official_schema_validation.py::test_factory_rejects_every_official_schema_rejection",
+        "tests/python/ipynb/test_obligation_official_schema_validation.py::test_exact_supported_minor_schema_accepts_valid_document",
+        "tests/python/ipynb/test_obligation_official_schema_validation.py::test_schema_diagnostics_expose_stable_codes_and_precise_paths"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Both validation modes on fixtures per schema construct; unknown-field separation asserted."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/validation/validator.py::validate",
+        "src/python/ipynb/src/format_factory/ipynb/validation/validator.py::validate_notebook_schema",
+        "src/python/ipynb/src/format_factory/ipynb/validation/validator.py::validate_notebook",
+        "src/python/ipynb/src/format_factory/ipynb/validation/rules.py::SelectedProfile",
+        "src/python/ipynb/src/format_factory/ipynb/validation/rules.py::diagnostic",
+        "src/python/ipynb/src/format_factory/ipynb/validation/rules.py::select_profile",
+        "src/python/ipynb/src/format_factory/ipynb/validation/rules.py::validate_model"
+      ],
+      "status": "partial"
+    },
+    {
+      "capability_id": "IPYNB-LIFECYCLE-001",
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
+      "missing_behavior": [
+        "Not yet audited against this obligation's declared proof requirements: Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+      ],
+      "negative_test_selectors": [],
+      "obligation_id": "SAL-IPYNB-OBL-FFF232183E2BB71E",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_preservation_mode_does_not_synthesize_absent_values_or_ids",
+        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_strict_mode_rejects_incomplete_current_document_with_diagnostic",
+        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_recovery_mode_is_deterministic_and_reports_every_synthesized_value"
+      ],
+      "proof_requirements": {
+        "negative": [
+          "Selector-bound negative cases are not yet identified."
+        ],
+        "positive": [
+          "Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+        ]
+      },
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::NotebookVersion",
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::RecoveryAction",
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionAction",
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionDisposition"
+      ],
+      "status": "partial"
+    }
+  ],
+  "promotion_effect": "none",
+  "proof_strength": "supporting_nonpromoting",
+  "referenced_input_digests": {
+    "reports/skills-rff6/skill-transcripts/build-evidence-ledger-ipynb-001.json": "9489d414aaef351c0ca631db2e7cf3abd9c09411a76cc4164246f53608cc5c35",
+    "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py": "2f3b6b4920e08549bb8714673ece9b4dffd5f30aae1a9e802aa27efa0bb6776c",
+    "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py": "69e6862b047e46ac5321e144381befccb31d64cb5565bad19a504df8beb3b315",
+    "src/python/ipynb/src/format_factory/ipynb/model/attachments.py": "b1741391d835630d80a824fafbb8493098108c6e027b01fa192395c60c8216e1",
+    "src/python/ipynb/src/format_factory/ipynb/model/cleanup.py": "27db43887e2f005ccbc73c9270cd90b3aebab05e2cffa7771705c185e7081d20",
+    "src/python/ipynb/src/format_factory/ipynb/model/diff.py": "30aabd6d60adc5427d7a8b6bb6c9b1cbf347ffb9c37d56da382089e8b96d65a0",
+    "src/python/ipynb/src/format_factory/ipynb/model/document.py": "ae6b32adb46f7c2c4885c8e7f48ef3a55c7761c6cbf29213a93d3f57b4335e78",
+    "src/python/ipynb/src/format_factory/ipynb/model/editor.py": "23ba3083f73898ecd0042184939c386a954cdb047b7fa2fcf9f9608a4b1c53f1",
+    "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py": "5ddd4ff5ec6fbc34685d4ffd067b73fe4cf9ffa84bf8baf52ac222e23e30e9c9",
+    "src/python/ipynb/src/format_factory/ipynb/model/metadata.py": "18aead211c9b92441c7daa63de4743f85caa1233f04a0f8ef81e20a3c69e443c",
+    "src/python/ipynb/src/format_factory/ipynb/model/output.py": "8abef47971e7d7bbc6279c2708f5d33e3b5fa5c75b1ce2e3a54708d036870568",
+    "src/python/ipynb/src/format_factory/ipynb/security/limits.py": "5364a2b1e91a1057c68602bb2cf52086829c3120ce53a304ebbf8df59e4d926a",
+    "src/python/ipynb/src/format_factory/ipynb/security/sanitizer.py": "0f51806e23d61ab614c1bd314c41929b9ae186186c358a55ea015f0a87cc7a69",
+    "src/python/ipynb/src/format_factory/ipynb/security/trust.py": "731a7c39e84d3142fbdeb4111849db4cf9c12473be5bbd54c0bc032d7c25c087",
+    "src/python/ipynb/src/format_factory/ipynb/validation/rules.py": "1f98a87f5ef6810b8ff03f5e886f0597b815706e94075cb86d75537ee3ad62af",
+    "src/python/ipynb/src/format_factory/ipynb/validation/validator.py": "a2cef1b6a6d2a83dea99b5067287b4e6114e3bc663a3de90f30a5685029801c2",
+    "tests/python/ipynb/test_obligation_attachment_management.py": "496758a79b2f277186e05b1edf7fbda43ce42ed1259d205a2bf15f269758dd08",
+    "tests/python/ipynb/test_obligation_attachments.py": "eaaf0e5b21e37bc676ea79bd64ee2033739bdf63814fdfc3937979e8448f96ef",
+    "tests/python/ipynb/test_obligation_cell_editor.py": "28399cc82c0f543180b79804bdba90d0913c1cc449d4de81e60d6f5ad827ea88",
+    "tests/python/ipynb/test_obligation_cell_identity.py": "a91396e60ba37a857e3ab845cd85df53934e8c70a3397c44db37c91ed99bf6a6",
+    "tests/python/ipynb/test_obligation_cleanup.py": "0fbdedce809a91f82a27ff79bef73a5568440279bd4b54c16e07601da89a0b8f",
+    "tests/python/ipynb/test_obligation_corpus_integrity.py": "18e1f870e1f2ae1ccd4c9d4e5c35929f7cf3168b2a4f4d0017c88f83d48cc418",
+    "tests/python/ipynb/test_obligation_lifecycle_modes.py": "d42d19938843e94ec7743cd606c3bee1b704b534a98ce0fd72e4763126585651",
+    "tests/python/ipynb/test_obligation_metadata_adapters.py": "71d2436bcba090d36fd9a8b1ca5a8109e08fb2d095b0408b29d7e871d8650056",
+    "tests/python/ipynb/test_obligation_nbformat_core.py": "6ff9dd7dcf374b6c1c5002fc3c9f9d4285e4406872d7d5feccc54861e4b173e7",
+    "tests/python/ipynb/test_obligation_official_schema_validation.py": "e2c7ccb401e3bc752e063a4b6ad59c82db8f9582695ca81bb330c90d6db2ec4d",
+    "tests/python/ipynb/test_obligation_output_mime_matrix.py": "4f117775ed02a529065471a2aafe03360c890587fb0b2b3083a69ecca759e2c8",
+    "tests/python/ipynb/test_obligation_sanitization.py": "c35e5e2ac1b0ddb363f098b2efa94b27a106f6205754fe5fbeaa99ee87171b2a",
+    "tests/python/ipynb/test_obligation_security_limits.py": "d7223a242a324330c00116888376d4e172798f2dc0177ca03600e41eab983841",
+    "tests/python/ipynb/test_obligation_structure_diff.py": "95b301e5ad1625b7779d921452e221bb8da322a1133d60b800a9a5daf8d2330b",
+    "tests/python/ipynb/test_obligation_trust_notary.py": "038ac719ca7ead52e95bdb323aea6e5d8a40bc331ac65af9095320da741c7395",
+    "tests/python/ipynb/test_obligation_typed_model.py": "8883ae99c33245fd3ceccc48582d3570ebff90e35534c8be372ba902395e14ff",
+    "tests/python/ipynb/test_obligation_validation_profiles.py": "88bfd637a80e7c58ff0553e8e11d8293fbf164c2fe4b3208bfe2d853d7047fe2",
+    "tests/python/ipynb/test_obligation_version_conversion.py": "48ebf0c998441eec842fe9d2990207788f2c1fda9814fdfcf6b75b25c52f03d6",
+    "tests/python/ipynb/test_obligation_writer_contract.py": "4f7cf97aac106965a34ad729c9c7087adaa214772fb74c261913944dd97cd57b"
+  },
+  "schema": "format-contracts/obligation-reconciliation@1",
+  "summary": {
+    "by_status": {
+      "missing": 1,
+      "partial": 67
+    },
+    "total": 68,
+    "unresolved": 68
+  },
+  "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
+}

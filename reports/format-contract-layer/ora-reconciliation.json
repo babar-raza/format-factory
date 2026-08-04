@@ -1,0 +1,602 @@
+{
+  "format_id": "ora",
+  "contract_id": "FC-ORA-V1",
+  "contract_input_digests": {
+    "authority_lock_impl_sha256": "3295565e37b8a5ff47a6e05aa8b49b70bb8574171bbe2e7ba9362f344e20012c",
+    "authority_lock_schema_sha256": "a8b860f4bef1ceae1b9dd6348c29cc99b35f2bde2dca032217398bddb061f913",
+    "authority_lock_sha256": "5c1ac942018f1e26e0fc0ca7c8284313452d1cb44c04d7e225faad4b21219929",
+    "authority_materializer_sha256": "b730b8f700aec1460fcd48ef2e849e7e1b2798f7849de8c37c5c15943c204f58",
+    "authority_runtime_sha256": "a24f0834bc99cc2758e2b70201ce1d28039c11a057688f95f5a1f6c29ea23a15",
+    "authority_src_ora_001_sha256": "bd584b4b998df16c735bc3ce575e382569a101427fd4c4be14b677d30d210613",
+    "authority_src_ora_002_sha256": "a9f2cb90009e3cc76883ab9db2f43607a9518e723b9d03f1aa1b150f2c2e546a",
+    "authority_src_ora_003_sha256": "29c77a95396c8c245d259b349fa438e3b40019d7fe6f7e06b8520c2fc9f63a49",
+    "canonical_io_impl_sha256": "aca19b1319bf7304d5136fd6c9d729cb50b22d8a23a17ca9314fdb0c58cc164d",
+    "contract_compiler_impl_sha256": "e98ad15504ab1d338f114e21c9909b2eb5af9699961c0621da964bb59403dc67",
+    "contract_stores_impl_sha256": "cd120c7990a37b0f913a2b59e81ab28fdf7b3d50897e38d78cb20fc9e0823f7a",
+    "fact_categories_sha256": "aedd4c838073695752c724e8f53fd189f58653ca22e01b88f5932ebe9fe376bc",
+    "family_pack_sha256": "915e258dc7ad5d824738acab73d81a77c9be0f23d6df424eaca9313a2b76e837",
+    "format_contract_schema_sha256": "4eb5cae2d69d0831291646f3cf21e5d019d6b0de2904a745b712cf5fa6c37da9",
+    "research_intake_impl_sha256": "4c7d3bfd69e7e5a74a9db2483d25b062e11cfdcb6609637b0343dfa8d3cd0579",
+    "research_sha256": "bb607e2f45ae5f86ad8c91a5eb751db18128b0167cece7575fd90582851a2165",
+    "sal_facts_sha256": "8e3ad5d9893bd413c6887be8661de1563c94074104df03ba8defcf766a438cd7",
+    "shared_contract_sha256": "ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494",
+    "source_researcher_impl_sha256": "4367e7591a368bcbc6a01199a7eb6da0f569ccc5c706d6650cdd96db0b7083a3"
+  },
+  "product_source_present": false,
+  "function_count": 0,
+  "class_count": 0,
+  "test_file_count": 23,
+  "oracle_status": null,
+  "capabilities": [
+    {
+      "capability_id": "ORA-ASSET-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 5,
+      "product_symbols": [],
+      "test_files": [
+        "tests/format_contract/test_quality_oracle.py",
+        "tests/oracle/test_oracle_negative_controls.py",
+        "tests/python/csv/test_csv_gate6_oracle.py",
+        "tests/python/csv/test_csv_oracle_binding.py",
+        "tests/python/dif/test_dif_gate6_oracle.py",
+        "tests/python/fods/test_fods_oracle_binding.py",
+        "tests/python/fodt/test_fodt_oracle_binding.py",
+        "tests/python/ndjson/test_ndjson_oracle_binding.py",
+        "tests/python/ods/test_ods_gate6_oracle.py",
+        "tests/python/odt/test_odt_gate6_oracle.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ORA-BASELINEASSET-001",
+      "category": "write",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 5,
+      "product_symbols": [],
+      "test_files": [
+        "tests/format_contract/test_quality_oracle.py",
+        "tests/oracle/test_oracle_negative_controls.py",
+        "tests/python/csv/test_csv_gate6_oracle.py",
+        "tests/python/csv/test_csv_oracle_binding.py",
+        "tests/python/dif/test_dif_gate6_oracle.py",
+        "tests/python/fods/test_fods_oracle_binding.py",
+        "tests/python/fodt/test_fodt_oracle_binding.py",
+        "tests/python/ndjson/test_ndjson_oracle_binding.py",
+        "tests/python/ods/test_ods_gate6_oracle.py",
+        "tests/python/odt/test_odt_gate6_oracle.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ORA-COMPOSITE-001",
+      "category": "advanced",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 5,
+      "product_symbols": [],
+      "test_files": [
+        "tests/format_contract/test_quality_oracle.py",
+        "tests/oracle/test_oracle_negative_controls.py",
+        "tests/python/csv/test_csv_gate6_oracle.py",
+        "tests/python/csv/test_csv_oracle_binding.py",
+        "tests/python/dif/test_dif_gate6_oracle.py",
+        "tests/python/fods/test_fods_oracle_binding.py",
+        "tests/python/fodt/test_fodt_oracle_binding.py",
+        "tests/python/ndjson/test_ndjson_oracle_binding.py",
+        "tests/python/ods/test_ods_gate6_oracle.py",
+        "tests/python/odt/test_odt_gate6_oracle.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ORA-CONTAINER-001",
+      "category": "parse",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 4,
+      "product_symbols": [],
+      "test_files": [
+        "tests/format_contract/test_quality_oracle.py",
+        "tests/oracle/test_oracle_negative_controls.py",
+        "tests/python/csv/test_csv_gate6_oracle.py",
+        "tests/python/csv/test_csv_oracle_binding.py",
+        "tests/python/dif/test_dif_gate6_oracle.py",
+        "tests/python/fods/test_fods_oracle_binding.py",
+        "tests/python/fodt/test_fodt_oracle_binding.py",
+        "tests/python/ndjson/test_ndjson_oracle_binding.py",
+        "tests/python/ods/test_ods_gate6_oracle.py",
+        "tests/python/odt/test_odt_gate6_oracle.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ORA-DOCUMENT-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 5,
+      "product_symbols": [],
+      "test_files": [
+        "tests/format_contract/test_quality_oracle.py",
+        "tests/oracle/test_oracle_negative_controls.py",
+        "tests/python/csv/test_csv_gate6_oracle.py",
+        "tests/python/csv/test_csv_oracle_binding.py",
+        "tests/python/dif/test_dif_gate6_oracle.py",
+        "tests/python/fods/test_fods_oracle_binding.py",
+        "tests/python/fodt/test_fodt_oracle_binding.py",
+        "tests/python/ndjson/test_ndjson_oracle_binding.py",
+        "tests/python/ods/test_ods_gate6_oracle.py",
+        "tests/python/odt/test_odt_gate6_oracle.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ORA-EDIT-001",
+      "category": "edit",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 5,
+      "product_symbols": [],
+      "test_files": [
+        "tests/format_contract/test_quality_oracle.py",
+        "tests/oracle/test_oracle_negative_controls.py",
+        "tests/python/csv/test_csv_gate6_oracle.py",
+        "tests/python/csv/test_csv_oracle_binding.py",
+        "tests/python/dif/test_dif_gate6_oracle.py",
+        "tests/python/fods/test_fods_oracle_binding.py",
+        "tests/python/fodt/test_fodt_oracle_binding.py",
+        "tests/python/ndjson/test_ndjson_oracle_binding.py",
+        "tests/python/ods/test_ods_gate6_oracle.py",
+        "tests/python/odt/test_odt_gate6_oracle.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ORA-GROUP-001",
+      "category": "edit",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 5,
+      "product_symbols": [],
+      "test_files": [
+        "tests/format_contract/test_quality_oracle.py",
+        "tests/oracle/test_oracle_negative_controls.py",
+        "tests/python/csv/test_csv_gate6_oracle.py",
+        "tests/python/csv/test_csv_oracle_binding.py",
+        "tests/python/dif/test_dif_gate6_oracle.py",
+        "tests/python/fods/test_fods_oracle_binding.py",
+        "tests/python/fodt/test_fodt_oracle_binding.py",
+        "tests/python/ndjson/test_ndjson_oracle_binding.py",
+        "tests/python/ods/test_ods_gate6_oracle.py",
+        "tests/python/odt/test_odt_gate6_oracle.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ORA-ISOLATION-001",
+      "category": "advanced",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 5,
+      "product_symbols": [],
+      "test_files": [
+        "tests/format_contract/test_quality_oracle.py",
+        "tests/oracle/test_oracle_negative_controls.py",
+        "tests/python/csv/test_csv_gate6_oracle.py",
+        "tests/python/csv/test_csv_oracle_binding.py",
+        "tests/python/dif/test_dif_gate6_oracle.py",
+        "tests/python/fods/test_fods_oracle_binding.py",
+        "tests/python/fodt/test_fodt_oracle_binding.py",
+        "tests/python/ndjson/test_ndjson_oracle_binding.py",
+        "tests/python/ods/test_ods_gate6_oracle.py",
+        "tests/python/odt/test_odt_gate6_oracle.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ORA-LAYER-001",
+      "category": "edit",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 5,
+      "product_symbols": [],
+      "test_files": [
+        "tests/format_contract/test_quality_oracle.py",
+        "tests/oracle/test_oracle_negative_controls.py",
+        "tests/python/csv/test_csv_gate6_oracle.py",
+        "tests/python/csv/test_csv_oracle_binding.py",
+        "tests/python/dif/test_dif_gate6_oracle.py",
+        "tests/python/fods/test_fods_oracle_binding.py",
+        "tests/python/fodt/test_fodt_oracle_binding.py",
+        "tests/python/ndjson/test_ndjson_oracle_binding.py",
+        "tests/python/ods/test_ods_gate6_oracle.py",
+        "tests/python/odt/test_odt_gate6_oracle.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ORA-LIFECYCLE-001",
+      "category": "lifecycle",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 4,
+      "product_symbols": [],
+      "test_files": [
+        "tests/format_contract/test_quality_oracle.py",
+        "tests/oracle/test_oracle_negative_controls.py",
+        "tests/python/csv/test_csv_gate6_oracle.py",
+        "tests/python/csv/test_csv_oracle_binding.py",
+        "tests/python/dif/test_dif_gate6_oracle.py",
+        "tests/python/fods/test_fods_oracle_binding.py",
+        "tests/python/fodt/test_fodt_oracle_binding.py",
+        "tests/python/ndjson/test_ndjson_oracle_binding.py",
+        "tests/python/ods/test_ods_gate6_oracle.py",
+        "tests/python/odt/test_odt_gate6_oracle.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ORA-MASK-001",
+      "category": "advanced",
+      "level": "SHOULD",
+      "depth_required": 5,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 5,
+      "product_symbols": [],
+      "test_files": [
+        "tests/format_contract/test_quality_oracle.py",
+        "tests/oracle/test_oracle_negative_controls.py",
+        "tests/python/csv/test_csv_gate6_oracle.py",
+        "tests/python/csv/test_csv_oracle_binding.py",
+        "tests/python/dif/test_dif_gate6_oracle.py",
+        "tests/python/fods/test_fods_oracle_binding.py",
+        "tests/python/fodt/test_fodt_oracle_binding.py",
+        "tests/python/ndjson/test_ndjson_oracle_binding.py",
+        "tests/python/ods/test_ods_gate6_oracle.py",
+        "tests/python/odt/test_odt_gate6_oracle.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ORA-MIMETYPE-001",
+      "category": "validate",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 5,
+      "product_symbols": [],
+      "test_files": [
+        "tests/format_contract/test_quality_oracle.py",
+        "tests/oracle/test_oracle_negative_controls.py",
+        "tests/python/csv/test_csv_gate6_oracle.py",
+        "tests/python/csv/test_csv_oracle_binding.py",
+        "tests/python/dif/test_dif_gate6_oracle.py",
+        "tests/python/fods/test_fods_oracle_binding.py",
+        "tests/python/fodt/test_fodt_oracle_binding.py",
+        "tests/python/ndjson/test_ndjson_oracle_binding.py",
+        "tests/python/ods/test_ods_gate6_oracle.py",
+        "tests/python/odt/test_odt_gate6_oracle.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ORA-PRESERVE-001",
+      "category": "preserve",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 4,
+      "product_symbols": [],
+      "test_files": [
+        "tests/format_contract/test_quality_oracle.py",
+        "tests/oracle/test_oracle_negative_controls.py",
+        "tests/python/csv/test_csv_gate6_oracle.py",
+        "tests/python/csv/test_csv_oracle_binding.py",
+        "tests/python/dif/test_dif_gate6_oracle.py",
+        "tests/python/fods/test_fods_oracle_binding.py",
+        "tests/python/fodt/test_fodt_oracle_binding.py",
+        "tests/python/ndjson/test_ndjson_oracle_binding.py",
+        "tests/python/ods/test_ods_gate6_oracle.py",
+        "tests/python/odt/test_odt_gate6_oracle.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ORA-RENDER-001",
+      "category": "advanced",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 5,
+      "product_symbols": [],
+      "test_files": [
+        "tests/format_contract/test_quality_oracle.py",
+        "tests/oracle/test_oracle_negative_controls.py",
+        "tests/python/csv/test_csv_gate6_oracle.py",
+        "tests/python/csv/test_csv_oracle_binding.py",
+        "tests/python/dif/test_dif_gate6_oracle.py",
+        "tests/python/fods/test_fods_oracle_binding.py",
+        "tests/python/fodt/test_fodt_oracle_binding.py",
+        "tests/python/ndjson/test_ndjson_oracle_binding.py",
+        "tests/python/ods/test_ods_gate6_oracle.py",
+        "tests/python/odt/test_odt_gate6_oracle.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ORA-RESOLUTION-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 5,
+      "product_symbols": [],
+      "test_files": [
+        "tests/format_contract/test_quality_oracle.py",
+        "tests/oracle/test_oracle_negative_controls.py",
+        "tests/python/csv/test_csv_gate6_oracle.py",
+        "tests/python/csv/test_csv_oracle_binding.py",
+        "tests/python/dif/test_dif_gate6_oracle.py",
+        "tests/python/fods/test_fods_oracle_binding.py",
+        "tests/python/fodt/test_fodt_oracle_binding.py",
+        "tests/python/ndjson/test_ndjson_oracle_binding.py",
+        "tests/python/ods/test_ods_gate6_oracle.py",
+        "tests/python/odt/test_odt_gate6_oracle.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ORA-SEC-001",
+      "category": "security",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 5,
+      "product_symbols": [],
+      "test_files": [
+        "tests/format_contract/test_quality_oracle.py",
+        "tests/oracle/test_oracle_negative_controls.py",
+        "tests/python/csv/test_csv_gate6_oracle.py",
+        "tests/python/csv/test_csv_oracle_binding.py",
+        "tests/python/dif/test_dif_gate6_oracle.py",
+        "tests/python/fods/test_fods_oracle_binding.py",
+        "tests/python/fodt/test_fodt_oracle_binding.py",
+        "tests/python/ndjson/test_ndjson_oracle_binding.py",
+        "tests/python/ods/test_ods_gate6_oracle.py",
+        "tests/python/odt/test_odt_gate6_oracle.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ORA-STACK-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 5,
+      "product_symbols": [],
+      "test_files": [
+        "tests/format_contract/test_quality_oracle.py",
+        "tests/oracle/test_oracle_negative_controls.py",
+        "tests/python/csv/test_csv_gate6_oracle.py",
+        "tests/python/csv/test_csv_oracle_binding.py",
+        "tests/python/dif/test_dif_gate6_oracle.py",
+        "tests/python/fods/test_fods_oracle_binding.py",
+        "tests/python/fodt/test_fodt_oracle_binding.py",
+        "tests/python/ndjson/test_ndjson_oracle_binding.py",
+        "tests/python/ods/test_ods_gate6_oracle.py",
+        "tests/python/odt/test_odt_gate6_oracle.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ORA-STREAM-001",
+      "category": "performance",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 4,
+      "product_symbols": [],
+      "test_files": [
+        "tests/format_contract/test_quality_oracle.py",
+        "tests/oracle/test_oracle_negative_controls.py",
+        "tests/python/csv/test_csv_gate6_oracle.py",
+        "tests/python/csv/test_csv_oracle_binding.py",
+        "tests/python/dif/test_dif_gate6_oracle.py",
+        "tests/python/fods/test_fods_oracle_binding.py",
+        "tests/python/fodt/test_fodt_oracle_binding.py",
+        "tests/python/ndjson/test_ndjson_oracle_binding.py",
+        "tests/python/ods/test_ods_gate6_oracle.py",
+        "tests/python/odt/test_odt_gate6_oracle.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ORA-VALIDATE-001",
+      "category": "validate",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 5,
+      "product_symbols": [],
+      "test_files": [
+        "tests/format_contract/test_quality_oracle.py",
+        "tests/oracle/test_oracle_negative_controls.py",
+        "tests/python/csv/test_csv_gate6_oracle.py",
+        "tests/python/csv/test_csv_oracle_binding.py",
+        "tests/python/dif/test_dif_gate6_oracle.py",
+        "tests/python/fods/test_fods_oracle_binding.py",
+        "tests/python/fodt/test_fodt_oracle_binding.py",
+        "tests/python/ndjson/test_ndjson_oracle_binding.py",
+        "tests/python/ods/test_ods_gate6_oracle.py",
+        "tests/python/odt/test_odt_gate6_oracle.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "ORA-WRITE-001",
+      "category": "write",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 5,
+      "product_symbols": [],
+      "test_files": [
+        "tests/format_contract/test_quality_oracle.py",
+        "tests/oracle/test_oracle_negative_controls.py",
+        "tests/python/csv/test_csv_gate6_oracle.py",
+        "tests/python/csv/test_csv_oracle_binding.py",
+        "tests/python/dif/test_dif_gate6_oracle.py",
+        "tests/python/fods/test_fods_oracle_binding.py",
+        "tests/python/fodt/test_fodt_oracle_binding.py",
+        "tests/python/ndjson/test_ndjson_oracle_binding.py",
+        "tests/python/ods/test_ods_gate6_oracle.py",
+        "tests/python/odt/test_odt_gate6_oracle.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    }
+  ],
+  "summary": {
+    "total": 20,
+    "with_gap": 20,
+    "by_status": {
+      "NOT_STARTED": 20,
+      "IMPLEMENTED_UNPROVEN": 0,
+      "TESTED": 0,
+      "ORACLE_PROVEN": 0
+    }
+  }
+}

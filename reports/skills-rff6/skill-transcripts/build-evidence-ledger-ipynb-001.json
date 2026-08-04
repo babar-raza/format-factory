@@ -1,0 +1,47 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "build-evidence-ledger-ipynb-001",
+  "skill_id": "build-obligation-register",
+  "mode": "live",
+  "timestamp": "2026-08-04T21:05:00Z",
+  "inputs": {
+    "format_id": "ipynb",
+    "task_id": "PER_FORMAT_EVIDENCE_LEDGERS",
+    "task_kind": "evidence",
+    "root_cause": "The ipynb ledger was authored by a one-off scratchpad script before the shared builder existed, so it never inherited two later fixes: a `missing` obligation must not claim implemented_behavior, and must cite no source symbols or execution ids. Its exact-obligation reconciler had consequently never run.",
+    "acceptance_evidence": "reports/format-contract-layer/ipynb-obligation-reconciliation.json",
+    "regression_tier": "full ipynb package suite (tests/python/ipynb)"
+  },
+  "execution_steps": [
+    "1. Rebuilt the ipynb ledger through tools/ff6/build_evidence_ledger.py so it is produced by the same audited code path as safetensors, xliff, ubl and ora rather than by a one-off script.",
+    "2. Carried across the capability mapping established over this session, including the three corrections made after the shadow-package finding: IPYNB-OUTPUT-001, the cell-identity capabilities and IPYNB-WRITE-001 now map to the shipped-namespace test files written today rather than to the shadow files they originally cited.",
+    "3. Recorded the suite result honestly: 577 passed, 3 failed. The 3 are the editable-install namespace artifacts that pass against built wheels (424/424 in the isolated environment) and cannot pass in the shared dev venv by construction. They are not counted as passing.",
+    "4. Ran the exact-obligation reconciler, which had never succeeded for ipynb before."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/ledger-maps/ipynb.yaml",
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/ledger-maps/ipynb.yaml",
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/python.exe -m pytest tests/python/ipynb -q  # 577 passed, 3 failed",
+    "python -m tools.ff6.build_evidence_ledger --format-id ipynb",
+    "python -m tools.ff6.audit_proof_requirements --format-id ipynb"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS_WITH_KNOWN_EDITABLE_INSTALL_FAILURES",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "certification_state": "0/6",
+    "obligations_ledgered": 68,
+    "suite_truth": "577 passed, 3 failed in the shared dev venv. The 3 assert that format_factory.ipynb resolves from an INSTALLED location; every dev-venv package is an editable .pth install so they cannot pass there by construction, and all 3 pass against built wheels (424/424 in an isolated environment, recorded at Event 54). They are not counted as passing here.",
+    "why_rebuilt": "Uniformity of code path matters for trust: five formats were built by the shared builder and one by a one-off script that predated two correctness fixes. Now all six come from the same audited path.",
+    "obligations_moved": 0,
+    "ipynb_remains": "UNASSESSED"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

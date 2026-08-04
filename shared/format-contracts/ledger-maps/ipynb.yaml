@@ -1,0 +1,135 @@
+schema: ff6/ledger-map@1
+format_id: ipynb
+visibility: internal
+generated_by: claude
+generated_at: '2026-08-04'
+basis: >-
+  Carries across the mapping established over this session, including the three
+  corrections made after the shadow-package finding (GAP-017): IPYNB-OUTPUT-001,
+  the cell-identity capabilities and IPYNB-WRITE-001 originally cited test files
+  importing the deprecated ipynb.* shadow package, and now cite the
+  shipped-namespace files written to replace them. 12 of ipynb's 32 test files
+  are shadow-only and none of them may supply a selector.
+notes: >-
+  IPYNB-EXPORT-001 is mapped with no tests because it is genuinely unimplemented,
+  not merely untested: adapters/__init__.py contains only a docstring, with no
+  exporter adapter interface and no ancillary-resource collection. It is SHOULD
+  rather than MUST, and designing that surface needs a decided contract for what
+  an ancillary resource is and how adapters register -- inventing one to close a
+  checkbox would be the speculative generalization the directive forbids. Its
+  second clause, keeping exporter concerns outside the core parser, is already
+  satisfied since the core has no notebook-framework dependency.
+
+execution_evidence:
+  path: reports/skills-rff6/skill-transcripts/build-evidence-ledger-ipynb-001.json
+  result: PASS_WITH_KNOWN_EDITABLE_INSTALL_FAILURES
+  truth_boundary: >-
+    Suite-level and NON-PROMOTING. 577 passed, 3 failed in the shared dev venv.
+    The 3 assert that format_factory.ipynb resolves from an INSTALLED location;
+    every dev-venv package is an editable .pth install so they cannot pass there
+    by construction, and all 3 pass against built wheels (424/424 isolated,
+    Event 54). They are not counted as passing. Binds no individual selector
+    outcome to an obligation, so nothing here is verification; every obligation
+    is recorded `partial` at most.
+
+capabilities:
+  IPYNB-PARSE-001:
+    modules: [codec/reader/reader.py]
+    tests: [test_obligation_nbformat_core.py]
+
+  IPYNB-WRITE-001:
+    modules: [codec/writer/writer.py]
+    tests: [test_obligation_writer_contract.py]
+
+  IPYNB-MODEL-001:
+    modules: [model/document.py]
+    tests: [test_obligation_typed_model.py]
+
+  IPYNB-EXEC-001:
+    modules: [model/document.py]
+    tests: [test_obligation_typed_model.py]
+
+  IPYNB-OUTPUT-001:
+    modules: [model/output.py, model/document.py]
+    tests: [test_obligation_output_mime_matrix.py]
+
+  IPYNB-ID-001:
+    modules: [model/document.py]
+    tests: [test_obligation_cell_identity.py]
+
+  IPYNB-CELLNAME-001:
+    modules: [model/document.py, model/editor.py]
+    tests: [test_obligation_cell_identity.py]
+
+  IPYNB-CELLNAMEUNIQUE-001:
+    modules: [validation/rules.py]
+    tests: [test_obligation_cell_identity.py]
+
+  IPYNB-ATTACH-001:
+    modules: [model/attachments.py]
+    tests: [test_obligation_attachments.py, test_obligation_attachment_management.py]
+
+  IPYNB-VALIDATE-001:
+    modules: [validation/validator.py, validation/rules.py]
+    tests: [test_obligation_validation_profiles.py, test_obligation_official_schema_validation.py]
+
+  IPYNB-META-001:
+    modules: [model/metadata.py]
+    tests: [test_obligation_metadata_adapters.py]
+
+  IPYNB-DOCMETA-001:
+    modules: [model/metadata.py]
+    tests: [test_obligation_metadata_adapters.py]
+
+  IPYNB-EXECMETA-001:
+    modules: [model/metadata.py]
+    tests: [test_obligation_metadata_adapters.py]
+
+  IPYNB-HIDDEN-001:
+    modules: [model/metadata.py]
+    tests: [test_obligation_metadata_adapters.py]
+
+  IPYNB-SEC-001:
+    modules: [security/limits.py]
+    tests: [test_obligation_security_limits.py]
+
+  IPYNB-SANITIZE-001:
+    modules: [security/sanitizer.py]
+    tests: [test_obligation_sanitization.py]
+
+  IPYNB-TRUST-001:
+    modules: [security/trust.py]
+    tests: [test_obligation_trust_notary.py]
+
+  IPYNB-LIFECYCLE-001:
+    modules: [model/lifecycle.py]
+    tests: [test_obligation_lifecycle_modes.py]
+
+  IPYNB-UPGRADE-001:
+    modules: [model/lifecycle.py]
+    tests: [test_obligation_version_conversion.py]
+
+  IPYNB-CLEAN-001:
+    modules: [model/cleanup.py]
+    tests: [test_obligation_cleanup.py]
+
+  IPYNB-DIFF-001:
+    modules: [model/diff.py]
+    tests: [test_obligation_structure_diff.py]
+
+  IPYNB-MERGE-001:
+    modules: [model/diff.py]
+    tests: [test_obligation_structure_diff.py]
+
+  IPYNB-EDIT-001:
+    modules: [model/editor.py]
+    tests: [test_obligation_cell_editor.py]
+
+  IPYNB-PRESERVE-001:
+    modules: [codec/writer/writer.py, model/document.py]
+    tests: [test_obligation_corpus_integrity.py]
+
+  # Genuinely unimplemented, not merely untested -- see notes above.
+  IPYNB-EXPORT-001:
+    modules: []
+    tests: []
