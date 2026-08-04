@@ -35,7 +35,9 @@ execution_evidence:
 capabilities:
   IPYNB-PARSE-001:
     modules: [codec/reader/reader.py]
-    tests: [test_obligation_nbformat_core.py]
+    tests:
+      - test_obligation_nbformat_core.py
+      - test_obligation_parse_source_and_numeric_fidelity.py
 
   IPYNB-WRITE-001:
     modules: [codec/writer/writer.py]
