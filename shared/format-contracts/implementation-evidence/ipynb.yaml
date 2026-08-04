@@ -34,8 +34,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Orphan and missing-target
     fixtures produce diagnostics.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Orphan and missing-target fixtures produce diagnostics.
@@ -61,8 +59,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Conflict-matrix fixtures
     (move/edit, delete/edit, output, metadata).'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Conflict-matrix fixtures (move/edit, delete/edit, output, metadata).
@@ -79,9 +75,6 @@ obligations:
   positive_test_selectors:
   - tests/python/ipynb/test_obligation_nbformat_core.py::test_complete_core_vector_validates_and_roundtrips_without_execution
   - tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace
-  - tests/python/ipynb/test_ipynb_codec.py::test_probe_valid_minimal
-  - tests/python/ipynb/test_ipynb_codec.py::test_probe_valid_code_and_markdown
-  - tests/python/ipynb/test_ipynb_codec.py::test_probe_valid_with_outputs
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -90,8 +83,8 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Fixtures for string vs list-of-strings
     sources, unknown fields, and numeric edge values round-trip.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
+  - 'Shadow-package test files excluded from evidence (test_ipynb_codec.py): they exercise the deprecated
+    `ipynb.*` package, not the shipped namespace.'
   proof_requirements:
     positive:
     - Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip.
@@ -99,7 +92,7 @@ obligations:
     - Selector-bound negative cases are not yet identified for this obligation.
 - obligation_id: SAL-IPYNB-OBL-0ADDA3341B91C271
   capability_id: IPYNB-CELLNAME-001
-  status: partial
+  status: missing
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
@@ -109,10 +102,7 @@ obligations:
   - src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellQuery
   - src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellEdit
   - src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellEditReport
-  positive_test_selectors:
-  - tests/python/ipynb/test_ipynb_cell_id.py::test_generates_id_when_missing
-  - tests/python/ipynb/test_ipynb_cell_id.py::test_preserves_valid_existing_id
-  - tests/python/ipynb/test_ipynb_cell_id.py::test_regenerates_invalid_format_id
+  positive_test_selectors: []
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -121,8 +111,10 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Present non-empty names pass
     and empty names fail in every supported profile.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. The only test files for this capability (test_ipynb_cell_id.py)
+    import the deprecated `ipynb.*` shadow package, not format_factory.ipynb. Under forbidden_progress_claims
+    that cannot count as coverage of the shipped namespace, so this obligation currently has no valid
+    positive evidence.
   proof_requirements:
     positive:
     - Present non-empty names pass and empty names fail in every supported profile.
@@ -143,9 +135,6 @@ obligations:
   - tests/python/ipynb/test_obligation_validation_profiles.py::test_future_declared_profile_is_valid_with_separate_forward_warnings
   - tests/python/ipynb/test_obligation_validation_profiles.py::test_attachment_reference_integrity_and_mime_bundles
   - tests/python/ipynb/test_obligation_validation_profiles.py::test_malformed_cells_outputs_tags_and_mime_bundles_have_exact_diagnostics
-  - tests/python/ipynb/test_ipynb_validation.py::test_well_formed_notebook_passes
-  - tests/python/ipynb/test_ipynb_validation.py::test_well_formed_notebook_does_not_raise
-  - tests/python/ipynb/test_ipynb_validation.py::test_real_sample_files_pass
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -154,8 +143,8 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Both validation modes on
     fixtures per schema construct; unknown-field separation asserted.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
+  - 'Shadow-package test files excluded from evidence (test_ipynb_validation.py): they exercise the deprecated
+    `ipynb.*` package, not the shipped namespace.'
   proof_requirements:
     positive:
     - Both validation modes on fixtures per schema construct; unknown-field separation asserted.
@@ -172,9 +161,6 @@ obligations:
   positive_test_selectors:
   - tests/python/ipynb/test_obligation_nbformat_core.py::test_complete_core_vector_validates_and_roundtrips_without_execution
   - tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace
-  - tests/python/ipynb/test_ipynb_codec.py::test_probe_valid_minimal
-  - tests/python/ipynb/test_ipynb_codec.py::test_probe_valid_code_and_markdown
-  - tests/python/ipynb/test_ipynb_codec.py::test_probe_valid_with_outputs
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -183,8 +169,8 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Fixtures for string vs list-of-strings
     sources, unknown fields, and numeric edge values round-trip.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
+  - 'Shadow-package test files excluded from evidence (test_ipynb_codec.py): they exercise the deprecated
+    `ipynb.*` package, not the shipped namespace.'
   proof_requirements:
     positive:
     - Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip.
@@ -210,8 +196,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Unknown-metadata round trip;
     typed adapter reads on real fixtures.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Unknown-metadata round trip; typed adapter reads on real fixtures.
@@ -235,8 +219,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Each security_limits baseline
     behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
@@ -261,8 +243,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Each security_limits baseline
     behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
@@ -289,8 +269,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Title and multi-author fixtures
     round-trip for every applicable profile, including additional author properties.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Title and multi-author fixtures round-trip for every applicable profile, including additional author
@@ -317,8 +295,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
     behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative
@@ -340,9 +316,6 @@ obligations:
   - tests/python/ipynb/test_obligation_validation_profiles.py::test_future_declared_profile_is_valid_with_separate_forward_warnings
   - tests/python/ipynb/test_obligation_validation_profiles.py::test_attachment_reference_integrity_and_mime_bundles
   - tests/python/ipynb/test_obligation_validation_profiles.py::test_malformed_cells_outputs_tags_and_mime_bundles_have_exact_diagnostics
-  - tests/python/ipynb/test_ipynb_validation.py::test_well_formed_notebook_passes
-  - tests/python/ipynb/test_ipynb_validation.py::test_well_formed_notebook_does_not_raise
-  - tests/python/ipynb/test_ipynb_validation.py::test_real_sample_files_pass
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -351,8 +324,8 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Both validation modes on
     fixtures per schema construct; unknown-field separation asserted.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
+  - 'Shadow-package test files excluded from evidence (test_ipynb_validation.py): they exercise the deprecated
+    `ipynb.*` package, not the shipped namespace.'
   proof_requirements:
     positive:
     - Both validation modes on fixtures per schema construct; unknown-field separation asserted.
@@ -360,16 +333,13 @@ obligations:
     - Selector-bound negative cases are not yet identified for this obligation.
 - obligation_id: SAL-IPYNB-OBL-1FA16EB9033A30BD
   capability_id: IPYNB-CELLNAMEUNIQUE-001
-  status: partial
+  status: missing
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
-  positive_test_selectors:
-  - tests/python/ipynb/test_ipynb_cell_id.py::test_generates_id_when_missing
-  - tests/python/ipynb/test_ipynb_cell_id.py::test_preserves_valid_existing_id
-  - tests/python/ipynb/test_ipynb_cell_id.py::test_regenerates_invalid_format_id
+  positive_test_selectors: []
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -378,8 +348,10 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Duplicate-name fixtures fail
     the semantic check while distinct and absent names pass.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. The only test files for this capability (test_ipynb_cell_id.py)
+    import the deprecated `ipynb.*` shadow package, not format_factory.ipynb. Under forbidden_progress_claims
+    that cannot count as coverage of the shipped namespace, so this obligation currently has no valid
+    positive evidence.
   proof_requirements:
     positive:
     - Duplicate-name fixtures fail the semantic check while distinct and absent names pass.
@@ -387,7 +359,7 @@ obligations:
     - Selector-bound negative cases are not yet identified for this obligation.
 - obligation_id: SAL-IPYNB-OBL-2558D9E311DA3594
   capability_id: IPYNB-OUTPUT-001
-  status: partial
+  status: missing
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/model/output.py::get_output_representation
   - src/python/ipynb/src/format_factory/ipynb/model/output.py::add_output_representation
@@ -396,10 +368,7 @@ obligations:
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
-  positive_test_selectors:
-  - tests/python/ipynb/test_ipynb_output_mime_api.py::test_get_representation_returns_existing_mime_value
-  - tests/python/ipynb/test_ipynb_output_mime_api.py::test_get_representation_missing_mime_returns_none
-  - tests/python/ipynb/test_ipynb_output_mime_api.py::test_add_representation_adds_new_mime_type
+  positive_test_selectors: []
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -409,8 +378,10 @@ obligations:
   - 'Not yet audited against this obligation''s declared proof requirements: MIME-bundle matrix round-trips
     including vendor types and binary payloads.; MIME matrix fixtures per output type with byte-exact
     payload verification.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. The only test files for this capability (test_ipynb_output_mime_api.py)
+    import the deprecated `ipynb.*` shadow package, not format_factory.ipynb. Under forbidden_progress_claims
+    that cannot count as coverage of the shipped namespace, so this obligation currently has no valid
+    positive evidence.
   proof_requirements:
     positive:
     - MIME-bundle matrix round-trips including vendor types and binary payloads.
@@ -428,9 +399,6 @@ obligations:
   positive_test_selectors:
   - tests/python/ipynb/test_obligation_nbformat_core.py::test_complete_core_vector_validates_and_roundtrips_without_execution
   - tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace
-  - tests/python/ipynb/test_ipynb_codec.py::test_probe_valid_minimal
-  - tests/python/ipynb/test_ipynb_codec.py::test_probe_valid_code_and_markdown
-  - tests/python/ipynb/test_ipynb_codec.py::test_probe_valid_with_outputs
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -439,8 +407,8 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Fixtures for string vs list-of-strings
     sources, unknown fields, and numeric edge values round-trip.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
+  - 'Shadow-package test files excluded from evidence (test_ipynb_codec.py): they exercise the deprecated
+    `ipynb.*` package, not the shipped namespace.'
   proof_requirements:
     positive:
     - Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip.
@@ -466,8 +434,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Unknown-metadata round trip;
     typed adapter reads on real fixtures.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Unknown-metadata round trip; typed adapter reads on real fixtures.
@@ -495,8 +461,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Orphan and missing-target
     fixtures produce diagnostics.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Orphan and missing-target fixtures produce diagnostics.
@@ -521,8 +485,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Typed access per cell type;
     unknown-cell-type preservation fixture.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Typed access per cell type; unknown-cell-type preservation fixture.
@@ -547,8 +509,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Typed access per cell type;
     unknown-cell-type preservation fixture.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Typed access per cell type; unknown-cell-type preservation fixture.
@@ -574,8 +534,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Unknown-metadata round trip;
     typed adapter reads on real fixtures.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Unknown-metadata round trip; typed adapter reads on real fixtures.
@@ -603,8 +561,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Orphan and missing-target
     fixtures produce diagnostics.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Orphan and missing-target fixtures produce diagnostics.
@@ -630,8 +586,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Hostile active-content fixtures
     per mode; lossless mode leaves content intact and reported.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Hostile active-content fixtures per mode; lossless mode leaves content intact and reported.
@@ -656,8 +610,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Isolated-environment execution
     tests covering timeout, kernel failure, and partial output; core-path no-execution proof.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Isolated-environment execution tests covering timeout, kernel failure, and partial output; core-path
@@ -688,8 +640,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Each preservation baseline
     behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Each preservation baseline behavior has a focused positive test and, where refusable, a negative
@@ -716,8 +666,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
     behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative
@@ -744,8 +692,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Move-detection fixtures;
     ignore-policy matrix; patch precondition failures.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Move-detection fixtures; ignore-policy matrix; patch precondition failures.
@@ -753,7 +699,7 @@ obligations:
     - Selector-bound negative cases are not yet identified for this obligation.
 - obligation_id: SAL-IPYNB-OBL-679A623D14CBF763
   capability_id: IPYNB-OUTPUT-001
-  status: partial
+  status: missing
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/model/output.py::get_output_representation
   - src/python/ipynb/src/format_factory/ipynb/model/output.py::add_output_representation
@@ -762,10 +708,7 @@ obligations:
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
-  positive_test_selectors:
-  - tests/python/ipynb/test_ipynb_output_mime_api.py::test_get_representation_returns_existing_mime_value
-  - tests/python/ipynb/test_ipynb_output_mime_api.py::test_get_representation_missing_mime_returns_none
-  - tests/python/ipynb/test_ipynb_output_mime_api.py::test_add_representation_adds_new_mime_type
+  positive_test_selectors: []
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -775,8 +718,10 @@ obligations:
   - 'Not yet audited against this obligation''s declared proof requirements: MIME-bundle matrix round-trips
     including vendor types and binary payloads.; MIME matrix fixtures per output type with byte-exact
     payload verification.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. The only test files for this capability (test_ipynb_output_mime_api.py)
+    import the deprecated `ipynb.*` shadow package, not format_factory.ipynb. Under forbidden_progress_claims
+    that cannot count as coverage of the shipped namespace, so this obligation currently has no valid
+    positive evidence.
   proof_requirements:
     positive:
     - MIME-bundle matrix round-trips including vendor types and binary payloads.
@@ -807,8 +752,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Each preservation baseline
     behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Each preservation baseline behavior has a focused positive test and, where refusable, a negative
@@ -826,9 +769,6 @@ obligations:
   positive_test_selectors:
   - tests/python/ipynb/test_obligation_nbformat_core.py::test_complete_core_vector_validates_and_roundtrips_without_execution
   - tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace
-  - tests/python/ipynb/test_ipynb_codec.py::test_probe_valid_minimal
-  - tests/python/ipynb/test_ipynb_codec.py::test_probe_valid_code_and_markdown
-  - tests/python/ipynb/test_ipynb_codec.py::test_probe_valid_with_outputs
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -837,8 +777,8 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Fixtures for string vs list-of-strings
     sources, unknown fields, and numeric edge values round-trip.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
+  - 'Shadow-package test files excluded from evidence (test_ipynb_codec.py): they exercise the deprecated
+    `ipynb.*` package, not the shipped namespace.'
   proof_requirements:
     positive:
     - Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip.
@@ -846,16 +786,13 @@ obligations:
     - Selector-bound negative cases are not yet identified for this obligation.
 - obligation_id: SAL-IPYNB-OBL-6F4551856EC21F7B
   capability_id: IPYNB-ID-001
-  status: partial
+  status: missing
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
-  positive_test_selectors:
-  - tests/python/ipynb/test_ipynb_cell_id.py::test_generates_id_when_missing
-  - tests/python/ipynb/test_ipynb_cell_id.py::test_preserves_valid_existing_id
-  - tests/python/ipynb/test_ipynb_cell_id.py::test_regenerates_invalid_format_id
+  positive_test_selectors: []
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -864,8 +801,10 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Duplicate/invalid ID negatives;
     upgrade fixture verifies mapping.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. The only test files for this capability (test_ipynb_cell_id.py)
+    import the deprecated `ipynb.*` shadow package, not format_factory.ipynb. Under forbidden_progress_claims
+    that cannot count as coverage of the shipped namespace, so this obligation currently has no valid
+    positive evidence.
   proof_requirements:
     positive:
     - Duplicate/invalid ID negatives; upgrade fixture verifies mapping.
@@ -895,8 +834,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Each preservation baseline
     behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Each preservation baseline behavior has a focused positive test and, where refusable, a negative
@@ -905,7 +842,7 @@ obligations:
     - Selector-bound negative cases are not yet identified for this obligation.
 - obligation_id: SAL-IPYNB-OBL-77C54BA16B30D129
   capability_id: IPYNB-OUTPUT-001
-  status: partial
+  status: missing
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/model/output.py::get_output_representation
   - src/python/ipynb/src/format_factory/ipynb/model/output.py::add_output_representation
@@ -914,10 +851,7 @@ obligations:
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
-  positive_test_selectors:
-  - tests/python/ipynb/test_ipynb_output_mime_api.py::test_get_representation_returns_existing_mime_value
-  - tests/python/ipynb/test_ipynb_output_mime_api.py::test_get_representation_missing_mime_returns_none
-  - tests/python/ipynb/test_ipynb_output_mime_api.py::test_add_representation_adds_new_mime_type
+  positive_test_selectors: []
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -927,8 +861,10 @@ obligations:
   - 'Not yet audited against this obligation''s declared proof requirements: MIME-bundle matrix round-trips
     including vendor types and binary payloads.; MIME matrix fixtures per output type with byte-exact
     payload verification.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. The only test files for this capability (test_ipynb_output_mime_api.py)
+    import the deprecated `ipynb.*` shadow package, not format_factory.ipynb. Under forbidden_progress_claims
+    that cannot count as coverage of the shipped namespace, so this obligation currently has no valid
+    positive evidence.
   proof_requirements:
     positive:
     - MIME-bundle matrix round-trips including vendor types and binary payloads.
@@ -955,8 +891,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Move-detection fixtures;
     ignore-policy matrix; patch precondition failures.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Move-detection fixtures; ignore-policy matrix; patch precondition failures.
@@ -982,8 +916,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Edit-invalidates-trust fixture;
     notary plug-in contract test.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Edit-invalidates-trust fixture; notary plug-in contract test.
@@ -991,16 +923,13 @@ obligations:
     - Selector-bound negative cases are not yet identified for this obligation.
 - obligation_id: SAL-IPYNB-OBL-83A15CABF90C4B84
   capability_id: IPYNB-ID-001
-  status: partial
+  status: missing
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
-  positive_test_selectors:
-  - tests/python/ipynb/test_ipynb_cell_id.py::test_generates_id_when_missing
-  - tests/python/ipynb/test_ipynb_cell_id.py::test_preserves_valid_existing_id
-  - tests/python/ipynb/test_ipynb_cell_id.py::test_regenerates_invalid_format_id
+  positive_test_selectors: []
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -1009,8 +938,10 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Duplicate/invalid ID negatives;
     upgrade fixture verifies mapping.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. The only test files for this capability (test_ipynb_cell_id.py)
+    import the deprecated `ipynb.*` shadow package, not format_factory.ipynb. Under forbidden_progress_claims
+    that cannot count as coverage of the shipped namespace, so this obligation currently has no valid
+    positive evidence.
   proof_requirements:
     positive:
     - Duplicate/invalid ID negatives; upgrade fixture verifies mapping.
@@ -1036,8 +967,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Four standard timing keys,
     additional string keys, and non-string negatives are covered.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Four standard timing keys, additional string keys, and non-string negatives are covered.
@@ -1063,8 +992,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Visibility metadata fixtures
     cover all cell types, boolean validation, and unknown Jupyter fields.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Visibility metadata fixtures cover all cell types, boolean validation, and unknown Jupyter fields.
@@ -1088,8 +1015,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Each security_limits baseline
     behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
@@ -1116,8 +1041,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Visibility metadata fixtures
     cover all cell types, boolean validation, and unknown Jupyter fields.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Visibility metadata fixtures cover all cell types, boolean validation, and unknown Jupyter fields.
@@ -1147,8 +1070,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Each preservation baseline
     behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Each preservation baseline behavior has a focused positive test and, where refusable, a negative
@@ -1166,9 +1087,6 @@ obligations:
   positive_test_selectors:
   - tests/python/ipynb/test_obligation_nbformat_core.py::test_complete_core_vector_validates_and_roundtrips_without_execution
   - tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace
-  - tests/python/ipynb/test_ipynb_codec.py::test_probe_valid_minimal
-  - tests/python/ipynb/test_ipynb_codec.py::test_probe_valid_code_and_markdown
-  - tests/python/ipynb/test_ipynb_codec.py::test_probe_valid_with_outputs
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -1177,8 +1095,8 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Fixtures for string vs list-of-strings
     sources, unknown fields, and numeric edge values round-trip.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
+  - 'Shadow-package test files excluded from evidence (test_ipynb_codec.py): they exercise the deprecated
+    `ipynb.*` package, not the shipped namespace.'
   proof_requirements:
     positive:
     - Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip.
@@ -1203,8 +1121,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Typed access per cell type;
     unknown-cell-type preservation fixture.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Typed access per cell type; unknown-cell-type preservation fixture.
@@ -1221,9 +1137,6 @@ obligations:
   positive_test_selectors:
   - tests/python/ipynb/test_obligation_nbformat_core.py::test_complete_core_vector_validates_and_roundtrips_without_execution
   - tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace
-  - tests/python/ipynb/test_ipynb_codec.py::test_probe_valid_minimal
-  - tests/python/ipynb/test_ipynb_codec.py::test_probe_valid_code_and_markdown
-  - tests/python/ipynb/test_ipynb_codec.py::test_probe_valid_with_outputs
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -1232,8 +1145,8 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Fixtures for string vs list-of-strings
     sources, unknown fields, and numeric edge values round-trip.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
+  - 'Shadow-package test files excluded from evidence (test_ipynb_codec.py): they exercise the deprecated
+    `ipynb.*` package, not the shipped namespace.'
   proof_requirements:
     positive:
     - Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip.
@@ -1241,16 +1154,13 @@ obligations:
     - Selector-bound negative cases are not yet identified for this obligation.
 - obligation_id: SAL-IPYNB-OBL-AABAEFD635A6381D
   capability_id: IPYNB-EXPORT-001
-  status: partial
+  status: missing
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/analytics/notebook.py::ipynb_cell_type_histogram
   - src/python/ipynb/src/format_factory/ipynb/analytics/notebook.py::ipynb_output_type_histogram
   - src/python/ipynb/src/format_factory/ipynb/analytics/notebook.py::ipynb_has_execution_errors
   - src/python/ipynb/src/format_factory/ipynb/analytics/notebook.py::ipynb_average_source_length
-  positive_test_selectors:
-  - tests/python/ipynb/test_ipynb_to_csv.py::test_returns_data_row_count
-  - tests/python/ipynb/test_ipynb_to_csv.py::test_output_file_created_and_nonempty
-  - tests/python/ipynb/test_ipynb_to_csv.py::test_header_row_present
+  positive_test_selectors: []
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -1259,8 +1169,10 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Exporter adapter contract
     test with ancillary-resource collection.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. The only test files for this capability (test_ipynb_to_csv.py)
+    import the deprecated `ipynb.*` shadow package, not format_factory.ipynb. Under forbidden_progress_claims
+    that cannot count as coverage of the shipped namespace, so this obligation currently has no valid
+    positive evidence.
   proof_requirements:
     positive:
     - Exporter adapter contract test with ancillary-resource collection.
@@ -1286,8 +1198,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Fixtures at each supported
     older version upgrade with ledger assertions; downgrade-loss reporting fixture.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Fixtures at each supported older version upgrade with ledger assertions; downgrade-loss reporting
@@ -1296,16 +1206,13 @@ obligations:
     - Selector-bound negative cases are not yet identified for this obligation.
 - obligation_id: SAL-IPYNB-OBL-B227B25AB9838FFD
   capability_id: IPYNB-CELLNAMEUNIQUE-001
-  status: partial
+  status: missing
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
-  positive_test_selectors:
-  - tests/python/ipynb/test_ipynb_cell_id.py::test_generates_id_when_missing
-  - tests/python/ipynb/test_ipynb_cell_id.py::test_preserves_valid_existing_id
-  - tests/python/ipynb/test_ipynb_cell_id.py::test_regenerates_invalid_format_id
+  positive_test_selectors: []
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -1314,8 +1221,10 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Duplicate-name fixtures fail
     the semantic check while distinct and absent names pass.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. The only test files for this capability (test_ipynb_cell_id.py)
+    import the deprecated `ipynb.*` shadow package, not format_factory.ipynb. Under forbidden_progress_claims
+    that cannot count as coverage of the shipped namespace, so this obligation currently has no valid
+    positive evidence.
   proof_requirements:
     positive:
     - Duplicate-name fixtures fail the semantic check while distinct and absent names pass.
@@ -1323,7 +1232,7 @@ obligations:
     - Selector-bound negative cases are not yet identified for this obligation.
 - obligation_id: SAL-IPYNB-OBL-B2FA0BFF8CA07D78
   capability_id: IPYNB-OUTPUT-001
-  status: partial
+  status: missing
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/model/output.py::get_output_representation
   - src/python/ipynb/src/format_factory/ipynb/model/output.py::add_output_representation
@@ -1332,10 +1241,7 @@ obligations:
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
-  positive_test_selectors:
-  - tests/python/ipynb/test_ipynb_output_mime_api.py::test_get_representation_returns_existing_mime_value
-  - tests/python/ipynb/test_ipynb_output_mime_api.py::test_get_representation_missing_mime_returns_none
-  - tests/python/ipynb/test_ipynb_output_mime_api.py::test_add_representation_adds_new_mime_type
+  positive_test_selectors: []
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -1345,8 +1251,10 @@ obligations:
   - 'Not yet audited against this obligation''s declared proof requirements: MIME-bundle matrix round-trips
     including vendor types and binary payloads.; MIME matrix fixtures per output type with byte-exact
     payload verification.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. The only test files for this capability (test_ipynb_output_mime_api.py)
+    import the deprecated `ipynb.*` shadow package, not format_factory.ipynb. Under forbidden_progress_claims
+    that cannot count as coverage of the shipped namespace, so this obligation currently has no valid
+    positive evidence.
   proof_requirements:
     positive:
     - MIME-bundle matrix round-trips including vendor types and binary payloads.
@@ -1355,7 +1263,7 @@ obligations:
     - Selector-bound negative cases are not yet identified for this obligation.
 - obligation_id: SAL-IPYNB-OBL-B3EFD046C72D3E4B
   capability_id: IPYNB-OUTPUT-001
-  status: partial
+  status: missing
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/model/output.py::get_output_representation
   - src/python/ipynb/src/format_factory/ipynb/model/output.py::add_output_representation
@@ -1364,10 +1272,7 @@ obligations:
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
-  positive_test_selectors:
-  - tests/python/ipynb/test_ipynb_output_mime_api.py::test_get_representation_returns_existing_mime_value
-  - tests/python/ipynb/test_ipynb_output_mime_api.py::test_get_representation_missing_mime_returns_none
-  - tests/python/ipynb/test_ipynb_output_mime_api.py::test_add_representation_adds_new_mime_type
+  positive_test_selectors: []
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -1377,8 +1282,10 @@ obligations:
   - 'Not yet audited against this obligation''s declared proof requirements: MIME-bundle matrix round-trips
     including vendor types and binary payloads.; MIME matrix fixtures per output type with byte-exact
     payload verification.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. The only test files for this capability (test_ipynb_output_mime_api.py)
+    import the deprecated `ipynb.*` shadow package, not format_factory.ipynb. Under forbidden_progress_claims
+    that cannot count as coverage of the shipped namespace, so this obligation currently has no valid
+    positive evidence.
   proof_requirements:
     positive:
     - MIME-bundle matrix round-trips including vendor types and binary payloads.
@@ -1404,8 +1311,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Dry-run report matches actual
     mutation; selective clearing fixtures.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Dry-run report matches actual mutation; selective clearing fixtures.
@@ -1413,7 +1318,7 @@ obligations:
     - Selector-bound negative cases are not yet identified for this obligation.
 - obligation_id: SAL-IPYNB-OBL-BBE5B3445AD56F9C
   capability_id: IPYNB-OUTPUT-001
-  status: partial
+  status: missing
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/model/output.py::get_output_representation
   - src/python/ipynb/src/format_factory/ipynb/model/output.py::add_output_representation
@@ -1422,10 +1327,7 @@ obligations:
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
-  positive_test_selectors:
-  - tests/python/ipynb/test_ipynb_output_mime_api.py::test_get_representation_returns_existing_mime_value
-  - tests/python/ipynb/test_ipynb_output_mime_api.py::test_get_representation_missing_mime_returns_none
-  - tests/python/ipynb/test_ipynb_output_mime_api.py::test_add_representation_adds_new_mime_type
+  positive_test_selectors: []
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -1435,8 +1337,10 @@ obligations:
   - 'Not yet audited against this obligation''s declared proof requirements: MIME-bundle matrix round-trips
     including vendor types and binary payloads.; MIME matrix fixtures per output type with byte-exact
     payload verification.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. The only test files for this capability (test_ipynb_output_mime_api.py)
+    import the deprecated `ipynb.*` shadow package, not format_factory.ipynb. Under forbidden_progress_claims
+    that cannot count as coverage of the shipped namespace, so this obligation currently has no valid
+    positive evidence.
   proof_requirements:
     positive:
     - MIME-bundle matrix round-trips including vendor types and binary payloads.
@@ -1463,8 +1367,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Each mutation class save-reload-verifies
     with IDs stable.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Each mutation class save-reload-verifies with IDs stable.
@@ -1490,8 +1392,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Title and multi-author fixtures
     round-trip for every applicable profile, including additional author properties.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Title and multi-author fixtures round-trip for every applicable profile, including additional author
@@ -1518,8 +1418,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Four standard timing keys,
     additional string keys, and non-string negatives are covered.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Four standard timing keys, additional string keys, and non-string negatives are covered.
@@ -1545,8 +1443,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Fixtures at each supported
     older version upgrade with ledger assertions; downgrade-loss reporting fixture.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Fixtures at each supported older version upgrade with ledger assertions; downgrade-loss reporting
@@ -1571,8 +1467,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Each security_limits baseline
     behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
@@ -1599,8 +1493,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
     behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative
@@ -1626,8 +1518,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Dry-run report matches actual
     mutation; selective clearing fixtures.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Dry-run report matches actual mutation; selective clearing fixtures.
@@ -1652,8 +1542,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Typed access per cell type;
     unknown-cell-type preservation fixture.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Typed access per cell type; unknown-cell-type preservation fixture.
@@ -1661,7 +1549,7 @@ obligations:
     - Selector-bound negative cases are not yet identified for this obligation.
 - obligation_id: SAL-IPYNB-OBL-CDB7DEE07F2275F7
   capability_id: IPYNB-OUTPUT-001
-  status: partial
+  status: missing
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/model/output.py::get_output_representation
   - src/python/ipynb/src/format_factory/ipynb/model/output.py::add_output_representation
@@ -1670,10 +1558,7 @@ obligations:
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
-  positive_test_selectors:
-  - tests/python/ipynb/test_ipynb_output_mime_api.py::test_get_representation_returns_existing_mime_value
-  - tests/python/ipynb/test_ipynb_output_mime_api.py::test_get_representation_missing_mime_returns_none
-  - tests/python/ipynb/test_ipynb_output_mime_api.py::test_add_representation_adds_new_mime_type
+  positive_test_selectors: []
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -1683,8 +1568,10 @@ obligations:
   - 'Not yet audited against this obligation''s declared proof requirements: MIME-bundle matrix round-trips
     including vendor types and binary payloads.; MIME matrix fixtures per output type with byte-exact
     payload verification.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. The only test files for this capability (test_ipynb_output_mime_api.py)
+    import the deprecated `ipynb.*` shadow package, not format_factory.ipynb. Under forbidden_progress_claims
+    that cannot count as coverage of the shipped namespace, so this obligation currently has no valid
+    positive evidence.
   proof_requirements:
     positive:
     - MIME-bundle matrix round-trips including vendor types and binary payloads.
@@ -1711,8 +1598,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Edit-invalidates-trust fixture;
     notary plug-in contract test.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Edit-invalidates-trust fixture; notary plug-in contract test.
@@ -1736,8 +1621,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Each security_limits baseline
     behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
@@ -1764,8 +1647,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
     behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative
@@ -1774,16 +1655,13 @@ obligations:
     - Selector-bound negative cases are not yet identified for this obligation.
 - obligation_id: SAL-IPYNB-OBL-E72B508EFCCD0E0C
   capability_id: IPYNB-WRITE-001
-  status: partial
+  status: missing
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dumps
   - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dump
   - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::write_ipynb
   - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::get_cell_count
-  positive_test_selectors:
-  - tests/python/ipynb/test_ipynb_codec.py::test_probe_valid_minimal
-  - tests/python/ipynb/test_ipynb_codec.py::test_probe_valid_code_and_markdown
-  - tests/python/ipynb/test_ipynb_codec.py::test_probe_valid_with_outputs
+  positive_test_selectors: []
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -1792,8 +1670,10 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Determinism byte-compare;
     binary-payload integrity fixtures.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. The only test files for this capability (test_ipynb_codec.py)
+    import the deprecated `ipynb.*` shadow package, not format_factory.ipynb. Under forbidden_progress_claims
+    that cannot count as coverage of the shipped namespace, so this obligation currently has no valid
+    positive evidence.
   proof_requirements:
     positive:
     - Determinism byte-compare; binary-payload integrity fixtures.
@@ -1801,7 +1681,7 @@ obligations:
     - Selector-bound negative cases are not yet identified for this obligation.
 - obligation_id: SAL-IPYNB-OBL-E9E64A65284001E4
   capability_id: IPYNB-CELLNAME-001
-  status: partial
+  status: missing
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
@@ -1811,10 +1691,7 @@ obligations:
   - src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellQuery
   - src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellEdit
   - src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellEditReport
-  positive_test_selectors:
-  - tests/python/ipynb/test_ipynb_cell_id.py::test_generates_id_when_missing
-  - tests/python/ipynb/test_ipynb_cell_id.py::test_preserves_valid_existing_id
-  - tests/python/ipynb/test_ipynb_cell_id.py::test_regenerates_invalid_format_id
+  positive_test_selectors: []
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -1823,8 +1700,10 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Present non-empty names pass
     and empty names fail in every supported profile.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
+  - NO SHIPPED-NAMESPACE TEST COVERAGE. The only test files for this capability (test_ipynb_cell_id.py)
+    import the deprecated `ipynb.*` shadow package, not format_factory.ipynb. Under forbidden_progress_claims
+    that cannot count as coverage of the shipped namespace, so this obligation currently has no valid
+    positive evidence.
   proof_requirements:
     positive:
     - Present non-empty names pass and empty names fail in every supported profile.
@@ -1850,8 +1729,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Hostile active-content fixtures
     per mode; lossless mode leaves content intact and reported.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Hostile active-content fixtures per mode; lossless mode leaves content intact and reported.
@@ -1877,8 +1754,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
     behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative
@@ -1900,9 +1775,6 @@ obligations:
   - tests/python/ipynb/test_obligation_validation_profiles.py::test_future_declared_profile_is_valid_with_separate_forward_warnings
   - tests/python/ipynb/test_obligation_validation_profiles.py::test_attachment_reference_integrity_and_mime_bundles
   - tests/python/ipynb/test_obligation_validation_profiles.py::test_malformed_cells_outputs_tags_and_mime_bundles_have_exact_diagnostics
-  - tests/python/ipynb/test_ipynb_validation.py::test_well_formed_notebook_passes
-  - tests/python/ipynb/test_ipynb_validation.py::test_well_formed_notebook_does_not_raise
-  - tests/python/ipynb/test_ipynb_validation.py::test_real_sample_files_pass
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -1911,8 +1783,8 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Both validation modes on
     fixtures per schema construct; unknown-field separation asserted.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
+  - 'Shadow-package test files excluded from evidence (test_ipynb_validation.py): they exercise the deprecated
+    `ipynb.*` package, not the shipped namespace.'
   proof_requirements:
     positive:
     - Both validation modes on fixtures per schema construct; unknown-field separation asserted.
@@ -1938,8 +1810,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
     behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
-  - 'No independent oracle: IPYNB has no reference implementation registered, so nothing here is externally
-    verified.'
   proof_requirements:
     positive:
     - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative
