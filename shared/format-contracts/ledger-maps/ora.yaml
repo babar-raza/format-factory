@@ -14,12 +14,12 @@ notes: >-
   exactly the fabrication the evidence process exists to prevent. Recording
   them explicitly keeps all 134 obligations inside the denominator.
 
-  Four capabilities are now mapped to real source that was read, not merely
+  Five capabilities are now mapped to real source that was read, not merely
   assumed to exist (the GAP-022 rule). Mapping them does not assert they are
   complete -- ORA-STACK-001's model is built and its rendering is not -- only
   that implementing behaviour and tests exist for the reconciler to grade.
 
-  This remains a build-from-nothing lane. 16 of 20 capabilities have no source.
+  This remains a build-from-nothing lane. 15 of 20 capabilities have no source.
 
 execution_evidence:
   path: reports/skills-rff6/skill-transcripts/build-evidence-ledger-ora-001.json
@@ -31,8 +31,12 @@ execution_evidence:
 
 capabilities:
   ORA-ASSET-001:
-    modules: []
-    tests: []
+    modules:
+    - codec/png_metadata.py
+    - codec/assets.py
+    - codec/container.py
+    tests:
+    - test_obligation_raster_assets.py
 
   ORA-BASELINEASSET-001:
     modules: []

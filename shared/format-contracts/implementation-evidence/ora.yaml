@@ -215,16 +215,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-10B73685E6FDA374
   capability_id: ORA-ASSET-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata
+  - src/python/ora/src/format_factory/ora/codec/assets.py::ResolvedAsset
+  - src/python/ora/src/format_factory/ora/codec/assets.py::resolve_asset
+  - src/python/ora/src/format_factory/ora/codec/assets.py::iter_layers
+  - src/python/ora/src/format_factory/ora/codec/assets.py::resolve_all_assets
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_read_from_the_header
+  - tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_available_even_when_the_pixel_data_is_unreadable
+  - tests/python/ora/test_obligation_raster_assets.py::test_only_the_header_is_consumed
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Missing, aliased, hostile-path,
     malformed-raster, huge-dimension, and replacement round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips.
@@ -549,16 +561,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-2B5CB90B7C3E7512
   capability_id: ORA-ASSET-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata
+  - src/python/ora/src/format_factory/ora/codec/assets.py::ResolvedAsset
+  - src/python/ora/src/format_factory/ora/codec/assets.py::resolve_asset
+  - src/python/ora/src/format_factory/ora/codec/assets.py::iter_layers
+  - src/python/ora/src/format_factory/ora/codec/assets.py::resolve_all_assets
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_read_from_the_header
+  - tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_available_even_when_the_pixel_data_is_unreadable
+  - tests/python/ora/test_obligation_raster_assets.py::test_only_the_header_is_consumed
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Missing, aliased, hostile-path,
     malformed-raster, huge-dimension, and replacement round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips.
@@ -765,16 +789,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-3A738D65887DDAA0
   capability_id: ORA-ASSET-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata
+  - src/python/ora/src/format_factory/ora/codec/assets.py::ResolvedAsset
+  - src/python/ora/src/format_factory/ora/codec/assets.py::resolve_asset
+  - src/python/ora/src/format_factory/ora/codec/assets.py::iter_layers
+  - src/python/ora/src/format_factory/ora/codec/assets.py::resolve_all_assets
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_read_from_the_header
+  - tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_available_even_when_the_pixel_data_is_unreadable
+  - tests/python/ora/test_obligation_raster_assets.py::test_only_the_header_is_consumed
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Missing, aliased, hostile-path,
     malformed-raster, huge-dimension, and replacement round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips.
@@ -887,16 +923,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-46734DBF545B4DD3
   capability_id: ORA-ASSET-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata
+  - src/python/ora/src/format_factory/ora/codec/assets.py::ResolvedAsset
+  - src/python/ora/src/format_factory/ora/codec/assets.py::resolve_asset
+  - src/python/ora/src/format_factory/ora/codec/assets.py::iter_layers
+  - src/python/ora/src/format_factory/ora/codec/assets.py::resolve_all_assets
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_read_from_the_header
+  - tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_available_even_when_the_pixel_data_is_unreadable
+  - tests/python/ora/test_obligation_raster_assets.py::test_only_the_header_is_consumed
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Missing, aliased, hostile-path,
     malformed-raster, huge-dimension, and replacement round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips.
@@ -1381,16 +1429,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-700F3D214D9573FB
   capability_id: ORA-ASSET-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata
+  - src/python/ora/src/format_factory/ora/codec/assets.py::ResolvedAsset
+  - src/python/ora/src/format_factory/ora/codec/assets.py::resolve_asset
+  - src/python/ora/src/format_factory/ora/codec/assets.py::iter_layers
+  - src/python/ora/src/format_factory/ora/codec/assets.py::resolve_all_assets
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_read_from_the_header
+  - tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_available_even_when_the_pixel_data_is_unreadable
+  - tests/python/ora/test_obligation_raster_assets.py::test_only_the_header_is_consumed
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Missing, aliased, hostile-path,
     malformed-raster, huge-dimension, and replacement round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips.
@@ -1486,16 +1546,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-80901F8E09F17910
   capability_id: ORA-ASSET-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata
+  - src/python/ora/src/format_factory/ora/codec/assets.py::ResolvedAsset
+  - src/python/ora/src/format_factory/ora/codec/assets.py::resolve_asset
+  - src/python/ora/src/format_factory/ora/codec/assets.py::iter_layers
+  - src/python/ora/src/format_factory/ora/codec/assets.py::resolve_all_assets
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_read_from_the_header
+  - tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_available_even_when_the_pixel_data_is_unreadable
+  - tests/python/ora/test_obligation_raster_assets.py::test_only_the_header_is_consumed
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Missing, aliased, hostile-path,
     malformed-raster, huge-dimension, and replacement round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips.
@@ -1520,16 +1592,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-849EDE79FBAE125D
   capability_id: ORA-ASSET-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata
+  - src/python/ora/src/format_factory/ora/codec/assets.py::ResolvedAsset
+  - src/python/ora/src/format_factory/ora/codec/assets.py::resolve_asset
+  - src/python/ora/src/format_factory/ora/codec/assets.py::iter_layers
+  - src/python/ora/src/format_factory/ora/codec/assets.py::resolve_all_assets
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_read_from_the_header
+  - tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_available_even_when_the_pixel_data_is_unreadable
+  - tests/python/ora/test_obligation_raster_assets.py::test_only_the_header_is_consumed
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Missing, aliased, hostile-path,
     malformed-raster, huge-dimension, and replacement round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips.
@@ -1572,16 +1656,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-894A8A7FE25717DA
   capability_id: ORA-ASSET-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata
+  - src/python/ora/src/format_factory/ora/codec/assets.py::ResolvedAsset
+  - src/python/ora/src/format_factory/ora/codec/assets.py::resolve_asset
+  - src/python/ora/src/format_factory/ora/codec/assets.py::iter_layers
+  - src/python/ora/src/format_factory/ora/codec/assets.py::resolve_all_assets
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_read_from_the_header
+  - tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_available_even_when_the_pixel_data_is_unreadable
+  - tests/python/ora/test_obligation_raster_assets.py::test_only_the_header_is_consumed
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Missing, aliased, hostile-path,
     malformed-raster, huge-dimension, and replacement round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips.
@@ -1589,16 +1685,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-8E371EA83EEB75CF
   capability_id: ORA-ASSET-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata
+  - src/python/ora/src/format_factory/ora/codec/assets.py::ResolvedAsset
+  - src/python/ora/src/format_factory/ora/codec/assets.py::resolve_asset
+  - src/python/ora/src/format_factory/ora/codec/assets.py::iter_layers
+  - src/python/ora/src/format_factory/ora/codec/assets.py::resolve_all_assets
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_read_from_the_header
+  - tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_available_even_when_the_pixel_data_is_unreadable
+  - tests/python/ora/test_obligation_raster_assets.py::test_only_the_header_is_consumed
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Missing, aliased, hostile-path,
     malformed-raster, huge-dimension, and replacement round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips.
@@ -1749,16 +1857,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-99738EDD922E7F5E
   capability_id: ORA-ASSET-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata
+  - src/python/ora/src/format_factory/ora/codec/assets.py::ResolvedAsset
+  - src/python/ora/src/format_factory/ora/codec/assets.py::resolve_asset
+  - src/python/ora/src/format_factory/ora/codec/assets.py::iter_layers
+  - src/python/ora/src/format_factory/ora/codec/assets.py::resolve_all_assets
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_read_from_the_header
+  - tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_available_even_when_the_pixel_data_is_unreadable
+  - tests/python/ora/test_obligation_raster_assets.py::test_only_the_header_is_consumed
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Missing, aliased, hostile-path,
     malformed-raster, huge-dimension, and replacement round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips.
@@ -2319,16 +2439,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-D7C9E9B6208C49AF
   capability_id: ORA-ASSET-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata
+  - src/python/ora/src/format_factory/ora/codec/assets.py::ResolvedAsset
+  - src/python/ora/src/format_factory/ora/codec/assets.py::resolve_asset
+  - src/python/ora/src/format_factory/ora/codec/assets.py::iter_layers
+  - src/python/ora/src/format_factory/ora/codec/assets.py::resolve_all_assets
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_read_from_the_header
+  - tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_available_even_when_the_pixel_data_is_unreadable
+  - tests/python/ora/test_obligation_raster_assets.py::test_only_the_header_is_consumed
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Missing, aliased, hostile-path,
     malformed-raster, huge-dimension, and replacement round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips.
@@ -2336,16 +2468,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-D9D70C82BBB1808C
   capability_id: ORA-ASSET-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata
+  - src/python/ora/src/format_factory/ora/codec/assets.py::ResolvedAsset
+  - src/python/ora/src/format_factory/ora/codec/assets.py::resolve_asset
+  - src/python/ora/src/format_factory/ora/codec/assets.py::iter_layers
+  - src/python/ora/src/format_factory/ora/codec/assets.py::resolve_all_assets
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_read_from_the_header
+  - tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_available_even_when_the_pixel_data_is_unreadable
+  - tests/python/ora/test_obligation_raster_assets.py::test_only_the_header_is_consumed
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Missing, aliased, hostile-path,
     malformed-raster, huge-dimension, and replacement round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips.

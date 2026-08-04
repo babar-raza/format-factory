@@ -13,7 +13,16 @@ commit f050b99fa8af44cb4cc3c9d842d25097458765f6.
 
 from __future__ import annotations
 
-from .codec import OPENRASTER_MEDIA_TYPE, OraContainer, parse_stack
+from .codec import (
+    OPENRASTER_MEDIA_TYPE,
+    OraContainer,
+    RasterMetadata,
+    ResolvedAsset,
+    parse_stack,
+    read_png_metadata,
+    resolve_all_assets,
+    resolve_asset,
+)
 from .model import OraDocument, OraLayer, OraNode, OraStack, OraText
 from .errors import OraArchiveError, OraError, OraLimitError, OraValidationError
 
@@ -29,8 +38,13 @@ __all__ = [
     "OraNode",
     "OraStack",
     "OraText",
+    "RasterMetadata",
+    "ResolvedAsset",
     "OraLimitError",
     "OraValidationError",
     "__version__",
     "parse_stack",
+    "read_png_metadata",
+    "resolve_all_assets",
+    "resolve_asset",
 ]
