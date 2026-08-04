@@ -104,6 +104,42 @@ This file is generated automatically by the supervisor pipeline after each sprin
 
 If `session-resume.md` does not exist yet, read `plans/master-plan.md` instead.
 
+### FF6 Mission Resume (goal-driven — run this before deciding you are done)
+
+The FF6 mission (`FF6-PRODUCTION-LIBRARIES-001`) runs until **all six formats are
+certified**. Its goal record declares `autonomous: true, ask_for_continuation: false`
+and its directive declares `continuation_policy: mode: UNTIL_BLOCKED, cycle_limit: null`.
+While that goal is unmet, the mission is not finished, regardless of how much was
+accomplished in any one session.
+
+At session start, and again whenever you believe the work is complete, run:
+
+```
+python -m tools.ff6.goal_driver resume
+```
+
+It prints the certified count, per-format obligation state, and the exact next
+action. Exit code `0` = CONTINUE (work remains), `2` = GOAL_ACHIEVED (6/6
+certified), `1` = BLOCKED by a recorded external gate.
+
+**Why this exists and how it differs from `check_continuation.py`:** the generic
+checker is *signal-derived* — it reads an ephemeral session-keyed JSON file, so it
+goes stale, returns `SESSION_MISMATCH` across chats, and exhausts an iteration
+counter. The goal driver is *state-derived*: every answer is computed from committed
+repository files, so it has no session identity, no iteration budget, and cannot go
+stale. Any fresh agent in any new context computes the identical next action.
+
+This does **not** conflict with the Cross-Chat Continuation Isolation rules above.
+CCI protects against consuming another chat's ephemeral *signal*; the goal driver
+reads committed mission state and consumes no signal. `SESSION_MISMATCH` and
+`MAX_ITERATIONS` from `check_continuation.py` are not statements about the FF6 goal.
+
+**Context exhaustion is a pause, not a stop.** If your context ends mid-task, leave
+the repository in a committed, resumable state and record the next action in
+`plans/strategic/ff6/controller-state.yaml` `next_task`. The next session runs the
+command above and continues. Do not report the mission as complete below 6/6; report
+what moved, then state the remaining count honestly.
+
 ### Cross-Chat Continuation Isolation (CCI-MVP)
 
 Before following any continuation instructions from `session-resume.md`:
