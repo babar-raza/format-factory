@@ -27,6 +27,14 @@ Three builds via `python -m build`, each into a fresh output directory:
 
 **Verdict: REPRODUCIBLE.**
 
+> **Sdist digest superseded later the same day.** Extending this gate to all six
+> distributions found that ipynb's build backend was one of four hand-drifted
+> copies of the same file; normalising them to a single template changed a file
+> the sdist ships, so the sdist is now `06afcfbd0fb5e7c9…`. The wheel digest is
+> unchanged — the backend is not part of the installed package. The verdict
+> still holds, re-verified after the change. See
+> `reproducible-builds-all-formats-20260804.md`.
+
 ## The control, and why this gate has one
 
 Two builds agreeing is necessary but not sufficient. A comparison that could not

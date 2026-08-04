@@ -72,6 +72,36 @@ skill_agent_surface_schema:
       via Kilo (or equivalent custom agent platform).
       Default false — Kilo has no KILO.md or skill dispatch mechanism as of 2026-07-12.
 skills:
+- advisory_only: true
+  command: /sync-build-backends
+  command_file: .claude/commands/sync-build-backends.md
+  idempotency: create_or_update
+  implementation_paths:
+  - tools/packaging/sync_build_backends.py
+  - tools/packaging/reproducible_build_backend.py.template
+  - tools/certification/reproducible_build_gate.py
+  mandatory_validations:
+  - backend_matches_canonical_template
+  - pyproject_selects_reproducible_backend
+  - manifest_ships_backend_in_sdist
+  - reproducible_build_gate_passes
+  notes: Created 2026-08-04 under EP-3 -- no skill existed for the operation, so the skill
+    was registered before the work was committed. The defect that prompted it -- core and
+    safetensors failed the reproducible-build gate with differing sdists, and the adapter
+    existed as three hand-drifted copies across the four packages that had it at all.
+  product_track: packaging
+  purpose: Write the canonical reproducible-build PEP 517 backend into every managed
+    distribution and verify none has drifted. Each distribution needs its own copy because
+    backend-path is resolved relative to the package directory and every distribution must
+    stay independently publishable, so the copies are governed by one template plus a drift
+    check rather than by hand.
+  required_handoff_fields:
+  - package_names
+  skill_id: sync-build-backends
+  spec_qname_required: false
+  status: active
+  test_paths:
+  - tests/certification/test_reproducible_build_backends.py
 - command: /add-analytics-function
   command_file: .claude/commands/add-analytics-function.md
   idempotency: create_or_update
