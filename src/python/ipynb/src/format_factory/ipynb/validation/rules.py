@@ -33,6 +33,17 @@ class SelectedProfile:
         declared = self.declared_minor
         return self.expected_minor >= 5 or declared is not None and declared >= 5
 
+    @property
+    def require_unique_cell_names(self) -> bool:
+        """Whether notebook-wide cell-name uniqueness applies (nbformat 4.2+).
+
+        The authority states from 4.4 that JSON Schema cannot express this, so
+        it can only be enforced semantically. Scoped to 4.2 and later: 4.0 and
+        4.1 permit duplicate names and tightening them would be its own defect.
+        """
+        declared = self.declared_minor
+        return self.expected_minor >= 2 or declared is not None and declared >= 2
+
 
 def diagnostic(
     code: str,
@@ -455,6 +466,7 @@ def validate_model(
         return diagnostics
 
     seen_ids: set[str] = set()
+    seen_names: set[str] = set()
     for index, cell in enumerate(cells):
         path = ("cells", index)
         if not isinstance(cell, Mapping):
@@ -513,6 +525,22 @@ def validate_model(
             )
         else:
             _validate_tags(metadata, (*path, "metadata"), diagnostics)
+            # Notebook-wide cell-name uniqueness (nbformat 4.2+). The schema
+            # cannot express this, so it is checked here or nowhere. Only a
+            # PRESENT, well-formed name participates: absence is not a
+            # collision, and an empty name is already reported by the schema.
+            cell_name = metadata.get("name")
+            if profile.require_unique_cell_names and isinstance(cell_name, str) and cell_name:
+                if cell_name in seen_names:
+                    diagnostics.append(
+                        diagnostic(
+                            "IPYNB_CELL_NAME_DUPLICATE",
+                            f"duplicate cell name {cell_name!r}",
+                            (*path, "metadata", "name"),
+                        )
+                    )
+                else:
+                    seen_names.add(cell_name)
         source_text = _validate_source(
             cell.get("source"),
             (*path, "source"),

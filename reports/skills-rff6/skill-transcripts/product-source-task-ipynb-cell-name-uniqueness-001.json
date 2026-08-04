@@ -1,0 +1,65 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-cell-name-uniqueness-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-04T20:45:00Z",
+  "inputs": {
+    "format_id": "ipynb",
+    "task_id": "TC-FF6-IPYNB-CELL-NAME-UNIQUENESS-001",
+    "task_kind": "defect",
+    "root_cause": "SAL-IPYNB-OBL-033A30BD (MUST, profiles 4.2-4.5) requires a notebook-wide uniqueness check for present cell metadata names, and SAL-IPYNB-OBL-B9838FFD records that from 4.4 the authority explicitly states JSON Schema cannot enforce uniqueness. No such check existed anywhere in the package -- no seen_names set, no duplicate-name diagnostic. Because the official schema provably cannot express the rule and nothing else checked it, duplicate cell names passed validation silently at every profile that forbids them.",
+    "planned_paths": [
+      "src/python/ipynb/src/format_factory/ipynb/validation/rules.py",
+      "tests/python/ipynb/test_obligation_cell_identity.py"
+    ],
+    "input_digests": {"baseline_commit": "7e6b2805", "obligations": ["SAL-IPYNB-OBL-033A30BD", "SAL-IPYNB-OBL-B9838FFD"]},
+    "acceptance_evidence": "taskcards/TC-FF6-IPYNB-CELL-NAME-UNIQUENESS-001.md",
+    "regression_tier": "full IPYNB package suite (tests/python/ipynb)"
+  },
+  "execution_steps": [
+    "1. Found the defect while writing shipped-namespace coverage for the cell-identity capabilities under GAP-017. Probed duplicate cell names across all six profiles: accepted at 4.0 and 4.1 (correct, the obligation does not apply) and accepted at 4.2, 4.3, 4.4 and 4.5 (defect, the obligation requires rejection).",
+    "2. Confirmed the absence was total, not partial: no seen_names, no duplicate-name diagnostic code anywhere in src/python/ipynb.",
+    "3. Noted the sibling machinery already existed -- cell IDs are checked for duplicates via seen_ids emitting IPYNB_CELL_ID_DUPLICATE -- so the fix is to apply the same shape to names rather than invent a mechanism.",
+    "4. Wrote tests/python/ipynb/test_obligation_cell_identity.py first and captured a clean RED of exactly 6 failures, all the uniqueness cases, with 58 passing.",
+    "5. Two of my own tests failed first for my reasons, not the product's: writing a pre-4.5 notebook at the default profile is refused with 'requires explicit upgrade()', which is IPYNB-ID-001's explicit-upgrade-only rule working correctly. Pinned the write to the declared profile and added a test asserting that refusal directly.",
+    "6. Implemented SelectedProfile.require_unique_cell_names (4.2+, mirroring require_cell_ids) and a seen_names check in the cell loop, emitting IPYNB_CELL_NAME_DUPLICATE at the offending cell's own metadata path.",
+    "7. Scoped participation deliberately: only a PRESENT, non-empty string name participates. Absence is not a collision, and an empty name is already reported by the schema pattern, so it must not be double-reported.",
+    "8. Verified 4.0 and 4.1 still accept duplicates, so the fix did not over-correct into profiles the obligation does not cover."
+  ],
+  "allowed_files": [
+    "src/python/ipynb/src/format_factory/ipynb/validation/rules.py",
+    "tests/python/ipynb/test_obligation_cell_identity.py",
+    "taskcards/TC-FF6-IPYNB-CELL-NAME-UNIQUENESS-001.md",
+    "taskcards/index.yaml",
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ipynb/src/format_factory/ipynb/validation/rules.py",
+    "tests/python/ipynb/test_obligation_cell_identity.py",
+    "taskcards/TC-FF6-IPYNB-CELL-NAME-UNIQUENESS-001.md",
+    "taskcards/index.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/python.exe -m pytest tests/python/ipynb/test_obligation_cell_identity.py -q  # RED 6 failed/58 passed -> 64 passed",
+    ".venv/Scripts/python.exe -m pytest tests/python/ipynb -q  # 520 passed, 3 known editable-install failures (was 456 passed)",
+    ".venv/Scripts/python.exe -m ruff check src/python/ipynb tests/python/ipynb/test_obligation_cell_identity.py  # All checks passed",
+    ".venv/Scripts/python.exe -m mypy src/python/ipynb/src/format_factory/ipynb  # no issues in 29 source files"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "certification_state": "0/6",
+    "defect_class": "MUST-level obligation entirely unimplemented",
+    "profiles_fixed": ["4.2", "4.3", "4.4", "4.5"],
+    "profiles_deliberately_unchanged": ["4.0", "4.1"],
+    "new_diagnostic": "IPYNB_CELL_NAME_DUPLICATE",
+    "why_it_stayed_hidden": "The capability's only test file imported the deprecated ipynb.* shadow package, so it never exercised the shipped validator. An obligation with no valid evidence is exactly the condition under which a MUST can go unimplemented unnoticed -- this is GAP-017 producing a concrete product defect rather than a bookkeeping complaint.",
+    "obligations_moved": 0,
+    "obligations_moved_note": "Zero toward implemented. The obligation now has real behavior and real evidence, but its full proof_requirement audit is not complete, so it stays partial.",
+    "ipynb_remains": "UNASSESSED"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
