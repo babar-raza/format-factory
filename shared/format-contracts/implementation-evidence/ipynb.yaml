@@ -92,7 +92,7 @@ obligations:
     - Selector-bound negative cases are not yet identified for this obligation.
 - obligation_id: SAL-IPYNB-OBL-0ADDA3341B91C271
   capability_id: IPYNB-CELLNAME-001
-  status: missing
+  status: partial
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
@@ -102,7 +102,10 @@ obligations:
   - src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellQuery
   - src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellEdit
   - src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellEditReport
-  positive_test_selectors: []
+  positive_test_selectors:
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_are_rejected_from_4_2_onward
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_remain_allowed_before_4_2
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_distinct_names_pass_in_every_profile
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -111,10 +114,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Present non-empty names pass
     and empty names fail in every supported profile.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. The only test files for this capability (test_ipynb_cell_id.py)
-    import the deprecated `ipynb.*` shadow package, not format_factory.ipynb. Under forbidden_progress_claims
-    that cannot count as coverage of the shipped namespace, so this obligation currently has no valid
-    positive evidence.
   proof_requirements:
     positive:
     - Present non-empty names pass and empty names fail in every supported profile.
@@ -333,13 +332,16 @@ obligations:
     - Selector-bound negative cases are not yet identified for this obligation.
 - obligation_id: SAL-IPYNB-OBL-1FA16EB9033A30BD
   capability_id: IPYNB-CELLNAMEUNIQUE-001
-  status: missing
+  status: partial
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
-  positive_test_selectors: []
+  positive_test_selectors:
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_are_rejected_from_4_2_onward
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_remain_allowed_before_4_2
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_distinct_names_pass_in_every_profile
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -348,10 +350,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Duplicate-name fixtures fail
     the semantic check while distinct and absent names pass.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. The only test files for this capability (test_ipynb_cell_id.py)
-    import the deprecated `ipynb.*` shadow package, not format_factory.ipynb. Under forbidden_progress_claims
-    that cannot count as coverage of the shipped namespace, so this obligation currently has no valid
-    positive evidence.
   proof_requirements:
     positive:
     - Duplicate-name fixtures fail the semantic check while distinct and absent names pass.
@@ -784,13 +782,16 @@ obligations:
     - Selector-bound negative cases are not yet identified for this obligation.
 - obligation_id: SAL-IPYNB-OBL-6F4551856EC21F7B
   capability_id: IPYNB-ID-001
-  status: missing
+  status: partial
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
-  positive_test_selectors: []
+  positive_test_selectors:
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_are_rejected_from_4_2_onward
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_remain_allowed_before_4_2
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_distinct_names_pass_in_every_profile
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -799,10 +800,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Duplicate/invalid ID negatives;
     upgrade fixture verifies mapping.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. The only test files for this capability (test_ipynb_cell_id.py)
-    import the deprecated `ipynb.*` shadow package, not format_factory.ipynb. Under forbidden_progress_claims
-    that cannot count as coverage of the shipped namespace, so this obligation currently has no valid
-    positive evidence.
   proof_requirements:
     positive:
     - Duplicate/invalid ID negatives; upgrade fixture verifies mapping.
@@ -920,13 +917,16 @@ obligations:
     - Selector-bound negative cases are not yet identified for this obligation.
 - obligation_id: SAL-IPYNB-OBL-83A15CABF90C4B84
   capability_id: IPYNB-ID-001
-  status: missing
+  status: partial
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
-  positive_test_selectors: []
+  positive_test_selectors:
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_are_rejected_from_4_2_onward
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_remain_allowed_before_4_2
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_distinct_names_pass_in_every_profile
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -935,10 +935,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Duplicate/invalid ID negatives;
     upgrade fixture verifies mapping.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. The only test files for this capability (test_ipynb_cell_id.py)
-    import the deprecated `ipynb.*` shadow package, not format_factory.ipynb. Under forbidden_progress_claims
-    that cannot count as coverage of the shipped namespace, so this obligation currently has no valid
-    positive evidence.
   proof_requirements:
     positive:
     - Duplicate/invalid ID negatives; upgrade fixture verifies mapping.
@@ -1203,13 +1199,16 @@ obligations:
     - Selector-bound negative cases are not yet identified for this obligation.
 - obligation_id: SAL-IPYNB-OBL-B227B25AB9838FFD
   capability_id: IPYNB-CELLNAMEUNIQUE-001
-  status: missing
+  status: partial
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
-  positive_test_selectors: []
+  positive_test_selectors:
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_are_rejected_from_4_2_onward
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_remain_allowed_before_4_2
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_distinct_names_pass_in_every_profile
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -1218,10 +1217,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Duplicate-name fixtures fail
     the semantic check while distinct and absent names pass.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. The only test files for this capability (test_ipynb_cell_id.py)
-    import the deprecated `ipynb.*` shadow package, not format_factory.ipynb. Under forbidden_progress_claims
-    that cannot count as coverage of the shipped namespace, so this obligation currently has no valid
-    positive evidence.
   proof_requirements:
     positive:
     - Duplicate-name fixtures fail the semantic check while distinct and absent names pass.
@@ -1674,7 +1669,7 @@ obligations:
     - Selector-bound negative cases are not yet identified for this obligation.
 - obligation_id: SAL-IPYNB-OBL-E9E64A65284001E4
   capability_id: IPYNB-CELLNAME-001
-  status: missing
+  status: partial
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
@@ -1684,7 +1679,10 @@ obligations:
   - src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellQuery
   - src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellEdit
   - src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellEditReport
-  positive_test_selectors: []
+  positive_test_selectors:
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_are_rejected_from_4_2_onward
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_remain_allowed_before_4_2
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_distinct_names_pass_in_every_profile
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
@@ -1693,10 +1691,6 @@ obligations:
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Present non-empty names pass
     and empty names fail in every supported profile.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. The only test files for this capability (test_ipynb_cell_id.py)
-    import the deprecated `ipynb.*` shadow package, not format_factory.ipynb. Under forbidden_progress_claims
-    that cannot count as coverage of the shipped namespace, so this obligation currently has no valid
-    positive evidence.
   proof_requirements:
     positive:
     - Present non-empty names pass and empty names fail in every supported profile.
