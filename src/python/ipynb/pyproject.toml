@@ -38,7 +38,11 @@ reference = ["nbformat==5.10.4"]
 # undeclared, so a fresh environment lost all nine to collection errors while the
 # capability reconciler still counted them as "TESTED" because the files existed.
 # It is a test-only dependency: the shipped package must not require it.
-test = ["pytest>=8.3", "hypothesis>=6.100", "nbformat>=5.10"]
+# pyyaml is used by test_obligation_corpus_integrity.py and was undeclared for
+# the same reason nbformat was: the shared dev venv happens to have it, so the
+# omission only surfaces in a clean install. Found by the isolated-wheel proof,
+# which is precisely the run these declarations exist to keep green.
+test = ["pytest>=8.3", "hypothesis>=6.100", "nbformat>=5.10", "pyyaml>=6.0"]
 
 [project.urls]
 Homepage = "https://github.com/format-factory/format-factory"

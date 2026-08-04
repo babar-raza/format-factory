@@ -1,0 +1,44 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-wheel-proof-001",
+  "skill_id": "package-install-proof",
+  "mode": "live",
+  "timestamp": "2026-08-04T19:55:00Z",
+  "inputs": {
+    "format_id": "ipynb",
+    "task_id": "IPYNB_PROOF_REQUIREMENT_AUDIT",
+    "task_kind": "verification",
+    "root_cause": "IPYNB had no installed-wheel proof, and 3 tests asserting resolution from an installed location failed in the shared dev venv. Whether those were a product defect or an editable-install artifact was unresolved.",
+    "planned_paths": ["src/python/ipynb/pyproject.toml"],
+    "acceptance_evidence": ".local/run-records/ff6/IPYNB-WHEEL-PROOF/wheel-proof.json",
+    "regression_tier": "full IPYNB suite against installed wheels"
+  },
+  "execution_steps": [
+    "1. Built format_factory_core and format_factory_ipynb wheels from source.",
+    "2. Created an isolated venv outside the source tree and installed both wheels with --no-index --no-deps, then nbformat as the oracle.",
+    "3. Confirmed via importlib.util.find_spec BEFORE running anything that format_factory.ipynb resolves from site-packages, not the repository tree.",
+    "4. Ran the 3 residual namespace tests there: all 3 passed, establishing they are an editable-install artifact rather than a product defect.",
+    "5. Ran the full suite and hit a fresh collection error: test_obligation_corpus_integrity.py imports pyyaml, which was undeclared -- the identical defect class to the nbformat omission, invisible in the dev venv because it happens to have pyyaml.",
+    "6. Declared pyyaml>=6.0 in the ipynb test extra and re-ran: 424 passed, 0 failed."
+  ],
+  "allowed_files": ["src/python/ipynb/pyproject.toml"],
+  "actual_files_changed": ["src/python/ipynb/pyproject.toml"],
+  "tests_run": [
+    "installed-env pytest (3 namespace selectors) -- 3 passed (dev venv: 3 failed)",
+    "installed-env pytest tests/python/ipynb -q -- 424 passed, 0 failed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "certification_state": "0/6",
+    "installed_wheel_proof": "PASS_424_OF_424",
+    "residual_failures_verdict": "EDITABLE_INSTALL_ARTIFACT_NOT_A_PRODUCT_DEFECT",
+    "new_defect_found": "pyyaml undeclared in the ipynb test extra; found only because the proof ran in a clean environment",
+    "obligations_moved": 0,
+    "obligations_moved_note": "Zero. A green suite against installed wheels is not obligation-bound proof; all 68 remain `partial` pending the proof_requirement audit.",
+    "ipynb_remains": "UNASSESSED"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
