@@ -645,6 +645,32 @@ structural_gaps_20260804:
       verify the owning process is genuinely gone (the lease record already
       carries `pid` and `worktree_path`). Resolve this BEFORE GAP-015's
       automated reclaim ships, so automation cannot reclaim a live agent's work.
+  - id: GAP-020
+    finding: >
+      Only TWO of the six formats have an implementation-evidence ledger at all.
+      shared/format-contracts/implementation-evidence/ contains ipynb.yaml and
+      nrrd.yaml and nothing else, so safetensors, ubl, xliff and ora have never
+      had their obligations classified against source symbols or test selectors.
+      That is 556 of the 689 canonical obligations -- safetensors 86, ubl 194,
+      xliff 142, ora 134 -- with no obligation-level evidence infrastructure
+      whatsoever. The reconciler's --exact-obligations mode cannot run for them,
+      and neither can the proof-requirement audit: it exits with "not found" for
+      all four.
+    severity: HIGH
+    status: OPEN
+    owner: unassigned
+    remediation: >
+      Author an implementation-evidence ledger per format, as was done for
+      ipynb, mapping each obligation to real source symbols and real
+      shipped-namespace test selectors. Apply the GAP-018 namespace filter from
+      the start: for ubl and xliff, which are 91% shadow-only, most existing
+      test files cannot supply valid selectors, so their ledgers will legitimately
+      open with large `missing` counts. Do not treat that as regression -- it is
+      the first honest measurement those formats will have had.
+    relation_to_other_gaps: >
+      This is the structural reason GAP-018's measurement matters. A format with
+      no ledger cannot even be audited, so its coverage numbers have never been
+      tested against the shipped namespace.
   - id: GAP-019
     finding: >
       Canonical GitLab origin/main is 30 commits behind local main and cannot be
@@ -655,9 +681,18 @@ structural_gaps_20260804:
       commits are authored by Babar Raza with no foreign author, and
       `git fetch origin main` exits 0 so the host is reachable.
     severity: MEDIUM
-    status: EXTERNAL_BLOCKED
-    owner: repository owner (local policy change)
-    classification: EXTERNAL_BLOCKER:push_denied_by_local_permission_policy
+    status: FIXED
+    owner: repository owner (lifted the local policy) + claude (executed)
+    classification: RESOLVED_2026-08-04 -- was EXTERNAL_BLOCKER:push_denied_by_local_permission_policy
+    resolution: >-
+      The owner removed "Bash(git push *)" from the deny array. The
+      fast-forward was re-verified immediately before pushing (remote still at
+      0fa7b2bd, still an ancestor of HEAD) and executed:
+      `0fa7b2bd..7ccb7cc4  main -> main`, 35 commits, exit 0. Confirmed by a
+      fresh fetch: remote and local are both 7ccb7cc4 with 0/0 divergence.
+      .claude/settings.json remained uncommitted and was not pushed, as
+      required. Canonical GitLab main is now synchronized with the verified
+      local state.
     remediation: >
       Remove "Bash(git push *)" from the deny array, or run `git push origin
       main` directly. Deliberately NOT classified as

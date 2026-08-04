@@ -37,11 +37,24 @@ modified in the working tree and **deliberately left uncommitted**. It is the
 user's own local permission configuration, not project content, and must not be
 pushed. Working tree is otherwise clean.
 
-## Blocker
+## Blocker — RESOLVED 2026-08-04
 
 ```
-EXTERNAL_BLOCKER: push_denied_by_local_permission_policy
+WAS: EXTERNAL_BLOCKER: push_denied_by_local_permission_policy
+NOW: RESOLVED — pushed 0fa7b2bd..7ccb7cc4, 35 commits, exit 0
 ```
+
+The owner removed the deny entry. The fast-forward was re-verified immediately
+before pushing — remote still at `0fa7b2bd`, still an ancestor of `HEAD` — then
+executed. A fresh fetch confirms remote and local are both `7ccb7cc4` with 0/0
+divergence. `.claude/settings.json` stayed uncommitted and was not pushed.
+
+The original classification is retained below because it was correct at the
+time, and because the distinction it drew still matters: this was never a
+credential or branch-protection problem, and naming it as one would have sent
+the next investigator to the wrong system.
+
+### Original classification
 
 `.claude/settings.json` lists `Bash(git push *)` in its **deny** array, so the
 tool call cannot be issued. This is worth classifying precisely, because it is
