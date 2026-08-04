@@ -586,6 +586,65 @@ structural_gaps_20260804:
     remediation: Pin default_model in tools/llm/endpoints.yaml to an
       explicit dated model ID; stamp the resolved model into every
       persisted LLM-backend result record. Not a Stage 2/3 blocker.
+  - id: GAP-014
+    finding: >
+      Autonomy stall #1 (FOUND BY HITTING IT). The pre-commit guard's shebang
+      was `#!/usr/bin/env python3`, but this machine has no `python3` on PATH
+      (only `python`). `env` could not launch the hook, so EVERY commit failed
+      with "/usr/bin/env: 'python3': No such file or directory". Failing closed
+      is correct for a governance hook, but this was not a governance decision:
+      it blocked commits the guard would have approved, and an unattended run
+      stalls permanently at its first commit while the message reads like a
+      governance block.
+    severity: HIGH
+    status: FIXED
+    owner: claude (2026-08-04, commit 106a130d)
+    remediation: >
+      Shebang replaced with a POSIX-sh/Python polyglot that resolves python3 and
+      falls back to python, arranged so the module docstring remains the single
+      leading string literal and `from __future__ import annotations` stays the
+      first statement. Verified by committing through the hook with no PATH
+      shim; the 15 existing governance guard tests pass.
+  - id: GAP-015
+    finding: >
+      Autonomy stall #2 (HIT THREE TIMES IN ONE SESSION). Commits are blocked by
+      EXCLUSIVE_WRITE leases the coordination system itself classifies as STALE,
+      owned by agents whose heartbeats are days old (2026-07-25, 2026-07-26,
+      2026-08-01). Clearing each one requires a manual takeover + release cycle
+      with hand-written reasons. There is no bulk reclaim verb: the CLI offers
+      per-lease `takeover` only. Every stale lease is therefore a hard stop for
+      an unattended run.
+    severity: HIGH
+    status: OPEN
+    owner: unassigned — next session resuming via tools/ff6/goal_driver
+    remediation: >
+      Add a narrow, governed reclaim that acts ONLY on leases the coordination
+      system reports as STALE (never ACTIVE), records a reason per lease in the
+      coordination journal exactly as a manual takeover does, and is invoked as
+      a preflight step before an autonomous batch. This weakens no rule -- STALE
+      is already the reclaimable state and the manual procedure is already
+      sanctioned; it removes the requirement that a human perform it. Do NOT
+      broaden it to ACTIVE or STALE_SUSPECT leases owned by a live agent.
+  - id: GAP-016
+    finding: >
+      Autonomy stall #3. A long-running interactive agent is classified
+      STALE_SUSPECT by its own coordination record because nothing sends
+      heartbeats during a long working turn (heartbeat_ttl_s is 1800 for
+      interactive agents). Observed live: this session's own agent
+      agent-claude-code-20260804T081350-023297 went STALE_SUSPECT while actively
+      working. The consequence is that a still-working agent's leases become
+      reclaimable by another agent, which is the exact condition GAP-015's
+      remediation must not misfire on.
+    severity: MEDIUM
+    status: OPEN
+    owner: unassigned
+    remediation: >
+      Either send a heartbeat from the coordination hooks on each tool call
+      (a `heartbeat` verb already exists), or raise the interactive TTL to
+      exceed a realistic turn length, or have GAP-015's reclaim additionally
+      verify the owning process is genuinely gone (the lease record already
+      carries `pid` and `worktree_path`). Resolve this BEFORE GAP-015's
+      automated reclaim ships, so automation cannot reclaim a live agent's work.
   - id: GAP-013
     finding: >
       A fourth copy of the literal encoding set {"ascii","text","txt"} remains
