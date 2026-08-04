@@ -298,6 +298,51 @@ nrrd_checkpoint:
     - architecture remediation and bounded product implementation taskcards
     - independent certification and release-candidate evidence
   promotion_effect: none
+ipynb_checkpoint:
+  status: WORK_IN_PROGRESS
+  established_by_event: FF6-EVENT-000052
+  accepted_slice: CAPABILITY_LEVEL_BASELINE_ONLY
+  source_checkpoint_commit: 7141067b
+  completed_steps: [CAPABILITY_RECONCILIATION_BASELINE]
+  first_unmet_step: EXACT_OBLIGATION_CLASSIFICATION
+  canonical_obligations: 68
+  exact_obligation_classification: NOT_STARTED
+  exact_obligation_blocker: >-
+    There is no shared/format-contracts/implementation-evidence/ipynb.yaml, and
+    the reconciler's --exact-obligations mode requires one. That absence is
+    precisely why IPYNB had never been reconciled: the 68 obligations have never
+    been mapped to source symbols or test selectors. Authoring that ledger
+    honestly -- one entry per obligation with real symbols, real selectors and
+    real missing_behavior -- is the actual next unit of work, and it must obey
+    proof_requirement_audit_lesson.
+  capability_baseline:
+    total_capabilities: 25
+    tested: 22
+    not_started: 3
+    implemented_unproven: 0
+    oracle_proven: 0
+    with_gap: 8
+    production_functions: 236
+    production_classes: 77
+    test_files: 12
+  not_started_capabilities:
+    - IPYNB-CLEAN-001
+    - IPYNB-MERGE-001
+    - IPYNB-UPGRADE-001
+  oracle_status: ABSENT
+  oracle_note: >-
+    No oracle is registered for IPYNB and zero capabilities are ORACLE_PROVEN.
+    Under forbidden_progress_claims no IPYNB capability may be called VERIFIED
+    on self-consistency alone. The independent reference for this format is the
+    official Jupyter `nbformat` package -- the analogue of Teem for NRRD -- and
+    acquiring it is a prerequisite for any IPYNB verification claim, not an
+    optional extra.
+  truth_boundary: >-
+    "TESTED: 22" means a test file exercising the capability exists. It is NOT
+    obligation-bound proof, NOT oracle proof, and NOT certification. The 22 are
+    the least-known part of this baseline, not the most-proven: none has been
+    checked against its obligations' declared proof_requirements.
+  promotion_effect: none
 safetensors_checkpoint:
   status: WORK_IN_PROGRESS
   accepted_slice: REFERENCE_SLICE_HEADER_LAYOUT_WRITER_AND_LAZY_ACCESS

@@ -2,16 +2,30 @@
   "format_id": "ipynb",
   "contract_id": "FC-IPYNB-V1",
   "contract_input_digests": {
-    "fact_categories_sha256": "27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468",
-    "family_pack_sha256": "bdc43666de37ffe17cbc827308747c60389ecb7e6e7d52a759e78f071ab32456",
+    "authority_lock_impl_sha256": "3295565e37b8a5ff47a6e05aa8b49b70bb8574171bbe2e7ba9362f344e20012c",
+    "authority_lock_schema_sha256": "a8b860f4bef1ceae1b9dd6348c29cc99b35f2bde2dca032217398bddb061f913",
+    "authority_lock_sha256": "5c1ac942018f1e26e0fc0ca7c8284313452d1cb44c04d7e225faad4b21219929",
+    "authority_materializer_sha256": "b730b8f700aec1460fcd48ef2e849e7e1b2798f7849de8c37c5c15943c204f58",
+    "authority_runtime_sha256": "a24f0834bc99cc2758e2b70201ce1d28039c11a057688f95f5a1f6c29ea23a15",
+    "authority_src_nb_002_sha256": "243d0d4544b23a9a968b02aea5b146da02d167d85b78780eb0c15afc3f4e0e64",
+    "authority_src_nb_003_sha256": "903b5e9c4d3f371105d209794221a342ee676f4bd5f36dc15c3ddacb7ceadccd",
+    "canonical_io_impl_sha256": "aca19b1319bf7304d5136fd6c9d729cb50b22d8a23a17ca9314fdb0c58cc164d",
+    "contract_compiler_impl_sha256": "e98ad15504ab1d338f114e21c9909b2eb5af9699961c0621da964bb59403dc67",
+    "contract_stores_impl_sha256": "cd120c7990a37b0f913a2b59e81ab28fdf7b3d50897e38d78cb20fc9e0823f7a",
+    "fact_categories_sha256": "aedd4c838073695752c724e8f53fd189f58653ca22e01b88f5932ebe9fe376bc",
+    "family_pack_sha256": "f37690dc81844402c7ec115deb6a7d750782553327fa153c152c19475e0a28dc",
+    "format_contract_schema_sha256": "4eb5cae2d69d0831291646f3cf21e5d019d6b0de2904a745b712cf5fa6c37da9",
+    "product_requirements_sha256": "903b5e9c4d3f371105d209794221a342ee676f4bd5f36dc15c3ddacb7ceadccd",
     "qname_registry_sha256": "11b280a73609e21feffb65527712942d55ecd067724f43a03592093cb80836ef",
-    "research_sha256": "2cbbf729a97687e4639914bcdbaaccd0d5f4a19b0b481d830d81e2bceb216507",
-    "sal_facts_sha256": "b2ea517efb6a18b9155b05a8a3f01e5615b1b52ee68228da7b8260e12636ffd0",
-    "shared_contract_sha256": "ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494"
+    "research_intake_impl_sha256": "4c7d3bfd69e7e5a74a9db2483d25b062e11cfdcb6609637b0343dfa8d3cd0579",
+    "research_sha256": "ef4b130cf19a916eaaed86629d80c14eeaaa4dbd2be943400a8b508ff1eb9b7a",
+    "sal_facts_sha256": "a00f801aa1de05e9b6427c543abfb73a33faa6235d22164035a688f163e1e8c6",
+    "shared_contract_sha256": "ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494",
+    "source_researcher_impl_sha256": "4367e7591a368bcbc6a01199a7eb6da0f569ccc5c706d6650cdd96db0b7083a3"
   },
   "product_source_present": true,
-  "function_count": 57,
-  "class_count": 11,
+  "function_count": 236,
+  "class_count": 77,
   "test_file_count": 12,
   "oracle_status": null,
   "capabilities": [
@@ -24,29 +38,89 @@
       "observed_depth": 3,
       "gap_depth": 0,
       "product_symbols": [
+        "AttachmentChange",
+        "AttachmentManager",
+        "AttachmentReferencePolicy",
+        "AttachmentReport",
         "Cell",
-        "IpynbCell",
-        "IpynbDocument",
-        "IpynbError",
-        "IpynbNotebook",
-        "IpynbOutput",
-        "IpynbParseError",
-        "IpynbValidationError",
-        "IpynbWriteError",
-        "Notebook",
-        "Output"
+        "CellChange",
+        "CellEdit",
+        "CellEditOperation",
+        "CellEditReport",
+        "CellEditor",
+        "CellField",
+        "CellIdRewrite",
+        "CellMetadataAdapter",
+        "CellQuery",
+        "Change",
+        "ChangeReport",
+        "CleanupPolicy",
+        "CodeCell",
+        "ConversionAction",
+        "ConversionDisposition"
       ],
       "test_files": [
         "tests/python/ipynb/test_ipynb_analytics.py",
         "tests/python/ipynb/test_ipynb_analytics_coverage.py",
         "tests/python/ipynb/test_ipynb_attachments.py",
         "tests/python/ipynb/test_ipynb_cell_id.py",
-        "tests/python/ipynb/test_ipynb_codec.py",
         "tests/python/ipynb/test_ipynb_compat_facades.py",
-        "tests/python/ipynb/test_ipynb_document_mutation.py",
         "tests/python/ipynb/test_ipynb_mutation_api.py",
-        "tests/python/ipynb/test_ipynb_output_mime_api.py",
-        "tests/python/ipynb/test_ipynb_smoke.py"
+        "tests/python/ipynb/test_ipynb_validation.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "IPYNB-CELLNAME-001",
+      "category": "validate",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "TESTED",
+      "observed_depth": 5,
+      "gap_depth": 0,
+      "product_symbols": [
+        "check_signature",
+        "validate",
+        "validate_model",
+        "validate_notebook",
+        "validate_notebook_schema",
+        "verify"
+      ],
+      "test_files": [
+        "tests/python/ipynb/test_ipynb_analytics_coverage.py",
+        "tests/python/ipynb/test_ipynb_validation.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "IPYNB-CELLNAMEUNIQUE-001",
+      "category": "validate",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "TESTED",
+      "observed_depth": 5,
+      "gap_depth": 0,
+      "product_symbols": [
+        "check_signature",
+        "validate",
+        "validate_model",
+        "validate_notebook",
+        "validate_notebook_schema",
+        "verify"
+      ],
+      "test_files": [
+        "tests/python/ipynb/test_ipynb_analytics_coverage.py",
+        "tests/python/ipynb/test_ipynb_validation.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -92,23 +166,64 @@
       "observed_depth": 4,
       "gap_depth": 2,
       "product_symbols": [
+        "find_cells",
         "get_cell_count",
         "get_code_cells",
         "get_markdown_cells",
         "get_output_representation",
-        "get_representation"
+        "get_representation",
+        "select_profile"
+      ],
+      "test_files": [
+        "tests/python/ipynb/test_ipynb_analytics_coverage.py",
+        "tests/python/ipynb/test_ipynb_codec.py",
+        "tests/python/ipynb/test_ipynb_output_mime_api.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "IPYNB-DOCMETA-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 3,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 0,
+      "product_symbols": [
+        "AttachmentChange",
+        "AttachmentManager",
+        "AttachmentReferencePolicy",
+        "AttachmentReport",
+        "Cell",
+        "CellChange",
+        "CellEdit",
+        "CellEditOperation",
+        "CellEditReport",
+        "CellEditor",
+        "CellField",
+        "CellIdRewrite",
+        "CellMetadataAdapter",
+        "CellQuery",
+        "Change",
+        "ChangeReport",
+        "CleanupPolicy",
+        "CodeCell",
+        "ConversionAction",
+        "ConversionDisposition"
       ],
       "test_files": [
         "tests/python/ipynb/test_ipynb_analytics.py",
         "tests/python/ipynb/test_ipynb_analytics_coverage.py",
         "tests/python/ipynb/test_ipynb_attachments.py",
         "tests/python/ipynb/test_ipynb_cell_id.py",
-        "tests/python/ipynb/test_ipynb_codec.py",
         "tests/python/ipynb/test_ipynb_compat_facades.py",
-        "tests/python/ipynb/test_ipynb_document_mutation.py",
         "tests/python/ipynb/test_ipynb_mutation_api.py",
-        "tests/python/ipynb/test_ipynb_output_mime_api.py",
-        "tests/python/ipynb/test_ipynb_smoke.py"
+        "tests/python/ipynb/test_ipynb_validation.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -126,13 +241,69 @@
       "observed_depth": 4,
       "gap_depth": 0,
       "product_symbols": [
+        "add",
         "add_cell",
         "add_output_representation",
         "add_representation",
+        "added",
         "clear_outputs",
+        "insert",
+        "move",
+        "remove",
         "remove_cell",
         "remove_output_mime_type",
-        "remove_representation"
+        "remove_representation",
+        "remove_signature",
+        "remove_where",
+        "removed",
+        "rename"
+      ],
+      "test_files": [
+        "tests/python/ipynb/test_ipynb_analytics_coverage.py",
+        "tests/python/ipynb/test_ipynb_attachments.py",
+        "tests/python/ipynb/test_ipynb_cell_id.py",
+        "tests/python/ipynb/test_ipynb_codec.py",
+        "tests/python/ipynb/test_ipynb_mutation_api.py",
+        "tests/python/ipynb/test_ipynb_output_mime_api.py",
+        "tests/python/ipynb/test_ipynb_smoke.py",
+        "tests/python/ipynb/test_ipynb_to_csv.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "IPYNB-EXEC-001",
+      "category": "advanced",
+      "level": "SHOULD",
+      "depth_required": 6,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 2,
+      "product_symbols": [
+        "__getitem__",
+        "__init__",
+        "__len__",
+        "__post_init__",
+        "__repr__",
+        "_action",
+        "_add_candidate",
+        "_add_reference",
+        "_additional_property_paths",
+        "_apply_candidates",
+        "_as_mapping",
+        "_attachments",
+        "_canonical_bytes",
+        "_canonical_payload",
+        "_canonicalize_sdist",
+        "_cell",
+        "_cell_field",
+        "_cell_index",
+        "_cells",
+        "_code"
       ],
       "test_files": [
         "tests/python/ipynb/test_ipynb_analytics.py",
@@ -154,46 +325,43 @@
       ]
     },
     {
-      "capability_id": "IPYNB-EXEC-001",
-      "category": "advanced",
-      "level": "SHOULD",
-      "depth_required": 6,
+      "capability_id": "IPYNB-EXECMETA-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 3,
       "observed_status": "TESTED",
-      "observed_depth": 4,
-      "gap_depth": 2,
+      "observed_depth": 3,
+      "gap_depth": 0,
       "product_symbols": [
-        "__init__",
-        "__repr__",
-        "_generate_cell_id",
-        "_read_source",
-        "_source_preview",
-        "_source_text_length",
-        "add_cell",
-        "add_output_representation",
-        "add_representation",
-        "attachments",
-        "cell_count",
-        "cell_type",
-        "cells",
-        "clear_outputs",
-        "code_cells",
-        "data",
-        "ename",
-        "ensure_cell_id",
-        "evalue",
-        "execution_count"
+        "AttachmentChange",
+        "AttachmentManager",
+        "AttachmentReferencePolicy",
+        "AttachmentReport",
+        "Cell",
+        "CellChange",
+        "CellEdit",
+        "CellEditOperation",
+        "CellEditReport",
+        "CellEditor",
+        "CellField",
+        "CellIdRewrite",
+        "CellMetadataAdapter",
+        "CellQuery",
+        "Change",
+        "ChangeReport",
+        "CleanupPolicy",
+        "CodeCell",
+        "ConversionAction",
+        "ConversionDisposition"
       ],
       "test_files": [
         "tests/python/ipynb/test_ipynb_analytics.py",
         "tests/python/ipynb/test_ipynb_analytics_coverage.py",
         "tests/python/ipynb/test_ipynb_attachments.py",
         "tests/python/ipynb/test_ipynb_cell_id.py",
-        "tests/python/ipynb/test_ipynb_codec.py",
         "tests/python/ipynb/test_ipynb_compat_facades.py",
-        "tests/python/ipynb/test_ipynb_document_mutation.py",
         "tests/python/ipynb/test_ipynb_mutation_api.py",
-        "tests/python/ipynb/test_ipynb_output_mime_api.py",
-        "tests/python/ipynb/test_ipynb_smoke.py"
+        "tests/python/ipynb/test_ipynb_validation.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -214,16 +382,53 @@
         "ipynb_to_csv"
       ],
       "test_files": [
+        "tests/python/ipynb/test_ipynb_to_csv.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "IPYNB-HIDDEN-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 3,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 0,
+      "product_symbols": [
+        "AttachmentChange",
+        "AttachmentManager",
+        "AttachmentReferencePolicy",
+        "AttachmentReport",
+        "Cell",
+        "CellChange",
+        "CellEdit",
+        "CellEditOperation",
+        "CellEditReport",
+        "CellEditor",
+        "CellField",
+        "CellIdRewrite",
+        "CellMetadataAdapter",
+        "CellQuery",
+        "Change",
+        "ChangeReport",
+        "CleanupPolicy",
+        "CodeCell",
+        "ConversionAction",
+        "ConversionDisposition"
+      ],
+      "test_files": [
         "tests/python/ipynb/test_ipynb_analytics.py",
         "tests/python/ipynb/test_ipynb_analytics_coverage.py",
         "tests/python/ipynb/test_ipynb_attachments.py",
         "tests/python/ipynb/test_ipynb_cell_id.py",
-        "tests/python/ipynb/test_ipynb_codec.py",
         "tests/python/ipynb/test_ipynb_compat_facades.py",
-        "tests/python/ipynb/test_ipynb_document_mutation.py",
         "tests/python/ipynb/test_ipynb_mutation_api.py",
-        "tests/python/ipynb/test_ipynb_output_mime_api.py",
-        "tests/python/ipynb/test_ipynb_smoke.py"
+        "tests/python/ipynb/test_ipynb_validation.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -241,29 +446,35 @@
       "observed_depth": 3,
       "gap_depth": 0,
       "product_symbols": [
+        "AttachmentChange",
+        "AttachmentManager",
+        "AttachmentReferencePolicy",
+        "AttachmentReport",
         "Cell",
-        "IpynbCell",
-        "IpynbDocument",
-        "IpynbError",
-        "IpynbNotebook",
-        "IpynbOutput",
-        "IpynbParseError",
-        "IpynbValidationError",
-        "IpynbWriteError",
-        "Notebook",
-        "Output"
+        "CellChange",
+        "CellEdit",
+        "CellEditOperation",
+        "CellEditReport",
+        "CellEditor",
+        "CellField",
+        "CellIdRewrite",
+        "CellMetadataAdapter",
+        "CellQuery",
+        "Change",
+        "ChangeReport",
+        "CleanupPolicy",
+        "CodeCell",
+        "ConversionAction",
+        "ConversionDisposition"
       ],
       "test_files": [
         "tests/python/ipynb/test_ipynb_analytics.py",
         "tests/python/ipynb/test_ipynb_analytics_coverage.py",
         "tests/python/ipynb/test_ipynb_attachments.py",
         "tests/python/ipynb/test_ipynb_cell_id.py",
-        "tests/python/ipynb/test_ipynb_codec.py",
         "tests/python/ipynb/test_ipynb_compat_facades.py",
-        "tests/python/ipynb/test_ipynb_document_mutation.py",
         "tests/python/ipynb/test_ipynb_mutation_api.py",
-        "tests/python/ipynb/test_ipynb_output_mime_api.py",
-        "tests/python/ipynb/test_ipynb_smoke.py"
+        "tests/python/ipynb/test_ipynb_validation.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -281,11 +492,12 @@
       "observed_depth": 4,
       "gap_depth": 0,
       "product_symbols": [
+        "load",
         "load_ipynb",
+        "loads",
         "write_ipynb"
       ],
       "test_files": [
-        "tests/python/ipynb/test_ipynb_analytics.py",
         "tests/python/ipynb/test_ipynb_analytics_coverage.py",
         "tests/python/ipynb/test_ipynb_attachments.py",
         "tests/python/ipynb/test_ipynb_cell_id.py",
@@ -294,7 +506,7 @@
         "tests/python/ipynb/test_ipynb_document_mutation.py",
         "tests/python/ipynb/test_ipynb_mutation_api.py",
         "tests/python/ipynb/test_ipynb_output_mime_api.py",
-        "tests/python/ipynb/test_ipynb_smoke.py"
+        "tests/python/ipynb/test_ipynb_validation.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -340,19 +552,15 @@
       "observed_depth": 2,
       "gap_depth": 0,
       "product_symbols": [
+        "_extension_issue",
+        "preserved_extensions",
         "roundtrip"
       ],
       "test_files": [
-        "tests/python/ipynb/test_ipynb_analytics.py",
         "tests/python/ipynb/test_ipynb_analytics_coverage.py",
-        "tests/python/ipynb/test_ipynb_attachments.py",
         "tests/python/ipynb/test_ipynb_cell_id.py",
         "tests/python/ipynb/test_ipynb_codec.py",
-        "tests/python/ipynb/test_ipynb_compat_facades.py",
-        "tests/python/ipynb/test_ipynb_document_mutation.py",
-        "tests/python/ipynb/test_ipynb_mutation_api.py",
-        "tests/python/ipynb/test_ipynb_output_mime_api.py",
-        "tests/python/ipynb/test_ipynb_smoke.py"
+        "tests/python/ipynb/test_ipynb_document_mutation.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -370,29 +578,35 @@
       "observed_depth": 4,
       "gap_depth": 0,
       "product_symbols": [
+        "AttachmentChange",
+        "AttachmentManager",
+        "AttachmentReferencePolicy",
+        "AttachmentReport",
         "Cell",
-        "IpynbCell",
-        "IpynbDocument",
-        "IpynbError",
-        "IpynbNotebook",
-        "IpynbOutput",
-        "IpynbParseError",
-        "IpynbValidationError",
-        "IpynbWriteError",
-        "Notebook",
-        "Output"
+        "CellChange",
+        "CellEdit",
+        "CellEditOperation",
+        "CellEditReport",
+        "CellEditor",
+        "CellField",
+        "CellIdRewrite",
+        "CellMetadataAdapter",
+        "CellQuery",
+        "Change",
+        "ChangeReport",
+        "CleanupPolicy",
+        "CodeCell",
+        "ConversionAction",
+        "ConversionDisposition"
       ],
       "test_files": [
         "tests/python/ipynb/test_ipynb_analytics.py",
         "tests/python/ipynb/test_ipynb_analytics_coverage.py",
         "tests/python/ipynb/test_ipynb_attachments.py",
         "tests/python/ipynb/test_ipynb_cell_id.py",
-        "tests/python/ipynb/test_ipynb_codec.py",
         "tests/python/ipynb/test_ipynb_compat_facades.py",
-        "tests/python/ipynb/test_ipynb_document_mutation.py",
         "tests/python/ipynb/test_ipynb_mutation_api.py",
-        "tests/python/ipynb/test_ipynb_output_mime_api.py",
-        "tests/python/ipynb/test_ipynb_smoke.py"
+        "tests/python/ipynb/test_ipynb_validation.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -410,29 +624,35 @@
       "observed_depth": 3,
       "gap_depth": 0,
       "product_symbols": [
+        "AttachmentChange",
+        "AttachmentManager",
+        "AttachmentReferencePolicy",
+        "AttachmentReport",
         "Cell",
-        "IpynbCell",
-        "IpynbDocument",
-        "IpynbError",
-        "IpynbNotebook",
-        "IpynbOutput",
-        "IpynbParseError",
-        "IpynbValidationError",
-        "IpynbWriteError",
-        "Notebook",
-        "Output"
+        "CellChange",
+        "CellEdit",
+        "CellEditOperation",
+        "CellEditReport",
+        "CellEditor",
+        "CellField",
+        "CellIdRewrite",
+        "CellMetadataAdapter",
+        "CellQuery",
+        "Change",
+        "ChangeReport",
+        "CleanupPolicy",
+        "CodeCell",
+        "ConversionAction",
+        "ConversionDisposition"
       ],
       "test_files": [
         "tests/python/ipynb/test_ipynb_analytics.py",
         "tests/python/ipynb/test_ipynb_analytics_coverage.py",
         "tests/python/ipynb/test_ipynb_attachments.py",
         "tests/python/ipynb/test_ipynb_cell_id.py",
-        "tests/python/ipynb/test_ipynb_codec.py",
         "tests/python/ipynb/test_ipynb_compat_facades.py",
-        "tests/python/ipynb/test_ipynb_document_mutation.py",
         "tests/python/ipynb/test_ipynb_mutation_api.py",
-        "tests/python/ipynb/test_ipynb_output_mime_api.py",
-        "tests/python/ipynb/test_ipynb_smoke.py"
+        "tests/python/ipynb/test_ipynb_validation.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -450,12 +670,16 @@
       "observed_depth": 2,
       "gap_depth": 0,
       "product_symbols": [
+        "detected_version",
         "from_file",
+        "from_value",
+        "load",
         "load_ipynb",
+        "loads",
+        "probe",
         "probe_ipynb"
       ],
       "test_files": [
-        "tests/python/ipynb/test_ipynb_analytics.py",
         "tests/python/ipynb/test_ipynb_analytics_coverage.py",
         "tests/python/ipynb/test_ipynb_attachments.py",
         "tests/python/ipynb/test_ipynb_cell_id.py",
@@ -464,7 +688,7 @@
         "tests/python/ipynb/test_ipynb_document_mutation.py",
         "tests/python/ipynb/test_ipynb_mutation_api.py",
         "tests/python/ipynb/test_ipynb_output_mime_api.py",
-        "tests/python/ipynb/test_ipynb_smoke.py"
+        "tests/python/ipynb/test_ipynb_validation.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -482,19 +706,15 @@
       "observed_depth": 3,
       "gap_depth": 1,
       "product_symbols": [
+        "_extension_issue",
+        "preserved_extensions",
         "roundtrip"
       ],
       "test_files": [
-        "tests/python/ipynb/test_ipynb_analytics.py",
         "tests/python/ipynb/test_ipynb_analytics_coverage.py",
-        "tests/python/ipynb/test_ipynb_attachments.py",
         "tests/python/ipynb/test_ipynb_cell_id.py",
         "tests/python/ipynb/test_ipynb_codec.py",
-        "tests/python/ipynb/test_ipynb_compat_facades.py",
-        "tests/python/ipynb/test_ipynb_document_mutation.py",
-        "tests/python/ipynb/test_ipynb_mutation_api.py",
-        "tests/python/ipynb/test_ipynb_output_mime_api.py",
-        "tests/python/ipynb/test_ipynb_smoke.py"
+        "tests/python/ipynb/test_ipynb_document_mutation.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -508,10 +728,13 @@
       "category": "security",
       "level": "MUST",
       "depth_required": 2,
-      "observed_status": "NOT_STARTED",
-      "observed_depth": 0,
-      "gap_depth": 2,
-      "product_symbols": [],
+      "observed_status": "TESTED",
+      "observed_depth": 2,
+      "gap_depth": 0,
+      "product_symbols": [
+        "effective_limits",
+        "sanitize"
+      ],
       "test_files": [
         "tests/python/ipynb/test_ipynb_analytics.py",
         "tests/python/ipynb/test_ipynb_analytics_coverage.py",
@@ -536,10 +759,13 @@
       "category": "security",
       "level": "MUST",
       "depth_required": 5,
-      "observed_status": "NOT_STARTED",
-      "observed_depth": 0,
-      "gap_depth": 5,
-      "product_symbols": [],
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 2,
+      "product_symbols": [
+        "effective_limits",
+        "sanitize"
+      ],
       "test_files": [
         "tests/python/ipynb/test_ipynb_analytics.py",
         "tests/python/ipynb/test_ipynb_analytics_coverage.py",
@@ -564,10 +790,13 @@
       "category": "security",
       "level": "MUST",
       "depth_required": 5,
-      "observed_status": "NOT_STARTED",
-      "observed_depth": 0,
-      "gap_depth": 5,
-      "product_symbols": [],
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 2,
+      "product_symbols": [
+        "effective_limits",
+        "sanitize"
+      ],
       "test_files": [
         "tests/python/ipynb/test_ipynb_analytics.py",
         "tests/python/ipynb/test_ipynb_analytics_coverage.py",
@@ -624,20 +853,16 @@
       "observed_depth": 5,
       "gap_depth": 0,
       "product_symbols": [
+        "check_signature",
+        "validate",
+        "validate_model",
         "validate_notebook",
-        "validate_notebook_schema"
+        "validate_notebook_schema",
+        "verify"
       ],
       "test_files": [
-        "tests/python/ipynb/test_ipynb_analytics.py",
         "tests/python/ipynb/test_ipynb_analytics_coverage.py",
-        "tests/python/ipynb/test_ipynb_attachments.py",
-        "tests/python/ipynb/test_ipynb_cell_id.py",
-        "tests/python/ipynb/test_ipynb_codec.py",
-        "tests/python/ipynb/test_ipynb_compat_facades.py",
-        "tests/python/ipynb/test_ipynb_document_mutation.py",
-        "tests/python/ipynb/test_ipynb_mutation_api.py",
-        "tests/python/ipynb/test_ipynb_output_mime_api.py",
-        "tests/python/ipynb/test_ipynb_smoke.py"
+        "tests/python/ipynb/test_ipynb_validation.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -655,6 +880,8 @@
       "observed_depth": 4,
       "gap_depth": 0,
       "product_symbols": [
+        "dump",
+        "dumps",
         "write_ipynb"
       ],
       "test_files": [
@@ -663,11 +890,9 @@
         "tests/python/ipynb/test_ipynb_attachments.py",
         "tests/python/ipynb/test_ipynb_cell_id.py",
         "tests/python/ipynb/test_ipynb_codec.py",
-        "tests/python/ipynb/test_ipynb_compat_facades.py",
         "tests/python/ipynb/test_ipynb_document_mutation.py",
         "tests/python/ipynb/test_ipynb_mutation_api.py",
-        "tests/python/ipynb/test_ipynb_output_mime_api.py",
-        "tests/python/ipynb/test_ipynb_smoke.py"
+        "tests/python/ipynb/test_ipynb_output_mime_api.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -678,12 +903,12 @@
     }
   ],
   "summary": {
-    "total": 20,
-    "with_gap": 9,
+    "total": 25,
+    "with_gap": 8,
     "by_status": {
-      "NOT_STARTED": 6,
+      "NOT_STARTED": 3,
       "IMPLEMENTED_UNPROVEN": 0,
-      "TESTED": 14,
+      "TESTED": 22,
       "ORACLE_PROVEN": 0
     }
   }
