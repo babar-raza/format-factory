@@ -1,74 +1,102 @@
 # IPYNB certification gate 1 — mutation testing (2026-08-04)
 
-**The first certification gate ever executed in this program.** None of the
-gates named in the goal record — licensed corpora, fuzzing, mutation testing,
-cross-platform 3.11–3.14, reproducible builds, SBOM, provenance,
-independent-repository extraction — had been run for any format before this.
+> **RETRACTED, same day, by the agent that produced it.** The result below —
+> 45/45 mutations killed, 100%, verdict STRONG — was an **artifact of a broken
+> measurement**. It is preserved rather than deleted because how it passed
+> review matters more than the number did.
+>
+> **Status: no valid mutation-testing result exists for any format.** A corrected
+> whole-package campaign is running; its result will be recorded separately.
 
-## Why mutation testing first
-
-IPYNB reached 633 passing tests today. The honest question is whether those
-tests *assert* behavior or merely *execute* it. Mutation testing answers it
-directly: change the source, see whether the suite notices. Given that this
-session found three separate cases of checks that could not fail for the defects
-they named, a large suite was exactly the place to expect the next one.
-
-## Result
+## What was originally reported
 
 | target | mutations | killed | survived | kill rate | verdict |
 |---|---|---|---|---|---|
 | `validation/rules.py` | 25 | 25 | 0 | **100%** | STRONG |
 | `model/metadata.py` | 20 | 20 | 0 | **100%** | STRONG |
 
-Mutation operators exercised included `negate_comparison`, `off_by_one` and
-`return_none`, applied across boundary checks, membership tests and identity
-comparisons.
+## Why it was wrong
 
-## The control run that makes the result trustworthy
-
-A 100% kill rate is exactly the shape a broken tester would produce — one that
-reports `killed` unconditionally would look identical. Reporting it without a
-control would have been the fourth disguise of *"a check that cannot fail for
-the defect it names"*.
-
-So the tester was run against a deliberately powerless test directory containing
-a single `assert True`:
+`mutation_tester.py` scores a mutation `killed` when the test suite exits
+non-zero. The IPYNB suite **already exited non-zero before any mutation was
+applied**:
 
 ```
-target: validation/rules.py    tests: <a directory with one trivial test>
-Result: 5 mutations, 0 killed, 5 SURVIVED, verdict NEEDS_HARDENING
+$ .venv/Scripts/pytest tests/python/ipynb/ -x -q --tb=no --no-header --timeout=30
+EXACT_TESTER_INVOCATION_ON_PRISTINE_SOURCE_EXIT=1
 ```
 
-It correctly identified every survivor with its exact line and mutation, e.g.
-`L498: CELL_ID_PATTERN.fullmatch(cell_id) is None → is not None`.
+Three tests fail under an editable install because they assert the package is
+resident in `site-packages`:
 
-**The tester detects survivors.** The 100% kill rates are therefore real
-evidence, not an artefact.
+- `test_obligation_attachments.py::test_attachment_proof_uses_installed_production_namespace`
+- `test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace`
+- `test_production_namespace.py::test_implicit_namespace_has_no_parent_init`
 
-## What this does and does not establish
+With the baseline red, `tests_pass` was `False` for every mutation. Every
+mutation was scored `killed`. **A 100% kill rate was the only result the run
+could have produced** — the same number would have come back had the mutations
+never been applied at all.
 
-It establishes that for the two modules tested, IPYNB's suite kills every
-mutation attempted — meaningful evidence that those tests assert rather than
-merely execute, and the strongest positive signal produced in this session.
+## The control ran, and still missed it
 
-It does **not** establish that IPYNB is certified, or that its whole suite is
-strong. Two of roughly nineteen source modules were sampled, at 25 and 20
-mutations each, bounded to keep the run inside a timeout. `model/diff.py` was
-started and exceeded the two-minute command limit before finishing; it has no
-result and is not counted. A full-package mutation campaign across every module
-remains outstanding, and the gate is recorded as **sampled**, not complete.
+A vacuity control *was* run, precisely because a 100% kill rate is the shape a
+broken tester produces. It pointed the tester at a scratch directory holding one
+`assert True` and got 5 mutations, 0 killed, 5 SURVIVED — proving the tester
+*can* report survivors.
 
-## Cost, recorded because it was unknown
+That control tested the wrong half. It proved the tester reports survivors when
+the baseline is green; it never checked whether **this target's** baseline was
+green. The failure mode it needed to exclude — a suite that can never exit zero —
+was invisible to it, because the control used a different, passing suite.
 
-- `mutmut` is installed but unused here; `tools/certification/mutation_tester.py`
-  (already in-repo) does the work and takes one source file at a time.
-- Roughly 25 mutations against a 500-line module completes inside two minutes
-  when the suite is fast (the IPYNB suite runs in ~5s).
-- A whole-package campaign is therefore hours, not minutes, and needs to run
-  detached rather than inside a command timeout. That is the first concrete
-  cost datum for any certification gate in this program.
+The lesson is sharper than "run a control": **a control must be run against the
+same configuration as the result it vouches for.** A control on a neighbouring
+setup can look rigorous and certify nothing.
+
+This is the fifth disguise of *"a check that cannot fail for the defect it
+names"* found in this program, after a skipped pytest branch in a selector list,
+`==` against `-0.0`, an audit hook never proven to fire, and a bare 100% kill
+rate. It is the first of the five that was produced by the agent's own gate work
+rather than found in inherited material.
+
+## How it was caught
+
+Not by review of the number. By building an isolated mutation lab
+(`tools/certification/mutation_lab.py`) so an hours-long campaign could not
+rewrite the live working tree — the lab's own baseline check refused to start,
+naming the same three residency failures. The safety measure found the
+measurement error.
+
+## What was changed so it cannot recur
+
+`mutation_tester.py` now runs the suite on unmutated source **before** mutating
+and raises `BaselineNotGreen` if it does not pass, refusing to report a kill
+rate at all (exit 2). Verified against the exact run that produced the retracted
+result:
+
+```
+$ python tools/certification/mutation_tester.py --target .../validation/rules.py \
+    --tests tests/python/ipynb/ --max-mutations 3
+BASELINE NOT GREEN -- refusing to report a kill rate:
+  tests/python/ipynb/ does not pass on unmutated source. Every mutation would be
+  scored 'killed' regardless of detection.
+EXIT=2
+```
+
+Environmental failures that cannot kill a mutation may be excluded with an
+explicit, repeatable `--deselect`, recorded in the gate document. The three
+residency assertions above qualify: they assert *where the package lives*, not
+what it does, so no source mutation could change their outcome. Nothing
+behavioural may be deselected.
+
+## Cost, corrected
+
+The original cost datum (~25 mutations per 500-line module inside two minutes)
+still holds mechanically — but it was the cost of a run that measured nothing.
+Real cost is recorded with the corrected campaign.
 
 ## Status
 
-IPYNB remains `UNASSESSED`. Certification remains **0/6**. One gate of eight has
-a sampled positive result.
+IPYNB remains `UNASSESSED`. Certification remains **0/6**. Gates with a valid
+result: **0**.

@@ -175,11 +175,14 @@ def apply_mutation(source: str, mutation: dict) -> str:
     return ast.unparse(new_tree)
 
 
-def run_tests(test_dir: str, timeout: int = 60) -> bool:
+def run_tests(test_dir: str, timeout: int = 60, deselect: tuple[str, ...] = ()) -> bool:
     """Run pytest on test_dir. Returns True if tests pass (mutation survived)."""
+    command = [VENV_PYTEST, test_dir, "-x", "-q", "--tb=no", "--no-header", "--timeout=30"]
+    for selector in deselect:
+        command += ["--deselect", selector]
     try:
         result = subprocess.run(
-            [VENV_PYTEST, test_dir, "-x", "-q", "--tb=no", "--no-header", "--timeout=30"],
+            command,
             capture_output=True, text=True, timeout=timeout,
             cwd=str(REPO_ROOT),
         )
@@ -188,10 +191,51 @@ def run_tests(test_dir: str, timeout: int = 60) -> bool:
         return False  # Timeout = killed
 
 
-def run_mutation_testing(target_path: str, test_dir: str, max_mutations: int = 50) -> dict:
+class BaselineNotGreen(RuntimeError):
+    """The test suite already fails before any mutation is applied.
+
+    This is fatal, not a warning. A mutation is scored `killed` when the suite
+    exits non-zero, so a suite that exits non-zero on pristine source scores
+    every mutation killed and reports a 100% kill rate that measures nothing.
+
+    This exact defect produced this program's first certification-gate result:
+    the IPYNB suite carried three failures asserting installed-package residency
+    (`site-packages` in `__file__`), which fail under an editable install. The
+    run reported 45/45 killed across two modules. It had detected nothing. The
+    vacuity control run alongside it used a *different*, passing test directory,
+    so it confirmed the tester can report survivors without ever confirming that
+    the real target's baseline could pass -- the control tested the wrong half.
+
+    Deselect environmental failures explicitly with --deselect if they cannot
+    kill a mutation anyway (residency assertions cannot), and say so in the
+    gate record. Never proceed past a red baseline.
+    """
+
+
+def assert_baseline_green(test_dir: str, deselect: tuple[str, ...] = ()) -> None:
+    """Refuse to run a campaign whose result could not be anything but 100%."""
+    if not run_tests(test_dir, timeout=600, deselect=deselect):
+        raise BaselineNotGreen(
+            f"{test_dir} does not pass on unmutated source"
+            + (f" (with {len(deselect)} deselected)" if deselect else "")
+            + ". Every mutation would be scored 'killed' regardless of detection. "
+            "Fix the suite or deselect the environmental failures explicitly."
+        )
+
+
+def run_mutation_testing(
+    target_path: str,
+    test_dir: str,
+    max_mutations: int = 50,
+    deselect: tuple[str, ...] = (),
+) -> dict:
     """Run mutation testing on target module."""
     target = Path(target_path)
     original_source = target.read_text(encoding="utf-8")
+
+    # Before touching the source: prove the suite can pass. Without this the
+    # kill rate is unfalsifiable. See BaselineNotGreen.
+    assert_baseline_green(test_dir, deselect)
 
     mutations = collect_mutations(original_source)
     print(f"Found {len(mutations)} possible mutations in {target.name}")
@@ -224,7 +268,7 @@ def run_mutation_testing(target_path: str, test_dir: str, max_mutations: int = 5
         target.write_text(mutated_source, encoding="utf-8")
 
         try:
-            tests_pass = run_tests(test_dir)
+            tests_pass = run_tests(test_dir, deselect=deselect)
             if tests_pass:
                 mut_record["status"] = "survived"
                 survived += 1
@@ -250,6 +294,8 @@ def run_mutation_testing(target_path: str, test_dir: str, max_mutations: int = 5
     return {
         "target": str(target),
         "test_dir": test_dir,
+        "baseline_green": True,
+        "deselected": list(deselect),
         "total_mutations": len(mutations),
         "killed": killed,
         "survived": survived,
@@ -266,12 +312,26 @@ def main():
     parser.add_argument("--tests", required=True, help="Path to test directory")
     parser.add_argument("--output", help="Path to write JSON results")
     parser.add_argument("--max-mutations", type=int, default=50, help="Max mutations to test")
+    parser.add_argument(
+        "--deselect", action="append", default=[],
+        help=(
+            "pytest --deselect selector for a test that fails on pristine source for "
+            "environmental reasons and so cannot kill a mutation. Repeatable. Record "
+            "every use in the gate document."
+        ),
+    )
     args = parser.parse_args()
 
     print(f"Mutation testing: {args.target}")
     print(f"Test suite: {args.tests}")
 
-    result = run_mutation_testing(args.target, args.tests, args.max_mutations)
+    try:
+        result = run_mutation_testing(
+            args.target, args.tests, args.max_mutations, tuple(args.deselect)
+        )
+    except BaselineNotGreen as exc:
+        print(f"\nBASELINE NOT GREEN -- refusing to report a kill rate:\n  {exc}", file=sys.stderr)
+        return 2
 
     print("\n=== Results ===")
     print(f"Total mutations: {result['total_mutations']}")
@@ -291,7 +351,8 @@ def main():
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
         print(f"\nResults written to: {out}")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

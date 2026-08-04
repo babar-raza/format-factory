@@ -736,6 +736,75 @@ structural_gaps_20260804:
       read as if it were. The proof-requirement audit catches missing selectors;
       nothing mechanical catches a module that is present but hollow. Only
       reading the source does.
+  - id: GAP-023
+    finding: >
+      The program's first certification-gate result was an artifact, and I
+      produced it. mutation_tester.py scores a mutation `killed` when the test
+      suite exits non-zero. The ipynb suite ALREADY exited non-zero before any
+      mutation was applied -- three tests assert the package is resident in
+      site-packages, which is false under an editable install. So tests_pass was
+      False for every mutation, every mutation was scored killed, and 45/45
+      (100%, STRONG) was the only result the run could have produced. The same
+      number would have come back had no mutation been applied at all.
+
+      A vacuity control WAS run, which is why this is worth recording rather
+      than just fixing. It pointed the tester at a scratch directory holding one
+      `assert True` and correctly reported 5 survivors -- proving the tester can
+      report survivors when the baseline is green. It never checked whether THIS
+      target's baseline was green. The control ran against a different, passing
+      suite, so the one failure mode that mattered was invisible to it.
+    severity: HIGH
+    status: FIXED
+    owner: claude — certification machinery
+    remediation: >
+      mutation_tester.py now runs the suite on unmutated source BEFORE mutating
+      and raises BaselineNotGreen if it does not pass, refusing to report a kill
+      rate at all (exit 2). Verified by re-running the exact command that
+      produced the retracted result: it now exits 2 and names the reason.
+      Environmental failures that provably cannot kill a mutation may be
+      excluded with an explicit repeatable --deselect, recorded in the gate
+      document; the three ipynb residency assertions qualify because they assert
+      where the package lives, not what it does. Nothing behavioural may be
+      deselected. The gate record at
+      reports/skills-rff6/certification-gates/ipynb-mutation-testing-20260804.md
+      is retracted in place rather than deleted.
+    method_lesson: >
+      A control must be run against the SAME configuration as the result it
+      vouches for. A control on a neighbouring setup can look rigorous and
+      certify nothing -- this one proved a property of the tester while the
+      defect lived in the target's baseline. This is the fifth disguise of "a
+      check that cannot fail for the defect it names" in this program, and the
+      first produced by my own gate work rather than found in inherited
+      material. It was caught not by reviewing the number but by building the
+      isolation lab: the lab's own baseline check refused to start and named the
+      three failures. The safety measure found the measurement error.
+  - id: GAP-024
+    finding: >
+      mutation_tester.py rewrites its target IN PLACE in the live working tree
+      and restores it in a `finally`. That is tolerable for a two-minute
+      foreground run. For the whole-package campaign the goal record requires --
+      hours, detached, while the agent keeps committing every iteration -- it is
+      a hazard: a concurrent `git add` can stage a mutated source file, and a
+      kill or crash between write and restore leaves one on disk. Nothing in the
+      repository prevented this; the campaign was about to be launched that way.
+    severity: MEDIUM
+    status: FIXED
+    owner: claude — certification machinery
+    remediation: >
+      tools/certification/mutation_lab.py copies the package, format-factory-core,
+      the test estate and the corpora/registries the tests resolve at repo-root
+      into a throwaway tree under .local/, and runs the campaign there. The live
+      tree is never written to.
+
+      The copy is the easy half. The editable install binds format_factory.ipynb
+      to an absolute live-tree path through a sys.meta_path finder, which beats
+      sys.path -- so a lab that copied the files but still imported the originals
+      would report kill rates for source it never mutated. The lab writes a
+      conftest that drops those finders, and then PROVES the redirection worked
+      before any campaign runs: it breaks the lab copy's loads() and requires the
+      lab suite to notice, then confirms the live tree is byte-identical
+      afterwards. Both conditions must hold or the campaign refuses to start.
+      Result recorded at reports/certification/ipynb/mutation-campaign/isolation-control.json.
   - id: GAP-021
     finding: >
       OpenRaster has NO implementation. Not thin coverage, not shadow-package
