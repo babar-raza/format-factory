@@ -85,3 +85,40 @@ ignore = [
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["E711", "F401", "F811"]  # tests use conditional imports and fixtures
 "tools/**" = ["F401", "F811"]          # tools use dynamic imports
+
+[tool.mypy]
+# Format Factory's newer-generation format libraries (core, ipynb, nrrd,
+# safetensors, ubl, xliff) share the format_factory.* PEP 420 implicit
+# namespace across independent src/python/{format}/src/ directories with no
+# format_factory/__init__.py. Without this section mypy resolves each such
+# package's own files fine in isolation but cannot resolve format_factory.*
+# imports ACROSS packages (e.g. src/python/nrrd/.../payload.py importing
+# format_factory.core), because it has no path telling it where the other
+# packages' src/ roots are. mypy_path + namespace_packages +
+# explicit_package_bases together let mypy treat each src/ directory as a
+# package root under the shared format_factory namespace, matching how these
+# packages are actually installed (editable, PEP 660) and imported at
+# runtime. Legacy flat-layout formats (abw, csv, zst, etc.) are unaffected —
+# they do not use this namespace and are not listed here.
+namespace_packages = true
+explicit_package_bases = true
+mypy_path = [
+    "src/python/core/src",
+    "src/python/ipynb/src",
+    "src/python/nrrd/src",
+    "src/python/safetensors/src",
+    "src/python/ubl/src",
+    "src/python/xliff/src",
+]
+# Deliberately NOT including tools/supervisor here: that directory mixes
+# bare imports (`from atomic_io import ...`) and qualified imports
+# (`from tools.supervisor.X import ...`) for the same files, so adding it as
+# an mypy_path root makes mypy see e.g. continuation_state.py as two
+# different modules ("continuation_state" and
+# "tools.supervisor.continuation_state") and hard-stop with a duplicate-
+# module error -- strictly worse than the handful of import-not-found notes
+# it would otherwise produce. Fixing this for real means auditing and
+# converting tools/supervisor's remaining bare imports to qualified ones
+# (already done for one case in Stage 1 -- the `from action_queue import
+# enqueue_front` fix in autonomous_orchestrator.py); that is GAP-004/GAP-005
+# territory in the 2026-08-04 independent review, not a config change.

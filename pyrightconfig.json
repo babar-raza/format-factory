@@ -1,0 +1,18 @@
+{
+  // Format Factory's newer-generation format libraries (core, ipynb, nrrd,
+  // safetensors, ubl, xliff) share the format_factory.* PEP 420 implicit
+  // namespace across independent src/python/{format}/src/ directories with
+  // no format_factory/__init__.py. Without extraPaths, pyright cannot
+  // resolve format_factory.* imports across packages (e.g. NRRD importing
+  // format_factory.core) -- matching the mypy_path section in pyproject.toml's
+  // [tool.mypy] for the same reason. Legacy flat-layout formats (abw, csv,
+  // zst, etc.) are unaffected and are not listed here.
+  "extraPaths": [
+    "src/python/core/src",
+    "src/python/ipynb/src",
+    "src/python/nrrd/src",
+    "src/python/safetensors/src",
+    "src/python/ubl/src",
+    "src/python/xliff/src"
+  ]
+}
