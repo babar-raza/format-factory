@@ -4,10 +4,10 @@ goal_status: ACTIVE
 generated_by: codex
 visibility: internal
 controller_state: CONTRACT
-transition_sequence: 52
+transition_sequence: 53
 last_verified_event:
-  event_id: FF6-EVENT-000052
-  event_hash: a4ec3bb123048f9915bb08475d222540ab6ede0edb724851671a6094750ce0fb
+  event_id: FF6-EVENT-000053
+  event_hash: 7a4f7ef32123bb0713aba8d90dd741a1d6a49d8f4a0d43df2598c51310101c53
 event_journal: plans/strategic/ff6/events.jsonl
 baseline_commit: e4f8f5f086b5e627c07c2ef2d940eda2601a22a8
 digest_policy:
@@ -61,33 +61,30 @@ stage_4_record:
     proves nothing new about either format's conformance; a refactor that moved
     obligations would be a red flag.
 next_task:
-  task_id: IPYNB_IMPLEMENTATION_EVIDENCE_LEDGER
+  task_id: IPYNB_PROOF_REQUIREMENT_AUDIT
   state: READY
   unlock_condition: >-
-    Continue from Event 52 and commit 8dc1f7f4. The IPYNB capability baseline is
-    established; the exact blocker is that
-    shared/format-contracts/implementation-evidence/ipynb.yaml does not exist,
-    which is why the reconciler's --exact-obligations mode has never run for this
-    format and why its 68 obligations are unclassified.
+    Continue from Event 53 and commit 38367145. IPYNB now has an independent
+    oracle (nbformat 5.10.4, installed AND declared in the test extra), a suite
+    that actually runs (421 passed, 3 failed, from a state where it aborted with
+    9 collection errors), an obligation-to-symbol ledger covering all 68
+    obligations, and one real cross-platform defect fixed.
 
-    Author that ledger: one entry per obligation with real source symbols, real
-    positive/negative test selectors, and honest missing_behavior. Then run
-    `python tools/format_contract/contract_reconciler.py --format-id ipynb
-    --exact-obligations --obligation-register plans/strategic/ff6/obligations/ipynb.yaml
-    --implementation-evidence shared/format-contracts/implementation-evidence/ipynb.yaml`.
-    Model the file on the NRRD ledger, which is the only existing example.
+    Two tracks. (1) Build format-factory-core and format-factory-ipynb wheels
+    into an isolated venv and re-run the 3 residual namespace tests there. They
+    assert resolution from an INSTALLED location and cannot pass in the editable
+    dev venv by construction -- the same shape as SafeTensors' official-interop
+    failures. That run doubles as the mission's required installed-wheel proof
+    for IPYNB, which has NOT been done.
 
-    Two binding constraints. First, proof_requirement_audit_lesson: an obligation
-    may reach `implemented` only when every dimension its declared
-    proof_requirements names maps to a real selector, and a pytest.skip-ed
-    negative case counts as unproven. Second, the 22 capabilities currently
-    marked TESTED carry no obligation-bound proof and no oracle proof -- do not
-    treat that status as evidence.
+    (2) Begin the proof_requirement audit. For each of the 68 mapped
+    obligations, read its declared proof_requirements literally, map every named
+    dimension to a real selector, treat any pytest.skip-ed negative case as
+    unproven, and only then move status off `partial`. All 68 are currently
+    `partial` because implementation exists for every one and none has been
+    audited -- mapping is not proving.
 
-    In parallel, acquire the official Jupyter `nbformat` package as the
-    independent oracle. IPYNB has none, so zero capabilities are ORACLE_PROVEN
-    and no IPYNB verification claim is permissible until it exists. Do not claim
-    certification for any format.
+    Do not claim certification for any format.
 acceleration_bootstrap:
   status: COMPLETE
   plan_version: 4
@@ -344,14 +341,27 @@ ipynb_checkpoint:
     - IPYNB-CLEAN-001
     - IPYNB-MERGE-001
     - IPYNB-UPGRADE-001
-  oracle_status: ABSENT
+  oracle_status: INSTALLED_AND_DECLARED
+  oracle: nbformat 5.10.4 (official Jupyter reference implementation)
   oracle_note: >-
-    No oracle is registered for IPYNB and zero capabilities are ORACLE_PROVEN.
-    Under forbidden_progress_claims no IPYNB capability may be called VERIFIED
-    on self-consistency alone. The independent reference for this format is the
-    official Jupyter `nbformat` package -- the analogue of Teem for NRRD -- and
-    acquiring it is a prerequisite for any IPYNB verification claim, not an
-    optional extra.
+    Resolved at Event 53. The oracle's absence was not merely a missing extra --
+    nine obligation test files import nbformat and it was never declared in the
+    ipynb test extra, so in a fresh environment all nine died at COLLECTION and
+    the whole suite aborted with 9 collection errors, while the capability
+    reconciler counted those same capabilities as TESTED because their files
+    existed. IPYNB's strongest evidence was dead and reported as coverage at the
+    same time. nbformat is now declared (test-only) so a fresh checkout cannot
+    lose it again.
+  suite_status: 421 passed, 3 failed
+  suite_status_history: "9 collection errors (did not run) -> 337 passed/50 failed -> 421 passed/3 failed"
+  residual_failures: 3
+  residual_failures_note: >-
+    All three assert that format_factory.ipynb resolves from an INSTALLED
+    location rather than the repo tree. Every package in the dev venv is an
+    editable .pth install, so they cannot pass there by construction. Same
+    environment class as GAP-002 and as SafeTensors' 4 official-interop
+    failures. NOT counted as passing.
+  installed_wheel_proof: NOT_RUN
   truth_boundary: >-
     "TESTED: 22" means a test file exercising the capability exists. It is NOT
     obligation-bound proof, NOT oracle proof, and NOT certification. The 22 are
