@@ -52,17 +52,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-023B8C902D0BB83F
   capability_id: UBL-VALUES-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Extreme decimal fixtures
     round-trip losslessly; attribute retention verified per value type.; Extreme decimal fixtures (large
     precision, trailing zeros) round-trip with attributes intact.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Extreme decimal fixtures round-trip losslessly; attribute retention verified per value type.
@@ -291,17 +300,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-10FAFE831BDBFA43
   capability_id: UBL-VALUES-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Extreme decimal fixtures
     round-trip losslessly; attribute retention verified per value type.; Extreme decimal fixtures (large
     precision, trailing zeros) round-trip with attributes intact.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Extreme decimal fixtures round-trip losslessly; attribute retention verified per value type.
@@ -690,17 +708,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-21AF03B6B4BD5875
   capability_id: UBL-VALUES-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Extreme decimal fixtures
     round-trip losslessly; attribute retention verified per value type.; Extreme decimal fixtures (large
     precision, trailing zeros) round-trip with attributes intact.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Extreme decimal fixtures round-trip losslessly; attribute retention verified per value type.
@@ -1099,17 +1126,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-32A419E39BDD8B9F
   capability_id: UBL-VALUES-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Extreme decimal fixtures
     round-trip losslessly; attribute retention verified per value type.; Extreme decimal fixtures (large
     precision, trailing zeros) round-trip with attributes intact.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Extreme decimal fixtures round-trip losslessly; attribute retention verified per value type.
@@ -1118,17 +1154,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-32D59836B480F6B8
   capability_id: UBL-VALUES-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Extreme decimal fixtures
     round-trip losslessly; attribute retention verified per value type.; Extreme decimal fixtures (large
     precision, trailing zeros) round-trip with attributes intact.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Extreme decimal fixtures round-trip losslessly; attribute retention verified per value type.
@@ -1288,17 +1333,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-43BDF391D6546975
   capability_id: UBL-VALUES-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Extreme decimal fixtures
     round-trip losslessly; attribute retention verified per value type.; Extreme decimal fixtures (large
     precision, trailing zeros) round-trip with attributes intact.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Extreme decimal fixtures round-trip losslessly; attribute retention verified per value type.
@@ -1307,17 +1361,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-441B495EB6A1CA64
   capability_id: UBL-VALUES-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Extreme decimal fixtures
     round-trip losslessly; attribute retention verified per value type.; Extreme decimal fixtures (large
     precision, trailing zeros) round-trip with attributes intact.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Extreme decimal fixtures round-trip losslessly; attribute retention verified per value type.
@@ -1863,17 +1926,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-573973D976582D1C
   capability_id: UBL-VALUES-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Extreme decimal fixtures
     round-trip losslessly; attribute retention verified per value type.; Extreme decimal fixtures (large
     precision, trailing zeros) round-trip with attributes intact.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Extreme decimal fixtures round-trip losslessly; attribute retention verified per value type.
@@ -1927,17 +1999,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-5CE5A2FA37D34103
   capability_id: UBL-VALUES-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Extreme decimal fixtures
     round-trip losslessly; attribute retention verified per value type.; Extreme decimal fixtures (large
     precision, trailing zeros) round-trip with attributes intact.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Extreme decimal fixtures round-trip losslessly; attribute retention verified per value type.
@@ -2864,17 +2945,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-911D4E2AA74AE5C9
   capability_id: UBL-VALUES-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Extreme decimal fixtures
     round-trip losslessly; attribute retention verified per value type.; Extreme decimal fixtures (large
     precision, trailing zeros) round-trip with attributes intact.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Extreme decimal fixtures round-trip losslessly; attribute retention verified per value type.
@@ -2944,17 +3034,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-93D4DBF066206515
   capability_id: UBL-VALUES-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Extreme decimal fixtures
     round-trip losslessly; attribute retention verified per value type.; Extreme decimal fixtures (large
     precision, trailing zeros) round-trip with attributes intact.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Extreme decimal fixtures round-trip losslessly; attribute retention verified per value type.
@@ -2963,17 +3062,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-94D3CE5786D8BDE9
   capability_id: UBL-VALUES-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Extreme decimal fixtures
     round-trip losslessly; attribute retention verified per value type.; Extreme decimal fixtures (large
     precision, trailing zeros) round-trip with attributes intact.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Extreme decimal fixtures round-trip losslessly; attribute retention verified per value type.
@@ -3144,17 +3252,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-A32204A79EEAA840
   capability_id: UBL-VALUES-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Extreme decimal fixtures
     round-trip losslessly; attribute retention verified per value type.; Extreme decimal fixtures (large
     precision, trailing zeros) round-trip with attributes intact.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Extreme decimal fixtures round-trip losslessly; attribute retention verified per value type.
@@ -3412,17 +3529,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-B47D8E797924BBD4
   capability_id: UBL-VALUES-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Extreme decimal fixtures
     round-trip losslessly; attribute retention verified per value type.; Extreme decimal fixtures (large
     precision, trailing zeros) round-trip with attributes intact.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Extreme decimal fixtures round-trip losslessly; attribute retention verified per value type.
@@ -3586,17 +3712,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-C287EBE21F059E6C
   capability_id: UBL-VALUES-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Extreme decimal fixtures
     round-trip losslessly; attribute retention verified per value type.; Extreme decimal fixtures (large
     precision, trailing zeros) round-trip with attributes intact.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Extreme decimal fixtures round-trip losslessly; attribute retention verified per value type.
@@ -3800,17 +3935,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-CA05321D7D7B950C
   capability_id: UBL-VALUES-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Extreme decimal fixtures
     round-trip losslessly; attribute retention verified per value type.; Extreme decimal fixtures (large
     precision, trailing zeros) round-trip with attributes intact.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Extreme decimal fixtures round-trip losslessly; attribute retention verified per value type.
@@ -3961,17 +4105,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-D25D2CB8429753F9
   capability_id: UBL-VALUES-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Extreme decimal fixtures
     round-trip losslessly; attribute retention verified per value type.; Extreme decimal fixtures (large
     precision, trailing zeros) round-trip with attributes intact.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Extreme decimal fixtures round-trip losslessly; attribute retention verified per value type.
@@ -4339,17 +4492,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-ED9826054E4BA037
   capability_id: UBL-VALUES-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Extreme decimal fixtures
     round-trip losslessly; attribute retention verified per value type.; Extreme decimal fixtures (large
     precision, trailing zeros) round-trip with attributes intact.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Extreme decimal fixtures round-trip losslessly; attribute retention verified per value type.
@@ -4514,17 +4676,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-F6C576C55BACDF83
   capability_id: UBL-VALUES-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Extreme decimal fixtures
     round-trip losslessly; attribute retention verified per value type.; Extreme decimal fixtures (large
     precision, trailing zeros) round-trip with attributes intact.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Extreme decimal fixtures round-trip losslessly; attribute retention verified per value type.

@@ -2,6 +2,14 @@
 
 from .document import UblDocument, XmlNode
 from .root_types import ROOT_CLASSES
+from .values import (
+    Amount,
+    BinaryObject,
+    Code,
+    Identifier,
+    Quantity,
+    Rounding,
+)
 
 
 def document_from_root(
@@ -20,4 +28,10 @@ def document_from_root(
         signed_content_sha256=signed_content_sha256,
     )
 
-__all__ = ["ROOT_CLASSES", "UblDocument", "XmlNode", "document_from_root"]
+__all__ = [
+    "Rounding",
+    "Quantity",
+    "Identifier",
+    "Code",
+    "BinaryObject",
+    "Amount","ROOT_CLASSES", "UblDocument", "XmlNode", "document_from_root"]

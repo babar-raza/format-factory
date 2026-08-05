@@ -24,11 +24,27 @@ from .codec import (
     semantic_sha256,
 )
 from .errors import UblError, UblParseError, UblValidationError, UblWriteError
-from .model import ROOT_CLASSES, UblDocument, XmlNode
+from .model import (
+    ROOT_CLASSES,
+    Amount,
+    BinaryObject,
+    Code,
+    Identifier,
+    Quantity,
+    Rounding,
+    UblDocument,
+    XmlNode,
+)
 from .security import UBL_DEFAULT_LIMITS
 from .validation import validate
 
 __all__ = [
+    "Rounding",
+    "Quantity",
+    "Identifier",
+    "Code",
+    "BinaryObject",
+    "Amount",
     "ARCHIVE_MEMBER_NAMES_SHA256",
     "AUTHORITY_SHA256",
     "ROOT_CLASSES",

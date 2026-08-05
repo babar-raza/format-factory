@@ -98,8 +98,14 @@ capabilities:
   # they are recorded `missing` with a reason rather than omitted. Together they
   # are 57 obligations, the largest unevidenced block in the program.
   UBL-VALUES-001:
-    modules: [model/root_types.py]
-    tests: []
+    # Was mapped to model/root_types.py with no tests -- a file of 91
+    # five-line root-name stubs that has nothing to do with typed values. That
+    # mapping is the GAP-022 pattern: a module that EXISTS standing in for one
+    # that IMPLEMENTS. Corrected 2026-08-05 to the real implementation.
+    modules:
+    - model/values.py
+    tests:
+    - test_obligation_business_value_types.py
 
   UBL-REF-001:
     modules: [model/document.py]
