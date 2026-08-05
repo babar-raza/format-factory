@@ -52,6 +52,14 @@ class QueryMatch:
     node: XmlNode
 
 
+@dataclass(frozen=True, slots=True)
+class DuplicateId:
+    """Two or more line-role components sharing the same own identifier."""
+
+    identifier: str
+    matches: tuple[QueryMatch, ...]
+
+
 def business_role(node: XmlNode) -> str | None:
     """Classify a node's business role by its local name, or None if it
     doesn't match one of the four the contract names.
@@ -158,6 +166,33 @@ class DocumentIndex:
         """`role` is one of "party", "item", "line", "document_reference"."""
         return tuple(self._by_role.get(role, ()))
 
+    def duplicate_line_ids(self) -> tuple[DuplicateId, ...]:
+        """Line-role components (cac:InvoiceLine, cac:CreditNoteLine, ...)
+        that share the same own identifier, with every occurrence's path.
+
+        UBL-REF-001: "detect duplicate IDs ... with locations." Scoped to
+        the "line" business role deliberately, not to every identifier in
+        `_by_id`: cbc:ID is a generic identifier component reused for
+        unrelated business identifier schemes (a party identifier, a line
+        number, an item code), so a Party's "1" and a Line's "1" are not a
+        conflict -- they are different identifier namespaces that happen to
+        share a string. Line identifiers are the one case UBL actually
+        expects document-scoped uniqueness for: they are what
+        `lines_referencing_item_id`-style consumers and tax/allowance
+        cross-references correlate against, so two lines sharing an ID is a
+        genuine, checkable defect rather than an invented rule.
+        """
+        by_identifier: dict[str, list[QueryMatch]] = {}
+        for match in self.by_business_role("line"):
+            identifier = _own_identifier(match.node)
+            if identifier:
+                by_identifier.setdefault(identifier, []).append(match)
+        return tuple(
+            DuplicateId(identifier=identifier, matches=tuple(matches))
+            for identifier, matches in by_identifier.items()
+            if len(matches) > 1
+        )
+
     def lines_referencing_item_id(self, item_id: str) -> tuple[QueryMatch, ...]:
         """Every line-role component whose own cac:Item subtree contains an
         identifier matching `item_id`.
@@ -182,6 +217,7 @@ class DocumentIndex:
 
 __all__ = [
     "DocumentIndex",
+    "DuplicateId",
     "Path",
     "QueryMatch",
     "business_role",

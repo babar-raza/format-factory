@@ -23,7 +23,7 @@ from .charges import (
     payment_means_of,
     price_of,
 )
-from .query import DocumentIndex, Path, QueryMatch, business_role
+from .query import DocumentIndex, DuplicateId, Path, QueryMatch, business_role
 from .temporal import UblDate, UblDateTime, UblTime
 from .typed import (
     date_of,
@@ -67,6 +67,7 @@ def document_from_root(
 
 __all__ = [
     "DocumentIndex",
+    "DuplicateId",
     "Path",
     "QueryMatch",
     "business_role",

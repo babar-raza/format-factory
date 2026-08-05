@@ -31,6 +31,11 @@ execution_evidence:
     -- see the capabilities section below and the notes above for what is actually mapped today. ubl suite:
     488 passed.
 
+    2026-08-06: UBL-QUERY-001 (model/query.py, DocumentIndex) and UBL-REF-001 (DocumentIndex.duplicate_line_ids())
+    add genuinely new source and tests since the 2026-08-05 addendum above. ubl suite: 507 -> 514 passed,
+    ruff clean, mypy clean. ubl obligations: 165 partial/29 missing -> 182 partial/12 missing. No obligation
+    reaches `implemented`.
+
     2026-08-06 (UBL-QUERY-001): model/query.py is new source, real and tested, not a remap of an existing
     stub. ubl suite: 488 -> 507 passed, ruff and mypy clean. Obligations: 163 partial/31 missing -> 165
     partial/29 missing.'
@@ -304,16 +309,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-0DE187D3095ADFC9
   capability_id: UBL-REF-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId
+  - src/python/ubl/src/format_factory/ubl/model/query.py::business_role
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_unique_line_ids_report_no_duplicates
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Duplicate-ID and broken-reference
     fixtures produce complete diagnostics.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Duplicate-ID and broken-reference fixtures produce complete diagnostics.
@@ -871,16 +885,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-21513DE5D9694015
   capability_id: UBL-REF-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId
+  - src/python/ubl/src/format_factory/ubl/model/query.py::business_role
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_unique_line_ids_report_no_duplicates
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Duplicate-ID and broken-reference
     fixtures produce complete diagnostics.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Duplicate-ID and broken-reference fixtures produce complete diagnostics.
@@ -1189,16 +1212,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-2B874025EE323381
   capability_id: UBL-REF-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId
+  - src/python/ubl/src/format_factory/ubl/model/query.py::business_role
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_unique_line_ids_report_no_duplicates
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Duplicate-ID and broken-reference
     fixtures produce complete diagnostics.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Duplicate-ID and broken-reference fixtures produce complete diagnostics.
@@ -1206,16 +1238,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-2CDD018E59A4BA54
   capability_id: UBL-REF-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId
+  - src/python/ubl/src/format_factory/ubl/model/query.py::business_role
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_unique_line_ids_report_no_duplicates
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Duplicate-ID and broken-reference
     fixtures produce complete diagnostics.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Duplicate-ID and broken-reference fixtures produce complete diagnostics.
@@ -1394,16 +1435,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-31DE92275AF5F6EF
   capability_id: UBL-REF-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId
+  - src/python/ubl/src/format_factory/ubl/model/query.py::business_role
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_unique_line_ids_report_no_duplicates
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Duplicate-ID and broken-reference
     fixtures produce complete diagnostics.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Duplicate-ID and broken-reference fixtures produce complete diagnostics.
@@ -1414,6 +1464,7 @@ obligations:
   status: partial
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId
   - src/python/ubl/src/format_factory/ubl/model/query.py::business_role
   - src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex
   positive_test_selectors:
@@ -1651,16 +1702,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-3F57C68621331DF7
   capability_id: UBL-REF-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId
+  - src/python/ubl/src/format_factory/ubl/model/query.py::business_role
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_unique_line_ids_report_no_duplicates
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Duplicate-ID and broken-reference
     fixtures produce complete diagnostics.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Duplicate-ID and broken-reference fixtures produce complete diagnostics.
@@ -1830,16 +1890,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-44B9393A83611C0E
   capability_id: UBL-REF-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId
+  - src/python/ubl/src/format_factory/ubl/model/query.py::business_role
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_unique_line_ids_report_no_duplicates
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Duplicate-ID and broken-reference
     fixtures produce complete diagnostics.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Duplicate-ID and broken-reference fixtures produce complete diagnostics.
@@ -1953,16 +2022,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-49E8A72A55F540E1
   capability_id: UBL-REF-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId
+  - src/python/ubl/src/format_factory/ubl/model/query.py::business_role
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_unique_line_ids_report_no_duplicates
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Duplicate-ID and broken-reference
     fixtures produce complete diagnostics.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Duplicate-ID and broken-reference fixtures produce complete diagnostics.
@@ -2816,16 +2894,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-6C8834CFF87AAD86
   capability_id: UBL-REF-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId
+  - src/python/ubl/src/format_factory/ubl/model/query.py::business_role
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_unique_line_ids_report_no_duplicates
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Duplicate-ID and broken-reference
     fixtures produce complete diagnostics.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Duplicate-ID and broken-reference fixtures produce complete diagnostics.
@@ -3273,16 +3360,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-7F53755AAD2DFEB4
   capability_id: UBL-REF-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId
+  - src/python/ubl/src/format_factory/ubl/model/query.py::business_role
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_unique_line_ids_report_no_duplicates
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Duplicate-ID and broken-reference
     fixtures produce complete diagnostics.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Duplicate-ID and broken-reference fixtures produce complete diagnostics.
@@ -3390,16 +3486,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-87B1BB6A1F876A98
   capability_id: UBL-REF-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId
+  - src/python/ubl/src/format_factory/ubl/model/query.py::business_role
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_unique_line_ids_report_no_duplicates
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Duplicate-ID and broken-reference
     fixtures produce complete diagnostics.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Duplicate-ID and broken-reference fixtures produce complete diagnostics.
@@ -3695,16 +3800,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-93A7C1CA85ABE754
   capability_id: UBL-REF-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId
+  - src/python/ubl/src/format_factory/ubl/model/query.py::business_role
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_unique_line_ids_report_no_duplicates
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Duplicate-ID and broken-reference
     fixtures produce complete diagnostics.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Duplicate-ID and broken-reference fixtures produce complete diagnostics.
@@ -3957,16 +4071,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-9C170E327B30FBD3
   capability_id: UBL-REF-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId
+  - src/python/ubl/src/format_factory/ubl/model/query.py::business_role
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_unique_line_ids_report_no_duplicates
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Duplicate-ID and broken-reference
     fixtures produce complete diagnostics.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Duplicate-ID and broken-reference fixtures produce complete diagnostics.
@@ -3977,6 +4100,7 @@ obligations:
   status: partial
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId
   - src/python/ubl/src/format_factory/ubl/model/query.py::business_role
   - src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex
   positive_test_selectors:
@@ -4752,16 +4876,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-C5FB97CFB1D415A7
   capability_id: UBL-REF-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId
+  - src/python/ubl/src/format_factory/ubl/model/query.py::business_role
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_unique_line_ids_report_no_duplicates
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Duplicate-ID and broken-reference
     fixtures produce complete diagnostics.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Duplicate-ID and broken-reference fixtures produce complete diagnostics.
@@ -5363,16 +5496,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-E016695D69C2BC7D
   capability_id: UBL-REF-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId
+  - src/python/ubl/src/format_factory/ubl/model/query.py::business_role
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_unique_line_ids_report_no_duplicates
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Duplicate-ID and broken-reference
     fixtures produce complete diagnostics.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Duplicate-ID and broken-reference fixtures produce complete diagnostics.
@@ -5380,16 +5522,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-E318A1DE9A0F1F24
   capability_id: UBL-REF-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId
+  - src/python/ubl/src/format_factory/ubl/model/query.py::business_role
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_unique_line_ids_report_no_duplicates
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Duplicate-ID and broken-reference
     fixtures produce complete diagnostics.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Duplicate-ID and broken-reference fixtures produce complete diagnostics.
@@ -5721,16 +5872,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-F13D8EC34F2D93BC
   capability_id: UBL-REF-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId
+  - src/python/ubl/src/format_factory/ubl/model/query.py::business_role
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_unique_line_ids_report_no_duplicates
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates
+  - tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Duplicate-ID and broken-reference
     fixtures produce complete diagnostics.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Duplicate-ID and broken-reference fixtures produce complete diagnostics.

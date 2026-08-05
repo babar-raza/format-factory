@@ -28,6 +28,7 @@ from .model import (
     ROOT_CLASSES,
     AllowanceCharge,
     DocumentIndex,
+    DuplicateId,
     PaymentMeans,
     Price,
     QueryMatch,
@@ -79,6 +80,7 @@ from .validation import validate
 
 __all__ = [
     "DocumentIndex",
+    "DuplicateId",
     "QueryMatch",
     "business_role",
     "time_of",

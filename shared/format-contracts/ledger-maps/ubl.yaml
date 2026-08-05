@@ -100,6 +100,47 @@ notes: >-
   19 new tests in test_obligation_document_query.py. ubl suite: 488 -> 507
   passed. ubl obligations: 163 partial/31 missing -> 165 partial/29 missing.
 
+  UBL-REF-001 status as of 2026-08-06: this capability's 17 obligations share
+  one distinguishing rule_text ("Index identifiers and references; detect
+  duplicate IDs, broken references, and inconsistent line references with
+  locations") drawn from a cross-format policy pack (POL-XBZ-REF-01), not a
+  UBL-specific spec fact -- the other 16 rule_texts under the same
+  capability_id are unrelated SAL facts about Order/Invoice schema shape,
+  Identifier/AmountType, element order, etc., grouped here only because they
+  all touch something "referenceable". Extended model/query.py's
+  DocumentIndex (built last slice for UBL-QUERY-001) with
+  duplicate_line_ids(): line-role components (cac:InvoiceLine,
+  cac:CreditNoteLine, ...) sharing the same own identifier, reported with
+  every occurrence's path.
+
+  Deliberately scoped to the "line" business role rather than a global
+  duplicate-ID check across every identifier in `_by_id`: cbc:ID is a
+  generic identifier component reused for unrelated business-identifier
+  schemes (a party identifier, a line number, an item code), so a Party ID
+  of "1" and a Line ID of "1" are not a conflict -- they are different
+  identifier namespaces that happen to share a string. A global check would
+  false-positive on exactly that shape of document; a dedicated test
+  (test_a_party_id_matching_a_line_id_is_not_a_false_positive) proves the
+  scoped version does not.
+
+  Deliberately NOT attempted: cross-document reference resolution (a
+  cac:OrderReference/cbc:ID points at a *different* Order document's own
+  ID; this library has no multi-document context to resolve against, and
+  inventing a single-document proxy for that would be worse than not
+  checking) and wrapper-vs-leaf "*Reference" completeness checking
+  (distinguishing cac:BillingReference, which by design wraps a nested
+  reference and carries no ID of its own, from a genuinely incomplete leaf
+  reference would need verified UBL schema data on which Reference-suffixed
+  elements are wrappers -- not available from the SAL facts backing this
+  obligation). Both remain declared `missing_behavior` on this capability's
+  evidence, matching the NRRD-PAYLOAD-001/UBL-UPGRADE-001 precedent of
+  documenting an unverified gap rather than fabricating a rule to close it.
+
+  7 new tests in test_obligation_referential_integrity.py. ubl suite: 507 ->
+  514 passed, ruff clean, mypy clean. All 17 UBL-REF-001 obligations move
+  from `missing` to `partial` (165 partial/29 missing -> 182 partial/12
+  missing). No obligation reaches `implemented`.
+
 execution_evidence:
   path: reports/skills-rff6/skill-transcripts/build-evidence-ledger-ubl-001.json
   result: PASS
@@ -134,6 +175,12 @@ execution_evidence:
     written to catch, not as a current assessment -- see the capabilities
     section below and the notes above for what is actually mapped today. ubl
     suite: 488 passed.
+
+    2026-08-06: UBL-QUERY-001 (model/query.py, DocumentIndex) and UBL-REF-001
+    (DocumentIndex.duplicate_line_ids()) add genuinely new source and tests
+    since the 2026-08-05 addendum above. ubl suite: 507 -> 514 passed, ruff
+    clean, mypy clean. ubl obligations: 165 partial/29 missing -> 182
+    partial/12 missing. No obligation reaches `implemented`.
 
     2026-08-06 (UBL-QUERY-001): model/query.py is new source, real and tested,
     not a remap of an existing stub. ubl suite: 488 -> 507 passed, ruff and
@@ -222,8 +269,8 @@ capabilities:
     - test_obligation_temporal_projection_and_charges.py
 
   UBL-REF-001:
-    modules: [model/document.py]
-    tests: []
+    modules: [model/query.py]
+    tests: [test_obligation_referential_integrity.py]
 
   UBL-CODELIST-001:
     modules: [validation/validator.py]
