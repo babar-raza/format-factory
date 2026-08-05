@@ -2,6 +2,17 @@
 
 from .document import UblDocument, XmlNode
 from .root_types import ROOT_CLASSES
+from .typed import (
+    amount_of,
+    binary_object_of,
+    code_of,
+    find,
+    find_all,
+    identifier_of,
+    local_name,
+    quantity_of,
+    to_node,
+)
 from .values import (
     Amount,
     BinaryObject,
@@ -29,6 +40,15 @@ def document_from_root(
     )
 
 __all__ = [
+    "to_node",
+    "quantity_of",
+    "local_name",
+    "identifier_of",
+    "find_all",
+    "find",
+    "code_of",
+    "binary_object_of",
+    "amount_of",
     "Rounding",
     "Quantity",
     "Identifier",

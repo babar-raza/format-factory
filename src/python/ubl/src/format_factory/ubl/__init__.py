@@ -26,6 +26,16 @@ from .codec import (
 from .errors import UblError, UblParseError, UblValidationError, UblWriteError
 from .model import (
     ROOT_CLASSES,
+    amount_of,
+    binary_object_of,
+    code_of,
+    find,
+    find_all,
+    identifier_of,
+    local_name,
+    quantity_of,
+    to_node,
+
     Amount,
     BinaryObject,
     Code,
@@ -39,6 +49,15 @@ from .security import UBL_DEFAULT_LIMITS
 from .validation import validate
 
 __all__ = [
+    "to_node",
+    "quantity_of",
+    "local_name",
+    "identifier_of",
+    "find_all",
+    "find",
+    "code_of",
+    "binary_object_of",
+    "amount_of",
     "Rounding",
     "Quantity",
     "Identifier",

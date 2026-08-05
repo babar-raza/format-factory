@@ -104,8 +104,10 @@ capabilities:
     # that IMPLEMENTS. Corrected 2026-08-05 to the real implementation.
     modules:
     - model/values.py
+    - model/typed.py
     tests:
     - test_obligation_business_value_types.py
+    - test_obligation_typed_projection.py
 
   UBL-REF-001:
     modules: [model/document.py]
