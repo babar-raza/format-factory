@@ -1,0 +1,178 @@
+"""NRRD-CONVERT-001 -- dtype and endian conversion with explicit policies.
+
+"Dtype/encoding/endian/layout conversions run with explicit overflow/
+clipping/rounding policies and produce a conversion report; semantics never
+change silently." A developer's example use case: convert float data to a
+narrower type under an explicit clipping policy with a report of affected
+values.
+
+Scope of this module: dtype conversion (including the float-to-narrower-
+integer case the obligation names directly) and endian conversion, both with
+mandatory explicit policies -- there is deliberately no default overflow or
+rounding policy, so a caller cannot silently get behavior they did not ask
+for.
+
+Encoding conversion (raw <-> gzip/bzip2/ascii/hex) and attached/detached form
+conversion are NOT implemented here. Both are real, separate pieces of work
+this module's docstring names honestly as absent rather than stubbing them
+to look covered.
+"""
+
+from __future__ import annotations
+
+import math
+import struct
+from dataclasses import dataclass, field
+from enum import Enum
+
+from .codec.payload import dtype_info
+from .errors import NrrdWriteError
+
+#: Inclusive (min, max) for every integer struct format character NRRD uses.
+_INTEGER_RANGES: dict[str, tuple[int, int]] = {
+    "b": (-128, 127),
+    "B": (0, 255),
+    "h": (-32768, 32767),
+    "H": (0, 65535),
+    "i": (-(2**31), 2**31 - 1),
+    "I": (0, 2**32 - 1),
+    "q": (-(2**63), 2**63 - 1),
+    "Q": (0, 2**64 - 1),
+}
+
+_FLOAT_FORMATS = frozenset({"f", "d"})
+
+
+class OverflowPolicy(Enum):
+    """What to do when a converted value falls outside the target type's
+    representable range. There is no default: a caller must choose."""
+
+    CLIP = "clip"
+    RAISE = "raise"
+
+
+class RoundingPolicy(Enum):
+    """How to convert a float value to an integer target. There is no
+    default, matching UBL's Rounding design in this same mission: HALF_UP and
+    truncation disagree on 0.5, so a default would be this library quietly
+    choosing a business outcome."""
+
+    TRUNCATE = "truncate"
+    ROUND_HALF_UP = "round_half_up"
+
+
+@dataclass(frozen=True, slots=True)
+class ConversionReport:
+    """What actually happened during a conversion -- never silent."""
+
+    source_type: str
+    target_type: str
+    overflow_policy: OverflowPolicy
+    rounding_policy: RoundingPolicy | None
+    clipped_indices: tuple[int, ...] = field(default_factory=tuple)
+    rounded_indices: tuple[int, ...] = field(default_factory=tuple)
+
+    @property
+    def is_lossless(self) -> bool:
+        return not self.clipped_indices and not self.rounded_indices
+
+
+def _round_to_int(value: float, policy: RoundingPolicy) -> int:
+    if policy is RoundingPolicy.TRUNCATE:
+        return int(value)
+    # ROUND_HALF_UP: Python's round() uses banker's rounding (round-half-even),
+    # which is a different, equally valid policy this enum deliberately
+    # distinguishes rather than silently applying.
+    return math.floor(value + 0.5) if value >= 0 else math.ceil(value - 0.5)
+
+
+def convert_dtype(
+    values: list[float | int],
+    *,
+    source_type: str,
+    target_type: str,
+    overflow: OverflowPolicy,
+    rounding: RoundingPolicy | None = None,
+) -> tuple[list[float | int], ConversionReport]:
+    """Convert `values` from `source_type` to `target_type`.
+
+    `rounding` is required when `target_type` is an integer type and any
+    source value could plausibly be non-integral (source is a float type);
+    omitting it in that case is refused rather than defaulted.
+    """
+    source_format, _ = dtype_info(source_type)
+    target_format, _ = dtype_info(target_type)
+
+    target_is_integer = target_format not in _FLOAT_FORMATS
+    source_is_float = source_format in _FLOAT_FORMATS
+
+    if target_is_integer and source_is_float and rounding is None:
+        raise NrrdWriteError(
+            "converting a float source to an integer target requires an "
+            "explicit RoundingPolicy; there is no default"
+        )
+
+    converted: list[float | int] = []
+    clipped: list[int] = []
+    rounded: list[int] = []
+
+    for index, value in enumerate(values):
+        working = value
+        if target_is_integer:
+            if source_is_float:
+                assert rounding is not None  # enforced by the check above
+                rounded_value = _round_to_int(float(working), rounding)
+                if rounded_value != working:
+                    rounded.append(index)
+                working = rounded_value
+            low, high = _INTEGER_RANGES[target_format]
+            if working < low or working > high:
+                if overflow is OverflowPolicy.RAISE:
+                    raise NrrdWriteError(
+                        f"value {working!r} at index {index} does not fit in "
+                        f"target type {target_type!r} (range {low}..{high}) "
+                        "and overflow policy is RAISE"
+                    )
+                clipped.append(index)
+                working = max(low, min(high, working))
+        else:
+            working = float(working)
+        converted.append(working)
+
+    report = ConversionReport(
+        source_type=source_type,
+        target_type=target_type,
+        overflow_policy=overflow,
+        rounding_policy=rounding,
+        clipped_indices=tuple(clipped),
+        rounded_indices=tuple(rounded),
+    )
+    return converted, report
+
+
+def convert_endian(payload: bytes, *, type_name: str) -> bytes:
+    """Byte-swap `payload`'s elements in place (returned as new bytes).
+
+    A single-byte type (int8/uint8) has no byte order to swap; this is a
+    documented no-op for those, not a silently-ignored request.
+    """
+    struct_format, item_size = dtype_info(type_name)
+    if item_size == 1:
+        return payload
+    if len(payload) % item_size != 0:
+        raise NrrdWriteError(
+            f"payload length {len(payload)} is not a multiple of the "
+            f"{item_size}-byte element size for {type_name!r}"
+        )
+    count = len(payload) // item_size
+    values = struct.unpack(f"<{count}{struct_format}", payload)
+    return struct.pack(f">{count}{struct_format}", *values)
+
+
+__all__ = [
+    "ConversionReport",
+    "OverflowPolicy",
+    "RoundingPolicy",
+    "convert_dtype",
+    "convert_endian",
+]
