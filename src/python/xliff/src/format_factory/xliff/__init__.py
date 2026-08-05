@@ -52,10 +52,21 @@ from .modules import (
     is_production_complete,
     module_coverage_manifest,
 )
+from .qa import (
+    QA_CHECKS,
+    check_missing_targets,
+    check_placeholder_mismatch,
+    check_target_language_compatibility,
+    check_translation_consistency,
+    check_unchanged_targets,
+    check_whitespace_punctuation_drift,
+    run_qa_checks,
+)
 from .security import XLIFF_DEFAULT_LIMITS
 from .validation import validate
 
 __all__ = [
+    "QA_CHECKS",
     "STANDARD_MODULES",
     "SUPPORTED_VERSIONS",
     "XLIFF_DEFAULT_LIMITS",
@@ -77,6 +88,12 @@ __all__ = [
     "XliffValidationError",
     "XliffWriteError",
     "average_source_length",
+    "check_missing_targets",
+    "check_placeholder_mismatch",
+    "check_target_language_compatibility",
+    "check_translation_consistency",
+    "check_unchanged_targets",
+    "check_whitespace_punctuation_drift",
     "copy_source_to_target",
     "dump",
     "dumps",
@@ -94,6 +111,7 @@ __all__ = [
     "probe_xliff",
     "replace_text_slots",
     "roundtrip",
+    "run_qa_checks",
     "split_segment",
     "text_slots",
     "translated_segment_count",

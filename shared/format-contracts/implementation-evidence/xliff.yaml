@@ -33,9 +33,15 @@ execution_evidence:
     not be recorded `partial` before because it had zero shipped-namespace selectors, not because the
     behavior was absent.
 
-    Suite-level and NON-PROMOTING. The xliff suite is 226 passed with no failures (193 baseline + 22 +
-    11 new), but that number is still dominated by the ten shadow-package files; the shipped-namespace
-    files now contribute 48 tests (15 + 22 + 11). A green suite here says very little about the package
+    XLIFF-QA-001, same session: qa.py is new source (unlike NOTE-001). Five of six named QA categories
+    implemented with dedicated tests each; length violations explicitly left undone pending Size/Length
+    module modeling, documented rather than stubbed. No QA-001 obligation may be recorded above `partial`
+    -- a check existing is not the same as it being verified against every fixture the required_tests
+    line names, and length is a real, acknowledged gap in the category set itself.
+
+    Suite-level and NON-PROMOTING. The xliff suite is 251 passed with no failures (193 baseline + 22 +
+    11 + 25 new), but that number is still dominated by the ten shadow-package files; the shipped-namespace
+    files now contribute 73 tests (15 + 22 + 11 + 25). A green suite here says very little about the package
     that would be released. Binds no individual selector outcome to an obligation, so nothing here is
     verification; every obligation is recorded `partial` at most.'
 obligations:
@@ -1567,16 +1573,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-5B4DF04385350948
   capability_id: XLIFF-QA-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/qa.py::check_missing_targets
+  - src/python/xliff/src/format_factory/xliff/qa.py::check_unchanged_targets
+  - src/python/xliff/src/format_factory/xliff/qa.py::check_placeholder_mismatch
+  - src/python/xliff/src/format_factory/xliff/qa.py::check_whitespace_punctuation_drift
+  positive_test_selectors:
+  - tests/python/xliff/test_obligation_qa_checks.py::test_qa_report_is_separate_from_conformance_report
+  - tests/python/xliff/test_obligation_qa_checks.py::test_qa_diagnostics_never_use_conformance_severities
+  - tests/python/xliff/test_obligation_qa_checks.py::test_qa_checks_are_pluggable_individually
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: QA fixtures per check; separation
     from conformance results asserted.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - QA fixtures per check; separation from conformance results asserted.
@@ -1985,16 +2000,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-7764F24576A4DC32
   capability_id: XLIFF-QA-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/qa.py::check_missing_targets
+  - src/python/xliff/src/format_factory/xliff/qa.py::check_unchanged_targets
+  - src/python/xliff/src/format_factory/xliff/qa.py::check_placeholder_mismatch
+  - src/python/xliff/src/format_factory/xliff/qa.py::check_whitespace_punctuation_drift
+  positive_test_selectors:
+  - tests/python/xliff/test_obligation_qa_checks.py::test_qa_report_is_separate_from_conformance_report
+  - tests/python/xliff/test_obligation_qa_checks.py::test_qa_diagnostics_never_use_conformance_severities
+  - tests/python/xliff/test_obligation_qa_checks.py::test_qa_checks_are_pluggable_individually
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: QA fixtures per check; separation
     from conformance results asserted.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - QA fixtures per check; separation from conformance results asserted.

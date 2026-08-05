@@ -12,12 +12,36 @@ basis: >-
   test_obligation_module_coverage.py (22 tests) for XLIFF-MODULE-001 and
   test_obligation_notes_and_annotations.py (11 tests) for XLIFF-NOTE-001, both
   written fresh against format_factory.xliff per the mission's no-shadow-port
-  rule.
+  rule. Also added test_obligation_qa_checks.py (25 tests) for XLIFF-QA-001.
 notes: >-
-  Two capabilities remain mapped with NO tests: XLIFF-MERGE-001 (2) and
-  XLIFF-QA-001 (2). They are listed explicitly rather than omitted, so the
-  builder records them `missing` with a reason instead of silently shrinking
-  the denominator.
+  One capability remains mapped with NO tests: XLIFF-MERGE-001 (2). It is
+  listed explicitly rather than omitted, so the builder records it `missing`
+  with a reason instead of silently shrinking the denominator.
+
+  XLIFF-QA-001 status as of 2026-08-05: qa.py adds run_qa_checks(), a
+  pluggable check registry kept structurally and semantically separate from
+  validate()'s conformance report -- QA diagnostics never use ERROR/FATAL
+  severity, so a QA finding can never make is_valid() false, and the two
+  reports are never merged. Five of the six named categories in
+  required_behavior are implemented: missing targets, unchanged targets,
+  placeholder/code mismatches (tag+id signature comparison, not tag-only --
+  a tag-only signature would miss two same-tagged codes swapping position,
+  caught by a real test failure during this slice and fixed), whitespace/
+  punctuation drift, and inconsistent translations across repeated source
+  text. Target language compatibility is also implemented with its own
+  normative-rule citation (the only one of the six with real normative_rules
+  text: XLIFF 2.0 requires exact xml:lang equality against trgLang, XLIFF 2.1
+  additionally accepts more-specific tags and reports reverse-specific or
+  incompatible ones).
+
+  Length violations are the one named category NOT implemented: checking
+  them meaningfully needs actual parsed restriction values from the Size and
+  Length Restriction module (slr:profiles' sizeRestriction/storageRestriction
+  attributes), which XLIFF-MODULE-001 deliberately keeps PRESERVATION_ONLY --
+  the raw XML round-trips, nothing parses it into usable numbers yet. A stub
+  that always passes would be worse than this documented gap; it would read
+  as coverage that was never built. qa.py's own module docstring states this
+  explicitly rather than leaving it to be discovered later.
 
   XLIFF-NOTE-001 status as of 2026-08-05: this capability turned out to be
   substantially already satisfied by existing, generic machinery, not
@@ -97,12 +121,20 @@ execution_evidence:
     before because it had zero shipped-namespace selectors, not because the
     behavior was absent.
 
-    Suite-level and NON-PROMOTING. The xliff suite is 226 passed with no
-    failures (193 baseline + 22 + 11 new), but that number is still dominated
-    by the ten shadow-package files; the shipped-namespace files now
-    contribute 48 tests (15 + 22 + 11). A green suite here says very little
-    about the package that would be released. Binds no individual selector
-    outcome to an obligation, so nothing here is verification; every
+    XLIFF-QA-001, same session: qa.py is new source (unlike NOTE-001). Five
+    of six named QA categories implemented with dedicated tests each;
+    length violations explicitly left undone pending Size/Length module
+    modeling, documented rather than stubbed. No QA-001 obligation may be
+    recorded above `partial` -- a check existing is not the same as it being
+    verified against every fixture the required_tests line names, and length
+    is a real, acknowledged gap in the category set itself.
+
+    Suite-level and NON-PROMOTING. The xliff suite is 251 passed with no
+    failures (193 baseline + 22 + 11 + 25 new), but that number is still
+    dominated by the ten shadow-package files; the shipped-namespace files
+    now contribute 73 tests (15 + 22 + 11 + 25). A green suite here says very
+    little about the package that would be released. Binds no individual
+    selector outcome to an obligation, so nothing here is verification; every
     obligation is recorded `partial` at most.
 
 capabilities:
@@ -158,12 +190,12 @@ capabilities:
     modules: [model/document.py, model/inline.py, codec/reader/reader.py, codec/writer/writer.py]
     tests: [test_obligation_notes_and_annotations.py]
 
-  # No shipped-namespace test exercises these two. Listed with empty `tests`
-  # so they are recorded `missing` with a reason rather than omitted.
+  XLIFF-QA-001:
+    modules: [qa.py]
+    tests: [test_obligation_qa_checks.py]
+
+  # No shipped-namespace test exercises this one. Listed with empty `tests`
+  # so it is recorded `missing` with a reason rather than omitted.
   XLIFF-MERGE-001:
     modules: [model/document.py]
-    tests: []
-
-  XLIFF-QA-001:
-    modules: [validation/validator.py]
     tests: []
