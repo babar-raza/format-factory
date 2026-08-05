@@ -13,15 +13,51 @@ basis: >-
   count suggests -- it is the strongest single shipped-namespace file of the
   four formats ledgered so far.
 notes: >-
-  Six capabilities are mapped with NO tests because no shipped-namespace test
-  exercises them: UBL-VALUES-001 (19 obligations), UBL-REF-001 (17),
-  UBL-CODELIST-001 (10), UBL-CALC-001 (7), UBL-QUERY-001 (2) and
-  UBL-UPGRADE-001 (2) -- 57 obligations, the largest unevidenced block in the
-  program. UBL-VALUES-001 and UBL-REF-001 together are 36 of those and concern
-  typed value semantics and document cross-references, which are core rather
-  than peripheral. They are listed explicitly so the builder records them
-  `missing` with a reason rather than silently shrinking the denominator, and
-  each deserves investigation into whether the behavior is untested or absent.
+  As of 2026-08-04, six capabilities were mapped with NO tests because no
+  shipped-namespace test exercised them: UBL-VALUES-001 (19 obligations),
+  UBL-REF-001 (17), UBL-CODELIST-001 (10), UBL-CALC-001 (7), UBL-QUERY-001 (2)
+  and UBL-UPGRADE-001 (2) -- 57 obligations, the largest unevidenced block in
+  the program at the time. UBL-VALUES-001 and UBL-REF-001 have since been
+  built out across the events-74-through-82 slices (typed temporal/monetary
+  values, aggregates, allowance/charge, price, payment means); this note's
+  historical framing of them as untouched is stale and should not be trusted
+  without checking the current capabilities section below.
+
+  UBL-CALC-001 status as of 2026-08-05: model/aggregates.py's
+  reconcile_invoice() already existed (built in an earlier UBL slice as part
+  of UBL-MODEL-001's aggregate work) and already reconciled line-extension
+  and tax-subtotal totals -- but always by exact match, with no allowance/
+  charge total check and no test file framed under UBL-CALC-001's own
+  obligation. Extended, not rebuilt: reconcile_invoice() gained a `tolerance:
+  Decimal = Decimal(0)` keyword parameter (default preserves prior exact-match
+  behavior for every existing caller) satisfying "under explicit rounding/
+  tolerance policies", and a new _reconcile_allowance_charge_totals() helper
+  that sums document-level cac:AllowanceCharge entries by charge/allowance
+  indicator and compares against cac:LegalMonetaryTotal's declared
+  AllowanceTotalAmount/ChargeTotalAmount, only when both sides exist ("optional
+  is not zero" -- an invoice with AllowanceCharge entries but no declared total
+  is not asserting the total is nil). A real bug was caught and fixed before
+  commit: the new diagnostic codes were built by string-concatenating a
+  caller-supplied "already includes _MISMATCH" constant with another
+  "_CURRENCY_MISMATCH" suffix, producing "UBL_CHARGE_TOTAL_MISMATCH_CURRENCY_
+  MISMATCH" instead of the intended "UBL_CHARGE_TOTAL_CURRENCY_MISMATCH" --
+  caught by test_allowance_charge_currency_mismatch_is_reported asserting the
+  exact intended code, not a substring match that would have silently passed.
+
+  Payable-amount reconciliation is a deliberate, documented gap, not an
+  oversight: PayableAmount = TaxInclusiveAmount - PrepaidAmount +
+  PayableRoundingAmount, and neither cbc:PrepaidAmount nor
+  cbc:PayableRoundingAmount is modeled anywhere in this package. Checking
+  PayableAmount == TaxInclusiveAmount without them would flag every invoice
+  that legitimately declares a prepayment as a mismatch -- a false positive on
+  correct data, which is worse than not checking. Recorded in aggregates.py's
+  own module docstring, matching the precedent set by XLIFF-QA-001's
+  undocumented-length-violations gap in the same session.
+
+  13 new tests in test_obligation_business_calculation.py, all 20 pre-existing
+  aggregate-component tests still pass unchanged (zero-tolerance default is
+  behaviorally identical to the prior exact `!=` comparison for every existing
+  case). ubl suite: 475 -> 488 passed.
 
 execution_evidence:
   path: reports/skills-rff6/skill-transcripts/build-evidence-ledger-ubl-001.json
@@ -44,6 +80,19 @@ execution_evidence:
     test_production_namespace.py exercises the shipped namespace. Binds no
     individual selector outcome to an obligation, so nothing here is
     verification; every obligation is recorded `partial` at most.
+
+    2026-08-05 (post events 74-82 and this session's UBL-CALC-001 slice): the
+    OVERSTATED framing above is no longer the current state of the package --
+    model/aggregates.py, model/values.py, model/temporal.py and model/charges.py
+    now hold real typed components (InvoiceLine, Item, TaxTotal/TaxSubtotal,
+    LegalMonetaryTotal, Amount/Quantity with Rounding policies, UblDate/UblTime/
+    UblDateTime, AllowanceCharge/Price/PaymentMeans) that did not exist when this
+    truth_boundary was written, and reconcile_invoice() now performs tolerance-
+    aware line-extension, tax-subtotal and allowance/charge reconciliation. This
+    text is preserved as the historical record of the overstatement GAP-022 was
+    written to catch, not as a current assessment -- see the capabilities
+    section below and the notes above for what is actually mapped today. ubl
+    suite: 488 passed.
 
 capabilities:
   UBL-PARSE-001:
@@ -136,8 +185,8 @@ capabilities:
     tests: []
 
   UBL-CALC-001:
-    modules: [validation/validator.py]
-    tests: []
+    modules: [model/aggregates.py]
+    tests: [test_obligation_business_calculation.py]
 
   UBL-QUERY-001:
     modules: [model/document.py]

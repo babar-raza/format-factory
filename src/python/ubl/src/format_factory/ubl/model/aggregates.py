@@ -17,11 +17,29 @@ document. It does not raise either, because real invoices are legitimately
 rounded in ways a naive sum disagrees with, and rejecting them at parse time
 would make the library unusable against genuine data. A mismatch is a finding
 for a human.
+
+`reconcile_invoice`'s `tolerance` parameter is exactly the "under explicit
+rounding/tolerance policies" clause UBL-CALC-001 asks for: a caller in a
+regime where totals round to two decimal places passes a tolerance that
+absorbs it, rather than the library picking a rounding policy on their
+behalf. The default is exact (zero tolerance), so an existing caller's
+behavior is unchanged unless they opt in.
+
+Payable-amount reconciliation is a deliberate gap, not an oversight: the
+correct formula is `PayableAmount = TaxInclusiveAmount - PrepaidAmount +
+PayableRoundingAmount`, and neither cbc:PrepaidAmount nor
+cbc:PayableRoundingAmount is modeled anywhere in this package yet. Checking
+`PayableAmount == TaxInclusiveAmount` without them would flag every invoice
+that legitimately declares a prepayment as a mismatch -- a false positive on
+real, correct data, which is worse than not checking at all. This is
+recorded as the honest remaining gap rather than an approximate formula that
+would be systematically wrong.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from decimal import Decimal
 
 from format_factory.core import Diagnostic, Severity, ValidationReport
 
@@ -190,8 +208,14 @@ def legal_monetary_total_of(node: XmlNode | None) -> LegalMonetaryTotal:
 # ── Reconciliation: report only ────────────────────────────────────────────
 
 
-def reconcile_invoice(root: XmlNode) -> ValidationReport:
+def reconcile_invoice(
+    root: XmlNode, *, tolerance: Decimal = Decimal(0)
+) -> ValidationReport:
     """Check the cross-field arithmetic the XSD cannot express.
+
+    `tolerance` is an explicit rounding/tolerance policy: a delta whose
+    absolute value is within it is not reported. The default of zero
+    preserves exact-match behavior for a caller who does not opt in.
 
     Returns findings. Never mutates the document and never raises: an absent
     aggregate is not an error, only a present-and-inconsistent one is.
@@ -257,14 +281,15 @@ def reconcile_invoice(root: XmlNode) -> ValidationReport:
                         severity=Severity.ERROR,
                     )
                 )
-            elif declared.value != line_sum.value:
+            elif abs(declared.value - line_sum.value) > tolerance:
                 found.append(
                     Diagnostic(
                         code="UBL_LINE_EXTENSION_TOTAL_MISMATCH",
                         message=(
                             f"cac:LegalMonetaryTotal declares a line extension of "
                             f"{declared.value} {declared.currency_id}, but the "
-                            f"{len(lines)} invoice lines sum to {line_sum.value}"
+                            f"{len(lines)} invoice lines sum to {line_sum.value} "
+                            f"(tolerance {tolerance})"
                         ),
                         severity=Severity.ERROR,
                     )
@@ -299,20 +324,114 @@ def reconcile_invoice(root: XmlNode) -> ValidationReport:
         subtotal_sum = total.subtotals[0].tax_amount
         for subtotal in total.subtotals[1:]:
             subtotal_sum = subtotal_sum + subtotal.tax_amount
-        if subtotal_sum.value != total.tax_amount.value:
+        if abs(subtotal_sum.value - total.tax_amount.value) > tolerance:
             found.append(
                 Diagnostic(
                     code="UBL_TAX_SUBTOTAL_MISMATCH",
                     message=(
                         f"cac:TaxTotal declares {total.tax_amount.value} "
                         f"{total.tax_amount.currency_id} but its "
-                        f"{len(total.subtotals)} subtotals sum to {subtotal_sum.value}"
+                        f"{len(total.subtotals)} subtotals sum to {subtotal_sum.value} "
+                        f"(tolerance {tolerance})"
                     ),
                     severity=Severity.ERROR,
                 )
             )
 
+    _reconcile_allowance_charge_totals(root, monetary_node, tolerance, found)
+
     return ValidationReport(diagnostics=tuple(found))
+
+
+def _reconcile_allowance_charge_totals(
+    root: XmlNode,
+    monetary_node: XmlNode | None,
+    tolerance: Decimal,
+    found: list[Diagnostic],
+) -> None:
+    """Sum document-level cac:AllowanceCharge amounts by indicator and
+    compare against cac:LegalMonetaryTotal's declared allowance/charge
+    totals, when both the summed and the declared side exist.
+
+    Local import: charges.py imports `_require` from this module, so a
+    module-level import here would be circular.
+    """
+    if monetary_node is None:
+        return
+    from .charges import allowance_charge_of
+
+    allowance_charge_nodes = find_all(root, "AllowanceCharge")
+    if not allowance_charge_nodes:
+        return
+
+    try:
+        monetary = legal_monetary_total_of(monetary_node)
+    except UblValidationError:
+        return  # already reported as UBL_LEGAL_MONETARY_TOTAL_INVALID above
+
+    allowances: list[Amount] = []
+    charges: list[Amount] = []
+    for node in allowance_charge_nodes:
+        try:
+            entry = allowance_charge_of(node)
+        except UblValidationError as exc:
+            found.append(
+                Diagnostic(
+                    code="UBL_ALLOWANCE_CHARGE_INVALID",
+                    message=str(exc),
+                    severity=Severity.ERROR,
+                )
+            )
+            continue
+        (charges if entry.is_charge else allowances).append(entry.amount)
+
+    def _reconcile_one(
+        entries: list[Amount], declared: Amount | None, label: str, base_code: str
+    ) -> None:
+        if declared is None or not entries:
+            return
+        total = entries[0]
+        for entry in entries[1:]:
+            total = total + entry
+        if declared.currency_id != total.currency_id:
+            found.append(
+                Diagnostic(
+                    code=f"{base_code}_CURRENCY_MISMATCH",
+                    message=(
+                        f"cac:LegalMonetaryTotal declares {label} in "
+                        f"{declared.currency_id} but the cac:AllowanceCharge "
+                        f"entries are in {total.currency_id}"
+                    ),
+                    severity=Severity.ERROR,
+                )
+            )
+            return
+        if abs(declared.value - total.value) > tolerance:
+            found.append(
+                Diagnostic(
+                    code=f"{base_code}_MISMATCH",
+                    message=(
+                        f"cac:LegalMonetaryTotal declares {label} of "
+                        f"{declared.value} {declared.currency_id}, but the "
+                        f"document-level cac:AllowanceCharge entries sum to "
+                        f"{total.value} (tolerance {tolerance})"
+                    ),
+                    severity=Severity.ERROR,
+                )
+            )
+
+    _reconcile_one(
+        allowances,
+        monetary.allowance_total_amount,
+        "an allowance total",
+        "UBL_ALLOWANCE_TOTAL",
+    )
+    _reconcile_one(
+        charges,
+        monetary.charge_total_amount,
+        "a charge total",
+        "UBL_CHARGE_TOTAL",
+    )
 
 
 __all__ = [

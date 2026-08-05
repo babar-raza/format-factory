@@ -19,7 +19,17 @@ execution_evidence:
     Suite-level and NON-PROMOTING. The ubl suite is 334 passed with no failures, but that figure is dominated
     by the ten shadow-package files; only test_production_namespace.py exercises the shipped namespace.
     Binds no individual selector outcome to an obligation, so nothing here is verification; every obligation
-    is recorded `partial` at most.'
+    is recorded `partial` at most.
+
+    2026-08-05 (post events 74-82 and this session''s UBL-CALC-001 slice): the OVERSTATED framing above
+    is no longer the current state of the package -- model/aggregates.py, model/values.py, model/temporal.py
+    and model/charges.py now hold real typed components (InvoiceLine, Item, TaxTotal/TaxSubtotal, LegalMonetaryTotal,
+    Amount/Quantity with Rounding policies, UblDate/UblTime/ UblDateTime, AllowanceCharge/Price/PaymentMeans)
+    that did not exist when this truth_boundary was written, and reconcile_invoice() now performs tolerance-
+    aware line-extension, tax-subtotal and allowance/charge reconciliation. This text is preserved as
+    the historical record of the overstatement GAP-022 was written to catch, not as a current assessment
+    -- see the capabilities section below and the notes above for what is actually mapped today. ubl suite:
+    488 passed.'
 obligations:
 - obligation_id: SAL-UBL-OBL-020F06E51DE6AB65
   capability_id: UBL-LIFECYCLE-001
@@ -1022,16 +1032,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-23C1161DF420B67B
   capability_id: UBL-CALC-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_business_calculation.py::test_default_tolerance_is_exact_zero
+  - tests/python/ubl/test_obligation_business_calculation.py::test_a_tolerance_within_the_delta_silences_the_mismatch
+  - tests/python/ubl/test_obligation_business_calculation.py::test_a_tolerance_smaller_than_the_delta_still_reports_it
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Reconciliation fixtures with
     agreeing and disagreeing declared totals across rounding policies.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Reconciliation fixtures with agreeing and disagreeing declared totals across rounding policies.
@@ -1039,16 +1058,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-2586C695D1A1C5FD
   capability_id: UBL-CALC-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_business_calculation.py::test_default_tolerance_is_exact_zero
+  - tests/python/ubl/test_obligation_business_calculation.py::test_a_tolerance_within_the_delta_silences_the_mismatch
+  - tests/python/ubl/test_obligation_business_calculation.py::test_a_tolerance_smaller_than_the_delta_still_reports_it
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Reconciliation fixtures with
     agreeing and disagreeing declared totals across rounding policies.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Reconciliation fixtures with agreeing and disagreeing declared totals across rounding policies.
@@ -1509,16 +1537,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-36E4EB0088A2F830
   capability_id: UBL-CALC-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_business_calculation.py::test_default_tolerance_is_exact_zero
+  - tests/python/ubl/test_obligation_business_calculation.py::test_a_tolerance_within_the_delta_silences_the_mismatch
+  - tests/python/ubl/test_obligation_business_calculation.py::test_a_tolerance_smaller_than_the_delta_still_reports_it
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Reconciliation fixtures with
     agreeing and disagreeing declared totals across rounding policies.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Reconciliation fixtures with agreeing and disagreeing declared totals across rounding policies.
@@ -2408,16 +2445,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-59A76283F9AA421A
   capability_id: UBL-CALC-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_business_calculation.py::test_default_tolerance_is_exact_zero
+  - tests/python/ubl/test_obligation_business_calculation.py::test_a_tolerance_within_the_delta_silences_the_mismatch
+  - tests/python/ubl/test_obligation_business_calculation.py::test_a_tolerance_smaller_than_the_delta_still_reports_it
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Reconciliation fixtures with
     agreeing and disagreeing declared totals across rounding policies.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Reconciliation fixtures with agreeing and disagreeing declared totals across rounding policies.
@@ -4110,16 +4156,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-AE02391EE2696F99
   capability_id: UBL-CALC-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_business_calculation.py::test_default_tolerance_is_exact_zero
+  - tests/python/ubl/test_obligation_business_calculation.py::test_a_tolerance_within_the_delta_silences_the_mismatch
+  - tests/python/ubl/test_obligation_business_calculation.py::test_a_tolerance_smaller_than_the_delta_still_reports_it
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Reconciliation fixtures with
     agreeing and disagreeing declared totals across rounding policies.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Reconciliation fixtures with agreeing and disagreeing declared totals across rounding policies.
@@ -4500,16 +4555,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-C1E21D0863BBF0D5
   capability_id: UBL-CALC-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_business_calculation.py::test_default_tolerance_is_exact_zero
+  - tests/python/ubl/test_obligation_business_calculation.py::test_a_tolerance_within_the_delta_silences_the_mismatch
+  - tests/python/ubl/test_obligation_business_calculation.py::test_a_tolerance_smaller_than_the_delta_still_reports_it
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Reconciliation fixtures with
     agreeing and disagreeing declared totals across rounding policies.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Reconciliation fixtures with agreeing and disagreeing declared totals across rounding policies.
@@ -5133,16 +5197,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-DA3DF6489222CB2A
   capability_id: UBL-CALC-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_business_calculation.py::test_default_tolerance_is_exact_zero
+  - tests/python/ubl/test_obligation_business_calculation.py::test_a_tolerance_within_the_delta_silences_the_mismatch
+  - tests/python/ubl/test_obligation_business_calculation.py::test_a_tolerance_smaller_than_the_delta_still_reports_it
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Reconciliation fixtures with
     agreeing and disagreeing declared totals across rounding policies.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Reconciliation fixtures with agreeing and disagreeing declared totals across rounding policies.
