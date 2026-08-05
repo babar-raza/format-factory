@@ -65,6 +65,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -75,6 +79,9 @@ obligations:
   - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
   - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
   - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_date_projects_to_a_typed_date
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_time_projects_and_keeps_its_zone
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_date_time_projects_and_keeps_its_exact_lexical_form
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -109,6 +116,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
@@ -205,6 +216,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
@@ -308,6 +323,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
@@ -377,6 +396,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -387,6 +410,9 @@ obligations:
   - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
   - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
   - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_date_projects_to_a_typed_date
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_time_projects_and_keeps_its_zone
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_date_time_projects_and_keeps_its_exact_lexical_form
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -515,6 +541,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
@@ -585,6 +615,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
@@ -685,6 +719,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
@@ -849,6 +887,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -859,6 +901,9 @@ obligations:
   - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
   - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
   - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_date_projects_to_a_typed_date
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_time_projects_and_keeps_its_zone
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_date_time_projects_and_keeps_its_exact_lexical_form
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -893,6 +938,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
@@ -1075,6 +1124,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
@@ -1227,6 +1280,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
@@ -1272,6 +1329,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
@@ -1348,6 +1409,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -1358,6 +1423,9 @@ obligations:
   - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
   - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
   - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_date_projects_to_a_typed_date
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_time_projects_and_keeps_its_zone
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_date_time_projects_and_keeps_its_exact_lexical_form
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -1389,6 +1457,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -1399,6 +1471,9 @@ obligations:
   - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
   - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
   - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_date_projects_to_a_typed_date
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_time_projects_and_keeps_its_zone
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_date_time_projects_and_keeps_its_exact_lexical_form
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -1467,6 +1542,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
@@ -1573,6 +1652,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
@@ -1615,6 +1698,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -1625,6 +1712,9 @@ obligations:
   - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
   - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
   - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_date_projects_to_a_typed_date
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_time_projects_and_keeps_its_zone
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_date_time_projects_and_keeps_its_exact_lexical_form
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -1656,6 +1746,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -1666,6 +1760,9 @@ obligations:
   - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
   - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
   - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_date_projects_to_a_typed_date
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_time_projects_and_keeps_its_zone
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_date_time_projects_and_keeps_its_exact_lexical_form
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -1867,6 +1964,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
@@ -2064,6 +2165,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
@@ -2268,6 +2373,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -2278,6 +2387,9 @@ obligations:
   - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
   - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
   - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_date_projects_to_a_typed_date
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_time_projects_and_keeps_its_zone
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_date_time_projects_and_keeps_its_exact_lexical_form
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -2354,6 +2466,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -2364,6 +2480,9 @@ obligations:
   - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
   - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
   - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_date_projects_to_a_typed_date
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_time_projects_and_keeps_its_zone
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_date_time_projects_and_keeps_its_exact_lexical_form
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -2475,6 +2594,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
@@ -2573,6 +2696,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
@@ -2784,6 +2911,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
@@ -2852,6 +2983,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
@@ -3301,6 +3436,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
@@ -3346,6 +3485,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
@@ -3415,6 +3558,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -3425,6 +3572,9 @@ obligations:
   - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
   - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
   - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_date_projects_to_a_typed_date
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_time_projects_and_keeps_its_zone
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_date_time_projects_and_keeps_its_exact_lexical_form
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -3517,6 +3667,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -3527,6 +3681,9 @@ obligations:
   - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
   - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
   - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_date_projects_to_a_typed_date
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_time_projects_and_keeps_its_zone
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_date_time_projects_and_keeps_its_exact_lexical_form
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -3558,6 +3715,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -3568,6 +3729,9 @@ obligations:
   - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
   - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
   - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_date_projects_to_a_typed_date
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_time_projects_and_keeps_its_zone
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_date_time_projects_and_keeps_its_exact_lexical_form
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -3602,6 +3766,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
@@ -3778,6 +3946,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -3788,6 +3960,9 @@ obligations:
   - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
   - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
   - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_date_projects_to_a_typed_date
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_time_projects_and_keeps_its_zone
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_date_time_projects_and_keeps_its_exact_lexical_form
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -4019,6 +4194,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
@@ -4085,6 +4264,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -4095,6 +4278,9 @@ obligations:
   - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
   - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
   - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_date_projects_to_a_typed_date
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_time_projects_and_keeps_its_zone
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_date_time_projects_and_keeps_its_exact_lexical_form
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -4183,6 +4369,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
@@ -4228,6 +4418,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
@@ -4273,6 +4467,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
@@ -4332,6 +4530,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -4342,6 +4544,9 @@ obligations:
   - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
   - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
   - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_date_projects_to_a_typed_date
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_time_projects_and_keeps_its_zone
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_date_time_projects_and_keeps_its_exact_lexical_form
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -4430,6 +4635,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
@@ -4492,6 +4701,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
@@ -4602,6 +4815,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -4612,6 +4829,9 @@ obligations:
   - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
   - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
   - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_date_projects_to_a_typed_date
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_time_projects_and_keeps_its_zone
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_date_time_projects_and_keeps_its_exact_lexical_form
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -4646,6 +4866,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
@@ -4802,6 +5026,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -4812,6 +5040,9 @@ obligations:
   - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
   - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
   - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_date_projects_to_a_typed_date
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_time_projects_and_keeps_its_zone
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_date_time_projects_and_keeps_its_exact_lexical_form
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -4869,6 +5100,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
@@ -5002,6 +5237,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
@@ -5081,6 +5320,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
@@ -5228,6 +5471,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
@@ -5270,6 +5517,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -5280,6 +5531,9 @@ obligations:
   - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
   - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
   - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_date_projects_to_a_typed_date
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_time_projects_and_keeps_its_zone
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_date_time_projects_and_keeps_its_exact_lexical_form
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -5314,6 +5568,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
@@ -5432,6 +5690,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
@@ -5501,6 +5763,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
   - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -5511,6 +5777,9 @@ obligations:
   - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
   - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
   - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_date_projects_to_a_typed_date
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_issue_time_projects_and_keeps_its_zone
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_date_time_projects_and_keeps_its_exact_lexical_form
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -5572,6 +5841,10 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip

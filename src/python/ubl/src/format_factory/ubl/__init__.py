@@ -26,6 +26,16 @@ from .codec import (
 from .errors import UblError, UblParseError, UblValidationError, UblWriteError
 from .model import (
     ROOT_CLASSES,
+    AllowanceCharge,
+    PaymentMeans,
+    Price,
+    allowance_charge_of,
+    payment_means_of,
+    price_of,
+    date_of,
+    date_time_of,
+    time_of,
+
     UblDate,
     UblDateTime,
     UblTime,
@@ -65,6 +75,15 @@ from .security import UBL_DEFAULT_LIMITS
 from .validation import validate
 
 __all__ = [
+    "time_of",
+    "date_time_of",
+    "date_of",
+    "price_of",
+    "payment_means_of",
+    "allowance_charge_of",
+    "Price",
+    "PaymentMeans",
+    "AllowanceCharge",
     "UblTime",
     "UblDateTime",
     "UblDate",

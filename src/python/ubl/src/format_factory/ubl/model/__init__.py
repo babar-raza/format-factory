@@ -15,8 +15,19 @@ from .aggregates import (
     tax_subtotal_of,
     tax_total_of,
 )
+from .charges import (
+    AllowanceCharge,
+    PaymentMeans,
+    Price,
+    allowance_charge_of,
+    payment_means_of,
+    price_of,
+)
 from .temporal import UblDate, UblDateTime, UblTime
 from .typed import (
+    date_of,
+    date_time_of,
+    time_of,
     amount_of,
     binary_object_of,
     code_of,
@@ -54,6 +65,15 @@ def document_from_root(
     )
 
 __all__ = [
+    "time_of",
+    "date_time_of",
+    "date_of",
+    "price_of",
+    "payment_means_of",
+    "allowance_charge_of",
+    "Price",
+    "PaymentMeans",
+    "AllowanceCharge",
     "UblTime",
     "UblDateTime",
     "UblDate",

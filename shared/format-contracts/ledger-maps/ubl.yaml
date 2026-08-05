@@ -61,7 +61,7 @@ capabilities:
     # STILL ABSENT: cac:ExternalReference and W3C XSD schema validation. The
     # status stays `partial` for that reason -- this remap makes the mapping
     # truthful, it does not claim the capability is complete.
-    modules: [model/document.py, model/values.py, model/typed.py, model/aggregates.py]
+    modules: [model/document.py, model/values.py, model/typed.py, model/aggregates.py, model/charges.py]
     tests:
     - test_production_namespace.py
     - test_obligation_aggregate_components.py
@@ -120,10 +120,12 @@ capabilities:
     - model/values.py
     - model/typed.py
     - model/temporal.py
+    - model/charges.py
     tests:
     - test_obligation_business_value_types.py
     - test_obligation_typed_projection.py
     - test_obligation_temporal_values.py
+    - test_obligation_temporal_projection_and_charges.py
 
   UBL-REF-001:
     modules: [model/document.py]

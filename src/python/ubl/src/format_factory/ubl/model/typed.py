@@ -22,6 +22,7 @@ from typing import Union
 
 from ..errors import UblValidationError
 from .document import XmlNode
+from .temporal import UblDate, UblDateTime, UblTime
 from .values import Amount, BinaryObject, Code, Identifier, Quantity
 
 #: Attribute names are unprefixed in UBL instances, so they are read directly.
@@ -35,7 +36,9 @@ LIST_VERSION_ID = "listVersionID"
 MIME_CODE = "mimeCode"
 FILENAME = "filename"
 
-TypedValue = Union[Amount, Quantity, Code, Identifier, BinaryObject]
+TypedValue = Union[
+    Amount, Quantity, Code, Identifier, BinaryObject, UblDate, UblTime, UblDateTime
+]
 
 
 def local_name(qname: str) -> str:
@@ -130,6 +133,27 @@ def binary_object_of(node: XmlNode | None) -> BinaryObject:
     )
 
 
+def date_of(node: XmlNode | None) -> UblDate:
+    """Project an `xsd:date` element, preserving its lexical form.
+
+    Surrounding whitespace is stripped because XML pretty-printing routinely
+    adds it -- that is a transport artefact, not part of the declared value.
+    Everything inside the value is preserved verbatim.
+    """
+    element = _require_node(node, "a UblDate")
+    return UblDate(element.text.strip())
+
+
+def time_of(node: XmlNode | None) -> UblTime:
+    element = _require_node(node, "a UblTime")
+    return UblTime(element.text.strip())
+
+
+def date_time_of(node: XmlNode | None) -> UblDateTime:
+    element = _require_node(node, "a UblDateTime")
+    return UblDateTime(element.text.strip())
+
+
 def to_node(qname: str, value: TypedValue) -> XmlNode:
     """Project a typed value back to an element, carrying its attributes.
 
@@ -160,6 +184,9 @@ def to_node(qname: str, value: TypedValue) -> XmlNode:
             attributes[LIST_AGENCY_ID] = value.list_agency_id
         if value.list_version_id is not None:
             attributes[LIST_VERSION_ID] = value.list_version_id
+    elif isinstance(value, (UblDate, UblTime, UblDateTime)):
+        # The lexical form IS the value; nothing is reformatted here.
+        text = str(value)
     elif isinstance(value, BinaryObject):
         text = value.to_base64()
         attributes[MIME_CODE] = value.mime_code
@@ -180,10 +207,13 @@ __all__ = [
     "amount_of",
     "binary_object_of",
     "code_of",
+    "date_of",
+    "date_time_of",
     "find",
     "find_all",
     "identifier_of",
     "local_name",
     "quantity_of",
+    "time_of",
     "to_node",
 ]
