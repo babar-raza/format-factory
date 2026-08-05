@@ -18,7 +18,9 @@
     "3. Checked for tests: there is no tests/python/ora directory.",
     "4. Checked packaging: no openraster entry in packaging/python/package-matrix.yaml.",
     "5. Concluded that openraster_source_present: false in the verified planning baseline is still accurate, and that this is the only one of the six formats with nothing at all -- not thin coverage, not shadow-package coverage, but no implementation.",
-    "6. Built the ledger with every capability declaring no modules and no tests, so all 134 obligations are recorded `missing` with the reason. Deliberately did NOT invent a mapping to make the ledger look populated."
+    "6. Built the ledger with every capability declaring no modules and no tests, so all 134 obligations are recorded `missing` with the reason. Deliberately did NOT invent a mapping to make the ledger look populated.",
+    "7. 2026-08-06 refresh: re-ran this same evidence-gathering process now that real ora source exists. `tools/format_contract/contract_reconciler.py --format-id ora --exact-obligations` failed with 'declared result PARTIAL_IMPLEMENTATION_PRESENT does not match NO_IMPLEMENTATION_PRESENT' because this artifact was never regenerated across the ORA-STACK-001 through ORA-ISOLATION-001 ticks -- only the surrounding implementation-evidence YAML's truth_boundary narrative was updated each time, in place, while this file (the artifact that narrative is supposed to be backed by) stayed frozen at its 2026-08-04, zero-source snapshot. Root cause: the per-tick workflow had no step that regenerates the execution-evidence JSON artifact itself, only the ledger-map/evidence YAML prose describing it. Fixing in place here rather than forking a new evidence_id/path, since every obligation's execution_evidence_ids already points at ORA-BASELINE-SUITE and the schema binds one evidence_id to one artifact path.",
+    "8. Re-derived today's numbers from this session's own already-verified actions, not invented: `.venv/Scripts/pytest tests/python/ora/ -q` = 204 passed, ruff clean; `python -m tools.ff6.build_evidence_ledger --format-id ora` = 78 partial / 56 missing across 134 obligations (9 of 20 capabilities still map to no source: rendering, compositing, editing, groups, layers-as-editable, masks, preservation duties, streaming, resolution profiles)."
   ],
   "allowed_files": [
     "shared/format-contracts/ledger-maps/ora.yaml",
@@ -26,28 +28,32 @@
   ],
   "actual_files_changed": [
     "shared/format-contracts/ledger-maps/ora.yaml",
-    "shared/format-contracts/implementation-evidence/ora.yaml"
+    "shared/format-contracts/implementation-evidence/ora.yaml",
+    "reports/skills-rff6/skill-transcripts/build-evidence-ledger-ora-001.json"
   ],
   "tests_run": [
-    "ls src/python/ | grep -i 'ora|openraster'  # no match",
-    "ls tests/python/ | grep -i 'ora|openraster'  # no match",
-    "python -m tools.ff6.build_evidence_ledger --format-id ora"
+    "ls src/python/ | grep -i 'ora|openraster'  # no match (2026-08-04)",
+    "ls tests/python/ | grep -i 'ora|openraster'  # no match (2026-08-04)",
+    "python -m tools.ff6.build_evidence_ledger --format-id ora",
+    ".venv/Scripts/pytest tests/python/ora/ -q  # 204 passed (2026-08-06 refresh)"
   ],
   "ledger_entry_id": null,
-  "result": "NO_IMPLEMENTATION_PRESENT",
+  "result": "PARTIAL_IMPLEMENTATION_PRESENT",
   "evidence": {
     "product_promotion_effect": "none",
     "certification_state": "0/6",
     "obligations_ledgered": 134,
-    "obligations_missing": 134,
-    "source_present": false,
-    "tests_present": false,
+    "obligations_partial": 78,
+    "obligations_missing": 56,
+    "source_present": true,
+    "tests_present": true,
     "packaging_entry_present": false,
-    "finding": "OpenRaster is not an under-tested format; it is an unstarted one. All 134 obligations are missing because there is nothing to map them to. The other five formats each have real source of some quality; this one has none.",
-    "why_a_ledger_at_all": "Recording 134 explicit missing obligations makes ora countable and auditable alongside the others, and states the position in the same schema every other format uses. Leaving it absent would let 134 obligations sit outside the denominator, which is exactly the silent-shrinking the ledger process exists to prevent.",
-    "scale_note": "134 obligations is roughly the size of nrrd (65) and safetensors (86) combined. The mission's stated goal includes format-factory-openraster as a deliverable distribution, so this is a build-from-nothing lane, not a verify-then-certify lane -- the directive's execution_model does not apply to it.",
-    "obligations_moved": 0,
-    "ora_remains": "UNASSESSED"
+    "finding": "OpenRaster was an unstarted format as of 2026-08-04 (see execution_steps 1-6, preserved verbatim above as the genesis record). Real source and tests were built across the ORA-STACK-001, ORA-CONTAINER-001, ORA-LIFECYCLE-001, ORA-SEC-001 and ORA-ISOLATION-001 slices since; 78 of 134 obligations are now `partial` (production source plus passing shipped-namespace tests exist), 56 remain `missing` (no source at all: rendering, compositing, editing, groups, layers-as-editable, masks, preservation duties, streaming, resolution profiles). No obligation has reached `implemented`.",
+    "why_a_ledger_at_all": "Recording explicit missing obligations makes ora countable and auditable alongside the others, and states the position in the same schema every other format uses. Leaving any absent would let obligations sit outside the denominator, which is exactly the silent-shrinking the ledger process exists to prevent.",
+    "scale_note": "134 obligations is roughly the size of nrrd (65) and safetensors (86) combined. The mission's stated goal includes format-factory-openraster as a deliverable distribution, so this remains a build-from-nothing lane, not a verify-then-certify lane -- the directive's execution_model does not apply to it.",
+    "obligations_moved": 78,
+    "ora_remains": "UNASSESSED",
+    "refresh_note": "2026-08-06: this artifact was stale for two ticks (ORA-SEC-001, ORA-ISOLATION-001) while its expected_result in the implementation-evidence YAML had already moved on; the exact-obligations reconciler is what caught the drift, since the per-tick ledger-rebuild step does not itself validate the artifact it points at. Regenerated here from this session's own verified test runs, not from new invention."
   },
   "generated_by": "claude",
   "visibility": "generated"

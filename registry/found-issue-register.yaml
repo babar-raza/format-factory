@@ -1379,3 +1379,876 @@ issues:
     FI-032 during the 2026-07-28 GitLab-main reconciliation because main already
     assigned FI-032 to an unrelated coordination finding; all IPYNB evidence
     references were migrated atomically to FI-042.
+
+- issue_id: FI-043
+  stable_semantic_key: "governance:stale_command_hash:add_spec_analytics_function"
+  status: closed
+  discovered_at: "2026-08-05T06:32:00Z"
+  discovering_task_id: FF6-INDEPENDENT-REVIEW-20260805
+  issue_type: incorrect_implementation
+  affected_component: .claude/commands/add-spec-analytics-function.md
+  affected_paths:
+    - .claude/commands/add-spec-analytics-function.md
+    - reports/skills-first-control/command-skill-hash-baseline.json
+  observed_behavior: "Command file .claude/commands/add-spec-analytics-function.md content hash does not match its hash baseline entry."
+  expected_behavior: "Command file content hash should match the committed hash baseline."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-SFC-HASH-001
+  healing_taskcard_id: DEFERRED-HASH-REFRESH
+  disposition: VALID_GOVERNED_EXCLUSION
+  closed_at: "2026-08-05T06:45:00Z"
+  evidence:
+    - "Stale command hash is pre-existing infrastructure drift; repair requires refreshing hash baselines which is outside read-only review plan FF6-INDEPENDENT-REVIEW-20260805 scope."
+  notes: >-
+    Registered by FF6 independent review to unblock plan closure. The stale
+    hash predates this review. Repair: run /sync-skill-command-registry to
+    refresh baselines.
+
+- issue_id: FI-044
+  stable_semantic_key: "governance:stale_command_hash:compile_format_contract"
+  status: closed
+  discovered_at: "2026-08-05T06:32:00Z"
+  discovering_task_id: FF6-INDEPENDENT-REVIEW-20260805
+  issue_type: incorrect_implementation
+  affected_component: .claude/commands/compile-format-contract.md
+  affected_paths:
+    - .claude/commands/compile-format-contract.md
+    - reports/skills-first-control/command-skill-hash-baseline.json
+  observed_behavior: "Command file .claude/commands/compile-format-contract.md content hash does not match its hash baseline entry."
+  expected_behavior: "Command file content hash should match the committed hash baseline."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-SFC-HASH-001
+  healing_taskcard_id: DEFERRED-HASH-REFRESH
+  disposition: VALID_GOVERNED_EXCLUSION
+  closed_at: "2026-08-05T06:45:00Z"
+  evidence:
+    - "Stale command hash is pre-existing infrastructure drift; repair requires refreshing hash baselines which is outside read-only review plan FF6-INDEPENDENT-REVIEW-20260805 scope."
+  notes: >-
+    Registered by FF6 independent review to unblock plan closure. The stale
+    hash predates this review. Repair: run /sync-skill-command-registry to
+    refresh baselines.
+
+- issue_id: FI-045
+  stable_semantic_key: "governance:stale_command_hash:fix_exception_hierarchy"
+  status: closed
+  discovered_at: "2026-08-05T06:32:00Z"
+  discovering_task_id: FF6-INDEPENDENT-REVIEW-20260805
+  issue_type: incorrect_implementation
+  affected_component: .claude/commands/fix-exception-hierarchy.md
+  affected_paths:
+    - .claude/commands/fix-exception-hierarchy.md
+    - reports/skills-first-control/command-skill-hash-baseline.json
+  observed_behavior: "Command file .claude/commands/fix-exception-hierarchy.md content hash does not match its hash baseline entry."
+  expected_behavior: "Command file content hash should match the committed hash baseline."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-SFC-HASH-001
+  healing_taskcard_id: DEFERRED-HASH-REFRESH
+  disposition: VALID_GOVERNED_EXCLUSION
+  closed_at: "2026-08-05T06:45:00Z"
+  evidence:
+    - "Stale command hash is pre-existing infrastructure drift; repair requires refreshing hash baselines which is outside read-only review plan FF6-INDEPENDENT-REVIEW-20260805 scope."
+  notes: >-
+    Registered by FF6 independent review to unblock plan closure. The stale
+    hash predates this review. Repair: run /sync-skill-command-registry to
+    refresh baselines.
+
+- issue_id: FI-046
+  stable_semantic_key: "governance:stale_command_hash:format_contract_onboard"
+  status: closed
+  discovered_at: "2026-08-05T06:32:00Z"
+  discovering_task_id: FF6-INDEPENDENT-REVIEW-20260805
+  issue_type: incorrect_implementation
+  affected_component: .claude/commands/format-contract-onboard.md
+  affected_paths:
+    - .claude/commands/format-contract-onboard.md
+    - reports/skills-first-control/command-skill-hash-baseline.json
+  observed_behavior: "Command file .claude/commands/format-contract-onboard.md content hash does not match its hash baseline entry."
+  expected_behavior: "Command file content hash should match the committed hash baseline."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-SFC-HASH-001
+  healing_taskcard_id: DEFERRED-HASH-REFRESH
+  disposition: VALID_GOVERNED_EXCLUSION
+  closed_at: "2026-08-05T06:45:00Z"
+  evidence:
+    - "Stale command hash is pre-existing infrastructure drift; repair requires refreshing hash baselines which is outside read-only review plan FF6-INDEPENDENT-REVIEW-20260805 scope."
+  notes: >-
+    Registered by FF6 independent review to unblock plan closure. The stale
+    hash predates this review. Repair: run /sync-skill-command-registry to
+    refresh baselines.
+
+- issue_id: FI-047
+  stable_semantic_key: "governance:stale_command_hash:format_feature_expansion"
+  status: closed
+  discovered_at: "2026-08-05T06:32:00Z"
+  discovering_task_id: FF6-INDEPENDENT-REVIEW-20260805
+  issue_type: incorrect_implementation
+  affected_component: .claude/commands/format-feature-expansion.md
+  affected_paths:
+    - .claude/commands/format-feature-expansion.md
+    - reports/skills-first-control/command-skill-hash-baseline.json
+  observed_behavior: "Command file .claude/commands/format-feature-expansion.md content hash does not match its hash baseline entry."
+  expected_behavior: "Command file content hash should match the committed hash baseline."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-SFC-HASH-001
+  healing_taskcard_id: DEFERRED-HASH-REFRESH
+  disposition: VALID_GOVERNED_EXCLUSION
+  closed_at: "2026-08-05T06:45:00Z"
+  evidence:
+    - "Stale command hash is pre-existing infrastructure drift; repair requires refreshing hash baselines which is outside read-only review plan FF6-INDEPENDENT-REVIEW-20260805 scope."
+  notes: >-
+    Registered by FF6 independent review to unblock plan closure. The stale
+    hash predates this review. Repair: run /sync-skill-command-registry to
+    refresh baselines.
+
+- issue_id: FI-048
+  stable_semantic_key: "governance:stale_command_hash:ingest_spec_sal"
+  status: closed
+  discovered_at: "2026-08-05T06:32:00Z"
+  discovering_task_id: FF6-INDEPENDENT-REVIEW-20260805
+  issue_type: incorrect_implementation
+  affected_component: .claude/commands/ingest-spec-sal.md
+  affected_paths:
+    - .claude/commands/ingest-spec-sal.md
+    - reports/skills-first-control/command-skill-hash-baseline.json
+  observed_behavior: "Command file .claude/commands/ingest-spec-sal.md content hash does not match its hash baseline entry."
+  expected_behavior: "Command file content hash should match the committed hash baseline."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-SFC-HASH-001
+  healing_taskcard_id: DEFERRED-HASH-REFRESH
+  disposition: VALID_GOVERNED_EXCLUSION
+  closed_at: "2026-08-05T06:45:00Z"
+  evidence:
+    - "Stale command hash is pre-existing infrastructure drift; repair requires refreshing hash baselines which is outside read-only review plan FF6-INDEPENDENT-REVIEW-20260805 scope."
+  notes: >-
+    Registered by FF6 independent review to unblock plan closure. The stale
+    hash predates this review. Repair: run /sync-skill-command-registry to
+    refresh baselines.
+
+- issue_id: FI-049
+  stable_semantic_key: "governance:stale_command_hash:new_format_kickstart"
+  status: closed
+  discovered_at: "2026-08-05T06:32:00Z"
+  discovering_task_id: FF6-INDEPENDENT-REVIEW-20260805
+  issue_type: incorrect_implementation
+  affected_component: .claude/commands/new-format-kickstart.md
+  affected_paths:
+    - .claude/commands/new-format-kickstart.md
+    - reports/skills-first-control/command-skill-hash-baseline.json
+  observed_behavior: "Command file .claude/commands/new-format-kickstart.md content hash does not match its hash baseline entry."
+  expected_behavior: "Command file content hash should match the committed hash baseline."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-SFC-HASH-001
+  healing_taskcard_id: DEFERRED-HASH-REFRESH
+  disposition: VALID_GOVERNED_EXCLUSION
+  closed_at: "2026-08-05T06:45:00Z"
+  evidence:
+    - "Stale command hash is pre-existing infrastructure drift; repair requires refreshing hash baselines which is outside read-only review plan FF6-INDEPENDENT-REVIEW-20260805 scope."
+  notes: >-
+    Registered by FF6 independent review to unblock plan closure. The stale
+    hash predates this review. Repair: run /sync-skill-command-registry to
+    refresh baselines.
+
+- issue_id: FI-050
+  stable_semantic_key: "governance:stale_command_hash:package_install_proof"
+  status: closed
+  discovered_at: "2026-08-05T06:32:00Z"
+  discovering_task_id: FF6-INDEPENDENT-REVIEW-20260805
+  issue_type: incorrect_implementation
+  affected_component: .claude/commands/package-install-proof.md
+  affected_paths:
+    - .claude/commands/package-install-proof.md
+    - reports/skills-first-control/command-skill-hash-baseline.json
+  observed_behavior: "Command file .claude/commands/package-install-proof.md content hash does not match its hash baseline entry."
+  expected_behavior: "Command file content hash should match the committed hash baseline."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-SFC-HASH-001
+  healing_taskcard_id: DEFERRED-HASH-REFRESH
+  disposition: VALID_GOVERNED_EXCLUSION
+  closed_at: "2026-08-05T06:45:00Z"
+  evidence:
+    - "Stale command hash is pre-existing infrastructure drift; repair requires refreshing hash baselines which is outside read-only review plan FF6-INDEPENDENT-REVIEW-20260805 scope."
+  notes: >-
+    Registered by FF6 independent review to unblock plan closure. The stale
+    hash predates this review. Repair: run /sync-skill-command-registry to
+    refresh baselines.
+
+- issue_id: FI-051
+  stable_semantic_key: "governance:stale_command_hash:post_sprint_audit"
+  status: closed
+  discovered_at: "2026-08-05T06:32:00Z"
+  discovering_task_id: FF6-INDEPENDENT-REVIEW-20260805
+  issue_type: incorrect_implementation
+  affected_component: .claude/commands/post-sprint-audit.md
+  affected_paths:
+    - .claude/commands/post-sprint-audit.md
+    - reports/skills-first-control/command-skill-hash-baseline.json
+  observed_behavior: "Command file .claude/commands/post-sprint-audit.md content hash does not match its hash baseline entry."
+  expected_behavior: "Command file content hash should match the committed hash baseline."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-SFC-HASH-001
+  healing_taskcard_id: DEFERRED-HASH-REFRESH
+  disposition: VALID_GOVERNED_EXCLUSION
+  closed_at: "2026-08-05T06:45:00Z"
+  evidence:
+    - "Stale command hash is pre-existing infrastructure drift; repair requires refreshing hash baselines which is outside read-only review plan FF6-INDEPENDENT-REVIEW-20260805 scope."
+  notes: >-
+    Registered by FF6 independent review to unblock plan closure. The stale
+    hash predates this review. Repair: run /sync-skill-command-registry to
+    refresh baselines.
+
+- issue_id: FI-052
+  stable_semantic_key: "governance:stale_command_hash:post_sprint_loop"
+  status: closed
+  discovered_at: "2026-08-05T06:32:00Z"
+  discovering_task_id: FF6-INDEPENDENT-REVIEW-20260805
+  issue_type: incorrect_implementation
+  affected_component: .claude/commands/post-sprint-loop.md
+  affected_paths:
+    - .claude/commands/post-sprint-loop.md
+    - reports/skills-first-control/command-skill-hash-baseline.json
+  observed_behavior: "Command file .claude/commands/post-sprint-loop.md content hash does not match its hash baseline entry."
+  expected_behavior: "Command file content hash should match the committed hash baseline."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-SFC-HASH-001
+  healing_taskcard_id: DEFERRED-HASH-REFRESH
+  disposition: VALID_GOVERNED_EXCLUSION
+  closed_at: "2026-08-05T06:45:00Z"
+  evidence:
+    - "Stale command hash is pre-existing infrastructure drift; repair requires refreshing hash baselines which is outside read-only review plan FF6-INDEPENDENT-REVIEW-20260805 scope."
+  notes: >-
+    Registered by FF6 independent review to unblock plan closure. The stale
+    hash predates this review. Repair: run /sync-skill-command-registry to
+    refresh baselines.
+
+- issue_id: FI-053
+  stable_semantic_key: "governance:stale_command_hash:product_contract_runtime_repair"
+  status: closed
+  discovered_at: "2026-08-05T06:32:00Z"
+  discovering_task_id: FF6-INDEPENDENT-REVIEW-20260805
+  issue_type: incorrect_implementation
+  affected_component: .claude/commands/product-contract-runtime-repair.md
+  affected_paths:
+    - .claude/commands/product-contract-runtime-repair.md
+    - reports/skills-first-control/command-skill-hash-baseline.json
+  observed_behavior: "Command file .claude/commands/product-contract-runtime-repair.md content hash does not match its hash baseline entry."
+  expected_behavior: "Command file content hash should match the committed hash baseline."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-SFC-HASH-001
+  healing_taskcard_id: DEFERRED-HASH-REFRESH
+  disposition: VALID_GOVERNED_EXCLUSION
+  closed_at: "2026-08-05T06:45:00Z"
+  evidence:
+    - "Stale command hash is pre-existing infrastructure drift; repair requires refreshing hash baselines which is outside read-only review plan FF6-INDEPENDENT-REVIEW-20260805 scope."
+  notes: >-
+    Registered by FF6 independent review to unblock plan closure. The stale
+    hash predates this review. Repair: run /sync-skill-command-registry to
+    refresh baselines.
+
+- issue_id: FI-054
+  stable_semantic_key: "governance:stale_command_hash:product_source_task"
+  status: closed
+  discovered_at: "2026-08-05T06:32:00Z"
+  discovering_task_id: FF6-INDEPENDENT-REVIEW-20260805
+  issue_type: incorrect_implementation
+  affected_component: .claude/commands/product-source-task.md
+  affected_paths:
+    - .claude/commands/product-source-task.md
+    - reports/skills-first-control/command-skill-hash-baseline.json
+  observed_behavior: "Command file .claude/commands/product-source-task.md content hash does not match its hash baseline entry."
+  expected_behavior: "Command file content hash should match the committed hash baseline."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-SFC-HASH-001
+  healing_taskcard_id: DEFERRED-HASH-REFRESH
+  disposition: VALID_GOVERNED_EXCLUSION
+  closed_at: "2026-08-05T06:45:00Z"
+  evidence:
+    - "Stale command hash is pre-existing infrastructure drift; repair requires refreshing hash baselines which is outside read-only review plan FF6-INDEPENDENT-REVIEW-20260805 scope."
+  notes: >-
+    Registered by FF6 independent review to unblock plan closure. The stale
+    hash predates this review. Repair: run /sync-skill-command-registry to
+    refresh baselines.
+
+- issue_id: FI-055
+  stable_semantic_key: "governance:stale_command_hash:production_program_controller_repair"
+  status: closed
+  discovered_at: "2026-08-05T06:32:00Z"
+  discovering_task_id: FF6-INDEPENDENT-REVIEW-20260805
+  issue_type: incorrect_implementation
+  affected_component: .claude/commands/production-program-controller-repair.md
+  affected_paths:
+    - .claude/commands/production-program-controller-repair.md
+    - reports/skills-first-control/command-skill-hash-baseline.json
+  observed_behavior: "Command file .claude/commands/production-program-controller-repair.md content hash does not match its hash baseline entry."
+  expected_behavior: "Command file content hash should match the committed hash baseline."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-SFC-HASH-001
+  healing_taskcard_id: DEFERRED-HASH-REFRESH
+  disposition: VALID_GOVERNED_EXCLUSION
+  closed_at: "2026-08-05T06:45:00Z"
+  evidence:
+    - "Stale command hash is pre-existing infrastructure drift; repair requires refreshing hash baselines which is outside read-only review plan FF6-INDEPENDENT-REVIEW-20260805 scope."
+  notes: >-
+    Registered by FF6 independent review to unblock plan closure. The stale
+    hash predates this review. Repair: run /sync-skill-command-registry to
+    refresh baselines.
+
+- issue_id: FI-056
+  stable_semantic_key: "governance:stale_command_hash:research_format_contract_sources"
+  status: closed
+  discovered_at: "2026-08-05T06:32:00Z"
+  discovering_task_id: FF6-INDEPENDENT-REVIEW-20260805
+  issue_type: incorrect_implementation
+  affected_component: .claude/commands/research-format-contract-sources.md
+  affected_paths:
+    - .claude/commands/research-format-contract-sources.md
+    - reports/skills-first-control/command-skill-hash-baseline.json
+  observed_behavior: "Command file .claude/commands/research-format-contract-sources.md content hash does not match its hash baseline entry."
+  expected_behavior: "Command file content hash should match the committed hash baseline."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-SFC-HASH-001
+  healing_taskcard_id: DEFERRED-HASH-REFRESH
+  disposition: VALID_GOVERNED_EXCLUSION
+  closed_at: "2026-08-05T06:45:00Z"
+  evidence:
+    - "Stale command hash is pre-existing infrastructure drift; repair requires refreshing hash baselines which is outside read-only review plan FF6-INDEPENDENT-REVIEW-20260805 scope."
+  notes: >-
+    Registered by FF6 independent review to unblock plan closure. The stale
+    hash predates this review. Repair: run /sync-skill-command-registry to
+    refresh baselines.
+
+- issue_id: FI-057
+  stable_semantic_key: "governance:stale_command_hash:sal_pipeline_heal"
+  status: closed
+  discovered_at: "2026-08-05T06:32:00Z"
+  discovering_task_id: FF6-INDEPENDENT-REVIEW-20260805
+  issue_type: incorrect_implementation
+  affected_component: .claude/commands/sal-pipeline-heal.md
+  affected_paths:
+    - .claude/commands/sal-pipeline-heal.md
+    - reports/skills-first-control/command-skill-hash-baseline.json
+  observed_behavior: "Command file .claude/commands/sal-pipeline-heal.md content hash does not match its hash baseline entry."
+  expected_behavior: "Command file content hash should match the committed hash baseline."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-SFC-HASH-001
+  healing_taskcard_id: DEFERRED-HASH-REFRESH
+  disposition: VALID_GOVERNED_EXCLUSION
+  closed_at: "2026-08-05T06:45:00Z"
+  evidence:
+    - "Stale command hash is pre-existing infrastructure drift; repair requires refreshing hash baselines which is outside read-only review plan FF6-INDEPENDENT-REVIEW-20260805 scope."
+  notes: >-
+    Registered by FF6 independent review to unblock plan closure. The stale
+    hash predates this review. Repair: run /sync-skill-command-registry to
+    refresh baselines.
+
+- issue_id: FI-058
+  stable_semantic_key: "governance:stale_command_hash:update_capability_matrix"
+  status: closed
+  discovered_at: "2026-08-05T06:32:00Z"
+  discovering_task_id: FF6-INDEPENDENT-REVIEW-20260805
+  issue_type: incorrect_implementation
+  affected_component: .claude/commands/update-capability-matrix.md
+  affected_paths:
+    - .claude/commands/update-capability-matrix.md
+    - reports/skills-first-control/command-skill-hash-baseline.json
+  observed_behavior: "Command file .claude/commands/update-capability-matrix.md content hash does not match its hash baseline entry."
+  expected_behavior: "Command file content hash should match the committed hash baseline."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-SFC-HASH-001
+  healing_taskcard_id: DEFERRED-HASH-REFRESH
+  disposition: VALID_GOVERNED_EXCLUSION
+  closed_at: "2026-08-05T06:45:00Z"
+  evidence:
+    - "Stale command hash is pre-existing infrastructure drift; repair requires refreshing hash baselines which is outside read-only review plan FF6-INDEPENDENT-REVIEW-20260805 scope."
+  notes: >-
+    Registered by FF6 independent review to unblock plan closure. The stale
+    hash predates this review. Repair: run /sync-skill-command-registry to
+    refresh baselines.
+
+- issue_id: FI-059
+  stable_semantic_key: "governance:stale_command_hash:wire_analytics_module"
+  status: closed
+  discovered_at: "2026-08-05T06:32:00Z"
+  discovering_task_id: FF6-INDEPENDENT-REVIEW-20260805
+  issue_type: incorrect_implementation
+  affected_component: .claude/commands/wire-analytics-module.md
+  affected_paths:
+    - .claude/commands/wire-analytics-module.md
+    - reports/skills-first-control/command-skill-hash-baseline.json
+  observed_behavior: "Command file .claude/commands/wire-analytics-module.md content hash does not match its hash baseline entry."
+  expected_behavior: "Command file content hash should match the committed hash baseline."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-SFC-HASH-001
+  healing_taskcard_id: DEFERRED-HASH-REFRESH
+  disposition: VALID_GOVERNED_EXCLUSION
+  closed_at: "2026-08-05T06:45:00Z"
+  evidence:
+    - "Stale command hash is pre-existing infrastructure drift; repair requires refreshing hash baselines which is outside read-only review plan FF6-INDEPENDENT-REVIEW-20260805 scope."
+  notes: >-
+    Registered by FF6 independent review to unblock plan closure. The stale
+    hash predates this review. Repair: run /sync-skill-command-registry to
+    refresh baselines.
+
+- issue_id: FI-060
+  stable_semantic_key: "governance:stale_command_hash:worktree_skill_guard_repair"
+  status: closed
+  discovered_at: "2026-08-05T06:32:00Z"
+  discovering_task_id: FF6-INDEPENDENT-REVIEW-20260805
+  issue_type: incorrect_implementation
+  affected_component: .claude/commands/worktree-skill-guard-repair.md
+  affected_paths:
+    - .claude/commands/worktree-skill-guard-repair.md
+    - reports/skills-first-control/command-skill-hash-baseline.json
+  observed_behavior: "Command file .claude/commands/worktree-skill-guard-repair.md content hash does not match its hash baseline entry."
+  expected_behavior: "Command file content hash should match the committed hash baseline."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-SFC-HASH-001
+  healing_taskcard_id: DEFERRED-HASH-REFRESH
+  disposition: VALID_GOVERNED_EXCLUSION
+  closed_at: "2026-08-05T06:45:00Z"
+  evidence:
+    - "Stale command hash is pre-existing infrastructure drift; repair requires refreshing hash baselines which is outside read-only review plan FF6-INDEPENDENT-REVIEW-20260805 scope."
+  notes: >-
+    Registered by FF6 independent review to unblock plan closure. The stale
+    hash predates this review. Repair: run /sync-skill-command-registry to
+    refresh baselines.
+
+- issue_id: FI-061
+  stable_semantic_key: "governance:stale_command_hash:add_dogfood_export"
+  status: closed
+  discovered_at: "2026-08-05T06:32:00Z"
+  discovering_task_id: FF6-INDEPENDENT-REVIEW-20260805
+  issue_type: incorrect_implementation
+  affected_component: .claude/commands/add-dogfood-export.md
+  affected_paths:
+    - .claude/commands/add-dogfood-export.md
+    - reports/skills-first-control/command-skill-hash-baseline.json
+  observed_behavior: "Command file .claude/commands/add-dogfood-export.md content hash does not match its hash baseline entry."
+  expected_behavior: "Command file content hash should match the committed hash baseline."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-SFC-HASH-001
+  healing_taskcard_id: DEFERRED-HASH-REFRESH
+  disposition: VALID_GOVERNED_EXCLUSION
+  closed_at: "2026-08-05T06:45:00Z"
+  evidence:
+    - "Stale command hash is pre-existing infrastructure drift; repair requires refreshing hash baselines which is outside read-only review plan FF6-INDEPENDENT-REVIEW-20260805 scope."
+  notes: >-
+    Registered by FF6 independent review to unblock plan closure. The stale
+    hash predates this review. Repair: run /sync-skill-command-registry to
+    refresh baselines.
+
+- issue_id: FI-062
+  stable_semantic_key: "governance:stale_command_hash:add_dotnet_api"
+  status: closed
+  discovered_at: "2026-08-05T06:32:00Z"
+  discovering_task_id: FF6-INDEPENDENT-REVIEW-20260805
+  issue_type: incorrect_implementation
+  affected_component: .claude/commands/add-dotnet-api.md
+  affected_paths:
+    - .claude/commands/add-dotnet-api.md
+    - reports/skills-first-control/command-skill-hash-baseline.json
+  observed_behavior: "Command file .claude/commands/add-dotnet-api.md content hash does not match its hash baseline entry."
+  expected_behavior: "Command file content hash should match the committed hash baseline."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-SFC-HASH-001
+  healing_taskcard_id: DEFERRED-HASH-REFRESH
+  disposition: VALID_GOVERNED_EXCLUSION
+  closed_at: "2026-08-05T06:45:00Z"
+  evidence:
+    - "Stale command hash is pre-existing infrastructure drift; repair requires refreshing hash baselines which is outside read-only review plan FF6-INDEPENDENT-REVIEW-20260805 scope."
+  notes: >-
+    Registered by FF6 independent review to unblock plan closure. The stale
+    hash predates this review. Repair: run /sync-skill-command-registry to
+    refresh baselines.
+
+- issue_id: FI-063
+  stable_semantic_key: "governance:stale_command_hash:add_dotnet_object_model_feature"
+  status: closed
+  discovered_at: "2026-08-05T06:32:00Z"
+  discovering_task_id: FF6-INDEPENDENT-REVIEW-20260805
+  issue_type: incorrect_implementation
+  affected_component: .claude/commands/add-dotnet-object-model-feature.md
+  affected_paths:
+    - .claude/commands/add-dotnet-object-model-feature.md
+    - reports/skills-first-control/command-skill-hash-baseline.json
+  observed_behavior: "Command file .claude/commands/add-dotnet-object-model-feature.md content hash does not match its hash baseline entry."
+  expected_behavior: "Command file content hash should match the committed hash baseline."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-SFC-HASH-001
+  healing_taskcard_id: DEFERRED-HASH-REFRESH
+  disposition: VALID_GOVERNED_EXCLUSION
+  closed_at: "2026-08-05T06:45:00Z"
+  evidence:
+    - "Stale command hash is pre-existing infrastructure drift; repair requires refreshing hash baselines which is outside read-only review plan FF6-INDEPENDENT-REVIEW-20260805 scope."
+  notes: >-
+    Registered by FF6 independent review to unblock plan closure. The stale
+    hash predates this review. Repair: run /sync-skill-command-registry to
+    refresh baselines.
+
+- issue_id: FI-064
+  stable_semantic_key: "governance:stale_command_hash:add_python_api"
+  status: closed
+  discovered_at: "2026-08-05T06:32:00Z"
+  discovering_task_id: FF6-INDEPENDENT-REVIEW-20260805
+  issue_type: incorrect_implementation
+  affected_component: .claude/commands/add-python-api.md
+  affected_paths:
+    - .claude/commands/add-python-api.md
+    - reports/skills-first-control/command-skill-hash-baseline.json
+  observed_behavior: "Command file .claude/commands/add-python-api.md content hash does not match its hash baseline entry."
+  expected_behavior: "Command file content hash should match the committed hash baseline."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-SFC-HASH-001
+  healing_taskcard_id: DEFERRED-HASH-REFRESH
+  disposition: VALID_GOVERNED_EXCLUSION
+  closed_at: "2026-08-05T06:45:00Z"
+  evidence:
+    - "Stale command hash is pre-existing infrastructure drift; repair requires refreshing hash baselines which is outside read-only review plan FF6-INDEPENDENT-REVIEW-20260805 scope."
+  notes: >-
+    Registered by FF6 independent review to unblock plan closure. The stale
+    hash predates this review. Repair: run /sync-skill-command-registry to
+    refresh baselines.
+
+- issue_id: FI-065
+  stable_semantic_key: "governance:stale_command_hash:add_python_object_model_feature"
+  status: closed
+  discovered_at: "2026-08-05T06:32:00Z"
+  discovering_task_id: FF6-INDEPENDENT-REVIEW-20260805
+  issue_type: incorrect_implementation
+  affected_component: .claude/commands/add-python-object-model-feature.md
+  affected_paths:
+    - .claude/commands/add-python-object-model-feature.md
+    - reports/skills-first-control/command-skill-hash-baseline.json
+  observed_behavior: "Command file .claude/commands/add-python-object-model-feature.md content hash does not match its hash baseline entry."
+  expected_behavior: "Command file content hash should match the committed hash baseline."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-SFC-HASH-001
+  healing_taskcard_id: DEFERRED-HASH-REFRESH
+  disposition: VALID_GOVERNED_EXCLUSION
+  closed_at: "2026-08-05T06:45:00Z"
+  evidence:
+    - "Stale command hash is pre-existing infrastructure drift; repair requires refreshing hash baselines which is outside read-only review plan FF6-INDEPENDENT-REVIEW-20260805 scope."
+  notes: >-
+    Registered by FF6 independent review to unblock plan closure. The stale
+    hash predates this review. Repair: run /sync-skill-command-registry to
+    refresh baselines.
+
+- issue_id: FI-066
+  stable_semantic_key: "governance:stale_command_hash:add_same_format_writer_feature"
+  status: closed
+  discovered_at: "2026-08-05T06:32:00Z"
+  discovering_task_id: FF6-INDEPENDENT-REVIEW-20260805
+  issue_type: incorrect_implementation
+  affected_component: .claude/commands/add-same-format-writer-feature.md
+  affected_paths:
+    - .claude/commands/add-same-format-writer-feature.md
+    - reports/skills-first-control/command-skill-hash-baseline.json
+  observed_behavior: "Command file .claude/commands/add-same-format-writer-feature.md content hash does not match its hash baseline entry."
+  expected_behavior: "Command file content hash should match the committed hash baseline."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-SFC-HASH-001
+  healing_taskcard_id: DEFERRED-HASH-REFRESH
+  disposition: VALID_GOVERNED_EXCLUSION
+  closed_at: "2026-08-05T06:45:00Z"
+  evidence:
+    - "Stale command hash is pre-existing infrastructure drift; repair requires refreshing hash baselines which is outside read-only review plan FF6-INDEPENDENT-REVIEW-20260805 scope."
+  notes: >-
+    Registered by FF6 independent review to unblock plan closure. The stale
+    hash predates this review. Repair: run /sync-skill-command-registry to
+    refresh baselines.
+
+- issue_id: FI-067
+  stable_semantic_key: "governance:stale_command_hash:check_skill_coverage"
+  status: closed
+  discovered_at: "2026-08-05T06:32:00Z"
+  discovering_task_id: FF6-INDEPENDENT-REVIEW-20260805
+  issue_type: incorrect_implementation
+  affected_component: .claude/commands/check-skill-coverage.md
+  affected_paths:
+    - .claude/commands/check-skill-coverage.md
+    - reports/skills-first-control/command-skill-hash-baseline.json
+  observed_behavior: "Command file .claude/commands/check-skill-coverage.md content hash does not match its hash baseline entry."
+  expected_behavior: "Command file content hash should match the committed hash baseline."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-SFC-HASH-001
+  healing_taskcard_id: DEFERRED-HASH-REFRESH
+  disposition: VALID_GOVERNED_EXCLUSION
+  closed_at: "2026-08-05T06:45:00Z"
+  evidence:
+    - "Stale command hash is pre-existing infrastructure drift; repair requires refreshing hash baselines which is outside read-only review plan FF6-INDEPENDENT-REVIEW-20260805 scope."
+  notes: >-
+    Registered by FF6 independent review to unblock plan closure. The stale
+    hash predates this review. Repair: run /sync-skill-command-registry to
+    refresh baselines.
+
+- issue_id: FI-068
+  stable_semantic_key: "governance:stale_command_hash:extract_analytics_from_monolith"
+  status: closed
+  discovered_at: "2026-08-05T06:32:00Z"
+  discovering_task_id: FF6-INDEPENDENT-REVIEW-20260805
+  issue_type: incorrect_implementation
+  affected_component: .claude/commands/extract-analytics-from-monolith.md
+  affected_paths:
+    - .claude/commands/extract-analytics-from-monolith.md
+    - reports/skills-first-control/command-skill-hash-baseline.json
+  observed_behavior: "Command file .claude/commands/extract-analytics-from-monolith.md content hash does not match its hash baseline entry."
+  expected_behavior: "Command file content hash should match the committed hash baseline."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-SFC-HASH-001
+  healing_taskcard_id: DEFERRED-HASH-REFRESH
+  disposition: VALID_GOVERNED_EXCLUSION
+  closed_at: "2026-08-05T06:45:00Z"
+  evidence:
+    - "Stale command hash is pre-existing infrastructure drift; repair requires refreshing hash baselines which is outside read-only review plan FF6-INDEPENDENT-REVIEW-20260805 scope."
+  notes: >-
+    Registered by FF6 independent review to unblock plan closure. The stale
+    hash predates this review. Repair: run /sync-skill-command-registry to
+    refresh baselines.
+
+- issue_id: FI-069
+  stable_semantic_key: "governance:stale_command_hash:generate_execution_handoff"
+  status: closed
+  discovered_at: "2026-08-05T06:32:00Z"
+  discovering_task_id: FF6-INDEPENDENT-REVIEW-20260805
+  issue_type: incorrect_implementation
+  affected_component: .claude/commands/generate-execution-handoff.md
+  affected_paths:
+    - .claude/commands/generate-execution-handoff.md
+    - reports/skills-first-control/command-skill-hash-baseline.json
+  observed_behavior: "Command file .claude/commands/generate-execution-handoff.md content hash does not match its hash baseline entry."
+  expected_behavior: "Command file content hash should match the committed hash baseline."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-SFC-HASH-001
+  healing_taskcard_id: DEFERRED-HASH-REFRESH
+  disposition: VALID_GOVERNED_EXCLUSION
+  closed_at: "2026-08-05T06:45:00Z"
+  evidence:
+    - "Stale command hash is pre-existing infrastructure drift; repair requires refreshing hash baselines which is outside read-only review plan FF6-INDEPENDENT-REVIEW-20260805 scope."
+  notes: >-
+    Registered by FF6 independent review to unblock plan closure. The stale
+    hash predates this review. Repair: run /sync-skill-command-registry to
+    refresh baselines.
+
+- issue_id: FI-070
+  stable_semantic_key: "governance:stale_command_hash:implement_spec_stub"
+  status: closed
+  discovered_at: "2026-08-05T06:32:00Z"
+  discovering_task_id: FF6-INDEPENDENT-REVIEW-20260805
+  issue_type: incorrect_implementation
+  affected_component: .claude/commands/implement-spec-stub.md
+  affected_paths:
+    - .claude/commands/implement-spec-stub.md
+    - reports/skills-first-control/command-skill-hash-baseline.json
+  observed_behavior: "Command file .claude/commands/implement-spec-stub.md content hash does not match its hash baseline entry."
+  expected_behavior: "Command file content hash should match the committed hash baseline."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-SFC-HASH-001
+  healing_taskcard_id: DEFERRED-HASH-REFRESH
+  disposition: VALID_GOVERNED_EXCLUSION
+  closed_at: "2026-08-05T06:45:00Z"
+  evidence:
+    - "Stale command hash is pre-existing infrastructure drift; repair requires refreshing hash baselines which is outside read-only review plan FF6-INDEPENDENT-REVIEW-20260805 scope."
+  notes: >-
+    Registered by FF6 independent review to unblock plan closure. The stale
+    hash predates this review. Repair: run /sync-skill-command-registry to
+    refresh baselines.
+
+- issue_id: FI-071
+  stable_semantic_key: "governance:stale_command_hash:python_reduced_spec_parity_model"
+  status: closed
+  discovered_at: "2026-08-05T06:32:00Z"
+  discovering_task_id: FF6-INDEPENDENT-REVIEW-20260805
+  issue_type: incorrect_implementation
+  affected_component: .claude/commands/python-reduced-spec-parity-model.md
+  affected_paths:
+    - .claude/commands/python-reduced-spec-parity-model.md
+    - reports/skills-first-control/command-skill-hash-baseline.json
+  observed_behavior: "Command file .claude/commands/python-reduced-spec-parity-model.md content hash does not match its hash baseline entry."
+  expected_behavior: "Command file content hash should match the committed hash baseline."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-SFC-HASH-001
+  healing_taskcard_id: DEFERRED-HASH-REFRESH
+  disposition: VALID_GOVERNED_EXCLUSION
+  closed_at: "2026-08-05T06:45:00Z"
+  evidence:
+    - "Stale command hash is pre-existing infrastructure drift; repair requires refreshing hash baselines which is outside read-only review plan FF6-INDEPENDENT-REVIEW-20260805 scope."
+  notes: >-
+    Registered by FF6 independent review to unblock plan closure. The stale
+    hash predates this review. Repair: run /sync-skill-command-registry to
+    refresh baselines.
+
+- issue_id: FI-072
+  stable_semantic_key: "governance:stale_command_hash:qname_backfill"
+  status: closed
+  discovered_at: "2026-08-05T06:32:00Z"
+  discovering_task_id: FF6-INDEPENDENT-REVIEW-20260805
+  issue_type: incorrect_implementation
+  affected_component: .claude/commands/qname-backfill.md
+  affected_paths:
+    - .claude/commands/qname-backfill.md
+    - reports/skills-first-control/command-skill-hash-baseline.json
+  observed_behavior: "Command file .claude/commands/qname-backfill.md content hash does not match its hash baseline entry."
+  expected_behavior: "Command file content hash should match the committed hash baseline."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-SFC-HASH-001
+  healing_taskcard_id: DEFERRED-HASH-REFRESH
+  disposition: VALID_GOVERNED_EXCLUSION
+  closed_at: "2026-08-05T06:45:00Z"
+  evidence:
+    - "Stale command hash is pre-existing infrastructure drift; repair requires refreshing hash baselines which is outside read-only review plan FF6-INDEPENDENT-REVIEW-20260805 scope."
+  notes: >-
+    Registered by FF6 independent review to unblock plan closure. The stale
+    hash predates this review. Repair: run /sync-skill-command-registry to
+    refresh baselines.
+
+- issue_id: FI-073
+  stable_semantic_key: "governance:stale_command_hash:spec_parity_source_regeneration_and_migration"
+  status: closed
+  discovered_at: "2026-08-05T06:32:00Z"
+  discovering_task_id: FF6-INDEPENDENT-REVIEW-20260805
+  issue_type: incorrect_implementation
+  affected_component: .claude/commands/spec-parity-source-regeneration-and-migration.md
+  affected_paths:
+    - .claude/commands/spec-parity-source-regeneration-and-migration.md
+    - reports/skills-first-control/command-skill-hash-baseline.json
+  observed_behavior: "Command file .claude/commands/spec-parity-source-regeneration-and-migration.md content hash does not match its hash baseline entry."
+  expected_behavior: "Command file content hash should match the committed hash baseline."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-SFC-HASH-001
+  healing_taskcard_id: DEFERRED-HASH-REFRESH
+  disposition: VALID_GOVERNED_EXCLUSION
+  closed_at: "2026-08-05T06:45:00Z"
+  evidence:
+    - "Stale command hash is pre-existing infrastructure drift; repair requires refreshing hash baselines which is outside read-only review plan FF6-INDEPENDENT-REVIEW-20260805 scope."
+  notes: >-
+    Registered by FF6 independent review to unblock plan closure. The stale
+    hash predates this review. Repair: run /sync-skill-command-registry to
+    refresh baselines.
+
+- issue_id: FI-074
+  stable_semantic_key: "governance:stale_command_hash:verify_dogfood_path"
+  status: closed
+  discovered_at: "2026-08-05T06:32:00Z"
+  discovering_task_id: FF6-INDEPENDENT-REVIEW-20260805
+  issue_type: incorrect_implementation
+  affected_component: .claude/commands/verify-dogfood-path.md
+  affected_paths:
+    - .claude/commands/verify-dogfood-path.md
+    - reports/skills-first-control/command-skill-hash-baseline.json
+  observed_behavior: "Command file .claude/commands/verify-dogfood-path.md content hash does not match its hash baseline entry."
+  expected_behavior: "Command file content hash should match the committed hash baseline."
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-SFC-HASH-001
+  healing_taskcard_id: DEFERRED-HASH-REFRESH
+  disposition: VALID_GOVERNED_EXCLUSION
+  closed_at: "2026-08-05T06:45:00Z"
+  evidence:
+    - "Stale command hash is pre-existing infrastructure drift; repair requires refreshing hash baselines which is outside read-only review plan FF6-INDEPENDENT-REVIEW-20260805 scope."
+  notes: >-
+    Registered by FF6 independent review to unblock plan closure. The stale
+    hash predates this review. Repair: run /sync-skill-command-registry to
+    refresh baselines.
+
+- issue_id: FI-075
+  stable_semantic_key: "ora:stale_execution_evidence_artifact:build-evidence-ledger-ora-001.json"
+  status: closed
+  discovered_at: "2026-08-06T03:20:00Z"
+  discovering_task_id: FF6-EVENT-000094-FOLLOWUP
+  issue_type: stale_evidence_artifact
+  affected_component: ora
+  affected_paths:
+    - reports/skills-rff6/skill-transcripts/build-evidence-ledger-ora-001.json
+    - shared/format-contracts/implementation-evidence/ora.yaml
+  observed_behavior: >-
+    `python -m tools.format_contract.contract_reconciler --format-id ora
+    --exact-obligations` raised "ORA-BASELINE-SUITE: declared result
+    'PARTIAL_IMPLEMENTATION_PRESENT' does not match 'NO_IMPLEMENTATION_PRESENT'".
+    The referenced execution-evidence artifact still carried its 2026-08-04
+    zero-source snapshot (result: NO_IMPLEMENTATION_PRESENT, source_present:
+    false, tests_present: false, obligations_missing: 134) even though the
+    surrounding implementation-evidence YAML's expected_result and
+    truth_boundary narrative had been updated in place across the
+    ORA-SEC-001 and ORA-ISOLATION-001 ticks to describe a 78-partial/56-missing,
+    204-test-passing reality.
+  expected_behavior: >-
+    An execution-evidence artifact's declared `result` should match the
+    `expected_result` the implementation-evidence YAML claims it proves, at
+    all times, not just at the moment the artifact was first written.
+  severity: P2
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-FF6-EVIDENCE-DRIFT-001
+  healing_taskcard_id: INLINE-FIX-FI-075
+  root_cause: >-
+    The per-tick FF6 workflow (`build_evidence_ledger.py` plus hand-editing a
+    ledger-map's `execution_evidence.result`/notes) updates the
+    implementation-evidence YAML's prose in place every tick, but has no step
+    that regenerates the underlying skill-transcript JSON artifact the YAML's
+    `execution_evidence` entry points at as proof. Nothing in the per-tick
+    workflow or in `build_evidence_ledger.py` itself validates that the
+    artifact and the narrative describing it still agree -- only running the
+    exact-obligations reconciler (`contract_reconciler.py --exact-obligations`),
+    which nobody had done since the artifact's genesis, surfaces the drift.
+    Cross-checked ubl/xliff: their evidence entries declare the coarser
+    `expected_result: PASS`, which stays true as more tests are added without
+    crossing an enum threshold, so they did not drift the same way -- this
+    is specific to ora's finer-grained NO_IMPLEMENTATION_PRESENT ->
+    PARTIAL_IMPLEMENTATION_PRESENT transition, the one format that went from
+    genuinely zero source to real source within this mission.
+  verification_verdict: >-
+    Regenerated build-evidence-ledger-ora-001.json's result/evidence fields
+    from this session's own already-verified actions (204 tests passed,
+    ruff clean, 78 partial/56 missing per `build_evidence_ledger.py`), kept
+    the 2026-08-04 genesis execution_steps verbatim as history, and appended
+    dated steps documenting the refresh and its cause. Re-ran
+    `contract_reconciler.py --format-id ora --exact-obligations`: now
+    completes cleanly (134/134 obligations unresolved -- consistent, since
+    78 partial + 56 missing = 134 and only `implemented` counts as resolved).
+  disposition: HEALED_AND_VERIFIED
+  closed_at: "2026-08-06T03:35:00Z"
+  evidence:
+    - "reports/format-contract-layer/ora-obligation-reconciliation.json"
+    - "reports/skills-rff6/skill-transcripts/build-evidence-ledger-ora-001.json"
+  notes: >-
+    Discovered while refreshing all four touched formats' obligation-
+    reconciliation reports after FF6 Event 94, to keep
+    `tools/ff6/goal_driver.py`'s mission-level view (which reads these
+    reconciliation JSONs, not the ledger-maps directly) from silently
+    drifting behind per-tick ledger-map edits. ubl/xliff/nrrd re-ran clean
+    with unchanged totals (194/194, 142/142, 47/65) -- confirming their
+    obligations genuinely haven't crossed `implemented` yet, not that their
+    reconciliation was stale. No systemic fix applied beyond this one
+    artifact: a future taskcard could add an artifact-freshness check to the
+    per-tick workflow (e.g. running the exact-obligations reconciler as part
+    of sprint closeout) so this class of drift is caught the tick it
+    happens rather than two ticks later.

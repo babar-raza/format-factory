@@ -21,7 +21,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "d05bf00193dbad8afbf2d5a399f9b0922a3044b1a4b67aa157c09992d81215cb",
+    "implementation_evidence": "3f7e93dbca9e2aa70f14c17eff73c38e669a6f7c2f224951a438a4f11d647e0c",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -985,14 +985,29 @@
     },
     {
       "capability_id": "NRRD-SPACE-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "No typed index-to-world or measurement-to-world transform APIs exist."
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "build_space_transform() validates space directions/origin/dimension for mutual consistency and builds a working index-to-world affine transform (SpaceTransform.index_to_world). Non-spatial axes (marked \"none\") are excluded from the spatial-axis set and contribute nothing to the transform. Space dimension is derived only from explicit data present (space dimension field, origin length, or spatial direction-vector lengths) -- the \"space\" field's name is not even a parameter to this function, so axis order can never be inferred from it."
+      ],
+      "missing_behavior": [
+        "Measurement-to-world (NRRD0005 measurement frame) transforms remain unimplemented -- deliberately kept as a separate, unbuilt capability per the obligation's own instruction to keep it distinct from the NRRD0004 index-to-world transform. No test fixture derived from an actual known medical-orientation dataset (e.g. a real DICOM-derived NRRD) has been run against this transform; all fixtures here are synthetic."
+      ],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_obligation_space_transform.py::test_origin_length_inconsistent_with_direction_vectors_is_rejected",
+        "tests/python/nrrd/test_obligation_space_transform.py::test_direction_vectors_of_differing_lengths_are_rejected",
+        "tests/python/nrrd/test_obligation_space_transform.py::test_direction_entry_count_must_match_the_document_axis_count",
+        "tests/python/nrrd/test_obligation_space_transform.py::test_index_to_world_rejects_an_index_of_the_wrong_length"
+      ],
       "obligation_id": "SAL-NRRD-OBL-666DA3540EE4E38D",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_obligation_space_transform.py::test_build_space_transform_from_consistent_3d_data",
+        "tests/python/nrrd/test_obligation_space_transform.py::test_identity_transform_maps_index_to_itself_plus_origin",
+        "tests/python/nrrd/test_obligation_space_transform.py::test_scaled_transform_applies_axis_spacing",
+        "tests/python/nrrd/test_obligation_space_transform.py::test_zero_index_maps_exactly_to_the_origin",
+        "tests/python/nrrd/test_obligation_space_transform.py::test_space_dimension_is_derived_from_data_not_the_named_space"
+      ],
       "proof_requirements": {
         "negative": [
           "Dimension mismatch, non-spatial axes, invalid basis, and no named-space axis inference."
@@ -1001,9 +1016,14 @@
           "Known medical-orientation transform fixtures."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/space.py::build_space_transform",
+        "src/python/nrrd/src/format_factory/nrrd/space.py::SpaceTransform",
+        "src/python/nrrd/src/format_factory/nrrd/space.py::parse_space_directions",
+        "src/python/nrrd/src/format_factory/nrrd/space.py::parse_space_origin"
+      ],
+      "status": "partial"
     },
     {
       "capability_id": "NRRD-LAZY-001",
@@ -1672,14 +1692,27 @@
     },
     {
       "capability_id": "NRRD-SPACE-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "No typed spatial metadata validation, non-spatial-axis model, or index-to-world transform."
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "Typed spatial metadata validation (space directions/origin/dimension consistency, malformed-vector rejection) and a non-spatial-axis model (\"none\" entries excluded from the spatial transform) both exist, alongside the index-to-world transform build_space_transform()/SpaceTransform.index_to_world() provide."
+      ],
+      "missing_behavior": [
+        "Named-space axis inference is not implemented, and deliberately so: no SAL fact in this repository enumerates Teem's named-space strings (e.g. \"left-posterior-superior\") with their exact implied dimensionality precisely enough to hard-code that table safely, and the obligation's own required_behavior forbids inferring axis order from a named space regardless. Dimension is derived only from explicit data (space dimension field, origin length, spatial vector lengths)."
+      ],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_obligation_space_transform.py::test_parse_space_directions_rejects_a_malformed_entry",
+        "tests/python/nrrd/test_obligation_space_transform.py::test_parse_space_origin_rejects_a_malformed_value",
+        "tests/python/nrrd/test_obligation_space_transform.py::test_explicit_space_dimension_must_agree_with_vector_lengths"
+      ],
       "obligation_id": "SAL-NRRD-OBL-D7B962F3981120A7",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_obligation_space_transform.py::test_non_spatial_axis_is_excluded_from_spatial_axes",
+        "tests/python/nrrd/test_obligation_space_transform.py::test_non_spatial_axis_does_not_contribute_to_index_to_world",
+        "tests/python/nrrd/test_obligation_space_transform.py::test_parse_space_directions_marks_non_spatial_axis_as_none",
+        "tests/python/nrrd/test_obligation_space_transform.py::test_explicit_space_dimension_agreeing_with_vectors_is_accepted"
+      ],
       "proof_requirements": {
         "negative": [
           "Bad vector length, dimension, numeric values, and named-space inference."
@@ -1688,9 +1721,14 @@
           "Known orientation transforms including non-spatial axes."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/space.py::build_space_transform",
+        "src/python/nrrd/src/format_factory/nrrd/space.py::SpaceTransform",
+        "src/python/nrrd/src/format_factory/nrrd/space.py::parse_space_directions",
+        "src/python/nrrd/src/format_factory/nrrd/space.py::parse_space_origin"
+      ],
+      "status": "partial"
     },
     {
       "capability_id": "NRRD-META-001",
@@ -1732,14 +1770,20 @@
         "Line skip is applied before byte skip; positive skips and raw byte-skip -1 are implemented."
       ],
       "missing_behavior": [
-        "SHADOW-PACKAGE EVIDENCE ONLY. Both selectors live in tests/python/nrrd/test_nrrd_feature_completeness.py, which imports the deprecated `nrrd.*` shadow package (from nrrd.exceptions, nrrd.models, nrrd.nrrd_codec) rather than format_factory.nrrd. forbidden_progress_claims bars counting that as coverage of the shipped namespace, so this obligation was invalidly marked implemented. Demoted to partial by the proof-requirement audit (GAP-018). The tests themselves exist and pass; they simply prove it for a package we do not ship."
+        "2026-08-06: reconciled from shadow-package-only evidence. The prior selectors (tests/python/nrrd/test_nrrd_feature_completeness.py::TestLineAndByteSkip) imported the deprecated nrrd.* shadow package and could not count as shipped-namespace coverage (GAP-018); this obligation was correctly demoted to partial for that reason. tests/python/nrrd/test_obligation_payload_skip.py now proves the same scenarios directly against format_factory.nrrd -- positive byte skip, line skip, combined line-then-byte skip, byte-skip -1 tail-size extraction, and the no-skip default -- plus three negative refusal cases (byte-skip -1 outside raw encoding, line skip exceeding available lines, byte skip exceeding the payload) the shadow tests did not cover at all. Remains partial rather than implemented: per this session's own discipline, no obligation moves above partial on one slice's evidence alone -- that determination needs broader review."
       ],
       "negative_test_selectors": [
-        "tests/python/nrrd/test_nrrd_feature_completeness.py::TestLineAndByteSkip::test_byte_skip_negative_one_skips_to_expected_tail_size"
+        "tests/python/nrrd/test_obligation_payload_skip.py::test_byte_skip_negative_one_is_refused_for_non_raw_encoding",
+        "tests/python/nrrd/test_obligation_payload_skip.py::test_line_skip_beyond_available_lines_is_refused",
+        "tests/python/nrrd/test_obligation_payload_skip.py::test_byte_skip_beyond_payload_is_refused"
       ],
       "obligation_id": "SAL-NRRD-OBL-DD537F7E8C81FDE6",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_nrrd_feature_completeness.py::TestLineAndByteSkip::test_byte_skip_and_line_skip_combined"
+        "tests/python/nrrd/test_obligation_payload_skip.py::test_byte_skip_offsets_past_junk_bytes",
+        "tests/python/nrrd/test_obligation_payload_skip.py::test_line_skip_advances_past_whole_lines",
+        "tests/python/nrrd/test_obligation_payload_skip.py::test_no_skip_fields_default_to_zero",
+        "tests/python/nrrd/test_obligation_payload_skip.py::test_byte_skip_negative_one_skips_to_expected_tail_size",
+        "tests/python/nrrd/test_obligation_payload_skip.py::test_line_skip_is_applied_before_byte_skip"
       ],
       "proof_requirements": {
         "negative": [
@@ -1791,14 +1835,28 @@
     },
     {
       "capability_id": "NRRD-CONVERT-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "No conversion API or explicit clipping/scaling/rounding/overflow report exists."
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "Dtype conversion (including float-to-narrower-integer, the obligation's own worked example) runs under an explicit OverflowPolicy (CLIP/RAISE) and, when the source is a float type, an explicit RoundingPolicy (TRUNCATE/ROUND_HALF_UP) -- neither has a default. A ConversionReport records which indices were clipped or rounded, so semantics never change silently. Endian conversion byte-swaps multibyte elements and is a documented no-op for single-byte types."
+      ],
+      "missing_behavior": [
+        "Encoding conversion (raw <-> gzip/bzip2/ascii/hex) and attached/detached form conversion are not implemented -- convert.py's own module docstring records this as a scope boundary, not an oversight. Scaling (as opposed to clipping/rounding) is also not implemented: no explicit scale-factor parameter exists yet."
+      ],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_obligation_dtype_conversion.py::test_overflow_policy_raise_refuses_out_of_range_conversion",
+        "tests/python/nrrd/test_obligation_dtype_conversion.py::test_float_to_integer_conversion_requires_an_explicit_rounding_policy",
+        "tests/python/nrrd/test_obligation_dtype_conversion.py::test_endian_conversion_rejects_a_payload_not_a_multiple_of_element_size"
+      ],
       "obligation_id": "SAL-NRRD-OBL-E2B0331E7D4F6AD8",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_obligation_dtype_conversion.py::test_narrowing_conversion_clips_out_of_range_values_and_reports_them",
+        "tests/python/nrrd/test_obligation_dtype_conversion.py::test_in_range_conversion_reports_lossless",
+        "tests/python/nrrd/test_obligation_dtype_conversion.py::test_truncate_and_round_half_up_disagree_and_both_are_honored",
+        "tests/python/nrrd/test_obligation_dtype_conversion.py::test_endian_conversion_byte_swaps_multibyte_elements",
+        "tests/python/nrrd/test_obligation_dtype_conversion.py::test_endian_conversion_round_trips"
+      ],
       "proof_requirements": {
         "negative": [
           "Overflow, clipping, scaling, rounding, and unrepresentable-conversion cases."
@@ -1807,9 +1865,15 @@
           "Dtype, encoding, attachment, and endian conversion matrices with reports."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/convert.py::convert_dtype",
+        "src/python/nrrd/src/format_factory/nrrd/convert.py::convert_endian",
+        "src/python/nrrd/src/format_factory/nrrd/convert.py::OverflowPolicy",
+        "src/python/nrrd/src/format_factory/nrrd/convert.py::RoundingPolicy",
+        "src/python/nrrd/src/format_factory/nrrd/convert.py::ConversionReport"
+      ],
+      "status": "partial"
     },
     {
       "capability_id": "NRRD-ARRAY-001",
@@ -2106,23 +2170,27 @@
     "src/python/nrrd/src/format_factory/nrrd/codec/payload.py": "1082dd49e148afdf69fecd6b9225f38f0cf7db4914e569d51aff1adece3fd172",
     "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "29e71387795de3be5faf239d3a7b0662d21c47817b478ade361f01b48cd884ae",
     "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py": "fd13125d65da768afed08150e3087c3883ee47411d98d561b47c410d56428195",
+    "src/python/nrrd/src/format_factory/nrrd/convert.py": "83d96605f886fd24e9146410be552cb54d1bb93ee317102f46dc53b164448951",
     "src/python/nrrd/src/format_factory/nrrd/model/document.py": "da9b7aaec60597d8951766cc13c24012ce1dd56d43e5930f07817bb0e5e9d1e1",
     "src/python/nrrd/src/format_factory/nrrd/security/limits.py": "61960ec909fda7e5b9accf4934948291467bb5e8ce4ce584ec6e6ee12e60e844",
+    "src/python/nrrd/src/format_factory/nrrd/space.py": "887ea01c8f5e6867c8522335375d717198f1430911728fe6575009dc9a037679",
     "src/python/nrrd/src/format_factory/nrrd/validation/validator.py": "4998f59098ae60a928e3b6b5049a7843300efd24f2b19a59d8477f914c41bd98",
     "tests/python/nrrd/test_ascii_encoding_endian.py": "70aaff339ed8a91183ead5c3b87164d5d1542c393746125c95fb63e5f3f17c04",
     "tests/python/nrrd/test_golden_raw_scalar_slice.py": "b818dd89a20229421b46b4cbb8aa19dc3449ee197d45552469069cfb10d76513",
-    "tests/python/nrrd/test_nrrd_feature_completeness.py": "23c20da810071461f5ed3f4575ba35e021ebaf3745b8ecbf489d519ec98c57d5",
     "tests/python/nrrd/test_obligation_detached_forms_production.py": "0ea4f16a7602ef7ea83a4c69dead3d3204c291c30a71747696a92a97ecc2a2d8",
+    "tests/python/nrrd/test_obligation_dtype_conversion.py": "303205eec17e82662e3e484870fac7e985c0ed400f36bc62f887c75b686d6425",
     "tests/python/nrrd/test_obligation_metadata_production.py": "5c928de8b704e53560d8e845bd02f33a549a61f3c8d3c5ef492c9dee1ceebd40",
+    "tests/python/nrrd/test_obligation_payload_skip.py": "631ddbb609282e655c179358af0e8cbaa76038e33343cd482c87aaeecb1b8116",
     "tests/python/nrrd/test_obligation_shape_production.py": "17ebb172b6e8f2ac861d2ff907dbe19794d327a6e20b5f915b20a9704be9dce5",
+    "tests/python/nrrd/test_obligation_space_transform.py": "fd2e5b51084b5061e2181cef869169f6a7bc9fc4dc0d64c4aa090c22d06fb874",
     "tests/python/nrrd/test_production_namespace.py": "4723abd65d29bd980d08097bb243fa65988d7ba6c6308d194d78c51bf4a17067"
   },
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
       "implemented": 18,
-      "missing": 6,
-      "partial": 38,
+      "missing": 3,
+      "partial": 41,
       "preservation_only": 3
     },
     "total": 65,
