@@ -45,10 +45,18 @@ from .model import (
     split_segment,
     text_slots,
 )
+from .modules import (
+    STANDARD_MODULES,
+    ModuleCoverage,
+    ModuleInfo,
+    is_production_complete,
+    module_coverage_manifest,
+)
 from .security import XLIFF_DEFAULT_LIMITS
 from .validation import validate
 
 __all__ = [
+    "STANDARD_MODULES",
     "SUPPORTED_VERSIONS",
     "XLIFF_DEFAULT_LIMITS",
     "XLIFF_NAMESPACE",
@@ -56,6 +64,8 @@ __all__ = [
     "Group",
     "InlineElement",
     "InlineNode",
+    "ModuleCoverage",
+    "ModuleInfo",
     "Note",
     "Segment",
     "SegmentMapping",
@@ -73,11 +83,13 @@ __all__ = [
     "flatten_inline_content",
     "get_file_count",
     "get_unit_count",
+    "is_production_complete",
     "iter_file_units",
     "load",
     "load_xliff",
     "join_segments",
     "loads",
+    "module_coverage_manifest",
     "probe",
     "probe_xliff",
     "replace_text_slots",

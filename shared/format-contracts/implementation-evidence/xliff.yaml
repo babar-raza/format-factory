@@ -7,23 +7,30 @@ execution_evidence:
   path: reports/skills-rff6/skill-transcripts/build-evidence-ledger-xliff-001.json
   expected_result: PASS
   granularity: suite
-  truth_boundary: 'SOURCE READ 2026-08-04 under the GAP-022 rule. Unlike ubl, xliff''s CORE is genuine
-    work: segmentation.py (217 LOC) implements split_segment, join_segments, SegmentMapping, spanning-code
-    closure checks and fresh-id enforcement; inline.py, text_editing.py and the reader/writer are real.
-    Those `partial` entries are defensible pending audit.
+  truth_boundary: 'SOURCE READ 2026-08-04 under the GAP-022 rule, updated 2026-08-05. Unlike ubl, xliff''s
+    CORE is genuine work: segmentation.py (217 LOC) implements split_segment, join_segments, SegmentMapping,
+    spanning-code closure checks and fresh-id enforcement; inline.py, text_editing.py and the reader/writer
+    are real. Those `partial` entries are defensible pending audit.
 
-    Its MODULE layer is entirely absent. XLIFF 2.1 defines eight modules (Translation Candidates, Glossary,
-    Format Style, Metadata, Resource Data, Change Tracking, Size and Length Restriction, Validation) and
-    NONE of their namespaces appears anywhere in the package -- the only `matches` hits are a local variable
-    in segmentation.py. XLIFF-MODULE-001''s 18 obligations are absent, not untested, which the ledger
-    already records as `missing`. validation/validator.py also performs no schema validation, so the schema-validation
-    clauses inside XLIFF-VALIDATE-001''s `partial` entries are overstated and need per-obligation correction.
+    2026-08-05 correction: the prior note here named the eight XLIFF 2.1 modules as "...Resource Data,
+    Change Tracking, Size and Length Restriction, Validation" -- Change Tracking is not one of the eight
+    the contract''s own normative_rules name; the eighth is ITS (http://www.w3.org/2005/11/its). That
+    error is fixed here rather than carried forward.
 
-    Suite-level and NON-PROMOTING. The xliff suite is 193 passed with no failures, but that number is
-    dominated by the ten shadow-package files; the single shipped-namespace file contributes 15 tests.
-    A green suite here says very little about the package that would be released. Binds no individual
-    selector outcome to an obligation, so nothing here is verification; every obligation is recorded `partial`
-    at most.'
+    modules.py now gives XLIFF-MODULE-001 a programmatic coverage manifest covering all eight (Translation
+    Candidates, Glossary, Format Style, Metadata, Resource Data, Size and Length Restriction, Validation,
+    ITS), each PRESERVATION_ONLY with round-trip fixtures proving lossless preservation (see notes above).
+    No typed per-module accessor exists yet, so no XLIFF-MODULE-001 obligation may be recorded above `partial`;
+    this deepens the evidence behind `partial`, exactly like the UBL slices that moved zero obligations
+    while making the evidence real rather than fictional. validation/validator.py still performs no schema
+    validation, so the schema-validation clauses inside XLIFF-VALIDATE-001''s `partial` entries remain
+    overstated and still need per-obligation correction -- unchanged by this slice.
+
+    Suite-level and NON-PROMOTING. The xliff suite is 215 passed with no failures (193 baseline + 22 new),
+    but that number is still dominated by the ten shadow-package files; the shipped-namespace files now
+    contribute 37 tests (15 + 22). A green suite here says very little about the package that would be
+    released. Binds no individual selector outcome to an obligation, so nothing here is verification;
+    every obligation is recorded `partial` at most.'
 obligations:
 - obligation_id: SAL-XLIFF-OBL-009F2EB91831B248
   capability_id: XLIFF-SEC-001
@@ -77,16 +84,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-05C85D6ED1E486EF
   capability_id: XLIFF-MODULE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleCoverage
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleInfo
+  - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
+  - src/python/xliff/src/format_factory/xliff/modules.py::is_production_complete
+  positive_test_selectors:
+  - tests/python/xliff/test_obligation_module_coverage.py::test_all_eight_standard_modules_are_declared
+  - tests/python/xliff/test_obligation_module_coverage.py::test_manifest_is_keyed_by_module_name_and_returns_module_info
+  - tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
     coverage manifest matches behavior.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Per-module round-trip fixtures; coverage manifest matches behavior.
@@ -119,16 +135,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-078DE5F17834C232
   capability_id: XLIFF-MODULE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleCoverage
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleInfo
+  - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
+  - src/python/xliff/src/format_factory/xliff/modules.py::is_production_complete
+  positive_test_selectors:
+  - tests/python/xliff/test_obligation_module_coverage.py::test_all_eight_standard_modules_are_declared
+  - tests/python/xliff/test_obligation_module_coverage.py::test_manifest_is_keyed_by_module_name_and_returns_module_info
+  - tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
     coverage manifest matches behavior.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Per-module round-trip fixtures; coverage manifest matches behavior.
@@ -292,16 +317,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-0F4BED4809335F28
   capability_id: XLIFF-MODULE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleCoverage
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleInfo
+  - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
+  - src/python/xliff/src/format_factory/xliff/modules.py::is_production_complete
+  positive_test_selectors:
+  - tests/python/xliff/test_obligation_module_coverage.py::test_all_eight_standard_modules_are_declared
+  - tests/python/xliff/test_obligation_module_coverage.py::test_manifest_is_keyed_by_module_name_and_returns_module_info
+  - tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
     coverage manifest matches behavior.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Per-module round-trip fixtures; coverage manifest matches behavior.
@@ -383,16 +417,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-1405C2E94EEF25E6
   capability_id: XLIFF-MODULE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleCoverage
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleInfo
+  - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
+  - src/python/xliff/src/format_factory/xliff/modules.py::is_production_complete
+  positive_test_selectors:
+  - tests/python/xliff/test_obligation_module_coverage.py::test_all_eight_standard_modules_are_declared
+  - tests/python/xliff/test_obligation_module_coverage.py::test_manifest_is_keyed_by_module_name_and_returns_module_info
+  - tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
     coverage manifest matches behavior.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Per-module round-trip fixtures; coverage manifest matches behavior.
@@ -549,16 +592,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-2104606D91AD8051
   capability_id: XLIFF-MODULE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleCoverage
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleInfo
+  - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
+  - src/python/xliff/src/format_factory/xliff/modules.py::is_production_complete
+  positive_test_selectors:
+  - tests/python/xliff/test_obligation_module_coverage.py::test_all_eight_standard_modules_are_declared
+  - tests/python/xliff/test_obligation_module_coverage.py::test_manifest_is_keyed_by_module_name_and_returns_module_info
+  - tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
     coverage manifest matches behavior.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Per-module round-trip fixtures; coverage manifest matches behavior.
@@ -640,16 +692,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-251C3608521B6A97
   capability_id: XLIFF-MODULE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleCoverage
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleInfo
+  - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
+  - src/python/xliff/src/format_factory/xliff/modules.py::is_production_complete
+  positive_test_selectors:
+  - tests/python/xliff/test_obligation_module_coverage.py::test_all_eight_standard_modules_are_declared
+  - tests/python/xliff/test_obligation_module_coverage.py::test_manifest_is_keyed_by_module_name_and_returns_module_info
+  - tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
     coverage manifest matches behavior.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Per-module round-trip fixtures; coverage manifest matches behavior.
@@ -1258,16 +1319,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-4CBBC3E46D3F6FD5
   capability_id: XLIFF-MODULE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleCoverage
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleInfo
+  - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
+  - src/python/xliff/src/format_factory/xliff/modules.py::is_production_complete
+  positive_test_selectors:
+  - tests/python/xliff/test_obligation_module_coverage.py::test_all_eight_standard_modules_are_declared
+  - tests/python/xliff/test_obligation_module_coverage.py::test_manifest_is_keyed_by_module_name_and_returns_module_info
+  - tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
     coverage manifest matches behavior.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Per-module round-trip fixtures; coverage manifest matches behavior.
@@ -1275,16 +1345,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-4CDD66101DC1EEB9
   capability_id: XLIFF-MODULE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleCoverage
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleInfo
+  - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
+  - src/python/xliff/src/format_factory/xliff/modules.py::is_production_complete
+  positive_test_selectors:
+  - tests/python/xliff/test_obligation_module_coverage.py::test_all_eight_standard_modules_are_declared
+  - tests/python/xliff/test_obligation_module_coverage.py::test_manifest_is_keyed_by_module_name_and_returns_module_info
+  - tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
     coverage manifest matches behavior.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Per-module round-trip fixtures; coverage manifest matches behavior.
@@ -1363,16 +1442,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-5450B2DB4BF7B672
   capability_id: XLIFF-MODULE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleCoverage
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleInfo
+  - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
+  - src/python/xliff/src/format_factory/xliff/modules.py::is_production_complete
+  positive_test_selectors:
+  - tests/python/xliff/test_obligation_module_coverage.py::test_all_eight_standard_modules_are_declared
+  - tests/python/xliff/test_obligation_module_coverage.py::test_manifest_is_keyed_by_module_name_and_returns_module_info
+  - tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
     coverage manifest matches behavior.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Per-module round-trip fixtures; coverage manifest matches behavior.
@@ -1380,16 +1468,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-56B240550D37E1BA
   capability_id: XLIFF-MODULE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleCoverage
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleInfo
+  - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
+  - src/python/xliff/src/format_factory/xliff/modules.py::is_production_complete
+  positive_test_selectors:
+  - tests/python/xliff/test_obligation_module_coverage.py::test_all_eight_standard_modules_are_declared
+  - tests/python/xliff/test_obligation_module_coverage.py::test_manifest_is_keyed_by_module_name_and_returns_module_info
+  - tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
     coverage manifest matches behavior.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Per-module round-trip fixtures; coverage manifest matches behavior.
@@ -1711,16 +1808,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-725053FB0A47E78D
   capability_id: XLIFF-MODULE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleCoverage
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleInfo
+  - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
+  - src/python/xliff/src/format_factory/xliff/modules.py::is_production_complete
+  positive_test_selectors:
+  - tests/python/xliff/test_obligation_module_coverage.py::test_all_eight_standard_modules_are_declared
+  - tests/python/xliff/test_obligation_module_coverage.py::test_manifest_is_keyed_by_module_name_and_returns_module_info
+  - tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
     coverage manifest matches behavior.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Per-module round-trip fixtures; coverage manifest matches behavior.
@@ -1780,16 +1886,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-733068E3157678E7
   capability_id: XLIFF-MODULE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleCoverage
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleInfo
+  - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
+  - src/python/xliff/src/format_factory/xliff/modules.py::is_production_complete
+  positive_test_selectors:
+  - tests/python/xliff/test_obligation_module_coverage.py::test_all_eight_standard_modules_are_declared
+  - tests/python/xliff/test_obligation_module_coverage.py::test_manifest_is_keyed_by_module_name_and_returns_module_info
+  - tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
     coverage manifest matches behavior.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Per-module round-trip fixtures; coverage manifest matches behavior.
@@ -2197,16 +2312,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-9795E0B80A36DEBB
   capability_id: XLIFF-MODULE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleCoverage
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleInfo
+  - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
+  - src/python/xliff/src/format_factory/xliff/modules.py::is_production_complete
+  positive_test_selectors:
+  - tests/python/xliff/test_obligation_module_coverage.py::test_all_eight_standard_modules_are_declared
+  - tests/python/xliff/test_obligation_module_coverage.py::test_manifest_is_keyed_by_module_name_and_returns_module_info
+  - tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
     coverage manifest matches behavior.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Per-module round-trip fixtures; coverage manifest matches behavior.
@@ -2618,16 +2742,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-BF29D4CDCFB61497
   capability_id: XLIFF-MODULE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleCoverage
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleInfo
+  - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
+  - src/python/xliff/src/format_factory/xliff/modules.py::is_production_complete
+  positive_test_selectors:
+  - tests/python/xliff/test_obligation_module_coverage.py::test_all_eight_standard_modules_are_declared
+  - tests/python/xliff/test_obligation_module_coverage.py::test_manifest_is_keyed_by_module_name_and_returns_module_info
+  - tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
     coverage manifest matches behavior.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Per-module round-trip fixtures; coverage manifest matches behavior.
@@ -2861,16 +2994,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-CF05EFE9DC2D7502
   capability_id: XLIFF-MODULE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleCoverage
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleInfo
+  - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
+  - src/python/xliff/src/format_factory/xliff/modules.py::is_production_complete
+  positive_test_selectors:
+  - tests/python/xliff/test_obligation_module_coverage.py::test_all_eight_standard_modules_are_declared
+  - tests/python/xliff/test_obligation_module_coverage.py::test_manifest_is_keyed_by_module_name_and_returns_module_info
+  - tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
     coverage manifest matches behavior.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Per-module round-trip fixtures; coverage manifest matches behavior.
@@ -2920,16 +3062,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-D1E0B4FE10EAE4E3
   capability_id: XLIFF-MODULE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleCoverage
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleInfo
+  - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
+  - src/python/xliff/src/format_factory/xliff/modules.py::is_production_complete
+  positive_test_selectors:
+  - tests/python/xliff/test_obligation_module_coverage.py::test_all_eight_standard_modules_are_declared
+  - tests/python/xliff/test_obligation_module_coverage.py::test_manifest_is_keyed_by_module_name_and_returns_module_info
+  - tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
     coverage manifest matches behavior.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Per-module round-trip fixtures; coverage manifest matches behavior.
@@ -2962,16 +3113,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-D8645A5568961940
   capability_id: XLIFF-MODULE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleCoverage
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleInfo
+  - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
+  - src/python/xliff/src/format_factory/xliff/modules.py::is_production_complete
+  positive_test_selectors:
+  - tests/python/xliff/test_obligation_module_coverage.py::test_all_eight_standard_modules_are_declared
+  - tests/python/xliff/test_obligation_module_coverage.py::test_manifest_is_keyed_by_module_name_and_returns_module_info
+  - tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
     coverage manifest matches behavior.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Per-module round-trip fixtures; coverage manifest matches behavior.
@@ -3246,16 +3406,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-EEA9C58A385F7C96
   capability_id: XLIFF-MODULE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleCoverage
+  - src/python/xliff/src/format_factory/xliff/modules.py::ModuleInfo
+  - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
+  - src/python/xliff/src/format_factory/xliff/modules.py::is_production_complete
+  positive_test_selectors:
+  - tests/python/xliff/test_obligation_module_coverage.py::test_all_eight_standard_modules_are_declared
+  - tests/python/xliff/test_obligation_module_coverage.py::test_manifest_is_keyed_by_module_name_and_returns_module_info
+  - tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Per-module round-trip fixtures;
     coverage manifest matches behavior.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Per-module round-trip fixtures; coverage manifest matches behavior.

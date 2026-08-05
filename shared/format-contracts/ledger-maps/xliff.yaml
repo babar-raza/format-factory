@@ -2,48 +2,78 @@ schema: ff6/ledger-map@1
 format_id: xliff
 visibility: internal
 generated_by: claude
-generated_at: '2026-08-04'
+generated_at: '2026-08-05'
 basis: >-
   XLIFF has exactly ONE test file that imports format_factory.xliff
   (test_production_namespace.py, 15 tests). The other ten import the deprecated
   xliff.* shadow package and cannot supply selectors under
   forbidden_progress_claims. Its 15 tests were read and assigned to capabilities
-  by what they actually exercise, not by name similarity.
+  by what they actually exercise, not by name similarity. 2026-08-05: added
+  test_obligation_module_coverage.py (22 tests) for XLIFF-MODULE-001, written
+  fresh against format_factory.xliff per the mission's no-shadow-port rule.
 notes: >-
-  Four capabilities are mapped with NO tests, because no shipped-namespace test
-  exercises them: XLIFF-MODULE-001 (18 obligations), XLIFF-NOTE-001 (4),
+  Three capabilities remain mapped with NO tests: XLIFF-NOTE-001 (4),
   XLIFF-MERGE-001 (2) and XLIFF-QA-001 (2). They are listed explicitly rather
   than omitted, so the builder records them `missing` with a reason instead of
-  silently shrinking the denominator. XLIFF-MODULE-001 in particular has no
-  visible module implementation in model/document.py -- only ExtensionNode for
-  unknown-namespace preservation -- so its 18 obligations are the largest single
-  block of unevidenced XLIFF work and deserve their own investigation.
+  silently shrinking the denominator.
+
+  XLIFF-MODULE-001 status as of 2026-08-05: modules.py adds a programmatic
+  coverage manifest (ModuleCoverage.MODELED/PRESERVATION_ONLY/UNSUPPORTED) for
+  all eight XLIFF 2.1 standard modules named in the contract, each reporting
+  PRESERVATION_ONLY -- honestly, since model/document.py still has no typed
+  accessor (Match, GlossEntry, MetaGroup, etc.) for any of them, only
+  ExtensionNode for unknown-namespace preservation. Per-module round-trip
+  fixtures prove all eight preserve losslessly through a real loads/dumps
+  cycle: six as unrecognized child elements (Translation Candidates, Glossary,
+  Metadata, Resource Data, Size and Length Restriction, Validation) and two as
+  unrecognized namespaced attributes on core elements (Format Style's fs/subFs,
+  ITS's itsm:2.1 domain/language mapping), which is how the actual OASIS spec
+  attaches them -- not as their own child elements. Resource Data's namespace
+  is reported as unconfirmed (None) rather than invented, because unlike the
+  other seven, no SAL fact states it explicitly; a control test proves
+  preservation does not depend on that field being populated. This satisfies
+  the obligation's "declare per-module coverage programmatically...never drop
+  module data silently" and "coverage manifest matches behavior" required_test.
+  It does NOT satisfy "production-complete status requires all modules
+  modeled" -- is_production_complete() correctly returns False, and no
+  XLIFF-MODULE-001 obligation may be recorded above `partial` on this alone.
 
 execution_evidence:
   path: reports/skills-rff6/skill-transcripts/build-evidence-ledger-xliff-001.json
   result: PASS
   truth_boundary: >-
-    SOURCE READ 2026-08-04 under the GAP-022 rule. Unlike ubl, xliff's CORE is
-    genuine work: segmentation.py (217 LOC) implements split_segment,
-    join_segments, SegmentMapping, spanning-code closure checks and fresh-id
-    enforcement; inline.py, text_editing.py and the reader/writer are real. Those
-    `partial` entries are defensible pending audit.
+    SOURCE READ 2026-08-04 under the GAP-022 rule, updated 2026-08-05. Unlike
+    ubl, xliff's CORE is genuine work: segmentation.py (217 LOC) implements
+    split_segment, join_segments, SegmentMapping, spanning-code closure checks
+    and fresh-id enforcement; inline.py, text_editing.py and the reader/writer
+    are real. Those `partial` entries are defensible pending audit.
 
-    Its MODULE layer is entirely absent. XLIFF 2.1 defines eight modules
-    (Translation Candidates, Glossary, Format Style, Metadata, Resource Data,
-    Change Tracking, Size and Length Restriction, Validation) and NONE of their
-    namespaces appears anywhere in the package -- the only `matches` hits are a
-    local variable in segmentation.py. XLIFF-MODULE-001's 18 obligations are
-    absent, not untested, which the ledger already records as `missing`.
-    validation/validator.py also performs no schema validation, so the
-    schema-validation clauses inside XLIFF-VALIDATE-001's `partial` entries are
-    overstated and need per-obligation correction.
+    2026-08-05 correction: the prior note here named the eight XLIFF 2.1
+    modules as "...Resource Data, Change Tracking, Size and Length
+    Restriction, Validation" -- Change Tracking is not one of the eight the
+    contract's own normative_rules name; the eighth is ITS
+    (http://www.w3.org/2005/11/its). That error is fixed here rather than
+    carried forward.
 
-    Suite-level and NON-PROMOTING. The xliff suite is 193 passed with no
-    failures, but that number is dominated by the ten shadow-package files; the
-    single shipped-namespace file contributes 15 tests. A green suite here says
-    very little about the package that would be released. Binds no individual
-    selector outcome to an obligation, so nothing here is verification; every
+    modules.py now gives XLIFF-MODULE-001 a programmatic coverage manifest
+    covering all eight (Translation Candidates, Glossary, Format Style,
+    Metadata, Resource Data, Size and Length Restriction, Validation, ITS),
+    each PRESERVATION_ONLY with round-trip fixtures proving lossless
+    preservation (see notes above). No typed per-module accessor exists yet,
+    so no XLIFF-MODULE-001 obligation may be recorded above `partial`; this
+    deepens the evidence behind `partial`, exactly like the UBL slices that
+    moved zero obligations while making the evidence real rather than
+    fictional. validation/validator.py still performs no schema validation, so
+    the schema-validation clauses inside XLIFF-VALIDATE-001's `partial`
+    entries remain overstated and still need per-obligation correction --
+    unchanged by this slice.
+
+    Suite-level and NON-PROMOTING. The xliff suite is 215 passed with no
+    failures (193 baseline + 22 new), but that number is still dominated by
+    the ten shadow-package files; the shipped-namespace files now contribute
+    37 tests (15 + 22). A green suite here says very little about the package
+    that would be released. Binds no individual selector outcome to an
+    obligation, so nothing here is verification; every
     obligation is recorded `partial` at most.
 
 capabilities:
@@ -91,12 +121,12 @@ capabilities:
     modules: [validation/validator.py, model/document.py]
     tests: [test_production_namespace.py]
 
-  # No shipped-namespace test exercises these four. Listed with empty `tests`
-  # so they are recorded `missing` with a reason rather than omitted.
   XLIFF-MODULE-001:
-    modules: [model/document.py]
-    tests: []
+    modules: [modules.py]
+    tests: [test_obligation_module_coverage.py]
 
+  # No shipped-namespace test exercises these three. Listed with empty `tests`
+  # so they are recorded `missing` with a reason rather than omitted.
   XLIFF-NOTE-001:
     modules: [model/document.py]
     tests: []
