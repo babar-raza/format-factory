@@ -51,8 +51,22 @@ capabilities:
     tests: [test_production_namespace.py]
 
   UBL-MODEL-001:
-    modules: [model/document.py, model/root_types.py]
-    tests: [test_production_namespace.py]
+    # Remapped 2026-08-05. GAP-022 recorded this as OVERSTATED while it pointed
+    # at model/root_types.py (91 five-line stubs) for 35 MUST obligations naming
+    # typed components that did not exist. Five of the seven it names now do:
+    # cbc:ID with schemeID (Identifier), AmountType with currencyID (Amount),
+    # QuantityType with unitCode (Quantity), cac:Item, and
+    # EmbeddedDocumentBinaryObject (BinaryObject), plus cac:InvoiceLine,
+    # cac:TaxTotal and cac:LegalMonetaryTotal.
+    # STILL ABSENT: cac:ExternalReference and W3C XSD schema validation. The
+    # status stays `partial` for that reason -- this remap makes the mapping
+    # truthful, it does not claim the capability is complete.
+    modules: [model/document.py, model/values.py, model/typed.py, model/aggregates.py]
+    tests:
+    - test_production_namespace.py
+    - test_obligation_aggregate_components.py
+    - test_obligation_business_value_types.py
+    - test_obligation_typed_projection.py
 
   UBL-DOCTYPES-001:
     modules: [_generated/root_catalog.py, model/root_types.py]

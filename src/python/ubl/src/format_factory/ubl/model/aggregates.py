@@ -1,0 +1,330 @@
+"""UBL-MODEL-001 — shared aggregate components as typed composites.
+
+The aggregates here are the ones the contract names: `cac:Item`,
+`cac:InvoiceLine`, `cac:TaxSubtotal`, `cac:TaxTotal` and
+`cac:LegalMonetaryTotal`. Required components are enforced at construction, so
+an invalid structure fails where it is built rather than later where it is
+serialized — that is what "diagnosable at edit time" asks for.
+
+Reconciliation is the interesting decision. The contract is explicit that
+
+  "the XSD does not encode cross-field arithmetic reconciliation"
+
+so this module offers it as an explicit **reporting** operation and nothing
+more. It does not correct totals, because a library that silently rewrote a
+payable amount to match its own arithmetic would be altering a business
+document. It does not raise either, because real invoices are legitimately
+rounded in ways a naive sum disagrees with, and rejecting them at parse time
+would make the library unusable against genuine data. A mismatch is a finding
+for a human.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+
+from format_factory.core import Diagnostic, Severity, ValidationReport
+
+from ..errors import UblValidationError
+from .document import XmlNode
+from .typed import amount_of, code_of, find, find_all, identifier_of, quantity_of
+from .values import Amount, Code, Identifier, Quantity
+
+
+def _require(value: object, name: str, owner: str) -> None:
+    if value is None:
+        raise UblValidationError(
+            f"{owner} requires {name}; the UBL aggregate definition makes it "
+            "mandatory, and an incomplete structure should fail where it is "
+            "built rather than where it is serialized"
+        )
+
+
+@dataclass(frozen=True)
+class Item:
+    """`cac:Item` — a traded item."""
+
+    name: str
+    identifiers: tuple[Identifier, ...] = ()
+    classification_codes: tuple[Code, ...] = ()
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.name, str) or not self.name.strip():
+            raise UblValidationError("cac:Item requires a non-empty cbc:Name")
+
+
+@dataclass(frozen=True)
+class InvoiceLine:
+    """`cac:InvoiceLine` — carries cbc:ID, cbc:InvoicedQuantity,
+    cbc:LineExtensionAmount and a cac:Item."""
+
+    id: Identifier
+    invoiced_quantity: Quantity
+    line_extension_amount: Amount
+    item: Item
+
+    def __post_init__(self) -> None:
+        _require(self.id, "cbc:ID", "cac:InvoiceLine")
+        _require(self.invoiced_quantity, "cbc:InvoicedQuantity", "cac:InvoiceLine")
+        _require(self.line_extension_amount, "cbc:LineExtensionAmount", "cac:InvoiceLine")
+        _require(self.item, "a cac:Item", "cac:InvoiceLine")
+
+
+@dataclass(frozen=True)
+class TaxSubtotal:
+    """`cac:TaxSubtotal` — one tax category's taxable and tax amounts."""
+
+    taxable_amount: Amount
+    tax_amount: Amount
+    category_code: Code | None = None
+
+    def __post_init__(self) -> None:
+        _require(self.taxable_amount, "cbc:TaxableAmount", "cac:TaxSubtotal")
+        _require(self.tax_amount, "cbc:TaxAmount", "cac:TaxSubtotal")
+
+
+@dataclass(frozen=True)
+class TaxTotal:
+    """`cac:TaxTotal` — cbc:TaxAmount plus nested cac:TaxSubtotal per category."""
+
+    tax_amount: Amount
+    subtotals: tuple[TaxSubtotal, ...] = field(default_factory=tuple)
+
+    def __post_init__(self) -> None:
+        _require(self.tax_amount, "cbc:TaxAmount", "cac:TaxTotal")
+
+
+@dataclass(frozen=True)
+class LegalMonetaryTotal:
+    """`cac:LegalMonetaryTotal` — document-level monetary totals.
+
+    Line extension and payable are required; the tax-exclusive, tax-inclusive,
+    allowance and charge amounts are optional, and absent is not the same as
+    zero — a document that omits an allowance total is not asserting it is nil.
+    """
+
+    line_extension_amount: Amount
+    payable_amount: Amount
+    tax_exclusive_amount: Amount | None = None
+    tax_inclusive_amount: Amount | None = None
+    allowance_total_amount: Amount | None = None
+    charge_total_amount: Amount | None = None
+
+    def __post_init__(self) -> None:
+        _require(self.line_extension_amount, "cbc:LineExtensionAmount", "cac:LegalMonetaryTotal")
+        _require(self.payable_amount, "cbc:PayableAmount", "cac:LegalMonetaryTotal")
+
+
+# ── Projection from the lossless tree ──────────────────────────────────────
+
+
+def item_of(node: XmlNode | None) -> Item:
+    if node is None:
+        raise UblValidationError("cannot project a missing element into a cac:Item")
+    name = find(node, "Name")
+    if name is None:
+        raise UblValidationError("cac:Item has no cbc:Name")
+    return Item(
+        name=name.text,
+        identifiers=tuple(identifier_of(child) for child in find_all(node, "ID")),
+        classification_codes=tuple(
+            code_of(child) for child in find_all(node, "CommodityClassification")
+        ),
+    )
+
+
+def invoice_line_of(node: XmlNode | None) -> InvoiceLine:
+    if node is None:
+        raise UblValidationError("cannot project a missing element into a cac:InvoiceLine")
+    item = find(node, "Item")
+    if item is None:
+        raise UblValidationError("cac:InvoiceLine has no cac:Item")
+    return InvoiceLine(
+        id=identifier_of(find(node, "ID")),
+        invoiced_quantity=quantity_of(find(node, "InvoicedQuantity")),
+        line_extension_amount=amount_of(find(node, "LineExtensionAmount")),
+        item=item_of(item),
+    )
+
+
+def tax_subtotal_of(node: XmlNode | None) -> TaxSubtotal:
+    if node is None:
+        raise UblValidationError("cannot project a missing element into a cac:TaxSubtotal")
+    category = find(node, "TaxCategory")
+    return TaxSubtotal(
+        taxable_amount=amount_of(find(node, "TaxableAmount")),
+        tax_amount=amount_of(find(node, "TaxAmount")),
+        category_code=code_of(find(category, "ID")) if category and find(category, "ID") else None,
+    )
+
+
+def tax_total_of(node: XmlNode | None) -> TaxTotal:
+    if node is None:
+        raise UblValidationError("cannot project a missing element into a cac:TaxTotal")
+    return TaxTotal(
+        tax_amount=amount_of(find(node, "TaxAmount")),
+        subtotals=tuple(tax_subtotal_of(child) for child in find_all(node, "TaxSubtotal")),
+    )
+
+
+def _optional_amount(node: XmlNode, name: str) -> Amount | None:
+    child = find(node, name)
+    return amount_of(child) if child is not None else None
+
+
+def legal_monetary_total_of(node: XmlNode | None) -> LegalMonetaryTotal:
+    if node is None:
+        raise UblValidationError(
+            "cannot project a missing element into a cac:LegalMonetaryTotal"
+        )
+    return LegalMonetaryTotal(
+        line_extension_amount=amount_of(find(node, "LineExtensionAmount")),
+        payable_amount=amount_of(find(node, "PayableAmount")),
+        tax_exclusive_amount=_optional_amount(node, "TaxExclusiveAmount"),
+        tax_inclusive_amount=_optional_amount(node, "TaxInclusiveAmount"),
+        allowance_total_amount=_optional_amount(node, "AllowanceTotalAmount"),
+        charge_total_amount=_optional_amount(node, "ChargeTotalAmount"),
+    )
+
+
+# ── Reconciliation: report only ────────────────────────────────────────────
+
+
+def reconcile_invoice(root: XmlNode) -> ValidationReport:
+    """Check the cross-field arithmetic the XSD cannot express.
+
+    Returns findings. Never mutates the document and never raises: an absent
+    aggregate is not an error, only a present-and-inconsistent one is.
+    """
+    found: list[Diagnostic] = []
+
+    line_nodes = find_all(root, "InvoiceLine")
+    lines: list[InvoiceLine] = []
+    for node in line_nodes:
+        try:
+            lines.append(invoice_line_of(node))
+        except UblValidationError as exc:
+            found.append(
+                Diagnostic(
+                    code="UBL_INVOICE_LINE_INVALID",
+                    message=str(exc),
+                    severity=Severity.ERROR,
+                )
+            )
+
+    line_sum: Amount | None = None
+    if lines:
+        currencies = {line.line_extension_amount.currency_id for line in lines}
+        if len(currencies) > 1:
+            found.append(
+                Diagnostic(
+                    code="UBL_LINE_CURRENCY_MISMATCH",
+                    message=(
+                        "invoice lines use more than one currency "
+                        f"({sorted(currencies)}); their extension amounts cannot be "
+                        "summed without an exchange rate the document does not carry"
+                    ),
+                    severity=Severity.ERROR,
+                )
+            )
+        else:
+            line_sum = lines[0].line_extension_amount
+            for line in lines[1:]:
+                line_sum = line_sum + line.line_extension_amount
+
+    monetary_node = find(root, "LegalMonetaryTotal")
+    if monetary_node is not None and line_sum is not None:
+        try:
+            monetary = legal_monetary_total_of(monetary_node)
+        except UblValidationError as exc:
+            found.append(
+                Diagnostic(
+                    code="UBL_LEGAL_MONETARY_TOTAL_INVALID",
+                    message=str(exc),
+                    severity=Severity.ERROR,
+                )
+            )
+        else:
+            declared = monetary.line_extension_amount
+            if declared.currency_id != line_sum.currency_id:
+                found.append(
+                    Diagnostic(
+                        code="UBL_LINE_EXTENSION_CURRENCY_MISMATCH",
+                        message=(
+                            f"cac:LegalMonetaryTotal declares {declared.currency_id} "
+                            f"but the invoice lines are in {line_sum.currency_id}"
+                        ),
+                        severity=Severity.ERROR,
+                    )
+                )
+            elif declared.value != line_sum.value:
+                found.append(
+                    Diagnostic(
+                        code="UBL_LINE_EXTENSION_TOTAL_MISMATCH",
+                        message=(
+                            f"cac:LegalMonetaryTotal declares a line extension of "
+                            f"{declared.value} {declared.currency_id}, but the "
+                            f"{len(lines)} invoice lines sum to {line_sum.value}"
+                        ),
+                        severity=Severity.ERROR,
+                    )
+                )
+
+    for node in find_all(root, "TaxTotal"):
+        try:
+            total = tax_total_of(node)
+        except UblValidationError as exc:
+            found.append(
+                Diagnostic(
+                    code="UBL_TAX_TOTAL_INVALID", message=str(exc), severity=Severity.ERROR
+                )
+            )
+            continue
+        if not total.subtotals:
+            continue
+        currencies = {subtotal.tax_amount.currency_id for subtotal in total.subtotals}
+        if len(currencies) > 1 or total.tax_amount.currency_id not in currencies:
+            found.append(
+                Diagnostic(
+                    code="UBL_TAX_CURRENCY_MISMATCH",
+                    message=(
+                        "cac:TaxTotal and its subtotals do not agree on a single "
+                        f"currency: total {total.tax_amount.currency_id}, subtotals "
+                        f"{sorted(currencies)}"
+                    ),
+                    severity=Severity.ERROR,
+                )
+            )
+            continue
+        subtotal_sum = total.subtotals[0].tax_amount
+        for subtotal in total.subtotals[1:]:
+            subtotal_sum = subtotal_sum + subtotal.tax_amount
+        if subtotal_sum.value != total.tax_amount.value:
+            found.append(
+                Diagnostic(
+                    code="UBL_TAX_SUBTOTAL_MISMATCH",
+                    message=(
+                        f"cac:TaxTotal declares {total.tax_amount.value} "
+                        f"{total.tax_amount.currency_id} but its "
+                        f"{len(total.subtotals)} subtotals sum to {subtotal_sum.value}"
+                    ),
+                    severity=Severity.ERROR,
+                )
+            )
+
+    return ValidationReport(diagnostics=tuple(found))
+
+
+__all__ = [
+    "InvoiceLine",
+    "Item",
+    "LegalMonetaryTotal",
+    "TaxSubtotal",
+    "TaxTotal",
+    "invoice_line_of",
+    "item_of",
+    "legal_monetary_total_of",
+    "reconcile_invoice",
+    "tax_subtotal_of",
+    "tax_total_of",
+]

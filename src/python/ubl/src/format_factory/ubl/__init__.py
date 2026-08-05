@@ -26,6 +26,18 @@ from .codec import (
 from .errors import UblError, UblParseError, UblValidationError, UblWriteError
 from .model import (
     ROOT_CLASSES,
+    InvoiceLine,
+    Item,
+    LegalMonetaryTotal,
+    TaxSubtotal,
+    TaxTotal,
+    invoice_line_of,
+    item_of,
+    legal_monetary_total_of,
+    reconcile_invoice,
+    tax_subtotal_of,
+    tax_total_of,
+
     amount_of,
     binary_object_of,
     code_of,
@@ -49,6 +61,17 @@ from .security import UBL_DEFAULT_LIMITS
 from .validation import validate
 
 __all__ = [
+    "tax_total_of",
+    "tax_subtotal_of",
+    "reconcile_invoice",
+    "legal_monetary_total_of",
+    "item_of",
+    "invoice_line_of",
+    "TaxTotal",
+    "TaxSubtotal",
+    "LegalMonetaryTotal",
+    "Item",
+    "InvoiceLine",
     "to_node",
     "quantity_of",
     "local_name",

@@ -91,14 +91,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -170,14 +187,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -256,14 +290,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -440,14 +491,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -493,14 +561,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -576,14 +661,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -761,14 +863,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -926,14 +1045,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -1061,14 +1197,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -1089,14 +1242,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -1255,14 +1425,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -1344,14 +1531,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -1609,14 +1813,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -1789,14 +2010,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -2171,14 +2409,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -2252,14 +2507,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -2446,14 +2718,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -2497,14 +2786,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -2929,14 +3235,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -2957,14 +3280,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -3178,14 +3518,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -3572,14 +3929,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -3713,14 +4087,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -3741,14 +4132,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -3769,14 +4177,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -3903,14 +4328,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -3948,14 +4390,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -4079,14 +4538,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -4279,14 +4755,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -4395,14 +4888,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -4457,14 +4967,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -4587,14 +5114,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -4650,14 +5194,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -4751,14 +5312,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -4868,14 +5446,31 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification
-  - src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
+  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
+  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
+  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
+  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
