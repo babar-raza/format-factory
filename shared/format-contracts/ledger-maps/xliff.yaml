@@ -12,11 +12,33 @@ basis: >-
   test_obligation_module_coverage.py (22 tests) for XLIFF-MODULE-001 and
   test_obligation_notes_and_annotations.py (11 tests) for XLIFF-NOTE-001, both
   written fresh against format_factory.xliff per the mission's no-shadow-port
-  rule. Also added test_obligation_qa_checks.py (25 tests) for XLIFF-QA-001.
-notes: >-
-  One capability remains mapped with NO tests: XLIFF-MERGE-001 (2). It is
-  listed explicitly rather than omitted, so the builder records it `missing`
-  with a reason instead of silently shrinking the denominator.
+  rule. Also added test_obligation_qa_checks.py (25 tests) for XLIFF-QA-001
+  and test_obligation_merge_adapter.py (14 tests) for XLIFF-MERGE-001. Every
+  xliff capability now has at least one shipped-namespace test.
+
+  XLIFF-MERGE-001 status as of 2026-08-05: genuinely new source, unlike
+  NOTE-001. No skeleton concept existed anywhere in the package. merge.py
+  adds Skeleton (template bytes with translatable spans replaced by
+  placeholder tokens, plus a source_digest computed at extraction time), the
+  MergeAdapter protocol (extract/merge, deliberately with NO built-in
+  adapter-less extraction path -- "never claim generic extraction without
+  format-specific adapters" is a real constraint on this module's shape, not
+  just prose), check_drift/merge_with_drift_check for the drift-refusal half,
+  and TemplateMergeAdapter, a reference adapter for a minimal invented
+  %%TR%%-delimited template format that exists only to prove the protocol
+  against a real, working extraction and merge-back -- not to claim coverage
+  of any real-world source format (no production template language uses this
+  marker syntax).
+
+  A real bug the test suite caught before commit: the adapter's first
+  extraction consumed both %%TR%% markers into the placeholder span rather
+  than keeping them as skeleton, so merging an UNTRANSLATED extraction back
+  did not reproduce the original bytes -- test_skeleton_mapping_is_reversible_
+  without_edits failed with the markers missing. Fixed by capturing only the
+  text BETWEEN the markers (regex group 1) for replacement, leaving both
+  %%TR%% occurrences as literal skeleton bytes on either side of the
+  placeholder. 14 tests, including the drift-refused-with-a-report case the
+  obligation's required_tests names explicitly.
 
   XLIFF-QA-001 status as of 2026-08-05: qa.py adds run_qa_checks(), a
   pluggable check registry kept structurally and semantically separate from
@@ -129,13 +151,21 @@ execution_evidence:
     verified against every fixture the required_tests line names, and length
     is a real, acknowledged gap in the category set itself.
 
-    Suite-level and NON-PROMOTING. The xliff suite is 251 passed with no
-    failures (193 baseline + 22 + 11 + 25 new), but that number is still
+    XLIFF-MERGE-001, same session: real new source (merge.py), unlike
+    NOTE-001. SHOULD-level, and it stays SHOULD-level satisfied at `partial`:
+    the reference adapter proves the protocol works end to end (extraction,
+    reversible skeleton, translated merge, drift detection and refusal) but
+    is deliberately not a real-world format adapter -- the obligation's
+    "never claim generic extraction" clause is precisely why no such claim is
+    made here.
+
+    Suite-level and NON-PROMOTING. The xliff suite is 265 passed with no
+    failures (193 baseline + 22 + 11 + 25 + 14 new), but that number is still
     dominated by the ten shadow-package files; the shipped-namespace files
-    now contribute 73 tests (15 + 22 + 11 + 25). A green suite here says very
-    little about the package that would be released. Binds no individual
-    selector outcome to an obligation, so nothing here is verification; every
-    obligation is recorded `partial` at most.
+    now contribute 87 tests (15 + 22 + 11 + 25 + 14). A green suite here says
+    very little about the package that would be released. Binds no
+    individual selector outcome to an obligation, so nothing here is
+    verification; every obligation is recorded `partial` at most.
 
 capabilities:
   XLIFF-PARSE-001:
@@ -194,8 +224,6 @@ capabilities:
     modules: [qa.py]
     tests: [test_obligation_qa_checks.py]
 
-  # No shipped-namespace test exercises this one. Listed with empty `tests`
-  # so it is recorded `missing` with a reason rather than omitted.
   XLIFF-MERGE-001:
-    modules: [model/document.py]
-    tests: []
+    modules: [merge.py]
+    tests: [test_obligation_merge_adapter.py]

@@ -39,11 +39,17 @@ execution_evidence:
     -- a check existing is not the same as it being verified against every fixture the required_tests
     line names, and length is a real, acknowledged gap in the category set itself.
 
-    Suite-level and NON-PROMOTING. The xliff suite is 251 passed with no failures (193 baseline + 22 +
-    11 + 25 new), but that number is still dominated by the ten shadow-package files; the shipped-namespace
-    files now contribute 73 tests (15 + 22 + 11 + 25). A green suite here says very little about the package
-    that would be released. Binds no individual selector outcome to an obligation, so nothing here is
-    verification; every obligation is recorded `partial` at most.'
+    XLIFF-MERGE-001, same session: real new source (merge.py), unlike NOTE-001. SHOULD-level, and it stays
+    SHOULD-level satisfied at `partial`: the reference adapter proves the protocol works end to end (extraction,
+    reversible skeleton, translated merge, drift detection and refusal) but is deliberately not a real-world
+    format adapter -- the obligation''s "never claim generic extraction" clause is precisely why no such
+    claim is made here.
+
+    Suite-level and NON-PROMOTING. The xliff suite is 265 passed with no failures (193 baseline + 22 +
+    11 + 25 + 14 new), but that number is still dominated by the ten shadow-package files; the shipped-namespace
+    files now contribute 87 tests (15 + 22 + 11 + 25 + 14). A green suite here says very little about
+    the package that would be released. Binds no individual selector outcome to an obligation, so nothing
+    here is verification; every obligation is recorded `partial` at most.'
 obligations:
 - obligation_id: SAL-XLIFF-OBL-009F2EB91831B248
   capability_id: XLIFF-SEC-001
@@ -1400,16 +1406,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-4F9A3D539840CB12
   capability_id: XLIFF-MERGE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/merge.py::Skeleton
+  - src/python/xliff/src/format_factory/xliff/merge.py::SourceDriftError
+  - src/python/xliff/src/format_factory/xliff/merge.py::MergeAdapter
+  - src/python/xliff/src/format_factory/xliff/merge.py::compute_source_digest
+  positive_test_selectors:
+  - tests/python/xliff/test_obligation_merge_adapter.py::test_template_adapter_satisfies_the_merge_adapter_protocol
+  - tests/python/xliff/test_obligation_merge_adapter.py::test_custom_adapter_conforming_to_protocol_works
+  - tests/python/xliff/test_obligation_merge_adapter.py::test_extraction_finds_every_translatable_block
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Merge with intact and drifted
     sources; drift refused with report.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Merge with intact and drifted sources; drift refused with report.
@@ -1779,16 +1794,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-6C1F7F44A337674B
   capability_id: XLIFF-MERGE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/merge.py::Skeleton
+  - src/python/xliff/src/format_factory/xliff/merge.py::SourceDriftError
+  - src/python/xliff/src/format_factory/xliff/merge.py::MergeAdapter
+  - src/python/xliff/src/format_factory/xliff/merge.py::compute_source_digest
+  positive_test_selectors:
+  - tests/python/xliff/test_obligation_merge_adapter.py::test_template_adapter_satisfies_the_merge_adapter_protocol
+  - tests/python/xliff/test_obligation_merge_adapter.py::test_custom_adapter_conforming_to_protocol_works
+  - tests/python/xliff/test_obligation_merge_adapter.py::test_extraction_finds_every_translatable_block
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Merge with intact and drifted
     sources; drift refused with report.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Merge with intact and drifted sources; drift refused with report.

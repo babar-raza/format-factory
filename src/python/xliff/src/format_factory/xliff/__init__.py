@@ -27,6 +27,15 @@ from .errors import (
     XliffValidationError,
     XliffWriteError,
 )
+from .merge import (
+    MergeAdapter,
+    Skeleton,
+    SourceDriftError,
+    TemplateMergeAdapter,
+    check_drift,
+    compute_source_digest,
+    merge_with_drift_check,
+)
 from .model import (
     ExtensionNode,
     Group,
@@ -66,9 +75,13 @@ from .security import XLIFF_DEFAULT_LIMITS
 from .validation import validate
 
 __all__ = [
+    "MergeAdapter",
     "QA_CHECKS",
+    "Skeleton",
+    "SourceDriftError",
     "STANDARD_MODULES",
     "SUPPORTED_VERSIONS",
+    "TemplateMergeAdapter",
     "XLIFF_DEFAULT_LIMITS",
     "XLIFF_NAMESPACE",
     "ExtensionNode",
@@ -88,12 +101,14 @@ __all__ = [
     "XliffValidationError",
     "XliffWriteError",
     "average_source_length",
+    "check_drift",
     "check_missing_targets",
     "check_placeholder_mismatch",
     "check_target_language_compatibility",
     "check_translation_consistency",
     "check_unchanged_targets",
     "check_whitespace_punctuation_drift",
+    "compute_source_digest",
     "copy_source_to_target",
     "dump",
     "dumps",
@@ -106,6 +121,7 @@ __all__ = [
     "load_xliff",
     "join_segments",
     "loads",
+    "merge_with_drift_check",
     "module_coverage_manifest",
     "probe",
     "probe_xliff",
