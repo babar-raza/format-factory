@@ -17,6 +17,48 @@ notes: >-
   optional dependency installed is a question for the proof-requirement audit,
   not for this mapping.
 
+  2026-08-06: 51 of safetensors' 86 obligations were flagged
+  FEWER_SELECTORS_THAN_DECLARED_DIMENSIONS by tools.ff6.audit_proof_requirements.
+  Sampled before assuming this needed new tests: SAFETENSORS-MODEL-001's
+  declared dimensions (complete dtype inventory, rank, scalar, zero-dimension,
+  unknown-field, aligned/misaligned sub-byte cases) already had real,
+  passing tests for every one of them -- just scattered across
+  test_production_namespace.py, test_obligation_writer_matrix.py,
+  test_obligation_validation_contract.py and test_obligation_lifecycle_
+  modes.py, none of which were mapped to this capability. This was a real
+  ledger-mapping gap, not a missing-coverage gap: writing new tests for
+  already-tested behavior would have been the "no fake progress" violation
+  this project's governance exists to catch.
+
+  test_production_namespace.py -- one of the 17 shipped-namespace files
+  named in this file's own `basis` note above -- was not mapped to ANY
+  capability at all. It holds 16 test functions spanning dtype inventory,
+  scalar/empty tensors, header limits, duplicate keys, trailing polyglot
+  data, unsafe offsets, and more. Added to SAFETENSORS-MODEL-001, whose
+  first three functions in file order (scalar roundtrip, empty tensor,
+  complete dtype inventory) serve it well. This alone resolved 20 of the 51
+  findings (51 -> 31).
+
+  The remaining 31 are concentrated in SAFETENSORS-HEADER-001 (16) and
+  SAFETENSORS-PAYLOAD-001 (11), and adding test_production_namespace.py to
+  either would NOT genuinely help: tools/ff6/build_evidence_ledger.py caps
+  selectors per file at MAX_SELECTORS=3 and takes the first three test
+  functions in file DEFINITION order, not the most relevant ones. Header-
+  and payload-specific tests in this file (test_upstream_header_limit_
+  rejected_before_allocation, test_duplicate_key_rejected, test_trailing_
+  polyglot_data_rejected, test_unsafe_offsets_rejected, test_memory_mapped_
+  path) all sit well past position 3, so mapping the file there would only
+  re-select the same three dtype/scalar/empty tests already claimed for
+  MODEL-001 -- selectors that do not actually exercise header or payload
+  behavior. Padding the count that way would be gaming the mechanical
+  check, not closing the gap it points at. Closing HEADER-001/PAYLOAD-001
+  properly needs either a machinery change (a more relevant per-capability
+  selection heuristic in build_evidence_ledger.py, which is shared by all
+  six formats and warrants its own review) or splitting
+  test_production_namespace.py by topic -- both out of scope for this
+  slice, recorded here rather than silently left for the next reader to
+  rediscover.
+
 execution_evidence:
   path: reports/skills-rff6/skill-transcripts/build-evidence-ledger-safetensors-001.json
   result: PASS_WITH_KNOWN_ENVIRONMENT_FAILURES
@@ -28,6 +70,12 @@ execution_evidence:
     wheel-install environment. They are not counted as passing. This binds no
     individual selector outcome to an obligation, so nothing here is
     verification; every obligation is recorded `partial` at most.
+
+    2026-08-06: no source or test change this slice, only this map. safetensors
+    suite unchanged at 385 passed / 1 skipped / 4 deselected (the same 4
+    pre-existing GAP-002 interop failures). Obligation status unchanged at 86
+    partial / 0 missing -- this slice deepens selector evidence within already-
+    `partial` obligations, it does not move any obligation's status.
 
 capabilities:
   SAFETENSORS-HEADER-001:
@@ -42,6 +90,7 @@ capabilities:
     tests:
       - test_obligation_tensor_regions.py
       - test_obligation_integer_overflow.py
+      - test_production_namespace.py
 
   SAFETENSORS-PAYLOAD-001:
     modules: [codec/reader/reader.py, model/document.py]
