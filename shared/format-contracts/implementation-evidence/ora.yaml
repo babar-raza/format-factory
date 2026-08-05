@@ -11,7 +11,12 @@ execution_evidence:
     Updated 2026-08-05: ORA-SEC-001 adds 17 tests against already-existing source (no new production code
     this slice). ORA suite is now 189 passed with no failures. The remaining 15 capabilities have no source
     and no suite; their obligations stay `missing` rather than borrowing this result. No ORA obligation
-    is `implemented`; ORA-SEC-001''s obligations move to `partial` on this evidence, not higher.'
+    is `implemented`; ORA-SEC-001''s obligations move to `partial` on this evidence, not higher.
+
+    2026-08-06: ORA-ISOLATION-001 adds 15 tests against already-existing source (no new production code
+    this slice either). ORA suite is now 204 passed with no failures. The remaining 9 capabilities have
+    no source and no suite; their obligations stay `missing`. No ORA obligation is `implemented`; ORA-ISOLATION-001''s
+    obligations move to `partial` only.'
 obligations:
 - obligation_id: SAL-ORA-OBL-022F37EEA74EC1BB
   capability_id: ORA-EDIT-001
@@ -2102,16 +2107,29 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-97CE271E3DD6D883
   capability_id: ORA-ISOLATION-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraText
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_declared_isolate_makes_a_stack_isolated
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_declared_auto_alone_is_not_isolated
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_isolation_defaults_to_auto_and_is_not_isolated
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Declared/inferred isolation
     pixel vectors and pre-profile rejection/preservation cases.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Declared/inferred isolation pixel vectors and pre-profile rejection/preservation cases.
@@ -2372,16 +2390,29 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-ABDDB437C86DC22F
   capability_id: ORA-ISOLATION-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraText
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_declared_isolate_makes_a_stack_isolated
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_declared_auto_alone_is_not_isolated
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_isolation_defaults_to_auto_and_is_not_isolated
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Declared/inferred isolation
     pixel vectors and pre-profile rejection/preservation cases.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Declared/inferred isolation pixel vectors and pre-profile rejection/preservation cases.

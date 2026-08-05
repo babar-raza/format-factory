@@ -19,10 +19,34 @@ notes: >-
   complete -- ORA-STACK-001's model is built and its rendering is not -- only
   that implementing behaviour and tests exist for the reconciler to grade.
 
-  This remains mostly a build-from-nothing lane. 10 of 20 capabilities have no
-  source: rendering, compositing, isolation semantics, editing, groups,
-  layers-as-editable, masks, preservation duties, streaming, and resolution
-  profiles.
+  This remains mostly a build-from-nothing lane. 9 of 20 capabilities have no
+  source: rendering, compositing, editing, groups, layers-as-editable, masks,
+  preservation duties, streaming, and resolution profiles.
+
+  ORA-ISOLATION-001 status as of 2026-08-06: another XLIFF-NOTE-001-pattern
+  capability, like ORA-SEC-001 before it. model/stack.py's
+  OraStack.is_isolated_group property already implements "declared and
+  inferred group isolation separately" verbatim -- its docstring even reads
+  "ORA-ISOLATION-001, profile 0.0.4+" -- and lifecycle.py's _detect_version()/
+  _uses_isolation() already implement "enforce profile availability" via the
+  same declared-vs-detected version separation this package uses for xres/
+  yres drift (a document declaring 0.0.1 that uses isolation is detected as
+  0.0.4, exposing the mismatch rather than either silently accepting or
+  rejecting it). Neither had a single test anywhere in the shipped-namespace
+  suite before this slice -- confirmed by grep, not assumption. 15 new tests
+  in test_obligation_isolation_semantics.py prove both halves: all three
+  independent isolation triggers (declared isolate, opacity below one,
+  non-default composite-op) individually and combined, that declared and
+  inferred are genuinely distinguishable (not conflated into one boolean),
+  that isolation is evaluated per-stack rather than inherited by nested
+  children, and that both declared-attribute and inferred-only isolation
+  usage register as a 0.0.1-vs-0.0.4 version drift. All 15 passed on first
+  run against the unmodified existing implementation.
+
+  Deliberately not attempted: "render isolated groups against a transparent
+  intermediate backdrop" is actual pixel compositing this package has no
+  rendering engine for at all -- not a testing gap, a genuinely absent
+  capability, matching ORA-RENDER-001/ORA-COMPOSITE-001's own missing status.
 
   ORA-SEC-001 status as of 2026-08-05: this format has no shadow-package
   problem at all -- unlike ipynb/ubl/xliff/nrrd, every one of ORA's 4
@@ -70,6 +94,12 @@ execution_evidence:
     borrowing this result. No ORA obligation is `implemented`; ORA-SEC-001's
     obligations move to `partial` on this evidence, not higher.
 
+    2026-08-06: ORA-ISOLATION-001 adds 15 tests against already-existing
+    source (no new production code this slice either). ORA suite is now 204
+    passed with no failures. The remaining 9 capabilities have no source and
+    no suite; their obligations stay `missing`. No ORA obligation is
+    `implemented`; ORA-ISOLATION-001's obligations move to `partial` only.
+
 capabilities:
   ORA-ASSET-001:
     modules:
@@ -113,8 +143,11 @@ capabilities:
     tests: []
 
   ORA-ISOLATION-001:
-    modules: []
-    tests: []
+    modules:
+    - model/stack.py
+    - lifecycle.py
+    tests:
+    - test_obligation_isolation_semantics.py
 
   ORA-LAYER-001:
     modules: []
