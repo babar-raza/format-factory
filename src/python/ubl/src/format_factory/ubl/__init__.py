@@ -27,9 +27,12 @@ from .errors import UblError, UblParseError, UblValidationError, UblWriteError
 from .model import (
     ROOT_CLASSES,
     AllowanceCharge,
+    DocumentIndex,
     PaymentMeans,
     Price,
+    QueryMatch,
     allowance_charge_of,
+    business_role,
     payment_means_of,
     price_of,
     date_of,
@@ -75,6 +78,9 @@ from .security import UBL_DEFAULT_LIMITS
 from .validation import validate
 
 __all__ = [
+    "DocumentIndex",
+    "QueryMatch",
+    "business_role",
     "time_of",
     "date_time_of",
     "date_of",

@@ -59,6 +59,47 @@ notes: >-
   behaviorally identical to the prior exact `!=` comparison for every existing
   case). ubl suite: 475 -> 488 passed.
 
+  UBL-QUERY-001 status as of 2026-08-06: genuinely new source (model/query.py),
+  unlike UBL-VALUES-001/REF-001's prior-session build-out. No query/index
+  concept existed anywhere in the package before this slice. DocumentIndex
+  walks the tree once and answers by_qname/by_local_name/by_id/
+  by_business_role from dict lookups afterward -- "read-only indexed views
+  for large documents" is the whole reason it builds once rather than
+  re-walking per query. business_role() classifies party/item/line/
+  document_reference by local-name suffix, plus lines_referencing_item_id()
+  answers the obligation's own worked example directly.
+
+  Three real design bugs were caught by the test suite before commit, all
+  fixed by correcting the design rather than the test: (1) path segments
+  were bare local names, so two sibling cac:InvoiceLine elements produced
+  IDENTICAL paths -- paths that cannot distinguish which of several
+  same-named siblings was matched are not path-aware in any useful sense.
+  Fixed by making every segment `name[index]`, index being position among
+  same-named siblings under that parent, uniformly (not only where
+  disambiguation happens to be needed, which would make the path shape
+  depend on document content). (2) The "document_reference" role initially
+  suffix-matched any name ending in "Reference", which incorrectly classified
+  cac:BillingReference -- a pure wrapper around a nested
+  cac:InvoiceDocumentReference with no cbc:ID of its own -- as a reference in
+  its own right. Fixed by requiring the reference-suffixed node to carry its
+  OWN identifying child, which correctly excludes wrapper-only containers
+  while still matching cac:OrderReference and cac:InvoiceDocumentReference
+  (both of which do carry their own cbc:ID). This restriction is deliberately
+  NOT applied to the party/line/item roles, since cac:AccountingSupplierParty
+  (no own ID; the ID lives on the nested cac:Party) and cac:Item (no own ID
+  in the real UBL schema at all) are both wrapper-shaped by design and the
+  existing tests correctly expect them classified anyway. (3)
+  lines_referencing_item_id() initially returned zero matches for a realistic
+  fixture: cac:Item carries no cbc:ID of its own in the actual UBL schema --
+  the identifier lives one level deeper, inside cac:StandardItemIdentification
+  (or cac:SellersItemIdentification/cac:BuyersItemIdentification). Fixed by
+  adding a dedicated item-identifier resolver that checks those three wrapper
+  children specifically, rather than reusing the generic own-identifier
+  lookup that only checks direct ID/LineID/UUID children.
+
+  19 new tests in test_obligation_document_query.py. ubl suite: 488 -> 507
+  passed. ubl obligations: 163 partial/31 missing -> 165 partial/29 missing.
+
 execution_evidence:
   path: reports/skills-rff6/skill-transcripts/build-evidence-ledger-ubl-001.json
   result: PASS
@@ -93,6 +134,10 @@ execution_evidence:
     written to catch, not as a current assessment -- see the capabilities
     section below and the notes above for what is actually mapped today. ubl
     suite: 488 passed.
+
+    2026-08-06 (UBL-QUERY-001): model/query.py is new source, real and tested,
+    not a remap of an existing stub. ubl suite: 488 -> 507 passed, ruff and
+    mypy clean. Obligations: 163 partial/31 missing -> 165 partial/29 missing.
 
 capabilities:
   UBL-PARSE-001:
@@ -189,8 +234,8 @@ capabilities:
     tests: [test_obligation_business_calculation.py]
 
   UBL-QUERY-001:
-    modules: [model/document.py]
-    tests: []
+    modules: [model/query.py]
+    tests: [test_obligation_document_query.py]
 
   UBL-UPGRADE-001:
     modules: [codec/reader/reader.py]

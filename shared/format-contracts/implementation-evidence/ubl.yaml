@@ -29,7 +29,11 @@ execution_evidence:
     aware line-extension, tax-subtotal and allowance/charge reconciliation. This text is preserved as
     the historical record of the overstatement GAP-022 was written to catch, not as a current assessment
     -- see the capabilities section below and the notes above for what is actually mapped today. ubl suite:
-    488 passed.'
+    488 passed.
+
+    2026-08-06 (UBL-QUERY-001): model/query.py is new source, real and tested, not a remap of an existing
+    stub. ubl suite: 488 -> 507 passed, ruff and mypy clean. Obligations: 163 partial/31 missing -> 165
+    partial/29 missing.'
 obligations:
 - obligation_id: SAL-UBL-OBL-020F06E51DE6AB65
   capability_id: UBL-LIFECYCLE-001
@@ -1407,16 +1411,24 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-31F4F60BFB40D4DE
   capability_id: UBL-QUERY-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch
+  - src/python/ubl/src/format_factory/ubl/model/query.py::business_role
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_document_query.py::test_by_qname_finds_every_matching_element_anywhere_in_the_tree
+  - tests/python/ubl/test_obligation_document_query.py::test_by_local_name_matches_regardless_of_namespace
+  - tests/python/ubl/test_obligation_document_query.py::test_by_qname_returns_empty_for_a_component_not_present
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Query result paths verified
     against fixtures; indexed and linear scans agree.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Query result paths verified against fixtures; indexed and linear scans agree.
@@ -3962,16 +3974,24 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-A11BEEAF8604759A
   capability_id: UBL-QUERY-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch
+  - src/python/ubl/src/format_factory/ubl/model/query.py::business_role
+  - src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_document_query.py::test_by_qname_finds_every_matching_element_anywhere_in_the_tree
+  - tests/python/ubl/test_obligation_document_query.py::test_by_local_name_matches_regardless_of_namespace
+  - tests/python/ubl/test_obligation_document_query.py::test_by_qname_returns_empty_for_a_component_not_present
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Query result paths verified
     against fixtures; indexed and linear scans agree.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Query result paths verified against fixtures; indexed and linear scans agree.
