@@ -14,12 +14,15 @@ notes: >-
   exactly the fabrication the evidence process exists to prevent. Recording
   them explicitly keeps all 134 obligations inside the denominator.
 
-  Five capabilities are now mapped to real source that was read, not merely
+  Nine capabilities are now mapped to real source that was read, not merely
   assumed to exist (the GAP-022 rule). Mapping them does not assert they are
   complete -- ORA-STACK-001's model is built and its rendering is not -- only
   that implementing behaviour and tests exist for the reconciler to grade.
 
-  This remains a build-from-nothing lane. 15 of 20 capabilities have no source.
+  This remains a build-from-nothing lane. 11 of 20 capabilities have no source:
+  rendering, compositing, isolation semantics, editing, groups, layers-as-
+  editable, masks, preservation duties, streaming, security posture, and
+  resolution profiles.
 
 execution_evidence:
   path: reports/skills-rff6/skill-transcripts/build-evidence-ledger-ora-001.json
@@ -39,8 +42,11 @@ capabilities:
     - test_obligation_raster_assets.py
 
   ORA-BASELINEASSET-001:
-    modules: []
-    tests: []
+    modules:
+    - lifecycle.py
+    - codec/png_metadata.py
+    tests:
+    - test_obligation_lifecycle_and_write.py
 
   ORA-COMPOSITE-001:
     modules: []
@@ -77,8 +83,12 @@ capabilities:
     tests: []
 
   ORA-LIFECYCLE-001:
-    modules: []
-    tests: []
+    modules:
+    - lifecycle.py
+    - codec/container.py
+    - codec/stack_xml.py
+    tests:
+    - test_obligation_lifecycle_and_write.py
 
   ORA-MASK-001:
     modules: []
@@ -118,9 +128,14 @@ capabilities:
     tests: []
 
   ORA-VALIDATE-001:
-    modules: []
-    tests: []
+    modules:
+    - lifecycle.py
+    - codec/stack_xml.py
+    tests:
+    - test_obligation_lifecycle_and_write.py
 
   ORA-WRITE-001:
-    modules: []
-    tests: []
+    modules:
+    - lifecycle.py
+    tests:
+    - test_obligation_lifecycle_and_write.py

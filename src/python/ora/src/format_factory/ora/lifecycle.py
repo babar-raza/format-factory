@@ -1,0 +1,384 @@
+"""ORA-LIFECYCLE-001, ORA-WRITE-001, ORA-BASELINEASSET-001 — load, validate, write.
+
+This is what makes OpenRaster usable rather than merely inspectable: an archive
+goes in, a document comes out, and the document goes back out as an archive the
+loader accepts.
+
+Two design choices carry most of the weight.
+
+**Lossless by default.** A loaded image keeps its original members verbatim,
+including the original `stack.xml` bytes. Writing re-emits them, so a vendor
+extension this library does not model survives a round trip. Defaulting to
+`CANONICAL` would silently discard those on any load-then-save, which is the
+destructive option and the wrong default for a format whose stated goal is
+"saving without destructive pixel operations".
+
+**Determinism by construction.** Member order is fixed, timestamps are pinned to
+the ZIP epoch, and compression is fixed, so an unchanged document serializes to
+identical bytes every time and a re-written archive is a fixed point. Anything
+derived from wall-clock time or dict ordering would break that silently.
+"""
+
+from __future__ import annotations
+
+import io
+import os
+import zipfile
+from dataclasses import dataclass, field
+from enum import Enum
+from pathlib import Path
+from typing import IO, Union
+
+from format_factory.core import (
+    DEFAULT_LIMITS,
+    Diagnostic,
+    ResourceLimits,
+    Severity,
+    ValidationReport,
+)
+
+from .codec.assets import MERGED_IMAGE_MEMBER, THUMBNAIL_MEMBER
+from .codec.container import MIMETYPE_MEMBER, OPENRASTER_MEDIA_TYPE, STACK_MEMBER, OraContainer
+from .codec.png_metadata import read_png_metadata
+from .codec.stack_xml import parse_stack
+from .errors import OraError, OraValidationError
+from .model.document import DEFAULT_RESOLUTION_PPI, OraDocument
+from .model.stack import DEFAULT_COMPOSITE_OP, OraLayer, OraStack, OraText
+
+#: The ZIP epoch. Every written member carries it, so output never depends on
+#: when the write happened.
+NORMALIZED_TIMESTAMP = (1980, 1, 1, 0, 0, 0)
+
+BASELINE_VERSION = "0.0.2"
+
+
+class ReadMode(Enum):
+    """STRICT rejects anything the specification requires; TOLERANT recovers
+    where the format permits and reports what it did."""
+
+    STRICT = "strict"
+    TOLERANT = "tolerant"
+
+
+class PreservationMode(Enum):
+    """LOSSLESS re-emits the original stack.xml; CANONICAL regenerates it."""
+
+    LOSSLESS = "lossless"
+    CANONICAL = "canonical"
+
+
+Source = Union[bytes, bytearray, "os.PathLike[str]", str, IO[bytes]]
+
+
+@dataclass(frozen=True)
+class OraImage:
+    """A loaded OpenRaster image: its model, its members, and how it was read."""
+
+    document: OraDocument
+    members: dict[str, bytes] = field(repr=False)
+    declared_version: str = BASELINE_VERSION
+    detected_version: str = BASELINE_VERSION
+    recovery_actions: tuple[str, ...] = ()
+
+
+def _read_source(source: Source) -> bytes:
+    if isinstance(source, (bytes, bytearray)):
+        return bytes(source)
+    if isinstance(source, (str, os.PathLike)):
+        return Path(source).read_bytes()
+    read = getattr(source, "read", None)
+    if callable(read):
+        return read()
+    raise TypeError(
+        f"cannot load an OpenRaster image from {type(source).__name__}; expected "
+        "bytes, a filesystem path, or a readable binary stream"
+    )
+
+
+def _detect_version(document: OraDocument, members: dict[str, bytes]) -> str:
+    """Infer the profile the document actually uses, ignoring what it declares.
+
+    A file may declare 0.0.1 and use 0.0.4 features, or declare 0.0.5 and use
+    none. Reporting both separately lets a caller notice the disagreement; a
+    single "version" would have to pick one and hide the other.
+    """
+    if _uses_isolation(document.root):
+        return "0.0.4"  # isolation semantics
+    if (document.xres, document.yres) != (DEFAULT_RESOLUTION_PPI, DEFAULT_RESOLUTION_PPI):
+        return "0.0.3"  # xres/yres
+    if MERGED_IMAGE_MEMBER in members:
+        return "0.0.2"  # mergedimage.png became mandatory
+    return "0.0.1"
+
+
+def _uses_isolation(stack: OraStack) -> bool:
+    for child in stack.children:
+        if isinstance(child, OraStack):
+            if child.isolation != "auto" or _uses_isolation(child):
+                return True
+        if child.opacity < 1.0 or child.composite_op != DEFAULT_COMPOSITE_OP:
+            return True
+    return False
+
+
+def _baseline_asset_diagnostics(members: dict[str, bytes]) -> list[Diagnostic]:
+    """ORA-BASELINEASSET-001, expressed as findings rather than exceptions."""
+    found: list[Diagnostic] = []
+
+    thumbnail = members.get(THUMBNAIL_MEMBER)
+    if thumbnail is None:
+        found.append(
+            Diagnostic(
+                code="ORA_THUMBNAIL_MISSING",
+                message=f"{THUMBNAIL_MEMBER} is required and is absent",
+                severity=Severity.ERROR,
+            )
+        )
+    else:
+        try:
+            metadata = read_png_metadata(thumbnail)
+        except OraError as exc:
+            found.append(
+                Diagnostic(
+                    code="ORA_THUMBNAIL_UNREADABLE",
+                    message=f"{THUMBNAIL_MEMBER} is not a readable PNG: {exc}",
+                    severity=Severity.ERROR,
+                )
+            )
+        else:
+            if not metadata.satisfies_thumbnail_constraints():
+                found.append(
+                    Diagnostic(
+                        code="ORA_THUMBNAIL_NON_CONFORMING",
+                        message=(
+                            f"{THUMBNAIL_MEMBER} must be a non-interlaced PNG with 8 "
+                            f"bits per channel and at most 256x256, but is "
+                            f"{metadata.width}x{metadata.height} at {metadata.bit_depth}-bit"
+                            + (" interlaced" if metadata.interlaced else "")
+                        ),
+                        severity=Severity.ERROR,
+                    )
+                )
+
+    merged = members.get(MERGED_IMAGE_MEMBER)
+    if merged is None:
+        found.append(
+            Diagnostic(
+                code="ORA_MERGED_IMAGE_MISSING",
+                message=f"{MERGED_IMAGE_MEMBER} is mandatory since profile 0.0.2 and is absent",
+                severity=Severity.ERROR,
+            )
+        )
+    else:
+        try:
+            metadata = read_png_metadata(merged)
+        except OraError as exc:
+            found.append(
+                Diagnostic(
+                    code="ORA_MERGED_IMAGE_UNREADABLE",
+                    message=f"{MERGED_IMAGE_MEMBER} is not a readable PNG: {exc}",
+                    severity=Severity.ERROR,
+                )
+            )
+        else:
+            if not metadata.satisfies_merged_image_constraints():
+                found.append(
+                    Diagnostic(
+                        code="ORA_MERGED_IMAGE_NON_CONFORMING",
+                        message=(
+                            f"{MERGED_IMAGE_MEMBER} must carry 8 or 16 bits per channel, "
+                            f"but declares {metadata.bit_depth}"
+                        ),
+                        severity=Severity.ERROR,
+                    )
+                )
+
+    return found
+
+
+def load(
+    source: Source,
+    *,
+    mode: ReadMode = ReadMode.STRICT,
+    limits: ResourceLimits = DEFAULT_LIMITS,
+) -> OraImage:
+    """Load an OpenRaster image from bytes, a path, or a readable stream."""
+    payload = _read_source(source)
+    container = OraContainer.from_bytes(payload, limits=limits)
+    members = {name: container.read(name) for name in container.names}
+
+    document = parse_stack(members[STACK_MEMBER], limits=limits)
+    # What the file says about itself, kept verbatim and never rewritten.
+    declared_version = document.version
+
+    diagnostics = _baseline_asset_diagnostics(members)
+    recovery: list[str] = []
+    if diagnostics:
+        if mode is ReadMode.STRICT:
+            raise OraValidationError(
+                "; ".join(diagnostic.message for diagnostic in diagnostics)
+            )
+        # Tolerant: the layer tree is intact and readable, so the document is
+        # usable. What was wrong is reported rather than repaired silently.
+        recovery.extend(diagnostic.message for diagnostic in diagnostics)
+
+    return OraImage(
+        document=document,
+        members=members,
+        declared_version=declared_version,
+        detected_version=_detect_version(document, members),
+        recovery_actions=tuple(recovery),
+    )
+
+
+def loads(
+    payload: bytes,
+    *,
+    mode: ReadMode = ReadMode.STRICT,
+    limits: ResourceLimits = DEFAULT_LIMITS,
+) -> OraImage:
+    return load(payload, mode=mode, limits=limits)
+
+
+def validate(source: Source, *, limits: ResourceLimits = DEFAULT_LIMITS) -> ValidationReport:
+    """Validate without raising.
+
+    A validator that raises on the worst input is not a validator: the caller
+    asked for a report, and "this is not a ZIP" is a finding like any other.
+    """
+    try:
+        payload = _read_source(source)
+        container = OraContainer.from_bytes(payload, limits=limits)
+        members = {name: container.read(name) for name in container.names}
+        parse_stack(members[STACK_MEMBER], limits=limits)
+    except OraError as exc:
+        return ValidationReport(
+            diagnostics=(
+                Diagnostic(
+                    code="ORA_UNREADABLE",
+                    message=str(exc),
+                    severity=Severity.FATAL,
+                ),
+            )
+        )
+
+    return ValidationReport(diagnostics=tuple(_baseline_asset_diagnostics(members)))
+
+
+def _canonical_stack_xml(document: OraDocument) -> bytes:
+    """Regenerate stack.xml from the model, deterministically.
+
+    Attributes are emitted in a fixed order and defaults are written explicitly,
+    so the same model always produces the same bytes.
+    """
+
+    def render(node: OraStack | OraLayer | OraText, depth: int) -> list[str]:
+        indent = "  " * depth
+        attributes = []
+        if node.name is not None:
+            attributes.append(("name", node.name))
+        attributes.append(("x", str(node.x)))
+        attributes.append(("y", str(node.y)))
+        attributes.append(("opacity", f"{node.opacity:g}"))
+        attributes.append(("visibility", node.visibility))
+        attributes.append(("composite-op", node.composite_op))
+        if isinstance(node, OraStack):
+            attributes.append(("isolation", node.isolation))
+        if isinstance(node, (OraLayer, OraText)) and node.src:
+            attributes.append(("src", node.src))
+
+        rendered = " ".join(f'{key}="{_escape(value)}"' for key, value in attributes)
+        tag = {OraStack: "stack", OraLayer: "layer", OraText: "text"}[type(node)]
+
+        if isinstance(node, OraStack):
+            lines = [f"{indent}<{tag} {rendered}>"]
+            for child in node.children:
+                lines.extend(render(child, depth + 1))
+            lines.append(f"{indent}</{tag}>")
+            return lines
+        return [f"{indent}<{tag} {rendered}/>"]
+
+    body = "\n".join(render(document.root, 1))
+    return (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        f'<image w="{document.width}" h="{document.height}" '
+        f'version="{_escape(document.version)}" '
+        f'xres="{document.xres}" yres="{document.yres}">\n'
+        f"{body}\n"
+        "</image>\n"
+    ).encode("utf-8")
+
+
+def _escape(value: str) -> str:
+    return (
+        value.replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace('"', "&quot;")
+    )
+
+
+def dumps(
+    image: OraImage, *, preservation: PreservationMode = PreservationMode.LOSSLESS
+) -> bytes:
+    """Serialize deterministically.
+
+    The same image in the same mode always produces identical bytes: the
+    mimetype sentinel first and STORED, remaining members in sorted order, every
+    timestamp pinned to the ZIP epoch, and a fixed compression method. Nothing
+    here consults the clock or relies on dict ordering.
+    """
+    members = dict(image.members)
+    if preservation is PreservationMode.CANONICAL:
+        members[STACK_MEMBER] = _canonical_stack_xml(image.document)
+
+    buffer = io.BytesIO()
+    with zipfile.ZipFile(buffer, "w") as archive:
+        sentinel = zipfile.ZipInfo(MIMETYPE_MEMBER, date_time=NORMALIZED_TIMESTAMP)
+        sentinel.compress_type = zipfile.ZIP_STORED
+        sentinel.external_attr = 0o644 << 16
+        archive.writestr(sentinel, OPENRASTER_MEDIA_TYPE)
+
+        for name in sorted(members):
+            if name == MIMETYPE_MEMBER:
+                continue
+            info = zipfile.ZipInfo(name, date_time=NORMALIZED_TIMESTAMP)
+            info.compress_type = zipfile.ZIP_DEFLATED
+            info.external_attr = 0o644 << 16
+            archive.writestr(info, members[name])
+
+    return buffer.getvalue()
+
+
+def dump(
+    image: OraImage,
+    destination: "os.PathLike[str] | str | IO[bytes]",
+    *,
+    preservation: PreservationMode = PreservationMode.LOSSLESS,
+) -> None:
+    """Write to a path or a writable binary stream."""
+    payload = dumps(image, preservation=preservation)
+    if isinstance(destination, (str, os.PathLike)):
+        Path(destination).write_bytes(payload)
+        return
+    write = getattr(destination, "write", None)
+    if not callable(write):
+        raise TypeError(
+            f"cannot write an OpenRaster image to {type(destination).__name__}; "
+            "expected a filesystem path or a writable binary stream"
+        )
+    write(payload)
+
+
+__all__ = [
+    "BASELINE_VERSION",
+    "NORMALIZED_TIMESTAMP",
+    "OraImage",
+    "PreservationMode",
+    "ReadMode",
+    "dump",
+    "dumps",
+    "load",
+    "loads",
+    "validate",
+]

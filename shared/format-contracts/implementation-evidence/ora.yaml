@@ -181,16 +181,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-0CF770969FA42DB5
   capability_id: ORA-BASELINEASSET-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Raster-depth, dimension,
     aspect, interlace, path, XML-reference, and stale-view regeneration matrices.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Raster-depth, dimension, aspect, interlace, path, XML-reference, and stale-view regeneration matrices.
@@ -244,16 +255,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-10D5EA62EEE3CC1A
   capability_id: ORA-LIFECYCLE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
     behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative
@@ -262,16 +285,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-11A840CCAC773C4F
   capability_id: ORA-WRITE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Three-run byte determinism,
     installed-wheel writes, independent application reopen, and unknown-extension preservation.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Three-run byte determinism, installed-wheel writes, independent application reopen, and unknown-extension
@@ -362,16 +394,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-1B7BB4BAA91DE8E4
   capability_id: ORA-VALIDATE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: One discriminating negative
     per normative and security obligation plus multi-error aggregation.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - One discriminating negative per normative and security obligation plus multi-error aggregation.
@@ -461,16 +504,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-20B1A50A349D0B87
   capability_id: ORA-WRITE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Three-run byte determinism,
     installed-wheel writes, independent application reopen, and unknown-extension preservation.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Three-run byte determinism, installed-wheel writes, independent application reopen, and unknown-extension
@@ -543,16 +595,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-2755B9376EC8CEF6
   capability_id: ORA-LIFECYCLE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
     behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative
@@ -590,16 +654,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-2BFD0DF67723D491
   capability_id: ORA-BASELINEASSET-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Raster-depth, dimension,
     aspect, interlace, path, XML-reference, and stale-view regeneration matrices.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Raster-depth, dimension, aspect, interlace, path, XML-reference, and stale-view regeneration matrices.
@@ -665,16 +740,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-300F9204F3EDFE6A
   capability_id: ORA-WRITE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Three-run byte determinism,
     installed-wheel writes, independent application reopen, and unknown-extension preservation.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Three-run byte determinism, installed-wheel writes, independent application reopen, and unknown-extension
@@ -683,16 +767,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-326BF47F7EE42769
   capability_id: ORA-LIFECYCLE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
     behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative
@@ -771,16 +867,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-396B84EE7DD9240C
   capability_id: ORA-WRITE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Three-run byte determinism,
     installed-wheel writes, independent application reopen, and unknown-extension preservation.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Three-run byte determinism, installed-wheel writes, independent application reopen, and unknown-extension
@@ -818,16 +923,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-3B127E22A6A75F82
   capability_id: ORA-VALIDATE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: One discriminating negative
     per normative and security obligation plus multi-error aggregation.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - One discriminating negative per normative and security obligation plus multi-error aggregation.
@@ -835,16 +951,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-3DD2E3BF32E01930
   capability_id: ORA-WRITE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Three-run byte determinism,
     installed-wheel writes, independent application reopen, and unknown-extension preservation.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Three-run byte determinism, installed-wheel writes, independent application reopen, and unknown-extension
@@ -870,16 +995,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-3FBCDC073FF0F58B
   capability_id: ORA-WRITE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Three-run byte determinism,
     installed-wheel writes, independent application reopen, and unknown-extension preservation.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Three-run byte determinism, installed-wheel writes, independent application reopen, and unknown-extension
@@ -970,16 +1104,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-478DE18CD1B84DD4
   capability_id: ORA-LIFECYCLE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
     behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative
@@ -988,16 +1134,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-48761EB31C2C2F7D
   capability_id: ORA-BASELINEASSET-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Raster-depth, dimension,
     aspect, interlace, path, XML-reference, and stale-view regeneration matrices.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Raster-depth, dimension, aspect, interlace, path, XML-reference, and stale-view regeneration matrices.
@@ -1005,16 +1162,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-4C5ADF883687656E
   capability_id: ORA-VALIDATE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: One discriminating negative
     per normative and security obligation plus multi-error aggregation.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - One discriminating negative per normative and security obligation plus multi-error aggregation.
@@ -1022,16 +1190,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-4DDAA1D370E3106E
   capability_id: ORA-VALIDATE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: One discriminating negative
     per normative and security obligation plus multi-error aggregation.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - One discriminating negative per normative and security obligation plus multi-error aggregation.
@@ -1057,16 +1236,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-51047D9CBD1191DF
   capability_id: ORA-WRITE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Three-run byte determinism,
     installed-wheel writes, independent application reopen, and unknown-extension preservation.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Three-run byte determinism, installed-wheel writes, independent application reopen, and unknown-extension
@@ -1075,16 +1263,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-52746ABC41B3E790
   capability_id: ORA-BASELINEASSET-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Raster-depth, dimension,
     aspect, interlace, path, XML-reference, and stale-view regeneration matrices.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Raster-depth, dimension, aspect, interlace, path, XML-reference, and stale-view regeneration matrices.
@@ -1110,16 +1309,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-537613F85A370825
   capability_id: ORA-WRITE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Three-run byte determinism,
     installed-wheel writes, independent application reopen, and unknown-extension preservation.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Three-run byte determinism, installed-wheel writes, independent application reopen, and unknown-extension
@@ -1128,16 +1336,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-5495E8C27E9DFFCE
   capability_id: ORA-LIFECYCLE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
     behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative
@@ -1886,16 +2106,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-99E022E1F9490AE2
   capability_id: ORA-VALIDATE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: One discriminating negative
     per normative and security obligation plus multi-error aggregation.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - One discriminating negative per normative and security obligation plus multi-error aggregation.
@@ -2116,16 +2347,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-AD8A2C03327A9DF2
   capability_id: ORA-VALIDATE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: One discriminating negative
     per normative and security obligation plus multi-error aggregation.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - One discriminating negative per normative and security obligation plus multi-error aggregation.
@@ -2320,16 +2562,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-CE7043CB956573DD
   capability_id: ORA-VALIDATE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: One discriminating negative
     per normative and security obligation plus multi-error aggregation.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - One discriminating negative per normative and security obligation plus multi-error aggregation.
@@ -2393,16 +2646,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-D59ADDD7B5FA720C
   capability_id: ORA-WRITE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Three-run byte determinism,
     installed-wheel writes, independent application reopen, and unknown-extension preservation.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Three-run byte determinism, installed-wheel writes, independent application reopen, and unknown-extension
@@ -2561,16 +2823,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-EB51016F53E73135
   capability_id: ORA-WRITE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Three-run byte determinism,
     installed-wheel writes, independent application reopen, and unknown-extension preservation.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Three-run byte determinism, installed-wheel writes, independent application reopen, and unknown-extension
@@ -2597,16 +2868,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-ED7755CB3433CE7B
   capability_id: ORA-VALIDATE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: One discriminating negative
     per normative and security obligation plus multi-error aggregation.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - One discriminating negative per normative and security obligation plus multi-error aggregation.
@@ -2614,16 +2896,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-F2672F4CCD923AC2
   capability_id: ORA-VALIDATE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: One discriminating negative
     per normative and security obligation plus multi-error aggregation.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - One discriminating negative per normative and security obligation plus multi-error aggregation.
@@ -2695,16 +2988,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-F969AF770A7D350A
   capability_id: ORA-LIFECYCLE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
     behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative
@@ -2713,16 +3018,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-FAE67484E14C50B4
   capability_id: ORA-VALIDATE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: One discriminating negative
     per normative and security obligation plus multi-error aggregation.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - One discriminating negative per normative and security obligation plus multi-error aggregation.

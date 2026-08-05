@@ -24,6 +24,16 @@ from .codec import (
     resolve_asset,
 )
 from .model import OraDocument, OraLayer, OraNode, OraStack, OraText
+from .lifecycle import (
+    OraImage,
+    PreservationMode,
+    ReadMode,
+    dump,
+    dumps,
+    load,
+    loads,
+    validate,
+)
 from .errors import OraArchiveError, OraError, OraLimitError, OraValidationError
 
 __version__ = "0.1.0.dev0"
@@ -34,17 +44,25 @@ __all__ = [
     "OraContainer",
     "OraDocument",
     "OraError",
+    "OraImage",
     "OraLayer",
     "OraNode",
     "OraStack",
     "OraText",
+    "PreservationMode",
     "RasterMetadata",
+    "ReadMode",
     "ResolvedAsset",
     "OraLimitError",
     "OraValidationError",
     "__version__",
+    "dump",
+    "dumps",
+    "load",
+    "loads",
     "parse_stack",
     "read_png_metadata",
     "resolve_all_assets",
     "resolve_asset",
+    "validate",
 ]
