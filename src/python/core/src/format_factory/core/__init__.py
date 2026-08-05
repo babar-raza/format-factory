@@ -14,6 +14,7 @@ from .errors import (
     ResourceLimitError,
 )
 from .limits import DEFAULT_LIMITS, ResourceLimits
+from .xml_security import reject_unsafe_xml, safe_fromstring
 from .protocols import (
     BinaryDestination,
     BinarySource,
@@ -51,6 +52,8 @@ __all__ = [
     "WritableBinary",
     "WritableText",
     "checked_product",
+    "reject_unsafe_xml",
+    "safe_fromstring",
 ]
 
 __version__ = "0.1.0.dev0"

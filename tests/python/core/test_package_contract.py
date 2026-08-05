@@ -45,6 +45,7 @@ def test_core_exports_only_approved_responsibilities() -> None:
         "errors",
         "limits",
         "protocols",
+        "xml_security",
     }
 
 

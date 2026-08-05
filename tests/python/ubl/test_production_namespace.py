@@ -111,13 +111,13 @@ def test_dtd_and_entity_declarations_are_rejected() -> None:
             b"<cbc:UBLVersionID>&xxe;</cbc:UBLVersionID>",
         )
     )
-    with pytest.raises(UblParseError, match="DTD and entity"):
+    with pytest.raises(UblParseError, match="DTD declarations are prohibited"):
         loads(payload)
 
 
 def test_extension_payload_never_resolves_external_entities() -> None:
     fixture = _FIXTURES / "hostile-extension-entity.xml"
-    with pytest.raises(UblParseError, match="DTD and entity"):
+    with pytest.raises(UblParseError, match="DTD declarations are prohibited"):
         load(fixture)
     assert not probe(fixture)
 

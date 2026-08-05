@@ -26,12 +26,23 @@ classifiers = [
 [project.optional-dependencies]
 numpy = ["numpy>=1.26"]
 torch = ["torch>=2.2"]
-# pyyaml is imported by test_safetensors_compat.py and was undeclared. Found by
+# The official HuggingFace package is this format's independent oracle for
+# tests/python/safetensors/test_obligation_bidirectional_interop.py and
+# test_official_interop.py. It is declared, not installed, in the shared dev
+# venv: its top-level import name is "safetensors", which collides with this
+# repository's own legacy shadow package of the same name at src/python/
+# safetensors/ (GAP-017), so co-installing it there breaks that shadow
+# package's direct imports. Install it in an isolated environment to run the
+# interop tests.
+reference = ["safetensors==0.8.0"]
+# pyyaml is imported by test_safetensors_compat.py and numpy by
+# test_obligation_bidirectional_interop.py and test_safetensors_tensor_data.py,
+# both unconditionally at module scope, and both were undeclared here. Found by
 # the same audit that caught two such omissions in ipynb: the shared dev venv
-# happens to provide it, so the gap only appears in a clean install, where the
+# happens to provide them, so the gap only appears in a clean install, where the
 # import fails at COLLECTION and silently takes the whole test file out of the
 # run rather than failing loudly.
-test = ["pytest>=8.3", "hypothesis>=6.100", "pyyaml>=6.0"]
+test = ["pytest>=8.3", "hypothesis>=6.100", "pyyaml>=6.0", "numpy>=1.26"]
 
 [project.scripts]
 ff-safetensors = "format_factory.safetensors.cli:main"

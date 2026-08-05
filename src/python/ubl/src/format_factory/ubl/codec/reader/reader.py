@@ -7,7 +7,7 @@ import xml.etree.ElementTree as ET
 from os import PathLike
 from pathlib import Path
 
-from format_factory.core import BinarySource, ProbeResult, ResourceLimits
+from format_factory.core import BinarySource, ProbeResult, ResourceLimits, reject_unsafe_xml
 
 from ..._generated import ROOT_NAMESPACES, ROOT_NAME_SET
 from ...errors import UblParseError
@@ -15,7 +15,6 @@ from ...model import UblDocument, XmlNode, document_from_root
 from ...security import effective_limits
 
 SUPPORTED_PROFILE = "UBL-2.3"
-_FORBIDDEN_DECLARATIONS = (b"<!doctype", b"<!entity")
 _SIGNATURE_NAMESPACES = frozenset(
     {
         "http://www.w3.org/2000/09/xmldsig#",
@@ -51,12 +50,6 @@ def _split_qname(qname: str) -> tuple[str, str]:
         return "", qname
     namespace, local = qname[1:].split("}", 1)
     return namespace, local
-
-
-def _reject_unsafe_declarations(data: bytes) -> None:
-    lowered = data.lower()
-    if any(marker in lowered for marker in _FORBIDDEN_DECLARATIONS):
-        raise UblParseError("DTD and entity declarations are not permitted")
 
 
 def _enforce_tree_limits(root: ET.Element, limits: ResourceLimits) -> None:
@@ -102,7 +95,7 @@ def _has_signature(root: ET.Element) -> bool:
 
 
 def _parse(data: bytes, *, limits: ResourceLimits) -> UblDocument:
-    _reject_unsafe_declarations(data)
+    reject_unsafe_xml(data, error_class=UblParseError)
     try:
         root = ET.fromstring(data)
     except ET.ParseError as exc:

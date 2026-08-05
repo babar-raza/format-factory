@@ -21,7 +21,7 @@ from __future__ import annotations
 import re
 from xml.etree import ElementTree
 
-from format_factory.core import DEFAULT_LIMITS, CheckedArithmeticError, ResourceLimits, checked_product
+from format_factory.core import DEFAULT_LIMITS, CheckedArithmeticError, ResourceLimits, checked_product, reject_unsafe_xml
 
 from ..errors import OraLimitError, OraValidationError
 from ..model.document import DEFAULT_RESOLUTION_PPI, OraDocument
@@ -40,7 +40,6 @@ ROOT_ELEMENT = "image"
 #: Strict decimal integer. `int()` alone would accept " 8", "+8", "8_0" and
 #: unicode digits, none of which the specification permits.
 _INTEGER = re.compile(r"^-?[0-9]+$")
-_DOCTYPE = re.compile(rb"<!DOCTYPE", re.IGNORECASE)
 
 
 def _require(element: ElementTree.Element, attribute: str) -> str:
@@ -202,11 +201,7 @@ def parse_stack(payload: bytes, *, limits: ResourceLimits = DEFAULT_LIMITS) -> O
             f"{limits.max_header_bytes}"
         )
 
-    if _DOCTYPE.search(payload):
-        raise OraValidationError(
-            "stack.xml declares a DOCTYPE; entity declarations are refused "
-            "because they are an expansion and file-disclosure vector"
-        )
+    reject_unsafe_xml(payload, error_class=OraValidationError)
 
     try:
         root = ElementTree.fromstring(payload)

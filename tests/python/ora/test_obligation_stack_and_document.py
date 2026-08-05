@@ -291,7 +291,7 @@ def test_a_doctype_is_refused() -> None:
     with pytest.raises(OraValidationError) as raised:
         parse_stack(payload)
 
-    assert "doctype" in str(raised.value).lower()
+    assert "dtd" in str(raised.value).lower()
 
 
 def test_malformed_xml_is_refused() -> None:

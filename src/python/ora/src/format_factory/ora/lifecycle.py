@@ -121,6 +121,47 @@ def _uses_isolation(stack: OraStack) -> bool:
     return False
 
 
+def _collect_layer_sources(node: OraStack | OraLayer | OraText) -> list[str]:
+    """Walk the stack tree and return every layer src path."""
+    sources: list[str] = []
+    if isinstance(node, OraLayer) and node.src:
+        sources.append(node.src)
+    if isinstance(node, OraStack):
+        for child in node.children:
+            sources.extend(_collect_layer_sources(child))
+    return sources
+
+
+def _layer_png_diagnostics(
+    document: OraDocument,
+    members: dict[str, bytes],
+    limits: ResourceLimits,
+) -> list[Diagnostic]:
+    """Validate that every layer src references a valid PNG member."""
+    found: list[Diagnostic] = []
+    for src in _collect_layer_sources(document.root):
+        if src not in members:
+            found.append(
+                Diagnostic(
+                    code="ORA_LAYER_SOURCE_MISSING",
+                    message=f"layer references {src!r} which is not in the archive",
+                    severity=Severity.ERROR,
+                )
+            )
+            continue
+        try:
+            read_png_metadata(members[src], limits=limits)
+        except (OraError, OraValidationError) as exc:
+            found.append(
+                Diagnostic(
+                    code="ORA_LAYER_SOURCE_INVALID_PNG",
+                    message=f"layer source {src!r} is not a valid PNG: {exc}",
+                    severity=Severity.ERROR,
+                )
+            )
+    return found
+
+
 def _baseline_asset_diagnostics(members: dict[str, bytes]) -> list[Diagnostic]:
     """ORA-BASELINEASSET-001, expressed as findings rather than exceptions."""
     found: list[Diagnostic] = []
@@ -212,6 +253,7 @@ def load(
     declared_version = document.version
 
     diagnostics = _baseline_asset_diagnostics(members)
+    diagnostics.extend(_layer_png_diagnostics(document, members, limits))
     recovery: list[str] = []
     if diagnostics:
         if mode is ReadMode.STRICT:
@@ -250,7 +292,7 @@ def validate(source: Source, *, limits: ResourceLimits = DEFAULT_LIMITS) -> Vali
         payload = _read_source(source)
         container = OraContainer.from_bytes(payload, limits=limits)
         members = {name: container.read(name) for name in container.names}
-        parse_stack(members[STACK_MEMBER], limits=limits)
+        document = parse_stack(members[STACK_MEMBER], limits=limits)
     except OraError as exc:
         return ValidationReport(
             diagnostics=(
@@ -262,7 +304,9 @@ def validate(source: Source, *, limits: ResourceLimits = DEFAULT_LIMITS) -> Vali
             )
         )
 
-    return ValidationReport(diagnostics=tuple(_baseline_asset_diagnostics(members)))
+    all_diagnostics = _baseline_asset_diagnostics(members)
+    all_diagnostics.extend(_layer_png_diagnostics(document, members, limits))
+    return ValidationReport(diagnostics=tuple(all_diagnostics))
 
 
 def _canonical_stack_xml(document: OraDocument) -> bytes:

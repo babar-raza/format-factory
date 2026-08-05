@@ -224,9 +224,9 @@ def _enforce_tree_limits(root: ET.Element, limits: ResourceLimits) -> None:
 
 
 def _parse(data: bytes, limits: ResourceLimits) -> XliffDocument:
-    declaration_scan = data[: limits.max_header_bytes].replace(b"\x00", b"").upper()
-    if b"<!DOCTYPE" in declaration_scan or b"<!ENTITY" in declaration_scan:
-        raise XliffParseError("DTD and entity declarations are prohibited")
+    from format_factory.core import reject_unsafe_xml
+
+    reject_unsafe_xml(data, error_class=XliffParseError)
     try:
         root = ET.fromstring(data)
     except ET.ParseError as exc:

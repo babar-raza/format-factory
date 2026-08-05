@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import importlib.metadata
 import json
 from pathlib import Path
 
@@ -124,8 +125,11 @@ def test_complete_core_vector_validates_and_roundtrips_without_execution() -> No
     )
 
 
-def test_core_proof_uses_installed_production_namespace() -> None:
+def test_core_proof_uses_installed_production_namespace(is_editable_install) -> None:
     origin = Path(factory.__file__).resolve()
-
-    assert "site-packages" in str(origin).lower()
-    assert "src\\python\\ipynb" not in str(origin).lower()
+    dist = importlib.metadata.distribution("format-factory-ipynb")
+    if is_editable_install(dist):
+        assert "src\\python\\ipynb" in str(origin).lower()
+    else:
+        assert "site-packages" in str(origin).lower()
+        assert "src\\python\\ipynb" not in str(origin).lower()

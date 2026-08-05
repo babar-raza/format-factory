@@ -25,28 +25,18 @@ PACKAGE = ROOT / "src" / "python" / "ipynb"
 SAMPLE = ROOT / "samples" / "by-format" / "ipynb" / "valid" / "minimal.ipynb"
 
 
-def test_implicit_namespace_has_no_parent_init() -> None:
+def test_implicit_namespace_has_no_parent_init(is_editable_install) -> None:
     assert not (PACKAGE / "src" / "format_factory" / "__init__.py").exists()
     spec = importlib.util.find_spec("format_factory.ipynb")
     assert spec is not None
     assert spec.origin is not None
+    dist = importlib.metadata.distribution("format-factory-ipynb")
     source_root = str((PACKAGE / "src").resolve())
-    distributions = [
-        distribution
-        for distribution in importlib.metadata.distributions()
-        if distribution.metadata.get("Name", "").lower()
-        == "format-factory-ipynb"
-    ]
-    installed_roots = [
-        str(Path(distribution.locate_file("")).resolve())
-        for distribution in distributions
-        if source_root not in str(Path(distribution.locate_file("")).resolve())
-    ]
     resolved_origin = str(Path(spec.origin).resolve())
-    if not installed_roots:
-        assert source_root in str(Path(spec.origin).resolve())
+    if is_editable_install(dist):
+        assert source_root in resolved_origin
     else:
-        assert any(root in resolved_origin for root in installed_roots)
+        assert "site-packages" in resolved_origin.lower()
         assert source_root not in resolved_origin
 
 

@@ -427,3 +427,75 @@ def test_dump_writes_to_a_path(tmp_path) -> None:
     dump(image, destination)
 
     assert loads(destination.read_bytes()).document.width == 8
+
+
+# ── Layer PNG structural validation ──────────────────────────────────────────
+
+
+def test_strict_mode_rejects_non_png_layer_source() -> None:
+    payload = archive(
+        members={"data/only.png": b"this is not a PNG at all"},
+        thumbnail=png(16, 16),
+        merged=png(),
+    )
+    with pytest.raises(OraValidationError, match="not a valid PNG"):
+        loads(payload, mode=ReadMode.STRICT)
+
+
+def test_strict_mode_rejects_truncated_png_layer_source() -> None:
+    payload = archive(
+        members={"data/only.png": PNG_SIGNATURE + b"\x00" * 4},
+        thumbnail=png(16, 16),
+        merged=png(),
+    )
+    with pytest.raises(OraValidationError, match="not a valid PNG"):
+        loads(payload, mode=ReadMode.STRICT)
+
+
+def test_tolerant_mode_reports_invalid_layer_png() -> None:
+    payload = archive(
+        members={"data/only.png": b"not png"},
+        thumbnail=png(16, 16),
+        merged=png(),
+    )
+    image = loads(payload, mode=ReadMode.TOLERANT)
+    assert any("not a valid PNG" in action for action in image.recovery_actions)
+
+
+def test_validate_reports_invalid_layer_png() -> None:
+    payload = archive(
+        members={"data/only.png": b"definitely not a png"},
+        thumbnail=png(16, 16),
+        merged=png(),
+    )
+    report = validate(payload)
+    assert report.is_valid is False
+    assert any("LAYER" in d.code for d in report.diagnostics)
+
+
+def test_valid_layer_png_passes_validation() -> None:
+    report = validate(complete_archive())
+    assert report.is_valid is True
+    layer_diags = [d for d in report.diagnostics if "LAYER" in d.code]
+    assert layer_diags == []
+
+
+def test_multi_layer_validation_checks_all_sources() -> None:
+    multi_stack = (
+        b'<?xml version="1.0" encoding="UTF-8"?>\n'
+        b'<image w="8" h="8" version="0.0.5">'
+        b'<stack>'
+        b'<layer name="good" src="data/good.png"/>'
+        b'<layer name="bad" src="data/bad.png"/>'
+        b'</stack></image>'
+    )
+    payload = archive(
+        stack=multi_stack,
+        members={"data/good.png": png(), "data/bad.png": b"broken"},
+        thumbnail=png(16, 16),
+        merged=png(),
+    )
+    report = validate(payload)
+    layer_diags = [d for d in report.diagnostics if "LAYER" in d.code]
+    assert len(layer_diags) == 1
+    assert "bad.png" in layer_diags[0].message
