@@ -7,9 +7,11 @@ execution_evidence:
   path: reports/skills-rff6/skill-transcripts/build-evidence-ledger-ora-001.json
   expected_result: PARTIAL_IMPLEMENTATION_PRESENT
   granularity: suite
-  truth_boundary: 86 tests pass against the four mapped capabilities, written RED before the source existed.
-    The other 16 capabilities have no source and no suite; their obligations stay `missing` rather than
-    borrowing this result.
+  truth_boundary: '86 tests pass against the four mapped capabilities, written RED before the source existed.
+    Updated 2026-08-05: ORA-SEC-001 adds 17 tests against already-existing source (no new production code
+    this slice). ORA suite is now 189 passed with no failures. The remaining 15 capabilities have no source
+    and no suite; their obligations stay `missing` rather than borrowing this result. No ORA obligation
+    is `implemented`; ORA-SEC-001''s obligations move to `partial` on this evidence, not higher.'
 obligations:
 - obligation_id: SAL-ORA-OBL-022F37EEA74EC1BB
   capability_id: ORA-EDIT-001
@@ -468,16 +470,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-1C91BEA24163FEE8
   capability_id: ORA-SEC-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_security_baseline.py::test_limits_are_configurable_not_hardcoded
+  - tests/python/ora/test_obligation_security_baseline.py::test_safe_defaults_are_enabled_without_the_caller_supplying_limits
+  - tests/python/ora/test_obligation_security_baseline.py::test_input_size_limit_is_enforced
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Each security_limits baseline
     behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
@@ -531,16 +543,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-236BB3DAE380A960
   capability_id: ORA-SEC-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_security_baseline.py::test_limits_are_configurable_not_hardcoded
+  - tests/python/ora/test_obligation_security_baseline.py::test_safe_defaults_are_enabled_without_the_caller_supplying_limits
+  - tests/python/ora/test_obligation_security_baseline.py::test_input_size_limit_is_enforced
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Each security_limits baseline
     behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
@@ -1463,16 +1485,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-602DA38F95B14817
   capability_id: ORA-SEC-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_security_baseline.py::test_limits_are_configurable_not_hardcoded
+  - tests/python/ora/test_obligation_security_baseline.py::test_safe_defaults_are_enabled_without_the_caller_supplying_limits
+  - tests/python/ora/test_obligation_security_baseline.py::test_input_size_limit_is_enforced
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Each security_limits baseline
     behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
@@ -1608,16 +1640,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-6BF75B83618CE444
   capability_id: ORA-SEC-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_security_baseline.py::test_limits_are_configurable_not_hardcoded
+  - tests/python/ora/test_obligation_security_baseline.py::test_safe_defaults_are_enabled_without_the_caller_supplying_limits
+  - tests/python/ora/test_obligation_security_baseline.py::test_input_size_limit_is_enforced
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Each security_limits baseline
     behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
@@ -2787,16 +2829,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-E783242B1006F422
   capability_id: ORA-SEC-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_security_baseline.py::test_limits_are_configurable_not_hardcoded
+  - tests/python/ora/test_obligation_security_baseline.py::test_safe_defaults_are_enabled_without_the_caller_supplying_limits
+  - tests/python/ora/test_obligation_security_baseline.py::test_input_size_limit_is_enforced
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Each security_limits baseline
     behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative

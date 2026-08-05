@@ -19,18 +19,56 @@ notes: >-
   complete -- ORA-STACK-001's model is built and its rendering is not -- only
   that implementing behaviour and tests exist for the reconciler to grade.
 
-  This remains a build-from-nothing lane. 11 of 20 capabilities have no source:
-  rendering, compositing, isolation semantics, editing, groups, layers-as-
-  editable, masks, preservation duties, streaming, security posture, and
-  resolution profiles.
+  This remains mostly a build-from-nothing lane. 10 of 20 capabilities have no
+  source: rendering, compositing, isolation semantics, editing, groups,
+  layers-as-editable, masks, preservation duties, streaming, and resolution
+  profiles.
+
+  ORA-SEC-001 status as of 2026-08-05: this format has no shadow-package
+  problem at all -- unlike ipynb/ubl/xliff/nrrd, every one of ORA's 4
+  pre-existing test files already imports format_factory.ora exclusively
+  (confirmed by grep before any other work this slice; there is no top-level
+  `ora` shadow package under src/python/ora/ either). ORA-SEC-001 itself
+  turned out to be the XLIFF-NOTE-001 pattern rather than the XLIFF-MODULE-001
+  pattern: every required_behavior bullet was already implemented -- input
+  limits (ResourceLimits throughout container.py/stack_xml.py/png_metadata.py
+  with safe non-None defaults), path-traversal rejection (container.py's
+  _reject_unsafe_name and stack_xml.py's _validate_src, both already tested
+  incidentally under other capabilities), untrusted-payload discipline
+  (png_metadata.py reads only the IHDR chunk, never inflating pixel data),
+  and checked arithmetic plus bounded recursion (checked_product in
+  png_metadata.py/stack_xml.py, max_nesting_depth enforced in stack_xml.py's
+  _Walker) -- but it had zero tests framed under its OWN obligation, and one
+  behavior (no network resolution) had never been tested at all, in any
+  frame. 17 new tests in test_obligation_security_baseline.py prove all five
+  bullets explicitly, including that a URL-shaped layer src cannot cause a
+  network fetch (src is used only as a ZIP member-name lookup key, so it
+  simply fails to match any archive member -- a stronger guarantee than an
+  opt-in flag, since there is no code path that could ever dereference it as
+  a URI).
+
+  Three test-construction bugs were caught and fixed during this slice
+  (product code was correct throughout): a URL-shaped src assertion expected
+  the wrong rejection point (parse_stack does not resolve src at all; the
+  lifecycle.load() layer-PNG-validation added in this session's earlier
+  Phase 4.2 slice is what actually catches it as ORA_LAYER_SOURCE_MISSING);
+  an XML attribute value containing literal `<script>` markup was invalid
+  XML syntax without entity-escaping it; and a raw backslash in a ZIP member
+  name cannot survive zipfile.writestr's own os.sep normalization on
+  Windows, so that one guard is exercised by importing and calling
+  _reject_unsafe_name directly rather than through a constructed archive.
 
 execution_evidence:
   path: reports/skills-rff6/skill-transcripts/build-evidence-ledger-ora-001.json
   result: PARTIAL_IMPLEMENTATION_PRESENT
   truth_boundary: >-
     86 tests pass against the four mapped capabilities, written RED before the
-    source existed. The other 16 capabilities have no source and no suite; their
-    obligations stay `missing` rather than borrowing this result.
+    source existed. Updated 2026-08-05: ORA-SEC-001 adds 17 tests against
+    already-existing source (no new production code this slice). ORA suite is
+    now 189 passed with no failures. The remaining 15 capabilities have no
+    source and no suite; their obligations stay `missing` rather than
+    borrowing this result. No ORA obligation is `implemented`; ORA-SEC-001's
+    obligations move to `partial` on this evidence, not higher.
 
 capabilities:
   ORA-ASSET-001:
@@ -113,8 +151,12 @@ capabilities:
     tests: []
 
   ORA-SEC-001:
-    modules: []
-    tests: []
+    modules:
+    - codec/container.py
+    - codec/stack_xml.py
+    - codec/png_metadata.py
+    tests:
+    - test_obligation_security_baseline.py
 
   ORA-STACK-001:
     modules:
