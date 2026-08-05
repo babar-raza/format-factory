@@ -26,6 +26,10 @@ from .codec import (
 from .errors import UblError, UblParseError, UblValidationError, UblWriteError
 from .model import (
     ROOT_CLASSES,
+    UblDate,
+    UblDateTime,
+    UblTime,
+
     InvoiceLine,
     Item,
     LegalMonetaryTotal,
@@ -61,6 +65,9 @@ from .security import UBL_DEFAULT_LIMITS
 from .validation import validate
 
 __all__ = [
+    "UblTime",
+    "UblDateTime",
+    "UblDate",
     "tax_total_of",
     "tax_subtotal_of",
     "reconcile_invoice",

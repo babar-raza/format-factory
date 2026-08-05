@@ -62,6 +62,9 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
   - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -69,6 +72,9 @@ obligations:
   - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
+  - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
+  - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -368,6 +374,9 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
   - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -375,6 +384,9 @@ obligations:
   - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
+  - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
+  - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -834,6 +846,9 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
   - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -841,6 +856,9 @@ obligations:
   - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
+  - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
+  - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -1327,6 +1345,9 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
   - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -1334,6 +1355,9 @@ obligations:
   - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
+  - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
+  - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -1362,6 +1386,9 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
   - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -1369,6 +1396,9 @@ obligations:
   - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
+  - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
+  - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -1582,6 +1612,9 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
   - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -1589,6 +1622,9 @@ obligations:
   - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
+  - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
+  - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -1617,6 +1653,9 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
   - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -1624,6 +1663,9 @@ obligations:
   - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
+  - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
+  - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -2223,6 +2265,9 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
   - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -2230,6 +2275,9 @@ obligations:
   - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
+  - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
+  - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -2303,6 +2351,9 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
   - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -2310,6 +2361,9 @@ obligations:
   - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
+  - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
+  - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -3358,6 +3412,9 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
   - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -3365,6 +3422,9 @@ obligations:
   - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
+  - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
+  - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -3454,6 +3514,9 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
   - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -3461,6 +3524,9 @@ obligations:
   - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
+  - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
+  - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -3489,6 +3555,9 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
   - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -3496,6 +3565,9 @@ obligations:
   - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
+  - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
+  - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -3703,6 +3775,9 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
   - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -3710,6 +3785,9 @@ obligations:
   - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
+  - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
+  - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -4004,6 +4082,9 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
   - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -4011,6 +4092,9 @@ obligations:
   - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
+  - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
+  - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -4245,6 +4329,9 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
   - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -4252,6 +4339,9 @@ obligations:
   - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
+  - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
+  - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -4509,6 +4599,9 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
   - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -4516,6 +4609,9 @@ obligations:
   - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
+  - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
+  - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -4703,6 +4799,9 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
   - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -4710,6 +4809,9 @@ obligations:
   - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
+  - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
+  - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -5165,6 +5267,9 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
   - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -5172,6 +5277,9 @@ obligations:
   - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
+  - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
+  - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
@@ -5390,6 +5498,9 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
   - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDateTime
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblDate
+  - src/python/ubl/src/format_factory/ubl/model/temporal.py::UblTime
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
   - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
@@ -5397,6 +5508,9 @@ obligations:
   - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
   - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_temporal_values.py::test_a_date_time_round_trips_its_exact_lexical_form
+  - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
+  - tests/python/ubl/test_obligation_temporal_values.py::test_an_offset_of_zero_is_not_rewritten_as_z
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE

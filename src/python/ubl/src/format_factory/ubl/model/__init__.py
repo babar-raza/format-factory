@@ -15,6 +15,7 @@ from .aggregates import (
     tax_subtotal_of,
     tax_total_of,
 )
+from .temporal import UblDate, UblDateTime, UblTime
 from .typed import (
     amount_of,
     binary_object_of,
@@ -53,6 +54,9 @@ def document_from_root(
     )
 
 __all__ = [
+    "UblTime",
+    "UblDateTime",
+    "UblDate",
     "tax_total_of",
     "tax_subtotal_of",
     "reconcile_invoice",
