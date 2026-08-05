@@ -14,14 +14,14 @@ notes: >-
   exactly the fabrication the evidence process exists to prevent. Recording
   them explicitly keeps all 134 obligations inside the denominator.
 
-  Nine capabilities are now mapped to real source that was read, not merely
+  Eleven capabilities are now mapped to real source that was read, not merely
   assumed to exist (the GAP-022 rule). Mapping them does not assert they are
   complete -- ORA-STACK-001's model is built and its rendering is not -- only
   that implementing behaviour and tests exist for the reconciler to grade.
 
-  This remains mostly a build-from-nothing lane. 9 of 20 capabilities have no
+  This remains mostly a build-from-nothing lane. 8 of 20 capabilities have no
   source: rendering, compositing, editing, groups, layers-as-editable, masks,
-  preservation duties, streaming, and resolution profiles.
+  streaming, and resolution profiles.
 
   ORA-ISOLATION-001 status as of 2026-08-06: another XLIFF-NOTE-001-pattern
   capability, like ORA-SEC-001 before it. model/stack.py's
@@ -82,6 +82,51 @@ notes: >-
   Windows, so that one guard is exercised by importing and calling
   _reject_unsafe_name directly rather than through a constructed archive.
 
+  ORA-PRESERVE-001 status as of 2026-08-06: a mixed capability, not a single
+  pattern. Of its 4 obligations, two were already implemented with zero
+  tests (the XLIFF-NOTE-001 pattern): "distinguish lossless round-trip
+  output mode from normalized/canonical output mode as an explicit caller
+  choice" is lifecycle.PreservationMode, already an explicit dumps()/dump()
+  parameter defaulting to LOSSLESS; "preserve unknown or future-version
+  constructs ... never silently drop unrecognized content in lossless mode"
+  is dumps()'s existing member-passthrough behavior (LOSSLESS re-emits
+  image.members verbatim, including the original stack.xml bytes). One was
+  genuinely absent (the XLIFF-MODULE-001 pattern): "report every construct
+  that cannot be preserved before saving, through a loss report API, rather
+  than failing silently" had no API at all -- nothing told a caller, before
+  choosing CANONICAL, which constructs regeneration would drop. Built as a
+  new module, preservation.py: check_preservation(image, target) returns an
+  empty LossReport for LOSSLESS (nothing is ever lost) and, for CANONICAL,
+  re-parses the original stack.xml bytes and diffs their actual XML
+  attributes against the fixed set _canonical_stack_xml/_common already
+  recognize per element tag, reporting anything else -- a vendor extension,
+  a future-profile attribute -- with its element, value and tree location.
+
+  The fourth obligation, "preserve the distinction between an absent
+  optional value and an explicitly written default or empty value," is
+  deliberately NOT attempted and NOT claimed implemented. model/stack.py's
+  OraNode applies attribute defaults at construction time by documented
+  design ("a caller never has to distinguish 'absent' from 'explicitly
+  default' to composite correctly") -- correct for compositing, but it
+  means the in-memory model cannot currently tell whether opacity=1.0 was
+  written explicitly or just defaulted. This does not affect the
+  archive-level round trip (LOSSLESS keeps the original bytes verbatim
+  regardless of what the model captures), but fixing it properly at the
+  model level would need nullable defaults threaded through
+  OraNode/OraStack/OraLayer and every consumer of them (is_isolated_group
+  included) -- real, larger-scoped work, the same kind of gap identified
+  and deferred for ORA-LAYER-001/ORA-GROUP-001 this session, not something
+  to half-implement here.
+
+  9 new tests in test_obligation_preservation_baseline.py, all passed on
+  first run; ruff clean, mypy clean. ORA suite: 204 -> 213 passed. All 4
+  ORA-PRESERVE-001 obligations move from `missing` to `partial` (78
+  partial/56 missing -> 82 partial/52 missing) even though only 3 of the 4
+  underlying behaviors are proven -- consistent with how every other
+  `partial` capability in this ledger works (evidence exists for real
+  behavior; `missing_behavior` on the implementation-evidence YAML records
+  what is not yet audited or, here, not yet built).
+
 execution_evidence:
   path: reports/skills-rff6/skill-transcripts/build-evidence-ledger-ora-001.json
   result: PARTIAL_IMPLEMENTATION_PRESENT
@@ -99,6 +144,13 @@ execution_evidence:
     passed with no failures. The remaining 9 capabilities have no source and
     no suite; their obligations stay `missing`. No ORA obligation is
     `implemented`; ORA-ISOLATION-001's obligations move to `partial` only.
+
+    2026-08-06 (later): ORA-PRESERVE-001 adds a new module (preservation.py,
+    check_preservation()) plus 9 tests -- genuinely new production code this
+    time, not only tests against existing behavior. ORA suite is now 213
+    passed with no failures. The remaining 8 capabilities have no source and
+    no suite; their obligations stay `missing`. No ORA obligation is
+    `implemented`; ORA-PRESERVE-001's obligations move to `partial` only.
 
 capabilities:
   ORA-ASSET-001:
@@ -172,8 +224,11 @@ capabilities:
     - test_obligation_container_and_mimetype.py
 
   ORA-PRESERVE-001:
-    modules: []
-    tests: []
+    modules:
+    - preservation.py
+    - lifecycle.py
+    tests:
+    - test_obligation_preservation_baseline.py
 
   ORA-RENDER-001:
     modules: []

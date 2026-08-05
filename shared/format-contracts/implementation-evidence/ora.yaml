@@ -16,7 +16,13 @@ execution_evidence:
     2026-08-06: ORA-ISOLATION-001 adds 15 tests against already-existing source (no new production code
     this slice either). ORA suite is now 204 passed with no failures. The remaining 9 capabilities have
     no source and no suite; their obligations stay `missing`. No ORA obligation is `implemented`; ORA-ISOLATION-001''s
-    obligations move to `partial` only.'
+    obligations move to `partial` only.
+
+    2026-08-06 (later): ORA-PRESERVE-001 adds a new module (preservation.py, check_preservation()) plus
+    9 tests -- genuinely new production code this time, not only tests against existing behavior. ORA
+    suite is now 213 passed with no failures. The remaining 8 capabilities have no source and no suite;
+    their obligations stay `missing`. No ORA obligation is `implemented`; ORA-PRESERVE-001''s obligations
+    move to `partial` only.'
 obligations:
 - obligation_id: SAL-ORA-OBL-022F37EEA74EC1BB
   capability_id: ORA-EDIT-001
@@ -152,16 +158,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-07B4638C09251BE1
   capability_id: ORA-PRESERVE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/preservation.py::LossItem
+  - src/python/ora/src/format_factory/ora/preservation.py::LossReport
+  - src/python/ora/src/format_factory/ora/preservation.py::check_preservation
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_preservation_baseline.py::test_preservation_mode_is_an_explicit_dumps_parameter
+  - tests/python/ora/test_obligation_preservation_baseline.py::test_dumps_defaults_to_lossless_not_canonical
+  - tests/python/ora/test_obligation_preservation_baseline.py::test_lossless_round_trip_preserves_an_unmodeled_stack_attribute
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Each preservation baseline
     behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Each preservation baseline behavior has a focused positive test and, where refusable, a negative
@@ -365,16 +383,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-1527BE3306AC38F2
   capability_id: ORA-PRESERVE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/preservation.py::LossItem
+  - src/python/ora/src/format_factory/ora/preservation.py::LossReport
+  - src/python/ora/src/format_factory/ora/preservation.py::check_preservation
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_preservation_baseline.py::test_preservation_mode_is_an_explicit_dumps_parameter
+  - tests/python/ora/test_obligation_preservation_baseline.py::test_dumps_defaults_to_lossless_not_canonical
+  - tests/python/ora/test_obligation_preservation_baseline.py::test_lossless_round_trip_preserves_an_unmodeled_stack_attribute
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Each preservation baseline
     behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Each preservation baseline behavior has a focused positive test and, where refusable, a negative
@@ -604,16 +634,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-24BEC87CE09AB2DD
   capability_id: ORA-PRESERVE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/preservation.py::LossItem
+  - src/python/ora/src/format_factory/ora/preservation.py::LossReport
+  - src/python/ora/src/format_factory/ora/preservation.py::check_preservation
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_preservation_baseline.py::test_preservation_mode_is_an_explicit_dumps_parameter
+  - tests/python/ora/test_obligation_preservation_baseline.py::test_dumps_defaults_to_lossless_not_canonical
+  - tests/python/ora/test_obligation_preservation_baseline.py::test_lossless_round_trip_preserves_an_unmodeled_stack_attribute
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Each preservation baseline
     behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Each preservation baseline behavior has a focused positive test and, where refusable, a negative
@@ -2285,16 +2327,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-9C467C6DD59DFEE7
   capability_id: ORA-PRESERVE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/preservation.py::LossItem
+  - src/python/ora/src/format_factory/ora/preservation.py::LossReport
+  - src/python/ora/src/format_factory/ora/preservation.py::check_preservation
+  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_preservation_baseline.py::test_preservation_mode_is_an_explicit_dumps_parameter
+  - tests/python/ora/test_obligation_preservation_baseline.py::test_dumps_defaults_to_lossless_not_canonical
+  - tests/python/ora/test_obligation_preservation_baseline.py::test_lossless_round_trip_preserves_an_unmodeled_stack_attribute
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Each preservation baseline
     behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Each preservation baseline behavior has a focused positive test and, where refusable, a negative

@@ -34,12 +34,15 @@ from .lifecycle import (
     loads,
     validate,
 )
+from .preservation import LossItem, LossReport, check_preservation
 from .errors import OraArchiveError, OraError, OraLimitError, OraValidationError
 
 __version__ = "0.1.0.dev0"
 
 __all__ = [
     "OPENRASTER_MEDIA_TYPE",
+    "LossItem",
+    "LossReport",
     "OraArchiveError",
     "OraContainer",
     "OraDocument",
@@ -56,6 +59,7 @@ __all__ = [
     "OraLimitError",
     "OraValidationError",
     "__version__",
+    "check_preservation",
     "dump",
     "dumps",
     "load",
