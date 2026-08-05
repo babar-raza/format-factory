@@ -9,13 +9,33 @@ basis: >-
   xliff.* shadow package and cannot supply selectors under
   forbidden_progress_claims. Its 15 tests were read and assigned to capabilities
   by what they actually exercise, not by name similarity. 2026-08-05: added
-  test_obligation_module_coverage.py (22 tests) for XLIFF-MODULE-001, written
-  fresh against format_factory.xliff per the mission's no-shadow-port rule.
+  test_obligation_module_coverage.py (22 tests) for XLIFF-MODULE-001 and
+  test_obligation_notes_and_annotations.py (11 tests) for XLIFF-NOTE-001, both
+  written fresh against format_factory.xliff per the mission's no-shadow-port
+  rule.
 notes: >-
-  Three capabilities remain mapped with NO tests: XLIFF-NOTE-001 (4),
-  XLIFF-MERGE-001 (2) and XLIFF-QA-001 (2). They are listed explicitly rather
-  than omitted, so the builder records them `missing` with a reason instead of
-  silently shrinking the denominator.
+  Two capabilities remain mapped with NO tests: XLIFF-MERGE-001 (2) and
+  XLIFF-QA-001 (2). They are listed explicitly rather than omitted, so the
+  builder records them `missing` with a reason instead of silently shrinking
+  the denominator.
+
+  XLIFF-NOTE-001 status as of 2026-08-05: this capability turned out to be
+  substantially already satisfied by existing, generic machinery, not
+  unimplemented. Note (text/id/appliesTo/category/priority) already existed
+  and is parsed/written at file, group and unit level. The bigger question --
+  whether overlapping annotation spans (sm/em start/end markers, which cannot
+  be represented as a properly nested element pair) survive -- was answered by
+  direct experiment before writing the test file: reader.py's _parse_inline is
+  fully generic over ANY inline child tag (mrk, sm, em, pc, sc, ec alike),
+  preserving each one's tag, attributes and document-order position without
+  any tag-specific handling. That already gives sm/em their exact intended
+  semantics: a flat sequence of self-closing markers linked by id/startRef,
+  which is precisely how an overlapping span (one that a wrapping mrk could
+  not represent) must be encoded. 11 tests prove this: note priority/category/
+  appliesTo at all three levels, mrk wrapping a span, sm/em marking a span
+  that overlaps a pc element's boundary, and annotation survival through
+  create_target_from_source. No source change was needed -- the generic model
+  already had this obligation's required behavior; it had not been proven.
 
   XLIFF-MODULE-001 status as of 2026-08-05: modules.py adds a programmatic
   coverage manifest (ModuleCoverage.MODELED/PRESERVATION_ONLY/UNSUPPORTED) for
@@ -68,12 +88,21 @@ execution_evidence:
     entries remain overstated and still need per-obligation correction --
     unchanged by this slice.
 
-    Suite-level and NON-PROMOTING. The xliff suite is 215 passed with no
-    failures (193 baseline + 22 new), but that number is still dominated by
-    the ten shadow-package files; the shipped-namespace files now contribute
-    37 tests (15 + 22). A green suite here says very little about the package
-    that would be released. Binds no individual selector outcome to an
-    obligation, so nothing here is verification; every
+    XLIFF-NOTE-001, same session: no source change. Direct experiment first
+    (before writing any test) showed reader.py's _parse_inline is generic
+    over every inline tag, so mrk/sm/em already survive with their exact
+    attributes and document-order position -- which is what an overlapping
+    span requires, since it cannot be a nested element pair. The gap was
+    proof, not implementation; XLIFF-NOTE-001 could not be recorded `partial`
+    before because it had zero shipped-namespace selectors, not because the
+    behavior was absent.
+
+    Suite-level and NON-PROMOTING. The xliff suite is 226 passed with no
+    failures (193 baseline + 22 + 11 new), but that number is still dominated
+    by the ten shadow-package files; the shipped-namespace files now
+    contribute 48 tests (15 + 22 + 11). A green suite here says very little
+    about the package that would be released. Binds no individual selector
+    outcome to an obligation, so nothing here is verification; every
     obligation is recorded `partial` at most.
 
 capabilities:
@@ -125,12 +154,12 @@ capabilities:
     modules: [modules.py]
     tests: [test_obligation_module_coverage.py]
 
-  # No shipped-namespace test exercises these three. Listed with empty `tests`
-  # so they are recorded `missing` with a reason rather than omitted.
   XLIFF-NOTE-001:
-    modules: [model/document.py]
-    tests: []
+    modules: [model/document.py, model/inline.py, codec/reader/reader.py, codec/writer/writer.py]
+    tests: [test_obligation_notes_and_annotations.py]
 
+  # No shipped-namespace test exercises these two. Listed with empty `tests`
+  # so they are recorded `missing` with a reason rather than omitted.
   XLIFF-MERGE-001:
     modules: [model/document.py]
     tests: []

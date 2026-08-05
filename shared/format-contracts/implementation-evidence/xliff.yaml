@@ -26,11 +26,18 @@ execution_evidence:
     validation, so the schema-validation clauses inside XLIFF-VALIDATE-001''s `partial` entries remain
     overstated and still need per-obligation correction -- unchanged by this slice.
 
-    Suite-level and NON-PROMOTING. The xliff suite is 215 passed with no failures (193 baseline + 22 new),
-    but that number is still dominated by the ten shadow-package files; the shipped-namespace files now
-    contribute 37 tests (15 + 22). A green suite here says very little about the package that would be
-    released. Binds no individual selector outcome to an obligation, so nothing here is verification;
-    every obligation is recorded `partial` at most.'
+    XLIFF-NOTE-001, same session: no source change. Direct experiment first (before writing any test)
+    showed reader.py''s _parse_inline is generic over every inline tag, so mrk/sm/em already survive with
+    their exact attributes and document-order position -- which is what an overlapping span requires,
+    since it cannot be a nested element pair. The gap was proof, not implementation; XLIFF-NOTE-001 could
+    not be recorded `partial` before because it had zero shipped-namespace selectors, not because the
+    behavior was absent.
+
+    Suite-level and NON-PROMOTING. The xliff suite is 226 passed with no failures (193 baseline + 22 +
+    11 new), but that number is still dominated by the ten shadow-package files; the shipped-namespace
+    files now contribute 48 tests (15 + 22 + 11). A green suite here says very little about the package
+    that would be released. Binds no individual selector outcome to an obligation, so nothing here is
+    verification; every obligation is recorded `partial` at most.'
 obligations:
 - obligation_id: SAL-XLIFF-OBL-009F2EB91831B248
   capability_id: XLIFF-SEC-001
@@ -1122,16 +1129,32 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-44186566A8BE9B26
   capability_id: XLIFF-NOTE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Note
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Segment
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Unit
+  - src/python/xliff/src/format_factory/xliff/model/inline.py::InlineElement
+  - src/python/xliff/src/format_factory/xliff/model/inline.py::flatten_inline_content
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps
+  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump
+  positive_test_selectors:
+  - tests/python/xliff/test_obligation_notes_and_annotations.py::test_note_priority_and_category_are_represented
+  - tests/python/xliff/test_obligation_notes_and_annotations.py::test_note_applies_to_is_represented
+  - tests/python/xliff/test_obligation_notes_and_annotations.py::test_multiple_notes_on_one_unit_all_survive
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Overlapping-annotation fixtures
     round-trip; marker pairing validated.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Overlapping-annotation fixtures round-trip; marker pairing validated.
@@ -2650,16 +2673,32 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-B3D1B1A5CBD86240
   capability_id: XLIFF-NOTE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Note
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Segment
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Unit
+  - src/python/xliff/src/format_factory/xliff/model/inline.py::InlineElement
+  - src/python/xliff/src/format_factory/xliff/model/inline.py::flatten_inline_content
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps
+  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump
+  positive_test_selectors:
+  - tests/python/xliff/test_obligation_notes_and_annotations.py::test_note_priority_and_category_are_represented
+  - tests/python/xliff/test_obligation_notes_and_annotations.py::test_note_applies_to_is_represented
+  - tests/python/xliff/test_obligation_notes_and_annotations.py::test_multiple_notes_on_one_unit_all_survive
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Overlapping-annotation fixtures
     round-trip; marker pairing validated.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Overlapping-annotation fixtures round-trip; marker pairing validated.
@@ -3020,16 +3059,32 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-CF6EB3C804324A1C
   capability_id: XLIFF-NOTE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Note
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Segment
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Unit
+  - src/python/xliff/src/format_factory/xliff/model/inline.py::InlineElement
+  - src/python/xliff/src/format_factory/xliff/model/inline.py::flatten_inline_content
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps
+  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump
+  positive_test_selectors:
+  - tests/python/xliff/test_obligation_notes_and_annotations.py::test_note_priority_and_category_are_represented
+  - tests/python/xliff/test_obligation_notes_and_annotations.py::test_note_applies_to_is_represented
+  - tests/python/xliff/test_obligation_notes_and_annotations.py::test_multiple_notes_on_one_unit_all_survive
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Overlapping-annotation fixtures
     round-trip; marker pairing validated.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Overlapping-annotation fixtures round-trip; marker pairing validated.
@@ -3164,16 +3219,32 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-DA68F5DEF1A61582
   capability_id: XLIFF-NOTE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Note
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Segment
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Unit
+  - src/python/xliff/src/format_factory/xliff/model/inline.py::InlineElement
+  - src/python/xliff/src/format_factory/xliff/model/inline.py::flatten_inline_content
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps
+  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump
+  positive_test_selectors:
+  - tests/python/xliff/test_obligation_notes_and_annotations.py::test_note_priority_and_category_are_represented
+  - tests/python/xliff/test_obligation_notes_and_annotations.py::test_note_applies_to_is_represented
+  - tests/python/xliff/test_obligation_notes_and_annotations.py::test_multiple_notes_on_one_unit_all_survive
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Overlapping-annotation fixtures
     round-trip; marker pairing validated.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Overlapping-annotation fixtures round-trip; marker pairing validated.
