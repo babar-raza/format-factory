@@ -18,6 +18,12 @@ from .convert import (
     convert_endian,
 )
 from .errors import NrrdError, NrrdParseError, NrrdWriteError
+from .space import (
+    SpaceTransform,
+    build_space_transform,
+    parse_space_directions,
+    parse_space_origin,
+)
 from .model import (
     DOMAIN_KINDS,
     NrrdDocument,
@@ -32,11 +38,13 @@ __all__ = [
     "ConversionReport", "DOMAIN_KINDS", "NRRD_DEFAULT_LIMITS", "NrrdDocument",
     "NrrdError", "NrrdParseError", "NrrdWriteError", "OverflowPolicy",
     "PreservationIssue", "PreservationReport", "RoundingPolicy",
-    "axis_sizes", "convert_dtype", "convert_endian", "decode_nrrd_data",
-    "dump", "dumps", "element_count", "encode_nrrd_data", "get_array",
-    "get_dimension", "get_encoding", "is_compressed", "load", "load_nrrd",
-    "loads", "nrrd_installed_workflow", "preservation_report", "probe",
-    "probe_nrrd", "reshape_nrrd_array", "roundtrip", "validate", "write_nrrd",
+    "SpaceTransform",
+    "axis_sizes", "build_space_transform", "convert_dtype", "convert_endian",
+    "decode_nrrd_data", "dump", "dumps", "element_count", "encode_nrrd_data",
+    "get_array", "get_dimension", "get_encoding", "is_compressed", "load",
+    "load_nrrd", "loads", "nrrd_installed_workflow", "parse_space_directions",
+    "parse_space_origin", "preservation_report", "probe", "probe_nrrd",
+    "reshape_nrrd_array", "roundtrip", "validate", "write_nrrd",
 ]
 
 __version__ = "0.2.0.dev0"
