@@ -1,5 +1,12 @@
 """Production Jupyter Notebook API for nbformat 4.0 through 4.5."""
 
+from .adapters import (
+    AncillaryResource,
+    ExportAdapter,
+    ExportResult,
+    MarkdownExporter,
+    PythonScriptExporter,
+)
 from .analytics import (
     ipynb_average_source_length,
     ipynb_cell_type_histogram,
@@ -118,6 +125,7 @@ from .security import (
 from .validation import validate, validate_notebook, validate_notebook_schema
 
 __all__ = [
+    "AncillaryResource",
     "AttachmentChange",
     "AttachmentManager",
     "AttachmentReferencePolicy",
@@ -199,6 +207,8 @@ __all__ = [
     "dump",
     "dumps",
     "ensure_cell_id",
+    "ExportAdapter",
+    "ExportResult",
     "get_cell_count",
     "get_code_cells",
     "get_markdown_cells",
@@ -212,9 +222,11 @@ __all__ = [
     "ipynb_output_type_histogram",
     "load",
     "load_ipynb",
+    "MarkdownExporter",
     "loads",
     "probe",
     "probe_ipynb",
+    "PythonScriptExporter",
     "output_from_dict",
     "output_metadata",
     "plan_downgrade",

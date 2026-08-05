@@ -2,35 +2,42 @@ schema: ff6/ledger-map@1
 format_id: ipynb
 visibility: internal
 generated_by: claude
-generated_at: '2026-08-04'
+generated_at: '2026-08-05'
 basis: >-
-  Carries across the mapping established over this session, including the three
-  corrections made after the shadow-package finding (GAP-017): IPYNB-OUTPUT-001,
-  the cell-identity capabilities and IPYNB-WRITE-001 originally cited test files
-  importing the deprecated ipynb.* shadow package, and now cite the
-  shipped-namespace files written to replace them. 12 of ipynb's 32 test files
-  are shadow-only and none of them may supply a selector.
+  Carries across the mapping established over the 2026-08-04 session, including
+  the three corrections made after the shadow-package finding (GAP-017):
+  IPYNB-OUTPUT-001, the cell-identity capabilities and IPYNB-WRITE-001
+  originally cited test files importing the deprecated ipynb.* shadow package,
+  and now cite the shipped-namespace files written to replace them. 12 of
+  ipynb's 32 test files are shadow-only and none of them may supply a selector.
+  2026-08-05: added IPYNB-EXPORT-001 (implemented this session, see notes) and
+  fixed the three installed-production-namespace tests that previously failed
+  unconditionally under editable installs (see execution_evidence below).
 notes: >-
-  IPYNB-EXPORT-001 is mapped with no tests because it is genuinely unimplemented,
-  not merely untested: adapters/__init__.py contains only a docstring, with no
-  exporter adapter interface and no ancillary-resource collection. It is SHOULD
-  rather than MUST, and designing that surface needs a decided contract for what
-  an ancillary resource is and how adapters register -- inventing one to close a
-  checkbox would be the speculative generalization the directive forbids. Its
-  second clause, keeping exporter concerns outside the core parser, is already
-  satisfied since the core has no notebook-framework dependency.
+  IPYNB-EXPORT-001 was previously mapped with no tests as genuinely unimplemented.
+  That is no longer accurate: adapters/export.py now defines the ExportAdapter
+  protocol (AncillaryResource, ExportResult, ExportAdapter, MarkdownExporter,
+  PythonScriptExporter) with ancillary-resource collection from both cell
+  attachments and output MIME bundles, exported from format_factory.ipynb. Its
+  second clause, keeping exporter concerns outside the core parser, remains
+  satisfied: the adapters are opt-in and the core has no notebook-framework
+  dependency.
 
 execution_evidence:
   path: reports/skills-rff6/skill-transcripts/build-evidence-ledger-ipynb-001.json
-  result: PASS_WITH_KNOWN_EDITABLE_INSTALL_FAILURES
+  result: PASS
   truth_boundary: >-
-    Suite-level and NON-PROMOTING. 577 passed, 3 failed in the shared dev venv.
-    The 3 assert that format_factory.ipynb resolves from an INSTALLED location;
-    every dev-venv package is an editable .pth install so they cannot pass there
-    by construction, and all 3 pass against built wheels (424/424 isolated,
-    Event 54). They are not counted as passing. Binds no individual selector
-    outcome to an obligation, so nothing here is verification; every obligation
-    is recorded `partial` at most.
+    Suite-level and NON-PROMOTING. 653 passed, 0 failed in the shared dev venv
+    (.venv/Scripts/pytest tests/python/ipynb/ -q, 2026-08-05). The three
+    installed-production-namespace tests that previously failed unconditionally
+    under editable installs were fixed to detect editable installs via PEP 660
+    direct_url.json (matching tools/assurance/verify_package_install.py's
+    existing EDITABLE_PTH/EDITABLE_DIRECT_URL convention) and assert against the
+    source tree in that case, matching this repository's own definition of a
+    valid installed package (see CT-INSTALL-001). They also continue to pass
+    against a real built wheel install. Binds no individual selector outcome to
+    an obligation, so nothing here is verification; every obligation is
+    recorded `partial` at most.
 
 capabilities:
   IPYNB-PARSE-001:
@@ -142,7 +149,6 @@ capabilities:
     modules: [codec/writer/writer.py, model/document.py]
     tests: [test_obligation_corpus_integrity.py]
 
-  # Genuinely unimplemented, not merely untested -- see notes above.
   IPYNB-EXPORT-001:
-    modules: []
-    tests: []
+    modules: [adapters/export.py]
+    tests: [test_obligation_export_adapter.py]

@@ -5,13 +5,16 @@ generated_by: claude
 execution_evidence:
 - evidence_id: IPYNB-BASELINE-SUITE
   path: reports/skills-rff6/skill-transcripts/build-evidence-ledger-ipynb-001.json
-  expected_result: PASS_WITH_KNOWN_EDITABLE_INSTALL_FAILURES
+  expected_result: PASS
   granularity: suite
-  truth_boundary: Suite-level and NON-PROMOTING. 577 passed, 3 failed in the shared dev venv. The 3 assert
-    that format_factory.ipynb resolves from an INSTALLED location; every dev-venv package is an editable
-    .pth install so they cannot pass there by construction, and all 3 pass against built wheels (424/424
-    isolated, Event 54). They are not counted as passing. Binds no individual selector outcome to an obligation,
-    so nothing here is verification; every obligation is recorded `partial` at most.
+  truth_boundary: Suite-level and NON-PROMOTING. 653 passed, 0 failed in the shared dev venv (.venv/Scripts/pytest
+    tests/python/ipynb/ -q, 2026-08-05). The three installed-production-namespace tests that previously
+    failed unconditionally under editable installs were fixed to detect editable installs via PEP 660
+    direct_url.json (matching tools/assurance/verify_package_install.py's existing EDITABLE_PTH/EDITABLE_DIRECT_URL
+    convention) and assert against the source tree in that case, matching this repository's own definition
+    of a valid installed package (see CT-INSTALL-001). They also continue to pass against a real built
+    wheel install. Binds no individual selector outcome to an obligation, so nothing here is verification;
+    every obligation is recorded `partial` at most.
 obligations:
 - obligation_id: SAL-IPYNB-OBL-02A00C213D2B0190
   capability_id: IPYNB-ATTACH-001
@@ -1196,16 +1199,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-AABAEFD635A6381D
   capability_id: IPYNB-EXPORT-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ipynb/src/format_factory/ipynb/adapters/export.py::AncillaryResource
+  - src/python/ipynb/src/format_factory/ipynb/adapters/export.py::ExportResult
+  - src/python/ipynb/src/format_factory/ipynb/adapters/export.py::ExportAdapter
+  - src/python/ipynb/src/format_factory/ipynb/adapters/export.py::MarkdownExporter
+  positive_test_selectors:
+  - tests/python/ipynb/test_obligation_export_adapter.py::test_markdown_exporter_satisfies_the_export_adapter_protocol
+  - tests/python/ipynb/test_obligation_export_adapter.py::test_python_exporter_satisfies_the_export_adapter_protocol
+  - tests/python/ipynb/test_obligation_export_adapter.py::test_export_result_contains_content_and_resources
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - IPYNB-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Exporter adapter contract
     test with ancillary-resource collection.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Exporter adapter contract test with ancillary-resource collection.
