@@ -34,6 +34,14 @@
       "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE: it names the exact positive test selectors proving notes (priority/category/applies_to, attaching at file/group/unit level), mrk inline-span annotation, and sm/em overlapping-span markers (proven both crossing another inline element and with document order preserved across a round trip, and surviving target creation from source). Also covers the ITS module's two namespaces: the XLIFF 2.1 itsm:2.1 attribute mapping directly, and the W3C ITS namespace itself via the already-proven namespace-agnostic extension-preservation mechanism (no dedicated its:-element fixture). SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-XLIFF-OBL-44186566A8BE9B26, SAL-XLIFF-OBL-B3D1B1A5CBD86240, SAL-XLIFF-OBL-CF6EB3C804324A1C, and SAL-XLIFF-OBL-DA68F5DEF1A61582 only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "XLIFF-PRESERVATION-MODE-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-xliff-preservation-mode-001.json",
+      "sha256": "3ce322c7f4990e64fa3573f6ebc57fb2cccf08767f18604bce82078c88136ec2",
+      "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE: it names the exact positive test selectors proving codec/writer/writer.py's dumps()/ dump() now accept a keyword-only mode: PreservationMode parameter (LOSSLESS, the unchanged historical default; CANONICAL, which drops every ExtensionNode in the tree before serializing) and that codec.preservation.check_preservation() returns a LossReport disclosing exactly what CANONICAL mode would drop, without serializing. Scope is explicit and tested as a boundary, not just documented: CANONICAL mode drops ExtensionNode content at every tree level (document/file/group/unit/segment) but leaves every entry in the generic attributes dicts untouched in both modes, since this model has no separate vendor-vs-standard attribute distinction for a canonical regeneration to act on. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-XLIFF-OBL-A9AF9198E92EA6F9 and SAL-XLIFF-OBL-F920057AE26D1B4F only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "XLIFF-QA-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -61,7 +69,7 @@
   "format_id": "xliff",
   "input_digests": {
     "compiled_contract": "72b4fc502116a6df682bbb606e42fe2350d698d07b681a52604f6febe268fca4",
-    "implementation_evidence": "ae90fc1d6e8fca2eef5a1f7c5f32c5893ff71f7fe16433b7d98c728df07dccda",
+    "implementation_evidence": "4719962272871140b0199e57625d2d4e41d0a3bbcd04701b2ff392b853df7c82",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "6a66a15d1dba9f0b205634bae4437965fe0ac12a92a95a7c902ca289d1a9474b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -3452,14 +3460,23 @@
     },
     {
       "capability_id": "XLIFF-PRESERVE-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Confirmed gap, not an audit backlog: dumps()/dump() take no preservation-mode parameter at all -- there is exactly one output path, which always serializes the ExtensionNode/Note/Segment/Unit tree exactly as constructed. There is no separate CANONICAL regeneration path that could drop unmodeled content, so there is nothing for an explicit LOSSLESS-vs-CANONICAL caller choice to select between. The same architecture and the same confirmed-absent API were independently found in UBL's writer this session (UBL-PRESERVE-001's equivalent obligation) -- both packages serialize a raw tree with a single output path and no separate canonical-regeneration mode."
+      "execution_evidence_ids": [
+        "XLIFF-PRESERVATION-MODE-SELECTOR-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "dumps()/dump() now accept a keyword-only mode: PreservationMode parameter (codec/preservation.py). LOSSLESS is the default and is byte-identical to this function's pre-existing behavior -- no existing caller's output changes. CANONICAL walks the tree (document/file/group/unit/segment) and drops every ExtensionNode before serializing, giving callers the explicit LOSSLESS-vs-CANONICAL choice the obligation requires. Scope is documented, not silently narrowed: this model's only modeled/unmodeled distinction is ExtensionNode: the generic attributes dicts on Group/Unit/Segment/ XliffFile are preserved in both modes, since nothing in this model marks any entry there as vendor-only versus standard."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_obligation_preservation_mode.py::TestPreservationModeDefault::test_unknown_mode_string_rejected_by_type"
+      ],
       "obligation_id": "SAL-XLIFF-OBL-A9AF9198E92EA6F9",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/xliff/test_obligation_preservation_mode.py::TestPreservationModeDefault::test_default_mode_is_lossless",
+        "tests/python/xliff/test_obligation_preservation_mode.py::TestPreservationModeCanonical::test_canonical_mode_drops_all_extension_levels",
+        "tests/python/xliff/test_obligation_preservation_mode.py::TestPreservationModeCanonical::test_canonical_mode_drops_segment_level_extension",
+        "tests/python/xliff/test_obligation_preservation_mode.py::TestPreservationModeCanonical::test_canonical_mode_preserves_all_attributes"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -3468,9 +3485,13 @@
           "Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps",
+        "src/python/xliff/src/format_factory/xliff/codec/preservation.py::PreservationMode",
+        "src/python/xliff/src/format_factory/xliff/codec/preservation.py::canonicalize"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-MODEL-001",
@@ -4845,14 +4866,22 @@
     },
     {
       "capability_id": "XLIFF-PRESERVE-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Confirmed gap, not an audit backlog: no LossReport/check_preservation-style API exists anywhere in this package. Since dumps()/dump() always serialize the tree exactly as constructed (see SAL-XLIFF-OBL-A9AF9198E92EA6F9), there is currently no regeneration path capable of losing content for such a report to describe -- but the obligation requires the reporting API to exist as a first-class callable, which it does not."
+      "execution_evidence_ids": [
+        "XLIFF-PRESERVATION-MODE-SELECTOR-PROOF"
       ],
+      "implemented_behavior": [
+        "check_preservation(document) -> LossReport is now a first-class callable (codec/preservation.py), closing the gap this obligation named directly: dumps()/dump() gained a real CANONICAL regeneration path (SAL-XLIFF-OBL-A9AF9198E92EA6F9) for check_preservation() to describe. It walks the in-memory tree (no serialization) and reports is_lossless, dropped_count, dropped_tags, and a human-readable detail string naming exactly which ExtensionNode tags CANONICAL mode would drop -- proven against both hand-built documents and documents produced by the real reader (loads())."
+      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-F920057AE26D1B4F",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/xliff/test_obligation_preservation_mode.py::TestCheckPreservation::test_clean_document_reports_lossless",
+        "tests/python/xliff/test_obligation_preservation_mode.py::TestCheckPreservation::test_document_with_extensions_reports_lossy",
+        "tests/python/xliff/test_obligation_preservation_mode.py::TestCheckPreservation::test_check_preservation_matches_canonicalize_drop_count",
+        "tests/python/xliff/test_obligation_preservation_mode.py::TestLoadedDocumentPreservationReport::test_real_parsed_extension_reports_lossy",
+        "tests/python/xliff/test_obligation_preservation_mode.py::TestLoadedDocumentPreservationReport::test_real_document_without_extensions_reports_lossless"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -4861,9 +4890,12 @@
           "Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/xliff/src/format_factory/xliff/codec/preservation.py::check_preservation",
+        "src/python/xliff/src/format_factory/xliff/codec/preservation.py::LossReport"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-SEC-001",
@@ -4905,11 +4937,13 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-lifecycle-io-001.json": "02856c6f0ad09cf7b0352b9b777331dc5f6e2096e5f6576dbfe39f997669372d",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-merge-audit-001.json": "ad52bf9234b0abdb222fca9ca32f9fca835f0d73f2cab7e0709aca7a81e9c29a",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-notes-annotations-001.json": "0a5ffae1a5449741f166f644c5fce33059572098a8ab9624573162869da8eefd",
+    "reports/skills-rff6/skill-transcripts/product-source-task-xliff-preservation-mode-001.json": "3ce322c7f4990e64fa3573f6ebc57fb2cccf08767f18604bce82078c88136ec2",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-qa-checks-001.json": "00a6d7c1b4d2fc48359f0484a08d0d639ee8fe136b11904870bd1acdda0e4d5c",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-segment-split-join-001.json": "16e92d9df77d60b1ffb85830f63759c78034e3b5168faabc58102b168c1c904d",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-state-transitions-001.json": "368a286339e4990afa645543f86d2b1968bfc693706a6c170b366fecc18f432b",
+    "src/python/xliff/src/format_factory/xliff/codec/preservation.py": "117c0c1dd41f34535267d67b1d387302ac3e5d16af927a5a44a58ed506910768",
     "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py": "a9c296cbdfb6da4d2ba4d4621cb1d69e002f5ce85047aca1a77a3426c55ded7c",
-    "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py": "41c5a9168d0e2bb725faaa820dd7793b5e76a6935d8bc81ada0629ebd3210b6b",
+    "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py": "88109c0eeb3db97b7c73f92ee2f069d07b8b5790d4c376a0f70a3cc80ebad954",
     "src/python/xliff/src/format_factory/xliff/merge.py": "c16a0916c2a7ddaeb49dd200fbe89e4a0b08f0ca19dd5177f7001733c0882c1b",
     "src/python/xliff/src/format_factory/xliff/model/document.py": "70b4173911c55f8ebb068cff6aefbb34fadbe2577793ba5147e5e68652db4bbf",
     "src/python/xliff/src/format_factory/xliff/model/inline.py": "044d04957bcc6db867494411063619c0640e152012285f744a3f2ef7d41058c3",
@@ -4924,6 +4958,7 @@
     "tests/python/xliff/test_obligation_merge_adapter.py": "8ab808796f526b4497037ff207d9924382fe6833689529377210a80e60d95e88",
     "tests/python/xliff/test_obligation_module_coverage.py": "b83ec2190483e437fc5bac89611cdbefb85dbc1481fd6d936ad97edf2acd38ed",
     "tests/python/xliff/test_obligation_notes_and_annotations.py": "357ae9aace9aab3cbb6bcda064a928b4934ccd7b6720094452aaedd75b69e587",
+    "tests/python/xliff/test_obligation_preservation_mode.py": "f30f484eed1a8585828f01fb325a79f22eb0138633afbc872629a67841f140fe",
     "tests/python/xliff/test_obligation_qa_checks.py": "41662c596cd1ccae6ad779fadccad83b97a5263e2b8db4cca28f00d126de8f4c",
     "tests/python/xliff/test_obligation_state_transitions.py": "eb2fb6fa0f4503175da1904986563ca1a1ee97f317067a2d29466c5c35c9c1bf",
     "tests/python/xliff/test_production_namespace.py": "907de371555ded7c152d23d9748884e27915eb7ca93ffde5e10659e6266448d6"
@@ -4931,12 +4966,11 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 18,
-      "missing": 2,
+      "implemented": 20,
       "partial": 122
     },
     "total": 142,
-    "unresolved": 124
+    "unresolved": 122
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

@@ -22,6 +22,7 @@ from ...model import (
     XliffFile,
 )
 from ...security import effective_limits
+from ..preservation import PreservationMode, canonicalize
 from ..reader import SUPPORTED_VERSIONS, XLIFF_NAMESPACE
 
 
@@ -156,10 +157,22 @@ def _write_file(parent: ET.Element, value: XliffFile) -> None:
 def dumps(
     document: XliffDocument,
     *,
+    mode: PreservationMode = PreservationMode.LOSSLESS,
     profile: str | None = None,
     limits: ResourceLimits | None = None,
 ) -> str:
-    """Serialize canonical UTF-8 XLIFF without formatting mixed content."""
+    """Serialize canonical UTF-8 XLIFF without formatting mixed content.
+
+    ``mode`` selects LOSSLESS (default; the tree is serialized exactly as
+    constructed, unchanged from this function's historical behavior) or
+    CANONICAL (every ``ExtensionNode`` is dropped before serializing --
+    see ``codec.preservation`` for what is and is not eligible to drop).
+    """
+
+    if mode == PreservationMode.CANONICAL:
+        document, _dropped = canonicalize(document)
+    elif mode != PreservationMode.LOSSLESS:
+        raise XliffWriteError(f"unknown preservation mode: {mode!r}")
 
     version = profile or document.version
     if version not in SUPPORTED_VERSIONS:
@@ -202,10 +215,11 @@ def dump(
     document: XliffDocument,
     destination: TextDestination,
     *,
+    mode: PreservationMode = PreservationMode.LOSSLESS,
     profile: str | None = None,
     limits: ResourceLimits | None = None,
 ) -> None:
-    data = dumps(document, profile=profile, limits=limits)
+    data = dumps(document, mode=mode, profile=profile, limits=limits)
     if isinstance(destination, (str, PathLike)):
         try:
             Path(destination).write_text(data, encoding="utf-8", newline="\n")

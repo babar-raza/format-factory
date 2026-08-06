@@ -1,0 +1,66 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-preservation-mode-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T17:00:00Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_PRESERVATION_MODE_001",
+    "task_kind": "genuine-new-capability",
+    "root_cause": "XLIFF-PRESERVE-001's two obligations were confirmed genuinely unbuilt in an earlier tick this session: dumps()/dump() had exactly one output path with no LOSSLESS-vs-CANONICAL caller choice, and no LossReport/check_preservation-style API existed anywhere in the package. The identical gap was independently confirmed in UBL's parallel obligation. This tick closed XLIFF's half with real production source.",
+    "obligation_targeted": "SAL-XLIFF-OBL-A9AF9198E92EA6F9, SAL-XLIFF-OBL-F920057AE26D1B4F",
+    "acceptance_evidence": "tests/python/xliff/test_obligation_preservation_mode.py (new, 18 tests)",
+    "regression_tier": "full XLIFF package suite (tests/python/xliff)"
+  },
+  "execution_steps": [
+    "1. Read model/document.py and codec/writer/writer.py in full to find what this model already distinguishes as modeled vs unmodeled content. Found ExtensionNode (an explicit typed slot for 'an unknown or not-yet-typed namespaced XML subtree') attached at document/file/group/unit level, plus a separate extensions list on Segment -- the one place this model already draws that line. Attributes are NOT similarly distinguished: every Group/Unit/Segment/XliffFile.attributes dict holds both standard and vendor-custom attributes together with no marker for which is which.",
+    "2. Scoped the build honestly around that finding rather than inventing a new modeled/unmodeled split: CANONICAL mode drops every ExtensionNode at every tree level; every attributes dict entry is preserved in both modes. Documented this explicitly in the new module's own docstring, matching this session's established GAP-008 practice (ipynb execution adapter, nrrd lazy payload access).",
+    "3. Built codec/preservation.py as a new, purely additive module: PreservationMode (StrEnum: LOSSLESS/CANONICAL, mirroring safetensors' PayloadAccessMode naming convention), LossReport (frozen slotted dataclass: is_lossless, dropped_count, dropped_tags, detail), canonicalize() (walks the tree via four small per-level helpers mirroring writer.py's own _write_segment/_write_unit/_write_group/_write_file structure, returns a new document with every ExtensionNode dropped plus the dropped tags in document order -- uses dataclasses.replace() so the original document's children lists are never mutated), and check_preservation() (calls canonicalize() and reports what it found, without serializing).",
+    "4. Threaded a keyword-only mode: PreservationMode = PreservationMode.LOSSLESS parameter through the actual exported codec/writer/writer.py dumps()/dump() (not a parallel unused API) -- LOSSLESS is a no-op preserving this function's exact historical behavior; CANONICAL calls canonicalize() before the existing serialization logic runs, unchanged otherwise. This directly satisfies the obligation's literal text ('dumps()/dump() take no preservation-mode parameter').",
+    "5. Smoke-tested manually before writing formal tests: built a document with extensions at every tree level, confirmed check_preservation() reports all four dropped tags, confirmed CANONICAL output omits them while LOSSLESS output contains them, confirmed the default (no mode= passed) equals explicit LOSSLESS, confirmed canonicalize() does not mutate the original document (list lengths on the source document unchanged after the call), confirmed a clean document with no extensions produces byte-identical LOSSLESS and CANONICAL output.",
+    "6. Caught one real correctness bug during smoke-testing, not by mypy or tests: writer.py's mode-validation branch used `mode is PreservationMode.CANONICAL` (identity comparison). Since PreservationMode is a StrEnum, a caller passing the plain string 'canonical' (equal by value, not identity) would incorrectly hit the 'unknown mode' error branch. Fixed by switching to `==`/`!=`, then added test_plain_string_matching_enum_value_is_accepted to lock the correct behavior in.",
+    "7. Ran ruff and mypy on all four changed/new files: both clean on the first pass after step 6's fix.",
+    "8. Wrote test_obligation_preservation_mode.py (18 tests): default-mode identity, LOSSLESS preserving every extension level, LOSSLESS dump/load roundtrip, unknown-mode rejection (both enum and plain-string paths), CANONICAL dropping every tree level including segment-level extensions, CANONICAL output still loading cleanly, CANONICAL as a no-op on extension-free documents, CANONICAL preserving all attributes (the documented scope boundary), canonicalize() not mutating the original document, canonicalize() returning tags in document order, check_preservation() on clean and lossy documents, check_preservation() matching canonicalize()'s drop count, and two tests against documents produced by the real loads() reader (not just hand-built fixtures) to prove the report works on genuinely parsed XML, not only synthetic dataclass trees.",
+    "9. One own-test bug found and fixed during the first run: test_canonical_mode_drops_segment_level_extension asserted the LOSSLESS output contained the tag name exactly once, but an XML element's tag legitimately appears twice (open and close tags) -- fixed the assertion to check presence, not count.",
+    "10. Ran the full xliff suite: 313 passed (295 baseline + 18 new), 0 regressions. Promoted both XLIFF-PRESERVE-001 obligations to implemented -- the third genuinely new (not citation-corrected) capability closure this session, after the ipynb execution adapter and nrrd lazy payload access."
+  ],
+  "allowed_files": [
+    "src/python/xliff/src/format_factory/xliff/codec/preservation.py",
+    "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py",
+    "src/python/xliff/src/format_factory/xliff/codec/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/__init__.py",
+    "tests/python/xliff/test_obligation_preservation_mode.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/src/format_factory/xliff/codec/preservation.py",
+    "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py",
+    "src/python/xliff/src/format_factory/xliff/codec/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/__init__.py",
+    "tests/python/xliff/test_obligation_preservation_mode.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_preservation_mode.py -v -- 18 passed",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 313 passed (295 baseline + 18 new), 0 regressions",
+    ".venv/Scripts/python -m ruff check <changed files> -- All checks passed",
+    ".venv/Scripts/python -m mypy src/python/xliff/src/format_factory/xliff/ -- Success: no issues found in 24 source files"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 2,
+    "obligations_total_for_format": 142,
+    "xliff_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against a reference XLIFF implementation for canonical-regeneration or loss-reporting semantics specifically. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_this_is_genuine_new_capability_not_evidence_correction": "codec/preservation.py (new module, ~140 lines) plus a real signature change to the exported dumps()/dump() and 18 new tests are new production source and test coverage this slice -- the third non-citation-correction closure this session, directly building the capability the obligations name rather than auditing pre-existing but uncited code.",
+    "scope_limitations_documented_honestly": "CANONICAL mode drops ExtensionNode content only, at every tree level. Every attributes dict entry (Group/Unit/Segment/XliffFile) is preserved in both modes, because this model has no separate standard-vs-vendor attribute distinction for a canonical regeneration to legitimately act on -- stated explicitly in the module's own docstring, not silently narrowed.",
+    "next_candidate": "UBL-PRESERVE-001's parallel gap (SAL-UBL-OBL-5A831127B0AA359F, SAL-UBL-OBL-79F230CE7F5852E9) is the natural next tick: UBL's model is fully generic (every element is XmlNode, no ExtensionNode-style typed/untyped split exists yet), so closing it honestly requires first deciding what 'canonical' means for a namespace-generic tree -- likely scoping CANONICAL mode around UBL's own ext:UBLExtensions extension-container mechanism (a real, spec-defined UBL concept for vendor/national-customization content) rather than inventing an arbitrary modeled/unmodeled split this model does not have."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

@@ -161,6 +161,28 @@ execution_evidence:
     execution-recovery directive's GAP-008 rule, not VERIFIED. Covers
     SAL-XLIFF-OBL-420141532D90D385 and SAL-XLIFF-OBL-49484112588B088B
     only; it supports no other obligation and promotes no product state.
+- evidence_id: XLIFF-PRESERVATION-MODE-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-preservation-mode-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike XLIFF-BASELINE-SUITE: it names the exact
+    positive test selectors proving codec/writer/writer.py's dumps()/
+    dump() now accept a keyword-only mode: PreservationMode parameter
+    (LOSSLESS, the unchanged historical default; CANONICAL, which drops
+    every ExtensionNode in the tree before serializing) and that
+    codec.preservation.check_preservation() returns a LossReport
+    disclosing exactly what CANONICAL mode would drop, without
+    serializing. Scope is explicit and tested as a boundary, not just
+    documented: CANONICAL mode drops ExtensionNode content at every tree
+    level (document/file/group/unit/segment) but leaves every entry in
+    the generic attributes dicts untouched in both modes, since this
+    model has no separate vendor-vs-standard attribute distinction for a
+    canonical regeneration to act on. SELF-CONSISTENT format_factory-only
+    evidence per the execution-recovery directive's GAP-008 rule, not
+    VERIFIED. Covers SAL-XLIFF-OBL-A9AF9198E92EA6F9 and
+    SAL-XLIFF-OBL-F920057AE26D1B4F only; it supports no other obligation
+    and promotes no product state.
 obligations:
 - obligation_id: SAL-XLIFF-OBL-009F2EB91831B248
   capability_id: XLIFF-SEC-001
@@ -2740,23 +2762,33 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-A9AF9198E92EA6F9
   capability_id: XLIFF-PRESERVE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
-  negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
-  missing_behavior:
-  - 'Confirmed gap, not an audit backlog: dumps()/dump() take no
-    preservation-mode parameter at all -- there is exactly one output
-    path, which always serializes the ExtensionNode/Note/Segment/Unit tree
-    exactly as constructed. There is no separate CANONICAL regeneration
-    path that could drop unmodeled content, so there is nothing for an
-    explicit LOSSLESS-vs-CANONICAL caller choice to select between. The
-    same architecture and the same confirmed-absent API were independently
-    found in UBL''s writer this session (UBL-PRESERVE-001''s equivalent
-    obligation) -- both packages serialize a raw tree with a single output
-    path and no separate canonical-regeneration mode.'
+  status: implemented
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps
+  - src/python/xliff/src/format_factory/xliff/codec/preservation.py::PreservationMode
+  - src/python/xliff/src/format_factory/xliff/codec/preservation.py::canonicalize
+  positive_test_selectors:
+  - tests/python/xliff/test_obligation_preservation_mode.py::TestPreservationModeDefault::test_default_mode_is_lossless
+  - tests/python/xliff/test_obligation_preservation_mode.py::TestPreservationModeCanonical::test_canonical_mode_drops_all_extension_levels
+  - tests/python/xliff/test_obligation_preservation_mode.py::TestPreservationModeCanonical::test_canonical_mode_drops_segment_level_extension
+  - tests/python/xliff/test_obligation_preservation_mode.py::TestPreservationModeCanonical::test_canonical_mode_preserves_all_attributes
+  negative_test_selectors:
+  - tests/python/xliff/test_obligation_preservation_mode.py::TestPreservationModeDefault::test_unknown_mode_string_rejected_by_type
+  execution_evidence_ids:
+  - XLIFF-PRESERVATION-MODE-SELECTOR-PROOF
+  implemented_behavior:
+  - 'dumps()/dump() now accept a keyword-only mode: PreservationMode
+    parameter (codec/preservation.py). LOSSLESS is the default and is
+    byte-identical to this function''s pre-existing behavior -- no
+    existing caller''s output changes. CANONICAL walks the tree
+    (document/file/group/unit/segment) and drops every ExtensionNode
+    before serializing, giving callers the explicit LOSSLESS-vs-CANONICAL
+    choice the obligation requires. Scope is documented, not silently
+    narrowed: this model''s only modeled/unmodeled distinction is
+    ExtensionNode: the generic attributes dicts on Group/Unit/Segment/
+    XliffFile are preserved in both modes, since nothing in this model
+    marks any entry there as vendor-only versus standard.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each preservation baseline behavior has a focused positive test and, where refusable, a negative
@@ -3797,19 +3829,30 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-F920057AE26D1B4F
   capability_id: XLIFF-PRESERVE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: implemented
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/preservation.py::check_preservation
+  - src/python/xliff/src/format_factory/xliff/codec/preservation.py::LossReport
+  positive_test_selectors:
+  - tests/python/xliff/test_obligation_preservation_mode.py::TestCheckPreservation::test_clean_document_reports_lossless
+  - tests/python/xliff/test_obligation_preservation_mode.py::TestCheckPreservation::test_document_with_extensions_reports_lossy
+  - tests/python/xliff/test_obligation_preservation_mode.py::TestCheckPreservation::test_check_preservation_matches_canonicalize_drop_count
+  - tests/python/xliff/test_obligation_preservation_mode.py::TestLoadedDocumentPreservationReport::test_real_parsed_extension_reports_lossy
+  - tests/python/xliff/test_obligation_preservation_mode.py::TestLoadedDocumentPreservationReport::test_real_document_without_extensions_reports_lossless
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
-  missing_behavior:
-  - 'Confirmed gap, not an audit backlog: no LossReport/check_preservation-style
-    API exists anywhere in this package. Since dumps()/dump() always
-    serialize the tree exactly as constructed (see SAL-XLIFF-OBL-A9AF9198E92EA6F9),
-    there is currently no regeneration path capable of losing content for
-    such a report to describe -- but the obligation requires the reporting
-    API to exist as a first-class callable, which it does not.'
+  execution_evidence_ids:
+  - XLIFF-PRESERVATION-MODE-SELECTOR-PROOF
+  implemented_behavior:
+  - 'check_preservation(document) -> LossReport is now a first-class
+    callable (codec/preservation.py), closing the gap this obligation
+    named directly: dumps()/dump() gained a real CANONICAL regeneration
+    path (SAL-XLIFF-OBL-A9AF9198E92EA6F9) for check_preservation() to
+    describe. It walks the in-memory tree (no serialization) and reports
+    is_lossless, dropped_count, dropped_tags, and a human-readable detail
+    string naming exactly which ExtensionNode tags CANONICAL mode would
+    drop -- proven against both hand-built documents and documents
+    produced by the real reader (loads()).'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each preservation baseline behavior has a focused positive test and, where refusable, a negative
