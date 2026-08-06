@@ -148,6 +148,51 @@ def test_node_and_depth_limits_are_enforced() -> None:
         loads(payload, limits=tight)
 
 
+def test_a_wide_sibling_flood_is_rejected_by_node_count_not_depth() -> None:
+    """The algorithmic-complexity guard is checked-arithmetic, not just a
+    depth cap: a document that is wide (many siblings) rather than deep must
+    still be refused, and specifically via the node-count limit -- proving
+    the walk counts and checks every node incrementally rather than only
+    bounding recursion depth."""
+    payload = _minimal("Invoice", extension="<a/>" * 500)
+    tight = ResourceLimits(
+        max_input_bytes=1_000_000,
+        max_output_bytes=1_000_000,
+        max_header_bytes=1,
+        max_decompressed_bytes=1_000_000,
+        max_compression_ratio=1,
+        max_entries=1_000_000,
+        max_nesting_depth=1_000,
+        max_xml_nodes=100,
+        max_tensor_count=1,
+    )
+
+    with pytest.raises(UblParseError, match="node limit"):
+        loads(payload, limits=tight)
+
+
+def test_an_attribute_flood_on_one_element_is_rejected() -> None:
+    """Algorithmic complexity via attributes, not children: a single element
+    with many attributes must be refused by the attribute-count limit
+    independent of node count or nesting depth."""
+    attrs = " ".join(f'a{i}="x"' for i in range(500))
+    payload = _minimal("Invoice", extension=f"<a {attrs}/>")
+    tight = ResourceLimits(
+        max_input_bytes=1_000_000,
+        max_output_bytes=1_000_000,
+        max_header_bytes=1,
+        max_decompressed_bytes=1_000_000,
+        max_compression_ratio=1,
+        max_entries=100,
+        max_nesting_depth=1_000,
+        max_xml_nodes=1_000_000,
+        max_tensor_count=1,
+    )
+
+    with pytest.raises(UblParseError, match="attribute limit"):
+        loads(payload, limits=tight)
+
+
 def test_edit_invalidates_signature_assertion() -> None:
     xml = _minimal(
         "Invoice",

@@ -133,7 +133,7 @@
   "format_id": "ubl",
   "input_digests": {
     "compiled_contract": "41aec8cae7ec194c419ce7ac98ba0b5a3c67db3af0ff2a3c6b2f0e13594f62ab",
-    "implementation_evidence": "04e7a202b0c545823569ece5d632ce3ff20822bc77c23b74fc4ed54c0f4fb424",
+    "implementation_evidence": "05ddc0269217b139053ea89524f457e28a458fe3aa1d21026681fe80c3d81635",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "43298a744266dabae0cda8c7aa331317aef620515dec7784f1f5a186a97fe3b6",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -3451,30 +3451,35 @@
         "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Nesting depth, node count, and byte-size limits are enforced (same evidence as SAL-UBL-OBL-9817A4DE4754E298 in UBL-SEC-001), directly bounding the primary XML algorithmic-complexity attack surface (deeply nested or oversized documents). Python's arbitrary-precision integers mean size/count accumulation cannot silently overflow the way fixed-width arithmetic could in another language."
+        "_enforce_tree_limits walks the parsed tree with an explicit stack (not Python recursion, avoiding a stack-overflow-shaped complexity vector of its own) and checks node count, nesting depth, attribute count, and text bytes incrementally -- each counter is compared against its ceiling immediately after being updated, inside the walk, not after the full tree is built and counted. This is the 'checked arithmetic' guarantee in the sense used elsewhere this session: bounding growth before it becomes unbounded, not C-style overflow detection (Python's arbitrary-precision integers make silent wraparound impossible regardless). Depth was already proven; 2 new tests this slice prove the width-shaped and attribute-shaped complexity vectors specifically: a document with 500 sibling elements (wide, not deep) is refused via the node-count limit, and a single element carrying 500 attributes is refused via the attribute-count limit, each independent of the other limits. Entity-expansion-style attacks are a structurally different vector, already closed by unconditional DTD/entity rejection (a separate mechanism -- entities are disallowed outright, not merely size-bounded), not by this checked-arithmetic guard."
       ],
-      "missing_behavior": [
-        "No test specifically exercises 'checked arithmetic' as a distinct guarantee (e.g. an explicit overflow check independent of Python's native big-int semantics), and no test specifically targets an algorithmic-complexity attack vector beyond depth/size/count (e.g. quadratic-blowup entity-expansion-style attacks distinct from the already-rejected DTD/entity case). The limits mechanism exists and is tested; a dedicated complexity-attack-shaped test does not."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ubl/test_production_namespace.py::test_node_and_depth_limits_are_enforced",
+        "tests/python/ubl/test_production_namespace.py::test_a_wide_sibling_flood_is_rejected_by_node_count_not_depth",
+        "tests/python/ubl/test_production_namespace.py::test_an_attribute_flood_on_one_element_is_rejected"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-8396E06EA0EA75FC",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_node_and_depth_limits_are_enforced"
+        "tests/python/ubl/test_production_namespace.py::test_node_and_depth_limits_are_enforced",
+        "tests/python/ubl/test_production_namespace.py::test_a_wide_sibling_flood_is_rejected_by_node_count_not_depth",
+        "tests/python/ubl/test_production_namespace.py::test_an_attribute_flood_on_one_element_is_rejected"
       ],
       "proof_requirements": {
         "negative": [
-          "Selector-bound negative cases are not yet identified."
+          "Selector-bound negative cases are cited for depth, node-count, and attribute-count violations."
         ],
         "positive": [
           "Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::_parse",
+        "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::_enforce_tree_limits",
         "src/python/ubl/src/format_factory/ubl/security/limits.py::effective_limits"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-VALIDATE-001",
@@ -6209,17 +6214,17 @@
     "tests/python/ubl/test_obligation_temporal_projection_and_charges.py": "f9e50f7d338f9a96764972761953b1859153a10aff0e1c08668a5d5b179c1920",
     "tests/python/ubl/test_obligation_temporal_values.py": "6b280cba533c6d6370f06149257900b005784ff6702a10412c1d307a6a54f986",
     "tests/python/ubl/test_obligation_typed_projection.py": "2d035c4a83f5ff71729210eb83422f60c3d02a63c9f6b2dc92f3725f8d980b94",
-    "tests/python/ubl/test_production_namespace.py": "606bf80f422b5f0038624085f73fbe1bcc8abdfe118504e6f4bed5b957d8ee07"
+    "tests/python/ubl/test_production_namespace.py": "a4dbeab77322aaeb8d35b8c7cba5d8a173f1fbe5566924c32363157a3b171ce6"
   },
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 113,
+      "implemented": 114,
       "missing": 29,
-      "partial": 52
+      "partial": 51
     },
     "total": 194,
-    "unresolved": 81
+    "unresolved": 80
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

