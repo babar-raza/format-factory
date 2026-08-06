@@ -1,0 +1,58 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-lifecycle-io-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T13:20:00Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_LIFECYCLE_IO_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "XLIFF-LIFECYCLE-001 has the identical six-obligation structure as UBL-LIFECYCLE-001 (strict/tolerant mode, validate-as-callable, load path/stream/bytes, save path/stream/bytes+own-loader-accepts, deterministic serialization, detected/declared version), closed for UBL earlier this session. codec/reader/reader.py and codec/writer/writer.py already had complete load/loads/dump/dumps implementations and validation/validator.py's validate() already returned structured diagnostics, but the only shipped-namespace lifecycle test (test_stream_and_path_lifecycle) covered dump-to-stream/dump-to-path/load-from-path/probe, not load() from an actual binary stream object, not determinism, and not validate() called independently. XliffDocument (unlike UBL's XmlNode-tree model) is a mutable, typed dataclass with an existing plain `version: str` field but no detected_version at all.",
+    "obligation_targeted": "SAL-XLIFF-OBL-0CC8F5642F766D78, SAL-XLIFF-OBL-3901EF20FB3A778F, SAL-XLIFF-OBL-4847555DF5FC018E, SAL-XLIFF-OBL-7CC73B48A2DDD6E2, SAL-XLIFF-OBL-A8BDC1BEFD51DF8A",
+    "acceptance_evidence": "tests/python/xliff/test_obligation_lifecycle_io.py",
+    "regression_tier": "full XLIFF package suite (tests/python/xliff)"
+  },
+  "execution_steps": [
+    "1. Surveyed xliff's remaining obligations as the next sweep target (rotating attention after several ubl ticks), since xliff had the largest partial count (139) among all six formats and the least attention this session. XLIFF-LIFECYCLE-001's six obligations matched UBL-LIFECYCLE-001's structure exactly.",
+    "2. Read codec/reader/reader.py's _read_source (path/stream/bytes dispatch already implemented for load()) and codec/writer/writer.py's dumps()/dump(). Discovered an architectural asymmetry not present in UBL: dump()'s destination is a TEXT stream (TextDestination/TextIO), while load()'s stream source is BINARY -- confirmed against the existing test_stream_and_path_lifecycle reference test (which correctly uses StringIO for dump, not BytesIO) before writing any new tests, avoiding a wrong assumption carried over from the UBL slice.",
+    "3. Added XliffDocument.detected_version (new field, reader-only, set once by _parse() from the source file's actual version attribute) mirroring the NRRD/UBL detected-vs-declared pattern. Since XliffDocument is a mutable (non-frozen) dataclass, no with_root()-style reconstruction exists to accidentally reset the field on an edit -- a plain `document.version = ...` assignment naturally leaves detected_version untouched, unlike UBL's frozen tree model which needed an explicit with_root() fix.",
+    "4. Ran ruff, mypy, and the full xliff suite before writing new tests: 275 passed, unchanged (0 regressions from the new field).",
+    "5. Wrote tests/python/xliff/test_obligation_lifecycle_io.py (20 tests): load() from path/stream/bytes with cross-form agreement; dump()/dumps() to path/text-stream/bytes with the library's own loader proven to accept every save form's output; two determinism proofs (repeated calls, separate destinations) plus a load-save-load cycle; three validate()-as-callable tests; and detected_version/declared-version tests (fresh construction has none, loading records the actual version, mutating `version` never touches detected_version, and dumps() refuses -- XliffWriteError -- rather than silently rewriting an unsupported version like '1.2').",
+    "6. First run failed two tests (dump-to-stream and own-loader-acceptance) with a TypeError -- both had used BytesIO for the dump() destination, which writer.py rejects (`stream.write(data)` where data is str). Corrected both to use StringIO for the dump destination and loads() (not load(BytesIO(...))) for the reload, matching the confirmed TextDestination/BinarySource asymmetry.",
+    "7. All 20 passed after the fix. Re-ran the full XLIFF suite: 295 passed (275 baseline + 20 new, 0 regressions). ruff and mypy clean (23 source files).",
+    "8. Left the sixth XLIFF-LIFECYCLE-001 obligation (strict/tolerant mode) genuinely unpromoted, matching UBL's identical finding: mode='preservation' is accepted but has no distinct effect from strict, no recovery_actions field, no actual recovery logic. Narrowed its missing_behavior from the generic placeholder to name this exact, specific gap. Promoted the other five."
+  ],
+  "allowed_files": [
+    "src/python/xliff/src/format_factory/xliff/model/document.py",
+    "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py",
+    "tests/python/xliff/test_obligation_lifecycle_io.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/src/format_factory/xliff/model/document.py",
+    "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py",
+    "tests/python/xliff/test_obligation_lifecycle_io.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_lifecycle_io.py -v -- 20 passed",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 295 passed (275 baseline + 20 new, 0 regressions)",
+    ".venv/Scripts/python -m ruff check src/python/xliff/src/format_factory/xliff/model/document.py src/python/xliff/src/format_factory/xliff/codec/reader/reader.py tests/python/xliff/test_obligation_lifecycle_io.py -- All checks passed",
+    ".venv/Scripts/python -m mypy src/python/xliff/src/format_factory/xliff/ -- Success: no issues found in 23 source files"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 5,
+    "obligations_total_for_format": 142,
+    "xliff_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently verified against an external XLIFF CAT/lifecycle tool. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_only_five_of_six_lifecycle_obligations_promoted": "The sixth (strict/tolerant read mode with reported recovery actions) is a genuine, unbuilt gap identical in shape to UBL-LIFECYCLE-001's equivalent finding this same session: mode='preservation' exists but has no distinct recovery behavior. Not forced."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

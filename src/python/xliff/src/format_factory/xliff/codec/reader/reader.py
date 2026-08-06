@@ -254,6 +254,7 @@ def _parse(data: bytes, limits: ResourceLimits) -> XliffDocument:
         target_language=root.get("trgLang"),
         children=children,
         attributes=_unknown_attributes(root, {"version", "srcLang", "trgLang"}),
+        detected_version=version,
     )
 
 

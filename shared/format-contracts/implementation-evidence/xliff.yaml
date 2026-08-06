@@ -81,6 +81,25 @@ execution_evidence:
     and SAL-XLIFF-OBL-7764F24576A4DC32 (partially -- length violations are
     not implemented) only; it supports no other obligation and promotes no
     product state.
+- evidence_id: XLIFF-LIFECYCLE-IO-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-lifecycle-io-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike XLIFF-BASELINE-SUITE: it names the exact
+    positive and negative test selectors proving load() across
+    path/stream/bytes, dump()/dumps() across path/text-stream/bytes with
+    the library's own loader accepting every save form's output,
+    deterministic serialization (repeated calls, separate destinations,
+    and a load-save-load cycle all identical), validate() as a callable
+    returning a structured report rather than raising, and detected vs.
+    declared version (reader-only detected_version distinct from the
+    mutable version field). SELF-CONSISTENT format_factory-only evidence
+    per the execution-recovery directive's GAP-008 rule, not VERIFIED.
+    Covers SAL-XLIFF-OBL-0CC8F5642F766D78, SAL-XLIFF-OBL-3901EF20FB3A778F,
+    SAL-XLIFF-OBL-4847555DF5FC018E, SAL-XLIFF-OBL-7CC73B48A2DDD6E2, and
+    SAL-XLIFF-OBL-A8BDC1BEFD51DF8A only; it supports no other obligation
+    and promotes no product state.
 obligations:
 - obligation_id: SAL-XLIFF-OBL-009F2EB91831B248
   capability_id: XLIFF-SEC-001
@@ -301,11 +320,15 @@ obligations:
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - Strict mode (loads()/load()'s default) rejects malformed input with a diagnostic (XliffParseError),
+    proven by test_dtd_and_entity_declarations_are_rejected and similar. mode="preservation" exists but
+    has no distinct recovery behavior from strict -- investigated directly (matching UBL-LIFECYCLE-001's
+    identical finding for the sibling ubl obligation this same session) and confirmed not built.
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - 'A genuine tolerant/recovery read mode does not exist: mode="preservation" is accepted but has no
+    distinct effect on parsing versus strict (no recovery_actions field, no actual recovery logic). The
+    obligation requires "recovers where the format permits, with recovery actions reported" -- neither
+    exists yet.'
   proof_requirements:
     positive:
     - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative
@@ -314,26 +337,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-0CC8F5642F766D78
   capability_id: XLIFF-LIFECYCLE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
-  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps
-  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
-  negative_test_selectors: []
+  - tests/python/xliff/test_obligation_lifecycle_io.py::test_validate_returns_a_structured_report_not_an_exception
+  - tests/python/xliff/test_obligation_lifecycle_io.py::test_validate_is_callable_independently_of_load_or_dump
+  negative_test_selectors:
+  - tests/python/xliff/test_obligation_lifecycle_io.py::test_validate_reports_a_diagnostic_rather_than_raising_for_a_semantic_issue
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-LIFECYCLE-IO-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - 'validate() is a plain callable taking an already-in-memory XliffDocument and returning a
+    ValidationReport -- a semantic problem (e.g. an unsupported profile) is a reported finding a caller
+    reads from the result, never an exception raised out of validate() itself, and it is invocable
+    independently of load()/dump() on any document a caller already holds.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative
@@ -993,26 +1013,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-3901EF20FB3A778F
   capability_id: XLIFF-LIFECYCLE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
   - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
   - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
-  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps
-  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump
   positive_test_selectors:
+  - tests/python/xliff/test_obligation_lifecycle_io.py::test_load_from_a_filesystem_path
+  - tests/python/xliff/test_obligation_lifecycle_io.py::test_load_from_a_readable_stream
+  - tests/python/xliff/test_obligation_lifecycle_io.py::test_load_from_in_memory_bytes
+  - tests/python/xliff/test_obligation_lifecycle_io.py::test_loads_from_in_memory_bytes
+  - tests/python/xliff/test_obligation_lifecycle_io.py::test_all_three_load_forms_agree
   - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
   negative_test_selectors: []
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-LIFECYCLE-IO-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - 'load() accepts a filesystem path, a readable binary stream, or in-memory bytes (via _read_source''s
+    three-way dispatch); loads() accepts in-memory bytes or str directly. All forms return the same
+    root document/model type for identical input, proven by comparing unit counts and version across
+    load forms.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative
@@ -1282,26 +1303,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-4847555DF5FC018E
   capability_id: XLIFF-LIFECYCLE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
   - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps
   - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
+  - tests/python/xliff/test_obligation_lifecycle_io.py::test_dump_to_a_filesystem_path_and_reload
+  - tests/python/xliff/test_obligation_lifecycle_io.py::test_dump_to_a_writable_stream_and_reload
+  - tests/python/xliff/test_obligation_lifecycle_io.py::test_dumps_to_bytes_and_reload
+  - tests/python/xliff/test_obligation_lifecycle_io.py::test_the_librarys_own_loader_accepts_every_save_forms_output
   - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
   negative_test_selectors: []
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-LIFECYCLE-IO-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - 'dump() writes to a filesystem path or a writable TEXT stream (TextDestination -- an intentional
+    asymmetry with load()''s binary-stream source, not a bug); dumps() serializes to a str. Each of the
+    three save forms'' output is proven accepted by load()/loads() and re-validated, matching the
+    obligation''s own wording that the library''s own loader must accept the output.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative
@@ -2105,26 +2126,24 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-7CC73B48A2DDD6E2
   capability_id: XLIFF-LIFECYCLE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
   - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps
   - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  - tests/python/xliff/test_obligation_lifecycle_io.py::test_repeated_dumps_calls_on_one_unchanged_document_are_byte_identical
+  - tests/python/xliff/test_obligation_lifecycle_io.py::test_repeated_dump_to_path_calls_are_byte_identical
+  - tests/python/xliff/test_obligation_lifecycle_io.py::test_a_freshly_reloaded_document_serializes_identically_to_the_original
   negative_test_selectors: []
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-LIFECYCLE-IO-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - 'dumps()/dump() walk a fixed, ordered element tree built from the typed model with no unordered-
+    collection iteration in the serialization path, so repeated calls on one unchanged document -- to
+    bytes/str, or independently to two separate files -- are identical. Determinism holds across a
+    load-save-load cycle too, not merely within one in-memory object.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative
@@ -2624,26 +2643,30 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-A8BDC1BEFD51DF8A
   capability_id: XLIFF-LIFECYCLE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/model/document.py::XliffDocument
   - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
   - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps
-  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
-  negative_test_selectors: []
+  - tests/python/xliff/test_obligation_lifecycle_io.py::test_a_freshly_built_document_has_no_detected_version
+  - tests/python/xliff/test_obligation_lifecycle_io.py::test_loading_a_file_records_its_actual_declared_version_as_detected
+  - tests/python/xliff/test_obligation_lifecycle_io.py::test_mutating_version_never_touches_detected_version
+  - tests/python/xliff/test_obligation_lifecycle_io.py::test_repeated_round_trips_never_drift_the_declared_or_detected_version
+  negative_test_selectors:
+  - tests/python/xliff/test_obligation_lifecycle_io.py::test_dumps_refuses_rather_than_silently_rewriting_an_unsupported_version
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-LIFECYCLE-IO-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - 'XliffDocument.detected_version is set once, only by the reader''s _parse(), from the source file''s
+    actual version attribute; `version` is the mutable, currently-declared value dumps()/dump() will
+    write -- a plain field assignment (this model is not frozen) never touches detected_version, since
+    there is no reconstruction step to accidentally reset it through, unlike a tree-based model would
+    need. A freshly hand-built XliffDocument has detected_version=None. dumps() refuses (XliffWriteError)
+    rather than silently rewriting an unsupported declared version to a supported one -- no coercion
+    path exists.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative

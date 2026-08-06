@@ -132,6 +132,15 @@ class XliffDocument:
     children: list[XliffFile | ExtensionNode]
     attributes: dict[str, str] = field(default_factory=dict)
     namespace: str = "urn:oasis:names:tc:xliff:document:2.0"
+    #: The version this document's file actually declared, set once by the
+    #: reader at parse time (XLIFF-LIFECYCLE-001). `version` is the mutable,
+    #: currently-declared value dumps()/dump() will write; editing it (a
+    #: plain field assignment, since this model is not frozen) does not
+    #: touch `detected_version` -- there is no reconstruction step to
+    #: accidentally reset it through, unlike a frozen/tree-based model
+    #: would need. None on a document built directly in memory, since
+    #: nothing was detected.
+    detected_version: str | None = None
 
     @property
     def files(self) -> list[XliffFile]:

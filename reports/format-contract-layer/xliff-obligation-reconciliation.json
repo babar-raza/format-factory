@@ -10,6 +10,14 @@
       "truth_boundary": "SOURCE READ 2026-08-04 under the GAP-022 rule, updated 2026-08-05. Unlike ubl, xliff's CORE is genuine work: segmentation.py (217 LOC) implements split_segment, join_segments, SegmentMapping, spanning-code closure checks and fresh-id enforcement; inline.py, text_editing.py and the reader/writer are real. Those `partial` entries are defensible pending audit.\n2026-08-05 correction: the prior note here named the eight XLIFF 2.1 modules as \"...Resource Data, Change Tracking, Size and Length Restriction, Validation\" -- Change Tracking is not one of the eight the contract's own normative_rules name; the eighth is ITS (http://www.w3.org/2005/11/its). That error is fixed here rather than carried forward.\nmodules.py now gives XLIFF-MODULE-001 a programmatic coverage manifest covering all eight (Translation Candidates, Glossary, Format Style, Metadata, Resource Data, Size and Length Restriction, Validation, ITS), each PRESERVATION_ONLY with round-trip fixtures proving lossless preservation (see notes above). No typed per-module accessor exists yet, so no XLIFF-MODULE-001 obligation may be recorded above `partial`; this deepens the evidence behind `partial`, exactly like the UBL slices that moved zero obligations while making the evidence real rather than fictional. validation/validator.py still performs no schema validation, so the schema-validation clauses inside XLIFF-VALIDATE-001's `partial` entries remain overstated and still need per-obligation correction -- unchanged by this slice.\nXLIFF-NOTE-001, same session: no source change. Direct experiment first (before writing any test) showed reader.py's _parse_inline is generic over every inline tag, so mrk/sm/em already survive with their exact attributes and document-order position -- which is what an overlapping span requires, since it cannot be a nested element pair. The gap was proof, not implementation; XLIFF-NOTE-001 could not be recorded `partial` before because it had zero shipped-namespace selectors, not because the behavior was absent.\nXLIFF-QA-001, same session: qa.py is new source (unlike NOTE-001). Five of six named QA categories implemented with dedicated tests each; length violations explicitly left undone pending Size/Length module modeling, documented rather than stubbed. No QA-001 obligation may be recorded above `partial` -- a check existing is not the same as it being verified against every fixture the required_tests line names, and length is a real, acknowledged gap in the category set itself.\nXLIFF-MERGE-001, same session: real new source (merge.py), unlike NOTE-001. SHOULD-level, and it stays SHOULD-level satisfied at `partial`: the reference adapter proves the protocol works end to end (extraction, reversible skeleton, translated merge, drift detection and refusal) but is deliberately not a real-world format adapter -- the obligation's \"never claim generic extraction\" clause is precisely why no such claim is made here.\nSuite-level and NON-PROMOTING. The xliff suite is 265 passed with no failures (193 baseline + 22 + 11 + 25 + 14 new), but that number is still dominated by the ten shadow-package files; the shipped-namespace files now contribute 87 tests (15 + 22 + 11 + 25 + 14). A green suite here says very little about the package that would be released. Binds no individual selector outcome to an obligation, so nothing here is verification; every obligation is recorded `partial` at most."
     },
     {
+      "evidence_id": "XLIFF-LIFECYCLE-IO-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-xliff-lifecycle-io-001.json",
+      "sha256": "02856c6f0ad09cf7b0352b9b777331dc5f6e2096e5f6576dbfe39f997669372d",
+      "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE: it names the exact positive and negative test selectors proving load() across path/stream/bytes, dump()/dumps() across path/text-stream/bytes with the library's own loader accepting every save form's output, deterministic serialization (repeated calls, separate destinations, and a load-save-load cycle all identical), validate() as a callable returning a structured report rather than raising, and detected vs. declared version (reader-only detected_version distinct from the mutable version field). SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-XLIFF-OBL-0CC8F5642F766D78, SAL-XLIFF-OBL-3901EF20FB3A778F, SAL-XLIFF-OBL-4847555DF5FC018E, SAL-XLIFF-OBL-7CC73B48A2DDD6E2, and SAL-XLIFF-OBL-A8BDC1BEFD51DF8A only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "XLIFF-QA-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -29,7 +37,7 @@
   "format_id": "xliff",
   "input_digests": {
     "compiled_contract": "72b4fc502116a6df682bbb606e42fe2350d698d07b681a52604f6febe268fca4",
-    "implementation_evidence": "6ea987e797ee14a828653be839d07559ba340b79b6f4080e9d6a436e2b37dd4e",
+    "implementation_evidence": "855ed070d2bf977dabc2e453022a94f13a0e5ecef0da2e68772a127f7a6a3c59",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "6a66a15d1dba9f0b205634bae4437965fe0ac12a92a95a7c902ca289d1a9474b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -312,10 +320,10 @@
         "XLIFF-BASELINE-SUITE"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Strict mode (loads()/load()'s default) rejects malformed input with a diagnostic (XliffParseError), proven by test_dtd_and_entity_declarations_are_rejected and similar. mode=\"preservation\" exists but has no distinct recovery behavior from strict -- investigated directly (matching UBL-LIFECYCLE-001's identical finding for the sibling ubl obligation this same session) and confirmed not built."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+        "A genuine tolerant/recovery read mode does not exist: mode=\"preservation\" is accepted but has no distinct effect on parsing versus strict (no recovery_actions field, no actual recovery logic). The obligation requires \"recovers where the format permits, with recovery actions reported\" -- neither exists yet."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-0C477B7B6441FE75",
@@ -345,20 +353,20 @@
     {
       "capability_id": "XLIFF-LIFECYCLE-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-LIFECYCLE-IO-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "validate() is a plain callable taking an already-in-memory XliffDocument and returning a ValidationReport -- a semantic problem (e.g. an unsupported profile) is a reported finding a caller reads from the result, never an exception raised out of validate() itself, and it is invocable independently of load()/dump() on any document a caller already holds."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_obligation_lifecycle_io.py::test_validate_reports_a_diagnostic_rather_than_raising_for_a_semantic_issue"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-0CC8F5642F766D78",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_obligation_lifecycle_io.py::test_validate_returns_a_structured_report_not_an_exception",
+        "tests/python/xliff/test_obligation_lifecycle_io.py::test_validate_is_callable_independently_of_load_or_dump"
       ],
       "proof_requirements": {
         "negative": [
@@ -368,15 +376,11 @@
           "Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe",
-        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads",
-        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load",
-        "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps",
-        "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump"
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::validate"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-VALIDATE-001",
@@ -1256,20 +1260,22 @@
     {
       "capability_id": "XLIFF-LIFECYCLE-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-LIFECYCLE-IO-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "load() accepts a filesystem path, a readable binary stream, or in-memory bytes (via _read_source's three-way dispatch); loads() accepts in-memory bytes or str directly. All forms return the same root document/model type for identical input, proven by comparing unit counts and version across load forms."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-3901EF20FB3A778F",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_obligation_lifecycle_io.py::test_load_from_a_filesystem_path",
+        "tests/python/xliff/test_obligation_lifecycle_io.py::test_load_from_a_readable_stream",
+        "tests/python/xliff/test_obligation_lifecycle_io.py::test_load_from_in_memory_bytes",
+        "tests/python/xliff/test_obligation_lifecycle_io.py::test_loads_from_in_memory_bytes",
+        "tests/python/xliff/test_obligation_lifecycle_io.py::test_all_three_load_forms_agree",
+        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load"
       ],
       "proof_requirements": {
         "negative": [
@@ -1279,15 +1285,12 @@
           "Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe",
         "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads",
-        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load",
-        "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps",
-        "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump"
+        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-MODEL-001",
@@ -1641,19 +1644,20 @@
     {
       "capability_id": "XLIFF-LIFECYCLE-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-LIFECYCLE-IO-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "dump() writes to a filesystem path or a writable TEXT stream (TextDestination -- an intentional asymmetry with load()'s binary-stream source, not a bug); dumps() serializes to a str. Each of the three save forms' output is proven accepted by load()/loads() and re-validated, matching the obligation's own wording that the library's own loader must accept the output."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-4847555DF5FC018E",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
+        "tests/python/xliff/test_obligation_lifecycle_io.py::test_dump_to_a_filesystem_path_and_reload",
+        "tests/python/xliff/test_obligation_lifecycle_io.py::test_dump_to_a_writable_stream_and_reload",
+        "tests/python/xliff/test_obligation_lifecycle_io.py::test_dumps_to_bytes_and_reload",
+        "tests/python/xliff/test_obligation_lifecycle_io.py::test_the_librarys_own_loader_accepts_every_save_forms_output",
         "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
       ],
       "proof_requirements": {
@@ -1664,15 +1668,12 @@
           "Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe",
-        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads",
-        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load",
         "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps",
         "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-WRITE-001",
@@ -2732,20 +2733,19 @@
     {
       "capability_id": "XLIFF-LIFECYCLE-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-LIFECYCLE-IO-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "dumps()/dump() walk a fixed, ordered element tree built from the typed model with no unordered- collection iteration in the serialization path, so repeated calls on one unchanged document -- to bytes/str, or independently to two separate files -- are identical. Determinism holds across a load-save-load cycle too, not merely within one in-memory object."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-7CC73B48A2DDD6E2",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_obligation_lifecycle_io.py::test_repeated_dumps_calls_on_one_unchanged_document_are_byte_identical",
+        "tests/python/xliff/test_obligation_lifecycle_io.py::test_repeated_dump_to_path_calls_are_byte_identical",
+        "tests/python/xliff/test_obligation_lifecycle_io.py::test_a_freshly_reloaded_document_serializes_identically_to_the_original"
       ],
       "proof_requirements": {
         "negative": [
@@ -2755,15 +2755,12 @@
           "Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe",
-        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads",
-        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load",
         "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps",
         "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-TEXT-001",
@@ -3424,20 +3421,22 @@
     {
       "capability_id": "XLIFF-LIFECYCLE-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-LIFECYCLE-IO-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "XliffDocument.detected_version is set once, only by the reader's _parse(), from the source file's actual version attribute; `version` is the mutable, currently-declared value dumps()/dump() will write -- a plain field assignment (this model is not frozen) never touches detected_version, since there is no reconstruction step to accidentally reset it through, unlike a tree-based model would need. A freshly hand-built XliffDocument has detected_version=None. dumps() refuses (XliffWriteError) rather than silently rewriting an unsupported declared version to a supported one -- no coercion path exists."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_obligation_lifecycle_io.py::test_dumps_refuses_rather_than_silently_rewriting_an_unsupported_version"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-A8BDC1BEFD51DF8A",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_obligation_lifecycle_io.py::test_a_freshly_built_document_has_no_detected_version",
+        "tests/python/xliff/test_obligation_lifecycle_io.py::test_loading_a_file_records_its_actual_declared_version_as_detected",
+        "tests/python/xliff/test_obligation_lifecycle_io.py::test_mutating_version_never_touches_detected_version",
+        "tests/python/xliff/test_obligation_lifecycle_io.py::test_repeated_round_trips_never_drift_the_declared_or_detected_version"
       ],
       "proof_requirements": {
         "negative": [
@@ -3447,15 +3446,13 @@
           "Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe",
-        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads",
+        "src/python/xliff/src/format_factory/xliff/model/document.py::XliffDocument",
         "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load",
-        "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps",
-        "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump"
+        "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-PRESERVE-001",
@@ -4951,12 +4948,13 @@
   "proof_strength": "supporting_nonpromoting",
   "referenced_input_digests": {
     "reports/skills-rff6/skill-transcripts/build-evidence-ledger-xliff-001.json": "bb85918b335cbc4c82b7993cdbb1506f2e87c77626e871628989ce6fc87ac4d4",
+    "reports/skills-rff6/skill-transcripts/product-source-task-xliff-lifecycle-io-001.json": "02856c6f0ad09cf7b0352b9b777331dc5f6e2096e5f6576dbfe39f997669372d",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-qa-checks-001.json": "00a6d7c1b4d2fc48359f0484a08d0d639ee8fe136b11904870bd1acdda0e4d5c",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-state-transitions-001.json": "368a286339e4990afa645543f86d2b1968bfc693706a6c170b366fecc18f432b",
-    "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py": "8b779c48ad2de4c057d320ff45fc13869dec024edbf5c76f7c60d9be40a1b1ec",
+    "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py": "a9c296cbdfb6da4d2ba4d4621cb1d69e002f5ce85047aca1a77a3426c55ded7c",
     "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py": "41c5a9168d0e2bb725faaa820dd7793b5e76a6935d8bc81ada0629ebd3210b6b",
     "src/python/xliff/src/format_factory/xliff/merge.py": "c16a0916c2a7ddaeb49dd200fbe89e4a0b08f0ca19dd5177f7001733c0882c1b",
-    "src/python/xliff/src/format_factory/xliff/model/document.py": "aeab255bdfb6f016f2586f47ee20a7d85087205f2e4135d765c68d545a0e4161",
+    "src/python/xliff/src/format_factory/xliff/model/document.py": "70b4173911c55f8ebb068cff6aefbb34fadbe2577793ba5147e5e68652db4bbf",
     "src/python/xliff/src/format_factory/xliff/model/inline.py": "044d04957bcc6db867494411063619c0640e152012285f744a3f2ef7d41058c3",
     "src/python/xliff/src/format_factory/xliff/model/segmentation.py": "c2c3f1f35573fa11fc4f6ae67bf0a9d4395824dc2589dd05d73d88d83b00576b",
     "src/python/xliff/src/format_factory/xliff/model/text_editing.py": "408d1e5f8ffb5c51f548faac3e45125924bf395844171eb0fe292b0b3a20b5c3",
@@ -4965,6 +4963,7 @@
     "src/python/xliff/src/format_factory/xliff/security/limits.py": "8cec6ffd2ccd8fe17fa6d76ab19b2deeda3578d558925d862b15494b3b06665a",
     "src/python/xliff/src/format_factory/xliff/state_transitions.py": "6b12476e31076a788cef37fb476e1b5eda7365e6eb640bbb7bedcebabb9d49ea",
     "src/python/xliff/src/format_factory/xliff/validation/validator.py": "9ed437e179bfa8b927e080940bc0d40c967183c4569de89c8f453c958fc1cca1",
+    "tests/python/xliff/test_obligation_lifecycle_io.py": "5d9973d4c931cea5f36247ac8f22b05ff57b335ab3dccf2d6c878da7b529c62b",
     "tests/python/xliff/test_obligation_merge_adapter.py": "8ab808796f526b4497037ff207d9924382fe6833689529377210a80e60d95e88",
     "tests/python/xliff/test_obligation_module_coverage.py": "b83ec2190483e437fc5bac89611cdbefb85dbc1481fd6d936ad97edf2acd38ed",
     "tests/python/xliff/test_obligation_notes_and_annotations.py": "357ae9aace9aab3cbb6bcda064a928b4934ccd7b6720094452aaedd75b69e587",
@@ -4975,11 +4974,11 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 3,
-      "partial": 139
+      "implemented": 8,
+      "partial": 134
     },
     "total": 142,
-    "unresolved": 139
+    "unresolved": 134
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
