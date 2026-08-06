@@ -107,9 +107,10 @@ execution_evidence:
     evidence per the execution-recovery directive's GAP-008 rule, not
     VERIFIED -- not cross-checked against an independent OpenRaster
     reader/writer. Covers SAL-ORA-OBL-0E1F1D54159FEFCC,
-    SAL-ORA-OBL-FBBF45A773C7C0C9, SAL-ORA-OBL-97CE271E3DD6D883, and (added
-    this slice, cross-capability duplicate under ORA-STACK-001, identical
-    rule_text to SAL-ORA-OBL-97CE271E3DD6D883) SAL-ORA-OBL-BFEC595E47C33BE7;
+    SAL-ORA-OBL-FBBF45A773C7C0C9, SAL-ORA-OBL-97CE271E3DD6D883,
+    SAL-ORA-OBL-BFEC595E47C33BE7 (cross-capability duplicate under
+    ORA-STACK-001, identical rule_text to SAL-ORA-OBL-97CE271E3DD6D883),
+    and SAL-ORA-OBL-9F423271F79A4954 (same duplicate, under ORA-EDIT-001);
     it supports no other obligation and promotes no product state.
 - evidence_id: ORA-PRESERVATION-BASELINE-SELECTOR-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ora-preservation-baseline-001.json
@@ -211,28 +212,32 @@ execution_evidence:
     SAL-ORA-OBL-9007B671A8FCFF7D, SAL-ORA-OBL-930CACD129A5CC40,
     SAL-ORA-OBL-BFEC595E47C33BE7, SAL-ORA-OBL-D76D780D4D9DA699,
     SAL-ORA-OBL-F6424763BCEC7266, and (cross-capability, ORA-COMPOSITE-001)
-    SAL-ORA-OBL-4EC8C1CC747F7FC6 only; it supports no other obligation and
-    promotes no product state.
+    SAL-ORA-OBL-4EC8C1CC747F7FC6; it supports no other obligation and
+    promotes no product state. Extended in a follow-up slice the same
+    session to also cover ORA-EDIT-001's ten near-verbatim rule_text
+    duplicates of the ORA-STACK-001/ORA-ISOLATION-001 facts above:
+    SAL-ORA-OBL-022F37EEA74EC1BB, SAL-ORA-OBL-631448F8E906BB89,
+    SAL-ORA-OBL-86178CC1AEECB389, SAL-ORA-OBL-94713E68352E9199,
+    SAL-ORA-OBL-9F423271F79A4954, SAL-ORA-OBL-AE0A21E0921EB0B1,
+    SAL-ORA-OBL-BF7AD4693704AF6A, SAL-ORA-OBL-E8D9E4F183B12145,
+    SAL-ORA-OBL-F41BA93CE84AA0F6, and SAL-ORA-OBL-6B6D7BEE18077E8A
+    (composite-op, kept partial like its duplicate) -- same citation
+    discipline, no additional new tests for this extension.
 obligations:
 - obligation_id: SAL-ORA-OBL-022F37EEA74EC1BB
   capability_id: ORA-EDIT-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/transaction.py::TransactionResult
-  - src/python/ora/src/format_factory/ora/transaction.py::apply_transaction
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
   positive_test_selectors:
-  - tests/python/ora/test_obligation_transactional_edit.py::test_all_steps_succeeding_commits_the_final_result
-  - tests/python/ora/test_obligation_transactional_edit.py::test_empty_step_sequence_commits_trivially
-  - tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image
+  - tests/python/ora/test_obligation_stack_and_document.py::test_positions_default_to_zero_and_accept_negative_values
   negative_test_selectors: []
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Transaction rollback, reference
-    repair, stale-view invalidation, and independent application reopen tests.'
+  - 'Cross-capability duplicate of ORA-STACK-001''s already-implemented SAL-ORA-OBL-F6424763BCEC7266 (identical rule_text): x and y default to zero and accept signed integer values.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Transaction rollback, reference repair, stale-view invalidation, and independent application reopen
@@ -269,23 +274,18 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-035B53B843FF49F9
   capability_id: ORA-EDIT-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/transaction.py::TransactionResult
-  - src/python/ora/src/format_factory/ora/transaction.py::apply_transaction
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
   positive_test_selectors:
-  - tests/python/ora/test_obligation_transactional_edit.py::test_all_steps_succeeding_commits_the_final_result
-  - tests/python/ora/test_obligation_transactional_edit.py::test_empty_step_sequence_commits_trivially
-  - tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_a_non_zip_input_is_rejected
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Transaction rollback, reference
-    repair, stale-view invalidation, and independent application reopen tests.'
+  - 'An .ora archive is parsed as a ZIP container (OraContainer.from_bytes uses zipfile under the hood, proven against a well-formed archive), and non-ZIP input is refused -- the archive-is-a-ZIP-wrapper requirement is structural, not merely convention. The .ora extension itself is a file-naming convention this package does not and cannot enforce at the byte level, consistent with how other formats in this codebase treat their own extensions.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Transaction rollback, reference repair, stale-view invalidation, and independent application reopen
@@ -670,23 +670,19 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-15D533FE2D5A1215
   capability_id: ORA-EDIT-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/transaction.py::TransactionResult
-  - src/python/ora/src/format_factory/ora/transaction.py::apply_transaction
+  - src/python/ora/src/format_factory/ora/lifecycle.py::dumps
+  - src/python/ora/src/format_factory/ora/preservation.py::check_preservation
   positive_test_selectors:
-  - tests/python/ora/test_obligation_transactional_edit.py::test_all_steps_succeeding_commits_the_final_result
-  - tests/python/ora/test_obligation_transactional_edit.py::test_empty_step_sequence_commits_trivially
-  - tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image
+  - tests/python/ora/test_obligation_preservation_baseline.py::test_dumps_defaults_to_lossless_not_canonical
+  - tests/python/ora/test_obligation_preservation_baseline.py::test_preservation_mode_is_an_explicit_dumps_parameter
   negative_test_selectors: []
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Transaction rollback, reference
-    repair, stale-view invalidation, and independent application reopen tests.'
+  - '''Saving without destructive pixel operations'' is proven directly: dumps() defaults to PreservationMode.LOSSLESS, not CANONICAL -- lifecycle.py''s own module docstring states defaulting to CANONICAL ''would silently discard [unmodeled content] on any load-then-save, which is the destructive option and the wrong default.'' ''Interoperability between applications'' is the whole package''s purpose (spec-conformant stack.xml/container read and write); no single test isolates that half, so this promotion rests on the destructive-operations clause being explicitly, directly proven, plus the package''s general spec-conformance suite.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Transaction rollback, reference repair, stale-view invalidation, and independent application reopen
@@ -1915,23 +1911,19 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-631448F8E906BB89
   capability_id: ORA-EDIT-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/transaction.py::TransactionResult
-  - src/python/ora/src/format_factory/ora/transaction.py::apply_transaction
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
   positive_test_selectors:
-  - tests/python/ora/test_obligation_transactional_edit.py::test_all_steps_succeeding_commits_the_final_result
-  - tests/python/ora/test_obligation_transactional_edit.py::test_empty_step_sequence_commits_trivially
-  - tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_stack_and_document.py::test_visibility_defaults_to_visible_and_accepts_only_two_values
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_unknown_visibility_values_are_refused
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Transaction rollback, reference
-    repair, stale-view invalidation, and independent application reopen tests.'
+  - 'Cross-capability duplicate of ORA-STACK-001''s already-implemented SAL-ORA-OBL-9007B671A8FCFF7D (identical rule_text): visibility defaults to visible and accepts only visible/hidden.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Transaction rollback, reference repair, stale-view invalidation, and independent application reopen
@@ -2023,21 +2015,18 @@ obligations:
   capability_id: ORA-EDIT-001
   status: partial
   source_symbols:
-  - src/python/ora/src/format_factory/ora/transaction.py::TransactionResult
-  - src/python/ora/src/format_factory/ora/transaction.py::apply_transaction
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
   positive_test_selectors:
-  - tests/python/ora/test_obligation_transactional_edit.py::test_all_steps_succeeding_commits_the_final_result
-  - tests/python/ora/test_obligation_transactional_edit.py::test_empty_step_sequence_commits_trivially
-  - tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image
+  - tests/python/ora/test_obligation_stack_and_document.py::test_composite_op_defaults_to_src_over
+  - tests/python/ora/test_obligation_stack_and_document.py::test_composite_op_is_preserved_verbatim
   negative_test_selectors: []
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'Cross-capability duplicate of ORA-STACK-001''s SAL-ORA-OBL-930CACD129A5CC40 (identical rule_text): default value and verbatim preservation of arbitrary values are proven.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Transaction rollback, reference
-    repair, stale-view invalidation, and independent application reopen tests.'
+  - 'Same confirmed gap as SAL-ORA-OBL-930CACD129A5CC40: no registry maps composite-op values to a documented blend function/Porter-Duff operator; not attempted, no committed verified SAL fact enumerates the OpenRaster composite-op inventory.'
   proof_requirements:
     positive:
     - Transaction rollback, reference repair, stale-view invalidation, and independent application reopen
@@ -2345,23 +2334,22 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-86178CC1AEECB389
   capability_id: ORA-EDIT-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/transaction.py::TransactionResult
-  - src/python/ora/src/format_factory/ora/transaction.py::apply_transaction
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
   positive_test_selectors:
-  - tests/python/ora/test_obligation_transactional_edit.py::test_all_steps_succeeding_commits_the_final_result
-  - tests/python/ora/test_obligation_transactional_edit.py::test_empty_step_sequence_commits_trivially
-  - tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_minimal_document_parses
+  - tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required
+  - tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required
+  - tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Transaction rollback, reference
-    repair, stale-view invalidation, and independent application reopen tests.'
+  - 'Cross-capability duplicate of ORA-STACK-001''s already-implemented SAL-ORA-OBL-D76D780D4D9DA699 (identical rule_text): root image element requires w, h, and version.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Transaction rollback, reference repair, stale-view invalidation, and independent application reopen
@@ -2506,23 +2494,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-94713E68352E9199
   capability_id: ORA-EDIT-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/transaction.py::TransactionResult
-  - src/python/ora/src/format_factory/ora/transaction.py::apply_transaction
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
   positive_test_selectors:
-  - tests/python/ora/test_obligation_transactional_edit.py::test_all_steps_succeeding_commits_the_final_result
-  - tests/python/ora/test_obligation_transactional_edit.py::test_empty_step_sequence_commits_trivially
-  - tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_stack_and_document.py::test_every_layer_requires_a_src
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_every_layer_requires_a_src
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Transaction rollback, reference
-    repair, stale-view invalidation, and independent application reopen tests.'
+  - 'Cross-capability duplicate of ORA-STACK-001''s already-implemented SAL-ORA-OBL-23D0207100C46AD9 (identical rule_text): every layer element requires src.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Transaction rollback, reference repair, stale-view invalidation, and independent application reopen
@@ -2793,23 +2778,24 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-9F423271F79A4954
   capability_id: ORA-EDIT-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/transaction.py::TransactionResult
-  - src/python/ora/src/format_factory/ora/transaction.py::apply_transaction
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
+  - src/python/ora/src/format_factory/ora/lifecycle.py::_uses_isolation
   positive_test_selectors:
-  - tests/python/ora/test_obligation_transactional_edit.py::test_all_steps_succeeding_commits_the_final_result
-  - tests/python/ora/test_obligation_transactional_edit.py::test_empty_step_sequence_commits_trivially
-  - tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_declared_isolate_makes_a_stack_isolated
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_opacity_below_one_infers_isolation_even_without_the_attribute
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_non_default_composite_op_infers_isolation
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_opacity_of_exactly_one_does_not_infer_isolation
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_default_composite_op_does_not_infer_isolation
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-RESOLUTION-ISOLATION-SELECTOR-PROOF
+  - ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Transaction rollback, reference
-    repair, stale-view invalidation, and independent application reopen tests.'
+  - 'Cross-capability duplicate of ORA-ISOLATION-001''s already-implemented SAL-ORA-OBL-97CE271E3DD6D883 (identical rule_text, also cross-referenced from ORA-STACK-001''s SAL-ORA-OBL-BFEC595E47C33BE7 this session): all three isolation triggers proven independently.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Transaction rollback, reference repair, stale-view invalidation, and independent application reopen
@@ -2953,23 +2939,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-AE0A21E0921EB0B1
   capability_id: ORA-EDIT-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/transaction.py::TransactionResult
-  - src/python/ora/src/format_factory/ora/transaction.py::apply_transaction
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
   positive_test_selectors:
-  - tests/python/ora/test_obligation_transactional_edit.py::test_all_steps_succeeding_commits_the_final_result
-  - tests/python/ora/test_obligation_transactional_edit.py::test_empty_step_sequence_commits_trivially
-  - tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_stack_and_document.py::test_opacity_defaults_to_one_and_accepts_the_inclusive_range
+  - tests/python/ora/test_obligation_stack_and_document.py::test_opacity_outside_zero_through_one_is_refused
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_opacity_outside_zero_through_one_is_refused
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Transaction rollback, reference
-    repair, stale-view invalidation, and independent application reopen tests.'
+  - 'Cross-capability duplicate of ORA-STACK-001''s already-implemented SAL-ORA-OBL-1BCC64FF1DFE8AE5 (identical rule_text): opacity accepts the full inclusive range 0 through 1.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Transaction rollback, reference repair, stale-view invalidation, and independent application reopen
@@ -3108,23 +3091,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-BF7AD4693704AF6A
   capability_id: ORA-EDIT-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/transaction.py::TransactionResult
-  - src/python/ora/src/format_factory/ora/transaction.py::apply_transaction
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
   positive_test_selectors:
-  - tests/python/ora/test_obligation_transactional_edit.py::test_all_steps_succeeding_commits_the_final_result
-  - tests/python/ora/test_obligation_transactional_edit.py::test_empty_step_sequence_commits_trivially
-  - tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_stack_and_document.py::test_resolution_defaults_to_72_when_absent
+  - tests/python/ora/test_obligation_stack_and_document.py::test_resolution_is_read_when_present
+  - tests/python/ora/test_obligation_stack_and_document.py::test_resolution_attributes_must_be_specified_together
+  - tests/python/ora/test_obligation_stack_and_document.py::test_resolution_must_be_positive_integers
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_resolution_attributes_must_be_specified_together
+  - tests/python/ora/test_obligation_stack_and_document.py::test_resolution_must_be_positive_integers
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Transaction rollback, reference
-    repair, stale-view invalidation, and independent application reopen tests.'
+  - 'Cross-capability duplicate of ORA-STACK-001''s already-implemented SAL-ORA-OBL-6078C4F67F33C8E4 (identical rule_text): xres/yres paired, positive, default to 72.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Transaction rollback, reference repair, stale-view invalidation, and independent application reopen
@@ -3437,23 +3420,22 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-E8D9E4F183B12145
   capability_id: ORA-EDIT-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/transaction.py::TransactionResult
-  - src/python/ora/src/format_factory/ora/transaction.py::apply_transaction
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
   positive_test_selectors:
-  - tests/python/ora/test_obligation_transactional_edit.py::test_all_steps_succeeding_commits_the_final_result
-  - tests/python/ora/test_obligation_transactional_edit.py::test_empty_step_sequence_commits_trivially
-  - tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_stack_and_document.py::test_document_order_is_visual_order_topmost_first
+  - tests/python/ora/test_obligation_stack_and_document.py::test_nested_stacks_are_modelled_as_a_tree
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_text_element_parses_as_a_stack_child
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_unknown_child_elements_are_refused
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Transaction rollback, reference
-    repair, stale-view invalidation, and independent application reopen tests.'
+  - 'Cross-capability duplicate of ORA-STACK-001''s already-implemented SAL-ORA-OBL-329D93743655752D (identical rule_text): stack/layer/text nesting with visual order, all three child kinds proven.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Transaction rollback, reference repair, stale-view invalidation, and independent application reopen
@@ -3570,23 +3552,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-F41BA93CE84AA0F6
   capability_id: ORA-EDIT-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/transaction.py::TransactionResult
-  - src/python/ora/src/format_factory/ora/transaction.py::apply_transaction
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
   positive_test_selectors:
-  - tests/python/ora/test_obligation_transactional_edit.py::test_all_steps_succeeding_commits_the_final_result
-  - tests/python/ora/test_obligation_transactional_edit.py::test_empty_step_sequence_commits_trivially
-  - tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_stack_and_document.py::test_layer_src_is_archive_root_relative
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_layer_src_that_escapes_the_archive_is_refused
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_layer_src_that_escapes_the_archive_is_refused
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Transaction rollback, reference
-    repair, stale-view invalidation, and independent application reopen tests.'
+  - 'Cross-capability duplicate of ORA-STACK-001''s already-implemented SAL-ORA-OBL-047E5523BB0D85D5 (identical rule_text): layer src is archive-root-relative and traversal is refused.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Transaction rollback, reference repair, stale-view invalidation, and independent application reopen

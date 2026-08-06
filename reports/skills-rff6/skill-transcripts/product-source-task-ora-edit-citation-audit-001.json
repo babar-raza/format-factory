@@ -1,0 +1,48 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-edit-citation-audit-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T18:05:00Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_EDIT_CITATION_AUDIT_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "ORA-EDIT-001's 15 obligations all shared one identical generic 3-test citation, same pattern just closed for ORA-STACK-001 last tick. Pulled each of the 15 distinct rule_texts and found 10 are near-verbatim cross-capability duplicates of rule_texts already resolved under ORA-STACK-001/ORA-ISOLATION-001/ORA-COMPOSITE-001 in the immediately preceding tick, 2 more (ZIP-wrapper storage, interop-and-no-destructive-pixel-ops goals) had strong existing evidence in unrelated test files not yet cited, and 3 (baseline-support-levels statement, stack.xml UTF-8 conformance, the genuinely ORA-EDIT-001-specific transactional-CRUD rule) needed either the same honest-unaudited treatment as their duplicates or turned out too broad to cleanly promote this tick.",
+    "obligation_targeted": "SAL-ORA-OBL-022F37EEA74EC1BB, SAL-ORA-OBL-631448F8E906BB89, SAL-ORA-OBL-86178CC1AEECB389, SAL-ORA-OBL-94713E68352E9199, SAL-ORA-OBL-9F423271F79A4954, SAL-ORA-OBL-AE0A21E0921EB0B1, SAL-ORA-OBL-BF7AD4693704AF6A, SAL-ORA-OBL-E8D9E4F183B12145, SAL-ORA-OBL-F41BA93CE84AA0F6, SAL-ORA-OBL-6B6D7BEE18077E8A, SAL-ORA-OBL-15D533FE2D5A1215, SAL-ORA-OBL-035B53B843FF49F9",
+    "acceptance_evidence": "tests/python/ora/test_obligation_stack_and_document.py, test_obligation_isolation_semantics.py, test_obligation_preservation_baseline.py, test_obligation_container_and_mimetype.py (all pre-existing; no new tests this slice)",
+    "regression_tier": "full ORA package suite (tests/python/ora)"
+  },
+  "execution_steps": [
+    "1. Pulled all 15 ORA-EDIT-001 rule_texts from the obligation register. Found 10 are near-verbatim duplicates of rule_texts closed under ORA-STACK-001 in the prior tick (x/y positions, visibility, root w/h/version, layer src, isolation trigger, opacity, xres/yres, stack/layer/text nesting, layer data path, composite-op) -- confirmed by direct text comparison, not assumption.",
+    "2. For the 9 duplicates of already-fully-implemented ORA-STACK-001/ORA-ISOLATION-001 obligations: cited the exact same source_symbols and test selectors already proven for the counterpart, cross-referencing both directions (implemented_behavior text names the counterpart obligation ID; the shared evidence entries' 'Covers' lists were extended to list these obligations too). No new proof was generated -- this is citation-correction, not new capability.",
+    "3. For the 1 duplicate of the composite-op obligation (already corrected to honest partial last tick, not fully promotable): mirrored the same partial status and the same precise missing_behavior (documented blend-function/Porter-Duff-operator registry remains a confirmed, deliberately-unattempted gap pending a verified spec source).",
+    "4. Investigated the 2 non-duplicate obligations with promising leads: 'saving without destructive pixel operations' is directly proven by test_obligation_preservation_baseline.py::test_dumps_defaults_to_lossless_not_canonical (lifecycle.py's own module docstring states CANONICAL-by-default 'would silently discard [unmodeled content]... the destructive option and the wrong default') -- promoted, noting the broader 'interoperability' half rests on the package's general spec-conformance rather than one isolated test. 'OpenRaster archives use ZIP wrapper' is proven structurally by test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens (OraContainer.from_bytes parses real ZIP bytes) plus test_a_non_zip_input_is_rejected (non-ZIP refused) -- promoted, noting the .ora extension itself is an unenforceable naming convention like other formats in this codebase.",
+    "5. Investigated the one genuinely ORA-EDIT-001-specific rule_text (SAL-ORA-OBL-EC8D65524EB96820: 'Provide transactional add, replace, move, rename, and remove operations for groups, layers, assets, and metadata; maintain references and invalidate stale derived views') by reading transaction.py, test_obligation_transactional_edit.py, and test_obligation_layer_and_group_editing.py. Found add/replace/move/remove are well covered for groups and layers, but rename exists only incidentally (dataclasses.replace(group, name=...) inside another test, not a first-class rename operation or test), asset/metadata CRUD coverage is thinner, and no 'invalidate stale derived views' concept was found to exist anywhere in the package. Left this one, and the two other genuine duplicates whose ORA-STACK-001 counterparts also remain unaudited (baseline-support-levels statement, stack.xml UTF-8 conformance), untouched this slice rather than force-promoted or superficially re-worded.",
+    "6. Wrote a Python script operating on obligation_id-delimited text blocks (not a full YAML load/dump, to avoid reformatting the other 122 untouched obligations) to apply all 12 edits precisely. Caught and fixed one script bug during the first run: the regenerated blocks omitted the required proof_requirements field, causing a schema validation error -- fixed by re-inserting the correct shared boilerplate (verified against an untouched sibling obligation) before every edited block.",
+    "7. Ran the reconciler after the fix: clean pass, no errors. Ran the full ora suite to confirm zero regressions (no source or test files changed this slice, evidence YAML only) -- 281 passed, identical to before."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora/ -q -- 281 passed, unchanged from before this slice (0 source or test changes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 11,
+    "obligations_total_for_format": 134,
+    "ora_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against an independent OpenRaster reader/writer. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_11_of_15_moved_and_1_corrected_3_untouched": "9 obligations were exact cross-capability duplicates of facts already fully proven last tick, closed by citation. 2 more had real, previously-uncited existing proof in other test files, investigated and cited fresh. 1 duplicate (composite-op) was corrected to match its already-honest partial counterpart rather than force-promoted. 3 (baseline-support-levels, UTF-8 stack.xml conformance, the genuine transactional-CRUD rule) remain honestly unaudited -- either their ORA-STACK-001 counterpart is also unresolved, or (for the CRUD rule specifically) real coverage gaps were found (rename as a first-class operation, asset/metadata CRUD depth, 'invalidate stale derived views') that this tick did not have scope to close."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
