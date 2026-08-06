@@ -14,14 +14,17 @@ notes: >-
   exactly the fabrication the evidence process exists to prevent. Recording
   them explicitly keeps all 134 obligations inside the denominator.
 
-  Eleven capabilities are now mapped to real source that was read, not merely
-  assumed to exist (the GAP-022 rule). Mapping them does not assert they are
-  complete -- ORA-STACK-001's model is built and its rendering is not -- only
-  that implementing behaviour and tests exist for the reconciler to grade.
+  Fourteen capabilities are now mapped to real source that was read, not
+  merely assumed to exist (the GAP-022 rule). Mapping them does not assert
+  they are complete -- ORA-STACK-001's model is built and its rendering is
+  not -- only that implementing behaviour and tests exist for the
+  reconciler to grade.
 
-  This remains mostly a build-from-nothing lane. 8 of 20 capabilities have no
-  source: rendering, compositing, editing, groups, layers-as-editable, masks,
-  streaming, and resolution profiles.
+  This remains mostly a build-from-nothing lane. 6 of 20 capabilities have no
+  source: rendering, compositing, transactional multi-entity editing
+  (ORA-EDIT-001 -- distinct from ORA-LAYER-001/ORA-GROUP-001's per-node
+  edit-and-validate, which is now mapped), masks, streaming, and resolution
+  profiles.
 
   ORA-ISOLATION-001 status as of 2026-08-06: another XLIFF-NOTE-001-pattern
   capability, like ORA-SEC-001 before it. model/stack.py's
@@ -127,6 +130,56 @@ notes: >-
   behavior; `missing_behavior` on the implementation-evidence YAML records
   what is not yet audited or, here, not yet built).
 
+  ORA-LAYER-001 / ORA-GROUP-001 status as of 2026-08-06: the deferred gap
+  from the ORA-ISOLATION-001 and ORA-PRESERVE-001 ticks, closed this slice.
+  `OraNode`/`OraLayer`/`OraStack`/`OraText` were frozen dataclasses with NO
+  domain validation at construction -- every check (opacity range,
+  visibility enum, src safety) lived only in codec/stack_xml.py's PARSING
+  functions. Since "edit" throughout this session's other formats means
+  `dataclasses.replace()`, and `replace()` calls `__init__` again (which
+  runs `__post_init__`), this meant editing silently bypassed every domain
+  rule the parser enforces -- a real gap, not a testing one. Fixed by
+  moving the validators into model/stack.py as
+  validate_opacity/validate_visibility/validate_src, calling them from
+  `__post_init__` on every node type, and making codec/stack_xml.py
+  delegate to the SAME functions instead of keeping its own copies, so
+  parser and model can never silently diverge on what counts as valid --
+  the exact failure mode "reject invalid values" exists to prevent.
+
+  Proven for both capabilities: "model and edit ... reject invalid values"
+  (opacity, visibility, src) via `__post_init__` plus `dataclasses.replace()`
+  (a rejected edit raises before the new object is ever returned, so the
+  original -- already immutable by construction -- is provably untouched);
+  "create/edit/move/remove" nested groups via ordinary children-tuple
+  construction and `dataclasses.replace()` (no dedicated helper functions
+  exist or are needed for this -- a frozen dataclass with a tuple field
+  already supports every one of those operations mechanically, matching
+  the dataclasses.replace()-is-editing precedent this session's other
+  formats already established); "lossless child preservation" as the
+  direct, provable consequence of replace() only touching fields a caller
+  names (a dedicated test asserts `renamed.children is group.children`,
+  not merely equal, after an attribute-only edit).
+
+  Deliberately NOT attempted: composite-op and isolation have no validated
+  enum anywhere in this package, parser or model -- codec/stack_xml.py
+  never validated them either, and no SAL fact enumerates the exact
+  permitted composite-op/isolation value sets with enough confidence to
+  hard-code one now. This is a real, standing gap in "reject invalid
+  values" for those two specific fields, not something this slice closes,
+  and it is not claimed. "Root restriction" (image must contain exactly
+  one root stack) is enforced by parse_stack already and is not a new
+  model-level check this slice adds, since which stack is "the root" is a
+  document-level fact OraStack itself has no way to know.
+
+  38 new tests in test_obligation_layer_and_group_editing.py, all passed on
+  first run; ruff clean, mypy clean on the full package (12 source files).
+  All 213 pre-existing tests still pass unchanged after moving the
+  validators (parser behavior and error types are identical; only the
+  validation now also runs on direct/edited construction). ORA suite: 213
+  -> 251 passed. All 15 obligations across both capabilities move from
+  `missing` to `partial` (82 partial/52 missing -> 97 partial/37 missing).
+  No ORA obligation reaches `implemented`.
+
 execution_evidence:
   path: reports/skills-rff6/skill-transcripts/build-evidence-ledger-ora-001.json
   result: PARTIAL_IMPLEMENTATION_PRESENT
@@ -151,6 +204,16 @@ execution_evidence:
     passed with no failures. The remaining 8 capabilities have no source and
     no suite; their obligations stay `missing`. No ORA obligation is
     `implemented`; ORA-PRESERVE-001's obligations move to `partial` only.
+
+    2026-08-06 (later still): ORA-LAYER-001/ORA-GROUP-001 add __post_init__
+    validation (validate_opacity/validate_visibility/validate_src) to every
+    node type in model/stack.py, and codec/stack_xml.py now delegates to
+    those same functions instead of keeping its own copies. All 213
+    pre-existing tests still pass unchanged (parser behavior and error
+    types are identical). 38 new tests. ORA suite is now 251 passed with no
+    failures. The remaining 6 capabilities have no source and no suite;
+    their obligations stay `missing`. No ORA obligation is `implemented`;
+    ORA-LAYER-001/ORA-GROUP-001's obligations move to `partial` only.
 
 capabilities:
   ORA-ASSET-001:
@@ -191,8 +254,10 @@ capabilities:
     tests: []
 
   ORA-GROUP-001:
-    modules: []
-    tests: []
+    modules:
+    - model/stack.py
+    tests:
+    - test_obligation_layer_and_group_editing.py
 
   ORA-ISOLATION-001:
     modules:
@@ -202,8 +267,11 @@ capabilities:
     - test_obligation_isolation_semantics.py
 
   ORA-LAYER-001:
-    modules: []
-    tests: []
+    modules:
+    - model/stack.py
+    - codec/stack_xml.py
+    tests:
+    - test_obligation_layer_and_group_editing.py
 
   ORA-LIFECYCLE-001:
     modules:

@@ -22,7 +22,14 @@ execution_evidence:
     9 tests -- genuinely new production code this time, not only tests against existing behavior. ORA
     suite is now 213 passed with no failures. The remaining 8 capabilities have no source and no suite;
     their obligations stay `missing`. No ORA obligation is `implemented`; ORA-PRESERVE-001''s obligations
-    move to `partial` only.'
+    move to `partial` only.
+
+    2026-08-06 (later still): ORA-LAYER-001/ORA-GROUP-001 add __post_init__ validation (validate_opacity/validate_visibility/validate_src)
+    to every node type in model/stack.py, and codec/stack_xml.py now delegates to those same functions
+    instead of keeping its own copies. All 213 pre-existing tests still pass unchanged (parser behavior
+    and error types are identical). 38 new tests. ORA suite is now 251 passed with no failures. The remaining
+    6 capabilities have no source and no suite; their obligations stay `missing`. No ORA obligation is
+    `implemented`; ORA-LAYER-001/ORA-GROUP-001''s obligations move to `partial` only.'
 obligations:
 - obligation_id: SAL-ORA-OBL-022F37EEA74EC1BB
   capability_id: ORA-EDIT-001
@@ -44,16 +51,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-029A8C8544788060
   capability_id: ORA-LAYER-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_a_layer_models_source_name_offsets_opacity_visibility_and_blend
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_uses_replace_and_leaves_the_original_untouched
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_invalid_opacity_is_refused
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Full attribute boundary matrix
     and add/edit/move/remove semantic round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Full attribute boundary matrix and add/edit/move/remove semantic round trips.
@@ -81,10 +99,10 @@ obligations:
   capability_id: ORA-STACK-001
   status: partial
   source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
   - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraText
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
   positive_test_selectors:
@@ -124,16 +142,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-071A5F40BB2F4A17
   capability_id: ORA-LAYER-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_a_layer_models_source_name_offsets_opacity_visibility_and_blend
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_uses_replace_and_leaves_the_original_untouched
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_invalid_opacity_is_refused
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Full attribute boundary matrix
     and add/edit/move/remove semantic round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Full attribute boundary matrix and add/edit/move/remove semantic round trips.
@@ -141,16 +170,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-073651B7B9C5FB06
   capability_id: ORA-LAYER-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_a_layer_models_source_name_offsets_opacity_visibility_and_blend
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_uses_replace_and_leaves_the_original_untouched
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_invalid_opacity_is_refused
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Full attribute boundary matrix
     and add/edit/move/remove semantic round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Full attribute boundary matrix and add/edit/move/remove semantic round trips.
@@ -461,10 +501,10 @@ obligations:
   capability_id: ORA-STACK-001
   status: partial
   source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
   - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraText
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
   positive_test_selectors:
@@ -608,10 +648,10 @@ obligations:
   capability_id: ORA-STACK-001
   status: partial
   source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
   - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraText
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
   positive_test_selectors:
@@ -868,10 +908,10 @@ obligations:
   capability_id: ORA-STACK-001
   status: partial
   source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
   - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraText
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
   positive_test_selectors:
@@ -894,16 +934,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-3463B445DE0899EC
   capability_id: ORA-GROUP-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_a_layer_models_source_name_offsets_opacity_visibility_and_blend
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_uses_replace_and_leaves_the_original_untouched
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_invalid_opacity_is_refused
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Group create/edit/move/remove,
     root restriction, and unknown-extension preservation tests.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Group create/edit/move/remove, root restriction, and unknown-extension preservation tests.
@@ -1047,16 +1096,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-3EFB60C80F84675D
   capability_id: ORA-LAYER-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_a_layer_models_source_name_offsets_opacity_visibility_and_blend
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_uses_replace_and_leaves_the_original_untouched
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_invalid_opacity_is_refused
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Full attribute boundary matrix
     and add/edit/move/remove semantic round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Full attribute boundary matrix and add/edit/move/remove semantic round trips.
@@ -1109,16 +1169,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-41F8137CE8D8479A
   capability_id: ORA-GROUP-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_a_layer_models_source_name_offsets_opacity_visibility_and_blend
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_uses_replace_and_leaves_the_original_untouched
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_invalid_opacity_is_refused
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Group create/edit/move/remove,
     root restriction, and unknown-extension preservation tests.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Group create/edit/move/remove, root restriction, and unknown-extension preservation tests.
@@ -1562,10 +1631,10 @@ obligations:
   capability_id: ORA-STACK-001
   status: partial
   source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
   - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraText
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
   positive_test_selectors:
@@ -1652,16 +1721,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-691A965DDDA97CD2
   capability_id: ORA-LAYER-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_a_layer_models_source_name_offsets_opacity_visibility_and_blend
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_uses_replace_and_leaves_the_original_untouched
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_invalid_opacity_is_refused
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Full attribute boundary matrix
     and add/edit/move/remove semantic round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Full attribute boundary matrix and add/edit/move/remove semantic round trips.
@@ -1767,16 +1847,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-7160DCD53E7DAA43
   capability_id: ORA-LAYER-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_a_layer_models_source_name_offsets_opacity_visibility_and_blend
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_uses_replace_and_leaves_the_original_untouched
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_invalid_opacity_is_refused
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Full attribute boundary matrix
     and add/edit/move/remove semantic round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Full attribute boundary matrix and add/edit/move/remove semantic round trips.
@@ -1884,16 +1975,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-82D6411176AA5599
   capability_id: ORA-LAYER-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_a_layer_models_source_name_offsets_opacity_visibility_and_blend
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_uses_replace_and_leaves_the_original_untouched
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_invalid_opacity_is_refused
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Full attribute boundary matrix
     and add/edit/move/remove semantic round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Full attribute boundary matrix and add/edit/move/remove semantic round trips.
@@ -1930,16 +2032,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-85588089484A20F7
   capability_id: ORA-GROUP-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_a_layer_models_source_name_offsets_opacity_visibility_and_blend
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_uses_replace_and_leaves_the_original_untouched
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_invalid_opacity_is_refused
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Group create/edit/move/remove,
     root restriction, and unknown-extension preservation tests.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Group create/edit/move/remove, root restriction, and unknown-extension preservation tests.
@@ -2043,10 +2154,10 @@ obligations:
   capability_id: ORA-STACK-001
   status: partial
   source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
   - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraText
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
   positive_test_selectors:
@@ -2071,10 +2182,10 @@ obligations:
   capability_id: ORA-STACK-001
   status: partial
   source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
   - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraText
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
   positive_test_selectors:
@@ -2115,16 +2226,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-96D74D42B49F8C8B
   capability_id: ORA-GROUP-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_a_layer_models_source_name_offsets_opacity_visibility_and_blend
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_uses_replace_and_leaves_the_original_untouched
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_invalid_opacity_is_refused
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Group create/edit/move/remove,
     root restriction, and unknown-extension preservation tests.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Group create/edit/move/remove, root restriction, and unknown-extension preservation tests.
@@ -2151,10 +2271,10 @@ obligations:
   capability_id: ORA-ISOLATION-001
   status: partial
   source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
   - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraText
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
   - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
   - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
   - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
@@ -2310,16 +2430,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-9BC27656F2BAD9EF
   capability_id: ORA-GROUP-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_a_layer_models_source_name_offsets_opacity_visibility_and_blend
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_uses_replace_and_leaves_the_original_untouched
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_invalid_opacity_is_refused
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Group create/edit/move/remove,
     root restriction, and unknown-extension preservation tests.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Group create/edit/move/remove, root restriction, and unknown-extension preservation tests.
@@ -2418,10 +2547,10 @@ obligations:
   capability_id: ORA-STACK-001
   status: partial
   source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
   - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraText
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
   positive_test_selectors:
@@ -2446,10 +2575,10 @@ obligations:
   capability_id: ORA-ISOLATION-001
   status: partial
   source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
   - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraText
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
   - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
   - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
   - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
@@ -2520,16 +2649,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-B090B52032547696
   capability_id: ORA-GROUP-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_a_layer_models_source_name_offsets_opacity_visibility_and_blend
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_uses_replace_and_leaves_the_original_untouched
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_invalid_opacity_is_refused
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Group create/edit/move/remove,
     root restriction, and unknown-extension preservation tests.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Group create/edit/move/remove, root restriction, and unknown-extension preservation tests.
@@ -2608,16 +2746,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-B8CC12330026DE56
   capability_id: ORA-GROUP-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_a_layer_models_source_name_offsets_opacity_visibility_and_blend
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_uses_replace_and_leaves_the_original_untouched
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_invalid_opacity_is_refused
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Group create/edit/move/remove,
     root restriction, and unknown-extension preservation tests.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Group create/edit/move/remove, root restriction, and unknown-extension preservation tests.
@@ -2645,10 +2792,10 @@ obligations:
   capability_id: ORA-STACK-001
   status: partial
   source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
   - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraText
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
   positive_test_selectors:
@@ -2719,10 +2866,10 @@ obligations:
   capability_id: ORA-STACK-001
   status: partial
   source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
   - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraText
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
   positive_test_selectors:
@@ -2747,10 +2894,10 @@ obligations:
   capability_id: ORA-STACK-001
   status: partial
   source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
   - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraText
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
   positive_test_selectors:
@@ -2802,10 +2949,10 @@ obligations:
   capability_id: ORA-STACK-001
   status: partial
   source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
   - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraText
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
   positive_test_selectors:
@@ -2888,10 +3035,10 @@ obligations:
   capability_id: ORA-STACK-001
   status: partial
   source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
   - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraText
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
   positive_test_selectors:
@@ -3081,10 +3228,10 @@ obligations:
   capability_id: ORA-STACK-001
   status: partial
   source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
   - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraText
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
   positive_test_selectors:
@@ -3218,16 +3365,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-FEAED74E05E73C86
   capability_id: ORA-GROUP-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_a_layer_models_source_name_offsets_opacity_visibility_and_blend
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_uses_replace_and_leaves_the_original_untouched
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_invalid_opacity_is_refused
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Group create/edit/move/remove,
     root restriction, and unknown-extension preservation tests.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Group create/edit/move/remove, root restriction, and unknown-extension preservation tests.

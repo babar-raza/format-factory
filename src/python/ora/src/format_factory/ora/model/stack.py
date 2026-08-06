@@ -8,11 +8,21 @@ order exactly and never sorts.
 Attribute defaults come from the contract's normative rules and are applied at
 construction, so a caller never has to distinguish "absent" from "explicitly
 default" to composite correctly.
+
+ORA-LAYER-001 / ORA-GROUP-001: "reject invalid values without altering the
+document" applies to construction, not only to XML parsing -- editing via
+`dataclasses.replace()` calls `__init__` again, which runs `__post_init__`,
+so the same domain checks `codec/stack_xml.py` applies while parsing apply
+here too. `codec/stack_xml.py` calls the validators defined here rather than
+keeping its own copies, so parser and model can never silently diverge on
+what counts as a valid opacity, visibility, or layer/text source path.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+
+from ..errors import OraValidationError
 
 #: "The composite-op attribute defaults to svg:src-over..."
 DEFAULT_COMPOSITE_OP = "svg:src-over"
@@ -21,6 +31,41 @@ DEFAULT_COMPOSITE_OP = "svg:src-over"
 #: visible when omitted."
 VISIBILITY_VALUES = frozenset({"visible", "hidden"})
 DEFAULT_VISIBILITY = "visible"
+
+
+def validate_opacity(value: float, *, label: str = "opacity") -> None:
+    """"Stack and layer opacity is a floating-point value in the inclusive
+    range zero through one." Both endpoints are legal; NaN is not."""
+    if value != value:  # NaN compares unequal to itself.
+        raise OraValidationError(f"{label} must be a number, got NaN")
+    if not 0.0 <= value <= 1.0:
+        raise OraValidationError(
+            f"{label} must be within the inclusive range 0 through 1, got {value}"
+        )
+
+
+def validate_visibility(value: str, *, label: str = "visibility") -> None:
+    if value not in VISIBILITY_VALUES:
+        raise OraValidationError(
+            f"{label} accepts only {sorted(VISIBILITY_VALUES)}, got {value!r}"
+        )
+
+
+def validate_src(raw: str, *, element: str) -> str:
+    """A src is an archive-root-relative member path, so it can escape exactly
+    the way a member name can. Shared by the parser and the model so a
+    layer/text source can never be constructed unsafely by either route."""
+    if not raw:
+        raise OraValidationError(f"<{element}> has an empty src attribute")
+    if raw.startswith("/") or "\\" in raw or (len(raw) >= 2 and raw[1] == ":"):
+        raise OraValidationError(
+            f"<{element}> src {raw!r} is not an archive-root-relative path"
+        )
+    if ".." in raw.split("/"):
+        raise OraValidationError(
+            f"<{element}> src {raw!r} traverses outside the archive root"
+        )
+    return raw
 
 
 @dataclass(frozen=True)
@@ -44,6 +89,10 @@ class OraNode:
     def is_visible(self) -> bool:
         return self.visibility == "visible"
 
+    def __post_init__(self) -> None:
+        validate_opacity(self.opacity)
+        validate_visibility(self.visibility)
+
 
 @dataclass(frozen=True)
 class OraLayer(OraNode):
@@ -51,6 +100,10 @@ class OraLayer(OraNode):
     the separate archive member that stores the graphical layer.\""""
 
     src: str = ""
+
+    def __post_init__(self) -> None:
+        super().__post_init__()
+        validate_src(self.src, element="layer")
 
 
 @dataclass(frozen=True)
@@ -62,6 +115,11 @@ class OraText(OraNode):
     """
 
     src: str | None = None
+
+    def __post_init__(self) -> None:
+        super().__post_init__()
+        if self.src is not None:
+            validate_src(self.src, element="text")
 
 
 @dataclass(frozen=True)
@@ -101,4 +159,7 @@ __all__ = [
     "OraNode",
     "OraStack",
     "OraText",
+    "validate_opacity",
+    "validate_src",
+    "validate_visibility",
 ]

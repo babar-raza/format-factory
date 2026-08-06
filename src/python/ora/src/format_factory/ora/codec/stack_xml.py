@@ -28,11 +28,13 @@ from ..model.document import DEFAULT_RESOLUTION_PPI, OraDocument
 from ..model.stack import (
     DEFAULT_COMPOSITE_OP,
     DEFAULT_VISIBILITY,
-    VISIBILITY_VALUES,
     OraChild,
     OraLayer,
     OraStack,
     OraText,
+    validate_opacity,
+    validate_src,
+    validate_visibility,
 )
 
 ROOT_ELEMENT = "image"
@@ -68,46 +70,26 @@ def _signed_integer(raw: str, *, label: str) -> int:
 
 def _opacity(raw: str | None) -> float:
     """"Stack and layer opacity is a floating-point value in the inclusive range
-    zero through one." Both endpoints are legal; NaN is not."""
+    zero through one." Both endpoints are legal; NaN is not.
+
+    Range/NaN enforcement delegates to `model.stack.validate_opacity` -- the
+    same check `OraNode.__post_init__` runs on every construction, parser or
+    programmatic -- so the two routes cannot silently diverge.
+    """
     if raw is None:
         return 1.0
     try:
         value = float(raw)
     except ValueError as exc:
         raise OraValidationError(f"opacity must be a number, got {raw!r}") from exc
-    if value != value:  # NaN compares unequal to itself and would pass < / >
-        raise OraValidationError("opacity must be a number, got NaN")
-    if not 0.0 <= value <= 1.0:
-        raise OraValidationError(
-            f"opacity must be within the inclusive range 0 through 1, got {value}"
-        )
+    validate_opacity(value)
     return value
 
 
 def _visibility(raw: str | None) -> str:
     if raw is None:
         return DEFAULT_VISIBILITY
-    if raw not in VISIBILITY_VALUES:
-        raise OraValidationError(
-            f"visibility accepts only {sorted(VISIBILITY_VALUES)}, got {raw!r}"
-        )
-    return raw
-
-
-def _validate_src(raw: str, *, element: str) -> str:
-    """A src is an archive-root-relative member path, so it can escape exactly
-    the way a member name can. The container refuses traversing member names;
-    this refuses the same escape arriving through an attribute."""
-    if not raw:
-        raise OraValidationError(f"<{element}> has an empty src attribute")
-    if raw.startswith("/") or "\\" in raw or (len(raw) >= 2 and raw[1] == ":"):
-        raise OraValidationError(
-            f"<{element}> src {raw!r} is not an archive-root-relative path"
-        )
-    if ".." in raw.split("/"):
-        raise OraValidationError(
-            f"<{element}> src {raw!r} traverses outside the archive root"
-        )
+    validate_visibility(raw)
     return raw
 
 
@@ -148,13 +130,13 @@ class _Walker:
             return self.stack(element, depth)
         if element.tag == "layer":
             return OraLayer(
-                src=_validate_src(_require(element, "src"), element="layer"),
+                src=validate_src(_require(element, "src"), element="layer"),
                 **_common(element),  # type: ignore[arg-type]
             )
         if element.tag == "text":
             source = element.get("src")
             return OraText(
-                src=_validate_src(source, element="text") if source else None,
+                src=validate_src(source, element="text") if source else None,
                 **_common(element),  # type: ignore[arg-type]
             )
         raise OraValidationError(
