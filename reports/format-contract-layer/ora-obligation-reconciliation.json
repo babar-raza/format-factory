@@ -18,6 +18,14 @@
       "truth_boundary": "Selector-bound, unlike ORA-BASELINE-SUITE: it names the exact positive and negative test selectors proving mergedimage.png is mandatory (strict mode rejects its absence) and must carry 8 or 16 bits per channel (other depths rejected), and Thumbnails/thumbnail.png is mandatory, non-interlaced, 8-bit, and at most 256x256 (each violation individually rejected: too wide, too tall, wrong bit depth, interlaced), all validated through a code path (_baseline_asset_diagnostics) entirely separate from layer-source resolution, so a baseline asset is never confused with an editable layer src. Does NOT cover \"generate[ing]\" or \"replac[ing]\" these assets -- this package has no image-generation capability, read/validate only. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-ORA-OBL-0CF770969FA42DB5 and SAL-ORA-OBL-48761EB31C2C2F7D fully, and SAL-ORA-OBL-52746ABC41B3E790 partially (the read/validate/no-confusion half only); it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "ORA-CONTAINER-CITATION-AUDIT-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ora-container-citation-audit-001.json",
+      "sha256": "a8da421c2df540a82a0ebcca93b5642299a8ad71ee0100a9b64ac808e58b1d63",
+      "truth_boundary": "Selector-bound, unlike ORA-BASELINE-SUITE: ORA-CONTAINER-001's 8 obligations shared one identical generic citation (three mimetype tests) despite real, extensive source already tested in test_obligation_container_and_mimetype.py. This audit names the exact positive/negative test selector proving each obligation's own specific rule_text: DEFLATED/STORED-only compression, case-sensitive UTF-8 member names, and the full mimetype-member requirement set (required, first, stored, exact value, no whitespace) are each proven independently. The archive-decode obligation (duplicate/traversal/ absolute/malformed-Unicode/unsupported-compression/truncated/ limit-exceeding entry rejection) is corrected to accurate `partial`: six of seven named entry classes are proven refused, but no test exercises a malformed-Unicode member name specifically -- every existing non-ASCII test uses a valid name. Three obligations are cross-capability duplicates of rule_texts already resolved under ORA-STACK-001/ORA-EDIT-001 this session, closed by citation. One obligation (stack.xml UTF-8 conformance) mirrors its still-unaudited ORA-STACK-001/ORA-EDIT-001 counterparts and is left untouched for consistency. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-ORA-OBL-12247F430B50BEF0, SAL-ORA-OBL-5F86B60E46B035A9, SAL-ORA-OBL-6491749388BB6731, SAL-ORA-OBL-79E99C47667CE16E, SAL-ORA-OBL-9AA35CB2D4A8868E, SAL-ORA-OBL-9B4C91C0E07B379E, and SAL-ORA-OBL-B7B7362D7DBCA9A2 only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "ORA-DOCUMENT-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -69,7 +77,7 @@
   "format_id": "ora",
   "input_digests": {
     "compiled_contract": "b18759606ff94b21fbd451f3e46cd98c48350b62cfae44abc4bacd6ccf9a7e60",
-    "implementation_evidence": "15d4508ff89f2503dfde72229fa4679f58b24359f1fdde47a19783a46b6afe21",
+    "implementation_evidence": "c5d8bb36bb5a3fcd4a47fde5779b854795de55d6f80f4df8d8174fe27322012f",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "41a34d4a25c5422c9e3842e63eee01dd5a858b9cd79a8370cf15fc1b892f430b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -576,20 +584,20 @@
     {
       "capability_id": "ORA-CONTAINER-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-CONTAINER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Members using DEFLATED or STORED are accepted and readable back; a member declaring an unsupported method (BZIP2 proven) is refused with a diagnostic naming \"compression\"."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Valid and hostile archive matrices cover member naming, compression, duplicates, traversal, truncation, and expansion limits."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_unsupported_compression_method_is_rejected"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-12247F430B50BEF0",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens",
-        "tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected",
-        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member"
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_unsupported_compression_method_is_rejected",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_deflated_and_stored_members_are_both_accepted"
       ],
       "proof_requirements": {
         "negative": [
@@ -599,15 +607,11 @@
           "Valid and hostile archive matrices cover member naming, compression, duplicates, traversal, truncation, and expansion limits."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer",
-        "src/python/ora/src/format_factory/ora/errors.py::OraError",
-        "src/python/ora/src/format_factory/ora/errors.py::OraArchiveError",
-        "src/python/ora/src/format_factory/ora/errors.py::OraValidationError",
-        "src/python/ora/src/format_factory/ora/errors.py::OraLimitError"
+        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-PRESERVE-001",
@@ -2084,20 +2088,28 @@
     {
       "capability_id": "ORA-CONTAINER-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-CONTAINER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Six of the seven named entry classes are proven refused before payload use: duplicate names, path traversal (parent, nested-parent, absolute, drive-letter, dot-parent, bare-parent, and backslash-separator forms), unsupported compression, truncation, entry-count limits, and declared-size limits (checked from the central directory, before decompression). Non-ASCII member names are separately proven to round-trip correctly when valid."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Valid and hostile archive matrices cover member naming, compression, duplicates, traversal, truncation, and expansion limits."
+        "Confirmed gap, not an audit backlog: \"malformed Unicode\" member names specifically are not tested -- every existing non-ASCII test (test_non_ascii_member_names_round_trip) uses a valid UTF-8 name and asserts it is accepted, not a name containing an invalid/malformed byte sequence that should be refused. Not attempted this slice."
       ],
-      "negative_test_selectors": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_duplicate_member_names_are_rejected",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_traversal_and_absolute_member_names_are_rejected"
+      ],
       "obligation_id": "SAL-ORA-OBL-5F86B60E46B035A9",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens",
-        "tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected",
-        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member"
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_duplicate_member_names_are_rejected",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_traversal_and_absolute_member_names_are_rejected",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_backslash_separators_are_rejected",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_unsupported_compression_method_is_rejected",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_a_truncated_archive_is_rejected",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_too_many_members_is_a_limit_error",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_total_declared_size_over_the_limit_is_refused_before_reading"
       ],
       "proof_requirements": {
         "negative": [
@@ -2109,11 +2121,7 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer",
-        "src/python/ora/src/format_factory/ora/errors.py::OraError",
-        "src/python/ora/src/format_factory/ora/errors.py::OraArchiveError",
-        "src/python/ora/src/format_factory/ora/errors.py::OraValidationError",
-        "src/python/ora/src/format_factory/ora/errors.py::OraLimitError"
+        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer"
       ],
       "status": "partial"
     },
@@ -2241,20 +2249,18 @@
     {
       "capability_id": "ORA-CONTAINER-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-CONTAINER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Member names are case-sensitive (Data.png and data.png are proven distinct members) and non-ASCII UTF-8 names round-trip correctly."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Valid and hostile archive matrices cover member naming, compression, duplicates, traversal, truncation, and expansion limits."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-6491749388BB6731",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens",
-        "tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected",
-        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member"
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_member_names_are_case_sensitive",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_non_ascii_member_names_round_trip"
       ],
       "proof_requirements": {
         "negative": [
@@ -2264,15 +2270,11 @@
           "Valid and hostile archive matrices cover member naming, compression, duplicates, traversal, truncation, and expansion limits."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer",
-        "src/python/ora/src/format_factory/ora/errors.py::OraError",
-        "src/python/ora/src/format_factory/ora/errors.py::OraArchiveError",
-        "src/python/ora/src/format_factory/ora/errors.py::OraValidationError",
-        "src/python/ora/src/format_factory/ora/errors.py::OraLimitError"
+        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-EDIT-001",
@@ -2544,20 +2546,20 @@
     {
       "capability_id": "ORA-CONTAINER-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of ORA-STACK-001's already-implemented SAL-ORA-OBL-047E5523BB0D85D5 (identical rule_text): layer src is archive-root-relative and traversal is refused."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Valid and hostile archive matrices cover member naming, compression, duplicates, traversal, truncation, and expansion limits."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_stack_and_document.py::test_a_layer_src_that_escapes_the_archive_is_refused"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-79E99C47667CE16E",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens",
-        "tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected",
-        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member"
+        "tests/python/ora/test_obligation_stack_and_document.py::test_layer_src_is_archive_root_relative",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_a_layer_src_that_escapes_the_archive_is_refused"
       ],
       "proof_requirements": {
         "negative": [
@@ -2567,15 +2569,11 @@
           "Valid and hostile archive matrices cover member naming, compression, duplicates, traversal, truncation, and expansion limits."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer",
-        "src/python/ora/src/format_factory/ora/errors.py::OraError",
-        "src/python/ora/src/format_factory/ora/errors.py::OraArchiveError",
-        "src/python/ora/src/format_factory/ora/errors.py::OraValidationError",
-        "src/python/ora/src/format_factory/ora/errors.py::OraLimitError"
+        "src/python/ora/src/format_factory/ora/model/stack.py::validate_src"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-DOCUMENT-001",
@@ -3195,17 +3193,15 @@
         "ORA-BASELINE-SUITE"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of ORA-EDIT-001's already-implemented SAL-ORA-OBL-035B53B843FF49F9 (identical rule_text): .ora archives are parsed as a ZIP container; non-ZIP input is refused."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Valid and hostile archive matrices cover member naming, compression, duplicates, traversal, truncation, and expansion limits."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_a_non_zip_input_is_rejected"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-9AA35CB2D4A8868E",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens",
-        "tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected",
-        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member"
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens"
       ],
       "proof_requirements": {
         "negative": [
@@ -3215,33 +3211,28 @@
           "Valid and hostile archive matrices cover member naming, compression, duplicates, traversal, truncation, and expansion limits."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer",
-        "src/python/ora/src/format_factory/ora/errors.py::OraError",
-        "src/python/ora/src/format_factory/ora/errors.py::OraArchiveError",
-        "src/python/ora/src/format_factory/ora/errors.py::OraValidationError",
-        "src/python/ora/src/format_factory/ora/errors.py::OraLimitError"
+        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-CONTAINER-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of ORA-STACK-001's already-implemented SAL-ORA-OBL-23D0207100C46AD9 (identical rule_text): every layer element requires src."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Valid and hostile archive matrices cover member naming, compression, duplicates, traversal, truncation, and expansion limits."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_stack_and_document.py::test_every_layer_requires_a_src"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-9B4C91C0E07B379E",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens",
-        "tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected",
-        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member"
+        "tests/python/ora/test_obligation_stack_and_document.py::test_every_layer_requires_a_src"
       ],
       "proof_requirements": {
         "negative": [
@@ -3251,15 +3242,12 @@
           "Valid and hostile archive matrices cover member naming, compression, duplicates, traversal, truncation, and expansion limits."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer",
-        "src/python/ora/src/format_factory/ora/errors.py::OraError",
-        "src/python/ora/src/format_factory/ora/errors.py::OraArchiveError",
-        "src/python/ora/src/format_factory/ora/errors.py::OraValidationError",
-        "src/python/ora/src/format_factory/ora/errors.py::OraLimitError"
+        "src/python/ora/src/format_factory/ora/model/stack.py::OraLayer",
+        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-GROUP-001",
@@ -3653,20 +3641,28 @@
     {
       "capability_id": "ORA-CONTAINER-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-CONTAINER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "The mimetype member is required, must be first, must be STORED (uncompressed), and must contain exactly \"image/openraster\" -- proven against every named clause independently: missing, wrong position, compressed, six whitespace-variant payloads, and five wrong-value payloads are all refused; a spec-conformant archive opens successfully."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Valid and hostile archive matrices cover member naming, compression, duplicates, traversal, truncation, and expansion limits."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_stored_uncompressed",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_any_surrounding_whitespace",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_wrong_values"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-B7B7362D7DBCA9A2",
       "positive_test_selectors": [
         "tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens",
         "tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected",
-        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member"
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_stored_uncompressed",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_any_surrounding_whitespace",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_wrong_values"
       ],
       "proof_requirements": {
         "negative": [
@@ -3676,15 +3672,11 @@
           "Valid and hostile archive matrices cover member naming, compression, duplicates, traversal, truncation, and expansion limits."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer",
-        "src/python/ora/src/format_factory/ora/errors.py::OraError",
-        "src/python/ora/src/format_factory/ora/errors.py::OraArchiveError",
-        "src/python/ora/src/format_factory/ora/errors.py::OraValidationError",
-        "src/python/ora/src/format_factory/ora/errors.py::OraLimitError"
+        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-GROUP-001",
@@ -4580,6 +4572,7 @@
   "referenced_input_digests": {
     "reports/skills-rff6/skill-transcripts/build-evidence-ledger-ora-001.json": "ff1e276701cd182ef6dbf39d21d7fbeb7d841bc5d12209ab938ae304e341abdc",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-baselineasset-001.json": "e9fd4c00c4aabd1861f785b719efb3715dbad33c5cb8d09292091eda4ebe7f32",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ora-container-citation-audit-001.json": "a8da421c2df540a82a0ebcca93b5642299a8ad71ee0100a9b64ac808e58b1d63",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-document-model-construction-001.json": "e722f98266ec914ed9f2aca1d75695070ed123949b66335d7d572ba4e7c05171",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-mimetype-001.json": "c4af01879db0867dbc3deec2c4ecbb85112c7aa2a3283b2a2b24c28d6eb155cd",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-preservation-baseline-001.json": "66670b6131f704d6bd441c2fd8a8e83dc51b29d415fdfcb7bff998ec953a047e",
@@ -4611,12 +4604,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 40,
+      "implemented": 46,
       "missing": 20,
-      "partial": 74
+      "partial": 68
     },
     "total": 134,
-    "unresolved": 94
+    "unresolved": 88
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

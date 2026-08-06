@@ -1,0 +1,49 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-container-citation-audit-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T18:20:00Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_CONTAINER_CITATION_AUDIT_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "ORA-CONTAINER-001's 8 obligations shared one identical generic citation (three mimetype tests) despite real, extensive existing coverage in test_obligation_container_and_mimetype.py -- same pattern found and closed for ORA-STACK-001 and ORA-EDIT-001 the two preceding ticks. A quick check confirmed ORA-GROUP-001, ORA-LAYER-001, ORA-ASSET-001, ORA-WRITE-001, ORA-VALIDATE-001, and ORA-LIFECYCLE-001 all show the identical single-shared-citation signature -- this pattern is systemic across most of ora's remaining partial obligations, not isolated to the two clusters closed so far.",
+    "obligation_targeted": "SAL-ORA-OBL-12247F430B50BEF0, SAL-ORA-OBL-5F86B60E46B035A9, SAL-ORA-OBL-6491749388BB6731, SAL-ORA-OBL-79E99C47667CE16E, SAL-ORA-OBL-9AA35CB2D4A8868E, SAL-ORA-OBL-9B4C91C0E07B379E, SAL-ORA-OBL-B7B7362D7DBCA9A2",
+    "acceptance_evidence": "tests/python/ora/test_obligation_container_and_mimetype.py, test_obligation_stack_and_document.py (all pre-existing; no new tests this slice)",
+    "regression_tier": "full ORA package suite (tests/python/ora)"
+  },
+  "execution_steps": [
+    "1. Pulled all 8 ORA-CONTAINER-001 rule_texts from the obligation register. Found 3 are cross-capability duplicates of rule_texts already resolved this session (layer data path, ZIP wrapper storage, layer requires src -- all under ORA-STACK-001/ORA-EDIT-001), 1 (stack.xml UTF-8 conformance) mirrors a still-unaudited counterpart, and 4 are genuinely ORA-CONTAINER-001-specific (compression methods, member-name case/encoding, mimetype requirements, and the broad archive-decode-and-reject-hostile-input rule).",
+    "2. Read test_obligation_container_and_mimetype.py in full and mapped the 4 non-duplicate rule_texts to their specific proving tests: compression methods (test_unsupported_compression_method_is_rejected + test_deflated_and_stored_members_are_both_accepted), member-name case/encoding (test_member_names_are_case_sensitive + test_non_ascii_member_names_round_trip), mimetype requirements (all 6 mimetype-specific tests, each proving one named clause independently), and the archive-decode rule (7 named entry classes to reject: duplicate, traversal, absolute, malformed-Unicode, unsupported-compression, truncated, limit-exceeding).",
+    "3. For the archive-decode rule specifically: checked each of the 7 named entry classes against the actual test suite. 6 are directly proven (duplicate/traversal/absolute/backslash all via test_traversal_and_absolute_member_names_are_rejected + test_backslash_separators_are_rejected + test_duplicate_member_names_are_rejected; unsupported-compression via test_unsupported_compression_method_is_rejected; truncated via test_a_truncated_archive_is_rejected; limit-exceeding via test_too_many_members_is_a_limit_error + test_total_declared_size_over_the_limit_is_refused_before_reading). The 7th (malformed Unicode) is NOT tested: the only non-ASCII-name test (test_non_ascii_member_names_round_trip) uses a valid UTF-8 name and asserts acceptance, not a malformed-byte-sequence name asserting refusal. Corrected this obligation's status to accurate partial with a precisely narrowed missing_behavior naming exactly this gap, rather than force-promoting or leaving the stale generic placeholder.",
+    "4. For the 3 cross-capability duplicates: cited the exact source_symbols and tests already proven for their ORA-STACK-001/ORA-EDIT-001 counterparts, cross-referencing both directions in implemented_behavior text.",
+    "5. Left the stack.xml UTF-8 conformance duplicate untouched, consistent with its still-unaudited ORA-STACK-001/ORA-EDIT-001 counterparts.",
+    "6. Applied all 7 edits via the same obligation_id-delimited text-block script pattern proven reliable the last two ticks (avoids reformatting the other 127 untouched obligations), this time including the proof_requirements boilerplate from the start to avoid repeating last tick's schema-validation bug.",
+    "7. Ran the reconciler: clean pass, no errors, first attempt. Ran the full ora suite to confirm zero regressions (no source or test files changed this slice) -- 281 passed, identical to before."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora/ -q -- 281 passed, unchanged from before this slice (0 source or test changes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 6,
+    "obligations_total_for_format": 134,
+    "ora_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against an independent OpenRaster reader/writer. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_6_of_8_moved_and_1_corrected_1_untouched": "3 obligations were exact cross-capability duplicates of facts already fully proven. 3 more (compression methods, member-name case/encoding, mimetype requirements) were genuinely ORA-CONTAINER-001-specific and directly, fully provable by existing tests. 1 (the archive-decode rule) was corrected to accurate partial rather than force-promoted: 6 of 7 named entry classes are proven, but malformed-Unicode member-name rejection specifically is not tested. 1 (stack.xml UTF-8 conformance) mirrors its still-unaudited counterparts elsewhere and was left untouched for consistency.",
+    "pattern_confirmed_systemic": "A quick capability-level check (distinct citation-set count per capability) confirmed ORA-GROUP-001, ORA-LAYER-001, ORA-ASSET-001, ORA-WRITE-001, ORA-VALIDATE-001, and ORA-LIFECYCLE-001 all show the same single-shared-citation signature across their combined ~61 obligations -- strong evidence this citation-audit pattern (not new-capability building) is the dominant remaining opportunity across most of ora's capability set, worth continuing in future ticks."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

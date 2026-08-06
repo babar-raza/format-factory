@@ -223,6 +223,36 @@ execution_evidence:
     SAL-ORA-OBL-F41BA93CE84AA0F6, and SAL-ORA-OBL-6B6D7BEE18077E8A
     (composite-op, kept partial like its duplicate) -- same citation
     discipline, no additional new tests for this extension.
+- evidence_id: ORA-CONTAINER-CITATION-AUDIT-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ora-container-citation-audit-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike ORA-BASELINE-SUITE: ORA-CONTAINER-001's 8
+    obligations shared one identical generic citation (three mimetype
+    tests) despite real, extensive source already tested in
+    test_obligation_container_and_mimetype.py. This audit names the exact
+    positive/negative test selector proving each obligation's own specific
+    rule_text: DEFLATED/STORED-only compression, case-sensitive UTF-8
+    member names, and the full mimetype-member requirement set (required,
+    first, stored, exact value, no whitespace) are each proven
+    independently. The archive-decode obligation (duplicate/traversal/
+    absolute/malformed-Unicode/unsupported-compression/truncated/
+    limit-exceeding entry rejection) is corrected to accurate `partial`:
+    six of seven named entry classes are proven refused, but no test
+    exercises a malformed-Unicode member name specifically -- every
+    existing non-ASCII test uses a valid name. Three obligations are
+    cross-capability duplicates of rule_texts already resolved under
+    ORA-STACK-001/ORA-EDIT-001 this session, closed by citation. One
+    obligation (stack.xml UTF-8 conformance) mirrors its still-unaudited
+    ORA-STACK-001/ORA-EDIT-001 counterparts and is left untouched for
+    consistency. SELF-CONSISTENT format_factory-only evidence per the
+    execution-recovery directive's GAP-008 rule, not VERIFIED. Covers
+    SAL-ORA-OBL-12247F430B50BEF0, SAL-ORA-OBL-5F86B60E46B035A9,
+    SAL-ORA-OBL-6491749388BB6731, SAL-ORA-OBL-79E99C47667CE16E,
+    SAL-ORA-OBL-9AA35CB2D4A8868E, SAL-ORA-OBL-9B4C91C0E07B379E, and
+    SAL-ORA-OBL-B7B7362D7DBCA9A2 only; it supports no other obligation and
+    promotes no product state.
 obligations:
 - obligation_id: SAL-ORA-OBL-022F37EEA74EC1BB
   capability_id: ORA-EDIT-001
@@ -611,26 +641,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-12247F430B50BEF0
   capability_id: ORA-CONTAINER-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
-  - src/python/ora/src/format_factory/ora/errors.py::OraError
-  - src/python/ora/src/format_factory/ora/errors.py::OraArchiveError
-  - src/python/ora/src/format_factory/ora/errors.py::OraValidationError
-  - src/python/ora/src/format_factory/ora/errors.py::OraLimitError
   positive_test_selectors:
-  - tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens
-  - tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected
-  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_unsupported_compression_method_is_rejected
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_deflated_and_stored_members_are_both_accepted
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_unsupported_compression_method_is_rejected
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-CONTAINER-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Valid and hostile archive
-    matrices cover member naming, compression, duplicates, traversal, truncation, and expansion limits.'
+  - 'Members using DEFLATED or STORED are accepted and readable back; a member declaring an unsupported method (BZIP2 proven) is refused with a diagnostic naming "compression".'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Valid and hostile archive matrices cover member naming, compression, duplicates, traversal, truncation,
@@ -1814,23 +1838,24 @@ obligations:
   status: partial
   source_symbols:
   - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
-  - src/python/ora/src/format_factory/ora/errors.py::OraError
-  - src/python/ora/src/format_factory/ora/errors.py::OraArchiveError
-  - src/python/ora/src/format_factory/ora/errors.py::OraValidationError
-  - src/python/ora/src/format_factory/ora/errors.py::OraLimitError
   positive_test_selectors:
-  - tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens
-  - tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected
-  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_duplicate_member_names_are_rejected
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_traversal_and_absolute_member_names_are_rejected
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_backslash_separators_are_rejected
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_unsupported_compression_method_is_rejected
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_a_truncated_archive_is_rejected
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_too_many_members_is_a_limit_error
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_total_declared_size_over_the_limit_is_refused_before_reading
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_duplicate_member_names_are_rejected
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_traversal_and_absolute_member_names_are_rejected
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-CONTAINER-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'Six of the seven named entry classes are proven refused before payload use: duplicate names, path traversal (parent, nested-parent, absolute, drive-letter, dot-parent, bare-parent, and backslash-separator forms), unsupported compression, truncation, entry-count limits, and declared-size limits (checked from the central directory, before decompression). Non-ASCII member names are separately proven to round-trip correctly when valid.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Valid and hostile archive
-    matrices cover member naming, compression, duplicates, traversal, truncation, and expansion limits.'
+  - 'Confirmed gap, not an audit backlog: "malformed Unicode" member names specifically are not tested -- every existing non-ASCII test (test_non_ascii_member_names_round_trip) uses a valid UTF-8 name and asserts it is accepted, not a name containing an invalid/malformed byte sequence that should be refused. Not attempted this slice.'
   proof_requirements:
     positive:
     - Valid and hostile archive matrices cover member naming, compression, duplicates, traversal, truncation,
@@ -1932,26 +1957,19 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-6491749388BB6731
   capability_id: ORA-CONTAINER-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
-  - src/python/ora/src/format_factory/ora/errors.py::OraError
-  - src/python/ora/src/format_factory/ora/errors.py::OraArchiveError
-  - src/python/ora/src/format_factory/ora/errors.py::OraValidationError
-  - src/python/ora/src/format_factory/ora/errors.py::OraLimitError
   positive_test_selectors:
-  - tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens
-  - tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected
-  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_member_names_are_case_sensitive
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_non_ascii_member_names_round_trip
   negative_test_selectors: []
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-CONTAINER-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Valid and hostile archive
-    matrices cover member naming, compression, duplicates, traversal, truncation, and expansion limits.'
+  - 'Member names are case-sensitive (Data.png and data.png are proven distinct members) and non-ASCII UTF-8 names round-trip correctly.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Valid and hostile archive matrices cover member naming, compression, duplicates, traversal, truncation,
@@ -2162,26 +2180,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-79E99C47667CE16E
   capability_id: ORA-CONTAINER-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
-  - src/python/ora/src/format_factory/ora/errors.py::OraError
-  - src/python/ora/src/format_factory/ora/errors.py::OraArchiveError
-  - src/python/ora/src/format_factory/ora/errors.py::OraValidationError
-  - src/python/ora/src/format_factory/ora/errors.py::OraLimitError
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
   positive_test_selectors:
-  - tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens
-  - tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected
-  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_stack_and_document.py::test_layer_src_is_archive_root_relative
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_layer_src_that_escapes_the_archive_is_refused
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_layer_src_that_escapes_the_archive_is_refused
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Valid and hostile archive
-    matrices cover member naming, compression, duplicates, traversal, truncation, and expansion limits.'
+  - 'Cross-capability duplicate of ORA-STACK-001''s already-implemented SAL-ORA-OBL-047E5523BB0D85D5 (identical rule_text): layer src is archive-root-relative and traversal is refused.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Valid and hostile archive matrices cover member naming, compression, duplicates, traversal, truncation,
@@ -2670,26 +2682,18 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-9AA35CB2D4A8868E
   capability_id: ORA-CONTAINER-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
-  - src/python/ora/src/format_factory/ora/errors.py::OraError
-  - src/python/ora/src/format_factory/ora/errors.py::OraArchiveError
-  - src/python/ora/src/format_factory/ora/errors.py::OraValidationError
-  - src/python/ora/src/format_factory/ora/errors.py::OraLimitError
   positive_test_selectors:
   - tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens
-  - tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected
-  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member
-  negative_test_selectors: []
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_a_non_zip_input_is_rejected
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Valid and hostile archive
-    matrices cover member naming, compression, duplicates, traversal, truncation, and expansion limits.'
+  - 'Cross-capability duplicate of ORA-EDIT-001''s already-implemented SAL-ORA-OBL-035B53B843FF49F9 (identical rule_text): .ora archives are parsed as a ZIP container; non-ZIP input is refused.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Valid and hostile archive matrices cover member naming, compression, duplicates, traversal, truncation,
@@ -2698,26 +2702,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-9B4C91C0E07B379E
   capability_id: ORA-CONTAINER-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
-  - src/python/ora/src/format_factory/ora/errors.py::OraError
-  - src/python/ora/src/format_factory/ora/errors.py::OraArchiveError
-  - src/python/ora/src/format_factory/ora/errors.py::OraValidationError
-  - src/python/ora/src/format_factory/ora/errors.py::OraLimitError
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
   positive_test_selectors:
-  - tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens
-  - tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected
-  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_stack_and_document.py::test_every_layer_requires_a_src
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_every_layer_requires_a_src
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Valid and hostile archive
-    matrices cover member naming, compression, duplicates, traversal, truncation, and expansion limits.'
+  - 'Cross-capability duplicate of ORA-STACK-001''s already-implemented SAL-ORA-OBL-23D0207100C46AD9 (identical rule_text): every layer element requires src.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Valid and hostile archive matrices cover member naming, compression, duplicates, traversal, truncation,
@@ -3037,26 +3035,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-B7B7362D7DBCA9A2
   capability_id: ORA-CONTAINER-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
-  - src/python/ora/src/format_factory/ora/errors.py::OraError
-  - src/python/ora/src/format_factory/ora/errors.py::OraArchiveError
-  - src/python/ora/src/format_factory/ora/errors.py::OraValidationError
-  - src/python/ora/src/format_factory/ora/errors.py::OraLimitError
   positive_test_selectors:
   - tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens
   - tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected
   - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_stored_uncompressed
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_any_surrounding_whitespace
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_wrong_values
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_stored_uncompressed
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_any_surrounding_whitespace
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_wrong_values
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-CONTAINER-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Valid and hostile archive
-    matrices cover member naming, compression, duplicates, traversal, truncation, and expansion limits.'
+  - 'The mimetype member is required, must be first, must be STORED (uncompressed), and must contain exactly "image/openraster" -- proven against every named clause independently: missing, wrong position, compressed, six whitespace-variant payloads, and five wrong-value payloads are all refused; a spec-conformant archive opens successfully.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Valid and hostile archive matrices cover member naming, compression, duplicates, traversal, truncation,
