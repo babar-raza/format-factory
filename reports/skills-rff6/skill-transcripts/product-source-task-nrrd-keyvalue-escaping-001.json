@@ -1,0 +1,55 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-keyvalue-escaping-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-07T00:45:00Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_KEYVALUE_ESCAPING_001",
+    "task_kind": "genuine-production-bug-fix-plus-small-gap-closure",
+    "root_cause": "SAL-NRRD-OBL-48CB227B444651BA and SAL-NRRD-OBL-6533C8FB0044E3A2 (both NRRD-KEYVALUE-001) require the pinned spec's defined key/value escaping scheme ('\\n' for newline, '\\\\' for backslash, SAL-NRRD-00021) and NRRD0002+ gating. Neither reader.py nor writer.py implemented any escaping -- a value containing a real newline or backslash produced a header that could not be parsed back after dumps(), confirmed as a genuine round-trip failure by direct interactive reproduction before any fix was written. There was also no version gate rejecting key/value pairs in NRRD0001 headers, contradicting the spec's explicit statement that they were introduced in NRRD0002.",
+    "obligation_targeted": "SAL-NRRD-OBL-48CB227B444651BA, SAL-NRRD-OBL-6533C8FB0044E3A2 (both NRRD-KEYVALUE-001)",
+    "acceptance_evidence": "reader.py gained _unescape_key_value (decodes '\\n'->newline, '\\\\'->backslash) applied to both key and value on parse, plus a version<2 rejection when any ':=' line is seen. writer.py gained _escape_key_value (backslash escaped before newline, so a literal backslash is never mistaken for the start of a '\\n' sequence) applied on emit. 10 new tests prove: embedded-newline and embedded-backslash values round-trip through dumps()/loads(); escaping order is correct (a literal 'a\\\\nb' string, not an actual newline, survives unchanged); raw '\\n' and '\\\\' escape sequences in a hand-built header decode correctly; and NRRD0001 rejects key/value lines while NRRD0002 through NRRD0005 all accept them.",
+    "regression_tier": "full nrrd package suite (tests/python/nrrd) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Read the pinned spec source directly (.local/format-contracts/acquired/nrrd/src-nrrd-001.bin, SRC-NRRD-001): confirmed verbatim 'a minimal escaping scheme is required, which readers must interpret and writers must generate: \\n signifies a new line ... \\\\ signifies the backslash character' and 'These can appear in NRRD0002 (and higher version) files, but not NRRD0001 files.' Also confirmed the delimiter rule ('any spaces before or after := are assumed part of the key or value') matches the reader's existing unstripped split -- no change needed there -- and that 'the substring := is not allowed in the key' is already structurally guaranteed by splitting on the first occurrence.",
+    "2. Reproduced the round-trip bug interactively before writing any fix: dataclasses.replace()'d a loaded NrrdDocument's key_value_pairs with a value containing a real newline, called dumps(), and confirmed loads() on the result raised NrrdParseError -- the newline split the header into an extra, unparseable line.",
+    "3. Added _unescape_key_value to reader.py (single left-to-right scan, only recognizing the two defined sequences) and _escape_key_value to writer.py (backslash-first, then newline, to avoid double-escaping), wired into the ':=' branch of _parse_header and _header_bytes respectively. Verified the round-trip bug was fixed and the escaping order was correct via the same interactive reproduction before writing any test.",
+    "4. Added a version<2 check in the ':=' branch of _parse_header, confirmed interactively that NRRD0001 previously silently accepted key/value lines (a confirmed gap) and now raises, while NRRD0002-NRRD0005 remain accepted.",
+    "5. Grepped all existing nrrd test fixtures for key/value values containing backslashes or newlines before making the change -- none found, confirming no existing fixture depended on the old unescaped behavior.",
+    "6. Wrote 10 new tests (2 round-trip, 1 escaping-order, 2 raw-sequence-decode, 2 parametrized version-gate positive/negative) all passing on the first attempt. Ran ruff (clean) and the full nrrd suite (500 passed, was 490, +10) before writing any evidence claim. Ran the full 6-format regression (2971 passed, was 2961, +10; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py",
+    "tests/python/nrrd/test_obligation_keyvalue_escaping.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py",
+    "tests/python/nrrd/test_obligation_keyvalue_escaping.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_keyvalue_escaping.py -q -- 10 passed",
+    ".venv/Scripts/pytest tests/python/nrrd/ -q -- 500 passed, 1 skipped, was 490 passed",
+    ".venv/Scripts/python -m ruff check tests/python/nrrd/test_obligation_keyvalue_escaping.py src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 2971 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 2961 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 2,
+    "obligations_total_for_format": 65,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not cross-checked against a reference NRRD implementation. The escaping scheme and version gate were both read directly from the pinned, authority-locked spec source rather than paraphrased.",
+    "obligations_moved_breakdown": "2 obligations promoted to implemented by fixing a genuine, confirmed round-trip bug (key/value values containing a newline or backslash previously corrupted the header on write) and adding the spec-mandated NRRD0002 version gate, both confirmed against the pinned Teem spec text word-for-word, with 10 new tests."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

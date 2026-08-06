@@ -26,6 +26,14 @@
       "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Closes SAL-NRRD-OBL-C13492B6879B6E90 (NRRD-HEADER-001) only. The pinned spec source (src-nrrd-001.bin, SRC-NRRD-001) was read directly and confirms word-for-word: \"a colon followed by a single space ... and then the [field descriptor]\"; \"Whitespace (that is not part of the previous line's termination) is not allowed before a field identifier\"; and \"Extra whitespace after the field descriptor and before the line termination is ignored.\" reader.py._parse_header's ordinary-field branch now rejects leading whitespace before the field identifier and any colon spacing other than exactly one space, while still ignoring trailing value whitespace per the spec's own permissive clause. 6 new tests confirm both the rejections and the surviving permissive behavior. nrrd suite: 484 -> 490 passed. NOT backed by an independent reference NRRD implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-NRRD-OBL-C13492B6879B6E90 only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "NRRD-KEYVALUE-ESCAPING-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-keyvalue-escaping-001.json",
+      "sha256": "58b4a3c1cb9aefd9d546fb5c0e5dfc1d7f7be90fd15e40b3c7f4424238d11125",
+      "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Closes SAL-NRRD-OBL-48CB227B444651BA and SAL-NRRD-OBL-6533C8FB0044E3A2 (both NRRD-KEYVALUE-001). The pinned spec source (src-nrrd-001.bin, SRC-NRRD-001) confirms word-for-word: \"a minimal escaping scheme is required ... '\\n' signifies a new line ... '\\\\' signifies the backslash character\" and \"These can appear in NRRD0002 (and higher version) files, but not NRRD0001 files.\" Before this slice neither reader.py nor writer.py implemented any escaping -- a key/value value containing a real newline or backslash produced a header that could not be parsed back after dumps(), reproduced interactively before the fix. reader.py now unescapes and writer.py now escapes both directions correctly (backslash before newline, to avoid double-escaping); a NRRD0002 version gate now rejects key:=value lines in NRRD0001 headers. 10 new tests confirm round-tripping, escaping order, raw sequence decoding, and the version gate both ways. nrrd suite: 490 -> 500 passed. NOT backed by an independent reference NRRD implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-NRRD-OBL-48CB227B444651BA and SAL-NRRD-OBL-6533C8FB0044E3A2 only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "NRRD-LAZY-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -61,7 +69,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "25337234de4c7e1bd0a1e787da23b833d68bd3c60c716b677d398e4db656b621",
+    "implementation_evidence": "c642c67b5355ef9d7c1db88c8dd57cbdc6acc5747815f7ddee3f194e116caf46",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -730,23 +738,28 @@
     {
       "capability_id": "NRRD-KEYVALUE-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-KEYVALUE-ESCAPING-PROOF"
       ],
       "implemented_behavior": [
-        "Basic key:=value parsing, model access, preservation, editing, and deterministic writing exist. Duplicate keys now follow last-value-wins (fixed this slice -- the reader previously raised NrrdParseError on a repeated key, the opposite of the spec-mandated behavior), proven by 3 dedicated tests including a 3-way repeat and a mix of duplicate and distinct keys."
+        "Basic key:=value parsing, model access, preservation, editing, and deterministic writing exist. Duplicate keys follow last-value-wins. Escaping is now implemented per SAL-NRRD-00021, confirmed word-for-word against the pinned spec source: reader.py unescapes '\\n' to a real newline and '\\\\' to a single backslash on parse; writer.py escapes backslash before newline on emit (order matters, so a literal backslash is never mistaken for the start of a '\\n' sequence). A NRRD0002 version gate now rejects any key:=value line in a NRRD0001 header. The ':= not allowed in key' rule is structurally guaranteed by splitting on the first occurrence and needs no separate check; the delimiter itself already correctly preserves any spaces adjacent to ':=' as part of the key or value, unstripped, per the spec's own explicit statement."
       ],
-      "missing_behavior": [
-        "Escaping, forbidden delimiters, and NRRD0002 gating are still absent. Last-value-wins is now correctly implemented (see implemented_behavior); this is honest evidence correction of a confirmed spec-conformance bug, not new scope."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_duplicate_header_and_truncated_payload_fail_closed"
+        "tests/python/nrrd/test_obligation_keyvalue_escaping.py::test_key_value_pairs_are_rejected_before_nrrd0002"
       ],
       "obligation_id": "SAL-NRRD-OBL-48CB227B444651BA",
       "positive_test_selectors": [
         "tests/python/nrrd/test_obligation_metadata_production.py::test_quoted_explicit_and_unknown_metadata_survive_semantic_roundtrip",
         "tests/python/nrrd/test_obligation_keyvalue_duplicates.py::test_a_repeated_key_keeps_the_last_declared_value",
         "tests/python/nrrd/test_obligation_keyvalue_duplicates.py::test_three_repeats_of_one_key_keep_only_the_final_value",
-        "tests/python/nrrd/test_obligation_keyvalue_duplicates.py::test_duplicate_and_distinct_keys_coexist"
+        "tests/python/nrrd/test_obligation_keyvalue_duplicates.py::test_duplicate_and_distinct_keys_coexist",
+        "tests/python/nrrd/test_obligation_keyvalue_escaping.py::test_an_embedded_newline_round_trips_through_dumps_and_loads",
+        "tests/python/nrrd/test_obligation_keyvalue_escaping.py::test_an_embedded_backslash_round_trips_through_dumps_and_loads",
+        "tests/python/nrrd/test_obligation_keyvalue_escaping.py::test_the_written_header_escapes_backslash_before_newline",
+        "tests/python/nrrd/test_obligation_keyvalue_escaping.py::test_a_raw_backslash_n_escape_sequence_decodes_to_a_real_newline",
+        "tests/python/nrrd/test_obligation_keyvalue_escaping.py::test_a_raw_double_backslash_decodes_to_one_backslash",
+        "tests/python/nrrd/test_obligation_keyvalue_escaping.py::test_key_value_pairs_are_accepted_from_nrrd0002_onward"
       ],
       "proof_requirements": {
         "negative": [
@@ -756,12 +769,12 @@
           "Escaping/editing/duplicate semantics against Teem."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_parse_header",
         "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-PAYLOAD-001",
@@ -1006,22 +1019,27 @@
     {
       "capability_id": "NRRD-KEYVALUE-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-KEYVALUE-ESCAPING-PROOF"
       ],
       "implemented_behavior": [
-        "Key/value lines parse and serialize, and duplicate keys now follow last-value-wins (fixed this slice, closing the specific gap this obligation named -- previously the reader raised on a repeated key instead of keeping the last value)."
+        "Key/value lines parse and serialize; duplicate keys follow last-value-wins. Newline/backslash escaping ('\\n', '\\\\', per SAL-NRRD-00021) is now implemented symmetrically in reader.py and writer.py, confirmed against the pinned spec text word-for-word, fixing a genuine round-trip bug (a key/value value containing a real newline or backslash previously could not survive a dumps()/loads() cycle). The NRRD0002 version gate now rejects key:=value lines in NRRD0001 headers. The ':=' substring prohibition in the key is structurally guaranteed by construction (splitting on the first occurrence)."
       ],
-      "missing_behavior": [
-        "No newline/backslash unescaping, no := key prohibition, and no version gate. Last-value-wins duplicate behavior is now correctly implemented (see implemented_behavior)."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_duplicate_header_and_truncated_payload_fail_closed"
+        "tests/python/nrrd/test_obligation_keyvalue_escaping.py::test_key_value_pairs_are_rejected_before_nrrd0002"
       ],
       "obligation_id": "SAL-NRRD-OBL-6533C8FB0044E3A2",
       "positive_test_selectors": [
         "tests/python/nrrd/test_obligation_metadata_production.py::test_quoted_explicit_and_unknown_metadata_survive_semantic_roundtrip",
         "tests/python/nrrd/test_obligation_keyvalue_duplicates.py::test_a_repeated_key_keeps_the_last_declared_value",
-        "tests/python/nrrd/test_obligation_keyvalue_duplicates.py::test_three_repeats_of_one_key_keep_only_the_final_value"
+        "tests/python/nrrd/test_obligation_keyvalue_duplicates.py::test_three_repeats_of_one_key_keep_only_the_final_value",
+        "tests/python/nrrd/test_obligation_keyvalue_escaping.py::test_an_embedded_newline_round_trips_through_dumps_and_loads",
+        "tests/python/nrrd/test_obligation_keyvalue_escaping.py::test_an_embedded_backslash_round_trips_through_dumps_and_loads",
+        "tests/python/nrrd/test_obligation_keyvalue_escaping.py::test_the_written_header_escapes_backslash_before_newline",
+        "tests/python/nrrd/test_obligation_keyvalue_escaping.py::test_a_raw_backslash_n_escape_sequence_decodes_to_a_real_newline",
+        "tests/python/nrrd/test_obligation_keyvalue_escaping.py::test_a_raw_double_backslash_decodes_to_one_backslash",
+        "tests/python/nrrd/test_obligation_keyvalue_escaping.py::test_key_value_pairs_are_accepted_from_nrrd0002_onward"
       ],
       "proof_requirements": {
         "negative": [
@@ -1031,12 +1049,12 @@
           "Exact escaping and duplicate precedence against Teem."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_parse_header",
         "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-HEADER-001",
@@ -2309,14 +2327,15 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-ascii-endian-001.json": "60a99a5918aff5911cec49c6ecb8ca17e2d2284e8e513697a17e12a0f06e20c2",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-axis-arity-001.json": "7fa7b5a006873ffa9a1c9c12179d744a9cc9ff9612a9be34435c0203624ca5d7",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-header-grammar-001.json": "34ff1e271e63f2ceb26c72ebe47b1f44e9be6b2ddde57a06068be324b1383229",
+    "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-keyvalue-escaping-001.json": "58b4a3c1cb9aefd9d546fb5c0e5dfc1d7f7be90fd15e40b3c7f4424238d11125",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-lazy-payload-001.json": "ee783f0c983b7f4fba3cdcd565c9f09d4fe16dc3fd1799bfd881969d266d3e09",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-security-baseline-001.json": "75e80c2707a235afef3f1ab9980697a5e95e32a90fb18e8e1000fd29bbd2ee82",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-version-selection-001.json": "176aa723e7cf62c5e8eede3a629645c3f244c3a3c1601e80a21fe673a8b140aa",
     "reports/skills-rff6/skill-transcripts/reconcile-contract-capabilities-nrrd-readiness-001.json": "4675509f009d4b78181543769a6e18dd8292afb65b0624bd347a5b6ccdab2869",
     "src/python/nrrd/src/format_factory/nrrd/codec/lazy.py": "91881b17de9982f641410a448f2472c28526367628b92d89cb7a45521109a0c1",
     "src/python/nrrd/src/format_factory/nrrd/codec/payload.py": "38520a9be8ff12f1266999d5f8d79761254ecc327e65e637e39f35c72a86d240",
-    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "2d5f5b8a9f1839cb8a90cfcc3565525f3ba9c771110f587577a01d92899e7207",
-    "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py": "27ed99ee0e1db0a02155ce7577e7b7450544ed0fd96824b50f31a45d623af52c",
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "f80c57a5e22cb94f68dbdd99b00c02457d5b81710874fbac10bc3da6d57890dd",
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py": "918411fad99952bf7cc5577610fcb57a36b99aeb6d57878a4bf857242e926108",
     "src/python/nrrd/src/format_factory/nrrd/convert.py": "83d96605f886fd24e9146410be552cb54d1bb93ee317102f46dc53b164448951",
     "src/python/nrrd/src/format_factory/nrrd/model/document.py": "b0807a18aed01727b3ef85c445017ccd891b5840d7558c736f804fdbaa4222ab",
     "src/python/nrrd/src/format_factory/nrrd/security/limits.py": "61960ec909fda7e5b9accf4934948291467bb5e8ce4ce584ec6e6ee12e60e844",
@@ -2330,6 +2349,7 @@
     "tests/python/nrrd/test_obligation_dtype_conversion.py": "303205eec17e82662e3e484870fac7e985c0ed400f36bc62f887c75b686d6425",
     "tests/python/nrrd/test_obligation_header_field_grammar.py": "e70dc004b9be05c2828ba1b1fa99de76484c1190d1abf0ac59d1bd320e89fdee",
     "tests/python/nrrd/test_obligation_keyvalue_duplicates.py": "bd1aeeedc522b3be842bdecf4625b4a639375e84b858b8d94a0e5dd647798ab8",
+    "tests/python/nrrd/test_obligation_keyvalue_escaping.py": "9511255a07b3ed1b2fe02b2b533baa82f6e1d7181d1ed1f9187fec4be72b3699",
     "tests/python/nrrd/test_obligation_lazy_payload_access.py": "f18ff2c44b5e0582b716e675cfd6566bdebc3469b22df73821f5acdfcdab5de1",
     "tests/python/nrrd/test_obligation_metadata_production.py": "5c928de8b704e53560d8e845bd02f33a549a61f3c8d3c5ef492c9dee1ceebd40",
     "tests/python/nrrd/test_obligation_payload_skip.py": "631ddbb609282e655c179358af0e8cbaa76038e33343cd482c87aaeecb1b8116",
@@ -2342,13 +2362,13 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 30,
+      "implemented": 32,
       "missing": 1,
-      "partial": 31,
+      "partial": 29,
       "preservation_only": 3
     },
     "total": 65,
-    "unresolved": 35
+    "unresolved": 33
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

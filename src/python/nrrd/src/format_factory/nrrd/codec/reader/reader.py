@@ -31,6 +31,22 @@ from ..payload import (
 _REQUIRED_FIELDS = frozenset({"type", "dimension", "sizes", "encoding"})
 
 
+def _unescape_key_value(text: str) -> str:
+    """Reverse the key/value escaping scheme: "\\n" -> newline, "\\\\" -> backslash."""
+    result: list[str] = []
+    index = 0
+    length = len(text)
+    while index < length:
+        char = text[index]
+        if char == "\\" and index + 1 < length and text[index + 1] in "n\\":
+            result.append("\n" if text[index + 1] == "n" else "\\")
+            index += 2
+            continue
+        result.append(char)
+        index += 1
+    return "".join(result)
+
+
 def _read_source(source: BinarySource, limits: ResourceLimits) -> tuple[bytes, Path | None]:
     path: Path | None = None
     if isinstance(source, bytes):
@@ -101,10 +117,15 @@ def _parse_header(
             comments.append(line[1:].lstrip())
             continue
         if ":=" in line:
+            if version < 2:
+                raise NrrdParseError(
+                    f"key/value pairs require NRRD0002 or newer, got NRRD000{version} "
+                    f"at line {line_number}"
+                )
             key, value = line.split(":=", 1)
             if not key:
                 raise NrrdParseError(f"empty key/value key at line {line_number}")
-            key_values[key] = value
+            key_values[_unescape_key_value(key)] = _unescape_key_value(value)
             continue
         if ":" not in line:
             raise NrrdParseError(f"malformed header line {line_number}")

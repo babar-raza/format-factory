@@ -26,6 +26,11 @@ _FIELD_ORDER = (
 )
 
 
+def _escape_key_value(text: str) -> str:
+    """Apply the key/value escaping scheme: backslash -> "\\\\", newline -> "\\n"."""
+    return text.replace("\\", "\\\\").replace("\n", "\\n")
+
+
 def _coerce_document(value: NrrdDocument | Mapping[str, Any]) -> NrrdDocument:
     return value if isinstance(value, NrrdDocument) else NrrdDocument.from_mapping(value)
 
@@ -42,7 +47,9 @@ def _header_bytes(document: NrrdDocument, profile: str) -> bytes:
         if name not in emitted and name != "data file":
             lines.append(f"{name}: {document.header[name]}")
     for key in sorted(document.key_value_pairs):
-        lines.append(f"{key}:={document.key_value_pairs[key]}")
+        escaped_key = _escape_key_value(key)
+        escaped_value = _escape_key_value(document.key_value_pairs[key])
+        lines.append(f"{escaped_key}:={escaped_value}")
     try:
         return ("\n".join(lines) + "\n\n").encode("ascii")
     except UnicodeEncodeError as exc:
