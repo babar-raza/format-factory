@@ -10,12 +10,36 @@
       "truth_boundary": "OVERSTATED -- READ GAP-022 BEFORE TRUSTING ANY `partial` HERE. The whole ubl package is 1,480 LOC, of which model/root_types.py is 652 comprising 91 five-line stubs that carry only a ROOT_NAME constant. Searching the package for the typed value components its obligations name -- AmountType, currencyID, CodeType, listID, LegalMonetaryTotal, TaxTotal, InvoiceLine -- returns nothing, and validator.py states that full schema and cardinality validation remains a mandatory open obligation. A large share of the 137 `partial` entries below therefore assert implemented behavior that does not exist. They were produced by mapping capabilities to modules that EXIST; the builder cannot check that a module IMPLEMENTS its obligation. Correcting them needs per-obligation judgement, not a wholesale demotion.\nSuite-level and NON-PROMOTING. The ubl suite is 334 passed with no failures, but that figure is dominated by the ten shadow-package files; only test_production_namespace.py exercises the shipped namespace. Binds no individual selector outcome to an obligation, so nothing here is verification; every obligation is recorded `partial` at most.\n2026-08-05 (post events 74-82 and this session's UBL-CALC-001 slice): the OVERSTATED framing above is no longer the current state of the package -- model/aggregates.py, model/values.py, model/temporal.py and model/charges.py now hold real typed components (InvoiceLine, Item, TaxTotal/TaxSubtotal, LegalMonetaryTotal, Amount/Quantity with Rounding policies, UblDate/UblTime/ UblDateTime, AllowanceCharge/Price/PaymentMeans) that did not exist when this truth_boundary was written, and reconcile_invoice() now performs tolerance- aware line-extension, tax-subtotal and allowance/charge reconciliation. This text is preserved as the historical record of the overstatement GAP-022 was written to catch, not as a current assessment -- see the capabilities section below and the notes above for what is actually mapped today. ubl suite: 488 passed.\n2026-08-06: UBL-QUERY-001 (model/query.py, DocumentIndex) and UBL-REF-001 (DocumentIndex.duplicate_line_ids()) add genuinely new source and tests since the 2026-08-05 addendum above. ubl suite: 507 -> 514 passed, ruff clean, mypy clean. ubl obligations: 165 partial/29 missing -> 182 partial/12 missing. No obligation reaches `implemented`.\n2026-08-06 (UBL-QUERY-001): model/query.py is new source, real and tested, not a remap of an existing stub. ubl suite: 488 -> 507 passed, ruff and mypy clean. Obligations: 163 partial/31 missing -> 165 partial/29 missing.\n2026-08-06 (later still): UBL's first `implemented` promotions. UBL-QUERY-001's two obligations both required \"indexed and linear scans agree\" -- proof that DocumentIndex's pre-built dict lookups return exactly what an independent, freshly-written linear scan finds, not proof the module merely exists. Added tests/python/ubl/test_obligation_query_index_agreement.py (10 new tests, zero source changes): a from-scratch linear-scan implementation (different traversal shape, no shared code with DocumentIndex._walk) cross-checked against by_qname/by_local_name/by_id/by_business_role across two structurally distinct fixtures. ubl suite: 514 -> 524 passed, ruff clean. Obligations: 182 partial/12 missing -> 180 partial/12 missing, 2 implemented (was 0)."
     },
     {
+      "evidence_id": "UBL-CODELIST-CITATION-AUDIT-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ubl-codelist-citation-audit-001.json",
+      "sha256": "e86ec085304fda4650c0a8e685459487d3fdf3ada7c4eab9b5d8b444c2222302",
+      "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE: UBL-CODELIST-001's 10 obligations were all `missing` with no citation at all, despite six of them describing model classes (Quantity, Amount, Item, AllowanceCharge, BinaryObject, Code) that already exist and are already tested in test_obligation_business_value_types.py, test_obligation_aggregate_components.py, and test_obligation_temporal_projection_and_charges.py -- misattributed- but-existing-evidence, not unbuilt capability. This entry names the exact positive/negative selectors proving each of those six. A seventh (PaymentMeans) is corrected to accurate partial: code and due date are proven, but the rule_text also names \"payee financial account elements\" (cac:PayeeFinancialAccount), which is not modeled and has no committed, verified SAL fact documenting its element structure -- not attempted, to avoid inventing structure from memory. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-UBL-OBL-0CB3818FF9DAA16C, SAL-UBL-OBL-368AAF6A5FDB598F, SAL-UBL-OBL-42BE8E0788B1267B, SAL-UBL-OBL-4AC3C1FBF4218EB2, SAL-UBL-OBL-720A660EC43410DA, SAL-UBL-OBL-933F687594F7AFA1, and SAL-UBL-OBL-D21BA46DEC8DFA2B only; it supports no other obligation and promotes no product state."
+    },
+    {
+      "evidence_id": "UBL-CODELIST-REGISTRY-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ubl-codelist-citation-audit-001.json",
+      "sha256": "e86ec085304fda4650c0a8e685459487d3fdf3ada7c4eab9b5d8b444c2222302",
+      "truth_boundary": "Selector-bound: new module model/codelist.py builds the full pluggable code-list registry and offline validation mechanism the obligations ask for -- immutable CodeList entries keyed by (list_id, agency_id, version), CodeListRegistry.register()/get(), and validate_code() (deterministic, no network/filesystem access, proven idempotent). Proven that an \"official\"-shaped list and a user-supplied list register through the identical method with no special-casing, and that agency/version each independently distinguish otherwise-identical list_ids. Does NOT bundle actual official code-list data or a genericode distribution-format loader -- no committed SAL fact enumerates any real list's values or documents the genericode schema with enough precision to build against; not attempted, to avoid fabricating spec content. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-UBL-OBL-C717DEB32BC6F815 and SAL-UBL-OBL-DE7D98EAE4344EDA only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "UBL-DETECTED-DECLARED-VERSION-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
       "path": "reports/skills-rff6/skill-transcripts/product-source-task-ubl-detected-declared-version-001.json",
       "sha256": "1059a4d232058af1d560fc0e1e0732ad04bfe0079ef93b03de24f3f4ddfb61b0",
       "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE: it names the exact positive and negative test selectors proving detected_version (reader-only, frozen at parse, survives edits) and declared_version (live property) are distinct, and that the writer refuses rather than silently rewriting an unsupported declared version. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-UBL-OBL-8940ED685664E7CE (UBL-LIFECYCLE-001, the detected-vs-declared distinction) and, via the same declared_version property, SAL-UBL-OBL-FC5C33152AFDB187 (UBL-PROFILE-001, plain UBLVersionID exposure with no detected/declared split required), partially SAL-UBL-OBL-7D0855CD163E1EFD (the version-exposure clause only), and SAL-UBL-OBL-12FE2060729C9B75 (UBL-UPGRADE-001, \"cbc:UBLVersionID identifies the declared version\" -- the ubl_version_id() helper and declared_version property this entry already proves); it supports no other obligation and promotes no product state."
+    },
+    {
+      "evidence_id": "UBL-EXTERNAL-REFERENCE-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ubl-codelist-citation-audit-001.json",
+      "sha256": "e86ec085304fda4650c0a8e685459487d3fdf3ada7c4eab9b5d8b444c2222302",
+      "truth_boundary": "Selector-bound: cac:ExternalReference (URI, DocumentHash, MimeCode, FileName, Description, all optional per the verified SAL fact SAL-UBL-00119) had no model class anywhere in this package. New module model/reference.py adds ExternalReference and external_reference_of(), proven fully populated, fully absent, and partially populated (unset fields stay None, not empty string), plus refusal on a missing element. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-UBL-OBL-88EBC13520652DAE only; it supports no other obligation and promotes no product state."
     },
     {
       "evidence_id": "UBL-LIFECYCLE-IO-SELECTOR-PROOF",
@@ -69,7 +93,7 @@
   "format_id": "ubl",
   "input_digests": {
     "compiled_contract": "41aec8cae7ec194c419ce7ac98ba0b5a3c67db3af0ff2a3c6b2f0e13594f62ab",
-    "implementation_evidence": "cc7db97fa9b606aa23525594fa0c71f9a12aa230a14c646222e842764d4d62f6",
+    "implementation_evidence": "2e9ee09e869009baf6c1cc6a48c5fbf5b76ad1c31481b54e193f51c52c5f278f",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "43298a744266dabae0cda8c7aa331317aef620515dec7784f1f5a186a97fe3b6",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -383,15 +407,20 @@
     },
     {
       "capability_id": "UBL-CODELIST-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Known-good and known-bad coded values per first-wave list; offline determinism verified.",
-        "NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability."
+      "execution_evidence_ids": [
+        "UBL-CODELIST-CITATION-AUDIT-SELECTOR-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "Quantity-typed basic components (Quantity) carry an optional unit_code attribute -- proven present and proven absent (default None), both valid."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ubl/test_obligation_business_value_types.py::test_a_quantity_also_refuses_floats"
+      ],
       "obligation_id": "SAL-UBL-OBL-0CB3818FF9DAA16C",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ubl/test_obligation_business_value_types.py::test_a_quantity_carries_an_optional_unit_code"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -400,9 +429,11 @@
           "Known-good and known-bad coded values per first-wave list; offline determinism verified."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/model/values.py::Quantity"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-REF-001",
@@ -2007,15 +2038,22 @@
     },
     {
       "capability_id": "UBL-CODELIST-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Known-good and known-bad coded values per first-wave list; offline determinism verified.",
-        "NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability."
+      "execution_evidence_ids": [
+        "UBL-CODELIST-CITATION-AUDIT-SELECTOR-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "AmountType is modeled as an exact Decimal plus a required currencyID, validated against the ISO 4217 lexical shape (three uppercase letters) -- a missing or malformed currency is refused. Cross-field arithmetic reconciliation across totals is a separate, already-documented obligation (UBL-CALC-001/reconcile_invoice), not claimed here."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_requires_a_currency",
+        "tests/python/ubl/test_obligation_business_value_types.py::test_currency_must_look_like_an_iso_4217_code"
+      ],
       "obligation_id": "SAL-UBL-OBL-368AAF6A5FDB598F",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal",
+        "tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_requires_a_currency"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -2024,9 +2062,11 @@
           "Known-good and known-bad coded values per first-wave list; offline determinism verified."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/model/values.py::Amount"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-CALC-001",
@@ -2193,15 +2233,22 @@
     },
     {
       "capability_id": "UBL-CODELIST-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Known-good and known-bad coded values per first-wave list; offline determinism verified.",
-        "NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability."
+      "execution_evidence_ids": [
+        "UBL-CODELIST-CITATION-AUDIT-SELECTOR-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "cac:Item is modeled with a required name, optional identifiers (identification schemes), and optional classification codes, proven both at direct construction and projected from real XML via item_of() (exercised through invoice line projection)."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name"
+      ],
       "obligation_id": "SAL-UBL-OBL-42BE8E0788B1267B",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name",
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_carries_optional_identifiers_and_classification_codes",
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_invoice_lines_project_from_xml"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -2210,9 +2257,12 @@
           "Known-good and known-bad coded values per first-wave list; offline determinism verified."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item",
+        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::item_of"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-MODEL-001",
@@ -2683,15 +2733,22 @@
     },
     {
       "capability_id": "UBL-CODELIST-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Known-good and known-bad coded values per first-wave list; offline determinism verified.",
-        "NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability."
+      "execution_evidence_ids": [
+        "UBL-CODELIST-CITATION-AUDIT-SELECTOR-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "cac:AllowanceCharge is modeled with a required boolean charge indicator (distinguishing a charge from an allowance, proven both directions), a required amount, and optional reason code/reason -- an ambiguous or missing indicator, and a missing amount, are both refused."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_ambiguous_charge_indicator_is_refused",
+        "tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_allowance_charge_requires_an_indicator_and_amount"
+      ],
       "obligation_id": "SAL-UBL-OBL-4AC3C1FBF4218EB2",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_allowance_charge_projects_with_its_indicator_and_amount",
+        "tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_the_charge_indicator_distinguishes_a_charge_from_an_allowance"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -2700,9 +2757,12 @@
           "Known-good and known-bad coded values per first-wave list; offline determinism verified."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge",
+        "src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-DOCTYPES-001",
@@ -3815,15 +3875,22 @@
     },
     {
       "capability_id": "UBL-CODELIST-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Known-good and known-bad coded values per first-wave list; offline determinism verified.",
-        "NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability."
+      "execution_evidence_ids": [
+        "UBL-CODELIST-CITATION-AUDIT-SELECTOR-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "cbc:EmbeddedDocumentBinaryObject is modeled as base64Binary data plus a required mimeCode, matching the UBL UDT restriction -- a missing mimeCode and malformed base64 are both refused, and a round-trip through base64 preserves the original bytes exactly."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ubl/test_obligation_business_value_types.py::test_a_binary_object_requires_a_mime_code",
+        "tests/python/ubl/test_obligation_business_value_types.py::test_binary_object_rejects_malformed_base64"
+      ],
       "obligation_id": "SAL-UBL-OBL-720A660EC43410DA",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ubl/test_obligation_business_value_types.py::test_a_binary_object_round_trips_through_base64",
+        "tests/python/ubl/test_obligation_business_value_types.py::test_binary_object_preserves_its_filename_when_given"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -3832,9 +3899,11 @@
           "Known-good and known-bad coded values per first-wave list; offline determinism verified."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/model/values.py::BinaryObject"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-MODEL-001",
@@ -4462,15 +4531,23 @@
     },
     {
       "capability_id": "UBL-CODELIST-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Known-good and known-bad coded values per first-wave list; offline determinism verified.",
-        "NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability."
+      "execution_evidence_ids": [
+        "UBL-CODELIST-CITATION-AUDIT-SELECTOR-PROOF",
+        "UBL-EXTERNAL-REFERENCE-SELECTOR-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "cac:ExternalReference is now modeled (new module, model/reference.py) as an aggregate with optional uri, document_hash, mime_code, filename, and description -- every element optional per the verified SAL fact (SAL-UBL-00119), proven both fully populated and fully absent, plus a partial-population case proving unset fields stay None rather than defaulting to empty strings."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ubl/test_obligation_external_reference.py::TestExternalReferenceProjection::test_projecting_a_missing_element_is_refused"
+      ],
       "obligation_id": "SAL-UBL-OBL-88EBC13520652DAE",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ubl/test_obligation_external_reference.py::TestExternalReferenceProjection::test_projecting_a_full_element",
+        "tests/python/ubl/test_obligation_external_reference.py::TestExternalReferenceProjection::test_projecting_an_empty_element_yields_all_none",
+        "tests/python/ubl/test_obligation_external_reference.py::TestExternalReferenceProjection::test_projecting_a_partial_element_leaves_the_rest_none"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -4479,9 +4556,12 @@
           "Known-good and known-bad coded values per first-wave list; offline determinism verified."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/model/reference.py::ExternalReference",
+        "src/python/ubl/src/format_factory/ubl/model/reference.py::external_reference_of"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-LIFECYCLE-001",
@@ -4799,15 +4879,21 @@
     },
     {
       "capability_id": "UBL-CODELIST-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Known-good and known-bad coded values per first-wave list; offline determinism verified.",
-        "NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability."
+      "execution_evidence_ids": [
+        "UBL-CODELIST-CITATION-AUDIT-SELECTOR-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "CodeType values are modeled as normalized strings with optional list_id, list_agency_id, and list_version_id attributes, matching the base UBL XSD (which does not itself enumerate business code values) -- proven preserved and proven normalized without collapsing or stripping content; an empty code is refused."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ubl/test_obligation_business_value_types.py::test_an_empty_code_is_refused"
+      ],
       "obligation_id": "SAL-UBL-OBL-933F687594F7AFA1",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ubl/test_obligation_business_value_types.py::test_a_code_preserves_its_list_attributes",
+        "tests/python/ubl/test_obligation_business_value_types.py::test_code_values_are_normalized_strings"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -4816,9 +4902,11 @@
           "Known-good and known-bad coded values per first-wave list; offline determinism verified."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/model/values.py::Code"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-REF-001",
@@ -6272,15 +6360,27 @@
     },
     {
       "capability_id": "UBL-CODELIST-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Known-good and known-bad coded values per first-wave list; offline determinism verified.",
-        "NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability."
+      "execution_evidence_ids": [
+        "UBL-CODELIST-CITATION-AUDIT-SELECTOR-PROOF",
+        "UBL-CODELIST-REGISTRY-SELECTOR-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "A new pluggable registry (model/codelist.py) now exists: immutable CodeList entries keyed by (list_id, agency_id, version), a CodeListRegistry callers populate at runtime, and validate_code() which is deterministic and makes no network or filesystem access -- proven idempotent across repeated calls. An official code list and a user-/profile-supplied code list register through exactly the same method, with no special-casing, proven by registering both kinds side by side."
+      ],
+      "missing_behavior": [
+        "Confirmed gap, not an audit backlog: this obligation asks to \"load official code lists from their distribution artifacts\" -- no actual official code-list data (UN/CEFACT UNCL lists, ISO 4217, ISO 3166, and similar) is bundled, and no OASIS genericode XML loader is implemented. No SAL fact in this repository's committed spec cache enumerates any such list's real values or documents the genericode distribution schema with enough precision to build a loader against; building either from memory would risk fabricating spec content. The registry and validation mechanism this obligation also asks for is fully built and tested -- only the officially-sourced data and its distribution-format loader remain unattempted."
+      ],
+      "negative_test_selectors": [
+        "tests/python/ubl/test_obligation_codelist_registry.py::TestValidateCode::test_code_not_a_member_of_a_registered_list_is_invalid",
+        "tests/python/ubl/test_obligation_codelist_registry.py::TestValidateCode::test_code_naming_an_unregistered_list_is_unknown_not_invalid"
+      ],
       "obligation_id": "SAL-UBL-OBL-C717DEB32BC6F815",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ubl/test_obligation_codelist_registry.py::TestValidateCode::test_code_member_of_a_registered_list_is_valid",
+        "tests/python/ubl/test_obligation_codelist_registry.py::TestValidateCode::test_official_and_user_supplied_lists_register_identically",
+        "tests/python/ubl/test_obligation_codelist_registry.py::TestValidateCode::test_validation_is_deterministic_and_repeatable",
+        "tests/python/ubl/test_obligation_codelist_registry.py::TestCodeListImmutability::test_code_list_is_frozen"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -6289,9 +6389,12 @@
           "Known-good and known-bad coded values per first-wave list; offline determinism verified."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/model/codelist.py::CodeListRegistry",
+        "src/python/ubl/src/format_factory/ubl/model/codelist.py::validate_code"
+      ],
+      "status": "partial"
     },
     {
       "capability_id": "UBL-EDIT-001",
@@ -6608,15 +6711,24 @@
     },
     {
       "capability_id": "UBL-CODELIST-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Known-good and known-bad coded values per first-wave list; offline determinism verified.",
-        "NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability."
+      "execution_evidence_ids": [
+        "UBL-CODELIST-CITATION-AUDIT-SELECTOR-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "cac:PaymentMeans is modeled with a required payment means code and an optional due date, both proven at construction and via XML projection; a missing code and a malformed due date are both refused."
+      ],
+      "missing_behavior": [
+        "Confirmed gap, not an audit backlog: this obligation's own rule_text names \"payee financial account elements\" (cac:PayeeFinancialAccount) as part of what PaymentMeans carries, and this module's own docstring already quotes that clause -- but no such field is modeled on PaymentMeans, and no SAL fact in this repository's committed spec cache documents cac:PayeeFinancialAccount's own element structure (ID, Name, FinancialInstitutionBranch, or otherwise) with enough precision to model it without inventing structure from memory. Not attempted this slice for that reason."
+      ],
+      "negative_test_selectors": [
+        "tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_payment_means_requires_a_code",
+        "tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_malformed_due_date_is_refused"
+      ],
       "obligation_id": "SAL-UBL-OBL-D21BA46DEC8DFA2B",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_payment_means_projects_with_its_code_and_due_date",
+        "tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_payment_due_date_is_optional"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -6625,9 +6737,12 @@
           "Known-good and known-bad coded values per first-wave list; offline determinism verified."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans",
+        "src/python/ubl/src/format_factory/ubl/model/charges.py::payment_means_of"
+      ],
+      "status": "partial"
     },
     {
       "capability_id": "UBL-VALUES-001",
@@ -6847,15 +6962,25 @@
     },
     {
       "capability_id": "UBL-CODELIST-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Known-good and known-bad coded values per first-wave list; offline determinism verified.",
-        "NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability."
+      "execution_evidence_ids": [
+        "UBL-CODELIST-CITATION-AUDIT-SELECTOR-PROOF",
+        "UBL-CODELIST-REGISTRY-SELECTOR-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "Cross-capability duplicate of the loading/validation mechanism SAL-UBL-OBL-C717DEB32BC6F815 also names: coded properties (Code.list_id/list_agency_id/list_version_id) map directly onto a CodeList's identity, and validate_code() checks identifiers/agencies/versions/values together -- proven that agency and version each independently distinguish otherwise-identical list_ids, and that a Code with no list_id has nothing to validate against. User-supplied lists are supported identically to any other registered list."
+      ],
+      "missing_behavior": [
+        "Same confirmed gap as SAL-UBL-OBL-C717DEB32BC6F815: no official code-list resources or their distribution-format loader are implemented, for the same reason (no verified spec source for either the list content or the genericode schema)."
+      ],
+      "negative_test_selectors": [
+        "tests/python/ubl/test_obligation_codelist_registry.py::TestValidateCode::test_code_with_no_list_id_is_unknown_not_invalid"
+      ],
       "obligation_id": "SAL-UBL-OBL-DE7D98EAE4344EDA",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ubl/test_obligation_codelist_registry.py::TestValidateCode::test_validation_is_scoped_by_agency_and_version_together",
+        "tests/python/ubl/test_obligation_codelist_registry.py::TestRegistryLookup::test_agency_id_distinguishes_otherwise_identical_list_ids",
+        "tests/python/ubl/test_obligation_codelist_registry.py::TestRegistryLookup::test_version_distinguishes_otherwise_identical_list_ids"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -6864,9 +6989,12 @@
           "Known-good and known-bad coded values per first-wave list; offline determinism verified."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/model/codelist.py::CodeListRegistry",
+        "src/python/ubl/src/format_factory/ubl/model/codelist.py::validate_code"
+      ],
+      "status": "partial"
     },
     {
       "capability_id": "UBL-PARSE-001",
@@ -7843,6 +7971,7 @@
   "proof_strength": "supporting_nonpromoting",
   "referenced_input_digests": {
     "reports/skills-rff6/skill-transcripts/build-evidence-ledger-ubl-001.json": "1e7b783cd545d3fcc56de100cfbd37c2d62ad9bf226093f940808de488756200",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ubl-codelist-citation-audit-001.json": "e86ec085304fda4650c0a8e685459487d3fdf3ada7c4eab9b5d8b444c2222302",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-detected-declared-version-001.json": "1059a4d232058af1d560fc0e1e0732ad04bfe0079ef93b03de24f3f4ddfb61b0",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-lifecycle-io-001.json": "ed787921f2225a81573186c4cd81377a417d211b447444ba0807685ba1e837b8",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-preservation-mode-001.json": "088e0985934fa48774b39f185c541d9d3c3f038b561d70bb1d30359755986909",
@@ -7853,11 +7982,13 @@
     "src/python/ubl/src/format_factory/ubl/codec/preservation.py": "dab616ced8f5104f5bee89db229a32d14000f486b061ace0e7a29dd934f5ab99",
     "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py": "254743ef56212db8aebabac970793fee188634466b6907145e25b1b662e8f9fc",
     "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py": "e352a3442d0a31389f177c9a206d3a5d857c9a2d4f724833e9af90e31d5b4a7d",
-    "src/python/ubl/src/format_factory/ubl/model/__init__.py": "995fb78c81c9b844f733e15cdd1bf3d8693277f250e61979a99a474fcf7125d6",
+    "src/python/ubl/src/format_factory/ubl/model/__init__.py": "9e80ee4ab23c7bbdee54673f1bf8920aa358866de5ac5005ff7752e7578be925",
     "src/python/ubl/src/format_factory/ubl/model/aggregates.py": "c0f02a00ad6065ea0359dd379f30d0db94b95d63f772d2247ab521ea7a49886a",
     "src/python/ubl/src/format_factory/ubl/model/charges.py": "2832078eb56abae974a7e549b8b58d8a486105c36ed7302fe099efe6f9c0f8ef",
+    "src/python/ubl/src/format_factory/ubl/model/codelist.py": "1f17c8c2a0e0acafe8665c8695fbdf3226562a20c423fa2e4b388a4d2e5dd83f",
     "src/python/ubl/src/format_factory/ubl/model/document.py": "9b8ca16af3989f29c8ccd5ac15f697e6c4e423a6503db38378e8f2013c89bf6b",
     "src/python/ubl/src/format_factory/ubl/model/query.py": "b88a8be52595daac91f4e68f78b0c018339eb1612d9bb7e42d562bcedee5b4b4",
+    "src/python/ubl/src/format_factory/ubl/model/reference.py": "98d303cdb177d529b786af09a19e50c9938e5c4e4fada28a8cb4d744ac4a654e",
     "src/python/ubl/src/format_factory/ubl/model/root_types.py": "1ffc0eb226aaeb88c0a2ee941faf71cf0578fa7e5de94d77fae335bcfbccb126",
     "src/python/ubl/src/format_factory/ubl/model/temporal.py": "fa364fbcb2357cde3787518731cd9662d5f4933ebd2e46cd3e244a3616c36c43",
     "src/python/ubl/src/format_factory/ubl/model/typed.py": "3768fa130256f78078070bc083c3c571d3827e4a8074ffb224b56db5e753a31c",
@@ -7868,8 +7999,10 @@
     "tests/python/ubl/test_obligation_aggregate_components.py": "26e36e29e05e239f1fc17915ebf243ae61b55799c7811dbfe8c3fee0fac66242",
     "tests/python/ubl/test_obligation_business_calculation.py": "ebf8352d49b7d0bc6bf5aa4bfa0d034f6f98f896ba34aceb95cfe38efeeee150",
     "tests/python/ubl/test_obligation_business_value_types.py": "aefb8749170d03e5310add4d3ec5d183830eebbacce9dcabcc0e08f2893a83c5",
+    "tests/python/ubl/test_obligation_codelist_registry.py": "703e263896b28695ffac86f281b1588ed65e46c80c11e8a98ac465c3d3a7d657",
     "tests/python/ubl/test_obligation_detected_declared_version.py": "8833196d78820749344abc5f9b17f93393b7ccdce587fb434f7430032bb69bec",
     "tests/python/ubl/test_obligation_document_query.py": "43151bb1577f2c57f8f9782753d37cac8595d3e2efde33bf25d03d71705b3f21",
+    "tests/python/ubl/test_obligation_external_reference.py": "6ba99de8b1dab95aacf884176da6e3c59cf698d3017df4c95748f834fe854901",
     "tests/python/ubl/test_obligation_lifecycle_io.py": "6189da6be51a33cbe60b72e6d98b632dfda9232838d41788dfd7547ec824f7ed",
     "tests/python/ubl/test_obligation_preservation_mode.py": "b6a47fe647cd9e42641d45aafa2991fe60dc7f6372b2c738c239953a793a6182",
     "tests/python/ubl/test_obligation_profile_identifiers.py": "4a755868d52bba01f7023b09b5fff94d43582d496367eb287ec83ad184379738",
@@ -7884,12 +8017,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 15,
-      "missing": 12,
-      "partial": 167
+      "implemented": 22,
+      "missing": 2,
+      "partial": 170
     },
     "total": 194,
-    "unresolved": 179
+    "unresolved": 172
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

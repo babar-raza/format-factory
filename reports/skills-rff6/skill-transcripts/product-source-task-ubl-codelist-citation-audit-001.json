@@ -1,0 +1,66 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-codelist-citation-audit-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T19:00:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_CODELIST_001",
+    "task_kind": "mixed-citation-audit-and-genuine-new-capability",
+    "root_cause": "Deliberately pivoted from five consecutive citation-audit-only ticks to a combined tick after finding UBL-CODELIST-001: 10 fully `missing` obligations (no citation at all), the largest fully-unbuilt-looking cluster remaining across xliff/safetensors/ubl (both xliff and safetensors have zero remaining `missing` obligations). Investigation split the cluster three ways: 6 obligations describe model classes (Quantity, Amount, Item, AllowanceCharge, BinaryObject, Code) that already exist and are already tested -- misattributed, not unbuilt. 1 (PaymentMeans) is proven for most of its rule_text but genuinely missing a payee-financial-account field with no verified spec source to build it from. 2 are a genuinely unbuilt, well-scoped, buildable capability (a pluggable code-list registry). 1 (ExternalReference) is a genuinely unbuilt but simple, spec-verified aggregate.",
+    "obligation_targeted": "SAL-UBL-OBL-0CB3818FF9DAA16C, SAL-UBL-OBL-368AAF6A5FDB598F, SAL-UBL-OBL-42BE8E0788B1267B, SAL-UBL-OBL-4AC3C1FBF4218EB2, SAL-UBL-OBL-720A660EC43410DA, SAL-UBL-OBL-88EBC13520652DAE, SAL-UBL-OBL-933F687594F7AFA1, SAL-UBL-OBL-C717DEB32BC6F815, SAL-UBL-OBL-D21BA46DEC8DFA2B, SAL-UBL-OBL-DE7D98EAE4344EDA",
+    "acceptance_evidence": "tests/python/ubl/test_obligation_business_value_types.py, test_obligation_aggregate_components.py, test_obligation_temporal_projection_and_charges.py (pre-existing); test_obligation_codelist_registry.py, test_obligation_external_reference.py (new, 22 tests)",
+    "regression_tier": "full UBL package suite (tests/python/ubl)"
+  },
+  "execution_steps": [
+    "1. Pulled all 10 UBL-CODELIST-001 rule_texts. Checked each named model type (Quantity, Amount, Item, AllowanceCharge, BinaryObject, Code, PaymentMeans, ExternalReference) against the actual source tree before assuming anything was unbuilt: found Quantity/Amount/Item/AllowanceCharge/BinaryObject/Code all already exist with matching field shapes and existing tests; PaymentMeans exists but is missing a field its own rule_text (and its own module's docstring, written in an earlier tick) names explicitly; ExternalReference has no class anywhere.",
+    "2. For the 6 misattributed obligations: mapped each to its specific existing positive/negative tests (already thorough: currency ISO-4217 validation, code-list attribute preservation and normalization, base64 round-trip and malformed-base64 refusal, item/allowance-charge construction and refusal, etc.) and promoted with precise citations -- zero new code for these six.",
+    "3. For PaymentMeans (SAL-UBL-OBL-D21BA46DEC8DFA2B): verified code+due-date are proven, then searched shared/sal-facts/ubl.yaml for a fact documenting cac:PayeeFinancialAccount's element structure before considering building it -- found none. Corrected to accurate partial rather than either force-promoting or inventing IBAN/account/branch fields from memory (the same anti-fabrication discipline applied earlier this session to ORA's composite-op and mask obligations).",
+    "4. For ExternalReference: found a verified SAL fact (SAL-UBL-00119) naming exactly five optional elements (URI, DocumentHash, MimeCode, FileName, Description) with high enough confidence to build against safely. Built model/reference.py (ExternalReference dataclass + external_reference_of() projection), matching the existing aggregate module conventions (frozen dataclass, UblValidationError on a missing element, find()-based child lookup). Wired exports through model/__init__.py and the top-level package.",
+    "5. For the code-list loading/validation obligations (SAL-UBL-OBL-C717DEB32BC6F815, SAL-UBL-OBL-DE7D98EAE4344EDA): confirmed via grep that no codelist module or concept exists anywhere in the package. Scoped the build deliberately: no official UN/ISO code-list data is available from a verified source in this repo, and no genericode-format loader can be built without a real distribution artifact to parse against -- attempting either would risk fabrication. Built the full pluggable registry and offline-validation mechanism instead (model/codelist.py): CodeList (frozen, immutable), CodeListRegistry (register/get, keyed by list_id+agency_id+version), CodeListValidation (report), and validate_code() (deterministic, no I/O). Documented the scope choice explicitly in the module's own docstring.",
+    "6. Smoke-tested both new modules manually before writing formal tests: ExternalReference's full/empty/partial population and refusal-on-missing-element; the registry's empty state, register/get round-trip, agency- and version-scoped distinctness, unknown-list and no-list_id 'unknown, not invalid' semantics, member/non-member validation, immutability (both of CodeList itself and of an already-registered entry when a later list replaces it), and that official-shaped and user-supplied lists register through the identical method.",
+    "7. Ran ruff and mypy on all four changed/new source files: clean on the first pass.",
+    "8. Wrote test_obligation_codelist_registry.py (14 tests) and test_obligation_external_reference.py (8 tests). Ran all 22 directly before citing: all passed. Ran the full ubl suite: 608 passed (586 baseline + 22 new), 0 regressions.",
+    "9. Applied all 10 evidence edits via the same obligation_id-delimited text-block script pattern used across the ora/ipynb ticks, this time verifying the actual proof_requirements boilerplate for this specific capability first (it differs from other UBL capabilities' boilerplate -- caught before running the script, not after a failed reconciler pass)."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/model/reference.py",
+    "src/python/ubl/src/format_factory/ubl/model/codelist.py",
+    "src/python/ubl/src/format_factory/ubl/model/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_codelist_registry.py",
+    "tests/python/ubl/test_obligation_external_reference.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/model/reference.py",
+    "src/python/ubl/src/format_factory/ubl/model/codelist.py",
+    "src/python/ubl/src/format_factory/ubl/model/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_codelist_registry.py",
+    "tests/python/ubl/test_obligation_external_reference.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_codelist_registry.py tests/python/ubl/test_obligation_external_reference.py -v -- 22 passed",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 608 passed (586 baseline + 22 new), 0 regressions",
+    ".venv/Scripts/python -m ruff check <changed files> -- All checks passed",
+    ".venv/Scripts/python -m mypy src/python/ubl/src/format_factory/ubl/ -- Success: no issues found in 29 source files"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 7,
+    "obligations_total_for_format": 194,
+    "ubl_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against a reference UBL implementation or official code-list data. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_7_of_10_moved_and_3_stayed_partial": "6 were misattributed-existing-evidence (zero new code, citation only) and 1 (ExternalReference) was a genuine but simple, spec-verified new build -- all 7 fully provable. 3 (PaymentMeans, and both code-list-loading obligations) retain a precisely-named, deliberately-unattempted gap each: PaymentMeans is missing a field with no verified spec source to model it from, and the code-list obligations are missing only the officially-sourced data + genericode loader, not the pluggable registry/validation mechanism itself, which is fully built and tested.",
+    "genuine_new_capability_this_slice": "model/reference.py (ExternalReference, ~40 lines) and model/codelist.py (CodeListRegistry, ~140 lines) are new production source, not citation corrections -- the fifth and sixth genuinely new capability closures this session, after the ipynb execution adapter, nrrd lazy payload access, xliff/ubl preservation modes."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
