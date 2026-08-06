@@ -1,0 +1,48 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-upgrade-version-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T15:00:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_UPGRADE_VERSION_CITATION_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "UBL-UPGRADE-001's SAL-UBL-OBL-12FE2060729C9B75 ('cbc:UBLVersionID identifies the UBL specification version a document instance declares') was left at `missing` with zero test coverage, despite ubl_version_id()/UblDocument.declared_version already existing and being fully proven by test_obligation_detected_declared_version.py (built and closed under UBL-LIFECYCLE-001/UBL-PROFILE-001 in an earlier tick this session) -- the obligation had simply never been cross-referenced against that already-existing evidence.",
+    "obligation_targeted": "SAL-UBL-OBL-12FE2060729C9B75",
+    "acceptance_evidence": "tests/python/ubl/test_obligation_detected_declared_version.py",
+    "regression_tier": "full UBL package suite (tests/python/ubl)"
+  },
+  "execution_steps": [
+    "1. Surveyed ubl's smallest remaining capabilities. UBL-UPGRADE-001 has 2 obligations: cbc:UBLVersionID version identification (SAL-UBL-OBL-12FE2060729C9B75) and explicit migrate-with-report semantics for older versions (SAL-UBL-OBL-7B16479ACBBC8EFC).",
+    "2. Investigated the second obligation first since it looked like the bigger prize: found no `upgrade()` function anywhere in the ubl package (unlike ipynb's explicit-upgrade-only pattern), and no SAL fact enumerating any UBL version-to-version structural migration transform. Building real migration logic between UBL profile versions without a verified structural diff would require fabricating the exact transform rules -- declined per this session's established GAP-008 discipline (same reasoning as NRRD's kind-value enums, UBL/XLIFF's tolerant-mode, XLIFF's version-downgrade-loss detection).",
+    "3. Investigated the first obligation: ubl_version_id() (model/document.py) already reads the current tree's cbc:UBLVersionID text or returns None when absent, and UblDocument.declared_version exposes the identical value as a live property -- this is exactly the obligation's claim.",
+    "4. Ran the relevant tests in test_obligation_detected_declared_version.py directly: test_declared_version_reads_the_current_trees_ublversionid, test_ubl_version_id_helper_matches_the_declared_version_property (both positive), and test_declared_version_is_none_when_ublversionid_is_absent (negative) all passed.",
+    "5. Promoted SAL-UBL-OBL-12FE2060729C9B75 to implemented, extending the existing UBL-DETECTED-DECLARED-VERSION-SELECTOR-PROOF execution-evidence entry's covered-obligations list (same underlying proof, now also serving this UBL-UPGRADE-001 obligation) rather than duplicating a near-identical evidence entry. Left SAL-UBL-OBL-7B16479ACBBC8EFC genuinely missing -- real, larger-scoped work requiring verified migration-transform facts that do not currently exist."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_detected_declared_version.py -v -- 10 passed",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- unchanged from before this slice (0 source or test changes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 194,
+    "ubl_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against an external UBL validator for this specific fixture. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_no_new_production_source": "cbc:UBLVersionID exposure was already complete and covered by dedicated tests built in an earlier tick -- this slice audited and cited that existing proof, it did not build anything new.",
+    "why_the_sibling_obligation_was_declined": "Explicit version-to-version migration with a report requires structural transform rules this session has no verified SAL fact for; building it would mean guessing the exact UBL version deltas, which GAP-008 forbids."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

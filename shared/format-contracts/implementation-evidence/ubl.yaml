@@ -94,9 +94,12 @@ execution_evidence:
     (UBL-LIFECYCLE-001, the detected-vs-declared distinction) and, via the
     same declared_version property, SAL-UBL-OBL-FC5C33152AFDB187
     (UBL-PROFILE-001, plain UBLVersionID exposure with no detected/declared
-    split required) and partially SAL-UBL-OBL-7D0855CD163E1EFD (the
-    version-exposure clause only); it supports no other obligation and
-    promotes no product state.
+    split required), partially SAL-UBL-OBL-7D0855CD163E1EFD (the
+    version-exposure clause only), and SAL-UBL-OBL-12FE2060729C9B75
+    (UBL-UPGRADE-001, "cbc:UBLVersionID identifies the declared version" --
+    the ubl_version_id() helper and declared_version property this entry
+    already proves); it supports no other obligation and promotes no
+    product state.
 - evidence_id: UBL-PROFILE-IDENTIFIERS-SELECTOR-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-profile-identifiers-001.json
   expected_result: PASS
@@ -570,16 +573,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-12FE2060729C9B75
   capability_id: UBL-UPGRADE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
-  negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Older-version fixtures: migrate-with-report
-    and unsupported-refusal paths.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
+  status: implemented
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/document.py::ubl_version_id
+  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_detected_declared_version.py::test_declared_version_reads_the_current_trees_ublversionid
+  - tests/python/ubl/test_obligation_detected_declared_version.py::test_ubl_version_id_helper_matches_the_declared_version_property
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_detected_declared_version.py::test_declared_version_is_none_when_ublversionid_is_absent
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  - UBL-DETECTED-DECLARED-VERSION-SELECTOR-PROOF
+  implemented_behavior:
+  - ubl_version_id() reads the current tree's cbc:UBLVersionID text (or
+    returns None when the element is absent), and UblDocument.declared_version
+    exposes the identical value as a live property -- this is the exact
+    mechanism that identifies which UBL specification version a document
+    instance declares.
+  missing_behavior: []
   proof_requirements:
     positive:
     - 'Older-version fixtures: migrate-with-report and unsupported-refusal paths.'
