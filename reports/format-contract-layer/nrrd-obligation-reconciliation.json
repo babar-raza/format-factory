@@ -45,7 +45,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "e8ef5b8362e5cc68d040c1575fd8ea01da445a577dcbc8ddfc3c4dac8ffbea70",
+    "implementation_evidence": "bec2191e279f6746ddce6b1da9e15689d17625effe05ad1d6995c2e9b6482bca",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -706,17 +706,20 @@
         "NRRD-R1-SOURCE-TESTS"
       ],
       "implemented_behavior": [
-        "Basic key:=value parsing, model access, preservation, editing, and deterministic writing exist."
+        "Basic key:=value parsing, model access, preservation, editing, and deterministic writing exist. Duplicate keys now follow last-value-wins (fixed this slice -- the reader previously raised NrrdParseError on a repeated key, the opposite of the spec-mandated behavior), proven by 3 dedicated tests including a 3-way repeat and a mix of duplicate and distinct keys."
       ],
       "missing_behavior": [
-        "Duplicate keys are rejected rather than last-value-wins; escaping, forbidden delimiters, and NRRD0002 gating are absent."
+        "Escaping, forbidden delimiters, and NRRD0002 gating are still absent. Last-value-wins is now correctly implemented (see implemented_behavior); this is honest evidence correction of a confirmed spec-conformance bug, not new scope."
       ],
       "negative_test_selectors": [
         "tests/python/nrrd/test_production_namespace.py::test_duplicate_header_and_truncated_payload_fail_closed"
       ],
       "obligation_id": "SAL-NRRD-OBL-48CB227B444651BA",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_obligation_metadata_production.py::test_quoted_explicit_and_unknown_metadata_survive_semantic_roundtrip"
+        "tests/python/nrrd/test_obligation_metadata_production.py::test_quoted_explicit_and_unknown_metadata_survive_semantic_roundtrip",
+        "tests/python/nrrd/test_obligation_keyvalue_duplicates.py::test_a_repeated_key_keeps_the_last_declared_value",
+        "tests/python/nrrd/test_obligation_keyvalue_duplicates.py::test_three_repeats_of_one_key_keep_only_the_final_value",
+        "tests/python/nrrd/test_obligation_keyvalue_duplicates.py::test_duplicate_and_distinct_keys_coexist"
       ],
       "proof_requirements": {
         "negative": [
@@ -979,17 +982,19 @@
         "NRRD-R1-SOURCE-TESTS"
       ],
       "implemented_behavior": [
-        "Key/value lines parse and serialize."
+        "Key/value lines parse and serialize, and duplicate keys now follow last-value-wins (fixed this slice, closing the specific gap this obligation named -- previously the reader raised on a repeated key instead of keeping the last value)."
       ],
       "missing_behavior": [
-        "No newline/backslash unescaping, no := key prohibition, no last-value-wins duplicate behavior, and no version gate."
+        "No newline/backslash unescaping, no := key prohibition, and no version gate. Last-value-wins duplicate behavior is now correctly implemented (see implemented_behavior)."
       ],
       "negative_test_selectors": [
         "tests/python/nrrd/test_production_namespace.py::test_duplicate_header_and_truncated_payload_fail_closed"
       ],
       "obligation_id": "SAL-NRRD-OBL-6533C8FB0044E3A2",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_obligation_metadata_production.py::test_quoted_explicit_and_unknown_metadata_survive_semantic_roundtrip"
+        "tests/python/nrrd/test_obligation_metadata_production.py::test_quoted_explicit_and_unknown_metadata_survive_semantic_roundtrip",
+        "tests/python/nrrd/test_obligation_keyvalue_duplicates.py::test_a_repeated_key_keeps_the_last_declared_value",
+        "tests/python/nrrd/test_obligation_keyvalue_duplicates.py::test_three_repeats_of_one_key_keep_only_the_final_value"
       ],
       "proof_requirements": {
         "negative": [
@@ -2262,7 +2267,7 @@
     "reports/skills-rff6/skill-transcripts/reconcile-contract-capabilities-nrrd-readiness-001.json": "4675509f009d4b78181543769a6e18dd8292afb65b0624bd347a5b6ccdab2869",
     "src/python/nrrd/src/format_factory/nrrd/codec/lazy.py": "91881b17de9982f641410a448f2472c28526367628b92d89cb7a45521109a0c1",
     "src/python/nrrd/src/format_factory/nrrd/codec/payload.py": "1082dd49e148afdf69fecd6b9225f38f0cf7db4914e569d51aff1adece3fd172",
-    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "de972d2377a13f11909d2c5a5f7e204cc6c5fd779a94b056ea31ddf616f4d0c5",
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "6e310b36a8ecdd6ed30ff570e9779f415cdb4d39248924c45017c66a2f83c72f",
     "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py": "27ed99ee0e1db0a02155ce7577e7b7450544ed0fd96824b50f31a45d623af52c",
     "src/python/nrrd/src/format_factory/nrrd/convert.py": "83d96605f886fd24e9146410be552cb54d1bb93ee317102f46dc53b164448951",
     "src/python/nrrd/src/format_factory/nrrd/model/document.py": "b0807a18aed01727b3ef85c445017ccd891b5840d7558c736f804fdbaa4222ab",
@@ -2274,6 +2279,7 @@
     "tests/python/nrrd/test_obligation_axis_field_arity.py": "9d6e7bbbc5e7b0ea5a80d73f4ac4d285dc27e22f59bdcd522cfa74d4fa4392a1",
     "tests/python/nrrd/test_obligation_detached_forms_production.py": "0ea4f16a7602ef7ea83a4c69dead3d3204c291c30a71747696a92a97ecc2a2d8",
     "tests/python/nrrd/test_obligation_dtype_conversion.py": "303205eec17e82662e3e484870fac7e985c0ed400f36bc62f887c75b686d6425",
+    "tests/python/nrrd/test_obligation_keyvalue_duplicates.py": "bd1aeeedc522b3be842bdecf4625b4a639375e84b858b8d94a0e5dd647798ab8",
     "tests/python/nrrd/test_obligation_lazy_payload_access.py": "f18ff2c44b5e0582b716e675cfd6566bdebc3469b22df73821f5acdfcdab5de1",
     "tests/python/nrrd/test_obligation_metadata_production.py": "5c928de8b704e53560d8e845bd02f33a549a61f3c8d3c5ef492c9dee1ceebd40",
     "tests/python/nrrd/test_obligation_payload_skip.py": "631ddbb609282e655c179358af0e8cbaa76038e33343cd482c87aaeecb1b8116",

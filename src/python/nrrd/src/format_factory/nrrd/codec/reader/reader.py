@@ -99,8 +99,6 @@ def _parse_header(
             key, value = line.split(":=", 1)
             if not key:
                 raise NrrdParseError(f"empty key/value key at line {line_number}")
-            if key in key_values:
-                raise NrrdParseError(f"duplicate key/value key {key!r}")
             key_values[key] = value
             continue
         if ":" not in line:
