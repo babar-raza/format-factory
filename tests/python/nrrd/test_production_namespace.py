@@ -96,6 +96,29 @@ def test_lossless_mode_replays_unchanged_source_and_reports_mutation() -> None:
         dumps(document, mode="lossless")
 
 
+def test_canonical_mode_also_preserves_unrecognized_header_fields() -> None:
+    """Unlike a format whose canonical/regenerate path only re-emits what a
+    typed model represents, nrrd's canonical writer iterates the full header
+    dict (known fields in declared order, then every other key sorted), so
+    an unrecognized ordinary field is not dropped just because it was never
+    itself modeled -- only the byte-for-byte formatting is regenerated."""
+    source = (
+        b"NRRD0004\r\n"
+        b"vendor field: retained\r\n"
+        b"type: uint8\r\n"
+        b"dimension: 1\r\n"
+        b"sizes: 2\r\n"
+        b"encoding: raw\r\n"
+        b"vendor:=value\r\n\r\n\x01\x02"
+    )
+    document = loads(source, mode="preservation")
+
+    canonical = dumps(document, mode="canonical")
+
+    assert b"vendor field: retained" in canonical
+    assert b"vendor:=value" in canonical
+
+
 def test_big_endian_decode_and_default_profile() -> None:
     document = NrrdDocument(
         version=1,

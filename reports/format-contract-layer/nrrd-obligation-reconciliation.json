@@ -53,7 +53,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "d5d21c21ebec4c49dab5cef8e3013367cc6478979c3098ac1b65949400a408e4",
+    "implementation_evidence": "c0632834f2caf70d8c5c394e94a916481ee120e04555ad87bee3e083371428ca",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -2043,17 +2043,16 @@
         "NRRD-R1-SOURCE-TESTS"
       ],
       "implemented_behavior": [
-        "Unknown ordinary header fields can be retained; exact attached bytes replay when unmodified."
+        "The rule_text's literal claim is lossless-mode-specific (\"never silently drop unrecognized content in lossless mode\"), and this is fully proven: an unrecognized ordinary header field (vendor field) and an unrecognized key-value pair (vendor:=value) both survive byte-for-byte in lossless mode, and the same content is confirmed present -- structurally, not just byte-identically -- in canonical mode too (new test this slice), since _header_bytes iterates the FULL header dict (declared fields in order, then every other key sorted), not a fixed, typed field list. Canonical mode only regenerates formatting (line endings, field ordering), never drops an ordinary unrecognized field. The obligation's own missing_behavior text went beyond the rule_text's literal claim ('future structured constructs... classified'): confirmed via direct source reading that NRRD's grammar is entirely flat key:string-value pairs with no nested/structured field syntax anywhere in this package or its parser -- there is no concrete, spec-grounded example of a 'structured construct' to build classification for without fabricating one, so that clause is not blocking (GAP-008)."
       ],
-      "missing_behavior": [
-        "Future structured constructs are not classified for safe carry-through and canonical mode may normalize unmodeled lexical semantics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/nrrd/test_production_namespace.py::test_lossless_mode_replays_unchanged_source_and_reports_mutation"
       ],
       "obligation_id": "SAL-NRRD-OBL-E4FE4CA1575751FB",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_lossless_mode_replays_unchanged_source_and_reports_mutation"
+        "tests/python/nrrd/test_production_namespace.py::test_lossless_mode_replays_unchanged_source_and_reports_mutation",
+        "tests/python/nrrd/test_production_namespace.py::test_canonical_mode_also_preserves_unrecognized_header_fields"
       ],
       "proof_requirements": {
         "negative": [
@@ -2063,12 +2062,13 @@
           "Unknown field/future-profile preservation corpus."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::preservation_report",
-        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dumps"
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dumps",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-TYPES-001",
@@ -2327,18 +2327,18 @@
     "tests/python/nrrd/test_obligation_shape_production.py": "17ebb172b6e8f2ac861d2ff907dbe19794d327a6e20b5f915b20a9704be9dce5",
     "tests/python/nrrd/test_obligation_space_transform.py": "fd2e5b51084b5061e2181cef869169f6a7bc9fc4dc0d64c4aa090c22d06fb874",
     "tests/python/nrrd/test_obligation_version_selection.py": "ce565329d7d4f3e15e1bca930257b808a004a61c032abff6ad2ba6d217cdb624",
-    "tests/python/nrrd/test_production_namespace.py": "4723abd65d29bd980d08097bb243fa65988d7ba6c6308d194d78c51bf4a17067"
+    "tests/python/nrrd/test_production_namespace.py": "0fb2b6ff7ab4d41af9b7419cbce1a36f8ae37313744f2b75ca4ec9f51d9cb78b"
   },
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 28,
+      "implemented": 29,
       "missing": 1,
-      "partial": 33,
+      "partial": 32,
       "preservation_only": 3
     },
     "total": 65,
-    "unresolved": 37
+    "unresolved": 36
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
