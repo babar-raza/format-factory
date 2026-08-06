@@ -224,6 +224,22 @@ def test_multiple_mismatched_fields_are_all_reported_independently() -> None:
     assert len(codes) == 2
 
 
+def test_an_unterminated_quoted_value_is_rejected() -> None:
+    document = _document(labels='"unterminated')
+
+    with pytest.raises(ValueError, match="unterminated"):
+        document.labels
+
+
+def test_a_backslash_not_followed_by_a_quote_is_left_literal() -> None:
+    """"support no other escaping" -- an unrecognized backslash sequence is
+    not given special meaning (not interpreted as \\n, not rejected as
+    illegal); it survives as the literal characters it is."""
+    document = _document(units=r'"\n" "mm" "mm"')
+
+    assert document.units[0] == "\\n"
+
+
 def test_diagnostic_reports_the_declared_and_expected_counts() -> None:
     document = _document(spacings="1.0 2.0")
 

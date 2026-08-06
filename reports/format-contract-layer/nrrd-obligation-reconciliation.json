@@ -7,7 +7,7 @@
       "granularity": "selector",
       "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-axis-arity-001.json",
       "sha256": "7fa7b5a006873ffa9a1c9c12179d744a9cc9ff9612a9be34435c0203624ca5d7",
-      "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS: it names the exact positive and negative test selectors for every baseline and later-version per-axis metadata field (spacings, axis mins, axis maxs, centers, labels, units, kinds, thicknesses). Unlike NRRD-ENDIAN-SELECTOR-PROOF, this is NOT backed by an independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-NRRD-OBL-428BE326FCBC9A6E only; it supports no other obligation and promotes no product state."
+      "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS: it names the exact positive and negative test selectors for every baseline and later-version per-axis metadata field (spacings, axis mins, axis maxs, centers, labels, units, kinds, thicknesses), plus the quote-delimited label/unit tokenizer's embedded-quote escaping, unterminated-quote rejection, and no-other-escaping behavior (2 tests added 2026-08-06 when this evidence was extended to cover 2 more obligations whose stale missing_behavior claimed arity/quoting was unenforced when it already was). Unlike NRRD-ENDIAN-SELECTOR-PROOF, this is NOT backed by an independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-NRRD-OBL-428BE326FCBC9A6E, SAL-NRRD-OBL-41CA935399A5A312, and SAL-NRRD-OBL-D8AFDA0097117585 only; it supports no other obligation and promotes no product state."
     },
     {
       "evidence_id": "NRRD-ENDIAN-SELECTOR-PROOF",
@@ -53,7 +53,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "4ac7dc40d99a1b27fe41de375ad4aefc83f04cae4fb6aba868caa66126f03907",
+    "implementation_evidence": "d5d21c21ebec4c49dab5cef8e3013367cc6478979c3098ac1b65949400a408e4",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -626,18 +626,29 @@
     {
       "capability_id": "NRRD-META-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-AXIS-ARITY-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Per-axis metadata fields are preserved lexically."
+        "Stale finding corrected: arity IS enforced for every named field. validate() iterates NrrdDocument.per_axis_field_arities() (spacings, axis mins, axis maxs, centers, labels, units, thicknesses, kinds) and reports nrrd.axis_field.arity for any field present with a count that does not equal dimension -- proven individually for all seven baseline/later-version fields, across multiple dimensions, and for multiple simultaneous mismatches reported independently, by an existing, already-passing, previously-uncited test file (test_obligation_axis_field_arity.py, 26 tests)."
       ],
-      "missing_behavior": [
-        "Arity is not enforced for spacings, mins, maxs, centers, labels, units, or thicknesses."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_obligation_axis_field_arity.py::test_mismatched_spacings_arity_is_rejected",
+        "tests/python/nrrd/test_obligation_axis_field_arity.py::test_mismatched_axis_mins_arity_is_rejected",
+        "tests/python/nrrd/test_obligation_axis_field_arity.py::test_mismatched_axis_maxs_arity_is_rejected",
+        "tests/python/nrrd/test_obligation_axis_field_arity.py::test_mismatched_centers_arity_is_rejected",
+        "tests/python/nrrd/test_obligation_axis_field_arity.py::test_mismatched_labels_arity_is_rejected",
+        "tests/python/nrrd/test_obligation_axis_field_arity.py::test_mismatched_units_arity_is_rejected",
+        "tests/python/nrrd/test_obligation_axis_field_arity.py::test_mismatched_thicknesses_arity_is_rejected",
+        "tests/python/nrrd/test_obligation_axis_field_arity.py::test_multiple_mismatched_fields_are_all_reported_independently",
+        "tests/python/nrrd/test_obligation_axis_field_arity.py::test_diagnostic_reports_the_declared_and_expected_counts"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-NRRD-OBL-41CA935399A5A312",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_obligation_metadata_production.py::test_quoted_explicit_and_unknown_metadata_survive_semantic_roundtrip"
+        "tests/python/nrrd/test_obligation_axis_field_arity.py::test_all_baseline_fields_together_with_correct_arity_validate",
+        "tests/python/nrrd/test_obligation_axis_field_arity.py::test_correct_arity_validates_across_dimensions",
+        "tests/python/nrrd/test_obligation_axis_field_arity.py::test_kinds_and_thicknesses_later_version_fields_validate_with_correct_arity"
       ],
       "proof_requirements": {
         "negative": [
@@ -647,12 +658,12 @@
           "Every per-axis field at each supported profile and dimension."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument",
-        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes"
+        "src/python/nrrd/src/format_factory/nrrd/validation/validator.py::validate"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-SHAPE-001",
@@ -1844,18 +1855,27 @@
     {
       "capability_id": "NRRD-META-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-AXIS-ARITY-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Quoted labels and units survive as raw strings."
+        "_parse_quoted_list is a real, dedicated quote-aware tokenizer, not a naive whitespace split: it correctly handles a label/unit containing an embedded space inside its quotes as one token, unescapes backslash-quote to a literal quote, leaves any other backslash sequence (verified with a literal \\n) untouched rather than interpreting or rejecting it (matching \"support no other escaping\"), and raises ValueError for an unterminated quoted value -- a real, working rejection previously untested. 2 new tests this slice close the two remaining proof_requirements gaps (unclosed quotes; no-other-escaping is inert, not silently misinterpreted)."
       ],
-      "missing_behavior": [
-        "No quote-delimited token parsing, embedded quote unescaping, other-escape rejection, or arity validation."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_obligation_axis_field_arity.py::test_an_unterminated_quoted_value_is_rejected",
+        "tests/python/nrrd/test_obligation_axis_field_arity.py::test_mismatched_labels_arity_is_rejected",
+        "tests/python/nrrd/test_obligation_axis_field_arity.py::test_mismatched_units_arity_is_rejected"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-NRRD-OBL-D8AFDA0097117585",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_obligation_metadata_production.py::test_quoted_explicit_and_unknown_metadata_survive_semantic_roundtrip"
+        "tests/python/nrrd/test_obligation_axis_field_arity.py::test_labels_parses_quote_delimited_strings",
+        "tests/python/nrrd/test_obligation_axis_field_arity.py::test_units_parses_quote_delimited_strings",
+        "tests/python/nrrd/test_obligation_axis_field_arity.py::test_a_label_escapes_an_embedded_quote",
+        "tests/python/nrrd/test_obligation_axis_field_arity.py::test_a_label_containing_a_space_is_still_one_axis_worth_of_tokens",
+        "tests/python/nrrd/test_obligation_axis_field_arity.py::test_a_backslash_not_followed_by_a_quote_is_left_literal",
+        "tests/python/nrrd/test_obligation_axis_field_arity.py::test_mismatched_labels_arity_is_rejected",
+        "tests/python/nrrd/test_obligation_axis_field_arity.py::test_mismatched_units_arity_is_rejected"
       ],
       "proof_requirements": {
         "negative": [
@@ -1865,12 +1885,12 @@
           "Quoted label/unit token and embedded-quote roundtrips."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument",
-        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes"
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::_parse_quoted_list"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-PAYLOAD-001",
@@ -2295,7 +2315,7 @@
     "src/python/nrrd/src/format_factory/nrrd/validation/validator.py": "57656b36d7a8f1ac3c0a55a19c58dec9f4dfe4e6018878a1671a94c117bd7ef8",
     "tests/python/nrrd/test_ascii_encoding_endian.py": "70aaff339ed8a91183ead5c3b87164d5d1542c393746125c95fb63e5f3f17c04",
     "tests/python/nrrd/test_golden_raw_scalar_slice.py": "b818dd89a20229421b46b4cbb8aa19dc3449ee197d45552469069cfb10d76513",
-    "tests/python/nrrd/test_obligation_axis_field_arity.py": "9d6e7bbbc5e7b0ea5a80d73f4ac4d285dc27e22f59bdcd522cfa74d4fa4392a1",
+    "tests/python/nrrd/test_obligation_axis_field_arity.py": "3528ed42454f8e5f9c3640f3b005ee3f7f3a0972081d0a2b81ce9d3dcd6751e0",
     "tests/python/nrrd/test_obligation_compressed_trailing_data.py": "5d2e460aa29e58b85602ce8c4000ad9642e3aee4b38be1816d8297db1116f97e",
     "tests/python/nrrd/test_obligation_detached_forms_production.py": "67c0d1384acdb24a892f7fb7c0340a9bd5c3338e2be5069d5d034a996121263a",
     "tests/python/nrrd/test_obligation_dtype_conversion.py": "303205eec17e82662e3e484870fac7e985c0ed400f36bc62f887c75b686d6425",
@@ -2312,13 +2332,13 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 26,
+      "implemented": 28,
       "missing": 1,
-      "partial": 35,
+      "partial": 33,
       "preservation_only": 3
     },
     "total": 65,
-    "unresolved": 39
+    "unresolved": 37
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
