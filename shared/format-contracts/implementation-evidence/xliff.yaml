@@ -3,6 +3,11 @@ format_id: xliff
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: XLIFF-SEG-001-STRUCTURE-LANGUAGE-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-seg-structure-language-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes 3 of XLIFF-SEG-001''s 4 remaining obligations (the 4th, source/target content-carrying, reuses the existing XLIFF-SEGMENT-SPLIT-JOIN-SELECTOR-PROOF entry). Unit-must-contain-at-least-one-segment was a genuine, previously-unenforced gap in validate() -- a zero-segment Unit passed silently before this slice; the ''exactly one source, at most one target'' half needs no runtime test since it is a structural guarantee of the Segment dataclass shape itself (one source field, one optional target field). srcLang/trgLang xml:lang compatibility validation was a genuinely unbuilt feature entirely -- confirmed via direct source reading that nothing beyond a bare srcLang-presence check existed. Implemented a version-aware _language_compatible() helper (XLIFF 2.0 requires exact equality; XLIFF 2.1 additionally accepts a more-specific tag per the normative F4T Schematron, matching the obligation''s own rule_text) and wired it into validate() for both segment source and target xml:lang. 7 new tests total (2 structure, 5 language) plus reuse of 2 existing, previously-uncited tests for the source/target content claim. xliff suite: 339 passed, unchanged from before -- confirms the new checks introduce zero false positives against any existing fixture. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, not VERIFIED. Covers SAL-XLIFF-OBL-6808B6BB958F8A9B, SAL-XLIFF-OBL-90EFD3BBDD9D1EC7, and SAL-XLIFF-OBL-D16EDB479826DAB5 only; it supports no other obligation and promotes no product state.'
 - evidence_id: XLIFF-BASELINE-SUITE
   path: reports/skills-rff6/skill-transcripts/build-evidence-ledger-xliff-001.json
   expected_result: PASS
@@ -1639,29 +1644,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-5BB18B34B798FCC4
   capability_id: XLIFF-SEG-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/model/segmentation.py::SegmentMapping
   - src/python/xliff/src/format_factory/xliff/model/segmentation.py::split_segment
   - src/python/xliff/src/format_factory/xliff/model/segmentation.py::join_segments
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
-  negative_test_selectors: []
+  - 'tests/python/xliff/test_production_namespace.py::test_segment_split_join_reports_mapping_and_preserves_inline_content'
+  negative_test_selectors:
+  - 'tests/python/xliff/test_production_namespace.py::test_segment_split_rejects_boundary_that_orphans_a_spanning_code'
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-SEGMENT-SPLIT-JOIN-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Split/join fixtures verify
-    code validity and mapping-report accuracy.'
+  - 'test_segment_split_join_reports_mapping_and_preserves_inline_content (real, dedicated, previously uncited) directly proves segment/ignorable source and target children carry translatable text and translations respectively: splitting a segment with inline content produces two segments whose source text partitions correctly, and joining recombines both source and target text exactly. test_segment_split_rejects_boundary_that_orphans_a_spanning_code (also previously uncited) proves the negative path -- a split boundary inside a paired inline code span is refused with a diagnostic, not silently corrupted.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Split/join fixtures verify code validity and mapping-report accuracy.
+    - Each distinct clause of this obligation has a focused positive test proving the specific claim, not a
+      generic cluster-wide citation.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - Selector-bound negative cases are cited where the claim has a refusal half.
 - obligation_id: SAL-XLIFF-OBL-612349C06EB3E809
   capability_id: XLIFF-PRESERVE-001
   status: partial
@@ -1754,29 +1757,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-6808B6BB958F8A9B
   capability_id: XLIFF-SEG-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::SegmentMapping
-  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::split_segment
-  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::join_segments
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::_language_compatible
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
-  negative_test_selectors: []
+  - 'tests/python/xliff/test_obligation_segment_structure_and_language.py::test_xliff_21_accepts_exact_and_more_specific_source_language'
+  negative_test_selectors:
+  - 'tests/python/xliff/test_obligation_segment_structure_and_language.py::test_xliff_21_rejects_an_unrelated_source_language'
+  - 'tests/python/xliff/test_obligation_segment_structure_and_language.py::test_xliff_20_requires_exact_source_language_equality'
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-SEG-001-STRUCTURE-LANGUAGE-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Split/join fixtures verify
-    code validity and mapping-report accuracy.'
+  - 'Genuine, previously-unbuilt feature: added a new _language_compatible() helper and wired it into validate() for each segment''s source xml:lang against the document''s srcLang. XLIFF 2.0 requires exact equality; XLIFF 2.1 additionally accepts a more-specific tag (declared ''en-US''/''EN-us'' under enclosing ''en''), matching the F4T Schematron''s normative behavior -- proven by test_xliff_21_accepts_exact_and_more_specific_source_language (3-way parametrized: exact, more-specific, case-insensitive), test_xliff_21_rejects_an_unrelated_source_language (an unrelated tag like ''fr'' under enclosing ''en'' is refused with xliff.segment.source.lang.incompatible), and test_xliff_20_requires_exact_source_language_equality (the same more-specific tag that 2.1 accepts is refused under 2.0''s exact-only rule).'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Split/join fixtures verify code validity and mapping-report accuracy.
+    - Each distinct clause of this obligation has a focused positive test proving the specific claim, not a
+      generic cluster-wide citation.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - Selector-bound negative cases are cited where the claim has a refusal half.
 - obligation_id: SAL-XLIFF-OBL-6B5E0355D5E6E57A
   capability_id: XLIFF-MODEL-001
   status: partial
@@ -2282,29 +2283,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-90EFD3BBDD9D1EC7
   capability_id: XLIFF-SEG-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::SegmentMapping
-  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::split_segment
-  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::join_segments
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::_language_compatible
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
-  negative_test_selectors: []
+  - 'tests/python/xliff/test_obligation_segment_structure_and_language.py::test_target_language_compatibility_mirrors_source'
+  - 'tests/python/xliff/test_obligation_segment_structure_and_language.py::test_no_declared_target_language_skips_the_target_check'
+  negative_test_selectors:
+  - 'tests/python/xliff/test_obligation_segment_structure_and_language.py::test_target_language_compatibility_mirrors_source'
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-SEG-001-STRUCTURE-LANGUAGE-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Split/join fixtures verify
-    code validity and mapping-report accuracy.'
+  - 'Same _language_compatible() mechanism applied to each segment''s target xml:lang against the document''s trgLang, with the same version-aware exact-vs-more-specific rule -- proven by test_target_language_compatibility_mirrors_source (a more-specific ''fr-CA'' under enclosing ''fr'' accepted, an unrelated ''de'' refused with xliff.segment.target.lang.incompatible) and test_no_declared_target_language_skips_the_target_check (when the document declares no trgLang at all, the check is correctly skipped rather than comparing against an absent value).'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Split/join fixtures verify code validity and mapping-report accuracy.
+    - Each distinct clause of this obligation has a focused positive test proving the specific claim, not a
+      generic cluster-wide citation.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - Selector-bound negative cases are cited where the claim has a refusal half.
 - obligation_id: SAL-XLIFF-OBL-91FEB76442382843
   capability_id: XLIFF-PARSE-001
   status: implemented
@@ -2984,29 +2983,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-D16EDB479826DAB5
   capability_id: XLIFF-SEG-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::SegmentMapping
-  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::split_segment
-  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::join_segments
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Segment
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Unit
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
-  negative_test_selectors: []
+  - 'tests/python/xliff/test_obligation_segment_structure_and_language.py::test_a_unit_with_a_segment_or_ignorable_is_accepted'
+  negative_test_selectors:
+  - 'tests/python/xliff/test_obligation_segment_structure_and_language.py::test_a_unit_with_no_segments_is_refused'
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-SEG-001-STRUCTURE-LANGUAGE-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Split/join fixtures verify
-    code validity and mapping-report accuracy.'
+  - '''Exactly one source, at most one target'' is a structural guarantee of the Segment dataclass shape itself (one source field, one optional target field) -- there is no way to construct a Segment with more than one of either, so this half of the claim needs no runtime test. ''At least one segment or ignorable'' was a genuine, previously-unenforced gap: added a new xliff.unit.segment.required diagnostic in validate() (a Unit with zero segments/ignorables now fails validation), proven by 2 new tests -- test_a_unit_with_no_segments_is_refused (negative) and test_a_unit_with_a_segment_or_ignorable_is_accepted (positive, covering both segment and ignorable kinds).'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Split/join fixtures verify code validity and mapping-report accuracy.
+    - Each distinct clause of this obligation has a focused positive test proving the specific claim, not a
+      generic cluster-wide citation.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - Selector-bound negative cases are cited where the claim has a refusal half.
 - obligation_id: SAL-XLIFF-OBL-D1E0B4FE10EAE4E3
   capability_id: XLIFF-MODULE-001
   status: partial

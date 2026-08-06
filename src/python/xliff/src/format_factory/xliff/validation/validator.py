@@ -20,6 +20,23 @@ from ..model import (
 
 _STATES = frozenset({"", "initial", "translated", "reviewed", "final"})
 _TARGET_REQUIRED_STATES = frozenset({"translated", "reviewed", "final"})
+_XML_LANG = "{http://www.w3.org/XML/1998/namespace}lang"
+
+
+def _language_compatible(enclosing: str, declared: str, *, exact_only: bool) -> bool:
+    """Whether `declared` satisfies the enclosing srcLang/trgLang.
+
+    XLIFF 2.0 requires exact equality; XLIFF 2.1's F4T Schematron additionally
+    accepts a more-specific tag (e.g. declared "en-US" under enclosing "en").
+    Comparison is case-insensitive per BCP 47.
+    """
+    enclosing_lower = enclosing.lower()
+    declared_lower = declared.lower()
+    if declared_lower == enclosing_lower:
+        return True
+    if exact_only:
+        return False
+    return declared_lower.startswith(enclosing_lower + "-")
 
 
 def _inline_elements(content: list[InlineNode]) -> list[InlineElement]:
@@ -140,6 +157,13 @@ def validate(
                 diagnostics.append(
                     Diagnostic("xliff.unit.id.required", "unit id is required")
                 )
+            if not unit.segments:
+                diagnostics.append(
+                    Diagnostic(
+                        "xliff.unit.segment.required",
+                        f"unit {unit.id!r} must contain at least one segment or ignorable",
+                    )
+                )
             segment_ids = [segment.id for segment in unit.segments]
             for duplicate in sorted(
                 key
@@ -178,6 +202,37 @@ def validate(
                         )
                     )
                 _validate_inline(segment, diagnostics)
+                exact_only = selected == "2.0"
+                source_lang = segment.source_attributes.get(_XML_LANG)
+                if (
+                    source_lang
+                    and value.source_language
+                    and not _language_compatible(
+                        value.source_language, source_lang, exact_only=exact_only
+                    )
+                ):
+                    diagnostics.append(
+                        Diagnostic(
+                            "xliff.segment.source.lang.incompatible",
+                            f"segment {segment.id!r} source xml:lang {source_lang!r} "
+                            f"is incompatible with srcLang {value.source_language!r}",
+                        )
+                    )
+                target_lang = segment.target_attributes.get(_XML_LANG)
+                if (
+                    target_lang
+                    and value.target_language
+                    and not _language_compatible(
+                        value.target_language, target_lang, exact_only=exact_only
+                    )
+                ):
+                    diagnostics.append(
+                        Diagnostic(
+                            "xliff.segment.target.lang.incompatible",
+                            f"segment {segment.id!r} target xml:lang {target_lang!r} "
+                            f"is incompatible with trgLang {value.target_language!r}",
+                        )
+                    )
                 for segment_extension in segment.extensions:
                     _extension_well_formed(segment_extension, diagnostics)
         for file_child in file.children:
