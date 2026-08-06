@@ -1,0 +1,48 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-notes-annotations-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T13:40:00Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_NOTE_CITATION_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "XLIFF-NOTE-001's four obligations (notes with priority/category attaching at file/group/unit level, mrk inline-span annotation, sm/em overlapping-span markers, and ITS module namespace mapping) already had complete production source and dedicated test coverage across two test files, but were cited against generic placeholder selectors and left at partial.",
+    "obligation_targeted": "SAL-XLIFF-OBL-44186566A8BE9B26, SAL-XLIFF-OBL-B3D1B1A5CBD86240, SAL-XLIFF-OBL-CF6EB3C804324A1C, SAL-XLIFF-OBL-DA68F5DEF1A61582",
+    "acceptance_evidence": "tests/python/xliff/test_obligation_notes_and_annotations.py, tests/python/xliff/test_obligation_module_coverage.py",
+    "regression_tier": "full XLIFF package suite (tests/python/xliff)"
+  },
+  "execution_steps": [
+    "1. Continued the xliff sweep after XLIFF-MERGE-001. Checked XLIFF-NOTE-001's four obligations against tests/python/xliff/test_obligation_notes_and_annotations.py (11 tests: note priority/category/applies_to, notes attaching at file/group/unit level, mrk inline-span wrapping and round trip, sm/em overlapping spans crossing another inline element, sm/em surviving overlap and target creation, document-order preservation across a round trip) and tests/python/xliff/test_obligation_module_coverage.py (namespace-manifest tests including ITS itsm:2.1 attribute mapping and namespace-agnostic extension preservation for the raw W3C ITS namespace).",
+    "2. Ran all candidate tests directly before citing any of them: all 11 notes/annotations tests passed; the 3 targeted module-coverage tests (test_its_mapping_attributes_round_trip_on_a_unit, test_confirmed_module_namespaces_match_the_sal_facts, test_resource_data_module_round_trips_despite_unconfirmed_namespace) passed.",
+    "3. Initially cited STANDARD_MODULES for the ITS obligation -- a module-level tuple constant in modules.py, unresolvable by contract_reconciler.py's AST-based _resolve_python_reference (def/class-level symbols only). Replaced with module_coverage_manifest, the function that exposes the same information programmatically.",
+    "4. Split source_symbols and required_tests per obligation by distinct emphasis rather than citing identical evidence for all four: the broadest obligation (notes + overlapping annotations) cites the full 10-of-11 notes/annotations suite; the notes-specific obligation cites the 5 priority/category/attach-point tests; the annotations-specific obligation cites the 5 mrk/sm/em tests; the ITS obligation cites the module-coverage tests plus ExtensionNode (the namespace-agnostic preservation mechanism covering the raw W3C ITS namespace).",
+    "5. Promoted all four to implemented. Zero source or test changes -- pure evidence correction, the fifth such correction this session (after IPYNB-ID-001, IPYNB-MERGE-001, IPYNB-EDIT-001/EXPORT-001/WRITE-001, XLIFF-MERGE-001)."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_notes_and_annotations.py -v -- 11 passed",
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_module_coverage.py -v -- passed",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- unchanged from before this slice (0 source or test changes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 4,
+    "obligations_total_for_format": 142,
+    "xliff_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently verified against an external XLIFF ITS/notes tool. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_no_new_production_source": "Notes, mrk/sm-em annotation, and ITS namespace-mapping support were already complete and covered by 11+3 dedicated tests -- this slice audited and cited that existing proof, it did not build anything new."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

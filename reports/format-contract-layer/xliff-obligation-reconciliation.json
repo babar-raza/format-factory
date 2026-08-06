@@ -26,6 +26,14 @@
       "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE: it names the exact positive and negative test selectors proving Skeleton carries non-translatable structure verbatim, MergeAdapter is a genuine runtime Protocol (a third-party adapter conforms without inheriting from anything in this module), TemplateMergeAdapter's extract()/merge() round trip end to end, and check_drift()/merge_with_drift_check() detect and refuse a live source that no longer matches the skeleton's extraction digest (reporting both digests), correctly skipping the check only when no live source is supplied. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-XLIFF-OBL-4F9A3D539840CB12 and SAL-XLIFF-OBL-6C1F7F44A337674B only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "XLIFF-NOTES-ANNOTATIONS-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-xliff-notes-annotations-001.json",
+      "sha256": "0a5ffae1a5449741f166f644c5fce33059572098a8ab9624573162869da8eefd",
+      "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE: it names the exact positive test selectors proving notes (priority/category/applies_to, attaching at file/group/unit level), mrk inline-span annotation, and sm/em overlapping-span markers (proven both crossing another inline element and with document order preserved across a round trip, and surviving target creation from source). Also covers the ITS module's two namespaces: the XLIFF 2.1 itsm:2.1 attribute mapping directly, and the W3C ITS namespace itself via the already-proven namespace-agnostic extension-preservation mechanism (no dedicated its:-element fixture). SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-XLIFF-OBL-44186566A8BE9B26, SAL-XLIFF-OBL-B3D1B1A5CBD86240, SAL-XLIFF-OBL-CF6EB3C804324A1C, and SAL-XLIFF-OBL-DA68F5DEF1A61582 only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "XLIFF-QA-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -45,7 +53,7 @@
   "format_id": "xliff",
   "input_digests": {
     "compiled_contract": "72b4fc502116a6df682bbb606e42fe2350d698d07b681a52604f6febe268fca4",
-    "implementation_evidence": "34ac174e86cc68edd8e6546dc7927c365843e89c1f531d0f359a0059ca78c69c",
+    "implementation_evidence": "7496318ec59207bf73cd83f3d69a8caeca822f751852d3dbd4b6658d31cd900f",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "6a66a15d1dba9f0b205634bae4437965fe0ac12a92a95a7c902ca289d1a9474b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -1507,20 +1515,19 @@
     {
       "capability_id": "XLIFF-NOTE-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-NOTES-ANNOTATIONS-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "This obligation's two named namespaces are proven two different, correct ways. The XLIFF 2.1 mapping's itsm:2.1 attributes (domains/language) are directly, explicitly proven to round-trip on a unit. The W3C ITS namespace (http://www.w3.org/2005/11/its) itself is not modeled with a dedicated fixture, but ITS is registered PRESERVATION_ONLY in modules.py's manifest (STANDARD_MODULES, whose namespace value is proven to match the SAL fact) and preservation is proven namespace-agnostic elsewhere in this same test file (test_resource_data_module_round_trips_despite_unconfirmed_namespace's own docstring: \"preservation does not require... a specific namespace\") -- any its:-namespaced element would flow through the identical, already-proven ExtensionNode mechanism."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Overlapping-annotation fixtures round-trip; marker pairing validated."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-44186566A8BE9B26",
       "positive_test_selectors": [
-        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_note_priority_and_category_are_represented",
-        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_note_applies_to_is_represented",
-        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_multiple_notes_on_one_unit_all_survive"
+        "tests/python/xliff/test_obligation_module_coverage.py::test_its_mapping_attributes_round_trip_on_a_unit",
+        "tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts",
+        "tests/python/xliff/test_obligation_module_coverage.py::test_resource_data_module_round_trips_despite_unconfirmed_namespace"
       ],
       "proof_requirements": {
         "negative": [
@@ -1530,21 +1537,12 @@
           "Overlapping-annotation fixtures round-trip; marker pairing validated."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Note",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Segment",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Unit",
-        "src/python/xliff/src/format_factory/xliff/model/inline.py::InlineElement",
-        "src/python/xliff/src/format_factory/xliff/model/inline.py::flatten_inline_content",
-        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe",
-        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads",
-        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load",
-        "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps",
-        "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump"
+        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest",
+        "src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-MODEL-001",
@@ -3644,20 +3642,27 @@
     {
       "capability_id": "XLIFF-NOTE-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-NOTES-ANNOTATIONS-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Note carries priority/category/applies_to and attaches at file, group, and unit level, all round-tripping. mrk wraps an inline span; overlapping spans (a span crossing another inline element's boundary) use sm/em start/end markers rather than illegal nesting, proven both for overlap with another inline element and with document order preserved across a round trip. Annotation spans survive target creation from source (create_target_from_source's deep-copy), so translating a segment does not silently drop an existing annotation."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Overlapping-annotation fixtures round-trip; marker pairing validated."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-B3D1B1A5CBD86240",
       "positive_test_selectors": [
         "tests/python/xliff/test_obligation_notes_and_annotations.py::test_note_priority_and_category_are_represented",
         "tests/python/xliff/test_obligation_notes_and_annotations.py::test_note_applies_to_is_represented",
-        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_multiple_notes_on_one_unit_all_survive"
+        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_multiple_notes_on_one_unit_all_survive",
+        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_notes_attach_at_file_group_and_unit_level",
+        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_notes_at_every_level_round_trip",
+        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_mrk_annotation_wraps_a_span",
+        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_mrk_annotation_round_trips",
+        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_overlapping_span_uses_sm_and_em_markers_not_nesting",
+        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_sm_em_span_survives_overlap_with_another_inline_element",
+        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_sm_em_round_trips_with_document_order_preserved",
+        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_annotation_spans_survive_target_creation_from_source"
       ],
       "proof_requirements": {
         "negative": [
@@ -3667,21 +3672,16 @@
           "Overlapping-annotation fixtures round-trip; marker pairing validated."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode",
         "src/python/xliff/src/format_factory/xliff/model/document.py::Note",
         "src/python/xliff/src/format_factory/xliff/model/document.py::Segment",
         "src/python/xliff/src/format_factory/xliff/model/document.py::Unit",
-        "src/python/xliff/src/format_factory/xliff/model/inline.py::InlineElement",
-        "src/python/xliff/src/format_factory/xliff/model/inline.py::flatten_inline_content",
-        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe",
-        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads",
-        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load",
-        "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps",
-        "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump"
+        "src/python/xliff/src/format_factory/xliff/model/document.py::Group",
+        "src/python/xliff/src/format_factory/xliff/model/document.py::XliffFile",
+        "src/python/xliff/src/format_factory/xliff/model/inline.py::InlineElement"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-VALIDATE-001",
@@ -4160,20 +4160,21 @@
     {
       "capability_id": "XLIFF-NOTE-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-NOTES-ANNOTATIONS-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Note carries an optional priority and category (plus id/applies_to), and attaches -- via each container's own notes list -- at file, group, and unit level, all independently proven and all round-tripping together in one document."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Overlapping-annotation fixtures round-trip; marker pairing validated."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-CF6EB3C804324A1C",
       "positive_test_selectors": [
         "tests/python/xliff/test_obligation_notes_and_annotations.py::test_note_priority_and_category_are_represented",
         "tests/python/xliff/test_obligation_notes_and_annotations.py::test_note_applies_to_is_represented",
-        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_multiple_notes_on_one_unit_all_survive"
+        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_multiple_notes_on_one_unit_all_survive",
+        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_notes_attach_at_file_group_and_unit_level",
+        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_notes_at_every_level_round_trip"
       ],
       "proof_requirements": {
         "negative": [
@@ -4183,21 +4184,14 @@
           "Overlapping-annotation fixtures round-trip; marker pairing validated."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode",
         "src/python/xliff/src/format_factory/xliff/model/document.py::Note",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Segment",
         "src/python/xliff/src/format_factory/xliff/model/document.py::Unit",
-        "src/python/xliff/src/format_factory/xliff/model/inline.py::InlineElement",
-        "src/python/xliff/src/format_factory/xliff/model/inline.py::flatten_inline_content",
-        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe",
-        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads",
-        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load",
-        "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps",
-        "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump"
+        "src/python/xliff/src/format_factory/xliff/model/document.py::Group",
+        "src/python/xliff/src/format_factory/xliff/model/document.py::XliffFile"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-SEG-001",
@@ -4374,20 +4368,21 @@
     {
       "capability_id": "XLIFF-NOTE-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-NOTES-ANNOTATIONS-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "mrk (InlineElement) wraps a translatable/annotatable inline span directly, round-tripping intact. Where a span would overlap another inline element's boundary -- illegal to represent via nesting -- sm/em start/end markers mark the span's boundaries instead, proven both crossing a real inline element and with document order preserved across a full round trip."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Overlapping-annotation fixtures round-trip; marker pairing validated."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-DA68F5DEF1A61582",
       "positive_test_selectors": [
-        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_note_priority_and_category_are_represented",
-        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_note_applies_to_is_represented",
-        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_multiple_notes_on_one_unit_all_survive"
+        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_mrk_annotation_wraps_a_span",
+        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_mrk_annotation_round_trips",
+        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_overlapping_span_uses_sm_and_em_markers_not_nesting",
+        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_sm_em_span_survives_overlap_with_another_inline_element",
+        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_sm_em_round_trips_with_document_order_preserved"
       ],
       "proof_requirements": {
         "negative": [
@@ -4397,21 +4392,12 @@
           "Overlapping-annotation fixtures round-trip; marker pairing validated."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Note",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Segment",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Unit",
         "src/python/xliff/src/format_factory/xliff/model/inline.py::InlineElement",
-        "src/python/xliff/src/format_factory/xliff/model/inline.py::flatten_inline_content",
-        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe",
-        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads",
-        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load",
-        "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps",
-        "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump"
+        "src/python/xliff/src/format_factory/xliff/model/inline.py::flatten_inline_content"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-VALIDATE-001",
@@ -4964,6 +4950,7 @@
     "reports/skills-rff6/skill-transcripts/build-evidence-ledger-xliff-001.json": "bb85918b335cbc4c82b7993cdbb1506f2e87c77626e871628989ce6fc87ac4d4",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-lifecycle-io-001.json": "02856c6f0ad09cf7b0352b9b777331dc5f6e2096e5f6576dbfe39f997669372d",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-merge-audit-001.json": "ad52bf9234b0abdb222fca9ca32f9fca835f0d73f2cab7e0709aca7a81e9c29a",
+    "reports/skills-rff6/skill-transcripts/product-source-task-xliff-notes-annotations-001.json": "0a5ffae1a5449741f166f644c5fce33059572098a8ab9624573162869da8eefd",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-qa-checks-001.json": "00a6d7c1b4d2fc48359f0484a08d0d639ee8fe136b11904870bd1acdda0e4d5c",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-state-transitions-001.json": "368a286339e4990afa645543f86d2b1968bfc693706a6c170b366fecc18f432b",
     "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py": "a9c296cbdfb6da4d2ba4d4621cb1d69e002f5ce85047aca1a77a3426c55ded7c",
@@ -4989,11 +4976,11 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 10,
-      "partial": 132
+      "implemented": 14,
+      "partial": 128
     },
     "total": 142,
-    "unresolved": 132
+    "unresolved": 128
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
