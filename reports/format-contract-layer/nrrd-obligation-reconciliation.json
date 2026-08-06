@@ -45,7 +45,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "bec2191e279f6746ddce6b1da9e15689d17625effe05ad1d6995c2e9b6482bca",
+    "implementation_evidence": "cebc96033ea62752e73be7fb2289235182be9e2174541799e0a3063e5daea822",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -1452,11 +1452,10 @@
         "NRRD-ENDIAN-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Declared byte size is checked before scalar unpack/allocation; decompression output size and compression ratio are bounded; a hostile declared shape is refused within a measured memory and time envelope; overflow-equivalent size products and negative dimensions fail before allocation."
+        "Declared byte size is checked before scalar unpack/allocation; decompression output size and compression ratio are bounded; a hostile declared shape is refused within a measured memory and time envelope; overflow-equivalent size products and negative dimensions fail before allocation. Trailing-data policy is now asserted for every encoding (fixed this slice): raw-encoded attached payloads were already caught by decode_binary's exact-length check, and compressed encodings (gzip, bzip2) now check the decompressor's unused_data attribute after EOF and reject any bytes left over after a complete compressed stream, including a second concatenated gzip member."
       ],
       "missing_behavior": [
-        "Compressed payloads are still decompressed (within the bounded envelope) before comparison against the declared exact size, rather than being rejected from the header arithmetic alone.",
-        "Trailing-data policy after a complete payload is not asserted."
+        "Compressed payloads are still decompressed (within the bounded envelope) before comparison against the declared exact size, rather than being rejected from the header arithmetic alone -- this remains a real architectural gap distinct from the now-fixed trailing-data policy."
       ],
       "negative_test_selectors": [
         "tests/python/nrrd/test_golden_raw_scalar_slice.py::test_negative_dimension_rejected_before_allocation",
@@ -1464,12 +1463,17 @@
         "tests/python/nrrd/test_golden_raw_scalar_slice.py::test_truncated_payload_rejected_for_raw_encoding",
         "tests/python/nrrd/test_golden_raw_scalar_slice.py::test_decompressed_size_limit_enforced_for_gzip",
         "tests/python/nrrd/test_golden_raw_scalar_slice.py::test_compression_ratio_limit_enforced",
-        "tests/python/nrrd/test_golden_raw_scalar_slice.py::test_hostile_declared_shape_rejected_within_bounded_memory_and_time"
+        "tests/python/nrrd/test_golden_raw_scalar_slice.py::test_hostile_declared_shape_rejected_within_bounded_memory_and_time",
+        "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_trailing_bytes_after_a_complete_gzip_stream_are_rejected",
+        "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_trailing_bytes_after_a_complete_bzip2_stream_are_rejected",
+        "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_a_second_concatenated_gzip_member_is_rejected_as_trailing_data"
       ],
       "obligation_id": "SAL-NRRD-OBL-9C262130232DCD09",
       "positive_test_selectors": [
         "tests/python/nrrd/test_production_namespace.py::test_validation_reports_declared_payload_byte_mismatch",
-        "tests/python/nrrd/test_golden_raw_scalar_slice.py::test_declared_byte_count_mismatch_is_rejected"
+        "tests/python/nrrd/test_golden_raw_scalar_slice.py::test_declared_byte_count_mismatch_is_rejected",
+        "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_a_clean_gzip_payload_still_loads",
+        "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_a_clean_bzip2_payload_still_loads"
       ],
       "proof_requirements": {
         "negative": [
@@ -1483,6 +1487,7 @@
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::expected_binary_size",
         "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::_enforce_expansion",
+        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::decode_encoding",
         "src/python/nrrd/src/format_factory/nrrd/validation/validator.py::validate"
       ],
       "status": "partial"
@@ -2266,7 +2271,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-version-selection-001.json": "176aa723e7cf62c5e8eede3a629645c3f244c3a3c1601e80a21fe673a8b140aa",
     "reports/skills-rff6/skill-transcripts/reconcile-contract-capabilities-nrrd-readiness-001.json": "4675509f009d4b78181543769a6e18dd8292afb65b0624bd347a5b6ccdab2869",
     "src/python/nrrd/src/format_factory/nrrd/codec/lazy.py": "91881b17de9982f641410a448f2472c28526367628b92d89cb7a45521109a0c1",
-    "src/python/nrrd/src/format_factory/nrrd/codec/payload.py": "1082dd49e148afdf69fecd6b9225f38f0cf7db4914e569d51aff1adece3fd172",
+    "src/python/nrrd/src/format_factory/nrrd/codec/payload.py": "38520a9be8ff12f1266999d5f8d79761254ecc327e65e637e39f35c72a86d240",
     "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "6e310b36a8ecdd6ed30ff570e9779f415cdb4d39248924c45017c66a2f83c72f",
     "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py": "27ed99ee0e1db0a02155ce7577e7b7450544ed0fd96824b50f31a45d623af52c",
     "src/python/nrrd/src/format_factory/nrrd/convert.py": "83d96605f886fd24e9146410be552cb54d1bb93ee317102f46dc53b164448951",
@@ -2277,6 +2282,7 @@
     "tests/python/nrrd/test_ascii_encoding_endian.py": "70aaff339ed8a91183ead5c3b87164d5d1542c393746125c95fb63e5f3f17c04",
     "tests/python/nrrd/test_golden_raw_scalar_slice.py": "b818dd89a20229421b46b4cbb8aa19dc3449ee197d45552469069cfb10d76513",
     "tests/python/nrrd/test_obligation_axis_field_arity.py": "9d6e7bbbc5e7b0ea5a80d73f4ac4d285dc27e22f59bdcd522cfa74d4fa4392a1",
+    "tests/python/nrrd/test_obligation_compressed_trailing_data.py": "5d2e460aa29e58b85602ce8c4000ad9642e3aee4b38be1816d8297db1116f97e",
     "tests/python/nrrd/test_obligation_detached_forms_production.py": "0ea4f16a7602ef7ea83a4c69dead3d3204c291c30a71747696a92a97ecc2a2d8",
     "tests/python/nrrd/test_obligation_dtype_conversion.py": "303205eec17e82662e3e484870fac7e985c0ed400f36bc62f887c75b686d6425",
     "tests/python/nrrd/test_obligation_keyvalue_duplicates.py": "bd1aeeedc522b3be842bdecf4625b4a639375e84b858b8d94a0e5dd647798ab8",

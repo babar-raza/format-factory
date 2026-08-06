@@ -1,0 +1,55 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-compressed-trailing-data-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T02:30:00Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_COMPRESSED_TRAILING_DATA_001",
+    "task_kind": "security-relevant-bug-fix",
+    "root_cause": "Following event 163's exact_next_action (continue nrrd's remaining clusters with the same bug-hunting approach, NRRD-VALIDATE-001's compressed-payload-ordering nuance flagged as a promising candidate), investigated SAL-NRRD-OBL-9C262130232DCD09's 'trailing-data policy after a complete payload is not asserted' claim empirically.",
+    "obligation_targeted": "SAL-NRRD-OBL-9C262130232DCD09 (NRRD-VALIDATE-001).",
+    "acceptance_evidence": "Empirically confirmed raw-encoding attached payloads already reject trailing garbage (decode_binary's exact-length check), but compressed encodings (gzip, bzip2) silently accepted trailing garbage after a complete compressed stream. Fixed decode_encoding() to check the decompressor's unused_data attribute after EOF. Added 5 dedicated tests.",
+    "regression_tier": "full nrrd package suite (tests/python/nrrd)"
+  },
+  "execution_steps": [
+    "1. Read the obligation's missing_behavior text ('Trailing-data policy after a complete payload is not asserted') and tested it empirically against the actual current reader rather than assuming it was still accurate, given the immediately preceding tick (event 163) had already found nrrd's evidence to be precisely maintained but not necessarily current -- constructed a raw-encoded attached payload with trailing garbage and confirmed decode_binary's exact-length check already rejects it ('payload length mismatch: expected 2 bytes, got 24'), meaning half the claim is stale.",
+    "2. Constructed a gzip-encoded payload with trailing garbage bytes after a complete, valid gzip stream and confirmed it was silently ACCEPTED -- the other half of the claim is real and current.",
+    "3. Investigated why: decode_encoding() uses zlib.decompressobj/bz2.BZ2Decompressor, both of which stop consuming input once the compressed stream's own EOF marker is reached. Verified interactively that the existing code checks `.unconsumed_tail` (which stays empty in this scenario -- that attribute is for mid-stream max_length truncation, a different case) but never checks `.unused_data` (the attribute that actually holds bytes left over after a complete stream terminates) -- confirmed both attributes' exact behavior with a standalone zlib/bz2 script before touching source.",
+    "4. Fixed decode_encoding() in payload.py: after confirming gzip_decoder.eof / bzip2_decoder.eof is True, check .unused_data and raise NrrdParseError if non-empty, for both gzip and bzip2 branches. Verified the fix rejects trailing garbage (including a pathological case: a second concatenated gzip member, which Python's own gzip module would otherwise silently concatenate) while still accepting clean payloads.",
+    "5. Added tests/python/nrrd/test_obligation_compressed_trailing_data.py (5 tests: clean gzip/bzip2 still load, trailing garbage after each rejected, concatenated second gzip member rejected). Ran in isolation (5 passed), ruff and mypy clean, full nrrd suite (474 passed, +5, zero regressions).",
+    "6. Updated SAL-NRRD-OBL-9C262130232DCD09's evidence precisely: the trailing-data-policy claim was removed from missing_behavior and folded into implemented_behavior with an honest explanation of exactly what was already true (raw) vs. now fixed (compressed); the separate, still-genuine 'compressed payloads decompressed before comparison' architectural gap was kept in missing_behavior unchanged, since this fix does not address it. Obligation correctly stays `partial`, not promoted to implemented. Hit and fixed a self-inflicted shell-quoting bug: a backtick inside a Python string passed via `python -c \"...\"` was interpreted by bash as command substitution before Python ever saw it, silently stripping the word 'unused_data' from the intended text -- caught by reading the written YAML back immediately after the edit rather than trusting the script's exit code, fixed with a direct Edit tool call (no shell involved) instead of another shell one-liner."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/payload.py",
+    "tests/python/nrrd/test_obligation_compressed_trailing_data.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/payload.py",
+    "tests/python/nrrd/test_obligation_compressed_trailing_data.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_compressed_trailing_data.py -q -- 5 passed (new)",
+    ".venv/Scripts/python -m ruff check src/python/nrrd/src/format_factory/nrrd/codec/payload.py tests/python/nrrd/test_obligation_compressed_trailing_data.py -- all checks passed",
+    ".venv/Scripts/python -m mypy src/python/nrrd/src/format_factory/nrrd/codec/payload.py -- success, no issues found",
+    ".venv/Scripts/pytest tests/python/nrrd/ -q -- 474 passed, 1 skipped (was 469 passed, 1 skipped; +5 new, 0 regressions)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_total_for_format": 65,
+    "nrrd_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against a reference NRRD/Teem implementation. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "obligations_moved_breakdown": "0 obligations changed status (stays honestly partial: a separate, real architectural gap remains). Real security-relevant product capability shipped: a document that could previously smuggle extra data (including a second concatenated, independently valid compressed stream) past the payload boundary is now rejected for both compressed encodings.",
+    "why_this_is_security_relevant": "Silently accepting trailing data after a declared-complete payload is a data-integrity and potential steganography/smuggling concern (arbitrary extra bytes riding along inside a file that appears valid) -- this is the second genuine security-relevant finding surfaced this session through careful, source-level investigation rather than citation re-mapping (the first being ubl's PARSE-001 namespace-spoofing finding, event 161)."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

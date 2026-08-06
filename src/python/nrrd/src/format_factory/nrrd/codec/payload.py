@@ -235,6 +235,8 @@ def decode_encoding(payload: bytes, encoding: str, *, limits: ResourceLimits) ->
         result += gzip_decoder.flush(limits.max_decompressed_bytes + 1 - len(result))
         if not gzip_decoder.eof:
             raise NrrdParseError("truncated gzip payload")
+        if gzip_decoder.unused_data:
+            raise NrrdParseError("trailing data after gzip payload")
     elif normalized in {"bzip2", "bz2"}:
         bzip2_decoder = bz2.BZ2Decompressor()
         try:
@@ -247,6 +249,8 @@ def decode_encoding(payload: bytes, encoding: str, *, limits: ResourceLimits) ->
             if len(result) > limits.max_decompressed_bytes:
                 raise ResourceLimitError("bzip2 payload exceeds decompression limit")
             raise NrrdParseError("truncated or oversized bzip2 payload")
+        if bzip2_decoder.unused_data:
+            raise NrrdParseError("trailing data after bzip2 payload")
     elif normalized == "hex":
         try:
             result = bytes.fromhex(payload.decode("ascii"))
