@@ -46,14 +46,25 @@ def _validate_inline(segment: Segment, diagnostics: list[Diagnostic]) -> None:
                 )
             )
         starts = {value.id for value in elements if value.tag == "sc" and value.id}
+        seen_starts: set[str] = set()
         for value in elements:
-            if value.tag == "ec":
+            if value.tag == "sc" and value.id:
+                seen_starts.add(value.id)
+            elif value.tag == "ec":
                 start_ref = value.attributes.get("startRef")
                 if not start_ref or start_ref not in starts:
                     diagnostics.append(
                         Diagnostic(
                             "xliff.inline.ec.unpaired",
                             f"ec in segment {segment.id!r} has no matching sc",
+                        )
+                    )
+                elif start_ref not in seen_starts:
+                    diagnostics.append(
+                        Diagnostic(
+                            "xliff.inline.ec.out_of_order",
+                            f"ec in segment {segment.id!r} {label} closes "
+                            f"{start_ref!r} before its sc opens",
                         )
                     )
 

@@ -1,0 +1,55 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-paired-code-integrity-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T04:45:00Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_PAIRED_CODE_INTEGRITY_001",
+    "task_kind": "real-gap-fix-plus-citation-audit",
+    "root_cause": "Following event 168's exact_next_action (pivot to ubl/xliff/nrrd for remaining headroom), investigated xliff's 3 genuinely-distinct XLIFF-INLINE-001 obligations flagged since event 154, still carrying the original generic 3-test citation.",
+    "obligation_targeted": "SAL-XLIFF-OBL-112C4F88A16C0E1E, SAL-XLIFF-OBL-AE50FBBF3AFEC48A, SAL-XLIFF-OBL-C788B2558FFB2D9C (all XLIFF-INLINE-001).",
+    "acceptance_evidence": "Representation and duplicate/orphan refusal already proven by existing tests. A real gap (out-of-order ec references) found and fixed with a new validator diagnostic plus 5 new tests.",
+    "regression_tier": "full xliff package suite (tests/python/xliff)"
+  },
+  "execution_steps": [
+    "1. Read all 3 obligations' rule_texts and found them describing paired-code representation (token sequence, identity, nesting, original-data references) and refusal of corrupted edits (orphan, cross, duplicate, illegal reorder).",
+    "2. Checked InlineElement's model directly: confirmed it has a first-class data_ref property checking dataRef/dataRefStart/dataRefEnd/startRef, not just incidental attribute passthrough -- proving the original-data-reference representation claim precisely.",
+    "3. Checked validator.py's _validate_inline directly: confirmed xliff.inline.id.duplicate (duplicate ids) and xliff.inline.ec.unpaired (ec with no matching sc anywhere) were both already correctly implemented and tested. Checked whether 'illegally reorder' (an ec closing a code before its sc opens) was covered -- confirmed interactively it was NOT: the check only tested set membership (was the startRef ID present anywhere among all sc elements), never sequence position.",
+    "4. Fixed _validate_inline: track sc IDs seen so far incrementally while walking the ordered element list; when an ec's startRef exists in the full starts set but not yet in seen_starts, emit a new xliff.inline.ec.out_of_order diagnostic. Verified interactively before writing tests: well-formed documents (sc before ec) produce zero new diagnostics, and two independently-paired OVERLAPPING spans (sc1, sc2, ec1-closes-c1, ec2-closes-c2 -- a pattern XLIFF's sc/ec model explicitly permits, not equivalent to an illegal backward reorder) are correctly NOT flagged.",
+    "5. Added tests/python/xliff/test_obligation_paired_code_integrity.py (5 tests: well-formed clean, orphan detected, duplicate detected, out-of-order detected, overlapping-but-valid spans not flagged). Ran in isolation (5 passed), ruff and mypy clean, full xliff suite (323 passed, was 318, +5, zero regressions).",
+    "6. Applied the patch-script pattern, promoting all 3 obligations to implemented with precise citations distinguishing the representation half, the refusal half, and an explicit honest note that 'crossing' (overlapping spans) is deliberately not flagged since it is valid XLIFF, not a corruption case. Added the new XLIFF-INLINE-PAIRED-CODE-SELECTOR-PROOF execution_evidence entry, validated the YAML parses (142 total obligations, XLIFF-INLINE-001 now 4 implemented / 3 partial / 2 missing), and ran the reconciler."
+  ],
+  "allowed_files": [
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+    "tests/python/xliff/test_obligation_paired_code_integrity.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+    "tests/python/xliff/test_obligation_paired_code_integrity.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_paired_code_integrity.py -q -- 5 passed (new)",
+    ".venv/Scripts/python -m ruff check src/python/xliff/src/format_factory/xliff/validation/validator.py tests/python/xliff/test_obligation_paired_code_integrity.py -- all checks passed",
+    ".venv/Scripts/python -m mypy src/python/xliff/src/format_factory/xliff/validation/validator.py -- success, no issues found",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 323 passed (was 318, +5, 0 regressions)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 3,
+    "obligations_total_for_format": 142,
+    "xliff_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against a reference XLIFF implementation. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "obligations_moved_breakdown": "All 3 targeted obligations moved to implemented. 2 were closeable via citation correction against real capability (representation, duplicate/orphan refusal); 1 real gap (out-of-order ec) was fixed with a new validator diagnostic.",
+    "session_pattern_note": "This closes 3 of xliff's 13 obligations flagged genuinely distinct since event 154. XLIFF-MODEL-001 (document-hierarchy model, 2), XLIFF-VALIDATE-001 (multi-scope/comprehensive validation, 2), and XLIFF-TEXT-001 (inline-editing, 1) remain, all 5 still worth the same direct-investigation treatment applied here rather than assumed to need large new features."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

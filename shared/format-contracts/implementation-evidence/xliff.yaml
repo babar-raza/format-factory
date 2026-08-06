@@ -50,6 +50,26 @@ execution_evidence:
     files now contribute 87 tests (15 + 22 + 11 + 25 + 14). A green suite here says very little about
     the package that would be released. Binds no individual selector outcome to an obligation, so nothing
     here is verification; every obligation is recorded `partial` at most.'
+- evidence_id: XLIFF-INLINE-PAIRED-CODE-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-paired-code-integrity-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike XLIFF-BASELINE-SUITE. XLIFF-INLINE-001's 3 remaining obligations (flagged
+    genuinely distinct since event 154, still carrying the original generic 3-test citation and generic
+    "not yet audited" missing_behavior) were investigated directly. Representation (paired-code identity,
+    original-data references via InlineElement.data_ref, nesting/order through round-trip) was already
+    proven by existing tests. Refusal of duplicate ids and orphaned ec was already proven by validate()'s
+    existing diagnostics. A real, confirmed gap was found and fixed this slice: an ec element referencing
+    an sc that opens LATER in the same content sequence (closing a code before it opens) produced zero
+    diagnostics -- the prior check only tested ID membership in the full element set, not sequence
+    position. Added a new xliff.inline.ec.out_of_order diagnostic in validator.py's _validate_inline,
+    tracking sc/ec position incrementally rather than just set membership. Verified interactively before
+    writing tests that well-formed documents are unaffected and that two independently-paired OVERLAPPING
+    spans (which XLIFF's sc/ec model permits by design, not the same as an illegal backward reorder) are
+    correctly NOT flagged. 5 new tests. NOT backed by an independent reference implementation --
+    SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not
+    VERIFIED.
 - evidence_id: XLIFF-SEC-CITATION-AUDIT-SELECTOR-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-security-limits-001.json
   expected_result: PASS
@@ -591,23 +611,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-112C4F88A16C0E1E
   capability_id: XLIFF-INLINE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/model/inline.py::InlineElement
-  - src/python/xliff/src/format_factory/xliff/model/inline.py::flatten_inline_content
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::_validate_inline
+  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::split_segment
   positive_test_selectors:
   - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
   - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  - tests/python/xliff/test_production_namespace.py::test_segment_split_rejects_boundary_that_orphans_a_spanning_code
+  - tests/python/xliff/test_obligation_paired_code_integrity.py::test_an_ec_with_no_matching_sc_anywhere_is_orphaned
+  - tests/python/xliff/test_obligation_paired_code_integrity.py::test_two_inline_elements_sharing_an_id_are_duplicates
+  - tests/python/xliff/test_obligation_paired_code_integrity.py::test_an_ec_referencing_an_sc_that_opens_later_is_out_of_order
+  - tests/python/xliff/test_obligation_paired_code_integrity.py::test_two_independently_paired_overlapping_spans_are_not_flagged
+  - tests/python/xliff/test_obligation_paired_code_integrity.py::test_a_well_formed_paired_code_produces_no_diagnostics
   negative_test_selectors: []
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-INLINE-PAIRED-CODE-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Paired-code corruption attempts
-    (orphan, cross, duplicate) refused/diagnosed; token round trip preserves original data.'
+  - 'Representation: InlineElement models tag/attributes/content/tail as a token sequence, and test_typed_core_and_inline_content_load / test_semantic_roundtrip_preserves_unknown_namespace_and_order prove paired-code identity (id, startRef) and document order survive a full load/round-trip. Refusal: duplicate inline ids (xliff.inline.id.duplicate), orphaned ec (xliff.inline.ec.unpaired), and -- fixed this slice -- an ec referencing an sc that opens later in the sequence (xliff.inline.ec.out_of_order, a real gap: the prior check only tested ID membership in the full element set, not sequence position) are all diagnosed by validate(); split_segment() separately refuses a boundary that would orphan a spanning code. ''Cross'' (two independently-paired overlapping spans) is deliberately NOT flagged: XLIFF''s sc/ec model permits non-hierarchically-nested overlapping annotation spans by design, proven by test_two_independently_paired_overlapping_spans_are_not_flagged -- this is not the same violation as an illegal (backward) reorder.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Paired-code corruption attempts (orphan, cross, duplicate) refused/diagnosed; token round trip preserves
@@ -2517,23 +2541,19 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-AE50FBBF3AFEC48A
   capability_id: XLIFF-INLINE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/model/inline.py::InlineElement
-  - src/python/xliff/src/format_factory/xliff/model/inline.py::flatten_inline_content
   positive_test_selectors:
   - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
   - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
   negative_test_selectors: []
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-INLINE-PAIRED-CODE-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Paired-code corruption attempts
-    (orphan, cross, duplicate) refused/diagnosed; token round trip preserves original data.'
+  - 'InlineElement.data_ref exposes original-data references (dataRef/dataRefStart/dataRefEnd/startRef, checked in that priority order) as a first-class property, not merely incidental attribute passthrough. Paired-code relationships (id/startRef), identity, and nesting/order all survive a full load and semantic round-trip, proven by test_typed_core_and_inline_content_load (which loads a pc element with dataRefStart/dataRefEnd from the fixture) and test_semantic_roundtrip_preserves_unknown_namespace_and_order.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Paired-code corruption attempts (orphan, cross, duplicate) refused/diagnosed; token round trip preserves
@@ -2808,23 +2828,24 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-C788B2558FFB2D9C
   capability_id: XLIFF-INLINE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/model/inline.py::InlineElement
-  - src/python/xliff/src/format_factory/xliff/model/inline.py::flatten_inline_content
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::_validate_inline
+  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::split_segment
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  - tests/python/xliff/test_production_namespace.py::test_segment_split_rejects_boundary_that_orphans_a_spanning_code
+  - tests/python/xliff/test_obligation_paired_code_integrity.py::test_an_ec_with_no_matching_sc_anywhere_is_orphaned
+  - tests/python/xliff/test_obligation_paired_code_integrity.py::test_two_inline_elements_sharing_an_id_are_duplicates
+  - tests/python/xliff/test_obligation_paired_code_integrity.py::test_an_ec_referencing_an_sc_that_opens_later_is_out_of_order
+  - tests/python/xliff/test_obligation_paired_code_integrity.py::test_two_independently_paired_overlapping_spans_are_not_flagged
+  - tests/python/xliff/test_obligation_paired_code_integrity.py::test_a_well_formed_paired_code_produces_no_diagnostics
   negative_test_selectors: []
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-INLINE-PAIRED-CODE-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Paired-code corruption attempts
-    (orphan, cross, duplicate) refused/diagnosed; token round trip preserves original data.'
+  - 'Same refusal evidence as SAL-XLIFF-OBL-112C4F88A16C0E1E in this cluster: duplicate ids, orphaned ec, and out-of-order ec (fixed this slice) are all diagnosed by validate(); split_segment() separately refuses a boundary that would orphan a spanning code. ''Cross'' is deliberately not flagged, since overlapping paired-code spans are valid XLIFF, not a corruption case -- proven by test_two_independently_paired_overlapping_spans_are_not_flagged.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Paired-code corruption attempts (orphan, cross, duplicate) refused/diagnosed; token round trip preserves
