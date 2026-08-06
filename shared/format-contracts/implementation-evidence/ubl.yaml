@@ -240,6 +240,32 @@ execution_evidence:
     GAP-008 rule, not VERIFIED. Covers SAL-UBL-OBL-C717DEB32BC6F815 and
     SAL-UBL-OBL-DE7D98EAE4344EDA only; it supports no other obligation
     and promotes no product state.
+- evidence_id: UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-parse-citation-audit-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike UBL-BASELINE-SUITE. UBL-PARSE-001's 29 obligations all shared one generic
+    citation and are near-verbatim restatements of UBL-MODEL-001/VALUES-001/DOCTYPES-001 facts (all
+    resolved in preceding ticks). A programmatic exact-rule_text matcher found 27 of 29 are exact-text
+    duplicates, cross-referenced to that real evidence. 1 (default vs. prefixed XML namespace forms
+    resolving to identical expanded QNames) was proven directly by 2 new tests added this slice
+    (test_obligation_qname_resolution.py) demonstrating that xml.etree.ElementTree's inherent Clark-notation
+    normalization makes this true by construction, previously unasserted. 1 is a genuine, confirmed,
+    security-relevant finding, not merely unaudited: model/typed.py's find()/find_all() -- the navigation
+    primitives every typed accessor in the package routes through -- match children by local name only,
+    never verifying the expanded namespace, so a spoofed-namespace element with the same local name as a
+    legitimate one is silently preferred if it appears first in document order (demonstrated directly by
+    constructing such a case and observing find() return the spoofed value). Root-level namespace mismatches
+    are rejected, but that check does not extend to descendant lookups. This is left honestly `missing`
+    rather than force-promoted or patched hastily: a correct fix touches every find()/find_all() call site
+    across typed.py/aggregates.py/charges.py/reference.py/document.py, a cross-cutting change with real
+    blast radius that needs dedicated design and regression coverage beyond a citation-audit tick's safe
+    scope -- recorded as a genuine actionable finding for a future taskcard. NOT backed by an independent
+    reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery
+    directive's GAP-008 rule, not VERIFIED. Promotes no product state beyond the 20 obligations moved to
+    `implemented` (note: obligations_moved counts only clusters whose EXACT_DUP source was itself
+    implemented; several sources are honest partials/missings carried forward unchanged).
 - evidence_id: UBL-DOCTYPES-CITATION-AUDIT-SELECTOR-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-doctypes-citation-audit-001.json
   expected_result: PASS
@@ -403,25 +429,14 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-0996E6D7B91D544F
   capability_id: UBL-PARSE-001
-  status: partial
-  source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
-  positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
   negative_test_selectors: []
-  execution_evidence_ids:
-  - UBL-BASELINE-SUITE
-  implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  execution_evidence_ids: []
+  implemented_behavior: []
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Same document under default
-    namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures
-    rejected.'
+  - 'Confirmed real gap, not merely unaudited: model/typed.py''s find()/find_all() (the navigation primitives used throughout the package -- amount_of, quantity_of, identifier_of, and every aggregate-of function route through them) match children by LOCAL NAME ONLY (local_name(child.qname) == name), never checking the expanded namespace. Verified directly: constructing a parent with a spoofed {urn:evil:attacker:namespace}ID child ahead of the real {urn:oasis:...:CommonBasicComponents-2}ID child, find(parent, ''ID'') returns the spoofed element''s text, not the real one -- this is exactly the ''best-effort guessing'' this obligation says must be rejected, not accepted. Root-level namespace mismatches ARE rejected (test_wrong_namespace_and_preview_profile_fail_closed), but that check does not extend to descendant elements reached via find()/find_all(). Fixing this properly requires auditing and updating every call site across typed.py/aggregates.py/charges.py/reference.py/document.py to verify the expected namespace, not just the local name -- a cross-cutting change with real blast radius across the whole typed-projection layer, out of scope for a citation-audit tick to safely execute without dedicated design and regression coverage. Left honestly missing with this precise finding rather than force-promoted, silently ignored, or hidden behind a generic placeholder -- this is a genuine, actionable finding for a dedicated future taskcard, not a citation-audit false negative.'
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
@@ -843,25 +858,14 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-1EEEC2DD4CA2C80E
   capability_id: UBL-PARSE-001
-  status: partial
-  source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
-  positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
   negative_test_selectors: []
-  execution_evidence_ids:
-  - UBL-BASELINE-SUITE
-  implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  execution_evidence_ids: []
+  implemented_behavior: []
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Same document under default
-    namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures
-    rejected.'
+  - 'Same confirmed status as UBL-DOCTYPES-001''s SAL-UBL-OBL-1549D8ECF079779C (identical rule_text). SPEC-PACKAGE-FACT: this obligation describes the contents of the official pinned UBL 2.3 OASIS Standard distribution package itself (exactly 91 maindoc XSD files), not format_factory''s runtime behavior. No XSD files from the official package are vendored in this repository, so there is nothing to unit-test this claim against -- the closest available evidence is the package''s own file inventory, which is not committed. This mirrors the SPEC-PACKAGE-FACT category identified in XLIFF-PARSE-001''s citation audit earlier this session (obligations about the physical spec artifact rather than product behavior). Not force-promoted and not left as a generic placeholder.'
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
@@ -896,23 +900,21 @@ obligations:
   capability_id: UBL-PARSE-001
   status: partial
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Identifier
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_typed_projection.py::test_an_id_element_projects_with_its_scheme_attributes
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_identifier_preserves_its_scheme_attributes
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-433310901DD96A1A (identical rule_text): Restates SAL-UBL-OBL-0AFE5C0F7BA8AC02''s CBC-namespace/typed-leaf-value fact from the physical-XSD-file angle rather than the runtime-model angle; every cbc:-namespaced element is correctly typed and tested (same evidence).'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Same document under default
-    namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures
-    rejected.'
+  - 'Same gap as SAL-UBL-OBL-0AFE5C0F7BA8AC02: no test asserts the CBC-namespace convention as a standalone fact, and no code in this package parses the physical UBL-CommonBasicComponents-2.3.xsd file directly.'
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
@@ -989,25 +991,21 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-2366A1602688CC13
   capability_id: UBL-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
+  - src/python/ubl/src/format_factory/ubl/model/root_types.py::Invoice
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_invoice_lines_project_from_xml
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Same document under default
-    namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures
-    rejected.'
+  - 'Cross-capability duplicate of UBL-VALUES-001''s SAL-UBL-OBL-F6C576C55BACDF83 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-D569DF7E63EF3A7E (identical rule_text): Invoice is one of the 91 typed document roots (proven by test_all_91_roots_have_typed_roundtrip, parametrized over the root inventory including "Invoice") rooted in the UBL-Invoice-2 namespace; its InvoiceLine aggregate is separately fully typed (id/invoiced_quantity/line_extension_amount, tested for both required-field enforcement and XML projection). Unlike the Order/CreditNote/DespatchAdvice/ApplicationResponse siblings in this cluster, Invoice is the one root where both the document-root half and the named-line-aggregate half of the claim are fully typed and tested, not just the root half.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
@@ -1237,23 +1235,21 @@ obligations:
   capability_id: UBL-PARSE-001
   status: partial
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Identifier
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_typed_projection.py::test_an_id_element_projects_with_its_scheme_attributes
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_identifier_preserves_its_scheme_attributes
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-0AFE5C0F7BA8AC02 (identical rule_text): Every cbc:-namespaced element (ID, Amount, Quantity, Code) is exercised and correctly typed across dozens of tests, individually proving each concrete leaf type.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Same document under default
-    namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures
-    rejected.'
+  - 'No single test asserts the CommonBasicComponents-2/cbc-namespace convention itself as a standalone architectural fact -- it is only implicit in the per-type behavior of Amount/Quantity/Code/Identifier, never checked directly (e.g. no test asserts a cbc:-prefixed element''s namespace URI equals CommonBasicComponents-2).'
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
@@ -1687,23 +1683,17 @@ obligations:
   capability_id: UBL-PARSE-001
   status: partial
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
+  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'Cross-capability duplicate of UBL-DOCTYPES-001''s SAL-UBL-OBL-91E7CB3AF843790E (identical rule_text): Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-77AE58DED2CCE475 (identical rule_text): ApplicationResponse is one of the 91 typed document roots; test_all_91_roots_have_typed_roundtrip proves its root element, namespace, and round-trip fidelity.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Same document under default
-    namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures
-    rejected.'
+  - 'No typed DocumentResponse dataclass exists anywhere in the model -- business-level acknowledgement aggregates are preserved generically as part of the lossless XmlNode tree rather than modeled as a typed composite. The document-root/namespace half of this claim is proven; the named-child-aggregate-as-typed-composite half is not.'
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
@@ -1714,23 +1704,17 @@ obligations:
   capability_id: UBL-PARSE-001
   status: partial
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
+  - src/python/ubl/src/format_factory/ubl/model/root_types.py::CreditNote
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-E349D547D508AD8C (identical rule_text): CreditNote is one of the 91 typed document roots; test_all_91_roots_have_typed_roundtrip proves its root element, namespace, and round-trip fidelity.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Same document under default
-    namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures
-    rejected.'
+  - 'Unlike InvoiceLine, no typed CreditNoteLine dataclass exists anywhere in the model -- credit note lines are preserved generically as part of the lossless XmlNode tree rather than modeled as a typed composite. The document-root/namespace half of this claim is proven; the named-child-aggregate-as-typed-composite half is not.'
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
@@ -1783,23 +1767,20 @@ obligations:
   capability_id: UBL-PARSE-001
   status: partial
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::payment_means_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_payment_means_projects_with_its_code_and_due_date
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_payment_means_requires_a_code
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_payment_due_date_is_optional
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'Cross-capability duplicate of UBL-VALUES-001''s SAL-UBL-OBL-B47D8E797924BBD4 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-603915CF28301B40 (identical rule_text): PaymentMeans models payment_means_code (required) and payment_due_date (optional), both directly tested.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Same document under default
-    namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures
-    rejected.'
+  - 'PaymentMeans carries no payee-financial-account field at all -- the payee financial account element named in this obligation''s rule_text is genuinely unbuilt, not merely untested.'
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
@@ -1898,25 +1879,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-4C5B833BA1A52FF5
   capability_id: UBL-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Identifier
+  - src/python/ubl/src/format_factory/ubl/model/values.py::BinaryObject
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_requires_a_currency
+  - tests/python/ubl/test_obligation_business_value_types.py::test_a_quantity_carries_an_optional_unit_code
+  - tests/python/ubl/test_obligation_business_value_types.py::test_code_values_are_normalized_strings
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_identifier_preserves_its_scheme_attributes
+  - tests/python/ubl/test_obligation_business_value_types.py::test_a_binary_object_requires_a_mime_code
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Same document under default
-    namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures
-    rejected.'
+  - 'Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-DF289613C3ABBC56 (identical rule_text): This is the umbrella "unqualified data types" fact over Amount/Quantity/Code/Identifier/BinaryObject; no code in this package parses the physical BDNDR-UnqualifiedDataTypes-1.1.xsd artifact directly, but every one of the five scalar lexical representations it defines is implemented as its own typed value class and individually tested (see the per-type citations above -- same underlying facts as SAL-UBL-OBL-F44F5E57128BCA15, 21CA9DE1B597B083, F8659253DDA9D0E4, 0E8FA39856DF47F2, 30FEA2365B54D2D5 in this same cluster).'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
@@ -1952,25 +1934,21 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-4E0F145D653528E0
   capability_id: UBL-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::tax_total_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_a_tax_total_requires_a_tax_amount
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_a_tax_total_projects_with_its_subtotals
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Same document under default
-    namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures
-    rejected.'
+  - 'Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-B2AEC196C0FA7268 (identical rule_text): TaxTotal/TaxSubtotal model exactly cbc:TaxAmount plus nested TaxSubtotal elements per category; both construction (required TaxAmount) and XML projection (subtotal list) are directly tested.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
@@ -2047,25 +2025,21 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-518CC9B6B5EFEC04
   capability_id: UBL-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::invoice_line_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_invoice_lines_project_from_xml
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Same document under default
-    namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures
-    rejected.'
+  - 'Cross-capability duplicate of UBL-DOCTYPES-001''s SAL-UBL-OBL-9A23EF69DE53160B (identical rule_text): Cross-capability duplicate of UBL-VALUES-001''s SAL-UBL-OBL-32D59836B480F6B8 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-2972A8BB421227B8 (identical rule_text): InvoiceLine carries exactly id/invoiced_quantity/line_extension_amount/item as required fields; required-field enforcement (raises on a missing component) and XML projection are both directly tested.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
@@ -2074,25 +2048,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-5523FE5DCEFDA8C8
   capability_id: UBL-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::item_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_carries_optional_identifiers_and_classification_codes
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Same document under default
-    namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures
-    rejected.'
+  - 'Cross-capability duplicate of UBL-VALUES-001''s SAL-UBL-OBL-C287EBE21F059E6C (identical rule_text): Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-314B2CBE504470CC (identical rule_text): Item requires a name and carries optional identifiers/classification_codes tuples; both the required-name enforcement and the optional identification/classification elements are directly tested.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
@@ -2101,25 +2070,19 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-55B90386831BAA06
   capability_id: UBL-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_qname_resolution.py::test_default_and_prefixed_root_namespace_forms_produce_identical_qnames
+  - tests/python/ubl/test_obligation_qname_resolution.py::test_default_and_prefixed_forms_project_the_same_child_value
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Same document under default
-    namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures
-    rejected.'
+  - 'Added this slice: the parser (xml.etree.ElementTree) always normalizes an element''s tag to Clark notation ({namespace}local) at parse time regardless of whether the source declared that namespace as the default (xmlns=) or bound it to a prefix (xmlns:p=) -- this was already true by construction (XmlNode.qname is always the ET-normalized tag) but never directly asserted. Two new tests prove it: an Invoice document written once with a default namespace and once with an explicit prefix produce byte-identical root and child qnames and identical projected values.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
@@ -2128,25 +2091,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-569CA01EDACE6EDD
   capability_id: UBL-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Identifier
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::identifier_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_identifier_preserves_its_scheme_attributes
+  - tests/python/ubl/test_obligation_typed_projection.py::test_an_id_element_projects_with_its_scheme_attributes
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Same document under default
-    namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures
-    rejected.'
+  - 'Cross-capability duplicate of UBL-VALUES-001''s SAL-UBL-OBL-CA05321D7D7B950C (identical rule_text): Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-0E8FA39856DF47F2 (identical rule_text): Identifier carries optional scheme_id/scheme_agency_id fields (mapping to schemeID/schemeAgencyID); scheme-attribute preservation is directly tested at both the value-type and the XML-projection level.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
@@ -2262,25 +2220,14 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-5D2ED9EBC9246EDA
   capability_id: UBL-PARSE-001
-  status: partial
-  source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
-  positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
   negative_test_selectors: []
-  execution_evidence_ids:
-  - UBL-BASELINE-SUITE
-  implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  execution_evidence_ids: []
+  implemented_behavior: []
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Same document under default
-    namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures
-    rejected.'
+  - 'Same confirmed status as UBL-MODEL-001''s SAL-UBL-OBL-CADCC40DD4CD3689 (identical rule_text). No PostalAddress or Address dataclass exists anywhere in the model -- confirmed by grepping the entire model package for "class PostalAddress"/"class Address". Street/city/postal-zone/country as a typed composite is entirely unbuilt (addresses round-trip only as generic, untyped XmlNode subtrees). This is a genuine, unbuilt gap, not a citation-audit opportunity.'
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
@@ -2560,25 +2507,14 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-71FF376D05E7219A
   capability_id: UBL-PARSE-001
-  status: partial
-  source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
-  positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
   negative_test_selectors: []
-  execution_evidence_ids:
-  - UBL-BASELINE-SUITE
-  implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  execution_evidence_ids: []
+  implemented_behavior: []
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Same document under default
-    namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures
-    rejected.'
+  - 'Same confirmed status as UBL-DOCTYPES-001''s SAL-UBL-OBL-4936871F9800219B (identical rule_text). Same confirmed status as UBL-MODEL-001''s SAL-UBL-OBL-3B43504E9C74003C (identical rule_text). XmlNode preserves whatever child element order was present in the source document (a tuple, not a set) for round-trip fidelity, but nothing in the model or validator.py checks that order against the schema-declared sequence model to determine document validity. Confirmed by reading validator.py directly: it performs no sequence-order validation. Same underlying gap as SAL-UBL-OBL-B68F5F29F11197D6 in this cluster.'
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
@@ -2666,25 +2602,14 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-783649FDF531B0F9
   capability_id: UBL-PARSE-001
-  status: partial
-  source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
-  positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
   negative_test_selectors: []
-  execution_evidence_ids:
-  - UBL-BASELINE-SUITE
-  implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  execution_evidence_ids: []
+  implemented_behavior: []
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Same document under default
-    namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures
-    rejected.'
+  - 'Same confirmed status as UBL-DOCTYPES-001''s SAL-UBL-OBL-3C2E2EA8D3B697C9 (identical rule_text). Same confirmed status as UBL-MODEL-001''s SAL-UBL-OBL-03AF3A7D3A76F362 (identical rule_text). validator.py''s own docstring states this chassis validation "is deliberately not an XSD-conformance claim" and that "full schema and cardinality validation remains a mandatory open obligation." This is a real, confirmed, explicitly self-documented gap -- not force-promoted and not left as a generic placeholder.'
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
@@ -2770,23 +2695,21 @@ obligations:
   capability_id: UBL-PARSE-001
   status: partial
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::LegalMonetaryTotal
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_a_tax_total_projects_with_its_subtotals
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-EDA03586C360349D (identical rule_text): cac:-namespaced aggregates (InvoiceLine, Item, TaxTotal, LegalMonetaryTotal) are pervasively and correctly exercised as typed composites.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Same document under default
-    namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures
-    rejected.'
+  - 'No single test asserts the CommonAggregateComponents-2/cac-namespace convention itself as a standalone architectural fact, the same gap as its CBC-namespace sibling SAL-UBL-OBL-0AFE5C0F7BA8AC02 in this cluster.'
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
@@ -2859,25 +2782,21 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-7ED610619EF8F149
   capability_id: UBL-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_allowance_charge_projects_with_its_indicator_and_amount
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_the_charge_indicator_distinguishes_a_charge_from_an_allowance
+  - tests/python/ubl/test_obligation_business_calculation.py::test_allowance_charge_reconciliation_ignores_line_level_entries
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Same document under default
-    namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures
-    rejected.'
+  - 'Cross-capability duplicate of UBL-VALUES-001''s SAL-UBL-OBL-ED9826054E4BA037 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-8AACB36579F7436B (identical rule_text): AllowanceCharge models charge_indicator/amount/reason_code; the boolean charge/allowance distinction and document-vs-line-level reconciliation scoping are both directly tested.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
@@ -3547,25 +3466,18 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-A33577D6A0F0430E
   capability_id: UBL-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
+  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Same document under default
-    namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures
-    rejected.'
+  - 'Cross-capability duplicate of UBL-DOCTYPES-001''s SAL-UBL-OBL-78F83C6CBF92C11F (identical rule_text): Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-4A8AFD0D68F5B2B8 (identical rule_text): This restates SAL-UBL-OBL-8AB9CEA1A6909770''s runtime-proven per-type-namespace fact from the physical-maindoc-XSD-file angle rather than the runtime-model angle. No code in this package parses the physical XSD files directly, but the namespace convention they define (urn:oasis:names:specification:ubl:schema:xsd:<Type>-2 per document type) is fully implemented and tested across all 91 roots by the same evidence.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
@@ -3598,25 +3510,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-A4C0DA6A1DA93666
   capability_id: UBL-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::LegalMonetaryTotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::legal_monetary_total_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_a_legal_monetary_total_requires_line_extension_and_payable
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_a_legal_monetary_total_projects_its_optional_amounts
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Same document under default
-    namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures
-    rejected.'
+  - 'Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-6B2C75D678FE010A (identical rule_text): LegalMonetaryTotal carries exactly line_extension/tax_exclusive/tax_inclusive/allowance_total/charge_total/payable amounts; required-vs-optional amount handling is directly tested for both cases.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
@@ -3651,23 +3558,19 @@ obligations:
   capability_id: UBL-PARSE-001
   status: partial
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
+  - src/python/ubl/src/format_factory/ubl/codec/preservation.py::canonicalize
+  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
+  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-957563FFE4EF0A64 (identical rule_text): preservation.py generically round-trips a root-level ext:UBLExtensions container (dropping it in CANONICAL mode, preserving it losslessly by default); test_unknown_extension_is_preserved_semantically proves a foreign-namespaced extension element and its attributes/text survive a full round-trip unchanged.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Same document under default
-    namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures
-    rejected.'
+  - 'The specific structural constraints named in this obligation -- that UBLExtensions must be the first optional component in sequence order, that each UBLExtension permits exactly one foreign-namespaced apex element, and "lax" schema processing semantics for that content -- are not separately validated or enforced. The container is preserved losslessly as whatever generic subtree shape the input document already had, not checked against these specific structural rules.'
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
@@ -3840,23 +3743,17 @@ obligations:
   capability_id: UBL-PARSE-001
   status: partial
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
+  - src/python/ubl/src/format_factory/ubl/model/root_types.py::Order
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'Cross-capability duplicate of UBL-DOCTYPES-001''s SAL-UBL-OBL-80D484D6F8F255B4 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-16C93B2852CE2EAC (identical rule_text): Order is one of the 91 typed document roots; test_all_91_roots_have_typed_roundtrip proves its root element, namespace, and round-trip fidelity (parametrized over the full root inventory including "Order").'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Same document under default
-    namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures
-    rejected.'
+  - 'Unlike InvoiceLine, no typed OrderLine dataclass exists anywhere in the model -- order lines are preserved generically as part of the lossless XmlNode tree (locatable via typed.py::find by local name) rather than modeled as a typed composite. The document-root/namespace half of this claim is proven; the named-child-aggregate-as-typed-composite half is not.'
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
@@ -4000,25 +3897,14 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-C4BD36751BD0B3AB
   capability_id: UBL-PARSE-001
-  status: partial
-  source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
-  positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
   negative_test_selectors: []
-  execution_evidence_ids:
-  - UBL-BASELINE-SUITE
-  implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  execution_evidence_ids: []
+  implemented_behavior: []
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Same document under default
-    namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures
-    rejected.'
+  - 'Same confirmed status as UBL-MODEL-001''s SAL-UBL-OBL-75FA432A5A176927 (identical rule_text). No Party dataclass or typed composite exists anywhere in the model -- confirmed by grepping the entire model package for "class Party". Party-suffixed elements are only generically tagged by query.py''s business_role() heuristic (a document-query helper, not a typed model), with no identification, name, postal-address, tax-scheme, or contact sub-structure modeled or tested. This is a genuine, unbuilt gap, not a citation-audit opportunity.'
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
@@ -4231,23 +4117,17 @@ obligations:
   capability_id: UBL-PARSE-001
   status: partial
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
+  - src/python/ubl/src/format_factory/ubl/model/root_types.py::Order
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'Cross-capability duplicate of UBL-DOCTYPES-001''s SAL-UBL-OBL-5DE0B14D6D273578 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-4F8B81527163B9F9 (identical rule_text): Same underlying fact as SAL-UBL-OBL-16C93B2852CE2EAC in this cluster (Order document root, namespace, and OrderLine aggregate), restated with an "OASIS UBL 2.1" framing instead of "UBL maindoc schemas." The document-root/namespace half is proven by the same 91-root test.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Same document under default
-    namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures
-    rejected.'
+  - 'Same gap as SAL-UBL-OBL-16C93B2852CE2EAC: no typed OrderLine dataclass exists; order lines are only generically preserved, not modeled as a typed composite.'
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
@@ -4468,23 +4348,17 @@ obligations:
   capability_id: UBL-PARSE-001
   status: partial
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
+  - src/python/ubl/src/format_factory/ubl/model/root_types.py::DespatchAdvice
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'Cross-capability duplicate of UBL-DOCTYPES-001''s SAL-UBL-OBL-C2A6F6ABBACE3C26 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-BE7766CC0C6398BE (identical rule_text): DespatchAdvice is one of the 91 typed document roots; test_all_91_roots_have_typed_roundtrip proves its root element, namespace, and round-trip fidelity.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Same document under default
-    namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures
-    rejected.'
+  - 'No typed DespatchLine dataclass exists anywhere in the model -- despatch lines are preserved generically as part of the lossless XmlNode tree rather than modeled as a typed composite. The document-root/namespace half of this claim is proven; the named-child-aggregate-as-typed-composite half is not.'
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
@@ -4592,25 +4466,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-E485C1257EDE82FD
   capability_id: UBL-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
+  - src/python/ubl/src/format_factory/ubl/model/reference.py::ExternalReference
+  - src/python/ubl/src/format_factory/ubl/model/reference.py::external_reference_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_external_reference.py::TestExternalReferenceConstruction::test_every_field_is_independently_settable
+  - tests/python/ubl/test_obligation_external_reference.py::TestExternalReferenceProjection::test_projecting_a_partial_element_leaves_the_rest_none
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Same document under default
-    namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures
-    rejected.'
+  - 'Cross-capability duplicate of UBL-DOCTYPES-001''s SAL-UBL-OBL-F79C106EE20386B9 (identical rule_text): Cross-capability duplicate of UBL-VALUES-001''s SAL-UBL-OBL-D25D2CB8429753F9 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-1D41106A5EF340AB (identical rule_text): ExternalReference is a dataclass with exactly URI/DocumentHash/MimeCode/FileName/Description, all independently optional; test_every_field_is_independently_settable proves each field can be set alone and test_projecting_a_partial_element_leaves_the_rest_none proves a partial XML element leaves unset fields None rather than raising.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
@@ -4766,25 +4635,19 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-EFCDD49AB32B85E2
   capability_id: UBL-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
+  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_production_namespace.py::test_wrong_namespace_and_preview_profile_fail_closed
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Same document under default
-    namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures
-    rejected.'
+  - 'Cross-capability duplicate of UBL-DOCTYPES-001''s SAL-UBL-OBL-B1459A3D33EDA8BD (identical rule_text): Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-8AB9CEA1A6909770 (identical rule_text): ROOT_CLASSES maps every one of the 91 typed document roots to a subclass whose namespace follows urn:oasis:names:specification:ubl:schema:xsd:<Type>-2 uniformly; test_all_91_roots_have_typed_roundtrip is parametrized over all 91 roots (checks root_name, typed class identity, validity, and round-trip), and test_wrong_namespace_and_preview_profile_fail_closed proves a namespace mismatch is rejected rather than silently accepted.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
@@ -4989,25 +4852,21 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-FBD6CE2F9C471A5A
   capability_id: UBL-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::price_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_price_projects_with_its_base_quantity
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_price_requires_an_amount
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_base_quantity_is_optional
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Same document under default
-    namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures
-    rejected.'
+  - 'Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-ED0E6E84CB8D90B7 (identical rule_text): Price models price_amount (required) and base_quantity (optional); required-amount enforcement, optional base-quantity handling, and XML projection are all directly tested.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;

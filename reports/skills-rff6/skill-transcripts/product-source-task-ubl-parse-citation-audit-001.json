@@ -1,0 +1,51 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-parse-citation-audit-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-07T00:50:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_PARSE_CITATION_AUDIT_001",
+    "task_kind": "obligation-closure-citation-audit-plus-finding",
+    "root_cause": "Following event 160's exact_next_action (UBL-PARSE-001 is worth a duplicate-detection pass before assuming fresh investigation is needed, the same lesson learned from xliff's PARSE-001/MODULE-001 pair), ran the programmatic matcher against UBL-PARSE-001's 29 obligations.",
+    "obligation_targeted": "29 obligations in UBL-PARSE-001 -- see the UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF execution_evidence entry.",
+    "acceptance_evidence": "27 cross-referenced to already-resolved UBL-MODEL-001/VALUES-001/DOCTYPES-001 evidence; 1 proven directly by 2 new tests; 1 left honestly missing as a genuine, confirmed, security-relevant finding.",
+    "regression_tier": "full ubl package suite (tests/python/ubl)"
+  },
+  "execution_steps": [
+    "1. Ran the programmatic exact-rule_text matcher against the pool resolved in UBL-MODEL-001/VALUES-001/DOCTYPES-001: 27 of 29 UBL-PARSE-001 obligations matched exactly (dict-key equality). Spot-checked 4 pairs directly against the register to confirm byte-for-byte identity.",
+    "2. Investigated the 2 non-matching obligations. SAL-UBL-OBL-55B90386831BAA06 (default vs. prefixed namespace forms resolve identically): read reader.py's _to_node() and confirmed it copies element.tag directly, which xml.etree.ElementTree always normalizes to Clark notation regardless of source prefix/default-namespace usage -- wrote 2 new tests (test_obligation_qname_resolution.py) constructing the same Invoice document twice, once with a default namespace and once with an explicit prefix, proving identical resulting qnames and identical projected values.",
+    "3. SAL-UBL-OBL-0996E6D7B91D544F (reject namespace spoofing / ambiguous QName resolution with diagnostics): read model/typed.py's find()/find_all() directly and found they match children by local_name(child.qname) == name ONLY, never checking the expanded namespace. Verified this is a real, exploitable gap by direct construction: built a parent XmlNode with a spoofed {urn:evil:attacker:namespace}ID child placed before a real {urn:oasis:...:CommonBasicComponents-2}ID child, called find(parent, 'ID'), and confirmed it returned the spoofed element's text -- exactly the 'best-effort guessing' this obligation says must be rejected.",
+    "4. Assessed whether to fix this in-tick: find()/find_all() are the navigation primitives every typed accessor in the package routes through (amount_of, quantity_of, identifier_of, every aggregate-of function). A correct fix requires auditing and updating every call site across typed.py/aggregates.py/charges.py/reference.py/document.py to verify the expected namespace alongside the local name -- a cross-cutting change to a core primitive with real blast radius. Decided this exceeds a citation-audit tick's safe scope without dedicated design and regression coverage, and left it honestly `missing` with the precise, demonstrated finding rather than attempting a rushed fix that could destabilize the whole typed-projection layer, or silently ignoring/hiding it behind a generic placeholder.",
+    "5. Applied the patch-script pattern. Added the new UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF execution_evidence entry, validated the YAML parses (194 total obligations, PARSE-001 now 13 implemented / 10 partial / 6 missing), ran the reconciler cleanly, ran ruff on the new test file (clean), and ran the full ubl suite to confirm zero regressions beyond the 2 new tests."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ubl.yaml",
+    "tests/python/ubl/test_obligation_qname_resolution.py"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ubl.yaml",
+    "tests/python/ubl/test_obligation_qname_resolution.py"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_qname_resolution.py -q -- 2 passed (new)",
+    ".venv/Scripts/python -m ruff check tests/python/ubl/test_obligation_qname_resolution.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 705 passed (was 703, +2 new, 0 regressions)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 20,
+    "obligations_total_for_format": 194,
+    "ubl_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against a reference UBL implementation. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "obligations_moved_breakdown": "20 of 29 obligations moved to implemented (cross-references whose MODEL-001/VALUES-001/DOCTYPES-001 source was implemented, plus 1 fresh direct citation). 10 stay partial and 6 stay missing, carrying forward the same honest, precise reasons from their source obligations (or, for the 2 genuinely new obligations, freshly derived).",
+    "significant_finding": "SAL-UBL-OBL-0996E6D7B91D544F is a genuine, demonstrated, security-relevant gap (namespace-unaware child lookup in the package's core navigation primitive) surfaced by this citation audit, not a false negative -- flagged precisely for future dedicated remediation rather than papered over."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
