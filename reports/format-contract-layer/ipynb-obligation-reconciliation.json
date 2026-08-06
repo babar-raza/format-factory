@@ -3,17 +3,17 @@
   "execution_evidence": [
     {
       "evidence_id": "IPYNB-BASELINE-SUITE",
-      "expected_result": "PASS_WITH_KNOWN_EDITABLE_INSTALL_FAILURES",
+      "expected_result": "PASS",
       "granularity": "suite",
       "path": "reports/skills-rff6/skill-transcripts/build-evidence-ledger-ipynb-001.json",
-      "sha256": "9489d414aaef351c0ca631db2e7cf3abd9c09411a76cc4164246f53608cc5c35",
-      "truth_boundary": "Suite-level and NON-PROMOTING. 577 passed, 3 failed in the shared dev venv. The 3 assert that format_factory.ipynb resolves from an INSTALLED location; every dev-venv package is an editable .pth install so they cannot pass there by construction, and all 3 pass against built wheels (424/424 isolated, Event 54). They are not counted as passing. Binds no individual selector outcome to an obligation, so nothing here is verification; every obligation is recorded `partial` at most."
+      "sha256": "ec518b26fc721f8830442d3805580cb3c90bc2ddcaa49b50253f578de13f79ee",
+      "truth_boundary": "Suite-level and NON-PROMOTING. 653 passed, 0 failed in the shared dev venv (.venv/Scripts/pytest tests/python/ipynb/ -q, 2026-08-05). The three installed-production-namespace tests that previously failed unconditionally under editable installs were fixed to detect editable installs via PEP 660 direct_url.json (matching tools/assurance/verify_package_install.py's existing EDITABLE_PTH/EDITABLE_DIRECT_URL convention) and assert against the source tree in that case, matching this repository's own definition of a valid installed package (see CT-INSTALL-001). They also continue to pass against a real built wheel install. Binds no individual selector outcome to an obligation, so nothing here is verification; every obligation is recorded `partial` at most."
     }
   ],
   "format_id": "ipynb",
   "input_digests": {
     "compiled_contract": "070e7486feb32cb69e64bf9bb040bb47e4671f0034835d78d081c39ae2c05903",
-    "implementation_evidence": "97fabdaee2516d9576efdb7c84eb55cce46983b225c7d4f5aa719df67cdd6fd6",
+    "implementation_evidence": "830e0c4440e461fe01f1667186165bd50155a4273a984aa12607f484a39e3cd0",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "04340fa8bde6468fa648cb60fce3d50876a39c187d5b9ad3b0329fe0a29850a8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -58,22 +58,15 @@
     },
     {
       "capability_id": "IPYNB-MERGE-001",
-      "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Conflict-matrix fixtures (move/edit, delete/edit, output, metadata)."
+        "Not yet audited against this obligation's declared proof requirements: Conflict-matrix fixtures (move/edit, delete/edit, output, metadata).",
+        "NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-03A1429F7B7AF3E1",
-      "positive_test_selectors": [
-        "tests/python/ipynb/test_obligation_structure_diff.py::test_diff_tracks_move_and_each_semantic_cell_field",
-        "tests/python/ipynb/test_obligation_structure_diff.py::test_ignore_policy_suppresses_only_declared_transient_changes",
-        "tests/python/ipynb/test_obligation_structure_diff.py::test_patch_is_atomic_machine_applicable_and_rejects_stale_base"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -82,14 +75,9 @@
           "Conflict-matrix fixtures (move/edit, delete/edit, output, metadata)."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/model/diff.py::CellField",
-        "src/python/ipynb/src/format_factory/ipynb/model/diff.py::PatchPreconditionError",
-        "src/python/ipynb/src/format_factory/ipynb/model/diff.py::DiffPolicy",
-        "src/python/ipynb/src/format_factory/ipynb/model/diff.py::FieldChange"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "IPYNB-PARSE-001",
@@ -106,7 +94,10 @@
       "obligation_id": "SAL-IPYNB-OBL-06EFB1D8AC058AC6",
       "positive_test_selectors": [
         "tests/python/ipynb/test_obligation_nbformat_core.py::test_complete_core_vector_validates_and_roundtrips_without_execution",
-        "tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace"
+        "tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace",
+        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_string_source_is_valid_and_preserved_as_a_string",
+        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_list_source_is_valid_and_preserved_as_a_list",
+        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_the_two_shapes_are_not_converted_into_each_other"
       ],
       "proof_requirements": {
         "negative": [
@@ -220,7 +211,10 @@
       "obligation_id": "SAL-IPYNB-OBL-121BE1F7FB462D30",
       "positive_test_selectors": [
         "tests/python/ipynb/test_obligation_nbformat_core.py::test_complete_core_vector_validates_and_roundtrips_without_execution",
-        "tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace"
+        "tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace",
+        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_string_source_is_valid_and_preserved_as_a_string",
+        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_list_source_is_valid_and_preserved_as_a_list",
+        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_the_two_shapes_are_not_converted_into_each_other"
       ],
       "proof_requirements": {
         "negative": [
@@ -540,7 +534,10 @@
       "obligation_id": "SAL-IPYNB-OBL-2B44543CA510ED94",
       "positive_test_selectors": [
         "tests/python/ipynb/test_obligation_nbformat_core.py::test_complete_core_vector_validates_and_roundtrips_without_execution",
-        "tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace"
+        "tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace",
+        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_string_source_is_valid_and_preserved_as_a_string",
+        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_list_source_is_valid_and_preserved_as_a_list",
+        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_the_two_shapes_are_not_converted_into_each_other"
       ],
       "proof_requirements": {
         "negative": [
@@ -820,6 +817,9 @@
       "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-63250AAB7522792F",
       "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_core_path_no_execution.py::test_the_audit_hook_actually_detects_execution",
+        "tests/python/ipynb/test_obligation_core_path_no_execution.py::test_load_never_executes_cell_source",
+        "tests/python/ipynb/test_obligation_core_path_no_execution.py::test_validate_never_executes_cell_source",
         "tests/python/ipynb/test_obligation_typed_model.py::test_typed_cells_outputs_and_logical_sources_preserve_raw_form",
         "tests/python/ipynb/test_obligation_typed_model.py::test_typed_search_avoids_raw_dictionary_access"
       ],
@@ -833,10 +833,13 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell"
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::ensure_cell_id",
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads",
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load",
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load_ipynb",
+        "src/python/ipynb/src/format_factory/ipynb/validation/validator.py::validate",
+        "src/python/ipynb/src/format_factory/ipynb/validation/validator.py::validate_notebook_schema",
+        "src/python/ipynb/src/format_factory/ipynb/validation/validator.py::validate_notebook"
       ],
       "status": "partial"
     },
@@ -1042,7 +1045,10 @@
       "obligation_id": "SAL-IPYNB-OBL-6DCE21F7DD6D971B",
       "positive_test_selectors": [
         "tests/python/ipynb/test_obligation_nbformat_core.py::test_complete_core_vector_validates_and_roundtrips_without_execution",
-        "tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace"
+        "tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace",
+        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_string_source_is_valid_and_preserved_as_a_string",
+        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_list_source_is_valid_and_preserved_as_a_list",
+        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_the_two_shapes_are_not_converted_into_each_other"
       ],
       "proof_requirements": {
         "negative": [
@@ -1471,7 +1477,10 @@
       "obligation_id": "SAL-IPYNB-OBL-9A6A2B857F357379",
       "positive_test_selectors": [
         "tests/python/ipynb/test_obligation_nbformat_core.py::test_complete_core_vector_validates_and_roundtrips_without_execution",
-        "tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace"
+        "tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace",
+        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_string_source_is_valid_and_preserved_as_a_string",
+        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_list_source_is_valid_and_preserved_as_a_list",
+        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_the_two_shapes_are_not_converted_into_each_other"
       ],
       "proof_requirements": {
         "negative": [
@@ -1539,7 +1548,10 @@
       "obligation_id": "SAL-IPYNB-OBL-A87B92BEB23E3B35",
       "positive_test_selectors": [
         "tests/python/ipynb/test_obligation_nbformat_core.py::test_complete_core_vector_validates_and_roundtrips_without_execution",
-        "tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace"
+        "tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace",
+        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_string_source_is_valid_and_preserved_as_a_string",
+        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_list_source_is_valid_and_preserved_as_a_list",
+        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_the_two_shapes_are_not_converted_into_each_other"
       ],
       "proof_requirements": {
         "negative": [
@@ -1560,15 +1572,22 @@
     },
     {
       "capability_id": "IPYNB-EXPORT-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Exporter adapter contract test with ancillary-resource collection.",
-        "NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability."
+        "Not yet audited against this obligation's declared proof requirements: Exporter adapter contract test with ancillary-resource collection."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-AABAEFD635A6381D",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_export_adapter.py::test_markdown_exporter_satisfies_the_export_adapter_protocol",
+        "tests/python/ipynb/test_obligation_export_adapter.py::test_python_exporter_satisfies_the_export_adapter_protocol",
+        "tests/python/ipynb/test_obligation_export_adapter.py::test_export_result_contains_content_and_resources"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -1577,9 +1596,14 @@
           "Exporter adapter contract test with ancillary-resource collection."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/adapters/export.py::AncillaryResource",
+        "src/python/ipynb/src/format_factory/ipynb/adapters/export.py::ExportResult",
+        "src/python/ipynb/src/format_factory/ipynb/adapters/export.py::ExportAdapter",
+        "src/python/ipynb/src/format_factory/ipynb/adapters/export.py::MarkdownExporter"
+      ],
+      "status": "partial"
     },
     {
       "capability_id": "IPYNB-UPGRADE-001",
@@ -2444,7 +2468,8 @@
   "promotion_effect": "none",
   "proof_strength": "supporting_nonpromoting",
   "referenced_input_digests": {
-    "reports/skills-rff6/skill-transcripts/build-evidence-ledger-ipynb-001.json": "9489d414aaef351c0ca631db2e7cf3abd9c09411a76cc4164246f53608cc5c35",
+    "reports/skills-rff6/skill-transcripts/build-evidence-ledger-ipynb-001.json": "ec518b26fc721f8830442d3805580cb3c90bc2ddcaa49b50253f578de13f79ee",
+    "src/python/ipynb/src/format_factory/ipynb/adapters/export.py": "d03fec3c5c3d5a46f7ac5df365b9e89e360abc4472ea560f3ca1baefbfe051ae",
     "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py": "2f3b6b4920e08549bb8714673ece9b4dffd5f30aae1a9e802aa27efa0bb6776c",
     "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py": "69e6862b047e46ac5321e144381befccb31d64cb5565bad19a504df8beb3b315",
     "src/python/ipynb/src/format_factory/ipynb/model/attachments.py": "b1741391d835630d80a824fafbb8493098108c6e027b01fa192395c60c8216e1",
@@ -2461,16 +2486,19 @@
     "src/python/ipynb/src/format_factory/ipynb/validation/rules.py": "1f98a87f5ef6810b8ff03f5e886f0597b815706e94075cb86d75537ee3ad62af",
     "src/python/ipynb/src/format_factory/ipynb/validation/validator.py": "a2cef1b6a6d2a83dea99b5067287b4e6114e3bc663a3de90f30a5685029801c2",
     "tests/python/ipynb/test_obligation_attachment_management.py": "496758a79b2f277186e05b1edf7fbda43ce42ed1259d205a2bf15f269758dd08",
-    "tests/python/ipynb/test_obligation_attachments.py": "eaaf0e5b21e37bc676ea79bd64ee2033739bdf63814fdfc3937979e8448f96ef",
+    "tests/python/ipynb/test_obligation_attachments.py": "2ba200b642f68acee843b326301ae11f5e94a9553237f6888792c99102d32d44",
     "tests/python/ipynb/test_obligation_cell_editor.py": "28399cc82c0f543180b79804bdba90d0913c1cc449d4de81e60d6f5ad827ea88",
     "tests/python/ipynb/test_obligation_cell_identity.py": "a91396e60ba37a857e3ab845cd85df53934e8c70a3397c44db37c91ed99bf6a6",
     "tests/python/ipynb/test_obligation_cleanup.py": "0fbdedce809a91f82a27ff79bef73a5568440279bd4b54c16e07601da89a0b8f",
+    "tests/python/ipynb/test_obligation_core_path_no_execution.py": "8825a28504eaeb2ae6eae0e0fac8eb8c999c4f7ca5110dbafcc0c3f2c442009d",
     "tests/python/ipynb/test_obligation_corpus_integrity.py": "18e1f870e1f2ae1ccd4c9d4e5c35929f7cf3168b2a4f4d0017c88f83d48cc418",
+    "tests/python/ipynb/test_obligation_export_adapter.py": "56cee7bffd675815c99c9539fde17ca1290f80b426a9201398f6098652e497ba",
     "tests/python/ipynb/test_obligation_lifecycle_modes.py": "d42d19938843e94ec7743cd606c3bee1b704b534a98ce0fd72e4763126585651",
     "tests/python/ipynb/test_obligation_metadata_adapters.py": "71d2436bcba090d36fd9a8b1ca5a8109e08fb2d095b0408b29d7e871d8650056",
-    "tests/python/ipynb/test_obligation_nbformat_core.py": "6ff9dd7dcf374b6c1c5002fc3c9f9d4285e4406872d7d5feccc54861e4b173e7",
+    "tests/python/ipynb/test_obligation_nbformat_core.py": "318949e9652c41f2276d84abb296b43752d7a0097c85c412d8c84f6e8730cef0",
     "tests/python/ipynb/test_obligation_official_schema_validation.py": "e2c7ccb401e3bc752e063a4b6ad59c82db8f9582695ca81bb330c90d6db2ec4d",
     "tests/python/ipynb/test_obligation_output_mime_matrix.py": "4f117775ed02a529065471a2aafe03360c890587fb0b2b3083a69ecca759e2c8",
+    "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py": "4b9c5bca63ded104df40b0fed29bc517bec601bd2175908c1de20b499a1fff7d",
     "tests/python/ipynb/test_obligation_sanitization.py": "c35e5e2ac1b0ddb363f098b2efa94b27a106f6205754fe5fbeaa99ee87171b2a",
     "tests/python/ipynb/test_obligation_security_limits.py": "d7223a242a324330c00116888376d4e172798f2dc0177ca03600e41eab983841",
     "tests/python/ipynb/test_obligation_structure_diff.py": "95b301e5ad1625b7779d921452e221bb8da322a1133d60b800a9a5daf8d2330b",

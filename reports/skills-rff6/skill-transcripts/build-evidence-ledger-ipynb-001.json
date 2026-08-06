@@ -16,7 +16,9 @@
     "1. Rebuilt the ipynb ledger through tools/ff6/build_evidence_ledger.py so it is produced by the same audited code path as safetensors, xliff, ubl and ora rather than by a one-off script.",
     "2. Carried across the capability mapping established over this session, including the three corrections made after the shadow-package finding: IPYNB-OUTPUT-001, the cell-identity capabilities and IPYNB-WRITE-001 now map to the shipped-namespace test files written today rather than to the shadow files they originally cited.",
     "3. Recorded the suite result honestly: 577 passed, 3 failed. The 3 are the editable-install namespace artifacts that pass against built wheels (424/424 in the isolated environment) and cannot pass in the shared dev venv by construction. They are not counted as passing.",
-    "4. Ran the exact-obligation reconciler, which had never succeeded for ipynb before."
+    "4. Ran the exact-obligation reconciler, which had never succeeded for ipynb before.",
+    "5. 2026-08-06 refresh: `tools/format_contract/contract_reconciler.py --format-id ipynb --exact-obligations` failed with 'declared result PASS does not match PASS_WITH_KNOWN_EDITABLE_INSTALL_FAILURES' because this artifact was never regenerated after the 2026-08-05 fix (recorded in the implementation-evidence YAML's own truth_boundary) that detected editable installs via PEP 660 and eliminated the 3 known failures -- only the surrounding YAML's expected_result/truth_boundary were updated in place at the time, not this artifact. Same root-cause class as FI-075 (registry/found-issue-register.yaml), independently rediscovered here rather than assumed to also apply.",
+    "6. Re-ran `.venv/Scripts/pytest tests/python/ipynb/ -q` directly to verify before touching this file: 653 passed, 0 failed -- confirms the YAML's expected_result (PASS) is the current truth and this artifact was the stale side, not the other way around."
   ],
   "allowed_files": [
     "shared/format-contracts/ledger-maps/ipynb.yaml",
@@ -24,23 +26,26 @@
   ],
   "actual_files_changed": [
     "shared/format-contracts/ledger-maps/ipynb.yaml",
-    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+    "shared/format-contracts/implementation-evidence/ipynb.yaml",
+    "reports/skills-rff6/skill-transcripts/build-evidence-ledger-ipynb-001.json"
   ],
   "tests_run": [
-    ".venv/Scripts/python.exe -m pytest tests/python/ipynb -q  # 577 passed, 3 failed",
+    ".venv/Scripts/python.exe -m pytest tests/python/ipynb -q  # 577 passed, 3 failed (2026-08-04)",
     "python -m tools.ff6.build_evidence_ledger --format-id ipynb",
-    "python -m tools.ff6.audit_proof_requirements --format-id ipynb"
+    "python -m tools.ff6.audit_proof_requirements --format-id ipynb",
+    ".venv/Scripts/pytest tests/python/ipynb/ -q  # 653 passed, 0 failed (2026-08-06 refresh)"
   ],
   "ledger_entry_id": null,
-  "result": "PASS_WITH_KNOWN_EDITABLE_INSTALL_FAILURES",
+  "result": "PASS",
   "evidence": {
     "product_promotion_effect": "none",
     "certification_state": "0/6",
     "obligations_ledgered": 68,
-    "suite_truth": "577 passed, 3 failed in the shared dev venv. The 3 assert that format_factory.ipynb resolves from an INSTALLED location; every dev-venv package is an editable .pth install so they cannot pass there by construction, and all 3 pass against built wheels (424/424 in an isolated environment, recorded at Event 54). They are not counted as passing here.",
+    "suite_truth": "653 passed, 0 failed in the shared dev venv as of 2026-08-06 (independently re-run, not assumed). The 3 editable-install namespace tests that previously failed unconditionally in the shared dev venv (every dev-venv package being an editable .pth install) were fixed on 2026-08-05 to detect editable installs via PEP 660 metadata and skip the installed-location assertion when running under one; they now pass in both the shared dev venv and against built wheels (424/424 in an isolated environment, recorded at Event 54).",
     "why_rebuilt": "Uniformity of code path matters for trust: five formats were built by the shared builder and one by a one-off script that predated two correctness fixes. Now all six come from the same audited path.",
     "obligations_moved": 0,
-    "ipynb_remains": "UNASSESSED"
+    "ipynb_remains": "UNASSESSED",
+    "refresh_note": "2026-08-06: this artifact was stale relative to a real fix already landed and already reflected in the implementation-evidence YAML's own narrative; the exact-obligations reconciler is what caught the drift, matching FI-075's ora finding exactly. Regenerated from an independently re-run test suite, not from re-stating the YAML's own claim."
   },
   "generated_by": "claude",
   "visibility": "generated"

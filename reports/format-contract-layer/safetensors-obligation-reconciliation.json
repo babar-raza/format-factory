@@ -7,13 +7,13 @@
       "granularity": "suite",
       "path": "reports/skills-rff6/skill-transcripts/build-evidence-ledger-safetensors-001.json",
       "sha256": "0c4341a9828b89799ba47aeba0932e99bda659dc424a982d3e42ebe57adc270b",
-      "truth_boundary": "Suite-level and NON-PROMOTING. Records that the mapped shipped-namespace suites run and that the mapped source symbols exist. The declared result is deliberately not PASS: 4 of the 390 tests fail in the shared dev venv on the known GAP-002 shadow-package name collision, and pass only in an isolated wheel-install environment. They are not counted as passing. This binds no individual selector outcome to an obligation, so nothing here is verification; every obligation is recorded `partial` at most."
+      "truth_boundary": "Suite-level and NON-PROMOTING. Records that the mapped shipped-namespace suites run and that the mapped source symbols exist. The declared result is deliberately not PASS: 4 of the 390 tests fail in the shared dev venv on the known GAP-002 shadow-package name collision, and pass only in an isolated wheel-install environment. They are not counted as passing. This binds no individual selector outcome to an obligation, so nothing here is verification; every obligation is recorded `partial` at most.\n2026-08-06: no source or test change this slice, only this map. safetensors suite unchanged at 385 passed / 1 skipped / 4 deselected (the same 4 pre-existing GAP-002 interop failures). Obligation status unchanged at 86 partial / 0 missing -- this slice deepens selector evidence within already- `partial` obligations, it does not move any obligation's status."
     }
   ],
   "format_id": "safetensors",
   "input_digests": {
     "compiled_contract": "0c75ec78971819ea2d679482ea8b81334f594632bf79cdb0c4ec465c8a3bcfbb",
-    "implementation_evidence": "3f43fdf4bf7c1af9e2105d8debdcdf9f4e2e038bede1e7d91bce4b9ebdc08534",
+    "implementation_evidence": "ecc238c9063e19d0a113b8222199d0cf85ab436291f2800ae7cec9a75d91ede8",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "acaf4a88cf5aee24cc52b3da71013932a0573d1fc834b9e79adf7489fc393b80",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -75,7 +75,10 @@
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy",
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed",
         "tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow",
-        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow"
+        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow",
+        "tests/python/safetensors/test_production_namespace.py::test_scalar_roundtrip_is_deterministic",
+        "tests/python/safetensors/test_production_namespace.py::test_empty_tensor_is_valid",
+        "tests/python/safetensors/test_production_namespace.py::test_complete_dtype_inventory"
       ],
       "proof_requirements": {
         "negative": [
@@ -111,7 +114,10 @@
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy",
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed",
         "tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow",
-        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow"
+        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow",
+        "tests/python/safetensors/test_production_namespace.py::test_scalar_roundtrip_is_deterministic",
+        "tests/python/safetensors/test_production_namespace.py::test_empty_tensor_is_valid",
+        "tests/python/safetensors/test_production_namespace.py::test_complete_dtype_inventory"
       ],
       "proof_requirements": {
         "negative": [
@@ -188,7 +194,10 @@
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy",
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed",
         "tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow",
-        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow"
+        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow",
+        "tests/python/safetensors/test_production_namespace.py::test_scalar_roundtrip_is_deterministic",
+        "tests/python/safetensors/test_production_namespace.py::test_empty_tensor_is_valid",
+        "tests/python/safetensors/test_production_namespace.py::test_complete_dtype_inventory"
       ],
       "proof_requirements": {
         "negative": [
@@ -261,7 +270,10 @@
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy",
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed",
         "tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow",
-        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow"
+        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow",
+        "tests/python/safetensors/test_production_namespace.py::test_scalar_roundtrip_is_deterministic",
+        "tests/python/safetensors/test_production_namespace.py::test_empty_tensor_is_valid",
+        "tests/python/safetensors/test_production_namespace.py::test_complete_dtype_inventory"
       ],
       "proof_requirements": {
         "negative": [
@@ -334,7 +346,10 @@
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy",
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed",
         "tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow",
-        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow"
+        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow",
+        "tests/python/safetensors/test_production_namespace.py::test_scalar_roundtrip_is_deterministic",
+        "tests/python/safetensors/test_production_namespace.py::test_empty_tensor_is_valid",
+        "tests/python/safetensors/test_production_namespace.py::test_complete_dtype_inventory"
       ],
       "proof_requirements": {
         "negative": [
@@ -403,7 +418,10 @@
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy",
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed",
         "tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow",
-        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow"
+        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow",
+        "tests/python/safetensors/test_production_namespace.py::test_scalar_roundtrip_is_deterministic",
+        "tests/python/safetensors/test_production_namespace.py::test_empty_tensor_is_valid",
+        "tests/python/safetensors/test_production_namespace.py::test_complete_dtype_inventory"
       ],
       "proof_requirements": {
         "negative": [
@@ -629,7 +647,10 @@
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy",
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed",
         "tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow",
-        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow"
+        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow",
+        "tests/python/safetensors/test_production_namespace.py::test_scalar_roundtrip_is_deterministic",
+        "tests/python/safetensors/test_production_namespace.py::test_empty_tensor_is_valid",
+        "tests/python/safetensors/test_production_namespace.py::test_complete_dtype_inventory"
       ],
       "proof_requirements": {
         "negative": [
@@ -819,7 +840,10 @@
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy",
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed",
         "tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow",
-        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow"
+        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow",
+        "tests/python/safetensors/test_production_namespace.py::test_scalar_roundtrip_is_deterministic",
+        "tests/python/safetensors/test_production_namespace.py::test_empty_tensor_is_valid",
+        "tests/python/safetensors/test_production_namespace.py::test_complete_dtype_inventory"
       ],
       "proof_requirements": {
         "negative": [
@@ -1005,7 +1029,10 @@
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy",
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed",
         "tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow",
-        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow"
+        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow",
+        "tests/python/safetensors/test_production_namespace.py::test_scalar_roundtrip_is_deterministic",
+        "tests/python/safetensors/test_production_namespace.py::test_empty_tensor_is_valid",
+        "tests/python/safetensors/test_production_namespace.py::test_complete_dtype_inventory"
       ],
       "proof_requirements": {
         "negative": [
@@ -1074,7 +1101,10 @@
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy",
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed",
         "tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow",
-        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow"
+        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow",
+        "tests/python/safetensors/test_production_namespace.py::test_scalar_roundtrip_is_deterministic",
+        "tests/python/safetensors/test_production_namespace.py::test_empty_tensor_is_valid",
+        "tests/python/safetensors/test_production_namespace.py::test_complete_dtype_inventory"
       ],
       "proof_requirements": {
         "negative": [
@@ -1521,7 +1551,10 @@
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy",
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed",
         "tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow",
-        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow"
+        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow",
+        "tests/python/safetensors/test_production_namespace.py::test_scalar_roundtrip_is_deterministic",
+        "tests/python/safetensors/test_production_namespace.py::test_empty_tensor_is_valid",
+        "tests/python/safetensors/test_production_namespace.py::test_complete_dtype_inventory"
       ],
       "proof_requirements": {
         "negative": [
@@ -1867,7 +1900,10 @@
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy",
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed",
         "tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow",
-        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow"
+        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow",
+        "tests/python/safetensors/test_production_namespace.py::test_scalar_roundtrip_is_deterministic",
+        "tests/python/safetensors/test_production_namespace.py::test_empty_tensor_is_valid",
+        "tests/python/safetensors/test_production_namespace.py::test_complete_dtype_inventory"
       ],
       "proof_requirements": {
         "negative": [
@@ -2054,7 +2090,10 @@
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy",
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed",
         "tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow",
-        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow"
+        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow",
+        "tests/python/safetensors/test_production_namespace.py::test_scalar_roundtrip_is_deterministic",
+        "tests/python/safetensors/test_production_namespace.py::test_empty_tensor_is_valid",
+        "tests/python/safetensors/test_production_namespace.py::test_complete_dtype_inventory"
       ],
       "proof_requirements": {
         "negative": [
@@ -2172,7 +2211,10 @@
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy",
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed",
         "tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow",
-        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow"
+        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow",
+        "tests/python/safetensors/test_production_namespace.py::test_scalar_roundtrip_is_deterministic",
+        "tests/python/safetensors/test_production_namespace.py::test_empty_tensor_is_valid",
+        "tests/python/safetensors/test_production_namespace.py::test_complete_dtype_inventory"
       ],
       "proof_requirements": {
         "negative": [
@@ -2286,7 +2328,10 @@
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy",
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed",
         "tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow",
-        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow"
+        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow",
+        "tests/python/safetensors/test_production_namespace.py::test_scalar_roundtrip_is_deterministic",
+        "tests/python/safetensors/test_production_namespace.py::test_empty_tensor_is_valid",
+        "tests/python/safetensors/test_production_namespace.py::test_complete_dtype_inventory"
       ],
       "proof_requirements": {
         "negative": [
@@ -2392,7 +2437,10 @@
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy",
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed",
         "tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow",
-        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow"
+        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow",
+        "tests/python/safetensors/test_production_namespace.py::test_scalar_roundtrip_is_deterministic",
+        "tests/python/safetensors/test_production_namespace.py::test_empty_tensor_is_valid",
+        "tests/python/safetensors/test_production_namespace.py::test_complete_dtype_inventory"
       ],
       "proof_requirements": {
         "negative": [
@@ -2464,7 +2512,10 @@
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy",
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed",
         "tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow",
-        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow"
+        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow",
+        "tests/python/safetensors/test_production_namespace.py::test_scalar_roundtrip_is_deterministic",
+        "tests/python/safetensors/test_production_namespace.py::test_empty_tensor_is_valid",
+        "tests/python/safetensors/test_production_namespace.py::test_complete_dtype_inventory"
       ],
       "proof_requirements": {
         "negative": [
@@ -2794,7 +2845,10 @@
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy",
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed",
         "tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow",
-        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow"
+        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow",
+        "tests/python/safetensors/test_production_namespace.py::test_scalar_roundtrip_is_deterministic",
+        "tests/python/safetensors/test_production_namespace.py::test_empty_tensor_is_valid",
+        "tests/python/safetensors/test_production_namespace.py::test_complete_dtype_inventory"
       ],
       "proof_requirements": {
         "negative": [
@@ -2867,7 +2921,10 @@
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy",
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed",
         "tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow",
-        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow"
+        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow",
+        "tests/python/safetensors/test_production_namespace.py::test_scalar_roundtrip_is_deterministic",
+        "tests/python/safetensors/test_production_namespace.py::test_empty_tensor_is_valid",
+        "tests/python/safetensors/test_production_namespace.py::test_complete_dtype_inventory"
       ],
       "proof_requirements": {
         "negative": [
@@ -3057,7 +3114,10 @@
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy",
         "tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed",
         "tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow",
-        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow"
+        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow",
+        "tests/python/safetensors/test_production_namespace.py::test_scalar_roundtrip_is_deterministic",
+        "tests/python/safetensors/test_production_namespace.py::test_empty_tensor_is_valid",
+        "tests/python/safetensors/test_production_namespace.py::test_complete_dtype_inventory"
       ],
       "proof_requirements": {
         "negative": [
@@ -3221,6 +3281,7 @@
     "tests/python/safetensors/test_obligation_validation_contract.py": "8a5721ef13568f95cead94d15d2d65fc221769861f9342d489d3c1924976f9ea",
     "tests/python/safetensors/test_obligation_writer_matrix.py": "770ccbefaaa12d47af534db5eb1069995c5c7bfc16a7272130d46e3fa620ab40",
     "tests/python/safetensors/test_official_interop.py": "cd72df073c684651d3083c28cfe3c52181ed8e60a13a8bcb3297d4dd03abdc3a",
+    "tests/python/safetensors/test_production_namespace.py": "48c847dcbcb6a3b7c2e6f1a818f4d75e177fe87826607036ca44055f62d450dc",
     "tests/python/safetensors/test_reference_header_layout_lazy_slice.py": "1f208d5da61aa86f409ae840d51c37c844ea91e5c9fe38a16cbd1057e7cd1f89"
   },
   "schema": "format-contracts/obligation-reconciliation@1",

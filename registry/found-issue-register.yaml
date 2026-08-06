@@ -2252,3 +2252,67 @@ issues:
     per-tick workflow (e.g. running the exact-obligations reconciler as part
     of sprint closeout) so this class of drift is caught the tick it
     happens rather than two ticks later.
+
+- issue_id: FI-076
+  stable_semantic_key: "ipynb:stale_execution_evidence_artifact:build-evidence-ledger-ipynb-001.json"
+  status: closed
+  discovered_at: "2026-08-06T05:55:00Z"
+  discovering_task_id: FF6-EVENT-000098-FOLLOWUP
+  issue_type: stale_evidence_artifact
+  affected_component: ipynb
+  affected_paths:
+    - reports/skills-rff6/skill-transcripts/build-evidence-ledger-ipynb-001.json
+    - shared/format-contracts/implementation-evidence/ipynb.yaml
+  observed_behavior: >-
+    `python -m tools.format_contract.contract_reconciler --format-id ipynb
+    --exact-obligations` raised "IPYNB-BASELINE-SUITE: declared result
+    'PASS' does not match 'PASS_WITH_KNOWN_EDITABLE_INSTALL_FAILURES'". The
+    referenced execution-evidence artifact still carried its 2026-08-04
+    pre-fix snapshot (577 passed, 3 known editable-install failures) even
+    though the implementation-evidence YAML's expected_result and
+    truth_boundary had already been updated in place on 2026-08-05 to
+    describe a fix (PEP 660 editable-install detection) that eliminated
+    those 3 failures.
+  expected_behavior: >-
+    An execution-evidence artifact's declared `result` should match the
+    `expected_result` the implementation-evidence YAML claims it proves, at
+    all times, not just at the moment the artifact was first written.
+  severity: P2
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-FF6-EVIDENCE-DRIFT-001
+  healing_taskcard_id: INLINE-FIX-FI-076
+  root_cause: >-
+    Same root cause as FI-075 (ora): the per-tick FF6 workflow updates
+    ledger-map/evidence-YAML prose in place when a fix lands, but has no
+    step that regenerates the underlying execution-evidence JSON artifact
+    that prose is supposed to be backed by, and nothing routinely runs the
+    exact-obligations reconciler to catch the divergence. Independently
+    rediscovered while proactively re-running the reconciler for ipynb and
+    safetensors (the two formats not yet re-checked after FI-075), rather
+    than assumed to also be present.
+  verification_verdict: >-
+    Independently re-ran `.venv/Scripts/pytest tests/python/ipynb/ -q`
+    before editing anything: 653 passed, 0 failed, confirming the YAML's
+    expected_result (PASS) is the current truth and the artifact was the
+    stale side. Regenerated build-evidence-ledger-ipynb-001.json's
+    result/evidence fields from that verified run, preserved the original
+    2026-08-04 genesis execution_steps verbatim as history, and appended
+    dated steps documenting the refresh and its cause. Re-ran the
+    reconciler: now completes cleanly, 68/68 obligations unresolved
+    (unchanged -- no obligation was previously implemented, none is now;
+    this is an artifact-freshness fix only, not a promotion).
+  disposition: HEALED_AND_VERIFIED
+  closed_at: "2026-08-06T06:05:00Z"
+  evidence:
+    - "reports/format-contract-layer/ipynb-obligation-reconciliation.json"
+    - "reports/skills-rff6/skill-transcripts/build-evidence-ledger-ipynb-001.json"
+  notes: >-
+    safetensors was also re-checked in the same sweep and reconciled
+    cleanly (86/86 unresolved, unchanged) -- no drift found there. Two
+    formats (ora, ipynb) out of six checked so far have hit this drift
+    class; xliff/ubl/nrrd checked clean under FI-075. All six formats'
+    exact-obligations reconciliation reports are now confirmed fresh as of
+    2026-08-06. The standing recommendation from FI-075 remains open: add
+    an artifact-freshness check to per-tick closeout so this class of
+    drift is caught the tick it happens rather than discovered later by a
+    proactive sweep.
