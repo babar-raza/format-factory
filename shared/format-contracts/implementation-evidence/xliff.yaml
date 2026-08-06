@@ -63,6 +63,24 @@ execution_evidence:
     execution-recovery directive's GAP-008 rule, not VERIFIED. Covers
     SAL-XLIFF-OBL-AF86B77156C7C1E2 and SAL-XLIFF-OBL-95E74FFC0501843B only;
     it supports no other obligation and promotes no product state.
+- evidence_id: XLIFF-QA-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-qa-checks-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike XLIFF-BASELINE-SUITE: it names the exact positive
+    and negative test selectors for target-language compatibility
+    (exact/more-specific/reverse-specific/incompatible BCP-47 relations,
+    version-gated between XLIFF 2.0 and 2.1) and for five of the six named
+    pluggable QA check categories (missing/unchanged targets, placeholder
+    mismatches, whitespace/punctuation drift, translation consistency),
+    each proven separate from validate()'s conformance report. NOT backed
+    by an independent reference implementation -- SELF-CONSISTENT
+    format_factory-only evidence per the execution-recovery directive's
+    GAP-008 rule, not VERIFIED. Covers SAL-XLIFF-OBL-5B4DF04385350948 (fully)
+    and SAL-XLIFF-OBL-7764F24576A4DC32 (partially -- length violations are
+    not implemented) only; it supports no other obligation and promotes no
+    product state.
 obligations:
 - obligation_id: SAL-XLIFF-OBL-009F2EB91831B248
   capability_id: XLIFF-SEC-001
@@ -1601,25 +1619,32 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-5B4DF04385350948
   capability_id: XLIFF-QA-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/qa.py::check_missing_targets
-  - src/python/xliff/src/format_factory/xliff/qa.py::check_unchanged_targets
-  - src/python/xliff/src/format_factory/xliff/qa.py::check_placeholder_mismatch
-  - src/python/xliff/src/format_factory/xliff/qa.py::check_whitespace_punctuation_drift
+  - src/python/xliff/src/format_factory/xliff/qa.py::check_target_language_compatibility
+  - src/python/xliff/src/format_factory/xliff/qa.py::_language_specificity_relation
   positive_test_selectors:
+  - tests/python/xliff/test_obligation_qa_checks.py::test_xliff_20_exact_match_passes
+  - tests/python/xliff/test_obligation_qa_checks.py::test_xliff_21_accepts_more_specific_language
+  - tests/python/xliff/test_obligation_qa_checks.py::test_no_explicit_xml_lang_is_not_flagged
+  - tests/python/xliff/test_obligation_qa_checks.py::test_no_document_trg_lang_means_nothing_to_check_against
   - tests/python/xliff/test_obligation_qa_checks.py::test_qa_report_is_separate_from_conformance_report
   - tests/python/xliff/test_obligation_qa_checks.py::test_qa_diagnostics_never_use_conformance_severities
-  - tests/python/xliff/test_obligation_qa_checks.py::test_qa_checks_are_pluggable_individually
-  negative_test_selectors: []
+  negative_test_selectors:
+  - tests/python/xliff/test_obligation_qa_checks.py::test_xliff_20_requires_exact_language_match
+  - tests/python/xliff/test_obligation_qa_checks.py::test_xliff_21_reports_reverse_specific_language
+  - tests/python/xliff/test_obligation_qa_checks.py::test_xliff_21_reports_incompatible_language
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-QA-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: QA fixtures per check; separation
-    from conformance results asserted.'
+  - 'check_target_language_compatibility implements the obligation''s rule exactly: an explicit target
+    xml:lang is compared against the document''s trgLang via BCP-47 subtag specificity
+    (_language_specificity_relation returns exact/more_specific/reverse_specific/incompatible). XLIFF
+    2.0 requires exact equality (more_specific is flagged, not silently accepted); XLIFF 2.1 accepts
+    exact and more-specific tags while still reporting reverse-specific and incompatible values. Reported
+    as a QA diagnostic (never a conformance error), separate from validate()''s report.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - QA fixtures per check; separation from conformance results asserted.
@@ -2043,19 +2068,36 @@ obligations:
   - src/python/xliff/src/format_factory/xliff/qa.py::check_unchanged_targets
   - src/python/xliff/src/format_factory/xliff/qa.py::check_placeholder_mismatch
   - src/python/xliff/src/format_factory/xliff/qa.py::check_whitespace_punctuation_drift
+  - src/python/xliff/src/format_factory/xliff/qa.py::check_translation_consistency
+  - src/python/xliff/src/format_factory/xliff/qa.py::run_qa_checks
   positive_test_selectors:
   - tests/python/xliff/test_obligation_qa_checks.py::test_qa_report_is_separate_from_conformance_report
   - tests/python/xliff/test_obligation_qa_checks.py::test_qa_diagnostics_never_use_conformance_severities
   - tests/python/xliff/test_obligation_qa_checks.py::test_qa_checks_are_pluggable_individually
-  negative_test_selectors: []
+  - tests/python/xliff/test_obligation_qa_checks.py::test_all_named_checks_are_registered
+  - tests/python/xliff/test_obligation_qa_checks.py::test_missing_target_is_flagged
+  - tests/python/xliff/test_obligation_qa_checks.py::test_unchanged_target_is_flagged
+  - tests/python/xliff/test_obligation_qa_checks.py::test_dropped_placeholder_is_flagged
+  - tests/python/xliff/test_obligation_qa_checks.py::test_terminal_punctuation_drift_is_flagged
+  - tests/python/xliff/test_obligation_qa_checks.py::test_inconsistent_translation_of_the_same_source_is_flagged
+  negative_test_selectors:
+  - tests/python/xliff/test_obligation_qa_checks.py::test_present_target_is_not_flagged_as_missing
+  - tests/python/xliff/test_obligation_qa_checks.py::test_genuinely_translated_target_is_not_flagged
+  - tests/python/xliff/test_obligation_qa_checks.py::test_preserved_placeholder_is_not_flagged
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-QA-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'run_qa_checks() provides five of the six named categories as independently pluggable, independently
+    selectable checks (missing/unchanged targets, placeholder mismatches, whitespace/punctuation drift,
+    translation consistency), always reported separately from validate()''s conformance ValidationReport
+    via its own report and its own non-conformance severity scale.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: QA fixtures per check; separation
-    from conformance results asserted.'
+  - 'Length violations are not implemented. Checking them meaningfully needs actual numeric restriction
+    values from the Size and Length Restriction module (slr:profiles'' sizeRestriction/storageRestriction),
+    which XLIFF-MODULE-001 deliberately keeps PRESERVATION_ONLY (the raw XML round-trips, but nothing
+    parses its attributes into usable values yet) -- see qa.py''s own module docstring. A stub that
+    always passed would be worse than this honest gap.'
   proof_requirements:
     positive:
     - QA fixtures per check; separation from conformance results asserted.

@@ -1,0 +1,47 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-qa-checks-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T11:05:00Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_QA_CITATION_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "xliff had comparatively little attention this session relative to nrrd/ora/safetensors (only XLIFF-STATE-001 previously closed). XLIFF-QA-001's two obligations (pluggable QA checks separate from conformance; target-language compatibility specifically) both cited the same three generic architecture-level selectors with no negative selectors and the boilerplate 'not yet audited' missing_behavior, despite qa.py already being a complete, well-documented module with 24 passing tests covering nearly every named check category.",
+    "obligation_targeted": "SAL-XLIFF-OBL-5B4DF04385350948, SAL-XLIFF-OBL-7764F24576A4DC32",
+    "acceptance_evidence": "tests/python/xliff/test_obligation_qa_checks.py",
+    "regression_tier": "full XLIFF package suite (tests/python/xliff)"
+  },
+  "execution_steps": [
+    "1. Surveyed xliff's small partial capabilities after the safetensors work this tick, since xliff and ipynb were flagged as the most under-examined formats. XLIFF-QA-001 (2 obligations) stood out: qa.py's own module docstring is unusually explicit about scope, naming which QA categories are implemented and explaining exactly why one (length violations) deliberately is not.",
+    "2. Read qa.py in full: check_missing_targets, check_unchanged_targets, check_placeholder_mismatch, check_whitespace_punctuation_drift, check_target_language_compatibility, check_translation_consistency, all registered in QA_CHECKS and run through run_qa_checks(checks=...) for independent pluggability, always returned as a separate ValidationReport from validate()'s conformance report. check_target_language_compatibility implements the target-language obligation's BCP-47 specificity comparison (_language_specificity_relation: exact/more_specific/reverse_specific/incompatible) with the exact XLIFF 2.0-vs-2.1 version gating the obligation's rule_text names.",
+    "3. Confirmed 'length violations' is a genuine, honestly-documented gap, not an oversight: the module docstring explains it needs numeric values from the Size and Length Restriction module, which XLIFF-MODULE-001 deliberately keeps PRESERVATION_ONLY (raw XML round-trips but attributes aren't parsed into usable values yet) -- and states explicitly that a stub which always passed would be worse than the honest gap.",
+    "4. Ran all 25 tests in test_obligation_qa_checks.py directly before citing any of them: all passed.",
+    "5. Split the two obligations by actual scope rather than treating them as duplicates sharing generic evidence: SAL-XLIFF-OBL-5B4DF04385350948's rule_text is specifically and only about target-language compatibility -- fully covered by 7 dedicated tests spanning both XLIFF versions and all four BCP-47 relations -- promoted to implemented with zero remaining gap. SAL-XLIFF-OBL-7764F24576A4DC32's rule_text is the general 'provide pluggable QA checks (missing/unchanged targets, placeholder mismatches, drift, length, consistency)' obligation, which explicitly names length as one of six categories -- five of six are implemented and tested, but promoting this one to implemented would overclaim the one honestly-missing category. Left partial, with missing_behavior rewritten from the generic placeholder to name exactly the one real remaining gap (length) and why."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_qa_checks.py -v -- 25 passed",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- unchanged from before this slice (0 source or test changes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 142,
+    "xliff_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently verified against an external XLIFF QA/CAT tool. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_only_one_of_two_obligations_promoted": "The two obligations under XLIFF-QA-001 have genuinely different scope despite sharing identical required_tests boilerplate text: one is narrowly about target-language compatibility (fully implemented and tested), the other is the general pluggable-checks obligation that explicitly names length violations as a required category (honestly not implemented, per qa.py's own documented scope boundary). Promoting the second would overclaim; its missing_behavior was instead corrected from a generic placeholder to the one real, specific, well-understood remaining gap."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
