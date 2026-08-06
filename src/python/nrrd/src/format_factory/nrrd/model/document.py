@@ -8,6 +8,46 @@ from typing import Any, Mapping
 
 DOMAIN_KINDS = frozenset({"domain", "space", "time"})
 
+#: NRRD-SHAPE-001 (SAL-NRRD-00010): "The baseline per-axis metadata fields
+#: spacings, axis mins, axis maxs, centers, labels, and units each carry
+#: exactly one value per declared dimension." Header keys as stored by the
+#: reader (lowercased, spaces preserved -- see codec/reader/reader.py).
+_NUMERIC_AXIS_FIELDS = ("spacings", "axis mins", "axis maxs", "centers")
+_QUOTED_AXIS_FIELDS = ("labels", "units")
+
+
+def _parse_quoted_list(value: str) -> list[str]:
+    """Quote-delimited per-axis strings (SAL-NRRD-00009): each value is
+    `"..."`-delimited; `\\"` escapes a literal quote and no other escaping
+    is recognized."""
+    tokens: list[str] = []
+    index = 0
+    length = len(value)
+    while index < length:
+        if value[index].isspace():
+            index += 1
+            continue
+        if value[index] != '"':
+            raise ValueError(f"expected a quoted per-axis value at position {index}: {value!r}")
+        index += 1
+        chars: list[str] = []
+        closed = False
+        while index < length:
+            if value[index] == "\\" and index + 1 < length and value[index + 1] == '"':
+                chars.append('"')
+                index += 2
+                continue
+            if value[index] == '"':
+                closed = True
+                break
+            chars.append(value[index])
+            index += 1
+        if not closed:
+            raise ValueError(f"unterminated quoted per-axis value: {value!r}")
+        index += 1  # consume the closing quote
+        tokens.append("".join(chars))
+    return tokens
+
 
 @dataclass(frozen=True, slots=True)
 class PreservationIssue:
@@ -106,6 +146,60 @@ class NrrdDocument:
     def space(self) -> str:
         return self.header.get("space", "")
 
+    @property
+    def labels(self) -> list[str]:
+        value = self.header.get("labels", "")
+        return _parse_quoted_list(value) if value else []
+
+    @property
+    def units(self) -> list[str]:
+        value = self.header.get("units", "")
+        return _parse_quoted_list(value) if value else []
+
+    @property
+    def spacings(self) -> list[float]:
+        value = self.header.get("spacings", "")
+        return [float(token) for token in value.split()] if value else []
+
+    @property
+    def axis_mins(self) -> list[float]:
+        value = self.header.get("axis mins", "")
+        return [float(token) for token in value.split()] if value else []
+
+    @property
+    def axis_maxs(self) -> list[float]:
+        value = self.header.get("axis maxs", "")
+        return [float(token) for token in value.split()] if value else []
+
+    @property
+    def centers(self) -> list[str]:
+        value = self.header.get("centers", "")
+        return value.split() if value else []
+
+    @property
+    def thicknesses(self) -> list[float]:
+        value = self.header.get("thicknesses", "")
+        return [float(token) for token in value.split()] if value else []
+
+    def per_axis_field_arities(self) -> dict[str, int]:
+        """The declared length of every per-axis field actually present.
+
+        Only fields present in the header are reported -- a per-axis field
+        the document does not use at all is not an arity violation, only a
+        mismatched count for a field it DOES use is (NRRD-SHAPE-001).
+        """
+        fields: dict[str, list[Any]] = {
+            "spacings": self.spacings,
+            "axis mins": self.axis_mins,
+            "axis maxs": self.axis_maxs,
+            "centers": self.centers,
+            "labels": self.labels,
+            "units": self.units,
+            "kinds": self.kinds,
+            "thicknesses": self.thicknesses,
+        }
+        return {name: len(values) for name, values in fields.items() if name in self.header}
+
     def preservation_report(self) -> PreservationReport:
         """Report whether the original byte representation can be replayed safely.
 
@@ -195,6 +289,13 @@ class NrrdDocument:
             "recovery_actions": list(self.recovery_actions),
             "kinds": self.kinds,
             "space": self.space,
+            "labels": self.labels,
+            "units": self.units,
+            "spacings": self.spacings,
+            "axis_mins": self.axis_mins,
+            "axis_maxs": self.axis_maxs,
+            "centers": self.centers,
+            "thicknesses": self.thicknesses,
             "array": list(self.array),
             "array_shape": self.array_shape,
             "source_path": self.source_path,

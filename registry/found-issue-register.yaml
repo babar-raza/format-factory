@@ -2389,3 +2389,76 @@ issues:
     per-format table, instead of relying on a hand-authored field, which
     would make this class of drift structurally impossible rather than
     requiring a periodic manual sweep to catch it.
+
+- issue_id: FI-078
+  stable_semantic_key: "ff6:destructive_ledger_rebuild_risk:build_evidence_ledger_overwrites_implemented"
+  status: open
+  discovered_at: "2026-08-06T07:45:00Z"
+  discovering_task_id: TC-FF6-NRRD-AXIS-ARITY-001
+  issue_type: destructive_tooling_risk
+  affected_component: ff6-evidence-tooling
+  affected_paths:
+    - tools/ff6/build_evidence_ledger.py
+    - shared/format-contracts/implementation-evidence/nrrd.yaml
+  observed_behavior: >-
+    tools/ff6/build_evidence_ledger.py fully regenerates and overwrites the
+    entire shared/format-contracts/implementation-evidence/{format}.yaml
+    file from the corresponding ledger-map, and its own docstring states
+    "Every obligation is emitted `partial` at most" -- it has no code path
+    that ever writes `status: implemented`, and no logic that detects or
+    preserves an existing `implemented` row before overwriting it. NRRD's
+    implementation-evidence file currently holds 19 hand-curated
+    `implemented` rows (selector-level positive/negative test proof,
+    missing_behavior: [] -- 18 pre-dating this session, including the
+    Event-50 endian promotions, plus 1 added this session for
+    SAL-NRRD-OBL-428BE326FCBC9A6E's per-axis arity closure). Re-running
+    `python -m tools.ff6.build_evidence_ledger --format-id nrrd` for any
+    reason -- e.g. following this session's own established per-tick
+    workflow of "update ledger-map notes, rebuild the ledger" used
+    routinely for ora/ubl/xliff/ipynb -- would silently discard all 19
+    `implemented` rows back down to `partial`, destroying real,
+    schema-validated, higher-fidelity evidence with no warning and no
+    diff review, since the tool has no concept of "do not downgrade."
+  expected_behavior: >-
+    A ledger-rebuild tool should never silently downgrade evidence quality
+    for a format it does not fully understand the promotion history of --
+    either by refusing to touch obligations already at `implemented`
+    (leaving them for a human/agent to reconcile by hand), or by failing
+    loudly if the rebuild would regress any obligation's status.
+  severity: HIGH
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-FF6-LEDGER-REBUILD-DESTRUCTIVE-001
+  healing_taskcard_id: UNASSIGNED
+  root_cause: >-
+    build_evidence_ledger.py was designed for formats where nothing has
+    ever been promoted past `partial` (matching its own docstring's
+    stated ceiling), and was never updated after NRRD became the one
+    format with real `implemented` rows (via the Event-50 endian work,
+    predating this tool's general adoption this session). Nothing enforces
+    that the tool's known ceiling and NRRD's actual, higher state stay
+    compatible -- the incompatibility is silent until the tool is actually
+    re-run against nrrd.
+  verification_verdict: >-
+    Not yet healed -- discovered and avoided (this session's nrrd work
+    edited shared/format-contracts/implementation-evidence/nrrd.yaml
+    directly and did NOT touch shared/format-contracts/ledger-maps/nrrd.yaml
+    or re-run build_evidence_ledger.py for nrrd this tick, specifically
+    because this risk was identified before acting). Recorded as OPEN
+    rather than silently worked around, per EP-2: a finding is not closed
+    by avoiding it once.
+  disposition: OPEN_AVOIDED_THIS_SESSION
+  evidence:
+    - "shared/format-contracts/implementation-evidence/nrrd.yaml (19 implemented rows, verified present after this session's edits)"
+    - "tools/ff6/build_evidence_ledger.py (docstring: 'Every obligation is emitted partial at most')"
+  notes: >-
+    Proposed remediation for a future taskcard: add a --format-id nrrd
+    guard (or a general one, since any format could eventually earn
+    implemented rows) to build_evidence_ledger.py that reads the CURRENT
+    implementation-evidence.yaml before writing, and either (a) preserves
+    any existing `implemented` row verbatim rather than regenerating it
+    from the ledger-map, or (b) refuses to proceed with a clear error if
+    doing so would downgrade any obligation's status, requiring an
+    explicit --allow-downgrade flag. Until fixed, any agent must manually
+    check for existing `implemented` rows in a format's
+    implementation-evidence.yaml before running this tool against that
+    format.

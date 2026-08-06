@@ -89,6 +89,17 @@ def validate(
                     "kinds must contain one entry per axis",
                 )
             )
+        for field_name, arity in document.per_axis_field_arities().items():
+            if field_name == "kinds":
+                continue  # already reported above with its own diagnostic code
+            if arity != dimension:
+                diagnostics.append(
+                    Diagnostic(
+                        "nrrd.axis_field.arity",
+                        f"{field_name!r} declares {arity} value(s), expected one "
+                        f"per axis ({dimension})",
+                    )
+                )
     except (KeyError, TypeError, ValueError, NrrdParseError) as exc:
         diagnostics.append(Diagnostic("nrrd.header.invalid", str(exc)))
     return ValidationReport(diagnostics)

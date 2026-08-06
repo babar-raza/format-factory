@@ -1,0 +1,58 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-axis-arity-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T07:20:00Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC-FF6-NRRD-AXIS-ARITY-001",
+    "task_kind": "obligation-closure",
+    "root_cause": "validation/validator.py checked arity only for `sizes` (via dimension) and `kinds`, even though SAL-NRRD-00010 (verified, Teem NRRD Format Specification Sections 1.3 and 6) states every baseline per-axis field -- spacings, axis mins, axis maxs, centers, labels, units -- and the later-version fields kinds/thicknesses must each carry exactly one value per declared dimension. NrrdDocument had no typed access to most of these fields at all (only `kinds` existed as a property), so the gap was both missing validation and missing model surface.",
+    "obligation_targeted": "SAL-NRRD-OBL-428BE326FCBC9A6E",
+    "acceptance_evidence": "tests/python/nrrd/test_obligation_axis_field_arity.py",
+    "regression_tier": "full NRRD package suite (tests/python/nrrd)"
+  },
+  "execution_steps": [
+    "1. Read SAL-NRRD-00010 and its neighbor SAL-NRRD-00009 (labels/units are quote-delimited strings, \\\" escapes a literal embedded quote, no other escaping) directly from shared/sal-facts/nrrd.yaml before writing anything -- both fact_status: verified, citing the Teem NRRD Format Specification.",
+    "2. Confirmed via grep that none of spacings/axis mins/axis maxs/centers/labels/units/thicknesses appeared anywhere in reader.py or document.py by name -- these fields were entirely unmodeled, not merely unvalidated.",
+    "3. Added model/document.py: _parse_quoted_list() (a quote-aware tokenizer implementing SAL-NRRD-00009's exact escaping rule -- a naive whitespace split would miscount a label containing an embedded space inside its quotes) plus typed properties spacings/axis_mins/axis_maxs/centers/labels/units/thicknesses, mirroring the existing kinds property's shape. Added per_axis_field_arities(), reporting the declared length of every per-axis field actually present in the header (absent fields are not a violation; only a present field with the wrong count is).",
+    "4. Extended validation/validator.py's validate() to check every field per_axis_field_arities() reports against document.dimension, alongside the existing kinds check (left untouched, not duplicated).",
+    "5. Wrote tests/python/nrrd/test_obligation_axis_field_arity.py: typed-access tests for all seven new properties including the quote-escaping edge case, positive tests proving correct arity validates across three different dimensions (1, 2, 4) and across the kinds/thicknesses later-version fields, and one negative test per field proving a mismatched count is rejected with a diagnostic naming that field, plus a multi-field-mismatch test proving independent, non-exclusive reporting.",
+    "6. First run surfaced a test-construction bug, not a product bug: the fixture builder used a fixed 8-element array/empty payload regardless of the parametrized dimension/sizes, so the dimension-matrix positive tests failed on a pre-existing, unrelated payload-length check rather than on anything this slice added. Fixed by computing the correct element count from sizes and round-tripping the draft through dumps()/loads() so each fixture is a genuinely self-consistent document -- isolates the per-axis-arity assertion from incidental payload-size noise.",
+    "7. All 24 new tests passed after the fixture fix. Re-ran the full NRRD suite: 412 passed, 1 pre-existing skip unchanged (388 baseline + 24 new, 0 regressions). ruff and mypy clean on the full package (19 source files).",
+    "8. Re-read the obligation's proof_requirements against what was actually built: positive 'All per-axis fields across dimensions and profiles' and negative 'Every per-axis field with mismatched arity' are both now covered -- every baseline and later-version field has both a positive (correct-arity) and negative (mismatched-arity) selector, and the positive side additionally spans three distinct dimensions. missing_behavior for this specific obligation is genuinely empty; promoted to implemented on that basis. Two sibling obligations (SAL-NRRD-OBL-94D8938DE18A6562, NRRD-SHAPE-001, and SAL-NRRD-OBL-2085AD256AFE6E96, NRRD-VALIDATE-001) referenced 'per-axis arities' among their own listed gaps -- updated their missing_behavior text to remove that closed clause while preserving their own remaining, separate gaps (an axis-order model/conversion report, and conditional-field/version-feature/trailing-payload rules respectively). Neither sibling is promoted -- each still has real, distinct missing_behavior of its own."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/model/document.py",
+    "src/python/nrrd/src/format_factory/nrrd/validation/validator.py",
+    "tests/python/nrrd/test_obligation_axis_field_arity.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/model/document.py",
+    "src/python/nrrd/src/format_factory/nrrd/validation/validator.py",
+    "tests/python/nrrd/test_obligation_axis_field_arity.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_axis_field_arity.py -v -- 24 passed",
+    ".venv/Scripts/pytest tests/python/nrrd/ -q -- 412 passed, 1 skipped (388 baseline + 24 new, 0 regressions)",
+    ".venv/Scripts/python -m ruff check src/python/nrrd/src/format_factory/nrrd/ tests/python/nrrd/test_obligation_axis_field_arity.py -- All checks passed",
+    ".venv/Scripts/python -m mypy src/python/nrrd/src/format_factory/nrrd/ -- Success: no issues found in 19 source files"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 65,
+    "nrrd_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently verified against Teem or another reference implementation for this specific field set. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 remediation rule, not VERIFIED; 'implemented' in this ledger's schema means complete, self-consistent, selector-bound proof against the obligation's own declared proof_requirements, which is a narrower claim than independent verification and is not conflated with it here.",
+    "why_only_one_obligation_promoted": "SAL-NRRD-OBL-428BE326FCBC9A6E's entire declared gap was per-axis arity validation, now fully closed. Its two siblings under the same rule area (SAL-NRRD-OBL-94D8938DE18A6562 and SAL-NRRD-OBL-2085AD256AFE6E96) each bundle the now-closed arity gap together with a genuinely separate, still-open requirement (an axis-order model/conversion report; conditional-field and version-feature validation) -- promoting them would overclaim, so only their missing_behavior text was corrected, not their status."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

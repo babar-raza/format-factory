@@ -2,6 +2,14 @@
   "contract_id": "FC-NRRD-V1",
   "execution_evidence": [
     {
+      "evidence_id": "NRRD-AXIS-ARITY-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-axis-arity-001.json",
+      "sha256": "7fa7b5a006873ffa9a1c9c12179d744a9cc9ff9612a9be34435c0203624ca5d7",
+      "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS: it names the exact positive and negative test selectors for every baseline and later-version per-axis metadata field (spacings, axis mins, axis maxs, centers, labels, units, kinds, thicknesses). Unlike NRRD-ENDIAN-SELECTOR-PROOF, this is NOT backed by an independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-NRRD-OBL-428BE326FCBC9A6E only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "NRRD-ENDIAN-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -21,7 +29,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "3f7e93dbca9e2aa70f14c17eff73c38e669a6f7c2f224951a438a4f11d647e0c",
+    "implementation_evidence": "3e421a48859f9a29c8e3b19175605c4c8514b0c12f2a23792dfebcb71db3e072",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -361,7 +369,7 @@
         "Required fields, sizes/dimension, kinds arity, block rules, and decoded byte/value counts receive diagnostics."
       ],
       "missing_behavior": [
-        "Conditional fields, version-feature rules, all per-axis arities, and trailing-payload policy are incomplete."
+        "Conditional fields, version-feature rules, and trailing-payload policy are incomplete (all per-axis arities are now validated -- see SAL-NRRD-OBL-428BE326FCBC9A6E)."
       ],
       "negative_test_selectors": [
         "tests/python/nrrd/test_production_namespace.py::test_validation_reports_declared_payload_byte_mismatch"
@@ -613,20 +621,31 @@
     {
       "capability_id": "NRRD-SHAPE-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-AXIS-ARITY-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Dimension is positive and sizes arity equals dimension."
+        "Dimension is positive and sizes arity equals dimension.",
+        "Every baseline per-axis field (spacings, axis mins, axis maxs, centers, labels, units) and later-version field (kinds, thicknesses) is exposed as a typed property and validated for exactly-dimension arity when present; labels/units use a quote-aware tokenizer matching SAL-NRRD-00009's escaping rule so an embedded space inside a quoted value is never miscounted as a field separator."
       ],
-      "missing_behavior": [
-        "Not every per-axis metadata field is arity-validated."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_validation_reports_declared_payload_byte_mismatch"
+        "tests/python/nrrd/test_production_namespace.py::test_validation_reports_declared_payload_byte_mismatch",
+        "tests/python/nrrd/test_obligation_axis_field_arity.py::test_mismatched_spacings_arity_is_rejected",
+        "tests/python/nrrd/test_obligation_axis_field_arity.py::test_mismatched_axis_mins_arity_is_rejected",
+        "tests/python/nrrd/test_obligation_axis_field_arity.py::test_mismatched_axis_maxs_arity_is_rejected",
+        "tests/python/nrrd/test_obligation_axis_field_arity.py::test_mismatched_centers_arity_is_rejected",
+        "tests/python/nrrd/test_obligation_axis_field_arity.py::test_mismatched_labels_arity_is_rejected",
+        "tests/python/nrrd/test_obligation_axis_field_arity.py::test_mismatched_units_arity_is_rejected",
+        "tests/python/nrrd/test_obligation_axis_field_arity.py::test_mismatched_thicknesses_arity_is_rejected",
+        "tests/python/nrrd/test_obligation_axis_field_arity.py::test_multiple_mismatched_fields_are_all_reported_independently"
       ],
       "obligation_id": "SAL-NRRD-OBL-428BE326FCBC9A6E",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_obligation_shape_production.py::test_big_endian_axis_zero_fastest_and_detached_payload"
+        "tests/python/nrrd/test_obligation_shape_production.py::test_big_endian_axis_zero_fastest_and_detached_payload",
+        "tests/python/nrrd/test_obligation_axis_field_arity.py::test_all_baseline_fields_together_with_correct_arity_validate",
+        "tests/python/nrrd/test_obligation_axis_field_arity.py::test_correct_arity_validates_across_dimensions",
+        "tests/python/nrrd/test_obligation_axis_field_arity.py::test_kinds_and_thicknesses_later_version_fields_validate_with_correct_arity"
       ],
       "proof_requirements": {
         "negative": [
@@ -636,14 +655,22 @@
           "All per-axis fields across dimensions and profiles."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_parse_sizes",
         "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::checked_element_count",
         "src/python/nrrd/src/format_factory/nrrd/model/document.py::reshape_nrrd_array",
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::spacings",
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::axis_mins",
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::axis_maxs",
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::centers",
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::labels",
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::units",
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::thicknesses",
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::per_axis_field_arities",
         "src/python/nrrd/src/format_factory/nrrd/validation/validator.py::validate"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-KEYVALUE-001",
@@ -1280,7 +1307,7 @@
         "Dimension/sizes, checked sample count, fastest-first reshape, and explicit to_array conversion exist."
       ],
       "missing_behavior": [
-        "All per-axis arities and a first-class axis-order model/conversion report are absent."
+        "A first-class axis-order model/conversion report is absent (per-axis arity validation is now complete -- see SAL-NRRD-OBL-428BE326FCBC9A6E)."
       ],
       "negative_test_selectors": [
         "tests/python/nrrd/test_production_namespace.py::test_validation_reports_declared_payload_byte_mismatch"
@@ -2166,17 +2193,19 @@
   "proof_strength": "supporting_nonpromoting",
   "referenced_input_digests": {
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-ascii-endian-001.json": "60a99a5918aff5911cec49c6ecb8ca17e2d2284e8e513697a17e12a0f06e20c2",
+    "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-axis-arity-001.json": "7fa7b5a006873ffa9a1c9c12179d744a9cc9ff9612a9be34435c0203624ca5d7",
     "reports/skills-rff6/skill-transcripts/reconcile-contract-capabilities-nrrd-readiness-001.json": "4675509f009d4b78181543769a6e18dd8292afb65b0624bd347a5b6ccdab2869",
     "src/python/nrrd/src/format_factory/nrrd/codec/payload.py": "1082dd49e148afdf69fecd6b9225f38f0cf7db4914e569d51aff1adece3fd172",
     "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "29e71387795de3be5faf239d3a7b0662d21c47817b478ade361f01b48cd884ae",
     "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py": "fd13125d65da768afed08150e3087c3883ee47411d98d561b47c410d56428195",
     "src/python/nrrd/src/format_factory/nrrd/convert.py": "83d96605f886fd24e9146410be552cb54d1bb93ee317102f46dc53b164448951",
-    "src/python/nrrd/src/format_factory/nrrd/model/document.py": "da9b7aaec60597d8951766cc13c24012ce1dd56d43e5930f07817bb0e5e9d1e1",
+    "src/python/nrrd/src/format_factory/nrrd/model/document.py": "7ebae20b6caaf4668e9840fa369e037e9519b3f6642faa6a49e5e6e354db2362",
     "src/python/nrrd/src/format_factory/nrrd/security/limits.py": "61960ec909fda7e5b9accf4934948291467bb5e8ce4ce584ec6e6ee12e60e844",
     "src/python/nrrd/src/format_factory/nrrd/space.py": "887ea01c8f5e6867c8522335375d717198f1430911728fe6575009dc9a037679",
-    "src/python/nrrd/src/format_factory/nrrd/validation/validator.py": "4998f59098ae60a928e3b6b5049a7843300efd24f2b19a59d8477f914c41bd98",
+    "src/python/nrrd/src/format_factory/nrrd/validation/validator.py": "8adaf232a1a45fcc03b9f6ce415055d3df4c9aa0c7d2038c1dc05beb85e22ca6",
     "tests/python/nrrd/test_ascii_encoding_endian.py": "70aaff339ed8a91183ead5c3b87164d5d1542c393746125c95fb63e5f3f17c04",
     "tests/python/nrrd/test_golden_raw_scalar_slice.py": "b818dd89a20229421b46b4cbb8aa19dc3449ee197d45552469069cfb10d76513",
+    "tests/python/nrrd/test_obligation_axis_field_arity.py": "9d6e7bbbc5e7b0ea5a80d73f4ac4d285dc27e22f59bdcd522cfa74d4fa4392a1",
     "tests/python/nrrd/test_obligation_detached_forms_production.py": "0ea4f16a7602ef7ea83a4c69dead3d3204c291c30a71747696a92a97ecc2a2d8",
     "tests/python/nrrd/test_obligation_dtype_conversion.py": "303205eec17e82662e3e484870fac7e985c0ed400f36bc62f887c75b686d6425",
     "tests/python/nrrd/test_obligation_metadata_production.py": "5c928de8b704e53560d8e845bd02f33a549a61f3c8d3c5ef492c9dee1ceebd40",
@@ -2188,13 +2217,13 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 18,
+      "implemented": 19,
       "missing": 3,
-      "partial": 41,
+      "partial": 40,
       "preservation_only": 3
     },
     "total": 65,
-    "unresolved": 47
+    "unresolved": 46
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
