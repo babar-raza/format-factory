@@ -24,12 +24,20 @@
       "path": "reports/skills-rff6/skill-transcripts/reconcile-contract-capabilities-nrrd-readiness-001.json",
       "sha256": "4675509f009d4b78181543769a6e18dd8292afb65b0624bd347a5b6ccdab2869",
       "truth_boundary": "The transcript records 58 production-namespace and 219 legacy tests passing at commit 767e7006, but it does not bind individual selector outcomes and is non-promoting support only."
+    },
+    {
+      "evidence_id": "NRRD-VERSION-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-version-selection-001.json",
+      "sha256": "176aa723e7cf62c5e8eede3a629645c3f244c3a3c1601e80a21fe673a8b140aa",
+      "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS: it names the exact positive and negative test selectors proving `detected_version` and `version` are distinct, reader-vs-caller-populated fields, and that a declared or requested profile too old for the document's populated fields is refused (writer) or flagged (validator) rather than silently accepted or silently rewritten. The underlying feature-to-minimum-version gate table is backed by verified SAL facts (SAL-NRRD-00006, SAL-NRRD-00019, SAL-NRRD-00020, SAL-NRRD-00021, SAL-NRRD-00022, SAL-NRRD-00023, SAL-NRRD-00024) for the spec content itself, but this implementation is NOT independently cross-checked against Teem or another reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-NRRD-OBL-028C0109E783B8F3 only; it supports no other obligation and promotes no product state."
     }
   ],
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "3e421a48859f9a29c8e3b19175605c4c8514b0c12f2a23792dfebcb71db3e072",
+    "implementation_evidence": "5786132b3ba627ef09fc2875e3192797d7c44e317b08c50a8d5fe0153a96dc8e",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -69,18 +77,28 @@
     {
       "capability_id": "NRRD-LIFECYCLE-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-VERSION-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Detected magic version is exposed and the document version is preserved by default."
+        "NrrdDocument exposes `detected_version` (set once by the reader from the file's actual magic line; None for a freshly-constructed document) distinct from the mutable `version` field the writer treats as the current declaration -- mutating `version` never touches `detected_version`.",
+        "Writing with a declared `version` (or an explicit profile= override) too old for the document's populated fields is refused with a diagnostic naming every blocking field and the minimum required profile, rather than silently accepted or silently rewritten; `validate()` reports the same condition non-destructively as `nrrd.version.insufficient`."
       ],
-      "missing_behavior": [
-        "Detected and separately declared version are not distinct model fields."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_obligation_version_selection.py::test_dumps_refuses_a_declared_version_too_old_for_kinds",
+        "tests/python/nrrd/test_obligation_version_selection.py::test_dumps_refuses_an_explicit_profile_override_too_old",
+        "tests/python/nrrd/test_obligation_version_selection.py::test_dumps_error_names_every_blocking_field",
+        "tests/python/nrrd/test_obligation_version_selection.py::test_validate_flags_a_declared_version_too_old_for_populated_fields",
+        "tests/python/nrrd/test_obligation_version_selection.py::test_validate_flags_an_explicit_profile_argument_too_old"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-NRRD-OBL-028C0109E783B8F3",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_lifecycle_api_and_stream_destination"
+        "tests/python/nrrd/test_obligation_version_selection.py::test_freshly_constructed_document_has_no_detected_version",
+        "tests/python/nrrd/test_obligation_version_selection.py::test_loading_a_file_records_its_actual_magic_line_version_as_detected",
+        "tests/python/nrrd/test_obligation_version_selection.py::test_mutating_the_declared_version_never_touches_detected_version",
+        "tests/python/nrrd/test_obligation_version_selection.py::test_to_dict_and_from_mapping_round_trip_detected_version",
+        "tests/python/nrrd/test_obligation_version_selection.py::test_dumps_succeeds_when_declared_version_is_already_sufficient"
       ],
       "proof_requirements": {
         "negative": [
@@ -90,15 +108,16 @@
           "Installed-wheel tests for detected versus declared version."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::probe",
-        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::loads",
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::version_requirements",
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::minimal_version_for",
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::load",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::loads",
         "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dumps",
-        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dump"
+        "src/python/nrrd/src/format_factory/nrrd/validation/validator.py::validate"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-KINDS-001",
@@ -432,10 +451,10 @@
         "NRRD-R1-SOURCE-TESTS"
       ],
       "implemented_behavior": [
-        "Attached deterministic writer emits required fields and preserves explicit selected version."
+        "Attached deterministic writer emits required fields; a declared or requested profile too old for the populated fields is refused rather than silently accepted (see SAL-NRRD-OBL-028C0109E783B8F3), and profile=\"auto\" selects the oldest sufficient profile on explicit request."
       ],
       "missing_behavior": [
-        "No feature-derived version selection, detached partition writer, or complete conditional/optional absence policy."
+        "No detached partition writer or complete conditional/optional absence policy."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-NRRD-OBL-284E2438B08DA529",
@@ -454,7 +473,8 @@
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes",
         "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dumps",
-        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dump"
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dump",
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::minimal_version_for"
       ],
       "status": "partial"
     },
@@ -2122,7 +2142,8 @@
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes",
         "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dumps",
-        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dump"
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dump",
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::minimal_version_for"
       ],
       "status": "implemented"
     },
@@ -2194,15 +2215,16 @@
   "referenced_input_digests": {
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-ascii-endian-001.json": "60a99a5918aff5911cec49c6ecb8ca17e2d2284e8e513697a17e12a0f06e20c2",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-axis-arity-001.json": "7fa7b5a006873ffa9a1c9c12179d744a9cc9ff9612a9be34435c0203624ca5d7",
+    "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-version-selection-001.json": "176aa723e7cf62c5e8eede3a629645c3f244c3a3c1601e80a21fe673a8b140aa",
     "reports/skills-rff6/skill-transcripts/reconcile-contract-capabilities-nrrd-readiness-001.json": "4675509f009d4b78181543769a6e18dd8292afb65b0624bd347a5b6ccdab2869",
     "src/python/nrrd/src/format_factory/nrrd/codec/payload.py": "1082dd49e148afdf69fecd6b9225f38f0cf7db4914e569d51aff1adece3fd172",
-    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "29e71387795de3be5faf239d3a7b0662d21c47817b478ade361f01b48cd884ae",
-    "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py": "fd13125d65da768afed08150e3087c3883ee47411d98d561b47c410d56428195",
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "de972d2377a13f11909d2c5a5f7e204cc6c5fd779a94b056ea31ddf616f4d0c5",
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py": "27ed99ee0e1db0a02155ce7577e7b7450544ed0fd96824b50f31a45d623af52c",
     "src/python/nrrd/src/format_factory/nrrd/convert.py": "83d96605f886fd24e9146410be552cb54d1bb93ee317102f46dc53b164448951",
-    "src/python/nrrd/src/format_factory/nrrd/model/document.py": "7ebae20b6caaf4668e9840fa369e037e9519b3f6642faa6a49e5e6e354db2362",
+    "src/python/nrrd/src/format_factory/nrrd/model/document.py": "b0807a18aed01727b3ef85c445017ccd891b5840d7558c736f804fdbaa4222ab",
     "src/python/nrrd/src/format_factory/nrrd/security/limits.py": "61960ec909fda7e5b9accf4934948291467bb5e8ce4ce584ec6e6ee12e60e844",
     "src/python/nrrd/src/format_factory/nrrd/space.py": "887ea01c8f5e6867c8522335375d717198f1430911728fe6575009dc9a037679",
-    "src/python/nrrd/src/format_factory/nrrd/validation/validator.py": "8adaf232a1a45fcc03b9f6ce415055d3df4c9aa0c7d2038c1dc05beb85e22ca6",
+    "src/python/nrrd/src/format_factory/nrrd/validation/validator.py": "57656b36d7a8f1ac3c0a55a19c58dec9f4dfe4e6018878a1671a94c117bd7ef8",
     "tests/python/nrrd/test_ascii_encoding_endian.py": "70aaff339ed8a91183ead5c3b87164d5d1542c393746125c95fb63e5f3f17c04",
     "tests/python/nrrd/test_golden_raw_scalar_slice.py": "b818dd89a20229421b46b4cbb8aa19dc3449ee197d45552469069cfb10d76513",
     "tests/python/nrrd/test_obligation_axis_field_arity.py": "9d6e7bbbc5e7b0ea5a80d73f4ac4d285dc27e22f59bdcd522cfa74d4fa4392a1",
@@ -2212,18 +2234,19 @@
     "tests/python/nrrd/test_obligation_payload_skip.py": "631ddbb609282e655c179358af0e8cbaa76038e33343cd482c87aaeecb1b8116",
     "tests/python/nrrd/test_obligation_shape_production.py": "17ebb172b6e8f2ac861d2ff907dbe19794d327a6e20b5f915b20a9704be9dce5",
     "tests/python/nrrd/test_obligation_space_transform.py": "fd2e5b51084b5061e2181cef869169f6a7bc9fc4dc0d64c4aa090c22d06fb874",
+    "tests/python/nrrd/test_obligation_version_selection.py": "ce565329d7d4f3e15e1bca930257b808a004a61c032abff6ad2ba6d217cdb624",
     "tests/python/nrrd/test_production_namespace.py": "4723abd65d29bd980d08097bb243fa65988d7ba6c6308d194d78c51bf4a17067"
   },
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 19,
+      "implemented": 20,
       "missing": 3,
-      "partial": 40,
+      "partial": 39,
       "preservation_only": 3
     },
     "total": 65,
-    "unresolved": 46
+    "unresolved": 45
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

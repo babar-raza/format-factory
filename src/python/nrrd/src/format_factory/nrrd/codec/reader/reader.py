@@ -300,6 +300,7 @@ def _load(source: BinarySource, *, limits: ResourceLimits, recovery_actions: tup
         )
     return NrrdDocument(
         version=version,
+        detected_version=version,
         header=header,
         comments=comments,
         key_value_pairs=key_values,

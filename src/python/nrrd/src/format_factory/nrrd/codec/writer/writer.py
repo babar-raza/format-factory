@@ -75,10 +75,36 @@ def dumps(
         active_limits.enforce("max_output_bytes", len(value.source_bytes))
         return value.source_bytes
     # Default serialization preserves the version declared by the document.
-    # Callers may deliberately request an explicit target profile to convert it.
-    selected = profile or f"NRRD000{value.version}"
+    # Callers may deliberately request an explicit target profile to convert
+    # it, or "auto" to select the oldest profile able to represent it
+    # (NRRD-VERSION-001, NRRD-WRITE-001; feature gates per SAL-NRRD-00020).
+    if profile == "auto":
+        selected = f"NRRD000{value.minimal_version_for()}"
+    else:
+        selected = profile or f"NRRD000{value.version}"
     if selected not in {f"NRRD000{version}" for version in range(1, 6)}:
         raise NrrdWriteError(f"unsupported NRRD profile: {selected!r}")
+    selected_version = int(selected[-1])
+    minimal_version = value.minimal_version_for()
+    if selected_version < minimal_version:
+        # NRRD-LIFECYCLE-001: never silently rewrite a declared version --
+        # refuse loudly instead of writing a profile too old for the fields
+        # actually present.
+        blocking = ", ".join(
+            sorted(
+                {
+                    name
+                    for gate, name in value.version_requirements()
+                    if gate > selected_version
+                }
+            )
+        )
+        raise NrrdWriteError(
+            f"{selected} cannot represent this document: {blocking} requires "
+            f"NRRD000{minimal_version} or newer (declared version is never "
+            'silently rewritten -- pass profile="auto" to select the oldest '
+            "sufficient profile explicitly)"
+        )
     if value.encoding not in SUPPORTED_ENCODINGS:
         raise NrrdWriteError(f"unsupported NRRD encoding: {value.encoding!r}")
     try:

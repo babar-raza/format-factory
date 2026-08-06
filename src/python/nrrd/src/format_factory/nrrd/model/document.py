@@ -76,6 +76,7 @@ class NrrdDocument:
     header: dict[str, str]
     payload: bytes
     array: list[Any]
+    detected_version: int | None = None
     comments: list[str] = field(default_factory=list)
     key_value_pairs: dict[str, str] = field(default_factory=dict)
     raw_header: bytes = b""
@@ -200,6 +201,40 @@ class NrrdDocument:
         }
         return {name: len(values) for name, values in fields.items() if name in self.header}
 
+    def version_requirements(self) -> list[tuple[int, str]]:
+        """Which populated fields force which minimum NRRD profile version.
+
+        Cumulative feature gates per SAL-NRRD-00020 (profile-version), backed
+        by SAL-NRRD-00021 (key/value, NRRD0002+), SAL-NRRD-00022 (kinds,
+        NRRD0003+), SAL-NRRD-00023/00019 (thicknesses and space/orientation
+        fields, NRRD0004+), SAL-NRRD-00006 (multi-file data file, NRRD0004+),
+        and SAL-NRRD-00024 (measurement frame, NRRD0005+). Fields that are
+        version-independent baseline (spacings, axis mins/maxs, centers,
+        labels, units -- SAL-NRRD-00010) are not represented here.
+        """
+
+        requirements: list[tuple[int, str]] = []
+        if self.key_value_pairs:
+            requirements.append((2, "key/value pairs"))
+        if "kinds" in self.header:
+            requirements.append((3, "kinds"))
+        if "thicknesses" in self.header:
+            requirements.append((4, "thicknesses"))
+        for field_name in ("space", "space dimension", "space units", "space origin", "space directions"):
+            if field_name in self.header:
+                requirements.append((4, field_name))
+        data_file = self.header.get("data file", "")
+        if data_file and (data_file.upper().startswith("LIST") or "%" in data_file):
+            requirements.append((4, "data file (multi-file)"))
+        if "measurement frame" in self.header:
+            requirements.append((5, "measurement frame"))
+        return requirements
+
+    def minimal_version_for(self) -> int:
+        """The oldest NRRD profile version able to represent this document."""
+
+        return max((version for version, _ in self.version_requirements()), default=1)
+
     def preservation_report(self) -> PreservationReport:
         """Report whether the original byte representation can be replayed safely.
 
@@ -254,6 +289,11 @@ class NrrdDocument:
             header={str(key).lower(): str(item) for key, item in header_value.items()},
             payload=payload_value,
             array=list(value.get("array") or []),
+            detected_version=(
+                int(value["detected_version"])
+                if value.get("detected_version") is not None
+                else None
+            ),
             comments=[str(item) for item in value.get("comments", [])],
             key_value_pairs={
                 str(key): str(item) for key, item in key_values.items()
@@ -278,6 +318,7 @@ class NrrdDocument:
 
         return {
             "version": self.version,
+            "detected_version": self.detected_version,
             "header": dict(self.header),
             "key_value_pairs": dict(self.key_value_pairs),
             "comments": list(self.comments),

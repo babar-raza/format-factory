@@ -33,12 +33,35 @@ def validate(
         )
     except (TypeError, ValueError) as exc:
         return ValidationReport([Diagnostic("nrrd.model.invalid", str(exc))])
-    if profile is not None and profile not in {
-        f"NRRD000{item}" for item in range(1, 6)
-    }:
+    valid_profiles = {f"NRRD000{item}" for item in range(1, 6)}
+    if profile is not None and profile not in valid_profiles:
         diagnostics.append(
             Diagnostic("nrrd.profile.unsupported", f"unsupported profile {profile!r}")
         )
+    target_profile = profile if profile in valid_profiles else f"NRRD000{document.version}"
+    if target_profile in valid_profiles:
+        target_version = int(target_profile[-1])
+        minimal_version = document.minimal_version_for()
+        if target_version < minimal_version:
+            # NRRD-VERSION-001/NRRD-LIFECYCLE-001: a declared (or requested)
+            # version too old for the populated fields must be flagged, not
+            # silently accepted or silently upgraded.
+            blocking = ", ".join(
+                sorted(
+                    {
+                        name
+                        for gate, name in document.version_requirements()
+                        if gate > target_version
+                    }
+                )
+            )
+            diagnostics.append(
+                Diagnostic(
+                    "nrrd.version.insufficient",
+                    f"{target_profile} cannot represent this document: {blocking} "
+                    f"requires NRRD000{minimal_version} or newer",
+                )
+            )
     try:
         dimension = document.dimension
         sizes = document.sizes

@@ -1,0 +1,61 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-version-selection-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T09:10:00Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_VERSION_SELECTION_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "NrrdDocument had a single `version: int` field conflating what a file's magic line actually said (on read) with what will be written (on write), and dumps()/validate() accepted any profile string regardless of which fields were actually populated. SAL-NRRD-00020 (verified, Teem NRRD Format Specification Section 1.1; Teem formatNRRD.c lines 183-205) states profile magics are cumulative -- NRRD0002 adds key/value pairs, NRRD0003 adds kinds, NRRD0004 adds thicknesses/space-orientation fields/multi-file data, NRRD0005 adds measurement frame -- and POL-SLC-LIFECYCLE-01..06 (NRRD-LIFECYCLE-001) requires detected and declared version to be exposed separately with no silent rewrite of a declared version.",
+    "obligation_targeted": "SAL-NRRD-OBL-028C0109E783B8F3",
+    "acceptance_evidence": "tests/python/nrrd/test_obligation_version_selection.py",
+    "regression_tier": "full NRRD package suite (tests/python/nrrd)"
+  },
+  "execution_steps": [
+    "1. Read SAL-NRRD-00020 (profile-version, verified) plus its five supporting facts (SAL-NRRD-00021 key/value NRRD0002+, SAL-NRRD-00022 kinds NRRD0003+, SAL-NRRD-00023/00019 thicknesses and space/orientation fields NRRD0004+, SAL-NRRD-00006 multi-file data file NRRD0004+, SAL-NRRD-00024 measurement frame NRRD0005+) and SAL-NRRD-00010 (spacings/axis mins/axis maxs/centers/labels/units are baseline, NOT version-gated) directly from shared/sal-facts/nrrd.yaml before writing anything, to build a fully fact-backed feature-to-minimum-version table with no invented spec content. Deliberately did NOT attempt a 'complete kind enum/alias model' (a separate, still-partial NRRD-KINDS-001 gap) since no SAL fact enumerates the actual kind VALUES (domain/space/scalar/vector/etc.), only arity and the NRRD0003+ version gate -- building that would have fabricated unverified spec claims.",
+    "2. Added NrrdDocument.version_requirements() (model/document.py): a pure scan of which populated header fields force which minimum profile version, and minimal_version_for() (max of those, defaulting to 1). Added NrrdDocument.detected_version: int | None = None, set only by the reader at parse time from the magic line; freshly-constructed documents leave it None. Verified via grep that every shipped-namespace NrrdDocument(...) construction site (reader.py, 5 test files) uses keyword args, so inserting detected_version positionally in the dataclass was safe.",
+    "3. writer.py dumps(): added profile=\"auto\" (selects the oldest sufficient profile explicitly, on request) and a refusal check -- if the selected/declared profile is below minimal_version_for(), raise NrrdWriteError naming every blocking field and the minimum required profile, rather than silently writing an under-versioned file or silently upgrading it. validation/validator.py validate(): added the equivalent non-raising nrrd.version.insufficient diagnostic against document.version (or an explicit profile= argument), guarded so an already-out-of-range profile string (existing nrrd.profile.unsupported check) does not also spuriously trigger it.",
+    "4. Before writing tests, cross-referenced every existing shipped-namespace NrrdDocument construction site across tests/python/nrrd/ for a low version combined with a now-gated field (kinds/thicknesses/space/key-value/measurement-frame) that could break under the new writer refusal -- found none (all such fixtures already use version=5 or populate no gated field), confirmed by a full pre-emptive suite run before adding any new tests.",
+    "5. Wrote tests/python/nrrd/test_obligation_version_selection.py (29 tests): pure version_requirements()/minimal_version_for() coverage for every gate including the single-file-vs-multi-file data file distinction (SAL-NRRD-00006's specific carve-out), writer refusal (declared version and explicit profile= override, multi-field error-message coverage), profile=\"auto\" selection, validator diagnostics (declared and explicit-profile paths, plus a no-double-report check against the pre-existing unsupported-profile diagnostic), and detected_version/version separation (reader-populated, None on fresh construction, independent of later mutation, round-trips through to_dict/from_mapping).",
+    "6. All 29 new tests passed on first run. Re-ran the full NRRD suite: 441 passed, 1 pre-existing skip unchanged (412 baseline + 29 new, 0 regressions). ruff and mypy clean on the full package (19 source files).",
+    "7. Reconciled against the obligation register's three related obligations. SAL-NRRD-OBL-028C0109E783B8F3 (NRRD-LIFECYCLE-001, 'expose detected/declared separately, never silently rewrite') is fully and cleanly closed by this slice -- promoted to implemented. The two NRRD-VERSION-001 obligations (SAL-NRRD-OBL-1DAEF31DD0BB6EBB, SAL-NRRD-OBL-725881DB5590E608) both require 'choose the oldest sufficient magic deterministically WHEN NO TARGET PROFILE IS REQUESTED' as DEFAULT writer behavior -- this slice deliberately does NOT auto-select by default (only via explicit profile=\"auto\"), because a silent default auto-downgrade/upgrade would itself violate NRRD-LIFECYCLE-001's 'never silently rewrite a declared version' on the very same document.version field. This is a genuine, honest gap against those two obligations' literal wording, not fabricated closure -- left partial, with missing_behavior unchanged (feature-introduction validation now exists, but default-path auto-selection does not). NRRD-WRITE-001's obligation (SAL-NRRD-OBL-284E2438B08DA529) bundles version selection with a detached-partition writer and a complete conditional/optional absence policy, neither of which this slice touched -- left partial, missing_behavior narrowed to drop only the now-closed 'no feature-derived version selection' clause."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/model/document.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py",
+    "src/python/nrrd/src/format_factory/nrrd/validation/validator.py",
+    "tests/python/nrrd/test_obligation_version_selection.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/model/document.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py",
+    "src/python/nrrd/src/format_factory/nrrd/validation/validator.py",
+    "tests/python/nrrd/test_obligation_version_selection.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_version_selection.py -v -- 29 passed",
+    ".venv/Scripts/pytest tests/python/nrrd/ -q -- 441 passed, 1 skipped (412 baseline + 29 new, 0 regressions)",
+    ".venv/Scripts/python -m ruff check src/python/nrrd/src/format_factory/nrrd/ tests/python/nrrd/test_obligation_version_selection.py -- All checks passed",
+    ".venv/Scripts/python -m mypy src/python/nrrd/src/format_factory/nrrd/ -- Success: no issues found in 19 source files"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 65,
+    "nrrd_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently verified against Teem or another reference implementation for this specific behavior. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 remediation rule, not VERIFIED; the underlying feature-to-version gate table itself IS backed by verified SAL facts (SAL-NRRD-00006/00019/00020/00021/00022/00023/00024), which is a claim about the SPEC content being correctly sourced, not about this implementation being independently cross-checked against Teem.",
+    "why_only_one_obligation_promoted": "SAL-NRRD-OBL-028C0109E783B8F3's entire declared gap (detected vs. declared version distinctness, no silent rewrite) is now fully closed. Its two capability-sibling obligations under NRRD-VERSION-001 additionally require default-path (no-profile) auto-selection of the oldest sufficient version, which this slice deliberately did not implement by default -- doing so would have silently rewritten an explicitly declared version on the very same field this obligation protects, so promoting them would overclaim. NRRD-WRITE-001's obligation bundles the now-closed version-selection clause with two untouched concerns (detached partition writer, conditional/optional absence policy) -- only its missing_behavior text was narrowed, not its status."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
