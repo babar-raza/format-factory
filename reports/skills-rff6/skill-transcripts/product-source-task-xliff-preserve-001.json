@@ -1,0 +1,47 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-preserve-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T15:40:00Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_PRESERVE_AUDIT_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "XLIFF-PRESERVE-001's 4 obligations (unknown constructs preserved; absent-vs-explicit-default distinction; explicit lossless-vs-canonical caller choice; loss-report API) were all unexamined, sharing an identical generic 6-symbol citation. Investigation found: unknown-content preservation is fully built and tested (ExtensionNode stores raw bytes); absent-vs-default is proven for one field (Note.priority) via a presence-checked-before-parse pattern; the explicit lossless/canonical choice and loss-report API are both confirmed architecturally absent -- dumps()/dump() have no mode parameter and there is no LossReport-equivalent class anywhere in the package, matching an identical finding for UBL's parallel obligations investigated earlier this session.",
+    "obligation_targeted": "SAL-XLIFF-OBL-5028A9F2822CA945, SAL-XLIFF-OBL-612349C06EB3E809, SAL-XLIFF-OBL-A9AF9198E92EA6F9, SAL-XLIFF-OBL-F920057AE26D1B4F",
+    "acceptance_evidence": "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order, test_obligation_notes_and_annotations.py::test_note_priority_and_category_are_represented",
+    "regression_tier": "full XLIFF package suite (tests/python/xliff)"
+  },
+  "execution_steps": [
+    "1. Surveyed xliff's remaining capabilities. XLIFF-PRESERVE-001 was 4/4 unresolved, all sharing an identical generic 6-symbol citation with no obligation-specific test selectors, unlike most of the capabilities already swept this session.",
+    "2. Investigated obligation 1 (unknown constructs preserved): ExtensionNode.xml stores an unrecognized namespaced subtree as raw bytes, not a typed reconstruction. Found test_semantic_roundtrip_preserves_unknown_namespace_and_order already proving a vendor extension element survives a full load-dump-load-dump cycle byte-identical. Ran it directly: passed. Promoted.",
+    "3. Investigated obligation 3 (explicit lossless-vs-canonical caller choice) and obligation 4 (loss-report API before saving): grepped writer.py for a mode/preservation parameter and the whole package for a LossReport/check_preservation-style class -- found neither. dumps()/dump() have exactly one output path with no separate canonical-regeneration mode, so there is nothing for an explicit choice to select between, and no reporting API exists to describe what such a regeneration would drop. Corrected both from a misleading generic `partial` citation to an honest `missing` naming the confirmed architectural gap -- the same gap independently found in UBL's parallel obligations this session (both packages serialize a raw XmlNode/ExtensionNode tree with a single output path).",
+    "4. Investigated obligation 2 (absent-vs-explicit-default distinction): found reader.py's note-parsing checks `if \"priority\" in note.attrib:` before parsing, so an absent priority leaves Note.priority as None rather than a defaulted numeric value. Found test_note_priority_and_category_are_represented already proving this ([1, 5, None] for three notes, the third lacking the attribute). Ran it directly: passed. Promoted the citation but kept status `partial` (not `implemented`) and narrowed source/tests to only this one field, since the claim was verified for Note.priority specifically, not systematically swept across every optional field in the model -- an honest scope limitation rather than an overclaim."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order -v -- 1 passed",
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_notes_and_annotations.py::test_note_priority_and_category_are_represented -v -- 1 passed",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- unchanged from before this slice (0 source or test changes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 142,
+    "xliff_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against an external XLIFF preservation tool. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_only_one_net_promotion": "Two obligations were confirmed genuinely absent (correctly downgraded from misleading partial to honest missing, not promoted). One obligation's citation was corrected and narrowed for accuracy but kept at partial since only one field's behavior was directly verified, not swept systematically -- avoiding an overclaim."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

@@ -53,7 +53,7 @@
   "format_id": "xliff",
   "input_digests": {
     "compiled_contract": "72b4fc502116a6df682bbb606e42fe2350d698d07b681a52604f6febe268fca4",
-    "implementation_evidence": "7496318ec59207bf73cd83f3d69a8caeca822f751852d3dbd4b6658d31cd900f",
+    "implementation_evidence": "7b67e99fbba35fbe00813e3f70bfd4b740d55a5e32eb6e0685f5eb6b055c2fb8",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "6a66a15d1dba9f0b205634bae4437965fe0ac12a92a95a7c902ca289d1a9474b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -1892,17 +1892,13 @@
         "XLIFF-BASELINE-SUITE"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "ExtensionNode stores an unknown/unrecognized namespaced subtree as raw XML bytes rather than a typed reconstruction, so a vendor extension element survives a full load-dump-load-dump cycle byte-identical and in its original document position -- proven with an unknown urn:vendor:test namespace element that this package has no dedicated model for."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-5028A9F2822CA945",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order"
       ],
       "proof_requirements": {
         "negative": [
@@ -1912,16 +1908,12 @@
           "Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps",
-        "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump",
         "src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Note",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Segment",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Unit"
+        "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-PARSE-001",
@@ -2173,17 +2165,15 @@
         "XLIFF-BASELINE-SUITE"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "reader.py checks `if \"priority\" in note.attrib:` before parsing, so a note with no priority attribute leaves Note.priority as None -- distinguishable from an explicit priority value -- rather than defaulting it to a numeric placeholder. Proven for Note.priority specifically; the same presence-checked-before-parse pattern recurs elsewhere in reader.py but has not been individually verified for every optional field in this pass."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+        "Only Note.priority has been directly verified; a systematic sweep of every other optional field's absent-vs-explicit-default handling (segment/@state empty-string normalization, other note/unit attributes) has not been done."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-612349C06EB3E809",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_note_priority_and_category_are_represented"
       ],
       "proof_requirements": {
         "negative": [
@@ -2195,12 +2185,7 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps",
-        "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Note",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Segment",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Unit"
+        "src/python/xliff/src/format_factory/xliff/model/document.py::Note"
       ],
       "status": "partial"
     },
@@ -3468,22 +3453,14 @@
     },
     {
       "capability_id": "XLIFF-PRESERVE-001",
-      "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+        "Confirmed gap, not an audit backlog: dumps()/dump() take no preservation-mode parameter at all -- there is exactly one output path, which always serializes the ExtensionNode/Note/Segment/Unit tree exactly as constructed. There is no separate CANONICAL regeneration path that could drop unmodeled content, so there is nothing for an explicit LOSSLESS-vs-CANONICAL caller choice to select between. The same architecture and the same confirmed-absent API were independently found in UBL's writer this session (UBL-PRESERVE-001's equivalent obligation) -- both packages serialize a raw tree with a single output path and no separate canonical-regeneration mode."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-A9AF9198E92EA6F9",
-      "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -3492,16 +3469,9 @@
           "Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps",
-        "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Note",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Segment",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Unit"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "XLIFF-MODEL-001",
@@ -4876,22 +4846,14 @@
     },
     {
       "capability_id": "XLIFF-PRESERVE-001",
-      "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+        "Confirmed gap, not an audit backlog: no LossReport/check_preservation-style API exists anywhere in this package. Since dumps()/dump() always serialize the tree exactly as constructed (see SAL-XLIFF-OBL-A9AF9198E92EA6F9), there is currently no regeneration path capable of losing content for such a report to describe -- but the obligation requires the reporting API to exist as a first-class callable, which it does not."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-F920057AE26D1B4F",
-      "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -4900,16 +4862,9 @@
           "Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps",
-        "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Note",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Segment",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Unit"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "XLIFF-SEC-001",
@@ -4976,11 +4931,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 14,
-      "partial": 128
+      "implemented": 15,
+      "missing": 2,
+      "partial": 125
     },
     "total": 142,
-    "unresolved": 128
+    "unresolved": 127
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
