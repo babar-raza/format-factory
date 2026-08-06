@@ -61,9 +61,59 @@ stage_4_record:
     proves nothing new about either format's conformance; a refactor that moved
     obligations would be a red flag.
 next_task:
-  task_id: IPYNB_SHIPPED_NAMESPACE_COVERAGE
+  task_id: CONTINUE_PER_FORMAT_OBLIGATION_CLOSURE
   state: READY
   unlock_condition: >-
+    STALE-TEXT NOTICE (added at Event 98, superseding the "Continue from Event
+    56" / "IPYNB-OUTPUT-001 has NO valid evidence" text this field used to
+    hold verbatim below): that text was accurate at Event ~56 but was never
+    updated across Events 57-98 of real work on ora/ubl/xliff/nrrd (this
+    session's Claude Code stream), so a fresh agent trusting it cold would
+    redo work that is already done -- IPYNB-OUTPUT-001 and the other five
+    capabilities it names were already re-mapped to shipped-namespace tests
+    on 2026-08-04/05 per shared/format-contracts/ledger-maps/ipynb.yaml and
+    the ipynb suite is 653 passed, 0 failed (independently re-verified
+    2026-08-06, see registry/found-issue-register.yaml FI-076).
+
+    Do NOT trust per-format progress narrative in this file's *_checkpoint
+    blocks (ipynb_checkpoint, ubl_checkpoint, xliff_checkpoint, etc.) without
+    cross-checking reports/format-contract-layer/{format}-obligation-
+    reconciliation.json first -- run `python -m tools.format_contract.
+    contract_reconciler --format-id <fmt> --exact-obligations
+    --obligation-register plans/strategic/ff6/obligations/<fmt>.yaml
+    --implementation-evidence shared/format-contracts/implementation-
+    evidence/<fmt>.yaml` to regenerate it fresh, since the checkpoint prose
+    in this file and the implementation-evidence YAML/ledger-map narrative
+    can each independently drift from the other (see FI-075, FI-076).
+
+    Current, reconciler-verified per-format `partial`/`missing` counts (none
+    `implemented` yet, program-wide) as of Event 98: ora 97 partial/37
+    missing (of 134); ubl 182 partial/12 missing (of 194); xliff 142
+    partial/0 missing (of 142); nrrd 18 implemented/41 partial/3
+    preservation_only/3 missing (of 65); ipynb and safetensors reconcile at
+    68/68 and 86/86 unresolved respectively but their partial/missing split
+    is not yet broken out here -- check their own implementation-evidence
+    YAMLs directly.
+
+    Live next options as of Event 98 (see plans/strategic/ff6/events.jsonl
+    Event 98's exact_next_action for full detail): ora has 6 capabilities
+    with zero mapped source (rendering, compositing, ORA-EDIT-001's
+    transactional multi-entity edit API, masks, streaming, resolution
+    profiles); ubl has 12 obligations left, all under UBL-CODELIST-001 (10,
+    needs a verified source for real official UBL code-list data not yet
+    found) and UBL-UPGRADE-001 (2, needs concrete version-migration
+    semantics beyond one coarse SAL fact); nrrd has NRRD-LAZY-001 (2
+    obligations, mmap/streaming-decode/region-read API, large scope) as its
+    only remaining gap; ipynb and safetensors have not been touched by this
+    session's ora/ubl/xliff/nrrd-focused stream and may have live options
+    the six-format regression suite (2537 passed as of Event 98) doesn't
+    surface on its own -- worth a fresh capability survey before assuming
+    parity with the numbers above.
+
+    Do not claim certification for any format.
+
+    --- ORIGINAL TEXT BELOW, PRESERVED AS HISTORY, DO NOT TRUST AS CURRENT ---
+
     Continue from Event 56. GAP-018 changed the program's picture: shadow-package
     tests dominate the estate everywhere, not just NRRD -- ubl 91%, xliff 91%,
     nrrd 54%, ipynb 39%, safetensors 32%, with no file importing both, so this is

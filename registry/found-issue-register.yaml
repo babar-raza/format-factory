@@ -2316,3 +2316,76 @@ issues:
     an artifact-freshness check to per-tick closeout so this class of
     drift is caught the tick it happens rather than discovered later by a
     proactive sweep.
+
+- issue_id: FI-077
+  stable_semantic_key: "ff6:stale_next_task_narrative:controller-state.yaml"
+  status: closed
+  discovered_at: "2026-08-06T06:10:00Z"
+  discovering_task_id: FF6-EVENT-000098-FOLLOWUP
+  issue_type: stale_narrative_projection
+  affected_component: ff6-controller
+  affected_paths:
+    - plans/strategic/ff6/controller-state.yaml
+  observed_behavior: >-
+    `python -m tools.ff6.goal_driver resume`'s "NEXT ACTION" section (sourced
+    from controller-state.yaml's next_task.unlock_condition field) read
+    "Continue from Event 56 ... Immediate IPYNB work: write shipped-namespace
+    tests for the six capabilities that currently have NO valid evidence" --
+    while the controller head was at Event 98 and those six IPYNB
+    capabilities (IPYNB-OUTPUT-001 etc.) had already been re-mapped to
+    shipped-namespace tests on 2026-08-04/05, per
+    shared/format-contracts/ledger-maps/ipynb.yaml's own notes. A fresh
+    agent in a new context trusting this text verbatim -- exactly the usage
+    goal_driver.py's own docstring describes as its purpose -- would have
+    redone already-completed work.
+  expected_behavior: >-
+    next_task.unlock_condition should describe the mission's actual current
+    next action, not a snapshot frozen at whatever event it was last
+    hand-authored.
+  severity: P2
+  reproducibility: ALWAYS_REPRODUCIBLE
+  root_cause_id: RC-FF6-EVIDENCE-DRIFT-001
+  healing_taskcard_id: INLINE-FIX-FI-077
+  root_cause: >-
+    Same root-cause family as FI-075/FI-076: controller-state.yaml's
+    `transition_sequence`/`last_verified_event` fields are kept fresh
+    automatically by `controller_events.py --sync-projection` on every
+    append, but `next_task.unlock_condition` (and the large per-format
+    `*_checkpoint` blocks) are free-text narrative fields with no automatic
+    regeneration -- they only change when an agent deliberately rewrites
+    them, which stopped happening once this session's ora/ubl/xliff/nrrd
+    work started using the ledger-map/build_evidence_ledger.py/
+    contract_reconciler.py machinery instead of the earlier
+    codex-authored SAL-candidate-adjudication workflow those checkpoint
+    blocks describe.
+  verification_verdict: >-
+    Rewrote next_task.unlock_condition with a dated stale-text notice
+    (explaining exactly what was wrong and why), an explicit warning not to
+    trust the *_checkpoint blocks without cross-checking the
+    obligation-reconciliation JSONs first, the current reconciler-verified
+    per-format partial/missing counts as of Event 98, and the live next
+    options from Event 98's own exact_next_action. The original text is
+    preserved verbatim below the notice, explicitly marked as historical,
+    not deleted -- this is a narrative correction, not a destructive edit.
+    Did NOT attempt to rewrite the much larger, more intricate
+    codex-authored *_checkpoint blocks (SAL fact counts, schema graph
+    hashes, authority lock chains) -- those record a different, historical
+    work-stream this session cannot independently verify or safely
+    regenerate; flagging their unreliability in the next_task notice is the
+    proportionate fix, not rewriting content outside this session's
+    competence to verify.
+  disposition: HEALED_AND_VERIFIED
+  closed_at: "2026-08-06T06:15:00Z"
+  evidence:
+    - "plans/strategic/ff6/controller-state.yaml"
+  notes: >-
+    Discovered while investigating why `goal_driver resume`'s per-format
+    numeric counts (accurate, reconciler-backed) coexisted with a "NEXT
+    ACTION" narrative describing already-completed IPYNB work as the
+    immediate priority. The numeric PER-FORMAT STATE table was never wrong;
+    only the free-text narrative field was. A remaining, not-yet-built
+    improvement: goal_driver.py could compute next_task.unlock_condition
+    from the same obligation-reconciliation JSONs it already reads for the
+    per-format table, instead of relying on a hand-authored field, which
+    would make this class of drift structurally impossible rather than
+    requiring a periodic manual sweep to catch it.
