@@ -74,6 +74,14 @@
       "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE: it names the exact positive and negative test selectors for target-language compatibility (exact/more-specific/reverse-specific/incompatible BCP-47 relations, version-gated between XLIFF 2.0 and 2.1) and for five of the six named pluggable QA check categories (missing/unchanged targets, placeholder mismatches, whitespace/punctuation drift, translation consistency), each proven separate from validate()'s conformance report. NOT backed by an independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-XLIFF-OBL-5B4DF04385350948 (fully) and SAL-XLIFF-OBL-7764F24576A4DC32 (partially -- length violations are not implemented) only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "XLIFF-SEC-CITATION-AUDIT-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-xliff-security-limits-001.json",
+      "sha256": "15f42fdeb25a403a632cbeca88772e794950c42e67c540c6384f09d31dfd84cd",
+      "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE. XLIFF-SEC-001's 5 obligations all shared one identical, generic, never-individually-verified 3-test citation -- the same never-audited-security-baseline pattern already found and closed for ubl (UBL-SEC-001, event 162) and nrrd (event 164) this session. Investigated per-obligation: DTD/entity/network-resolution rejection and embedded-payload-never-evaluated were already proven by test_dtd_and_entity_declarations_are_rejected, just never individually cited -- promoted to implemented. Configurable limits with safe defaults and algorithmic-complexity/recursion-depth bounding had the underlying enforcement mechanism (_enforce_tree_limits, effective_limits) already wired into the reader but with zero dedicated tests proving nesting-depth or node-count rejection, or that the DEFAULT limits object (not just an explicitly-passed one) is what gets enforced when the caller passes none -- closed with 5 new tests (test_obligation_security_limits.py) rather than force-citing existing coverage that did not actually exist. Configurable-limits obligation promoted to implemented; the algorithmic-complexity obligation stays honestly partial (depth/count bounded and now tested, but no dedicated complexity-attack-shaped test beyond that exists, and 'checked arithmetic' is trivially satisfied by Python's native big-int semantics rather than an explicit guarantee -- same characterization as the equivalent UBL-SEC-001 obligation). Path-traversal prevention stays honestly missing: no feature anywhere in the package resolves a detached/referenced resource from document content to a filesystem path, so the specific vulnerability class has no attack surface and no test can prove the claim either way -- same precedent as UBL-SEC-001's equivalent obligation. NOT backed by an independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED."
+    },
+    {
       "evidence_id": "XLIFF-SEGMENT-SPLIT-JOIN-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -93,7 +101,7 @@
   "format_id": "xliff",
   "input_digests": {
     "compiled_contract": "72b4fc502116a6df682bbb606e42fe2350d698d07b681a52604f6febe268fca4",
-    "implementation_evidence": "95ab82c2b01c298e49f6bba9c544aec94e994fd5ee9ee2a533c215564b411ef9",
+    "implementation_evidence": "aec1c7d893b5b0be160047bf1d0e052c51bd7fcddb8ee0cee2b8d9d04c2dee18",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "6a66a15d1dba9f0b205634bae4437965fe0ac12a92a95a7c902ca289d1a9474b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -101,22 +109,14 @@
   "obligations": [
     {
       "capability_id": "XLIFF-SEC-001",
-      "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+        "No feature anywhere in the package resolves a detached or referenced resource from parsed document content to a filesystem path -- confirmed by grepping the whole model package for path-joining or resolution logic touching untrusted input (none found); XLIFF's notes/extensions/original-data references are all stored as opaque strings, never dereferenced or fetched. The specific vulnerability class (path traversal via a resolved reference) therefore has no attack surface in the current feature set. Recorded as missing rather than partial because this structural absence-of-attack-surface claim has no dedicated test proving it (same precedent as SAL-UBL-OBL-4CA52BA5DDD8840F, UBL-SEC-001) -- if a future feature adds resource resolution from document content, this obligation needs a real path-confinement test at that time."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-009F2EB91831B248",
-      "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -125,11 +125,9 @@
           "Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/security/limits.py::effective_limits"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "XLIFF-MODEL-001",
@@ -525,20 +523,20 @@
     {
       "capability_id": "XLIFF-SEC-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-SEC-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Nesting depth and node count are bounded (added this slice), directly bounding the primary XML algorithmic-complexity attack surface (deeply nested or oversized documents). Python's arbitrary-precision integers mean size/count accumulation cannot silently overflow the way fixed-width arithmetic could in another language -- same characterization as the equivalent ubl obligation (SAL-UBL-OBL-8396E06EA0EA75FC, UBL-SEC-001)."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+        "No test specifically exercises 'checked arithmetic' as a distinct guarantee independent of Python's native big-int semantics, and no test targets an algorithmic-complexity attack vector beyond depth/node-count (e.g. quadratic-blowup-style attacks distinct from the already-rejected DTD/entity case). The limits mechanism exists and is now tested; a dedicated complexity-attack-shaped test does not."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-130340BC212989D5",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_obligation_security_limits.py::test_a_document_exceeding_a_configured_nesting_limit_is_rejected",
+        "tests/python/xliff/test_obligation_security_limits.py::test_a_document_exceeding_a_configured_node_count_limit_is_rejected"
       ],
       "proof_requirements": {
         "negative": [
@@ -550,7 +548,7 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/security/limits.py::effective_limits"
+        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::_enforce_tree_limits"
       ],
       "status": "partial"
     },
@@ -783,20 +781,17 @@
     {
       "capability_id": "XLIFF-SEC-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-SEC-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "XliffDocument and its children are plain data structures; nothing in the package evaluates or interprets embedded payload content (notes, extensions, inline codes are all stored as inert text/attributes). test_dtd_and_entity_declarations_are_rejected proves a hostile embedded payload (DTD/entity injection) is rejected before any content is evaluated, not silently processed."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-22D7FF9A90E032F8",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_production_namespace.py::test_dtd_and_entity_declarations_are_rejected"
       ],
       "proof_requirements": {
         "negative": [
@@ -806,11 +801,12 @@
           "Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/security/limits.py::effective_limits"
+        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::_parse",
+        "src/python/xliff/src/format_factory/xliff/model/document.py::XliffDocument"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-PARSE-001",
@@ -1064,20 +1060,17 @@
     {
       "capability_id": "XLIFF-SEC-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-SEC-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "test_dtd_and_entity_declarations_are_rejected proves a DOCTYPE/external-entity declaration is rejected before parsing (reject_unsafe_xml, shared with nrrd/ubl via format_factory.core). No code path in the package performs network I/O or loads plugins; nothing in the model resolves an external reference to fetch it."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-3647C8CF8DA89EA9",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_production_namespace.py::test_dtd_and_entity_declarations_are_rejected"
       ],
       "proof_requirements": {
         "negative": [
@@ -1087,11 +1080,11 @@
           "Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/security/limits.py::effective_limits"
+        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::_parse"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-INLINE-001",
@@ -4436,20 +4429,21 @@
     {
       "capability_id": "XLIFF-SEC-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-SEC-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "effective_limits() falls back to XLIFF_DEFAULT_LIMITS when the caller passes none, proving safe defaults are enabled without opt-in (added this slice: a direct test of the fallback plus a test proving the default nesting limit is enforced even with no explicit limits argument at all). test_resource_limits_apply_before_xml_processing proves a custom max_input_bytes limit is enforced; the two new configured-limit tests (added this slice) prove max_nesting_depth and max_xml_nodes are each independently enforced with a precise diagnostic."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-FE51662AAD65CDB3",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_production_namespace.py::test_resource_limits_apply_before_xml_processing",
+        "tests/python/xliff/test_obligation_security_limits.py::test_a_document_exceeding_a_configured_nesting_limit_is_rejected",
+        "tests/python/xliff/test_obligation_security_limits.py::test_a_document_exceeding_a_configured_node_count_limit_is_rejected",
+        "tests/python/xliff/test_obligation_security_limits.py::test_default_limits_apply_without_caller_opt_in",
+        "tests/python/xliff/test_obligation_security_limits.py::test_loading_without_explicit_limits_still_enforces_the_safe_default_nesting_limit"
       ],
       "proof_requirements": {
         "negative": [
@@ -4459,11 +4453,12 @@
           "Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/security/limits.py::effective_limits"
+        "src/python/xliff/src/format_factory/xliff/security/limits.py::effective_limits",
+        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::_enforce_tree_limits"
       ],
-      "status": "partial"
+      "status": "implemented"
     }
   ],
   "promotion_effect": "none",
@@ -4478,6 +4473,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-parse-citation-audit-001.json": "f510c6a7663de155ce4a245fe662a4d5b5f31c372b04595c1c9d6fec95089ef0",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-preservation-mode-001.json": "3ce322c7f4990e64fa3573f6ebc57fb2cccf08767f18604bce82078c88136ec2",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-qa-checks-001.json": "00a6d7c1b4d2fc48359f0484a08d0d639ee8fe136b11904870bd1acdda0e4d5c",
+    "reports/skills-rff6/skill-transcripts/product-source-task-xliff-security-limits-001.json": "15f42fdeb25a403a632cbeca88772e794950c42e67c540c6384f09d31dfd84cd",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-segment-split-join-001.json": "16e92d9df77d60b1ffb85830f63759c78034e3b5168faabc58102b168c1c904d",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-state-transitions-001.json": "368a286339e4990afa645543f86d2b1968bfc693706a6c170b366fecc18f432b",
     "src/python/xliff/src/format_factory/xliff/codec/preservation.py": "117c0c1dd41f34535267d67b1d387302ac3e5d16af927a5a44a58ed506910768",
@@ -4499,18 +4495,19 @@
     "tests/python/xliff/test_obligation_notes_and_annotations.py": "357ae9aace9aab3cbb6bcda064a928b4934ccd7b6720094452aaedd75b69e587",
     "tests/python/xliff/test_obligation_preservation_mode.py": "f30f484eed1a8585828f01fb325a79f22eb0138633afbc872629a67841f140fe",
     "tests/python/xliff/test_obligation_qa_checks.py": "41662c596cd1ccae6ad779fadccad83b97a5263e2b8db4cca28f00d126de8f4c",
+    "tests/python/xliff/test_obligation_security_limits.py": "cee5018bd3af729036aaa146067f1d37932992869a27e825dc93b4b3f703b051",
     "tests/python/xliff/test_obligation_state_transitions.py": "eb2fb6fa0f4503175da1904986563ca1a1ee97f317067a2d29466c5c35c9c1bf",
     "tests/python/xliff/test_production_namespace.py": "907de371555ded7c152d23d9748884e27915eb7ca93ffde5e10659e6266448d6"
   },
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 50,
-      "missing": 27,
-      "partial": 65
+      "implemented": 53,
+      "missing": 28,
+      "partial": 61
     },
     "total": 142,
-    "unresolved": 92
+    "unresolved": 89
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

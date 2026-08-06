@@ -50,6 +50,31 @@ execution_evidence:
     files now contribute 87 tests (15 + 22 + 11 + 25 + 14). A green suite here says very little about
     the package that would be released. Binds no individual selector outcome to an obligation, so nothing
     here is verification; every obligation is recorded `partial` at most.'
+- evidence_id: XLIFF-SEC-CITATION-AUDIT-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-security-limits-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike XLIFF-BASELINE-SUITE. XLIFF-SEC-001's 5 obligations all shared one identical,
+    generic, never-individually-verified 3-test citation -- the same never-audited-security-baseline pattern
+    already found and closed for ubl (UBL-SEC-001, event 162) and nrrd (event 164) this session. Investigated
+    per-obligation: DTD/entity/network-resolution rejection and embedded-payload-never-evaluated were already
+    proven by test_dtd_and_entity_declarations_are_rejected, just never individually cited -- promoted to
+    implemented. Configurable limits with safe defaults and algorithmic-complexity/recursion-depth bounding
+    had the underlying enforcement mechanism (_enforce_tree_limits, effective_limits) already wired into the
+    reader but with zero dedicated tests proving nesting-depth or node-count rejection, or that the DEFAULT
+    limits object (not just an explicitly-passed one) is what gets enforced when the caller passes none --
+    closed with 5 new tests (test_obligation_security_limits.py) rather than force-citing existing coverage
+    that did not actually exist. Configurable-limits obligation promoted to implemented; the
+    algorithmic-complexity obligation stays honestly partial (depth/count bounded and now tested, but no
+    dedicated complexity-attack-shaped test beyond that exists, and 'checked arithmetic' is trivially satisfied
+    by Python's native big-int semantics rather than an explicit guarantee -- same characterization as the
+    equivalent UBL-SEC-001 obligation). Path-traversal prevention stays honestly missing: no feature anywhere
+    in the package resolves a detached/referenced resource from document content to a filesystem path, so the
+    specific vulnerability class has no attack surface and no test can prove the claim either way -- same
+    precedent as UBL-SEC-001's equivalent obligation. NOT backed by an independent reference implementation --
+    SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not
+    VERIFIED.
 - evidence_id: XLIFF-STATE-SELECTOR-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-state-transitions-001.json
   expected_result: PASS
@@ -297,22 +322,14 @@ execution_evidence:
 obligations:
 - obligation_id: SAL-XLIFF-OBL-009F2EB91831B248
   capability_id: XLIFF-SEC-001
-  status: partial
-  source_symbols:
-  - src/python/xliff/src/format_factory/xliff/security/limits.py::effective_limits
-  positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
   negative_test_selectors: []
-  execution_evidence_ids:
-  - XLIFF-BASELINE-SUITE
-  implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  execution_evidence_ids: []
+  implemented_behavior: []
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each security_limits baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - 'No feature anywhere in the package resolves a detached or referenced resource from parsed document content to a filesystem path -- confirmed by grepping the whole model package for path-joining or resolution logic touching untrusted input (none found); XLIFF''s notes/extensions/original-data references are all stored as opaque strings, never dereferenced or fetched. The specific vulnerability class (path traversal via a resolved reference) therefore has no attack surface in the current feature set. Recorded as missing rather than partial because this structural absence-of-attack-surface claim has no dedicated test proving it (same precedent as SAL-UBL-OBL-4CA52BA5DDD8840F, UBL-SEC-001) -- if a future feature adds resource resolution from document content, this obligation needs a real path-confinement test at that time.'
   proof_requirements:
     positive:
     - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
@@ -601,20 +618,18 @@ obligations:
   capability_id: XLIFF-SEC-001
   status: partial
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/security/limits.py::effective_limits
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::_enforce_tree_limits
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  - tests/python/xliff/test_obligation_security_limits.py::test_a_document_exceeding_a_configured_nesting_limit_is_rejected
+  - tests/python/xliff/test_obligation_security_limits.py::test_a_document_exceeding_a_configured_node_count_limit_is_rejected
   negative_test_selectors: []
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-SEC-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'Nesting depth and node count are bounded (added this slice), directly bounding the primary XML algorithmic-complexity attack surface (deeply nested or oversized documents). Python''s arbitrary-precision integers mean size/count accumulation cannot silently overflow the way fixed-width arithmetic could in another language -- same characterization as the equivalent ubl obligation (SAL-UBL-OBL-8396E06EA0EA75FC, UBL-SEC-001).'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each security_limits baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - 'No test specifically exercises ''checked arithmetic'' as a distinct guarantee independent of Python''s native big-int semantics, and no test targets an algorithmic-complexity attack vector beyond depth/node-count (e.g. quadratic-blowup-style attacks distinct from the already-rejected DTD/entity case). The limits mechanism exists and is now tested; a dedicated complexity-attack-shaped test does not.'
   proof_requirements:
     positive:
     - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
@@ -777,22 +792,19 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-22D7FF9A90E032F8
   capability_id: XLIFF-SEC-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/security/limits.py::effective_limits
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::_parse
+  - src/python/xliff/src/format_factory/xliff/model/document.py::XliffDocument
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  - tests/python/xliff/test_production_namespace.py::test_dtd_and_entity_declarations_are_rejected
   negative_test_selectors: []
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-SEC-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each security_limits baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - 'XliffDocument and its children are plain data structures; nothing in the package evaluates or interprets embedded payload content (notes, extensions, inline codes are all stored as inert text/attributes). test_dtd_and_entity_declarations_are_rejected proves a hostile embedded payload (DTD/entity injection) is rejected before any content is evaluated, not silently processed.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
@@ -968,22 +980,18 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-3647C8CF8DA89EA9
   capability_id: XLIFF-SEC-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/security/limits.py::effective_limits
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::_parse
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  - tests/python/xliff/test_production_namespace.py::test_dtd_and_entity_declarations_are_rejected
   negative_test_selectors: []
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-SEC-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each security_limits baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - 'test_dtd_and_entity_declarations_are_rejected proves a DOCTYPE/external-entity declaration is rejected before parsing (reject_unsafe_xml, shared with nrrd/ubl via format_factory.core). No code path in the package performs network I/O or loads plugins; nothing in the model resolves an external reference to fetch it.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
@@ -3387,22 +3395,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-FE51662AAD65CDB3
   capability_id: XLIFF-SEC-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/security/limits.py::effective_limits
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::_enforce_tree_limits
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  - tests/python/xliff/test_production_namespace.py::test_resource_limits_apply_before_xml_processing
+  - tests/python/xliff/test_obligation_security_limits.py::test_a_document_exceeding_a_configured_nesting_limit_is_rejected
+  - tests/python/xliff/test_obligation_security_limits.py::test_a_document_exceeding_a_configured_node_count_limit_is_rejected
+  - tests/python/xliff/test_obligation_security_limits.py::test_default_limits_apply_without_caller_opt_in
+  - tests/python/xliff/test_obligation_security_limits.py::test_loading_without_explicit_limits_still_enforces_the_safe_default_nesting_limit
   negative_test_selectors: []
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-SEC-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each security_limits baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - 'effective_limits() falls back to XLIFF_DEFAULT_LIMITS when the caller passes none, proving safe defaults are enabled without opt-in (added this slice: a direct test of the fallback plus a test proving the default nesting limit is enforced even with no explicit limits argument at all). test_resource_limits_apply_before_xml_processing proves a custom max_input_bytes limit is enforced; the two new configured-limit tests (added this slice) prove max_nesting_depth and max_xml_nodes are each independently enforced with a precise diagnostic.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative

@@ -1,0 +1,54 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-security-limits-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-07T03:00:00Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_SECURITY_LIMITS_001",
+    "task_kind": "obligation-closure-citation-audit-plus-new-tests",
+    "root_cause": "Following event 164's exact_next_action (XLIFF-SEC-001's 5-fact security baseline is the most promising unstarted lead, now backed by two concrete precedents -- ubl's and nrrd's security findings -- suggesting source-level empirical investigation would be productive), investigated all 5 XLIFF-SEC-001 obligations, all still sharing one generic 3-test citation from event 154 onward.",
+    "obligation_targeted": "5 obligations in XLIFF-SEC-001 -- see the XLIFF-SEC-CITATION-AUDIT-SELECTOR-PROOF execution_evidence entry.",
+    "acceptance_evidence": "3 promoted to implemented (2 via existing but never-individually-cited test coverage, 1 via 5 new tests); 1 stays honestly partial; 1 stays honestly missing.",
+    "regression_tier": "full xliff package suite (tests/python/xliff)"
+  },
+  "execution_steps": [
+    "1. Read all 5 XLIFF-SEC-001 rule_texts and found them near-identical in shape to UBL-SEC-001's 5 facts (already resolved this session, event 162): network/execution/plugin prevention, untrusted-payload handling, configurable limits with safe defaults, algorithmic-complexity guards, path-traversal prevention.",
+    "2. Searched for a dedicated xliff security test file (none found) and read test_production_namespace.py's existing tests directly: found test_dtd_and_entity_declarations_are_rejected (DTD/entity/XXE rejection, already proven) and test_resource_limits_apply_before_xml_processing (a bare max_input_bytes check), but no nesting-depth or node-count rejection test, and no test proving the DEFAULT limits object itself gets enforced when the caller passes none.",
+    "3. Read reader.py directly and confirmed _enforce_tree_limits already calls limits.enforce('max_xml_nodes', ...) and limits.enforce('max_nesting_depth', ...) on every parse, and effective_limits() already falls back to XLIFF_DEFAULT_LIMITS -- the enforcement mechanism was real and wired in, just never exercised by a dedicated test. Confirmed interactively (constructing a 50-level-deep document against a tight max_nesting_depth=5 limit) that ResourceLimitError propagates correctly before writing any test.",
+    "4. Wrote tests/python/xliff/test_obligation_security_limits.py (5 tests: baseline document loads within default nesting, configured nesting-depth limit rejects, configured node-count limit rejects, effective_limits(None) returns the real default object with positive fields, and a document just over the DEFAULT nesting limit -- not a custom one -- is rejected with no limits argument passed at all). Deliberately avoided constructing a 64MB payload to test the default max_input_bytes (XLIFF_DEFAULT_LIMITS.max_input_bytes is 64MB) since that would be slow and wasteful for a unit test; tested the default-fallback guarantee directly against effective_limits() and the cheaper default-nesting-limit path instead.",
+    "5. Ran in isolation (5 passed), ruff clean, full xliff suite (318 passed, was 313, +5, zero regressions). No production source needed changing -- the security machinery already existed and worked, it was purely untested.",
+    "6. Checked SAL-XLIFF-OBL-009F2EB91831B248 (path traversal prevention) the same way as the UBL-SEC-001 precedent: grepped the whole xliff model package for path-joining/resolution logic touching untrusted document content, found none -- notes/extensions/original-data references are all opaque stored strings, never dereferenced. Recorded honestly as missing (no attack surface, no test can prove the claim either way) rather than force-promoted, matching the UBL-SEC-001 precedent exactly.",
+    "7. Characterized SAL-XLIFF-OBL-130340BC212989D5 (algorithmic complexity/checked arithmetic) as honestly partial: depth/node-count now bounded and tested, but no dedicated complexity-attack-shaped test beyond that exists, and Python's native big-int semantics trivially satisfy 'checked arithmetic' rather than an explicit guarantee -- same characterization as the equivalent already-resolved UBL-SEC-001 obligation.",
+    "8. Applied the patch-script pattern. Added the new XLIFF-SEC-CITATION-AUDIT-SELECTOR-PROOF execution_evidence entry, validated the YAML parses (142 total obligations, XLIFF-SEC-001 now 3 implemented / 1 partial / 1 missing), and ran the reconciler."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/xliff.yaml",
+    "tests/python/xliff/test_obligation_security_limits.py"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/xliff.yaml",
+    "tests/python/xliff/test_obligation_security_limits.py"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_security_limits.py -q -- 5 passed (new)",
+    ".venv/Scripts/python -m ruff check tests/python/xliff/test_obligation_security_limits.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 318 passed (was 313, +5, 0 regressions)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 3,
+    "obligations_total_for_format": 142,
+    "xliff_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against a reference XLIFF implementation. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "obligations_moved_breakdown": "3 of 5 obligations moved to implemented (2 via existing-but-never-cited coverage, 1 via new tests proving the already-wired-in limits mechanism). 1 stays partial, 1 stays missing, both with precise, specific, non-generic reasons directly parallel to the UBL-SEC-001 precedent.",
+    "session_pattern_note": "This is the third format this session where the same security-baseline pattern (generic 3-test citation across 5 near-identical facts about network/execution/limits/complexity/path-traversal) was found and closed with the same investigative discipline: nrrd (via test_production_namespace.py's existing DTD/limits tests, events 163-164), ubl (UBL-SEC-001, event 162), and now xliff. The pattern appears architecturally consistent across formats sharing the format_factory.core security module."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
