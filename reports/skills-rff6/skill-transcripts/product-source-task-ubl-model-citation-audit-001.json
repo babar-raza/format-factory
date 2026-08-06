@@ -1,0 +1,49 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-model-citation-audit-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T23:15:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_MODEL_CITATION_AUDIT_001",
+    "task_kind": "obligation-closure-citation-audit",
+    "root_cause": "Following event 157's exact_next_action (ubl and nrrd remain completely unaudited this session, ubl has 172 unresolved obligations, more than double any other format's remaining backlog), surveyed ubl's clusters: 11 of 18 capability_ids (163 obligations) share single generic citations, the same pattern proven productive across xliff/ora/ipynb/safetensors this session. Started with the largest cluster, UBL-MODEL-001 (35 obligations).",
+    "obligation_targeted": "35 obligations in UBL-MODEL-001 -- see the UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF execution_evidence entry.",
+    "acceptance_evidence": "20 promoted to implemented via direct citation of existing dedicated tests (verified by grep before citing); 13 stay honestly partial with precise, specific reasons (not the generic placeholder); 2 stay honestly missing (confirmed unbuilt via source grep).",
+    "regression_tier": "full ubl package suite (tests/python/ubl), shipped-namespace tests only"
+  },
+  "execution_steps": [
+    "1. Delegated initial research to an Explore subagent: map each of the 35 UBL-MODEL-001 rule_texts to specific proving tests, flag same-cluster duplicates, flag facts that look like they belong to one of ubl's 10 other still-generic sibling clusters (UBL-VALUES-001/DOCTYPES-001/VALIDATE-001/EXT-001/etc.), and say 'no clear existing test found' rather than guess. The subagent also read src/format_factory/ubl/model/ directly and reported the object model is a generic XmlNode-based lossless tree with typed accessor/projection functions, not 91 bespoke per-document-type classes -- important context that shaped every subsequent decision.",
+    "2. The subagent's own verdict tally was arithmetically inconsistent in its summary (admitted mid-response); recounted the 35 individual verdict lines by hand to get the real breakdown: 12 STRONG, 4 PARTIAL, 4 SAME_CLUSTER_DUPLICATE, 13 CROSS_CLUSTER_DUPLICATE, 2 NONE.",
+    "3. Independently verified every claim before trusting it: grepped every cited test function name across all relevant test files (~30 names) to confirm existence; confirmed every cited test file imports format_factory.ubl (not the deprecated bare ubl.* shadow package used by 9 sibling test files, which were correctly excluded); read root_types.py directly and discovered each of the 91 document roots DOES have its own typed UblDocument subclass (ROOT_CLASSES dict) -- this corrected the subagent's blanket 'per-document-type facts are unbuilt, belongs to UBL-DOCTYPES-001' framing for 5 obligations (Order x2, ApplicationResponse, DespatchAdvice, CreditNote, Invoice): the document-root/namespace half of each claim IS proven for all 91 roots, only the named-child-line-aggregate half (cac:OrderLine etc. as a typed composite) is unbuilt except for Invoice/InvoiceLine, which is fully typed both halves.",
+    "4. Key correctness decision: since UBL-MODEL-001's 13 CROSS_CLUSTER_DUPLICATE-flagged obligations point to sibling clusters (UBL-VALUES-001, UBL-DOCTYPES-001, UBL-VALIDATE-001, UBL-EXT-001) that are themselves STILL fully generic and unaudited (unlike the safetensors pattern where cross-references pointed to already-implemented evidence), did NOT write 'cross-capability duplicate of X (implemented)' citations that would misrepresent an unresolved sibling as resolved. Instead cited the real underlying tests directly against the MODEL-001 obligation itself wherever real evidence existed, and left a note that the same fact likely also lives in a named sibling cluster for that cluster's own future audit.",
+    "5. Verified two claimed genuine gaps (no Party class, no PostalAddress/Address class) by grepping the entire model package for 'class Party'/'class PostalAddress'/'class Address' directly -- confirmed absent, left honestly missing rather than force-built (building a full Party/Address model is a substantial feature addition beyond a citation-audit tick's scope).",
+    "6. Verified two claimed genuine gaps in cardinality/validation (no XSD-conformance validation, no element-order enforcement) by reading validator.py and XmlNode directly: validator.py's own docstring explicitly states 'this chassis validation is deliberately not an XSD-conformance claim... full schema and cardinality validation remains a mandatory open obligation'; XmlNode preserves whatever order was in the source document for round-trip fidelity but nothing checks that order against the schema-declared sequence. Left both honestly partial with these precise, sourced reasons instead of the generic placeholder.",
+    "7. Applied the patch-script pattern (render_block with explicit `key: []` for empty lists) to write: 20 implemented, 13 partial (precise reasons), 2 missing (precise reasons). Added the new UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF execution_evidence entry, validated the YAML parses (194 total obligations, MODEL-001 now 20 implemented / 13 partial / 2 missing), and ran the reconciler."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- unchanged from before this slice (0 source or test changes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 20,
+    "obligations_total_for_format": 194,
+    "ubl_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against a reference UBL implementation. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "obligations_moved_breakdown": "20 of 35 obligations moved to implemented via direct citation of real, verified, pre-existing tests. 13 stay honestly partial with precise reasons. 2 stay honestly missing with precise reasons. This is ubl's first large-scale citation-audit sweep this session -- UBL-PARSE-001 (29), UBL-VALUES-001 (19), UBL-DOCTYPES-001 (22), UBL-REF-001 (17), UBL-VALIDATE-001 (14), UBL-EXT-001 (8), UBL-CALC-001 (7), UBL-SEC-001 (5), UBL-EDIT-001 (5), UBL-WRITE-001 (2) remain untouched (128 obligations), several of which (VALUES-001, DOCTYPES-001) should now benefit from this tick's direct findings even though no formal cross-reference was written.",
+    "why_no_cross_capability_duplicate_framing_was_used": "Unlike the safetensors PAYLOAD-001/ADAPTER-001 ticks, where cross-references pointed to already-implemented sibling evidence, ubl's other 10 generic clusters are themselves still fully unaudited. Writing 'cross-capability duplicate of X (implemented)' would have been false -- X is not implemented. This tick cites the real tests directly against MODEL-001's own obligations instead, and documents which facts likely overlap with named sibling clusters for their own future audit to reuse."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

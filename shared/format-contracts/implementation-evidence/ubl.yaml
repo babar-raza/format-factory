@@ -240,6 +240,37 @@ execution_evidence:
     GAP-008 rule, not VERIFIED. Covers SAL-UBL-OBL-C717DEB32BC6F815 and
     SAL-UBL-OBL-DE7D98EAE4344EDA only; it supports no other obligation
     and promotes no product state.
+- evidence_id: UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-model-citation-audit-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike UBL-BASELINE-SUITE. UBL-MODEL-001's 35 obligations all shared one identical,
+    generic, never-individually-verified 12-test citation. Investigated per-obligation, verifying every
+    cited test name directly and reading the model source (root_types.py, aggregates.py, values.py,
+    charges.py, reference.py, typed.py) before citing anything: 20 obligations are proven directly by
+    dedicated existing tests and promoted to `implemented` (InvoiceLine/Item/TaxTotal/LegalMonetaryTotal/
+    AllowanceCharge/Price/ExternalReference typed composites, Amount/Quantity/Code/Identifier/BinaryObject
+    typed values, the 91-root namespace convention, customization/profile/version metadata, and the
+    umbrella typed-composite/lexical-preservation principle). 13 stay honestly `partial` with precise,
+    specific reasons: the CBC/CAC namespace conventions are implicit but never asserted as standalone
+    facts; PaymentMeans is missing its payee-financial-account field; element order is confirmed unenforced
+    (validator.py performs no sequence-order check); XSD-conformance validation is confirmed unbuilt
+    (validator.py's own docstring says so); ext:UBLExtensions is preserved losslessly but its specific
+    structural constraints (first-position, single-foreign-apex) are not separately validated; and four
+    per-document-type obligations (Order x2, ApplicationResponse, DespatchAdvice, CreditNote) have their
+    document-root/namespace half proven by the 91-root test but no typed line-aggregate class the way
+    InvoiceLine exists for Invoice. 2 stay honestly `missing`: no Party or PostalAddress typed composite
+    exists anywhere in the model (confirmed by grepping the whole package), genuine unbuilt gaps, not
+    force-promoted. Zero new source or test code. Many of these facts are also tracked under UBL's ten
+    other still-fully-generic sibling clusters (UBL-VALUES-001, UBL-DOCTYPES-001, UBL-VALIDATE-001,
+    UBL-EXT-001) -- NOT cross-referenced to those clusters here because none of them are resolved yet
+    (unlike the safetensors pattern where cross-references pointed to already-implemented evidence);
+    this MODEL-001 investigation instead cites the real underlying tests directly, leaving the sibling
+    clusters for their own dedicated audit passes to reuse or independently re-derive. NOT backed by an
+    independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per the
+    execution-recovery directive's GAP-008 rule, not VERIFIED. Promotes no product state beyond the 20
+    obligations moved to `implemented`.
 obligations:
 - obligation_id: SAL-UBL-OBL-020F06E51DE6AB65
   capability_id: UBL-LIFECYCLE-001
@@ -319,48 +350,14 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-03AF3A7D3A76F362
   capability_id: UBL-MODEL-001
-  status: partial
-  source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
-  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
-  positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
   negative_test_selectors: []
-  execution_evidence_ids:
-  - UBL-BASELINE-SUITE
-  implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  execution_evidence_ids: []
+  implemented_behavior: []
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'validator.py''s own docstring states this chassis validation "is deliberately not an XSD-conformance claim" and that "full schema and cardinality validation remains a mandatory open obligation." This is a real, confirmed, explicitly self-documented gap -- not force-promoted and not left as a generic placeholder.'
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -421,46 +418,21 @@ obligations:
   capability_id: UBL-MODEL-001
   status: partial
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
-  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
   - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
   - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
   - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Identifier
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_typed_projection.py::test_an_id_element_projects_with_its_scheme_attributes
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_identifier_preserves_its_scheme_attributes
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'Every cbc:-namespaced element (ID, Amount, Quantity, Code) is exercised and correctly typed across dozens of tests, individually proving each concrete leaf type.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'No single test asserts the CommonBasicComponents-2/cbc-namespace convention itself as a standalone architectural fact -- it is only implicit in the per-type behavior of Amount/Quantity/Code/Identifier, never checked directly (e.g. no test asserts a cbc:-prefixed element''s namespace URI equals CommonBasicComponents-2).'
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -537,48 +509,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-0E8FA39856DF47F2
   capability_id: UBL-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
-  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Identifier
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::identifier_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_identifier_preserves_its_scheme_attributes
+  - tests/python/ubl/test_obligation_typed_projection.py::test_an_id_element_projects_with_its_scheme_attributes
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'Identifier carries optional scheme_id/scheme_agency_id fields (mapping to schemeID/schemeAgencyID); scheme-attribute preservation is directly tested at both the value-type and the XML-projection level.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -766,46 +710,17 @@ obligations:
   capability_id: UBL-MODEL-001
   status: partial
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
-  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
+  - src/python/ubl/src/format_factory/ubl/model/root_types.py::Order
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'Order is one of the 91 typed document roots; test_all_91_roots_have_typed_roundtrip proves its root element, namespace, and round-trip fidelity (parametrized over the full root inventory including "Order").'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'Unlike InvoiceLine, no typed OrderLine dataclass exists anywhere in the model -- order lines are preserved generically as part of the lossless XmlNode tree (locatable via typed.py::find by local name) rather than modeled as a typed composite. The document-root/namespace half of this claim is proven; the named-child-aggregate-as-typed-composite half is not.'
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -844,48 +759,21 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-1948F05A4C147BA1
   capability_id: UBL-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
-  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::reconcile_invoice
   - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_a_consistent_invoice_reconciles_clean
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_a_line_total_mismatch_is_reported
+  - tests/python/ubl/test_obligation_business_calculation.py::test_default_tolerance_is_exact_zero
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'reconcile_invoice() is explicitly a report-only diagnostic (not schema-enforced) precisely because the XSD does not encode cross-field arithmetic reconciliation -- test_a_consistent_invoice_reconciles_clean and test_a_line_total_mismatch_is_reported prove clean and mismatched totals are both reported (not rejected at parse time), and test_default_tolerance_is_exact_zero proves the reconciliation tolerance default. Amount is decimal-typed and requires currencyID (see UBL-VALUES-001''s overlapping AmountType fact).'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -943,48 +831,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-1D41106A5EF340AB
   capability_id: UBL-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
-  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
+  - src/python/ubl/src/format_factory/ubl/model/reference.py::ExternalReference
+  - src/python/ubl/src/format_factory/ubl/model/reference.py::external_reference_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_external_reference.py::TestExternalReferenceConstruction::test_every_field_is_independently_settable
+  - tests/python/ubl/test_obligation_external_reference.py::TestExternalReferenceProjection::test_projecting_a_partial_element_leaves_the_rest_none
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'ExternalReference is a dataclass with exactly URI/DocumentHash/MimeCode/FileName/Description, all independently optional; test_every_field_is_independently_settable proves each field can be set alone and test_projecting_a_partial_element_leaves_the_rest_none proves a partial XML element leaves unset fields None rather than raising.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -1171,48 +1031,19 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-21CA9DE1B597B083
   capability_id: UBL-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
-  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
   - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::quantity_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_business_value_types.py::test_a_quantity_carries_an_optional_unit_code
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'Quantity carries an optional unit_code field mapping to the unitCode attribute; directly tested.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -1373,48 +1204,21 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-2972A8BB421227B8
   capability_id: UBL-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
-  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::invoice_line_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
   - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
   - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_invoice_lines_project_from_xml
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'InvoiceLine carries exactly id/invoiced_quantity/line_extension_amount/item as required fields; required-field enforcement (raises on a missing component) and XML projection are both directly tested.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -1547,48 +1351,19 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-30FEA2365B54D2D5
   capability_id: UBL-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
-  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
+  - src/python/ubl/src/format_factory/ubl/model/values.py::BinaryObject
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::binary_object_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_business_value_types.py::test_a_binary_object_requires_a_mime_code
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'BinaryObject requires a mime_code field (mapping to the required mimeCode attribute on UDT BinaryObjectType); directly tested.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -1596,48 +1371,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-314B2CBE504470CC
   capability_id: UBL-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
-  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::item_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
   - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_carries_optional_identifiers_and_classification_codes
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'Item requires a name and carries optional identifiers/classification_codes tuples; both the required-name enforcement and the optional identification/classification elements are directly tested.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -1852,48 +1599,14 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-3B43504E9C74003C
   capability_id: UBL-MODEL-001
-  status: partial
-  source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
-  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
-  positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
   negative_test_selectors: []
-  execution_evidence_ids:
-  - UBL-BASELINE-SUITE
-  implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  execution_evidence_ids: []
+  implemented_behavior: []
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'XmlNode preserves whatever child element order was present in the source document (a tuple, not a set) for round-trip fidelity, but nothing in the model or validator.py checks that order against the schema-declared sequence model to determine document validity. Confirmed by reading validator.py directly: it performs no sequence-order validation. Same underlying gap as SAL-UBL-OBL-B68F5F29F11197D6 in this cluster.'
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -1978,46 +1691,21 @@ obligations:
   capability_id: UBL-MODEL-001
   status: partial
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
-  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
   - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
   - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
   - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Identifier
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_typed_projection.py::test_an_id_element_projects_with_its_scheme_attributes
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_identifier_preserves_its_scheme_attributes
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'Restates SAL-UBL-OBL-0AFE5C0F7BA8AC02''s CBC-namespace/typed-leaf-value fact from the physical-XSD-file angle rather than the runtime-model angle; every cbc:-namespaced element is correctly typed and tested (same evidence).'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'Same gap as SAL-UBL-OBL-0AFE5C0F7BA8AC02: no test asserts the CBC-namespace convention as a standalone fact, and no code in this package parses the physical UBL-CommonBasicComponents-2.3.xsd file directly.'
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -2310,48 +1998,18 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-4A8AFD0D68F5B2B8
   capability_id: UBL-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'This restates SAL-UBL-OBL-8AB9CEA1A6909770''s runtime-proven per-type-namespace fact from the physical-maindoc-XSD-file angle rather than the runtime-model angle. No code in this package parses the physical XSD files directly, but the namespace convention they define (urn:oasis:names:specification:ubl:schema:xsd:<Type>-2 per document type) is fully implemented and tested across all 91 roots by the same evidence.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -2518,46 +2176,17 @@ obligations:
   capability_id: UBL-MODEL-001
   status: partial
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
-  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
+  - src/python/ubl/src/format_factory/ubl/model/root_types.py::Order
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'Same underlying fact as SAL-UBL-OBL-16C93B2852CE2EAC in this cluster (Order document root, namespace, and OrderLine aggregate), restated with an "OASIS UBL 2.1" framing instead of "UBL maindoc schemas." The document-root/namespace half is proven by the same 91-root test.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'Same gap as SAL-UBL-OBL-16C93B2852CE2EAC: no typed OrderLine dataclass exists; order lines are only generically preserved, not modeled as a typed composite.'
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -2966,46 +2595,20 @@ obligations:
   capability_id: UBL-MODEL-001
   status: partial
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
-  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
   - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::payment_means_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_payment_means_projects_with_its_code_and_due_date
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_payment_means_requires_a_code
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_payment_due_date_is_optional
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'PaymentMeans models payment_means_code (required) and payment_due_date (optional), both directly tested.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'PaymentMeans carries no payee-financial-account field at all -- the payee financial account element named in this obligation''s rule_text is genuinely unbuilt, not merely untested.'
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -3065,48 +2668,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-6B2C75D678FE010A
   capability_id: UBL-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
-  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::LegalMonetaryTotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::legal_monetary_total_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_a_legal_monetary_total_requires_line_extension_and_payable
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_a_legal_monetary_total_projects_its_optional_amounts
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'LegalMonetaryTotal carries exactly line_extension/tax_exclusive/tax_inclusive/allowance_total/charge_total/payable amounts; required-vs-optional amount handling is directly tested for both cases.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -3293,48 +2868,14 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-75FA432A5A176927
   capability_id: UBL-MODEL-001
-  status: partial
-  source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
-  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
-  positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
   negative_test_selectors: []
-  execution_evidence_ids:
-  - UBL-BASELINE-SUITE
-  implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  execution_evidence_ids: []
+  implemented_behavior: []
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'No Party dataclass or typed composite exists anywhere in the model -- confirmed by grepping the entire model package for "class Party". Party-suffixed elements are only generically tagged by query.py''s business_role() heuristic (a document-query helper, not a typed model), with no identification, name, postal-address, tax-scheme, or contact sub-structure modeled or tested. This is a genuine, unbuilt gap, not a citation-audit opportunity.'
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -3367,46 +2908,17 @@ obligations:
   capability_id: UBL-MODEL-001
   status: partial
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
-  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
+  - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'ApplicationResponse is one of the 91 typed document roots; test_all_91_roots_have_typed_roundtrip proves its root element, namespace, and round-trip fidelity.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'No typed DocumentResponse dataclass exists anywhere in the model -- business-level acknowledgement aggregates are preserved generically as part of the lossless XmlNode tree rather than modeled as a typed composite. The document-root/namespace half of this claim is proven; the named-child-aggregate-as-typed-composite half is not.'
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -3882,48 +3394,21 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-8AACB36579F7436B
   capability_id: UBL-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
-  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
   - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_allowance_charge_projects_with_its_indicator_and_amount
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_the_charge_indicator_distinguishes_a_charge_from_an_allowance
+  - tests/python/ubl/test_obligation_business_calculation.py::test_allowance_charge_reconciliation_ignores_line_level_entries
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'AllowanceCharge models charge_indicator/amount/reason_code; the boolean charge/allowance distinction and document-vs-line-level reconciliation scoping are both directly tested.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -3931,48 +3416,19 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-8AB9CEA1A6909770
   capability_id: UBL-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_production_namespace.py::test_wrong_namespace_and_preview_profile_fail_closed
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'ROOT_CLASSES maps every one of the 91 typed document roots to a subclass whose namespace follows urn:oasis:names:specification:ubl:schema:xsd:<Type>-2 uniformly; test_all_91_roots_have_typed_roundtrip is parametrized over all 91 roots (checks root_name, typed class identity, validity, and round-trip), and test_wrong_namespace_and_preview_profile_fail_closed proves a namespace mismatch is rejected rather than silently accepted.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -4226,46 +3682,19 @@ obligations:
   capability_id: UBL-MODEL-001
   status: partial
   source_symbols:
+  - src/python/ubl/src/format_factory/ubl/codec/preservation.py::canonicalize
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'preservation.py generically round-trips a root-level ext:UBLExtensions container (dropping it in CANONICAL mode, preserving it losslessly by default); test_unknown_extension_is_preserved_semantically proves a foreign-namespaced extension element and its attributes/text survive a full round-trip unchanged.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'The specific structural constraints named in this obligation -- that UBLExtensions must be the first optional component in sequence order, that each UBLExtension permits exactly one foreign-namespaced apex element, and "lax" schema processing semantics for that content -- are not separately validated or enforced. The container is preserved losslessly as whatever generic subtree shape the input document already had, not checked against these specific structural rules.'
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -4697,48 +4126,21 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-B2AEC196C0FA7268
   capability_id: UBL-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
-  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::tax_total_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_a_tax_total_requires_a_tax_amount
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_a_tax_total_projects_with_its_subtotals
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'TaxTotal/TaxSubtotal model exactly cbc:TaxAmount plus nested TaxSubtotal elements per category; both construction (required TaxAmount) and XML projection (subtotal list) are directly tested.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -4874,46 +4276,22 @@ obligations:
   capability_id: UBL-MODEL-001
   status: partial
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
-  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::LegalMonetaryTotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
   - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
   - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
   - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'Cardinality and optionality are reflected and diagnosed at construction time across every typed aggregate (InvoiceLine, LegalMonetaryTotal, TaxTotal, Price, PaymentMeans, AllowanceCharge all raise on a missing required field).'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'Element order is not reflected or enforced anywhere in the model or validator -- the same confirmed gap as SAL-UBL-OBL-3B43504E9C74003C in this cluster. XmlNode preserves whatever child order was present in the source document for round-trip fidelity, but nothing validates that order against the schema-declared sequence.'
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -4921,48 +4299,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-BCF0A0E445F55DD6
   capability_id: UBL-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_profile_identifiers.py::test_customization_id_is_exposed_when_declared
+  - tests/python/ubl/test_obligation_profile_identifiers.py::test_profile_id_is_exposed_when_declared
+  - tests/python/ubl/test_obligation_profile_identifiers.py::test_customization_and_profile_and_version_are_read_independently
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'UblDocument.customization_id and .profile_id read cbc:CustomizationID/cbc:ProfileID directly; presence, absence, and independence from each other and from the version identifier are all directly tested.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -4972,46 +4322,17 @@ obligations:
   capability_id: UBL-MODEL-001
   status: partial
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
-  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
+  - src/python/ubl/src/format_factory/ubl/model/root_types.py::DespatchAdvice
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'DespatchAdvice is one of the 91 typed document roots; test_all_91_roots_have_typed_roundtrip proves its root element, namespace, and round-trip fidelity.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'No typed DespatchLine dataclass exists anywhere in the model -- despatch lines are preserved generically as part of the lossless XmlNode tree rather than modeled as a typed composite. The document-root/namespace half of this claim is proven; the named-child-aggregate-as-typed-composite half is not.'
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -5147,48 +4468,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-C59FF5C86F4044C0
   capability_id: UBL-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
+  - src/python/ubl/src/format_factory/ubl/model/document.py::ubl_version_id
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_detected_declared_version.py::test_declared_version_reads_the_current_trees_ublversionid
+  - tests/python/ubl/test_obligation_detected_declared_version.py::test_ubl_version_id_helper_matches_the_declared_version_property
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'ubl_version_id() and UblDocument.declared_version both read cbc:UBLVersionID directly from the current tree; both are directly tested, including agreement between the helper function and the property.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -5222,48 +4515,22 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-C65ED6A2D9100174
   capability_id: UBL-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
-  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_typed_projection.py::test_projection_round_trips_without_losing_attributes
+  - tests/python/ubl/test_obligation_business_value_types.py::test_scale_is_preserved_rather_than_normalized
+  - tests/python/ubl/test_obligation_temporal_values.py::test_z_is_not_rewritten_as_an_offset
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'This is the umbrella architectural principle quoted atop aggregates.py and its test file: typed composites for aggregates, typed values for basic components, lexical form preserved where round-trip fidelity requires it. Proven across three angles: attribute-preserving projection round-trips, decimal scale preservation (not normalized), and literal "Z" UTC-offset lexical form preservation.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -5396,48 +4663,14 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-CADCC40DD4CD3689
   capability_id: UBL-MODEL-001
-  status: partial
-  source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
-  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
-  positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
   negative_test_selectors: []
-  execution_evidence_ids:
-  - UBL-BASELINE-SUITE
-  implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  execution_evidence_ids: []
+  implemented_behavior: []
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'No PostalAddress or Address dataclass exists anywhere in the model -- confirmed by grepping the entire model package for "class PostalAddress"/"class Address". Street/city/postal-zone/country as a typed composite is entirely unbuilt (addresses round-trip only as generic, untyped XmlNode subtrees). This is a genuine, unbuilt gap, not a citation-audit opportunity.'
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -5636,48 +4869,21 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-D569DF7E63EF3A7E
   capability_id: UBL-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
-  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
+  - src/python/ubl/src/format_factory/ubl/model/root_types.py::Invoice
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
   - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_invoice_lines_project_from_xml
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'Invoice is one of the 91 typed document roots (proven by test_all_91_roots_have_typed_roundtrip, parametrized over the root inventory including "Invoice") rooted in the UBL-Invoice-2 namespace; its InvoiceLine aggregate is separately fully typed (id/invoiced_quantity/line_extension_amount, tested for both required-field enforcement and XML projection). Unlike the Order/CreditNote/DespatchAdvice/ApplicationResponse siblings in this cluster, Invoice is the one root where both the document-root half and the named-line-aggregate half of the claim are fully typed and tested, not just the root half.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -5789,48 +4995,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-DF289613C3ABBC56
   capability_id: UBL-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
-  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
   - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
   - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
   - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
+  - src/python/ubl/src/format_factory/ubl/model/values.py::Identifier
+  - src/python/ubl/src/format_factory/ubl/model/values.py::BinaryObject
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_requires_a_currency
+  - tests/python/ubl/test_obligation_business_value_types.py::test_a_quantity_carries_an_optional_unit_code
+  - tests/python/ubl/test_obligation_business_value_types.py::test_code_values_are_normalized_strings
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_identifier_preserves_its_scheme_attributes
+  - tests/python/ubl/test_obligation_business_value_types.py::test_a_binary_object_requires_a_mime_code
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'This is the umbrella "unqualified data types" fact over Amount/Quantity/Code/Identifier/BinaryObject; no code in this package parses the physical BDNDR-UnqualifiedDataTypes-1.1.xsd artifact directly, but every one of the five scalar lexical representations it defines is implemented as its own typed value class and individually tested (see the per-type citations above -- same underlying facts as SAL-UBL-OBL-F44F5E57128BCA15, 21CA9DE1B597B083, F8659253DDA9D0E4, 0E8FA39856DF47F2, 30FEA2365B54D2D5 in this same cluster).'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -5892,46 +5076,17 @@ obligations:
   capability_id: UBL-MODEL-001
   status: partial
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
-  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
+  - src/python/ubl/src/format_factory/ubl/model/root_types.py::CreditNote
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'CreditNote is one of the 91 typed document roots; test_all_91_roots_have_typed_roundtrip proves its root element, namespace, and round-trip fidelity.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'Unlike InvoiceLine, no typed CreditNoteLine dataclass exists anywhere in the model -- credit note lines are preserved generically as part of the lossless XmlNode tree rather than modeled as a typed composite. The document-root/namespace half of this claim is proven; the named-child-aggregate-as-typed-composite half is not.'
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -6044,48 +5199,21 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-ED0E6E84CB8D90B7
   capability_id: UBL-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
-  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
   - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::price_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_price_projects_with_its_base_quantity
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_price_requires_an_amount
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_base_quantity_is_optional
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'Price models price_amount (required) and base_quantity (optional); required-amount enforcement, optional base-quantity handling, and XML projection are all directly tested.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -6143,46 +5271,21 @@ obligations:
   capability_id: UBL-MODEL-001
   status: partial
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
-  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::LegalMonetaryTotal
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
   - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_a_tax_total_projects_with_its_subtotals
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'cac:-namespaced aggregates (InvoiceLine, Item, TaxTotal, LegalMonetaryTotal) are pervasively and correctly exercised as typed composites.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'No single test asserts the CommonAggregateComponents-2/cac-namespace convention itself as a standalone architectural fact, the same gap as its CBC-namespace sibling SAL-UBL-OBL-0AFE5C0F7BA8AC02 in this cluster.'
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -6272,48 +5375,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-F44F5E57128BCA15
   capability_id: UBL-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
-  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
   - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
   - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_requires_a_currency
+  - tests/python/ubl/test_obligation_business_value_types.py::test_currency_must_look_like_an_iso_4217_code
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'Amount requires a currency_id field (mapping to the required currencyID attribute) and validates it looks like an ISO 4217 code; both requirements are directly tested.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -6423,48 +5498,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-F8659253DDA9D0E4
   capability_id: UBL-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
-  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Rounding
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
-  - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
   - src/python/ubl/src/format_factory/ubl/model/values.py::Code
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::local_name
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all
-  - src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal
-  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
-  - src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::code_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_holds_an_exact_decimal
-  - tests/python/ubl/test_obligation_business_value_types.py::test_constructing_an_amount_from_a_float_is_refused
-  - tests/python/ubl/test_obligation_business_value_types.py::test_decimal_addition_is_exact_where_float_would_not_be
-  - tests/python/ubl/test_obligation_typed_projection.py::test_local_name_strips_the_namespace
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_locates_a_child_by_local_name
-  - tests/python/ubl/test_obligation_typed_projection.py::test_find_returns_none_when_absent
+  - tests/python/ubl/test_obligation_business_value_types.py::test_code_values_are_normalized_strings
+  - tests/python/ubl/test_obligation_business_value_types.py::test_code_normalization_does_not_collapse_or_strip
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access for every first-wave
-    component; cardinality violations diagnosed on mutation.'
+  - 'Code values are normalized strings (whitespace-collapsed per xsd:normalizedString semantics) while not collapsing or stripping content beyond that; both the normalization rule and its precise boundary are directly tested. The base UBL XSD not enumerating business code values is honestly reflected: Code carries no closed value set, just the normalized-string constraint.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
