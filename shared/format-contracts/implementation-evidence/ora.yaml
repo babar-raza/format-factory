@@ -48,7 +48,31 @@ execution_evidence:
     with no negative selectors at all, left over from this file''s original codex-authored ledger-map
     mapping. Corrected each obligation''s citation to its own precise, differentiated selector set. ORA
     suite unchanged at 261 passed (0 new tests, 0 source changes) -- proves this was a citation fix, not
-    product work. Four ORA-MIMETYPE-001 obligations move from `partial` to `implemented`.'
+    product work. Four ORA-MIMETYPE-001 obligations move from `partial` to `implemented`.
+
+    2026-08-06 (later still): ORA-DOCUMENT-001 closes. model/document.py''s OraDocument had no
+    __post_init__ at all -- every w/h/version/xres/yres domain invariant was enforced only by
+    codec/stack_xml.py''s parser, so direct model construction (bypassing XML) could build an invalid
+    document with no refusal. Added OraDocument.__post_init__ (positive width/height/xres/yres,
+    non-empty version), matching model/stack.py''s OraNode precedent exactly, plus
+    tests/python/ora/test_obligation_document_model_construction.py (14 new tests) proving the same
+    invariants hold for direct construction and for dataclasses.replace()-based editing, not only
+    parsing. ORA suite: 261 -> 275 passed, ruff and mypy clean. Three ORA-DOCUMENT-001 obligations move
+    from `partial` to `implemented`.'
+- evidence_id: ORA-DOCUMENT-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ora-document-model-construction-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike ORA-BASELINE-SUITE: it names the exact positive and
+    negative test selectors proving the root image element's w/h/version/xres/yres
+    domain invariants hold for direct model construction and for
+    dataclasses.replace()-based editing, not only for XML parsing.
+    SELF-CONSISTENT format_factory-only evidence per the execution-recovery
+    directive's GAP-008 rule, not VERIFIED -- not cross-checked against an
+    independent OpenRaster reader/writer. Covers SAL-ORA-OBL-349C38CC0AFF836B,
+    SAL-ORA-OBL-7ABBF1F9FDF34B2E, and SAL-ORA-OBL-B4D2F9B31528BCA0 only; it
+    supports no other obligation and promotes no product state.
 - evidence_id: ORA-MIMETYPE-SELECTOR-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ora-mimetype-001.json
   expected_result: PASS
@@ -1027,24 +1051,32 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-349C38CC0AFF836B
   capability_id: ORA-DOCUMENT-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ora/src/format_factory/ora/model/document.py::OraDocument
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/model/document.py::_require_positive
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
   positive_test_selectors:
   - tests/python/ora/test_obligation_stack_and_document.py::test_a_minimal_document_parses
+  - tests/python/ora/test_obligation_document_model_construction.py::test_a_valid_document_constructs_directly_without_parsing_xml
+  negative_test_selectors:
   - tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required
   - tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_document_model_construction.py::test_non_positive_width_is_refused_on_direct_construction
+  - tests/python/ora/test_obligation_document_model_construction.py::test_non_positive_height_is_refused_on_direct_construction
+  - tests/python/ora/test_obligation_document_model_construction.py::test_an_empty_version_is_refused_on_direct_construction
+  - tests/python/ora/test_obligation_document_model_construction.py::test_replace_with_an_invalid_width_is_refused_not_silently_applied
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-DOCUMENT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Root/canvas/profile boundary
-    and overflow matrices; model construction without I/O.'
+  - 'parse_stack() enforces positive-integer w/h and a required version string when reading stack.xml.
+    OraDocument.__post_init__ (new: model/document.py had no validation of its own before this slice)
+    enforces the identical invariants directly, independent of the XML parser -- proving "model
+    construction without I/O", not only XML parsing, per the obligation''s own required_tests text.
+    dataclasses.replace() re-runs __post_init__, so editing is held to the same invariants as
+    construction.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Root/canvas/profile boundary and overflow matrices; model construction without I/O.
@@ -2014,24 +2046,31 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-7ABBF1F9FDF34B2E
   capability_id: ORA-DOCUMENT-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ora/src/format_factory/ora/model/document.py::OraDocument
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/model/document.py::OraDocument::pixel_count
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
   positive_test_selectors:
-  - tests/python/ora/test_obligation_stack_and_document.py::test_a_minimal_document_parses
-  - tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required
-  - tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_stack_and_document.py::test_the_root_stack_is_exposed
+  - tests/python/ora/test_obligation_stack_and_document.py::test_resolution_defaults_to_72_when_absent
+  - tests/python/ora/test_obligation_stack_and_document.py::test_resolution_is_read_when_present
+  - tests/python/ora/test_obligation_stack_and_document.py::test_an_ordinary_canvas_passes_the_same_limits
+  - tests/python/ora/test_obligation_document_model_construction.py::test_explicit_resolution_is_retained_on_direct_construction
+  - tests/python/ora/test_obligation_document_model_construction.py::test_pixel_count_is_available_immediately_after_direct_construction
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_an_absurd_canvas_is_refused_by_checked_arithmetic
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-DOCUMENT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Root/canvas/profile boundary
-    and overflow matrices; model construction without I/O.'
+  - 'OraDocument is a typed dataclass exposing width/height (canvas-size), version (declared-profile),
+    xres/yres (resolution), and root (root-stack) as first-class fields, plus pixel_count derived
+    directly from them. Canvas-area overflow is validated with checked arithmetic (checked_product)
+    against a caller-supplied resource budget at parse time -- a resource-limit concern distinct from
+    the domain invariants OraDocument.__post_init__ enforces (see SAL-ORA-OBL-349C38CC0AFF836B), so it
+    correctly stays in codec/stack_xml.py rather than the model.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Root/canvas/profile boundary and overflow matrices; model construction without I/O.
@@ -2817,24 +2856,31 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-B4D2F9B31528BCA0
   capability_id: ORA-DOCUMENT-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ora/src/format_factory/ora/model/document.py::OraDocument
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/model/document.py::_require_positive
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
   positive_test_selectors:
-  - tests/python/ora/test_obligation_stack_and_document.py::test_a_minimal_document_parses
-  - tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required
-  - tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_stack_and_document.py::test_resolution_defaults_to_72_when_absent
+  - tests/python/ora/test_obligation_stack_and_document.py::test_resolution_is_read_when_present
+  - tests/python/ora/test_obligation_document_model_construction.py::test_explicit_resolution_is_retained_on_direct_construction
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_resolution_attributes_must_be_specified_together
+  - tests/python/ora/test_obligation_stack_and_document.py::test_resolution_must_be_positive_integers
+  - tests/python/ora/test_obligation_document_model_construction.py::test_non_positive_xres_is_refused_on_direct_construction
+  - tests/python/ora/test_obligation_document_model_construction.py::test_non_positive_yres_is_refused_on_direct_construction
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-DOCUMENT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Root/canvas/profile boundary
-    and overflow matrices; model construction without I/O.'
+  - 'parse_stack() requires xres and yres to be specified together (one present without the other is
+    refused, never defaulted) and defaults both to 72 when both are absent, matching the profile 0.0.3+
+    rule exactly -- an absent/present distinction that exists only at the XML wire form, not after
+    construction, since a constructed OraDocument always carries both values. OraDocument.__post_init__
+    separately enforces that whatever xres/yres value reaches the model, explicit or defaulted, is a
+    positive integer.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Root/canvas/profile boundary and overflow matrices; model construction without I/O.

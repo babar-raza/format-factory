@@ -1,0 +1,56 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-document-model-construction-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T10:05:00Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_DOCUMENT_MODEL_CONSTRUCTION_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "ORA-DOCUMENT-001's three obligations required_tests: 'Root/canvas/profile boundary and overflow matrices; model construction without I/O.' model/document.py's OraDocument (width/height/version/root/xres/yres) already existed and codec/stack_xml.py's parse_stack() already enforced every domain invariant (positive w/h, required version, xres/yres specified together and defaulting to 72, positive resolution) at parse time -- but OraDocument had no __post_init__ of its own. A caller constructing or editing an OraDocument directly, bypassing the XML parser, could build an invalid document (negative width, empty version, non-positive xres) with no refusal. model/stack.py's OraNode already established the precedent for this exact situation: its own docstring states 'reject invalid values without altering the document applies to construction, not only to XML parsing... the same domain checks codec/stack_xml.py applies while parsing apply here too', enforced via __post_init__ so dataclasses.replace()-based editing is held to it too.",
+    "obligation_targeted": "SAL-ORA-OBL-349C38CC0AFF836B, SAL-ORA-OBL-7ABBF1F9FDF34B2E, SAL-ORA-OBL-B4D2F9B31528BCA0",
+    "acceptance_evidence": "tests/python/ora/test_obligation_document_model_construction.py",
+    "regression_tier": "full ORA package suite (tests/python/ora)"
+  },
+  "execution_steps": [
+    "1. Surveyed ora's remaining partial capabilities after ORA-MIMETYPE-001 (this session's prior slice), looking for another obligation where existing code was already complete but under-tested/mis-cited. ORA-DOCUMENT-001 (3 obligations, all sharing 'Root/canvas/profile boundary and overflow matrices; model construction without I/O' as required_tests) stood out: model/document.py's own module docstring literally quotes two of the three obligations' exact normative text, a strong signal the model was already built to match them.",
+    "2. Read model/document.py: OraDocument was a plain frozen dataclass with zero validation of its own -- every invariant lived in codec/stack_xml.py's parse_stack(). Confirmed via grep that OraDocument(...) is constructed at exactly one call site in the shipped namespace (parse_stack), meaning the model's own invariants were, in practice, enforced only accidentally by that single caller always passing already-validated values -- not because the model itself required it.",
+    "3. Read model/stack.py's OraNode.__post_init__ and its docstring in full: it establishes the exact precedent this obligation needs -- domain invariants belong in __post_init__, not only the parser, specifically so dataclasses.replace()-based editing (which re-runs __init__/__post_init__) is held to the same rules as initial construction.",
+    "4. Added OraDocument.__post_init__ (model/document.py): positive width/height/xres/yres via a new _require_positive helper, non-empty version. Deliberately did NOT re-validate 'xres and yres specified together' at the model level -- once constructed, xres/yres are always both present (defaulted to 72), so there is no absent/present distinction left for the model to check; that clause is inherently about the XML wire form parse_stack reads, already covered by existing parser-level tests. Deliberately did NOT move the canvas-area overflow check (checked_product against a caller's resource budget) into the model either -- that is a resource-limit concern requiring a ResourceLimits object the dataclass constructor does not have, correctly scoped to codec/stack_xml.py.",
+    "5. Ran the full ORA suite before writing any new tests to confirm the new __post_init__ introduced zero regressions: 261 passed, unchanged (parse_stack already only ever passes valid values through, so the new checks are a no-op on every existing call path).",
+    "6. Wrote tests/python/ora/test_obligation_document_model_construction.py (14 tests): direct OraDocument(...) construction with valid values (no XML involved), explicit-resolution retention, pixel_count availability immediately after construction, one negative test per invariant (width/height/version/xres/yres) proving direct construction refuses invalid values with a diagnostic naming the field, and two dataclasses.replace() tests proving editing is refused the same way and that replace() produces an independent object.",
+    "7. All 14 passed on first run. Re-ran the full ORA suite: 275 passed (261 baseline + 14 new, 0 regressions). ruff and mypy clean on the full package (13 source files).",
+    "8. Corrected all three obligations' source_symbols/positive/negative selectors to their own precise, differentiated set (the w/h/version obligation, the full-typed-exposure-plus-overflow obligation, and the resolution-specific obligation each cite a distinct, overlapping-but-not-identical subset) and promoted all three to implemented."
+  ],
+  "allowed_files": [
+    "src/python/ora/src/format_factory/ora/model/document.py",
+    "tests/python/ora/test_obligation_document_model_construction.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ora/src/format_factory/ora/model/document.py",
+    "tests/python/ora/test_obligation_document_model_construction.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora/test_obligation_document_model_construction.py -v -- 14 passed",
+    ".venv/Scripts/pytest tests/python/ora/ -q -- 275 passed (261 baseline + 14 new, 0 regressions)",
+    ".venv/Scripts/python -m ruff check src/python/ora/src/format_factory/ora/model/document.py tests/python/ora/test_obligation_document_model_construction.py -- All checks passed",
+    ".venv/Scripts/python -m mypy src/python/ora/src/format_factory/ora/ -- Success: no issues found in 13 source files"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 3,
+    "obligations_total_for_format": 134,
+    "ora_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently verified against an external OpenRaster reader/writer. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_this_is_real_new_code_not_pure_citation_correction": "Unlike the prior ORA-MIMETYPE-001 slice (0 source changes), this one required a genuine, if small, source change: OraDocument had no __post_init__ before this slice, and the obligation's own required_tests explicitly names 'model construction without I/O' as something to prove -- which was not actually true until this slice added the validation that makes it true."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

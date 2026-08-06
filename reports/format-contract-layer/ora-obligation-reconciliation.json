@@ -7,7 +7,15 @@
       "granularity": "suite",
       "path": "reports/skills-rff6/skill-transcripts/build-evidence-ledger-ora-001.json",
       "sha256": "ff1e276701cd182ef6dbf39d21d7fbeb7d841bc5d12209ab938ae304e341abdc",
-      "truth_boundary": "86 tests pass against the four mapped capabilities, written RED before the source existed. Updated 2026-08-05: ORA-SEC-001 adds 17 tests against already-existing source (no new production code this slice). ORA suite is now 189 passed with no failures. The remaining 15 capabilities have no source and no suite; their obligations stay `missing` rather than borrowing this result. No ORA obligation is `implemented`; ORA-SEC-001's obligations move to `partial` on this evidence, not higher.\n2026-08-06: ORA-ISOLATION-001 adds 15 tests against already-existing source (no new production code this slice either). ORA suite is now 204 passed with no failures. The remaining 9 capabilities have no source and no suite; their obligations stay `missing`. No ORA obligation is `implemented`; ORA-ISOLATION-001's obligations move to `partial` only.\n2026-08-06 (later): ORA-PRESERVE-001 adds a new module (preservation.py, check_preservation()) plus 9 tests -- genuinely new production code this time, not only tests against existing behavior. ORA suite is now 213 passed with no failures. The remaining 8 capabilities have no source and no suite; their obligations stay `missing`. No ORA obligation is `implemented`; ORA-PRESERVE-001's obligations move to `partial` only.\n2026-08-06 (later still): ORA-LAYER-001/ORA-GROUP-001 add __post_init__ validation (validate_opacity/validate_visibility/validate_src) to every node type in model/stack.py, and codec/stack_xml.py now delegates to those same functions instead of keeping its own copies. All 213 pre-existing tests still pass unchanged (parser behavior and error types are identical). 38 new tests. ORA suite is now 251 passed with no failures. The remaining 6 capabilities have no source and no suite; their obligations stay `missing`. No ORA obligation is `implemented`; ORA-LAYER-001/ORA-GROUP-001's obligations move to `partial` only.\n2026-08-06 (later still): ORA-EDIT-001 adds a new module (transaction.py, apply_transaction()) plus 10 tests, covering only its \"transaction rollback\" required-proof area (three others -- reference repair, stale-view invalidation, independent application reopen -- remain unattempted, see the dated note above for why). ORA suite is now 261 passed with no failures. The remaining 5 capabilities have no source and no suite; their obligations stay `missing`. No ORA obligation is `implemented`; ORA-EDIT-001's obligations move to `partial` only.\n2026-08-06 (later still): first ORA `implemented` promotions -- pure evidence-citation correction, zero new production code or tests. codec/container.py's OraContainer._check_mimetype/ALLOWED_COMPRESSION and model/stack.py's validate_src already fully and exactly implement four ORA-MIMETYPE-001 obligations (mimetype sentinel position/compression/exact-bytes, ZIP-member compression-method restriction, and archive-root-relative src referencing), each with existing on-point positive and negative tests in tests/python/ora/test_obligation_container_and_mimetype.py and test_obligation_stack_and_document.py -- but every one was citing the same three generic placeholder selectors (test_a_well_formed_archive_opens/test_missing_mimetype_is_rejected/test_mimetype_must_be_the_first_member) with no negative selectors at all, left over from this file's original codex-authored ledger-map mapping. Corrected each obligation's citation to its own precise, differentiated selector set. ORA suite unchanged at 261 passed (0 new tests, 0 source changes) -- proves this was a citation fix, not product work. Four ORA-MIMETYPE-001 obligations move from `partial` to `implemented`."
+      "truth_boundary": "86 tests pass against the four mapped capabilities, written RED before the source existed. Updated 2026-08-05: ORA-SEC-001 adds 17 tests against already-existing source (no new production code this slice). ORA suite is now 189 passed with no failures. The remaining 15 capabilities have no source and no suite; their obligations stay `missing` rather than borrowing this result. No ORA obligation is `implemented`; ORA-SEC-001's obligations move to `partial` on this evidence, not higher.\n2026-08-06: ORA-ISOLATION-001 adds 15 tests against already-existing source (no new production code this slice either). ORA suite is now 204 passed with no failures. The remaining 9 capabilities have no source and no suite; their obligations stay `missing`. No ORA obligation is `implemented`; ORA-ISOLATION-001's obligations move to `partial` only.\n2026-08-06 (later): ORA-PRESERVE-001 adds a new module (preservation.py, check_preservation()) plus 9 tests -- genuinely new production code this time, not only tests against existing behavior. ORA suite is now 213 passed with no failures. The remaining 8 capabilities have no source and no suite; their obligations stay `missing`. No ORA obligation is `implemented`; ORA-PRESERVE-001's obligations move to `partial` only.\n2026-08-06 (later still): ORA-LAYER-001/ORA-GROUP-001 add __post_init__ validation (validate_opacity/validate_visibility/validate_src) to every node type in model/stack.py, and codec/stack_xml.py now delegates to those same functions instead of keeping its own copies. All 213 pre-existing tests still pass unchanged (parser behavior and error types are identical). 38 new tests. ORA suite is now 251 passed with no failures. The remaining 6 capabilities have no source and no suite; their obligations stay `missing`. No ORA obligation is `implemented`; ORA-LAYER-001/ORA-GROUP-001's obligations move to `partial` only.\n2026-08-06 (later still): ORA-EDIT-001 adds a new module (transaction.py, apply_transaction()) plus 10 tests, covering only its \"transaction rollback\" required-proof area (three others -- reference repair, stale-view invalidation, independent application reopen -- remain unattempted, see the dated note above for why). ORA suite is now 261 passed with no failures. The remaining 5 capabilities have no source and no suite; their obligations stay `missing`. No ORA obligation is `implemented`; ORA-EDIT-001's obligations move to `partial` only.\n2026-08-06 (later still): first ORA `implemented` promotions -- pure evidence-citation correction, zero new production code or tests. codec/container.py's OraContainer._check_mimetype/ALLOWED_COMPRESSION and model/stack.py's validate_src already fully and exactly implement four ORA-MIMETYPE-001 obligations (mimetype sentinel position/compression/exact-bytes, ZIP-member compression-method restriction, and archive-root-relative src referencing), each with existing on-point positive and negative tests in tests/python/ora/test_obligation_container_and_mimetype.py and test_obligation_stack_and_document.py -- but every one was citing the same three generic placeholder selectors (test_a_well_formed_archive_opens/test_missing_mimetype_is_rejected/test_mimetype_must_be_the_first_member) with no negative selectors at all, left over from this file's original codex-authored ledger-map mapping. Corrected each obligation's citation to its own precise, differentiated selector set. ORA suite unchanged at 261 passed (0 new tests, 0 source changes) -- proves this was a citation fix, not product work. Four ORA-MIMETYPE-001 obligations move from `partial` to `implemented`.\n2026-08-06 (later still): ORA-DOCUMENT-001 closes. model/document.py's OraDocument had no __post_init__ at all -- every w/h/version/xres/yres domain invariant was enforced only by codec/stack_xml.py's parser, so direct model construction (bypassing XML) could build an invalid document with no refusal. Added OraDocument.__post_init__ (positive width/height/xres/yres, non-empty version), matching model/stack.py's OraNode precedent exactly, plus tests/python/ora/test_obligation_document_model_construction.py (14 new tests) proving the same invariants hold for direct construction and for dataclasses.replace()-based editing, not only parsing. ORA suite: 261 -> 275 passed, ruff and mypy clean. Three ORA-DOCUMENT-001 obligations move from `partial` to `implemented`."
+    },
+    {
+      "evidence_id": "ORA-DOCUMENT-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ora-document-model-construction-001.json",
+      "sha256": "e722f98266ec914ed9f2aca1d75695070ed123949b66335d7d572ba4e7c05171",
+      "truth_boundary": "Selector-bound, unlike ORA-BASELINE-SUITE: it names the exact positive and negative test selectors proving the root image element's w/h/version/xres/yres domain invariants hold for direct model construction and for dataclasses.replace()-based editing, not only for XML parsing. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED -- not cross-checked against an independent OpenRaster reader/writer. Covers SAL-ORA-OBL-349C38CC0AFF836B, SAL-ORA-OBL-7ABBF1F9FDF34B2E, and SAL-ORA-OBL-B4D2F9B31528BCA0 only; it supports no other obligation and promotes no product state."
     },
     {
       "evidence_id": "ORA-MIMETYPE-SELECTOR-PROOF",
@@ -21,7 +29,7 @@
   "format_id": "ora",
   "input_digests": {
     "compiled_contract": "b18759606ff94b21fbd451f3e46cd98c48350b62cfae44abc4bacd6ccf9a7e60",
-    "implementation_evidence": "81789a380361bf64db2583580724cb77f999e256a1367f1d9a1a0e04a3e7aff7",
+    "implementation_evidence": "0008c8ca83c9ddba4f6b8dc0a58fd4abba2ab5fd2038f2d25693e650c564c0dd",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "41a34d4a25c5422c9e3842e63eee01dd5a858b9cd79a8370cf15fc1b892f430b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -1281,20 +1289,25 @@
     {
       "capability_id": "ORA-DOCUMENT-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-DOCUMENT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "parse_stack() enforces positive-integer w/h and a required version string when reading stack.xml. OraDocument.__post_init__ (new: model/document.py had no validation of its own before this slice) enforces the identical invariants directly, independent of the XML parser -- proving \"model construction without I/O\", not only XML parsing, per the obligation's own required_tests text. dataclasses.replace() re-runs __post_init__, so editing is held to the same invariants as construction."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Root/canvas/profile boundary and overflow matrices; model construction without I/O."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers",
+        "tests/python/ora/test_obligation_document_model_construction.py::test_non_positive_width_is_refused_on_direct_construction",
+        "tests/python/ora/test_obligation_document_model_construction.py::test_non_positive_height_is_refused_on_direct_construction",
+        "tests/python/ora/test_obligation_document_model_construction.py::test_an_empty_version_is_refused_on_direct_construction",
+        "tests/python/ora/test_obligation_document_model_construction.py::test_replace_with_an_invalid_width_is_refused_not_silently_applied"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-349C38CC0AFF836B",
       "positive_test_selectors": [
         "tests/python/ora/test_obligation_stack_and_document.py::test_a_minimal_document_parses",
-        "tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required",
-        "tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers"
+        "tests/python/ora/test_obligation_document_model_construction.py::test_a_valid_document_constructs_directly_without_parsing_xml"
       ],
       "proof_requirements": {
         "negative": [
@@ -1304,13 +1317,13 @@
           "Root/canvas/profile boundary and overflow matrices; model construction without I/O."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/ora/src/format_factory/ora/model/document.py::OraDocument",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker",
+        "src/python/ora/src/format_factory/ora/model/document.py::_require_positive",
         "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-WRITE-001",
@@ -2569,20 +2582,24 @@
     {
       "capability_id": "ORA-DOCUMENT-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-DOCUMENT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "OraDocument is a typed dataclass exposing width/height (canvas-size), version (declared-profile), xres/yres (resolution), and root (root-stack) as first-class fields, plus pixel_count derived directly from them. Canvas-area overflow is validated with checked arithmetic (checked_product) against a caller-supplied resource budget at parse time -- a resource-limit concern distinct from the domain invariants OraDocument.__post_init__ enforces (see SAL-ORA-OBL-349C38CC0AFF836B), so it correctly stays in codec/stack_xml.py rather than the model."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Root/canvas/profile boundary and overflow matrices; model construction without I/O."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_stack_and_document.py::test_an_absurd_canvas_is_refused_by_checked_arithmetic"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-7ABBF1F9FDF34B2E",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_stack_and_document.py::test_a_minimal_document_parses",
-        "tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required",
-        "tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers"
+        "tests/python/ora/test_obligation_stack_and_document.py::test_the_root_stack_is_exposed",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_resolution_defaults_to_72_when_absent",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_resolution_is_read_when_present",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_an_ordinary_canvas_passes_the_same_limits",
+        "tests/python/ora/test_obligation_document_model_construction.py::test_explicit_resolution_is_retained_on_direct_construction",
+        "tests/python/ora/test_obligation_document_model_construction.py::test_pixel_count_is_available_immediately_after_direct_construction"
       ],
       "proof_requirements": {
         "negative": [
@@ -2592,13 +2609,13 @@
           "Root/canvas/profile boundary and overflow matrices; model construction without I/O."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/ora/src/format_factory/ora/model/document.py::OraDocument",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker",
+        "src/python/ora/src/format_factory/ora/model/document.py::OraDocument::pixel_count",
         "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-ASSET-001",
@@ -3622,20 +3639,24 @@
     {
       "capability_id": "ORA-DOCUMENT-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-DOCUMENT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "parse_stack() requires xres and yres to be specified together (one present without the other is refused, never defaulted) and defaults both to 72 when both are absent, matching the profile 0.0.3+ rule exactly -- an absent/present distinction that exists only at the XML wire form, not after construction, since a constructed OraDocument always carries both values. OraDocument.__post_init__ separately enforces that whatever xres/yres value reaches the model, explicit or defaulted, is a positive integer."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Root/canvas/profile boundary and overflow matrices; model construction without I/O."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_stack_and_document.py::test_resolution_attributes_must_be_specified_together",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_resolution_must_be_positive_integers",
+        "tests/python/ora/test_obligation_document_model_construction.py::test_non_positive_xres_is_refused_on_direct_construction",
+        "tests/python/ora/test_obligation_document_model_construction.py::test_non_positive_yres_is_refused_on_direct_construction"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-B4D2F9B31528BCA0",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_stack_and_document.py::test_a_minimal_document_parses",
-        "tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required",
-        "tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers"
+        "tests/python/ora/test_obligation_stack_and_document.py::test_resolution_defaults_to_72_when_absent",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_resolution_is_read_when_present",
+        "tests/python/ora/test_obligation_document_model_construction.py::test_explicit_resolution_is_retained_on_direct_construction"
       ],
       "proof_requirements": {
         "negative": [
@@ -3645,13 +3666,13 @@
           "Root/canvas/profile boundary and overflow matrices; model construction without I/O."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/ora/src/format_factory/ora/model/document.py::OraDocument",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker",
+        "src/python/ora/src/format_factory/ora/model/document.py::_require_positive",
         "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-CONTAINER-001",
@@ -4578,6 +4599,7 @@
   "proof_strength": "supporting_nonpromoting",
   "referenced_input_digests": {
     "reports/skills-rff6/skill-transcripts/build-evidence-ledger-ora-001.json": "ff1e276701cd182ef6dbf39d21d7fbeb7d841bc5d12209ab938ae304e341abdc",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ora-document-model-construction-001.json": "e722f98266ec914ed9f2aca1d75695070ed123949b66335d7d572ba4e7c05171",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-mimetype-001.json": "c4af01879db0867dbc3deec2c4ecbb85112c7aa2a3283b2a2b24c28d6eb155cd",
     "src/python/ora/src/format_factory/ora/codec/assets.py": "daa355728ed65a92d69c3178f91af4075501bde0549fb0ce9755a944206b9091",
     "src/python/ora/src/format_factory/ora/codec/container.py": "02dd620d7c5f405a2a63222a686cc77a102ad8da95893b43716684bc1c2fbde5",
@@ -4585,11 +4607,12 @@
     "src/python/ora/src/format_factory/ora/codec/stack_xml.py": "e63c2b411cbe65efb7baf6217cb2c1e91566c96243bde28dd182085d589d301b",
     "src/python/ora/src/format_factory/ora/errors.py": "a00e0809d126afc89e40ff0e107287c0a93c4a3467dfefd559f4c3c1145e3ab6",
     "src/python/ora/src/format_factory/ora/lifecycle.py": "8e817f2350d1103df5ac0ed62851021c66cf61bc486698ed1d19697dfd025277",
-    "src/python/ora/src/format_factory/ora/model/document.py": "88b2fe150d1cdc5db6d343109c7aec72a0702627d3e2d144b5d66c52e6d24aac",
+    "src/python/ora/src/format_factory/ora/model/document.py": "e77dcfb27563a7c6ea4aa002a4582cc4f1a2cce981f3b3a7f3575a819e99d5ef",
     "src/python/ora/src/format_factory/ora/model/stack.py": "252efd4b0ae3492959d1eb720e800c653d35c12b956767a233aa603656cdae12",
     "src/python/ora/src/format_factory/ora/preservation.py": "2805b9b1d028af36a45eea1b12f97236b04540053685625adc633deb64f3b003",
     "src/python/ora/src/format_factory/ora/transaction.py": "2b43957b457688f862646be56045ff6c7a49478ade3901a5153140cbba4c3b85",
     "tests/python/ora/test_obligation_container_and_mimetype.py": "d95f2eaf0ef56d88eb377d2e19b5cc479d6ad16ee5fe14a57579c405053272a2",
+    "tests/python/ora/test_obligation_document_model_construction.py": "478139c90d4beeda8b8c4759b42bee88f29cc769fbbd1f1e9d70adf436224987",
     "tests/python/ora/test_obligation_isolation_semantics.py": "1d41a5f6f432a48cc8cb46967ed1287f186bea87f302de1c7b89cf42bdbf9b6f",
     "tests/python/ora/test_obligation_layer_and_group_editing.py": "508cabfb53c92fa7c4f8d2922aec0756ba76315ccac8ac3fd584a51f56dca9e3",
     "tests/python/ora/test_obligation_lifecycle_and_write.py": "cc89d000bfeb459226214523e0423485b7cf8001414149cf09c7227643b23dfa",
@@ -4602,12 +4625,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 4,
+      "implemented": 7,
       "missing": 22,
-      "partial": 108
+      "partial": 105
     },
     "total": 134,
-    "unresolved": 130
+    "unresolved": 127
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
