@@ -82,6 +82,14 @@
       "truth_boundary": "Selector-bound, unlike IPYNB-BASELINE-SUITE: IPYNB-PARSE-001's 6 obligations all cited the same 5-test citation drawn from two different test files, under-proving several of the six distinct rule_texts (top-level structure x2, version+multiline parsing, source-shape preservation, forward compatibility, unknown-field/ numeric/Unicode fidelity). This entry names each obligation's own precise selectors: forward compatibility is proven by a dedicated file (test_obligation_forward_compatibility.py) that cross-validates against the official nbformat library itself, not just this package's own tests -- an unrecognized cell type, an unrecognized output type, and unknown dictionary constructs at every level all round-trip identically through both implementations. Numeric/Unicode fidelity is proven at real edge cases (float64-exactness boundary, u64 boundary, negative zero via copysign since == cannot detect a lost sign, NaN/Infinity failing closed at write time). No new source or test code this slice. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-IPYNB-OBL-06EFB1D8AC058AC6, SAL-IPYNB-OBL-121BE1F7FB462D30, SAL-IPYNB-OBL-2B44543CA510ED94, SAL-IPYNB-OBL-6DCE21F7DD6D971B, SAL-IPYNB-OBL-9A6A2B857F357379, and SAL-IPYNB-OBL-A87B92BEB23E3B35 only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "IPYNB-SEC-CITATION-AUDIT-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-security-limits-001.json",
+      "sha256": "087eee927b04bbab0743704d649356fb0ba2c71c0da140f8c855ba6fa2bfc105",
+      "truth_boundary": "Selector-bound, unlike IPYNB-BASELINE-SUITE. IPYNB-SEC-001's 5 obligations all shared one identical, generic, never-individually-verified 3-test citation -- the same never-audited-security-baseline pattern already found and closed for ubl (UBL-SEC-001), nrrd, and xliff (XLIFF-SEC-001) this session. ipynb's actual security posture proved exceptionally strong once investigated: a 4th existing test (test_input_and_decoded_payload_bytes_are_bounded) was already sitting in the cited file uncited, and a separate, rigorous audit-hook-based test file (test_obligation_core_path_no_execution.py, proving the core load/validate/save/diff/upgrade path never executes notebook code even against 5 hostile payloads, with both a runtime CPython audit-hook proof and a static AST-level proof that core modules do not even import the execution adapter) was already complete and simply never cited against these obligations. 4 of 5 obligations promoted to implemented via pure citation correction, zero new tests. The 5th (path-traversal prevention) was a genuine, confirmed, real gap unlike its ubl/xliff counterparts (which had no attack surface at all): AncillaryResource.filename, returned by the export adapters for a caller to write to disk, derived directly from an untrusted attachment dict key with zero validation. Closed this slice with a new _is_safe_resource_filename() guard in adapters/export.py (rejects relative traversal, absolute paths, nested subdirectories, and Windows-style backslash sequences; correctly still accepts a filename that merely starts with dots) plus 7 new tests, then promoted to implemented. NOT backed by an independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED."
+    },
+    {
       "evidence_id": "IPYNB-STRUCTURE-DIFF-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -101,7 +109,7 @@
   "format_id": "ipynb",
   "input_digests": {
     "compiled_contract": "070e7486feb32cb69e64bf9bb040bb47e4671f0034835d78d081c39ae2c05903",
-    "implementation_evidence": "e6956d16263e133c57fe1b5aafd734278207a8117a1b004be2e5cd93a6530ce4",
+    "implementation_evidence": "6bb7ea967421ee5830bba6977dc5a2951d64cc43ceddb412cd8eb9485f1ebdc9",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "04340fa8bde6468fa648cb60fce3d50876a39c187d5b9ad3b0329fe0a29850a8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -371,20 +379,20 @@
     {
       "capability_id": "IPYNB-SEC-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-SEC-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "test_total_element_count_is_bounded and test_nesting_depth_is_bounded_without_recursive_walker_failure prove element/record count and nesting depth are each independently bounded with a precise diagnostic; test_json_recursion_failure_is_a_deterministic_parse_error proves a pathologically deep JSON structure (1500 levels) fails deterministically rather than exhausting the C stack; test_input_and_decoded_payload_bytes_are_bounded proves input/decoded byte totals are bounded. Together these directly bound the algorithmic-complexity attack surface; Python's arbitrary-precision integers mean size/count accumulation cannot silently overflow the way fixed-width arithmetic could."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-14DF9ED57CF9FC2E",
       "positive_test_selectors": [
         "tests/python/ipynb/test_obligation_security_limits.py::test_total_element_count_is_bounded",
         "tests/python/ipynb/test_obligation_security_limits.py::test_nesting_depth_is_bounded_without_recursive_walker_failure",
-        "tests/python/ipynb/test_obligation_security_limits.py::test_json_recursion_failure_is_a_deterministic_parse_error"
+        "tests/python/ipynb/test_obligation_security_limits.py::test_json_recursion_failure_is_a_deterministic_parse_error",
+        "tests/python/ipynb/test_obligation_security_limits.py::test_input_and_decoded_payload_bytes_are_bounded"
       ],
       "proof_requirements": {
         "negative": [
@@ -394,30 +402,31 @@
           "Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/security/limits.py::effective_limits",
-        "src/python/ipynb/src/format_factory/ipynb/security/limits.py::enforce_structure"
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::_parse",
+        "src/python/ipynb/src/format_factory/ipynb/security/limits.py::effective_limits"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-SEC-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-SEC-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "test_obligation_core_path_no_execution.py proves this with a CPython audit hook (not mere absence-of-side-effect observation, which the file's own docstring explains is weak evidence): loads/validate/dumps/diff_notebooks/upgrade are each parametrized over 5 hostile source payloads (os.system, subprocess.Popen, eval, exec, urllib network access) and proven to raise zero forbidden audit events. test_execute_notebook_is_the_sole_execution_entry_point and test_core_module_source_never_references_the_execution_adapter add both a runtime proof (the core functions are not aliases for execute_notebook) and a static AST-level proof (the core modules do not even import the execution adapter) that execution is reachable ONLY via the explicit, separately-invoked execute_notebook() opt-in adapter, which itself runs in an isolated subprocess (adapters/execute.py)."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-14E091F2690EE701",
       "positive_test_selectors": [
-        "tests/python/ipynb/test_obligation_security_limits.py::test_total_element_count_is_bounded",
-        "tests/python/ipynb/test_obligation_security_limits.py::test_nesting_depth_is_bounded_without_recursive_walker_failure",
-        "tests/python/ipynb/test_obligation_security_limits.py::test_json_recursion_failure_is_a_deterministic_parse_error"
+        "tests/python/ipynb/test_obligation_core_path_no_execution.py::test_load_never_executes_cell_source",
+        "tests/python/ipynb/test_obligation_core_path_no_execution.py::test_save_never_executes_cell_source",
+        "tests/python/ipynb/test_obligation_core_path_no_execution.py::test_full_lifecycle_over_every_hostile_payload_executes_nothing",
+        "tests/python/ipynb/test_obligation_core_path_no_execution.py::test_execute_notebook_is_the_sole_execution_entry_point",
+        "tests/python/ipynb/test_obligation_core_path_no_execution.py::test_core_module_source_never_references_the_execution_adapter"
       ],
       "proof_requirements": {
         "negative": [
@@ -427,12 +436,12 @@
           "Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/security/limits.py::effective_limits",
-        "src/python/ipynb/src/format_factory/ipynb/security/limits.py::enforce_structure"
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads",
+        "src/python/ipynb/src/format_factory/ipynb/adapters/execute.py::execute_notebook"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-DOCMETA-001",
@@ -1449,20 +1458,20 @@
     {
       "capability_id": "IPYNB-SEC-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-SEC-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Same evidence as SAL-IPYNB-OBL-14DF9ED57CF9FC2E in this cluster: input size, nesting depth, element/record count, and total decoded payload bytes are each independently bounded and tested. Safe defaults are enabled without opt-in: every test in test_obligation_security_limits.py starts from IPYNB_DEFAULT_LIMITS.with_overrides(...), proving the real default limits object (not an ad hoc one) is what every override narrows."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-9544ABFA3D62EC79",
       "positive_test_selectors": [
         "tests/python/ipynb/test_obligation_security_limits.py::test_total_element_count_is_bounded",
         "tests/python/ipynb/test_obligation_security_limits.py::test_nesting_depth_is_bounded_without_recursive_walker_failure",
-        "tests/python/ipynb/test_obligation_security_limits.py::test_json_recursion_failure_is_a_deterministic_parse_error"
+        "tests/python/ipynb/test_obligation_security_limits.py::test_json_recursion_failure_is_a_deterministic_parse_error",
+        "tests/python/ipynb/test_obligation_security_limits.py::test_input_and_decoded_payload_bytes_are_bounded"
       ],
       "proof_requirements": {
         "negative": [
@@ -1472,12 +1481,12 @@
           "Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/ipynb/src/format_factory/ipynb/security/limits.py::effective_limits",
-        "src/python/ipynb/src/format_factory/ipynb/security/limits.py::enforce_structure"
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::_parse"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-HIDDEN-001",
@@ -2056,20 +2065,19 @@
     {
       "capability_id": "IPYNB-SEC-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-SEC-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "test_hostile_metadata_is_not_executed and test_hostile_output_payload_is_not_executed prove hostile payloads placed in notebook/cell metadata and in display_data output bundles (including inline '<script>' HTML) survive a full load->dumps round trip without ever being evaluated -- proven with the same CPython audit-hook mechanism as SAL-IPYNB-OBL-14E091F2690EE701 in this cluster (verified itself to actually detect execution by test_the_audit_hook_actually_detects_execution, so the negative-result tests are not vacuous)."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-C5EFBC1F7327CCE7",
       "positive_test_selectors": [
-        "tests/python/ipynb/test_obligation_security_limits.py::test_total_element_count_is_bounded",
-        "tests/python/ipynb/test_obligation_security_limits.py::test_nesting_depth_is_bounded_without_recursive_walker_failure",
-        "tests/python/ipynb/test_obligation_security_limits.py::test_json_recursion_failure_is_a_deterministic_parse_error"
+        "tests/python/ipynb/test_obligation_core_path_no_execution.py::test_hostile_metadata_is_not_executed",
+        "tests/python/ipynb/test_obligation_core_path_no_execution.py::test_hostile_output_payload_is_not_executed",
+        "tests/python/ipynb/test_obligation_core_path_no_execution.py::test_the_audit_hook_actually_detects_execution"
       ],
       "proof_requirements": {
         "negative": [
@@ -2079,12 +2087,12 @@
           "Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/security/limits.py::effective_limits",
-        "src/python/ipynb/src/format_factory/ipynb/security/limits.py::enforce_structure"
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads",
+        "src/python/ipynb/src/format_factory/ipynb/adapters/execute.py::execute_notebook"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-LIFECYCLE-001",
@@ -2261,20 +2269,21 @@
     {
       "capability_id": "IPYNB-SEC-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-SEC-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Added this slice: a real, confirmed gap -- AncillaryResource.filename (returned by MarkdownExporter/PythonScriptExporter for a caller to write to disk) derived directly from an untrusted attachment dict key with zero validation; a notebook attachment keyed '../../../etc/cron.d/evil' would produce exactly that traversal-shaped filename. _is_safe_resource_filename() now rejects any attachment or output-derived filename that is not a bare, single-component, non-absolute name (relative traversal, absolute paths, nested subdirectories, and Windows-style backslash sequences are all rejected; a filename that merely starts with dots, e.g. '..hidden.png', is correctly still accepted). 7 new tests prove both the positive case and 5 distinct attack shapes."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-DB823E1426D979E1",
       "positive_test_selectors": [
-        "tests/python/ipynb/test_obligation_security_limits.py::test_total_element_count_is_bounded",
-        "tests/python/ipynb/test_obligation_security_limits.py::test_nesting_depth_is_bounded_without_recursive_walker_failure",
-        "tests/python/ipynb/test_obligation_security_limits.py::test_json_recursion_failure_is_a_deterministic_parse_error"
+        "tests/python/ipynb/test_obligation_export_resource_path_safety.py::test_a_bare_filename_attachment_key_is_collected",
+        "tests/python/ipynb/test_obligation_export_resource_path_safety.py::test_a_relative_traversal_attachment_key_is_rejected",
+        "tests/python/ipynb/test_obligation_export_resource_path_safety.py::test_an_absolute_path_attachment_key_is_rejected",
+        "tests/python/ipynb/test_obligation_export_resource_path_safety.py::test_a_nested_subdirectory_attachment_key_is_rejected",
+        "tests/python/ipynb/test_obligation_export_resource_path_safety.py::test_a_windows_style_traversal_attachment_key_is_rejected"
       ],
       "proof_requirements": {
         "negative": [
@@ -2284,12 +2293,12 @@
           "Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/security/limits.py::effective_limits",
-        "src/python/ipynb/src/format_factory/ipynb/security/limits.py::enforce_structure"
+        "src/python/ipynb/src/format_factory/ipynb/adapters/export.py::_is_safe_resource_filename",
+        "src/python/ipynb/src/format_factory/ipynb/adapters/export.py::_collect_resources"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-LIFECYCLE-001",
@@ -2556,10 +2565,11 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-merge-001.json": "f12e54e0372e13214347eb90ccb68f87c8abd19f95df34465dc6c3cd2a83804d",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-output-citation-audit-001.json": "f04a02748969db3a18e6289e53513a6c13fe2eef0ea03a49f630ee24b39a3e95",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-parse-citation-audit-001.json": "05a573d1aef638ad84c2c8182f3d894dfdfa8dec90ffccf82a1f4fd66b66b754",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-security-limits-001.json": "087eee927b04bbab0743704d649356fb0ba2c71c0da140f8c855ba6fa2bfc105",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-structure-diff-001.json": "4ab6abdf71526d76d0d213be161888e759169470d15bea9839995b1009524004",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-write-001.json": "2e1e1d5493518b7330f43d91639efa5839d91e11b4a13ba32f5b83abfd125675",
     "src/python/ipynb/src/format_factory/ipynb/adapters/execute.py": "5900091eb00d9009b429055a46b703803c491cb861180f0baca6777c6fd9e87d",
-    "src/python/ipynb/src/format_factory/ipynb/adapters/export.py": "d03fec3c5c3d5a46f7ac5df365b9e89e360abc4472ea560f3ca1baefbfe051ae",
+    "src/python/ipynb/src/format_factory/ipynb/adapters/export.py": "921dca914ed3c3ac9de41ba646bf5fc42e1e82df919119834a24f549f577e2da",
     "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py": "2f3b6b4920e08549bb8714673ece9b4dffd5f30aae1a9e802aa27efa0bb6776c",
     "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py": "69e6862b047e46ac5321e144381befccb31d64cb5565bad19a504df8beb3b315",
     "src/python/ipynb/src/format_factory/ipynb/model/attachments.py": "b1741391d835630d80a824fafbb8493098108c6e027b01fa192395c60c8216e1",
@@ -2585,6 +2595,7 @@
     "tests/python/ipynb/test_obligation_corpus_integrity.py": "18e1f870e1f2ae1ccd4c9d4e5c35929f7cf3168b2a4f4d0017c88f83d48cc418",
     "tests/python/ipynb/test_obligation_execution_adapter.py": "42f1f95620fa741a01ad17896091bc0d6c5789420405b1614fea982e25c7a510",
     "tests/python/ipynb/test_obligation_export_adapter.py": "56cee7bffd675815c99c9539fde17ca1290f80b426a9201398f6098652e497ba",
+    "tests/python/ipynb/test_obligation_export_resource_path_safety.py": "f92ddd90008b0bd71b7c8c9a49f78e56115e07edf88ab65c6a9657f520d65f1e",
     "tests/python/ipynb/test_obligation_forward_compatibility.py": "81897b973ce37ca98e23177b0c5eee62fa29e9d19f38702b28635f3f55ffe295",
     "tests/python/ipynb/test_obligation_lifecycle_modes.py": "d42d19938843e94ec7743cd606c3bee1b704b534a98ce0fd72e4763126585651",
     "tests/python/ipynb/test_obligation_metadata_adapters.py": "71d2436bcba090d36fd9a8b1ca5a8109e08fb2d095b0408b29d7e871d8650056",
@@ -2606,11 +2617,11 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 32,
-      "partial": 36
+      "implemented": 37,
+      "partial": 31
     },
     "total": 68,
-    "unresolved": 36
+    "unresolved": 31
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

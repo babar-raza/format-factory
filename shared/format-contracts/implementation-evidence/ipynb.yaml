@@ -20,6 +20,29 @@ execution_evidence:
     genuinely new production code, closing ipynb''s one remaining `missing` obligation. ipynb suite is
     now 670 passed with no failures. No ipynb obligation is `implemented`; IPYNB-MERGE-001''s obligation
     moves to `partial` only. ipynb obligations: 67 partial/1 missing -> 68 partial/0 missing.'
+- evidence_id: IPYNB-SEC-CITATION-AUDIT-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ipynb-security-limits-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike IPYNB-BASELINE-SUITE. IPYNB-SEC-001's 5 obligations all shared one identical,
+    generic, never-individually-verified 3-test citation -- the same never-audited-security-baseline pattern
+    already found and closed for ubl (UBL-SEC-001), nrrd, and xliff (XLIFF-SEC-001) this session. ipynb's
+    actual security posture proved exceptionally strong once investigated: a 4th existing test
+    (test_input_and_decoded_payload_bytes_are_bounded) was already sitting in the cited file uncited, and a
+    separate, rigorous audit-hook-based test file (test_obligation_core_path_no_execution.py, proving the
+    core load/validate/save/diff/upgrade path never executes notebook code even against 5 hostile payloads,
+    with both a runtime CPython audit-hook proof and a static AST-level proof that core modules do not even
+    import the execution adapter) was already complete and simply never cited against these obligations.
+    4 of 5 obligations promoted to implemented via pure citation correction, zero new tests. The 5th
+    (path-traversal prevention) was a genuine, confirmed, real gap unlike its ubl/xliff counterparts (which
+    had no attack surface at all): AncillaryResource.filename, returned by the export adapters for a caller
+    to write to disk, derived directly from an untrusted attachment dict key with zero validation. Closed
+    this slice with a new _is_safe_resource_filename() guard in adapters/export.py (rejects relative
+    traversal, absolute paths, nested subdirectories, and Windows-style backslash sequences; correctly still
+    accepts a filename that merely starts with dots) plus 7 new tests, then promoted to implemented. NOT
+    backed by an independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per
+    the execution-recovery directive's GAP-008 rule, not VERIFIED.
 - evidence_id: IPYNB-CELL-ID-SELECTOR-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ipynb-cell-id-001.json
   expected_result: PASS
@@ -456,23 +479,22 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-14DF9ED57CF9FC2E
   capability_id: IPYNB-SEC-001
-  status: partial
+  status: implemented
   source_symbols:
+  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::_parse
   - src/python/ipynb/src/format_factory/ipynb/security/limits.py::effective_limits
-  - src/python/ipynb/src/format_factory/ipynb/security/limits.py::enforce_structure
   positive_test_selectors:
   - tests/python/ipynb/test_obligation_security_limits.py::test_total_element_count_is_bounded
   - tests/python/ipynb/test_obligation_security_limits.py::test_nesting_depth_is_bounded_without_recursive_walker_failure
   - tests/python/ipynb/test_obligation_security_limits.py::test_json_recursion_failure_is_a_deterministic_parse_error
+  - tests/python/ipynb/test_obligation_security_limits.py::test_input_and_decoded_payload_bytes_are_bounded
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-SEC-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each security_limits baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - 'test_total_element_count_is_bounded and test_nesting_depth_is_bounded_without_recursive_walker_failure prove element/record count and nesting depth are each independently bounded with a precise diagnostic; test_json_recursion_failure_is_a_deterministic_parse_error proves a pathologically deep JSON structure (1500 levels) fails deterministically rather than exhausting the C stack; test_input_and_decoded_payload_bytes_are_bounded proves input/decoded byte totals are bounded. Together these directly bound the algorithmic-complexity attack surface; Python''s arbitrary-precision integers mean size/count accumulation cannot silently overflow the way fixed-width arithmetic could.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
@@ -481,23 +503,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-14E091F2690EE701
   capability_id: IPYNB-SEC-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/security/limits.py::effective_limits
-  - src/python/ipynb/src/format_factory/ipynb/security/limits.py::enforce_structure
+  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads
+  - src/python/ipynb/src/format_factory/ipynb/adapters/execute.py::execute_notebook
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_security_limits.py::test_total_element_count_is_bounded
-  - tests/python/ipynb/test_obligation_security_limits.py::test_nesting_depth_is_bounded_without_recursive_walker_failure
-  - tests/python/ipynb/test_obligation_security_limits.py::test_json_recursion_failure_is_a_deterministic_parse_error
+  - tests/python/ipynb/test_obligation_core_path_no_execution.py::test_load_never_executes_cell_source
+  - tests/python/ipynb/test_obligation_core_path_no_execution.py::test_save_never_executes_cell_source
+  - tests/python/ipynb/test_obligation_core_path_no_execution.py::test_full_lifecycle_over_every_hostile_payload_executes_nothing
+  - tests/python/ipynb/test_obligation_core_path_no_execution.py::test_execute_notebook_is_the_sole_execution_entry_point
+  - tests/python/ipynb/test_obligation_core_path_no_execution.py::test_core_module_source_never_references_the_execution_adapter
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-SEC-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each security_limits baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - 'test_obligation_core_path_no_execution.py proves this with a CPython audit hook (not mere absence-of-side-effect observation, which the file''s own docstring explains is weak evidence): loads/validate/dumps/diff_notebooks/upgrade are each parametrized over 5 hostile source payloads (os.system, subprocess.Popen, eval, exec, urllib network access) and proven to raise zero forbidden audit events. test_execute_notebook_is_the_sole_execution_entry_point and test_core_module_source_never_references_the_execution_adapter add both a runtime proof (the core functions are not aliases for execute_notebook) and a static AST-level proof (the core modules do not even import the execution adapter) that execution is reachable ONLY via the explicit, separately-invoked execute_notebook() opt-in adapter, which itself runs in an isolated subprocess (adapters/execute.py).'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
@@ -1291,23 +1313,22 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-9544ABFA3D62EC79
   capability_id: IPYNB-SEC-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/security/limits.py::effective_limits
-  - src/python/ipynb/src/format_factory/ipynb/security/limits.py::enforce_structure
+  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::_parse
   positive_test_selectors:
   - tests/python/ipynb/test_obligation_security_limits.py::test_total_element_count_is_bounded
   - tests/python/ipynb/test_obligation_security_limits.py::test_nesting_depth_is_bounded_without_recursive_walker_failure
   - tests/python/ipynb/test_obligation_security_limits.py::test_json_recursion_failure_is_a_deterministic_parse_error
+  - tests/python/ipynb/test_obligation_security_limits.py::test_input_and_decoded_payload_bytes_are_bounded
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-SEC-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each security_limits baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - 'Same evidence as SAL-IPYNB-OBL-14DF9ED57CF9FC2E in this cluster: input size, nesting depth, element/record count, and total decoded payload bytes are each independently bounded and tested. Safe defaults are enabled without opt-in: every test in test_obligation_security_limits.py starts from IPYNB_DEFAULT_LIMITS.with_overrides(...), proving the real default limits object (not an ad hoc one) is what every override narrows.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
@@ -1752,23 +1773,21 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-C5EFBC1F7327CCE7
   capability_id: IPYNB-SEC-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/security/limits.py::effective_limits
-  - src/python/ipynb/src/format_factory/ipynb/security/limits.py::enforce_structure
+  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads
+  - src/python/ipynb/src/format_factory/ipynb/adapters/execute.py::execute_notebook
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_security_limits.py::test_total_element_count_is_bounded
-  - tests/python/ipynb/test_obligation_security_limits.py::test_nesting_depth_is_bounded_without_recursive_walker_failure
-  - tests/python/ipynb/test_obligation_security_limits.py::test_json_recursion_failure_is_a_deterministic_parse_error
+  - tests/python/ipynb/test_obligation_core_path_no_execution.py::test_hostile_metadata_is_not_executed
+  - tests/python/ipynb/test_obligation_core_path_no_execution.py::test_hostile_output_payload_is_not_executed
+  - tests/python/ipynb/test_obligation_core_path_no_execution.py::test_the_audit_hook_actually_detects_execution
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-SEC-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each security_limits baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - 'test_hostile_metadata_is_not_executed and test_hostile_output_payload_is_not_executed prove hostile payloads placed in notebook/cell metadata and in display_data output bundles (including inline ''<script>'' HTML) survive a full load->dumps round trip without ever being evaluated -- proven with the same CPython audit-hook mechanism as SAL-IPYNB-OBL-14E091F2690EE701 in this cluster (verified itself to actually detect execution by test_the_audit_hook_actually_detects_execution, so the negative-result tests are not vacuous).'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
@@ -1902,23 +1921,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-DB823E1426D979E1
   capability_id: IPYNB-SEC-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/security/limits.py::effective_limits
-  - src/python/ipynb/src/format_factory/ipynb/security/limits.py::enforce_structure
+  - src/python/ipynb/src/format_factory/ipynb/adapters/export.py::_is_safe_resource_filename
+  - src/python/ipynb/src/format_factory/ipynb/adapters/export.py::_collect_resources
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_security_limits.py::test_total_element_count_is_bounded
-  - tests/python/ipynb/test_obligation_security_limits.py::test_nesting_depth_is_bounded_without_recursive_walker_failure
-  - tests/python/ipynb/test_obligation_security_limits.py::test_json_recursion_failure_is_a_deterministic_parse_error
+  - tests/python/ipynb/test_obligation_export_resource_path_safety.py::test_a_bare_filename_attachment_key_is_collected
+  - tests/python/ipynb/test_obligation_export_resource_path_safety.py::test_a_relative_traversal_attachment_key_is_rejected
+  - tests/python/ipynb/test_obligation_export_resource_path_safety.py::test_an_absolute_path_attachment_key_is_rejected
+  - tests/python/ipynb/test_obligation_export_resource_path_safety.py::test_a_nested_subdirectory_attachment_key_is_rejected
+  - tests/python/ipynb/test_obligation_export_resource_path_safety.py::test_a_windows_style_traversal_attachment_key_is_rejected
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-SEC-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each security_limits baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - 'Added this slice: a real, confirmed gap -- AncillaryResource.filename (returned by MarkdownExporter/PythonScriptExporter for a caller to write to disk) derived directly from an untrusted attachment dict key with zero validation; a notebook attachment keyed ''../../../etc/cron.d/evil'' would produce exactly that traversal-shaped filename. _is_safe_resource_filename() now rejects any attachment or output-derived filename that is not a bare, single-component, non-absolute name (relative traversal, absolute paths, nested subdirectories, and Windows-style backslash sequences are all rejected; a filename that merely starts with dots, e.g. ''..hidden.png'', is correctly still accepted). 7 new tests prove both the positive case and 5 distinct attack shapes.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative

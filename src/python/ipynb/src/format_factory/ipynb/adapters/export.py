@@ -8,9 +8,22 @@ from __future__ import annotations
 
 import base64
 from dataclasses import dataclass, field
+from pathlib import PurePosixPath
 from typing import Any, Protocol, runtime_checkable
 
 from ..model.document import Cell, CodeCell, IpynbDocument, cell_from_dict
+
+
+def _is_safe_resource_filename(name: str) -> bool:
+    """An attachment key is untrusted document content, not a path -- reject
+    anything that is not a bare filename (no separators, no ``..`` segments,
+    not absolute) before it becomes an AncillaryResource.filename a caller
+    might join onto a directory when writing exported resources to disk."""
+
+    if not name or name in {".", ".."} or "\\" in name:
+        return False
+    candidate = PurePosixPath(name)
+    return candidate.name == name and ".." not in candidate.parts
 
 
 @dataclass(frozen=True, slots=True)
@@ -46,7 +59,7 @@ def _collect_resources(
     counter: dict[str, int] = {}
     for cell_index, cell_raw in enumerate(cells):
         for key, attachment_bundle in cell_raw.get("attachments", {}).items():
-            if isinstance(attachment_bundle, dict):
+            if isinstance(attachment_bundle, dict) and _is_safe_resource_filename(key):
                 for mime, payload in attachment_bundle.items():
                     if isinstance(payload, str) and "/" in mime:
                         try:
@@ -80,10 +93,13 @@ def _collect_resources(
                     continue
                 ext = mime.split("/", 1)[1].split("+", 1)[0]
                 n = counter.get(ext, 0)
+                filename = f"output_{cell_index}_{n}.{ext}"
                 counter[ext] = n + 1
+                if not _is_safe_resource_filename(filename):
+                    continue
                 resources.append(
                     AncillaryResource(
-                        filename=f"output_{cell_index}_{n}.{ext}",
+                        filename=filename,
                         mime_type=mime,
                         data=data,
                         source_path=("cells", cell_index, "outputs", out_index, "data", mime),

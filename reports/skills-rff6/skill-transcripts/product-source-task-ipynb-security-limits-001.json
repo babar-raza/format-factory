@@ -1,0 +1,56 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-security-limits-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T03:30:00Z",
+  "inputs": {
+    "format_id": "ipynb",
+    "task_id": "TC_FF6_IPYNB_SECURITY_LIMITS_001",
+    "task_kind": "citation-audit-plus-real-gap-fix",
+    "root_cause": "Following event 165's exact_next_action (survey ora/ipynb/safetensors for the same unaudited security-cluster pattern found in ubl/xliff/nrrd), surveyed all three and found ORA-SEC-001 already fully resolved but IPYNB-SEC-001's 5 obligations still carrying the original generic 3-test citation.",
+    "obligation_targeted": "5 obligations in IPYNB-SEC-001 -- see the IPYNB-SEC-CITATION-AUDIT-SELECTOR-PROOF execution_evidence entry.",
+    "acceptance_evidence": "4 promoted to implemented via pure citation correction against already-existing, uncited test coverage. 1 (path traversal) was a genuine, confirmed gap closed with a new guard function and 7 new tests.",
+    "regression_tier": "full ipynb package suite (tests/python/ipynb)"
+  },
+  "execution_steps": [
+    "1. Read test_obligation_security_limits.py in full rather than trusting the 3-test citation: found a 4th test (test_input_and_decoded_payload_bytes_are_bounded) already present and directly relevant, never cited.",
+    "2. Searched for execution-related tests and found test_obligation_core_path_no_execution.py -- an exceptionally rigorous, already-complete test file proving the core load/validate/save/diff/upgrade path never executes notebook code, using a CPython audit hook (not mere absence-of-side-effect observation) against 5 hostile payloads, plus a static AST-level check that core modules do not even import the execution adapter. This single file alone proves 2 of the 5 obligations (network/execution/plugin prevention; untrusted-payload handling) directly and rigorously -- it had simply never been cited against IPYNB-SEC-001.",
+    "3. Read adapters/execute.py directly and confirmed execute_notebook() is a distinct, explicitly-invoked public function (not called by loads/validate/dumps), running in an isolated subprocess -- exactly the 'opt-in adapter' shape the obligation demands.",
+    "4. Investigated the 5th obligation (path traversal prevention) the same way as the ubl/xliff precedent: searched for any resource-resolution-from-content feature. Found adapters/export.py's _collect_resources(), which sets AncillaryResource.filename directly from an untrusted attachment dict key with zero validation -- unlike ubl/xliff, this IS a real, exploitable attack surface (a caller naturally joining resource.filename onto an export directory to write files to disk). Confirmed interactively: an attachment keyed '../../../etc/cron.d/evil' produced exactly that filename with no guard.",
+    "5. Fixed adapters/export.py: added _is_safe_resource_filename() (rejects empty names, literal '..', backslash-containing names, and any name where PurePosixPath(name).name != name or '..' appears as a path component -- covering relative traversal, absolute paths, and nested subdirectories in one check) and wired it into both the attachment-key path and the MIME-type-derived output-image filename path (the latter also attacker-influenced via the MIME type string). Verified interactively that a mix of safe and hostile attachment keys correctly yields only the safe one.",
+    "6. Added tests/python/ipynb/test_obligation_export_resource_path_safety.py (7 tests: bare filename accepted, relative traversal/absolute path/nested subdirectory/Windows-backslash-style all rejected, literal '..' rejected, a filename that merely starts with dots -- not an actual traversal component -- correctly still accepted). Ran in isolation (7 passed), ruff clean on the new test file (2 pre-existing unrelated F401 unused-import warnings in export.py confirmed via git stash to predate this change, left untouched per scope discipline), mypy clean, full ipynb suite (697 passed, was 690, +7, zero regressions).",
+    "7. Applied the patch-script pattern, promoting all 5 obligations to implemented (4 via citation correction, 1 via the new fix). Added the new IPYNB-SEC-CITATION-AUDIT-SELECTOR-PROOF execution_evidence entry, validated the YAML parses (68 total obligations, IPYNB-SEC-001 now 5/5 implemented), and ran the reconciler."
+  ],
+  "allowed_files": [
+    "src/python/ipynb/src/format_factory/ipynb/adapters/export.py",
+    "tests/python/ipynb/test_obligation_export_resource_path_safety.py",
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ipynb/src/format_factory/ipynb/adapters/export.py",
+    "tests/python/ipynb/test_obligation_export_resource_path_safety.py",
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ipynb/test_obligation_export_resource_path_safety.py -q -- 7 passed (new)",
+    ".venv/Scripts/python -m ruff check src/python/ipynb/src/format_factory/ipynb/adapters/export.py tests/python/ipynb/test_obligation_export_resource_path_safety.py -- 2 pre-existing unrelated warnings (confirmed via git stash to predate this change), 0 new",
+    ".venv/Scripts/python -m mypy src/python/ipynb/src/format_factory/ipynb/adapters/export.py -- success, no issues found",
+    ".venv/Scripts/pytest tests/python/ipynb/ -q -- 697 passed (was 690; +7 new, 0 regressions)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 5,
+    "obligations_total_for_format": 68,
+    "ipynb_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against a reference Jupyter/nbformat implementation. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "obligations_moved_breakdown": "All 5 obligations in IPYNB-SEC-001 moved to implemented -- 4 via citation correction against real, already-existing, rigorous test coverage; 1 via a genuine new fix (path-traversal guard) with 7 new tests. First fully-resolved SEC-style cluster this session where the underlying real gap (not just citation) was small enough to close in the same tick as discovery.",
+    "why_path_traversal_differed_from_ubl_and_xliff": "ubl and xliff had NO attack surface at all for this obligation (no feature resolves a referenced resource to a filesystem path), so both stayed honestly missing. ipynb DOES have such a feature (export adapters return caller-writable AncillaryResource.filename values derived from untrusted attachment keys), making this a real, closeable gap rather than a structural non-issue -- the investigation correctly distinguished the two cases rather than applying a uniform verdict."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
