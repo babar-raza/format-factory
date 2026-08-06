@@ -1,0 +1,47 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-small-clusters-citation-audit-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-07T01:30:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_SMALL_CLUSTERS_CITATION_AUDIT_001",
+    "task_kind": "obligation-closure-at-scale-programmatic",
+    "root_cause": "Following event 161's exact_next_action (continue into ubl's remaining smaller clusters; UBL-SEC-001 is the natural home to investigate the PARSE-001 namespace-spoofing finding further), covered all 7 remaining generic-citation ubl clusters (58 obligations) in one tick.",
+    "obligation_targeted": "58 obligations across UBL-SEC-001, UBL-REF-001, UBL-VALIDATE-001, UBL-EXT-001, UBL-CALC-001, UBL-EDIT-001, UBL-WRITE-001 -- see the UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF execution_evidence entry.",
+    "acceptance_evidence": "42 cross-referenced to already-resolved MODEL-001/VALUES-001/DOCTYPES-001/PARSE-001 evidence; 6 of the remaining 16 proven directly by existing tests; 6 honestly partial; 4 honestly missing.",
+    "regression_tier": "full ubl package suite (tests/python/ubl)"
+  },
+  "execution_steps": [
+    "1. Ran the programmatic exact-rule_text matcher against the pool resolved in the 4 prior ubl ticks this session: 42 of 58 obligations across all 7 clusters matched exactly (dict-key equality). Spot-checked 4 pairs directly against the register.",
+    "2. Investigated the 16 non-matching obligations by reading source directly rather than guessing: query.py's DocumentIndex/DuplicateId for referential integrity (duplicate-ID detection real and tested, broken-reference diagnosis not built); validator.py/profiles.py/codelist.py for the 5-layer validation claim (4 of 5 layers exist separately, schema/XSD-conformance confirmed missing); aggregates.py's reconcile_invoice for calculation reconciliation (never mutates, tolerance-aware, per-total deltas, no separate repair-mode feature but the safety guarantee is trivially satisfied); security/limits.py and the core xml_security module for the SEC-001 cluster (DTD/entity rejection, configurable limits with safe UBL_DEFAULT_LIMITS fallback, both already thoroughly tested in test_production_namespace.py); preservation.py for extension read/write (lossless arbitrary-namespace round-trip real, opt-in typed-adapter registry for extension content not built, distinct from CodeListRegistry); grepped the whole package for any CRUD/mutation module (none found beyond generic XmlNode.with_children/UblDocument.with_root) and any path-resolution-from-content logic (none found -- ExternalReference/Identifier fields are all opaque stored strings, never dereferenced).",
+    "3. For SAL-UBL-OBL-4CA52BA5DDD8840F (path traversal prevention), initially drafted a 'partial' status citing the structural absence-of-attack-surface argument, then caught during self-review that this violates the reconciler schema (partial requires real positive_test_selectors, and no dedicated test proves the absence-of-attack-surface claim) -- corrected to 'missing' with a precise reason before running the reconciler, not after a rejection.",
+    "4. Hit the same everyone-in-this-cluster-is-being-edited proof_requirements-extraction problem as before for UBL-SEC-001 (5/5 obligations edited) and UBL-WRITE-001 (2/2 edited) -- no untouched sibling existed to extract the boilerplate from. Fixed the patch script with a second-pass fallback: when no untouched sibling exists, extract proof_requirements from the original (pre-edit) block for that capability instead, still real text, just not from a sibling.",
+    "5. Applied the patch. Added the new UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF execution_evidence entry, validated the YAML parses (194 total obligations; program-wide ubl totals now 112 implemented / 53 partial / 29 missing), ran the reconciler cleanly, and ran the full ubl suite to confirm zero regressions (no source or test files changed this slice -- pure evidence-YAML citation work, reusing existing test coverage throughout)."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- unchanged from before this slice (0 source or test changes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 48,
+    "obligations_total_for_format": 194,
+    "ubl_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against a reference UBL implementation. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "obligations_moved_breakdown": "48 of 58 obligations moved to implemented this slice (42 exact cross-capability duplicates whose source was implemented, 6 fresh direct citations). 6 stay partial, 4 stay missing, all with precise, specific, non-generic reasons.",
+    "session_ubl_summary": "This completes the ubl citation-audit sweep this session across all 11 same-pattern generic-citation clusters (194 obligations total, 22 implemented at session start). ubl now stands at 112/194 implemented -- the largest single-session obligation-count movement of any format this session."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

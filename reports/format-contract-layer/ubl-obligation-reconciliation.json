@@ -114,6 +114,14 @@
       "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE: it names the exact positive test selectors proving every one of the 91 authority-pinned root types is loaded and type-dispatched via its urn:oasis:names:specification:ubl:schema:xsd:<Type>-2 namespace (a pattern the fixture builder constructs independently of the generated ROOT_NAMESPACES table, so this is not circular), and that editing a signed document invalidates UblDocument.signature_preserved and surfaces validate()'s ubl.signature.invalidated diagnostic as a non-fatal report rather than a silent loss. Does NOT cover \"verification and signing remain a separate pluggable opt-in\" -- no signing or verification backend, pluggable or otherwise, exists in this package; that clause of UBL-SIGN-001's two signature obligations remains unpromoted. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-UBL-OBL-8A3551BBBAC3FFD9 fully, and SAL-UBL-OBL-175ADB055BC12E8F and SAL-UBL-OBL-452B9C973F40966B partially (the report-before-saving and never-rewrite-subtrees halves only); it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ubl-small-clusters-citation-audit-001.json",
+      "sha256": "c3014f0982d137f4487dfb14bc9eddbebbb560d3d0088084de16d7969c54a54b",
+      "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. Covers ubl's 7 remaining same-pattern clusters in one tick (UBL-SEC-001 5, UBL-REF-001 17, UBL-VALIDATE-001 14, UBL-EXT-001 8, UBL-CALC-001 7, UBL-EDIT-001 5, UBL-WRITE-001 2 -- 58 obligations combined). A programmatic exact-rule_text matcher against the pool resolved in UBL-MODEL-001/VALUES-001/DOCTYPES-001/PARSE-001 found 42 of 58 are exact-text duplicates, cross-referenced to that real evidence. Of the 16 genuinely new obligations: 6 proven directly by dedicated existing tests (arithmetic reconciliation with per-total deltas and no repair-mode mutation; DTD/entity/network-resolution rejection; embedded-payload-never-evaluated; configurable limits with safe defaults) -- promoted to implemented. 6 stay honestly partial with precise, specific reasons (duplicate-ID detection is real but broken-reference/inconsistent-line-reference diagnosis is not built; 4 of 5 named validation layers exist as separate composable diagnostics but schema/XSD-conformance is the confirmed missing layer, same root cause as UBL-MODEL-001's finding; algorithmic-complexity guards exist for depth/size/count but no dedicated complexity-attack test exists; lossless arbitrary-namespace extension read/write is real but opt-in typed-adapter registration for extension content is not built; binary-object media-type exposure is real but extension-payload checksum exposure and external-retrieval gating are not, the latter having no attack surface since nothing fetches external content at all). 4 stay honestly missing: no CRUD/mutation API exists for business components beyond generic immutable XmlNode replacement (x2); no schema-valid-element-order-on-write feature exists (matching the confirmed UBL-MODEL-001 element-order gap); the official-sample round-trip corpus is not vendored (SPEC-PACKAGE-FACT, compounded by the same missing write-ordering feature); and path-traversal prevention for detached/ referenced resources has no attack surface to test against since no feature resolves references to paths at all, recorded honestly as missing rather than a false partial since no dedicated test proves the claim either way. Zero new source code -- test-file additions only (2 tests from the immediately preceding UBL-PARSE-001 tick's namespace-resolution work were reused as citations here where applicable; no new tests were needed for this cluster's own facts, all citations reuse existing coverage). NOT backed by an independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED."
+    },
+    {
       "evidence_id": "UBL-VALUES-CITATION-AUDIT-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -125,7 +133,7 @@
   "format_id": "ubl",
   "input_digests": {
     "compiled_contract": "41aec8cae7ec194c419ce7ac98ba0b5a3c67db3af0ff2a3c6b2f0e13594f62ab",
-    "implementation_evidence": "ef0120c737f555370482afa4a7e9a5ede46acd289a67f64ef53050ef102d0b6f",
+    "implementation_evidence": "159ba908f9ec38985df7477e1761838dafe4d47803264f94166c71b1553bbe18",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "43298a744266dabae0cda8c7aa331317aef620515dec7784f1f5a186a97fe3b6",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -222,19 +230,18 @@
     {
       "capability_id": "UBL-EXT-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-PARSE-001's SAL-UBL-OBL-A7A7F3A905D33782 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-957563FFE4EF0A64 (identical rule_text): preservation.py generically round-trips a root-level ext:UBLExtensions container (dropping it in CANONICAL mode, preserving it losslessly by default); test_unknown_extension_is_preserved_semantically proves a foreign-namespaced extension element and its attributes/text survive a full round-trip unchanged."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Unknown-namespace extension payloads survive load-save byte-semantically in lossless mode."
+        "The specific structural constraints named in this obligation -- that UBLExtensions must be the first optional component in sequence order, that each UBLExtension permits exactly one foreign-namespaced apex element, and \"lax\" schema processing semantics for that content -- are not separately validated or enforced. The container is preserved losslessly as whatever generic subtree shape the input document already had, not checked against these specific structural rules."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-04ADBA28EFEAC74C",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
         "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
       ],
       "proof_requirements": {
@@ -247,6 +254,7 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/codec/preservation.py::canonicalize",
         "src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode",
         "src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument"
       ],
@@ -312,20 +320,17 @@
     {
       "capability_id": "UBL-EXT-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Same structural fact and evidence as SAL-UBL-OBL-F506A4219783DD7D in UBL-SEC-001: XmlNode is inert data with no evaluation path, and the hostile-extension-entity fixture proves extension decoding does not resolve or execute embedded content."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Unknown-namespace extension payloads survive load-save byte-semantically in lossless mode."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-0B23187F233A25E2",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_production_namespace.py::test_extension_payload_never_resolves_external_entities"
       ],
       "proof_requirements": {
         "negative": [
@@ -335,12 +340,12 @@
           "Unknown-namespace extension payloads survive load-save byte-semantically in lossless mode."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode",
-        "src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument"
+        "src/python/ubl/src/format_factory/ubl/codec/preservation.py::canonicalize"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-CODELIST-001",
@@ -375,20 +380,19 @@
     {
       "capability_id": "UBL-REF-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-PARSE-001's SAL-UBL-OBL-CC931175029D1D9C (identical rule_text): Cross-capability duplicate of UBL-DOCTYPES-001's SAL-UBL-OBL-5DE0B14D6D273578 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-4F8B81527163B9F9 (identical rule_text): Same underlying fact as SAL-UBL-OBL-16C93B2852CE2EAC in this cluster (Order document root, namespace, and OrderLine aggregate), restated with an \"OASIS UBL 2.1\" framing instead of \"UBL maindoc schemas.\" The document-root/namespace half is proven by the same 91-root test."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Duplicate-ID and broken-reference fixtures produce complete diagnostics."
+        "Same gap as SAL-UBL-OBL-16C93B2852CE2EAC: no typed OrderLine dataclass exists; order lines are only generically preserved, not modeled as a typed composite."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-0DE187D3095ADFC9",
       "positive_test_selectors": [
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_unique_line_ids_report_no_duplicates",
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates",
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence"
+        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip"
       ],
       "proof_requirements": {
         "negative": [
@@ -400,10 +404,7 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::business_role",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex"
+        "src/python/ubl/src/format_factory/ubl/model/root_types.py::Order"
       ],
       "status": "partial"
     },
@@ -507,20 +508,19 @@
     {
       "capability_id": "UBL-VALIDATE-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-PARSE-001's SAL-UBL-OBL-B68AB21224AFB222 (identical rule_text): Cross-capability duplicate of UBL-DOCTYPES-001's SAL-UBL-OBL-80D484D6F8F255B4 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-16C93B2852CE2EAC (identical rule_text): Order is one of the 91 typed document roots; test_all_91_roots_have_typed_roundtrip proves its root element, namespace, and round-trip fidelity (parametrized over the full root inventory including \"Order\")."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Per-layer positive/negative fixtures; layered report structure asserted machine-readable."
+        "Unlike InvoiceLine, no typed OrderLine dataclass exists anywhere in the model -- order lines are preserved generically as part of the lossless XmlNode tree (locatable via typed.py::find by local name) rather than modeled as a typed composite. The document-root/namespace half of this claim is proven; the named-child-aggregate-as-typed-composite half is not."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-111E7D9625D62ECE",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip"
       ],
       "proof_requirements": {
         "negative": [
@@ -532,7 +532,7 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/validation/validator.py::validate"
+        "src/python/ubl/src/format_factory/ubl/model/root_types.py::Order"
       ],
       "status": "partial"
     },
@@ -870,20 +870,19 @@
     {
       "capability_id": "UBL-EXT-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-DOCTYPES-001's SAL-UBL-OBL-9A23EF69DE53160B (identical rule_text): Cross-capability duplicate of UBL-VALUES-001's SAL-UBL-OBL-32D59836B480F6B8 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-2972A8BB421227B8 (identical rule_text): InvoiceLine carries exactly id/invoiced_quantity/line_extension_amount/item as required fields; required-field enforcement (raises on a missing component) and XML projection are both directly tested."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Unknown-namespace extension payloads survive load-save byte-semantically in lossless mode."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-1F07682B2B64520E",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components",
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component",
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_invoice_lines_project_from_xml"
       ],
       "proof_requirements": {
         "negative": [
@@ -893,12 +892,12 @@
           "Unknown-namespace extension payloads survive load-save byte-semantically in lossless mode."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode",
-        "src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument"
+        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine",
+        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::invoice_line_of"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-PARSE-001",
@@ -938,20 +937,18 @@
     {
       "capability_id": "UBL-REF-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-F8659253DDA9D0E4 (identical rule_text): Code values are normalized strings (whitespace-collapsed per xsd:normalizedString semantics) while not collapsing or stripping content beyond that; both the normalization rule and its precise boundary are directly tested. The base UBL XSD not enumerating business code values is honestly reflected: Code carries no closed value set, just the normalized-string constraint."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Duplicate-ID and broken-reference fixtures produce complete diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-21513DE5D9694015",
       "positive_test_selectors": [
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_unique_line_ids_report_no_duplicates",
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates",
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence"
+        "tests/python/ubl/test_obligation_business_value_types.py::test_code_values_are_normalized_strings",
+        "tests/python/ubl/test_obligation_business_value_types.py::test_code_normalization_does_not_collapse_or_strip"
       ],
       "proof_requirements": {
         "negative": [
@@ -961,14 +958,12 @@
           "Duplicate-ID and broken-reference fixtures produce complete diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::business_role",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex"
+        "src/python/ubl/src/format_factory/ubl/model/values.py::Code",
+        "src/python/ubl/src/format_factory/ubl/model/typed.py::code_of"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-VALUES-001",
@@ -1066,22 +1061,14 @@
     },
     {
       "capability_id": "UBL-EDIT-001",
-      "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each mutation class save-reload-verifies; renumbering fixture proves reference rewrite."
+        "No CRUD API for core business components exists beyond the low-level, generic, schema-unaware XmlNode.with_children()/UblDocument.with_root() immutable-replace primitives -- confirmed by grepping the whole package for a mutation/edit/CRUD module (none exists). A caller wanting to add, remove, or modify a typed component (e.g. an InvoiceLine) must hand-construct a replacement XmlNode tree themselves; nothing enforces that the result stays schema-order-valid or rejects an edit that would produce a schema-forbidden element at that position. Genuinely unbuilt, not a citation-audit gap."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-237188D47391391E",
-      "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -1090,30 +1077,25 @@
           "Each mutation class save-reload-verifies; renumbering fixture proves reference rewrite."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode",
-        "src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "UBL-CALC-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-B2AEC196C0FA7268 (identical rule_text): TaxTotal/TaxSubtotal model exactly cbc:TaxAmount plus nested TaxSubtotal elements per category; both construction (required TaxAmount) and XML projection (subtotal list) are directly tested."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Reconciliation fixtures with agreeing and disagreeing declared totals across rounding policies."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-23C1161DF420B67B",
       "positive_test_selectors": [
-        "tests/python/ubl/test_obligation_business_calculation.py::test_default_tolerance_is_exact_zero",
-        "tests/python/ubl/test_obligation_business_calculation.py::test_a_tolerance_within_the_delta_silences_the_mismatch",
-        "tests/python/ubl/test_obligation_business_calculation.py::test_a_tolerance_smaller_than_the_delta_still_reports_it"
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_a_tax_total_requires_a_tax_amount",
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_a_tax_total_projects_with_its_subtotals"
       ],
       "proof_requirements": {
         "negative": [
@@ -1123,32 +1105,31 @@
           "Reconciliation fixtures with agreeing and disagreeing declared totals across rounding policies."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item",
-        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine",
+        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal",
         "src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal",
-        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal"
+        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::tax_total_of"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-CALC-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "reconcile_invoice() takes an explicit tolerance policy (default zero), compares computed totals against declared totals, and its own docstring plus test_reconciliation_with_tolerance_and_allowance_charge_never_mutates prove it never mutates the document and never raises for a present-and-consistent total. There is no separate 'repair mode' feature in the package -- the function is unconditionally report-only, which trivially satisfies 'without mutating them unless repair mode is explicitly requested' (mutation never happens at all, so it certainly never happens outside an explicit request)."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Reconciliation fixtures with agreeing and disagreeing declared totals across rounding policies."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-2586C695D1A1C5FD",
       "positive_test_selectors": [
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_a_consistent_invoice_reconciles_clean",
         "tests/python/ubl/test_obligation_business_calculation.py::test_default_tolerance_is_exact_zero",
         "tests/python/ubl/test_obligation_business_calculation.py::test_a_tolerance_within_the_delta_silences_the_mismatch",
-        "tests/python/ubl/test_obligation_business_calculation.py::test_a_tolerance_smaller_than_the_delta_still_reports_it"
+        "tests/python/ubl/test_obligation_business_calculation.py::test_reconciliation_with_tolerance_and_allowance_charge_never_mutates"
       ],
       "proof_requirements": {
         "negative": [
@@ -1158,14 +1139,11 @@
           "Reconciliation fixtures with agreeing and disagreeing declared totals across rounding policies."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item",
-        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine",
-        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal",
-        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal"
+        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::reconcile_invoice"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-DOCTYPES-001",
@@ -1256,20 +1234,18 @@
     {
       "capability_id": "UBL-REF-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-VALUES-001's SAL-UBL-OBL-CA05321D7D7B950C (identical rule_text): Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-0E8FA39856DF47F2 (identical rule_text): Identifier carries optional scheme_id/scheme_agency_id fields (mapping to schemeID/schemeAgencyID); scheme-attribute preservation is directly tested at both the value-type and the XML-projection level."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Duplicate-ID and broken-reference fixtures produce complete diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-2B874025EE323381",
       "positive_test_selectors": [
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_unique_line_ids_report_no_duplicates",
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates",
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence"
+        "tests/python/ubl/test_obligation_business_value_types.py::test_an_identifier_preserves_its_scheme_attributes",
+        "tests/python/ubl/test_obligation_typed_projection.py::test_an_id_element_projects_with_its_scheme_attributes"
       ],
       "proof_requirements": {
         "negative": [
@@ -1279,32 +1255,29 @@
           "Duplicate-ID and broken-reference fixtures produce complete diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::business_role",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex"
+        "src/python/ubl/src/format_factory/ubl/model/values.py::Identifier",
+        "src/python/ubl/src/format_factory/ubl/model/typed.py::identifier_of"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-REF-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-DOCTYPES-001's SAL-UBL-OBL-26C3825EE19AA383 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-1948F05A4C147BA1 (identical rule_text): reconcile_invoice() is explicitly a report-only diagnostic (not schema-enforced) precisely because the XSD does not encode cross-field arithmetic reconciliation -- test_a_consistent_invoice_reconciles_clean and test_a_line_total_mismatch_is_reported prove clean and mismatched totals are both reported (not rejected at parse time), and test_default_tolerance_is_exact_zero proves the reconciliation tolerance default. Amount is decimal-typed and requires currencyID (see UBL-VALUES-001's overlapping AmountType fact)."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Duplicate-ID and broken-reference fixtures produce complete diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-2CDD018E59A4BA54",
       "positive_test_selectors": [
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_unique_line_ids_report_no_duplicates",
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates",
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence"
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_a_consistent_invoice_reconciles_clean",
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_a_line_total_mismatch_is_reported",
+        "tests/python/ubl/test_obligation_business_calculation.py::test_default_tolerance_is_exact_zero"
       ],
       "proof_requirements": {
         "negative": [
@@ -1314,32 +1287,29 @@
           "Duplicate-ID and broken-reference fixtures produce complete diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::business_role",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex"
+        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::reconcile_invoice",
+        "src/python/ubl/src/format_factory/ubl/model/values.py::Amount"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-VALIDATE-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-E349D547D508AD8C (identical rule_text): CreditNote is one of the 91 typed document roots; test_all_91_roots_have_typed_roundtrip proves its root element, namespace, and round-trip fidelity."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Per-layer positive/negative fixtures; layered report structure asserted machine-readable."
+        "Unlike InvoiceLine, no typed CreditNoteLine dataclass exists anywhere in the model -- credit note lines are preserved generically as part of the lossless XmlNode tree rather than modeled as a typed composite. The document-root/namespace half of this claim is proven; the named-child-aggregate-as-typed-composite half is not."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-2DC5FD2DA3562AD8",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip"
       ],
       "proof_requirements": {
         "negative": [
@@ -1351,7 +1321,7 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/validation/validator.py::validate"
+        "src/python/ubl/src/format_factory/ubl/model/root_types.py::CreditNote"
       ],
       "status": "partial"
     },
@@ -1392,22 +1362,14 @@
     },
     {
       "capability_id": "UBL-VALIDATE-001",
-      "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Per-layer positive/negative fixtures; layered report structure asserted machine-readable."
+        "Same confirmed status as UBL-PARSE-001's SAL-UBL-OBL-1EEEC2DD4CA2C80E (identical rule_text). Same confirmed status as UBL-DOCTYPES-001's SAL-UBL-OBL-1549D8ECF079779C (identical rule_text). SPEC-PACKAGE-FACT: this obligation describes the contents of the official pinned UBL 2.3 OASIS Standard distribution package itself (exactly 91 maindoc XSD files), not format_factory's runtime behavior. No XSD files from the official package are vendored in this repository, so there is nothing to unit-test this claim against -- the closest available evidence is the package's own file inventory, which is not committed. This mirrors the SPEC-PACKAGE-FACT category identified in XLIFF-PARSE-001's citation audit earlier this session (obligations about the physical spec artifact rather than product behavior). Not force-promoted and not left as a generic placeholder."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-2FCD900E00C1654E",
-      "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -1416,11 +1378,9 @@
           "Per-layer positive/negative fixtures; layered report structure asserted machine-readable."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/validation/validator.py::validate"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "UBL-MODEL-001",
@@ -1485,22 +1445,14 @@
     },
     {
       "capability_id": "UBL-REF-001",
-      "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Duplicate-ID and broken-reference fixtures produce complete diagnostics."
+        "Same confirmed status as UBL-PARSE-001's SAL-UBL-OBL-71FF376D05E7219A (identical rule_text). Same confirmed status as UBL-DOCTYPES-001's SAL-UBL-OBL-4936871F9800219B (identical rule_text). Same confirmed status as UBL-MODEL-001's SAL-UBL-OBL-3B43504E9C74003C (identical rule_text). XmlNode preserves whatever child element order was present in the source document (a tuple, not a set) for round-trip fidelity, but nothing in the model or validator.py checks that order against the schema-declared sequence model to determine document validity. Confirmed by reading validator.py directly: it performs no sequence-order validation. Same underlying gap as SAL-UBL-OBL-B68F5F29F11197D6 in this cluster."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-31DE92275AF5F6EF",
-      "positive_test_selectors": [
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_unique_line_ids_report_no_duplicates",
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates",
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -1509,14 +1461,9 @@
           "Duplicate-ID and broken-reference fixtures produce complete diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::business_role",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "UBL-QUERY-001",
@@ -1663,20 +1610,18 @@
     {
       "capability_id": "UBL-CALC-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-PARSE-001's SAL-UBL-OBL-A4C0DA6A1DA93666 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-6B2C75D678FE010A (identical rule_text): LegalMonetaryTotal carries exactly line_extension/tax_exclusive/tax_inclusive/allowance_total/charge_total/payable amounts; required-vs-optional amount handling is directly tested for both cases."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Reconciliation fixtures with agreeing and disagreeing declared totals across rounding policies."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-36E4EB0088A2F830",
       "positive_test_selectors": [
-        "tests/python/ubl/test_obligation_business_calculation.py::test_default_tolerance_is_exact_zero",
-        "tests/python/ubl/test_obligation_business_calculation.py::test_a_tolerance_within_the_delta_silences_the_mismatch",
-        "tests/python/ubl/test_obligation_business_calculation.py::test_a_tolerance_smaller_than_the_delta_still_reports_it"
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_a_legal_monetary_total_requires_line_extension_and_payable",
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_a_legal_monetary_total_projects_its_optional_amounts"
       ],
       "proof_requirements": {
         "negative": [
@@ -1686,14 +1631,12 @@
           "Reconciliation fixtures with agreeing and disagreeing declared totals across rounding policies."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item",
-        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine",
-        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal",
-        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal"
+        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::LegalMonetaryTotal",
+        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::legal_monetary_total_of"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-MODEL-001",
@@ -1742,20 +1685,19 @@
     {
       "capability_id": "UBL-REF-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-VALUES-001's SAL-UBL-OBL-F6C576C55BACDF83 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-D569DF7E63EF3A7E (identical rule_text): Invoice is one of the 91 typed document roots (proven by test_all_91_roots_have_typed_roundtrip, parametrized over the root inventory including \"Invoice\") rooted in the UBL-Invoice-2 namespace; its InvoiceLine aggregate is separately fully typed (id/invoiced_quantity/line_extension_amount, tested for both required-field enforcement and XML projection). Unlike the Order/CreditNote/DespatchAdvice/ApplicationResponse siblings in this cluster, Invoice is the one root where both the document-root half and the named-line-aggregate half of the claim are fully typed and tested, not just the root half."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Duplicate-ID and broken-reference fixtures produce complete diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-3F57C68621331DF7",
       "positive_test_selectors": [
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_unique_line_ids_report_no_duplicates",
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates",
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence"
+        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components",
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_invoice_lines_project_from_xml"
       ],
       "proof_requirements": {
         "negative": [
@@ -1765,14 +1707,12 @@
           "Duplicate-ID and broken-reference fixtures produce complete diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::business_role",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex"
+        "src/python/ubl/src/format_factory/ubl/model/root_types.py::Invoice",
+        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-CODELIST-001",
@@ -1910,20 +1850,18 @@
     {
       "capability_id": "UBL-REF-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-F44F5E57128BCA15 (identical rule_text): Amount requires a currency_id field (mapping to the required currencyID attribute) and validates it looks like an ISO 4217 code; both requirements are directly tested."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Duplicate-ID and broken-reference fixtures produce complete diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-44B9393A83611C0E",
       "positive_test_selectors": [
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_unique_line_ids_report_no_duplicates",
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates",
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence"
+        "tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_requires_a_currency",
+        "tests/python/ubl/test_obligation_business_value_types.py::test_currency_must_look_like_an_iso_4217_code"
       ],
       "proof_requirements": {
         "negative": [
@@ -1933,14 +1871,12 @@
           "Duplicate-ID and broken-reference fixtures produce complete diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::business_role",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex"
+        "src/python/ubl/src/format_factory/ubl/model/values.py::Amount",
+        "src/python/ubl/src/format_factory/ubl/model/typed.py::amount_of"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-SIGN-001",
@@ -2061,20 +1997,21 @@
     {
       "capability_id": "UBL-REF-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "DocumentIndex.duplicate_line_ids() indexes identifiers and detects duplicate IDs with the path of every occurrence, directly proven by 3 dedicated tests covering single groups, multiple groups, and path-per-occurrence reporting."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Duplicate-ID and broken-reference fixtures produce complete diagnostics."
+        "'Broken references' and 'inconsistent line references' are not built as a dedicated diagnostic. DocumentIndex.by_id()/lines_referencing_item_id() return an empty tuple for an identifier that doesn't exist, but nothing wraps that into a reported finding (e.g. 'line references item ID X but no such item exists') the way duplicate_line_ids() does for duplicates -- the primitive to build such a check exists, the check itself does not."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-49E8A72A55F540E1",
       "positive_test_selectors": [
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_unique_line_ids_report_no_duplicates",
         "tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates",
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence"
+        "tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence",
+        "tests/python/ubl/test_obligation_referential_integrity.py::test_multiple_distinct_duplicate_groups_are_all_reported"
       ],
       "proof_requirements": {
         "negative": [
@@ -2086,10 +2023,8 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::business_role",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex"
+        "src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex",
+        "src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId"
       ],
       "status": "partial"
     },
@@ -2223,22 +2158,14 @@
     },
     {
       "capability_id": "UBL-WRITE-001",
-      "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Out-of-order property assignment still yields schema-valid output; determinism byte-compare.; Official-sample round trips per supported document type with canonical XML comparison."
+        "Same confirmed gap as SAL-UBL-OBL-3B43504E9C74003C (UBL-MODEL-001, element order) and SAL-UBL-OBL-B68F5F29F11197D6 (UBL-MODEL-001): nothing in the writer reorders elements assembled in arbitrary order into schema-valid sequence -- dumps()/dump() serialize whatever child order the XmlNode tree already has, with no schema-order-aware canonicalization pass. No canonical prefix/formatting policy option exists either. Genuinely unbuilt, not a citation-audit gap."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-4BD9BBC9F974C175",
-      "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -2248,13 +2175,9 @@
           "Official-sample round trips per supported document type with canonical XML comparison."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::dumps",
-        "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::dump",
-        "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::semantic_sha256"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "UBL-PARSE-001",
@@ -2295,22 +2218,14 @@
     },
     {
       "capability_id": "UBL-SEC-001",
-      "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+        "No feature anywhere in the package resolves a detached or referenced resource from parsed document content -- ExternalReference's URI/DocumentHash and Identifier's schemeID/schemeAgencyID are all stored as opaque strings, confirmed by reading reference.py and typed.py directly, never joined against a filesystem path or fetched, so the specific vulnerability class (path traversal via a resolved reference) has no attack surface in the current feature set. Recorded as missing rather than partial because this structural absence-of-attack-surface claim has no dedicated test proving it (unlike safetensors' sharded-index root-confinement test, which proves the equivalent guarantee positively for a feature that DOES resolve references to paths) -- if a future feature adds resource resolution from document content, this obligation needs a real path-confinement test at that time."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-4CA52BA5DDD8840F",
-      "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -2319,14 +2234,9 @@
           "Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/security/limits.py::effective_limits",
-        "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads",
-        "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load",
-        "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "UBL-PARSE-001",
@@ -2394,20 +2304,18 @@
     {
       "capability_id": "UBL-SEC-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "test_dtd_and_entity_declarations_are_rejected proves a DOCTYPE/external-entity payload attempting to read a local file (file:///etc/passwd) is rejected before parsing; test_extension_payload_never_resolves_external_entities proves the same for a hostile extension payload fixture. No code path in the package loads plugins or performs network I/O; ExternalReference's URI/DocumentHash fields (SAL-UBL-OBL-1D41106A5EF340AB) are stored as opaque strings, never dereferenced or fetched."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-5026C29977F347B7",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_production_namespace.py::test_dtd_and_entity_declarations_are_rejected",
+        "tests/python/ubl/test_production_namespace.py::test_extension_payload_never_resolves_external_entities"
       ],
       "proof_requirements": {
         "negative": [
@@ -2417,14 +2325,11 @@
           "Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/security/limits.py::effective_limits",
-        "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads",
-        "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load",
-        "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe"
+        "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::_parse"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-DOCTYPES-001",
@@ -2615,20 +2520,17 @@
     {
       "capability_id": "UBL-CALC-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-PARSE-001's SAL-UBL-OBL-A33577D6A0F0430E (identical rule_text): Cross-capability duplicate of UBL-DOCTYPES-001's SAL-UBL-OBL-78F83C6CBF92C11F (identical rule_text): Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-4A8AFD0D68F5B2B8 (identical rule_text): This restates SAL-UBL-OBL-8AB9CEA1A6909770's runtime-proven per-type-namespace fact from the physical-maindoc-XSD-file angle rather than the runtime-model angle. No code in this package parses the physical XSD files directly, but the namespace convention they define (urn:oasis:names:specification:ubl:schema:xsd:<Type>-2 per document type) is fully implemented and tested across all 91 roots by the same evidence."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Reconciliation fixtures with agreeing and disagreeing declared totals across rounding policies."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-59A76283F9AA421A",
       "positive_test_selectors": [
-        "tests/python/ubl/test_obligation_business_calculation.py::test_default_tolerance_is_exact_zero",
-        "tests/python/ubl/test_obligation_business_calculation.py::test_a_tolerance_within_the_delta_silences_the_mismatch",
-        "tests/python/ubl/test_obligation_business_calculation.py::test_a_tolerance_smaller_than_the_delta_still_reports_it"
+        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip"
       ],
       "proof_requirements": {
         "negative": [
@@ -2638,14 +2540,11 @@
           "Reconciliation fixtures with agreeing and disagreeing declared totals across rounding policies."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item",
-        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine",
-        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal",
-        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal"
+        "src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-PRESERVE-001",
@@ -2769,20 +2668,19 @@
     {
       "capability_id": "UBL-VALIDATE-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-VALUES-001's SAL-UBL-OBL-F6C576C55BACDF83 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-D569DF7E63EF3A7E (identical rule_text): Invoice is one of the 91 typed document roots (proven by test_all_91_roots_have_typed_roundtrip, parametrized over the root inventory including \"Invoice\") rooted in the UBL-Invoice-2 namespace; its InvoiceLine aggregate is separately fully typed (id/invoiced_quantity/line_extension_amount, tested for both required-field enforcement and XML projection). Unlike the Order/CreditNote/DespatchAdvice/ApplicationResponse siblings in this cluster, Invoice is the one root where both the document-root half and the named-line-aggregate half of the claim are fully typed and tested, not just the root half."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Per-layer positive/negative fixtures; layered report structure asserted machine-readable."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-5E4A8D245A84A12F",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
         "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components",
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_invoice_lines_project_from_xml"
       ],
       "proof_requirements": {
         "negative": [
@@ -2792,11 +2690,12 @@
           "Per-layer positive/negative fixtures; layered report structure asserted machine-readable."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/validation/validator.py::validate"
+        "src/python/ubl/src/format_factory/ubl/model/root_types.py::Invoice",
+        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-MODEL-001",
@@ -2834,22 +2733,14 @@
     },
     {
       "capability_id": "UBL-EDIT-001",
-      "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each mutation class save-reload-verifies; renumbering fixture proves reference rewrite."
+        "Same confirmed status as UBL-MODEL-001's SAL-UBL-OBL-CADCC40DD4CD3689 (identical rule_text). No PostalAddress or Address dataclass exists anywhere in the model -- confirmed by grepping the entire model package for \"class PostalAddress\"/\"class Address\". Street/city/postal-zone/country as a typed composite is entirely unbuilt (addresses round-trip only as generic, untyped XmlNode subtrees). This is a genuine, unbuilt gap, not a citation-audit opportunity."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-63B4E9D295EF12C0",
-      "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -2858,12 +2749,9 @@
           "Each mutation class save-reload-verifies; renumbering fixture proves reference rewrite."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode",
-        "src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "UBL-LIFECYCLE-001",
@@ -2968,20 +2856,19 @@
     {
       "capability_id": "UBL-REF-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-BCF0A0E445F55DD6 (identical rule_text): UblDocument.customization_id and .profile_id read cbc:CustomizationID/cbc:ProfileID directly; presence, absence, and independence from each other and from the version identifier are all directly tested."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Duplicate-ID and broken-reference fixtures produce complete diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-6C8834CFF87AAD86",
       "positive_test_selectors": [
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_unique_line_ids_report_no_duplicates",
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates",
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence"
+        "tests/python/ubl/test_obligation_profile_identifiers.py::test_customization_id_is_exposed_when_declared",
+        "tests/python/ubl/test_obligation_profile_identifiers.py::test_profile_id_is_exposed_when_declared",
+        "tests/python/ubl/test_obligation_profile_identifiers.py::test_customization_and_profile_and_version_are_read_independently"
       ],
       "proof_requirements": {
         "negative": [
@@ -2991,14 +2878,11 @@
           "Duplicate-ID and broken-reference fixtures produce complete diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::business_role",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex"
+        "src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-LIFECYCLE-001",
@@ -3040,20 +2924,19 @@
     {
       "capability_id": "UBL-VALIDATE-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-PARSE-001's SAL-UBL-OBL-DE96E8B4E9ADF196 (identical rule_text): Cross-capability duplicate of UBL-DOCTYPES-001's SAL-UBL-OBL-C2A6F6ABBACE3C26 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-BE7766CC0C6398BE (identical rule_text): DespatchAdvice is one of the 91 typed document roots; test_all_91_roots_have_typed_roundtrip proves its root element, namespace, and round-trip fidelity."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Per-layer positive/negative fixtures; layered report structure asserted machine-readable."
+        "No typed DespatchLine dataclass exists anywhere in the model -- despatch lines are preserved generically as part of the lossless XmlNode tree rather than modeled as a typed composite. The document-root/namespace half of this claim is proven; the named-child-aggregate-as-typed-composite half is not."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-6D30B851A52B5863",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip"
       ],
       "proof_requirements": {
         "negative": [
@@ -3065,27 +2948,25 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/validation/validator.py::validate"
+        "src/python/ubl/src/format_factory/ubl/model/root_types.py::DespatchAdvice"
       ],
       "status": "partial"
     },
     {
       "capability_id": "UBL-EXT-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-PARSE-001's SAL-UBL-OBL-A4C0DA6A1DA93666 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-6B2C75D678FE010A (identical rule_text): LegalMonetaryTotal carries exactly line_extension/tax_exclusive/tax_inclusive/allowance_total/charge_total/payable amounts; required-vs-optional amount handling is directly tested for both cases."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Unknown-namespace extension payloads survive load-save byte-semantically in lossless mode."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-6F4C6D18C62B59D4",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_a_legal_monetary_total_requires_line_extension_and_payable",
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_a_legal_monetary_total_projects_its_optional_amounts"
       ],
       "proof_requirements": {
         "negative": [
@@ -3095,12 +2976,12 @@
           "Unknown-namespace extension payloads survive load-save byte-semantically in lossless mode."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode",
-        "src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument"
+        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::LegalMonetaryTotal",
+        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::legal_monetary_total_of"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-PARSE-001",
@@ -3181,20 +3062,18 @@
     {
       "capability_id": "UBL-VALIDATE-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-PARSE-001's SAL-UBL-OBL-EFCDD49AB32B85E2 (identical rule_text): Cross-capability duplicate of UBL-DOCTYPES-001's SAL-UBL-OBL-B1459A3D33EDA8BD (identical rule_text): Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-8AB9CEA1A6909770 (identical rule_text): ROOT_CLASSES maps every one of the 91 typed document roots to a subclass whose namespace follows urn:oasis:names:specification:ubl:schema:xsd:<Type>-2 uniformly; test_all_91_roots_have_typed_roundtrip is parametrized over all 91 roots (checks root_name, typed class identity, validity, and round-trip), and test_wrong_namespace_and_preview_profile_fail_closed proves a namespace mismatch is rejected rather than silently accepted."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Per-layer positive/negative fixtures; layered report structure asserted machine-readable."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-76D91F1FFF63CFB4",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
         "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_production_namespace.py::test_wrong_namespace_and_preview_profile_fail_closed"
       ],
       "proof_requirements": {
         "negative": [
@@ -3204,11 +3083,11 @@
           "Per-layer positive/negative fixtures; layered report structure asserted machine-readable."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/validation/validator.py::validate"
+        "src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-MODEL-001",
@@ -3266,20 +3145,21 @@
     {
       "capability_id": "UBL-VALIDATE-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "4 of the 5 named layers exist as separate, independently invokable, diagnostic-returning capabilities rather than one monolithic all-or-nothing check: syntax (XML parse errors), referential (DocumentIndex.duplicate_line_ids), code-list (CodeListRegistry.validate_code), and pluggable business-rule (ProfileValidatorRegistry) are each separately callable and each return structured diagnostics rather than raising. validate() itself returns a ValidationReport rather than an exception, proven directly."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Per-layer positive/negative fixtures; layered report structure asserted machine-readable."
+        "Schema/XSD-conformance validation is the one confirmed missing layer -- validator.py's own docstring states 'this chassis validation is deliberately not an XSD-conformance claim,' the same confirmed gap as SAL-UBL-OBL-03AF3A7D3A76F362 (UBL-MODEL-001). The 5 layers also are not unified into one combined call returning all diagnostics together -- a caller currently invokes each layer separately."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-788B2748204338B8",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_obligation_lifecycle_io.py::test_validate_returns_a_structured_report_not_an_exception",
+        "tests/python/ubl/test_obligation_lifecycle_io.py::test_validate_reports_a_diagnostic_rather_than_raising_for_a_semantic_issue",
+        "tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates"
       ],
       "proof_requirements": {
         "negative": [
@@ -3291,7 +3171,10 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/validation/validator.py::validate"
+        "src/python/ubl/src/format_factory/ubl/validation/validator.py::validate",
+        "src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex",
+        "src/python/ubl/src/format_factory/ubl/model/codelist.py::CodeListRegistry",
+        "src/python/ubl/src/format_factory/ubl/validation/profiles.py::ProfileValidatorRegistry"
       ],
       "status": "partial"
     },
@@ -3497,20 +3380,19 @@
     {
       "capability_id": "UBL-REF-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-DOCTYPES-001's SAL-UBL-OBL-9A23EF69DE53160B (identical rule_text): Cross-capability duplicate of UBL-VALUES-001's SAL-UBL-OBL-32D59836B480F6B8 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-2972A8BB421227B8 (identical rule_text): InvoiceLine carries exactly id/invoiced_quantity/line_extension_amount/item as required fields; required-field enforcement (raises on a missing component) and XML projection are both directly tested."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Duplicate-ID and broken-reference fixtures produce complete diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-7F53755AAD2DFEB4",
       "positive_test_selectors": [
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_unique_line_ids_report_no_duplicates",
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates",
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence"
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components",
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component",
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_invoice_lines_project_from_xml"
       ],
       "proof_requirements": {
         "negative": [
@@ -3520,14 +3402,12 @@
           "Duplicate-ID and broken-reference fixtures produce complete diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::business_role",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex"
+        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine",
+        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::invoice_line_of"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-DOCTYPES-001",
@@ -3563,20 +3443,19 @@
     {
       "capability_id": "UBL-SEC-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Nesting depth, node count, and byte-size limits are enforced (same evidence as SAL-UBL-OBL-9817A4DE4754E298 in UBL-SEC-001), directly bounding the primary XML algorithmic-complexity attack surface (deeply nested or oversized documents). Python's arbitrary-precision integers mean size/count accumulation cannot silently overflow the way fixed-width arithmetic could in another language."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+        "No test specifically exercises 'checked arithmetic' as a distinct guarantee (e.g. an explicit overflow check independent of Python's native big-int semantics), and no test specifically targets an algorithmic-complexity attack vector beyond depth/size/count (e.g. quadratic-blowup entity-expansion-style attacks distinct from the already-rejected DTD/entity case). The limits mechanism exists and is tested; a dedicated complexity-attack-shaped test does not."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-8396E06EA0EA75FC",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_production_namespace.py::test_node_and_depth_limits_are_enforced"
       ],
       "proof_requirements": {
         "negative": [
@@ -3588,30 +3467,27 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/security/limits.py::effective_limits",
-        "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads",
-        "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load",
-        "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe"
+        "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::_parse",
+        "src/python/ubl/src/format_factory/ubl/security/limits.py::effective_limits"
       ],
       "status": "partial"
     },
     {
       "capability_id": "UBL-VALIDATE-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-DOCTYPES-001's SAL-UBL-OBL-91E7CB3AF843790E (identical rule_text): Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-77AE58DED2CCE475 (identical rule_text): ApplicationResponse is one of the 91 typed document roots; test_all_91_roots_have_typed_roundtrip proves its root element, namespace, and round-trip fidelity."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Per-layer positive/negative fixtures; layered report structure asserted machine-readable."
+        "No typed DocumentResponse dataclass exists anywhere in the model -- business-level acknowledgement aggregates are preserved generically as part of the lossless XmlNode tree rather than modeled as a typed composite. The document-root/namespace half of this claim is proven; the named-child-aggregate-as-typed-composite half is not."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-83CEA9EE98A528C3",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip"
       ],
       "proof_requirements": {
         "negative": [
@@ -3623,27 +3499,27 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/validation/validator.py::validate"
+        "src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse"
       ],
       "status": "partial"
     },
     {
       "capability_id": "UBL-VALIDATE-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-433310901DD96A1A (identical rule_text): Restates SAL-UBL-OBL-0AFE5C0F7BA8AC02's CBC-namespace/typed-leaf-value fact from the physical-XSD-file angle rather than the runtime-model angle; every cbc:-namespaced element is correctly typed and tested (same evidence)."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Per-layer positive/negative fixtures; layered report structure asserted machine-readable."
+        "Same gap as SAL-UBL-OBL-0AFE5C0F7BA8AC02: no test asserts the CBC-namespace convention as a standalone fact, and no code in this package parses the physical UBL-CommonBasicComponents-2.3.xsd file directly."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-86ED6C7E674781EC",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_obligation_typed_projection.py::test_an_id_element_projects_with_its_scheme_attributes",
+        "tests/python/ubl/test_obligation_business_value_types.py::test_an_identifier_preserves_its_scheme_attributes"
       ],
       "proof_requirements": {
         "negative": [
@@ -3655,27 +3531,28 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/validation/validator.py::validate"
+        "src/python/ubl/src/format_factory/ubl/model/values.py::Amount",
+        "src/python/ubl/src/format_factory/ubl/model/values.py::Quantity",
+        "src/python/ubl/src/format_factory/ubl/model/values.py::Code",
+        "src/python/ubl/src/format_factory/ubl/model/values.py::Identifier"
       ],
       "status": "partial"
     },
     {
       "capability_id": "UBL-REF-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-VALUES-001's SAL-UBL-OBL-C287EBE21F059E6C (identical rule_text): Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-314B2CBE504470CC (identical rule_text): Item requires a name and carries optional identifiers/classification_codes tuples; both the required-name enforcement and the optional identification/classification elements are directly tested."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Duplicate-ID and broken-reference fixtures produce complete diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-87B1BB6A1F876A98",
       "positive_test_selectors": [
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_unique_line_ids_report_no_duplicates",
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates",
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence"
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_requires_a_name",
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_an_item_carries_optional_identifiers_and_classification_codes"
       ],
       "proof_requirements": {
         "negative": [
@@ -3685,14 +3562,12 @@
           "Duplicate-ID and broken-reference fixtures produce complete diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::business_role",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex"
+        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item",
+        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::item_of"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-CODELIST-001",
@@ -4000,20 +3875,18 @@
     {
       "capability_id": "UBL-REF-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-DOCTYPES-001's SAL-UBL-OBL-C9255992CC53F982 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-C59FF5C86F4044C0 (identical rule_text): ubl_version_id() and UblDocument.declared_version both read cbc:UBLVersionID directly from the current tree; both are directly tested, including agreement between the helper function and the property."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Duplicate-ID and broken-reference fixtures produce complete diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-93A7C1CA85ABE754",
       "positive_test_selectors": [
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_unique_line_ids_report_no_duplicates",
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates",
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence"
+        "tests/python/ubl/test_obligation_detected_declared_version.py::test_declared_version_reads_the_current_trees_ublversionid",
+        "tests/python/ubl/test_obligation_detected_declared_version.py::test_ubl_version_id_helper_matches_the_declared_version_property"
       ],
       "proof_requirements": {
         "negative": [
@@ -4023,14 +3896,12 @@
           "Duplicate-ID and broken-reference fixtures produce complete diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::business_role",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex"
+        "src/python/ubl/src/format_factory/ubl/model/document.py::ubl_version_id",
+        "src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-VALUES-001",
@@ -4171,22 +4042,14 @@
     },
     {
       "capability_id": "UBL-VALIDATE-001",
-      "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Per-layer positive/negative fixtures; layered report structure asserted machine-readable."
+        "Same confirmed status as UBL-PARSE-001's SAL-UBL-OBL-783649FDF531B0F9 (identical rule_text). Same confirmed status as UBL-DOCTYPES-001's SAL-UBL-OBL-3C2E2EA8D3B697C9 (identical rule_text). Same confirmed status as UBL-MODEL-001's SAL-UBL-OBL-03AF3A7D3A76F362 (identical rule_text). validator.py's own docstring states this chassis validation \"is deliberately not an XSD-conformance claim\" and that \"full schema and cardinality validation remains a mandatory open obligation.\" This is a real, confirmed, explicitly self-documented gap -- not force-promoted and not left as a generic placeholder."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-9736787B52CB148C",
-      "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -4195,29 +4058,24 @@
           "Per-layer positive/negative fixtures; layered report structure asserted machine-readable."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/validation/validator.py::validate"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "UBL-SEC-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "effective_limits() falls back to UBL_DEFAULT_LIMITS when the caller passes none, proving safe defaults are enabled without opt-in; test_node_and_depth_limits_are_enforced proves an explicit ResourceLimits (input bytes, nesting depth, node count, decoded byte total) is enforced and a document exceeding the configured nesting limit is rejected before full processing."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-9817A4DE4754E298",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_production_namespace.py::test_node_and_depth_limits_are_enforced"
       ],
       "proof_requirements": {
         "negative": [
@@ -4227,14 +4085,12 @@
           "Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/ubl/src/format_factory/ubl/security/limits.py::effective_limits",
-        "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads",
-        "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load",
-        "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe"
+        "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::_parse"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-DOCTYPES-001",
@@ -4270,22 +4126,14 @@
     },
     {
       "capability_id": "UBL-REF-001",
-      "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Duplicate-ID and broken-reference fixtures produce complete diagnostics."
+        "Same confirmed status as UBL-PARSE-001's SAL-UBL-OBL-783649FDF531B0F9 (identical rule_text). Same confirmed status as UBL-DOCTYPES-001's SAL-UBL-OBL-3C2E2EA8D3B697C9 (identical rule_text). Same confirmed status as UBL-MODEL-001's SAL-UBL-OBL-03AF3A7D3A76F362 (identical rule_text). validator.py's own docstring states this chassis validation \"is deliberately not an XSD-conformance claim\" and that \"full schema and cardinality validation remains a mandatory open obligation.\" This is a real, confirmed, explicitly self-documented gap -- not force-promoted and not left as a generic placeholder."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-9C170E327B30FBD3",
-      "positive_test_selectors": [
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_unique_line_ids_report_no_duplicates",
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates",
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -4294,14 +4142,9 @@
           "Duplicate-ID and broken-reference fixtures produce complete diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::business_role",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "UBL-QUERY-001",
@@ -4417,20 +4260,19 @@
     {
       "capability_id": "UBL-EDIT-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-E349D547D508AD8C (identical rule_text): CreditNote is one of the 91 typed document roots; test_all_91_roots_have_typed_roundtrip proves its root element, namespace, and round-trip fidelity."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each mutation class save-reload-verifies; renumbering fixture proves reference rewrite."
+        "Unlike InvoiceLine, no typed CreditNoteLine dataclass exists anywhere in the model -- credit note lines are preserved generically as part of the lossless XmlNode tree rather than modeled as a typed composite. The document-root/namespace half of this claim is proven; the named-child-aggregate-as-typed-composite half is not."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-A453593B8331BB0F",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip"
       ],
       "proof_requirements": {
         "negative": [
@@ -4442,8 +4284,7 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode",
-        "src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument"
+        "src/python/ubl/src/format_factory/ubl/model/root_types.py::CreditNote"
       ],
       "status": "partial"
     },
@@ -4481,20 +4322,19 @@
     {
       "capability_id": "UBL-EXT-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-VALUES-001's SAL-UBL-OBL-F6C576C55BACDF83 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-D569DF7E63EF3A7E (identical rule_text): Invoice is one of the 91 typed document roots (proven by test_all_91_roots_have_typed_roundtrip, parametrized over the root inventory including \"Invoice\") rooted in the UBL-Invoice-2 namespace; its InvoiceLine aggregate is separately fully typed (id/invoiced_quantity/line_extension_amount, tested for both required-field enforcement and XML projection). Unlike the Order/CreditNote/DespatchAdvice/ApplicationResponse siblings in this cluster, Invoice is the one root where both the document-root half and the named-line-aggregate half of the claim are fully typed and tested, not just the root half."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Unknown-namespace extension payloads survive load-save byte-semantically in lossless mode."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-A78221E2626C086D",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
         "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components",
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_invoice_lines_project_from_xml"
       ],
       "proof_requirements": {
         "negative": [
@@ -4504,12 +4344,12 @@
           "Unknown-namespace extension payloads survive load-save byte-semantically in lossless mode."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode",
-        "src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument"
+        "src/python/ubl/src/format_factory/ubl/model/root_types.py::Invoice",
+        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-PARSE-001",
@@ -4546,22 +4386,14 @@
     },
     {
       "capability_id": "UBL-CALC-001",
-      "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Reconciliation fixtures with agreeing and disagreeing declared totals across rounding policies."
+        "Same confirmed status as UBL-PARSE-001's SAL-UBL-OBL-C4BD36751BD0B3AB (identical rule_text). Same confirmed status as UBL-MODEL-001's SAL-UBL-OBL-75FA432A5A176927 (identical rule_text). No Party dataclass or typed composite exists anywhere in the model -- confirmed by grepping the entire model package for \"class Party\". Party-suffixed elements are only generically tagged by query.py's business_role() heuristic (a document-query helper, not a typed model), with no identification, name, postal-address, tax-scheme, or contact sub-structure modeled or tested. This is a genuine, unbuilt gap, not a citation-audit opportunity."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-AE02391EE2696F99",
-      "positive_test_selectors": [
-        "tests/python/ubl/test_obligation_business_calculation.py::test_default_tolerance_is_exact_zero",
-        "tests/python/ubl/test_obligation_business_calculation.py::test_a_tolerance_within_the_delta_silences_the_mismatch",
-        "tests/python/ubl/test_obligation_business_calculation.py::test_a_tolerance_smaller_than_the_delta_still_reports_it"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -4570,33 +4402,20 @@
           "Reconciliation fixtures with agreeing and disagreeing declared totals across rounding policies."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item",
-        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine",
-        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal",
-        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "UBL-EDIT-001",
-      "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each mutation class save-reload-verifies; renumbering fixture proves reference rewrite."
+        "Same underlying gap as SAL-UBL-OBL-237188D47391391E in this cluster: no line insertion/removal/movement/renumbering API exists, and no reference-rewrite-map mechanism (to keep e.g. lines_referencing_item_id-style cross-references consistent after a renumber) is built. Genuinely unbuilt, not a citation-audit gap."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-AF5263F0FC7036B9",
-      "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -4605,12 +4424,9 @@
           "Each mutation class save-reload-verifies; renumbering fixture proves reference rewrite."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode",
-        "src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "UBL-DOCTYPES-001",
@@ -4677,19 +4493,18 @@
     {
       "capability_id": "UBL-EXT-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Extension containers with arbitrary foreign namespaces and payloads round-trip losslessly by default (LOSSLESS preservation mode), proven directly against a foreign vendor-namespaced payload with its own attributes and text."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Unknown-namespace extension payloads survive load-save byte-semantically in lossless mode."
+        "'Expose registered typed adapters as opt-in' for extension CONTENT specifically does not exist -- distinct from CodeListRegistry (which is for business code-list values, not extension payload types), there is no registry that lets a caller register a typed decoder for a specific extension namespace. Extensions are always exposed as generic XmlNode subtrees."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-B36305DA0BCEE0F6",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
         "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
       ],
       "proof_requirements": {
@@ -4702,8 +4517,8 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode",
-        "src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument"
+        "src/python/ubl/src/format_factory/ubl/codec/preservation.py::canonicalize",
+        "src/python/ubl/src/format_factory/ubl/codec/preservation.py::check_preservation"
       ],
       "status": "partial"
     },
@@ -4905,20 +4720,19 @@
     {
       "capability_id": "UBL-CALC-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-DOCTYPES-001's SAL-UBL-OBL-26C3825EE19AA383 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-1948F05A4C147BA1 (identical rule_text): reconcile_invoice() is explicitly a report-only diagnostic (not schema-enforced) precisely because the XSD does not encode cross-field arithmetic reconciliation -- test_a_consistent_invoice_reconciles_clean and test_a_line_total_mismatch_is_reported prove clean and mismatched totals are both reported (not rejected at parse time), and test_default_tolerance_is_exact_zero proves the reconciliation tolerance default. Amount is decimal-typed and requires currencyID (see UBL-VALUES-001's overlapping AmountType fact)."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Reconciliation fixtures with agreeing and disagreeing declared totals across rounding policies."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-C1E21D0863BBF0D5",
       "positive_test_selectors": [
-        "tests/python/ubl/test_obligation_business_calculation.py::test_default_tolerance_is_exact_zero",
-        "tests/python/ubl/test_obligation_business_calculation.py::test_a_tolerance_within_the_delta_silences_the_mismatch",
-        "tests/python/ubl/test_obligation_business_calculation.py::test_a_tolerance_smaller_than_the_delta_still_reports_it"
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_a_consistent_invoice_reconciles_clean",
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_a_line_total_mismatch_is_reported",
+        "tests/python/ubl/test_obligation_business_calculation.py::test_default_tolerance_is_exact_zero"
       ],
       "proof_requirements": {
         "negative": [
@@ -4928,14 +4742,12 @@
           "Reconciliation fixtures with agreeing and disagreeing declared totals across rounding policies."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item",
-        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine",
-        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal",
-        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal"
+        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::reconcile_invoice",
+        "src/python/ubl/src/format_factory/ubl/model/values.py::Amount"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-VALUES-001",
@@ -5056,20 +4868,18 @@
     {
       "capability_id": "UBL-REF-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-DOCTYPES-001's SAL-UBL-OBL-F79C106EE20386B9 (identical rule_text): Cross-capability duplicate of UBL-VALUES-001's SAL-UBL-OBL-D25D2CB8429753F9 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-1D41106A5EF340AB (identical rule_text): ExternalReference is a dataclass with exactly URI/DocumentHash/MimeCode/FileName/Description, all independently optional; test_every_field_is_independently_settable proves each field can be set alone and test_projecting_a_partial_element_leaves_the_rest_none proves a partial XML element leaves unset fields None rather than raising."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Duplicate-ID and broken-reference fixtures produce complete diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-C5FB97CFB1D415A7",
       "positive_test_selectors": [
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_unique_line_ids_report_no_duplicates",
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates",
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence"
+        "tests/python/ubl/test_obligation_external_reference.py::TestExternalReferenceConstruction::test_every_field_is_independently_settable",
+        "tests/python/ubl/test_obligation_external_reference.py::TestExternalReferenceProjection::test_projecting_a_partial_element_leaves_the_rest_none"
       ],
       "proof_requirements": {
         "negative": [
@@ -5079,14 +4889,12 @@
           "Duplicate-ID and broken-reference fixtures produce complete diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::business_role",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex"
+        "src/python/ubl/src/format_factory/ubl/model/reference.py::ExternalReference",
+        "src/python/ubl/src/format_factory/ubl/model/reference.py::external_reference_of"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-MODEL-001",
@@ -5161,22 +4969,14 @@
     },
     {
       "capability_id": "UBL-EDIT-001",
-      "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each mutation class save-reload-verifies; renumbering fixture proves reference rewrite."
+        "Same confirmed status as UBL-PARSE-001's SAL-UBL-OBL-C4BD36751BD0B3AB (identical rule_text). Same confirmed status as UBL-MODEL-001's SAL-UBL-OBL-75FA432A5A176927 (identical rule_text). No Party dataclass or typed composite exists anywhere in the model -- confirmed by grepping the entire model package for \"class Party\". Party-suffixed elements are only generically tagged by query.py's business_role() heuristic (a document-query helper, not a typed model), with no identification, name, postal-address, tax-scheme, or contact sub-structure modeled or tested. This is a genuine, unbuilt gap, not a citation-audit opportunity."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-C73836B17D8ECDBC",
-      "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -5185,12 +4985,9 @@
           "Each mutation class save-reload-verifies; renumbering fixture proves reference rewrite."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode",
-        "src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "UBL-DOCTYPES-001",
@@ -5280,19 +5077,18 @@
     {
       "capability_id": "UBL-VALIDATE-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-PARSE-001's SAL-UBL-OBL-A7A7F3A905D33782 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-957563FFE4EF0A64 (identical rule_text): preservation.py generically round-trips a root-level ext:UBLExtensions container (dropping it in CANONICAL mode, preserving it losslessly by default); test_unknown_extension_is_preserved_semantically proves a foreign-namespaced extension element and its attributes/text survive a full round-trip unchanged."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Per-layer positive/negative fixtures; layered report structure asserted machine-readable."
+        "The specific structural constraints named in this obligation -- that UBLExtensions must be the first optional component in sequence order, that each UBLExtension permits exactly one foreign-namespaced apex element, and \"lax\" schema processing semantics for that content -- are not separately validated or enforced. The container is preserved losslessly as whatever generic subtree shape the input document already had, not checked against these specific structural rules."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-CB4B2809D1A7DD8F",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
         "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
       ],
       "proof_requirements": {
@@ -5305,7 +5101,9 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/validation/validator.py::validate"
+        "src/python/ubl/src/format_factory/ubl/codec/preservation.py::canonicalize",
+        "src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode",
+        "src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument"
       ],
       "status": "partial"
     },
@@ -5342,22 +5140,14 @@
     },
     {
       "capability_id": "UBL-VALIDATE-001",
-      "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Per-layer positive/negative fixtures; layered report structure asserted machine-readable."
+        "Same confirmed status as UBL-PARSE-001's SAL-UBL-OBL-71FF376D05E7219A (identical rule_text). Same confirmed status as UBL-DOCTYPES-001's SAL-UBL-OBL-4936871F9800219B (identical rule_text). Same confirmed status as UBL-MODEL-001's SAL-UBL-OBL-3B43504E9C74003C (identical rule_text). XmlNode preserves whatever child element order was present in the source document (a tuple, not a set) for round-trip fidelity, but nothing in the model or validator.py checks that order against the schema-declared sequence model to determine document validity. Confirmed by reading validator.py directly: it performs no sequence-order validation. Same underlying gap as SAL-UBL-OBL-B68F5F29F11197D6 in this cluster."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-CDADC5CFB25A9B9E",
-      "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -5366,29 +5156,26 @@
           "Per-layer positive/negative fixtures; layered report structure asserted machine-readable."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/validation/validator.py::validate"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "UBL-EXT-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-DOCTYPES-001's SAL-UBL-OBL-26C3825EE19AA383 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-1948F05A4C147BA1 (identical rule_text): reconcile_invoice() is explicitly a report-only diagnostic (not schema-enforced) precisely because the XSD does not encode cross-field arithmetic reconciliation -- test_a_consistent_invoice_reconciles_clean and test_a_line_total_mismatch_is_reported prove clean and mismatched totals are both reported (not rejected at parse time), and test_default_tolerance_is_exact_zero proves the reconciliation tolerance default. Amount is decimal-typed and requires currencyID (see UBL-VALUES-001's overlapping AmountType fact)."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Unknown-namespace extension payloads survive load-save byte-semantically in lossless mode."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-D086EFE9688F6F14",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_a_consistent_invoice_reconciles_clean",
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_a_line_total_mismatch_is_reported",
+        "tests/python/ubl/test_obligation_business_calculation.py::test_default_tolerance_is_exact_zero"
       ],
       "proof_requirements": {
         "negative": [
@@ -5398,12 +5185,12 @@
           "Unknown-namespace extension payloads survive load-save byte-semantically in lossless mode."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode",
-        "src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument"
+        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::reconcile_invoice",
+        "src/python/ubl/src/format_factory/ubl/model/values.py::Amount"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-CODELIST-001",
@@ -5475,20 +5262,21 @@
     {
       "capability_id": "UBL-VALIDATE-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-DF289613C3ABBC56 (identical rule_text): This is the umbrella \"unqualified data types\" fact over Amount/Quantity/Code/Identifier/BinaryObject; no code in this package parses the physical BDNDR-UnqualifiedDataTypes-1.1.xsd artifact directly, but every one of the five scalar lexical representations it defines is implemented as its own typed value class and individually tested (see the per-type citations above -- same underlying facts as SAL-UBL-OBL-F44F5E57128BCA15, 21CA9DE1B597B083, F8659253DDA9D0E4, 0E8FA39856DF47F2, 30FEA2365B54D2D5 in this same cluster)."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Per-layer positive/negative fixtures; layered report structure asserted machine-readable."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-D27B76A8A49AC0AF",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_obligation_business_value_types.py::test_an_amount_requires_a_currency",
+        "tests/python/ubl/test_obligation_business_value_types.py::test_a_quantity_carries_an_optional_unit_code",
+        "tests/python/ubl/test_obligation_business_value_types.py::test_code_values_are_normalized_strings",
+        "tests/python/ubl/test_obligation_business_value_types.py::test_an_identifier_preserves_its_scheme_attributes",
+        "tests/python/ubl/test_obligation_business_value_types.py::test_a_binary_object_requires_a_mime_code"
       ],
       "proof_requirements": {
         "negative": [
@@ -5498,11 +5286,15 @@
           "Per-layer positive/negative fixtures; layered report structure asserted machine-readable."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/validation/validator.py::validate"
+        "src/python/ubl/src/format_factory/ubl/model/values.py::Amount",
+        "src/python/ubl/src/format_factory/ubl/model/values.py::Quantity",
+        "src/python/ubl/src/format_factory/ubl/model/values.py::Code",
+        "src/python/ubl/src/format_factory/ubl/model/values.py::Identifier",
+        "src/python/ubl/src/format_factory/ubl/model/values.py::BinaryObject"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-MODEL-001",
@@ -5539,20 +5331,22 @@
     {
       "capability_id": "UBL-CALC-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "reconcile_invoice() computes and reconciles line extensions, allowance/charge totals, and tax-subtotal totals against declared LegalMonetaryTotal amounts, each under the same explicit tolerance policy, reporting a Diagnostic per mismatch (proving per-total, not just whole-document, reporting) and never mutating the document (same evidence as SAL-UBL-OBL-2586C695D1A1C5FD in this cluster)."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Reconciliation fixtures with agreeing and disagreeing declared totals across rounding policies."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-DA3DF6489222CB2A",
       "positive_test_selectors": [
-        "tests/python/ubl/test_obligation_business_calculation.py::test_default_tolerance_is_exact_zero",
-        "tests/python/ubl/test_obligation_business_calculation.py::test_a_tolerance_within_the_delta_silences_the_mismatch",
-        "tests/python/ubl/test_obligation_business_calculation.py::test_a_tolerance_smaller_than_the_delta_still_reports_it"
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_a_line_total_mismatch_is_reported",
+        "tests/python/ubl/test_obligation_business_calculation.py::test_disagreeing_charge_total_is_reported",
+        "tests/python/ubl/test_obligation_business_calculation.py::test_disagreeing_allowance_total_is_reported",
+        "tests/python/ubl/test_obligation_business_calculation.py::test_tolerance_applies_to_tax_subtotal_reconciliation_too",
+        "tests/python/ubl/test_obligation_business_calculation.py::test_multiple_allowance_charge_entries_are_summed_by_indicator",
+        "tests/python/ubl/test_obligation_business_calculation.py::test_reconciliation_with_tolerance_and_allowance_charge_never_mutates"
       ],
       "proof_requirements": {
         "negative": [
@@ -5562,14 +5356,11 @@
           "Reconciliation fixtures with agreeing and disagreeing declared totals across rounding policies."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item",
-        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine",
-        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxSubtotal",
-        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal"
+        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::reconcile_invoice"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-DOCTYPES-001",
@@ -5709,22 +5500,14 @@
     },
     {
       "capability_id": "UBL-REF-001",
-      "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Duplicate-ID and broken-reference fixtures produce complete diagnostics."
+        "Same confirmed status as UBL-PARSE-001's SAL-UBL-OBL-C4BD36751BD0B3AB (identical rule_text). Same confirmed status as UBL-MODEL-001's SAL-UBL-OBL-75FA432A5A176927 (identical rule_text). No Party dataclass or typed composite exists anywhere in the model -- confirmed by grepping the entire model package for \"class Party\". Party-suffixed elements are only generically tagged by query.py's business_role() heuristic (a document-query helper, not a typed model), with no identification, name, postal-address, tax-scheme, or contact sub-structure modeled or tested. This is a genuine, unbuilt gap, not a citation-audit opportunity."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-E016695D69C2BC7D",
-      "positive_test_selectors": [
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_unique_line_ids_report_no_duplicates",
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates",
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -5733,32 +5516,24 @@
           "Duplicate-ID and broken-reference fixtures produce complete diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::business_role",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "UBL-REF-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-VALUES-001's SAL-UBL-OBL-94D3CE5786D8BDE9 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-21CA9DE1B597B083 (identical rule_text): Quantity carries an optional unit_code field mapping to the unitCode attribute; directly tested."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Duplicate-ID and broken-reference fixtures produce complete diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-E318A1DE9A0F1F24",
       "positive_test_selectors": [
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_unique_line_ids_report_no_duplicates",
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates",
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence"
+        "tests/python/ubl/test_obligation_business_value_types.py::test_a_quantity_carries_an_optional_unit_code"
       ],
       "proof_requirements": {
         "negative": [
@@ -5768,14 +5543,12 @@
           "Duplicate-ID and broken-reference fixtures produce complete diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::business_role",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex"
+        "src/python/ubl/src/format_factory/ubl/model/values.py::Quantity",
+        "src/python/ubl/src/format_factory/ubl/model/typed.py::quantity_of"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-MODEL-001",
@@ -5842,20 +5615,19 @@
     {
       "capability_id": "UBL-VALIDATE-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-PARSE-001's SAL-UBL-OBL-CC931175029D1D9C (identical rule_text): Cross-capability duplicate of UBL-DOCTYPES-001's SAL-UBL-OBL-5DE0B14D6D273578 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-4F8B81527163B9F9 (identical rule_text): Same underlying fact as SAL-UBL-OBL-16C93B2852CE2EAC in this cluster (Order document root, namespace, and OrderLine aggregate), restated with an \"OASIS UBL 2.1\" framing instead of \"UBL maindoc schemas.\" The document-root/namespace half is proven by the same 91-root test."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Per-layer positive/negative fixtures; layered report structure asserted machine-readable."
+        "Same gap as SAL-UBL-OBL-16C93B2852CE2EAC: no typed OrderLine dataclass exists; order lines are only generically preserved, not modeled as a typed composite."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-E77A92D09663F2D4",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip"
       ],
       "proof_requirements": {
         "negative": [
@@ -5867,7 +5639,7 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/validation/validator.py::validate"
+        "src/python/ubl/src/format_factory/ubl/model/root_types.py::Order"
       ],
       "status": "partial"
     },
@@ -5906,20 +5678,19 @@
     {
       "capability_id": "UBL-EXT-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "BinaryObject exposes a required mime_code (media type) field for embedded binary attachments, directly tested. Extension and binary payloads are never evaluated (same evidence as SAL-UBL-OBL-0B23187F233A25E2 in this cluster)."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Unknown-namespace extension payloads survive load-save byte-semantically in lossless mode."
+        "Checksum exposure for extension payloads specifically is not built -- ExternalReference's DocumentHash field (SAL-UBL-OBL-1D41106A5EF340AB) is stored as an opaque string, not computed or verified by the package. 'Gate any external attachment retrieval behind allowlists, byte limits, and timeouts' has no attack surface currently (same structural absence as SAL-UBL-OBL-4CA52BA5DDD8840F: nothing fetches an external attachment at all), so there is no retrieval path to gate yet."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-E98EB489DAC77A1A",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_obligation_business_value_types.py::test_a_binary_object_requires_a_mime_code"
       ],
       "proof_requirements": {
         "negative": [
@@ -5931,8 +5702,7 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode",
-        "src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument"
+        "src/python/ubl/src/format_factory/ubl/model/values.py::BinaryObject"
       ],
       "status": "partial"
     },
@@ -6069,20 +5839,19 @@
     {
       "capability_id": "UBL-REF-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-PARSE-001's SAL-UBL-OBL-A7A7F3A905D33782 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-957563FFE4EF0A64 (identical rule_text): preservation.py generically round-trips a root-level ext:UBLExtensions container (dropping it in CANONICAL mode, preserving it losslessly by default); test_unknown_extension_is_preserved_semantically proves a foreign-namespaced extension element and its attributes/text survive a full round-trip unchanged."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Duplicate-ID and broken-reference fixtures produce complete diagnostics."
+        "The specific structural constraints named in this obligation -- that UBLExtensions must be the first optional component in sequence order, that each UBLExtension permits exactly one foreign-namespaced apex element, and \"lax\" schema processing semantics for that content -- are not separately validated or enforced. The container is preserved losslessly as whatever generic subtree shape the input document already had, not checked against these specific structural rules."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-F13D8EC34F2D93BC",
       "positive_test_selectors": [
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_unique_line_ids_report_no_duplicates",
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates",
-        "tests/python/ubl/test_obligation_referential_integrity.py::test_duplicate_report_carries_the_path_of_every_occurrence"
+        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
       ],
       "proof_requirements": {
         "negative": [
@@ -6094,10 +5863,9 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::business_role",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex"
+        "src/python/ubl/src/format_factory/ubl/codec/preservation.py::canonicalize",
+        "src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode",
+        "src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument"
       ],
       "status": "partial"
     },
@@ -6168,20 +5936,18 @@
     {
       "capability_id": "UBL-SEC-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "XmlNode is a plain immutable data structure (qname/attributes/text/children/tail); nothing in the package evaluates, executes, or interprets embedded payload content -- extension bodies, signatures, and binary blobs are all stored as inert text/bytes. test_extension_payload_never_resolves_external_entities proves a hostile embedded payload (attempting XXE via a nested entity) is rejected before any content is evaluated, not silently processed."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-F506A4219783DD7D",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_production_namespace.py::test_extension_payload_never_resolves_external_entities",
+        "tests/python/ubl/test_production_namespace.py::test_dtd_and_entity_declarations_are_rejected"
       ],
       "proof_requirements": {
         "negative": [
@@ -6191,14 +5957,12 @@
           "Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/security/limits.py::effective_limits",
-        "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads",
-        "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load",
-        "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe"
+        "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::_parse",
+        "src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-VALUES-001",
@@ -6297,22 +6061,14 @@
     },
     {
       "capability_id": "UBL-WRITE-001",
-      "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Out-of-order property assignment still yields schema-valid output; determinism byte-compare.; Official-sample round trips per supported document type with canonical XML comparison."
+        "SPEC-PACKAGE-FACT-adjacent and feature-dependent double gap: no official UBL sample corpus is vendored in this repository to round-trip against (same category as SAL-UBL-OBL-1549D8ECF079779C's spec-package absence), and the schema-valid-element-order-on-write feature this obligation also requires does not exist (same gap as SAL-UBL-OBL-4BD9BBC9F974C175 in this cluster). Neither half is buildable without first resolving the other; left honestly missing rather than force-promoted."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-F9D5251F2302AE3A",
-      "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -6322,13 +6078,9 @@
           "Official-sample round trips per supported document type with canonical XML comparison."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::dumps",
-        "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::dump",
-        "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::semantic_sha256"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "UBL-PARSE-001",
@@ -6412,6 +6164,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-profile-validator-registry-001.json": "4fa90752a767767e0ead729d416bbbd68836191ef0a7c2f62480a640b5b2b9cd",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-query-index-agreement-001.json": "5dae056fd7ab94b20a63eca83daf6843420a30132ee2875991917e251d7a85a3",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-signature-namespace-001.json": "6e26948fc2b7a618118cfc6e2aaba6d4c15ed5076aff4192bc9c5741e172d8ba",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ubl-small-clusters-citation-audit-001.json": "c3014f0982d137f4487dfb14bc9eddbebbb560d3d0088084de16d7969c54a54b",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-values-citation-audit-001.json": "f9ec4866f212093bd3387fa2053bbcff765bd6472733dcb0aa2849adfd1a267b",
     "src/python/ubl/src/format_factory/ubl/codec/preservation.py": "dab616ced8f5104f5bee89db229a32d14000f486b061ace0e7a29dd934f5ab99",
     "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py": "254743ef56212db8aebabac970793fee188634466b6907145e25b1b662e8f9fc",
@@ -6454,12 +6207,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 84,
-      "missing": 15,
-      "partial": 95
+      "implemented": 112,
+      "missing": 29,
+      "partial": 53
     },
     "total": 194,
-    "unresolved": 110
+    "unresolved": 82
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
