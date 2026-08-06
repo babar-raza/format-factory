@@ -1,0 +1,60 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-profile-validator-registry-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T13:05:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_PROFILE_VALIDATOR_REGISTRY_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "SAL-UBL-OBL-7D0855CD163E1EFD's 'allow profile-specific validators to be registered; never claim profile conformance without the installed ruleset passing' clause had no implementation anywhere: validate() checks only one hardcoded stable-profile ruleset, with no API for a caller to register a validator for a specific customization profile (EN 16931, PEPPOL BIS, or any other). Flagged as the concrete next candidate in FF6 Event 118, following the immediately preceding tick's identifier-exposure work on the same capability.",
+    "obligation_targeted": "SAL-UBL-OBL-7D0855CD163E1EFD",
+    "acceptance_evidence": "tests/python/ubl/test_obligation_profile_validator_registry.py",
+    "regression_tier": "full UBL package suite (tests/python/ubl)"
+  },
+  "execution_steps": [
+    "1. Designed a new module, validation/profiles.py: ProfileValidatorRegistry (an immutable, customization-ID-keyed collection of validator callables -- register() returns a NEW registry rather than mutating, matching this package's existing immutable-model convention throughout XmlNode/UblDocument) and validate_profile(document, registry) (a dispatcher looking up the registered validator for the document's own customization_id and running it, returning None when nothing matches).",
+    "2. Deliberately keyed the registry by cbc:CustomizationID, not cbc:ProfileID, and documented why in the module docstring: in real UBL deployments (EN 16931 / PEPPOL BIS being the clearest examples), CustomizationID is what selects the Schematron/validation-artefact set a document must pass; ProfileID identifies the business process (ordering, billing, ...) the document participates in, not which ruleset applies to it. No SAL fact pins this down explicitly, so this is a documented design judgment matching real-world UBL tooling convention, not a literal spec quote.",
+    "3. Designed validate_profile() to return None (not an empty/passing ValidationReport) both when nothing is registered at all and when the document declares no customization ID -- matching 'absent when not installed' precisely, and structurally ruling out 'claim conformance without the installed ruleset passing': the function has no code path that could report a pass a registered validator itself did not produce.",
+    "4. Exported ProfileValidatorRegistry, ProfileValidator, and validate_profile from validation/__init__.py and the top-level package __init__.py, matching the existing export pattern.",
+    "5. Ran ruff, mypy, and the full ubl suite before writing new tests: 556 passed, unchanged (0 regressions from the new module and exports).",
+    "6. Wrote tests/python/ubl/test_obligation_profile_validator_registry.py (11 tests): registry immutability (register() leaves the original untouched, re-registering an ID replaces it, multiple distinct IDs coexist, an empty ID is refused), scoping (a validator registered for a DIFFERENT customization ID never runs against a document declaring a different one -- the clearest proof of scoping), a failing installed ruleset reported rather than softened, and 'absent when not installed' proven three ways (nothing registered at all, document declares no customization ID, a freshly built unparsed document).",
+    "7. All 11 passed on first run. Re-ran the full UBL suite: 567 passed (556 baseline + 11 new, 0 regressions). ruff and mypy clean (26 source files).",
+    "8. Promoted SAL-UBL-OBL-7D0855CD163E1EFD fully to implemented -- this closes the last of UBL-PROFILE-001's three obligations, all closed across this tick and the immediately preceding one."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/validation/profiles.py",
+    "src/python/ubl/src/format_factory/ubl/validation/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_profile_validator_registry.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/validation/profiles.py",
+    "src/python/ubl/src/format_factory/ubl/validation/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_profile_validator_registry.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_profile_validator_registry.py -v -- 11 passed",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 567 passed (556 baseline + 11 new, 0 regressions)",
+    ".venv/Scripts/python -m ruff check src/python/ubl/src/format_factory/ubl/validation/profiles.py src/python/ubl/src/format_factory/ubl/validation/__init__.py src/python/ubl/src/format_factory/ubl/__init__.py tests/python/ubl/test_obligation_profile_validator_registry.py -- All checks passed",
+    ".venv/Scripts/python -m mypy src/python/ubl/src/format_factory/ubl/ -- Success: no issues found in 26 source files"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 194,
+    "ubl_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently verified against an external UBL library or a real EN 16931/PEPPOL BIS Schematron ruleset. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_this_is_real_new_code": "No profile-specific validator registration mechanism existed anywhere in this codebase before this slice. ProfileValidatorRegistry and validate_profile() are entirely new production code, completing the third and final UBL-PROFILE-001 obligation across this tick and the immediately preceding one."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

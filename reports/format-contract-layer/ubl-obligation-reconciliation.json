@@ -34,6 +34,14 @@
       "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE: it names the exact positive and negative test selectors proving customization_id and profile_id are live properties reading cbc:CustomizationID/cbc:ProfileID from the current tree, each independent of the other and of declared_version, None (never fabricated) when absent, and reflecting an edit immediately. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-UBL-OBL-965E8CAEA15E1281 (fully) and partially SAL-UBL-OBL-7D0855CD163E1EFD (the customization/profile exposure clause only); it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "UBL-PROFILE-VALIDATOR-REGISTRY-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ubl-profile-validator-registry-001.json",
+      "sha256": "4fa90752a767767e0ead729d416bbbd68836191ef0a7c2f62480a640b5b2b9cd",
+      "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE: it names the exact positive and negative test selectors proving ProfileValidatorRegistry is immutable (register() returns a new registry), a registered validator never runs against a document declaring a different customization ID, a failing installed ruleset is reported rather than softened, and validate_profile() returns None -- not an empty/passing report -- both when nothing is registered and when the document declares no customization ID. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-UBL-OBL-7D0855CD163E1EFD only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "UBL-QUERY-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -45,7 +53,7 @@
   "format_id": "ubl",
   "input_digests": {
     "compiled_contract": "41aec8cae7ec194c419ce7ac98ba0b5a3c67db3af0ff2a3c6b2f0e13594f62ab",
-    "implementation_evidence": "adba2b3ed16b9bd30cae1fd9fb50c161efd58e9402d95834d89776c4e4614650",
+    "implementation_evidence": "764520bf3148fe4271296ec522a21f4aced0b0d41e4f61de800bb0a3822dd4ee",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "43298a744266dabae0cda8c7aa331317aef620515dec7784f1f5a186a97fe3b6",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -4173,20 +4181,30 @@
       "execution_evidence_ids": [
         "UBL-BASELINE-SUITE",
         "UBL-PROFILE-IDENTIFIERS-SELECTOR-PROOF",
-        "UBL-DETECTED-DECLARED-VERSION-SELECTOR-PROOF"
+        "UBL-DETECTED-DECLARED-VERSION-SELECTOR-PROOF",
+        "UBL-PROFILE-VALIDATOR-REGISTRY-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "The \"expose version, customization, and profile identifiers\" clause is now fully covered: UblDocument.declared_version/customization_id/profile_id (see the two sibling obligations under this same capability). The remaining clause -- \"allow profile-specific validators to be registered; never claim profile conformance without the installed ruleset passing\" -- is a distinct, not-yet-built plug-in registry mechanism: no API exists for a caller to register a validator keyed by profile/customization ID, and validate() only ever checks the single hardcoded stable-profile ruleset. Not claimed."
+        "The \"expose version, customization, and profile identifiers\" clause is covered by UblDocument.declared_version/customization_id/profile_id. The \"allow profile-specific validators to be registered\" clause is covered by ProfileValidatorRegistry (new module, validation/profiles.py): an immutable, customization-ID-keyed registry (register() returns a new registry rather than mutating), and validate_profile(document, registry) dispatches to whichever validator is registered for the document's own customization_id, returning that validator's exact verdict unmodified -- proving \"never claim profile conformance without the installed ruleset passing\" structurally, not by convention: the function has no code path that could report a pass the registered ruleset itself did not produce. Scoping is proven the strong way (a registered validator for a DIFFERENT customization ID never runs against a document declaring a different one), and \"absent when not installed\" returns None -- never an empty/passing report -- both when nothing is registered at all and when the document declares no customization ID."
       ],
-      "missing_behavior": [
-        "A profile-specific validator plug-in registry does not exist: no way to register a validator keyed by customization_id/profile_id, and no dispatcher that would run it and report a verdict scoped to that profile (absent entirely when no validator is registered for it, per this obligation's own required_tests wording)."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ubl/test_obligation_profile_validator_registry.py::test_registering_an_empty_id_is_refused",
+        "tests/python/ubl/test_obligation_profile_validator_registry.py::test_a_registered_validator_for_a_different_id_never_runs",
+        "tests/python/ubl/test_obligation_profile_validator_registry.py::test_no_verdict_when_nothing_is_registered_at_all",
+        "tests/python/ubl/test_obligation_profile_validator_registry.py::test_no_verdict_when_the_document_declares_no_customization_id",
+        "tests/python/ubl/test_obligation_profile_validator_registry.py::test_no_verdict_for_a_freshly_built_document_with_no_customization_id"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-7D0855CD163E1EFD",
       "positive_test_selectors": [
         "tests/python/ubl/test_obligation_profile_identifiers.py::test_customization_id_is_exposed_when_declared",
         "tests/python/ubl/test_obligation_profile_identifiers.py::test_profile_id_is_exposed_when_declared",
-        "tests/python/ubl/test_obligation_detected_declared_version.py::test_declared_version_reads_the_current_trees_ublversionid"
+        "tests/python/ubl/test_obligation_detected_declared_version.py::test_declared_version_reads_the_current_trees_ublversionid",
+        "tests/python/ubl/test_obligation_profile_validator_registry.py::test_register_returns_a_new_registry_leaving_the_original_untouched",
+        "tests/python/ubl/test_obligation_profile_validator_registry.py::test_re_registering_the_same_id_replaces_it",
+        "tests/python/ubl/test_obligation_profile_validator_registry.py::test_multiple_distinct_ids_coexist",
+        "tests/python/ubl/test_obligation_profile_validator_registry.py::test_verdict_is_scoped_to_the_documents_own_customization_id",
+        "tests/python/ubl/test_obligation_profile_validator_registry.py::test_a_failing_installed_ruleset_is_reported_not_silently_passed"
       ],
       "proof_requirements": {
         "negative": [
@@ -4196,12 +4214,14 @@
           "Profile ruleset plug-in fixture: verdicts scoped to the profile and absent when not installed."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument",
-        "src/python/ubl/src/format_factory/ubl/validation/validator.py::validate"
+        "src/python/ubl/src/format_factory/ubl/validation/validator.py::validate",
+        "src/python/ubl/src/format_factory/ubl/validation/profiles.py::ProfileValidatorRegistry",
+        "src/python/ubl/src/format_factory/ubl/validation/profiles.py::validate_profile"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-PARSE-001",
@@ -7835,6 +7855,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-detected-declared-version-001.json": "1059a4d232058af1d560fc0e1e0732ad04bfe0079ef93b03de24f3f4ddfb61b0",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-lifecycle-io-001.json": "ed787921f2225a81573186c4cd81377a417d211b447444ba0807685ba1e837b8",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-profile-identifiers-001.json": "48879903a7e0b13d2411bfdb1a24c27529a89fbf06f5f2dd0de655d21e7ab871",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ubl-profile-validator-registry-001.json": "4fa90752a767767e0ead729d416bbbd68836191ef0a7c2f62480a640b5b2b9cd",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-query-index-agreement-001.json": "5dae056fd7ab94b20a63eca83daf6843420a30132ee2875991917e251d7a85a3",
     "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py": "254743ef56212db8aebabac970793fee188634466b6907145e25b1b662e8f9fc",
     "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py": "628de81ba8521c8214c41c4f508ce3fbcd9515329d245d9589b6dd9dc6f15d1e",
@@ -7848,6 +7869,7 @@
     "src/python/ubl/src/format_factory/ubl/model/typed.py": "3768fa130256f78078070bc083c3c571d3827e4a8074ffb224b56db5e753a31c",
     "src/python/ubl/src/format_factory/ubl/model/values.py": "4d9fc62609afaa2b3d935db570ea6c9541b352d32403e07a1cc24a6922e424fc",
     "src/python/ubl/src/format_factory/ubl/security/limits.py": "95ba5485bad5547fe800d4952518507824e217d15a197df822945f73921afc6d",
+    "src/python/ubl/src/format_factory/ubl/validation/profiles.py": "9be1805b9ea265200e890fc833526dd3589b0be559d61f1d6ba76954f63b0c35",
     "src/python/ubl/src/format_factory/ubl/validation/validator.py": "fe46e4b8e56cdd7387d5299cf0f565a7f9cf7863562fa544f0b6fb8346c11662",
     "tests/python/ubl/test_obligation_aggregate_components.py": "26e36e29e05e239f1fc17915ebf243ae61b55799c7811dbfe8c3fee0fac66242",
     "tests/python/ubl/test_obligation_business_calculation.py": "ebf8352d49b7d0bc6bf5aa4bfa0d034f6f98f896ba34aceb95cfe38efeeee150",
@@ -7856,6 +7878,7 @@
     "tests/python/ubl/test_obligation_document_query.py": "43151bb1577f2c57f8f9782753d37cac8595d3e2efde33bf25d03d71705b3f21",
     "tests/python/ubl/test_obligation_lifecycle_io.py": "6189da6be51a33cbe60b72e6d98b632dfda9232838d41788dfd7547ec824f7ed",
     "tests/python/ubl/test_obligation_profile_identifiers.py": "4a755868d52bba01f7023b09b5fff94d43582d496367eb287ec83ad184379738",
+    "tests/python/ubl/test_obligation_profile_validator_registry.py": "b874e4d0c934f0496470bb854a6d90fafd98dc39f0ff744daac780909e2f2cb1",
     "tests/python/ubl/test_obligation_query_index_agreement.py": "9c593f19f18c25e0db6d4cbb75d31b9d8ec26f7fa80a5db7562263e5fcd58112",
     "tests/python/ubl/test_obligation_referential_integrity.py": "ca3bf25af599e5624a7ac0b3d3973724d2f4580aad8f03d2dcb2c0cce412379c",
     "tests/python/ubl/test_obligation_temporal_projection_and_charges.py": "f9e50f7d338f9a96764972761953b1859153a10aff0e1c08668a5d5b179c1920",
@@ -7866,12 +7889,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 9,
+      "implemented": 10,
       "missing": 12,
-      "partial": 173
+      "partial": 172
     },
     "total": 194,
-    "unresolved": 185
+    "unresolved": 184
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

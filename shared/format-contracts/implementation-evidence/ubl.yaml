@@ -112,6 +112,22 @@ execution_evidence:
     SAL-UBL-OBL-965E8CAEA15E1281 (fully) and partially
     SAL-UBL-OBL-7D0855CD163E1EFD (the customization/profile exposure clause
     only); it supports no other obligation and promotes no product state.
+- evidence_id: UBL-PROFILE-VALIDATOR-REGISTRY-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-profile-validator-registry-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike UBL-BASELINE-SUITE: it names the exact positive
+    and negative test selectors proving ProfileValidatorRegistry is
+    immutable (register() returns a new registry), a registered validator
+    never runs against a document declaring a different customization ID,
+    a failing installed ruleset is reported rather than softened, and
+    validate_profile() returns None -- not an empty/passing report -- both
+    when nothing is registered and when the document declares no
+    customization ID. SELF-CONSISTENT format_factory-only evidence per the
+    execution-recovery directive's GAP-008 rule, not VERIFIED. Covers
+    SAL-UBL-OBL-7D0855CD163E1EFD only; it supports no other obligation and
+    promotes no product state.
 obligations:
 - obligation_id: SAL-UBL-OBL-020F06E51DE6AB65
   capability_id: UBL-LIFECYCLE-001
@@ -3393,32 +3409,46 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-7D0855CD163E1EFD
   capability_id: UBL-PROFILE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
   - src/python/ubl/src/format_factory/ubl/validation/validator.py::validate
+  - src/python/ubl/src/format_factory/ubl/validation/profiles.py::ProfileValidatorRegistry
+  - src/python/ubl/src/format_factory/ubl/validation/profiles.py::validate_profile
   positive_test_selectors:
   - tests/python/ubl/test_obligation_profile_identifiers.py::test_customization_id_is_exposed_when_declared
   - tests/python/ubl/test_obligation_profile_identifiers.py::test_profile_id_is_exposed_when_declared
   - tests/python/ubl/test_obligation_detected_declared_version.py::test_declared_version_reads_the_current_trees_ublversionid
-  negative_test_selectors: []
+  - tests/python/ubl/test_obligation_profile_validator_registry.py::test_register_returns_a_new_registry_leaving_the_original_untouched
+  - tests/python/ubl/test_obligation_profile_validator_registry.py::test_re_registering_the_same_id_replaces_it
+  - tests/python/ubl/test_obligation_profile_validator_registry.py::test_multiple_distinct_ids_coexist
+  - tests/python/ubl/test_obligation_profile_validator_registry.py::test_verdict_is_scoped_to_the_documents_own_customization_id
+  - tests/python/ubl/test_obligation_profile_validator_registry.py::test_a_failing_installed_ruleset_is_reported_not_silently_passed
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_profile_validator_registry.py::test_registering_an_empty_id_is_refused
+  - tests/python/ubl/test_obligation_profile_validator_registry.py::test_a_registered_validator_for_a_different_id_never_runs
+  - tests/python/ubl/test_obligation_profile_validator_registry.py::test_no_verdict_when_nothing_is_registered_at_all
+  - tests/python/ubl/test_obligation_profile_validator_registry.py::test_no_verdict_when_the_document_declares_no_customization_id
+  - tests/python/ubl/test_obligation_profile_validator_registry.py::test_no_verdict_for_a_freshly_built_document_with_no_customization_id
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-PROFILE-IDENTIFIERS-SELECTOR-PROOF
   - UBL-DETECTED-DECLARED-VERSION-SELECTOR-PROOF
+  - UBL-PROFILE-VALIDATOR-REGISTRY-SELECTOR-PROOF
   implemented_behavior:
-  - 'The "expose version, customization, and profile identifiers" clause is now fully covered:
-    UblDocument.declared_version/customization_id/profile_id (see the two sibling obligations under
-    this same capability). The remaining clause -- "allow profile-specific validators to be registered;
-    never claim profile conformance without the installed ruleset passing" -- is a distinct,
-    not-yet-built plug-in registry mechanism: no API exists for a caller to register a validator keyed by
-    profile/customization ID, and validate() only ever checks the single hardcoded stable-profile
-    ruleset. Not claimed.'
-  missing_behavior:
-  - 'A profile-specific validator plug-in registry does not exist: no way to register a validator keyed
-    by customization_id/profile_id, and no dispatcher that would run it and report a verdict scoped to
-    that profile (absent entirely when no validator is registered for it, per this obligation''s own
-    required_tests wording).'
+  - 'The "expose version, customization, and profile identifiers" clause is covered by
+    UblDocument.declared_version/customization_id/profile_id. The "allow profile-specific validators to
+    be registered" clause is covered by ProfileValidatorRegistry (new module,
+    validation/profiles.py): an immutable, customization-ID-keyed registry (register() returns a new
+    registry rather than mutating), and validate_profile(document, registry) dispatches to whichever
+    validator is registered for the document''s own customization_id, returning that validator''s exact
+    verdict unmodified -- proving "never claim profile conformance without the installed ruleset
+    passing" structurally, not by convention: the function has no code path that could report a pass
+    the registered ruleset itself did not produce. Scoping is proven the strong way (a registered
+    validator for a DIFFERENT customization ID never runs against a document declaring a different one),
+    and "absent when not installed" returns None -- never an empty/passing report -- both when nothing
+    is registered at all and when the document declares no customization ID.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - 'Profile ruleset plug-in fixture: verdicts scoped to the profile and absent when not installed.'

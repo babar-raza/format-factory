@@ -77,7 +77,7 @@ from .model import (
     ubl_version_id,
 )
 from .security import UBL_DEFAULT_LIMITS
-from .validation import validate
+from .validation import ProfileValidator, ProfileValidatorRegistry, validate, validate_profile
 
 __all__ = [
     "DocumentIndex",
@@ -148,6 +148,9 @@ __all__ = [
     "semantic_sha256",
     "ubl_installed_workflow",
     "validate",
+    "validate_profile",
+    "ProfileValidator",
+    "ProfileValidatorRegistry",
 ]
 
 __version__ = "0.2.0.dev0"
