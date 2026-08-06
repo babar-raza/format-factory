@@ -322,6 +322,35 @@ execution_evidence:
     SAL-ORA-OBL-D9D70C82BBB1808C, SAL-ORA-OBL-3A738D65887DDAA0,
     SAL-ORA-OBL-80901F8E09F17910, and SAL-ORA-OBL-849EDE79FBAE125D only;
     it supports no other obligation and promotes no product state.
+- evidence_id: ORA-WRITE-CITATION-AUDIT-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ora-write-citation-audit-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike ORA-BASELINE-SUITE: ORA-WRITE-001's 10
+    obligations shared one identical generic citation, the sixth ora
+    cluster to show this pattern. 8 of the 10 rule_texts are exact
+    cross-capability duplicates of facts already resolved under
+    ORA-STACK-001/ORA-CONTAINER-001/ORA-BASELINEASSET-001, closed by
+    citation. The genuinely write-specific obligation (stable member
+    order, normalized timestamps, exact sentinels, deterministic XML,
+    validated raster assets, explicit lossless-versus-canonical modes) is
+    proven by test_obligation_lifecycle_and_write.py's own extensive
+    suite -- output order independent of input order, timestamps
+    normalized, mimetype written first and stored, byte-identical
+    repeated serialization, a load-dump-load round trip as a fixed
+    point, every layer source validated, and both preservation modes
+    (LOSSLESS default, CANONICAL regeneration proven to drop unmodelled
+    content and remain deterministic) all directly tested. No new source
+    or test code this slice -- pure citation correction, following the
+    same pattern proven across five prior ora ticks. SELF-CONSISTENT
+    format_factory-only evidence per the execution-recovery directive's
+    GAP-008 rule, not VERIFIED. Covers SAL-ORA-OBL-20B1A50A349D0B87,
+    SAL-ORA-OBL-300F9204F3EDFE6A, SAL-ORA-OBL-396B84EE7DD9240C,
+    SAL-ORA-OBL-3DD2E3BF32E01930, SAL-ORA-OBL-3FBCDC073FF0F58B,
+    SAL-ORA-OBL-51047D9CBD1191DF, SAL-ORA-OBL-537613F85A370825,
+    SAL-ORA-OBL-D59ADDD7B5FA720C, and SAL-ORA-OBL-EB51016F53E73135 only;
+    it supports no other obligation and promotes no product state.
 obligations:
 - obligation_id: SAL-ORA-OBL-022F37EEA74EC1BB
   capability_id: ORA-EDIT-001
@@ -884,25 +913,18 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-20B1A50A349D0B87
   capability_id: ORA-WRITE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
-  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
   positive_test_selectors:
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_a_non_zip_input_is_rejected
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Three-run byte determinism,
-    installed-wheel writes, independent application reopen, and unknown-extension preservation.'
+  - 'Cross-capability duplicate of already-implemented SAL-ORA-OBL-035B53B843FF49F9 (identical rule_text): .ora archives are parsed as a ZIP container; non-ZIP input is refused.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Three-run byte determinism, installed-wheel writes, independent application reopen, and unknown-extension
@@ -1144,25 +1166,22 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-300F9204F3EDFE6A
   capability_id: ORA-WRITE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
-  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  - src/python/ora/src/format_factory/ora/lifecycle.py::_baseline_asset_diagnostics
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata
   positive_test_selectors:
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_raster_assets.py::test_a_conforming_thumbnail_is_accepted
+  - tests/python/ora/test_obligation_raster_assets.py::test_non_conforming_thumbnails_are_rejected
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_strict_mode_rejects_a_document_missing_its_thumbnail
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_validate_reports_a_non_conforming_thumbnail
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-ASSET-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Three-run byte determinism,
-    installed-wheel writes, independent application reopen, and unknown-extension preservation.'
+  - 'Cross-capability duplicate (this exact clause) of ORA-BASELINEASSET-001''s already-implemented SAL-ORA-OBL-48761EB31C2C2F7D: Thumbnails/thumbnail.png is required and non-conforming thumbnails are refused, each proven independently.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Three-run byte determinism, installed-wheel writes, independent application reopen, and unknown-extension
@@ -1297,25 +1316,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-396B84EE7DD9240C
   capability_id: ORA-WRITE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
-  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
   positive_test_selectors:
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_stack_and_document.py::test_layer_src_is_archive_root_relative
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_layer_src_that_escapes_the_archive_is_refused
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_layer_src_that_escapes_the_archive_is_refused
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Three-run byte determinism,
-    installed-wheel writes, independent application reopen, and unknown-extension preservation.'
+  - 'Cross-capability duplicate of already-implemented SAL-ORA-OBL-047E5523BB0D85D5 (identical rule_text): layer src is archive-root-relative and traversal is refused.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Three-run byte determinism, installed-wheel writes, independent application reopen, and unknown-extension
@@ -1386,25 +1400,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-3DD2E3BF32E01930
   capability_id: ORA-WRITE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
-  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
   positive_test_selectors:
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_stored_uncompressed
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_any_surrounding_whitespace
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_wrong_values
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_stored_uncompressed
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_any_surrounding_whitespace
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_wrong_values
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-CONTAINER-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Three-run byte determinism,
-    installed-wheel writes, independent application reopen, and unknown-extension preservation.'
+  - 'Cross-capability duplicate of already-implemented SAL-ORA-OBL-B7B7362D7DBCA9A2 (identical rule_text): mimetype member requirements proven against every named clause.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Three-run byte determinism, installed-wheel writes, independent application reopen, and unknown-extension
@@ -1435,25 +1452,34 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-3FBCDC073FF0F58B
   capability_id: ORA-WRITE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::dumps
+  - src/python/ora/src/format_factory/ora/lifecycle.py::dump
   - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
-  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  - src/python/ora/src/format_factory/ora/preservation.py::check_preservation
   positive_test_selectors:
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_serialization_is_stable_across_separate_loads
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_output_does_not_depend_on_input_member_order
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_written_timestamps_are_normalized
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_written_mimetype_is_first_and_stored
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_serialization_is_byte_identical_across_repeated_calls
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_a_round_trip_is_a_fixed_point
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_valid_layer_png_passes_validation
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_multi_layer_validation_checks_all_sources
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_lossless_is_the_default_preservation_mode
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_canonical_mode_regenerates_the_stack_and_drops_unmodelled_content
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_canonical_output_is_also_deterministic
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_canonical_output_still_loads
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_strict_mode_rejects_non_png_layer_source
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_strict_mode_rejects_truncated_png_layer_source
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-WRITE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Three-run byte determinism,
-    installed-wheel writes, independent application reopen, and unknown-extension preservation.'
+  - 'Output member order is stable and does not depend on input member order (two documents built from differently-ordered members serialize identically); timestamps are normalized rather than passed through from the filesystem; the mimetype sentinel is written first and STORED, matching the container-format requirement exactly; XML serialization is byte-identical across repeated calls on an unchanged document and a load-dump-load round trip is a fixed point. Every layer raster source is validated (non-PNG and truncated sources refused in strict mode; multiple layers all checked, not just the first). LOSSLESS is the explicit default preservation mode; CANONICAL mode regenerates the stack and provably drops unmodelled content, is itself deterministic, and its output still loads cleanly.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Three-run byte determinism, installed-wheel writes, independent application reopen, and unknown-extension
@@ -1698,25 +1724,19 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-51047D9CBD1191DF
   capability_id: ORA-WRITE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
-  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
   positive_test_selectors:
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_member_names_are_case_sensitive
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_non_ascii_member_names_round_trip
   negative_test_selectors: []
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-CONTAINER-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Three-run byte determinism,
-    installed-wheel writes, independent application reopen, and unknown-extension preservation.'
+  - 'Cross-capability duplicate of already-implemented SAL-ORA-OBL-6491749388BB6731 (identical rule_text): member names are case-sensitive; non-ASCII UTF-8 names round-trip.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Three-run byte determinism, installed-wheel writes, independent application reopen, and unknown-extension
@@ -1777,25 +1797,22 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-537613F85A370825
   capability_id: ORA-WRITE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
-  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
   positive_test_selectors:
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_minimal_document_parses
+  - tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required
+  - tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required
+  - tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Three-run byte determinism,
-    installed-wheel writes, independent application reopen, and unknown-extension preservation.'
+  - 'Cross-capability duplicate of already-implemented SAL-ORA-OBL-D76D780D4D9DA699 (identical rule_text): root image element requires w, h, and version.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Three-run byte determinism, installed-wheel writes, independent application reopen, and unknown-extension
@@ -3234,25 +3251,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-D59ADDD7B5FA720C
   capability_id: ORA-WRITE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
-  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
   positive_test_selectors:
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_stack_and_document.py::test_every_layer_requires_a_src
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_every_layer_requires_a_src
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Three-run byte determinism,
-    installed-wheel writes, independent application reopen, and unknown-extension preservation.'
+  - 'Cross-capability duplicate of already-implemented SAL-ORA-OBL-23D0207100C46AD9 (identical rule_text): every layer element requires src.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Three-run byte determinism, installed-wheel writes, independent application reopen, and unknown-extension
@@ -3421,25 +3433,22 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-EB51016F53E73135
   capability_id: ORA-WRITE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
-  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  - src/python/ora/src/format_factory/ora/lifecycle.py::_baseline_asset_diagnostics
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata
   positive_test_selectors:
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_raster_assets.py::test_merged_image_accepts_only_8_or_16_bits
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_validate_reports_a_non_conforming_merged_image
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_validate_reports_a_missing_merged_image
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_strict_mode_rejects_a_document_missing_its_mergedimage
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-ASSET-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Three-run byte determinism,
-    installed-wheel writes, independent application reopen, and unknown-extension preservation.'
+  - 'Cross-capability duplicate (this exact clause) of ORA-BASELINEASSET-001''s already-implemented SAL-ORA-OBL-0CF770969FA42DB5: mergedimage.png''s mandatory presence (missing is refused) and its 8-or-16-bit-per-channel constraint (non-conforming is refused) are each proven independently.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Three-run byte determinism, installed-wheel writes, independent application reopen, and unknown-extension

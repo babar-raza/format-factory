@@ -1,0 +1,46 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-write-citation-audit-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T19:35:00Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_WRITE_CITATION_AUDIT_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "ORA-WRITE-001's 10 obligations shared one identical generic citation, the sixth ora cluster this session to show the pattern. Pulled each rule_text individually: 8 are exact cross-capability duplicates of already-resolved facts (ZIP wrapper, thumbnail/mergedimage requirements, layer data path, mimetype requirements, member-name case/UTF-8, root w/h/version, layer requires src), 1 mirrors a still-unaudited stack.xml-UTF-8 duplicate and was left untouched for consistency, and 1 is the genuinely write-specific capability itself.",
+    "obligation_targeted": "SAL-ORA-OBL-20B1A50A349D0B87, SAL-ORA-OBL-300F9204F3EDFE6A, SAL-ORA-OBL-396B84EE7DD9240C, SAL-ORA-OBL-3DD2E3BF32E01930, SAL-ORA-OBL-3FBCDC073FF0F58B, SAL-ORA-OBL-51047D9CBD1191DF, SAL-ORA-OBL-537613F85A370825, SAL-ORA-OBL-D59ADDD7B5FA720C, SAL-ORA-OBL-EB51016F53E73135",
+    "acceptance_evidence": "tests/python/ora/test_obligation_lifecycle_and_write.py, test_obligation_container_and_mimetype.py, test_obligation_stack_and_document.py, test_obligation_raster_assets.py (all pre-existing; no new tests this slice)",
+    "regression_tier": "full ORA package suite (tests/python/ora)"
+  },
+  "execution_steps": [
+    "1. Pulled all 10 ORA-WRITE-001 rule_texts. Recognized 6 immediately as exact duplicates of facts closed in the STACK/CONTAINER ticks (ZIP wrapper, layer data path, mimetype requirements, member-name case/UTF-8, root w/h/version, layer requires src) and 2 more as duplicates of the ORA-BASELINEASSET-001 thumbnail/mergedimage facts closed in the ASSET tick -- cited directly from those already-verified evidence entries, zero re-investigation needed for these 8.",
+    "2. Read test_obligation_lifecycle_and_write.py's write-specific sections in full for the genuinely write-specific obligation (stable member order, normalized timestamps, exact sentinels, deterministic XML, validated raster assets, explicit lossless-vs-canonical modes). Found direct, specific tests for every named clause: member-order independence, timestamp normalization, mimetype-first-and-stored, byte-identical repeated serialization, round-trip fixed-point, per-layer raster validation (strict-mode refusal of non-PNG and truncated sources, all layers checked not just the first), and both preservation modes (LOSSLESS default explicitly proven, CANONICAL regeneration proven to drop unmodelled content, remain deterministic, and still load).",
+    "3. Ran the candidate tests directly before citing: all passed (already-passing pre-existing tests, no changes made).",
+    "4. Learned from the prior tick's mistake (an assumed-wrong proof_requirements boilerplate that had to be fixed mid-script): this time extracted the capability's actual proof_requirements text programmatically from an untouched sibling obligation (the stack.xml-UTF-8 duplicate, deliberately left unedited) before rendering any block, verified by printing it before writing the file.",
+    "5. Applied all 9 evidence edits via the same obligation_id-delimited text-block script pattern used across the five prior ora ticks. Ran the reconciler: clean pass, no errors, first attempt. Ran the full ora suite to confirm zero regressions (no source or test files changed this slice) -- 283 passed, identical to before."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora/ -q -- 283 passed, unchanged from before this slice (0 source or test changes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 9,
+    "obligations_total_for_format": 134,
+    "ora_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against an independent OpenRaster reader/writer. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_9_of_10_moved_and_1_untouched": "8 obligations were exact cross-capability duplicates of already-fully-proven facts, closed by citation. 1 (the write-specific capability itself) was directly, fully provable by an already-thorough existing test file. 1 (stack.xml UTF-8 conformance) mirrors its still-unaudited counterparts under ORA-STACK-001/ORA-EDIT-001/ORA-CONTAINER-001/ORA-ASSET-001 and was left untouched for consistency rather than force-promoted."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
