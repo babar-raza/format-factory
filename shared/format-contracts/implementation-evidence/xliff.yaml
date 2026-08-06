@@ -3,6 +3,11 @@ format_id: xliff
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: XLIFF-QA-SOURCE-LANGUAGE-COMPATIBILITY-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-qa-source-language-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes 4 cross-capability duplicate obligations (XLIFF-PARSE-001, XLIFF-VALIDATE-001, XLIFF-MODEL-001, XLIFF-TEXT-001) sharing one identical rule_text about source-side xml:lang compatibility, all confirmed genuinely unbuilt before this slice: qa.py already had a real, complete, already-tested check_target_language_compatibility (a WARNING-severity QA check, distinct from validate()''s conformance diagnostics, using a 4-way _language_specificity_relation helper) but no source-side sibling under any name. New check_source_language_compatibility mirrors it exactly -- same relation logic, same severity, same diagnostic code -- registered in QA_CHECKS and independently selectable via run_qa_checks(checks=...). This is distinct from the XLIFF-SEG-001 source/target language checks added to validator.py at an earlier tick this session: that pair are hard conformance diagnostics with a simpler 2-way exact-or-more-specific check; this pair are QA-layer, reviewer-facing WARNING signals using the more nuanced 4-way relation (adding a distinct reverse-specific case) that qa.py''s existing target-side check already used. 6 new tests mirror the existing 6-test target-language matrix precisely (exact, more-specific-under-2.1, reverse-specific, incompatible, no-explicit-lang, XLIFF-2.0-exact-only). xliff suite: 339 -> 345 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, not VERIFIED. Covers SAL-XLIFF-OBL-1FF54C0CDEC82951, SAL-XLIFF-OBL-20D653BB993E2687, SAL-XLIFF-OBL-A062E07DF7D59EBB, and SAL-XLIFF-OBL-A4C4AAF3B757A07B only; it supports no other obligation and promotes no product state.'
 - evidence_id: XLIFF-SEG-001-STRUCTURE-LANGUAGE-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-seg-structure-language-001.json
   expected_result: PASS
@@ -776,35 +781,58 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-1FF54C0CDEC82951
   capability_id: XLIFF-PARSE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
-  negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
-  missing_behavior:
-  - 'Confirmed gap, not an audit backlog: no check_source_language_compatibility (or equivalent) exists anywhere in qa.py/validator.py -- only the mirror-image target-language check (check_target_language_compatibility, SAL-XLIFF-OBL-E90A3420AFA03CC2) is implemented. The source-side compatibility check this obligation names is genuinely unbuilt. Not attempted this slice.'
+  status: implemented
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/qa.py::check_source_language_compatibility
+  - src/python/xliff/src/format_factory/xliff/qa.py::_language_specificity_relation
+  positive_test_selectors:
+  - 'tests/python/xliff/test_obligation_qa_checks.py::test_xliff_20_exact_source_match_passes'
+  - 'tests/python/xliff/test_obligation_qa_checks.py::test_xliff_21_accepts_more_specific_source_language'
+  - 'tests/python/xliff/test_obligation_qa_checks.py::test_no_explicit_source_xml_lang_is_not_flagged'
+  negative_test_selectors:
+  - 'tests/python/xliff/test_obligation_qa_checks.py::test_xliff_20_requires_exact_source_language_match'
+  - 'tests/python/xliff/test_obligation_qa_checks.py::test_xliff_21_reports_reverse_specific_source_language'
+  - 'tests/python/xliff/test_obligation_qa_checks.py::test_xliff_21_reports_incompatible_source_language'
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  - XLIFF-QA-SOURCE-LANGUAGE-COMPATIBILITY-PROOF
+  implemented_behavior:
+  - 'check_source_language_compatibility (new this slice) mirrors the existing check_target_language_compatibility exactly, reusing the same _language_specificity_relation helper: for each segment with an explicit source xml:lang, exact and (for XLIFF 2.1) more-specific tags relative to the document''s srcLang are accepted; reverse-specific (declared less specific than srcLang) and incompatible tags are reported via a WARNING-severity QA diagnostic (xliff.qa.language.incompatible), matching this obligation''s own ''reports incompatible values'' clause and the QA module''s own severity framing (a reviewer-facing quality signal, not a conformance error). Registered in QA_CHECKS as ''source_language_compatibility'', independently selectable via run_qa_checks(checks=...) like every other named check. Proven for all four specificity relations (exact, more-specific under 2.1, reverse-specific, incompatible) plus the no-explicit-lang and XLIFF-2.0-exact-only cases, mirroring the target-side test matrix precisely.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
+    - Each distinct clause of this obligation has a focused positive test proving the specific claim, not a
+      generic cluster-wide citation.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - Selector-bound negative cases are cited for every language-specificity relation this obligation
+      requires to be reported.
 - obligation_id: SAL-XLIFF-OBL-20D653BB993E2687
   capability_id: XLIFF-VALIDATE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
-  negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
-  missing_behavior:
-  - 'Same confirmed status as XLIFF-PARSE-001''s SAL-XLIFF-OBL-1FF54C0CDEC82951 (identical rule_text). Confirmed gap, not an audit backlog: no check_source_language_compatibility (or equivalent) exists anywhere in qa.py/validator.py -- only the mirror-image target-language check (check_target_language_compatibility, SAL-XLIFF-OBL-E90A3420AFA03CC2) is implemented. The source-side compatibility check this obligation names is genuinely unbuilt. Not attempted this slice.'
+  status: implemented
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/qa.py::check_source_language_compatibility
+  - src/python/xliff/src/format_factory/xliff/qa.py::_language_specificity_relation
+  positive_test_selectors:
+  - 'tests/python/xliff/test_obligation_qa_checks.py::test_xliff_20_exact_source_match_passes'
+  - 'tests/python/xliff/test_obligation_qa_checks.py::test_xliff_21_accepts_more_specific_source_language'
+  - 'tests/python/xliff/test_obligation_qa_checks.py::test_no_explicit_source_xml_lang_is_not_flagged'
+  negative_test_selectors:
+  - 'tests/python/xliff/test_obligation_qa_checks.py::test_xliff_20_requires_exact_source_language_match'
+  - 'tests/python/xliff/test_obligation_qa_checks.py::test_xliff_21_reports_reverse_specific_source_language'
+  - 'tests/python/xliff/test_obligation_qa_checks.py::test_xliff_21_reports_incompatible_source_language'
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  - XLIFF-QA-SOURCE-LANGUAGE-COMPATIBILITY-PROOF
+  implemented_behavior:
+  - 'check_source_language_compatibility (new this slice) mirrors the existing check_target_language_compatibility exactly, reusing the same _language_specificity_relation helper: for each segment with an explicit source xml:lang, exact and (for XLIFF 2.1) more-specific tags relative to the document''s srcLang are accepted; reverse-specific (declared less specific than srcLang) and incompatible tags are reported via a WARNING-severity QA diagnostic (xliff.qa.language.incompatible), matching this obligation''s own ''reports incompatible values'' clause and the QA module''s own severity framing (a reviewer-facing quality signal, not a conformance error). Registered in QA_CHECKS as ''source_language_compatibility'', independently selectable via run_qa_checks(checks=...) like every other named check. Proven for all four specificity relations (exact, more-specific under 2.1, reverse-specific, incompatible) plus the no-explicit-lang and XLIFF-2.0-exact-only cases, mirroring the target-side test matrix precisely.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.
-    - Core element matrix and module matrix fixtures with per-layer diagnostics assertions.
+    - Each distinct clause of this obligation has a focused positive test proving the specific claim, not a
+      generic cluster-wide citation.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - Selector-bound negative cases are cited for every language-specificity relation this obligation
+      requires to be reported.
 - obligation_id: SAL-XLIFF-OBL-2104606D91AD8051
   capability_id: XLIFF-MODULE-001
   status: implemented
@@ -2451,34 +2479,58 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-A062E07DF7D59EBB
   capability_id: XLIFF-MODEL-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
-  negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
-  missing_behavior:
-  - 'Same confirmed status as XLIFF-PARSE-001''s SAL-XLIFF-OBL-1FF54C0CDEC82951 (identical rule_text). Confirmed gap, not an audit backlog: no check_source_language_compatibility (or equivalent) exists anywhere in qa.py/validator.py -- only the mirror-image target-language check (check_target_language_compatibility, SAL-XLIFF-OBL-E90A3420AFA03CC2) is implemented. The source-side compatibility check this obligation names is genuinely unbuilt. Not attempted this slice.'
+  status: implemented
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/qa.py::check_source_language_compatibility
+  - src/python/xliff/src/format_factory/xliff/qa.py::_language_specificity_relation
+  positive_test_selectors:
+  - 'tests/python/xliff/test_obligation_qa_checks.py::test_xliff_20_exact_source_match_passes'
+  - 'tests/python/xliff/test_obligation_qa_checks.py::test_xliff_21_accepts_more_specific_source_language'
+  - 'tests/python/xliff/test_obligation_qa_checks.py::test_no_explicit_source_xml_lang_is_not_flagged'
+  negative_test_selectors:
+  - 'tests/python/xliff/test_obligation_qa_checks.py::test_xliff_20_requires_exact_source_language_match'
+  - 'tests/python/xliff/test_obligation_qa_checks.py::test_xliff_21_reports_reverse_specific_source_language'
+  - 'tests/python/xliff/test_obligation_qa_checks.py::test_xliff_21_reports_incompatible_source_language'
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  - XLIFF-QA-SOURCE-LANGUAGE-COMPATIBILITY-PROOF
+  implemented_behavior:
+  - 'check_source_language_compatibility (new this slice) mirrors the existing check_target_language_compatibility exactly, reusing the same _language_specificity_relation helper: for each segment with an explicit source xml:lang, exact and (for XLIFF 2.1) more-specific tags relative to the document''s srcLang are accepted; reverse-specific (declared less specific than srcLang) and incompatible tags are reported via a WARNING-severity QA diagnostic (xliff.qa.language.incompatible), matching this obligation''s own ''reports incompatible values'' clause and the QA module''s own severity framing (a reviewer-facing quality signal, not a conformance error). Registered in QA_CHECKS as ''source_language_compatibility'', independently selectable via run_qa_checks(checks=...) like every other named check. Proven for all four specificity relations (exact, more-specific under 2.1, reverse-specific, incompatible) plus the no-explicit-lang and XLIFF-2.0-exact-only cases, mirroring the target-side test matrix precisely.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Nested-structure fixtures verify order, inheritance, and ID preservation after round trip.
+    - Each distinct clause of this obligation has a focused positive test proving the specific claim, not a
+      generic cluster-wide citation.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - Selector-bound negative cases are cited for every language-specificity relation this obligation
+      requires to be reported.
 - obligation_id: SAL-XLIFF-OBL-A4C4AAF3B757A07B
   capability_id: XLIFF-TEXT-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
-  negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
-  missing_behavior:
-  - 'Same confirmed status as XLIFF-PARSE-001''s SAL-XLIFF-OBL-1FF54C0CDEC82951 (identical rule_text). Confirmed gap, not an audit backlog: no check_source_language_compatibility (or equivalent) exists anywhere in qa.py/validator.py -- only the mirror-image target-language check (check_target_language_compatibility, SAL-XLIFF-OBL-E90A3420AFA03CC2) is implemented. The source-side compatibility check this obligation names is genuinely unbuilt. Not attempted this slice.'
+  status: implemented
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/qa.py::check_source_language_compatibility
+  - src/python/xliff/src/format_factory/xliff/qa.py::_language_specificity_relation
+  positive_test_selectors:
+  - 'tests/python/xliff/test_obligation_qa_checks.py::test_xliff_20_exact_source_match_passes'
+  - 'tests/python/xliff/test_obligation_qa_checks.py::test_xliff_21_accepts_more_specific_source_language'
+  - 'tests/python/xliff/test_obligation_qa_checks.py::test_no_explicit_source_xml_lang_is_not_flagged'
+  negative_test_selectors:
+  - 'tests/python/xliff/test_obligation_qa_checks.py::test_xliff_20_requires_exact_source_language_match'
+  - 'tests/python/xliff/test_obligation_qa_checks.py::test_xliff_21_reports_reverse_specific_source_language'
+  - 'tests/python/xliff/test_obligation_qa_checks.py::test_xliff_21_reports_incompatible_source_language'
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  - XLIFF-QA-SOURCE-LANGUAGE-COMPATIBILITY-PROOF
+  implemented_behavior:
+  - 'check_source_language_compatibility (new this slice) mirrors the existing check_target_language_compatibility exactly, reusing the same _language_specificity_relation helper: for each segment with an explicit source xml:lang, exact and (for XLIFF 2.1) more-specific tags relative to the document''s srcLang are accepted; reverse-specific (declared less specific than srcLang) and incompatible tags are reported via a WARNING-severity QA diagnostic (xliff.qa.language.incompatible), matching this obligation''s own ''reports incompatible values'' clause and the QA module''s own severity framing (a reviewer-facing quality signal, not a conformance error). Registered in QA_CHECKS as ''source_language_compatibility'', independently selectable via run_qa_checks(checks=...) like every other named check. Proven for all four specificity relations (exact, more-specific under 2.1, reverse-specific, incompatible) plus the no-explicit-lang and XLIFF-2.0-exact-only cases, mirroring the target-side test matrix precisely.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures.
+    - Each distinct clause of this obligation has a focused positive test proving the specific claim, not a
+      generic cluster-wide citation.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - Selector-bound negative cases are cited for every language-specificity relation this obligation
+      requires to be reported.
 - obligation_id: SAL-XLIFF-OBL-A8BDC1BEFD51DF8A
   capability_id: XLIFF-LIFECYCLE-001
   status: implemented

@@ -17,6 +17,7 @@ from format_factory.xliff import (
     QA_CHECKS,
     check_missing_targets,
     check_placeholder_mismatch,
+    check_source_language_compatibility,
     check_target_language_compatibility,
     check_translation_consistency,
     check_unchanged_targets,
@@ -29,11 +30,17 @@ from format_factory.xliff import (
 XLIFF_NS = "urn:oasis:names:tc:xliff:document:2.0"
 
 
-def _document(unit_body: str, *, version: str = "2.0", trg_lang: str | None = None) -> str:
+def _document(
+    unit_body: str,
+    *,
+    version: str = "2.0",
+    trg_lang: str | None = None,
+    src_lang: str = "en",
+) -> str:
     trg = f' trgLang="{trg_lang}"' if trg_lang else ""
     return (
         f'<?xml version="1.0" encoding="UTF-8"?>\n'
-        f'<xliff xmlns="{XLIFF_NS}" version="{version}" srcLang="en"{trg}>'
+        f'<xliff xmlns="{XLIFF_NS}" version="{version}" srcLang="{src_lang}"{trg}>'
         f'<file id="f1">{unit_body}</file>'
         f"</xliff>"
     )
@@ -43,8 +50,14 @@ def _unit(unit_id: str, segments: str) -> str:
     return f'<unit id="{unit_id}">{segments}</unit>'
 
 
-def _segment(seg_id: str, source: str, target: str | None = None, target_attrs: str = "") -> str:
-    src = f'<source>{source}</source>'
+def _segment(
+    seg_id: str,
+    source: str,
+    target: str | None = None,
+    target_attrs: str = "",
+    source_attrs: str = "",
+) -> str:
+    src = f'<source{source_attrs}>{source}</source>'
     tgt = f'<target{target_attrs}>{target}</target>' if target is not None else ""
     return f'<segment id="{seg_id}">{src}{tgt}</segment>'
 
@@ -96,6 +109,7 @@ def test_all_named_checks_are_registered() -> None:
         "unchanged_target",
         "placeholder_mismatch",
         "whitespace_punctuation_drift",
+        "source_language_compatibility",
         "target_language_compatibility",
         "translation_consistency",
     }
@@ -303,6 +317,82 @@ def test_no_document_trg_lang_means_nothing_to_check_against() -> None:
     assert document.target_language is None
 
     assert check_target_language_compatibility(document) == []
+
+
+# ── Source language compatibility (the source-side sibling check) ──────────
+
+
+def test_xliff_20_requires_exact_source_language_match() -> None:
+    xml = _document(
+        _unit("u1", _segment("s1", "hello", source_attrs=' xml:lang="en-US"')),
+        version="2.0",
+        src_lang="en",
+    )
+    document = loads(xml)
+
+    findings = check_source_language_compatibility(document)
+
+    assert len(findings) == 1
+    assert "more_specific" in findings[0].message
+
+
+def test_xliff_20_exact_source_match_passes() -> None:
+    xml = _document(
+        _unit("u1", _segment("s1", "hello", source_attrs=' xml:lang="en"')),
+        version="2.0",
+        src_lang="en",
+    )
+    document = loads(xml)
+
+    assert check_source_language_compatibility(document) == []
+
+
+def test_xliff_21_accepts_more_specific_source_language() -> None:
+    xml = _document(
+        _unit("u1", _segment("s1", "hello", source_attrs=' xml:lang="en-US"')),
+        version="2.1",
+        src_lang="en",
+    )
+    document = loads(xml)
+
+    assert check_source_language_compatibility(document) == []
+
+
+def test_xliff_21_reports_reverse_specific_source_language() -> None:
+    """A source declaring LESS specificity than the document's own declared
+    srcLang."""
+    xml = _document(
+        _unit("u1", _segment("s1", "hello", source_attrs=' xml:lang="en"')),
+        version="2.1",
+        src_lang="en-US",
+    )
+    document = loads(xml)
+
+    findings = check_source_language_compatibility(document)
+
+    assert len(findings) == 1
+    assert "reverse_specific" in findings[0].message
+
+
+def test_xliff_21_reports_incompatible_source_language() -> None:
+    xml = _document(
+        _unit("u1", _segment("s1", "bonjour", source_attrs=' xml:lang="fr"')),
+        version="2.1",
+        src_lang="en",
+    )
+    document = loads(xml)
+
+    findings = check_source_language_compatibility(document)
+
+    assert len(findings) == 1
+    assert "incompatible" in findings[0].message
+
+
+def test_no_explicit_source_xml_lang_is_not_flagged() -> None:
+    xml = _document(_unit("u1", _segment("s1", "hello")), version="2.1", src_lang="en")
+    document = loads(xml)
+
+    assert check_source_language_compatibility(document) == []
 
 
 # ── Translation consistency ─────────────────────────────────────────────────

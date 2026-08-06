@@ -215,6 +215,45 @@ def check_target_language_compatibility(document: XliffDocument) -> list[Diagnos
     return diagnostics
 
 
+def check_source_language_compatibility(document: XliffDocument) -> list[Diagnostic]:
+    """(XLIFF 2.1 Core source language compatibility) "An explicit xml:lang
+    value on a source child of segment or ignorable must satisfy the
+    enclosing xliff srcLang. XLIFF 2.1 accepts exact and more-specific
+    language tags and reports incompatible values."
+
+    The source-side sibling of check_target_language_compatibility, sharing
+    the same specificity relation and QA-severity framing -- srcLang
+    compatibility is exactly as much a reviewer-facing quality signal as
+    trgLang compatibility, not a harder conformance error.
+    """
+    diagnostics: list[Diagnostic] = []
+    if not document.source_language:
+        return diagnostics
+    for unit in document.iter_units():
+        for segment in unit.children:
+            if not isinstance(segment, Segment):
+                continue
+            explicit_lang = segment.source_attributes.get(XML_LANG)
+            if not explicit_lang:
+                continue
+            relation = _language_specificity_relation(
+                explicit_lang, document.source_language
+            )
+            if relation == "exact":
+                continue
+            if relation == "more_specific" and document.version != "2.0":
+                continue
+            diagnostics.append(
+                Diagnostic(
+                    "xliff.qa.language.incompatible",
+                    f"segment {segment.id!r} source xml:lang {explicit_lang!r} "
+                    f"is {relation} relative to srcLang {document.source_language!r}",
+                    severity=Severity.WARNING,
+                )
+            )
+    return diagnostics
+
+
 def check_translation_consistency(document: XliffDocument) -> list[Diagnostic]:
     """The same source text translated two different ways within one
     document is usually an inconsistency to flag for a reviewer, not an
@@ -249,6 +288,7 @@ QA_CHECKS = {
     "unchanged_target": check_unchanged_targets,
     "placeholder_mismatch": check_placeholder_mismatch,
     "whitespace_punctuation_drift": check_whitespace_punctuation_drift,
+    "source_language_compatibility": check_source_language_compatibility,
     "target_language_compatibility": check_target_language_compatibility,
     "translation_consistency": check_translation_consistency,
 }
@@ -274,6 +314,7 @@ __all__ = [
     "QA_CHECKS",
     "check_missing_targets",
     "check_placeholder_mismatch",
+    "check_source_language_compatibility",
     "check_target_language_compatibility",
     "check_translation_consistency",
     "check_unchanged_targets",

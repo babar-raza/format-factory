@@ -1,0 +1,55 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-qa-source-language-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T22:22:00Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_QA_SOURCE_LANG_COMPAT_001",
+    "task_kind": "new-feature-mirroring-existing-sibling",
+    "root_cause": "4 obligations across 4 capabilities (XLIFF-PARSE-001, XLIFF-VALIDATE-001, XLIFF-MODEL-001, XLIFF-TEXT-001) share an identical rule_text about source-language xml:lang compatibility, all confirmed genuinely unbuilt: qa.py has a real, working check_target_language_compatibility (WARNING-severity QA check, separate from validate()'s conformance diagnostics) but no source-side sibling.",
+    "obligation_targeted": "SAL-XLIFF-OBL-1FF54C0CDEC82951 (PARSE-001), SAL-XLIFF-OBL-20D653BB993E2687 (VALIDATE-001), SAL-XLIFF-OBL-A062E07DF7D59EBB (MODEL-001), SAL-XLIFF-OBL-A4C4AAF3B757A07B (TEXT-001) -- 4 cross-capability duplicates of one rule_text",
+    "acceptance_evidence": "New check_source_language_compatibility function in qa.py, mirroring check_target_language_compatibility exactly (same _language_specificity_relation helper, same QA severity framing), registered in QA_CHECKS, exported from the package. 6 new tests mirroring the existing target-language test matrix precisely (exact, more-specific-under-2.1, reverse-specific, incompatible, no-explicit-lang, XLIFF-2.0-exact-only).",
+    "regression_tier": "full xliff package suite (tests/python/xliff)"
+  },
+  "execution_steps": [
+    "1. Investigating xliff's largest remaining cluster (XLIFF-PARSE-001, 24 obligations) for tractable wins, found SAL-XLIFF-OBL-1FF54C0CDEC82951's missing_behavior text: 'no check_source_language_compatibility (or equivalent) exists anywhere in qa.py/validator.py -- only the mirror-image target-language check ... is implemented.' Read qa.py directly and confirmed check_target_language_compatibility is a real, complete, already-tested function -- not a stub -- using a 4-way _language_specificity_relation helper (exact/more_specific/reverse_specific/incompatible) more nuanced than the 2-way check already built into validator.py at an earlier tick this session for a different (XLIFF-SEG-001) obligation pair.",
+    "2. Confirmed via grep that this exact rule_text (byte-for-byte) is duplicated across 4 obligations in 4 different capability clusters (PARSE-001, VALIDATE-001, MODEL-001, TEXT-001), each independently marked with the identical finding -- a genuine, confirmed gap, not a citation-audit opportunity, since qa.py's module docstring and QA_CHECKS registry confirmed no source-side check existed under any name.",
+    "3. Wrote check_source_language_compatibility as a precise mirror of check_target_language_compatibility: same relation logic, same WARNING severity, same xliff.qa.language.incompatible diagnostic code, checking segment.source_attributes/document.source_language instead of target_attributes/target_language. Verified all 4 specificity relations (exact, more_specific, reverse_specific, incompatible) interactively against real XliffDocument/Segment objects before writing any test.",
+    "4. Registered the new function in QA_CHECKS as 'source_language_compatibility' and exported it from both qa.py's __all__ and the top-level package __init__.py, alongside the existing check_target_language_compatibility entries.",
+    "5. Added source_attrs parameter to the test file's existing _segment() helper (symmetric with its existing target_attrs) and src_lang parameter to _document() (symmetric with its existing trg_lang), then wrote 6 new tests mirroring the existing 6-test target-language matrix exactly, plus updated one existing test (test_all_named_checks_are_registered) to include the new registered check name.",
+    "6. Ran ruff and mypy on both changed source files (clean) and the full xliff suite (345 passed, was 339) before writing any evidence claim. Ran the skills-first resolve/manifest/receipt/closeout sequence since src/ was touched, then patched the evidence YAML for all 4 duplicate obligations and ran the reconciler."
+  ],
+  "allowed_files": [
+    "src/python/xliff/src/format_factory/xliff/qa.py",
+    "src/python/xliff/src/format_factory/xliff/__init__.py",
+    "tests/python/xliff/test_obligation_qa_checks.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/src/format_factory/xliff/qa.py",
+    "src/python/xliff/src/format_factory/xliff/__init__.py",
+    "tests/python/xliff/test_obligation_qa_checks.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_qa_checks.py -q -- 31 passed",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 345 passed, was 339",
+    ".venv/Scripts/python -m ruff check <3 changed files> -- all checks passed",
+    ".venv/Scripts/python -m mypy src/python/xliff/src/format_factory/xliff/qa.py -- no issues"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 4,
+    "obligations_total_for_format": 142,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not cross-checked against a reference XLIFF implementation. The new function's structure is a direct, verified mirror of an already-existing, already-real function in the same module, not fabricated from memory.",
+    "obligations_moved_breakdown": "4 cross-capability duplicate obligations (PARSE-001, VALIDATE-001, MODEL-001, TEXT-001) closed by one new, genuinely-needed QA check function plus 6 new tests, following the exact architectural pattern of its already-existing target-side sibling."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
