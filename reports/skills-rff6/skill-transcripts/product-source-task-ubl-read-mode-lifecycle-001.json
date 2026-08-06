@@ -1,0 +1,51 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-read-mode-lifecycle-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-07T05:45:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_READ_MODE_LIFECYCLE_001",
+    "task_kind": "honest-evidence-correction-real-finding",
+    "root_cause": "Following event 170's exact_next_action (pivot to nrrd or ubl), surveyed ubl's remaining partial obligations for the bug-hunt pattern proven productive in nrrd/xliff. Investigated nrrd's NRRD-SHAPE-001 axis-order gap and NRRD-HEADER-001 lexical-strictness gap first but assessed both as either requiring a risky behavior-narrowing change (rejecting currently-accepted lenient input) or substantial new API design without a clear minimal fix -- deferred both honestly rather than rushing. Also investigated ubl's duplicated 'no typed OrderLine/CreditNoteLine/DespatchLine/DocumentResponse dataclass' finding (appearing across ~20 obligations) but confirmed via grep that the committed SAL facts only name these elements, not their required sub-fields -- building them would require fabricating spec content from memory, violating this session's GAP-008 anti-fabrication discipline. Settled on SAL-UBL-OBL-6C91BBF7F11E4402 (UBL-LIFECYCLE-001), still carrying the fully generic placeholder despite being a single, well-scoped, empirically-verifiable claim.",
+    "obligation_targeted": "SAL-UBL-OBL-6C91BBF7F11E4402 (UBL-LIFECYCLE-001).",
+    "acceptance_evidence": "3 new tests. Confirmed strict-mode rejection is real; confirmed 'preservation' mode is validated as an accepted string but never actually branches for malformed-input tolerance -- a genuine, precise finding replacing the generic placeholder.",
+    "regression_tier": "full ubl package suite (tests/python/ubl)"
+  },
+  "execution_steps": [
+    "1. Read the obligation's rule_text ('strict read mode that rejects malformed input with diagnostics and a tolerant read mode that recovers ... with recovery actions reported') and grepped reader.py for every use of the mode parameter: found it validated against {'strict', 'preservation'} in two places but never branched on afterward for parsing/error-handling behavior.",
+    "2. Grepped the entire ubl test suite for mode=\"preservation\" and found zero matches -- no test had ever exercised the preservation-mode code path explicitly at all, despite the obligation's own citation implying it was covered.",
+    "3. Verified interactively before writing any test: constructed a deliberately malformed XLIFF-shaped document and called loads() with both mode='strict' and mode='preservation' -- both raised UblParseError with an identical 'malformed XML' message, confirming no distinct tolerant/recovery path exists for either mode.",
+    "4. Wrote 3 tests: strict-mode rejection with diagnostic (a real, positive behavior worth locking in), preservation-mode's current identical-rejection behavior (an honest characterization test documenting the gap, not asserting a false capability), and unrecognized-mode-string rejection. Ran in isolation (3 passed), ruff clean, full ubl suite (708 passed, was 705, +3, zero regressions -- no production source changed).",
+    "5. Replaced the obligation's generic 'Not yet audited' placeholder with the precise, verified finding: strict mode is real and tested; the 'tolerant read mode that recovers... with recovery actions reported' clause is confirmed genuinely unimplemented (no recovery-action report type exists, no document that preservation mode accepts while strict rejects), not merely untested -- honestly distinguishing this from UBL-PRESERVE-001's disclosure-mode concept, which is a different, already-resolved capability. Obligation correctly stays partial."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ubl.yaml",
+    "tests/python/ubl/test_obligation_read_mode_lifecycle.py"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ubl.yaml",
+    "tests/python/ubl/test_obligation_read_mode_lifecycle.py"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_read_mode_lifecycle.py -q -- 3 passed (new)",
+    ".venv/Scripts/python -m ruff check tests/python/ubl/test_obligation_read_mode_lifecycle.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 708 passed (was 705, +3, 0 regressions)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_total_for_format": 194,
+    "ubl_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against a reference UBL implementation. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "obligations_moved_breakdown": "0 obligations changed status (stays honestly partial: the tolerant-recovery-mode feature genuinely does not exist). This is honest evidence correction plus 3 new characterization tests, replacing a generic placeholder with a precise, verified finding -- the third such finding this session (after ubl's PARSE-001 namespace-spoofing and nrrd's compressed-trailing-data), matching Rule 3's explicit allowance for 'obligation mapping, independent verification' as a valid slice output.",
+    "why_larger_ubl_gaps_were_deferred": "The 'no typed OrderLine/CreditNoteLine/DespatchLine/DocumentResponse' finding recurs across roughly 20 obligations across many clusters and would be high-leverage to close, but building those typed classes would require the exact required/optional sub-element structure for each -- not present in the committed SAL facts (which only name the elements, e.g. 'cac:OrderLine', not their fields) -- so building them now would mean fabricating spec content from memory, which this session's GAP-008 discipline explicitly prohibits. Left deliberately untouched pending real spec research."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

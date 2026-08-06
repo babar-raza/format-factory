@@ -133,7 +133,7 @@
   "format_id": "ubl",
   "input_digests": {
     "compiled_contract": "41aec8cae7ec194c419ce7ac98ba0b5a3c67db3af0ff2a3c6b2f0e13594f62ab",
-    "implementation_evidence": "159ba908f9ec38985df7477e1761838dafe4d47803264f94166c71b1553bbe18",
+    "implementation_evidence": "e4dd23df84e29f92ab3bdc35c307fccaf3a949579e5ed724d9b822b904abf4f8",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "43298a744266dabae0cda8c7aa331317aef620515dec7784f1f5a186a97fe3b6",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -2890,17 +2890,21 @@
         "UBL-BASELINE-SUITE"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Strict mode is real and tested: loads(mode=\"strict\") rejects malformed XML with a diagnostic (test_strict_mode_rejects_malformed_xml_with_a_diagnostic), and an unrecognized mode string is rejected outright (test_an_unrecognized_mode_string_is_rejected). Added this slice, closing the generic placeholder with a precise, verified finding: no test previously ever passed mode=\"preservation\" at all."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+        "Confirmed genuinely unimplemented, not merely untested: reader.py validates mode is one of \"strict\"/\"preservation\" but never branches on its value for malformed-input handling -- both modes reject a given malformed document identically (test_preservation_mode_currently_rejects_the_same_malformed_xml_identically, added this slice, verified interactively before writing). There is no tolerant recovery path, no document that \"preservation\" mode accepts while \"strict\" rejects, and no recovery-action report type at all. The \"preservation\" mode name currently governs only round-trip disclosure (see UBL-PRESERVE-001), not input-error tolerance as this obligation requires."
       ],
-      "negative_test_selectors": [],
+      "negative_test_selectors": [
+        "tests/python/ubl/test_obligation_read_mode_lifecycle.py::test_preservation_mode_currently_rejects_the_same_malformed_xml_identically"
+      ],
       "obligation_id": "SAL-UBL-OBL-6C91BBF7F11E4402",
       "positive_test_selectors": [
         "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
         "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically",
+        "tests/python/ubl/test_obligation_read_mode_lifecycle.py::test_strict_mode_rejects_malformed_xml_with_a_diagnostic",
+        "tests/python/ubl/test_obligation_read_mode_lifecycle.py::test_an_unrecognized_mode_string_is_rejected"
       ],
       "proof_requirements": {
         "negative": [
@@ -6198,6 +6202,7 @@
     "tests/python/ubl/test_obligation_profile_validator_registry.py": "b874e4d0c934f0496470bb854a6d90fafd98dc39f0ff744daac780909e2f2cb1",
     "tests/python/ubl/test_obligation_qname_resolution.py": "0ec24fd32c63ecb5c4b758c9f3d47321deaaaee31f76c77ddb14c9b7a3bde611",
     "tests/python/ubl/test_obligation_query_index_agreement.py": "9c593f19f18c25e0db6d4cbb75d31b9d8ec26f7fa80a5db7562263e5fcd58112",
+    "tests/python/ubl/test_obligation_read_mode_lifecycle.py": "53d3f43acb217df3ebd395d699d2270f3b30022fcc16bc4db1f0737ecc84b697",
     "tests/python/ubl/test_obligation_referential_integrity.py": "ca3bf25af599e5624a7ac0b3d3973724d2f4580aad8f03d2dcb2c0cce412379c",
     "tests/python/ubl/test_obligation_temporal_projection_and_charges.py": "f9e50f7d338f9a96764972761953b1859153a10aff0e1c08668a5d5b179c1920",
     "tests/python/ubl/test_obligation_temporal_values.py": "6b280cba533c6d6370f06149257900b005784ff6702a10412c1d307a6a54f986",

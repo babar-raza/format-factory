@@ -2337,15 +2337,25 @@ obligations:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  negative_test_selectors: []
+  - tests/python/ubl/test_obligation_read_mode_lifecycle.py::test_strict_mode_rejects_malformed_xml_with_a_diagnostic
+  - tests/python/ubl/test_obligation_read_mode_lifecycle.py::test_an_unrecognized_mode_string_is_rejected
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_read_mode_lifecycle.py::test_preservation_mode_currently_rejects_the_same_malformed_xml_identically
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'Strict mode is real and tested: loads(mode="strict") rejects malformed XML with a diagnostic
+    (test_strict_mode_rejects_malformed_xml_with_a_diagnostic), and an unrecognized mode string is rejected
+    outright (test_an_unrecognized_mode_string_is_rejected). Added this slice, closing the generic placeholder
+    with a precise, verified finding: no test previously ever passed mode="preservation" at all.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - 'Confirmed genuinely unimplemented, not merely untested: reader.py validates mode is one of "strict"/"preservation"
+    but never branches on its value for malformed-input handling -- both modes reject a given malformed
+    document identically (test_preservation_mode_currently_rejects_the_same_malformed_xml_identically,
+    added this slice, verified interactively before writing). There is no tolerant recovery path, no document
+    that "preservation" mode accepts while "strict" rejects, and no recovery-action report type at all. The
+    "preservation" mode name currently governs only round-trip disclosure (see UBL-PRESERVE-001), not
+    input-error tolerance as this obligation requires.'
   proof_requirements:
     positive:
     - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative
