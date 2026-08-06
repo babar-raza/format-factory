@@ -23,6 +23,42 @@ notes: >-
   satisfied: the adapters are opt-in and the core has no notebook-framework
   dependency.
 
+  IPYNB-MERGE-001 status as of 2026-08-06: this was ipynb's ONE genuinely
+  unmapped capability (0 modules, 0 tests) -- every other ipynb capability
+  already had real source and tests (67 of 68 obligations `partial`, only
+  IPYNB-MERGE-001's single obligation `missing`). Built model/merge.py:
+  merge_notebooks(base, ours, theirs) does a three-way merge on top of the
+  existing diff_notebooks() (model/diff.py, built in an earlier session for
+  IPYNB-DIFF-001) -- a three-way merge is two of its two-way diffs
+  (base-to-ours, base-to-theirs) reconciled cell by cell: unchanged on both
+  sides keeps base; changed on exactly one side takes that side; changed
+  identically on both sides takes either; changed differently is a
+  conflict, classified into one of the four categories the obligation names
+  (MOVE_EDIT, DELETE_EDIT, OUTPUT, METADATA -- EDIT_EDIT covers the
+  remaining fields, e.g. source and cell_type), reported in a MergeReport,
+  and resolved to base's own original value pending real resolution --
+  NEVER either side's conflicting value, and never a marker splice into
+  source. "Never hide conflicts inside executable source" is read as an
+  outright prohibition on textual conflict markers (which would silently
+  turn a real conflict into a syntax error or a foreign string literal),
+  not merely a caution; a dedicated test proves no marker text or either
+  side's disputed content appears in a conflicted cell's merged source.
+
+  Scope boundary stated explicitly: this reconciles CELLS only. All four
+  named conflict categories are cell-scoped in the obligation's own
+  phrasing. Notebook-level fields (kernelspec, language_info, nbformat) are
+  taken from `base` unchanged -- top-level metadata merging is a different,
+  unbuilt capability. Pure position divergence (both sides reorder cells
+  differently but neither edits content) is also not one of the four named
+  categories and is deliberately not flagged as a conflict -- a dedicated
+  test proves this documented limitation rather than leaving it merely
+  claimed.
+
+  17 new tests in test_obligation_notebook_merge.py, all passed on first
+  run. ipynb suite: 653 -> 670 passed, ruff clean, mypy clean on the full
+  package (31 source files). ipynb obligations: 67 partial/1 missing -> 68
+  partial/0 missing. No ipynb obligation reaches `implemented`.
+
 execution_evidence:
   path: reports/skills-rff6/skill-transcripts/build-evidence-ledger-ipynb-001.json
   result: PASS
@@ -38,6 +74,13 @@ execution_evidence:
     against a real built wheel install. Binds no individual selector outcome to
     an obligation, so nothing here is verification; every obligation is
     recorded `partial` at most.
+
+    2026-08-06: IPYNB-MERGE-001 adds a new module (model/merge.py,
+    merge_notebooks()) plus 17 tests -- genuinely new production code,
+    closing ipynb's one remaining `missing` obligation. ipynb suite is now
+    670 passed with no failures. No ipynb obligation is `implemented`;
+    IPYNB-MERGE-001's obligation moves to `partial` only. ipynb obligations:
+    67 partial/1 missing -> 68 partial/0 missing.
 
 capabilities:
   IPYNB-PARSE-001:
@@ -133,13 +176,16 @@ capabilities:
     modules: [model/diff.py]
     tests: [test_obligation_structure_diff.py]
 
-  # No merge implementation exists. model/diff.py provides diff and patch only:
-  # no merge, no conflict detection, no conflict report. It was mapped here
-  # because the module EXISTS, which GAP-022 establishes is not evidence that it
-  # implements the obligation. Absent, not untested.
+  # 2026-08-06: was mapped empty here -- model/diff.py provided diff and
+  # patch only, no merge, no conflict detection, no conflict report. Closed
+  # by model/merge.py's merge_notebooks(), built on top of diff_notebooks();
+  # see the dated note above for what it does and does not cover.
   IPYNB-MERGE-001:
-    modules: []
-    tests: []
+    modules:
+    - model/merge.py
+    - model/diff.py
+    tests:
+    - test_obligation_notebook_merge.py
 
   IPYNB-EDIT-001:
     modules: [model/editor.py]

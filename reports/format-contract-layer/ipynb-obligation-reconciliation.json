@@ -7,13 +7,13 @@
       "granularity": "suite",
       "path": "reports/skills-rff6/skill-transcripts/build-evidence-ledger-ipynb-001.json",
       "sha256": "ec518b26fc721f8830442d3805580cb3c90bc2ddcaa49b50253f578de13f79ee",
-      "truth_boundary": "Suite-level and NON-PROMOTING. 653 passed, 0 failed in the shared dev venv (.venv/Scripts/pytest tests/python/ipynb/ -q, 2026-08-05). The three installed-production-namespace tests that previously failed unconditionally under editable installs were fixed to detect editable installs via PEP 660 direct_url.json (matching tools/assurance/verify_package_install.py's existing EDITABLE_PTH/EDITABLE_DIRECT_URL convention) and assert against the source tree in that case, matching this repository's own definition of a valid installed package (see CT-INSTALL-001). They also continue to pass against a real built wheel install. Binds no individual selector outcome to an obligation, so nothing here is verification; every obligation is recorded `partial` at most."
+      "truth_boundary": "Suite-level and NON-PROMOTING. 653 passed, 0 failed in the shared dev venv (.venv/Scripts/pytest tests/python/ipynb/ -q, 2026-08-05). The three installed-production-namespace tests that previously failed unconditionally under editable installs were fixed to detect editable installs via PEP 660 direct_url.json (matching tools/assurance/verify_package_install.py's existing EDITABLE_PTH/EDITABLE_DIRECT_URL convention) and assert against the source tree in that case, matching this repository's own definition of a valid installed package (see CT-INSTALL-001). They also continue to pass against a real built wheel install. Binds no individual selector outcome to an obligation, so nothing here is verification; every obligation is recorded `partial` at most.\n2026-08-06: IPYNB-MERGE-001 adds a new module (model/merge.py, merge_notebooks()) plus 17 tests -- genuinely new production code, closing ipynb's one remaining `missing` obligation. ipynb suite is now 670 passed with no failures. No ipynb obligation is `implemented`; IPYNB-MERGE-001's obligation moves to `partial` only. ipynb obligations: 67 partial/1 missing -> 68 partial/0 missing."
     }
   ],
   "format_id": "ipynb",
   "input_digests": {
     "compiled_contract": "070e7486feb32cb69e64bf9bb040bb47e4671f0034835d78d081c39ae2c05903",
-    "implementation_evidence": "830e0c4440e461fe01f1667186165bd50155a4273a984aa12607f484a39e3cd0",
+    "implementation_evidence": "2698ef708a7c26ec475af2fd56b27d0ecfb3cfb65df2f62b50d74567331972aa",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "04340fa8bde6468fa648cb60fce3d50876a39c187d5b9ad3b0329fe0a29850a8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -58,15 +58,22 @@
     },
     {
       "capability_id": "IPYNB-MERGE-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
+      "execution_evidence_ids": [
+        "IPYNB-BASELINE-SUITE"
+      ],
+      "implemented_behavior": [
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+      ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Conflict-matrix fixtures (move/edit, delete/edit, output, metadata).",
-        "NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability."
+        "Not yet audited against this obligation's declared proof requirements: Conflict-matrix fixtures (move/edit, delete/edit, output, metadata)."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-03A1429F7B7AF3E1",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_notebook_merge.py::test_identical_ours_and_theirs_produce_no_conflicts",
+        "tests/python/ipynb/test_obligation_notebook_merge.py::test_change_on_only_one_side_is_applied_without_conflict",
+        "tests/python/ipynb/test_obligation_notebook_merge.py::test_identical_change_on_both_sides_is_applied_without_conflict"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -75,9 +82,18 @@
           "Conflict-matrix fixtures (move/edit, delete/edit, output, metadata)."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/model/merge.py::ConflictKind",
+        "src/python/ipynb/src/format_factory/ipynb/model/merge.py::CellConflict",
+        "src/python/ipynb/src/format_factory/ipynb/model/merge.py::MergeReport",
+        "src/python/ipynb/src/format_factory/ipynb/model/merge.py::MergeResult",
+        "src/python/ipynb/src/format_factory/ipynb/model/diff.py::CellField",
+        "src/python/ipynb/src/format_factory/ipynb/model/diff.py::PatchPreconditionError",
+        "src/python/ipynb/src/format_factory/ipynb/model/diff.py::DiffPolicy",
+        "src/python/ipynb/src/format_factory/ipynb/model/diff.py::FieldChange"
+      ],
+      "status": "partial"
     },
     {
       "capability_id": "IPYNB-PARSE-001",
@@ -2478,6 +2494,7 @@
     "src/python/ipynb/src/format_factory/ipynb/model/document.py": "ae6b32adb46f7c2c4885c8e7f48ef3a55c7761c6cbf29213a93d3f57b4335e78",
     "src/python/ipynb/src/format_factory/ipynb/model/editor.py": "23ba3083f73898ecd0042184939c386a954cdb047b7fa2fcf9f9608a4b1c53f1",
     "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py": "5ddd4ff5ec6fbc34685d4ffd067b73fe4cf9ffa84bf8baf52ac222e23e30e9c9",
+    "src/python/ipynb/src/format_factory/ipynb/model/merge.py": "9c4c20c21c409e8f3d9a992ec9b78b3d08821f10808cc12f8e64da4e8d1ffd7d",
     "src/python/ipynb/src/format_factory/ipynb/model/metadata.py": "18aead211c9b92441c7daa63de4743f85caa1233f04a0f8ef81e20a3c69e443c",
     "src/python/ipynb/src/format_factory/ipynb/model/output.py": "8abef47971e7d7bbc6279c2708f5d33e3b5fa5c75b1ce2e3a54708d036870568",
     "src/python/ipynb/src/format_factory/ipynb/security/limits.py": "5364a2b1e91a1057c68602bb2cf52086829c3120ce53a304ebbf8df59e4d926a",
@@ -2496,6 +2513,7 @@
     "tests/python/ipynb/test_obligation_lifecycle_modes.py": "d42d19938843e94ec7743cd606c3bee1b704b534a98ce0fd72e4763126585651",
     "tests/python/ipynb/test_obligation_metadata_adapters.py": "71d2436bcba090d36fd9a8b1ca5a8109e08fb2d095b0408b29d7e871d8650056",
     "tests/python/ipynb/test_obligation_nbformat_core.py": "318949e9652c41f2276d84abb296b43752d7a0097c85c412d8c84f6e8730cef0",
+    "tests/python/ipynb/test_obligation_notebook_merge.py": "3b47b19bb0879993be46450bf29664dcdcc3184cd5497863dce1f32c25f63da5",
     "tests/python/ipynb/test_obligation_official_schema_validation.py": "e2c7ccb401e3bc752e063a4b6ad59c82db8f9582695ca81bb330c90d6db2ec4d",
     "tests/python/ipynb/test_obligation_output_mime_matrix.py": "4f117775ed02a529065471a2aafe03360c890587fb0b2b3083a69ecca759e2c8",
     "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py": "4b9c5bca63ded104df40b0fed29bc517bec601bd2175908c1de20b499a1fff7d",
@@ -2511,8 +2529,7 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "missing": 1,
-      "partial": 67
+      "partial": 68
     },
     "total": 68,
     "unresolved": 68

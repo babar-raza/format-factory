@@ -7,14 +7,19 @@ execution_evidence:
   path: reports/skills-rff6/skill-transcripts/build-evidence-ledger-ipynb-001.json
   expected_result: PASS
   granularity: suite
-  truth_boundary: Suite-level and NON-PROMOTING. 653 passed, 0 failed in the shared dev venv (.venv/Scripts/pytest
+  truth_boundary: 'Suite-level and NON-PROMOTING. 653 passed, 0 failed in the shared dev venv (.venv/Scripts/pytest
     tests/python/ipynb/ -q, 2026-08-05). The three installed-production-namespace tests that previously
     failed unconditionally under editable installs were fixed to detect editable installs via PEP 660
-    direct_url.json (matching tools/assurance/verify_package_install.py's existing EDITABLE_PTH/EDITABLE_DIRECT_URL
-    convention) and assert against the source tree in that case, matching this repository's own definition
+    direct_url.json (matching tools/assurance/verify_package_install.py''s existing EDITABLE_PTH/EDITABLE_DIRECT_URL
+    convention) and assert against the source tree in that case, matching this repository''s own definition
     of a valid installed package (see CT-INSTALL-001). They also continue to pass against a real built
     wheel install. Binds no individual selector outcome to an obligation, so nothing here is verification;
     every obligation is recorded `partial` at most.
+
+    2026-08-06: IPYNB-MERGE-001 adds a new module (model/merge.py, merge_notebooks()) plus 17 tests --
+    genuinely new production code, closing ipynb''s one remaining `missing` obligation. ipynb suite is
+    now 670 passed with no failures. No ipynb obligation is `implemented`; IPYNB-MERGE-001''s obligation
+    moves to `partial` only. ipynb obligations: 67 partial/1 missing -> 68 partial/0 missing.'
 obligations:
 - obligation_id: SAL-IPYNB-OBL-02A00C213D2B0190
   capability_id: IPYNB-ATTACH-001
@@ -46,16 +51,29 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-03A1429F7B7AF3E1
   capability_id: IPYNB-MERGE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ipynb/src/format_factory/ipynb/model/merge.py::ConflictKind
+  - src/python/ipynb/src/format_factory/ipynb/model/merge.py::CellConflict
+  - src/python/ipynb/src/format_factory/ipynb/model/merge.py::MergeReport
+  - src/python/ipynb/src/format_factory/ipynb/model/merge.py::MergeResult
+  - src/python/ipynb/src/format_factory/ipynb/model/diff.py::CellField
+  - src/python/ipynb/src/format_factory/ipynb/model/diff.py::PatchPreconditionError
+  - src/python/ipynb/src/format_factory/ipynb/model/diff.py::DiffPolicy
+  - src/python/ipynb/src/format_factory/ipynb/model/diff.py::FieldChange
+  positive_test_selectors:
+  - tests/python/ipynb/test_obligation_notebook_merge.py::test_identical_ours_and_theirs_produce_no_conflicts
+  - tests/python/ipynb/test_obligation_notebook_merge.py::test_change_on_only_one_side_is_applied_without_conflict
+  - tests/python/ipynb/test_obligation_notebook_merge.py::test_identical_change_on_both_sides_is_applied_without_conflict
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - IPYNB-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Conflict-matrix fixtures
     (move/edit, delete/edit, output, metadata).'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Conflict-matrix fixtures (move/edit, delete/edit, output, metadata).

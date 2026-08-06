@@ -25,6 +25,13 @@ from .editor import (
     CellQuery,
     edit_cells,
 )
+from .merge import (
+    CellConflict,
+    ConflictKind,
+    MergeReport,
+    MergeResult,
+    merge_notebooks,
+)
 from .document import (
     Cell,
     CodeCell,
@@ -84,6 +91,7 @@ __all__ = [
     "AttachmentReport",
     "Cell",
     "CellChange",
+    "CellConflict",
     "CellEdit",
     "CellEditOperation",
     "CellEditReport",
@@ -110,8 +118,11 @@ __all__ = [
     "FieldChange",
     "IpynbDocument",
     "KernelSpecMetadata",
+    "ConflictKind",
     "LanguageInfoMetadata",
     "MarkdownCell",
+    "MergeReport",
+    "MergeResult",
     "MimeBundle",
     "MetadataShapeError",
     "MimeRenderingMetadata",
@@ -139,6 +150,7 @@ __all__ = [
     "edit_cells",
     "get_output_representation",
     "manage_attachments",
+    "merge_notebooks",
     "notebook_metadata",
     "output_from_dict",
     "output_metadata",
