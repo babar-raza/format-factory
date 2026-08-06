@@ -65,8 +65,10 @@ from .lifecycle import (
     upgrade,
 )
 from .metadata import (
+    AuthorMetadata,
     CellMetadataAdapter,
     ExecutionMetadata,
+    JupyterCellMetadata,
     KernelSpecMetadata,
     LanguageInfoMetadata,
     MetadataShapeError,
@@ -89,6 +91,7 @@ __all__ = [
     "AttachmentManager",
     "AttachmentReferencePolicy",
     "AttachmentReport",
+    "AuthorMetadata",
     "Cell",
     "CellChange",
     "CellConflict",
@@ -117,6 +120,7 @@ __all__ = [
     "ExecuteResultOutput",
     "FieldChange",
     "IpynbDocument",
+    "JupyterCellMetadata",
     "KernelSpecMetadata",
     "ConflictKind",
     "LanguageInfoMetadata",

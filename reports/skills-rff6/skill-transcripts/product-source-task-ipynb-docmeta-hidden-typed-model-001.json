@@ -1,0 +1,61 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-docmeta-hidden-typed-model-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T19:41:00Z",
+  "inputs": {
+    "format_id": "ipynb",
+    "task_id": "TC_FF6_IPYNB_DOCMETA_HIDDEN_TYPED_MODEL_001",
+    "task_kind": "new-typed-model-feature",
+    "root_cause": "Event 172's citation audit found IPYNB-DOCMETA-001 (title/authors) and IPYNB-HIDDEN-001 (source_hidden/outputs_hidden) cite a metadata-adapters test file whose fixtures never touch those four fields, and confirmed model/metadata.py had no typed representation for any of them at all -- a real gap, not a mis-citation, needing new production code.",
+    "obligation_targeted": "SAL-IPYNB-OBL-1805FD97C77EDC3D, SAL-IPYNB-OBL-C2890074D83A8170 (IPYNB-DOCMETA-001); SAL-IPYNB-OBL-8998C2CB8626FA68, SAL-IPYNB-OBL-959B89100C121E14 (IPYNB-HIDDEN-001)",
+    "acceptance_evidence": "New AuthorMetadata and JupyterCellMetadata dataclasses plus title/authors/jupyter accessors on NotebookMetadataAdapter/CellMetadataAdapter in model/metadata.py, exported through model/__init__.py and the top-level package. 9 new tests (4 positive, 5 negative-path parametrize cases) in test_obligation_metadata_adapters.py. All 4 obligations promoted to implemented.",
+    "regression_tier": "full ipynb package suite (tests/python/ipynb)"
+  },
+  "execution_steps": [
+    "1. Read all 4 obligations' exact rule_text from plans/strategic/ff6/obligations/ipynb.yaml. Two are 'schema delta' framings (SAL fact text describing what the pinned nbformat schema says), two are the actual behavioral modeling requirements.",
+    "2. Read the pinned, vendored nbformat JSON schemas at src/python/ipynb/src/format_factory/ipynb/validation/schemas/nbformat.v4.2.schema.json and nbformat.v4.3.schema.json directly (not from memory, per GAP-008) to confirm the exact intended shapes: metadata.title (string), metadata.authors (array, each item's shape declared under the non-standard 'item' keyword rather than 'items' so never schema-enforced, item shape {name: string, additionalProperties: true}); cells[].metadata.jupyter.source_hidden (boolean, declared for raw/markdown/code cells) and .outputs_hidden (boolean, code cells only) -- both also declared as siblings of additionalProperties rather than nested under a properties key, so likewise never schema-enforced.",
+    "3. Read model/metadata.py in full to learn its established pattern: frozen dataclasses with a _raw field, a from_value classmethod using shared _mapping/_required_string/_optional_string helpers, an .extras property computed by subtracting a known-keys frozenset, and a .to_dict() returning a defensive copy. Added an _optional_bool helper following the same shape as _optional_string.",
+    "4. Added AuthorMetadata (name: str | None, extras preserving every other author field, matching the schema's unenforced-but-intended item shape) and JupyterCellMetadata (source_hidden, outputs_hidden: both bool | None, extras preserving unknown jupyter keys). Wired title/authors onto NotebookMetadataAdapter and jupyter onto CellMetadataAdapter, updating each adapter's extras known-keys set.",
+    "5. Exported both new classes through model/__init__.py and format_factory/ipynb/__init__.py's import and __all__ lists, matching the existing KernelSpecMetadata/LanguageInfoMetadata export pattern.",
+    "6. Verified interactively before writing tests: a two-author fixture (one with name+extra field, one with only an unrelated field and no name) round-trips correctly with both name and extras handled per-item; a code cell with source_hidden/outputs_hidden/an unknown vendor key round-trips correctly; an authors entry that is not a mapping raises MetadataShapeError.",
+    "7. Extended the shared _document() fixture in test_obligation_metadata_adapters.py with title/authors and cell-level jupyter metadata, added 4 new dedicated positive tests, and extended the existing test_malformed_known_metadata_fails_explicitly parametrize list with 5 new negative cases (malformed title, malformed authors container, malformed individual author item, malformed jupyter container, malformed source_hidden type).",
+    "8. Ran ruff and mypy on all 3 changed source files (clean) and the full ipynb suite (707 passed, was 698) before writing any evidence claim, then ran the skills-first resolve/manifest/receipt/closeout sequence since src/ was touched, then patched the evidence YAML and ran the reconciler."
+  ],
+  "allowed_files": [
+    "src/python/ipynb/src/format_factory/ipynb/model/metadata.py",
+    "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+    "tests/python/ipynb/test_obligation_metadata_adapters.py",
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ipynb/src/format_factory/ipynb/model/metadata.py",
+    "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+    "tests/python/ipynb/test_obligation_metadata_adapters.py",
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ipynb/test_obligation_metadata_adapters.py -q -- 16 passed",
+    ".venv/Scripts/pytest tests/python/ipynb/ -q -- 707 passed, was 698",
+    ".venv/Scripts/python -m ruff check <3 changed source files + test file> -- all checks passed",
+    ".venv/Scripts/python -m mypy src/python/ipynb/src/format_factory/ipynb/model/metadata.py -- no issues"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 4,
+    "obligations_total_for_format": 68,
+    "oracle": "The intended author-item and jupyter-visibility field shapes are read directly from this package's own pinned, vendored nbformat JSON schema files (validation/schemas/nbformat.v4.2.schema.json, nbformat.v4.3.schema.json), not from memory. The typed model's behavior for those fields is otherwise SELF-CONSISTENT format_factory-only evidence per GAP-008, not independently cross-checked against nbformat's own Python validator for these specific new fields.",
+    "obligations_moved_breakdown": "All 4 promoted to implemented via genuinely new production code (2 new dataclasses, 3 new adapter properties) plus 9 new tests (4 positive, 5 negative), closing both of event 172's remaining IPYNB-DOCMETA-001/IPYNB-HIDDEN-001 deferred clusters in one slice.",
+    "closes_event_172_deferred_clusters": "This slice closes the last 2 of event 172's 3 deliberately-deferred clusters (IPYNB-DOCMETA-001, IPYNB-HIDDEN-001); IPYNB-PRESERVE-001 was already closed at event 173.",
+    "schema_delta_finding": "Both obligation pairs turned out to describe the same underlying schema quirk: the pinned nbformat schema uses a non-standard singular keyword ('item' for authors, and top-level sibling placement for jupyter.source_hidden/outputs_hidden) that a real JSON Schema validator does not enforce. The typed model intentionally does not over-constrain beyond what the schema actually enforces (name and both hidden booleans are all optional, extras always preserved), documented directly in each obligation's implemented_behavior and in AuthorMetadata/JupyterCellMetadata's own docstrings."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

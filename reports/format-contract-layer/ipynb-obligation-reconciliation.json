@@ -34,6 +34,14 @@
       "truth_boundary": "Selector-bound, unlike IPYNB-BASELINE-SUITE. Found 31 obligations across 11 capability clusters (IPYNB-MODEL-001, IPYNB-ATTACH-001, IPYNB-VALIDATE-001, IPYNB-META-001, IPYNB-DOCMETA-001, IPYNB-SANITIZE-001, IPYNB-TRUST-001, IPYNB-EXECMETA-001, IPYNB-HIDDEN-001, IPYNB-UPGRADE-001, IPYNB-CLEAN-001) still carrying the generic 'not yet audited' placeholder despite each cluster already citing 2-5 specific-looking dedicated test files. Delegated initial per-obligation mapping to a research subagent (instructed to read every cited test file in full, not just function names, and verify shipped-namespace imports), then independently re-verified every claim: grepped all 18 distinct STRONG-verdict test function names to confirm they exist, confirmed all 10 involved test files import format_factory.ipynb (not a shadow package), and corrected several wrong source-symbol paths the initial draft guessed (model/cells.py does not exist -- MarkdownCell/CodeCell/RawCell live in model/document.py; cleanup lives in model/cleanup.py; upgrade/downgrade live in model/lifecycle.py) by grepping the actual source tree before finalizing. Of the 22 obligations closed this slice (across IPYNB-MODEL-001, IPYNB-ATTACH-001, IPYNB-VALIDATE-001, IPYNB-META-001, IPYNB-SANITIZE-001, IPYNB-TRUST-001, IPYNB-EXECMETA-001, IPYNB-UPGRADE-001, IPYNB-CLEAN-001): 14 were proven directly by existing tests and promoted to implemented; 8 stay honestly partial with precise reasons (e.g. a test proves a schema field is accepted at its floor value but never proves the floor is enforced by rejecting a value below it; an execution-timing fixture asserts only 1 of 4 standard fields). The subagent's research also surfaced 2 systematic mis-citations left DELIBERATELY untouched this slice for a dedicated follow-up: IPYNB-PRESERVE-001's 4 obligations cite a corpus-fixture-integrity test file that verifies committed test bytes haven't been tampered with -- an entirely different sense of 'preserve' than the obligations' actual codec round-trip claims; IPYNB-DOCMETA-001's 2 and IPYNB-HIDDEN-001's 2 obligations cite a metadata-adapters file whose fixtures never touch notebook title/authors or Jupyter source_hidden/outputs_hidden, and model/metadata.py has no typed model for any of those four fields at all. NOT backed by an independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Promotes no product state beyond the 14 obligations moved to implemented."
     },
     {
+      "evidence_id": "IPYNB-DOCMETA-HIDDEN-TYPED-MODEL-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-docmeta-hidden-typed-model-001.json",
+      "sha256": "3f7cb43b9623ed471633e6859ac7450dd8d64bd1eb1b16b4c25d1b32c516076e",
+      "truth_boundary": "Selector-bound, unlike IPYNB-BASELINE-SUITE. Closes event 172's last 2 deferred clusters (IPYNB-DOCMETA-001, IPYNB-HIDDEN-001), both genuine gaps (no typed model existed for any of title/authors/source_hidden/outputs_hidden), unlike IPYNB-PRESERVE-001 which was a pure mis-citation. New production code: AuthorMetadata and JupyterCellMetadata dataclasses in model/metadata.py, plus title/authors accessors on NotebookMetadataAdapter and a jupyter accessor on CellMetadataAdapter, exported through model/__init__.py and the top-level package. Intended field shapes (author item name+extras; jupyter source_hidden/outputs_hidden booleans) are read directly from this package's own pinned, vendored nbformat schemas (nbformat.v4.2.schema.json, nbformat.v4.3.schema.json), not from memory -- both schemas declare these shapes under non-standard keywords (\"item\" instead of \"items\"; sibling placement instead of nested under properties) that a real JSON Schema validator never enforces, so the typed model deliberately mirrors that unenforced-but-intended shape (name and both hidden booleans all optional, every other field preserved via extras) rather than over-constraining. 9 new tests: 4 positive (title+authors with mixed name/extras-only entries; absent title/authors returning None; jupyter with both booleans plus an unknown key; jupyter with only source_hidden present) and 5 negative cases within test_malformed_known_metadata_fails_explicitly (malformed title, authors container, individual author item, jupyter container, source_hidden type, each raising MetadataShapeError with a precise diagnostic). ipynb suite: 698 -> 707 passed. NOT backed by an independent reference implementation for the new fields specifically -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-IPYNB-OBL-1805FD97C77EDC3D, SAL-IPYNB-OBL-C2890074D83A8170, SAL-IPYNB-OBL-8998C2CB8626FA68, and SAL-IPYNB-OBL-959B89100C121E14 only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "IPYNB-EDIT-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -90,6 +98,14 @@
       "truth_boundary": "Selector-bound, unlike IPYNB-BASELINE-SUITE: IPYNB-PARSE-001's 6 obligations all cited the same 5-test citation drawn from two different test files, under-proving several of the six distinct rule_texts (top-level structure x2, version+multiline parsing, source-shape preservation, forward compatibility, unknown-field/ numeric/Unicode fidelity). This entry names each obligation's own precise selectors: forward compatibility is proven by a dedicated file (test_obligation_forward_compatibility.py) that cross-validates against the official nbformat library itself, not just this package's own tests -- an unrecognized cell type, an unrecognized output type, and unknown dictionary constructs at every level all round-trip identically through both implementations. Numeric/Unicode fidelity is proven at real edge cases (float64-exactness boundary, u64 boundary, negative zero via copysign since == cannot detect a lost sign, NaN/Infinity failing closed at write time). No new source or test code this slice. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-IPYNB-OBL-06EFB1D8AC058AC6, SAL-IPYNB-OBL-121BE1F7FB462D30, SAL-IPYNB-OBL-2B44543CA510ED94, SAL-IPYNB-OBL-6DCE21F7DD6D971B, SAL-IPYNB-OBL-9A6A2B857F357379, and SAL-IPYNB-OBL-A87B92BEB23E3B35 only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "IPYNB-PRESERVE-001-LOSS-REPORT-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-preserve-loss-report-001.json",
+      "sha256": "02b3d73a30f4f0b3e8bcae8bf5eb58b5b23e3fc5f9700a57b9643073078d7bef",
+      "truth_boundary": "Selector-bound, unlike IPYNB-BASELINE-SUITE. Closes the IPYNB-PRESERVE-001 mis-citation event 172 deliberately deferred: the obligations previously cited test_obligation_corpus_integrity.py, which verifies committed test-fixture byte integrity, not codec round-trip preservation. test_preservation_mode_does_not_synthesize_absent_values_or_ids proves both the absent-vs-explicit-default distinction and never-silently-drop-unrecognized-content (an unknown top-level 'vendor' key survives loads(mode='preservation') and an exact dumps(profile='declared') round trip). test_downgrade_plan_reports_loss_and_preserved_extensions and test_lossy_downgrade_requires_explicit_acceptance prove plan_downgrade()/downgrade()'s DowngradePlan is a real pre-save loss-report API (losses / preserved_extensions / blockers computed before modification; accept_loss=True required explicitly or downgrade() raises IpynbValidationError with the exact loss_count and loss_paths, never a silent drop). One new test, test_lossless_and_normalized_output_are_an_explicit_caller_choice, was added because the mode-as-explicit-choice claim was previously provable only by inferentially combining two unrelated existing tests; it now directly shows default dumps() refusing pending explicit upgrade versus profile='declared' succeeding immediately, for the same document. NOT backed by an independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-IPYNB-OBL-6401915AE1FC1ECF, SAL-IPYNB-OBL-6D98E9BE6A406DC3, SAL-IPYNB-OBL-733D902E103E53BD, and SAL-IPYNB-OBL-99A77B35A2B0E5E8 only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "IPYNB-SEC-CITATION-AUDIT-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -117,7 +133,7 @@
   "format_id": "ipynb",
   "input_digests": {
     "compiled_contract": "070e7486feb32cb69e64bf9bb040bb47e4671f0034835d78d081c39ae2c05903",
-    "implementation_evidence": "d47d09c086a1f7eb47cfd58f6c011537749b6bcd4ca71f3062160042a447a50b",
+    "implementation_evidence": "b44344c89c10210250f2acf01ca3c5bfb2beb1f6290503aaaffe6de2a690850c",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "04340fa8bde6468fa648cb60fce3d50876a39c187d5b9ad3b0329fe0a29850a8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -432,37 +448,35 @@
     {
       "capability_id": "IPYNB-DOCMETA-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-DOCMETA-HIDDEN-TYPED-MODEL-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "The pinned nbformat 4.2+ schema (validation/schemas/nbformat.v4.2.schema.json) declares metadata.authors item shape under the non-standard keyword 'item' rather than JSON Schema's 'items', so a real validator never enforces it. AuthorMetadata.from_value matches this delta directly: name is modeled as optional (not required), and every other field on an author entry is preserved verbatim via extras rather than being schema-shape-rejected or silently dropped -- test_notebook_metadata_models_title_and_authors_with_preserved_extras proves both a full name+extra-field author and a name-less, extras-only author."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Title and multi-author fixtures round-trip for every applicable profile, including additional author properties."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_malformed_known_metadata_fails_explicitly"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-1805FD97C77EDC3D",
       "positive_test_selectors": [
-        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_real_fixture_kernelspec_adapter_is_exact_and_non_mutating",
-        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_notebook_metadata_typed_fields_preserve_unknown_namespaces",
-        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_and_output_adapters_cover_common_namespaces"
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_notebook_metadata_models_title_and_authors_with_preserved_extras",
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_notebook_metadata_title_and_authors_are_absent_when_not_declared"
       ],
       "proof_requirements": {
         "negative": [
-          "Selector-bound negative cases are not yet identified."
+          "Malformed title, authors container, individual author item, jupyter container, and source_hidden type each have a focused negative test proving explicit MetadataShapeError refusal."
         ],
         "positive": [
-          "Title and multi-author fixtures round-trip for every applicable profile, including additional author properties."
+          "Title, author (including name-less/extras-only), and Jupyter visibility fixtures each have a focused positive test proving the specific claim, not a generic cluster-wide citation."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::MetadataShapeError",
-        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::KernelSpecMetadata",
-        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::LanguageInfoMetadata",
-        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::SlideshowMetadata"
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::AuthorMetadata",
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::NotebookMetadataAdapter"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-LIFECYCLE-001",
@@ -902,41 +916,32 @@
     {
       "capability_id": "IPYNB-PRESERVE-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-PRESERVE-001-LOSS-REPORT-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "loads(mode='preservation') on a source lacking a top-level metadata key and a cell id leaves both absent in document.raw rather than synthesizing empty/default values, and dumps(document, profile='declared') round-trips the source byte-for-byte -- proving absent-vs-explicit-empty is preserved as a distinct, observable state through a full load/dump cycle."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-6401915AE1FC1ECF",
       "positive_test_selectors": [
-        "tests/python/ipynb/test_obligation_corpus_integrity.py::test_active_valid_corpus_is_digest_bound_and_strictly_valid",
-        "tests/python/ipynb/test_obligation_corpus_integrity.py::test_quarantined_bytes_are_retained_and_fail_the_declared_minor_schema",
-        "tests/python/ipynb/test_obligation_corpus_integrity.py::test_reference_normalization_cannot_relabel_original_bytes_valid"
+        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_preservation_mode_does_not_synthesize_absent_values_or_ids"
       ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
         ],
         "positive": [
-          "Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+          "Absent-vs-explicit-default, unrecognized-content preservation, mode-as-explicit-choice, and pre-save loss reporting each have a focused positive test proving the specific claim, not a generic cluster-wide citation."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dumps",
-        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dump",
-        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::write_ipynb",
-        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::get_cell_count",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell"
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads",
+        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dumps"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-LIFECYCLE-001",
@@ -1045,41 +1050,35 @@
     {
       "capability_id": "IPYNB-PRESERVE-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-PRESERVE-001-LOSS-REPORT-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Two distinct 'unrecognized content' cases are both carried safely, never silently dropped, in lossless mode: (1) a wholly unknown top-level key ('vendor') survives loads(mode='preservation') into document.raw and round-trips exactly through dumps(profile='declared'); (2) newer-than-target-minor metadata/cell-metadata keys (title/authors, jupyter, execution) are reported by plan_downgrade as IPYNB_DOWNGRADE_*_EXTENSION issues with disposition PRESERVE_AS_EXTENSION and are confirmed still present in the downgraded document's raw data, not removed."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-6D98E9BE6A406DC3",
       "positive_test_selectors": [
-        "tests/python/ipynb/test_obligation_corpus_integrity.py::test_active_valid_corpus_is_digest_bound_and_strictly_valid",
-        "tests/python/ipynb/test_obligation_corpus_integrity.py::test_quarantined_bytes_are_retained_and_fail_the_declared_minor_schema",
-        "tests/python/ipynb/test_obligation_corpus_integrity.py::test_reference_normalization_cannot_relabel_original_bytes_valid"
+        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_preservation_mode_does_not_synthesize_absent_values_or_ids",
+        "tests/python/ipynb/test_obligation_version_conversion.py::test_downgrade_plan_reports_loss_and_preserved_extensions",
+        "tests/python/ipynb/test_obligation_version_conversion.py::test_lossless_downgrade_preserves_later_metadata_as_extensions"
       ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
         ],
         "positive": [
-          "Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+          "Absent-vs-explicit-default, unrecognized-content preservation, mode-as-explicit-choice, and pre-save loss reporting each have a focused positive test proving the specific claim, not a generic cluster-wide citation."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads",
         "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dumps",
-        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dump",
-        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::write_ipynb",
-        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::get_cell_count",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell"
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::plan_downgrade"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-PARSE-001",
@@ -1155,41 +1154,32 @@
     {
       "capability_id": "IPYNB-PRESERVE-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-PRESERVE-001-LOSS-REPORT-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "For the same loaded document, dumps(document) (the default, normalized/canonical profile) refuses with IpynbWriteError('...explicit upgrade...') unless the caller has explicitly upgraded the document, while dumps(document, profile='declared') succeeds immediately and returns the original nbformat_minor and content unchanged -- proving lossless round-trip output and normalized/canonical output are reached only through an explicit, distinct caller choice, never silently defaulted."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-733D902E103E53BD",
       "positive_test_selectors": [
-        "tests/python/ipynb/test_obligation_corpus_integrity.py::test_active_valid_corpus_is_digest_bound_and_strictly_valid",
-        "tests/python/ipynb/test_obligation_corpus_integrity.py::test_quarantined_bytes_are_retained_and_fail_the_declared_minor_schema",
-        "tests/python/ipynb/test_obligation_corpus_integrity.py::test_reference_normalization_cannot_relabel_original_bytes_valid"
+        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_lossless_and_normalized_output_are_an_explicit_caller_choice"
       ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
         ],
         "positive": [
-          "Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+          "Absent-vs-explicit-default, unrecognized-content preservation, mode-as-explicit-choice, and pre-save loss reporting each have a focused positive test proving the specific claim, not a generic cluster-wide citation."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dumps",
-        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dump",
-        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::write_ipynb",
-        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::get_cell_count",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell"
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::upgrade"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-OUTPUT-001",
@@ -1362,37 +1352,35 @@
     {
       "capability_id": "IPYNB-HIDDEN-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-DOCMETA-HIDDEN-TYPED-MODEL-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "The pinned nbformat 4.3+ schemas (validation/schemas/nbformat.v4.3.schema.json) declare cells[].metadata.jupyter.source_hidden for raw, markdown, and code cells, and outputs_hidden for code cells only -- both declared as siblings of additionalProperties rather than nested under a properties key, so neither is schema-shape-enforced either. JupyterCellMetadata.from_value models both fields as independently optional booleans regardless of cell type, matching what the pinned schema actually declares rather than a narrower assumption -- test_cell_metadata_jupyter_visibility_fields_are_each_independently_optional proves source_hidden alone (no outputs_hidden) on a raw cell round-trips correctly."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Visibility metadata fixtures cover all cell types, boolean validation, and unknown Jupyter fields."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_malformed_known_metadata_fails_explicitly"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-8998C2CB8626FA68",
       "positive_test_selectors": [
-        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_real_fixture_kernelspec_adapter_is_exact_and_non_mutating",
-        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_notebook_metadata_typed_fields_preserve_unknown_namespaces",
-        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_and_output_adapters_cover_common_namespaces"
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_metadata_models_jupyter_visibility_with_preserved_extras",
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_metadata_jupyter_visibility_fields_are_each_independently_optional"
       ],
       "proof_requirements": {
         "negative": [
-          "Selector-bound negative cases are not yet identified."
+          "Malformed title, authors container, individual author item, jupyter container, and source_hidden type each have a focused negative test proving explicit MetadataShapeError refusal."
         ],
         "positive": [
-          "Visibility metadata fixtures cover all cell types, boolean validation, and unknown Jupyter fields."
+          "Title, author (including name-less/extras-only), and Jupyter visibility fixtures each have a focused positive test proving the specific claim, not a generic cluster-wide citation."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::MetadataShapeError",
-        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::KernelSpecMetadata",
-        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::LanguageInfoMetadata",
-        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::SlideshowMetadata"
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::JupyterCellMetadata",
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::CellMetadataAdapter"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-SEC-001",
@@ -1430,76 +1418,67 @@
     {
       "capability_id": "IPYNB-HIDDEN-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-DOCMETA-HIDDEN-TYPED-MODEL-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "CellMetadataAdapter.jupyter returns a typed JupyterCellMetadata (source_hidden, outputs_hidden, both bool | None) parsed from cell.metadata.jupyter for any cell type, with every other key on that namespace preserved via .extras -- test_cell_metadata_models_jupyter_visibility_with_preserved_extras proves both booleans plus an unrecognized vendor key surviving together on one code cell. A non-object jupyter value or a non-boolean source_hidden each raise MetadataShapeError with a precise diagnostic rather than silently coercing."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Visibility metadata fixtures cover all cell types, boolean validation, and unknown Jupyter fields."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_malformed_known_metadata_fails_explicitly"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-959B89100C121E14",
       "positive_test_selectors": [
-        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_real_fixture_kernelspec_adapter_is_exact_and_non_mutating",
-        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_notebook_metadata_typed_fields_preserve_unknown_namespaces",
-        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_and_output_adapters_cover_common_namespaces"
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_metadata_models_jupyter_visibility_with_preserved_extras",
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_metadata_jupyter_visibility_fields_are_each_independently_optional"
       ],
       "proof_requirements": {
         "negative": [
-          "Selector-bound negative cases are not yet identified."
+          "Malformed title, authors container, individual author item, jupyter container, and source_hidden type each have a focused negative test proving explicit MetadataShapeError refusal."
         ],
         "positive": [
-          "Visibility metadata fixtures cover all cell types, boolean validation, and unknown Jupyter fields."
+          "Title, author (including name-less/extras-only), and Jupyter visibility fixtures each have a focused positive test proving the specific claim, not a generic cluster-wide citation."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::MetadataShapeError",
-        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::KernelSpecMetadata",
-        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::LanguageInfoMetadata",
-        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::SlideshowMetadata"
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::JupyterCellMetadata",
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::CellMetadataAdapter"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-PRESERVE-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-PRESERVE-001-LOSS-REPORT-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "plan_downgrade() computes a DowngradePlan -- a structured, pre-save report (DowngradePlan.losses / .preserved_extensions / .blockers, each a ConversionIssue with code/path/message/disposition) -- of every construct that cannot be preserved at the requested target version, without modifying the document. downgrade() then refuses to apply any plan with unaccepted losses, raising IpynbValidationError(code='IPYNB_DOWNGRADE_LOSS_NOT_ACCEPTED') with the exact loss_count and loss_paths in its context rather than silently dropping the data or failing without detail; accept_loss=True is required explicitly to proceed."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-99A77B35A2B0E5E8",
       "positive_test_selectors": [
-        "tests/python/ipynb/test_obligation_corpus_integrity.py::test_active_valid_corpus_is_digest_bound_and_strictly_valid",
-        "tests/python/ipynb/test_obligation_corpus_integrity.py::test_quarantined_bytes_are_retained_and_fail_the_declared_minor_schema",
-        "tests/python/ipynb/test_obligation_corpus_integrity.py::test_reference_normalization_cannot_relabel_original_bytes_valid"
+        "tests/python/ipynb/test_obligation_version_conversion.py::test_downgrade_plan_reports_loss_and_preserved_extensions",
+        "tests/python/ipynb/test_obligation_version_conversion.py::test_lossy_downgrade_requires_explicit_acceptance"
       ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
         ],
         "positive": [
-          "Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+          "Absent-vs-explicit-default, unrecognized-content preservation, mode-as-explicit-choice, and pre-save loss reporting each have a focused positive test proving the specific claim, not a generic cluster-wide citation."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dumps",
-        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dump",
-        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::write_ipynb",
-        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::get_cell_count",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell"
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::plan_downgrade",
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::downgrade",
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::DowngradePlan"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-PARSE-001",
@@ -1893,37 +1872,35 @@
     {
       "capability_id": "IPYNB-DOCMETA-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-DOCMETA-HIDDEN-TYPED-MODEL-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "NotebookMetadataAdapter.title (optional string) and .authors (optional tuple of AuthorMetadata) model notebook.metadata.title/authors for profile 4.2 and later; absent in profile <4.2 fixtures returns None for both without synthesizing empty values (test_notebook_metadata_title_and_authors_are_absent_when_not_declared). Each author's extra properties beyond name are preserved via AuthorMetadata.extras, matching the obligation's explicit 'preserve additional author fields' clause. A malformed title (non-string) or a malformed authors container (non-array) or a malformed individual author item (non-object) each raise MetadataShapeError with a precise diagnostic rather than silently coercing or accepting invalid shapes."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Title and multi-author fixtures round-trip for every applicable profile, including additional author properties."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_malformed_known_metadata_fails_explicitly"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-C2890074D83A8170",
       "positive_test_selectors": [
-        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_real_fixture_kernelspec_adapter_is_exact_and_non_mutating",
-        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_notebook_metadata_typed_fields_preserve_unknown_namespaces",
-        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_and_output_adapters_cover_common_namespaces"
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_notebook_metadata_models_title_and_authors_with_preserved_extras",
+        "tests/python/ipynb/test_obligation_metadata_adapters.py::test_notebook_metadata_title_and_authors_are_absent_when_not_declared"
       ],
       "proof_requirements": {
         "negative": [
-          "Selector-bound negative cases are not yet identified."
+          "Malformed title, authors container, individual author item, jupyter container, and source_hidden type each have a focused negative test proving explicit MetadataShapeError refusal."
         ],
         "positive": [
-          "Title and multi-author fixtures round-trip for every applicable profile, including additional author properties."
+          "Title, author (including name-less/extras-only), and Jupyter visibility fixtures each have a focused positive test proving the specific claim, not a generic cluster-wide citation."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::MetadataShapeError",
-        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::KernelSpecMetadata",
-        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::LanguageInfoMetadata",
-        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::SlideshowMetadata"
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::AuthorMetadata",
+        "src/python/ipynb/src/format_factory/ipynb/model/metadata.py::NotebookMetadataAdapter"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-EXECMETA-001",
@@ -2466,6 +2443,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-cell-id-001.json": "a41bd433193a2f056bbfacd95c667ef16c066fbdff389d26c8016fac7860d5a1",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-cellname-001.json": "16a30c07b50665d35467880b0d1822ccf5e037e19bee19daaad4aef698b24552",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-cluster-citation-audit-001.json": "8581e7742b93d4d6eff3779d48496336e1193d753ea20d4148482294621d1106",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-docmeta-hidden-typed-model-001.json": "3f7cb43b9623ed471633e6859ac7450dd8d64bd1eb1b16b4c25d1b32c516076e",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-edit-001.json": "bb88dabbc9361c01672ab1319cba2125c43bdb5ec1c4f5d650956a1ef5903d1d",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-execution-adapter-001.json": "cb763153a0ce13978e1e29e1620d3aaa2bae4ed83b792ef83e54fec2f36bce86",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-export-001.json": "53d61ffd27a6d7f9b7b1fee61a02de20972f1d98a3baf1849360f7c750153ebc",
@@ -2473,6 +2451,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-merge-001.json": "f12e54e0372e13214347eb90ccb68f87c8abd19f95df34465dc6c3cd2a83804d",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-output-citation-audit-001.json": "f04a02748969db3a18e6289e53513a6c13fe2eef0ea03a49f630ee24b39a3e95",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-parse-citation-audit-001.json": "05a573d1aef638ad84c2c8182f3d894dfdfa8dec90ffccf82a1f4fd66b66b754",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-preserve-loss-report-001.json": "02b3d73a30f4f0b3e8bcae8bf5eb58b5b23e3fc5f9700a57b9643073078d7bef",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-security-limits-001.json": "087eee927b04bbab0743704d649356fb0ba2c71c0da140f8c855ba6fa2bfc105",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-structure-diff-001.json": "4ab6abdf71526d76d0d213be161888e759169470d15bea9839995b1009524004",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-write-001.json": "2e1e1d5493518b7330f43d91639efa5839d91e11b4a13ba32f5b83abfd125675",
@@ -2487,7 +2466,7 @@
     "src/python/ipynb/src/format_factory/ipynb/model/editor.py": "23ba3083f73898ecd0042184939c386a954cdb047b7fa2fcf9f9608a4b1c53f1",
     "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py": "5ddd4ff5ec6fbc34685d4ffd067b73fe4cf9ffa84bf8baf52ac222e23e30e9c9",
     "src/python/ipynb/src/format_factory/ipynb/model/merge.py": "9c4c20c21c409e8f3d9a992ec9b78b3d08821f10808cc12f8e64da4e8d1ffd7d",
-    "src/python/ipynb/src/format_factory/ipynb/model/metadata.py": "18aead211c9b92441c7daa63de4743f85caa1233f04a0f8ef81e20a3c69e443c",
+    "src/python/ipynb/src/format_factory/ipynb/model/metadata.py": "4d2d29d4d7cb50dd46c71ecea8255dc10bddd24b167ad712918d9f7c00883482",
     "src/python/ipynb/src/format_factory/ipynb/security/limits.py": "5364a2b1e91a1057c68602bb2cf52086829c3120ce53a304ebbf8df59e4d926a",
     "src/python/ipynb/src/format_factory/ipynb/security/sanitizer.py": "0f51806e23d61ab614c1bd314c41929b9ae186186c358a55ea015f0a87cc7a69",
     "src/python/ipynb/src/format_factory/ipynb/security/trust.py": "731a7c39e84d3142fbdeb4111849db4cf9c12473be5bbd54c0bc032d7c25c087",
@@ -2500,13 +2479,12 @@
     "tests/python/ipynb/test_obligation_cell_identity.py": "a91396e60ba37a857e3ab845cd85df53934e8c70a3397c44db37c91ed99bf6a6",
     "tests/python/ipynb/test_obligation_cleanup.py": "0fbdedce809a91f82a27ff79bef73a5568440279bd4b54c16e07601da89a0b8f",
     "tests/python/ipynb/test_obligation_core_path_no_execution.py": "50451e0701d44dc1989ea8ea774e941e654e8e3c84053c0e47e3c31784b02b67",
-    "tests/python/ipynb/test_obligation_corpus_integrity.py": "18e1f870e1f2ae1ccd4c9d4e5c35929f7cf3168b2a4f4d0017c88f83d48cc418",
     "tests/python/ipynb/test_obligation_execution_adapter.py": "42f1f95620fa741a01ad17896091bc0d6c5789420405b1614fea982e25c7a510",
     "tests/python/ipynb/test_obligation_export_adapter.py": "56cee7bffd675815c99c9539fde17ca1290f80b426a9201398f6098652e497ba",
     "tests/python/ipynb/test_obligation_export_resource_path_safety.py": "f92ddd90008b0bd71b7c8c9a49f78e56115e07edf88ab65c6a9657f520d65f1e",
     "tests/python/ipynb/test_obligation_forward_compatibility.py": "81897b973ce37ca98e23177b0c5eee62fa29e9d19f38702b28635f3f55ffe295",
-    "tests/python/ipynb/test_obligation_lifecycle_modes.py": "d42d19938843e94ec7743cd606c3bee1b704b534a98ce0fd72e4763126585651",
-    "tests/python/ipynb/test_obligation_metadata_adapters.py": "71d2436bcba090d36fd9a8b1ca5a8109e08fb2d095b0408b29d7e871d8650056",
+    "tests/python/ipynb/test_obligation_lifecycle_modes.py": "6e1020d00430c35b8e0fbfcc979de6b2e87dc595cc257d1a182b2e9aa3b150ba",
+    "tests/python/ipynb/test_obligation_metadata_adapters.py": "30b1ba95a554169325219995242efba7d5e7f8d2bec928d6f36b6c6dc8c4eb5e",
     "tests/python/ipynb/test_obligation_nbformat_core.py": "318949e9652c41f2276d84abb296b43752d7a0097c85c412d8c84f6e8730cef0",
     "tests/python/ipynb/test_obligation_notebook_merge.py": "3b47b19bb0879993be46450bf29664dcdcc3184cd5497863dce1f32c25f63da5",
     "tests/python/ipynb/test_obligation_official_schema_validation.py": "e2c7ccb401e3bc752e063a4b6ad59c82db8f9582695ca81bb330c90d6db2ec4d",
@@ -2525,11 +2503,11 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 51,
-      "partial": 17
+      "implemented": 59,
+      "partial": 9
     },
     "total": 68,
-    "unresolved": 17
+    "unresolved": 9
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

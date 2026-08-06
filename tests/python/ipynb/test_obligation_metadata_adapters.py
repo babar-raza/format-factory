@@ -48,6 +48,14 @@ def _document() -> IpynbDocument:
                     "pygments_lexer": "ipython3",
                     "vendor_language": ["keep"],
                 },
+                "title": "Vendor Notebook",
+                "authors": [
+                    {
+                        "name": "Ada Lovelace",
+                        "affiliation": "Analytical Engine Institute",
+                    },
+                    {"orcid": "0000-0000-0000-0000"},
+                ],
                 "org.example": {"notebook": "keep"},
             },
             "cells": [
@@ -59,6 +67,11 @@ def _document() -> IpynbDocument:
                         "slideshow": {
                             "slide_type": "slide",
                             "vendor_slide": "keep",
+                        },
+                        "jupyter": {
+                            "source_hidden": True,
+                            "outputs_hidden": False,
+                            "vendor_jupyter": "keep",
                         },
                         "execution": {
                             "iopub.status.busy": "2026-07-26T00:00:00Z",
@@ -124,6 +137,74 @@ def test_notebook_metadata_typed_fields_preserve_unknown_namespaces() -> None:
     assert language.extras == {"vendor_language": ["keep"]}
     assert adapter.extras == {"org.example": {"notebook": "keep"}}
     assert adapter.to_dict() == document.raw["metadata"]
+
+
+def test_notebook_metadata_models_title_and_authors_with_preserved_extras() -> None:
+    document = _document()
+    adapter = notebook_metadata(document)
+
+    assert adapter.title == "Vendor Notebook"
+    authors = adapter.authors
+    assert authors is not None and len(authors) == 2
+    assert authors[0].name == "Ada Lovelace"
+    assert authors[0].extras == {
+        "affiliation": "Analytical Engine Institute"
+    }
+    assert authors[1].name is None
+    assert authors[1].extras == {"orcid": "0000-0000-0000-0000"}
+    assert authors[1].to_dict() == {"orcid": "0000-0000-0000-0000"}
+    assert "title" not in adapter.extras
+    assert "authors" not in adapter.extras
+
+
+def test_notebook_metadata_title_and_authors_are_absent_when_not_declared() -> None:
+    document = load(VALID_DIR / "minimal.ipynb")
+    adapter = notebook_metadata(document)
+
+    assert adapter.title is None
+    assert adapter.authors is None
+
+
+def test_cell_metadata_models_jupyter_visibility_with_preserved_extras() -> None:
+    document = _document()
+    cell_adapter = cell_metadata(document.cell_objects[0])
+
+    jupyter = cell_adapter.jupyter
+    assert jupyter is not None
+    assert jupyter.source_hidden is True
+    assert jupyter.outputs_hidden is False
+    assert jupyter.extras == {"vendor_jupyter": "keep"}
+    assert jupyter.to_dict() == {
+        "source_hidden": True,
+        "outputs_hidden": False,
+        "vendor_jupyter": "keep",
+    }
+    assert "jupyter" not in cell_adapter.extras
+
+
+def test_cell_metadata_jupyter_visibility_fields_are_each_independently_optional() -> None:
+    document = IpynbDocument(
+        {
+            "nbformat": 4,
+            "nbformat_minor": 5,
+            "metadata": {},
+            "cells": [
+                {
+                    "cell_type": "raw",
+                    "id": "raw-cell",
+                    "metadata": {"jupyter": {"source_hidden": True}},
+                    "source": "",
+                }
+            ],
+        }
+    )
+    cell_adapter = cell_metadata(document.cell_objects[0])
+
+    jupyter = cell_adapter.jupyter
+    assert jupyter is not None
+    assert jupyter.source_hidden is True
+    assert jupyter.outputs_hidden is None
+    assert jupyter.extras == {}
 
 
 def test_cell_and_output_adapters_cover_common_namespaces() -> None:
@@ -195,6 +276,33 @@ def test_adapters_are_defensive_snapshots_and_roundtrip_is_lossless() -> None:
                 value.cell_objects[0].output_objects[0]
             ).mime("text/html"),
             "text/html",
+        ),
+        (
+            lambda value: value.raw["metadata"].update(title=123),
+            lambda value: notebook_metadata(value).title,
+            "title",
+        ),
+        (
+            lambda value: value.raw["metadata"].update(authors="bad"),
+            lambda value: notebook_metadata(value).authors,
+            "authors",
+        ),
+        (
+            lambda value: value.raw["metadata"].update(authors=["bad"]),
+            lambda value: notebook_metadata(value).authors,
+            "author",
+        ),
+        (
+            lambda value: value.cells[0]["metadata"].update(jupyter="bad"),
+            lambda value: cell_metadata(value.cell_objects[0]).jupyter,
+            "jupyter",
+        ),
+        (
+            lambda value: value.cells[0]["metadata"]["jupyter"].update(
+                source_hidden="yes"
+            ),
+            lambda value: cell_metadata(value.cell_objects[0]).jupyter,
+            "source_hidden",
         ),
     ],
 )

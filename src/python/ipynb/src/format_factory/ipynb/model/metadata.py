@@ -46,6 +46,19 @@ def _optional_string(
     return selected
 
 
+def _optional_bool(
+    value: Mapping[str, Any],
+    key: str,
+    context: str,
+) -> bool | None:
+    selected = value.get(key)
+    if selected is None:
+        return None
+    if not isinstance(selected, bool):
+        raise MetadataShapeError(f"{context}.{key} must be a boolean")
+    return selected
+
+
 def _extras(
     value: Mapping[str, Any],
     known: frozenset[str],
@@ -131,6 +144,65 @@ class LanguageInfoMetadata:
                     "pygments_lexer",
                 }
             ),
+        )
+
+    def to_dict(self) -> dict[str, Any]:
+        return deepcopy(self._raw)
+
+
+@dataclass(frozen=True, slots=True)
+class AuthorMetadata:
+    """One entry of notebook metadata.authors.
+
+    The pinned nbformat 4.2+ schema declares this item's intended shape
+    under the non-standard keyword ``item`` rather than JSON Schema's
+    ``items``, so a real JSON Schema validator never enforces it; ``name``
+    is therefore modeled as optional here too, and every other field is
+    preserved via ``extras`` rather than silently dropped.
+    """
+
+    name: str | None
+    _raw: dict[str, Any]
+
+    @classmethod
+    def from_value(cls, value: Any) -> "AuthorMetadata":
+        raw = _mapping(value, "author")
+        return cls(
+            name=_optional_string(raw, "name", "author"),
+            _raw=raw,
+        )
+
+    @property
+    def extras(self) -> dict[str, Any]:
+        return _extras(self._raw, frozenset({"name"}))
+
+    def to_dict(self) -> dict[str, Any]:
+        return deepcopy(self._raw)
+
+
+@dataclass(frozen=True, slots=True)
+class JupyterCellMetadata:
+    """Official Jupyter cell metadata (nbformat 4.3+): source_hidden for
+    every known cell type, outputs_hidden for code cells."""
+
+    source_hidden: bool | None
+    outputs_hidden: bool | None
+    _raw: dict[str, Any]
+
+    @classmethod
+    def from_value(cls, value: Any) -> "JupyterCellMetadata":
+        raw = _mapping(value, "jupyter")
+        return cls(
+            source_hidden=_optional_bool(raw, "source_hidden", "jupyter"),
+            outputs_hidden=_optional_bool(raw, "outputs_hidden", "jupyter"),
+            _raw=raw,
+        )
+
+    @property
+    def extras(self) -> dict[str, Any]:
+        return _extras(
+            self._raw,
+            frozenset({"source_hidden", "outputs_hidden"}),
         )
 
     def to_dict(self) -> dict[str, Any]:
@@ -234,10 +306,23 @@ class NotebookMetadataAdapter:
         return None if value is None else LanguageInfoMetadata.from_value(value)
 
     @property
+    def title(self) -> str | None:
+        return _optional_string(self._raw, "title", "notebook")
+
+    @property
+    def authors(self) -> tuple[AuthorMetadata, ...] | None:
+        value = self._raw.get("authors")
+        if value is None:
+            return None
+        if not isinstance(value, list):
+            raise MetadataShapeError("notebook.authors must be an array")
+        return tuple(AuthorMetadata.from_value(item) for item in value)
+
+    @property
     def extras(self) -> dict[str, Any]:
         return _extras(
             self._raw,
-            frozenset({"kernelspec", "language_info"}),
+            frozenset({"kernelspec", "language_info", "title", "authors"}),
         )
 
     def to_dict(self) -> dict[str, Any]:
@@ -279,10 +364,15 @@ class CellMetadataAdapter:
         return None if value is None else ExecutionMetadata.from_value(value)
 
     @property
+    def jupyter(self) -> JupyterCellMetadata | None:
+        value = self._raw.get("jupyter")
+        return None if value is None else JupyterCellMetadata.from_value(value)
+
+    @property
     def extras(self) -> dict[str, Any]:
         return _extras(
             self._raw,
-            frozenset({"tags", "slideshow", "execution"}),
+            frozenset({"tags", "slideshow", "execution", "jupyter"}),
         )
 
     def to_dict(self) -> dict[str, Any]:
@@ -336,8 +426,10 @@ def output_metadata(output: NotebookOutput) -> OutputMetadataAdapter:
 
 
 __all__ = [
+    "AuthorMetadata",
     "CellMetadataAdapter",
     "ExecutionMetadata",
+    "JupyterCellMetadata",
     "KernelSpecMetadata",
     "LanguageInfoMetadata",
     "MetadataShapeError",

@@ -3,6 +3,11 @@ format_id: ipynb
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: IPYNB-DOCMETA-HIDDEN-TYPED-MODEL-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ipynb-docmeta-hidden-typed-model-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike IPYNB-BASELINE-SUITE. Closes event 172''s last 2 deferred clusters (IPYNB-DOCMETA-001, IPYNB-HIDDEN-001), both genuine gaps (no typed model existed for any of title/authors/source_hidden/outputs_hidden), unlike IPYNB-PRESERVE-001 which was a pure mis-citation. New production code: AuthorMetadata and JupyterCellMetadata dataclasses in model/metadata.py, plus title/authors accessors on NotebookMetadataAdapter and a jupyter accessor on CellMetadataAdapter, exported through model/__init__.py and the top-level package. Intended field shapes (author item name+extras; jupyter source_hidden/outputs_hidden booleans) are read directly from this package''s own pinned, vendored nbformat schemas (nbformat.v4.2.schema.json, nbformat.v4.3.schema.json), not from memory -- both schemas declare these shapes under non-standard keywords ("item" instead of "items"; sibling placement instead of nested under properties) that a real JSON Schema validator never enforces, so the typed model deliberately mirrors that unenforced-but-intended shape (name and both hidden booleans all optional, every other field preserved via extras) rather than over-constraining. 9 new tests: 4 positive (title+authors with mixed name/extras-only entries; absent title/authors returning None; jupyter with both booleans plus an unknown key; jupyter with only source_hidden present) and 5 negative cases within test_malformed_known_metadata_fails_explicitly (malformed title, authors container, individual author item, jupyter container, source_hidden type, each raising MetadataShapeError with a precise diagnostic). ipynb suite: 698 -> 707 passed. NOT backed by an independent reference implementation for the new fields specifically -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, not VERIFIED. Covers SAL-IPYNB-OBL-1805FD97C77EDC3D, SAL-IPYNB-OBL-C2890074D83A8170, SAL-IPYNB-OBL-8998C2CB8626FA68, and SAL-IPYNB-OBL-959B89100C121E14 only; it supports no other obligation and promotes no product state.'
 - evidence_id: IPYNB-PRESERVE-001-LOSS-REPORT-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ipynb-preserve-loss-report-001.json
   expected_result: PASS
@@ -538,31 +543,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-1805FD97C77EDC3D
   capability_id: IPYNB-DOCMETA-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::MetadataShapeError
-  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::KernelSpecMetadata
-  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::LanguageInfoMetadata
-  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::SlideshowMetadata
+  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::AuthorMetadata
+  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::NotebookMetadataAdapter
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_metadata_adapters.py::test_real_fixture_kernelspec_adapter_is_exact_and_non_mutating
-  - tests/python/ipynb/test_obligation_metadata_adapters.py::test_notebook_metadata_typed_fields_preserve_unknown_namespaces
-  - tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_and_output_adapters_cover_common_namespaces
-  negative_test_selectors: []
+  - 'tests/python/ipynb/test_obligation_metadata_adapters.py::test_notebook_metadata_models_title_and_authors_with_preserved_extras'
+  - 'tests/python/ipynb/test_obligation_metadata_adapters.py::test_notebook_metadata_title_and_authors_are_absent_when_not_declared'
+  negative_test_selectors:
+  - 'tests/python/ipynb/test_obligation_metadata_adapters.py::test_malformed_known_metadata_fails_explicitly'
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-DOCMETA-HIDDEN-TYPED-MODEL-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Title and multi-author fixtures
-    round-trip for every applicable profile, including additional author properties.'
+  - 'The pinned nbformat 4.2+ schema (validation/schemas/nbformat.v4.2.schema.json) declares metadata.authors item shape under the non-standard keyword ''item'' rather than JSON Schema''s ''items'', so a real validator never enforces it. AuthorMetadata.from_value matches this delta directly: name is modeled as optional (not required), and every other field on an author entry is preserved verbatim via extras rather than being schema-shape-rejected or silently dropped -- test_notebook_metadata_models_title_and_authors_with_preserved_extras proves both a full name+extra-field author and a name-less, extras-only author.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Title and multi-author fixtures round-trip for every applicable profile, including additional author
-      properties.
+    - Title, author (including name-less/extras-only), and Jupyter visibility fixtures each have a
+      focused positive test proving the specific claim, not a generic cluster-wide citation.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - Malformed title, authors container, individual author item, jupyter container, and source_hidden
+      type each have a focused negative test proving explicit MetadataShapeError refusal.
 - obligation_id: SAL-IPYNB-OBL-1CEEABB4EB56C405
   capability_id: IPYNB-LIFECYCLE-001
   status: implemented
@@ -1212,30 +1214,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-8998C2CB8626FA68
   capability_id: IPYNB-HIDDEN-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::MetadataShapeError
-  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::KernelSpecMetadata
-  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::LanguageInfoMetadata
-  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::SlideshowMetadata
+  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::JupyterCellMetadata
+  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::CellMetadataAdapter
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_metadata_adapters.py::test_real_fixture_kernelspec_adapter_is_exact_and_non_mutating
-  - tests/python/ipynb/test_obligation_metadata_adapters.py::test_notebook_metadata_typed_fields_preserve_unknown_namespaces
-  - tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_and_output_adapters_cover_common_namespaces
-  negative_test_selectors: []
+  - 'tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_metadata_models_jupyter_visibility_with_preserved_extras'
+  - 'tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_metadata_jupyter_visibility_fields_are_each_independently_optional'
+  negative_test_selectors:
+  - 'tests/python/ipynb/test_obligation_metadata_adapters.py::test_malformed_known_metadata_fails_explicitly'
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-DOCMETA-HIDDEN-TYPED-MODEL-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Visibility metadata fixtures
-    cover all cell types, boolean validation, and unknown Jupyter fields.'
+  - 'The pinned nbformat 4.3+ schemas (validation/schemas/nbformat.v4.3.schema.json) declare cells[].metadata.jupyter.source_hidden for raw, markdown, and code cells, and outputs_hidden for code cells only -- both declared as siblings of additionalProperties rather than nested under a properties key, so neither is schema-shape-enforced either. JupyterCellMetadata.from_value models both fields as independently optional booleans regardless of cell type, matching what the pinned schema actually declares rather than a narrower assumption -- test_cell_metadata_jupyter_visibility_fields_are_each_independently_optional proves source_hidden alone (no outputs_hidden) on a raw cell round-trips correctly.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Visibility metadata fixtures cover all cell types, boolean validation, and unknown Jupyter fields.
+    - Title, author (including name-less/extras-only), and Jupyter visibility fixtures each have a
+      focused positive test proving the specific claim, not a generic cluster-wide citation.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - Malformed title, authors container, individual author item, jupyter container, and source_hidden
+      type each have a focused negative test proving explicit MetadataShapeError refusal.
 - obligation_id: SAL-IPYNB-OBL-9544ABFA3D62EC79
   capability_id: IPYNB-SEC-001
   status: implemented
@@ -1262,30 +1262,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-959B89100C121E14
   capability_id: IPYNB-HIDDEN-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::MetadataShapeError
-  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::KernelSpecMetadata
-  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::LanguageInfoMetadata
-  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::SlideshowMetadata
+  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::JupyterCellMetadata
+  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::CellMetadataAdapter
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_metadata_adapters.py::test_real_fixture_kernelspec_adapter_is_exact_and_non_mutating
-  - tests/python/ipynb/test_obligation_metadata_adapters.py::test_notebook_metadata_typed_fields_preserve_unknown_namespaces
-  - tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_and_output_adapters_cover_common_namespaces
-  negative_test_selectors: []
+  - 'tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_metadata_models_jupyter_visibility_with_preserved_extras'
+  - 'tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_metadata_jupyter_visibility_fields_are_each_independently_optional'
+  negative_test_selectors:
+  - 'tests/python/ipynb/test_obligation_metadata_adapters.py::test_malformed_known_metadata_fails_explicitly'
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-DOCMETA-HIDDEN-TYPED-MODEL-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Visibility metadata fixtures
-    cover all cell types, boolean validation, and unknown Jupyter fields.'
+  - 'CellMetadataAdapter.jupyter returns a typed JupyterCellMetadata (source_hidden, outputs_hidden, both bool | None) parsed from cell.metadata.jupyter for any cell type, with every other key on that namespace preserved via .extras -- test_cell_metadata_models_jupyter_visibility_with_preserved_extras proves both booleans plus an unrecognized vendor key surviving together on one code cell. A non-object jupyter value or a non-boolean source_hidden each raise MetadataShapeError with a precise diagnostic rather than silently coercing.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Visibility metadata fixtures cover all cell types, boolean validation, and unknown Jupyter fields.
+    - Title, author (including name-less/extras-only), and Jupyter visibility fixtures each have a
+      focused positive test proving the specific claim, not a generic cluster-wide citation.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - Malformed title, authors container, individual author item, jupyter container, and source_hidden
+      type each have a focused negative test proving explicit MetadataShapeError refusal.
 - obligation_id: SAL-IPYNB-OBL-99A77B35A2B0E5E8
   capability_id: IPYNB-PRESERVE-001
   status: implemented
@@ -1603,31 +1601,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-C2890074D83A8170
   capability_id: IPYNB-DOCMETA-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::MetadataShapeError
-  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::KernelSpecMetadata
-  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::LanguageInfoMetadata
-  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::SlideshowMetadata
+  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::AuthorMetadata
+  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::NotebookMetadataAdapter
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_metadata_adapters.py::test_real_fixture_kernelspec_adapter_is_exact_and_non_mutating
-  - tests/python/ipynb/test_obligation_metadata_adapters.py::test_notebook_metadata_typed_fields_preserve_unknown_namespaces
-  - tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_and_output_adapters_cover_common_namespaces
-  negative_test_selectors: []
+  - 'tests/python/ipynb/test_obligation_metadata_adapters.py::test_notebook_metadata_models_title_and_authors_with_preserved_extras'
+  - 'tests/python/ipynb/test_obligation_metadata_adapters.py::test_notebook_metadata_title_and_authors_are_absent_when_not_declared'
+  negative_test_selectors:
+  - 'tests/python/ipynb/test_obligation_metadata_adapters.py::test_malformed_known_metadata_fails_explicitly'
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-DOCMETA-HIDDEN-TYPED-MODEL-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Title and multi-author fixtures
-    round-trip for every applicable profile, including additional author properties.'
+  - 'NotebookMetadataAdapter.title (optional string) and .authors (optional tuple of AuthorMetadata) model notebook.metadata.title/authors for profile 4.2 and later; absent in profile <4.2 fixtures returns None for both without synthesizing empty values (test_notebook_metadata_title_and_authors_are_absent_when_not_declared). Each author''s extra properties beyond name are preserved via AuthorMetadata.extras, matching the obligation''s explicit ''preserve additional author fields'' clause. A malformed title (non-string) or a malformed authors container (non-array) or a malformed individual author item (non-object) each raise MetadataShapeError with a precise diagnostic rather than silently coercing or accepting invalid shapes.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Title and multi-author fixtures round-trip for every applicable profile, including additional author
-      properties.
+    - Title, author (including name-less/extras-only), and Jupyter visibility fixtures each have a
+      focused positive test proving the specific claim, not a generic cluster-wide citation.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - Malformed title, authors container, individual author item, jupyter container, and source_hidden
+      type each have a focused negative test proving explicit MetadataShapeError refusal.
 - obligation_id: SAL-IPYNB-OBL-C3762C24648B1210
   capability_id: IPYNB-EXECMETA-001
   status: partial
