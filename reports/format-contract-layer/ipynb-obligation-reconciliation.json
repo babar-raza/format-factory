@@ -18,6 +18,14 @@
       "truth_boundary": "Selector-bound, unlike IPYNB-BASELINE-SUITE: it names the exact positive and negative test selectors for IPYNB-ID-001 (duplicate/invalid/valid cell ids, passive-read never generates, explicit-upgrade-only generation with a rewrite map, upgrade determinism). The upgrade-produces-an-officially-valid-notebook claim is backed by nbformat.validate() -- nbformat is this package's declared independent oracle (nbformat 5.10.4). The duplicate/invalid-id rejection logic itself is format_factory's own check, not independently cross-verified against nbformat for those specific negative inputs -- SELF-CONSISTENT for that half per the execution-recovery directive's GAP-008 rule, not blanket VERIFIED. Covers SAL-IPYNB-OBL-6F4551856EC21F7B and SAL-IPYNB-OBL-83A15CABF90C4B84 only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "IPYNB-CELLNAME-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-cellname-001.json",
+      "sha256": "16a30c07b50665d35467880b0d1822ccf5e037e19bee19daaad4aef698b24552",
+      "truth_boundary": "Selector-bound, unlike IPYNB-BASELINE-SUITE: it names the exact positive test selectors for IPYNB-CELLNAME-001 (present non-empty names pass and empty names fail in every supported profile 4.0-4.5, names are never synthesized during a passive read, a present name survives a round trip unchanged) and IPYNB-CELLNAMEUNIQUE-001 (duplicate names rejected from 4.2 onward, remain allowed pre-4.2, distinct and absent names always pass, absent-metadata cells do not break the check, only the colliding occurrences are reported). SELF-CONSISTENT format_factory-own evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED -- not cross-checked against nbformat.validate() for these specific fixtures. Covers SAL-IPYNB-OBL-0ADDA3341B91C271, SAL-IPYNB-OBL-E9E64A65284001E4, SAL-IPYNB-OBL-1FA16EB9033A30BD, and SAL-IPYNB-OBL-B227B25AB9838FFD only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "IPYNB-EDIT-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -53,7 +61,7 @@
   "format_id": "ipynb",
   "input_digests": {
     "compiled_contract": "070e7486feb32cb69e64bf9bb040bb47e4671f0034835d78d081c39ae2c05903",
-    "implementation_evidence": "a55d52647f627444ce9f5982d53a3c34be170488c87c5f521ad6cb09f03488b3",
+    "implementation_evidence": "3ea6958dce7c29cc2ea4a7580c5f3767caa28fafba3a0c86d66469bbf5301322",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "04340fa8bde6468fa648cb60fce3d50876a39c187d5b9ad3b0329fe0a29850a8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -186,20 +194,21 @@
     {
       "capability_id": "IPYNB-CELLNAME-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-CELLNAME-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "A present cell metadata name is validated as a non-empty string (schema_diagnostics enforces the metadata_name pattern ^.+$ from every per-version nbformat schema, 4.0 through 4.5) and is never synthesized for a cell that has none -- a passive loads()/dumps() round trip of a nameless cell leaves its metadata untouched, while a present name survives unchanged."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Present non-empty names pass and empty names fail in every supported profile."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_empty_name_fails_in_every_supported_profile"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-0ADDA3341B91C271",
       "positive_test_selectors": [
-        "tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_are_rejected_from_4_2_onward",
-        "tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_remain_allowed_before_4_2",
-        "tests/python/ipynb/test_obligation_cell_identity.py::test_distinct_names_pass_in_every_profile"
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_present_non_empty_name_passes_in_every_supported_profile",
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_names_are_never_synthesized_during_a_passive_read",
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_a_present_name_survives_roundtrip_unchanged"
       ],
       "proof_requirements": {
         "negative": [
@@ -209,18 +218,13 @@
           "Present non-empty names pass and empty names fail in every supported profile."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell",
-        "src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellEditOperation",
-        "src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellQuery",
-        "src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellEdit",
-        "src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellEditReport"
+        "src/python/ipynb/src/format_factory/ipynb/validation/schema.py::schema_diagnostics",
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads",
+        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dumps"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-VALIDATE-001",
@@ -515,20 +519,21 @@
     {
       "capability_id": "IPYNB-CELLNAMEUNIQUE-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-CELLNAME-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Notebook-wide uniqueness for present cell names is enforced by validate_model's semantic check (a constraint JSON Schema provably cannot express) for profiles 4.2 and later, and correctly NOT enforced before 4.2. Duplicate-name fixtures fail with IPYNB_CELL_NAME_DUPLICATE from 4.2 onward and pass before it; distinct and absent names always pass, and cells with no metadata at all do not break the check."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Duplicate-name fixtures fail the semantic check while distinct and absent names pass."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-1FA16EB9033A30BD",
       "positive_test_selectors": [
         "tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_are_rejected_from_4_2_onward",
         "tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_remain_allowed_before_4_2",
-        "tests/python/ipynb/test_obligation_cell_identity.py::test_distinct_names_pass_in_every_profile"
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_distinct_names_pass_in_every_profile",
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_absent_names_pass_in_every_profile",
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_cells_without_metadata_do_not_break_the_uniqueness_check"
       ],
       "proof_requirements": {
         "negative": [
@@ -538,14 +543,14 @@
           "Duplicate-name fixtures fail the semantic check while distinct and absent names pass."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/ipynb/src/format_factory/ipynb/validation/rules.py::SelectedProfile",
         "src/python/ipynb/src/format_factory/ipynb/validation/rules.py::diagnostic",
         "src/python/ipynb/src/format_factory/ipynb/validation/rules.py::select_profile",
         "src/python/ipynb/src/format_factory/ipynb/validation/rules.py::validate_model"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-OUTPUT-001",
@@ -1724,20 +1729,20 @@
     {
       "capability_id": "IPYNB-CELLNAMEUNIQUE-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-CELLNAME-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Since nbformat 4.2, cell names are checked for notebook-wide uniqueness via a dedicated semantic pass (validate_model) rather than the schema, which the authority notes explicitly cannot express this constraint: a two-cell collision reports exactly one diagnostic pointing at the second occurrence, and a three-way collision reports two repeats, one per additional occurrence."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Duplicate-name fixtures fail the semantic check while distinct and absent names pass."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-B227B25AB9838FFD",
       "positive_test_selectors": [
         "tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_are_rejected_from_4_2_onward",
         "tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_remain_allowed_before_4_2",
-        "tests/python/ipynb/test_obligation_cell_identity.py::test_distinct_names_pass_in_every_profile"
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_only_the_colliding_cell_is_reported",
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_three_way_collision_reports_each_repeat"
       ],
       "proof_requirements": {
         "negative": [
@@ -1747,14 +1752,14 @@
           "Duplicate-name fixtures fail the semantic check while distinct and absent names pass."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/ipynb/src/format_factory/ipynb/validation/rules.py::SelectedProfile",
         "src/python/ipynb/src/format_factory/ipynb/validation/rules.py::diagnostic",
         "src/python/ipynb/src/format_factory/ipynb/validation/rules.py::select_profile",
         "src/python/ipynb/src/format_factory/ipynb/validation/rules.py::validate_model"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-OUTPUT-001",
@@ -2381,20 +2386,21 @@
     {
       "capability_id": "IPYNB-CELLNAME-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-CELLNAME-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Across nbformat 4.0 through 4.5, a present cell metadata name is a string matching ^.+$ (schema_diagnostics enforces this pattern from every per-version schema file) and therefore cannot be empty; proven with a present non-empty name passing and an empty name failing at every one of the six supported profiles."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Present non-empty names pass and empty names fail in every supported profile."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_empty_name_fails_in_every_supported_profile"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-E9E64A65284001E4",
       "positive_test_selectors": [
-        "tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_are_rejected_from_4_2_onward",
-        "tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_remain_allowed_before_4_2",
-        "tests/python/ipynb/test_obligation_cell_identity.py::test_distinct_names_pass_in_every_profile"
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_present_non_empty_name_passes_in_every_supported_profile",
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_names_are_never_synthesized_during_a_passive_read",
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_a_present_name_survives_roundtrip_unchanged"
       ],
       "proof_requirements": {
         "negative": [
@@ -2404,18 +2410,13 @@
           "Present non-empty names pass and empty names fail in every supported profile."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell",
-        "src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellEditOperation",
-        "src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellQuery",
-        "src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellEdit",
-        "src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellEditReport"
+        "src/python/ipynb/src/format_factory/ipynb/validation/schema.py::schema_diagnostics",
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads",
+        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dumps"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-SANITIZE-001",
@@ -2569,6 +2570,7 @@
   "referenced_input_digests": {
     "reports/skills-rff6/skill-transcripts/build-evidence-ledger-ipynb-001.json": "ec518b26fc721f8830442d3805580cb3c90bc2ddcaa49b50253f578de13f79ee",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-cell-id-001.json": "a41bd433193a2f056bbfacd95c667ef16c066fbdff389d26c8016fac7860d5a1",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-cellname-001.json": "16a30c07b50665d35467880b0d1822ccf5e037e19bee19daaad4aef698b24552",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-edit-001.json": "bb88dabbc9361c01672ab1319cba2125c43bdb5ec1c4f5d650956a1ef5903d1d",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-export-001.json": "53d61ffd27a6d7f9b7b1fee61a02de20972f1d98a3baf1849360f7c750153ebc",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-merge-001.json": "f12e54e0372e13214347eb90ccb68f87c8abd19f95df34465dc6c3cd2a83804d",
@@ -2589,6 +2591,7 @@
     "src/python/ipynb/src/format_factory/ipynb/security/sanitizer.py": "0f51806e23d61ab614c1bd314c41929b9ae186186c358a55ea015f0a87cc7a69",
     "src/python/ipynb/src/format_factory/ipynb/security/trust.py": "731a7c39e84d3142fbdeb4111849db4cf9c12473be5bbd54c0bc032d7c25c087",
     "src/python/ipynb/src/format_factory/ipynb/validation/rules.py": "1f98a87f5ef6810b8ff03f5e886f0597b815706e94075cb86d75537ee3ad62af",
+    "src/python/ipynb/src/format_factory/ipynb/validation/schema.py": "879c803f915d546715155b5a4787bf4ce9bd972f262df325bf9863699a86c40e",
     "src/python/ipynb/src/format_factory/ipynb/validation/validator.py": "a2cef1b6a6d2a83dea99b5067287b4e6114e3bc663a3de90f30a5685029801c2",
     "tests/python/ipynb/test_obligation_attachment_management.py": "496758a79b2f277186e05b1edf7fbda43ce42ed1259d205a2bf15f269758dd08",
     "tests/python/ipynb/test_obligation_attachments.py": "2ba200b642f68acee843b326301ae11f5e94a9553237f6888792c99102d32d44",
@@ -2617,11 +2620,11 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 6,
-      "partial": 62
+      "implemented": 10,
+      "partial": 58
     },
     "total": 68,
-    "unresolved": 62
+    "unresolved": 58
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

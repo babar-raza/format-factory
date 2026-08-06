@@ -98,6 +98,25 @@ execution_evidence:
     execution-recovery directive's GAP-008 rule, not VERIFIED. Covers
     SAL-IPYNB-OBL-E72B508EFCCD0E0C only; it supports no other obligation
     and promotes no product state.
+- evidence_id: IPYNB-CELLNAME-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ipynb-cellname-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike IPYNB-BASELINE-SUITE: it names the exact positive
+    test selectors for IPYNB-CELLNAME-001 (present non-empty names pass and
+    empty names fail in every supported profile 4.0-4.5, names are never
+    synthesized during a passive read, a present name survives a round trip
+    unchanged) and IPYNB-CELLNAMEUNIQUE-001 (duplicate names rejected from
+    4.2 onward, remain allowed pre-4.2, distinct and absent names always
+    pass, absent-metadata cells do not break the check, only the colliding
+    occurrences are reported). SELF-CONSISTENT format_factory-own evidence
+    per the execution-recovery directive's GAP-008 rule, not VERIFIED --
+    not cross-checked against nbformat.validate() for these specific
+    fixtures. Covers SAL-IPYNB-OBL-0ADDA3341B91C271,
+    SAL-IPYNB-OBL-E9E64A65284001E4, SAL-IPYNB-OBL-1FA16EB9033A30BD, and
+    SAL-IPYNB-OBL-B227B25AB9838FFD only; it supports no other obligation
+    and promotes no product state.
 obligations:
 - obligation_id: SAL-IPYNB-OBL-02A00C213D2B0190
   capability_id: IPYNB-ATTACH-001
@@ -203,29 +222,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-0ADDA3341B91C271
   capability_id: IPYNB-CELLNAME-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
-  - src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellEditOperation
-  - src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellQuery
-  - src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellEdit
-  - src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellEditReport
+  - src/python/ipynb/src/format_factory/ipynb/validation/schema.py::schema_diagnostics
+  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads
+  - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dumps
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_are_rejected_from_4_2_onward
-  - tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_remain_allowed_before_4_2
-  - tests/python/ipynb/test_obligation_cell_identity.py::test_distinct_names_pass_in_every_profile
-  negative_test_selectors: []
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_present_non_empty_name_passes_in_every_supported_profile
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_names_are_never_synthesized_during_a_passive_read
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_a_present_name_survives_roundtrip_unchanged
+  negative_test_selectors:
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_empty_name_fails_in_every_supported_profile
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-CELLNAME-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Present non-empty names pass
-    and empty names fail in every supported profile.'
+  - A present cell metadata name is validated as a non-empty string
+    (schema_diagnostics enforces the metadata_name pattern ^.+$ from every
+    per-version nbformat schema, 4.0 through 4.5) and is never synthesized
+    for a cell that has none -- a passive loads()/dumps() round trip of a
+    nameless cell leaves its metadata untouched, while a present name
+    survives unchanged.
+  missing_behavior: []
   proof_requirements:
     positive:
     - Present non-empty names pass and empty names fail in every supported profile.
@@ -455,7 +473,7 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-1FA16EB9033A30BD
   capability_id: IPYNB-CELLNAMEUNIQUE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/validation/rules.py::SelectedProfile
   - src/python/ipynb/src/format_factory/ipynb/validation/rules.py::diagnostic
@@ -465,15 +483,20 @@ obligations:
   - tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_are_rejected_from_4_2_onward
   - tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_remain_allowed_before_4_2
   - tests/python/ipynb/test_obligation_cell_identity.py::test_distinct_names_pass_in_every_profile
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_absent_names_pass_in_every_profile
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_cells_without_metadata_do_not_break_the_uniqueness_check
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-CELLNAME-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Duplicate-name fixtures fail
-    the semantic check while distinct and absent names pass.'
+  - Notebook-wide uniqueness for present cell names is enforced by
+    validate_model's semantic check (a constraint JSON Schema provably
+    cannot express) for profiles 4.2 and later, and correctly NOT enforced
+    before 4.2. Duplicate-name fixtures fail with IPYNB_CELL_NAME_DUPLICATE
+    from 4.2 onward and pass before it; distinct and absent names always
+    pass, and cells with no metadata at all do not break the check.
+  missing_behavior: []
   proof_requirements:
     positive:
     - Duplicate-name fixtures fail the semantic check while distinct and absent names pass.
@@ -1390,7 +1413,7 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-B227B25AB9838FFD
   capability_id: IPYNB-CELLNAMEUNIQUE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/validation/rules.py::SelectedProfile
   - src/python/ipynb/src/format_factory/ipynb/validation/rules.py::diagnostic
@@ -1399,16 +1422,20 @@ obligations:
   positive_test_selectors:
   - tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_are_rejected_from_4_2_onward
   - tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_remain_allowed_before_4_2
-  - tests/python/ipynb/test_obligation_cell_identity.py::test_distinct_names_pass_in_every_profile
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_only_the_colliding_cell_is_reported
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_three_way_collision_reports_each_repeat
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-CELLNAME-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Duplicate-name fixtures fail
-    the semantic check while distinct and absent names pass.'
+  - 'Since nbformat 4.2, cell names are checked for notebook-wide
+    uniqueness via a dedicated semantic pass (validate_model) rather than
+    the schema, which the authority notes explicitly cannot express this
+    constraint: a two-cell collision reports exactly one diagnostic
+    pointing at the second occurrence, and a three-way collision reports
+    two repeats, one per additional occurrence.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Duplicate-name fixtures fail the semantic check while distinct and absent names pass.
@@ -1904,29 +1931,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-E9E64A65284001E4
   capability_id: IPYNB-CELLNAME-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
-  - src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellEditOperation
-  - src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellQuery
-  - src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellEdit
-  - src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellEditReport
+  - src/python/ipynb/src/format_factory/ipynb/validation/schema.py::schema_diagnostics
+  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads
+  - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dumps
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_are_rejected_from_4_2_onward
-  - tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_remain_allowed_before_4_2
-  - tests/python/ipynb/test_obligation_cell_identity.py::test_distinct_names_pass_in_every_profile
-  negative_test_selectors: []
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_present_non_empty_name_passes_in_every_supported_profile
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_names_are_never_synthesized_during_a_passive_read
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_a_present_name_survives_roundtrip_unchanged
+  negative_test_selectors:
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_empty_name_fails_in_every_supported_profile
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-CELLNAME-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Present non-empty names pass
-    and empty names fail in every supported profile.'
+  - 'Across nbformat 4.0 through 4.5, a present cell metadata name is a
+    string matching ^.+$ (schema_diagnostics enforces this pattern from
+    every per-version schema file) and therefore cannot be empty; proven
+    with a present non-empty name passing and an empty name failing at
+    every one of the six supported profiles.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Present non-empty names pass and empty names fail in every supported profile.

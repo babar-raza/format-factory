@@ -1,0 +1,48 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-cellname-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T14:05:00Z",
+  "inputs": {
+    "format_id": "ipynb",
+    "task_id": "TC_FF6_IPYNB_CELLNAME_CITATION_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "IPYNB-CELLNAME-001 (present cell metadata name is a non-empty string, never synthesized during a passive read) and IPYNB-CELLNAMEUNIQUE-001 (notebook-wide uniqueness for present names, 4.2+, a constraint JSON Schema provably cannot express) were both already fully built and covered by tests/python/ipynb/test_obligation_cell_identity.py (64 tests total across three capabilities), but all four obligations across the two capabilities cited only 3 generic duplicate-name selectors shared verbatim and left missing_behavior unaudited.",
+    "obligation_targeted": "SAL-IPYNB-OBL-0ADDA3341B91C271, SAL-IPYNB-OBL-E9E64A65284001E4, SAL-IPYNB-OBL-1FA16EB9033A30BD, SAL-IPYNB-OBL-B227B25AB9838FFD",
+    "acceptance_evidence": "tests/python/ipynb/test_obligation_cell_identity.py",
+    "regression_tier": "full IPYNB package suite (tests/python/ipynb)"
+  },
+  "execution_steps": [
+    "1. Surveyed ipynb's smallest remaining capabilities as part of a rotation back to the two least-covered formats (ipynb, safetensors) per FF6 Event 123's guidance. IPYNB-CELLNAME-001 and IPYNB-CELLNAMEUNIQUE-001 (2 obligations each) were already partial with a real (not generic) test file mapped, but citing only the CELLNAMEUNIQUE-specific duplicate-name selectors for all four obligations regardless of which capability or which half of the obligation pair.",
+    "2. Read test_obligation_cell_identity.py in full: its own module docstring already names all three capabilities it covers (IPYNB-ID-001, IPYNB-CELLNAME-001, IPYNB-CELLNAMEUNIQUE-001) and explains why -- the only prior test file for cell identity imported a deprecated shadow package and could not count as shipped-namespace coverage.",
+    "3. Confirmed schema_diagnostics (validation/schema.py) enforces the metadata_name pattern ^.+$ from every per-version nbformat schema file (4.0 through 4.5), and that codec/reader/reader.py's loads()/codec/writer/writer.py's dumps() never synthesize a name for a nameless cell -- these are the real production symbols, not the model/editor.py symbols previously cited (which implement cell editing generally, not name validation specifically).",
+    "4. Ran all 64 tests in the file directly: all passed, unchanged (0 source or test edits this slice).",
+    "5. Split source_symbols and test selectors per obligation and per capability rather than reusing one generic set for all four: IPYNB-CELLNAME-001's two obligations (general rule, cross-version schema-delta framing) cite schema_diagnostics/loads/dumps plus the present/empty/never-synthesized/survives-roundtrip tests; IPYNB-CELLNAMEUNIQUE-001's two obligations (general rule, schema-authority framing) cite rules.py's validate_model plus the 4.2-boundary/collision-reporting tests, with the schema-authority-framed obligation specifically citing the exact-collision-count tests (single occurrence flagged, three-way collision reports two repeats) since its rule_text emphasizes 'an additional check is required'.",
+    "6. Promoted all four to implemented. Zero source or test changes -- the sixth evidence-correction closure this session (after IPYNB-ID-001, IPYNB-MERGE-001, IPYNB-EDIT-001/EXPORT-001/WRITE-001, XLIFF-MERGE-001, XLIFF-NOTE-001)."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ipynb/test_obligation_cell_identity.py -v -- 64 passed",
+    ".venv/Scripts/pytest tests/python/ipynb/ -q -- unchanged from before this slice (0 source or test changes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 4,
+    "obligations_total_for_format": 68,
+    "ipynb_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against nbformat.validate() for these specific name/uniqueness fixtures. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_no_new_production_source": "Cell name validation (schema pattern), non-synthesis on passive read, and notebook-wide uniqueness (4.2+) were already complete and covered by 64 dedicated tests -- this slice audited and cited that existing proof, it did not build anything new."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
