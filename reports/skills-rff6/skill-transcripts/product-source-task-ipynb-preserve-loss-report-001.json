@@ -1,0 +1,51 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-preserve-loss-report-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-07T06:30:00Z",
+  "inputs": {
+    "format_id": "ipynb",
+    "task_id": "TC_FF6_IPYNB_PRESERVE_001_MISCITATION_CLOSURE_001",
+    "task_kind": "obligation-closure-mis-citation-repair",
+    "root_cause": "Event 172's citation audit found IPYNB-PRESERVE-001's 4 obligations cited test_obligation_corpus_integrity.py, which verifies committed test-fixture byte integrity -- a different sense of 'preserve' than the obligations' actual codec round-trip/loss-report claims -- and deliberately left them untouched pending dedicated follow-up.",
+    "obligation_targeted": "SAL-IPYNB-OBL-6401915AE1FC1ECF, SAL-IPYNB-OBL-6D98E9BE6A406DC3, SAL-IPYNB-OBL-733D902E103E53BD, SAL-IPYNB-OBL-99A77B35A2B0E5E8 (all IPYNB-PRESERVE-001)",
+    "acceptance_evidence": "All 4 promoted to implemented: 3 via precise re-citation of already-existing, already-passing tests in test_obligation_lifecycle_modes.py and test_obligation_version_conversion.py; 1 (mode-as-explicit-choice) via one new small test making an inferential two-file argument into a single direct proof.",
+    "regression_tier": "full ipynb package suite (tests/python/ipynb)"
+  },
+  "execution_steps": [
+    "1. Read the 4 obligations' exact rule_text from plans/strategic/ff6/obligations/ipynb.yaml: absent-vs-explicit-default distinction, never silently drop unrecognized content in lossless mode, lossless-vs-normalized output as an explicit caller choice, and reporting every unpreservable construct before saving via a loss report API.",
+    "2. Grepped for LossReport/PreservationMode/canonicalize/check_preservation across ipynb source per the earlier in-session investigation -- found nothing by those names -- then read reader.py's mode parameter (strict/preservation/recovery) and writer.py's dumps(profile=...) parameter directly instead of assuming the pattern used by safetensors/nrrd/xliff/ubl was ported here.",
+    "3. Read test_obligation_lifecycle_modes.py in full. test_preservation_mode_does_not_synthesize_absent_values_or_ids already directly proves the absent-vs-explicit-default claim (asserts 'metadata' not in document.raw and 'id' not in document.cells[0] for a source lacking both, plus an exact profile='declared' round trip) and, via the same source's unrecognized top-level 'vendor' key surviving raw and the round trip unchanged, also directly proves the never-silently-drop-unrecognized-content claim.",
+    "4. Grepped model/lifecycle.py and found a real, already-built, already-tested loss-report API that had never been cited against these obligations: plan_downgrade() returns an immutable DowngradePlan (losses / preserved_extensions / blockers, each a ConversionIssue with code/path/message/disposition) computed before any modification, and downgrade() refuses to apply a plan with unaccepted losses (IpynbValidationError code=IPYNB_DOWNGRADE_LOSS_NOT_ACCEPTED, with loss_count and loss_paths in context) unless the caller passes accept_loss=True. Read test_obligation_version_conversion.py and confirmed test_downgrade_plan_reports_loss_and_preserved_extensions and test_lossy_downgrade_requires_explicit_acceptance already prove exactly this end to end.",
+    "5. The 'lossless output vs normalized/canonical output as an explicit caller choice' claim was only provable by combining two existing tests in two different files (profile='declared' succeeding vs default dumps() raising pending explicit upgrade) -- judged too inferential for a single citation, so added one new, small, self-contained test (test_lossless_and_normalized_output_are_an_explicit_caller_choice) to test_obligation_lifecycle_modes.py that builds one document and shows both paths side by side: default dumps() refuses with 'explicit upgrade', profile='declared' returns the original nbformat_minor unchanged, and the explicitly upgraded document's dumps() output differs and reports nbformat_minor 5.",
+    "6. Ran the new test plus the full lifecycle-modes and version-conversion files (26 passed) before writing any evidence claim.",
+    "7. Patched all 4 obligations to implemented with precise, individually-verified implemented_behavior text (via a YAML-safe quoting helper after an initial draft attempt produced an invalid nested mapping from an unquoted colon, caught immediately by the reconciler's schema check and fixed before proceeding), added the new IPYNB-PRESERVE-001-LOSS-REPORT-PROOF execution evidence entry, ran the reconciler, and ran the full ipynb suite."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ipynb.yaml",
+    "tests/python/ipynb/test_obligation_lifecycle_modes.py"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ipynb.yaml",
+    "tests/python/ipynb/test_obligation_lifecycle_modes.py"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ipynb/test_obligation_lifecycle_modes.py tests/python/ipynb/test_obligation_version_conversion.py -q -- 26 passed",
+    ".venv/Scripts/pytest tests/python/ipynb/ -q -- full package suite"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 4,
+    "obligations_total_for_format": 68,
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against a reference nbformat implementation. Labeled SELF-CONSISTENT per GAP-008, not VERIFIED.",
+    "obligations_moved_breakdown": "All 4 of IPYNB-PRESERVE-001's obligations promoted to implemented. 3 via precise re-citation of pre-existing, already-passing tests (absent-vs-default distinction and unrecognized-content preservation both proved by test_preservation_mode_does_not_synthesize_absent_values_or_ids; pre-save loss reporting proved by plan_downgrade/downgrade's existing DowngradePlan tests). 1 via one new, small, direct test (mode-as-explicit-caller-choice) rather than relying on an inferential combination of two unrelated tests.",
+    "closes_event_172_deferred_cluster": "IPYNB-PRESERVE-001 was 1 of 3 clusters (9 obligations total) event 172 deliberately deferred as a genuine mis-citation needing dedicated follow-up, not a force-match. This slice closes it in full; IPYNB-DOCMETA-001 (2) and IPYNB-HIDDEN-001 (2) remain open, needing new typed model fields rather than new tests against existing code."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

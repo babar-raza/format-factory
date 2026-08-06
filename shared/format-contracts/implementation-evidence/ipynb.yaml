@@ -3,6 +3,11 @@ format_id: ipynb
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: IPYNB-PRESERVE-001-LOSS-REPORT-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ipynb-preserve-loss-report-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike IPYNB-BASELINE-SUITE. Closes the IPYNB-PRESERVE-001 mis-citation event 172 deliberately deferred: the obligations previously cited test_obligation_corpus_integrity.py, which verifies committed test-fixture byte integrity, not codec round-trip preservation. test_preservation_mode_does_not_synthesize_absent_values_or_ids proves both the absent-vs-explicit-default distinction and never-silently-drop-unrecognized-content (an unknown top-level ''vendor'' key survives loads(mode=''preservation'') and an exact dumps(profile=''declared'') round trip). test_downgrade_plan_reports_loss_and_preserved_extensions and test_lossy_downgrade_requires_explicit_acceptance prove plan_downgrade()/downgrade()''s DowngradePlan is a real pre-save loss-report API (losses / preserved_extensions / blockers computed before modification; accept_loss=True required explicitly or downgrade() raises IpynbValidationError with the exact loss_count and loss_paths, never a silent drop). One new test, test_lossless_and_normalized_output_are_an_explicit_caller_choice, was added because the mode-as-explicit-choice claim was previously provable only by inferentially combining two unrelated existing tests; it now directly shows default dumps() refusing pending explicit upgrade versus profile=''declared'' succeeding immediately, for the same document. NOT backed by an independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, not VERIFIED. Covers SAL-IPYNB-OBL-6401915AE1FC1ECF, SAL-IPYNB-OBL-6D98E9BE6A406DC3, SAL-IPYNB-OBL-733D902E103E53BD, and SAL-IPYNB-OBL-99A77B35A2B0E5E8 only; it supports no other obligation and promotes no product state.'
 - evidence_id: IPYNB-BASELINE-SUITE
   path: reports/skills-rff6/skill-transcripts/build-evidence-ledger-ipynb-001.json
   expected_result: PASS
@@ -877,33 +882,24 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-6401915AE1FC1ECF
   capability_id: IPYNB-PRESERVE-001
-  status: partial
+  status: implemented
   source_symbols:
+  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads
   - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dumps
-  - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dump
-  - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::write_ipynb
-  - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::get_cell_count
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_corpus_integrity.py::test_active_valid_corpus_is_digest_bound_and_strictly_valid
-  - tests/python/ipynb/test_obligation_corpus_integrity.py::test_quarantined_bytes_are_retained_and_fail_the_declared_minor_schema
-  - tests/python/ipynb/test_obligation_corpus_integrity.py::test_reference_normalization_cannot_relabel_original_bytes_valid
+  - tests/python/ipynb/test_obligation_lifecycle_modes.py::test_preservation_mode_does_not_synthesize_absent_values_or_ids
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-PRESERVE-001-LOSS-REPORT-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each preservation baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - 'loads(mode=''preservation'') on a source lacking a top-level metadata key and a cell id leaves both absent in document.raw rather than synthesizing empty/default values, and dumps(document, profile=''declared'') round-trips the source byte-for-byte -- proving absent-vs-explicit-empty is preserved as a distinct, observable state through a full load/dump cycle.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Each preservation baseline behavior has a focused positive test and, where refusable, a negative
-      test proving refusal with diagnostics.
+    - Absent-vs-explicit-default, unrecognized-content preservation, mode-as-explicit-choice, and
+      pre-save loss reporting each have a focused positive test proving the specific claim, not a
+      generic cluster-wide citation.
     negative:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-650D957D94A33790
@@ -987,33 +983,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-6D98E9BE6A406DC3
   capability_id: IPYNB-PRESERVE-001
-  status: partial
+  status: implemented
   source_symbols:
+  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads
   - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dumps
-  - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dump
-  - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::write_ipynb
-  - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::get_cell_count
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
+  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::plan_downgrade
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_corpus_integrity.py::test_active_valid_corpus_is_digest_bound_and_strictly_valid
-  - tests/python/ipynb/test_obligation_corpus_integrity.py::test_quarantined_bytes_are_retained_and_fail_the_declared_minor_schema
-  - tests/python/ipynb/test_obligation_corpus_integrity.py::test_reference_normalization_cannot_relabel_original_bytes_valid
+  - tests/python/ipynb/test_obligation_lifecycle_modes.py::test_preservation_mode_does_not_synthesize_absent_values_or_ids
+  - tests/python/ipynb/test_obligation_version_conversion.py::test_downgrade_plan_reports_loss_and_preserved_extensions
+  - tests/python/ipynb/test_obligation_version_conversion.py::test_lossless_downgrade_preserves_later_metadata_as_extensions
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-PRESERVE-001-LOSS-REPORT-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each preservation baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - 'Two distinct ''unrecognized content'' cases are both carried safely, never silently dropped, in lossless mode: (1) a wholly unknown top-level key (''vendor'') survives loads(mode=''preservation'') into document.raw and round-trips exactly through dumps(profile=''declared''); (2) newer-than-target-minor metadata/cell-metadata keys (title/authors, jupyter, execution) are reported by plan_downgrade as IPYNB_DOWNGRADE_*_EXTENSION issues with disposition PRESERVE_AS_EXTENSION and are confirmed still present in the downgraded document''s raw data, not removed.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Each preservation baseline behavior has a focused positive test and, where refusable, a negative
-      test proving refusal with diagnostics.
+    - Absent-vs-explicit-default, unrecognized-content preservation, mode-as-explicit-choice, and
+      pre-save loss reporting each have a focused positive test proving the specific claim, not a
+      generic cluster-wide citation.
     negative:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-6DCE21F7DD6D971B
@@ -1075,33 +1065,24 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-733D902E103E53BD
   capability_id: IPYNB-PRESERVE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dumps
-  - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dump
-  - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::write_ipynb
-  - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::get_cell_count
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
+  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::upgrade
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_corpus_integrity.py::test_active_valid_corpus_is_digest_bound_and_strictly_valid
-  - tests/python/ipynb/test_obligation_corpus_integrity.py::test_quarantined_bytes_are_retained_and_fail_the_declared_minor_schema
-  - tests/python/ipynb/test_obligation_corpus_integrity.py::test_reference_normalization_cannot_relabel_original_bytes_valid
+  - tests/python/ipynb/test_obligation_lifecycle_modes.py::test_lossless_and_normalized_output_are_an_explicit_caller_choice
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-PRESERVE-001-LOSS-REPORT-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each preservation baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - 'For the same loaded document, dumps(document) (the default, normalized/canonical profile) refuses with IpynbWriteError(''...explicit upgrade...'') unless the caller has explicitly upgraded the document, while dumps(document, profile=''declared'') succeeds immediately and returns the original nbformat_minor and content unchanged -- proving lossless round-trip output and normalized/canonical output are reached only through an explicit, distinct caller choice, never silently defaulted.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Each preservation baseline behavior has a focused positive test and, where refusable, a negative
-      test proving refusal with diagnostics.
+    - Absent-vs-explicit-default, unrecognized-content preservation, mode-as-explicit-choice, and
+      pre-save loss reporting each have a focused positive test proving the specific claim, not a
+      generic cluster-wide citation.
     negative:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-77C54BA16B30D129
@@ -1307,33 +1288,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-99A77B35A2B0E5E8
   capability_id: IPYNB-PRESERVE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dumps
-  - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dump
-  - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::write_ipynb
-  - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::get_cell_count
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
+  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::plan_downgrade
+  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::downgrade
+  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::DowngradePlan
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_corpus_integrity.py::test_active_valid_corpus_is_digest_bound_and_strictly_valid
-  - tests/python/ipynb/test_obligation_corpus_integrity.py::test_quarantined_bytes_are_retained_and_fail_the_declared_minor_schema
-  - tests/python/ipynb/test_obligation_corpus_integrity.py::test_reference_normalization_cannot_relabel_original_bytes_valid
+  - tests/python/ipynb/test_obligation_version_conversion.py::test_downgrade_plan_reports_loss_and_preserved_extensions
+  - tests/python/ipynb/test_obligation_version_conversion.py::test_lossy_downgrade_requires_explicit_acceptance
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-PRESERVE-001-LOSS-REPORT-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each preservation baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - 'plan_downgrade() computes a DowngradePlan -- a structured, pre-save report (DowngradePlan.losses / .preserved_extensions / .blockers, each a ConversionIssue with code/path/message/disposition) -- of every construct that cannot be preserved at the requested target version, without modifying the document. downgrade() then refuses to apply any plan with unaccepted losses, raising IpynbValidationError(code=''IPYNB_DOWNGRADE_LOSS_NOT_ACCEPTED'') with the exact loss_count and loss_paths in its context rather than silently dropping the data or failing without detail; accept_loss=True is required explicitly to proceed.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Each preservation baseline behavior has a focused positive test and, where refusable, a negative
-      test proving refusal with diagnostics.
+    - Absent-vs-explicit-default, unrecognized-content preservation, mode-as-explicit-choice, and
+      pre-save loss reporting each have a focused positive test proving the specific claim, not a
+      generic cluster-wide citation.
     negative:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-9A6A2B857F357379

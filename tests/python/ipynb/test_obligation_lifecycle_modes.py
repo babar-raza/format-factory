@@ -125,6 +125,25 @@ def test_explicit_upgrade_is_the_only_production_path_that_generates_ids() -> No
     assert dumps(upgraded) == dumps(upgraded)
 
 
+def test_lossless_and_normalized_output_are_an_explicit_caller_choice() -> None:
+    document = loads(
+        _notebook(minor=4, cell={"cell_type": "markdown", "source": "text", "metadata": {}}),
+        mode="preservation",
+    )
+
+    with pytest.raises(IpynbWriteError, match="explicit upgrade"):
+        dumps(document)
+
+    lossless = json.loads(dumps(document, profile="declared"))
+    assert lossless == document.raw
+    assert lossless["nbformat_minor"] == 4
+
+    upgraded = upgrade(document, target="4.5").document
+    normalized = json.loads(dumps(upgraded))
+    assert normalized["nbformat_minor"] == 5
+    assert normalized != document.raw
+
+
 def test_legacy_facade_retains_characterized_normalization_behavior() -> None:
     legacy = load_ipynb(
         _notebook(
