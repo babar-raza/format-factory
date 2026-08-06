@@ -24,10 +24,27 @@ The capability-to-module mapping is human judgement about what implements what,
 so it lives in a reviewable data file (``shared/format-contracts/ledger-maps/
 {format}.yaml``) rather than buried in this script.
 
-Every obligation is emitted ``partial`` at most. Mapping an obligation to
-symbols is not proving it, and ``implemented`` requires the proof-requirement
-audit that ``tools/ff6/audit_proof_requirements.py`` supports and a reader
-completes.
+Every obligation this script computes fresh is emitted ``partial`` at most.
+Mapping an obligation to symbols is not proving it, and ``implemented``
+requires the proof-requirement audit that
+``tools/ff6/audit_proof_requirements.py`` supports and a reader completes by
+hand-authoring selector-level evidence directly into the implementation-
+evidence YAML.
+
+**FI-075/FI-078 (registry/found-issue-register.yaml): existing ``implemented``
+rows are preserved, not recomputed.** Earlier versions of this script always
+overwrote the whole ``implementation-evidence/{format}.yaml`` file, which is
+correct for a format with nothing above ``partial`` but silently DESTROYED
+hand-curated ``implemented`` rows (and the custom, selector-granularity
+``execution_evidence`` entries they reference) the moment this script ran
+again for a format that had any -- four formats hit this in one session
+before it was caught (nrrd, xliff, ipynb, safetensors). Before computing
+anything, this script now reads the CURRENT evidence file (if one exists),
+copies forward every obligation already at ``implemented`` verbatim, and
+carries forward every ``execution_evidence`` entry those preserved rows
+reference. Pass ``--allow-downgrade`` to bypass this and regenerate every
+obligation fresh, e.g. after a deliberate, reviewed decision to retire a
+prior promotion.
 """
 
 from __future__ import annotations
@@ -96,7 +113,31 @@ def test_functions(path: Path) -> list[str]:
     ]
 
 
-def build(format_id: str, *, dry_run: bool = False) -> dict[str, Any]:
+def _existing_implemented_state(
+    format_id: str,
+) -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, Any]]]:
+    """Obligations already at ``implemented``, and the execution_evidence
+    entries they reference, from the CURRENT evidence file -- empty dicts if
+    none exists yet. Read once, before any recomputation, so a downgrade
+    can never happen even transiently."""
+    existing_path = EVIDENCE_DIR / f"{format_id}.yaml"
+    if not existing_path.exists():
+        return {}, {}
+    existing = yaml.safe_load(existing_path.read_bytes().decode("utf-8")) or {}
+    implemented_by_id = {
+        row["obligation_id"]: row
+        for row in existing.get("obligations") or []
+        if row.get("status") == "implemented"
+    }
+    evidence_by_id = {
+        entry["evidence_id"]: entry for entry in existing.get("execution_evidence") or []
+    }
+    return implemented_by_id, evidence_by_id
+
+
+def build(
+    format_id: str, *, dry_run: bool = False, allow_downgrade: bool = False
+) -> dict[str, Any]:
     """Build the ledger. Execution evidence comes from the map, not a guess.
 
     The reconciler compares an evidence entry's declared ``expected_result``
@@ -104,7 +145,13 @@ def build(format_id: str, *, dry_run: bool = False) -> dict[str, Any]:
     must name something that actually carries a result -- a skill transcript,
     not a reconciliation report. Both are declared in the ledger map so the
     claim is reviewable rather than invented here.
+
+    Existing ``implemented`` obligations are preserved verbatim unless
+    ``allow_downgrade`` is set -- see the module docstring (FI-075/FI-078).
     """
+    preserved_implemented, preserved_evidence = (
+        {} if allow_downgrade else _existing_implemented_state(format_id)
+    )
     map_path = MAP_DIR / f"{format_id}.yaml"
     register_path = REGISTER_DIR / f"{format_id}.yaml"
     for path in (map_path, register_path):
@@ -137,8 +184,22 @@ def build(format_id: str, *, dry_run: bool = False) -> dict[str, Any]:
     entries: list[dict[str, Any]] = []
     unmapped: set[str] = set()
     shadow_excluded: set[str] = set()
+    carried_evidence_ids: set[str] = set()
+    preserved_count = 0
 
     for obligation in obligations:
+        obligation_id = obligation.get("obligation_id")
+        preserved_row = preserved_implemented.get(obligation_id)
+        if preserved_row is not None:
+            # FI-075/FI-078: never recompute an obligation already promoted
+            # past `partial` -- copy it forward exactly, and carry forward
+            # whatever execution_evidence entries it cites so the reconciler
+            # still finds them.
+            entries.append(preserved_row)
+            carried_evidence_ids.update(preserved_row.get("execution_evidence_ids") or [])
+            preserved_count += 1
+            continue
+
         capability = obligation.get("capability_id")
         spec = mapping.get(capability)
         if not spec:
@@ -238,28 +299,41 @@ def build(format_id: str, *, dry_run: bool = False) -> dict[str, Any]:
             }
         )
 
+    baseline_evidence_id = f"{format_id.upper()}-BASELINE-SUITE"
+    execution_evidence = [
+        {
+            "evidence_id": baseline_evidence_id,
+            "path": evidence_path,
+            "expected_result": evidence_result,
+            "granularity": "suite",
+            "truth_boundary": evidence_boundary,
+        }
+    ]
+    # FI-075/FI-078: any execution_evidence entry a preserved `implemented`
+    # row cites (typically a selector-granularity proof this script never
+    # generates on its own) must survive too, or the reconciler would reject
+    # the preserved row as citing an unknown evidence id.
+    for evidence_id in sorted(carried_evidence_ids - {baseline_evidence_id}):
+        carried = preserved_evidence.get(evidence_id)
+        if carried is not None:
+            execution_evidence.append(carried)
+
     document = {
         "schema": "format-contracts/implementation-evidence@1",
         "format_id": format_id,
         "visibility": "generated",
         "generated_by": "claude",
-        "execution_evidence": [
-            {
-                "evidence_id": f"{format_id.upper()}-BASELINE-SUITE",
-                "path": evidence_path,
-                "expected_result": evidence_result,
-                "granularity": "suite",
-                "truth_boundary": evidence_boundary,
-            }
-        ],
+        "execution_evidence": execution_evidence,
         "obligations": entries,
     }
 
     summary = {
         "format_id": format_id,
         "obligations": len(entries),
+        "implemented": sum(1 for e in entries if e["status"] == "implemented"),
         "partial": sum(1 for e in entries if e["status"] == "partial"),
         "missing": sum(1 for e in entries if e["status"] == "missing"),
+        "preserved_implemented": preserved_count,
         "unmapped_capabilities": sorted(unmapped),
         "shadow_files_excluded": sorted(shadow_excluded),
     }
@@ -285,18 +359,35 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument("--format-id", required=True)
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument(
+        "--allow-downgrade",
+        action="store_true",
+        help=(
+            "Recompute every obligation fresh, including ones already at "
+            "`implemented` -- discards their selector-level evidence unless "
+            "this was a deliberate, reviewed decision (FI-075/FI-078)."
+        ),
+    )
     args = parser.parse_args(argv)
 
     try:
-        summary = build(args.format_id, dry_run=args.dry_run)
+        summary = build(
+            args.format_id, dry_run=args.dry_run, allow_downgrade=args.allow_downgrade
+        )
     except LedgerError as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 1
 
     print(
         f"{summary['format_id']}: {summary['obligations']} obligations "
-        f"({summary['partial']} partial, {summary['missing']} missing)"
+        f"({summary['implemented']} implemented, {summary['partial']} partial, "
+        f"{summary['missing']} missing)"
     )
+    if summary["preserved_implemented"]:
+        print(
+            f"  {summary['preserved_implemented']} `implemented` obligation(s) "
+            "preserved verbatim from the existing evidence file (FI-075/FI-078)"
+        )
     if summary["shadow_files_excluded"]:
         print("  shadow-package files excluded from evidence:")
         for name in summary["shadow_files_excluded"]:

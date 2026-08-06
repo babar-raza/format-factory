@@ -2392,7 +2392,7 @@ issues:
 
 - issue_id: FI-078
   stable_semantic_key: "ff6:destructive_ledger_rebuild_risk:build_evidence_ledger_overwrites_implemented"
-  status: open
+  status: closed
   discovered_at: "2026-08-06T07:45:00Z"
   discovering_task_id: TC-FF6-NRRD-AXIS-ARITY-001
   issue_type: destructive_tooling_risk
@@ -2454,40 +2454,82 @@ issues:
     format touched by an implemented-status promotion this session is now
     exposed. Only ora and ubl remain unaffected, simply because neither has
     an implemented row yet.
+  correction_20260806_pre_fix: >-
+    The original observed_behavior/affected_paths listed
+    shared/format-contracts/implementation-evidence/nrrd.yaml as at risk.
+    This was WRONG: shared/format-contracts/ledger-maps/ does not and never
+    did contain an nrrd.yaml (confirmed by directory listing -- it holds
+    only ipynb.yaml, ora.yaml, safetensors.yaml, ubl.yaml, xliff.yaml), and
+    build_evidence_ledger.py --format-id nrrd fails immediately (no
+    ledger-map to read) rather than overwriting anything. NRRD's 19
+    implemented rows were therefore never actually reachable by this tool
+    in the first place -- the real exposure was always exactly xliff,
+    ipynb, and safetensors (the three formats that do have a ledger-map
+    AND had earned an implemented row). Recorded here rather than silently
+    edited out, per EP-2: correcting a finding's own inaccuracy is itself
+    part of the finding's lifecycle, not a reason to rewrite history.
   severity: HIGH
   reproducibility: ALWAYS_REPRODUCIBLE
   root_cause_id: RC-FF6-LEDGER-REBUILD-DESTRUCTIVE-001
-  healing_taskcard_id: UNASSIGNED
+  healing_taskcard_id: INLINE-FIX-FI-078
   root_cause: >-
     build_evidence_ledger.py was designed for formats where nothing has
     ever been promoted past `partial` (matching its own docstring's
-    stated ceiling), and was never updated after NRRD became the one
-    format with real `implemented` rows (via the Event-50 endian work,
-    predating this tool's general adoption this session). Nothing enforces
-    that the tool's known ceiling and NRRD's actual, higher state stay
-    compatible -- the incompatibility is silent until the tool is actually
-    re-run against nrrd.
-  verification_verdict: >-
-    Not yet healed -- discovered and avoided (this session's nrrd work
-    edited shared/format-contracts/implementation-evidence/nrrd.yaml
-    directly and did NOT touch shared/format-contracts/ledger-maps/nrrd.yaml
-    or re-run build_evidence_ledger.py for nrrd this tick, specifically
-    because this risk was identified before acting). Recorded as OPEN
-    rather than silently worked around, per EP-2: a finding is not closed
-    by avoiding it once.
-  disposition: OPEN_AVOIDED_THIS_SESSION
-  evidence:
-    - "shared/format-contracts/implementation-evidence/nrrd.yaml (19 implemented rows, verified present after this session's edits)"
-    - "tools/ff6/build_evidence_ledger.py (docstring: 'Every obligation is emitted partial at most')"
-  notes: >-
-    Proposed remediation for a future taskcard: add a --format-id nrrd
-    guard (or a general one, since any format could eventually earn
-    implemented rows) to build_evidence_ledger.py that reads the CURRENT
-    implementation-evidence.yaml before writing, and either (a) preserves
-    any existing `implemented` row verbatim rather than regenerating it
-    from the ledger-map, or (b) refuses to proceed with a clear error if
-    doing so would downgrade any obligation's status, requiring an
-    explicit --allow-downgrade flag. Until fixed, any agent must manually
-    check for existing `implemented` rows in a format's
-    implementation-evidence.yaml before running this tool against that
+    stated ceiling), and was never updated after xliff/ipynb/safetensors
+    (all three ledger-map-driven formats) earned real `implemented` rows
+    this session. Nothing enforced that the tool's known ceiling and each
+    format's actual, higher state stayed compatible -- the incompatibility
+    was silent until the tool was actually re-run against an affected
     format.
+  verification_verdict: >-
+    Healed. tools/ff6/build_evidence_ledger.py now reads the CURRENT
+    implementation-evidence/{format}.yaml before writing (new
+    `_existing_implemented_state()`), and preserves any existing
+    `implemented` row verbatim (entry + its execution_evidence_ids, and the
+    execution_evidence entries they point to) instead of regenerating it
+    from the ledger-map. A new `--allow-downgrade` CLI flag bypasses
+    preservation explicitly when a real downgrade is intended. Verified via
+    `--dry-run` against all three actually-affected formats: xliff (2
+    implemented preserved), ipynb (2 preserved), safetensors (1 preserved)
+    -- each reproduces its exact known count with a "preserved verbatim"
+    message. Verified as a true no-op for the two unaffected
+    ledger-map-having formats: ora (0 implemented, 112 partial, 22 missing)
+    and ubl (0 implemented, 182 partial, 12 missing) -- unchanged from
+    their pre-fix counts. A real (non-dry-run) rebuild against safetensors
+    was also run directly and confirmed via `git diff` to reproduce
+    byte-for-byte equivalent YAML data (only a cosmetic block-folded-vs-
+    quoted scalar re-serialization difference from loading and re-dumping
+    through PyYAML, not a content change), then reverted since no genuine
+    rebuild was intended this tick. The pre-existing
+    tests/ff6/test_build_evidence_ledger.py::test_real_safetensors_ledger_rebuilds_identically
+    regression test (asserts rebuild determinism against the real repo
+    file) was updated to compare parsed YAML rather than raw text for this
+    same reason, with a try/finally restoring the original file bytes so
+    the suite never leaves the working tree dirty. Full
+    tests/ff6/test_build_evidence_ledger.py suite: 14/14 passed (13
+    pre-existing behavioral tests unaffected + the 1 fixed for the
+    reserialization difference).
+  disposition: HEALED_AND_VERIFIED
+  closed_at: "2026-08-06T09:10:00Z"
+  evidence:
+    - "tools/ff6/build_evidence_ledger.py (_existing_implemented_state, allow_downgrade param, preservation check in the obligations loop)"
+    - "tests/ff6/test_build_evidence_ledger.py::test_real_safetensors_ledger_rebuilds_identically (updated for parsed-YAML comparison)"
+    - "python -m tools.ff6.build_evidence_ledger --format-id xliff --dry-run -> 2 implemented preserved"
+    - "python -m tools.ff6.build_evidence_ledger --format-id ipynb --dry-run -> 2 implemented preserved"
+    - "python -m tools.ff6.build_evidence_ledger --format-id safetensors --dry-run -> 1 implemented preserved"
+    - "python -m tools.ff6.build_evidence_ledger --format-id ora --dry-run -> 0 implemented (unchanged, true no-op)"
+    - "python -m tools.ff6.build_evidence_ledger --format-id ubl --dry-run -> 0 implemented (unchanged, true no-op)"
+  notes: >-
+    Scope was bounded to the destructive-overwrite risk itself (a narrow,
+    reversible fix to one tool plus its own regression test), consistent
+    with the FF6 goal's rule-2 exception for machinery repairs that fix
+    "contradictory canonical state" / "inability to independently verify
+    partial work" -- not a broad machinery phase. No product source under
+    src/ was touched by this fix, so no skills-first governance manifest
+    was required for it (only the evidence YAMLs and tools/tests trees
+    changed). Remaining residual risk: any format that earns its FIRST
+    implemented row via a ledger-map-driven capability remap (not a direct
+    hand-edit, as all four promotions this session were) would still need
+    this same preservation path exercised for that specific transition --
+    covered by the fix's general (not per-format) implementation, but not
+    yet exercised by a live example of that specific sequence.
