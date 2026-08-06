@@ -17,3 +17,7 @@ class IpynbWriteError(IpynbError):
 
 class IpynbValidationError(IpynbError):
     """Raised when a notebook violates the selected profile."""
+
+
+class IpynbExecutionError(IpynbError):
+    """Raised when the opt-in execution adapter cannot run a notebook."""

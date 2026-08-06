@@ -34,6 +34,14 @@
       "truth_boundary": "Selector-bound, unlike IPYNB-BASELINE-SUITE: it names the exact positive and negative test selectors for CellEditor's full CRUD surface (insert/move/copy/replace/remove/remove_where), search by every named criterion (id/type/tag/metadata/source text), dry-run-matches-apply and save-reload ID stability for every mutation class, and atomic refusal of invalid or notebook-invalidating edits. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-IPYNB-OBL-BD6E7B4AA7C7E06C only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "IPYNB-EXECUTION-ADAPTER-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-execution-adapter-001.json",
+      "sha256": "cb763153a0ce13978e1e29e1620d3aaa2bae4ed83b792ef83e54fec2f36bce86",
+      "truth_boundary": "Selector-bound, unlike IPYNB-BASELINE-SUITE: it names the exact test selectors proving both halves of IPYNB-EXEC-001. Adapter half (test_obligation_execution_adapter.py, new this slice): execution runs in a real subprocess with state persisting across cells within one run, only code cells are sent for execution, successful and failing cells both produce a structured result (never a raised exception for ordinary cell errors), on_error stop/continue is honored, a timeout produces a structured report (not a raised TimeoutExpired) that preserves output from cells that completed before the kill, kernel defaults to the current interpreter and an explicit override is respected, a non-Python declared kernelspec is refused rather than silently run as Python, and a kernel that fails to launch at all produces a structured report (not an unhandled OSError). No-execution half (test_obligation_core_path_no_execution.py, extended this slice): a CPython audit hook proves load/validate/diff/save/upgrade never execute cell code, and a static AST check proves the core codec/ validation/diff modules do not even import the adapter module. Does NOT cover non-Python kernels, per-cell timeouts, or the Jupyter kernel wire protocol -- explicitly out of scope, documented in adapters/execute.py's own module docstring. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED -- not cross-checked against nbclient or a real Jupyter kernel. Covers SAL-IPYNB-OBL-63250AAB7522792F only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "IPYNB-EXPORT-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -69,7 +77,7 @@
   "format_id": "ipynb",
   "input_digests": {
     "compiled_contract": "070e7486feb32cb69e64bf9bb040bb47e4671f0034835d78d081c39ae2c05903",
-    "implementation_evidence": "2a24e3b24745cc6f1d0be8bd61bebaf34526b6904bc68012c1fc0d166a337e1c",
+    "implementation_evidence": "93ddb1b67bab979a6ac1f8d6834159baf228f17bace3e070de2a374baf6a0644",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "04340fa8bde6468fa648cb60fce3d50876a39c187d5b9ad3b0329fe0a29850a8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -886,22 +894,35 @@
     {
       "capability_id": "IPYNB-EXEC-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-EXECUTION-ADAPTER-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "execute_notebook() is a new opt-in adapter (adapters/execute.py, not imported by any core codec/validation/diff module) that runs a notebook's code cells in one isolated subprocess sharing a namespace across cells, selecting and validating the kernel (defaults to the current interpreter, refuses a declared non-Python kernelspec, accepts an explicit override), enforcing one overall wall-clock timeout, honoring a stop/continue error policy, and always returning a structured ExecutionReport -- never raising for an ordinary cell error, a timeout, or a kernel that fails to launch. The pre-existing core-path-never-executes proof (a CPython audit hook) was extended with a static AST check that the core modules do not even import this adapter."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Isolated-environment execution tests covering timeout, kernel failure, and partial output; core-path no-execution proof."
-      ],
-      "negative_test_selectors": [],
-      "obligation_id": "SAL-IPYNB-OBL-63250AAB7522792F",
-      "positive_test_selectors": [
-        "tests/python/ipynb/test_obligation_core_path_no_execution.py::test_the_audit_hook_actually_detects_execution",
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ipynb/test_obligation_execution_adapter.py::test_failing_cell_reports_structured_error_not_a_raised_exception",
+        "tests/python/ipynb/test_obligation_execution_adapter.py::test_on_error_stop_halts_remaining_cells",
+        "tests/python/ipynb/test_obligation_execution_adapter.py::test_timeout_is_reported_structurally_not_raised",
+        "tests/python/ipynb/test_obligation_execution_adapter.py::test_non_python_kernel_is_refused_not_silently_run_as_python",
+        "tests/python/ipynb/test_obligation_execution_adapter.py::test_kernel_failure_is_reported_not_raised_as_an_unhandled_exception",
         "tests/python/ipynb/test_obligation_core_path_no_execution.py::test_load_never_executes_cell_source",
         "tests/python/ipynb/test_obligation_core_path_no_execution.py::test_validate_never_executes_cell_source",
-        "tests/python/ipynb/test_obligation_typed_model.py::test_typed_cells_outputs_and_logical_sources_preserve_raw_form",
-        "tests/python/ipynb/test_obligation_typed_model.py::test_typed_search_avoids_raw_dictionary_access"
+        "tests/python/ipynb/test_obligation_core_path_no_execution.py::test_save_never_executes_cell_source",
+        "tests/python/ipynb/test_obligation_core_path_no_execution.py::test_diff_never_executes_cell_source"
+      ],
+      "obligation_id": "SAL-IPYNB-OBL-63250AAB7522792F",
+      "positive_test_selectors": [
+        "tests/python/ipynb/test_obligation_execution_adapter.py::test_execution_runs_in_a_subprocess_not_the_parent_interpreter",
+        "tests/python/ipynb/test_obligation_execution_adapter.py::test_state_persists_across_cells_within_one_run",
+        "tests/python/ipynb/test_obligation_execution_adapter.py::test_successful_cell_reports_stdout_and_no_error",
+        "tests/python/ipynb/test_obligation_execution_adapter.py::test_on_error_continue_runs_every_cell_regardless_of_failure",
+        "tests/python/ipynb/test_obligation_execution_adapter.py::test_timeout_preserves_partial_output_from_completed_cells",
+        "tests/python/ipynb/test_obligation_execution_adapter.py::test_default_kernel_is_the_current_python_interpreter",
+        "tests/python/ipynb/test_obligation_execution_adapter.py::test_explicit_kernel_override_bypasses_language_detection",
+        "tests/python/ipynb/test_obligation_core_path_no_execution.py::test_execute_notebook_is_the_sole_execution_entry_point",
+        "tests/python/ipynb/test_obligation_core_path_no_execution.py::test_core_module_source_never_references_the_execution_adapter"
       ],
       "proof_requirements": {
         "negative": [
@@ -911,17 +932,13 @@
           "Isolated-environment execution tests covering timeout, kernel failure, and partial output; core-path no-execution proof."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::ensure_cell_id",
-        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads",
-        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load",
-        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load_ipynb",
-        "src/python/ipynb/src/format_factory/ipynb/validation/validator.py::validate",
-        "src/python/ipynb/src/format_factory/ipynb/validation/validator.py::validate_notebook_schema",
-        "src/python/ipynb/src/format_factory/ipynb/validation/validator.py::validate_notebook"
+        "src/python/ipynb/src/format_factory/ipynb/adapters/execute.py::execute_notebook",
+        "src/python/ipynb/src/format_factory/ipynb/adapters/execute.py::ExecutionReport",
+        "src/python/ipynb/src/format_factory/ipynb/adapters/execute.py::CellExecutionResult"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-PRESERVE-001",
@@ -2582,10 +2599,12 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-cell-id-001.json": "a41bd433193a2f056bbfacd95c667ef16c066fbdff389d26c8016fac7860d5a1",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-cellname-001.json": "16a30c07b50665d35467880b0d1822ccf5e037e19bee19daaad4aef698b24552",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-edit-001.json": "bb88dabbc9361c01672ab1319cba2125c43bdb5ec1c4f5d650956a1ef5903d1d",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-execution-adapter-001.json": "cb763153a0ce13978e1e29e1620d3aaa2bae4ed83b792ef83e54fec2f36bce86",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-export-001.json": "53d61ffd27a6d7f9b7b1fee61a02de20972f1d98a3baf1849360f7c750153ebc",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-merge-001.json": "f12e54e0372e13214347eb90ccb68f87c8abd19f95df34465dc6c3cd2a83804d",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-structure-diff-001.json": "4ab6abdf71526d76d0d213be161888e759169470d15bea9839995b1009524004",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-write-001.json": "2e1e1d5493518b7330f43d91639efa5839d91e11b4a13ba32f5b83abfd125675",
+    "src/python/ipynb/src/format_factory/ipynb/adapters/execute.py": "5900091eb00d9009b429055a46b703803c491cb861180f0baca6777c6fd9e87d",
     "src/python/ipynb/src/format_factory/ipynb/adapters/export.py": "d03fec3c5c3d5a46f7ac5df365b9e89e360abc4472ea560f3ca1baefbfe051ae",
     "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py": "2f3b6b4920e08549bb8714673ece9b4dffd5f30aae1a9e802aa27efa0bb6776c",
     "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py": "69e6862b047e46ac5321e144381befccb31d64cb5565bad19a504df8beb3b315",
@@ -2609,8 +2628,9 @@
     "tests/python/ipynb/test_obligation_cell_editor.py": "28399cc82c0f543180b79804bdba90d0913c1cc449d4de81e60d6f5ad827ea88",
     "tests/python/ipynb/test_obligation_cell_identity.py": "a91396e60ba37a857e3ab845cd85df53934e8c70a3397c44db37c91ed99bf6a6",
     "tests/python/ipynb/test_obligation_cleanup.py": "0fbdedce809a91f82a27ff79bef73a5568440279bd4b54c16e07601da89a0b8f",
-    "tests/python/ipynb/test_obligation_core_path_no_execution.py": "8825a28504eaeb2ae6eae0e0fac8eb8c999c4f7ca5110dbafcc0c3f2c442009d",
+    "tests/python/ipynb/test_obligation_core_path_no_execution.py": "50451e0701d44dc1989ea8ea774e941e654e8e3c84053c0e47e3c31784b02b67",
     "tests/python/ipynb/test_obligation_corpus_integrity.py": "18e1f870e1f2ae1ccd4c9d4e5c35929f7cf3168b2a4f4d0017c88f83d48cc418",
+    "tests/python/ipynb/test_obligation_execution_adapter.py": "42f1f95620fa741a01ad17896091bc0d6c5789420405b1614fea982e25c7a510",
     "tests/python/ipynb/test_obligation_export_adapter.py": "56cee7bffd675815c99c9539fde17ca1290f80b426a9201398f6098652e497ba",
     "tests/python/ipynb/test_obligation_lifecycle_modes.py": "d42d19938843e94ec7743cd606c3bee1b704b534a98ce0fd72e4763126585651",
     "tests/python/ipynb/test_obligation_metadata_adapters.py": "71d2436bcba090d36fd9a8b1ca5a8109e08fb2d095b0408b29d7e871d8650056",
@@ -2631,11 +2651,11 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 12,
-      "partial": 56
+      "implemented": 13,
+      "partial": 55
     },
     "total": 68,
-    "unresolved": 56
+    "unresolved": 55
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

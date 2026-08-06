@@ -1,0 +1,67 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-execution-adapter-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T16:25:00Z",
+  "inputs": {
+    "format_id": "ipynb",
+    "task_id": "TC_FF6_IPYNB_EXEC_ADAPTER_001",
+    "task_kind": "genuine-new-capability",
+    "root_cause": "IPYNB-EXEC-001's single obligation ('keep execution in an opt-in adapter with kernel selection, timeouts, error policy, and isolation boundary; return a structured execution report; never execute during load/validate/diff/save') had its second half (core path never executes) fully proven via a CPython audit hook, but the first half (the adapter itself) was genuinely unbuilt -- no adapters/execute.py existed, flagged repeatedly across several ticks this session as the clearest real new-code opportunity rather than a citation-audit backlog item.",
+    "obligation_targeted": "SAL-IPYNB-OBL-63250AAB7522792F",
+    "acceptance_evidence": "tests/python/ipynb/test_obligation_execution_adapter.py (new, 17 tests), tests/python/ipynb/test_obligation_core_path_no_execution.py (extended, +2 tests replacing 1 now-outdated test)",
+    "regression_tier": "full IPYNB package suite (tests/python/ipynb)"
+  },
+  "execution_steps": [
+    "1. Checked the package's dependencies (pyproject.toml): only format-factory-core and jsonschema are shipped dependencies, no jupyter_client/nbclient/ipykernel. Implementing the full Jupyter kernel wire protocol (ZMQ) would add a heavy, out-of-character dependency. Scoped the adapter instead to Python-family kernels executed via a real OS subprocess -- explicitly documented as the chosen scope in the module's own docstring, not silently narrowed.",
+    "2. Designed adapters/execute.py: a driver script string executed inside a child subprocess via `subprocess.run([interpreter, '-c', driver], input=json_payload, capture_output=True, text=True, timeout=timeout)`. The driver runs each code cell's source in one shared namespace (so later cells can use names earlier cells defined, matching real notebook semantics), writes one flushed JSON result line per attempted cell, and stops early if a cell errors and the caller asked for on_error='stop'.",
+    "3. Added errors.py::IpynbExecutionError, model classes ExecutionError/CellExecutionResult/ExecutionReport (frozen dataclasses, matching the existing adapters/export.py style), and execute_notebook(document, *, kernel=None, timeout=30.0, on_error='stop'). Exported from adapters/__init__.py and the top-level package __init__.py alongside the existing export adapter.",
+    "4. Handled the three failure modes the obligation's required_tests names explicitly, all as STRUCTURED report fields rather than raised exceptions: timeout (subprocess.TimeoutExpired caught; TimeoutExpired.stdout carries whatever was flushed before the kill, so partial output survives -- verified this is real Python behavior, not assumed), kernel launch failure (OSError caught around subprocess.run, e.g. a nonexistent interpreter path), and per-cell execution errors (caught inside the driver script itself, never propagated to the parent).",
+    "5. Manually smoke-tested all code paths interactively before writing formal tests: normal success, on_error=stop vs continue, timeout with partial-output preservation, and non-Python kernelspec refusal -- all behaved as designed on the first implementation, no design iteration needed.",
+    "6. Wrote test_obligation_execution_adapter.py (17 tests) covering isolation (a name defined in the subprocess does not leak into the parent's globals()), state persistence across cells, markdown/raw cells never sent for execution, structured success/error/timeout/kernel-failure reporting, both error policies, kernel default/override/refusal, and rejection of an invalid on_error value.",
+    "7. Updated test_obligation_core_path_no_execution.py: its own docstring said 'there is no execution adapter today' -- no longer true. Replaced the now-outdated test_public_api_exposes_no_execution_entry_point (which asserted NO execution capability existed anywhere, and only still passed by an accidental string-match coincidence between 'execute_notebook' and the forbidden lowercase token 'executenotebook') with two tests that assert the correct invariant going forward: execute_notebook is the adapter's sole entry point and is not aliased by any core lifecycle function, and a static AST check that reader.py/writer.py/validator.py/diff.py do not even import the adapter module -- a stronger, compile-time-checkable guarantee than the runtime audit hook alone.",
+    "8. Ran ruff and mypy on all new/changed source: ruff clean immediately; mypy caught one real type narrowing issue (subprocess.TimeoutExpired.stdout typed as bytes|str in the stub even though text=True guarantees str at runtime) -- fixed with an isinstance check rather than a cast or ignore.",
+    "9. Ran the full ipynb suite: 688 passed (670 baseline + 18 net new: +17 new file, +2/-1 in the modified file), 0 regressions. Promoted the obligation to implemented -- IPYNB-EXEC-001 is the first genuinely new (not citation-corrected) capability closure this session in several ticks."
+  ],
+  "allowed_files": [
+    "src/python/ipynb/src/format_factory/ipynb/adapters/execute.py",
+    "src/python/ipynb/src/format_factory/ipynb/adapters/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/errors.py",
+    "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+    "tests/python/ipynb/test_obligation_execution_adapter.py",
+    "tests/python/ipynb/test_obligation_core_path_no_execution.py",
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ipynb/src/format_factory/ipynb/adapters/execute.py",
+    "src/python/ipynb/src/format_factory/ipynb/adapters/__init__.py",
+    "src/python/ipynb/src/format_factory/ipynb/errors.py",
+    "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+    "tests/python/ipynb/test_obligation_execution_adapter.py",
+    "tests/python/ipynb/test_obligation_core_path_no_execution.py",
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ipynb/test_obligation_execution_adapter.py -v -- 17 passed",
+    ".venv/Scripts/pytest tests/python/ipynb/test_obligation_core_path_no_execution.py -v -- 23 passed",
+    ".venv/Scripts/pytest tests/python/ipynb/ -q -- 688 passed (670 baseline + 18 net new), 0 regressions",
+    ".venv/Scripts/python -m ruff check <changed files> -- All checks passed",
+    ".venv/Scripts/python -m mypy src/python/ipynb/src/format_factory/ipynb/ -- Success: no issues found in 32 source files (after one fix)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 68,
+    "ipynb_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not cross-checked against nbclient or a real Jupyter kernel for these specific behaviors. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_this_is_genuine_new_capability_not_evidence_correction": "adapters/execute.py, errors.py::IpynbExecutionError, and both test files' execution-adapter content are new production source and new tests this slice -- the first non-citation-correction closure in several ticks, directly building the real capability the obligation names rather than auditing existing coverage.",
+    "scope_limitations_documented_honestly": "Python-family kernels only (no Jupyter wire protocol / non-Python kernel support), one overall timeout rather than per-cell timeouts -- both explicitly stated in the module docstring and not silently overclaimed."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

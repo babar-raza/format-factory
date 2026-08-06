@@ -4,11 +4,12 @@ The obligation reads: "Keep execution in an opt-in adapter with kernel
 selection, timeouts, error policy, and isolation boundary; return a structured
 execution report; never execute during load/validate/diff/save."
 
-Only the second half is testable today. There is no execution adapter in the
-package -- the sole `kernel` references are kernelspec *metadata* parsing -- so
-the timeout, kernel-failure and partial-output cases the requirement also names
-cannot be written against anything. That half is recorded `missing` in the
-ledger rather than papered over here.
+The first half (the adapter itself: kernel selection, timeouts, error policy,
+isolation boundary, structured report) is now built --
+adapters/execute.py's execute_notebook() -- and proven in
+test_obligation_execution_adapter.py. This file proves the second half only:
+that the CORE path (loads/validate/diff_notebooks/dumps/upgrade) never
+executes cell code, independent of whether the opt-in adapter exists.
 
 The no-execution half matters on its own: a notebook is untrusted input, and a
 loader that evaluated cell source would be a remote-code-execution hole. These
@@ -222,18 +223,53 @@ def test_hostile_output_payload_is_not_executed(recorder: _AuditRecorder) -> Non
     _assert_no_execution(recorder, "output round-trip")
 
 
-# ── The package ships no execution surface at all ──────────────────────────
+# ── Execution lives only behind the explicit opt-in adapter ────────────────
 
 
-def test_public_api_exposes_no_execution_entry_point() -> None:
-    """The obligation puts execution behind an opt-in adapter. There is no
-    adapter today, so there must be no execution entry point either -- an
-    execute() on the core API would violate the isolation boundary."""
-    import format_factory.ipynb as package
+def test_execute_notebook_is_the_sole_execution_entry_point() -> None:
+    """The obligation puts execution behind an opt-in adapter. execute_notebook
+    is that adapter's one entry point -- proving it exists is
+    test_obligation_execution_adapter.py's job. This test proves the core
+    lifecycle functions are not secretly aliases for it and do not reach it."""
+    from format_factory.ipynb import diff_notebooks as diff_fn
+    from format_factory.ipynb import dumps as dumps_fn
+    from format_factory.ipynb import execute_notebook
+    from format_factory.ipynb import loads as loads_fn
+    from format_factory.ipynb import upgrade as upgrade_fn
+    from format_factory.ipynb import validate as validate_fn
+    from format_factory.ipynb.adapters.execute import execute_notebook as adapter_fn
 
-    exported = {name.lower() for name in package.__all__}
-    for forbidden in ("execute", "run", "runcell", "executenotebook", "kernel"):
-        assert forbidden not in exported, (
-            f"{forbidden!r} is exported from the core API; execution must live "
-            "in an opt-in adapter"
-        )
+    core_functions = (loads_fn, dumps_fn, validate_fn, diff_fn, upgrade_fn)
+    assert execute_notebook not in core_functions
+    assert execute_notebook is adapter_fn
+
+
+def test_core_module_source_never_references_the_execution_adapter() -> None:
+    """A stronger, static check than the audit hook: the reader, writer,
+    validator, and diff modules must not import adapters.execute at all, so
+    there is no code path -- reachable or not -- connecting them to it."""
+    import ast
+    from pathlib import Path
+
+    package_root = Path(__file__).resolve().parents[3] / "src" / "python" / "ipynb" / "src"
+    core_modules = [
+        package_root / "format_factory" / "ipynb" / "codec" / "reader" / "reader.py",
+        package_root / "format_factory" / "ipynb" / "codec" / "writer" / "writer.py",
+        package_root / "format_factory" / "ipynb" / "validation" / "validator.py",
+        package_root / "format_factory" / "ipynb" / "model" / "diff.py",
+    ]
+    for module_path in core_modules:
+        assert module_path.is_file(), f"expected core module at {module_path}"
+        tree = ast.parse(module_path.read_text(encoding="utf-8"))
+        for node in ast.walk(tree):
+            if isinstance(node, ast.ImportFrom) and node.module:
+                assert "execute" not in node.module, (
+                    f"{module_path} imports from {node.module!r}; the core path "
+                    "must not reference the execution adapter"
+                )
+            if isinstance(node, ast.Import):
+                for alias in node.names:
+                    assert "execute" not in alias.name, (
+                        f"{module_path} imports {alias.name!r}; the core path "
+                        "must not reference the execution adapter"
+                    )

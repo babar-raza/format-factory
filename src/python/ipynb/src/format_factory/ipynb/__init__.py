@@ -2,10 +2,14 @@
 
 from .adapters import (
     AncillaryResource,
+    CellExecutionResult,
+    ExecutionError,
+    ExecutionReport,
     ExportAdapter,
     ExportResult,
     MarkdownExporter,
     PythonScriptExporter,
+    execute_notebook,
 )
 from .analytics import (
     ipynb_average_source_length,
@@ -32,6 +36,7 @@ from .codec import (
 )
 from .errors import (
     IpynbError,
+    IpynbExecutionError,
     IpynbParseError,
     IpynbValidationError,
     IpynbWriteError,
@@ -143,6 +148,7 @@ __all__ = [
     "CellEditOperation",
     "CellEditReport",
     "CellEditor",
+    "CellExecutionResult",
     "CellField",
     "CellQuery",
     "CellMetadataAdapter",
@@ -163,6 +169,8 @@ __all__ = [
     "DEFAULT_ACTIVE_MIME_TYPES",
     "ErrorOutput",
     "ExecutionMetadata",
+    "ExecutionError",
+    "ExecutionReport",
     "ExecuteResultOutput",
     "FieldChange",
     "HmacNotebookNotary",
@@ -171,6 +179,7 @@ __all__ = [
     "KernelSpecMetadata",
     "LanguageInfoMetadata",
     "IpynbError",
+    "IpynbExecutionError",
     "IpynbParseError",
     "IpynbValidationError",
     "IpynbWriteError",
@@ -216,6 +225,7 @@ __all__ = [
     "dump",
     "dumps",
     "ensure_cell_id",
+    "execute_notebook",
     "ExportAdapter",
     "ExportResult",
     "get_cell_count",

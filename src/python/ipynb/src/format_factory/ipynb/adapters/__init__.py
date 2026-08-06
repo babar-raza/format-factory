@@ -3,6 +3,12 @@
 The production chassis has no mandatory notebook-framework dependency.
 """
 
+from .execute import (
+    CellExecutionResult,
+    ExecutionError,
+    ExecutionReport,
+    execute_notebook,
+)
 from .export import (
     AncillaryResource,
     ExportAdapter,
@@ -13,8 +19,12 @@ from .export import (
 
 __all__ = [
     "AncillaryResource",
+    "CellExecutionResult",
+    "ExecutionError",
+    "ExecutionReport",
     "ExportAdapter",
     "ExportResult",
     "MarkdownExporter",
     "PythonScriptExporter",
+    "execute_notebook",
 ]
