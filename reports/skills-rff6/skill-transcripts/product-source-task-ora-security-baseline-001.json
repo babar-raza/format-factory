@@ -1,0 +1,46 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-security-baseline-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T16:10:00Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_SEC_CLOSURE_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "ORA-SEC-001's 5 obligations (algorithmic-complexity guards; path-traversal/absolute-path rejection; no network/plugin/code-execution resolution; embedded payloads treated as untrusted; configurable resource limits with safe defaults) were all fully implemented and covered by a dedicated 17-test file (test_obligation_security_baseline.py), but all 5 cited an identical generic 5-symbol/3-test subset regardless of which specific security property each obligation actually names.",
+    "obligation_targeted": "SAL-ORA-OBL-1C91BEA24163FEE8, SAL-ORA-OBL-236BB3DAE380A960, SAL-ORA-OBL-602DA38F95B14817, SAL-ORA-OBL-6BF75B83618CE444, SAL-ORA-OBL-E783242B1006F422",
+    "acceptance_evidence": "tests/python/ora/test_obligation_security_baseline.py",
+    "regression_tier": "full ORA package suite (tests/python/ora)"
+  },
+  "execution_steps": [
+    "1. Continued the ora sweep to ORA-SEC-001 as flagged in the prior tick's exact_next_action. Read test_obligation_security_baseline.py in full (17 tests): checked-arithmetic refusal of absurd canvas/PNG dimensions, bounded-recursion refusal of deep stack nesting, excessive-compression-ratio refusal, path-traversal/absolute-path/backslash-path rejection for both container members and layer src references, network-URL non-resolution, no-embedded-script-evaluation, PNG metadata read without pixel decode, and four independently-enforced configurable resource limits (input size, entry count, decompressed bytes, XML nesting) with safe defaults.",
+    "2. Ran all 17 tests directly before citing any of them: all passed.",
+    "3. Split source_symbols and test selectors per obligation by which specific security property each names, rather than reusing the same generic subset for all five: algorithmic-complexity cites stack_xml.py's _Walker/png_metadata.py's read_png_metadata plus the four checked-arithmetic/recursion/compression negative tests; path-traversal cites OraContainer plus the four traversal/absolute-path/backslash negative tests; no-network-or-code-execution cites parse_stack plus the network-URL and no-script-evaluation tests; untrusted-payload-handling cites read_png_metadata plus the header-only-read and no-evaluation tests; configurable-limits cites OraContainer plus all four limit-enforcement negative tests and the two configurability/safe-default positive tests.",
+    "4. Promoted all 5 to implemented, fully closing ORA-SEC-001 -- ora's third fully-closed capability this session (after ORA-RESOLUTION-001, and effectively ORA-BASELINEASSET-001's two fully-closed obligations). Zero source or test changes -- pure evidence correction."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora/test_obligation_security_baseline.py -v -- 17 passed",
+    ".venv/Scripts/pytest tests/python/ora/ -q -- unchanged from before this slice (0 source or test changes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 5,
+    "obligations_total_for_format": 134,
+    "ora_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently verified against an external OpenRaster reader/writer or a fuzzing harness. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_no_new_production_source": "Algorithmic-complexity guards, path-traversal rejection, no-network/no-code-execution, untrusted-payload handling, and configurable resource limits were already complete and covered by 17 dedicated tests -- this slice audited and cited that existing proof, it did not build anything new."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

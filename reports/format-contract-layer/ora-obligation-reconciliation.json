@@ -48,12 +48,20 @@
       "path": "reports/skills-rff6/skill-transcripts/product-source-task-ora-resolution-isolation-001.json",
       "sha256": "1a8d632812f95c0c628a894ccf0d2a6e1cc96c7784e6a38506cf576c66d67c59",
       "truth_boundary": "Selector-bound, unlike ORA-BASELINE-SUITE: it names the exact positive test selectors proving paired/positive/defaulting-to-72 resolution modeling at both parse and direct-construction time, non-default resolution alone (isolation absent) detected as profile 0.0.3 distinctly from the 0.0.4 (isolation) and 0.0.2 (mergedimage-only) triggers, and declared-versus-inferred group isolation (isolation attribute, opacity below one, non-default composite-op) modeled separately with profile 0.0.4 detection. Does NOT cover actual pixel compositing/rendering of isolated groups against a transparent backdrop -- this package has no rendering engine, and that clause of ORA-ISOLATION-001's broader obligation remains unpromoted. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED -- not cross-checked against an independent OpenRaster reader/writer. Covers SAL-ORA-OBL-0E1F1D54159FEFCC, SAL-ORA-OBL-FBBF45A773C7C0C9, and SAL-ORA-OBL-97CE271E3DD6D883 only; it supports no other obligation and promotes no product state."
+    },
+    {
+      "evidence_id": "ORA-SECURITY-BASELINE-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ora-security-baseline-001.json",
+      "sha256": "3c679aa993c7146ac43c33f5ca132b0a7d88c643e4aa8b0756c285e16ca3f011",
+      "truth_boundary": "Selector-bound, unlike ORA-BASELINE-SUITE: it names the exact test selectors proving checked-arithmetic refusal of algorithmic-complexity attacks (absurd canvas/PNG dimensions, excessive compression ratio, unbounded stack nesting via a bounded recursion walk), path-traversal and absolute-path rejection for both container members and layer src references (including backslash paths, rejected rather than platform-dependently normalized), refusal to resolve network URLs or evaluate embedded script/executable content, PNG metadata read without decoding pixel data, and configurable resource limits (input size, entry count, decompressed bytes, XML node/nesting depth) enabled with safe defaults when the caller supplies none. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-ORA-OBL-1C91BEA24163FEE8, SAL-ORA-OBL-236BB3DAE380A960, SAL-ORA-OBL-602DA38F95B14817, SAL-ORA-OBL-6BF75B83618CE444, and SAL-ORA-OBL-E783242B1006F422 only; it supports no other obligation and promotes no product state."
     }
   ],
   "format_id": "ora",
   "input_digests": {
     "compiled_contract": "b18759606ff94b21fbd451f3e46cd98c48350b62cfae44abc4bacd6ccf9a7e60",
-    "implementation_evidence": "6ab287b7c1e57bc2d4bfee91e870631a6c5b547d706eed5421c16c544cc7974f",
+    "implementation_evidence": "11114f5774aab0faddddb3f1e16ee74c4465d28c3176d1c28a38b5d37ccaf960",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "41a34d4a25c5422c9e3842e63eee01dd5a858b9cd79a8370cf15fc1b892f430b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -772,20 +780,22 @@
     {
       "capability_id": "ORA-SEC-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-SECURITY-BASELINE-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Canvas and PNG dimension products are computed with checked arithmetic (refusing absurd w*h before allocation), stack nesting is walked with a bounded-depth traversal rather than unbounded recursion, and decompression ratio is limit-enforced -- all algorithmic-complexity vectors are refused before their cost is paid, not after."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_security_baseline.py::test_absurd_canvas_dimensions_are_refused_by_checked_arithmetic",
+        "tests/python/ora/test_obligation_security_baseline.py::test_absurd_png_dimensions_are_refused_by_checked_arithmetic",
+        "tests/python/ora/test_obligation_security_baseline.py::test_deeply_nested_stacks_are_refused_by_a_bounded_recursion_walk",
+        "tests/python/ora/test_obligation_security_baseline.py::test_excessive_compression_ratio_is_refused"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-1C91BEA24163FEE8",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_security_baseline.py::test_limits_are_configurable_not_hardcoded",
-        "tests/python/ora/test_obligation_security_baseline.py::test_safe_defaults_are_enabled_without_the_caller_supplying_limits",
-        "tests/python/ora/test_obligation_security_baseline.py::test_input_size_limit_is_enforced"
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes"
       ],
       "proof_requirements": {
         "negative": [
@@ -795,15 +805,12 @@
           "Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer",
         "src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack",
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata",
         "src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-RENDER-001",
@@ -866,20 +873,22 @@
     {
       "capability_id": "ORA-SEC-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-SECURITY-BASELINE-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Both ZIP member names and layer src references are rejected when they traverse (../), are absolute filesystem paths, or use a backslash separator -- the backslash case is refused outright rather than normalized differently per platform, so behavior does not vary with the host OS's path semantics."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_security_baseline.py::test_layer_references_cannot_be_absolute_filesystem_paths",
+        "tests/python/ora/test_obligation_security_baseline.py::test_container_member_traversal_is_rejected",
+        "tests/python/ora/test_obligation_security_baseline.py::test_layer_src_traversal_is_rejected",
+        "tests/python/ora/test_obligation_security_baseline.py::test_backslash_paths_are_rejected_not_platform_dependently_normalized"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-236BB3DAE380A960",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_security_baseline.py::test_limits_are_configurable_not_hardcoded",
-        "tests/python/ora/test_obligation_security_baseline.py::test_safe_defaults_are_enabled_without_the_caller_supplying_limits",
-        "tests/python/ora/test_obligation_security_baseline.py::test_input_size_limit_is_enforced"
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes"
       ],
       "proof_requirements": {
         "negative": [
@@ -889,15 +898,11 @@
           "Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack",
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata",
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata"
+        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-STACK-001",
@@ -2146,20 +2151,20 @@
     {
       "capability_id": "ORA-SEC-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-SECURITY-BASELINE-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "A layer src referencing a network URL is never resolved (parsing treats it as an opaque string, no network I/O occurs), and embedded script/executable content anywhere in the archive is never evaluated -- this package has no code-execution, plugin-loading, or external-reference-following capability at all, by construction, not merely by omission."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_security_baseline.py::test_layer_references_cannot_resolve_to_a_network_url",
+        "tests/python/ora/test_obligation_security_baseline.py::test_no_embedded_script_or_executable_content_is_ever_evaluated"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-602DA38F95B14817",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_security_baseline.py::test_limits_are_configurable_not_hardcoded",
-        "tests/python/ora/test_obligation_security_baseline.py::test_safe_defaults_are_enabled_without_the_caller_supplying_limits",
-        "tests/python/ora/test_obligation_security_baseline.py::test_input_size_limit_is_enforced"
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes"
       ],
       "proof_requirements": {
         "negative": [
@@ -2169,15 +2174,11 @@
           "Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack",
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata",
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata"
+        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-STACK-001",
@@ -2391,20 +2392,19 @@
     {
       "capability_id": "ORA-SEC-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-SECURITY-BASELINE-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "read_png_metadata reads only the PNG header chunk (IHDR) without ever decoding pixel data, and embedded script/style/binary payloads anywhere in an archive are carried as opaque bytes -- parsing inspects structure only and never evaluates payload content as code or markup."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_security_baseline.py::test_no_embedded_script_or_executable_content_is_ever_evaluated"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-6BF75B83618CE444",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_security_baseline.py::test_limits_are_configurable_not_hardcoded",
-        "tests/python/ora/test_obligation_security_baseline.py::test_safe_defaults_are_enabled_without_the_caller_supplying_limits",
-        "tests/python/ora/test_obligation_security_baseline.py::test_input_size_limit_is_enforced"
+        "tests/python/ora/test_obligation_security_baseline.py::test_png_metadata_is_read_without_decoding_pixel_data"
       ],
       "proof_requirements": {
         "negative": [
@@ -2414,15 +2414,11 @@
           "Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack",
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata",
         "src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-MIMETYPE-001",
@@ -4138,20 +4134,23 @@
     {
       "capability_id": "ORA-SEC-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-SECURITY-BASELINE-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "ResourceLimits exposes configurable ceilings for input size, ZIP entry count, decompressed byte total, and XML node/nesting depth, each independently enforced and each individually violable to prove it is real rather than decorative; a caller supplying no limits still gets safe, non-infinite defaults rather than unbounded behavior."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_security_baseline.py::test_input_size_limit_is_enforced",
+        "tests/python/ora/test_obligation_security_baseline.py::test_entry_count_limit_is_enforced",
+        "tests/python/ora/test_obligation_security_baseline.py::test_decompressed_byte_limit_is_enforced",
+        "tests/python/ora/test_obligation_security_baseline.py::test_xml_node_and_nesting_limits_are_enforced"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-E783242B1006F422",
       "positive_test_selectors": [
         "tests/python/ora/test_obligation_security_baseline.py::test_limits_are_configurable_not_hardcoded",
-        "tests/python/ora/test_obligation_security_baseline.py::test_safe_defaults_are_enabled_without_the_caller_supplying_limits",
-        "tests/python/ora/test_obligation_security_baseline.py::test_input_size_limit_is_enforced"
+        "tests/python/ora/test_obligation_security_baseline.py::test_safe_defaults_are_enabled_without_the_caller_supplying_limits"
       ],
       "proof_requirements": {
         "negative": [
@@ -4161,15 +4160,11 @@
           "Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack",
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata",
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata"
+        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-EDIT-001",
@@ -4619,6 +4614,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-mimetype-001.json": "c4af01879db0867dbc3deec2c4ecbb85112c7aa2a3283b2a2b24c28d6eb155cd",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-preservation-baseline-001.json": "66670b6131f704d6bd441c2fd8a8e83dc51b29d415fdfcb7bff998ec953a047e",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-resolution-isolation-001.json": "1a8d632812f95c0c628a894ccf0d2a6e1cc96c7784e6a38506cf576c66d67c59",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ora-security-baseline-001.json": "3c679aa993c7146ac43c33f5ca132b0a7d88c643e4aa8b0756c285e16ca3f011",
     "src/python/ora/src/format_factory/ora/codec/assets.py": "daa355728ed65a92d69c3178f91af4075501bde0549fb0ce9755a944206b9091",
     "src/python/ora/src/format_factory/ora/codec/container.py": "02dd620d7c5f405a2a63222a686cc77a102ad8da95893b43716684bc1c2fbde5",
     "src/python/ora/src/format_factory/ora/codec/png_metadata.py": "6b247625e57be37e010808f50a08ce76e5efd240c5459d2a7ad506eee74ac2ad",
@@ -4644,12 +4640,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 15,
+      "implemented": 20,
       "missing": 21,
-      "partial": 98
+      "partial": 93
     },
     "total": 134,
-    "unresolved": 119
+    "unresolved": 114
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

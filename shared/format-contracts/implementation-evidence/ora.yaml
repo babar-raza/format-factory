@@ -153,6 +153,27 @@ execution_evidence:
     SAL-ORA-OBL-48761EB31C2C2F7D fully, and SAL-ORA-OBL-52746ABC41B3E790
     partially (the read/validate/no-confusion half only); it supports no
     other obligation and promotes no product state.
+- evidence_id: ORA-SECURITY-BASELINE-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ora-security-baseline-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike ORA-BASELINE-SUITE: it names the exact test
+    selectors proving checked-arithmetic refusal of algorithmic-complexity
+    attacks (absurd canvas/PNG dimensions, excessive compression ratio,
+    unbounded stack nesting via a bounded recursion walk), path-traversal
+    and absolute-path rejection for both container members and layer src
+    references (including backslash paths, rejected rather than
+    platform-dependently normalized), refusal to resolve network URLs or
+    evaluate embedded script/executable content, PNG metadata read without
+    decoding pixel data, and configurable resource limits (input size,
+    entry count, decompressed bytes, XML node/nesting depth) enabled with
+    safe defaults when the caller supplies none. SELF-CONSISTENT
+    format_factory-only evidence per the execution-recovery directive's
+    GAP-008 rule, not VERIFIED. Covers SAL-ORA-OBL-1C91BEA24163FEE8,
+    SAL-ORA-OBL-236BB3DAE380A960, SAL-ORA-OBL-602DA38F95B14817,
+    SAL-ORA-OBL-6BF75B83618CE444, and SAL-ORA-OBL-E783242B1006F422 only;
+    it supports no other obligation and promotes no product state.
 obligations:
 - obligation_id: SAL-ORA-OBL-022F37EEA74EC1BB
   capability_id: ORA-EDIT-001
@@ -710,26 +731,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-1C91BEA24163FEE8
   capability_id: ORA-SEC-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
-  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata
   - src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata
   positive_test_selectors:
-  - tests/python/ora/test_obligation_security_baseline.py::test_limits_are_configurable_not_hardcoded
-  - tests/python/ora/test_obligation_security_baseline.py::test_safe_defaults_are_enabled_without_the_caller_supplying_limits
-  - tests/python/ora/test_obligation_security_baseline.py::test_input_size_limit_is_enforced
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_security_baseline.py::test_absurd_canvas_dimensions_are_refused_by_checked_arithmetic
+  - tests/python/ora/test_obligation_security_baseline.py::test_absurd_png_dimensions_are_refused_by_checked_arithmetic
+  - tests/python/ora/test_obligation_security_baseline.py::test_deeply_nested_stacks_are_refused_by_a_bounded_recursion_walk
+  - tests/python/ora/test_obligation_security_baseline.py::test_excessive_compression_ratio_is_refused
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-SECURITY-BASELINE-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each security_limits baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - Canvas and PNG dimension products are computed with checked arithmetic
+    (refusing absurd w*h before allocation), stack nesting is walked with a
+    bounded-depth traversal rather than unbounded recursion, and
+    decompression ratio is limit-enforced -- all algorithmic-complexity
+    vectors are refused before their cost is paid, not after.
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
@@ -783,26 +805,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-236BB3DAE380A960
   capability_id: ORA-SEC-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
-  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata
-  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata
   positive_test_selectors:
-  - tests/python/ora/test_obligation_security_baseline.py::test_limits_are_configurable_not_hardcoded
-  - tests/python/ora/test_obligation_security_baseline.py::test_safe_defaults_are_enabled_without_the_caller_supplying_limits
-  - tests/python/ora/test_obligation_security_baseline.py::test_input_size_limit_is_enforced
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_security_baseline.py::test_layer_references_cannot_be_absolute_filesystem_paths
+  - tests/python/ora/test_obligation_security_baseline.py::test_container_member_traversal_is_rejected
+  - tests/python/ora/test_obligation_security_baseline.py::test_layer_src_traversal_is_rejected
+  - tests/python/ora/test_obligation_security_baseline.py::test_backslash_paths_are_rejected_not_platform_dependently_normalized
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-SECURITY-BASELINE-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each security_limits baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - Both ZIP member names and layer src references are rejected when they
+    traverse (../), are absolute filesystem paths, or use a backslash
+    separator -- the backslash case is refused outright rather than
+    normalized differently per platform, so behavior does not vary with
+    the host OS's path semantics.
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
@@ -1787,26 +1809,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-602DA38F95B14817
   capability_id: ORA-SEC-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
-  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata
-  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata
   positive_test_selectors:
-  - tests/python/ora/test_obligation_security_baseline.py::test_limits_are_configurable_not_hardcoded
-  - tests/python/ora/test_obligation_security_baseline.py::test_safe_defaults_are_enabled_without_the_caller_supplying_limits
-  - tests/python/ora/test_obligation_security_baseline.py::test_input_size_limit_is_enforced
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_security_baseline.py::test_layer_references_cannot_resolve_to_a_network_url
+  - tests/python/ora/test_obligation_security_baseline.py::test_no_embedded_script_or_executable_content_is_ever_evaluated
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-SECURITY-BASELINE-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each security_limits baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - A layer src referencing a network URL is never resolved (parsing
+    treats it as an opaque string, no network I/O occurs), and embedded
+    script/executable content anywhere in the archive is never evaluated
+    -- this package has no code-execution, plugin-loading, or
+    external-reference-following capability at all, by construction, not
+    merely by omission.
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
@@ -1974,26 +1995,22 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-6BF75B83618CE444
   capability_id: ORA-SEC-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
-  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata
   - src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata
   positive_test_selectors:
-  - tests/python/ora/test_obligation_security_baseline.py::test_limits_are_configurable_not_hardcoded
-  - tests/python/ora/test_obligation_security_baseline.py::test_safe_defaults_are_enabled_without_the_caller_supplying_limits
-  - tests/python/ora/test_obligation_security_baseline.py::test_input_size_limit_is_enforced
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_security_baseline.py::test_png_metadata_is_read_without_decoding_pixel_data
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_security_baseline.py::test_no_embedded_script_or_executable_content_is_ever_evaluated
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-SECURITY-BASELINE-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each security_limits baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - read_png_metadata reads only the PNG header chunk (IHDR) without ever
+    decoding pixel data, and embedded script/style/binary payloads
+    anywhere in an archive are carried as opaque bytes -- parsing inspects
+    structure only and never evaluates payload content as code or markup.
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
@@ -3332,26 +3349,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-E783242B1006F422
   capability_id: ORA-SEC-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
-  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata
-  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata
   positive_test_selectors:
   - tests/python/ora/test_obligation_security_baseline.py::test_limits_are_configurable_not_hardcoded
   - tests/python/ora/test_obligation_security_baseline.py::test_safe_defaults_are_enabled_without_the_caller_supplying_limits
+  negative_test_selectors:
   - tests/python/ora/test_obligation_security_baseline.py::test_input_size_limit_is_enforced
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_security_baseline.py::test_entry_count_limit_is_enforced
+  - tests/python/ora/test_obligation_security_baseline.py::test_decompressed_byte_limit_is_enforced
+  - tests/python/ora/test_obligation_security_baseline.py::test_xml_node_and_nesting_limits_are_enforced
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-SECURITY-BASELINE-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each security_limits baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - ResourceLimits exposes configurable ceilings for input size, ZIP entry
+    count, decompressed byte total, and XML node/nesting depth, each
+    independently enforced and each individually violable to prove it is
+    real rather than decorative; a caller supplying no limits still gets
+    safe, non-infinite defaults rather than unbounded behavior.
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
