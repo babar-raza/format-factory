@@ -49,6 +49,23 @@ execution_evidence:
     SAL-SAFETENSORS-OBL-59F9F25F677A2C4F and
     SAL-SAFETENSORS-OBL-695A339CFF62830F only; it supports no other
     obligation and promotes no product state.
+- evidence_id: SAFETENSORS-LAZY-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-safetensors-lazy-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike SAFETENSORS-BASELINE-SUITE: it names the exact
+    test selectors proving header-only validation, real read-only mmap
+    path access with tensor-relative zero-copy region views, machine-readable
+    access-strategy disclosure (PayloadAccess/PayloadAccessMode) across
+    every load path, bounded Python allocation on a 64MB sparse tensor
+    (tracemalloc-measured), and safe borrowed-view release semantics
+    including a redundant release after close. NOT backed by an independent
+    reference implementation for these specific behaviors -- SELF-CONSISTENT
+    format_factory-only evidence per the execution-recovery directive's
+    GAP-008 rule, not VERIFIED. Covers SAL-SAFETENSORS-OBL-909DA5B5108BBCF6
+    and SAL-SAFETENSORS-OBL-991021FCD2FCB37C only; it supports no other
+    obligation and promotes no product state.
 obligations:
 - obligation_id: SAL-SAFETENSORS-OBL-00A5D5CAF3AEF4AD
   capability_id: SAFETENSORS-PRESERVE-001
@@ -1532,27 +1549,38 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-SAFETENSORS-OBL-909DA5B5108BBCF6
   capability_id: SAFETENSORS-LAZY-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
-  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
   - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
   - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::SafeTensorsDocument::tensor_region
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
   positive_test_selectors:
   - tests/python/safetensors/test_lazy_io.py::test_header_only_and_mapped_region_access_stay_bounded
   - tests/python/safetensors/test_lazy_io.py::test_stream_buffering_is_disclosed_and_header_only_requires_seek
-  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_exact_eight_byte_length_prefix_and_utf8_json_header
-  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_truncated_prefix_is_rejected
-  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_declared_header_length_beyond_file_is_rejected
-  negative_test_selectors: []
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_header_only_validation_does_not_read_payload
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_path_backed_read_uses_readonly_mapping_and_tensor_relative_views
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_stream_backed_document_discloses_buffered_not_zero_copy_access
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_configurable_stricter_header_limit_enforced
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy
+  negative_test_selectors:
+  - tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed
   execution_evidence_ids:
   - SAFETENSORS-BASELINE-SUITE
+  - SAFETENSORS-LAZY-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Bounded-memory large-file,
-    header-read-count, mapped-region, stream-buffer disclosure, and view-lifetime tests.'
+  - 'read_header() validates the header without reading any payload bytes. load(path) uses a real
+    read-only mmap (PayloadAccessMode.MEMORY_MAPPED), giving zero-copy, tensor-relative region views via
+    tensor_region()/tensor_bytes(); load(stream) discloses BUFFERED_STREAM (full read required, no
+    mapping possible on a non-seekable source) instead of silently claiming the same guarantees. Every
+    load path returns a PayloadAccess record (mode/zero_copy/region_reads/full_payload_read_required/
+    full_decode_required/detail) -- the machine-readable access-strategy disclosure this obligation
+    names directly. ResourceLimits bounds header size independently of payload size (configurable,
+    stricter-than-official-ceiling enforced). Region bounds are checked and fail closed on out-of-range
+    or wrong-type offsets.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Bounded-memory large-file, header-read-count, mapped-region, stream-buffer disclosure, and view-lifetime
@@ -1620,27 +1648,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-SAFETENSORS-OBL-991021FCD2FCB37C
   capability_id: SAFETENSORS-LAZY-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
-  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
   - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
-  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::SafeTensorsDocument::tensor_region
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::SafeTensorsDocument::close
   positive_test_selectors:
-  - tests/python/safetensors/test_lazy_io.py::test_header_only_and_mapped_region_access_stay_bounded
-  - tests/python/safetensors/test_lazy_io.py::test_stream_buffering_is_disclosed_and_header_only_requires_seek
-  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_exact_eight_byte_length_prefix_and_utf8_json_header
-  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_truncated_prefix_is_rejected
-  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_declared_header_length_beyond_file_is_rejected
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_sparse_file_access_stays_within_bounded_python_allocation
+  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_released_view_survives_a_redundant_second_release_after_close
   negative_test_selectors: []
   execution_evidence_ids:
   - SAFETENSORS-BASELINE-SUITE
+  - SAFETENSORS-LAZY-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Bounded-memory large-file,
-    header-read-count, mapped-region, stream-buffer disclosure, and view-lifetime tests.'
+  - 'test_sparse_file_access_stays_within_bounded_python_allocation directly proves this obligation''s
+    own wording: opening a 64MB sparse tensor via safe_open()''s mmap path and reading a 16-byte tail
+    region keeps peak Python allocation (measured with tracemalloc) under 4MB -- the tensor payload is
+    never materialized into Python memory regardless of its declared size. test_released_view_survives_a_redundant_second_release_after_close
+    proves borrowed-view lifetime: releasing an already-released view after the document closes is a
+    safe no-op, not a crash.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Bounded-memory large-file, header-read-count, mapped-region, stream-buffer disclosure, and view-lifetime

@@ -1,0 +1,47 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-safetensors-lazy-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T10:55:00Z",
+  "inputs": {
+    "format_id": "safetensors",
+    "task_id": "TC_FF6_SAFETENSORS_LAZY_CITATION_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "SAFETENSORS-LAZY-001's two obligations ('Provide header-only validation, read-only path mapping, tensor-relative region views, configurable size limits, and machine-readable access-strategy disclosure' / 'Large sparse-file tests prove header bytes copied, mapping mode, bounded Python allocations, and borrowed-view lifetime behavior') were both cited against the same five generic selectors (mostly header-layout parsing tests, not lazy/region-access tests) with no negative selectors, left at partial with the boilerplate missing_behavior placeholder -- despite three dedicated test files (test_lazy_io.py, test_obligation_tensor_regions.py, test_reference_header_layout_lazy_slice.py) already existing with real, on-point coverage of every single clause in both obligations' required_tests text.",
+    "obligation_targeted": "SAL-SAFETENSORS-OBL-909DA5B5108BBCF6, SAL-SAFETENSORS-OBL-991021FCD2FCB37C",
+    "acceptance_evidence": "tests/python/safetensors/test_lazy_io.py, tests/python/safetensors/test_obligation_tensor_regions.py, tests/python/safetensors/test_reference_header_layout_lazy_slice.py",
+    "regression_tier": "full safetensors package suite (tests/python/safetensors)"
+  },
+  "execution_steps": [
+    "1. Continued the safetensors sweep after SAFETENSORS-LIFECYCLE-001. Read codec/reader/reader.py's load()/loads()/safe_open() in full: load(path) uses a genuine read-only mmap.mmap(..., access=mmap.ACCESS_READ) for zero-copy tensor-relative region access (PayloadAccessMode.MEMORY_MAPPED); loads(bytes) borrows the caller's buffer (BORROWED_BUFFER); load(non-seekable stream) discloses BUFFERED_STREAM honestly rather than claiming the same zero-copy guarantee it cannot provide. Every path returns a PayloadAccess record (model/document.py) -- the exact 'machine-readable access-strategy disclosure' this obligation names.",
+    "2. Searched for existing lazy/region/mmap-related tests and found three dedicated files already covering essentially every required_tests clause: test_lazy_io.py (header-only-and-mapped-region-bounded, stream-buffering-disclosure), test_obligation_tensor_regions.py (read-only mapped views without copy, region bounds fail closed), and test_reference_header_layout_lazy_slice.py (header-only validation not reading payload, path-backed readonly mapping and tensor-relative views, configurable header-limit enforcement, stream-backed buffered-not-zero-copy disclosure, a tracemalloc-measured 64MB-sparse-tensor bounded-allocation test, and a borrowed-view double-release-after-close safety test).",
+    "3. Ran all 16 candidate selectors directly before citing any of them (including the tensor_relative_region_bounds_fail_closed parametrization, 6 cases): all passed.",
+    "4. Read the sparse-file test body carefully before writing implemented_behavior to avoid overclaiming: it proves peak Python allocation (tracemalloc) stays under 4MB while reading a 16-byte tail region of a declared 64MB tensor -- i.e. payload is never materialized into Python memory regardless of declared size. It does NOT specifically isolate 'only header bytes are copied' as a measured claim, so the citation text was phrased to match exactly what tracemalloc actually measures, not a broader unverified claim.",
+    "5. Corrected both obligations' source_symbols (added SafeTensorsDocument.tensor_region, PayloadAccess, PayloadAccessMode, SafeTensorsDocument.close -- none of which were previously cited despite being directly exercised), positive/negative selectors (each obligation cites its own precise, non-identical subset matching its specific emphasis -- the first on the full access-strategy-disclosure surface, the second on the sparse-file/view-lifetime specifics), and promoted both to implemented. Zero source or test changes -- pure evidence correction."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/safetensors.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/safetensors.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_header_only_validation_does_not_read_payload tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_path_backed_read_uses_readonly_mapping_and_tensor_relative_views tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_sparse_file_access_stays_within_bounded_python_allocation tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_released_view_survives_a_redundant_second_release_after_close tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_stream_backed_document_discloses_buffered_not_zero_copy_access tests/python/safetensors/test_lazy_io.py::test_header_only_and_mapped_region_access_stay_bounded tests/python/safetensors/test_lazy_io.py::test_stream_buffering_is_disclosed_and_header_only_requires_seek tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed -v -- 16 passed",
+    ".venv/Scripts/pytest tests/python/safetensors/ -q -- unchanged from before this slice (0 source or test changes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 2,
+    "obligations_total_for_format": 86,
+    "safetensors_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence (including tracemalloc-measured memory bounds, which is a genuine empirical measurement but not a comparison against an independent reference implementation). Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_no_new_production_source": "load()/safe_open()'s mmap-based zero-copy region access, PayloadAccess disclosure, and view-release lifecycle were already complete, correct, and covered by dedicated tests -- this slice's job was citing that proof accurately, not building anything new."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

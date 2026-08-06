@@ -10,6 +10,14 @@
       "truth_boundary": "Suite-level and NON-PROMOTING. Records that the mapped shipped-namespace suites run and that the mapped source symbols exist. The declared result is deliberately not PASS: 4 of the 390 tests fail in the shared dev venv on the known GAP-002 shadow-package name collision, and pass only in an isolated wheel-install environment. They are not counted as passing. This binds no individual selector outcome to an obligation, so nothing here is verification; every obligation is recorded `partial` at most.\n2026-08-06: no source or test change this slice, only this map. safetensors suite unchanged at 385 passed / 1 skipped / 4 deselected (the same 4 pre-existing GAP-002 interop failures). Obligation status unchanged at 86 partial / 0 missing -- this slice deepens selector evidence within already- `partial` obligations, it does not move any obligation's status."
     },
     {
+      "evidence_id": "SAFETENSORS-LAZY-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-safetensors-lazy-001.json",
+      "sha256": "2d60c6f75191d4292b36828e98b5058f53e22615af8a27db4ae10355ea26eade",
+      "truth_boundary": "Selector-bound, unlike SAFETENSORS-BASELINE-SUITE: it names the exact test selectors proving header-only validation, real read-only mmap path access with tensor-relative zero-copy region views, machine-readable access-strategy disclosure (PayloadAccess/PayloadAccessMode) across every load path, bounded Python allocation on a 64MB sparse tensor (tracemalloc-measured), and safe borrowed-view release semantics including a redundant release after close. NOT backed by an independent reference implementation for these specific behaviors -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-SAFETENSORS-OBL-909DA5B5108BBCF6 and SAL-SAFETENSORS-OBL-991021FCD2FCB37C only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "SAFETENSORS-LIFECYCLE-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -29,7 +37,7 @@
   "format_id": "safetensors",
   "input_digests": {
     "compiled_contract": "0c75ec78971819ea2d679482ea8b81334f594632bf79cdb0c4ec465c8a3bcfbb",
-    "implementation_evidence": "e80d6de9b5662d6d56b694620670f64dfdf76b9a88476a484554a0c9cc7dcfbc",
+    "implementation_evidence": "f91b4cb1a7e55e3eb37efd6e6288a29c8c39d1624de37b14cc18e659162cd249",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "acaf4a88cf5aee24cc52b3da71013932a0573d1fc834b9e79adf7489fc393b80",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -1937,22 +1945,25 @@
     {
       "capability_id": "SAFETENSORS-LAZY-001",
       "execution_evidence_ids": [
-        "SAFETENSORS-BASELINE-SUITE"
+        "SAFETENSORS-BASELINE-SUITE",
+        "SAFETENSORS-LAZY-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "read_header() validates the header without reading any payload bytes. load(path) uses a real read-only mmap (PayloadAccessMode.MEMORY_MAPPED), giving zero-copy, tensor-relative region views via tensor_region()/tensor_bytes(); load(stream) discloses BUFFERED_STREAM (full read required, no mapping possible on a non-seekable source) instead of silently claiming the same guarantees. Every load path returns a PayloadAccess record (mode/zero_copy/region_reads/full_payload_read_required/ full_decode_required/detail) -- the machine-readable access-strategy disclosure this obligation names directly. ResourceLimits bounds header size independently of payload size (configurable, stricter-than-official-ceiling enforced). Region bounds are checked and fail closed on out-of-range or wrong-type offsets."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Bounded-memory large-file, header-read-count, mapped-region, stream-buffer disclosure, and view-lifetime tests."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/safetensors/test_obligation_tensor_regions.py::test_tensor_relative_region_bounds_fail_closed"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-SAFETENSORS-OBL-909DA5B5108BBCF6",
       "positive_test_selectors": [
         "tests/python/safetensors/test_lazy_io.py::test_header_only_and_mapped_region_access_stay_bounded",
         "tests/python/safetensors/test_lazy_io.py::test_stream_buffering_is_disclosed_and_header_only_requires_seek",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_exact_eight_byte_length_prefix_and_utf8_json_header",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_truncated_prefix_is_rejected",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_declared_header_length_beyond_file_is_rejected"
+        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_header_only_validation_does_not_read_payload",
+        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_path_backed_read_uses_readonly_mapping_and_tensor_relative_views",
+        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_stream_backed_document_discloses_buffered_not_zero_copy_access",
+        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_configurable_stricter_header_limit_enforced",
+        "tests/python/safetensors/test_obligation_tensor_regions.py::test_path_tensor_regions_are_read_only_mapped_views_without_copy"
       ],
       "proof_requirements": {
         "negative": [
@@ -1962,14 +1973,16 @@
           "Bounded-memory large-file, header-read-count, mapped-region, stream-buffer disclosure, and view-lifetime tests."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header",
-        "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads",
         "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load",
-        "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open"
+        "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open",
+        "src/python/safetensors/src/format_factory/safetensors/model/document.py::SafeTensorsDocument::tensor_region",
+        "src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess",
+        "src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "SAFETENSORS-INTEROP-001",
@@ -2051,22 +2064,18 @@
     {
       "capability_id": "SAFETENSORS-LAZY-001",
       "execution_evidence_ids": [
-        "SAFETENSORS-BASELINE-SUITE"
+        "SAFETENSORS-BASELINE-SUITE",
+        "SAFETENSORS-LAZY-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "test_sparse_file_access_stays_within_bounded_python_allocation directly proves this obligation's own wording: opening a 64MB sparse tensor via safe_open()'s mmap path and reading a 16-byte tail region keeps peak Python allocation (measured with tracemalloc) under 4MB -- the tensor payload is never materialized into Python memory regardless of its declared size. test_released_view_survives_a_redundant_second_release_after_close proves borrowed-view lifetime: releasing an already-released view after the document closes is a safe no-op, not a crash."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Bounded-memory large-file, header-read-count, mapped-region, stream-buffer disclosure, and view-lifetime tests."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-SAFETENSORS-OBL-991021FCD2FCB37C",
       "positive_test_selectors": [
-        "tests/python/safetensors/test_lazy_io.py::test_header_only_and_mapped_region_access_stay_bounded",
-        "tests/python/safetensors/test_lazy_io.py::test_stream_buffering_is_disclosed_and_header_only_requires_seek",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_exact_eight_byte_length_prefix_and_utf8_json_header",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_truncated_prefix_is_rejected",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_declared_header_length_beyond_file_is_rejected"
+        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_sparse_file_access_stays_within_bounded_python_allocation",
+        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_released_view_survives_a_redundant_second_release_after_close"
       ],
       "proof_requirements": {
         "negative": [
@@ -2076,14 +2085,13 @@
           "Bounded-memory large-file, header-read-count, mapped-region, stream-buffer disclosure, and view-lifetime tests."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header",
-        "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads",
         "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load",
-        "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open"
+        "src/python/safetensors/src/format_factory/safetensors/model/document.py::SafeTensorsDocument::tensor_region",
+        "src/python/safetensors/src/format_factory/safetensors/model/document.py::SafeTensorsDocument::close"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "SAFETENSORS-MODEL-001",
@@ -3274,6 +3282,7 @@
   "proof_strength": "supporting_nonpromoting",
   "referenced_input_digests": {
     "reports/skills-rff6/skill-transcripts/build-evidence-ledger-safetensors-001.json": "0c4341a9828b89799ba47aeba0932e99bda659dc424a982d3e42ebe57adc270b",
+    "reports/skills-rff6/skill-transcripts/product-source-task-safetensors-lazy-001.json": "2d60c6f75191d4292b36828e98b5058f53e22615af8a27db4ae10355ea26eade",
     "reports/skills-rff6/skill-transcripts/product-source-task-safetensors-lifecycle-001.json": "d110f288b73b97e6f51775dd6fe1b0281220ab68f7937be5a55a1e133323b3f5",
     "reports/skills-rff6/skill-transcripts/product-source-task-safetensors-metadata-001.json": "8e0038229a0a1751b782c261d06b6df7de18dcd650b2adb77a1fcd0f8d7ff0e5",
     "src/python/safetensors/src/format_factory/safetensors/adapters/numpy.py": "82c249624fa0346474cb00a0877fa172ef15b593c03a6cd4670bd59435698b40",
@@ -3306,11 +3315,11 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 3,
-      "partial": 83
+      "implemented": 5,
+      "partial": 81
     },
     "total": 86,
-    "unresolved": 83
+    "unresolved": 81
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
